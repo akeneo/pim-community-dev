@@ -3,9 +3,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
     table: pim_catalog_product_model
     changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductModelRepository
-    gedmo:
-        tree:
-            type: nested
     fields:
         id:
             type: integer
@@ -24,25 +21,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
             type: datetime
         updated:
             type: datetime
-        root:
-            type: integer
-            gedmo:
-                - treeRoot
-        level:
-            type: integer
-            column: lvl
-            gedmo:
-                - treeLevel
-        left:
-            type: integer
-            column: lft
-            gedmo:
-                - treeLeft
-        right:
-            type: integer
-            column: rgt
-            gedmo:
-                - treeRight
     manyToMany:
         categories:
             targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
@@ -64,7 +42,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
             mappedBy: parent
             orderBy:
-                left: ASC
+                created: ASC
         associations:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface
             mappedBy: owner
@@ -80,8 +58,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
                 parent_id:
                     referencedColumnName: id
                     onDelete: CASCADE
-            gedmo:
-                - treeParent
         familyVariant:
             targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface
             joinColumn:

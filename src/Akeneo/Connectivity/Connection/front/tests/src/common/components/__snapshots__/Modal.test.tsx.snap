@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Modal should render 1`] = `
+Array [
+  <div
+    className="AknFullPage"
+  >
+    <div
+      className="AknFullPage-content AknFullPage-content--withIllustration"
+    >
+      <div>
+        <div
+          className="AknFullPage-image AknFullPage-illustration AknFullPage-illustration--api"
+        />
+      </div>
+      <div>
+        <div
+          className="AknFullPage-titleContainer"
+        >
+          <div
+            className="AknFullPage-subTitle"
+          >
+            subtitle
+          </div>
+          <div
+            className="AknFullPage-title"
+          >
+            title
+          </div>
+          description
+        </div>
+        content
+      </div>
+    </div>
+  </div>,
+  <div
+    className="AknFullPage-cancel"
+    onClick={[Function]}
+  />,
+]
+`;

@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SmallHelper should render 1`] = `
+<div
+  className="sc-kkGfuU kkZOph AknSubsection"
+>
+  <div
+    className="sc-iAyFgw iYCgxT"
+  />
+  <div
+    className="sc-hSdWYo gsOyBM"
+  >
+    content
+  </div>
+</div>
+`;

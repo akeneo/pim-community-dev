@@ -4,7 +4,7 @@ import {ApplyButton} from './button/ApplyButton';
 import {GreyButton} from './button/GreyButton';
 import {IconButton} from './button/IconButton';
 import {ImportantButton} from './button/ImportantButton';
-import {DropdownLink, SecondaryActionsDropdownButton} from './button/SecondaryActionsButton';
+import {DropdownLink, SecondaryActionsDropdownButton} from './button/SecondaryActionsDropdownButton';
 import {Figure, FigureCaption, FigureImage} from './Figure';
 import {Form} from './form/Form';
 import {FormGroup} from './form/FormGroup';

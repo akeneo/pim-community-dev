@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller;
 
+use Akeneo\Tool\Component\Email\SenderAddress;
 use Akeneo\UserManagement\Bundle\Form\Handler\ResetHandler;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -35,13 +36,17 @@ class ResetController extends Controller
     /** @var FormInterface */
     private $form;
 
+    /** @var string */
+    private $mailerUrl;
+
     public function __construct(
         UserManager $userManager,
         Swift_Mailer $mailer,
         SessionInterface $session,
         ResetHandler $resetHandler,
         TokenStorageInterface $tokenStorage,
-        FormInterface $form
+        FormInterface $form,
+        string $mailerUrl
     ) {
         $this->userManager = $userManager;
         $this->mailer = $mailer;
@@ -49,6 +54,7 @@ class ResetController extends Controller
         $this->resetHandler = $resetHandler;
         $this->tokenStorage = $tokenStorage;
         $this->form = $form;
+        $this->mailerUrl = $mailerUrl;
     }
 
     /**
@@ -92,7 +98,7 @@ class ResetController extends Controller
          * @todo Move to postUpdate lifecycle event handler as service
          */
         $message = (new \Swift_Message('Reset password'))
-            ->setFrom($this->container->getParameter('pim_user.email'))
+            ->setFrom((string) SenderAddress::fromMailerUrl($this->mailerUrl))
             ->setTo($user->getEmail())
             ->setBody(
                 $this->renderView('PimUserBundle:Mail:reset.html.twig', ['user' => $user]),

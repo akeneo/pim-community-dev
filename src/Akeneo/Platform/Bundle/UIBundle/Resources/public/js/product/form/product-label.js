@@ -46,11 +46,14 @@ define(
                 var locale = UserContext.get('catalogLocale');
 
                 var values = this.getFormData().values[attributeAsLabelIdentifier];
+                if (values) {
+                    return values.find(value => {
+                        return (false === scopable || value.scope === scope)
+                            && (false === localizable || value.locale === locale);
+                    }).data;
+                }
 
-                return values.find(value => {
-                    return (false === scopable || value.scope === scope)
-                      && (false === localizable || value.locale === locale);
-                }).data;
+                return '';
             },
 
             getLabelFromMeta: function () {
@@ -63,7 +66,7 @@ define(
                 return null;
             },
 
-            fetchFamily: function(code) {
+            fetchFamily: function (code) {
                 if (!code) {
                     return;
                 }
@@ -74,11 +77,11 @@ define(
 
                 FetcherRegistry.getFetcher('family')
                     .fetch(code)
-                    .then(function(family) {
-                      this.family = family;
-                      this.render();
+                    .then(function (family) {
+                        this.family = family;
+                        this.render();
                     }.bind(this));
-            },
+            }
         });
     }
 );

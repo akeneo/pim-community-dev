@@ -10,9 +10,9 @@
     <input type="text" name="filter-data" class="AknTextField AknTextField--noRightRadius AknTextField--noLeftRadius value" value="<%- value.amount %>" <%- editable ? '' : 'disabled' %>>
 
     <select class="select2 unit" name="filter-unit" <%- editable ? '' : 'disabled' %>>
-        <% _.each(_.keys(units.units), function (key) { %>
-            <option value="<%- key %>"<%- value.unit === key ? ' selected' : '' %>>
-                <%- __(`pim_measure.units.${key}`) %>
+        <% _.each(units, function (unit) { %>
+            <option value="<%- unit.code %>"<%- value.unit === unit.code ? ' selected' : '' %>>
+                <%- i18n.getLabel(unit.labels, locale, unit.code) %>
             </option>
         <% }); %>
     </select>

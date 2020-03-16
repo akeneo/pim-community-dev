@@ -11,14 +11,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 
 class TextAreaFilterSpec extends ObjectBehavior
 {
-    function let(AttributeValidatorHelper $attributeValidatorHelper)
+    function let(ElasticsearchFilterValidator $filterValidator)
     {
         $this->beConstructedWith(
-            $attributeValidatorHelper,
+            $filterValidator,
             ['pim_catalog_textarea'],
             ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -53,15 +53,15 @@ class TextAreaFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_equals(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $description,
         SearchQueryBuilder $sqb
     ) {
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('textarea');
 
-        $attributeValidatorHelper->validateLocale($description, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($description, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('description', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('description', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -76,15 +76,15 @@ class TextAreaFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_equal(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $description,
         SearchQueryBuilder $sqb
     ) {
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('textarea');
 
-        $attributeValidatorHelper->validateLocale($description, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($description, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('description', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('description', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(
             [
@@ -105,15 +105,15 @@ class TextAreaFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_empty(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $description,
         SearchQueryBuilder $sqb
     ) {
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('textarea');
 
-        $attributeValidatorHelper->validateLocale($description, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($description, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('description', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('description', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(
             [
@@ -129,15 +129,15 @@ class TextAreaFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_not_empty(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $description,
         SearchQueryBuilder $sqb
     ) {
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('textarea');
 
-        $attributeValidatorHelper->validateLocale($description, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($description, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('description', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('description', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -152,15 +152,15 @@ class TextAreaFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_contains(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $description,
         SearchQueryBuilder $sqb
     ) {
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('textarea');
 
-        $attributeValidatorHelper->validateLocale($description, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($description, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('description', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('description', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -176,15 +176,15 @@ class TextAreaFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_does_not_contain(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $description,
         SearchQueryBuilder $sqb
     ) {
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('textarea');
 
-        $attributeValidatorHelper->validateLocale($description, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($description, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('description', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('description', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(
             [
@@ -207,15 +207,15 @@ class TextAreaFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_starts_with(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $description,
         SearchQueryBuilder $sqb
     ) {
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('textarea');
 
-        $attributeValidatorHelper->validateLocale($description, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($description, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('description', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('description', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -239,15 +239,15 @@ class TextAreaFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_given_value_is_not_a_string(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $description,
         SearchQueryBuilder $sqb
     ) {
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('textarea');
 
-        $attributeValidatorHelper->validateLocale($description, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($description, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('description', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('description', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -261,15 +261,15 @@ class TextAreaFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $description,
         SearchQueryBuilder $sqb
     ) {
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('textarea');
 
-        $attributeValidatorHelper->validateLocale($description, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($description, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('description', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('description', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -282,7 +282,7 @@ class TextAreaFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_locale_validation(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $description,
         SearchQueryBuilder $sqb
     ) {
@@ -292,7 +292,7 @@ class TextAreaFilterSpec extends ObjectBehavior
         $description->getAvailableLocaleCodes('fr_FR');
 
         $e = new \LogicException('Attribute "description" expects a locale, none given.');
-        $attributeValidatorHelper->validateLocale($description, 'en_US')->willThrow($e);
+        $filterValidator->validateLocaleForAttribute('description', 'en_US')->willThrow($e);
 
         $this->setQueryBuilder($sqb);
 
@@ -306,7 +306,7 @@ class TextAreaFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_scope_validation(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $description,
         SearchQueryBuilder $sqb
     ) {
@@ -315,7 +315,7 @@ class TextAreaFilterSpec extends ObjectBehavior
         $description->isScopable()->willReturn(false);
 
         $e = new \LogicException('Attribute "description" does not expect a scope, "ecommerce" given.');
-        $attributeValidatorHelper->validateLocale($description, 'en_US')->willThrow($e);
+        $filterValidator->validateLocaleForAttribute('description', 'en_US')->willThrow($e);
 
         $this->setQueryBuilder($sqb);
 

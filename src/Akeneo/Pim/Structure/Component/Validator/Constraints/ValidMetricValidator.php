@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -20,22 +21,16 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ValidMetricValidator extends ConstraintValidator
 {
-    /** @var array $measures */
-    protected $measures;
-
     /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
 
-    /**
-     * Constructor
-     *
-     * @param PropertyAccessorInterface $propertyAccessor
-     * @param array                     $measures
-     */
-    public function __construct(PropertyAccessorInterface $propertyAccessor, $measures)
+    /** @var LegacyMeasurementProvider */
+    private $legacyMeasureProvider;
+
+    public function __construct(PropertyAccessorInterface $propertyAccessor, LegacyMeasurementProvider $provider)
     {
         $this->propertyAccessor = $propertyAccessor;
-        $this->measures = $measures['measures_config'];
+        $this->legacyMeasureProvider = $provider;
     }
 
     /**
@@ -68,14 +63,14 @@ class ValidMetricValidator extends ConstraintValidator
             return;
         }
 
+        $measureFamilies = $this->legacyMeasureProvider->getMeasurementFamilies();
         $family = $this->propertyAccessor->getValue($object, $familyProperty);
         $unit = $this->propertyAccessor->getValue($object, $unitProperty);
-
-        if (!array_key_exists($family, $this->measures)) {
+        if (!array_key_exists($family, $measureFamilies)) {
             $this->context->buildViolation($constraint->familyMessage)
                 ->atPath($familyProperty)
                 ->addViolation();
-        } elseif (!array_key_exists($unit, $this->measures[$family]['units'])) {
+        } elseif (!array_key_exists($unit, $measureFamilies[$family]['units'])) {
             $this->context->buildViolation($constraint->unitMessage)
                 ->atPath($unitProperty)
                 ->addViolation();

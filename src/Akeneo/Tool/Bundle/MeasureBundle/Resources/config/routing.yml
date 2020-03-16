@@ -1,0 +1,8 @@
+akeneo_measurements_settings_index:
+    path: '/configuration/measurement/'
+
+# Internal API
+akeneo_measurements_measurement_family_create_rest:
+    path: '/rest/measurement-families'
+    defaults: { _controller: pim_api.controller.internal_api.create_measurement_family }
+    methods: [POST]

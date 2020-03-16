@@ -16,7 +16,7 @@ class MailNotifierSpec extends ObjectBehavior
         \Twig_Environment $twig,
         \Swift_Mailer $mailer
     ) {
-        $this->beConstructedWith($handler, $tokenStorage, $twig, $mailer, 'myEmail');
+        $this->beConstructedWith($handler, $tokenStorage, $twig, $mailer, 'null://localhost?encryption=tls&auth_mode=login&username=foo&password=bar&sender_address=no-reply@example.com');
         $this->setRecipientEmail('destEmail');
     }
 
@@ -24,7 +24,7 @@ class MailNotifierSpec extends ObjectBehavior
     {
         $mailer->createMessage()->willReturn($message);
         $message->setSubject('Job has been executed')->shouldBeCalled();
-        $message->setFrom('myEmail')->shouldBeCalled();
+        $message->setFrom('no-reply@example.com')->shouldBeCalled();
         $message->setTo('destEmail')->shouldBeCalled();
         $message->setBody(Argument::any(), 'text/plain')->shouldBeCalled();
         $message->addPart(Argument::any(), 'text/html')->shouldBeCalled();

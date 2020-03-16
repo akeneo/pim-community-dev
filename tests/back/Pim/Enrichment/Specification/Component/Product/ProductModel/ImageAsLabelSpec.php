@@ -54,7 +54,7 @@ class ImageAsLabelSpec extends ObjectBehavior
         $familyVariant->getVariantAttributeSets()->willReturn($attributeSets);
         $productModel->getFamily()->willReturn($family);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $productModel->getLevel()->willReturn(1);
+        $productModel->isRoot()->willReturn(false);
         $productModel->getImage()->willReturn($imageValue);
 
         $this->value($productModel)->shouldReturn($imageValue);
@@ -91,7 +91,7 @@ class ImageAsLabelSpec extends ObjectBehavior
         $familyVariant->getVariantAttributeSets()->willReturn($attributeSets);
         $productModel->getFamily()->willReturn($family);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $productModel->getLevel()->willReturn(1);
+        $productModel->isRoot()->willReturn(false);
         $productModel->getImage()->willReturn($imageValue);
 
         $this->value($productModel)->shouldReturn($imageValue);
@@ -124,14 +124,14 @@ class ImageAsLabelSpec extends ObjectBehavior
         $attributeSetTwo->getAttributes()->willReturn($attributeCollectionTwo);
         $attributeSetTwo->getLevel()->willReturn(2);
 
-        $attributeCollectionOne->contains($attributeAsImage)->willReturn(false);
-        $attributeCollectionTwo->contains($attributeAsImage)->willReturn(true);
+        $attributeCollectionOne->contains($attributeAsImage)->willReturn(true);
+        $attributeCollectionTwo->contains($attributeAsImage)->willReturn(false);
 
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
         $familyVariant->getVariantAttributeSets()->willReturn($attributeSets);
         $productModel->getFamily()->willReturn($family);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $productModel->getLevel()->willReturn(1);
+        $productModel->isRoot()->willReturn(true);
 
         $productModelRepository->findBy(
             ['parent' => $productModel],
@@ -180,7 +180,7 @@ class ImageAsLabelSpec extends ObjectBehavior
         $familyVariant->getVariantAttributeSets()->willReturn($attributeSets);
         $productModel->getFamily()->willReturn($family);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $productModel->getLevel()->willReturn(1);
+        $productModel->isRoot()->willReturn(false);
 
         $productModelRepository->findBy(
             ['parent' => $productModel],
@@ -227,7 +227,7 @@ class ImageAsLabelSpec extends ObjectBehavior
         $familyVariant->getVariantAttributeSets()->willReturn($attributeSets);
         $productModel->getFamily()->willReturn($family);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $productModel->getLevel()->willReturn(1);
+        $productModel->isRoot()->willReturn(false);
 
         $productModelRepository->findBy(
             ['parent' => $productModel],

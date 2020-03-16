@@ -1,0 +1,10 @@
+config:
+    config:
+        pim/controller-registry:
+            controllers:
+                akeneo_measurements_settings_index:
+                    module: pim/controller/measurements/settings
+                    aclResourceId: akeneo_measurements_manage_settings
+
+    paths:
+        pim/controller/measurements/settings: akeneomeasure/bridge/controller/settings.tsx
