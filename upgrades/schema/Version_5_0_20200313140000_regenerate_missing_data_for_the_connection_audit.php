@@ -20,20 +20,17 @@ final class Version_5_0_20200313140000_regenerate_missing_data_for_the_connectio
 
     public function up(Schema $schema): void
     {
-        var_dump('oiudis');
         $auditDataExists = $this->connection->executeQuery('SELECT COUNT(1) FROM akeneo_connectivity_connection_audit_product')->fetchColumn();
         if ($auditDataExists > 0) {
-            var_dump('Already data in audit_product table... No migration needed!');
             return;
         }
-        var_dump('No data in audit product table. Starting recalculation...');
 
         $datetimeUTC = new \DateTime('now', new \DateTimeZone('UTC'));
         $datetimeUTC->setTime((int) $datetimeUTC->format('H'), 0);
 
         $hourInterval = new \DateInterval('PT1H');
 
-        for ($i = 24*8; $i > 0; $i--) {
+        for ($i = 24*9; $i > 0; $i--) {
             $this->recalculateForDateTime($datetimeUTC->sub($hourInterval));
         }
     }
@@ -75,10 +72,10 @@ SQL;
 
         $totalCount = 0;
         foreach ($eventCounts as $eventCount) {
-            $this->insertAuditProductRow($eventCount['connection_code'], $eventCount['event_count'], $startDateTime->format('Y-m-d H:i:s'), 'product_created');
-            $totalCount += $eventCount['event_count'];
+            $this->insertAuditProductRow($eventCount['connection_code'], (int) $eventCount['event_count'], $startDateTime->format('Y-m-d H:i:s'), 'product_created');
+            $totalCount += (int) $eventCount['event_count'];
         }
-        $this->insertAuditProductRow('<all>', $totalCount, $startDateTime->format('Y-m-d H:i:s'), 'product_created');
+        $this->insertAuditProductRow('<all>', (int) $totalCount, $startDateTime->format('Y-m-d H:i:s'), 'product_created');
     }
 
     private function recalculateUpdatedForDateTime(\DateTime $startDateTime, \DateTime $endDateTime): void
@@ -107,10 +104,10 @@ SQL;
 
         $totalCount = 0;
         foreach ($eventCounts as $eventCount) {
-            $this->insertAuditProductRow($eventCount['connection_code'], $eventCount['event_count'], $startDateTime->format('Y-m-d H:i:s'), 'product_updated');
-            $totalCount += $eventCount['event_count'];
+            $this->insertAuditProductRow($eventCount['connection_code'], (int) $eventCount['event_count'], $startDateTime->format('Y-m-d H:i:s'), 'product_updated');
+            $totalCount += (int) $eventCount['event_count'];
         }
-        $this->insertAuditProductRow('<all>', $totalCount, $startDateTime->format('Y-m-d H:i:s'), 'product_updated');
+        $this->insertAuditProductRow('<all>', (int) $totalCount, $startDateTime->format('Y-m-d H:i:s'), 'product_updated');
     }
 
     private function insertAuditProductRow(string $connectionCode, int $eventCount, string $eventDateTime, string $eventType): void
