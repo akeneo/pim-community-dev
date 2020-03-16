@@ -27,7 +27,7 @@ class CodeValidator extends ConstraintValidator
         $violations = $validator->validate($code, [
                 new Constraints\NotBlank(),
                 new Constraints\Type(['type' => 'string']),
-                new Constraints\Length(['max' => self::MAX_CODE_LENGTH, 'min' => 1]),
+                new Constraints\Length(['max' => self::MAX_CODE_LENGTH]),
                 new Constraints\Regex([
                         'pattern' => '/^[a-zA-Z0-9_]+$/',
                         'message' => 'pim_measurements.validation.common.code.pattern',
