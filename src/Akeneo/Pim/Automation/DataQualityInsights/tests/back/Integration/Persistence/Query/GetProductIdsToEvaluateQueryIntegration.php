@@ -21,7 +21,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdsToEvaluateQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
@@ -31,38 +30,61 @@ class GetProductIdsToEvaluateQueryIntegration extends TestCase
     private $db;
 
     /** @var GetProductIdsToEvaluateQuery */
-    private $query;
+    private $productQuery;
+
+        /** @var GetProductIdsToEvaluateQuery */
+    private $productModelQuery;
 
     /** @var CriterionEvaluationRepositoryInterface */
-    private $repository;
+    private $productCriterionEvaluationRepository;
+
+    /** @var CriterionEvaluationRepositoryInterface */
+    private $productModelCriterionEvaluationRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->db = $this->get('database_connection');
-        $this->query = $this->get(GetProductIdsToEvaluateQuery::class);
-        $this->repository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
+        $this->productQuery = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_ids_to_evaluate');
+        $this->productModelQuery = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_to_evaluate');
+        $this->productCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
+        $this->productModelCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation');
     }
 
     public function test_it_returns_all_product_id_with_pending_criteria()
     {
-        $this->assertEquals([], iterator_to_array($this->query->execute(4, 2)));
-        $this->createDataset();
+        $this->assertEquals([], iterator_to_array($this->productQuery->execute(4, 2)));
+        $this->productCriterionEvaluationRepository->create($this->getCriteriaEvaluationsSample());
 
         $expectedProductIds = [
             [42, 123],
             [456, 321],
         ];
 
-        $productIds = iterator_to_array($this->query->execute(4, 2));
+        $productIds = iterator_to_array($this->productQuery->execute(4, 2));
 
         $this->assertEqualsCanonicalizing($expectedProductIds, $productIds);
     }
 
-    private function createDataset(): void
+    public function test_it_returns_all_product_model_id_with_pending_criteria()
     {
-        $criteria = (new CriterionEvaluationCollection)
+        $this->assertEquals([], iterator_to_array($this->productModelQuery->execute(4, 2)));
+        $this->productModelCriterionEvaluationRepository->create($this->getCriteriaEvaluationsSample());
+
+        $expectedProductModelIds = [
+            [42, 123],
+            [456, 321],
+        ];
+
+        $productModelIds = iterator_to_array($this->productModelQuery->execute(4, 2));
+
+        $this->assertEqualsCanonicalizing($expectedProductModelIds, $productModelIds);
+    }
+
+    private function getCriteriaEvaluationsSample(): CriterionEvaluationCollection
+    {
+        return (new CriterionEvaluationCollection)
             ->add(new CriterionEvaluation(
                 new CriterionEvaluationId('95f124de-45cd-495e-ac58-349086ad6cd4'),
                 new CriterionCode('completeness'),
@@ -112,7 +134,6 @@ class GetProductIdsToEvaluateQueryIntegration extends TestCase
                 new \DateTimeImmutable('2019-10-28 10:41:59.456'),
                 CriterionEvaluationStatus::pending()
             ));
-        $this->repository->create($criteria);
     }
 
     protected function getConfiguration()

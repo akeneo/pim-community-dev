@@ -22,16 +22,22 @@ final class GetProductIdsToEvaluateQuery implements GetProductIdsToEvaluateQuery
     /** @var Connection */
     private $db;
 
-    public function __construct(Connection $db)
+    /** @var string */
+    private $tableName;
+
+    public function __construct(Connection $db, string $tableName)
     {
         $this->db = $db;
+        $this->tableName = $tableName;
     }
 
     public function execute(int $limit, int $bulkSize): \Iterator
     {
+        $criterionEvaluationTable = $this->tableName;
+
         $sql = <<<SQL
 SELECT product_id, MIN(created_at) as creation_date
-FROM pimee_data_quality_insights_criteria_evaluation
+FROM $criterionEvaluationTable
 WHERE status = :status
 GROUP BY product_id
 ORDER BY creation_date

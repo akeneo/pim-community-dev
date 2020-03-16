@@ -66,7 +66,7 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdsToEvaluateQuery'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_ids_to_evaluate'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateMissingProductsCriteriaEvaluations'
             - '@logger'
 
