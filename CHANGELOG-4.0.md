@@ -1,5 +1,7 @@
 # 4.0.x
 
+- MET-70: Add maintenance command to transform scopable asset manager attributes into non-scopable
+
 # 4.0.9 (2020-03-16)
 
 ## Improvements
