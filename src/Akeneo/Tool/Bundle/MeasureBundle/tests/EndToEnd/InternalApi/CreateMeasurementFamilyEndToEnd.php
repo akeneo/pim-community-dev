@@ -22,7 +22,6 @@ class CreateMeasurementFamilyEndToEnd extends WebTestCase
         parent::setUp();
 
         $this->measurementFamilyRepository = $this->get('akeneo_measure.persistence.measurement_family_repository');
-        $this->authenticateAsAdmin();
     }
 
     /**
@@ -41,6 +40,7 @@ class CreateMeasurementFamilyEndToEnd extends WebTestCase
         $measurementFamily = self::createMeasurementFamily('custom_metric_1');
         $normalizedMeasurementFamily = $measurementFamily->normalize();
 
+        $this->authenticateAsAdmin();
         $this->client->request(
             'POST',
             'rest/measurement-families',
@@ -64,6 +64,7 @@ class CreateMeasurementFamilyEndToEnd extends WebTestCase
     {
         $invalidMeasurementFamily = ['values' => null];
 
+        $this->authenticateAsAdmin();
         $this->client->request(
             'POST',
             'rest/measurement-families',
@@ -91,6 +92,7 @@ class CreateMeasurementFamilyEndToEnd extends WebTestCase
         $normalizedMeasurementFamily = $measurementFamily->normalize();
         $normalizedMeasurementFamily['code'] = 'INVALID CODE WITH SPACES';
 
+        $this->authenticateAsAdmin();
         $this->client->request(
             'POST',
             'rest/measurement-families',
@@ -120,6 +122,7 @@ class CreateMeasurementFamilyEndToEnd extends WebTestCase
         $measurementFamily = self::createMeasurementFamily('custom_metric_1');
         $normalizedMeasurementFamily = $measurementFamily->normalize();
 
+        $this->authenticateAsAdmin();
         $this->client->request(
             'POST',
             'rest/measurement-families',
@@ -133,6 +136,7 @@ class CreateMeasurementFamilyEndToEnd extends WebTestCase
 
         $this->client->restart();
 
+        $this->authenticateAsAdmin();
         $this->client->request(
             'POST',
             'rest/measurement-families',

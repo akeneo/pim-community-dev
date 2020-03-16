@@ -20,17 +20,33 @@ abstract class WebTestCase extends TestCase
     /** @var KernelBrowser */
     protected $client;
 
+    /** @var UserInterface */
+    protected $user;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->client = self::$container->get('test.client');
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->user = null;
+    }
+
     protected function authenticateAsAdmin()
     {
-        $user = $this->createAdminUser();
+        $this->authenticate($this->getAdminUser());
+    }
 
-        $this->authenticate($user);
+    protected function getAdminUser(): UserInterface
+    {
+        if (!$this->user) {
+            $this->user = $this->createAdminUser();
+        }
+
+        return $this->user;
     }
 
     private function authenticate(UserInterface $user)
