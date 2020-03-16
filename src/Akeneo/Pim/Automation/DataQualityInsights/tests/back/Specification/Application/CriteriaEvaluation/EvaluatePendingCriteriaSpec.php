@@ -18,16 +18,26 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Con
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleDataCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetEvaluableProductValuesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetPendingCriteriaEvaluationsByProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 
 class EvaluatePendingCriteriaSpec extends ObjectBehavior
@@ -36,15 +46,17 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         CriterionEvaluationRepositoryInterface $repository,
         CriteriaEvaluationRegistry $registry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
+        GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
         LoggerInterface $logger
     ) {
-        $this->beConstructedWith($repository, $registry, $getPendingCriteriaEvaluationsQuery, $logger);
+        $this->beConstructedWith($repository, $registry, $getPendingCriteriaEvaluationsQuery, $getEvaluableProductValuesQuery, $logger);
     }
 
     public function it_evaluates_criteria_for_a_set_of_products(
         CriterionEvaluationRepositoryInterface $repository,
         CriteriaEvaluationRegistry $registry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
+        GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
         EvaluateCriterionInterface $evaluateSpelling,
         EvaluateCriterionInterface $evaluateCompleteness
     ) {
@@ -86,11 +98,21 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
             123 => $criteriaProduct123
         ]);
 
+        $product42Values = $this->givenRandomProductValues();
+        $product123Values = $this->givenRandomProductValues();
+
+        $getEvaluableProductValuesQuery->byProductId(new ProductId(42))->willReturn($product42Values);
+        $getEvaluableProductValuesQuery->byProductId(new ProductId(123))->willReturn($product123Values);
+
         $registry->get($criterionSpelling)->willReturn($evaluateSpelling);
         $registry->get($criterionCompleteness)->willReturn($evaluateCompleteness);
-        $evaluateSpelling->evaluate($criteria['product_42_spelling'])->willReturn(new Write\CriterionEvaluationResult());
-        $evaluateSpelling->evaluate($criteria['product_123_spelling'])->willReturn(new Write\CriterionEvaluationResult());
-        $evaluateCompleteness->evaluate($criteria['product_42_completeness'])->willReturn(new Write\CriterionEvaluationResult());
+
+        $evaluateSpelling->evaluate($criteria['product_42_spelling'], $product42Values)
+            ->willReturn(new Write\CriterionEvaluationResult());
+        $evaluateSpelling->evaluate($criteria['product_123_spelling'], $product123Values)
+            ->willReturn(new Write\CriterionEvaluationResult());
+        $evaluateCompleteness->evaluate($criteria['product_42_completeness'], $product42Values)
+            ->willReturn(new Write\CriterionEvaluationResult());
 
         $repository->update(Argument::any())->shouldBeCalledTimes(2);
 
@@ -105,6 +127,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         CriterionEvaluationRepositoryInterface $repository,
         CriteriaEvaluationRegistry $registry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
+        GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
         EvaluateCriterionInterface $evaluateCriterion
     ) {
         $criterionCode = new CriterionCode(EvaluateSpelling::CRITERION_CODE);
@@ -130,9 +153,15 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
             123 => (new Write\CriterionEvaluationCollection())->add($criterionB),
         ]);
 
+        $product42Values = $this->givenRandomProductValues();
+        $product123Values = $this->givenRandomProductValues();
+
+        $getEvaluableProductValuesQuery->byProductId(new ProductId(42))->willReturn($product42Values);
+        $getEvaluableProductValuesQuery->byProductId(new ProductId(123))->willReturn($product123Values);
+
         $registry->get($criterionCode)->willReturn($evaluateCriterion);
-        $evaluateCriterion->evaluate($criterionA)->willThrow(new \Exception('Evaluation failed'));
-        $evaluateCriterion->evaluate($criterionB)->willReturn(new Write\CriterionEvaluationResult());
+        $evaluateCriterion->evaluate($criterionA, $product42Values)->willThrow(new \Exception('Evaluation failed'));
+        $evaluateCriterion->evaluate($criterionB, $product123Values)->willReturn(new Write\CriterionEvaluationResult());
 
         $repository->update(Argument::any())->shouldBeCalledTimes(2);
 
@@ -146,6 +175,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         CriterionEvaluationRepositoryInterface $repository,
         CriteriaEvaluationRegistry $registry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
+        GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
         EvaluateCriterionInterface $evaluateSpelling,
         EvaluateCriterionInterface $evaluateCompleteness
     ) {
@@ -184,12 +214,20 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
                 ->add($criteria['product_123_spelling']),
         ]);
 
+        $product42Values = $this->givenRandomProductValues();
+        $product123Values = $this->givenRandomProductValues();
+
+        $getEvaluableProductValuesQuery->byProductId(new ProductId(42))->willReturn($product42Values);
+        $getEvaluableProductValuesQuery->byProductId(new ProductId(123))->willReturn($product123Values);
+
         $registry->get($criterionTitleFormatting)->shouldNotBeCalled();
         $evaluateCompleteness->evaluate($criteria['product_42_title'])->shouldNotBeCalled();
 
         $registry->get($criterionSpelling)->willReturn($evaluateSpelling);
-        $evaluateSpelling->evaluate($criteria['product_42_spelling'])->willReturn(new Write\CriterionEvaluationResult());
-        $evaluateSpelling->evaluate($criteria['product_123_spelling'])->willReturn(new Write\CriterionEvaluationResult());
+        $evaluateSpelling->evaluate($criteria['product_42_spelling'], $product42Values)
+            ->willReturn(new Write\CriterionEvaluationResult());
+        $evaluateSpelling->evaluate($criteria['product_123_spelling'], $product123Values)
+            ->willReturn(new Write\CriterionEvaluationResult());
 
         $repository->update(Argument::any())->shouldBeCalledTimes(2);
 
@@ -198,5 +236,15 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         Assert::eq(CriterionEvaluationStatus::pending(), $criteria['product_42_title']->getStatus());
         Assert::eq(CriterionEvaluationStatus::done(), $criteria['product_42_spelling']->getStatus());
         Assert::eq(CriterionEvaluationStatus::done(), $criteria['product_123_spelling']->getStatus());
+    }
+
+    private function givenRandomProductValues(): ProductValuesCollection
+    {
+        $attribute = new Attribute(new AttributeCode(strval(Uuid::uuid4())), AttributeType::text(), true, false);
+        $values = (new ChannelLocaleDataCollection())
+            ->addToChannelAndLocale(new ChannelCode('mobile'), new LocaleCode('en_US'), strval(Uuid::uuid4()))
+            ->addToChannelAndLocale(new ChannelCode('print'), new LocaleCode('fr_FR'), strval(Uuid::uuid4()));
+
+        return (new ProductValuesCollection())->add(new ProductValues($attribute, $values));
     }
 }

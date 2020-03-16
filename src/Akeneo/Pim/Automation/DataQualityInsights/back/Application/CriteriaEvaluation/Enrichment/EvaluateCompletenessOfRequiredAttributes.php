@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
@@ -37,7 +38,7 @@ final class EvaluateCompletenessOfRequiredAttributes implements EvaluateCriterio
         $this->evaluateCompleteness = $evaluateCompleteness;
     }
 
-    public function evaluate(Write\CriterionEvaluation $criterionEvaluation): Write\CriterionEvaluationResult
+    public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
     {
         return $this->evaluateCompleteness->evaluate($this->completenessCalculator, $criterionEvaluation);
     }

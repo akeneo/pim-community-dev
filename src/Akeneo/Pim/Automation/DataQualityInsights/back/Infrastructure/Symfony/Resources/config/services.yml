@@ -43,6 +43,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetPendingCriteriaEvaluationsByProductIdsQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetEvaluableProductValuesQuery'
             - '@logger'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates:
@@ -111,16 +112,6 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetNonRequiredAttributesMasksQuery'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\BuildProductValues:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetProductRawValuesQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetLocalesByChannelQuery'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\GetProductAttributesCodes:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributesByTypeFromProductQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalizableAttributesByTypeFromProductQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellChecker'
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellChecker:

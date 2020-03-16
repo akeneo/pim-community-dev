@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
-interface GetTextAttributeCodesCompatibleWithSpellingQueryInterface
+interface GetEvaluableAttributesByProductQueryInterface
 {
-    public function byProductId(ProductId $productId): array;
+    /**
+     * @return Attribute[]
+     */
+    public function execute(ProductId $productId): array;
 }

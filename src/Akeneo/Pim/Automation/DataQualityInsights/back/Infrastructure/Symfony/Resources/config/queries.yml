@@ -21,19 +21,7 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributesByTypeFromProductQuery:
-        arguments:
-            - '@database_connection'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalizableAttributesByTypeFromProductQuery:
-        arguments:
-            - '@database_connection'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetTextareaAttributeCodesCompatibleWithSpellingQuery:
-        arguments:
-            - '@database_connection'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetTextAttributeCodesCompatibleWithSpellingQuery:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetEvaluableAttributesByProductQuery:
         arguments:
             - '@database_connection'
 
@@ -41,9 +29,11 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributeAsMainTitleFromProductId:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetEvaluableProductValuesQuery:
         arguments:
-            - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetProductRawValuesQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetEvaluableAttributesByProductQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetLocalesByChannelQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetCategoryChildrenIdsQuery:
         arguments:

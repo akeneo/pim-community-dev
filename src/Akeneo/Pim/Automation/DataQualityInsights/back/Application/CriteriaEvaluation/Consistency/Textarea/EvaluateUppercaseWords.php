@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Textarea;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCodesInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -28,22 +27,11 @@ final class EvaluateUppercaseWords implements EvaluateCriterionInterface
 {
     public const CRITERION_CODE = 'consistency_textarea_uppercase_words';
 
-    /** @var BuildProductValuesInterface */
-    private $buildProductValues;
-
-    /** @var GetProductAttributesCodesInterface */
-    private $getProductAttributesCodes;
-
     /** @var GetLocalesByChannelQueryInterface */
     private $localesByChannelQuery;
 
-    public function __construct(
-        BuildProductValuesInterface $buildProductValues,
-        GetProductAttributesCodesInterface $getProductAttributesCodes,
-        GetLocalesByChannelQueryInterface $localesByChannelQuery
-    ) {
-        $this->buildProductValues = $buildProductValues;
-        $this->getProductAttributesCodes = $getProductAttributesCodes;
+    public function __construct(GetLocalesByChannelQueryInterface $localesByChannelQuery)
+    {
         $this->localesByChannelQuery = $localesByChannelQuery;
     }
 
@@ -52,11 +40,9 @@ final class EvaluateUppercaseWords implements EvaluateCriterionInterface
         return new CriterionCode(self::CRITERION_CODE);
     }
 
-    public function evaluate(Write\CriterionEvaluation $criterionEvaluation): Write\CriterionEvaluationResult
+    public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
-        $attributesCodes = $this->getProductAttributesCodes->getTextarea($criterionEvaluation->getProductId());
-        $productValues = $this->buildProductValues->buildForProductIdAndAttributeCodes($criterionEvaluation->getProductId(), $attributesCodes);
 
         $evaluationResult = new Write\CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localeCodes) {
@@ -68,15 +54,16 @@ final class EvaluateUppercaseWords implements EvaluateCriterionInterface
         return $evaluationResult;
     }
 
-    private function evaluateChannelLocaleRate(Write\CriterionEvaluationResult $evaluationResult, ChannelCode $channelCode, LocaleCode $localeCode, array $productValues): void
+    private function evaluateChannelLocaleRate(Write\CriterionEvaluationResult $evaluationResult, ChannelCode $channelCode, LocaleCode $localeCode, ProductValuesCollection $productValues): void
     {
         $attributesRates = [];
-        foreach ($productValues as $attributeCode => $productValueByChannelAndLocale) {
-            $productValue = $productValueByChannelAndLocale[strval($channelCode)][strval($localeCode)] ?? null;
+        foreach ($productValues->getTextareaValues() as $productValueByChannelAndLocale) {
+            $attributeCode = $productValueByChannelAndLocale->getAttribute()->getCode();
+            $productValue = $productValueByChannelAndLocale->getValueByChannelAndLocale($channelCode, $localeCode);
             $rate = $this->computeProductValueRate($productValue);
 
             if ($rate !== null) {
-                $attributesRates[$attributeCode] = $rate;
+                $attributesRates[strval($attributeCode)] = $rate;
             }
         }
 
