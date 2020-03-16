@@ -35,6 +35,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductModelRawValuesQuery:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetEvaluableProductValuesQuery:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductRawValuesQuery'

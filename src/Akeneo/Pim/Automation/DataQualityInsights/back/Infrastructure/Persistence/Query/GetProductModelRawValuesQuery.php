@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2020 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,14 +17,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductRawValuesQu
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 
-class GetProductRawValuesQuery implements GetProductRawValuesQueryInterface
+class GetProductModelRawValuesQuery implements GetProductRawValuesQueryInterface
 {
     /** * @var Connection */
-    private $db;
+    private $dbConnection;
 
-    public function __construct(Connection $db)
+    public function __construct(Connection $dbConnection)
     {
-        $this->db = $db;
+        $this->dbConnection = $dbConnection;
     }
 
     public function execute(ProductId $productId): array
@@ -32,22 +32,20 @@ class GetProductRawValuesQuery implements GetProductRawValuesQueryInterface
         $query = <<<SQL
 SELECT
     JSON_MERGE(
-        COALESCE(pm1.raw_values, '{}'),
-        COALESCE(pm2.raw_values, '{}'),
-        product.raw_values
+        COALESCE(product_model_parent.raw_values, '{}'),
+        product_model.raw_values
     ) AS raw_values
-FROM pim_catalog_product as product
-    LEFT JOIN pim_catalog_product_model pm1 ON product.product_model_id = pm1.id
-    LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
-WHERE product.id = :product_id;
+    FROM pim_catalog_product_model AS product_model
+    LEFT JOIN pim_catalog_product_model AS product_model_parent ON product_model_parent.id = product_model.parent_id
+WHERE product_model.id = :product_model_id;
 SQL;
 
-        $statement = $this->db->executeQuery($query,
+        $statement = $this->dbConnection->executeQuery($query,
             [
-                'product_id' => $productId->toInt(),
+                'product_model_id' => $productId->toInt(),
             ],
             [
-                'product_id' => \PDO::PARAM_INT,
+                'product_model_id' => \PDO::PARAM_INT,
             ]
         );
 
