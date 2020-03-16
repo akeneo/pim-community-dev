@@ -97,7 +97,7 @@ const List = () => {
             viewName="pim-measurements-user-navigation"
           />
         }
-        buttons={[<Button onClick={openCreateModal}>Create</Button>]}
+        buttons={[<Button onClick={openCreateModal}>{__('measurements.family.create')}</Button>]}
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbItem>{__('pim_menu.tab.settings')}</BreadcrumbItem>
