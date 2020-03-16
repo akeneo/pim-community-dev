@@ -23,6 +23,10 @@ measurements:
         standard_unit_is_not_editable_after_creation: This standard unit is set once and for all. It will be used to convert the other units.
         add_new_measurement_family: Add a new measurement family
         create: Create
+        tab:
+            units: Units
+            properties: Properties
+
     list:
         result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"
         header:

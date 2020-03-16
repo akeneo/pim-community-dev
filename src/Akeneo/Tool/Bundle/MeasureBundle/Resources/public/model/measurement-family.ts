@@ -28,8 +28,10 @@ type Unit = {
   convert_from_standard: Operation[];
 };
 
+type MeasurementFamilyCode = string;
+
 type MeasurementFamily = {
-  code: string;
+  code: MeasurementFamilyCode;
   labels: {
     [locale: string]: string;
   };
@@ -88,6 +90,7 @@ export {
   Direction,
   Operator,
   MeasurementFamily,
+  MeasurementFamilyCode,
   getMeasurementFamilyLabel,
   getStandardUnitLabel,
   filterMeasurementFamily,

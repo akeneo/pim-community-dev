@@ -6,5 +6,9 @@ config:
                     module: pim/controller/measurements/settings
                     aclResourceId: akeneo_measurements_manage_settings
 
+                akeneo_measurements_settings_any:
+                    module: pim/controller/measurements/settings
+                    aclResourceId: akeneo_measurements_manage_settings
+
     paths:
         pim/controller/measurements/settings: akeneomeasure/bridge/controller/settings.tsx

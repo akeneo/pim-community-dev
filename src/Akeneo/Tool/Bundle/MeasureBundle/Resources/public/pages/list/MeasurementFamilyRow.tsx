@@ -6,6 +6,7 @@ import {
   getStandardUnitLabel,
 } from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
+import {withRouter} from 'react-router-dom';
 
 const Container = styled.tr`
   height: 54px;
@@ -22,17 +23,21 @@ type MeasurementFamilyRowProps = {
   measurementFamily: MeasurementFamily;
 };
 
-const MeasurementFamilyRow = ({measurementFamily}: MeasurementFamilyRowProps) => {
+const MeasurementFamilyRow = withRouter(({history, measurementFamily}: MeasurementFamilyRowProps & any) => {
   const locale = useContext(UserContext)('uiLocale');
 
   return (
-    <Container>
+    <Container
+      onClick={() => {
+        history.push(`/configuration/measurement/${measurementFamily.code}`); //TODO maybe do something beter (use the router)
+      }}
+    >
       <MeasurementFamilyLabelCell>{getMeasurementFamilyLabel(measurementFamily, locale)}</MeasurementFamilyLabelCell>
       <td>{measurementFamily.code}</td>
       <td>{getStandardUnitLabel(measurementFamily, locale)}</td>
       <td>{measurementFamily.units.length}</td>
     </Container>
   );
-};
+});
 
 export {MeasurementFamilyRow};
