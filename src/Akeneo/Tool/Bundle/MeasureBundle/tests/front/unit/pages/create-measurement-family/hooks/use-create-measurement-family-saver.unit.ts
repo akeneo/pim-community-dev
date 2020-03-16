@@ -28,7 +28,7 @@ const measurementFamily = Object.freeze({
 });
 
 afterEach(() => {
-  global.fetch.mockClear();
+  global.fetch && global.fetch.mockClear();
   delete global.fetch;
 });
 
@@ -56,9 +56,10 @@ test('It returns a list of errors when there is a validation problem', async () 
 
   global.fetch = jest.fn().mockImplementation(() => ({
     ok: false,
-    json: () => Promise.resolve({
-      errors: errors,
-    })
+    json: () =>
+      Promise.resolve({
+        errors: errors,
+      }),
   }));
 
   const {result} = renderHook(() => useCreateMeasurementFamilySaver());

@@ -8,10 +8,7 @@ const fetcher = async (route: string) => {
   return await response.json();
 };
 
-const useMeasurementFamilies = (): [
-  MeasurementFamily[] | null,
-  () => Promise<void>
-] => {
+const useMeasurementFamilies = (): [MeasurementFamily[] | null, () => Promise<void>] => {
   const [measurementFamilies, setMeasurementFamilies] = useState<MeasurementFamily[] | null>(null);
   const route = useContext(RouterContext).generate('pim_enrich_measures_rest_index');
 
