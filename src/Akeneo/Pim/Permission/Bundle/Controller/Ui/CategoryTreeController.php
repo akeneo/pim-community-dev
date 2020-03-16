@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController as BaseCat
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductConsistencyException;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -272,5 +273,16 @@ class CategoryTreeController extends BaseCategoryTreeController
             ],
             new JsonResponse()
         );
+    }
+
+    public function removeAction(Request $request, $id)
+    {
+        try {
+            return parent::removeAction($request, $id);
+        } catch (PublishedProductConsistencyException $e) {
+            return new JsonResponse([
+                'message' => 'pimee_enrich.entity.category.flash.remove.error_linked',
+            ], 422);
+        }
     }
 }

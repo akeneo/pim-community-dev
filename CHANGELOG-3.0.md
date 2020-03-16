@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes: 
+
+- PIM-9140: Add explicit error message when trying to delete a category linked to a published product
+
 # 3.0.69 (2020-03-11)
 
 # 3.0.68 (2020-02-19)
