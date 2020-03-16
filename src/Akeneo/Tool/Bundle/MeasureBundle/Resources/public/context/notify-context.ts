@@ -1,12 +1,14 @@
 import {createContext} from 'react';
 
-export enum NotificationLevel {
-    INFO = 'info',
-    SUCCESS = 'success',
-    WARNING = 'warning',
-    ERROR = 'error',
+enum NotificationLevel {
+  INFO = 'info',
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error',
 }
 
-export type NotifyContextValue = (level: NotificationLevel, message: string) => void;
+type NotifyContextValue = (level: NotificationLevel, message: string) => void;
 
-export const NotifyContext = createContext<NotifyContextValue>(() => undefined);
+const NotifyContext = createContext<NotifyContextValue>(() => undefined);
+
+export {NotificationLevel, NotifyContextValue, NotifyContext};

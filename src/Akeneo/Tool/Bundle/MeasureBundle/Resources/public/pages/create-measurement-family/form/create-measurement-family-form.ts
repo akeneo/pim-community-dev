@@ -2,7 +2,7 @@ import {MeasurementFamily, Operator} from 'akeneomeasure/model/measurement-famil
 
 type LocaleCode = string;
 
-export type FormState = {
+type FormState = {
   family_code: string;
   family_label: string;
   standard_unit_code: string;
@@ -10,7 +10,7 @@ export type FormState = {
   standard_unit_symbol: string;
 };
 
-export const createFormState = () => {
+const createFormState = () => {
   return Object.freeze({
     family_code: '',
     family_label: '',
@@ -20,7 +20,7 @@ export const createFormState = () => {
   });
 };
 
-export const createMeasurementFamilyFromFormState = (data: FormState, locale: LocaleCode): MeasurementFamily => {
+const createMeasurementFamilyFromFormState = (data: FormState, locale: LocaleCode): MeasurementFamily => {
   return {
     code: data.family_code,
     labels: {
@@ -44,3 +44,5 @@ export const createMeasurementFamilyFromFormState = (data: FormState, locale: Lo
     ],
   };
 };
+
+export {FormState, createFormState, createMeasurementFamilyFromFormState};

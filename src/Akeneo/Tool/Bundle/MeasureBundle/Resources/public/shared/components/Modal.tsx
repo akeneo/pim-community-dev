@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {akeneoTheme} from 'akeneomeasure/shared/theme';
 import {CloseIcon} from 'akeneomeasure/shared/icons/CloseIcon';
 
-export const Modal = styled.div.attrs(() => ({className: 'AknFullPage'}))``;
+const Modal = styled.div.attrs(() => ({className: 'AknFullPage'}))``;
 
 const ModalCloseButtonContainer = styled.button`
   background: none;
@@ -21,7 +21,7 @@ const ModalCloseButtonContainer = styled.button`
   }
 `;
 
-export const ModalCloseButton = ({title, ...props}: {title: string} & any) => (
+const ModalCloseButton = ({title, ...props}: {title: string} & any) => (
   <ModalCloseButtonContainer title={title} tabIndex={0} aria-label={title} {...props}>
     <CloseIcon color={akeneoTheme.color.grey100} title={title} size={24} />
   </ModalCloseButtonContainer>
@@ -29,19 +29,14 @@ export const ModalCloseButton = ({title, ...props}: {title: string} & any) => (
 
 type ModalWithIllustationProps = {
   illustration: ReactElement;
-}
-
-export const ModalBodyWithIllustration = ({
-  illustration,
-  children,
-}: PropsWithChildren<ModalWithIllustationProps>) => {
-  return (
-    <div className="AknFullPage-content AknFullPage-content--withIllustration">
-      <div>{illustration}</div>
-      <div>{children}</div>
-    </div>
-  );
 };
+
+const ModalBodyWithIllustration = ({illustration, children}: PropsWithChildren<ModalWithIllustationProps>) => (
+  <div className="AknFullPage-content AknFullPage-content--withIllustration">
+    <div>{illustration}</div>
+    <div>{children}</div>
+  </div>
+);
 
 const ModalTitleContainer = styled.div.attrs(() => ({className: 'AknFullPage-titleContainer'}))`
   margin-bottom: 16px;
@@ -50,13 +45,13 @@ const ModalTitleContainer = styled.div.attrs(() => ({className: 'AknFullPage-tit
 type ModalTitleProps = {
   title: string;
   subtitle?: string;
-}
-
-export const ModalTitle = ({title, subtitle}: ModalTitleProps) => {
-  return (
-    <ModalTitleContainer>
-      {subtitle && <div className="AknFullPage-subTitle">{subtitle}</div>}
-      <div className="AknFullPage-title">{title}</div>
-    </ModalTitleContainer>
-  )
 };
+
+const ModalTitle = ({title, subtitle}: ModalTitleProps) => (
+  <ModalTitleContainer>
+    {subtitle && <div className="AknFullPage-subTitle">{subtitle}</div>}
+    <div className="AknFullPage-title">{title}</div>
+  </ModalTitleContainer>
+);
+
+export {Modal, ModalCloseButton, ModalBodyWithIllustration, ModalTitle};

@@ -1,8 +1,8 @@
 import styled, {css} from 'styled-components';
 
-export const Subsection = styled.div.attrs(() => ({className: 'AknSubsection'}))``;
+const Subsection = styled.div.attrs(() => ({className: 'AknSubsection'}))``;
 
-export const SubsectionHeader = styled.header<{top?: number}>`
+const SubsectionHeader = styled.header<{top?: number}>`
   border-bottom: 1px solid ${props => props.theme.color.grey140};
   color: ${props => props.theme.color.grey140};
   display: flex;
@@ -22,3 +22,4 @@ export const SubsectionHeader = styled.header<{top?: number}>`
     `}
 `;
 
+export {Subsection, SubsectionHeader};

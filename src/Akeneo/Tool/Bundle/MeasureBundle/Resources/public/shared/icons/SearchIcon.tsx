@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Search = ({
+const SearchIcon = ({
   title = 'Search',
   color = '#67768A',
   size = 24,
@@ -15,4 +15,4 @@ const Search = ({
   </svg>
 );
 
-export {Search};
+export {SearchIcon};

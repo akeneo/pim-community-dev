@@ -1,6 +1,6 @@
 import {EffectCallback, useCallback, useState} from 'react';
 
-export const useToggleState = (defaultValue: boolean): [boolean, EffectCallback, EffectCallback] => {
+const useToggleState = (defaultValue: boolean): [boolean, EffectCallback, EffectCallback] => {
   const [value, setValue] = useState<boolean>(defaultValue);
 
   const setTrue = useCallback(() => {
@@ -13,3 +13,5 @@ export const useToggleState = (defaultValue: boolean): [boolean, EffectCallback,
 
   return [value, setTrue, setFalse];
 };
+
+export {useToggleState};

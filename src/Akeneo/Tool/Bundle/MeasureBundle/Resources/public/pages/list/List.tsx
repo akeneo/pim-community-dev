@@ -5,7 +5,7 @@ import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
-import {MeasurementFamily as MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamily';
+import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
 import {HelperTitle, HelperText, Helper} from 'akeneomeasure/shared/components/Helper';
 import {Link} from 'akeneomeasure/shared/components/Link';
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/NoData';
@@ -97,11 +97,7 @@ const List = () => {
             viewName="pim-measurements-user-navigation"
           />
         }
-        buttons={[
-          <Button onClick={openCreateModal}>
-            Create
-          </Button>,
-        ]}
+        buttons={[<Button onClick={openCreateModal}>{__('measurements.family.create')}</Button>]}
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbItem>{__('pim_menu.tab.settings')}</BreadcrumbItem>

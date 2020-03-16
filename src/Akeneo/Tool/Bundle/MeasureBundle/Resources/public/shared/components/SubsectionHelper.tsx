@@ -3,13 +3,13 @@ import React, {PropsWithChildren} from 'react';
 import {WarningIcon} from 'akeneomeasure/shared/icons/WarningIcon';
 import {akeneoTheme} from 'akeneomeasure/shared/theme';
 
-export const HELPER_LEVEL_WARNING = 'warning';
-export const HELPER_LEVEL_INFO = 'info'; // @todo
+const HELPER_LEVEL_WARNING = 'warning';
+const HELPER_LEVEL_INFO = 'info'; // @todo
 
 type Level = typeof HELPER_LEVEL_WARNING | typeof HELPER_LEVEL_INFO;
 
 const getBackgroundColor = (level: Level): string => {
-  switch(level){
+  switch (level) {
     case HELPER_LEVEL_WARNING:
     default:
       return akeneoTheme.color.yellow10;
@@ -17,7 +17,7 @@ const getBackgroundColor = (level: Level): string => {
 };
 
 const getForegroundColor = (level: Level): string => {
-  switch(level){
+  switch (level) {
     case HELPER_LEVEL_WARNING:
     default:
       return akeneoTheme.color.yellow120;
@@ -25,10 +25,10 @@ const getForegroundColor = (level: Level): string => {
 };
 
 const getIcon = (level: Level): JSX.Element => {
-  switch(level){
+  switch (level) {
     case HELPER_LEVEL_WARNING:
     default:
-      return <WarningIcon color={akeneoTheme.color.yellow120}/>;
+      return <WarningIcon color={akeneoTheme.color.yellow120} />;
   }
 };
 
@@ -46,7 +46,7 @@ const SubsectionHelperIconContainer = styled.div<{level: Level}>`
   position: relative;
   display: flex;
   margin: 0 15px 0 0;
-  
+
   &:after {
     background-color: ${props => getForegroundColor(props.level)};
     content: '';
@@ -60,23 +60,19 @@ const SubsectionHelperIconContainer = styled.div<{level: Level}>`
   }
 `;
 
-const SubsectionHelperIcon = ({level}: {level: Level}) => {
-  return (
-    <SubsectionHelperIconContainer level={level}>
-      {getIcon(level)}
-    </SubsectionHelperIconContainer>
-  );
-};
+const SubsectionHelperIcon = ({level}: {level: Level}) => (
+  <SubsectionHelperIconContainer level={level}>{getIcon(level)}</SubsectionHelperIconContainer>
+);
 
 type SubsectionHelperProps = {
   level: Level;
-}
-
-export const SubsectionHelper = ({level, children}: PropsWithChildren<SubsectionHelperProps>) => {
-  return (
-    <SubsectionHelperContainer level={level}>
-      <SubsectionHelperIcon level={level}/>
-      {children}
-    </SubsectionHelperContainer>
-  );
 };
+
+const SubsectionHelper = ({level, children}: PropsWithChildren<SubsectionHelperProps>) => (
+  <SubsectionHelperContainer level={level}>
+    <SubsectionHelperIcon level={level} />
+    {children}
+  </SubsectionHelperContainer>
+);
+
+export {HELPER_LEVEL_INFO, HELPER_LEVEL_WARNING, SubsectionHelper};

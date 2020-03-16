@@ -3,7 +3,7 @@ import {Modal, ModalBodyWithIllustration, ModalCloseButton, ModalTitle} from 'ak
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
 import {UserContext} from 'akeneomeasure/context/user-context';
-import {MeasurementFamily as MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamily';
+import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
 import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {HELPER_LEVEL_WARNING, SubsectionHelper} from 'akeneomeasure/shared/components/SubsectionHelper';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
@@ -13,12 +13,14 @@ import {useCreateMeasurementFamilyState} from 'akeneomeasure/pages/create-measur
 import {useCreateMeasurementFamilySaver} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
 import {createMeasurementFamilyFromFormState} from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
 import {ValidationError} from 'akeneomeasure/model/validation-error';
+import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
+import {Key} from 'akeneomeasure/shared/key';
 
 type CreateMeasurementFamilyProps = {
   onClose: () => void;
 };
 
-export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
+const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
   const __ = useContext(TranslateContext);
   const notify = useContext(NotifyContext);
   const locale = useContext(UserContext)('uiLocale');
@@ -27,16 +29,16 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
   const saveMeasurementFamily = useCreateMeasurementFamilySaver();
   const [errors, setErrors] = useState<ValidationError[]>([]);
 
-  const handleClose = useCallback(() => {
-    onClose();
-  }, [onClose]);
+  const handleClose = useCallback(onClose, [onClose]);
+
+  useShortcut(Key.Escape, handleClose);
 
   const handleSave = useCallback(async () => {
     try {
       const measurementFamily = createMeasurementFamilyFromFormState(form, locale);
       const response = await saveMeasurementFamily(measurementFamily);
 
-      switch(response.success){
+      switch (response.success) {
         case true:
           notify(NotificationLevel.SUCCESS, __('measurements.create_family.flash.success'));
           handleClose();
@@ -55,8 +57,8 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
 
   return (
     <Modal>
-      <ModalCloseButton title={__('close')} onClick={handleClose}/>
-      <ModalBodyWithIllustration illustration={<MeasurementFamilyIllustration/>}>
+      <ModalCloseButton title={__('close')} onClick={handleClose} />
+      <ModalBodyWithIllustration illustration={<MeasurementFamilyIllustration />}>
         <ModalTitle
           title={__('measurements.family.add_new_measurement_family')}
           subtitle={__('measurements.title.measurement')}
@@ -118,3 +120,5 @@ export const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps)
     </Modal>
   );
 };
+
+export {CreateMeasurementFamily};
