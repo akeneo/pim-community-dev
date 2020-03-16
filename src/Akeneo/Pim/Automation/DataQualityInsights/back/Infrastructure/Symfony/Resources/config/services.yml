@@ -55,9 +55,15 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetEvaluableProductValuesQuery'
             - '@logger'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates:
+    akeneo.pim.automation.get_product_axes_rates:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpToDateLatestProductAxesRatesQuery'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_axes_rates'
+
+    akeneo.pim.automation.get_product_model_axes_rates:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_model_axes_rates'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductEvaluation:
         arguments:

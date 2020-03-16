@@ -14,20 +14,20 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
-final class GetUpToDateLatestProductAxesRatesQuery implements GetLatestProductAxesRatesQueryInterface
+final class GetUpToDateLatestAxesRatesQuery implements GetLatestAxesRatesQueryInterface
 {
-    /** @var GetLatestProductAxesRatesQueryInterface */
+    /** @var GetLatestAxesRatesQueryInterface */
     private $getLatestProductAxesRatesQuery;
 
     /** @var HasUpToDateEvaluationQueryInterface */
     private $hasUpToDateEvaluationQuery;
 
     public function __construct(
-        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
+        GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
     ) {
         $this->getLatestProductAxesRatesQuery = $getLatestProductAxesRatesQuery;

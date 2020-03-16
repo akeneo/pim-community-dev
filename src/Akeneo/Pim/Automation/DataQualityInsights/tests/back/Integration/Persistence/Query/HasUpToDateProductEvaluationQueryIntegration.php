@@ -15,17 +15,17 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Persi
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\HasUpToDateEvaluationQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\HasUpToDateProductEvaluationQuery;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
-final class HasUpToDateEvaluationQueryIntegration extends TestCase
+final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
 {
     /** @var Connection */
     private $db;
 
-    /** @var HasUpToDateEvaluationQuery */
+    /** @var HasUpToDateProductEvaluationQuery */
     private $query;
 
     protected function setUp(): void
@@ -33,7 +33,7 @@ final class HasUpToDateEvaluationQueryIntegration extends TestCase
         parent::setUp();
 
         $this->db = $this->get('database_connection');
-        $this->query = $this->get(HasUpToDateEvaluationQuery::class);
+        $this->query = $this->get(HasUpToDateProductEvaluationQuery::class);
     }
 
     protected function getConfiguration()

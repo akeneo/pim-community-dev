@@ -28,7 +28,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -44,14 +44,14 @@ final class GetUpToDateLatestProductEvaluationQuerySpec extends ObjectBehavior
 {
     public function let(
         GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
-        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery
+        GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery
     ) {
         $this->beConstructedWith($getLatestCriteriaEvaluationsByProductIdQuery, $getLatestProductAxesRatesQuery, new AxisRegistry());
     }
 
     public function it_returns_the_latest_product_evaluation_for_a_product_id(
         GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
-        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery
+        GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery
     ) {
         $productId = new ProductId(42);
         $enrichment = new Enrichment();
@@ -87,7 +87,7 @@ final class GetUpToDateLatestProductEvaluationQuerySpec extends ObjectBehavior
 
     public function it_returns_an_empty_product_evaluation_if_there_is_no_criterion_evaluation(
         GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
-        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery
+        GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery
     ) {
         $productId = new ProductId(42);
         $enrichment = new Enrichment();

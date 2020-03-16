@@ -15,29 +15,35 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 
-final class GetLatestProductAxesRatesQuery implements GetLatestProductAxesRatesQueryInterface
+final class GetLatestAxesRatesQuery implements GetLatestAxesRatesQueryInterface
 {
     /** @var Connection */
     private $db;
 
-    public function __construct(Connection $db)
+    /** @var string */
+    private $tableName;
+
+    public function __construct(Connection $db, string $tableName)
     {
         $this->db = $db;
+        $this->tableName = $tableName;
     }
 
     public function byProductId(ProductId $productId): AxisRateCollection
     {
+        $tableName = $this->tableName;
+
         $query = <<<SQL
 SELECT product_id, JSON_OBJECTAGG(axis_code, rates) AS rates
 FROM (
     SELECT latest_eval.axis_code, latest_eval.product_id, latest_eval.rates
-    FROM pimee_data_quality_insights_product_axis_rates AS latest_eval
-        LEFT JOIN pimee_data_quality_insights_product_axis_rates AS other_eval
+    FROM $tableName AS latest_eval
+        LEFT JOIN $tableName AS other_eval
             ON other_eval.axis_code = latest_eval.axis_code
             AND other_eval.product_id = latest_eval.product_id
             AND latest_eval.evaluated_at < other_eval.evaluated_at

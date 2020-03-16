@@ -17,23 +17,23 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
 
-final class GetUpToDateLatestProductAxesRatesQuerySpec extends ObjectBehavior
+final class GetUpToDateLatestAxesRatesQuerySpec extends ObjectBehavior
 {
     public function let(
-        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
+        GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
     ) {
         $this->beConstructedWith($getLatestProductAxesRatesQuery, $hasUpToDateEvaluationQuery);
     }
 
     public function it_returns_the_latest_product_axes_rates_if_the_evaluation_of_the_product_is_up_to_date(
-        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
+        GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
     ) {
         $productId = new ProductId(42);
@@ -51,7 +51,7 @@ final class GetUpToDateLatestProductAxesRatesQuerySpec extends ObjectBehavior
     }
 
     public function it_returns_empty_axes_rates_if_the_evaluation_of_the_product_is_outdated(
-        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
+        GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
     ) {
         $productId = new ProductId(42);

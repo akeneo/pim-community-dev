@@ -24,19 +24,19 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestProductAxesRatesQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestAxesRatesQuery;
 use Akeneo\Test\Integration\TestCase;
 
-final class GetLatestProductAxesRatesQueryIntegration extends TestCase
+final class GetLatestAxesRatesQueryIntegration extends TestCase
 {
-    /** @var GetLatestProductAxesRatesQuery */
+    /** @var GetLatestAxesRatesQuery */
     private $query;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->query = $this->get(GetLatestProductAxesRatesQuery::class);
+        $this->query = $this->get('akeneo.pim.automation.data_quality_insights.query.get_latest_product_axes_rates');
     }
 
     protected function getConfiguration()

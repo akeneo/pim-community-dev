@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
-interface GetLatestProductAxesRatesQueryInterface
+interface GetLatestAxesRatesQueryInterface
 {
     public function byProductId(ProductId $productId): AxisRateCollection;
 }

@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\HasUpToDateEvaluation
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 
-final class HasUpToDateEvaluationQuery implements HasUpToDateEvaluationQueryInterface
+final class HasUpToDateProductModelEvaluationQuery implements HasUpToDateEvaluationQueryInterface
 {
     /** @var Connection */
     private $dbConnection;
@@ -45,18 +45,15 @@ final class HasUpToDateEvaluationQuery implements HasUpToDateEvaluationQueryInte
         }, $productIds);
 
         $query = <<<SQL
-SELECT product.id
-FROM pim_catalog_product AS product
-LEFT JOIN pim_catalog_product_model AS parent ON parent.id = product.product_model_id
-LEFT JOIN pim_catalog_product_model AS grand_parent ON grand_parent.id = parent.parent_id
-WHERE product.id IN (:product_ids)
-    AND EXISTS(
-        SELECT 1 FROM pimee_data_quality_insights_criteria_evaluation AS evaluation
-        WHERE evaluation.product_id = product.id 
-        AND evaluation.created_at >=
-            IF(grand_parent.updated > parent.updated AND grand_parent.updated > product.updated, grand_parent.updated, 
-                IF(parent.updated > product.updated, parent.updated, product.updated)
-            )
+SELECT product_model.id
+FROM pim_catalog_product_model AS product_model
+         LEFT JOIN pim_catalog_product_model AS parent ON parent.id = product_model.parent_id
+WHERE product_model.id IN (:product_ids)
+  AND EXISTS(
+        SELECT 1 FROM pimee_data_quality_insights_product_model_criteria_evaluation AS evaluation
+        WHERE evaluation.product_id = product_model.id
+          AND evaluation.created_at >=
+              IF(parent.updated > product_model.updated, parent.updated, product_model.updated)
     )
 SQL;
 

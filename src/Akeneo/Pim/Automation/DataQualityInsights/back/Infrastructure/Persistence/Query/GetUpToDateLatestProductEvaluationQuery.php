@@ -21,8 +21,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisEvaluationCo
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
@@ -31,7 +31,7 @@ final class GetUpToDateLatestProductEvaluationQuery implements GetLatestProductE
     /** @var GetLatestCriteriaEvaluationsByProductIdQueryInterface */
     private $getLatestCriteriaEvaluationsByProductIdQuery;
 
-    /** @var GetLatestProductAxesRatesQueryInterface */
+    /** @var GetLatestAxesRatesQueryInterface */
     private $getLatestProductAxesRatesQuery;
 
     /** @var AxisRegistry */
@@ -39,7 +39,7 @@ final class GetUpToDateLatestProductEvaluationQuery implements GetLatestProductE
 
     public function __construct(
         GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
-        GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
+        GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
         AxisRegistry $axisRegistry
     ) {
         $this->getLatestCriteriaEvaluationsByProductIdQuery = $getLatestCriteriaEvaluationsByProductIdQuery;
