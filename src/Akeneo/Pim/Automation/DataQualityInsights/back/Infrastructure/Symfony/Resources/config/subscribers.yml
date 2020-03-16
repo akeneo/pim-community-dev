@@ -26,7 +26,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\InitializeEvaluationOfAProductSubscriber:
         arguments:
             $dataQualityInsightsFeature: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            $createProductsCriteriaEvaluations: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations'
+            $createProductsCriteriaEvaluations: '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             $logger: '@logger'
             $evaluatePendingCriteria: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria'
             $consolidateProductAxisRates: '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates'

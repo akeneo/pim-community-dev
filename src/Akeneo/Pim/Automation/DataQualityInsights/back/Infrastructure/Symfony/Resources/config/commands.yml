@@ -31,7 +31,7 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateDashboardRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository'
             - '@database_connection'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations'
+            - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
