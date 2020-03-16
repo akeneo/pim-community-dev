@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-9140: Translate error message from backend in dialogs
+
 # 3.0.69 (2020-03-11)
 
 ## Bug fixes
