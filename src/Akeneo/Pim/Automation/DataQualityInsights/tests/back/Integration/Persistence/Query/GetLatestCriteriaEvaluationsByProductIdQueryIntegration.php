@@ -15,7 +15,6 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -26,8 +25,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository;
 use Akeneo\Test\Integration\TestCase;
 
 final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends TestCase
@@ -36,6 +33,20 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
     private const LATEST_SPELLING_EVALUATION_ID = '905be2a7-1397-4d56-9cab-b6bc3f2a5b7a';
     private const LATEST_GRAMMAR_EVALUATION_ID = '089c4358-231b-48ed-9484-48dbe14b1d51';
 
+    /** @var CriterionEvaluationRepositoryInterface */
+    private $productCriterionEvaluationRepository;
+
+    /** @var CriterionEvaluationRepositoryInterface */
+    private $productModelCriterionEvaluationRepository;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->productCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
+        $this->productModelCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation');
+    }
+
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
@@ -43,12 +54,14 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
 
     public function test_it_gives_the_latest_criteria_evaluations_of_a_product()
     {
-        $this->givenTwoCompletenessEvaluationsDone();
-        $this->givenAPendingSpellingEvaluationAndAnOlderSpellingEvaluationInProgress();
-        $this->givenATimeOutGrammarEvaluationAndAnOlderGrammarEvaluationDone();
-        $this->givenACompletenessEvaluationDoneForAnotherProduct();
+        $this->givenTwoCompletenessEvaluationsDone($this->productCriterionEvaluationRepository);
+        $this->givenAPendingSpellingEvaluationAndAnOlderSpellingEvaluationInProgress($this->productCriterionEvaluationRepository);
+        $this->givenATimeOutGrammarEvaluationAndAnOlderGrammarEvaluationDone($this->productCriterionEvaluationRepository);
+        $this->givenACompletenessEvaluationDoneForAnotherProduct($this->productCriterionEvaluationRepository);
 
-        $latestEvaluations = $this->getQuery()->execute(new ProductId(42));
+        $latestEvaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_latest_product_criteria_evaluations')
+            ->execute(new ProductId(42));
+
         $this->assertCount(3, $latestEvaluations, 'There should be 3 latest evaluations');
 
         $latestCompletenessEvaluation = $latestEvaluations->get(new CriterionCode('completeness'));
@@ -64,7 +77,32 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
         $this->assertEquals(self::LATEST_GRAMMAR_EVALUATION_ID, strval($latestGrammarEvaluation->getId()), 'The grammar evaluation found should be the latest');
     }
 
-    private function givenTwoCompletenessEvaluationsDone(): void
+    public function test_it_gives_the_latest_criteria_evaluations_of_a_product_model()
+    {
+        $this->givenTwoCompletenessEvaluationsDone($this->productModelCriterionEvaluationRepository);
+        $this->givenAPendingSpellingEvaluationAndAnOlderSpellingEvaluationInProgress($this->productModelCriterionEvaluationRepository);
+        $this->givenATimeOutGrammarEvaluationAndAnOlderGrammarEvaluationDone($this->productModelCriterionEvaluationRepository);
+        $this->givenACompletenessEvaluationDoneForAnotherProduct($this->productModelCriterionEvaluationRepository);
+
+        $latestEvaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_latest_product_model_criteria_evaluations')
+            ->execute(new ProductId(42));
+
+        $this->assertCount(3, $latestEvaluations, 'There should be 3 latest evaluations');
+
+        $latestCompletenessEvaluation = $latestEvaluations->get(new CriterionCode('completeness'));
+        $this->assertNotNull($latestCompletenessEvaluation, 'There should be a latest completeness evaluation');
+        $this->assertEquals(self::LATEST_COMPLETENESS_EVALUATION_ID, strval($latestCompletenessEvaluation->getId()), 'The completeness evaluation found should be the latest');
+
+        $latestSpellingEvaluation = $latestEvaluations->get(new CriterionCode('spelling'));
+        $this->assertNotNull($latestSpellingEvaluation, 'There should be a latest spelling evaluation');
+        $this->assertEquals(self::LATEST_SPELLING_EVALUATION_ID, strval($latestSpellingEvaluation->getId()), 'The spelling evaluation found should be the latest');
+
+        $latestGrammarEvaluation = $latestEvaluations->get(new CriterionCode('grammar'));
+        $this->assertNotNull($latestGrammarEvaluation, 'There should be a latest grammar evaluation');
+        $this->assertEquals(self::LATEST_GRAMMAR_EVALUATION_ID, strval($latestGrammarEvaluation->getId()), 'The grammar evaluation found should be the latest');
+    }
+
+    private function givenTwoCompletenessEvaluationsDone(CriterionEvaluationRepositoryInterface $repository): void
     {
         $completeness = new CriterionCode('completeness');
         $productId = new ProductId(42);
@@ -72,8 +110,6 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
-
-        $repository = $this->getRepository();
 
         $latestCompletenessEvaluationDone = new Write\CriterionEvaluation(
             new CriterionEvaluationId(self::LATEST_COMPLETENESS_EVALUATION_ID),
@@ -121,11 +157,10 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
         $repository->update($olderEvaluations);
     }
 
-    private function givenAPendingSpellingEvaluationAndAnOlderSpellingEvaluationInProgress(): void
+    private function givenAPendingSpellingEvaluationAndAnOlderSpellingEvaluationInProgress(CriterionEvaluationRepositoryInterface $repository): void
     {
         $spelling = new CriterionCode('spelling');
         $productId = new ProductId(42);
-        $repository = $this->getRepository();
 
         $spellingEvaluationInProgress = new Write\CriterionEvaluation(
             new CriterionEvaluationId(),
@@ -151,11 +186,10 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
         $repository->create((new Write\CriterionEvaluationCollection())->add($spellingEvaluationPending));
     }
 
-    private function givenATimeOutGrammarEvaluationAndAnOlderGrammarEvaluationDone(): void
+    private function givenATimeOutGrammarEvaluationAndAnOlderGrammarEvaluationDone(CriterionEvaluationRepositoryInterface $repository): void
     {
         $grammar = new CriterionCode('grammar');
         $productId = new ProductId(42);
-        $repository = $this->getRepository();
 
         $grammarEvaluationTimeout = new Write\CriterionEvaluation(
             new CriterionEvaluationId(self::LATEST_GRAMMAR_EVALUATION_ID),
@@ -185,7 +219,7 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
         $repository->update($evaluationsDone);
     }
 
-    private function givenACompletenessEvaluationDoneForAnotherProduct(): void
+    private function givenACompletenessEvaluationDoneForAnotherProduct(CriterionEvaluationRepositoryInterface $repository): void
     {
         $channelEcommerce = new ChannelCode('ecommerce');
         $channelMobile = new ChannelCode('mobile');
@@ -218,7 +252,6 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
         ;
 
         $evaluations = (new Write\CriterionEvaluationCollection())->add($completenessEvaluation);
-        $repository = $this->getRepository();
         $repository->create($evaluations);
         $completenessEvaluation->start();
         $completenessEvaluation->end($completenessEvaluationResult);
@@ -228,15 +261,5 @@ final class GetLatestCriteriaEvaluationsByProductIdQueryIntegration extends Test
     private function getClock(): Clock
     {
         return $this->get(SystemClock::class);
-    }
-
-    private function getRepository(): CriterionEvaluationRepositoryInterface
-    {
-        return $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
-    }
-
-    private function getQuery(): GetLatestCriteriaEvaluationsByProductIdQueryInterface
-    {
-        return $this->get(GetLatestCriteriaEvaluationsByProductIdQuery::class);
     }
 }

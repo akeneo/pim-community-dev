@@ -85,7 +85,7 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_latest_product_criteria_evaluations'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_axis_rate'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeAxisRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
@@ -163,7 +163,7 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductTitleSuggestion:
         arguments:
-            $getLatestCriteriaEvaluationsByProductIdQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery'
+            $getLatestCriteriaEvaluationsByProductIdQuery: '@akeneo.pim.automation.data_quality_insights.query.get_latest_product_criteria_evaluations'
             $getIgnoredProductTitleSuggestionQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetIgnoredProductTitleSuggestionQuery'
             $getDescendantVariantProductIdsQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetDescendantVariantProductIds'
 
