@@ -27,7 +27,7 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Datagrid\FetchConsistencyForProductRows:
         arguments:
-            - '@akeneo.pim.automation.get_product_axes_rates'
+            - '@akeneo.pim.automation.data_quality_insights.get_product_axes_rates'
         tags:
             - { name: akeneo.pim.enrichment.product.grid.add_additional_product_properties }
 
@@ -37,7 +37,7 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Datagrid\FetchEnrichmentForProductRows:
         arguments:
-            - '@akeneo.pim.automation.get_product_axes_rates'
+            - '@akeneo.pim.automation.data_quality_insights.get_product_axes_rates'
         tags:
             - { name: akeneo.pim.enrichment.product.grid.add_additional_product_properties }
 

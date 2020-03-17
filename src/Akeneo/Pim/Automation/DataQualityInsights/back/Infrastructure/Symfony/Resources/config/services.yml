@@ -66,19 +66,27 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.query.get_evaluable_product_model_values'
             - '@logger'
 
-    akeneo.pim.automation.get_product_axes_rates:
+    akeneo.pim.automation.data_quality_insights.get_product_axes_rates:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_axes_rates'
 
-    akeneo.pim.automation.get_product_model_axes_rates:
+    akeneo.pim.automation.data_quality_insights.get_product_model_axes_rates:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_model_axes_rates'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductEvaluation:
+    akeneo.pim.automation.data_quality_insights.get_product_evaluation:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductEvaluation
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpToDateLatestProductEvaluationQuery'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_evaluations'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetLocalesByChannelQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\AxisRegistry'
+
+    akeneo.pim.automation.data_quality_insights.get_product_model_evaluation:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductEvaluation
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_model_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetLocalesByChannelQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\AxisRegistry'
 

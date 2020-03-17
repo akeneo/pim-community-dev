@@ -2,14 +2,14 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductAxesRatesController:
         public: true
         arguments:
-            - '@akeneo.pim.automation.get_product_axes_rates'
+            - '@akeneo.pim.automation.data_quality_insights.get_product_axes_rates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductEvaluationController:
         public: true
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductEvaluation'
+            - '@akeneo.pim.automation.data_quality_insights.get_product_evaluation'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardController:
         public: true
