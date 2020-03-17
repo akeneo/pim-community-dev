@@ -18,6 +18,9 @@ final class Version_5_0_20200313140000_regenerate_missing_data_for_the_connectio
     /** @var ContainerInterface */
     private $container;
 
+    /** @var array */
+    private $connectionsData = null;
+
     public function up(Schema $schema): void
     {
         $auditDataExists = $this->connection->executeQuery('SELECT COUNT(1) FROM akeneo_connectivity_connection_audit_product')->fetchColumn();
@@ -132,16 +135,25 @@ SQL;
 
     private function fillAuditProductDataForEachConnection(string $startTime, string $endTime): void
     {
-        $selectConnectionsSql = <<<SQL
+        $connectionsData = $this->getConnectionsData();
+
+        foreach ($connectionsData as $connectionData) {
+            $this->insertAuditProductRow($connectionData['code'], 0, $startTime, 'product_created');
+            $this->insertAuditProductRow($connectionData['code'], 0, $startTime, 'product_updated');
+        }
+    }
+
+    private function getConnectionsData(): array
+    {
+        if (null === $this->connectionsData) {
+            $selectConnectionsSql = <<<SQL
 SELECT code FROM akeneo_connectivity_connection
 WHERE flow_type = 'data_source'
 SQL;
-        $connections = $this->connection->executeQuery($selectConnectionsSql)->fetchAll();
-
-        foreach ($connections as $connection) {
-            $this->insertAuditProductRow($connection['code'], 0, $startTime, 'product_created');
-            $this->insertAuditProductRow($connection['code'], 0, $startTime, 'product_updated');
+            $this->connectionsData = $this->connection->executeQuery($selectConnectionsSql)->fetchAll();
         }
+
+        return $this->connectionsData;
     }
 
     public function down(Schema $schema): void
