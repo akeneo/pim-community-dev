@@ -382,6 +382,19 @@ jobs:
                     ssh-keyscan github.com >> ~/.ssh/known_hosts
                     ENV_NAME=preprod make deploy_latest_release_for_helpdesk
 
+  deploy_pr_environment:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: foo
+                command: |
+                    echo "that should work"
+                    echo "PR env deployed"
+
   test_back_missing_structure_migrations:
       machine:
         image: ubuntu-1604:201903-01
@@ -456,6 +469,17 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
+          - deploy_pr_environment?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
+                requires:
+                    - build_prod
+          - deploy_pr_environment:
+                requires:
+                    - deploy_pr_environment?
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
