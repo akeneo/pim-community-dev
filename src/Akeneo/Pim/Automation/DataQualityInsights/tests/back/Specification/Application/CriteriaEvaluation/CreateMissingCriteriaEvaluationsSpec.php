@@ -13,23 +13,23 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
 
-final class CreateMissingProductsCriteriaEvaluationsSpec extends ObjectBehavior
+final class CreateMissingCriteriaEvaluationsSpec extends ObjectBehavior
 {
     public function let(
         GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface $getUpdatedProductsWithoutUpToDateEvaluationQuery,
-        CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations
+        CreateCriteriaEvaluations $createProductsCriteriaEvaluations
     ) {
         $this->beConstructedWith($getUpdatedProductsWithoutUpToDateEvaluationQuery, $createProductsCriteriaEvaluations);
     }
 
     public function it_creates_missing_criterion_evaluations_for_products_updated_since_a_given_date(
         GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface $getUpdatedProductsWithoutUpToDateEvaluationQuery,
-        CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations
+        CreateCriteriaEvaluations $createProductsCriteriaEvaluations
     ) {
         $updatedSince = new \DateTimeImmutable();
         $productIdsBatch1 = [new ProductId(42), new ProductId(123)];

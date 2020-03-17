@@ -28,7 +28,7 @@ services:
             $dataQualityInsightsFeature: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $createProductsCriteriaEvaluations: '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             $logger: '@logger'
-            $evaluatePendingCriteria: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria'
+            $evaluatePendingCriteria: '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
             $consolidateProductAxisRates: '@akeneo.pim.automation.data_quality_insights.consolidate_product_axes_rates'
             $indexProductRates: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
         tags:

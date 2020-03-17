@@ -63,11 +63,11 @@ services:
     #Tasklets
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria'
+            - '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
             - '@akeneo.pim.automation.data_quality_insights.consolidate_product_axes_rates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_ids_to_evaluate'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateMissingProductsCriteriaEvaluations'
+            - '@akeneo.pim.automation.data_quality_insights.create_missing_products_criteria_evaluations'
             - '@logger'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\ConsolidateDashboardRatesTasklet:

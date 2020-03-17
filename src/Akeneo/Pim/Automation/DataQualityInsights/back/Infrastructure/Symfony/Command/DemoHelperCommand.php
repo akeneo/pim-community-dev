@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Comma
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateDashboardRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\DictionarySource;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
@@ -45,7 +45,7 @@ final class DemoHelperCommand extends Command
     /** @var Connection */
     private $db;
 
-    /** @var CreateProductsCriteriaEvaluations */
+    /** @var CreateCriteriaEvaluations */
     private $createProductsCriteriaEvaluations;
 
     /** @var EvaluatePendingCriteria */
@@ -63,7 +63,7 @@ final class DemoHelperCommand extends Command
         ConsolidateDashboardRates $consolidateDashboardRates,
         DashboardRatesProjectionRepository $dashboardRatesProjectionRepository,
         Connection $db,
-        CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations,
+        CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         EvaluatePendingCriteria $evaluatePendingCriteria,
         ConsolidateAxesRates $consolidateProductAxisRates,
         IndexProductRates $indexProductRates

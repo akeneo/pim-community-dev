@@ -22,7 +22,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-final class CreateProductsCriteriaEvaluationsSpec extends ObjectBehavior
+final class CreateCriteriaEvaluationsSpec extends ObjectBehavior
 {
     public function it_creates_criteria(
         CriteriaEvaluationRegistry $criterionEvaluationRegistry,

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeCriteriaEvaluation;
 use Doctrine\DBAL\Connection;
@@ -17,7 +17,7 @@ class InitializeCriteriaEvaluationSpec extends ObjectBehavior
     public function let(
         FeatureFlag $featureFlag,
         Connection $db,
-        CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations
+        CreateCriteriaEvaluations $createProductsCriteriaEvaluations
     ) {
         $this->beConstructedWith($featureFlag, $db, $createProductsCriteriaEvaluations);
     }

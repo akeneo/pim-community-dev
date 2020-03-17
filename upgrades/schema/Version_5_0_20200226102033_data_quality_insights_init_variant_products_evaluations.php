@@ -22,7 +22,7 @@ final class Version_5_0_20200226102033_data_quality_insights_init_variant_produc
     {
         $this->disableMigrationWarning();
 
-        $createProductsCriteriaEvaluations = $this->container->get('Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations');
+        $createProductsCriteriaEvaluations = $this->container->get('Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateCriteriaEvaluations');
         foreach ($this->getVariantProductIdToEvaluateByBatch() as $productIds) {
             $createProductsCriteriaEvaluations->create($productIds);
         }

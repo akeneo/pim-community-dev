@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
-class CreateProductsCriteriaEvaluations
+class CreateCriteriaEvaluations
 {
     /**
      * @var CriteriaEvaluationRegistry

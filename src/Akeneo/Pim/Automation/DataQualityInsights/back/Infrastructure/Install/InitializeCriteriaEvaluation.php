@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
@@ -19,13 +19,13 @@ final class InitializeCriteriaEvaluation
     /** @var Connection */
     private $db;
 
-    /** @var CreateProductsCriteriaEvaluations */
+    /** @var CreateCriteriaEvaluations */
     private $createProductsCriteriaEvaluations;
 
     public function __construct(
         FeatureFlag $featureFlag,
         Connection $db,
-        CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations
+        CreateCriteriaEvaluations $createProductsCriteriaEvaluations
     ) {
         $this->featureFlag = $featureFlag;
         $this->db = $db;

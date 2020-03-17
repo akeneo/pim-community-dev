@@ -15,17 +15,17 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluati
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface;
 
-final class CreateMissingProductsCriteriaEvaluations
+final class CreateMissingCriteriaEvaluations
 {
     /** @var GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface */
     private $getUpdatedProductsWithoutUpToDateEvaluationQuery;
 
-    /** @var CreateProductsCriteriaEvaluations */
+    /** @var CreateCriteriaEvaluations */
     private $createProductsCriteriaEvaluations;
 
     public function __construct(
         GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface $getUpdatedProductsWithoutUpToDateEvaluationQuery,
-        CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations
+        CreateCriteriaEvaluations $createProductsCriteriaEvaluations
     ) {
         $this->getUpdatedProductsWithoutUpToDateEvaluationQuery = $getUpdatedProductsWithoutUpToDateEvaluationQuery;
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
