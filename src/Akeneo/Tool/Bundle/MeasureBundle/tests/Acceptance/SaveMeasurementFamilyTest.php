@@ -197,7 +197,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals('The standard unit code of the "WEIGHT" measurement family should be a multiply by 1 operation', $violation->getMessage());
+        self::assertEquals('The standard unit code of the "WEIGHT" measurement family should be a multiply-by-1 operation', $violation->getMessage());
         self::assertEquals('units[0].convert_from_standard', $violation->getPropertyPath());
     }
 
@@ -656,7 +656,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals('A product attribute is linked to this measurement family, you can only edit the translated labels and symbol of a unit', $violation->getMessage());
+        self::assertEquals('A product attribute is linked to this measurement family. You can only edit the translated labels and symbol of a unit.', $violation->getMessage());
         self::assertEquals('units', $violation->getPropertyPath());
     }
 
@@ -712,7 +712,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals('A product attribute is linked to this measurement family, you can only edit the translated labels and symbol of a unit', $violation->getMessage());
+        self::assertEquals('A product attribute is linked to this measurement family. You can only edit the translated labels and symbol of a unit', $violation->getMessage());
         self::assertEquals('', $violation->getPropertyPath());
     }
 
@@ -743,7 +743,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
 
         self::assertEquals(1, $violations->count());
         $violation = $violations->get(0);
-        self::assertEquals('There was some duplicated units found in the measurement family. The measurement family is expected to have unique units.', $violation->getMessage());
+        self::assertEquals('We found some duplicated units in the measurement family. The measurement family requires unique units.', $violation->getMessage());
         self::assertEquals('units', $violation->getPropertyPath());
     }
 
