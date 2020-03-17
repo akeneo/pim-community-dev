@@ -9,6 +9,11 @@ const Header = styled.header`
   z-index: 10;
 `;
 
+const PageHeaderPlaceholder = styled.div`
+  width: 200px;
+  height: 34px;
+`;
+
 type PageHeaderProps = {
   breadcrumb?: ReactElement;
   buttons?: ReactElement[];
@@ -17,7 +22,14 @@ type PageHeaderProps = {
   imageSrc?: string;
 };
 
-const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, imageSrc}: PropsWithChildren<PageHeaderProps>) => (
+const PageHeader = ({
+  children: title,
+  breadcrumb,
+  buttons,
+  userButtons,
+  state,
+  imageSrc,
+}: PropsWithChildren<PageHeaderProps>) => (
   <Header>
     <div className="AknTitleContainer-line">
       {imageSrc && (
@@ -51,4 +63,4 @@ const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, i
   </Header>
 );
 
-export {PageHeader};
+export {PageHeader, PageHeaderPlaceholder};

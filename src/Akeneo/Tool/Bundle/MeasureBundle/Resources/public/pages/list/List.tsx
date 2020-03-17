@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useState} from 'react';
 import styled from 'styled-components';
-import {PageHeader} from 'akeneomeasure/shared/components/PageHeader';
+import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
@@ -21,11 +21,6 @@ import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
 const Container = styled.div``;
 const PageContent = styled.div`
   padding: 0 40px;
-`;
-
-const PageHeaderPlaceholder = styled.div`
-  width: 200px;
-  height: 34px;
 `;
 
 const TablePlaceholder = styled.div`

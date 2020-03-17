@@ -44,6 +44,12 @@ const getMeasurementFamilyLabel = (measurementFamily: MeasurementFamily, locale:
 
 const getUnitLabel = (unit: Unit, locale: LocaleCode) => getLabel(unit.labels, locale, unit.code);
 
+const setMeasurementFamilyLabel = (
+  measurementFamily: MeasurementFamily,
+  locale: LocaleCode,
+  value: string
+): MeasurementFamily => ({...measurementFamily, labels: {...measurementFamily.labels, [locale]: value}});
+
 const getStandardUnitLabel = (measurementFamily: MeasurementFamily, locale: LocaleCode) => {
   const unit = measurementFamily.units.find(unit => unit.code === measurementFamily.standard_unit_code);
 
@@ -92,6 +98,7 @@ export {
   MeasurementFamily,
   MeasurementFamilyCode,
   getMeasurementFamilyLabel,
+  setMeasurementFamilyLabel,
   getStandardUnitLabel,
   filterMeasurementFamily,
   sortMeasurementFamily,
