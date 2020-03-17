@@ -36,15 +36,13 @@ class CleanCompletenessForNonExistingProductsCommandIntegration extends TestCase
         return $lines['line_count'] + 0;
     }
 
-    private function deleteProduct(string $identifier): int
+    private function deleteProduct($object): void
     {
-        $sql = "delete from pim_product_catalog where identifier = :id";
-
-        return $this->get('database_connection')
-            ->executeUpdate($sql, ['id' => $identifier]);
+        $this->get('pim_catalog.remover.product')
+            ->remove($object);
     }
 
-    private function createProduct(string $identifier, array $data): int
+    private function createProduct(string $identifier, array $data): Object
     {
         $product = $this->get('pim_catalog.builder.product')
             ->createProduct($identifier);
@@ -53,7 +51,7 @@ class CleanCompletenessForNonExistingProductsCommandIntegration extends TestCase
         $this->get('pim_catalog.saver.product')
             ->save($product);
 
-        return $product->getId();
+        return $product;
     }
 
     public function test_with_no_product()
@@ -61,19 +59,20 @@ class CleanCompletenessForNonExistingProductsCommandIntegration extends TestCase
         $commandLauncher = new CommandLauncher(static::$kernel);
         $initial_rows_nb = $this->countCompleteness();
         $commandLauncher->execute('pim:completeness:clean');
-        Assert::assertTrue($initial_rows_nb == $this->countCompleteness());
+        Assert::assertEquals($initial_rows_nb, $this->countCompleteness());
     }
 
     public function test_with_products()
     {
-        $id1 = $this->createProduct('AAA1', ['values' => [ "a_yes_no" => [['scope' => null, 'locale' => null, 'data' => true]]]]);
+        $product = $this->createProduct('AAA1', ['family' => 'familyA', 'values' => [ "a_yes_no" => [['scope' => null, 'locale' => null, 'data' => true]]]]);
         $this->get('pim_catalog.completeness.product.compute_and_persist')
             ->fromProductIdentifier('AAA1');
+        $origCompleteness = $this->countCompleteness();
         $commandLauncher = new CommandLauncher(static::$kernel);
         $commandLauncher->execute('pim:completeness:clean');
-        Assert::assertEquals(1, $this->countCompleteness());
-        $this->deleteProduct('AAA1');
-        Assert::assertEquals(1, $this->countCompleteness());
+        Assert::assertEquals($origCompleteness, $this->countCompleteness());
+        $this->deleteProduct($product);
+        Assert::assertEquals($origCompleteness, $this->countCompleteness());
         $commandLauncher->execute('pim:completeness:clean');
         Assert::assertEquals(0, $this->countCompleteness());
     }
