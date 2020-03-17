@@ -55,14 +55,13 @@ final class Version_5_0_20200313140000_regenerate_missing_data_for_the_connectio
     private function recalculateCreatedForDateTime(string $startTime, string $endTime): void
     {
         $selectEventCountByTime = <<<SQL
-SELECT conn.code AS connection_code, COUNT(resource_id) as event_count
+SELECT conn.code AS connection_code, COUNT(tmp_table.id) as event_count
 FROM (
-    SELECT author, resource_id
+    SELECT author, id
     FROM pim_versioning_version USE INDEX(logged_at_idx)
     WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
     AND version = 1
-    GROUP BY author, resource_id
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = 'api'
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
@@ -94,7 +93,6 @@ FROM (
     WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
     AND version != 1
-    GROUP BY author, id
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = 'api'
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
