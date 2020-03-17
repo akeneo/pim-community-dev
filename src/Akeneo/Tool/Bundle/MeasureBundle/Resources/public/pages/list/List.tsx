@@ -11,7 +11,7 @@ import {Link} from 'akeneomeasure/shared/components/Link';
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/NoData';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
-import {filterMeasurementFamily, sortMeasurementFamily, Direction} from 'akeneomeasure/model/measurement-family';
+import {sortMeasurementFamily, Direction, filterOnLabelOrCode} from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {Table} from 'akeneomeasure/pages/list/Table';
 import {Button} from 'akeneomeasure/shared/components/Button';
@@ -74,7 +74,7 @@ const List = () => {
     null === measurementFamilies
       ? null
       : measurementFamilies
-          .filter(measurementFamily => filterMeasurementFamily(measurementFamily, searchValue, locale))
+          .filter(filterOnLabelOrCode(searchValue, locale))
           .sort(sortMeasurementFamily(getSortDirection(sortColumn), locale, sortColumn));
 
   const measurementFamiliesCount = null === measurementFamilies ? 0 : measurementFamilies.length;

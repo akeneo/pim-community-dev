@@ -1,6 +1,5 @@
 import {getLabel} from 'pimui/js/i18n';
-
-type LocaleCode = string;
+import {LocaleCode} from 'akeneomeasure/model/locale';
 
 enum Direction {
   Ascending = 'Ascending',
@@ -14,16 +13,20 @@ enum Operator {
   SUB = 'sub',
 }
 
+type LabelCollection = {
+  [locale: string]: string;
+};
+
 type Operation = {
   operator: string;
   value: string;
 };
 
+type UnitCode = string;
+
 type Unit = {
-  code: string;
-  labels: {
-    [locale: string]: string;
-  };
+  code: UnitCode;
+  labels: LabelCollection;
   symbol: string;
   convert_from_standard: Operation[];
 };
@@ -32,9 +35,7 @@ type MeasurementFamilyCode = string;
 
 type MeasurementFamily = {
   code: MeasurementFamilyCode;
-  labels: {
-    [locale: string]: string;
-  };
+  labels: LabelCollection;
   standard_unit_code: string;
   units: Unit[];
 };
@@ -50,22 +51,42 @@ const setMeasurementFamilyLabel = (
   value: string
 ): MeasurementFamily => ({...measurementFamily, labels: {...measurementFamily.labels, [locale]: value}});
 
-const getStandardUnitLabel = (measurementFamily: MeasurementFamily, locale: LocaleCode) => {
-  const unit = measurementFamily.units.find(unit => unit.code === measurementFamily.standard_unit_code);
+const setUnitLabel = (
+  measurementFamily: MeasurementFamily,
+  unitCode: UnitCode,
+  locale: LocaleCode,
+  value: string
+): MeasurementFamily => {
+  const unit = getUnit(measurementFamily, unitCode);
 
-  if (undefined === unit) return `[${measurementFamily.standard_unit_code}]`;
+  if (undefined === unit) return measurementFamily;
 
-  return getUnitLabel(unit, locale);
+  unit.labels = {...unit.labels, [locale]: value};
+
+  return {...measurementFamily, units: {...measurementFamily.units, [unitCode]: unit}};
 };
 
-const filterMeasurementFamily = (
-  measurementFamily: MeasurementFamily,
-  searchValue: string,
-  locale: LocaleCode
-): boolean =>
-  -1 !== measurementFamily.code.toLowerCase().indexOf(searchValue.toLowerCase()) ||
-  (undefined !== measurementFamily.labels[locale] &&
-    -1 !== measurementFamily.labels[locale].toLowerCase().indexOf(searchValue.toLowerCase()));
+const getUnit = (measurementFamily: MeasurementFamily, unitCode: UnitCode): Unit | undefined =>
+  measurementFamily.units.find(unit => unit.code === unitCode);
+
+const getStandardUnit = (measurementFamily: MeasurementFamily): Unit => {
+  const unit = getUnit(measurementFamily, measurementFamily.standard_unit_code);
+
+  if (undefined === unit) throw Error('Measurement family should always have a standard unit');
+
+  return unit;
+};
+
+const getStandardUnitLabel = (measurementFamily: MeasurementFamily, locale: LocaleCode) =>
+  getUnitLabel(getStandardUnit(measurementFamily), locale);
+
+const filterOnLabelOrCode = (searchValue: string, locale: LocaleCode) => (entity: {
+  code: string;
+  labels: LabelCollection;
+}): boolean =>
+  -1 !== entity.code.toLowerCase().indexOf(searchValue.toLowerCase()) ||
+  (undefined !== entity.labels[locale] &&
+    -1 !== entity.labels[locale].toLowerCase().indexOf(searchValue.toLowerCase()));
 
 const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCode, sortColumn: string) => (
   first: MeasurementFamily,
@@ -95,11 +116,15 @@ const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCode, sor
 export {
   Direction,
   Operator,
+  Unit,
   MeasurementFamily,
   MeasurementFamilyCode,
   getMeasurementFamilyLabel,
   setMeasurementFamilyLabel,
+  getUnitLabel,
+  setUnitLabel,
+  getStandardUnit,
   getStandardUnitLabel,
-  filterMeasurementFamily,
+  filterOnLabelOrCode,
   sortMeasurementFamily,
 };

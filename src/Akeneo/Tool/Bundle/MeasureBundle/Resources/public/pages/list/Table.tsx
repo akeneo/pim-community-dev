@@ -42,12 +42,12 @@ const Table = ({measurementFamilies, toggleSortDirection, getSortDirection}: Tab
     <Container>
       <thead>
         <tr>
-          <SortableTableCell title={__('measurements.list.header.label')} onClick={() => toggleSortDirection('label')}>
-            {__('measurements.list.header.label')}
+          <SortableTableCell title={__('pim_common.label')} onClick={() => toggleSortDirection('label')}>
+            {__('pim_common.label')}
             <Caret direction={getSortDirection('label')} />
           </SortableTableCell>
-          <SortableTableCell title={__('measurements.list.header.code')} onClick={() => toggleSortDirection('code')}>
-            {__('measurements.list.header.code')}
+          <SortableTableCell title={__('pim_common.code')} onClick={() => toggleSortDirection('code')}>
+            {__('pim_common.code')}
             <Caret direction={getSortDirection('code')} />
           </SortableTableCell>
           <SortableTableCell

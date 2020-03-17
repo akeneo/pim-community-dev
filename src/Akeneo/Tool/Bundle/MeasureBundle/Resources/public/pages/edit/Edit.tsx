@@ -19,8 +19,6 @@ enum Tab {
   Properties = 'properties',
 }
 
-const Container = styled.div``;
-
 const TabContainer = styled.div`
   display: flex;
   width: 100%;
@@ -52,7 +50,7 @@ const Edit = () => {
   }
 
   return (
-    <Container>
+    <>
       <PageHeader
         userButtons={
           <PimView
@@ -66,7 +64,7 @@ const Edit = () => {
               //TODO save
             }}
           >
-            {__('measurements.family.save')}
+            {__('pim_common.save')}
           </Button>,
         ]}
         breadcrumb={
@@ -102,7 +100,7 @@ const Edit = () => {
           )}
         </Content>
       </PageContent>
-    </Container>
+    </>
   );
 };
 
