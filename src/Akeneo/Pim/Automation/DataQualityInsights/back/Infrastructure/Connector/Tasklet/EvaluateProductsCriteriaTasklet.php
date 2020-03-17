@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateMissingProductsCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductIdsToEvaluateQueryInterface;
@@ -36,7 +36,7 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var ConsolidateProductAxisRates */
+    /** @var ConsolidateAxesRates */
     private $consolidateProductAxisRates;
 
     /** @var IndexProductRates */
@@ -53,7 +53,7 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
 
     public function __construct(
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateProductAxisRates $consolidateProductAxisRates,
+        ConsolidateAxesRates $consolidateProductAxisRates,
         IndexProductRates $indexProductRates,
         GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery,
         CreateMissingProductsCriteriaEvaluations $createMissingProductsCriteriaEvaluations,

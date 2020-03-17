@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateDashboardRates;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\DictionarySource;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
@@ -51,7 +51,7 @@ final class DemoHelperCommand extends Command
     /** @var EvaluatePendingCriteria */
     private $evaluatePendingCriteria;
 
-    /** @var ConsolidateProductAxisRates */
+    /** @var ConsolidateAxesRates */
     private $consolidateProductAxisRates;
 
     /** @var IndexProductRates */
@@ -65,7 +65,7 @@ final class DemoHelperCommand extends Command
         Connection $db,
         CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateProductAxisRates $consolidateProductAxisRates,
+        ConsolidateAxesRates $consolidateProductAxisRates,
         IndexProductRates $indexProductRates
     ) {
         $this->productValueInDatabaseDictionarySource = $productValueInDatabaseDictionarySource;

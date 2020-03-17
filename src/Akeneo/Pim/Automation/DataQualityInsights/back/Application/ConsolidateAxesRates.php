@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEval
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
-class ConsolidateProductAxisRates
+class ConsolidateAxesRates
 {
     /** @var GetLatestCriteriaEvaluationsByProductIdQueryInterface */
     private $getLatestCriteriaEvaluationsByProductIdQuery;

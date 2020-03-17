@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
@@ -36,7 +36,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations,
         LoggerInterface $logger,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateProductAxisRates $consolidateProductAxisRates,
+        ConsolidateAxesRates $consolidateProductAxisRates,
         IndexProductRates $indexProductRates
     ) {
         $this->beConstructedWith(

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
@@ -31,7 +31,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     /** @var EvaluatePendingCriteria */
     private $evaluatePendingCriteria;
 
-    /** @var ConsolidateProductAxisRates */
+    /** @var ConsolidateAxesRates */
     private $consolidateProductAxisRates;
 
     /** @var IndexProductRates */
@@ -42,7 +42,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
         CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations,
         LoggerInterface $logger,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateProductAxisRates $consolidateProductAxisRates,
+        ConsolidateAxesRates $consolidateProductAxisRates,
         IndexProductRates $indexProductRates
     ) {
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
