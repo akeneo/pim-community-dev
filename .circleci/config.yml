@@ -320,7 +320,7 @@ jobs:
                 echo "DEPLOY FAILED - Delete CI env PFID=srnt-ci-$CIRCLE_SHA1"
                 IMAGE_TAG=$CIRCLE_SHA1 make delete
 
-  deploy_upgrade_pim3_environment:
+  deploy_upgrade_oldest_prod_environment:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -330,13 +330,13 @@ jobs:
           - add_ssh_keys
           - set_gcloud_config_dev
           - run:
-              name: PIM3 deployment on kubernetes
+              name: Oldest SaaS prod (PIM v3) deployment on kubernetes
               command: |
                 ssh-keyscan github.com >> ~/.ssh/known_hosts
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
           - run:
-              name: Upgrade PIM3 env
+              name: Upgrade oldest SaaS prod (PIM v3) to master
               command: |
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy
@@ -521,7 +521,7 @@ workflows:
           - deploy_master_environment:
                 requires:
                     - build_prod
-          - deploy_upgrade_pim3_environment:
+          - deploy_upgrade_oldest_prod_environment:
                 requires:
                     - deploy_master_environment
           - test_back_static_and_acceptance:
@@ -550,7 +550,7 @@ workflows:
                     - test_back_performance
                     - back_behat_legacy
                     - deploy_master_environment
-                    - deploy_upgrade_pim3_environment
+                    - deploy_upgrade_oldest_prod_environment
                     - test_back_data_migrations
 
   on_demand:
@@ -573,7 +573,7 @@ workflows:
           - deploy_master_environment:
                 requires:
                     - build_prod
-          - deploy_upgrade_pim3_environment:
+          - deploy_upgrade_oldest_prod_environment:
                 requires:
                     - deploy_master_environment
           - test_back_static_and_acceptance:
@@ -602,7 +602,7 @@ workflows:
                     - test_back_performance
                     - back_behat_legacy
                     - deploy_master_environment
-                    - deploy_upgrade_pim3_environment
+                    - deploy_upgrade_oldest_prod_environment
                     - test_back_data_migrations
 
 commands:
