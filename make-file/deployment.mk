@@ -147,5 +147,6 @@ slack_helpdesk:
 .PHONY: deploy_pr_environment
 deploy_pr_environment:
 	BRANCH=$$(echo ${CIRCLE_BRANCH} | tr '[:upper:]' '[:lower:]') && \
+	echo "\n\nThis environment will be available at https://pimci-pr-$${BRANCH}.dev.cloud.akeneo.com once deployed :)\n\n" && \
 	INSTANCE_NAME=pimci-pr-$${BRANCH} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
 	INSTANCE_NAME=pimci-pr-$${BRANCH} IMAGE_TAG=$${CIRCLE_SHA1} make deploy
