@@ -20,4 +20,9 @@ interface MeasurementFamilyRepositoryInterface
     public function save(MeasurementFamily $measurementFamily);
 
     public function countAllOthers(MeasurementFamilyCode $excludedMeasurementFamilyCode): int;
+
+    /**
+     * @throws MeasurementFamilyNotFoundException
+     */
+    public function deleteByCode(MeasurementFamilyCode $measurementFamilyCode);
 }
