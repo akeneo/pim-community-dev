@@ -3,6 +3,7 @@
 - PIM-9109: Fix SSO not working behind reverse proxy.
 - PIM-9133: Fix product and product model save when the user has no permission on some attribute groups
 - PIM-9149: Fix compare/translate on product 
+- PIM-9138: Rules import not working with asset manager
 
 ## Improvements
 

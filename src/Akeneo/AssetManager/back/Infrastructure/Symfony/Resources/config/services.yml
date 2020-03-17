@@ -123,3 +123,12 @@ services:
 
     # Clock
     Akeneo\AssetManager\Infrastructure\Clock: ~
+
+    akeneo_assetmanager.updater.copier.asset_collection:
+        class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Updater\Copier\AssetCollectionAttributeCopier'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_catalog_asset_collection']
+            - ['pim_catalog_asset_collection']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
