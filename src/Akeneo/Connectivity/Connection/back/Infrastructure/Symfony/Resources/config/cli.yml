@@ -13,10 +13,3 @@ services:
             - '@akeneo_connectivity.connection.application.handler.create_connection'
         tags:
             - { name: 'console.command' }
-
-    Akeneo\Connectivity\Connection\Infrastructure\Cli\PurgeReadProductTableCommand:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Cli\PurgeReadProductTableCommand
-        arguments:
-            - '@akeneo_connectivity_connection.persistence.query.purge_read_product'
-        tags:
-            - { name: 'console.command' }
