@@ -13,6 +13,7 @@
 - DAPI-739: Add coefficients by criterion to the calculation of the axes rates
 - DAPI-635: Add spellcheck on WYSIWG editors
 - DAPI-798: Allow spelling suggestions after a title formatter check
+- RUL-20: Rule engine - As Julia, I would like to copy values from/to different attribute types
 
 ## New features
 
