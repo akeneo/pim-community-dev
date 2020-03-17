@@ -57,13 +57,33 @@ const setUnitLabel = (
   locale: LocaleCode,
   value: string
 ): MeasurementFamily => {
-  const unit = getUnit(measurementFamily, unitCode);
+  const units = measurementFamily.units.map((unit: Unit) => {
+    if (unitCode !== unit.code) {
+      return unit;
+    }
 
-  if (undefined === unit) return measurementFamily;
+    return {
+      ...unit,
+      labels: {...unit.labels, [locale]: value},
+    };
+  });
 
-  unit.labels = {...unit.labels, [locale]: value};
+  return {...measurementFamily, units: units};
+};
 
-  return {...measurementFamily, units: {...measurementFamily.units, [unitCode]: unit}};
+const setUnitSymbol = (measurementFamily: MeasurementFamily, unitCode: UnitCode, value: string): MeasurementFamily => {
+  const units = measurementFamily.units.map((unit: Unit) => {
+    if (unitCode !== unit.code) {
+      return unit;
+    }
+
+    return {
+      ...unit,
+      symbol: value,
+    };
+  });
+
+  return {...measurementFamily, units: units};
 };
 
 const getUnit = (measurementFamily: MeasurementFamily, unitCode: UnitCode): Unit | undefined =>
@@ -117,12 +137,15 @@ export {
   Direction,
   Operator,
   Unit,
+  UnitCode,
   MeasurementFamily,
   MeasurementFamilyCode,
   getMeasurementFamilyLabel,
   setMeasurementFamilyLabel,
+  getUnit,
   getUnitLabel,
   setUnitLabel,
+  setUnitSymbol,
   getStandardUnit,
   getStandardUnitLabel,
   filterOnLabelOrCode,

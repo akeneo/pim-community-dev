@@ -4,8 +4,10 @@ import {
   MeasurementFamily,
   Unit,
   getUnitLabel,
+  getUnit,
   filterOnLabelOrCode,
-  getStandardUnit,
+  setUnitSymbol,
+  UnitCode,
   setUnitLabel,
 } from 'akeneomeasure/model/measurement-family';
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
@@ -16,6 +18,7 @@ import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/
 import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
+import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 
 const Container = styled.div`
   display: flex;
@@ -92,7 +95,7 @@ const StandardUnitBadge = styled.span`
 type UnitRowProps = {
   unit: Unit;
   isStandardUnit: boolean;
-  onRowSelected: (unit: Unit) => void;
+  onRowSelected: (unit: UnitCode) => void;
 };
 
 const UnitRow = ({unit, isStandardUnit, onRowSelected}: UnitRowProps) => {
@@ -100,7 +103,7 @@ const UnitRow = ({unit, isStandardUnit, onRowSelected}: UnitRowProps) => {
   const locale = useContext(UserContext)('uiLocale');
 
   return (
-    <UnitContainer onClick={() => onRowSelected(unit)}>
+    <UnitContainer onClick={() => onRowSelected(unit.code)}>
       <LabelCell>{getUnitLabel(unit, locale)}</LabelCell>
       <CodeCell>
         <span>
@@ -122,16 +125,16 @@ const UnitTab = ({
   const __ = useContext(TranslateContext);
   const locale = useContext(UserContext)('uiLocale');
   const [searchValue, setSearchValue] = useState('');
-  const [selectedUnit, selectUnit] = useState<Unit>(getStandardUnit(measurementFamily));
+  const [selectedUnitCode, selectUnitCode] = useState<UnitCode>(measurementFamily.standard_unit_code);
+  const selectedUnit = getUnit(measurementFamily, selectedUnitCode);
 
   const filteredUnits = measurementFamily.units.filter(filterOnLabelOrCode(searchValue, locale));
+  const locales = useUiLocales();
+
+  if (undefined === selectedUnit) return null;
 
   return (
-    <Container
-      onClick={() => {
-        onMeasurementFamilyChange({...measurementFamily, code: 'nice from unit tab'});
-      }}
-    >
+    <Container>
       <UnitList>
         <StickySearchBar
           count={measurementFamily.units.length}
@@ -158,7 +161,7 @@ const UnitTab = ({
                   key={unit.code}
                   unit={unit}
                   isStandardUnit={unit.code === measurementFamily.standard_unit_code}
-                  onRowSelected={selectUnit}
+                  onRowSelected={selectUnitCode}
                 />
               ))}
             </tbody>
@@ -167,7 +170,7 @@ const UnitTab = ({
       </UnitList>
       <UnitDetails>
         <SubsectionHeader>
-          {__('measurements.unit.edit.title', {unitLabel: getUnitLabel(selectedUnit, locale)})}
+          {__('measurements.unit.title', {unitLabel: getUnitLabel(selectedUnit, locale)})}
         </SubsectionHeader>
         <FormGroup>
           <TextField
@@ -178,15 +181,30 @@ const UnitTab = ({
             readOnly
           />
           <TextField
-            id="measurements.unit.properties.code"
-            label={__('pim_common.code')}
-            value={selectedUnit.code}
+            id="measurements.unit.properties.symbol"
+            label={__('measurements.unit.symbol')}
+            value={selectedUnit.symbol}
             onChange={(event: FormEvent<HTMLInputElement>) =>
-              onMeasurementFamilyChange(
-                setUnitLabel(measurementFamily, selectedUnit.code, locale, event.currentTarget.value)
-              )
+              onMeasurementFamilyChange(setUnitSymbol(measurementFamily, selectedUnit.code, event.currentTarget.value))
             }
           />
+        </FormGroup>
+        <SubsectionHeader>{__('pim_common.label_translations')}</SubsectionHeader>
+        <FormGroup>
+          {null !== locales &&
+            locales.map(locale => (
+              <TextField
+                id={`measurements.family.properties.label.${locale.code}`}
+                label={locale.label}
+                key={locale.code}
+                value={measurementFamily.labels[locale.code] || ''}
+                onChange={(event: FormEvent<HTMLInputElement>) =>
+                  onMeasurementFamilyChange(
+                    setUnitLabel(measurementFamily, selectedUnitCode, locale.code, event.currentTarget.value)
+                  )
+                }
+              />
+            ))}
         </FormGroup>
       </UnitDetails>
     </Container>

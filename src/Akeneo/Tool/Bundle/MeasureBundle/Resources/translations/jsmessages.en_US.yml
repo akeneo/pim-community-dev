@@ -26,6 +26,7 @@ measurements:
             properties: Properties
     unit:
         title: Edit {{ unitLabel }}
+        symbol: Symbol
 
     list:
         result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"

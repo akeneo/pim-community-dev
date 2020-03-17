@@ -22,8 +22,6 @@ const PropertyTab = ({
   //TODO check why does not work
   const [ref] = useFocus();
 
-  console.log(ref);
-
   return (
     <Container>
       <SubsectionHeader>{__('pim_common.general_properties')}</SubsectionHeader>
