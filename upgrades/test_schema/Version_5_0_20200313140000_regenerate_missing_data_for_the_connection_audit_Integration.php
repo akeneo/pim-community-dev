@@ -17,6 +17,8 @@ final class Version_5_0_20200313140000_regenerate_missing_data_for_the_connectio
     /** @var Connection */
     private $dbalConnection;
 
+    private static $versionCounter = 2;
+
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
@@ -37,28 +39,90 @@ final class Version_5_0_20200313140000_regenerate_missing_data_for_the_connectio
         $this->assertAuditProductTableEntryCount(1);
     }
 
-    public function test_it_recalculate_audit_for_the_last_10_days(): void
+    public function test_it_recalculates_audit_data_when_there_is_no_connection(): void
     {
-        $this->ensureAuditProductTableIsEmpty();
-        $connection = $this->createConnection('franklin');
-        $connection2 = $this->createConnection('cnet');
-
-        $yesterdayDateTime = new \DateTime('yesterday', new \DateTimeZone('UTC'));
-        $this->insertVersionRow($connection->username(), true, $yesterdayDateTime->format('Y-m-d H:i:s'));
-        $this->insertVersionRow($connection->username(), false, $yesterdayDateTime->modify('+1 hour')->format('Y-m-d H:i:s'));
-        $this->insertVersionRow($connection->username(), false, $yesterdayDateTime->modify('+1 hour')->format('Y-m-d H:i:s'));
-
-        $nowDateTime = new \DateTime('now', new \DateTimeZone('UTC'));
-        $this->insertVersionRow($connection->username(), false, $nowDateTime->format('Y-m-d H:i:s'));
-        $this->insertVersionRow($connection2->username(), true, $nowDateTime->format('Y-m-d H:i:s'));
-        $this->insertVersionRow($connection2->username(), false, $nowDateTime->format('Y-m-d H:i:s'));
+        $this->ensureThereIsNoConnection();
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-        $this->assertAuditProductTableEntryCount(648);
+        $this->assertAuditProductTableEntryCount(432);
     }
 
-    //TODO: Test if no connections
+    public function test_it_recalculates_audit_for_the_last_10_days_for_a_single_connection(): void
+    {
+        $this->ensureAuditProductTableIsEmpty();
+        $connection = $this->createConnection('franklin');
+
+        $yesterdayDateTime = new \DateTime('yesterday', new \DateTimeZone('UTC'));
+        $this->insertVersionRow($connection->username(), 1, true, $yesterdayDateTime->format('Y-m-d H:i:s'));
+        $this->insertVersionRow($connection->username(), 1, false, $yesterdayDateTime->modify('+1 hour')->format('Y-m-d H:i:s'));
+        $this->insertVersionRow($connection->username(), 1, false, $yesterdayDateTime->modify('+1 hour')->format('Y-m-d H:i:s'));
+        $this->insertVersionRow($connection->username(), 1, false, $yesterdayDateTime->format('Y-m-d H:i:s'));
+
+        $nowDateTime = new \DateTime('today', new \DateTimeZone('UTC'));
+        $this->insertVersionRow($connection->username(), 1, false, $nowDateTime->format('Y-m-d H:i:s'));
+
+        $this->reExecuteMigration(self::MIGRATION_LABEL);
+
+        $this->assertAuditProductTableEntryCount(864);
+
+        $selectAuditProductSql = <<<SQL
+SELECT connection_code, event_type, event_count FROM akeneo_connectivity_connection_audit_product
+WHERE event_count != 0
+ORDER BY event_datetime ASC, connection_code, event_type
+SQL;
+        $auditRows = $this->dbalConnection->fetchAll($selectAuditProductSql);
+
+        $expectedRows = [
+            ['connection_code' => '<all>', 'event_count' => 1, 'event_type' => 'product_created'],
+            ['connection_code' => 'franklin', 'event_count' => 1, 'event_type' => 'product_created'],
+            ['connection_code' => '<all>', 'event_count' => 1, 'event_type' => 'product_updated'],
+            ['connection_code' => 'franklin', 'event_count' => 1, 'event_type' => 'product_updated'],
+            ['connection_code' => '<all>', 'event_count' => 2, 'event_type' => 'product_updated'],
+            ['connection_code' => 'franklin', 'event_count' => 2, 'event_type' => 'product_updated'],
+            ['connection_code' => '<all>', 'event_count' => 1, 'event_type' => 'product_updated'],
+            ['connection_code' => 'franklin', 'event_count' => 1, 'event_type' => 'product_updated'],
+        ];
+        $this->assertEquals($expectedRows, $auditRows);
+    }
+
+    public function test_it_recalculates_audit_for_the_last_10_days_for_many_connections(): void
+    {
+        $this->ensureAuditProductTableIsEmpty();
+
+        $connection1 = $this->createConnection('franklin');
+        $connection2 = $this->createConnection('cnet');
+
+        $nowDateTime = new \DateTime('today', new \DateTimeZone('UTC'));
+        $this->insertVersionRow($connection1->username(), 1, true, $nowDateTime->format('Y-m-d H:i:s'));
+        $this->insertVersionRow($connection1->username(), 1, false, $nowDateTime->format('Y-m-d H:i:s'));
+        $this->insertVersionRow($connection1->username(), 2, true, $nowDateTime->format('Y-m-d H:i:s'));
+        $this->insertVersionRow($connection1->username(), 3, true, $nowDateTime->format('Y-m-d H:i:s'));
+
+        $this->insertVersionRow($connection2->username(), 4, true, $nowDateTime->format('Y-m-d H:i:s'));
+        $this->insertVersionRow($connection2->username(), 1, false, $nowDateTime->format('Y-m-d H:i:s'));
+        $this->insertVersionRow($connection2->username(), 1, false, $nowDateTime->format('Y-m-d H:i:s'));
+
+        $this->reExecuteMigration(self::MIGRATION_LABEL);
+
+        $this->assertAuditProductTableEntryCount(1296);
+
+        $selectAuditProductSql = <<<SQL
+SELECT * FROM akeneo_connectivity_connection_audit_product
+WHERE event_count != 0
+ORDER BY event_datetime ASC, connection_code, event_type
+SQL;
+        $auditRows = $this->dbalConnection->fetchAll($selectAuditProductSql);
+
+        $expectedRows = [
+            ['connection_code' => '<all>', 'event_count' => 4, 'event_type' => 'product_created'],
+            ['connection_code' => 'cnet', 'event_count' => 1, 'event_type' => 'product_created'],
+            ['connection_code' => 'franklin', 'event_count' => 3, 'event_type' => 'product_created'],
+            ['connection_code' => '<all>', 'event_count' => 3, 'event_type' => 'product_updated'],
+            ['connection_code' => 'cnet', 'event_count' => 2, 'event_type' => 'product_updated'],
+            ['connection_code' => 'franklin', 'event_count' => 1, 'event_type' => 'product_updated'],
+        ];
+    }
 
     private function ensureAuditProductTableIsFilled(): void
     {
@@ -75,6 +139,14 @@ SQL;
         $this->assertAuditProductTableEntryCount(0);
     }
 
+    private function ensureThereIsNoConnection(): void
+    {
+        $this->dbalConnection->executeQuery('DELETE FROM akeneo_connectivity_connection');
+
+        $stmt = $this->dbalConnection->executeQuery('SELECT COUNT(1) FROM akeneo_connectivity_connection_audit_product');
+        $this->assertEquals(0, $stmt->fetchColumn());
+    }
+
     private function assertAuditProductTableEntryCount(int $expectedCount): void
     {
         $stmt = $this->dbalConnection->executeQuery('SELECT COUNT(1) FROM akeneo_connectivity_connection_audit_product');
@@ -89,9 +161,9 @@ VALUES (:user_api, 'Akeneo\\\\Pim\\\\Enrichment\\\\Component\\\\Product\\\\Model
 SQL;
         $insertParams = [
             'user_api' => $userApi,
-            'version' => ($created) ? 1 : 2,
-            'logged_at' => $loggedAt
-
+            'version' => ($created === true) ? 1 : self::$versionCounter++,
+            'logged_at' => $loggedAt,
+            'resource_id' => $resourceId,
         ];
         $this->dbalConnection->executeQuery($insertVersioningSql, $insertParams);
     }

@@ -40,13 +40,19 @@ final class Version_5_0_20200313140000_regenerate_missing_data_for_the_connectio
         $endDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', $startDateTime->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
         $endDateTime->setTime((int) $endDateTime->format('H')+1, 0, 0);
 
+        $startTime = $startDateTime->format('Y-m-d H:i:s');
+        $endTime = $endDateTime->format('Y-m-d H:i:s');
+
+        // Fill in for each connection
+        $this->fillAuditProductDataForEachConnection($startTime, $endTime);
+
         // Recalculate created
-        $this->recalculateCreatedForDateTime($startDateTime, $endDateTime);
+        $this->recalculateCreatedForDateTime($startTime, $endTime);
         // Recalculate updated
-        $this->recalculateUpdatedForDateTime($startDateTime, $endDateTime);
+        $this->recalculateUpdatedForDateTime($startTime, $endTime);
     }
 
-    private function recalculateCreatedForDateTime(\DateTime $startDateTime, \DateTime $endDateTime): void
+    private function recalculateCreatedForDateTime(string $startTime, string $endTime): void
     {
         $selectEventCountByTime = <<<SQL
 SELECT conn.code AS connection_code, COUNT(resource_id) as event_count
@@ -64,31 +70,31 @@ GROUP BY conn.code;
 SQL;
 
         $dateTimeParams = [
-            'start_time' => $startDateTime->format('Y-m-d H:i:s'),
-            'end_time'   => $endDateTime->format('Y-m-d H:i:s'),
+            'start_time' => $startTime,
+            'end_time'   => $endTime,
             'resource_name' => $this->container->getParameter('pim_catalog.entity.product.class'),
         ];
         $eventCounts = $this->connection->executeQuery($selectEventCountByTime, $dateTimeParams)->fetchAll();
 
         $totalCount = 0;
         foreach ($eventCounts as $eventCount) {
-            $this->insertAuditProductRow($eventCount['connection_code'], (int) $eventCount['event_count'], $startDateTime->format('Y-m-d H:i:s'), 'product_created');
+            $this->insertAuditProductRow($eventCount['connection_code'], (int) $eventCount['event_count'], $startTime, 'product_created');
             $totalCount += (int) $eventCount['event_count'];
         }
-        $this->insertAuditProductRow('<all>', (int) $totalCount, $startDateTime->format('Y-m-d H:i:s'), 'product_created');
+        $this->insertAuditProductRow('<all>', (int) $totalCount, $startTime, 'product_created');
     }
 
-    private function recalculateUpdatedForDateTime(\DateTime $startDateTime, \DateTime $endDateTime): void
+    private function recalculateUpdatedForDateTime(string $startTime, $endTime): void
     {
         $selectEventCountByTime = <<<SQL
-SELECT conn.code AS connection_code, COUNT(resource_id) as event_count
+SELECT conn.code AS connection_code, COUNT(tmp_table.id) as event_count
 FROM (
-    SELECT author, resource_id
+    SELECT author, id
     FROM pim_versioning_version USE INDEX(logged_at_idx)
     WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
     AND version != 1
-    GROUP BY author, resource_id
+    GROUP BY author, id
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = 'api'
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
@@ -96,18 +102,18 @@ GROUP BY conn.code;
 SQL;
 
         $dateTimeParams = [
-            'start_time' => $startDateTime->format('Y-m-d H:i:s'),
-            'end_time'   => $endDateTime->format('Y-m-d H:i:s'),
+            'start_time' => $startTime,
+            'end_time'   => $endTime,
             'resource_name' => $this->container->getParameter('pim_catalog.entity.product.class'),
         ];
         $eventCounts = $this->connection->executeQuery($selectEventCountByTime, $dateTimeParams)->fetchAll();
 
         $totalCount = 0;
         foreach ($eventCounts as $eventCount) {
-            $this->insertAuditProductRow($eventCount['connection_code'], (int) $eventCount['event_count'], $startDateTime->format('Y-m-d H:i:s'), 'product_updated');
+            $this->insertAuditProductRow($eventCount['connection_code'], (int) $eventCount['event_count'], $startTime, 'product_updated');
             $totalCount += (int) $eventCount['event_count'];
         }
-        $this->insertAuditProductRow('<all>', (int) $totalCount, $startDateTime->format('Y-m-d H:i:s'), 'product_updated');
+        $this->insertAuditProductRow('<all>', (int) $totalCount, $startTime, 'product_updated');
     }
 
     private function insertAuditProductRow(string $connectionCode, int $eventCount, string $eventDateTime, string $eventType): void
@@ -115,6 +121,7 @@ SQL;
         $insertQuerySql = <<<SQL
 INSERT INTO akeneo_connectivity_connection_audit_product (connection_code, event_datetime, event_count, event_type, updated)
 VALUES(:connection_code, :event_datetime, :event_count, :event_type, UTC_TIMESTAMP())
+ON DUPLICATE KEY UPDATE event_count = :event_count, updated = UTC_TIMESTAMP()
 SQL;
         $insertQueryParams = [
             'connection_code' => $connectionCode,
@@ -125,13 +132,27 @@ SQL;
         $this->connection->executeQuery($insertQuerySql, $insertQueryParams);
     }
 
+    private function fillAuditProductDataForEachConnection(string $startTime, string $endTime): void
+    {
+        $selectConnectionsSql = <<<SQL
+SELECT code FROM akeneo_connectivity_connection
+WHERE flow_type = 'data_source'
+SQL;
+        $connections = $this->connection->executeQuery($selectConnectionsSql)->fetchAll();
+
+        foreach ($connections as $connection) {
+            $this->insertAuditProductRow($connection['code'], 0, $startTime, 'product_created');
+            $this->insertAuditProductRow($connection['code'], 0, $startTime, 'product_updated');
+        }
+    }
+
     public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
