@@ -143,3 +143,8 @@ deploy_latest_release_for_helpdesk:
 .PHONY: slack_helpdesk
 slack_helpdesk:
 	curl -X POST -H 'Content-type: application/json' --data '{"text":"Serenity env has been deployed with the last tag $(IMAGE_TAG) : https://pimci-helpdesk.preprod.cloud.akeneo.com"}' $${SLACK_URL_HELPDESK};
+
+.PHONY: deploy_pr_environment
+deploy_pr_environment:
+	INSTANCE_NAME=pimci-pr-$${CIRCLE_BRANCH} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
+	INSTANCE_NAME=pimci-pr-$${CIRCLE_BRANCH} IMAGE_TAG=$${CIRCLE_SHA1} make deploy

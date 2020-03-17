@@ -389,11 +389,11 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
+          - set_gcloud_config_dev
           - run:
-                name: foo
+                name: Deploy PR environment
                 command: |
-                    echo "that should work"
-                    echo "PR env deployed"
+                    ENV_NAME=dev make deploy_pr_environment
 
   test_back_missing_structure_migrations:
       machine:
