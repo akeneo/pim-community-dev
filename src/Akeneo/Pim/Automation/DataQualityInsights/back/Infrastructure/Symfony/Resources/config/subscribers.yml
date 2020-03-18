@@ -34,6 +34,16 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\ProductModel\InitializeEvaluationOfAProductModelSubscriber:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
+            - '@logger'
+            - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
+            - '@akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates'
+        tags:
+            - { name: kernel.event_subscriber }
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\RemoveEvaluationJobsAfterFreshInstallSubscriber:
         arguments:
             $db: '@database_connection'
