@@ -3,7 +3,7 @@ import {Provider} from "react-redux";
 import {productEditFormStore} from "../infrastructure/store";
 import {CatalogContextListener, PageContextListener, ProductContextListener} from "./listener";
 import {Product} from "../domain";
-import {fetchProductDataQualityEvaluation} from '../infrastructure/fetcher';
+import {fetchProduct, fetchProductDataQualityEvaluation} from '../infrastructure/fetcher';
 import {
   AttributesTabContent,
   AxisRatesOverviewPortal,
@@ -21,7 +21,7 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
     <Provider store={productEditFormStore}>
       <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
       <PageContextListener />
-      <ProductContextListener product={product}/>
+      <ProductContextListener product={product} productFetcher={fetchProduct}/>
 
       <AttributesTabContent product={product}/>
       <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductDataQualityEvaluation}/>
