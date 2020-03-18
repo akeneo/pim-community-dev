@@ -500,4 +500,65 @@ class ProductWriterSpec extends ObjectBehavior
         ]);
         $this->flush();
     }
+
+    function it_does_not_write_the_selected_attributes_in_headers_if_there_is_no_content(
+        $bufferFactory,
+        $flusher,
+        $generateHeadersFromAttributeCodes,
+        FlatItemBuffer $flatRowBuffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        ExecutionContext $executionContext
+    ) {
+        $this->setStepExecution($stepExecution);
+
+        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getStartTime()->willReturn(new \DateTime());
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('CSV Product export');
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('linesPerFile')->willReturn(false);
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('enclosure')->willReturn('"');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
+        $jobParameters->has('ui_locale')->willReturn(false);
+        $jobParameters->has('decimalSeparator')->willReturn(false);
+        $jobParameters->has('dateFormat')->willReturn(false);
+        $jobParameters->has('with_media')->willReturn(false);
+        $jobParameters->has('selected_properties')->willReturn(true);
+        $jobParameters->get('selected_properties')->willReturn([]);
+        $jobParameters->has('withHeader')->willReturn(true);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filters')->willReturn([
+            'structure' => [
+                'locales' => ['fr_FR', 'en_US'],
+                'scope' => 'ecommerce',
+                'attributes' => ['name', 'description'],
+            ]
+        ]);
+        $generateHeadersFromAttributeCodes
+            ->__invoke(Argument::cetera())
+            ->shouldNotBeCalled();
+
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $flusher->flush(
+            $flatRowBuffer,
+            Argument::type('array'),
+            Argument::type('string'),
+            -1
+        )->willReturn([
+            $this->directory . 'CSV_Product_export_product1.csv',
+        ]);
+        $flatRowBuffer->addToHeaders([])->shouldBeCalled();
+
+        $this->initialize();
+        $this->flush();
+    }
 }
