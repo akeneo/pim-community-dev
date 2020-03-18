@@ -153,7 +153,7 @@ class SaveMeasurementFamilyActionTest extends WebTestCase
     {
         $normalizedMeasurementFamily = $this->measurementFamily();
         $invalidMeasurementFamily = $normalizedMeasurementFamily;
-        $invalidMeasurementFamily['labels']['fr_FR'] = str_repeat('a',101);
+        $invalidMeasurementFamily['labels']['fr_FR'] = str_repeat('a', 101);
 
         return $invalidMeasurementFamily;
     }
@@ -200,5 +200,4 @@ class SaveMeasurementFamilyActionTest extends WebTestCase
 
         return $response;
     }
-
 }
