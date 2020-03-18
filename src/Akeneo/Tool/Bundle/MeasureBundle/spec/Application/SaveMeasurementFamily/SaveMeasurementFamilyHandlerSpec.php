@@ -39,21 +39,21 @@ class SaveMeasurementFamilyHandlerSpec extends ObjectBehavior
         SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand
     ) {
         $saveMeasurementFamilyCommand->code = 'Area';
-        $saveMeasurementFamilyCommand->labels = ["en_US" => "Area", "fr_FR" => "Surface"];
+        $saveMeasurementFamilyCommand->labels = ['en_US' => 'Area', 'fr_FR' => 'Surface'];
         $saveMeasurementFamilyCommand->standardUnitCode = 'SQUARE_MILLIMETER';
         $saveMeasurementFamilyCommand->units = [
           [
               'code' => 'SQUARE_MILLIMETER',
-              'labels' => ["en_US" => "Square millimeter", "fr_FR" => "Millimètre carré"],
+              'labels' => ['en_US' => 'Square millimeter', 'fr_FR' => 'Millimètre carré'],
               'convert_from_standard' => [[
                   'operator' => 'mul',
-                  'value' => '0.000001'
+                  'value' => '1'
               ]],
               'symbol' => 'mm²'
           ],
           [
               'code' => 'SQUARE_CENTIMETER',
-              'labels' => ["en_US" => "Square centimeter", "fr_FR" => "Centimètre carré"],
+              'labels' => ['en_US' => 'Square centimeter', 'fr_FR' => 'Centimètre carré'],
               'convert_from_standard' => [[
                   'operator' => 'mul',
                   'value' => '0.0001'
@@ -64,25 +64,26 @@ class SaveMeasurementFamilyHandlerSpec extends ObjectBehavior
 
         $expectedArea = MeasurementFamily::create(
             MeasurementFamilyCode::fromString('Area'),
-            LabelCollection::fromArray(["en_US" => "Area", "fr_FR" => "Surface"]),
+            LabelCollection::fromArray(['en_US' => 'Area', 'fr_FR' => 'Surface']),
             UnitCode::fromString('SQUARE_MILLIMETER'),
             [
                 Unit::create(
                     UnitCode::fromString('SQUARE_MILLIMETER'),
-                    LabelCollection::fromArray(["en_US" => "Square millimeter", "fr_FR" => "Millimètre carré"]),
-                    [Operation::create("mul", "0.000001")],
-                    "mm²",
+                    LabelCollection::fromArray(['en_US' => 'Square millimeter', 'fr_FR' => 'Millimètre carré']),
+                    [Operation::create('mul', '1')],
+                    'mm²',
                 ),
                 Unit::create(
                     UnitCode::fromString('SQUARE_CENTIMETER'),
-                    LabelCollection::fromArray(["en_US" => "Square centimeter", "fr_FR" => "Centimètre carré"]),
-                    [Operation::create("mul", "0.0001")],
-                    "cm²",
+                    LabelCollection::fromArray(['en_US' => 'Square centimeter', 'fr_FR' => 'Centimètre carré']),
+                    [Operation::create('mul', '0.0001')],
+                    'cm²',
                 )
             ]
         );
 
-        $measurementFamilyRepository->save(Argument::that(function ($area) use ($expectedArea) {
+        $measurementFamilyRepository->save(
+            Argument::that(function ($area) use ($expectedArea) {
             Assert::eq($expectedArea, $area);
             return true;
         }))->shouldBeCalled();

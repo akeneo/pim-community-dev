@@ -9,4 +9,4 @@ We do our best to ease contributions as much as we can, feel free to open an iss
 
 To be able to merge your contribution, we need that you read and sign the following contributor agreement http://www.akeneo.com/contributor-license-agreement/
 
-You can follow this guide to have details about how to contribute: https://docs.akeneo.com/master/contributing/contribution_guide.html
+You can follow this guide to have details about how to contribute: https://docs.akeneo.com/master/contribute_to_pim/contribution_guide.html

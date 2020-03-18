@@ -23,6 +23,7 @@ class CountValidator extends ConstraintValidator
 {
     /** @var MeasurementFamilyRepositoryInterface */
     private $measurementFamilyRepository;
+
     /** @var int */
     private $max;
 
@@ -52,8 +53,8 @@ class CountValidator extends ConstraintValidator
         $count = $this->measurementFamilyRepository->countAllOthers($excludedMeasurementFamilyCode);
 
         if ($count >= $this->max) {
-            $this->context->buildViolation($constraint->maxMessage)
-                ->setParameter('{{ limit }}', $this->max)
+            $this->context->buildViolation(Count::MAX_MESSAGE)
+                ->setParameter('%limit%', $this->max)
                 ->setInvalidValue($saveMeasurementFamilyCommand)
                 ->setPlural((int)$this->max)
                 ->addViolation();

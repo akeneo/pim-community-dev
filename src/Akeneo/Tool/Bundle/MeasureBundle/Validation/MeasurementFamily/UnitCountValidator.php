@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -47,10 +48,17 @@ class UnitCountValidator extends ConstraintValidator
         $count = \count($value);
 
         if ($count > $this->max) {
-            $this->context->buildViolation($constraint->maxMessage)
-                ->setParameter('{{ limit }}', $this->max)
+            $this->context->buildViolation(UnitCount::MAX_MESSAGE)
+                ->setParameter('%limit%', $this->max)
                 ->setInvalidValue($value)
                 ->setPlural((int)$this->max)
+                ->addViolation();
+        }
+
+        if ($count < MeasurementFamily::MIN_UNIT_COUNT) {
+            $this->context->buildViolation(UnitCount::MIN_MESSAGE)
+                ->setParameter('%limit%', MeasurementFamily::MIN_UNIT_COUNT)
+                ->setInvalidValue($value)
                 ->addViolation();
         }
     }

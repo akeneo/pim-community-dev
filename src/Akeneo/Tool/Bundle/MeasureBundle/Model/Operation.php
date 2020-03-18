@@ -13,7 +13,9 @@ use Webmozart\Assert\Assert;
  */
 final class Operation
 {
-    private const SUPPORTED_OPERATORS = ['mul', 'div', 'add', 'sub'];
+    public const STANDARD_OPERATOR = 'mul';
+    public const STANDARD_VALUE = '1';
+    private const SUPPORTED_OPERATORS = [self::STANDARD_OPERATOR, 'div', 'add', 'sub'];
 
     /** @var string */
     private $operator;
@@ -33,6 +35,16 @@ final class Operation
     public static function create(string $operator, string $value): self
     {
         return new self($operator, $value);
+    }
+
+    public function operator(): string
+    {
+        return $this->operator;
+    }
+
+    public function value(): string
+    {
+        return $this->value;
     }
 
     public function normalize(): array

@@ -509,3 +509,42 @@ services:
             - ['pim_reference_data_multiselect']
         tags:
             - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.heterogeneous_attributes:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\HeterogeneousAttributeCopier'
+        arguments:
+            - '@pim_catalog.updater.converter.registry'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.validator.helper.attribute'
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.converter.registry:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\ValueDataConverterRegistry'
+        arguments:
+            - !tagged pim_catalog.updater.value_data_converter
+
+    pim_catalog.updater.value_converter.string_to_string:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\StringToStringDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.number_to_string:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\NumberToStringDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.number_to_metric:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\NumberToMetricDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.collection_to_string:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\CollectionToStringDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.collection_to_array:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\CollectionToArrayDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\MeasurementFamily;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
@@ -37,7 +38,12 @@ class InMemoryMeasurementFamilyRepository implements MeasurementFamilyRepository
             $this->measurementFamilies = $this->loadMeasurementFamilies();
         }
 
-        return $this->measurementFamilies[$measurementFamilyCode->normalize()];
+        $measurementFamily = $this->measurementFamilies[$measurementFamilyCode->normalize()] ?? null;
+        if (null === $measurementFamily) {
+            throw new MeasurementFamilyNotFoundException();
+        }
+
+        return $measurementFamily;
     }
 
     private function loadMeasurementFamilies(): array

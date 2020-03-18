@@ -26,21 +26,16 @@ class GetMeasurementFamiliesAction
     /** @var ParameterValidatorInterface */
     private $parameterValidator;
 
-    /** @var PaginatorInterface */
-    private $paginator;
-
     /** @var array */
     private $apiConfiguration;
 
     public function __construct(
         MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
         ParameterValidatorInterface $parameterValidator,
-        PaginatorInterface $paginator,
         array $apiConfiguration
     ) {
         $this->measurementFamilyRepository = $measurementFamilyRepository;
         $this->parameterValidator = $parameterValidator;
-        $this->paginator = $paginator;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -52,38 +47,19 @@ class GetMeasurementFamiliesAction
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
-        $defaultParameters = [
-            'page'       => 1,
-            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
-            'with_count' => 'false',
-        ];
-
-        $queryParameters = array_merge($defaultParameters, $request->query->all());
-        $parameters = [
-            'query_parameters' => $queryParameters,
-            'list_route_name'  => 'pim_api_measurement_family_get',
-        ];
-
         $measurementFamilies = $this->measurementFamilyRepository->all();
-        $normalizedMeasurementFamilies = $this->normalizeMeasurementFamilies($measurementFamilies, $queryParameters);
-        $count = true === $request->query->getBoolean('with_count') ? count($measurementFamilies) : null;
-        $paginatedMeasureFamilies = $this->paginator->paginate($normalizedMeasurementFamilies, $parameters, $count);
+        $normalizedMeasurementFamilies = $this->normalizeMeasurementFamilies($measurementFamilies);
 
-        return new JsonResponse($paginatedMeasureFamilies);
+        return new JsonResponse($normalizedMeasurementFamilies);
     }
 
-    private function normalizeMeasurementFamilies(array $measurementFamilies, array $queryParameters): array
+    private function normalizeMeasurementFamilies(array $measurementFamilies): array
     {
-        $limit = $queryParameters['limit'];
-        $offset = $limit * ($queryParameters['page'] - 1);
-
-        $measurementFamiliesPage = array_slice($measurementFamilies, $offset, $queryParameters['limit']);
-
         return array_map(
             function (MeasurementFamily $measurementFamily) {
                 return $measurementFamily->normalize();
             },
-            $measurementFamiliesPage
+            $measurementFamilies
         );
     }
 }

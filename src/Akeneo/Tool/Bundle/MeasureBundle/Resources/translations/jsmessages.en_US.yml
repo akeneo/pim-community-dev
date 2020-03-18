@@ -1,0 +1,46 @@
+pim_menu.item:
+    measurements: Measurements
+
+pim_title:
+    akeneo_measurements_settings_index: Measurements
+
+measurements:
+    helper:
+        title: Welcome to the measurements!
+        text: Here, you will be able to create your own measurement families with their units or add units to the existing measurement families.
+        link: Want to know more? Here you go!
+    search:
+        placeholder: Search on label or code
+    family:
+        result_count: "{0}0 Measurement families|{1}1 Measurement family|]1, Inf[{{ itemsCount }} Measurement families"
+        no_data:
+            title: Sorry there is no measurement family!
+            link: Click here to add one
+        no_result:
+            title: Sorry, there is no result for your search!
+        properties: Properties
+        standard_unit: Standard Unit
+        standard_unit_is_not_editable_after_creation: This standard unit is set once and for all. It will be used to convert the other units.
+        add_new_measurement_family: Add a new measurement family
+        create: Create
+    list:
+        result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"
+        header:
+            label: Label
+            code: Code
+            standard_unit: Standard unit
+            unit_count: Number of units
+    close: Close
+    form:
+        required_suffix: (required)
+        input:
+            code: Code
+            label: Label
+            symbol: "Symbol (eg: km)"
+        save: Save
+    create_family:
+        flash:
+            success: Measurement family successfully created.
+            error: Sorry, an error occurred while creating the measurement family.
+    title:
+        measurement: Measurement

@@ -28,23 +28,20 @@ class LegacyMeasurementAdapterSpec extends ObjectBehavior
     {
         $measurementFamily = MeasurementFamily::create(
             MeasurementFamilyCode::fromString('Area'),
-            LabelCollection::fromArray(["en_US" => "Area", "fr_FR" => "Surface"]),
+            LabelCollection::fromArray(['en_US' => 'Area', 'fr_FR' => 'Surface']),
             UnitCode::fromString('SQUARE_MILLIMETER'),
             [
                 Unit::create(
                     UnitCode::fromString('SQUARE_MILLIMETER'),
-                    LabelCollection::fromArray(["en_US" => "Square millimeter", "fr_FR" => "Millimètre carré"]),
-                    [
-                        Operation::create("mul", "0.000001"),
-                        Operation::create("add", "4")
-                    ],
-                    "mm²",
+                    LabelCollection::fromArray(['en_US' => 'Square millimeter', 'fr_FR' => 'Millimètre carré']),
+                    [Operation::create('mul', '1')],
+                    'mm²',
                 ),
                 Unit::create(
                     UnitCode::fromString('SQUARE_CENTIMETER'),
-                    LabelCollection::fromArray(["en_US" => "Square centimeter", "fr_FR" => "Centimètre carré"]),
-                    [Operation::create("mul", "0.0001")],
-                    "cm²",
+                    LabelCollection::fromArray(['en_US' => 'Square centimeter', 'fr_FR' => 'Centimètre carré']),
+                    [Operation::create('mul', '0.0001'), Operation::create('add', '4')],
+                    'cm²',
                 )
             ]
         );
@@ -55,14 +52,14 @@ class LegacyMeasurementAdapterSpec extends ObjectBehavior
                 'units' => [
                     'SQUARE_MILLIMETER' => [
                         'convert' => [
-                            ['mul' => "0.000001"],
-                            ['add' => '4'],
+                            ['mul' => '1'],
                         ],
                         'symbol' => 'mm²',
                     ],
                     'SQUARE_CENTIMETER' => [
                         'convert' => [
                             ['mul' => '0.0001'],
+                            ['add' => '4'],
                         ],
                         'symbol' => 'cm²',
                     ],

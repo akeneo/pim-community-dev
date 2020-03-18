@@ -1,0 +1,14 @@
+services:
+    # controllers
+    pim_api.controller.internal_api.create_measurement_family:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi\CreateMeasurementFamilyAction
+        public: true
+        arguments:
+            - '@pim_api.controller.internal_api.json_schema.measurement_family_structure_validator'
+            - '@validator'
+            - '@pim_api.normalizer.exception.violation'
+            - '@akeneo_measure.application.create_measurement_family_handler'
+
+    # Json schema
+    pim_api.controller.internal_api.json_schema.measurement_family_structure_validator:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi\JsonSchema\MeasurementFamilyStructureValidator
