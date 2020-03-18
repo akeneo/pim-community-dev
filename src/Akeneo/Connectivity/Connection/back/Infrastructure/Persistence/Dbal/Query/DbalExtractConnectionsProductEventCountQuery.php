@@ -35,18 +35,17 @@ class DbalExtractConnectionsProductEventCountQuery implements ExtractConnections
     public function extractCreatedProductsByConnection(HourlyInterval $hourlyInterval): array
     {
         $sqlQuery = <<<SQL
-SELECT conn.code, COUNT(resource_id) as event_count
+SELECT conn.code, event_count
 FROM (
-    SELECT author, resource_id
+    SELECT author, COUNT(id) as event_count
     FROM pim_versioning_version USE INDEX(logged_at_idx)
     WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
     AND version = 1
-    GROUP BY author, resource_id
+    GROUP BY author
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
-INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
-GROUP BY conn.code;
+INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id;
 SQL;
 
         $dataRows = $this->dbalConnection->executeQuery(
@@ -79,14 +78,14 @@ SQL;
     public function extractAllCreatedProducts(HourlyInterval $hourlyInterval): array
     {
         $sqlQuery = <<<SQL
-SELECT COUNT(resource_id) as event_count
+SELECT event_count
 FROM (
-    SELECT author, resource_id
+    SELECT author, COUNT(id) as event_count
     FROM pim_versioning_version USE INDEX(logged_at_idx)
     WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
     AND version = 1
-    GROUP BY author, resource_id
+    GROUP BY author
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 SQL;
@@ -120,14 +119,14 @@ SQL;
     public function extractUpdatedProductsByConnection(HourlyInterval $hourlyInterval): array
     {
         $sqlQuery = <<<SQL
-SELECT conn.code, COUNT(resource_id) as event_count
+SELECT conn.code, event_count
 FROM (
-    SELECT author, resource_id
+    SELECT author, COUNT(id) as event_count
     FROM pim_versioning_version USE INDEX(logged_at_idx)
     WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
     AND version != 1
-    GROUP BY author, resource_id
+    GROUP BY author
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
@@ -163,14 +162,14 @@ SQL;
     public function extractAllUpdatedProducts(HourlyInterval $hourlyInterval): array
     {
         $sqlQuery = <<<SQL
-SELECT COUNT(resource_id) as event_count
+SELECT event_count
 FROM (
-    SELECT author, resource_id
+    SELECT author, COUNT(id) as event_count
     FROM pim_versioning_version USE INDEX(logged_at_idx)
     WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
     AND version != 1
-    GROUP BY author, resource_id
+    GROUP BY author
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 SQL;
