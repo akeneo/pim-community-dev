@@ -6,13 +6,13 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler;
+use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -34,7 +34,7 @@ class SaveMeasurementFamilyAction
     public function __construct(
         ValidatorInterface $validator,
         SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler,
-        NormalizerInterface $violationNormalizer
+        ViolationNormalizer $violationNormalizer
     ) {
         $this->validator = $validator;
         $this->violationNormalizer = $violationNormalizer;
@@ -53,20 +53,19 @@ class SaveMeasurementFamilyAction
             );
         }
 
-
         $decodedRequest = $this->decodeRequest($request);
         $saveMeasurementFamilyCommand = $this->createSaveMeasurementFamilyCommand($decodedRequest);
-
-        $violations = $this->validator->validate($saveMeasurementFamilyCommand);
-        if ($violations->count() > 0) {
-            return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
         try {
+            $this->validateCreateMeasurementFamilyCommand($saveMeasurementFamilyCommand);
             $this->saveMeasurementFamilyHandler->handle($saveMeasurementFamilyCommand);
         } catch (\InvalidArgumentException $ex) {
             return new JsonResponse(
                 ['code' => Response::HTTP_UNPROCESSABLE_ENTITY, 'message' => $ex->getMessage()],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        } catch (ViolationHttpException $ex) {
+            return new JsonResponse(
+                $this->violationNormalizer->normalize($ex),
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
@@ -105,5 +104,17 @@ class SaveMeasurementFamilyAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         return $normalizedCommand['code'] !== $request->get('measurement_family_code');
+    }
+
+    private function validateCreateMeasurementFamilyCommand(SaveMeasurementFamilyCommand $createMeasurementFamilyCommand)
+    {
+        $violations = $this->validator->validate($createMeasurementFamilyCommand);
+
+        if (count($violations) > 0) {
+            throw new ViolationHttpException(
+                $violations,
+                'The measurement family has data that does not comply with the business rules.'
+            );
+        }
     }
 }

@@ -21,4 +21,4 @@ services:
         arguments:
             - '@validator'
             - '@akeneo_measure.application.save_measurement_family_handler'
-            - '@serializer'
+            - '@pim_api.normalizer.exception.violation'

@@ -175,10 +175,10 @@ class SaveMeasurementFamilyActionTest extends WebTestCase
     {
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $responseBody = json_decode($response->getContent(), true);
-        $this->assertEquals(
-            $responseBody[0]['message'],
-            'This value is too long. It should have 100 characters or less.'
-        );
+        $this->assertEquals(422, $responseBody['code']);
+        $this->assertEquals('The measurement family has data that does not comply with the business rules.', $responseBody['message']);
+        $this->assertEquals('labels', $responseBody['errors'][0]['property']);
+        $this->assertEquals('This value is too long. It should have 100 characters or less.', $responseBody['errors'][0]['message']);
     }
 
     private function saveWithMeasurementFamilyCodeDifferentFromRouteAndBody(
