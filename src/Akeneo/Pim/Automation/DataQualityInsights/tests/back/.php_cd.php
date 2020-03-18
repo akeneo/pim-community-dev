@@ -67,7 +67,7 @@ $rules = [
             'Akeneo\Tool\Component\Batch\Model\StepExecution',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
 
-            //Necessary for GetNonRequiredAttributesMasksQuery
+            //Necessary for the Completeness calculation
             'Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks',
             'Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask',
             'Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale',
