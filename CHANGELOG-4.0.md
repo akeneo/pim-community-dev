@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.10 (2020-03-18)
+
 - PIM-9153: Remove useless GLOB_BRACE flag from standard Kernel
 
 # 4.0.9 (2020-03-16)
