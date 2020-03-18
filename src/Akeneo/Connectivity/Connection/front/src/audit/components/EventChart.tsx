@@ -57,7 +57,7 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
         }));
 
         setChartData(chartData);
-    }, [formatDate, translate, connectionsAuditData, selectedConnectionCode]);
+    }, [formatDate, translate, connectionsAuditData, selectedConnectionCode, formatNumber]);
 
     const connections = Object.values(state.sourceConnections);
     connections.unshift({

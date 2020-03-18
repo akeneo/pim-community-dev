@@ -3,21 +3,21 @@
 exports[`ConnectionGrid should render 1`] = `
 Array [
   <header
-    className="sc-cSHVUG hQujCk"
+    className="sc-chPdSV ezSWnC"
   >
     <div
-      className="sc-kAzzGY gikFWy"
+      className="sc-kgoBCf gieNXv"
     >
       others
     </div>
     <div
-      className="sc-eHgmQL iKZfMK"
+      className="sc-jWBwVP hQRvtH"
     >
       akeneo_connectivity.connection.connection_count?count=0
     </div>
   </header>,
   <div
-    className="sc-cvbbAY bUumeS"
+    className="sc-brqgnP ldMYlX"
   />,
 ]
 `;

@@ -2,24 +2,24 @@
 
 exports[`Connection should render 1`] = `
 <div
-  className="sc-bwzfXH ivdGIV"
+  className="sc-htpNat cJouWi"
   onClick={[Function]}
 >
   <div
-    className="sc-ifAKCX eVvIoj"
+    className="sc-EHOje ePjyrR"
   >
     <div
-      className="sc-htpNat krYJTA"
+      className="sc-bxivhb cIYLov"
     >
       <img
         alt="Google Shopping"
-        className="sc-bxivhb fHwuCK AknImage-display"
+        className="sc-ifAKCX cnjDHs AknImage-display"
         src="pim_enrich_media_show?filename=a%252Fb%252Fc%252Fpath.jpg&filter=thumbnail"
       />
     </div>
   </div>
   <div
-    className="sc-EHOje bjQzHG"
+    className="sc-bZQynM ckdTkM"
     title="Google Shopping"
   >
     Google Shopping
