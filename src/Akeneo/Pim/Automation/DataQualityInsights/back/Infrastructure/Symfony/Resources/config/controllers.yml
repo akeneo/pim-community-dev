@@ -11,6 +11,12 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             - '@akeneo.pim.automation.data_quality_insights.get_product_evaluation'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductModelEvaluationController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            - '@akeneo.pim.automation.data_quality_insights.get_product_model_evaluation'
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardController:
         public: true
         arguments:
