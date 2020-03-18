@@ -42,6 +42,12 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpdatedProductsWithoutUpToDateEvaluationQuery'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
 
+    akeneo.pim.automation.data_quality_insights.create_missing_product_models_criteria_evaluations:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateMissingCriteriaEvaluations
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpdatedProductModelsWithoutUpToDateEvaluationQuery'
+            - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
+
     Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry:
         arguments:
             - !tagged akeneo.pim.automation.data_quality_insights.evaluate_criterion

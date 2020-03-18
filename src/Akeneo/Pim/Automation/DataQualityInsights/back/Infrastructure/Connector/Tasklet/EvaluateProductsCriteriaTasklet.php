@@ -96,7 +96,7 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
             );
         } catch (\Throwable $exception) {
             $this->logger->error(
-                'Unable to create all missing criteria evaluations',
+                'Unable to create all missing criteria evaluations for the products',
                 [
                     'error_code' => 'unable_to_create_missing_product_criteria_evaluation',
                     'error_message' => $exception->getMessage(),
