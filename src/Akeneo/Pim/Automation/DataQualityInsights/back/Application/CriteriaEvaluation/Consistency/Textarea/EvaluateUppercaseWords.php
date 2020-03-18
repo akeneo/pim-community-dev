@@ -113,7 +113,8 @@ final class EvaluateUppercaseWords implements EvaluateCriterionInterface
             return null;
         }
 
-        if (preg_match('~\p{L}+~u', $productValue) === 0) {
+        $anyKindOfLetterFromAnyLanguageRegex = '~\p{L}+~u';
+        if (preg_match($anyKindOfLetterFromAnyLanguageRegex, $productValue) === 0) {
             return new Rate(100);
         }
 
