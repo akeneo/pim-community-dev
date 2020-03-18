@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const TableContainer = styled.table`
+const Table = styled.table`
   width: 100%;
   color: ${props => props.theme.color.grey140};
   border-collapse: collapse;
@@ -41,4 +41,4 @@ const LabelCell = styled.td`
   font-weight: bold;
 `;
 
-export {TableContainer, TablePlaceholder, Row, HeaderCell, LabelCell};
+export {Table, TablePlaceholder, Row, HeaderCell, LabelCell};

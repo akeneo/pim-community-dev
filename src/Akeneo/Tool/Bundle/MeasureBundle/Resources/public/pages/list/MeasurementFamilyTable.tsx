@@ -4,7 +4,7 @@ import {MeasurementFamilyRow} from 'akeneomeasure/pages/list/MeasurementFamilyRo
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Caret, Direction} from 'akeneomeasure/shared/components/Caret';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
-import {TableContainer, HeaderCell} from 'akeneomeasure/pages/common/Table';
+import {Table, HeaderCell} from 'akeneomeasure/pages/common/Table';
 
 const SortableHeaderCell = styled(HeaderCell)`
   &:hover {
@@ -26,7 +26,7 @@ const MeasurementFamilyTable = ({
   const __ = useContext(TranslateContext);
 
   return (
-    <TableContainer>
+    <Table>
       <thead>
         <tr>
           <SortableHeaderCell title={__('pim_common.label')} onClick={() => toggleSortDirection('label')}>
@@ -58,7 +58,7 @@ const MeasurementFamilyTable = ({
           <MeasurementFamilyRow key={measurementFamily.code} measurementFamily={measurementFamily} />
         ))}
       </tbody>
-    </TableContainer>
+    </Table>
   );
 };
 

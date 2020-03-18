@@ -24,7 +24,7 @@ import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {Button} from 'akeneomeasure/shared/components/Button';
-import {TableContainer, HeaderCell, Row, LabelCell} from 'akeneomeasure/pages/common/Table';
+import {Table, HeaderCell, Row, LabelCell} from 'akeneomeasure/pages/common/Table';
 
 const UnitList = styled.div`
   flex: 1;
@@ -123,7 +123,7 @@ const UnitTab = ({
           </NoDataSection>
         )}
         {0 < filteredUnits.length && (
-          <TableContainer>
+          <Table>
             <thead>
               <tr>
                 <HeaderCell title={__('pim_common.label')}>{__('pim_common.label')}</HeaderCell>
@@ -140,7 +140,7 @@ const UnitTab = ({
                 />
               ))}
             </tbody>
-          </TableContainer>
+          </Table>
         )}
       </UnitList>
       <UnitDetails>

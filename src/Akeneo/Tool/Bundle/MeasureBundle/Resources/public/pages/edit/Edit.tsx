@@ -10,7 +10,7 @@ import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
 import {Button} from 'akeneomeasure/shared/components/Button';
-import {getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
+import {getMeasurementFamilyLabel} from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 
@@ -45,10 +45,6 @@ const Edit = () => {
   const {measurementFamilyCode} = useParams() as {measurementFamilyCode: string};
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.Units);
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
-
-  const onMeasurementFamilyChange = (newMeasurementFamily: MeasurementFamily) => {
-    setMeasurementFamily(newMeasurementFamily);
-  };
 
   if (undefined === measurementFamilyCode || null === measurementFamily) {
     return null;
@@ -107,10 +103,10 @@ const Edit = () => {
         </TabContainer>
         <Container>
           {currentTab === Tab.Units && (
-            <UnitTab measurementFamily={measurementFamily} onMeasurementFamilyChange={onMeasurementFamilyChange} />
+            <UnitTab measurementFamily={measurementFamily} onMeasurementFamilyChange={setMeasurementFamily} />
           )}
           {currentTab === Tab.Properties && (
-            <PropertyTab measurementFamily={measurementFamily} onMeasurementFamilyChange={onMeasurementFamilyChange} />
+            <PropertyTab measurementFamily={measurementFamily} onMeasurementFamilyChange={setMeasurementFamily} />
           )}
         </Container>
       </PageContent>
