@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 
 class CleanCompletenessForNonExistingProducts extends Command
-{ 
+{
     protected static $defaultName = 'pim:completeness:clean';
 
     /** @var Connection */
@@ -56,4 +56,3 @@ SQL;
         return 0;
     }
 }
-
