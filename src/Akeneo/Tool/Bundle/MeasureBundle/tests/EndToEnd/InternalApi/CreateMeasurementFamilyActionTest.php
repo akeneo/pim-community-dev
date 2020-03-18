@@ -12,7 +12,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInte
 use Akeneo\Tool\Bundle\MeasureBundle\tests\EndToEnd\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateMeasurementFamilyEndToEnd extends WebTestCase
+class CreateMeasurementFamilyActionTest extends WebTestCase
 {
     /** @var MeasurementFamilyRepositoryInterface */
     private $measurementFamilyRepository;
@@ -37,7 +37,7 @@ class CreateMeasurementFamilyEndToEnd extends WebTestCase
      */
     public function it_creates_a_measurement_family()
     {
-        $measurementFamily = self::createMeasurementFamily('custom_metric_1');
+        $measurementFamily = $this->measurementFamilyWithCode('custom_metric_1');
         $normalizedMeasurementFamily = $measurementFamily->normalize();
 
         $this->authenticateAsAdmin();
@@ -88,7 +88,7 @@ class CreateMeasurementFamilyEndToEnd extends WebTestCase
      */
     public function it_returns_an_error_when_the_measurement_family_is_not_valid()
     {
-        $measurementFamily = self::createMeasurementFamily('custom_metric_1');
+        $measurementFamily = $this->measurementFamilyWithCode('custom_metric_1');
         $normalizedMeasurementFamily = $measurementFamily->normalize();
         $normalizedMeasurementFamily['code'] = 'INVALID CODE WITH SPACES';
 
@@ -119,7 +119,7 @@ class CreateMeasurementFamilyEndToEnd extends WebTestCase
      */
     public function it_returns_an_error_when_the_measurement_family_code_already_exists()
     {
-        $measurementFamily = self::createMeasurementFamily('custom_metric_1');
+        $measurementFamily = $this->measurementFamilyWithCode('custom_metric_1');
         $normalizedMeasurementFamily = $measurementFamily->normalize();
 
         $this->authenticateAsAdmin();
@@ -152,7 +152,7 @@ class CreateMeasurementFamilyEndToEnd extends WebTestCase
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    private static function createMeasurementFamily(string $code): MeasurementFamily
+    private function measurementFamilyWithCode(string $code): MeasurementFamily
     {
         return MeasurementFamily::create(
             MeasurementFamilyCode::fromString($code),
