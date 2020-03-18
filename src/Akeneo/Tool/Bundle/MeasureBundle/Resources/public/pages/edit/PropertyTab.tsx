@@ -9,7 +9,9 @@ import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {useFocus} from 'akeneomeasure/shared/hooks/use-focus';
 
 const Container = styled.div`
-  height: calc(100% - 50px);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   overflow: auto;
 `;
 

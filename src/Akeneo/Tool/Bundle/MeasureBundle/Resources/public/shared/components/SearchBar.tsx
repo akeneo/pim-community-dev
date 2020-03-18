@@ -12,6 +12,9 @@ const Container = styled.div`
   background: ${props => props.theme.color.white};
   padding: 13px 0;
   margin: 20px 0;
+  position: sticky;
+  top: 0;
+  height: 50px;
 `;
 
 const SearchContainer = styled.div`

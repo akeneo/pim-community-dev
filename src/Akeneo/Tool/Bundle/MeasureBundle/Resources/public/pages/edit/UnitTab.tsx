@@ -23,11 +23,7 @@ import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {Button} from 'akeneomeasure/shared/components/Button';
-
-const Container = styled.div`
-  height: calc(100% - 50px);
-  display: flex;
-`;
+import {TableContainer, HeaderCell, Row, LabelCell} from 'akeneomeasure/pages/common/Table';
 
 const UnitList = styled.div`
   flex: 1;
@@ -40,43 +36,6 @@ const UnitDetails = styled.div`
   width: 400px;
   height: 100%;
   overflow: auto;
-`;
-
-const StickySearchBar = styled(SearchBar)`
-  position: sticky;
-`;
-
-const TableContainer = styled.table`
-  width: 100%;
-  color: ${props => props.theme.color.grey140};
-  border-collapse: collapse;
-
-  td {
-    width: 25%;
-  }
-`;
-
-const HeaderCell = styled.th`
-  text-align: left;
-  font-weight: normal;
-  position: sticky;
-  height: 43px;
-  box-shadow: 0 1px 0 ${props => props.theme.color.grey120};
-  background: ${props => props.theme.color.white};
-`;
-
-// TODO factorize?
-const UnitContainer = styled.tr`
-  cursor: pointer;
-  height: 54px;
-  border-bottom: 1px solid ${props => props.theme.color.grey70};
-`;
-
-//TODO factorize with MeasurementFamilyRow/LabelCell?
-const LabelCell = styled.td`
-  color: ${props => props.theme.color.purple100};
-  font-style: italic;
-  font-weight: bold;
 `;
 
 const CodeCell = styled.td`
@@ -93,9 +52,11 @@ const CodeCell = styled.td`
 const Footer = styled.div`
   background: ${props => props.theme.color.white};
   border-top: 1px solid ${props => props.theme.color.grey80};
-  padding-top: 10px;
+  padding: 10px 0 40px;
   position: sticky;
-  bottom: 40px;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const StandardUnitBadge = styled.span`
@@ -120,7 +81,7 @@ const UnitRow = ({unit, isStandardUnit, onRowSelected}: UnitRowProps) => {
   const locale = useContext(UserContext)('uiLocale');
 
   return (
-    <UnitContainer onClick={() => onRowSelected(unit.code)}>
+    <Row onClick={() => onRowSelected(unit.code)}>
       <LabelCell>{getUnitLabel(unit, locale)}</LabelCell>
       <CodeCell>
         <span>
@@ -128,7 +89,7 @@ const UnitRow = ({unit, isStandardUnit, onRowSelected}: UnitRowProps) => {
           {isStandardUnit && <StandardUnitBadge>{__('measurements.family.standard_unit')}</StandardUnitBadge>}
         </span>
       </CodeCell>
-    </UnitContainer>
+    </Row>
   );
 };
 
@@ -151,13 +112,9 @@ const UnitTab = ({
   if (undefined === selectedUnit) return null;
 
   return (
-    <Container>
+    <>
       <UnitList>
-        <StickySearchBar
-          count={measurementFamily.units.length}
-          searchValue={searchValue}
-          onSearchChange={setSearchValue}
-        />
+        <SearchBar count={measurementFamily.units.length} searchValue={searchValue} onSearchChange={setSearchValue} />
         {0 === filteredUnits.length && (
           <NoDataSection>
             <MeasurementFamilyIllustration size={256} />
@@ -230,10 +187,12 @@ const UnitTab = ({
             ))}
         </FormGroup>
         <Footer>
-          <Button>{__('pim_common.delete')}</Button>
+          <Button color="red" outline>
+            {__('measurements.unit.delete')}
+          </Button>
         </Footer>
       </UnitDetails>
-    </Container>
+    </>
   );
 };
 

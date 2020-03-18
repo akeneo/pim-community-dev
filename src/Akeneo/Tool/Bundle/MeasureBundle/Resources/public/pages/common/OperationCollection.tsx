@@ -97,7 +97,8 @@ const OperationCollection = ({operations, onOperationsChange}: OperationCollecti
       ))}
       {operations.length < MAX_OPERATION_COUNT && (
         <Button
-          color="outline"
+          color="grey"
+          outline
           onClick={() => {
             onOperationsChange([...operations, emptyOperation()]);
           }}

@@ -19,6 +19,11 @@ enum Tab {
   Properties = 'properties',
 }
 
+const Container = styled.div`
+  height: calc(100% - 50px);
+  display: flex;
+`;
+
 const TabContainer = styled.div`
   display: flex;
   width: 100%;
@@ -91,12 +96,14 @@ const Edit = () => {
             </TabSelector>
           ))}
         </TabContainer>
-        {currentTab === Tab.Units && (
-          <UnitTab measurementFamily={measurementFamily} onMeasurementFamilyChange={onMeasurementFamilyChange} />
-        )}
-        {currentTab === Tab.Properties && (
-          <PropertyTab measurementFamily={measurementFamily} onMeasurementFamilyChange={onMeasurementFamilyChange} />
-        )}
+        <Container>
+          {currentTab === Tab.Units && (
+            <UnitTab measurementFamily={measurementFamily} onMeasurementFamilyChange={onMeasurementFamilyChange} />
+          )}
+          {currentTab === Tab.Properties && (
+            <PropertyTab measurementFamily={measurementFamily} onMeasurementFamilyChange={onMeasurementFamilyChange} />
+          )}
+        </Container>
       </PageContent>
     </>
   );
