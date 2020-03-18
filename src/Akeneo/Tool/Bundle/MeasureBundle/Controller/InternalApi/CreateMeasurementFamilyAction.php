@@ -6,8 +6,6 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyHandler;
-use Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\JsonSchemaErrorsFormatter;
-use Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi\JsonSchema\MeasurementFamilyStructureValidator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,9 +21,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateMeasurementFamilyAction
 {
-    /** @var MeasurementFamilyStructureValidator */
-    private $measurementFamilyStructureValidator;
-
     /** @var ValidatorInterface */
     private $validator;
 
@@ -36,12 +31,10 @@ class CreateMeasurementFamilyAction
     private $createMeasurementFamilyHandler;
 
     public function __construct(
-        MeasurementFamilyStructureValidator $measurementFamilyStructureValidator,
         ValidatorInterface $validator,
         ViolationNormalizer $violationNormalizer,
         CreateMeasurementFamilyHandler $createMeasurementFamilyHandler
     ) {
-        $this->measurementFamilyStructureValidator = $measurementFamilyStructureValidator;
         $this->validator = $validator;
         $this->violationNormalizer = $violationNormalizer;
         $this->createMeasurementFamilyHandler = $createMeasurementFamilyHandler;
@@ -54,19 +47,6 @@ class CreateMeasurementFamilyAction
         }
 
         $decodedRequest = $this->decodeRequest($request);
-        $structureErrors = $this->validateDecodedRequest($decodedRequest);
-
-        if (!empty($structureErrors)) {
-            return new JsonResponse(
-                [
-                    'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'The measurement family has an invalid format.',
-                    'errors' => JsonSchemaErrorsFormatter::format($structureErrors),
-                ],
-                Response::HTTP_BAD_REQUEST
-            );
-        }
-
         $createMeasurementFamilyCommand = $this->createCreateMeasurementFamilyCommand($decodedRequest);
 
         try {
@@ -99,11 +79,6 @@ class CreateMeasurementFamilyAction
         }
 
         return $normalizedRequest;
-    }
-
-    private function validateDecodedRequest(array $decodedRequest): array
-    {
-        return $this->measurementFamilyStructureValidator->validate($decodedRequest);
     }
 
     private function createCreateMeasurementFamilyCommand(
