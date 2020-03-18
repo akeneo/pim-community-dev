@@ -1,15 +1,17 @@
 import React, {FunctionComponent} from 'react';
-import {useCatalogContext, useFetchProductFamilyInformation} from '../../../../../infrastructure/hooks';
+import {useCatalogContext, useFetchProductFamilyInformation, useProduct} from '../../../../../infrastructure/hooks';
 import AttributeWithRecommendation from '../../../../../domain/AttributeWithRecommendation.interface';
 import AttributesList from './AttributesList';
-import VariantAttributesList from './VariantAttributesList';
+import AttributesListWithVariations from './AttributesListWithVariations';
 import {isSimpleProduct} from "../../../../helper/ProductEditForm/Product";
-import {Product} from "../../../../../domain";
+import {Evaluation, Product} from "../../../../../domain";
 
 interface RecommendationAttributesListProps {
   criterion: string;
   attributes: string[];
   product: Product;
+  axis: string;
+  evaluation: Evaluation;
 }
 
 const getAttributeLabel = (attributeCode: string, productFamilyInformation: any, locale: string) => {
@@ -28,9 +30,10 @@ const getAttributeLabel = (attributeCode: string, productFamilyInformation: any,
   return attributeItem.labels[locale];
 };
 
-const RecommendationAttributesList: FunctionComponent<RecommendationAttributesListProps> = ({criterion, attributes, product}) => {
+const RecommendationAttributesList: FunctionComponent<RecommendationAttributesListProps> = ({criterion, attributes, axis, evaluation}) => {
   const {locale} = useCatalogContext();
   const productFamilyInformation = useFetchProductFamilyInformation();
+  const product = useProduct();
 
   let attributesLabels: AttributeWithRecommendation[] = [];
   if (locale && productFamilyInformation) {
@@ -51,10 +54,10 @@ const RecommendationAttributesList: FunctionComponent<RecommendationAttributesLi
       {
         attributes.length === 0 ?
           <span className="NotApplicableAttribute">N/A</span> :
-          isSimpleProduct(product) ?
-            <AttributesList product={product} criterionCode={criterion} attributes={sortedAttributes}/> :
-            // @ts-ignore
-            <VariantAttributesList product={product} criterionCode={criterion} attributes={sortedAttributes} locale={locale}/>
+
+          isSimpleProduct(product)
+            ? <AttributesList product={product} criterionCode={criterion} attributes={sortedAttributes} axis={axis} evaluation={evaluation}/>
+            : <AttributesListWithVariations product={product} criterionCode={criterion} attributes={sortedAttributes} locale={locale as string} evaluation={evaluation} axis={axis}/>
       }
     </>
   )

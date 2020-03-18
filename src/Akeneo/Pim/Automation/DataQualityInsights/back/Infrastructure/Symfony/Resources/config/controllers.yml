@@ -73,3 +73,8 @@ services:
             $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $ignoredTitleSuggestionRepository: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\IgnoredTitleSuggestionRepository'
             $eventDispatcher: '@event_dispatcher'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductModelEvaluationController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'

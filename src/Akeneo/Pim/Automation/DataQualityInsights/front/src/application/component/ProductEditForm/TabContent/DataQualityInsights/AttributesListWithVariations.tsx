@@ -1,4 +1,4 @@
-import {AttributeWithRecommendation, Product} from '../../../../../domain';
+import {AttributeWithRecommendation, Evaluation, Product} from '../../../../../domain';
 import React from 'react';
 import AttributesList from './AttributesList';
 import {isRootProductModel} from "../../../../helper/ProductEditForm/Product";
@@ -6,14 +6,16 @@ import {ROOT_PRODUCT_MODEL_LEVEL} from "../../../../constant";
 
 const __ = require('oro/translator');
 
-interface AttributesListProps {
+interface AttributesListWithVariationsProps {
   product: Product;
   criterionCode: string;
   attributes: AttributeWithRecommendation[];
   locale: string;
+  axis: string;
+  evaluation: Evaluation;
 }
 
-const VariantAttributesList = ({product, criterionCode, attributes, locale}: AttributesListProps) => {
+const AttributesListWithVariations = ({product, criterionCode, attributes, locale, axis, evaluation}: AttributesListWithVariationsProps) => {
 
   const computeRootProductModelAttributesList = (attributes: AttributeWithRecommendation[]) => {
     let variantAttributes: string[] = [];
@@ -36,17 +38,17 @@ const VariantAttributesList = ({product, criterionCode, attributes, locale}: Att
   };
 
   return (
-    isRootProductModel(product) ?
-      <AttributesList product={product} criterionCode={criterionCode} attributes={getLevelAttributes(attributes, ROOT_PRODUCT_MODEL_LEVEL)}/> :
-      <div className="CriterionVariantRecommendations">
+    isRootProductModel(product)
+      ? <AttributesList product={product} criterionCode={criterionCode} attributes={getLevelAttributes(attributes, ROOT_PRODUCT_MODEL_LEVEL)} axis={axis} evaluation={evaluation}/>
+      : <div className="CriterionVariantRecommendations">
         {product.meta.variant_navigation
           // @ts-ignore
-          .filter((_: any, index) => index <= product.meta.level)
-          .map((variant: any, index: number) => {
+          .filter((_: any, level) => level <= product.meta.level)
+          .map((variant: any, level: number) => {
             return (
-              <div key={`variant-attributes-list-${index}`} className="attributeList">
-                <span>{index > 0 ? variant.axes[locale] : __('pim_enrich.entity.product.module.variant_navigation.common')}</span>:&thinsp;
-                <AttributesList product={product} criterionCode={criterionCode} attributes={getLevelAttributes(attributes, index)}/>
+              <div key={`variant-attributes-list-${level}`} className="attributeList">
+                <span>{level > 0 ? variant.axes[locale] : __('pim_enrich.entity.product.module.variant_navigation.common')}</span>:&thinsp;
+                <AttributesList product={product} criterionCode={criterionCode} attributes={getLevelAttributes(attributes, level)} axis={axis} evaluation={evaluation}/>
               </div>
             )
         })}
@@ -54,4 +56,4 @@ const VariantAttributesList = ({product, criterionCode, attributes, locale}: Att
   );
 };
 
-export default VariantAttributesList;
+export default AttributesListWithVariations;

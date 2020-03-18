@@ -72,7 +72,7 @@ const AxisEvaluation: FunctionComponent<AxisEvaluationProps> = ({evaluation, axi
       { axisHasError && (<AxisError/>) }
       { axisGradingInProgress && !axisHasError && (<AxisGradingInProgress/>) }
 
-      <CriteriaList axis={axis} criteria={criteria}/>
+      <CriteriaList axis={axis} criteria={criteria} evaluation={evaluation}/>
     </div>
   )
 };
