@@ -52,7 +52,7 @@ const StyledButton = styled.button<ButtonProps>`
             border-color: ${props.theme.color[`${props.color}120`]};
           }
           :active {
-            background-color: ${props.theme.color.grey80};
+            background-color: ${props.theme.color.grey60};
             color: ${props.theme.color[`${props.color}140`]};
             border-color: ${props.theme.color[`${props.color}140`]};
           }
@@ -85,4 +85,12 @@ Button.defaultProps = {
   outline: false,
 };
 
-export {Button};
+const TransparentButton = styled.button`
+  display: flex;
+  padding: 0;
+  border: none;
+  outline: none;
+  cursor: pointer;
+`;
+
+export {Button, TransparentButton};

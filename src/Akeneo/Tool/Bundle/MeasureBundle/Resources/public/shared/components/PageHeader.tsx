@@ -15,6 +15,12 @@ const PageHeaderPlaceholder = styled.div`
   height: 34px;
 `;
 
+const ButtonCollection = styled.div.attrs(() => ({className: 'AknTitleContainer-actionsContainer AknButtonList'}))`
+  > :not(:first-child) {
+    margin-left: 10px;
+  }
+`;
+
 type PageHeaderProps = {
   breadcrumb?: ReactElement;
   buttons?: ReactElement[];
@@ -46,11 +52,11 @@ const PageHeader = ({
             <div className="AknTitleContainer-buttonsContainer">
               {userButtons}
               {buttons && (
-                <div className="AknTitleContainer-actionsContainer AknButtonList">
+                <ButtonCollection>
                   {buttons.map((button, index) => (
                     <Fragment key={index}>{button}</Fragment>
                   ))}
-                </div>
+                </ButtonCollection>
               )}
             </div>
           </div>

@@ -65,6 +65,15 @@ const Edit = () => {
         }
         buttons={[
           <Button
+            color="blue"
+            outline
+            onClick={() => {
+              //TODO add unit
+            }}
+          >
+            {__('measurements.unit.add')}
+          </Button>,
+          <Button
             onClick={() => {
               //TODO save
             }}

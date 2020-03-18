@@ -28,6 +28,16 @@ measurements:
         title: Edit {{ unitLabel }}
         symbol: Symbol
         delete: Delete unit
+        add: Add unit
+        operation:
+            add: Add new operation
+        operator:
+            add: Add
+            sub: Substract
+            mul: Multiply
+            div: Divide
+            select: Select your operator
+        convert_from_standard: Convert from standard
 
     list:
         result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"

@@ -11,6 +11,7 @@ import {
   setUnitLabel,
   Operation,
   setUnitOperations,
+  removeUnit,
 } from 'akeneomeasure/model/measurement-family';
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
@@ -27,14 +28,13 @@ import {TableContainer, HeaderCell, Row, LabelCell} from 'akeneomeasure/pages/co
 
 const UnitList = styled.div`
   flex: 1;
-  height: 100%;
   overflow: auto;
 `;
 
 const UnitDetails = styled.div`
+  margin-top: 26px;
   margin-left: 40px;
   width: 400px;
-  height: 100%;
   overflow: auto;
 `;
 
@@ -57,6 +57,7 @@ const Footer = styled.div`
   bottom: 0;
   display: flex;
   justify-content: flex-end;
+  z-index: 10;
 `;
 
 const StandardUnitBadge = styled.span`
@@ -73,7 +74,7 @@ const StandardUnitBadge = styled.span`
 type UnitRowProps = {
   unit: Unit;
   isStandardUnit: boolean;
-  onRowSelected: (unit: UnitCode) => void;
+  onRowSelected: (unitCode: UnitCode) => void;
 };
 
 const UnitRow = ({unit, isStandardUnit, onRowSelected}: UnitRowProps) => {
@@ -143,7 +144,7 @@ const UnitTab = ({
         )}
       </UnitList>
       <UnitDetails>
-        <SubsectionHeader>
+        <SubsectionHeader top={0}>
           {__('measurements.unit.title', {unitLabel: getUnitLabel(selectedUnit, locale)})}
         </SubsectionHeader>
         <FormGroup>
@@ -163,13 +164,14 @@ const UnitTab = ({
             }
           />
           <OperationCollection
+            operations={selectedUnit.convert_from_standard}
             onOperationsChange={(operations: Operation[]) => {
               onMeasurementFamilyChange(setUnitOperations(measurementFamily, selectedUnit.code, operations));
             }}
-            operations={selectedUnit.convert_from_standard}
           />
         </FormGroup>
-        <SubsectionHeader>{__('pim_common.label_translations')}</SubsectionHeader>
+        <br />
+        <SubsectionHeader top={0}>{__('pim_common.label_translations')}</SubsectionHeader>
         <FormGroup>
           {null !== locales &&
             locales.map(locale => (
@@ -177,6 +179,7 @@ const UnitTab = ({
                 id={`measurements.family.properties.label.${locale.code}`}
                 label={locale.label}
                 key={locale.code}
+                flag={locale.code}
                 value={measurementFamily.labels[locale.code] || ''}
                 onChange={(event: FormEvent<HTMLInputElement>) =>
                   onMeasurementFamilyChange(
@@ -186,11 +189,20 @@ const UnitTab = ({
               />
             ))}
         </FormGroup>
-        <Footer>
-          <Button color="red" outline>
-            {__('measurements.unit.delete')}
-          </Button>
-        </Footer>
+        {selectedUnitCode !== measurementFamily.standard_unit_code && (
+          <Footer>
+            <Button
+              color="red"
+              outline
+              onClick={() => {
+                onMeasurementFamilyChange(removeUnit(measurementFamily, selectedUnitCode));
+                selectUnitCode(measurementFamily.standard_unit_code);
+              }}
+            >
+              {__('measurements.unit.delete')}
+            </Button>
+          </Footer>
+        )}
       </UnitDetails>
     </>
   );

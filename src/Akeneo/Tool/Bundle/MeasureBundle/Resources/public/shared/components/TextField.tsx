@@ -6,11 +6,14 @@ import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Flag} from 'akeneomeasure/shared/components/Flag';
 
 const Input = styled.input.attrs(() => ({className: 'AknTextField'}))<{invalid: boolean}>`
+  border: 1px solid ${props => props.theme.color.grey80};
+  padding: 0 15px;
+
   ${props =>
     props.invalid === true &&
     css`
       border-color: ${props => props.theme.color.red100};
-    `}
+    `};
 `;
 
 type TextFieldProps = {

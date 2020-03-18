@@ -1,25 +1,91 @@
 import React, {useState, useContext} from 'react';
 import styled from 'styled-components';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
-import {Button} from 'akeneomeasure/shared/components/Button';
+import {Button, TransparentButton} from 'akeneomeasure/shared/components/Button';
 import {Operation, Operator, emptyOperation, MAX_OPERATION_COUNT} from 'akeneomeasure/model/measurement-family';
+import {DownIcon} from 'akeneomeasure/shared/icons/DownIcon';
+import {akeneoTheme} from 'akeneomeasure/shared/theme';
+import {CloseIcon} from 'akeneomeasure/shared/icons/CloseIcon';
+import {SubArrowRightIcon} from 'akeneomeasure/shared/icons/SubArrowRightIcon';
 
-const Operation = styled.div`
-  border: 1px solid ${props => props.theme.color.grey80};
+const Container = styled.div<{level: number}>`
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-left: ${props => (props.level > 1 ? 24 * (props.level - 1) : 0)}px;
+
+  :not(:first-child) {
+    margin-top: 10px;
+  }
 `;
-const OperationValue = styled.input``;
-const OperationOperator = styled.span``;
+
+const OperationCollectionLabel = styled.div`
+  margin-bottom: 10px;
+`;
+
+const StyledArrow = styled(SubArrowRightIcon)`
+  margin: 0 4px 8px 2px;
+`;
+
+const OperationContainer = styled.div`
+  border: 1px solid ${props => props.theme.color.grey80};
+  height: 40px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding: 0 15px;
+`;
+
+const OperationValue = styled.input`
+  border: none;
+  flex: 1;
+  color: ${props => props.theme.color.grey140};
+  outline: none;
+`;
+
+const OperationOperator = styled.span`
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  color: ${props => props.theme.color.grey100};
+  cursor: default;
+
+  span:first-child {
+    margin-right: 10px;
+  }
+`;
+
 const OperatorSelector = styled.div`
   z-index: 804;
+  position: absolute;
+  right: 10px;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
+  width: 200px;
+  padding: 20px;
+  background-color: ${props => props.theme.color.white};
+  display: flex;
+  flex-direction: column;
 `;
+
+const OperatorSelectorLabel = styled.label`
+  color: ${props => props.theme.color.purple100};
+  padding-bottom: 15px;
+  border-bottom: 1px solid ${props => props.theme.color.purple100};
+  text-transform: uppercase;
+  font-size: ${props => props.theme.fontSize.small};
+`;
+
 const OperatorOption = styled.div`
   z-index: 804;
+  margin-top: 18px;
+  cursor: pointer;
 `;
-const RemoveOperation = styled.div`
-  width: 50px;
-  height: 50px;
-  background: red;
+
+const RemoveOperationButton = styled(TransparentButton)`
+  margin-left: 10px;
 `;
+
 // const OperatorSelectorMask = styled.div`
 //   position: fixed;
 //   top: 0;
@@ -28,6 +94,12 @@ const RemoveOperation = styled.div`
 //   height: 100%;
 //   z-index: 803;
 // `;
+
+const Footer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+`;
 
 type OperationCollectionProps = {
   operations: Operation[];
@@ -40,71 +112,71 @@ const OperationCollection = ({operations, onOperationsChange}: OperationCollecti
 
   return (
     <>
+      <OperationCollectionLabel>
+        {__('measurements.unit.convert_from_standard')} {__('pim_common.required_label')}
+      </OperationCollectionLabel>
       {operations.map((operation: Operation, index: number) => (
-        <Operation key={index}>
-          <OperationValue
-            value={operation.value}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              onOperationsChange(
-                operations.map((operation: Operation, currentIndex: number) => {
-                  if (currentIndex !== index) {
-                    return operation;
-                  }
-
-                  return {...operation, value: event.currentTarget.value};
-                })
-              );
-            }}
-          />
-          <OperationOperator onClick={() => setOpenOperatorSelector(index)}>{operation.operator}</OperationOperator>
-          {openOperatorSelector === index && (
-            <>
-              {/* <OperatorSelectorMask onClick={() => setOpenOperatorSelector(null)} /> */}
-              <OperatorSelector>
-                {Object.values(Operator).map((operator: string) => (
-                  <OperatorOption
-                    key={operator}
-                    onClick={() => {
-                      setOpenOperatorSelector(null);
-                      onOperationsChange(
-                        operations.map((operation: Operation, currentIndex: number) => {
-                          if (currentIndex !== index) {
-                            return operation;
-                          }
-
-                          return {...operation, operator};
-                        })
-                      );
-                    }}
-                  >
-                    {__(`measurements.unit.operator.${operator}`)}
-                  </OperatorOption>
-                ))}
-              </OperatorSelector>
-            </>
-          )}
-          {operations.length > 1 && (
-            <RemoveOperation
+        <Container level={index} key={index}>
+          {0 < index && <StyledArrow color={akeneoTheme.color.grey100} size={18} />}
+          <OperationContainer>
+            <OperationValue
+              value={operation.value}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                onOperationsChange(
+                  operations.map((operation: Operation, currentIndex: number) =>
+                    currentIndex === index ? {...operation, value: event.currentTarget.value} : operation
+                  )
+                );
+              }}
+            />
+            <OperationOperator onClick={() => setOpenOperatorSelector(index)}>
+              <span>{__(`measurements.unit.operator.${operation.operator}`)}</span>
+              <DownIcon color={akeneoTheme.color.grey100} size={18} />
+            </OperationOperator>
+            {openOperatorSelector === index && (
+              <>
+                {/* <OperatorSelectorMask onClick={() => setOpenOperatorSelector(null)} /> */}
+                <OperatorSelector>
+                  <OperatorSelectorLabel>{__('measurements.unit.operator.select')}</OperatorSelectorLabel>
+                  {Object.values(Operator).map((operator: string) => (
+                    <OperatorOption
+                      key={operator}
+                      onClick={() => {
+                        setOpenOperatorSelector(null);
+                        onOperationsChange(
+                          operations.map((operation: Operation, currentIndex: number) =>
+                            currentIndex === index ? {...operation, operator} : operation
+                          )
+                        );
+                      }}
+                    >
+                      {__(`measurements.unit.operator.${operator}`)}
+                    </OperatorOption>
+                  ))}
+                </OperatorSelector>
+              </>
+            )}
+          </OperationContainer>
+          {1 < operations.length && (
+            <RemoveOperationButton
               onClick={() => {
                 setOpenOperatorSelector(null);
                 onOperationsChange(
                   operations.filter((_operation: Operation, currentIndex: number) => index !== currentIndex)
                 );
               }}
-            />
+            >
+              <CloseIcon color={akeneoTheme.color.grey100} size={18} />
+            </RemoveOperationButton>
           )}
-        </Operation>
+        </Container>
       ))}
-      {operations.length < MAX_OPERATION_COUNT && (
-        <Button
-          color="grey"
-          outline
-          onClick={() => {
-            onOperationsChange([...operations, emptyOperation()]);
-          }}
-        >
-          {__('measurements.unit.operation.add')}
-        </Button>
+      {MAX_OPERATION_COUNT > operations.length && (
+        <Footer>
+          <Button color="grey" outline onClick={() => onOperationsChange([...operations, emptyOperation()])}>
+            {__('measurements.unit.operation.add')}
+          </Button>
+        </Footer>
       )}
     </>
   );

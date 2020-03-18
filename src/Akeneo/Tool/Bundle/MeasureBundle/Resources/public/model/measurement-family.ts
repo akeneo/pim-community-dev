@@ -93,6 +93,11 @@ const emptyOperation = (): Operation => ({
   operator: Operator.MUL,
 });
 
+const removeUnit = (measurementFamily: MeasurementFamily, unitCode: UnitCode): MeasurementFamily => ({
+  ...measurementFamily,
+  units: measurementFamily.units.filter(unit => unit.code !== unitCode),
+});
+
 const setUnitSymbol = (measurementFamily: MeasurementFamily, unitCode: UnitCode, value: string): MeasurementFamily => {
   const units = measurementFamily.units.map((unit: Unit) => {
     if (unitCode !== unit.code) {
@@ -157,12 +162,12 @@ const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCode, sor
 
 export {
   Direction,
+  MeasurementFamily,
+  MeasurementFamilyCode,
+  Operation,
   Operator,
   Unit,
   UnitCode,
-  Operation,
-  MeasurementFamily,
-  MeasurementFamilyCode,
   getMeasurementFamilyLabel,
   setMeasurementFamilyLabel,
   getUnit,
@@ -171,6 +176,7 @@ export {
   setUnitSymbol,
   setUnitOperations,
   emptyOperation,
+  removeUnit,
   MAX_OPERATION_COUNT,
   getStandardUnit,
   getStandardUnitLabel,

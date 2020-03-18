@@ -29,7 +29,7 @@ const PropertyTab = ({
 
   return (
     <Container>
-      <SubsectionHeader>{__('pim_common.general_properties')}</SubsectionHeader>
+      <SubsectionHeader top={0}>{__('pim_common.general_properties')}</SubsectionHeader>
       <FormGroup>
         <TextField
           id="measurements.family.properties.code"
@@ -39,7 +39,7 @@ const PropertyTab = ({
           readOnly
         />
       </FormGroup>
-      <SubsectionHeader>{__('pim_common.label_translations')}</SubsectionHeader>
+      <SubsectionHeader top={0}>{__('pim_common.label_translations')}</SubsectionHeader>
       <FormGroup>
         {null !== locales &&
           locales.map((locale, index) => (
@@ -48,6 +48,7 @@ const PropertyTab = ({
               id={`measurements.family.properties.label.${locale.code}`}
               label={locale.label}
               key={locale.code}
+              flag={locale.code}
               value={measurementFamily.labels[locale.code] || ''}
               onChange={(event: FormEvent<HTMLInputElement>) =>
                 onMeasurementFamilyChange(
