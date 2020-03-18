@@ -39,23 +39,14 @@ class DeleteMeasurementFamilyEndToEnd extends WebTestCase
     public function it_deletes_a_measurement_family()
     {
         $measurementFamilyCode = 'custom_metric_1';
-        $measurementFamily = self::createMeasurementFamily($measurementFamilyCode);
+        $measurementFamily = $this->createMeasurementFamily($measurementFamilyCode);
         $this->insertMeasurementFamily($measurementFamily);
 
         $this->assertMeasurementFamilyExists($measurementFamily);
 
         $this->authenticateAsAdmin();
-        $this->client->request(
-            'DELETE',
-            sprintf('rest/measurement-families/%s', $measurementFamilyCode),
-            [],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
+        $response = $this->requestDeleteEndpoint($measurementFamilyCode);
 
-        $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertMeasurementFamilyHasBeenDeleted($measurementFamily);
     }
@@ -63,22 +54,13 @@ class DeleteMeasurementFamilyEndToEnd extends WebTestCase
     /**
      * @test
      */
-    public function it_returns_an_error_when_the_measurement_family_does_not_exists()
+    public function it_returns_an_error_when_the_measurement_family_does_not_exist()
     {
         $measurementFamilyCode = 'custom_metric_1';
 
         $this->authenticateAsAdmin();
-        $this->client->request(
-            'DELETE',
-            sprintf('rest/measurement-families/%s', $measurementFamilyCode),
-            [],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
+        $response = $this->requestDeleteEndpoint($measurementFamilyCode);
 
-        $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
@@ -90,21 +72,12 @@ class DeleteMeasurementFamilyEndToEnd extends WebTestCase
         $measurementFamilyCode = 'Power';
 
         $this->authenticateAsAdmin();
-        $this->client->request(
-            'DELETE',
-            sprintf('rest/measurement-families/%s', $measurementFamilyCode),
-            [],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
+        $response = $this->requestDeleteEndpoint($measurementFamilyCode);
 
-        $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    private static function createMeasurementFamily(string $code): MeasurementFamily
+    private function createMeasurementFamily(string $code): MeasurementFamily
     {
         return MeasurementFamily::create(
             MeasurementFamilyCode::fromString($code),
@@ -126,6 +99,21 @@ class DeleteMeasurementFamilyEndToEnd extends WebTestCase
                 )
             ]
         );
+    }
+
+    private function requestDeleteEndpoint(string $measurementFamilyCode): Response
+    {
+        $this->client->request(
+            'DELETE',
+            sprintf('rest/measurement-families/%s', $measurementFamilyCode),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+
+        return $this->client->getResponse();
     }
 
     private function insertMeasurementFamily(MeasurementFamily $measurementFamily)
