@@ -12,6 +12,7 @@ import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
+import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 
 enum Tab {
   Units = 'units',
@@ -31,19 +32,6 @@ const TabSelector = styled.div<{isActive: boolean}>`
   font-size: ${props => props.theme.fontSize.big};
   color: ${props => (props.isActive ? props.theme.color.purple100 : 'inherit')};
   border-bottom: 3px solid ${props => (props.isActive ? props.theme.color.purple100 : 'transparent')};
-`;
-
-const Content = styled.div`
-  margin-top: 20px;
-  /* flex: 1; */
-`;
-
-const PageContent = styled.div`
-  padding: 0 40px;
-  /* flex: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column; */
 `;
 
 const Edit = () => {
@@ -103,14 +91,12 @@ const Edit = () => {
             </TabSelector>
           ))}
         </TabContainer>
-        <Content>
-          {currentTab === Tab.Units && (
-            <UnitTab measurementFamily={measurementFamily} onMeasurementFamilyChange={onMeasurementFamilyChange} />
-          )}
-          {currentTab === Tab.Properties && (
-            <PropertyTab measurementFamily={measurementFamily} onMeasurementFamilyChange={onMeasurementFamilyChange} />
-          )}
-        </Content>
+        {currentTab === Tab.Units && (
+          <UnitTab measurementFamily={measurementFamily} onMeasurementFamilyChange={onMeasurementFamilyChange} />
+        )}
+        {currentTab === Tab.Properties && (
+          <PropertyTab measurementFamily={measurementFamily} onMeasurementFamilyChange={onMeasurementFamilyChange} />
+        )}
       </PageContent>
     </>
   );

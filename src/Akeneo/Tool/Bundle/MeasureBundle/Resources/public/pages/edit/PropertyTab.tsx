@@ -8,7 +8,10 @@ import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {useFocus} from 'akeneomeasure/shared/hooks/use-focus';
 
-const Container = styled.div``;
+const Container = styled.div`
+  height: calc(100% - 50px);
+  overflow: auto;
+`;
 
 const PropertyTab = ({
   measurementFamily,

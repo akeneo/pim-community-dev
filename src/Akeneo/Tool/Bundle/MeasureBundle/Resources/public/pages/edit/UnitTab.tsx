@@ -25,16 +25,21 @@ import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollectio
 import {Button} from 'akeneomeasure/shared/components/Button';
 
 const Container = styled.div`
+  height: calc(100% - 50px);
   display: flex;
 `;
 
 const UnitList = styled.div`
   flex: 1;
+  height: 100%;
+  overflow: auto;
 `;
 
 const UnitDetails = styled.div`
-  width: 400px;
   margin-left: 40px;
+  width: 400px;
+  height: 100%;
+  overflow: auto;
 `;
 
 const StickySearchBar = styled(SearchBar)`

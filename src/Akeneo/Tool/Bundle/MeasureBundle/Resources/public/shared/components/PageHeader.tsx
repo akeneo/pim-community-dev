@@ -7,6 +7,7 @@ const Header = styled.header`
   padding: 40px 40px 20px;
   background: white;
   z-index: 10;
+  height: 130px;
 `;
 
 const PageHeaderPlaceholder = styled.div`

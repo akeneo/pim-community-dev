@@ -17,11 +17,9 @@ import {Table} from 'akeneomeasure/pages/list/Table';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
 import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
+import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 
 const Container = styled.div``;
-const PageContent = styled.div`
-  padding: 0 40px;
-`;
 
 const TablePlaceholder = styled.div`
   display: grid;
