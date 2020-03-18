@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\PurgeAuditProductQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectHourlyIntervalsToRefreshQuery;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,18 +28,24 @@ class UpdateAuditDataCommand extends Command
     /** @var DbalSelectHourlyIntervalsToRefreshQuery */
     private $selectHourlyIntervalsToRefreshQuery;
 
+    /** @var PurgeAuditProductQuery */
+    private $purgeQuery;
+
     public function __construct(
         UpdateProductEventCountHandler $updateProductEventCountHandler,
-        DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery
+        DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery,
+        PurgeAuditProductQuery $purgeQuery
     ) {
         parent::__construct();
 
         $this->updateProductEventCountHandler = $updateProductEventCountHandler;
         $this->selectHourlyIntervalsToRefreshQuery = $selectHourlyIntervalsToRefreshQuery;
+        $this->purgeQuery = $purgeQuery;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->purgeOlderThanXDays(10);
         // Create a Command for the current hour.
         $nowHourlyInterval = HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
         $this->updateProductEventCount($nowHourlyInterval);
@@ -58,6 +65,13 @@ class UpdateAuditDataCommand extends Command
         }
 
         return 0;
+    }
+
+    private function purgeOlderThanXDays(int $days): void
+    {
+        $before = new \DateTimeImmutable("now - $days days", new \DateTimeZone('UTC'));
+        $before->setTime((int) $before->format('H'), 0, 0);
+        $this->purgeQuery->execute($before);
     }
 
     private function updateProductEventCount(HourlyInterval $hourlyInterval): void
