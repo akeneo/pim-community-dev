@@ -6,6 +6,8 @@ enum Direction {
   Descending = 'Descending',
 }
 
+const MAX_OPERATION_COUNT = 5;
+
 enum Operator {
   MUL = 'mul',
   DIV = 'div',
@@ -70,6 +72,26 @@ const setUnitLabel = (
 
   return {...measurementFamily, units: units};
 };
+
+const setUnitOperations = (measurementFamily: MeasurementFamily, unitCode: UnitCode, operations: Operation[]) => {
+  const units = measurementFamily.units.map((unit: Unit) => {
+    if (unitCode !== unit.code) {
+      return unit;
+    }
+
+    return {
+      ...unit,
+      convert_from_standard: operations,
+    };
+  });
+
+  return {...measurementFamily, units: units};
+};
+
+const emptyOperation = (): Operation => ({
+  value: '1',
+  operator: Operator.MUL,
+});
 
 const setUnitSymbol = (measurementFamily: MeasurementFamily, unitCode: UnitCode, value: string): MeasurementFamily => {
   const units = measurementFamily.units.map((unit: Unit) => {
@@ -138,6 +160,7 @@ export {
   Operator,
   Unit,
   UnitCode,
+  Operation,
   MeasurementFamily,
   MeasurementFamilyCode,
   getMeasurementFamilyLabel,
@@ -146,6 +169,9 @@ export {
   getUnitLabel,
   setUnitLabel,
   setUnitSymbol,
+  setUnitOperations,
+  emptyOperation,
+  MAX_OPERATION_COUNT,
   getStandardUnit,
   getStandardUnitLabel,
   filterOnLabelOrCode,

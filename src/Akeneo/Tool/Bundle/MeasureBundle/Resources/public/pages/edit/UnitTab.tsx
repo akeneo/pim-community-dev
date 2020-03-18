@@ -9,6 +9,8 @@ import {
   setUnitSymbol,
   UnitCode,
   setUnitLabel,
+  Operation,
+  setUnitOperations,
 } from 'akeneomeasure/model/measurement-family';
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
@@ -19,6 +21,8 @@ import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
+import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
+import {Button} from 'akeneomeasure/shared/components/Button';
 
 const Container = styled.div`
   display: flex;
@@ -79,6 +83,14 @@ const CodeCell = styled.td`
       flex: 1;
     }
   }
+`;
+
+const Footer = styled.div`
+  background: ${props => props.theme.color.white};
+  border-top: 1px solid ${props => props.theme.color.grey80};
+  padding-top: 10px;
+  position: sticky;
+  bottom: 40px;
 `;
 
 const StandardUnitBadge = styled.span`
@@ -188,6 +200,12 @@ const UnitTab = ({
               onMeasurementFamilyChange(setUnitSymbol(measurementFamily, selectedUnit.code, event.currentTarget.value))
             }
           />
+          <OperationCollection
+            onOperationsChange={(operations: Operation[]) => {
+              onMeasurementFamilyChange(setUnitOperations(measurementFamily, selectedUnit.code, operations));
+            }}
+            operations={selectedUnit.convert_from_standard}
+          />
         </FormGroup>
         <SubsectionHeader>{__('pim_common.label_translations')}</SubsectionHeader>
         <FormGroup>
@@ -206,6 +224,9 @@ const UnitTab = ({
               />
             ))}
         </FormGroup>
+        <Footer>
+          <Button>{__('pim_common.delete')}</Button>
+        </Footer>
       </UnitDetails>
     </Container>
   );

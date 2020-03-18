@@ -17,7 +17,7 @@ class SettingsController extends ReactController {
   renderRoute() {
     mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-settings'});
     mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-measurements-settings'});
-    this.$el.css({height: '100vh', overflow: 'auto'});
+    // this.$el.css({height: '100vh', overflow: 'auto'});
 
     return super.renderRoute();
   }

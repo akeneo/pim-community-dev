@@ -5,7 +5,6 @@ import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-families
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {UnitTab} from 'akeneomeasure/pages/edit/UnitTab';
 import {PropertyTab} from 'akeneomeasure/pages/edit/PropertyTab';
-import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
@@ -36,6 +35,15 @@ const TabSelector = styled.div<{isActive: boolean}>`
 
 const Content = styled.div`
   margin-top: 20px;
+  /* flex: 1; */
+`;
+
+const PageContent = styled.div`
+  padding: 0 40px;
+  /* flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column; */
 `;
 
 const Edit = () => {
