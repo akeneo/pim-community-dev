@@ -71,7 +71,7 @@ const Edit = () => {
                 //TODO delete measurement family
               }}
             >
-              {__('pim_common.delete')}
+              {__('measurements.family.delete')}
             </DropdownLink>
           </SecondaryActionsDropdownButton>,
           <Button
@@ -85,7 +85,7 @@ const Edit = () => {
           </Button>,
           <Button
             onClick={() => {
-              //TODO save
+              //TODO save measurement family
             }}
           >
             {__('pim_common.save')}

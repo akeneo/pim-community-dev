@@ -24,6 +24,7 @@ measurements:
         tab:
             units: Units
             properties: Properties
+        delete: Delete measurement family
     unit:
         title: Edit {{ unitLabel }}
         symbol: Symbol

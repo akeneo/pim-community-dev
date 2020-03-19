@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useCallback} from 'react';
 import styled from 'styled-components';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Button, TransparentButton} from 'akeneomeasure/shared/components/Button';
@@ -7,6 +7,8 @@ import {DownIcon} from 'akeneomeasure/shared/icons/DownIcon';
 import {akeneoTheme} from 'akeneomeasure/shared/theme';
 import {CloseIcon} from 'akeneomeasure/shared/icons/CloseIcon';
 import {SubArrowRightIcon} from 'akeneomeasure/shared/icons/SubArrowRightIcon';
+import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
+import {Key} from 'akeneomeasure/shared/key';
 
 const Container = styled.div<{level: number}>`
   display: flex;
@@ -77,7 +79,6 @@ const OperatorSelectorLabel = styled.label`
 `;
 
 const OperatorOption = styled.div`
-  z-index: 804;
   margin-top: 18px;
   cursor: pointer;
 `;
@@ -86,14 +87,14 @@ const RemoveOperationButton = styled(TransparentButton)`
   margin-left: 10px;
 `;
 
-// const OperatorSelectorMask = styled.div`
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   z-index: 803;
-// `;
+const OperatorSelectorMask = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 800;
+`;
 
 const Footer = styled.div`
   display: flex;
@@ -109,6 +110,10 @@ type OperationCollectionProps = {
 const OperationCollection = ({operations, onOperationsChange}: OperationCollectionProps) => {
   const __ = useContext(TranslateContext);
   const [openOperatorSelector, setOpenOperatorSelector] = useState<number | null>(null);
+
+  const closeOperatorSelector = useCallback(() => setOpenOperatorSelector(null), [setOpenOperatorSelector]);
+
+  useShortcut(Key.Escape, closeOperatorSelector);
 
   return (
     <>
@@ -135,14 +140,14 @@ const OperationCollection = ({operations, onOperationsChange}: OperationCollecti
             </OperationOperator>
             {openOperatorSelector === index && (
               <>
-                {/* <OperatorSelectorMask onClick={() => setOpenOperatorSelector(null)} /> */}
+                <OperatorSelectorMask onClick={closeOperatorSelector} />
                 <OperatorSelector>
                   <OperatorSelectorLabel>{__('measurements.unit.operator.select')}</OperatorSelectorLabel>
                   {Object.values(Operator).map((operator: string) => (
                     <OperatorOption
                       key={operator}
                       onClick={() => {
-                        setOpenOperatorSelector(null);
+                        closeOperatorSelector();
                         onOperationsChange(
                           operations.map((operation: Operation, currentIndex: number) =>
                             currentIndex === index ? {...operation, operator} : operation
@@ -160,7 +165,7 @@ const OperationCollection = ({operations, onOperationsChange}: OperationCollecti
           {1 < operations.length && (
             <RemoveOperationButton
               onClick={() => {
-                setOpenOperatorSelector(null);
+                closeOperatorSelector();
                 onOperationsChange(
                   operations.filter((_operation: Operation, currentIndex: number) => index !== currentIndex)
                 );
