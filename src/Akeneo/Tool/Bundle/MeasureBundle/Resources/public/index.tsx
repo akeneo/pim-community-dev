@@ -8,12 +8,12 @@ import {Edit} from 'akeneomeasure/pages/edit';
 export default ({dependencies}: DependenciesProviderProps) => (
   <DependenciesProvider dependencies={dependencies}>
     <AkeneoThemeProvider>
-      <Router>
+      <Router basename="/configuration/measurement">
         <Switch>
-          <Route path="/configuration/measurement/:measurementFamilyCode">
+          <Route path="/:measurementFamilyCode">
             <Edit />
           </Route>
-          <Route path="/configuration/measurement/">
+          <Route path="/">
             <List />
           </Route>
         </Switch>

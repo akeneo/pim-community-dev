@@ -24,7 +24,6 @@ const PropertyTab = ({
 }) => {
   const __ = useContext(TranslateContext);
   const locales = useUiLocales();
-  //TODO check why does not work
   const [ref] = useFocus();
 
   return (

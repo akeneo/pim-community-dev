@@ -23,6 +23,10 @@ const Row = styled.tr`
   cursor: pointer;
   height: 54px;
   border-bottom: 1px solid ${props => props.theme.color.grey70};
+
+  :hover {
+    background-color: ${props => props.theme.color.blue20};
+  }
 `;
 
 const HeaderCell = styled.th`

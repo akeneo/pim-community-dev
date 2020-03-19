@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {useParams} from 'react-router-dom';
+import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-families';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
@@ -41,6 +41,7 @@ const TabSelector = styled.div<{isActive: boolean}>`
 
 const Edit = () => {
   const __ = useContext(TranslateContext);
+  const history = useHistory();
   const locale = useContext(UserContext)('uiLocale');
   const {measurementFamilyCode} = useParams() as {measurementFamilyCode: string};
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.Units);
@@ -80,7 +81,7 @@ const Edit = () => {
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbItem>{__('pim_menu.tab.settings')}</BreadcrumbItem>
-            <BreadcrumbItem>{__('pim_menu.item.measurements')}</BreadcrumbItem>
+            <BreadcrumbItem onClick={() => history.push('/')}>{__('pim_menu.item.measurements')}</BreadcrumbItem>
           </Breadcrumb>
         }
       >
