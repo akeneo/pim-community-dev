@@ -32,7 +32,6 @@ const UnitList = styled.div`
 `;
 
 const UnitDetails = styled.div`
-  margin-top: 26px;
   margin-left: 40px;
   width: 400px;
   overflow: auto;

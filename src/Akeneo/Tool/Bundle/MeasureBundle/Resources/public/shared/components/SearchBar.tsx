@@ -8,13 +8,12 @@ import {useFocus} from 'akeneomeasure/shared/hooks/use-focus';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid ${props => props.theme.color.grey100};
   background: ${props => props.theme.color.white};
-  padding: 13px 0;
-  margin: 20px 0;
   position: sticky;
   top: 0;
-  height: 50px;
+  height: 44px;
 `;
 
 const SearchContainer = styled.div`

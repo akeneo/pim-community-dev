@@ -39,10 +39,11 @@ const HeaderCell = styled.th`
   text-align: left;
   font-weight: normal;
   position: sticky;
-  top: 50px;
-  height: 43px;
+  top: 44px;
+  height: calc(44px + 15px);
   box-shadow: 0 1px 0 ${props => props.theme.color.grey120};
   background: ${props => props.theme.color.white};
+  padding-top: 15px;
 `;
 
 const LabelCell = styled.td`

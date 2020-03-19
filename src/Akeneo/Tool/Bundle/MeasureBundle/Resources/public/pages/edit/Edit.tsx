@@ -24,15 +24,17 @@ enum Tab {
 }
 
 const Container = styled.div`
-  height: calc(100% - 50px);
+  /* 70 = TabContainer height + margin */
+  height: calc(100% - 70px);
   display: flex;
-  overflow: auto;
 `;
 
 const TabContainer = styled.div`
   display: flex;
   width: 100%;
+  height: 50px;
   border-bottom: 1px solid ${props => props.theme.color.grey80};
+  margin-bottom: 20px;
 `;
 
 const TabSelector = styled.div<{isActive: boolean}>`
