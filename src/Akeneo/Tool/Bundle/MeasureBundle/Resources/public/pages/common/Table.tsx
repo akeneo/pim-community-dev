@@ -44,12 +44,17 @@ const HeaderCell = styled.th`
   box-shadow: 0 1px 0 ${props => props.theme.color.grey120};
   background: ${props => props.theme.color.white};
   padding-top: 15px;
+
+  :first-child {
+    padding-left: 20px;
+  }
 `;
 
 const LabelCell = styled.td`
   color: ${props => props.theme.color.purple100};
   font-style: italic;
   font-weight: bold;
+  padding-left: 20px;
 `;
 
 export {Table, TablePlaceholder, Row, HeaderCell, LabelCell};
