@@ -77,7 +77,7 @@ final class ElasticsearchProductProjection
     private $additionalData = [];
 
     public function __construct(
-        string $id,
+        int $id,
         string $identifier,
         \DateTimeImmutable $createdDate,
         \DateTimeImmutable $updatedDate,

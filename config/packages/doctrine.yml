@@ -5,6 +5,10 @@ doctrine:
         connections:
             default:
                 driver: 'pdo_mysql'
+                options:
+                    # 20 is the value of PDO::ATTR_EMULATE_PREPARES => FALSE
+                    # this stops Doctrine to return strings for integer values
+                    20: false
                 dbname: '%env(APP_DATABASE_NAME)%'
                 host: '%env(APP_DATABASE_HOST)%'
                 port: '%env(APP_DATABASE_PORT)%'
