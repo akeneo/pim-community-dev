@@ -54,6 +54,7 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
 
         $this->updateProduct($product1, ['enabled' => true]);
+        $this->updateProduct($product1, ['enabled' => false]);
         $this->updateProduct($product3, ['enabled' => true]);
         $this->setVersioningAuthor($connection->username());
 
@@ -61,14 +62,14 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         $commandTester->execute([]);
 
         Assert::assertEquals(3, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_CREATED));
-        Assert::assertEquals(2, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
+        Assert::assertEquals(3, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
     }
 
     private function getAuditCount(string $connectionCode, string $eventType): int
     {
         $sqlQuery = <<<SQL
 SELECT event_count
-FROM akeneo_connectivity_connection_audit
+FROM akeneo_connectivity_connection_audit_product
 WHERE connection_code = :connection_code
 AND event_type = :event_type
 SQL;

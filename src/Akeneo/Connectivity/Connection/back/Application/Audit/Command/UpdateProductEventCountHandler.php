@@ -12,7 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCoun
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class UpdateProductEventCountHandler
+final class UpdateProductEventCountHandler
 {
     /** @var ExtractConnectionsProductEventCountQuery */
     private $extractConnectionsEventCountQuery;
@@ -20,24 +20,30 @@ class UpdateProductEventCountHandler
     /** @var EventCountRepository */
     private $eventCountRepository;
 
-    public function __construct(ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery, EventCountRepository $eventCountRepository)
-    {
+    public function __construct(
+        ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery,
+        EventCountRepository $eventCountRepository
+    ) {
         $this->extractConnectionsEventCountQuery = $extractConnectionsEventCountQuery;
         $this->eventCountRepository = $eventCountRepository;
     }
 
     public function handle(UpdateProductEventCountCommand $command): void
     {
-        // TODO: Use Read Models and transform into write models?
-
-        $createdProductsCount = $this->extractConnectionsEventCountQuery->extractCreatedProductsByConnection($command->eventDate());
+        $createdProductsCount = $this->extractConnectionsEventCountQuery
+            ->extractCreatedProductsByConnection($command->hourlyInterval());
         $this->eventCountRepository->bulkInsert($createdProductsCount);
-        $createdProductsAllCount = $this->extractConnectionsEventCountQuery->extractAllCreatedProducts($command->eventDate());
+
+        $createdProductsAllCount = $this->extractConnectionsEventCountQuery
+            ->extractAllCreatedProducts($command->hourlyInterval());
         $this->eventCountRepository->bulkInsert($createdProductsAllCount);
 
-        $updatedProductsCount = $this->extractConnectionsEventCountQuery->extractUpdatedProductsByConnection($command->eventDate());
+        $updatedProductsCount = $this->extractConnectionsEventCountQuery
+            ->extractUpdatedProductsByConnection($command->hourlyInterval());
         $this->eventCountRepository->bulkInsert($updatedProductsCount);
-        $updatedProductsAllCount = $this->extractConnectionsEventCountQuery->extractAllUpdatedProducts($command->eventDate());
+
+        $updatedProductsAllCount = $this->extractConnectionsEventCountQuery
+            ->extractAllUpdatedProducts($command->hourlyInterval());
         $this->eventCountRepository->bulkInsert($updatedProductsAllCount);
     }
 }

@@ -6,6 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Query;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
@@ -30,25 +31,36 @@ class CountDailyEventsByConnectionHandlerSpec extends ObjectBehavior
 
     function it_handles_the_event_count($selectConnectionsEventCountByDayQuery)
     {
-        $eventCountByConnection1 = new WeeklyEventCounts(
-            'Magento',
-            '2019-12-09',
-            '2019-12-17',
-            []
-        );
-
-        $eventCountByConnection2 = new WeeklyEventCounts(
-            'Bynder',
-            '2019-12-09',
-            '2019-12-17',
-            []
-        );
-
+        $connectionsEventCounts = [
+            AllConnectionCode::CODE => [
+                [new \DateTimeImmutable('2020-01-01 12:00:00', new \DateTimeZone('UTC')), 3],
+            ],
+            'sap' => [
+                [new \DateTimeImmutable('2020-01-01 12:00:00', new \DateTimeZone('UTC')), 1],
+            ],
+            'bynder' => [
+                [new \DateTimeImmutable('2020-01-01 12:00:00', new \DateTimeZone('UTC')), 2],
+            ]
+        ];
         $selectConnectionsEventCountByDayQuery
-            ->execute(EventTypes::PRODUCT_CREATED, '2019-12-09', '2019-12-17')
-            ->willReturn([$eventCountByConnection1, $eventCountByConnection2]);
+            ->execute(
+                EventTypes::PRODUCT_CREATED,
+                new \DateTimeImmutable('2019-12-31 23:00:00', new \DateTimeZone('UTC')),
+                new \DateTimeImmutable('2020-01-02 23:00:00', new \DateTimeZone('UTC')),
+            )->willReturn($connectionsEventCounts);
 
-        $query = new CountDailyEventsByConnectionQuery(EventTypes::PRODUCT_CREATED, '2019-12-09', '2019-12-17');
-        $this->handle($query)->shouldReturn([$eventCountByConnection1, $eventCountByConnection2]);
+        $expectedResult = [
+            new WeeklyEventCounts(AllConnectionCode::CODE, '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts[AllConnectionCode::CODE]),
+            new WeeklyEventCounts('sap', '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts['sap']),
+            new WeeklyEventCounts('bynder', '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts['bynder']),
+        ];
+
+        $query = new CountDailyEventsByConnectionQuery(
+            EventTypes::PRODUCT_CREATED,
+            '2020-01-01',
+            '2020-01-02',
+            'Europe/Paris'
+        );
+        $this->handle($query)->shouldIterateLike($expectedResult);
     }
 }
