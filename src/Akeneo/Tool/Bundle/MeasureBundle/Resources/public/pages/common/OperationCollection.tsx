@@ -165,6 +165,7 @@ const OperationCollection = ({operations, onOperationsChange}: OperationCollecti
           </OperationContainer>
           {1 < operations.length && (
             <RemoveOperationButton
+              title={__('pim_common.remove')}
               onClick={() => {
                 closeOperatorSelector();
                 onOperationsChange(
