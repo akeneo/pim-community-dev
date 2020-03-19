@@ -1,6 +1,13 @@
 # 4.0.x
 
+## Bug fixes
+
+- API-1010: Change collect of Audit Data Source events to support Timezone.
 - PIM-9134: Remove error notif when a user saves a product and they have no view rights on the attribute used as label 
+
+## Technical Improvements
+
+- API-1010: Improve scalability on Audit connection feature.
 
 # 4.0.10 (2020-03-18)
 

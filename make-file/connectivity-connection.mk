@@ -84,12 +84,12 @@ else
 endif
 
 connectivity-connection-back:
-	make connectivity-connection-coupling-back
-	make connectivity-connection-static-analysis-back
-	make connectivity-connection-unit-back
-	make connectivity-connection-acceptance-back
-	make connectivity-connection-integration-back
-	make connectivity-connection-e2e-back
+	$(MAKE) connectivity-connection-coupling-back
+	$(MAKE) connectivity-connection-static-analysis-back
+	$(MAKE) connectivity-connection-unit-back
+	$(MAKE) connectivity-connection-acceptance-back
+	$(MAKE) connectivity-connection-integration-back
+	$(MAKE) connectivity-connection-e2e-back
 
 # Tests Front
 

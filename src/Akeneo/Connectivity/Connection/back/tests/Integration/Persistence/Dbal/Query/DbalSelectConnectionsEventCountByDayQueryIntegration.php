@@ -6,8 +6,11 @@ namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal
 
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Test\Integration\Configuration;
@@ -39,113 +42,59 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
         $this->selectConnectionsEventCountByDayQuery = $this->get('akeneo_connectivity.connection.persistence.query.select_connections_event_count_by_day');
     }
 
-    public function test_it_get_data_for_connections_with_audit_data()
+    public function test_it_gets_data_for_connections_with_audit_data(): void
     {
-        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_SOURCE);
+        $this->connectionLoader->createConnection('sap', 'SAP', FlowType::DATA_SOURCE);
         $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE);
 
-        $this->auditLoader->insertData('magento', new \DateTime('2020-01-01'), 5, EventTypes::PRODUCT_UPDATED);
-        $this->auditLoader->insertData('magento', new \DateTime('2020-01-02'), 10, EventTypes::PRODUCT_UPDATED);
-        $this->auditLoader->insertData('magento', new \DateTime('2020-01-07'), 4, EventTypes::PRODUCT_UPDATED);
-        $this->auditLoader->insertData('magento', new \DateTime('2020-01-10'), 10, EventTypes::PRODUCT_UPDATED);
-        $this->auditLoader->insertData('bynder', new \DateTime('2020-01-01'), 2, EventTypes::PRODUCT_UPDATED);
-        $this->auditLoader->insertData('bynder', new \DateTime('2020-01-08'), 8, EventTypes::PRODUCT_UPDATED);
-        $this->auditLoader->insertData('<all>', new \DateTime('2020-01-02'), 132, EventTypes::PRODUCT_UPDATED);
-        $this->auditLoader->insertData('<all>', new \DateTime('2020-01-04'), 0, EventTypes::PRODUCT_UPDATED);
+        array_map(function (HourlyEventCount $hourlyEventCount) {
+            $this->auditLoader->insert($hourlyEventCount);
+        }, [
+            new HourlyEventCount('sap', HourlyInterval::createFromDateTime(new \DateTime('2020-01-01 12:00:00', new \DateTimeZone('UTC'))), 5, EventTypes::PRODUCT_UPDATED),
+            new HourlyEventCount(AllConnectionCode::CODE, HourlyInterval::createFromDateTime(new \DateTime('2020-01-01 23:00:00', new \DateTimeZone('UTC'))), 12, EventTypes::PRODUCT_UPDATED),
+            // Expected results
+            new HourlyEventCount('sap', HourlyInterval::createFromDateTime(new \DateTime('2020-01-02 00:00:00', new \DateTimeZone('UTC'))), 10, EventTypes::PRODUCT_UPDATED),
+            new HourlyEventCount(AllConnectionCode::CODE, HourlyInterval::createFromDateTime(new \DateTime('2020-01-02 12:00:00', new \DateTimeZone('UTC'))), 8, EventTypes::PRODUCT_UPDATED),
+            new HourlyEventCount('sap', HourlyInterval::createFromDateTime(new \DateTime('2020-01-03 23:00:00', new \DateTimeZone('UTC'))), 4, EventTypes::PRODUCT_UPDATED),
+            // End of expected results
+            new HourlyEventCount('bynder', HourlyInterval::createFromDateTime(new \DateTime('2020-01-04 00:00:00', new \DateTimeZone('UTC'))), 2, EventTypes::PRODUCT_UPDATED),
+        ]);
 
-        $weeklyEventCountsPerConnection = $this->selectConnectionsEventCountByDayQuery->execute(
+        $result = $this->selectConnectionsEventCountByDayQuery->execute(
             EventTypes::PRODUCT_UPDATED,
-            date('2020-01-01'),
-            date('2020-01-08')
-        );
-
-        $result = array_reduce(
-            $weeklyEventCountsPerConnection,
-            function (array $data, WeeklyEventCounts $connectionEventCounts) {
-                return array_merge($data, $connectionEventCounts->normalize());
-            },
-            []
+            new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2020-01-03 23:00:00', new \DateTimeZone('UTC')),
         );
 
         $expectedResult = [
-            'bynder' => [
-                "2020-01-01" => 2,
-                "2020-01-02" => 0,
-                "2020-01-03" => 0,
-                "2020-01-04" => 0,
-                "2020-01-05" => 0,
-                "2020-01-06" => 0,
-                "2020-01-07" => 0,
-                "2020-01-08" => 8,
+            'bynder' => [],
+            'sap' => [
+                [new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC')), 10],
+                [new \DateTimeImmutable('2020-01-03 23:00:00', new \DateTimeZone('UTC')), 4]
             ],
-            'magento' => [
-                "2020-01-01" => 5,
-                "2020-01-02" => 10,
-                "2020-01-03" => 0,
-                "2020-01-04" => 0,
-                "2020-01-05" => 0,
-                "2020-01-06" => 0,
-                "2020-01-07" => 4,
-                "2020-01-08" => 0,
-            ],
-            '<all>' => [
-                "2020-01-01" => 0,
-                "2020-01-02" => 132,
-                "2020-01-03" => 0,
-                "2020-01-04" => 0,
-                "2020-01-05" => 0,
-                "2020-01-06" => 0,
-                "2020-01-07" => 0,
-                "2020-01-08" => 0
+            AllConnectionCode::CODE => [
+                [new \DateTimeImmutable('2020-01-02 12:00:00', new \DateTimeZone('UTC')), 8]
             ]
         ];
 
-        Assert::assertContainsOnlyInstancesOf(WeeklyEventCounts::class, $weeklyEventCountsPerConnection);
-        Assert::assertSame($expectedResult, $result);
+        Assert::assertEquals($expectedResult, $result);
     }
 
-    public function test_it_get_data_for_connections_without_audit_data()
+    public function test_it_gets_data_for_connections_without_audit_data(): void
     {
-        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_SOURCE);
+        $this->connectionLoader->createConnection('sap', 'SAP', FlowType::DATA_SOURCE);
 
-        $weeklyEventCountsPerConnection = $this->selectConnectionsEventCountByDayQuery->execute(
+        $result = $this->selectConnectionsEventCountByDayQuery->execute(
             EventTypes::PRODUCT_UPDATED,
-            date('2020-01-01'),
-            date('2020-01-08')
-        );
-
-        $result = array_reduce(
-            $weeklyEventCountsPerConnection,
-            function (array $data, WeeklyEventCounts $connectionEventCounts) {
-                return array_merge($data, $connectionEventCounts->normalize());
-            },
-            []
+            new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2020-01-08 00:00:00', new \DateTimeZone('UTC')),
         );
 
         $expectedResult = [
-            'magento' => [
-                "2020-01-01" => 0,
-                "2020-01-02" => 0,
-                "2020-01-03" => 0,
-                "2020-01-04" => 0,
-                "2020-01-05" => 0,
-                "2020-01-06" => 0,
-                "2020-01-07" => 0,
-                "2020-01-08" => 0,
-            ],
-            '<all>' => [
-                "2020-01-01" => 0,
-                "2020-01-02" => 0,
-                "2020-01-03" => 0,
-                "2020-01-04" => 0,
-                "2020-01-05" => 0,
-                "2020-01-06" => 0,
-                "2020-01-07" => 0,
-                "2020-01-08" => 0
-            ]
+            'sap' => [],
+            AllConnectionCode::CODE => []
         ];
 
-        Assert::assertContainsOnlyInstancesOf(WeeklyEventCounts::class, $weeklyEventCountsPerConnection);
         Assert::assertSame($expectedResult, $result);
     }
 
