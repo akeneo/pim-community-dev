@@ -23,8 +23,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * - only the current locale
  * - for completeness: only the ratio for the current locale and channel
  *
- * This normalizer exists for performance reasons, as normalizing a completeness collection in internalè_api format is
- * very costly, especially if there are a lot of channels and locales in the catalog
+ * This normalizer exists for performance reasons, as normalizing a completeness collection in
+ * internal_api format is very costly, especially if there are a lot of channels and locales in the catalog
  *
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
