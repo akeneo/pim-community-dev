@@ -31,6 +31,8 @@ measurements:
             flash:
                 success: Measurement family successfully saved.
                 error: Sorry, an error occured while saving the measurement family.
+        add_new_unit: Add a new unit
+        is_already_used_and_this_new_unit_will_be_read_only_after_creation: A product attribute is linked to this measurement family. Once the unit created, you will only be able to edit its translated labels and symbol.
     unit:
         title: Edit {{ unitLabel }}
         symbol: Symbol
@@ -47,7 +49,6 @@ measurements:
             div: Divide
             select: Select your operator
         convert_from_standard: Conversion operation
-
     list:
         result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"
         header:
