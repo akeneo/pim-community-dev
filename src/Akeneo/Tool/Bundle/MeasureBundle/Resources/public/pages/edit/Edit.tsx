@@ -13,6 +13,10 @@ import {Button} from 'akeneomeasure/shared/components/Button';
 import {getMeasurementFamilyLabel} from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
+import {
+  SecondaryActionsDropdownButton,
+  DropdownLink,
+} from 'akeneomeasure/shared/components/SecondaryActionsDropdownButton';
 
 enum Tab {
   Units = 'units',
@@ -61,6 +65,15 @@ const Edit = () => {
           />
         }
         buttons={[
+          <SecondaryActionsDropdownButton title={__('pim_common.other_actions')} key={0}>
+            <DropdownLink
+              onClick={() => {
+                //TODO delete measurement family
+              }}
+            >
+              {__('pim_common.delete')}
+            </DropdownLink>
+          </SecondaryActionsDropdownButton>,
           <Button
             color="blue"
             outline
