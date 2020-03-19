@@ -1,5 +1,5 @@
 import React, {useState, useContext, useCallback} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Button, TransparentButton} from 'akeneomeasure/shared/components/Button';
 import {Operation, Operator, emptyOperation, MAX_OPERATION_COUNT} from 'akeneomeasure/model/measurement-family';
@@ -79,9 +79,17 @@ const OperatorSelectorLabel = styled.label`
   font-size: ${props => props.theme.fontSize.small};
 `;
 
-const OperatorOption = styled.div`
+const OperatorOption = styled.div<{isSelected?: boolean}>`
   margin-top: 18px;
   cursor: pointer;
+
+  ${props =>
+    props.isSelected &&
+    css`
+      color: ${props => props.theme.color.purple100};
+      font-style: italic;
+      font-weight: bold;
+    `}
 `;
 
 const RemoveOperationButton = styled(TransparentButton)`
@@ -147,6 +155,7 @@ const OperationCollection = ({operations, onOperationsChange}: OperationCollecti
                   {Object.values(Operator).map((operator: string) => (
                     <OperatorOption
                       key={operator}
+                      isSelected={operator === operation.operator}
                       onClick={() => {
                         closeOperatorSelector();
                         onOperationsChange(
