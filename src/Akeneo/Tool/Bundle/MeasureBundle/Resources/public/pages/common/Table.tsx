@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 const Table = styled.table`
   width: 100%;
@@ -19,14 +19,20 @@ const TablePlaceholder = styled.div`
   }
 `;
 
-const Row = styled.tr`
+const Row = styled.tr<{isSelected?: boolean}>`
   cursor: pointer;
   height: 54px;
   border-bottom: 1px solid ${props => props.theme.color.grey70};
 
   :hover {
-    background-color: ${props => props.theme.color.blue20};
+    background-color: ${props => props.theme.color.grey60};
   }
+
+  ${props =>
+    props.isSelected &&
+    css`
+      background-color: ${props.theme.color.blue20};
+    `}
 `;
 
 const HeaderCell = styled.th`

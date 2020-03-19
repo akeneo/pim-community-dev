@@ -74,15 +74,16 @@ const StandardUnitBadge = styled.span`
 type UnitRowProps = {
   unit: Unit;
   isStandardUnit: boolean;
+  isSelected?: boolean;
   onRowSelected: (unitCode: UnitCode) => void;
 };
 
-const UnitRow = ({unit, isStandardUnit, onRowSelected}: UnitRowProps) => {
+const UnitRow = ({unit, isStandardUnit, isSelected = false, onRowSelected}: UnitRowProps) => {
   const __ = useContext(TranslateContext);
   const locale = useContext(UserContext)('uiLocale');
 
   return (
-    <Row onClick={() => onRowSelected(unit.code)}>
+    <Row isSelected={isSelected} onClick={() => onRowSelected(unit.code)}>
       <LabelCell>{getUnitLabel(unit, locale)}</LabelCell>
       <CodeCell>
         <span>
@@ -136,6 +137,7 @@ const UnitTab = ({
                   key={unit.code}
                   unit={unit}
                   isStandardUnit={unit.code === measurementFamily.standard_unit_code}
+                  isSelected={unit.code === selectedUnitCode}
                   onRowSelected={selectUnitCode}
                 />
               ))}

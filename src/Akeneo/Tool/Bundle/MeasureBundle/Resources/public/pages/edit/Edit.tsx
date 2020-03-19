@@ -26,6 +26,7 @@ enum Tab {
 const Container = styled.div`
   height: calc(100% - 50px);
   display: flex;
+  overflow: auto;
 `;
 
 const TabContainer = styled.div`
