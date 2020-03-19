@@ -52,17 +52,17 @@ class CreateMeasurementFamilyAction
         try {
             $this->validateCreateMeasurementFamilyCommand($createMeasurementFamilyCommand);
             $this->handleCreateMeasurementFamilyCommand($createMeasurementFamilyCommand);
-        } catch (\InvalidArgumentException $ex) {
+        } catch (\InvalidArgumentException $exception) {
             return new JsonResponse(
                 [
                     'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                    'message' => $ex->getMessage(),
+                    'message' => $exception->getMessage(),
                 ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
-        } catch (ViolationHttpException $ex) {
+        } catch (ViolationHttpException $exception) {
             return new JsonResponse(
-                $this->violationNormalizer->normalize($ex),
+                $this->violationNormalizer->normalize($exception),
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }

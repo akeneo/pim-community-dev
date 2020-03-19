@@ -58,14 +58,14 @@ class SaveMeasurementFamilyAction
         try {
             $this->validateCreateMeasurementFamilyCommand($saveMeasurementFamilyCommand);
             $this->saveMeasurementFamilyHandler->handle($saveMeasurementFamilyCommand);
-        } catch (\InvalidArgumentException $ex) {
+        } catch (\InvalidArgumentException $exception) {
             return new JsonResponse(
-                ['code' => Response::HTTP_UNPROCESSABLE_ENTITY, 'message' => $ex->getMessage()],
+                ['code' => Response::HTTP_UNPROCESSABLE_ENTITY, 'message' => $exception->getMessage()],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
-        } catch (ViolationHttpException $ex) {
+        } catch (ViolationHttpException $exception) {
             return new JsonResponse(
-                $this->violationNormalizer->normalize($ex),
+                $this->violationNormalizer->normalize($exception),
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
