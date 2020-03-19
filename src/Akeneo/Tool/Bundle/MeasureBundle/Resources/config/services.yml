@@ -47,6 +47,11 @@ services:
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'
 
+    akeneo_measure.application.delete_measurement_family_handler:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyHandler
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'
+
     akeneo_measure.validation.create_measurement_family.code_must_be_unique:
         class: Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\CodeMustBeUniqueValidator
         arguments:
@@ -99,3 +104,10 @@ services:
             - '@akeneo.pim.structure.query.is_there_at_least_one_attribute_configured_with_measurement_family'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_measure.validator.asset.when_used_in_a_product_attribute_should_be_able_to_update_only_labels_and_symbol_and_add_units' }
+
+    akeneo_measurement.validation.delete_measurement_family.should_not_be_used_by_product_attribute:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Validation\DeleteMeasurementFamily\ShouldNotBeUsedByProductAttributeValidator
+        arguments:
+            - '@akeneo.pim.structure.query.is_there_at_least_one_attribute_configured_with_measurement_family'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_measurement.validation.delete_measurement_family.should_not_be_used_by_product_attribute' }

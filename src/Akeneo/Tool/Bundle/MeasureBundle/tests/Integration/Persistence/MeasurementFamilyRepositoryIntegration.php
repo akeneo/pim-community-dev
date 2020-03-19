@@ -113,6 +113,40 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
         $this->assertCount(3, $measurementFamilies);
     }
 
+    /**
+     * @test
+     */
+    public function it_deletes_a_measurement_family(): void
+    {
+        $measurementFamilies = $this->repository->all();
+        $this->assertEquals(
+            ['Area', 'Binary'],
+            array_map(function (MeasurementFamily $measurementFamily) {
+                return $measurementFamily->normalize()['code'];
+            }, $measurementFamilies)
+        );
+
+        $this->repository->deleteByCode(MeasurementFamilyCode::fromString('Area'));
+
+        $measurementFamilies = $this->repository->all();
+        $this->assertEquals(
+            ['Binary'],
+            array_map(function (MeasurementFamily $measurementFamily) {
+                return $measurementFamily->normalize()['code'];
+            }, $measurementFamilies)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_the_measurement_family_being_removed_does_not_exists(): void
+    {
+        $this->expectException(MeasurementFamilyNotFoundException::class);
+
+        $this->repository->deleteByCode(MeasurementFamilyCode::fromString('NOT_EXISTING'));
+    }
+
     private function createMeasurementFamily(string $code = 'Area', array $labels = ["en_US" => "Area", "fr_FR" => "Surface"]): MeasurementFamily
     {
         return MeasurementFamily::create(
