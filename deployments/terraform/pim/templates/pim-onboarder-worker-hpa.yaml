@@ -1,4 +1,4 @@
-{{ if .Values.onboarder.enabled -}}
+{{- if .Values.onboarder.enabled }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -27,4 +27,3 @@ spec:
     kind: Deployment
     name: pim-onboarder-worker
 {{- end }}
-
