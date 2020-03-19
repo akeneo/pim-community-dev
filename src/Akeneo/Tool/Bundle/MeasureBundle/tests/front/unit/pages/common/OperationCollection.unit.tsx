@@ -61,7 +61,7 @@ test('It renders the given operations', async () => {
     },
     {
       value: '54',
-      operator: 'mul',
+      operator: 'add',
     },
   ];
   await act(async () => {

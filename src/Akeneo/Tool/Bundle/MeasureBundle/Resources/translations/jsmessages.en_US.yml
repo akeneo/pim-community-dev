@@ -3,6 +3,7 @@ pim_menu.item:
 
 pim_title:
     akeneo_measurements_settings_index: Measurements
+    akeneo_measurements_settings_any: Measurements
 
 measurements:
     label_translations: Label translations in UI locale
