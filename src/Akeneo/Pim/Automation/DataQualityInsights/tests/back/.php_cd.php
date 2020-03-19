@@ -71,6 +71,9 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks',
             'Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask',
             'Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale',
+            'Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask',
+            'Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks',
+            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
 
             //Datagrid filters, columns, sorting and ES indexation needs
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter',
