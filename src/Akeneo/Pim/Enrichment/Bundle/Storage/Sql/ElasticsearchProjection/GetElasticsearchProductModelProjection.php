@@ -344,6 +344,7 @@ FROM pim_catalog_product_model product_model
 INNER JOIN pim_catalog_family_variant family_variant ON family_variant.id = product_model.family_variant_id
 INNER JOIN family_attributes ON family_attributes.family_id = family_variant.family_id
 INNER JOIN family_variant_attributes_per_level ON family_variant_attributes_per_level.family_variant_id = product_model.family_variant_id
+WHERE product_model.code IN (:productModelCodes)
 SQL;
 
         $rows = $this->connection->fetchAll(
