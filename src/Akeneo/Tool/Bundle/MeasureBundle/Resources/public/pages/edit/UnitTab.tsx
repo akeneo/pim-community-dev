@@ -171,7 +171,7 @@ const UnitTab = ({
           />
         </FormGroup>
         <br />
-        <SubsectionHeader top={0}>{__('pim_common.label_translations')}</SubsectionHeader>
+        <SubsectionHeader top={0}>{__('measurements.label_translations')}</SubsectionHeader>
         <FormGroup>
           {null !== locales &&
             locales.map(locale => (
@@ -180,7 +180,7 @@ const UnitTab = ({
                 label={locale.label}
                 key={locale.code}
                 flag={locale.code}
-                value={measurementFamily.labels[locale.code] || ''}
+                value={selectedUnit.labels[locale.code] || ''}
                 onChange={(event: FormEvent<HTMLInputElement>) =>
                   onMeasurementFamilyChange(
                     setUnitLabel(measurementFamily, selectedUnitCode, locale.code, event.currentTarget.value)

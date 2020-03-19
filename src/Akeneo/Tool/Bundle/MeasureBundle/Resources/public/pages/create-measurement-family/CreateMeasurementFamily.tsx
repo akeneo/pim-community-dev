@@ -64,25 +64,25 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
         />
         <Subsection>
           <SubsectionHeader>{__('pim_common.properties')}</SubsectionHeader>
+          <FormGroup>
+            <TextField
+              id="measurements.measurement_family.create.family_code"
+              label={__('pim_common.code')}
+              value={form.family_code}
+              onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('family_code', e.currentTarget.value)}
+              required={true}
+              errors={errors.filter(error => error.property === 'code')}
+            />
+            <TextField
+              id="measurements.measurement_family.create.family_label"
+              label={__('pim_common.label')}
+              value={form.family_label}
+              onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('family_label', e.currentTarget.value)}
+              flag={locale}
+              errors={errors.filter(error => error.property === 'labels')}
+            />
+          </FormGroup>
         </Subsection>
-        <FormGroup>
-          <TextField
-            id="measurements.measurement_family.create.family_code"
-            label={__('pim_common.code')}
-            value={form.family_code}
-            onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('family_code', e.currentTarget.value)}
-            required={true}
-            errors={errors.filter(error => error.property === 'code')}
-          />
-          <TextField
-            id="measurements.measurement_family.create.family_label"
-            label={__('pim_common.label')}
-            value={form.family_label}
-            onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('family_label', e.currentTarget.value)}
-            flag={locale}
-            errors={errors.filter(error => error.property === 'labels')}
-          />
-        </FormGroup>
         <Subsection>
           <SubsectionHeader>{__('measurements.family.standard_unit')}</SubsectionHeader>
           <SubsectionHelper level={HELPER_LEVEL_WARNING}>

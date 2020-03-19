@@ -5,6 +5,7 @@ pim_title:
     akeneo_measurements_settings_index: Measurements
 
 measurements:
+    label_translations: Label translations in UI locale
     helper:
         title: Welcome to the measurements!
         text: Here, you will be able to create your own measurement families with their units or add units to the existing measurement families.
@@ -38,7 +39,7 @@ measurements:
             mul: Multiply
             div: Divide
             select: Select your operator
-        convert_from_standard: Convert from standard
+        convert_from_standard: Conversion operation
 
     list:
         result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"

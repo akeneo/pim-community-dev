@@ -1,17 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Router} from 'react-router';
 import {act, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {AkeneoThemeProvider} from 'akeneomeasure/AkeneoThemeProvider';
-import {Table} from 'akeneomeasure/pages/list/Table';
-
-const dependencies = {
-  legacy: {},
-  translate: (key: string) => key,
-  user: () => 'en_US',
-  router: {},
-  notify: () => {},
-};
+import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
+import {createMemoryHistory} from 'history';
 
 const measurementFamilies = [
   {
@@ -19,7 +13,7 @@ const measurementFamilies = [
     labels: {
       en_US: 'Area',
     },
-    standard_unit_code: 'SQUARE_FEET',
+    standard_unit_code: 'SQUARE_METER',
     units: [
       {
         code: 'SQUARE_METER',
@@ -57,11 +51,15 @@ afterEach(() => {
 });
 
 test('It displays an empty table', async () => {
+  const history = createMemoryHistory();
+
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <Table measurementFamilies={[]} toggleSortDirection={() => {}} getSortDirection={() => {}} />
-      </AkeneoThemeProvider>,
+      <Router history={history}>
+        <AkeneoThemeProvider>
+          <MeasurementFamilyTable measurementFamilies={[]} toggleSortDirection={() => {}} getSortDirection={() => {}} />
+        </AkeneoThemeProvider>
+      </Router>,
       container
     );
   });
@@ -71,11 +69,19 @@ test('It displays an empty table', async () => {
 });
 
 test('It displays some measurement families', async () => {
+  const history = createMemoryHistory();
+
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <Table measurementFamilies={measurementFamilies} toggleSortDirection={() => {}} getSortDirection={() => {}} />
-      </AkeneoThemeProvider>,
+      <Router history={history}>
+        <AkeneoThemeProvider>
+          <MeasurementFamilyTable
+            measurementFamilies={measurementFamilies}
+            toggleSortDirection={() => {}}
+            getSortDirection={() => {}}
+          />
+        </AkeneoThemeProvider>
+      </Router>,
       container
     );
   });
@@ -84,6 +90,7 @@ test('It displays some measurement families', async () => {
 });
 
 test('It toggles the sort direction on the columns', async () => {
+  const history = createMemoryHistory();
   let sortDirections = {
     label: 'Ascending',
     code: 'Ascending',
@@ -93,19 +100,21 @@ test('It toggles the sort direction on the columns', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <Table
-          measurementFamilies={measurementFamilies}
-          toggleSortDirection={(columnCode: string) => (sortDirections[columnCode] = 'Descending')}
-          getSortDirection={(columnCode: string) => sortDirections[columnCode]}
-        />
-      </AkeneoThemeProvider>,
+      <Router history={history}>
+        <AkeneoThemeProvider>
+          <MeasurementFamilyTable
+            measurementFamilies={measurementFamilies}
+            toggleSortDirection={(columnCode: string) => (sortDirections[columnCode] = 'Descending')}
+            getSortDirection={(columnCode: string) => sortDirections[columnCode]}
+          />
+        </AkeneoThemeProvider>
+      </Router>,
       container
     );
   });
 
-  const labelCell = container.querySelector('th[title="measurements.list.header.label"]');
-  const codeCell = container.querySelector('th[title="measurements.list.header.code"]');
+  const labelCell = container.querySelector('th[title="pim_common.label"]');
+  const codeCell = container.querySelector('th[title="pim_common.code"]');
   const standardUnitCell = container.querySelector('th[title="measurements.list.header.standard_unit"]');
   const unitCountCell = container.querySelector('th[title="measurements.list.header.unit_count"]');
 
@@ -117,4 +126,31 @@ test('It toggles the sort direction on the columns', async () => {
   });
 
   expect(Object.values(sortDirections).every(direction => direction === 'Descending')).toBe(true);
+});
+
+test('It changes the history when clicking on a row', async () => {
+  const history = createMemoryHistory();
+
+  await act(async () => {
+    ReactDOM.render(
+      <Router history={history}>
+        <AkeneoThemeProvider>
+          <MeasurementFamilyTable
+            measurementFamilies={measurementFamilies}
+            toggleSortDirection={() => {}}
+            getSortDirection={() => {}}
+          />
+        </AkeneoThemeProvider>
+      </Router>,
+      container
+    );
+  });
+
+  const areaRow = container.querySelector('tbody tr[title="[AREA]"]');
+
+  await act(async () => {
+    fireEvent.click(areaRow);
+  });
+
+  expect(history.location.pathname).toEqual('/AREA');
 });

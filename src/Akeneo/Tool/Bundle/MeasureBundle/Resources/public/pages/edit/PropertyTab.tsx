@@ -38,7 +38,7 @@ const PropertyTab = ({
           readOnly
         />
       </FormGroup>
-      <SubsectionHeader top={0}>{__('pim_common.label_translations')}</SubsectionHeader>
+      <SubsectionHeader top={0}>{__('measurements.label_translations')}</SubsectionHeader>
       <FormGroup>
         {null !== locales &&
           locales.map((locale, index) => (

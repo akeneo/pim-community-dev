@@ -43,7 +43,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps & any>(
           {flag && <Flag localeCode={flag} />}
         </div>
         <div className="AknFieldContainer-inputContainer">
-          <Input ref={ref} type="text" autoComplete="off" invalid={errors && errors.length > 0} {...props} />
+          <Input ref={ref} id={id} type="text" autoComplete="off" invalid={errors && errors.length > 0} {...props} />
         </div>
         {errors && <InputErrors errors={errors} />}
       </div>

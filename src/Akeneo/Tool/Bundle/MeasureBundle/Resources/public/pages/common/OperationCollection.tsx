@@ -61,7 +61,8 @@ const OperationOperator = styled.span`
 const OperatorSelector = styled.div`
   z-index: 804;
   position: absolute;
-  right: 10px;
+  top: 0;
+  right: 1px;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
   width: 200px;
   padding: 20px;

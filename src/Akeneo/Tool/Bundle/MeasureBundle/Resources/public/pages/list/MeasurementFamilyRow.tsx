@@ -15,10 +15,11 @@ type MeasurementFamilyRowProps = {
 const MeasurementFamilyRow = ({measurementFamily}: MeasurementFamilyRowProps) => {
   const locale = useContext(UserContext)('uiLocale');
   const history = useHistory();
+  const measurementFamilyLabel = getMeasurementFamilyLabel(measurementFamily, locale);
 
   return (
-    <Row onClick={() => history.push(`/${measurementFamily.code}`)}>
-      <LabelCell>{getMeasurementFamilyLabel(measurementFamily, locale)}</LabelCell>
+    <Row title={measurementFamilyLabel} onClick={() => history.push(`/${measurementFamily.code}`)}>
+      <LabelCell>{measurementFamilyLabel}</LabelCell>
       <td>{measurementFamily.code}</td>
       <td>{getStandardUnitLabel(measurementFamily, locale)}</td>
       <td>{measurementFamily.units.length}</td>
