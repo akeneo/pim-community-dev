@@ -34,8 +34,8 @@ const PropertyTab = ({
           id="measurements.family.properties.code"
           label={__('pim_common.code')}
           value={measurementFamily.code}
-          required
-          readOnly
+          required={true}
+          readOnly={true}
         />
       </FormGroup>
       <SubsectionHeader top={0}>{__('measurements.label_translations')}</SubsectionHeader>

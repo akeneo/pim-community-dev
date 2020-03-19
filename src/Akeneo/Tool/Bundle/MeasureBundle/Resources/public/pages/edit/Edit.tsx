@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
-import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-families';
+import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-family';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {UnitTab} from 'akeneomeasure/pages/edit/UnitTab';
 import {PropertyTab} from 'akeneomeasure/pages/edit/PropertyTab';
@@ -79,7 +79,7 @@ const Edit = () => {
           </SecondaryActionsDropdownButton>,
           <Button
             color="blue"
-            outline
+            outline={true}
             onClick={() => {
               //TODO add unit
             }}

@@ -3,27 +3,9 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent, getByLabelText, getByText, getByTitle} from '@testing-library/react';
+import {act, fireEvent, getAllByRole, getByText, getAllByTitle} from '@testing-library/react';
 import {AkeneoThemeProvider} from 'akeneomeasure/AkeneoThemeProvider';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
-
-// const changeTextInputValue = (container: HTMLElement, label: string, value: string) => {
-//   const input = getByLabelText(container, label, {exact: false, trim: true});
-//   fireEvent.change(input, {target: {value: value}});
-// };
-
-// const getFormSectionByTitle = (container: HTMLElement, title: string): HTMLElement => {
-//   const header = getByText(container, title);
-//   return header.parentElement as HTMLElement;
-// };
-
-const getByInputValue = (container: HTMLElement, value: string) => {
-  return container.querySelector(`input[value="${value}"]`);
-};
-
-const getFirstByTitle = (container: HTMLElement, value: string) => {
-  return container.querySelector(`[title="${value}"]`);
-};
 
 let container: HTMLElement;
 
@@ -73,10 +55,14 @@ test('It renders the given operations', async () => {
     );
   });
 
+  const valueInputs = getAllByRole(container, 'operation-value-input') as HTMLInputElement[];
+
   expect(getByText(container, 'measurements.unit.operator.mul')).toBeInTheDocument();
-  expect(getByInputValue(container, '12')).toBeInTheDocument();
-  expect(getByInputValue(container, '25')).toBeInTheDocument();
   expect(getByText(container, 'measurements.unit.operator.div')).toBeInTheDocument();
+  expect(getByText(container, 'measurements.unit.operator.add')).toBeInTheDocument();
+  expect(valueInputs[0].value).toEqual('12');
+  expect(valueInputs[1].value).toEqual('25');
+  expect(valueInputs[2].value).toEqual('54');
 });
 
 test('I can add an operation', async () => {
@@ -154,7 +140,7 @@ test('I can remove an operation', async () => {
   expect(newOperations).toEqual([]);
 
   await act(async () => {
-    const removeButton = getFirstByTitle(container, 'pim_common.remove');
+    const removeButton = getAllByTitle(container, 'pim_common.remove')[0];
     fireEvent.click(removeButton);
   });
 
@@ -195,7 +181,7 @@ test('I can edit the value of an operation', async () => {
   expect(newOperations).toEqual([]);
 
   await act(async () => {
-    const valueInput = getByInputValue(container, '12');
+    const valueInput = getAllByRole(container, 'operation-value-input')[0];
     fireEvent.change(valueInput, {target: {value: '23'}});
   });
 

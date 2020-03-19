@@ -26,7 +26,7 @@ const OperationCollectionLabel = styled.div`
 `;
 
 const StyledArrow = styled(SubArrowRightIcon)`
-  margin: 0 4px 8px 2px;
+  margin: 0 4px 10px 2px;
 `;
 
 const OperationContainer = styled.div`
@@ -134,6 +134,7 @@ const OperationCollection = ({operations, onOperationsChange}: OperationCollecti
           {0 < index && <StyledArrow color={akeneoTheme.color.grey100} size={18} />}
           <OperationContainer>
             <OperationValue
+              role="operation-value-input"
               value={operation.value}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onOperationsChange(

@@ -153,8 +153,8 @@ const UnitTab = ({
             id="measurements.unit.properties.code"
             label={__('pim_common.code')}
             value={selectedUnit.code}
-            required
-            readOnly
+            required={true}
+            readOnly={true}
           />
           <TextField
             id="measurements.unit.properties.symbol"
@@ -171,30 +171,31 @@ const UnitTab = ({
             }}
           />
         </FormGroup>
-        <br />
-        <SubsectionHeader top={0}>{__('measurements.label_translations')}</SubsectionHeader>
         <FormGroup>
-          {null !== locales &&
-            locales.map(locale => (
-              <TextField
-                id={`measurements.family.properties.label.${locale.code}`}
-                label={locale.label}
-                key={locale.code}
-                flag={locale.code}
-                value={selectedUnit.labels[locale.code] || ''}
-                onChange={(event: FormEvent<HTMLInputElement>) =>
-                  onMeasurementFamilyChange(
-                    setUnitLabel(measurementFamily, selectedUnitCode, locale.code, event.currentTarget.value)
-                  )
-                }
-              />
-            ))}
+          <SubsectionHeader top={0}>{__('measurements.label_translations')}</SubsectionHeader>
+          <FormGroup>
+            {null !== locales &&
+              locales.map(locale => (
+                <TextField
+                  id={`measurements.family.properties.label.${locale.code}`}
+                  label={locale.label}
+                  key={locale.code}
+                  flag={locale.code}
+                  value={selectedUnit.labels[locale.code] || ''}
+                  onChange={(event: FormEvent<HTMLInputElement>) =>
+                    onMeasurementFamilyChange(
+                      setUnitLabel(measurementFamily, selectedUnitCode, locale.code, event.currentTarget.value)
+                    )
+                  }
+                />
+              ))}
+          </FormGroup>
         </FormGroup>
         {selectedUnitCode !== measurementFamily.standard_unit_code && (
           <Footer>
             <Button
               color="red"
-              outline
+              outline={true}
               onClick={() => {
                 onMeasurementFamilyChange(removeUnit(measurementFamily, selectedUnitCode));
                 selectUnitCode(measurementFamily.standard_unit_code);
