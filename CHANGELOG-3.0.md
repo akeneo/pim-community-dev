@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Enhancements
+
+- PIM-9090: Improve performance of the variant navigation dropdown in the product model edit form
+
 # 3.0.70 (2020-03-17)
 
 ## Bug fixes
