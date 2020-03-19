@@ -2,9 +2,9 @@ import {Product} from "../../domain";
 
 const Routing = require('routing');
 
-const ROUTE_NAME = 'akeneo_data_quality_insights_check_title_suggestion';
+const ROUTE_NAME = 'akeneo_data_quality_insights_product_model_check_title_suggestion';
 
-const fetchTitleSuggestion = async (product: Product, channel: string, locale: string) => {
+const fetchProductModelTitleSuggestion = async (product: Product, channel: string, locale: string) => {
   const response = await fetch(Routing.generate(ROUTE_NAME), {
     method: "POST",
     headers: {
@@ -24,4 +24,4 @@ const fetchTitleSuggestion = async (product: Product, channel: string, locale: s
   return data;
 };
 
-export default fetchTitleSuggestion;
+export default fetchProductModelTitleSuggestion;

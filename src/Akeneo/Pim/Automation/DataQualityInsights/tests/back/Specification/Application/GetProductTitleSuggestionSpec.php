@@ -17,7 +17,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Con
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetDescendantVariantProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetIgnoredProductTitleSuggestionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -36,13 +35,11 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
 {
     public function let(
         GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
-        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery,
-        GetDescendantVariantProductIdsQueryInterface $getDescendantVariantProductIdsQuery
+        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
     ) {
         $this->beConstructedWith(
             $getLatestCriteriaEvaluationsByProductIdQuery,
-            $getIgnoredProductTitleSuggestionQuery,
-            $getDescendantVariantProductIdsQuery
+            $getIgnoredProductTitleSuggestionQuery
         );
     }
 

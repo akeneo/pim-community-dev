@@ -22,15 +22,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @author Olivier Pontier <olivier.pontier@akeneo.com>
- */
-class CheckTitleSuggestionController
+class CheckProductModelTitleSuggestionController
 {
     private $featureFlag;
-    /**
-     * @var GetProductTitleSuggestion
-     */
+
     private $getProductTitleSuggestion;
 
     public function __construct(FeatureFlag $featureFlag, GetProductTitleSuggestion $getProductTitleSuggestion)

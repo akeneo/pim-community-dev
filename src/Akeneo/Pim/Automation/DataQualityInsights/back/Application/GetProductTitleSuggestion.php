@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetDescendantVariantProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetIgnoredProductTitleSuggestionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -31,33 +30,15 @@ class GetProductTitleSuggestion
 
     private $getIgnoredProductTitleSuggestionQuery;
 
-    private $getDescendantVariantProductIdsQuery;
-
     public function __construct(
         GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
-        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery,
-        GetDescendantVariantProductIdsQueryInterface $getDescendantVariantProductIdsQuery
+        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
     ) {
         $this->getLatestCriteriaEvaluationsByProductIdQuery = $getLatestCriteriaEvaluationsByProductIdQuery;
         $this->getIgnoredProductTitleSuggestionQuery = $getIgnoredProductTitleSuggestionQuery;
-        $this->getDescendantVariantProductIdsQuery = $getDescendantVariantProductIdsQuery;
     }
 
-    public function get(ProductId $productId, ChannelCode $channel, LocaleCode $locale, string $productType): ?string
-    {
-        if ($productType === 'product_model') {
-            $variantProductIds = $this->getDescendantVariantProductIdsQuery->fromProductModelIds([strval($productId)]);
-            if (empty($variantProductIds)) {
-                return null;
-            }
-
-            return $this->getTitleSuggestionForAProduct(new ProductId((int) current($variantProductIds)), $channel, $locale);
-        }
-
-        return $this->getTitleSuggestionForAProduct($productId, $channel, $locale);
-    }
-
-    private function getTitleSuggestionForAProduct(ProductId $productId, ChannelCode $channel, LocaleCode $locale)
+    public function get(ProductId $productId, ChannelCode $channel, LocaleCode $locale): ?string
     {
         $evaluation = $this->getLatestCriteriaEvaluationsByProductIdQuery->execute($productId);
         $criterionEvaluation = $evaluation->get(new CriterionCode(EvaluateTitleFormatting::CRITERION_CODE));

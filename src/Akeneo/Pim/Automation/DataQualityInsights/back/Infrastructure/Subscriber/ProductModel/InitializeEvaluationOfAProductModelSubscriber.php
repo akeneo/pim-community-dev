@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Cre
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\ProductModelTitleSuggestionIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Psr\Log\LoggerInterface;
@@ -59,6 +60,7 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
     {
         return [
             StorageEvents::POST_SAVE => 'onPostSave',
+            ProductModelTitleSuggestionIgnoredEvent::TITLE_SUGGESTION_IGNORED => 'onIgnoredTitleSuggestion',
         ];
     }
 
@@ -81,6 +83,15 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
         $this->initializeCriteria($productModelId);
         $this->evaluatePendingCriteria->evaluateSynchronousCriteria([$productModelId]);
         $this->consolidateAxesRates->consolidate([$productModelId]);
+    }
+
+    public function onIgnoredTitleSuggestion(ProductModelTitleSuggestionIgnoredEvent $event)
+    {
+        if (! $this->dataQualityInsightsFeature->isEnabled()) {
+            return;
+        }
+
+        $this->initializeCriteria($event->getProductId()->toInt());
     }
 
     private function initializeCriteria($productModelId)

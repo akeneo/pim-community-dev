@@ -1,6 +1,8 @@
 import {useCallback} from "react";
 import {useCatalogContext, useProduct} from "../../index";
 import fetchIgnoreTitleSuggestion from "../../../fetcher/fetchIgnoreTitleSuggestion";
+import {isSimpleProduct} from '../../../../application/helper/ProductEditForm/Product';
+import fetchProductModelIgnoreTitleSuggestion from '../../../fetcher/fetchProductModelIgnoreTitleSuggestion';
 
 const useFetchIgnoreTitleSuggestion = () => {
   const product = useProduct();
@@ -12,7 +14,11 @@ const useFetchIgnoreTitleSuggestion = () => {
     }
 
     (async () => {
-      await fetchIgnoreTitleSuggestion(title, channel, locale, product.meta.id as number);
+      if (isSimpleProduct(product)) {
+        return await fetchIgnoreTitleSuggestion(title, channel, locale, product.meta.id as number);
+      } else {
+        return await fetchProductModelIgnoreTitleSuggestion(title, channel, locale, product.meta.id as number);
+      }
     })();
   }, [channel, locale]);
 
