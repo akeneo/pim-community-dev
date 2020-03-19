@@ -27,16 +27,22 @@ class GetIgnoredProductTitleSuggestionQuery implements GetIgnoredProductTitleSug
 {
     private $db;
 
-    public function __construct(Connection $dbConnection)
+    /** @var string */
+    private $tableName;
+
+    public function __construct(Connection $dbConnection, string $tableName)
     {
         $this->db = $dbConnection;
+        $this->tableName = $tableName;
     }
 
     public function execute(ProductId $productId, ChannelCode $channel, LocaleCode $locale): ?string
     {
+        $tableName = $this->tableName;
+
         $query = <<<SQL
 SELECT JSON_UNQUOTE(JSON_EXTRACT(ignored_suggestions, CONCAT('$.', :channel, '.', :locale)))
-FROM pimee_data_quality_insights_title_formatting_ignore
+FROM $tableName
 WHERE product_id = :product_id
 SQL;
 

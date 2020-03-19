@@ -71,5 +71,5 @@ services:
         public: true
         arguments:
             $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            $ignoredTitleSuggestionRepository: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\IgnoredTitleSuggestionRepository'
+            $ignoredTitleSuggestionRepository: '@akeneo.pim.automation.data_quality_insights.repository.product_ignore_title_suggestion'
             $eventDispatcher: '@event_dispatcher'

@@ -204,7 +204,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductTitleSuggestion:
         arguments:
             $getLatestCriteriaEvaluationsByProductIdQuery: '@akeneo.pim.automation.data_quality_insights.query.get_latest_product_criteria_evaluations'
-            $getIgnoredProductTitleSuggestionQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetIgnoredProductTitleSuggestionQuery'
+            $getIgnoredProductTitleSuggestionQuery: '@akeneo.pim.automation.data_quality_insights.query.get_product_ignored_title_suggestion'
             $getDescendantVariantProductIdsQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetDescendantVariantProductIds'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Structure\MapAttributeType: ~

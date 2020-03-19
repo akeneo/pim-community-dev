@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetIgnoredProductTitleSuggestionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetIgnoredProductTitleSuggestionQuery;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Types\Types;
 
@@ -25,12 +25,21 @@ use Doctrine\DBAL\Types\Types;
  */
 class GetIgnoredProductTitleSuggestionQueryIntegration extends TestCase
 {
+    /** @var GetIgnoredProductTitleSuggestionQueryInterface */
+    private $query;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->query = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_ignored_title_suggestion');
+    }
+
+
     public function test_it_returns_ignored_title_suggestion()
     {
         $this->givenSomeTitleSuggestionsAreIgnored();
-        $result = $this
-            ->get(GetIgnoredProductTitleSuggestionQuery::class)
-            ->execute(new ProductId(1000), new ChannelCode('ecommerce'), new LocaleCode('en_US'));
+        $result = $this->query->execute(new ProductId(1000), new ChannelCode('ecommerce'), new LocaleCode('en_US'));
 
         $this->assertEquals('My suggested title for ecommerce', $result);
     }
@@ -38,9 +47,7 @@ class GetIgnoredProductTitleSuggestionQueryIntegration extends TestCase
     public function test_it_does_not_return_ignored_title_suggestion_when_locale_is_not_supported()
     {
         $this->givenSomeTitleSuggestionsAreIgnored();
-        $result = $this
-            ->get(GetIgnoredProductTitleSuggestionQuery::class)
-            ->execute(new ProductId(1000), new ChannelCode('ecommerce'), new LocaleCode('it_IT'));
+        $result = $this->query->execute(new ProductId(1000), new ChannelCode('ecommerce'), new LocaleCode('it_IT'));
 
         $this->assertNull($result);
     }
@@ -48,9 +55,7 @@ class GetIgnoredProductTitleSuggestionQueryIntegration extends TestCase
     public function test_it_does_not_return_ignored_title_suggestion_when_product_id_is_wrong()
     {
         $this->givenSomeTitleSuggestionsAreIgnored();
-        $result = $this
-            ->get(GetIgnoredProductTitleSuggestionQuery::class)
-            ->execute(new ProductId(2000), new ChannelCode('ecommerce'), new LocaleCode('en_US'));
+        $result = $this->query->execute(new ProductId(2000), new ChannelCode('ecommerce'), new LocaleCode('en_US'));
 
         $this->assertNull($result);
     }
