@@ -13,4 +13,5 @@ final class EventTypes
 {
     const PRODUCT_CREATED = 'product_created';
     const PRODUCT_UPDATED = 'product_updated';
+    const PRODUCT_READ = 'product_read';
 }
