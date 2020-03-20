@@ -19,6 +19,14 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
     /** @var GetProductCompletenessRatio */
     private $getProductCompletenessRatio;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->getProductCompletenessRatio = $this->get(
+            'akeneo.pim.enrichment.product.query.product_completeness_ratio'
+        );
+    }
+
     /**
      * @test
      */
@@ -54,14 +62,6 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
 
         Assert::assertNull(
             $this->getProductCompletenessRatio->forChannelCodeAndLocaleCode($product->getId(), 'ecommerce', 'en_US')
-        );
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->getProductCompletenessRatio = $this->get(
-            'akeneo.pim.enrichment.product.query.product_completeness_ratio'
         );
     }
 
