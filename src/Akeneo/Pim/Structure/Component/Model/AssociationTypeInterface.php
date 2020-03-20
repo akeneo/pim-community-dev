@@ -69,6 +69,16 @@ interface AssociationTypeInterface extends
     public function setLabel($label);
 
     /**
+     * @return bool
+     */
+    public function isBidirectional(): bool;
+
+    /**
+     * @param bool $isBidirectional
+     */
+    public function setIsBidirectional(bool $isBidirectional): void;
+
+    /**
      * Returns the label of the association type
      *
      * @return string

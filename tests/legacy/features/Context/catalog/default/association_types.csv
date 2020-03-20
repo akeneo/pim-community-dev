@@ -1,5 +1,5 @@
-code;label-en_US;label-fr_FR
-X_SELL;Cross sell;Vente croisée
-UPSELL;Upsell;Vente incitative
-SUBSTITUTION;Substitution;Remplacement
-PACK;Pack;Pack
+code;is-bidirectional;label-en_US;label-fr_FR
+X_SELL;false;Cross sell;Vente croisée
+UPSELL;false;Upsell;Vente incitative
+SUBSTITUTION;false;Substitution;Remplacement
+PACK;false;Pack;Pack

@@ -23,6 +23,10 @@ Akeneo\Pim\Structure\Component\Model\AssociationType:
             gedmo:
                 timestampable:
                     on: update
+        isBidirectional:
+            type: boolean
+            options:
+                default: false
     oneToMany:
         translations:
             targetEntity: Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslationInterface
