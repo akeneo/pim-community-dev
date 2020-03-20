@@ -27,6 +27,10 @@ measurements:
             units: Units
             properties: Properties
         delete: Delete measurement family
+        save:
+            flash:
+                success: Measurement family successfully saved.
+                error: Sorry, an error occured while saving the measurement family.
     unit:
         title: Edit {{ unitLabel }}
         symbol: Symbol

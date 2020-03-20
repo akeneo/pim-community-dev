@@ -10,7 +10,7 @@ import {Link} from 'akeneomeasure/shared/components/Link';
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/NoData';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
-import {sortMeasurementFamily, Direction, filterOnLabelOrCode} from 'akeneomeasure/model/measurement-family';
+import {sortMeasurementFamily, filterOnLabelOrCode} from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
 import {Button} from 'akeneomeasure/shared/components/Button';
@@ -18,6 +18,7 @@ import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-fa
 import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
+import {Direction} from 'akeneomeasure/model/direction';
 
 const useSorting = (
   defaultColumn: string

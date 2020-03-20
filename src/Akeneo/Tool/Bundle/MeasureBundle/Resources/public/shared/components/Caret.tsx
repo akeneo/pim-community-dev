@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Direction} from 'akeneomeasure/model/measurement-family';
+import {Direction} from 'akeneomeasure/model/direction';
 
 const CaretContainer = styled.span`
   display: inline-block;
@@ -28,4 +28,4 @@ type CaretProps = {
 const Caret = ({direction}: CaretProps) =>
   direction === Direction.Ascending ? <AscendingCaret /> : <DescendingCaret />;
 
-export {Direction, Caret};
+export {Caret};

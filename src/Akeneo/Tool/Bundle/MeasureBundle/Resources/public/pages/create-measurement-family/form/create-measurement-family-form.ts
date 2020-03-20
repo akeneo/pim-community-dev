@@ -1,4 +1,5 @@
-import {MeasurementFamily, Operator} from 'akeneomeasure/model/measurement-family';
+import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
+import {Operator} from 'akeneomeasure/model/operation';
 
 type LocaleCode = string;
 

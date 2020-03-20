@@ -2,14 +2,10 @@ import React, {useState, useContext, FormEvent} from 'react';
 import styled from 'styled-components';
 import {
   MeasurementFamily,
-  Unit,
-  getUnitLabel,
   getUnit,
   filterOnLabelOrCode,
   setUnitSymbol,
-  UnitCode,
   setUnitLabel,
-  Operation,
   setUnitOperations,
   removeUnit,
 } from 'akeneomeasure/model/measurement-family';
@@ -25,6 +21,8 @@ import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {Table, HeaderCell, Row, LabelCell} from 'akeneomeasure/pages/common/Table';
+import {Unit, UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
+import {Operation} from 'akeneomeasure/model/operation';
 
 const UnitList = styled.div`
   flex: 1;

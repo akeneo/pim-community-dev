@@ -2,9 +2,10 @@ import React, {useContext} from 'react';
 import styled from 'styled-components';
 import {MeasurementFamilyRow} from 'akeneomeasure/pages/list/MeasurementFamilyRow';
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
-import {Caret, Direction} from 'akeneomeasure/shared/components/Caret';
+import {Caret} from 'akeneomeasure/shared/components/Caret';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Table, HeaderCell} from 'akeneomeasure/pages/common/Table';
+import {Direction} from 'akeneomeasure/model/direction';
 
 const SortableHeaderCell = styled(HeaderCell)`
   &:hover {

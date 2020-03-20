@@ -83,10 +83,6 @@ describe('measurement family', () => {
     expect(newMeasurementFamily.units[0].convert_from_standard).toEqual([{operator: 'div', value: '3'}]);
   });
 
-  it('should create an empty Operation', () => {
-    expect(emptyOperation()).toEqual({value: '1', operator: 'mul'});
-  });
-
   it('should remove the provided unit (using the unit code) from the measurement family', () => {
     expect(measurementFamily.units.length).toEqual(2);
 
