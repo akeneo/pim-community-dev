@@ -86,6 +86,7 @@ Button.defaultProps = {
 };
 
 const TransparentButton = styled.button`
+  background: none;
   display: flex;
   padding: 0;
   border: none;

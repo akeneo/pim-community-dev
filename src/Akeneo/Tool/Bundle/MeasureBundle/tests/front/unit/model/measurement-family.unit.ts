@@ -8,7 +8,7 @@ import {
   setUnitSymbol,
   sortMeasurementFamily,
   filterOnLabelOrCode,
-  emptyOperation,
+  getUnitIndex,
   removeUnit,
 } from 'akeneomeasure/model/measurement-family';
 
@@ -95,6 +95,11 @@ describe('measurement family', () => {
     const newMeasurementFamily = setUnitSymbol(measurementFamily, 'SQUARE_METER', 'new symbol');
 
     expect(newMeasurementFamily.units[0].symbol).toEqual('new symbol');
+  });
+
+  it('should return the standard unit from the measurement family', () => {
+    expect(getUnitIndex(measurementFamily, 'SQUARE_METER')).toEqual(0);
+    expect(getUnitIndex(measurementFamily, 'UNKNOWN')).toEqual(-1);
   });
 
   it('should return the standard unit from the measurement family', () => {
