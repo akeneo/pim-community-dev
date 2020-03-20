@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useCallback} from 'react';
 import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-family';
@@ -17,6 +17,9 @@ import {
   SecondaryActionsDropdownButton,
   DropdownLink,
 } from 'akeneomeasure/shared/components/SecondaryActionsDropdownButton';
+import {useMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family';
+import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
+import {ValidationError} from 'akeneomeasure/model/validation-error';
 
 enum Tab {
   Units = 'units',
@@ -53,6 +56,33 @@ const Edit = () => {
   const {measurementFamilyCode} = useParams() as {measurementFamilyCode: string};
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.Units);
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
+  const [errors, setErrors] = useState<ValidationError[]>([]);
+  const saveMeasurementFamily = useMeasurementFamilySaver();
+  const notify = useContext(NotifyContext);
+  console.log(errors);
+
+  const handleSave = useCallback(async () => {
+    if (null === measurementFamily) {
+      return;
+    }
+
+    try {
+      const response = await saveMeasurementFamily(measurementFamily);
+
+      switch (response.success) {
+        case true:
+          notify(NotificationLevel.SUCCESS, __('measurements.family.save.flash.success'));
+          break;
+
+        case false:
+          setErrors(response.errors);
+          break;
+      }
+    } catch (error) {
+      console.error(error);
+      notify(NotificationLevel.ERROR, __('measurements.create_family.flash.error'));
+    }
+  }, [measurementFamily, locale, saveMeasurementFamily, notify, __, setErrors]);
 
   if (undefined === measurementFamilyCode || null === measurementFamily) {
     return null;
@@ -88,7 +118,7 @@ const Edit = () => {
           </Button>,
           <Button
             onClick={() => {
-              //TODO save measurement family
+              handleSave();
             }}
           >
             {__('pim_common.save')}

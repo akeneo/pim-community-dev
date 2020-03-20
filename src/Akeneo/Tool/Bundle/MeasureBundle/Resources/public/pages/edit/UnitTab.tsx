@@ -25,6 +25,7 @@ import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {Table, HeaderCell, Row, LabelCell} from 'akeneomeasure/pages/common/Table';
+import {ValidationError} from 'akeneomeasure/model/validation-error';
 
 const UnitList = styled.div`
   flex: 1;
@@ -96,9 +97,11 @@ const UnitRow = ({unit, isStandardUnit, isSelected = false, onRowSelected}: Unit
 
 const UnitTab = ({
   measurementFamily,
+  errors,
   onMeasurementFamilyChange,
 }: {
   measurementFamily: MeasurementFamily;
+  errors: ValidationError[];
   onMeasurementFamilyChange: (measurementFamily: MeasurementFamily) => void;
 }) => {
   const __ = useContext(TranslateContext);
@@ -155,6 +158,7 @@ const UnitTab = ({
             value={selectedUnit.code}
             required={true}
             readOnly={true}
+            errors={errors.filter(error: ValidationError) => error.path === ''}//TODO
           />
           <TextField
             id="measurements.unit.properties.symbol"
@@ -187,6 +191,7 @@ const UnitTab = ({
                       setUnitLabel(measurementFamily, selectedUnitCode, locale.code, event.currentTarget.value)
                     )
                   }
+                  errors={errors.filter(error: ValidationError) => error.path === ''}//TODO
                 />
               ))}
           </FormGroup>
