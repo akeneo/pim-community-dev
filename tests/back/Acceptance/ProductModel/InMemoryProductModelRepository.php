@@ -43,7 +43,9 @@ class InMemoryProductModelRepository implements IdentifiableObjectRepositoryInte
 
     public function getItemsFromIdentifiers(array $identifiers)
     {
-        throw new NotImplementedException(__METHOD__);
+        return array_filter($this->productModels->toArray(), function ($productModel) use ($identifiers) {
+            return in_array($productModel->getCode(), $identifiers);
+        });
     }
 
     public function find($id)

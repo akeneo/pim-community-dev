@@ -145,6 +145,5 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $products = $this->getItemsFromIdentifiers([]);
         $products->shouldBeArray();
         $products->shouldHaveCount(0);
-
     }
 }

@@ -70,6 +70,32 @@ class InMemoryProductModelRepositorySpec extends ObjectBehavior
             ->during('save', ['a_thing']);
     }
 
+    function it_returns_product_models_for_given_identifiers()
+    {
+        $productModel1 = new ProductModel();
+        $productModel1->setCode('a-product-model');
+        $this->save($productModel1);
+
+        $productModel2 = new ProductModel();
+        $productModel2->setCode('a-second-product-model');
+        $this->save($productModel2);
+
+        $products = $this->getItemsFromIdentifiers(['a-product-model']);
+        $products->shouldBeArray();
+        $products->shouldHaveCount(1);
+        $products['a-product-model']->shouldBe($productModel1);
+
+        $products = $this->getItemsFromIdentifiers(['a-product-model', 'a-second-product-model']);
+        $products->shouldBeArray();
+        $products->shouldHaveCount(2);
+        $products['a-product-model']->shouldBe($productModel1);
+        $products['a-second-product-model']->shouldBe($productModel2);
+
+        $products = $this->getItemsFromIdentifiers([]);
+        $products->shouldBeArray();
+        $products->shouldHaveCount(0);
+    }
+
     function it_asserts_that_the_other_methods_are_not_implemented_yet()
     {
         $productModel = new ProductModel();
@@ -77,7 +103,6 @@ class InMemoryProductModelRepositorySpec extends ObjectBehavior
 
         $familyVariant = new FamilyVariant();
 
-        $this->shouldThrow(NotImplementedException::class)->during('getItemsFromIdentifiers', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('find', ['']);
         $this->shouldThrow(NotImplementedException::class)->during('findAll', []);
         $this->shouldThrow(NotImplementedException::class)->during('findBy', [[]]);
