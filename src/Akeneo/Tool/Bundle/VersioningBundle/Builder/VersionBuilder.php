@@ -172,8 +172,52 @@ class VersionBuilder
         return array_filter(
             $changeset,
             function ($item) {
-                return $item['old'] !== $item['new'];
+                return $this->hasValueChanged($item['old'], $item['new']);
             }
         );
+    }
+
+    private function hasValueChanged($old, $new): bool
+    {
+        if (null !== $hasChanged = $this->hasLegacyDateChanged($old, $new)) {
+            return $hasChanged;
+        }
+
+        return $old !== $new;
+    }
+
+    /**
+     * We need to handle date comparison for old versioning format 'Y-m-d' in place of the new 'Y-m-d\TH:i:sP'.
+     *
+     * To determine that we are comparing date from the old versioning format:
+     * - Check that the old value can be interpreted as a date with the format 'Y-m-d'
+     * - Check that the new value can be interpreted as a date with the format 'Y-m-d\TH:i:sP'
+     * - If both match the expected format, then we compare them as date.
+     *
+     * If one of the value doesn't match an expected date format, then it's not an issue (or not a date) and we fallback
+     * to the standard behavior.
+     *
+     * @see https://akeneo.atlassian.net/browse/PIM-9152
+     *
+     * @return bool|null True if the date has changed, False otherwise. Null if the comparison can't be done.
+     */
+    private function hasLegacyDateChanged($old, $new)
+    {
+        if (!is_string($old) || !is_string($new)) {
+            return null;
+        }
+
+        $oldDateTime = \DateTimeImmutable::createFromFormat('Y-m-d', $old, new \DateTimeZone('UTC'));
+        if (false === $oldDateTime) {
+            return null;
+        }
+        $oldDateTime = $oldDateTime->setTime(0, 0);
+
+        $newDateTime = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $new);
+        if (false === $newDateTime) {
+            return null;
+        }
+
+        return $oldDateTime->format('U') !== $newDateTime->format('U');
     }
 }
