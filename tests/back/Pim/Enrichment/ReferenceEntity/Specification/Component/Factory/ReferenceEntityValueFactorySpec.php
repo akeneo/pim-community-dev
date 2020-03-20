@@ -21,6 +21,9 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
     function let(RecordRepositoryInterface $recordRepository)
     {
         $this->beConstructedWith($recordRepository);
+
+        // $recordRepository is not used anymore
+        $recordRepository->getByReferenceEntityAndCode(Argument::any())->shouldNotBeCalled();
     }
 
     function it_is_initializable()
@@ -35,7 +38,6 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
     }
 
     function it_creates_a_null_reference_entity_product_value(
-        RecordRepositoryInterface $recordRepository,
         AttributeInterface $attribute
     ) {
         $attribute->isScopable()->willReturn(false);
@@ -45,8 +47,6 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('reference_data_option');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
-
-        $recordRepository->getByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
@@ -63,7 +63,6 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
     }
 
     function it_creates_a_localizable_and_scopable_null_reference_entity_product_value(
-        RecordRepositoryInterface $recordRepository,
         AttributeInterface $attribute
     ) {
         $attribute->isScopable()->willReturn(true);
@@ -73,8 +72,6 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('reference_data_option');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
-
-        $recordRepository->getByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
@@ -93,10 +90,7 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
     }
 
     function it_creates_a_reference_entity_product_value(
-        RecordRepositoryInterface $recordRepository,
-        AttributeInterface $attribute,
-        Record $dyson,
-        RecordCode $dysonCode
+        AttributeInterface $attribute
     ) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
@@ -105,13 +99,6 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('reference_data_option');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
-
-        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordRepository->getByReferenceEntityAndCode(
-            $designerIdentifier,
-            RecordCode::fromString('dyson')
-        )->willReturn($dyson);
-        $dyson->getCode()->willReturn($dysonCode);
 
         $productValue = $this->create(
             $attribute,
@@ -124,14 +111,11 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $productValue->shouldHaveAttribute('designer');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
-        $productValue->shouldHaveRecordCode($dysonCode);
+        $productValue->shouldHaveRecordCode(RecordCode::fromString('dyson'));
     }
 
     function it_creates_a_localizable_and_scopable_reference_entity_product_value(
-        RecordRepositoryInterface $recordRepository,
-        AttributeInterface $attribute,
-        Record $dyson,
-        RecordCode $dysonCode
+        AttributeInterface $attribute
     ) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
@@ -140,13 +124,6 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('reference_data_option');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
-
-        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordRepository->getByReferenceEntityAndCode(
-            $designerIdentifier,
-            RecordCode::fromString('dyson')
-        )->willReturn($dyson);
-        $dyson->getCode()->willReturn($dysonCode);
 
         $productValue = $this->create(
             $attribute,
@@ -159,7 +136,7 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $productValue->shouldHaveAttribute('designer');
         $productValue->shouldBeLocalizable();
         $productValue->shouldBeScopable();
-        $productValue->shouldHaveRecordCode($dysonCode);
+        $productValue->shouldHaveRecordCode(RecordCode::fromString('dyson'));
     }
 
     function it_throws_an_exception_when_provided_data_is_not_a_string(AttributeInterface $attribute)
@@ -179,70 +156,6 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         );
 
         $this->shouldThrow($exception)->during('create', [$attribute, null, null, true]);
-    }
-
-    function it_creates_a_null_reference_entity_value_if_record_does_not_exist_anymore_and_ignoring_unknow_data(
-        RecordRepositoryInterface $recordRepository,
-        AttributeInterface $attribute
-    ) {
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->getCode()->willReturn('designer');
-        $attribute->getType()->willReturn('akeneo_reference_entity');
-        $attribute->getBackendType()->willReturn('reference_data_option');
-        $attribute->isBackendTypeReferenceData()->willReturn(true);
-        $attribute->getReferenceDataName()->willReturn('designer');
-
-        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordRepository->getByReferenceEntityAndCode(
-            $designerIdentifier,
-            RecordCode::fromString('dyson')
-        )->willThrow(RecordNotFoundException::class);
-
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            'dyson',
-            true
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ReferenceEntityValue::class);
-        $productValue->shouldHaveAttribute('designer');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
-    }
-
-    function it_throws_exception_if_record_does_not_exist_anymore_when_not_ignoring_unknow_data(
-        RecordRepositoryInterface $recordRepository,
-        AttributeInterface $attribute
-    ) {
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->getCode()->willReturn('designer');
-        $attribute->getType()->willReturn('akeneo_reference_entity');
-        $attribute->getBackendType()->willReturn('reference_data_option');
-        $attribute->isBackendTypeReferenceData()->willReturn(true);
-        $attribute->getReferenceDataName()->willReturn('designer');
-
-        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $dysonCode = RecordCode::fromString('dyson');
-
-        $exception = RecordNotFoundException::withReferenceEntityAndCode(
-            $designerIdentifier,
-            $dysonCode
-        );
-
-        $recordRepository->getByReferenceEntityAndCode($designerIdentifier,$dysonCode)
-            ->willThrow($exception);
-
-        $this->shouldThrow($exception)->during('create', [
-            $attribute,
-            null,
-            null,
-            'dyson',
-        ]);
     }
 
     public function getMatchers(): array
@@ -269,7 +182,7 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
             'haveRecordCode' => function ($subject, $expected) {
                 $recordIdentifier = $subject->getData();
 
-                return $recordIdentifier === $expected;
+                return $recordIdentifier == $expected;
             },
         ];
     }

@@ -16,6 +16,9 @@ use Prophecy\Argument;
 class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
     function let(RecordRepositoryInterface $recordRepository) {
         $this->beConstructedWith($recordRepository);
+
+        // $recordRepository is not needed anymore
+        $recordRepository->getByReferenceEntityAndCode(Argument::any())->shouldNotBeCalled();
     }
 
     function it_is_initializable()
@@ -30,7 +33,6 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
     }
 
     function it_creates_an_empty_reference_entity_collection_product_value(
-        $recordRepository,
         AttributeInterface $attribute
     ) {
         $attribute->isScopable()->willReturn(false);
@@ -40,7 +42,6 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
-        $recordRepository->getByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
@@ -57,7 +58,6 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
     }
 
     function it_creates_a_localizable_and_scopable_empty_reference_entity_collection_product_value(
-        $recordRepository,
         AttributeInterface $attribute
     ) {
         $attribute->isScopable()->willReturn(true);
@@ -67,8 +67,6 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
-
-        $recordRepository->getByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
@@ -87,12 +85,7 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
     }
 
     function it_creates_a_reference_entity_collection_product_value(
-        $recordRepository,
-        AttributeInterface $attribute,
-        Record $starck,
-        Record $dyson,
-        RecordCode $starckCode,
-        RecordCode $dysonCode
+        AttributeInterface $attribute
     ) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
@@ -101,19 +94,6 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
-
-        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
-
-        $recordRepository->getByReferenceEntityAndCode(
-            $designerIdentifier, RecordCode::fromString('starck')
-        )->willReturn($starck);
-
-        $recordRepository->getByReferenceEntityAndCode(
-            $designerIdentifier, RecordCode::fromString('dyson')
-        )->willReturn($dyson);
-
-        $starck->getCode()->willReturn($starckCode);
-        $dyson->getCode()->willReturn($dysonCode);
 
         $productValue = $this->create(
             $attribute,
@@ -126,16 +106,11 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
         $productValue->shouldHaveAttribute('designer');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
-        $productValue->shouldHaveRecord([$starckCode, $dysonCode]);
+        $productValue->shouldHaveRecord([RecordCode::fromString('starck'), RecordCode::fromString('dyson')]);
     }
 
     function it_creates_a_localizable_and_scopable_reference_entity_collection_product_value(
-        $recordRepository,
-        AttributeInterface $attribute,
-        Record $starck,
-        Record $dyson,
-        RecordCode $starckCode,
-        RecordCode $dysonCode
+        AttributeInterface $attribute
     ) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
@@ -144,19 +119,6 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
-
-        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
-
-        $recordRepository->getByReferenceEntityAndCode(
-            $designerIdentifier, RecordCode::fromString('starck')
-        )->willReturn($starck);
-
-        $recordRepository->getByReferenceEntityAndCode(
-            $designerIdentifier, RecordCode::fromString('dyson')
-        )->willReturn($dyson);
-
-        $starck->getCode()->willReturn($starckCode);
-        $dyson->getCode()->willReturn($dysonCode);
 
         $productValue = $this->create(
             $attribute,
@@ -169,7 +131,7 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
         $productValue->shouldHaveAttribute('designer');
         $productValue->shouldBeLocalizable();
         $productValue->shouldBeScopable();
-        $productValue->shouldHaveRecord([$starckCode, $dysonCode]);
+        $productValue->shouldHaveRecord([RecordCode::fromString('starck'), RecordCode::fromString('dyson')]);
     }
 
     function it_throws_an_exception_when_provided_data_is_not_an_array(AttributeInterface $attribute)
