@@ -107,7 +107,29 @@ final class DemoHelperCommand extends Command
             'Use with care.'
         ]);
 
-        $confirm = $io->confirm('This command is only for dev / demo purpose. Never use it in production, it will erase data.', false);
+
+        $confirm = false;
+
+        if ($input->isInteractive() === true) {
+            $confirm = $io->confirm('This command is only for dev / demo purpose. Never use it in production, it will erase data.', false);
+        } else {
+            $delayInSeconds = 10;
+            $io->caution([
+                'This command is launched in non-interactive mode, it means that no confirmation will be asked to generate Fake data',
+                '',
+                'You have ' . $delayInSeconds . ' seconds to stop this process if you don\'t want to loose data.'
+            ]);
+
+            $io->createProgressBar($delayInSeconds);
+            $io->progressStart();
+            for ($i=0; $i<$delayInSeconds; $i++) {
+                $io->progressAdvance();
+                sleep(1);
+            }
+            $io->progressFinish();
+
+            $confirm = true;
+        }
 
         if (false === $confirm) {
             return;

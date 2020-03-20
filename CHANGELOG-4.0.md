@@ -1,12 +1,20 @@
 # 4.0.x
 
+# 4.0.10 (2020-03-18)
+
+- PIM-9153: Remove useless GLOB_BRACE flag from standard Kernel
+
+# 4.0.9 (2020-03-16)
+
 ## Improvements
 
 - DAPI-910: Do not insert evaluation criteria on post_save_all event, rely on product updated_at date
 
 ## Bug fixes
 
+- MET-70: Add maintenance command to transform scopable asset manager attributes into non-scopable
 - PIM-9121: Check Asset exists before importing it in a Product
+- DAPI-900: Accept "ignored words" with any kind of letter from any language
 
 # 4.0.8 (2020-03-05)
 
