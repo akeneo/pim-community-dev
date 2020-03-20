@@ -1,5 +1,10 @@
 akeneo_measurements_settings_index:
-    path: '/configuration/measurement/'
+    path: '/configuration/measurement'
+
+akeneo_measurements_settings_any:
+    path: '/configuration/measurement/{any}'
+    requirements:
+        any: .*
 
 # Internal API
 akeneo_measurements_measurement_family_create_rest:

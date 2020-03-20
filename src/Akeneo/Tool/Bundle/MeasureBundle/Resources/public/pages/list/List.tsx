@@ -1,6 +1,5 @@
 import React, {useCallback, useContext, useState} from 'react';
-import styled from 'styled-components';
-import {PageHeader} from 'akeneomeasure/shared/components/PageHeader';
+import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
@@ -11,36 +10,14 @@ import {Link} from 'akeneomeasure/shared/components/Link';
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/NoData';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
-import {filterMeasurementFamily, sortMeasurementFamily, Direction} from 'akeneomeasure/model/measurement-family';
+import {sortMeasurementFamily, Direction, filterOnLabelOrCode} from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
-import {Table} from 'akeneomeasure/pages/list/Table';
+import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
 import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
-
-const Container = styled.div``;
-const PageContent = styled.div`
-  padding: 0 40px;
-`;
-
-const PageHeaderPlaceholder = styled.div`
-  width: 200px;
-  height: 34px;
-`;
-
-const TablePlaceholder = styled.div`
-  display: grid;
-  grid-row-gap: 10px;
-
-  > div {
-    height: 54px;
-  }
-`;
-
-const StickySearchBar = styled(SearchBar)`
-  position: sticky;
-  top: 126px;
-`;
+import {PageContent} from 'akeneomeasure/shared/components/PageContent';
+import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
 
 const useSorting = (
   defaultColumn: string
@@ -79,7 +56,7 @@ const List = () => {
     null === measurementFamilies
       ? null
       : measurementFamilies
-          .filter(measurementFamily => filterMeasurementFamily(measurementFamily, searchValue, locale))
+          .filter(filterOnLabelOrCode(searchValue, locale))
           .sort(sortMeasurementFamily(getSortDirection(sortColumn), locale, sortColumn));
 
   const measurementFamiliesCount = null === measurementFamilies ? 0 : measurementFamilies.length;
@@ -97,7 +74,7 @@ const List = () => {
             viewName="pim-measurements-user-navigation"
           />
         }
-        buttons={[<Button onClick={openCreateModal}>{__('measurements.family.create')}</Button>]}
+        buttons={[<Button onClick={openCreateModal}>{__('pim_common.create')}</Button>]}
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbItem>{__('pim_menu.tab.settings')}</BreadcrumbItem>
@@ -149,8 +126,8 @@ const List = () => {
           </NoDataSection>
         )}
         {null !== filteredMeasurementFamilies && 0 < measurementFamiliesCount && (
-          <Container>
-            <StickySearchBar
+          <>
+            <SearchBar
               count={filteredMeasurementFamiliesCount}
               searchValue={searchValue}
               onSearchChange={setSearchValue}
@@ -162,13 +139,13 @@ const List = () => {
               </NoDataSection>
             )}
             {0 < filteredMeasurementFamiliesCount && (
-              <Table
+              <MeasurementFamilyTable
                 measurementFamilies={filteredMeasurementFamilies}
                 toggleSortDirection={toggleSortDirection}
                 getSortDirection={getSortDirection}
               />
             )}
-          </Container>
+          </>
         )}
       </PageContent>
     </>

@@ -114,4 +114,4 @@ const akeneoTheme: AkeneoTheme = {
   },
 };
 
-export {akeneoTheme, ThemedProps};
+export {akeneoTheme, ThemedProps, AkeneoTheme};

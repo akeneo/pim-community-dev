@@ -34,10 +34,7 @@ test('It renders without errors', async () => {
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
-        <CreateMeasurementFamily
-          onClose={() => {
-          }}
-        />
+        <CreateMeasurementFamily onClose={() => {}} />
       </AkeneoThemeProvider>,
       container
     );
@@ -55,24 +52,22 @@ test('I can fill the fields and save', async () => {
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
-        <CreateMeasurementFamily
-          onClose={mockOnClose}
-        />
+        <CreateMeasurementFamily onClose={mockOnClose} />
       </AkeneoThemeProvider>,
       container
     );
   });
 
   await act(async () => {
-    const propertiesSection = getFormSectionByTitle(container, 'measurements.family.properties');
-    changeTextInputValue(propertiesSection, 'measurements.form.input.code', 'custom_metric');
-    changeTextInputValue(propertiesSection, 'measurements.form.input.label', 'My custom metric');
+    const propertiesSection = getFormSectionByTitle(container, 'pim_common.properties');
+    changeTextInputValue(propertiesSection, 'pim_common.code', 'custom_metric');
+    changeTextInputValue(propertiesSection, 'pim_common.label', 'My custom metric');
     const standardUnitSection = getFormSectionByTitle(container, 'measurements.family.standard_unit');
-    changeTextInputValue(standardUnitSection, 'measurements.form.input.code', 'METER');
-    changeTextInputValue(standardUnitSection, 'measurements.form.input.label', 'Meters');
+    changeTextInputValue(standardUnitSection, 'pim_common.code', 'METER');
+    changeTextInputValue(standardUnitSection, 'pim_common.label', 'Meters');
     changeTextInputValue(standardUnitSection, 'measurements.form.input.symbol', 'm');
 
-    const button = getByText(container, 'measurements.form.save');
+    const button = getByText(container, 'pim_common.save');
     fireEvent.click(button);
   });
 

@@ -4,66 +4,53 @@ import {MeasurementFamilyRow} from 'akeneomeasure/pages/list/MeasurementFamilyRo
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Caret, Direction} from 'akeneomeasure/shared/components/Caret';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
+import {Table, HeaderCell} from 'akeneomeasure/pages/common/Table';
 
-const Container = styled.table`
-  width: 100%;
-  color: ${props => props.theme.color.grey140};
-  border-collapse: collapse;
-
-  td {
-    width: 25%;
-  }
-`;
-
-const SortableTableCell = styled.th`
-  text-align: left;
-  font-weight: normal;
-  position: sticky;
-  top: 177px;
-  height: 43px;
-  box-shadow: 0 1px 0 ${props => props.theme.color.grey120};
-  background: ${props => props.theme.color.white};
-
+const SortableHeaderCell = styled(HeaderCell)`
   &:hover {
     cursor: pointer;
   }
 `;
 
-type TableProps = {
+type MeasurementFamilyTableProps = {
   measurementFamilies: MeasurementFamily[];
   toggleSortDirection: (columnCode: string) => void;
   getSortDirection: (columnCode: string) => Direction;
 };
 
-const Table = ({measurementFamilies, toggleSortDirection, getSortDirection}: TableProps) => {
+const MeasurementFamilyTable = ({
+  measurementFamilies,
+  toggleSortDirection,
+  getSortDirection,
+}: MeasurementFamilyTableProps) => {
   const __ = useContext(TranslateContext);
 
   return (
-    <Container>
+    <Table>
       <thead>
         <tr>
-          <SortableTableCell title={__('measurements.list.header.label')} onClick={() => toggleSortDirection('label')}>
-            {__('measurements.list.header.label')}
+          <SortableHeaderCell title={__('pim_common.label')} onClick={() => toggleSortDirection('label')}>
+            {__('pim_common.label')}
             <Caret direction={getSortDirection('label')} />
-          </SortableTableCell>
-          <SortableTableCell title={__('measurements.list.header.code')} onClick={() => toggleSortDirection('code')}>
-            {__('measurements.list.header.code')}
+          </SortableHeaderCell>
+          <SortableHeaderCell title={__('pim_common.code')} onClick={() => toggleSortDirection('code')}>
+            {__('pim_common.code')}
             <Caret direction={getSortDirection('code')} />
-          </SortableTableCell>
-          <SortableTableCell
+          </SortableHeaderCell>
+          <SortableHeaderCell
             title={__('measurements.list.header.standard_unit')}
             onClick={() => toggleSortDirection('standard_unit')}
           >
             {__('measurements.list.header.standard_unit')}
             <Caret direction={getSortDirection('standard_unit')} />
-          </SortableTableCell>
-          <SortableTableCell
+          </SortableHeaderCell>
+          <SortableHeaderCell
             title={__('measurements.list.header.unit_count')}
             onClick={() => toggleSortDirection('unit_count')}
           >
             {__('measurements.list.header.unit_count')}
             <Caret direction={getSortDirection('unit_count')} />
-          </SortableTableCell>
+          </SortableHeaderCell>
         </tr>
       </thead>
       <tbody>
@@ -71,8 +58,8 @@ const Table = ({measurementFamilies, toggleSortDirection, getSortDirection}: Tab
           <MeasurementFamilyRow key={measurementFamily.code} measurementFamily={measurementFamily} />
         ))}
       </tbody>
-    </Container>
+    </Table>
   );
 };
 
-export {Table};
+export {MeasurementFamilyTable};
