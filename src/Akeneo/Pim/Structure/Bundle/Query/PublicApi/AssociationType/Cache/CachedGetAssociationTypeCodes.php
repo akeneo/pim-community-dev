@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AssociationType\GetAssociatio
 
 /**
  * Cache for association type codes fetching. If there is too much codes to set in cache, no cache is done
- * in order to prevent memory problem (see static::CACHED_ITEM_LIMIT).
+ * in order to prevent memory problem (see CACHED_ITEM_LIMIT).
  *
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)

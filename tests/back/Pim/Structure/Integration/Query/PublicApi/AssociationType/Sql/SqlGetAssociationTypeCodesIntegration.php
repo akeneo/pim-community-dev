@@ -45,7 +45,7 @@ final class SqlGetAssociationTypeCodesIntegration extends TestCase
         sort($results);
 
         $expected = array_merge(
-            ['PACK', 'X_SELL', 'SUBSTITUTION', 'UPSELL'],
+            ['PACK', 'X_SELL', 'SUBSTITUTION', 'UPSELL'], // already in minimal catalog
             $this->createAssociationTypeCodes(),
         );
         sort($expected);
