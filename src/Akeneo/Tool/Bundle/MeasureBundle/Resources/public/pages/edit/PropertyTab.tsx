@@ -6,6 +6,7 @@ import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
+import {ValidationError} from 'akeneomeasure/model/validation-error';
 
 const Container = styled.div`
   display: flex;
@@ -16,9 +17,11 @@ const Container = styled.div`
 
 const PropertyTab = ({
   measurementFamily,
+  errors,
   onMeasurementFamilyChange,
 }: {
   measurementFamily: MeasurementFamily;
+  errors: ValidationError[];
   onMeasurementFamilyChange: (measurementFamily: MeasurementFamily) => void;
 }) => {
   const __ = useContext(TranslateContext);
@@ -32,6 +35,7 @@ const PropertyTab = ({
           id="measurements.family.properties.code"
           label={__('pim_common.code')}
           value={measurementFamily.code}
+          errors={errors.filter((error: ValidationError) => error.property === 'code')}
           required={true}
           readOnly={true}
         />
@@ -44,6 +48,7 @@ const PropertyTab = ({
               autofocus={0 === index}
               id={`measurements.family.properties.label.${locale.code}`}
               label={locale.label}
+              errors={errors.filter((error: ValidationError) => error.property === 'label')} //TODO
               key={locale.code}
               flag={locale.code}
               value={measurementFamily.labels[locale.code] || ''}

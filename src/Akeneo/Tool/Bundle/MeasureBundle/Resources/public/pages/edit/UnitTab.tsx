@@ -8,6 +8,7 @@ import {
   setUnitLabel,
   setUnitOperations,
   removeUnit,
+  getUnitIndex,
 } from 'akeneomeasure/model/measurement-family';
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
@@ -21,6 +22,7 @@ import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {Table, HeaderCell, Row, LabelCell} from 'akeneomeasure/pages/common/Table';
+import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
 import {Unit, UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
 import {Operation} from 'akeneomeasure/model/operation';
 
@@ -94,9 +96,11 @@ const UnitRow = ({unit, isStandardUnit, isSelected = false, onRowSelected}: Unit
 
 const UnitTab = ({
   measurementFamily,
+  errors,
   onMeasurementFamilyChange,
 }: {
   measurementFamily: MeasurementFamily;
+  errors: ValidationError[];
   onMeasurementFamilyChange: (measurementFamily: MeasurementFamily) => void;
 }) => {
   const __ = useContext(TranslateContext);
@@ -153,6 +157,7 @@ const UnitTab = ({
             value={selectedUnit.code}
             required={true}
             readOnly={true}
+            errors={filterErrors(errors, `units[${getUnitIndex(measurementFamily, selectedUnitCode)}][code]`)}
           />
           <TextField
             id="measurements.unit.properties.symbol"
@@ -185,6 +190,7 @@ const UnitTab = ({
                       setUnitLabel(measurementFamily, selectedUnitCode, locale.code, event.currentTarget.value)
                     )
                   }
+                  errors={errors.filter((error: ValidationError) => error.property === '')} //TODO
                 />
               ))}
           </FormGroup>
