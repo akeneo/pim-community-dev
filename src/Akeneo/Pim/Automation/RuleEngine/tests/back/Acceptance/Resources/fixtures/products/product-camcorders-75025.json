@@ -59,6 +59,16 @@
             "<all_channels>": {
                 "<all_locales>": ["wi_fi", "hdmi", "usb"]
             }
+        },
+        "designer": {
+            "<all_channels>": {
+                "<all_locales>": "starck"
+            }
+        },
+        "designers": {
+            "<all_channels>": {
+                "<all_locales>": ["starck", "ikea"]
+            }
         }
     }
 }

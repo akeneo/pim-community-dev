@@ -89,6 +89,13 @@ $rules = [
         // TIP-964: Split Tool/RuleEngine into component + bundle
         'Akeneo\Tool\Bundle\RuleEngineBundle',
 
+        // Reference entity coupling
+        'Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode',
+        'Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier',
+        'Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordDetailsInterface',
+        'Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityCollectionValueInterface',
+        'Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityValueInterface',
+
     ])->in('Akeneo\Pim\Automation\RuleEngine\Component'),
 ];
 

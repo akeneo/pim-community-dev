@@ -99,3 +99,13 @@ services:
                 - 'pim_catalog_multiselect'
         tags:
             - { name: akeneo_rule_engine.concatenate_applier.stringifier }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ReferenceEntityValueStringifier:
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'
+            - '@akeneo.pim.structure.query.get_attributes'
+            -
+                - 'akeneo_reference_entity'
+                - 'akeneo_reference_entity_collection'
+        tags:
+            - { name: akeneo_rule_engine.concatenate_applier.stringifier }

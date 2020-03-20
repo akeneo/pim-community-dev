@@ -20,3 +20,4 @@
 ## New features
 
 - DAPI-854: Data quality - Variant products are also evaluated
+- RUL-17: Rules engine - Add the concatenate action type to concatenate some attribute values into a single attribute value

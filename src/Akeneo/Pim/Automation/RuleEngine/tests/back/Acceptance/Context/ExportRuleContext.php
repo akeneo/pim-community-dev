@@ -97,6 +97,8 @@ rules:
           - field: connectivity
           - field: connectivity
             label_locale: fr_FR
+          - field: designer
+          - field: designers
         to:
           field: description
           locale: en_US

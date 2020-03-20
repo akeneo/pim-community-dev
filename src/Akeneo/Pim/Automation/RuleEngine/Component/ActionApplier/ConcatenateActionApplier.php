@@ -118,7 +118,9 @@ final class ConcatenateActionApplier implements ActionApplierInterface
 
             $value = $entity->getValue($attributeCode, $source->getLocale(), $source->getScope());
             if (null === $value) {
-                throw new \LogicException(sprintf('The value for the "%s" attribute code is empty for the entity.', $attributeCode));
+                throw new \LogicException(
+                    sprintf('The value for the "%s" attribute code is empty for the entity.', $attributeCode)
+                );
             }
 
             $attribute = $this->getAttributes->forCode($attributeCode);

@@ -21,6 +21,9 @@ services:
             - '@pim_catalog.repository.currency'
             - '@test.attribute_option.builder'
             - '@akeneo.pim.enrichment.factory.write_value_collection'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'
 
     Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\UserContext:
         arguments:
@@ -66,3 +69,8 @@ services:
         class: 'AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition\InMemoryGetExistingAttributeOptionCodes'
         arguments:
             - '@pim_catalog.repository.attribute_option'
+
+    pimee.reference_entity.enrichment.find_all_existent_records_for_record_identifiers:
+        class: 'AkeneoEnterprise\Test\Acceptance\Enrichment\InMemory\InMemoryFindAllExistentRecordsForReferenceEntityIdentifiers'
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'

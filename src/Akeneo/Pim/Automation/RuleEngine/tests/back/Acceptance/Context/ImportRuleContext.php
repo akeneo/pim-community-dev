@@ -75,6 +75,10 @@ rules:
                   - field: connectivity
                   - field: connectivity
                     label_locale: fr_FR
+                  - field: designer
+                    label_locale: fr_FR
+                  - field: designers
+                    label_locale: fr_FR
               to:
                   field: description
                   locale: en_US

@@ -183,5 +183,29 @@
     "labels": {
       "en_US": "Connectivity"
     }
+  },
+  "designer": {
+    "code": "designer",
+    "type": "akeneo_reference_entity",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Designer",
+      "fr_FR": "Designer"
+    },
+    "reference_data_name": "designer"
+  },
+  "designers": {
+    "code": "designers",
+    "type": "akeneo_reference_entity_collection",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Designers",
+      "fr_FR": "Designers"
+    },
+    "reference_data_name": "designer"
   }
 }

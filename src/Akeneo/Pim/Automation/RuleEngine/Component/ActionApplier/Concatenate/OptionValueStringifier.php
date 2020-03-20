@@ -42,7 +42,7 @@ final class OptionValueStringifier extends AbstractValueStringifier implements V
     {
         if (!$value instanceof OptionValueInterface && !$value instanceof OptionsValueInterface) {
             throw new \InvalidArgumentException(sprintf(
-                'Value must an instance of %s, or %s, % given',
+                'The value must an instance of %s, or %s, % given',
                 OptionValueInterface::class,
                 OptionsValueInterface::class,
                 get_class($value)
