@@ -3,7 +3,6 @@
 namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\Unit;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Application\ValidateUnit\ValidateUnitCommand;
-use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -30,7 +29,7 @@ class CodeMustBeUniqueValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, CodeMustBeUnique::class);
         }
 
-        if(!$value instanceof ValidateUnitCommand){
+        if (!$value instanceof ValidateUnitCommand) {
             throw new UnexpectedTypeException($value, ValidateUnitCommand::class);
         }
 

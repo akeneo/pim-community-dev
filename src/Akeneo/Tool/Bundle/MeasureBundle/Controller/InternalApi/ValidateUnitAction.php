@@ -30,8 +30,7 @@ class ValidateUnitAction
     public function __construct(
         ValidatorInterface $validator,
         ViolationNormalizer $violationNormalizer
-    )
-    {
+    ) {
         $this->validator = $validator;
         $this->violationNormalizer = $violationNormalizer;
     }
@@ -72,8 +71,10 @@ class ValidateUnitAction
         return $decodedRequest;
     }
 
-    private function createValidateUnitCommand(string $measurementFamilyCode, array $decodedRequest): ValidateUnitCommand
-    {
+    private function createValidateUnitCommand(
+        string $measurementFamilyCode,
+        array $decodedRequest
+    ): ValidateUnitCommand {
         $command = new ValidateUnitCommand();
         $command->measurementFamilyCode = $measurementFamilyCode;
         $command->code = $decodedRequest['code'];
