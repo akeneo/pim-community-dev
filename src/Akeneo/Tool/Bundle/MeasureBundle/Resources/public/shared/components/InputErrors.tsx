@@ -9,10 +9,10 @@ const Container = styled.div`
 `;
 
 type InputErrorsProps = {
-  errors: ValidationError[];
+  errors?: ValidationError[];
 };
 
-const InputErrors = ({errors}: InputErrorsProps) => {
+const InputErrors = ({errors = []}: InputErrorsProps) => {
   if (errors.length === 0) return null;
 
   return (

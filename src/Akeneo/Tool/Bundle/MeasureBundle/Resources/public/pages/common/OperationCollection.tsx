@@ -13,14 +13,17 @@ import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-erro
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 
 const Container = styled.div<{level: number}>`
-  display: flex;
-  align-items: center;
   position: relative;
   margin-left: ${props => (props.level > 1 ? 24 * (props.level - 1) : 0)}px;
 
   :not(:first-child) {
     margin-top: 10px;
   }
+`;
+
+const OperationLine = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const OperationCollectionLabel = styled.div`
@@ -115,11 +118,11 @@ const Footer = styled.div`
 
 type OperationCollectionProps = {
   operations: Operation[];
-  errors: ValidationError[];
+  errors?: ValidationError[];
   onOperationsChange: (operations: Operation[]) => void;
 };
 
-const OperationCollection = ({operations, errors, onOperationsChange}: OperationCollectionProps) => {
+const OperationCollection = ({operations, errors = [], onOperationsChange}: OperationCollectionProps) => {
   const __ = useContext(TranslateContext);
   const [openOperatorSelector, setOpenOperatorSelector] = useState<number | null>(null);
 
@@ -136,8 +139,8 @@ const OperationCollection = ({operations, errors, onOperationsChange}: Operation
         const operationErrors = filterErrors(errors, `[${index}]`);
 
         return (
-          <>
-            <Container level={index} key={index}>
+          <Container key={index} level={index}>
+            <OperationLine>
               {0 < index && <StyledArrow color={akeneoTheme.color.grey100} size={18} />}
               <OperationContainer>
                 <OperationValue
@@ -193,9 +196,9 @@ const OperationCollection = ({operations, errors, onOperationsChange}: Operation
                   <CloseIcon color={akeneoTheme.color.grey100} size={18} />
                 </RemoveOperationButton>
               )}
-            </Container>
+            </OperationLine>
             <InputErrors errors={operationErrors} />
-          </>
+          </Container>
         );
       })}
       <Footer>

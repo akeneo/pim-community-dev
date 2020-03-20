@@ -46,6 +46,7 @@ test('It renders the given operations', async () => {
       operator: 'add',
     },
   ];
+
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
@@ -77,6 +78,7 @@ test('I can add an operation', async () => {
     },
   ];
   let newOperations = [];
+
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
@@ -123,6 +125,7 @@ test('I can remove an operation', async () => {
     },
   ];
   let newOperations = [];
+
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
@@ -164,6 +167,7 @@ test('I can edit the value of an operation', async () => {
     },
   ];
   let newOperations = [];
+
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
@@ -209,6 +213,7 @@ test('I can edit the operator of an operation', async () => {
     },
   ];
   let newOperations = [];
+
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
@@ -245,4 +250,36 @@ test('I can edit the operator of an operation', async () => {
       operator: 'add',
     },
   ]);
+});
+
+test('It renders the given operations errors', async () => {
+  const operations = [
+    {
+      value: '12',
+      operator: 'div',
+    },
+    {
+      value: '25',
+      operator: 'mul',
+    },
+    {
+      value: '54',
+      operator: 'add',
+    },
+  ];
+
+  await act(async () => {
+    ReactDOM.render(
+      <AkeneoThemeProvider>
+        <OperationCollection
+          operations={operations}
+          onOperationsChange={() => {}}
+          errors={[{property: '', message: 'message'}]}
+        />
+      </AkeneoThemeProvider>,
+      container
+    );
+  });
+
+  expect(getByText(container, 'message')).toBeInTheDocument();
 });
