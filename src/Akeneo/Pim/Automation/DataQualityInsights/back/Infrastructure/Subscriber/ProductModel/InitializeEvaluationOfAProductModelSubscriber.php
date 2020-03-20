@@ -17,10 +17,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetDescendantVariantProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\ProductModelTitleSuggestionIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\ProductModelWordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -32,7 +34,7 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
     private $dataQualityInsightsFeature;
 
     /** @var CreateCriteriaEvaluations */
-    private $createCriteriaEvaluations;
+    private $createProductModelCriteriaEvaluations;
 
     /** @var LoggerInterface */
     private $logger;
@@ -43,18 +45,33 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
     /** @var ConsolidateAxesRates */
     private $consolidateAxesRates;
 
+    /** @var GetDescendantVariantProductIdsQueryInterface */
+    private $getDescendantVariantProductIdsQuery;
+
+    /** @var DescendantProductModelIdsQueryInterface */
+    private $getDescendantProductModelIdsQuery;
+
+    /** @var CreateCriteriaEvaluations */
+    private $createProductsCriteriaEvaluations;
+
     public function __construct(
         FeatureFlag $dataQualityInsightsFeature,
-        CreateCriteriaEvaluations $createCriteriaEvaluations,
+        CreateCriteriaEvaluations $createProductModelCriteriaEvaluations,
         LoggerInterface $logger,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateAxesRates $consolidateAxesRates
+        ConsolidateAxesRates $consolidateAxesRates,
+        GetDescendantVariantProductIdsQueryInterface $getDescendantVariantProductIdsQuery,
+        DescendantProductModelIdsQueryInterface $getDescendantProductModelIdsQuery,
+        CreateCriteriaEvaluations $createProductsCriteriaEvaluations
     ) {
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
-        $this->createCriteriaEvaluations = $createCriteriaEvaluations;
+        $this->createProductModelCriteriaEvaluations = $createProductModelCriteriaEvaluations;
         $this->logger = $logger;
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
         $this->consolidateAxesRates = $consolidateAxesRates;
+        $this->getDescendantVariantProductIdsQuery = $getDescendantVariantProductIdsQuery;
+        $this->getDescendantProductModelIdsQuery = $getDescendantProductModelIdsQuery;
+        $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
     }
 
     public static function getSubscribedEvents()
@@ -82,7 +99,7 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
         }
 
         $productModelId = intval($subject->getId());
-        $this->initializeCriteria($productModelId);
+        $this->initializeProductModelCriteria($productModelId);
         $this->evaluatePendingCriteria->evaluateSynchronousCriteria([$productModelId]);
         $this->consolidateAxesRates->consolidate([$productModelId]);
     }
@@ -93,7 +110,9 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
             return;
         }
 
-        $this->initializeCriteria($event->getProductId()->toInt());
+        $this->initializeProductModelCriteria($event->getProductId()->toInt());
+        $this->initializeCriteriaForSubProductModels($event->getProductId());
+        $this->initializeCriteriaForVariantProducts($event->getProductId());
     }
 
     public function onIgnoredWord(ProductModelWordIgnoredEvent $event)
@@ -102,13 +121,15 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
             return;
         }
 
-        $this->initializeCriteria($event->getProductId()->toInt());
+        $this->initializeProductModelCriteria($event->getProductId()->toInt());
+        $this->initializeCriteriaForSubProductModels($event->getProductId());
+        $this->initializeCriteriaForVariantProducts($event->getProductId());
     }
 
-    private function initializeCriteria($productModelId)
+    private function initializeProductModelCriteria($productModelId)
     {
         try {
-            $this->createCriteriaEvaluations->create([new ProductId($productModelId)]);
+            $this->createProductModelCriteriaEvaluations->create([new ProductId($productModelId)]);
         } catch (\Throwable $e) {
             $this->logger->error(
                 'Unable to create product model criteria evaluation',
@@ -117,6 +138,32 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
                     'error_message' => $e->getMessage(),
                 ]
             );
+        }
+    }
+
+    private function initializeCriteriaForSubProductModels(ProductId $productId)
+    {
+        $subProductModelIds = $this->getDescendantProductModelIdsQuery->fetchFromParentProductModelId($productId->toInt());
+        foreach ($subProductModelIds as $subProductModelId) {
+            $this->initializeProductModelCriteria($subProductModelId);
+        }
+    }
+
+    private function initializeCriteriaForVariantProducts(ProductId $productId): void
+    {
+        $variantProductIds = $this->getDescendantVariantProductIdsQuery->fromProductModelIds([$productId->toInt()]);
+        foreach ($variantProductIds as $variantProductId) {
+            try {
+                $this->createProductsCriteriaEvaluations->create([new ProductId((int) $variantProductId)]);
+            } catch (\Throwable $e) {
+                $this->logger->error(
+                    'Unable to create product criteria evaluation',
+                    [
+                        'error_code' => 'unable_to_create_product_criteria_evaluation',
+                        'error_message' => $e->getMessage(),
+                    ]
+                );
+            }
         }
     }
 }
