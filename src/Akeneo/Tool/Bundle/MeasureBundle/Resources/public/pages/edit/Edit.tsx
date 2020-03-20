@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useCallback} from 'react';
 import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-family';
@@ -17,6 +17,9 @@ import {
   SecondaryActionsDropdownButton,
   DropdownLink,
 } from 'akeneomeasure/shared/components/SecondaryActionsDropdownButton';
+import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
+import {ValidationError} from 'akeneomeasure/model/validation-error';
+import {useMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-measurement-family-saver';
 
 enum Tab {
   Units = 'units',
@@ -53,6 +56,33 @@ const Edit = () => {
   const {measurementFamilyCode} = useParams() as {measurementFamilyCode: string};
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.Units);
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
+  const [errors, setErrors] = useState<ValidationError[]>([]);
+  const saveMeasurementFamily = useMeasurementFamilySaver();
+  const notify = useContext(NotifyContext);
+  console.log(errors);
+
+  const handleSave = useCallback(async () => {
+    if (null === measurementFamily) {
+      return;
+    }
+
+    try {
+      const response = await saveMeasurementFamily(measurementFamily);
+
+      switch (response.success) {
+        case true:
+          notify(NotificationLevel.SUCCESS, __('measurements.family.save.flash.success'));
+          break;
+
+        case false:
+          setErrors(response.errors);
+          break;
+      }
+    } catch (error) {
+      console.error(error);
+      notify(NotificationLevel.ERROR, __('measurements.family.save.flash.error'));
+    }
+  }, [measurementFamily, locale, saveMeasurementFamily, notify, __, setErrors]);
 
   if (undefined === measurementFamilyCode || null === measurementFamily) {
     return null;
@@ -86,13 +116,7 @@ const Edit = () => {
           >
             {__('measurements.unit.add')}
           </Button>,
-          <Button
-            onClick={() => {
-              //TODO save measurement family
-            }}
-          >
-            {__('pim_common.save')}
-          </Button>,
+          <Button onClick={handleSave}>{__('pim_common.save')}</Button>,
         ]}
         breadcrumb={
           <Breadcrumb>
@@ -120,10 +144,18 @@ const Edit = () => {
         </TabContainer>
         <Container>
           {currentTab === Tab.Units && (
-            <UnitTab measurementFamily={measurementFamily} onMeasurementFamilyChange={setMeasurementFamily} />
+            <UnitTab
+              measurementFamily={measurementFamily}
+              onMeasurementFamilyChange={setMeasurementFamily}
+              errors={errors}
+            />
           )}
           {currentTab === Tab.Properties && (
-            <PropertyTab measurementFamily={measurementFamily} onMeasurementFamilyChange={setMeasurementFamily} />
+            <PropertyTab
+              measurementFamily={measurementFamily}
+              onMeasurementFamilyChange={setMeasurementFamily}
+              errors={errors}
+            />
           )}
         </Container>
       </PageContent>

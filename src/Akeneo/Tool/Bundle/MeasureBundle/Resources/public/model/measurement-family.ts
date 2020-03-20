@@ -81,6 +81,14 @@ const setUnitSymbol = (measurementFamily: MeasurementFamily, unitCode: UnitCode,
 const getUnit = (measurementFamily: MeasurementFamily, unitCode: UnitCode): Unit | undefined =>
   measurementFamily.units.find(unit => unit.code === unitCode);
 
+const getUnitIndex = (measurementFamily: MeasurementFamily, unitCode: UnitCode): number => {
+  const unit = getUnit(measurementFamily, unitCode);
+
+  if (undefined === unit) return -1;
+
+  return measurementFamily.units.indexOf(unit);
+};
+
 const getStandardUnit = (measurementFamily: MeasurementFamily): Unit => {
   const unit = getUnit(measurementFamily, measurementFamily.standard_unit_code);
 
@@ -131,6 +139,7 @@ export {
   getMeasurementFamilyLabel,
   setMeasurementFamilyLabel,
   getUnit,
+  getUnitIndex,
   setUnitLabel,
   setUnitSymbol,
   setUnitOperations,
