@@ -53,3 +53,13 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Storage\Sql\SqlFindAttributeGroupOrdersEqualOrSuperiorTo'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.structure.query.sql_get_association_type_codes:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\AssociationType\Sql\SqlGetAssociationTypeCodes'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.cached_get_association_type_codes:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\AssociationType\Cache\CachedGetAssociationTypeCodes'
+        arguments:
+            - '@akeneo.pim.structure.query.sql_get_association_type_codes'
