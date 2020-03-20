@@ -18,5 +18,7 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute_option'
 
-    akeneo.pim.structure.query.sql_get_association_type_codes:
-        class: 'Akeneo\Test\Acceptance\AssociationType\InMemoryAssociationTypeRepository'
+    akeneo.pim.structure.query.get_association_type_codes:
+        class: 'Akeneo\Test\Acceptance\AssociationType\InMemoryGetAssociationTypeCodes'
+        arguments:
+            - '@pim_catalog.repository.association_type'

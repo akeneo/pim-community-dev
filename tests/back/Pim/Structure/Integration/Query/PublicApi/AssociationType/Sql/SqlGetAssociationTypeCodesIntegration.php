@@ -27,7 +27,7 @@ final class SqlGetAssociationTypeCodesIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->sqlGetAssociationTypeCodes = $this->get('akeneo.pim.structure.query.sql_get_association_type_codes');
+        $this->sqlGetAssociationTypeCodes = $this->get('akeneo.pim.structure.query.get_association_type_codes');
 
         $associationTypes = array_map(function (string $code): AssociationType {
             $associationType = new AssociationType();
