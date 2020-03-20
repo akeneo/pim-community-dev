@@ -107,6 +107,15 @@ extensions:
           formRequired: pim_common.required_label
           inputField: pim_enrich_association_type_form_code
 
+    pim-association-type-edit-form-properties-is-bidirectional:
+        module: pim/form/common/fields/boolean
+        parent: pim-association-type-edit-form-properties
+        targetZone: accordion
+        position: 110
+        config:
+            fieldName: isBidirectional
+            label: pim_enrich.entity.association_type.property.is_bidirectional
+
     pim-association-type-edit-form-properties-translation-section:
         module: pim/common/simple-view
         parent: pim-association-type-edit-form-properties
