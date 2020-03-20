@@ -22,3 +22,10 @@ services:
             - '@validator'
             - '@akeneo_measure.application.save_measurement_family_handler'
             - '@pim_api.normalizer.exception.violation'
+
+    pim_api.controller.internal_api.validate_unit:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi\ValidateUnitAction
+        public: true
+        arguments:
+            - '@validator'
+            - '@pim_api.normalizer.exception.violation'
