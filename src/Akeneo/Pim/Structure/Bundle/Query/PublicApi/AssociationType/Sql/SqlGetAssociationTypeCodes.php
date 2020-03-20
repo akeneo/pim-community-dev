@@ -28,30 +28,26 @@ final class SqlGetAssociationTypeCodes implements GetAssociationTypeCodes
      */
     public function findAll(): \Iterator
     {
-        $limitByQuery = 1000;
+        $pageSize = 1000;
         $offset = 0;
         $sql = 'SELECT code FROM pim_catalog_association_type LIMIT :limit OFFSET :offset';
 
         while (true) {
             $associationTypeCodes = $this->connection->executeQuery(
                 $sql,
-                ['offset' => $offset, 'limit' => $limitByQuery],
+                ['offset' => $offset, 'limit' => $pageSize],
                 ['offset' => \PDO::PARAM_INT, 'limit' => \PDO::PARAM_INT]
             )->fetchAll(FetchMode::COLUMN);
-
-            if (0 === count($associationTypeCodes)) {
-                break;
-            }
 
             foreach ($associationTypeCodes as $associationTypeCode) {
                 yield $associationTypeCode;
             }
 
-            if (count($associationTypeCodes) < $limitByQuery) {
+            if (count($associationTypeCodes) < $pageSize || 0 === count($associationTypeCodes)) {
                 break;
             }
 
-            $offset += $limitByQuery;
+            $offset += $pageSize;
         }
     }
 }
