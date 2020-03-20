@@ -234,3 +234,8 @@ services:
         class: 'Akeneo\Channel\Bundle\Doctrine\Query\GetChannelActiveLocaleCodes'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.product_completeness_ratio:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetProductCompletenessRatio'
+        arguments:
+            - '@database_connection'
