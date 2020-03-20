@@ -119,7 +119,7 @@ akeneo_connectivity.connection:
         flash:
             success: Connection successfully deleted.
     helper:
-        title: 👋 Welcome in the feature that will properly connect your PIM!
+        title: 👋 Welcome to the feature that will properly connect your PIM!
         description: A PIM without any third-party integrations is kinda useless, isn't it? Thanks to connections, you can declare all the data flows that will be pushed inside and pulled outside your PIM.
         link: Eager to know more? Find out what is a connection and how to make the most of it right here!
     flow_type_helper:
@@ -135,7 +135,7 @@ akeneo_connectivity.connection:
 
     dashboard:
         helper:
-            title: 👋 Welcome in your connection dashboard!
+            title: 👋 Welcome to your connection dashboard!
             description: Here, you will be able to track all the data flows that are collected into your PIM via your connections, as well as all the data flows that are distributed to your channels via your connections.
             link: Want to know more? Here you go!
         user_survey:
