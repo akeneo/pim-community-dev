@@ -4,26 +4,35 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Audit\Model\Write;
 
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+
 /**
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DailyEventCount
+class HourlyEventCount
 {
     /** @var string */
     private $connectionCode;
-    /** @var string */
-    private $eventDate;
+
+    /** @var HourlyInterval */
+    private $hourlyInterval;
+
     /** @var int */
     private $eventCount;
+
     /** @var string */
     private $eventType;
 
-    public function __construct(string $connectionCode, string $eventDate, int $eventCount, string $eventType)
-    {
+    public function __construct(
+        string $connectionCode,
+        HourlyInterval $hourlyInterval,
+        int $eventCount,
+        string $eventType
+    ) {
         $this->connectionCode = $connectionCode;
-        $this->eventDate = $eventDate;
+        $this->hourlyInterval = $hourlyInterval;
         $this->eventCount = $eventCount;
         $this->eventType = $eventType;
     }
@@ -33,9 +42,9 @@ class DailyEventCount
         return $this->connectionCode;
     }
 
-    public function eventDate():  string
+    public function hourlyInterval(): HourlyInterval
     {
-        return $this->eventDate;
+        return $this->hourlyInterval;
     }
 
     public function eventCount(): int

@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\DailyEventCount;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQuery;
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection as DbalConnection;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -29,76 +32,41 @@ class DbalExtractConnectionsProductEventCountQuery implements ExtractConnections
         $this->productClass = $productClass;
     }
 
-    public function extractCreatedProductsByConnection(string $date): array
+    public function extractCreatedProductsByConnection(HourlyInterval $hourlyInterval): array
     {
-        $dateTime = new \DateTimeImmutable($date, new \DateTimeZone('UTC'));
-        $dateTime->setTime(0, 0, 0, 0);
-
         $sqlQuery = <<<SQL
-SELECT conn.code, COUNT(resource_id) as event_count
+SELECT conn.code, event_count
 FROM (
-    SELECT author, resource_id 
-    FROM pim_versioning_version USE INDEX(logged_at_idx) 
-    WHERE logged_at >= :start_time AND logged_at < :end_time 
+    SELECT author, COUNT(id) as event_count
+    FROM pim_versioning_version USE INDEX(logged_at_idx)
+    WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
-    AND version = 1 
-    GROUP BY author, resource_id
+    AND version = 1
+    GROUP BY author
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
-INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
-GROUP BY conn.code;
+INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id;
 SQL;
-        $sqlParams = [
-            'start_time' => $dateTime->format('Y-m-d H:i:s'),
-            'end_time' => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
-            'resource_name' => $this->productClass,
-            'user_type' => User::TYPE_API
-        ];
 
-        $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
+        $dataRows = $this->dbalConnection->executeQuery(
+            $sqlQuery,
+            [
+                'start_time' => $hourlyInterval->fromDateTime(),
+                'end_time' => $hourlyInterval->upToDateTime(),
+                'resource_name' => $this->productClass,
+                'user_type' => User::TYPE_API
+            ],
+            [
+                'start_time' => Types::DATETIME_IMMUTABLE,
+                'end_time' => Types::DATETIME_IMMUTABLE,
+            ]
+        )->fetchAll();
+
         $dailyEventCount = [];
         foreach ($dataRows as $dataRow) {
-            $dailyEventCount[] = new DailyEventCount(
+            $dailyEventCount[] = new HourlyEventCount(
                 $dataRow['code'],
-                $dateTime->format('Y-m-d'),
-                (int)$dataRow['event_count'],
-                EventTypes::PRODUCT_CREATED
-            );
-        }
-
-        return $dailyEventCount;
-    }
-
-    public function extractAllCreatedProducts(string $date): array
-    {
-        $dateTime = new \DateTimeImmutable($date, new \DateTimeZone('UTC'));
-        $dateTime->setTime(0, 0, 0, 0);
-
-        $sqlQuery = <<<SQL
-SELECT COUNT(resource_id) as event_count
-FROM (
-    SELECT author, resource_id 
-    FROM pim_versioning_version USE INDEX(logged_at_idx) 
-    WHERE logged_at >= :start_time AND logged_at < :end_time 
-    AND resource_name = :resource_name
-    AND version = 1 
-    GROUP BY author, resource_id
-) AS tmp_table
-INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
-SQL;
-        $sqlParams = [
-            'start_time' => $dateTime->format('Y-m-d H:i:s'),
-            'end_time'   => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
-            'resource_name' => $this->productClass,
-            'user_type' => User::TYPE_API
-        ];
-
-        $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
-        $dailyEventCount = [];
-        foreach ($dataRows as $dataRow) {
-            $dailyEventCount[] = new DailyEventCount(
-                '<all>',
-                $dateTime->format('Y-m-d'),
+                $hourlyInterval,
                 (int) $dataRow['event_count'],
                 EventTypes::PRODUCT_CREATED
             );
@@ -107,38 +75,82 @@ SQL;
         return $dailyEventCount;
     }
 
-    public function extractUpdatedProductsByConnection(string $date): array
+    public function extractAllCreatedProducts(HourlyInterval $hourlyInterval): array
     {
-        $dateTime = new \DateTimeImmutable($date, new \DateTimeZone('UTC'));
-        $dateTime->setTime(0, 0, 0, 0);
-
         $sqlQuery = <<<SQL
-SELECT conn.code, COUNT(resource_id) as event_count
+SELECT event_count
 FROM (
-    SELECT author, resource_id 
-    FROM pim_versioning_version USE INDEX(logged_at_idx) 
-    WHERE logged_at >= :start_time AND logged_at < :end_time 
+    SELECT author, COUNT(id) as event_count
+    FROM pim_versioning_version USE INDEX(logged_at_idx)
+    WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
-    AND version != 1 
-    GROUP BY author, resource_id
+    AND version = 1
+    GROUP BY author
+) AS tmp_table
+INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
+SQL;
+        $dataRows = $this->dbalConnection->executeQuery(
+            $sqlQuery,
+            [
+                'start_time' => $hourlyInterval->fromDateTime(),
+                'end_time' => $hourlyInterval->upToDateTime(),
+                'resource_name' => $this->productClass,
+                'user_type' => User::TYPE_API
+            ],
+            [
+                'start_time' => Types::DATETIME_IMMUTABLE,
+                'end_time' => Types::DATETIME_IMMUTABLE,
+            ]
+        )->fetchAll();
+
+        $dailyEventCount = [];
+        foreach ($dataRows as $dataRow) {
+            $dailyEventCount[] = new HourlyEventCount(
+                AllConnectionCode::CODE,
+                $hourlyInterval,
+                (int) $dataRow['event_count'],
+                EventTypes::PRODUCT_CREATED
+            );
+        }
+
+        return $dailyEventCount;
+    }
+
+    public function extractUpdatedProductsByConnection(HourlyInterval $hourlyInterval): array
+    {
+        $sqlQuery = <<<SQL
+SELECT conn.code, event_count
+FROM (
+    SELECT author, COUNT(id) as event_count
+    FROM pim_versioning_version USE INDEX(logged_at_idx)
+    WHERE logged_at >= :start_time AND logged_at < :end_time
+    AND resource_name = :resource_name
+    AND version != 1
+    GROUP BY author
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
 GROUP BY conn.code;
 SQL;
-        $sqlParams = [
-            'start_time' => $dateTime->format('Y-m-d H:i:s'),
-            'end_time'   => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
-            'resource_name' => $this->productClass,
-            'user_type' => User::TYPE_API
-        ];
+        $dataRows = $this->dbalConnection->executeQuery(
+            $sqlQuery,
+            [
+                'start_time' => $hourlyInterval->fromDateTime(),
+                'end_time' => $hourlyInterval->upToDateTime(),
+                'resource_name' => $this->productClass,
+                'user_type' => User::TYPE_API
+            ],
+            [
+                'start_time' => Types::DATETIME_IMMUTABLE,
+                'end_time' => Types::DATETIME_IMMUTABLE,
+            ]
+        )->fetchAll();
 
-        $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
         $dailyEventCount = [];
         foreach ($dataRows as $dataRow) {
-            $dailyEventCount[] = new DailyEventCount(
+            $dailyEventCount[] = new HourlyEventCount(
                 $dataRow['code'],
-                $dateTime->format('Y-m-d'),
+                $hourlyInterval,
                 (int) $dataRow['event_count'],
                 EventTypes::PRODUCT_UPDATED
             );
@@ -147,36 +159,39 @@ SQL;
         return $dailyEventCount;
     }
 
-    public function extractAllUpdatedProducts(string $date): array
+    public function extractAllUpdatedProducts(HourlyInterval $hourlyInterval): array
     {
-        $dateTime = new \DateTimeImmutable($date, new \DateTimeZone('UTC'));
-        $dateTime->setTime(0, 0, 0, 0);
-
         $sqlQuery = <<<SQL
-SELECT COUNT(resource_id) as event_count
+SELECT event_count
 FROM (
-    SELECT author, resource_id 
-    FROM pim_versioning_version USE INDEX(logged_at_idx) 
-    WHERE logged_at >= :start_time AND logged_at < :end_time 
+    SELECT author, COUNT(id) as event_count
+    FROM pim_versioning_version USE INDEX(logged_at_idx)
+    WHERE logged_at >= :start_time AND logged_at < :end_time
     AND resource_name = :resource_name
-    AND version != 1 
-    GROUP BY author, resource_id
+    AND version != 1
+    GROUP BY author
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 SQL;
-        $sqlParams = [
-            'start_time' => $dateTime->format('Y-m-d H:i:s'),
-            'end_time'   => $dateTime->modify('+1 day')->format('Y-m-d H:i:s'),
-            'resource_name' => $this->productClass,
-            'user_type' => User::TYPE_API
-        ];
+        $dataRows = $this->dbalConnection->executeQuery(
+            $sqlQuery,
+            [
+                'start_time' => $hourlyInterval->fromDateTime(),
+                'end_time' => $hourlyInterval->upToDateTime(),
+                'resource_name' => $this->productClass,
+                'user_type' => User::TYPE_API
+            ],
+            [
+                'start_time' => Types::DATETIME_IMMUTABLE,
+                'end_time' => Types::DATETIME_IMMUTABLE,
+            ]
+        )->fetchAll();
 
-        $dataRows = $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchAll();
         $dailyEventCount = [];
         foreach ($dataRows as $dataRow) {
-            $dailyEventCount[] = new DailyEventCount(
-                '<all>',
-                $dateTime->format('Y-m-d'),
+            $dailyEventCount[] = new HourlyEventCount(
+                AllConnectionCode::CODE,
+                $hourlyInterval,
                 (int) $dataRow['event_count'],
                 EventTypes::PRODUCT_UPDATED
             );

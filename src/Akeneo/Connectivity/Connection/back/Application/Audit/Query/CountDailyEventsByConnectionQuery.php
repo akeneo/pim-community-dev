@@ -13,16 +13,26 @@ class CountDailyEventsByConnectionQuery
 {
     /** @var string */
     private $eventType;
+
     /** @var string */
     private $startDate;
+
     /** @var string */
     private $endDate;
 
-    public function __construct(string $eventType, string $startDate, string $endDate)
-    {
+    /** @var string */
+    private $timezone;
+
+    public function __construct(
+        string $eventType,
+        string $startDate,
+        string $endDate,
+        string $timezone
+    ) {
         $this->eventType = $eventType;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->timezone = $timezone;
     }
 
     public function eventType(): string
@@ -38,5 +48,10 @@ class CountDailyEventsByConnectionQuery
     public function endDate(): string
     {
         return $this->endDate;
+    }
+
+    public function timezone(): string
+    {
+        return $this->timezone;
     }
 }
