@@ -29,3 +29,6 @@ services:
 
     pim_catalog.repository.attribute_group:
         class: 'Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository'
+
+    pim_analytics.query.email_domains:
+        class: Akeneo\Test\Acceptance\Analytics\Query\Sql\EmailDomainsInMemory
