@@ -31,6 +31,13 @@ class DbalEventCountRepository implements EventCountRepository
         }
     }
 
+    public function bulkUpsert(array $hourlyEventCounts): void
+    {
+        foreach ($hourlyEventCounts as $hourlyEventCount) {
+            $this->upsert($hourlyEventCount);
+        }
+    }
+
     private function insert(HourlyEventCount $hourlyEventCount): void
     {
         $insertQuery = <<<SQL
@@ -41,6 +48,29 @@ SQL;
 
         $this->dbalConnection->executeUpdate(
             $insertQuery,
+            [
+                'connection_code' => $hourlyEventCount->connectionCode(),
+                'event_datetime' => $hourlyEventCount->hourlyInterval()->fromDateTime(),
+                'event_count' => (int) $hourlyEventCount->eventCount(),
+                'event_type' => (string) $hourlyEventCount->eventType(),
+            ],
+            [
+                'event_datetime' => Types::DATETIME_IMMUTABLE,
+                'event_count' => Types::INTEGER,
+            ]
+        );
+    }
+
+    private function upsert(HourlyEventCount $hourlyEventCount): void
+    {
+        $upsertQuery = <<<SQL
+INSERT INTO akeneo_connectivity_connection_audit_product (connection_code, event_datetime, event_count, event_type, updated)
+VALUES(:connection_code, :event_datetime, :event_count, :event_type, UTC_TIMESTAMP())
+ON DUPLICATE KEY UPDATE event_count = event_count + :event_count, updated = UTC_TIMESTAMP()
+SQL;
+
+        $this->dbalConnection->executeUpdate(
+            $upsertQuery,
             [
                 'connection_code' => $hourlyEventCount->connectionCode(),
                 'event_datetime' => $hourlyEventCount->hourlyInterval()->fromDateTime(),
