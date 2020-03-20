@@ -121,6 +121,8 @@ class InMemoryProductRepository implements
 
     public function getItemsFromIdentifiers(array $identifiers)
     {
-        throw new NotImplementedException(__METHOD__);
+        return array_filter($this->products->toArray(), function ($product) use ($identifiers) {
+            return in_array($product->getIdentifier(), $identifiers);
+        });
     }
 }

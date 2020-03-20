@@ -120,4 +120,31 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $products['a-product']->shouldBe($product1);
         $products['a-second-product']->shouldBe($product2);
     }
+
+    function it_returns_products_for_given_identifiers()
+    {
+        $product1 = new Product();
+        $product1->setIdentifier('a-product');
+        $this->save($product1);
+
+        $product2 = new Product();
+        $product2->setIdentifier('a-second-product');
+        $this->save($product2);
+
+        $products = $this->getItemsFromIdentifiers(['a-product']);
+        $products->shouldBeArray();
+        $products->shouldHaveCount(1);
+        $products['a-product']->shouldBe($product1);
+
+        $products = $this->getItemsFromIdentifiers(['a-product', 'a-second-product']);
+        $products->shouldBeArray();
+        $products->shouldHaveCount(2);
+        $products['a-product']->shouldBe($product1);
+        $products['a-second-product']->shouldBe($product2);
+
+        $products = $this->getItemsFromIdentifiers([]);
+        $products->shouldBeArray();
+        $products->shouldHaveCount(0);
+
+    }
 }
