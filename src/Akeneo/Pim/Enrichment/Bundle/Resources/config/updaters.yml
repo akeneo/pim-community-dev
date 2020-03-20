@@ -182,6 +182,7 @@ services:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.group'
             - '@pim_catalog.association.missing_association_adder'
+            - '@pim_catalog.updater.adder.association_field'
             - ['associations']
         tags:
             - { name: 'pim_catalog.updater.setter' }
