@@ -40,10 +40,11 @@ class AssociationTypeRepository extends EntityRepository implements DatagridRepo
         $qb
             ->select($rootAlias)
             ->addSelect(sprintf("%s AS label", $labelExpr))
-            ->addSelect('translation.label');
+            ->addSelect('translation.label')
+            ->addSelect('a.isBidirectional');
+        ;
 
-        $qb
-            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
+        $qb->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
 
         return $qb;
     }

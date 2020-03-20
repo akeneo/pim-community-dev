@@ -11,6 +11,9 @@ datagrid:
             label:
                 label: Label
                 frontend_type: label
+            isBidirectional:
+                label:         Is bidirectional
+                frontend_type: boolean-status
         properties:
             id: ~
             edit_link:

@@ -37,6 +37,9 @@ class AssociationType implements AssociationTypeInterface
     /** @var \DateTime */
     protected $updated;
 
+    /** @var bool */
+    protected $isBidirectional;
+
     /**
      * Constructor
      */
@@ -223,5 +226,21 @@ class AssociationType implements AssociationTypeInterface
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isBidirectional(): bool
+    {
+        return $this->isBidirectional;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setIsBidirectional(bool $isBidirectional): void
+    {
+        $this->isBidirectional = $isBidirectional;
     }
 }

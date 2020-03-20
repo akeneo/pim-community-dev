@@ -1,5 +1,5 @@
-code;label-en_US
-X_SELL;Cross sell
-UPSELL;Upsell
-SUBSTITUTION;Substitution
-PACK;Pack
+code;is-bidirectional;label-en_US
+X_SELL;false;Cross sell
+UPSELL;false;Upsell
+SUBSTITUTION;false;Substitution
+PACK;false;Pack
