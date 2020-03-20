@@ -48,8 +48,13 @@ akeneo_data_quality_insights_check_text:
     methods: [POST]
 
 akeneo_data_quality_insights_check_text_ignore:
-    path: /data-quality-insights/check-text/ignore
+    path: /data-quality-insights/product/check-text/ignore
     defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddWordInDictionaryController }
+    methods: [POST]
+
+akeneo_data_quality_insights_product_model_check_text_ignore:
+    path: /data-quality-insights/product-model/check-text/ignore
+    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddProductModelWordInDictionaryController }
     methods: [POST]
 
 akeneo_data_quality_insights_check_title_suggestion:
