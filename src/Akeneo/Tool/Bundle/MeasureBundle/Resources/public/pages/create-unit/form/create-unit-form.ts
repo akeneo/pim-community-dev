@@ -1,4 +1,5 @@
-import {Operator, Unit} from 'akeneomeasure/model/measurement-family';
+import {Operation, Operator} from 'akeneomeasure/model/operation';
+import {Unit} from 'akeneomeasure/model/unit';
 
 type LocaleCode = string;
 
@@ -6,6 +7,7 @@ type CreateUnitForm = {
   code: string;
   label: string;
   symbol: string;
+  operations: Operation[];
 };
 
 const initializeCreateUnitForm = () => {
@@ -13,6 +15,12 @@ const initializeCreateUnitForm = () => {
     code: '',
     label: '',
     symbol: '',
+    operations: [
+      {
+        operator: Operator.MUL,
+        value: '1',
+      },
+    ],
   });
 };
 
@@ -23,13 +31,7 @@ const createUnitFromForm = (data: CreateUnitForm, locale: LocaleCode): Unit => {
       [locale]: data.label,
     },
     symbol: data.symbol,
-    // @todo
-    convert_from_standard: [
-      {
-        operator: Operator.MUL,
-        value: '1',
-      },
-    ],
+    convert_from_standard: data.operations,
   };
 };
 

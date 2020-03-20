@@ -12,6 +12,11 @@ import {Operation, Operator, emptyOperation, MAX_OPERATION_COUNT} from 'akeneome
 import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 
+const AknFieldContainer = styled.div`
+  margin-bottom: 20px;
+  position: relative;
+`;
+
 const Container = styled.div<{level: number}>`
   position: relative;
   margin-left: ${props => (props.level > 1 ? 24 * (props.level - 1) : 0)}px;
@@ -74,6 +79,15 @@ const OperatorSelector = styled.div`
   background-color: ${props => props.theme.color.white};
   display: flex;
   flex-direction: column;
+
+  &:after {
+    bottom: -25px;
+    content: '';
+    display: block;
+    height: 5px;
+    position: relative;
+    width: 100%;
+  }
 `;
 
 const OperatorSelectorLabel = styled.label`
@@ -131,7 +145,7 @@ const OperationCollection = ({operations, errors = [], onOperationsChange}: Oper
   useShortcut(Key.Escape, closeOperatorSelector);
 
   return (
-    <>
+    <AknFieldContainer>
       <OperationCollectionLabel>
         {__('measurements.unit.convert_from_standard')} {__('pim_common.required_label')}
       </OperationCollectionLabel>
@@ -212,7 +226,7 @@ const OperationCollection = ({operations, errors = [], onOperationsChange}: Oper
         </Button>
       </Footer>
       <InputErrors errors={errors.filter(error => '' === error.property)} />
-    </>
+    </AknFieldContainer>
   );
 };
 

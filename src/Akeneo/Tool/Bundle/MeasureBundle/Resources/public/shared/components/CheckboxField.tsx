@@ -1,5 +1,10 @@
 import React from 'react';
 import {Checkbox} from 'akeneomeasure/shared/components/Checkbox';
+import styled from 'styled-components';
+
+const Label = styled.span`
+  user-select: none;
+`;
 
 type CheckboxFieldProps = {
   id: string;
@@ -21,7 +26,7 @@ const CheckboxField = ({id, label, value, onChange, readOnly}: CheckboxFieldProp
             onChange={onChange}
             readOnly={readOnly}
           />
-          {label}
+          <Label>{label}</Label>
         </label>
       </div>
     </div>

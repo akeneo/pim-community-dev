@@ -58,6 +58,11 @@ const setUnitOperations = (measurementFamily: MeasurementFamily, unitCode: UnitC
   return {...measurementFamily, units: units};
 };
 
+const addUnit = (measurementFamily: MeasurementFamily, unit: Unit): MeasurementFamily => ({
+  ...measurementFamily,
+  units: [...measurementFamily.units, unit],
+});
+
 const removeUnit = (measurementFamily: MeasurementFamily, unitCode: UnitCode): MeasurementFamily => ({
   ...measurementFamily,
   units: measurementFamily.units.filter(unit => unit.code !== unitCode),
@@ -143,6 +148,7 @@ export {
   setUnitLabel,
   setUnitSymbol,
   setUnitOperations,
+  addUnit,
   removeUnit,
   getStandardUnit,
   getStandardUnitLabel,

@@ -30,7 +30,7 @@ type TextFieldProps = {
   autofocus?: boolean;
 
   value: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   errors?: ValidationError[];
 
   flag?: string;

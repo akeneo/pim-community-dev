@@ -1,13 +1,13 @@
 import {useCallback, useState} from 'react';
 
-type SetValue = (path: string, value: string) => void;
+type SetValue = (path: string, value: any) => void;
 type ClearValues = () => void;
 
 const useForm = <T>(defaultValues: T): [T, SetValue, ClearValues] => {
   const [state, setState] = useState<T>(defaultValues);
 
   const setValue = useCallback(
-    (path: string, value: string) => {
+    (path: string, value: any) => {
       if (!(path in state)) {
         throw Error(`The field ${path} does not belong to this form.`);
       }
@@ -27,6 +27,4 @@ const useForm = <T>(defaultValues: T): [T, SetValue, ClearValues] => {
   return [state, setValue, clear];
 };
 
-export {
-  useForm
-};
+export {useForm};

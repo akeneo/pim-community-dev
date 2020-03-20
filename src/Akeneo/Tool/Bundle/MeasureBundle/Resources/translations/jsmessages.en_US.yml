@@ -33,6 +33,7 @@ measurements:
                 error: Sorry, an error occured while saving the measurement family.
         add_new_unit: Add a new unit
         is_already_used_and_this_new_unit_will_be_read_only_after_creation: A product attribute is linked to this measurement family. Once the unit created, you will only be able to edit its translated labels and symbol.
+        create_another_unit: Create another unit
     unit:
         title: Edit {{ unitLabel }}
         symbol: Symbol
@@ -63,3 +64,7 @@ measurements:
             error: Sorry, an error occurred while creating the measurement family.
     title:
         measurement: Measurement
+    add_unit:
+        flash:
+            success: Unit successfully added.
+            error: Sorry, an error occured while adding the unit.
