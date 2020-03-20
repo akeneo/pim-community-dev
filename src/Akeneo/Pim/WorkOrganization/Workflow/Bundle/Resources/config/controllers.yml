@@ -187,7 +187,7 @@ services:
             - '@pim_catalog.validator.product_model'
             - '@pimee_workflow.saver.product_model_delegating'
             - '@pim_enrich.normalizer.product_violation'
-            - '@pim_enrich.normalizer.entity_with_family_variant'
+            - '@pim_enrich.normalizer.entity_with_family_variant.light'
             - '@pim_catalog.factory.product_model'
             - '@pim_enrich.normalizer.violation'
             - '@pim_catalog.repository.family_variant'
