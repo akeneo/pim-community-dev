@@ -443,9 +443,7 @@ define(
                 const entity = this.getFormData();
                 const level = $(event.target).data('level');
 
-                this.getRoot().trigger('pim:product:variant-navigation:navigate-to-level:before');
                 this.redirectToEntity(entity.meta.variant_navigation[level].selected);
-                this.getRoot().trigger('pim:product:variant-navigation:navigate-to-level:after');
             },
 
             /**
@@ -464,6 +462,7 @@ define(
                     : 'pim_enrich_product_edit'
                 ;
 
+                this.getRoot().trigger('pim:product:variant-navigation:navigate-to-level:before');
                 router.redirectToRoute(route, params);
             }
         });
