@@ -1,37 +1,9 @@
 import {getLabel} from 'pimui/js/i18n';
 import {LocaleCode} from 'akeneomeasure/model/locale';
-
-enum Direction {
-  Ascending = 'Ascending',
-  Descending = 'Descending',
-}
-
-const MAX_OPERATION_COUNT = 5;
-
-enum Operator {
-  MUL = 'mul',
-  DIV = 'div',
-  ADD = 'add',
-  SUB = 'sub',
-}
-
-type LabelCollection = {
-  [locale: string]: string;
-};
-
-type Operation = {
-  operator: string;
-  value: string;
-};
-
-type UnitCode = string;
-
-type Unit = {
-  code: UnitCode;
-  labels: LabelCollection;
-  symbol: string;
-  convert_from_standard: Operation[];
-};
+import {LabelCollection} from 'akeneomeasure/model/label-collection';
+import {Unit, UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
+import {Operation} from 'akeneomeasure/model/operation';
+import {Direction} from 'akeneomeasure/model/direction';
 
 type MeasurementFamilyCode = string;
 
@@ -44,8 +16,6 @@ type MeasurementFamily = {
 
 const getMeasurementFamilyLabel = (measurementFamily: MeasurementFamily, locale: LocaleCode) =>
   getLabel(measurementFamily.labels, locale, measurementFamily.code);
-
-const getUnitLabel = (unit: Unit, locale: LocaleCode) => getLabel(unit.labels, locale, unit.code);
 
 const setMeasurementFamilyLabel = (
   measurementFamily: MeasurementFamily,
@@ -87,11 +57,6 @@ const setUnitOperations = (measurementFamily: MeasurementFamily, unitCode: UnitC
 
   return {...measurementFamily, units: units};
 };
-
-const emptyOperation = (): Operation => ({
-  value: '1',
-  operator: Operator.MUL,
-});
 
 const removeUnit = (measurementFamily: MeasurementFamily, unitCode: UnitCode): MeasurementFamily => ({
   ...measurementFamily,
@@ -161,23 +126,15 @@ const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCode, sor
 };
 
 export {
-  Direction,
   MeasurementFamily,
   MeasurementFamilyCode,
-  Operation,
-  Operator,
-  Unit,
-  UnitCode,
   getMeasurementFamilyLabel,
   setMeasurementFamilyLabel,
   getUnit,
-  getUnitLabel,
   setUnitLabel,
   setUnitSymbol,
   setUnitOperations,
-  emptyOperation,
   removeUnit,
-  MAX_OPERATION_COUNT,
   getStandardUnit,
   getStandardUnitLabel,
   filterOnLabelOrCode,

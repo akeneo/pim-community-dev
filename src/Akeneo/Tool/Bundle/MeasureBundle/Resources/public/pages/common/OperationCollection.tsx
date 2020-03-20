@@ -2,13 +2,13 @@ import React, {useState, useContext, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Button, TransparentButton} from 'akeneomeasure/shared/components/Button';
-import {Operation, Operator, emptyOperation, MAX_OPERATION_COUNT} from 'akeneomeasure/model/measurement-family';
 import {DownIcon} from 'akeneomeasure/shared/icons/DownIcon';
 import {akeneoTheme} from 'akeneomeasure/shared/theme';
 import {CloseIcon} from 'akeneomeasure/shared/icons/CloseIcon';
 import {SubArrowRightIcon} from 'akeneomeasure/shared/icons/SubArrowRightIcon';
 import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
+import {Operation, Operator, emptyOperation, MAX_OPERATION_COUNT} from 'akeneomeasure/model/operation';
 
 const Container = styled.div<{level: number}>`
   display: flex;
@@ -188,13 +188,16 @@ const OperationCollection = ({operations, onOperationsChange}: OperationCollecti
           )}
         </Container>
       ))}
-      {MAX_OPERATION_COUNT > operations.length && (
-        <Footer>
-          <Button color="grey" outline onClick={() => onOperationsChange([...operations, emptyOperation()])}>
-            {__('measurements.unit.operation.add')}
-          </Button>
-        </Footer>
-      )}
+      <Footer>
+        <Button
+          color="grey"
+          outline={true}
+          disabled={MAX_OPERATION_COUNT <= operations.length}
+          onClick={() => onOperationsChange([...operations, emptyOperation()])}
+        >
+          {__('measurements.unit.operation.add')}
+        </Button>
+      </Footer>
     </>
   );
 };

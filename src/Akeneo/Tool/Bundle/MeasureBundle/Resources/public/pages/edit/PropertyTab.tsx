@@ -6,7 +6,6 @@ import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
-import {useFocus} from 'akeneomeasure/shared/hooks/use-focus';
 
 const Container = styled.div`
   display: flex;
@@ -24,7 +23,6 @@ const PropertyTab = ({
 }) => {
   const __ = useContext(TranslateContext);
   const locales = useUiLocales();
-  const [ref] = useFocus();
 
   return (
     <Container>
@@ -43,7 +41,7 @@ const PropertyTab = ({
         {null !== locales &&
           locales.map((locale, index) => (
             <TextField
-              ref={0 === index ? ref : undefined}
+              autofocus={0 === index}
               id={`measurements.family.properties.label.${locale.code}`}
               label={locale.label}
               key={locale.code}
