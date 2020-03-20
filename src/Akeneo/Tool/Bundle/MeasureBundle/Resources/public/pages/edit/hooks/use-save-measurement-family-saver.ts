@@ -10,7 +10,7 @@ type SaverResult = {
 
 type Saver = (measurementFamily: MeasurementFamily) => Promise<SaverResult>;
 
-const useMeasurementFamilySaver = (): Saver => {
+const useSaveMeasurementFamilySaver = (): Saver => {
   const router = useContext(RouterContext);
 
   return async (measurementFamily: MeasurementFamily) => {
@@ -42,4 +42,4 @@ const useMeasurementFamilySaver = (): Saver => {
   };
 };
 
-export {useMeasurementFamilySaver};
+export {useSaveMeasurementFamilySaver};

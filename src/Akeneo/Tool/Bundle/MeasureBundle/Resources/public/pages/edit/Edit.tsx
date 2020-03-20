@@ -18,8 +18,9 @@ import {
   DropdownLink,
 } from 'akeneomeasure/shared/components/SecondaryActionsDropdownButton';
 import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
-import {ValidationError} from 'akeneomeasure/model/validation-error';
-import {useMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-measurement-family-saver';
+import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
+import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family-saver';
+import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 
 enum Tab {
   Units = 'units',
@@ -47,7 +48,26 @@ const TabSelector = styled.div<{isActive: boolean}>`
   font-size: ${props => props.theme.fontSize.big};
   color: ${props => (props.isActive ? props.theme.color.purple100 : 'inherit')};
   border-bottom: 3px solid ${props => (props.isActive ? props.theme.color.purple100 : 'transparent')};
+  display: flex;
+  align-items: baseline;
+
+  > :last-child {
+    margin-left: 5px;
+  }
 `;
+
+const hasTabErrors = (tab: Tab, errors: ValidationError[]): boolean => {
+  const unitsErrorCount = filterErrors(errors, 'units').length;
+
+  switch (tab) {
+    case Tab.Units:
+      return 0 < unitsErrorCount;
+    case Tab.Properties:
+      return 0 < errors.length - unitsErrorCount;
+    default:
+      return false;
+  }
+};
 
 const Edit = () => {
   const __ = useContext(TranslateContext);
@@ -57,9 +77,8 @@ const Edit = () => {
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.Units);
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
   const [errors, setErrors] = useState<ValidationError[]>([]);
-  const saveMeasurementFamily = useMeasurementFamilySaver();
+  const saveMeasurementFamily = useSaveMeasurementFamilySaver();
   const notify = useContext(NotifyContext);
-  console.log(errors);
 
   const handleSave = useCallback(async () => {
     if (null === measurementFamily) {
@@ -139,6 +158,7 @@ const Edit = () => {
           {Object.values(Tab).map((tab: Tab) => (
             <TabSelector key={tab} onClick={() => setCurrentTab(tab)} isActive={currentTab === tab}>
               {__(`measurements.family.tab.${tab}`)}
+              {hasTabErrors(tab, errors) && <ErrorBadge />}
             </TabSelector>
           ))}
         </TabContainer>
@@ -147,7 +167,7 @@ const Edit = () => {
             <UnitTab
               measurementFamily={measurementFamily}
               onMeasurementFamilyChange={setMeasurementFamily}
-              errors={errors}
+              errors={filterErrors(errors, 'units')}
             />
           )}
           {currentTab === Tab.Properties && (

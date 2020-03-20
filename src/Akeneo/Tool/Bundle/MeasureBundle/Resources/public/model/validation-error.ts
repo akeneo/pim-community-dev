@@ -4,6 +4,8 @@ type ValidationError = {
 };
 
 const filterErrors = (errors: ValidationError[], property: string) =>
-  errors.filter((error: ValidationError) => error.property === property);
+  errors
+    .filter(error => error.property.startsWith(property))
+    .map(error => ({...error, property: error.property.replace(property, '')}));
 
 export {ValidationError, filterErrors};
