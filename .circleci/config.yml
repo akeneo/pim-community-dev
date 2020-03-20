@@ -279,6 +279,10 @@ jobs:
           path: var/logs
 
   build_prod:
+      parameters:
+          is_pull_request:
+              type: boolean
+              default: true
       environment:
         <<: *envVarsDeployDev
       machine:
@@ -287,6 +291,16 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
+          - when:
+                condition: << parameters.is_pull_request >>
+                steps:
+                    - run:
+                          name: Update composer.json if same branch exists in CE
+                          command: >
+                              curl --output /dev/null --silent --head --fail
+                              https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
+                              sed -i "s/dev-master/dev-${CIRCLE_BRANCH}/" composer.json ||
+                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
           - run:
               name: Build PROD PIM docker image
               command: IMAGE_TAG=$CIRCLE_SHA1 IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
@@ -543,6 +557,7 @@ workflows:
                 requires:
                     - checkout
           - build_prod:
+                is_pull_request: false
                 requires:
                     - checkout
           - deploy_master_environment:
@@ -595,6 +610,7 @@ workflows:
                 requires:
                     - checkout
           - build_prod:
+                is_pull_request: false
                 requires:
                     - checkout
           - deploy_master_environment:
