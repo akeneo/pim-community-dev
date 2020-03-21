@@ -1,0 +1,4 @@
+"Sorry, page was not loaded correctly": "죄송합니다. 페이지가 제대로 로드되지 않았습니다."
+"Your local changes will be lost. Are you sure you want to refresh the page?": "로컬 변경 사항이 손실됩니다. 페이지를 새로 고치시겠습니까?"
+"navigation.message.content.outdated": "{{ title }} 페이지의 콘텐츠가 오래되었습니다. <a href='#' data-action='page-refresh'>페이지를 새로 고치십시오</a>"
+"Content of pinned page is outdated": "고정된 페이지의 콘텐츠가 오래되었습니다."

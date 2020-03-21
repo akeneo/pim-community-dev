@@ -1,8 +1,8 @@
-"oro_datagrid.no_data_hint %entityHint%": '%entityHint% がありません。'
-oro_datagrid.not_found_hint: 検索結果はありません。
+"oro_datagrid.no_data_hint %entityHint%": '%entityHint% がありません'
+oro_datagrid.not_found_hint: 検索結果がありません
 oro_datagrid.label_add_filter: フィルター管理
 oro_datagrid.label_loading_mask: 読み込み中...
-oro.grid.mass_action.selected_rows: 選択した行
+oro.grid.mass_action.selected_rows: 選択済の行
 oro.grid.mass_action.confirm_title: 一括操作の確認
 oro.grid.mass_action.confirm_content: 実行してもよろしいですか？
 oro.grid.mass_action.confirm_ok: はい、実行します
@@ -11,19 +11,23 @@ oro.grid.mass_action.error_content: 一括操作を実行できません
 oro.grid.mass_action.delete.label: 削除
 oro.grid.mass_action.delete.confirm_title: 一括削除の確認
 oro.grid.mass_action.delete.confirm_content: 選択した項目を削除してもよろしいですか?
+oro.grid.mass_action.delete.item_limit: '%limit%商品以上は一括削除できません (%count% 選択中)'
 oro.grid.datagrid.page_size.all: すべて
-oro.grid.mass_action.delete.success_message: "{0} 削除されたエンティティはありませんでした| {1} 1件のエンティティが削除されました|]1,Inf [%count% 件のエンティティが削除されました"
+oro.grid.mass_action.delete.success_message: "{0} 削除されたエンティティはありません| {1} 1件のエンティティが削除されました|]1,Inf [%count% 件のエンティティが削除されました"
+#Datagrid views constraints
 datagrid_view:
   columns:
-    min_message: 最低でも1つの表示する列を選択してください
+    min_message: 表示するデータ一覧表の列を1つ以上選択してください
   label:
-    unique_message: ラベルは一意でなければなりません
+    unique_message: ラベルは固有でなければなりません
     not_blank_message: ラベル名を入力してください
+#View selector flash messages
 grid.view_selector.flash:
-  created: データグリッドビューを作成しました
-  removed: データグリッドビューを削除しました
+  created: データ一覧表を作成しました
+  removed: データ一覧表を削除しました
   not_removable: このビューを削除する権限を持っていません
-quick_export: クイック エクスポート
+quick_export: クイックエクスポート
 import: インポート
 export: エクスポート
 mass_edit: 一括編集
+mass_delete: 一括削除

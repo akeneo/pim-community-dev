@@ -18,13 +18,13 @@ Status: ステータス
 All: すべて
 Per page: 1 ページあたり
 Mass Action Confirmation: 一括操作の確認
-Mass action performed.: 一括操作を実行。
-Mass action is not performed.: 一括操作を実行しません。
-Please, select items to perform mass action.: 一括操作を実行するアイテムを選択してください。
+Mass action performed.: 一括操作を実行
+Mass action is not performed.: 一括操作は実行されません
+Please, select items to perform mass action.: 一括操作を実行するアイテムを選択してください
 Execution Confirmation: 実行の確認
 Are you sure you want to do this?: 実行してもよろしいですか？
-Action performed.: アクションを実行しました。
-Action is not performed.: アクションは実行されません。
+Action performed.: アクションを実行しました
+Action is not performed.: アクションは実行されません
 Please, select item to perform action.: アクションを実行する項目を選択してください。
 View per page: 1ページあたりの表示
 Enabled: 有効
@@ -35,11 +35,13 @@ No: false
 oro.datagrid.entityHint: エンティティ
 oro.datagrid.noentities: レコードが見つかりません
 oro.datagrid.noresults: "検索結果はありません。"
-oro.datagrid.noresults_subTitle: "新しい検索条件を再度実行してください。"
-oro.datagrid.nocolumns: このグリッドを構成する列がありません。
+oro.datagrid.noresults_subTitle: "新しい検索条件で再試行してください"
+oro.datagrid.nocolumns: この一覧を構成する列がありません
 oro.datagrid.pagination.label: "ページ"
 oro.datagrid.pagination.totalPages: "/ {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} 件"
+#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
+oro.datagrid.pagination.limit_warning: "一覧で表示できる結果は{{ limit }}件までです。検索条件を追加して再試行してください"
 oro.datagrid.action.reset: "リセット"
 oro.datagrid.action.refresh: "更新"
 oro_datagrid.select.all: "すべて"
@@ -51,10 +53,10 @@ pim.grid.ajax_choice_filter.label_not_empty: 空ではない
 pim:
   grid:
     choice_filter:
-      label_contains: 含む
-      label_does_not_contain: 含まない
-      label_equal: 等しい
-      label_start_with: で始まる
+      label_contains: '含む:'
+      label_does_not_contain: '含まない:'
+      label_equal: '＝'
+      label_start_with: '次の内容始まる:'
       label_empty: 空
       label_not_empty: 空ではない
       label_in_list: リストに存在する
@@ -63,14 +65,15 @@ pim:
       label: 通貨
     category_filter:
       done: 完了
+#Column configuration
 Available Columns: 利用可能な列
-Displayed Columns: 選択された項目
-datagrid_view.columns.min_message: 最低でも1つの表示する列を選択してください
+Displayed Columns: 選択済の列
+datagrid_view.columns.min_message: 表示するデータ一覧表の列を1つ以上選択してください
 pim_datagrid:
   column_configurator:
     label: 列
-    title: 列を設定します。
-    all_groups: すべてのグループ
+    title: 列の設定
+    all_groups: グループ全て
     search: 検索
     clear: クリア
     displayed_columns: 選択された項目
@@ -81,18 +84,22 @@ pim_datagrid:
     attribute_groups: 属性グループ
   mass_action:
     delete:
-      confirm_title: 削除を確認する
+      confirm_title: 削除の確認
       confirm_ok: OK
       empty_selection: 商品が選択されていません。
-pim.grid.mass_action.quick_export.title: クイック エクスポート
+#Quick export
+pim.grid.mass_action.quick_export.title: クイックエクスポート
 pim.grid.mass_action.quick_export.launched: クイックエクスポート処理が開始されました。
+#Custom actions
 pim.grid.action.launch.title: 起動
 pim.grid.action.show.title: 表示
 Please select view: ビューを選択してください。
-Loading...: 読み込んでいます.
-View: ビュー
+Loading...: 読み込み中…
+View: 表示
+#Datetimepicker
 from: 開始
 to: 終了
+#View selector
 grid.view_selector:
   default_view: デフォルトビュー
   save_changes: このビューを保存
@@ -101,13 +108,22 @@ grid.view_selector:
   create: 作成
   search: 検索
   views: ビュー
-  placeholder: 新しいビューの名前
+  placeholder: 新規ビューの名前
   choose_label: ビューのラベルを選択
   confirmation:
-    remove: 本当に削除したいですか?
+    remove: 本当に削除しますか?
     delete: 削除を確認する
-grid.view_selector.flash.updated: データグリッドビューを更新しました
+#View selector flash messages
+grid.view_selector.flash.updated: データ一覧表を更新しました
+#Display selector
 grid.display_selector:
   label: 表示
+  gallery: ギャラリー
+  list: リスト
+#Credentials cell
 Client ID: クライアントID
-Secret: 秘密鍵
+Secret: 非公開
+grid.empty_results:
+  associated_product:
+    hint: 関連商品はありません
+    subHint: '商品を関連付けするには、「関連を追加」ボタンをクリックしてください。'

@@ -1,0 +1,166 @@
+pim_user:
+  user:
+    tab:
+      general.title: 일반
+      additional.title: 추가
+      group_and_role.title: 그룹 및 역할
+      password.title: 암호
+      business_unit.title: 비즈니스 단위
+      email_synchronization.title: 이메일 동기화 설정
+      interfaces.title: 인터페이스
+  group:
+    tab:
+      general.title: 일반
+      users.title: 사용자
+#user grids
+oro.user.controller:
+  group.message.saved: "그룹 저장됨"
+  role.message.saved: "역할 저장됨"
+  user.message.saved: "사용자 저장됨"
+  status.message.saved: "상태 저장됨"
+oro.user.grid.users:
+  columns:
+    username: "사용자 이름"
+    email: "이메일"
+    firstName: "이름"
+    lastName: "성"
+    createdAt: "생성:"
+    updatedAt: "업데이트:"
+    enabled: "상태"
+oro.user.grid.roles:
+  columns:
+    label: "레이블"
+oro.user.grid.groups:
+  columns:
+    name: "이름"
+#Page titles
+pim_title:
+  user.index: 사용자
+  user_role.index: 역할
+  user_group.index: 그룹
+  system_configuration.index: 구성
+#User
+user.title: 사용자
+user.overview: 사용자
+Users Management: 사용자 관리
+Create user: 사용자 만들기
+btn.create.user: 사용자 만들기
+New user: 새 사용자
+Additional: 추가
+Groups and Roles: 그룹 및 역할
+Username: 사용자 이름
+Password: 암호
+Password (again): 암호(다시 입력)
+Re-enter password: 암호 다시 입력
+Name prefix: 이름 접두사
+First name: 이름
+Middle name: 중간 이름
+Last name: 성
+Name suffix: 이름 접미사
+Date of birth: 생일
+Avatar: 아바타
+Additional emails: 추가 이메일
+Add another email: 다른 이메일 추가
+Catalog locale: 카탈로그 로케일
+Catalog scope: 카탈로그 범위
+Default tree: 기본 트리
+Business Units: 비즈니스 단위
+Email synchronization settings: 이메일 동기화 설정
+Host: 호스트
+Port: 포트
+Ssl: SSL
+Last logged in: 마지막 로그인
+Login count: 로그인 수
+Additional Information: 추가 정보
+Interfaces: 인터페이스
+Basic Information: 기본 정보
+Contact Information: 연락처 정보
+User name: 사용자 이름
+Birthday: 생일
+API key: API 키
+Ui locale: UI 로케일
+UI locale: UI 로케일
+User salt: 사용자 솔트
+Current password: 현재 암호
+New password: 새 암호
+Repeat new password: 새 암호(반복)
+Generate key: 키 생성
+Primary: 기본
+Removed user: 제거된 사용자
+user:
+  product_grid_filters: 재품 그리드 필터
+  default_product_grid_view:
+    label: 기본 제품 그리드 보기
+  default_grid_view:
+    none: 없음
+  timezone: 시간대
+#Role
+Role: 역할
+Owner: 소유자
+General: 일반
+Entity: 엔터티
+Capabilities: 기능
+Save and close: 저장 후 닫기
+Has role: 역할 있음
+role:
+  title: 역할
+  overview: 역할
+  edit: 역할 편집
+  create: 역할 만들기
+btn.create.role: 역할 만들기
+rights:
+  action: 권한
+oro_security:
+  acl_group:
+    user: 사용자
+    role: 역할
+    group: 사용자 그룹
+  acl:
+    user:
+      view: 사용자 나열
+      create: 사용자 만들기
+      edit: 사용자 편집
+      delete: 사용자 제거
+    role:
+      view: 역할 나열
+      create: 역할 만들기
+      edit: 역할 편집
+      delete: 역할 제거
+    group:
+      view: 사용자 그룹 나열
+      create: 사용자 그룹 만들기
+      edit: 사용자 그룹 편집
+      delete: 사용자 그룹 제거
+#Security
+(default): 엔터티의 기본 권한
+VIEW: 보기
+CREATE: 만들기
+EDIT: 편집
+DELETE: 삭제
+ASSIGN: 할당
+SHARE: 공유
+oro:
+  security:
+    access-level:
+      BASIC: 사용자
+      LOCAL: 비즈니스 단위
+      DEEP: 사업부
+      GLOBAL: 조직
+      SYSTEM: 시스템
+      NONE: 없음
+#User Group
+Create group: 그룹 만들기
+btn.create.user-group: 그룹 만들기
+Has group: 그룹 있음
+Save and Close: 저장 후 닫기
+user-group.overview: 그룹
+#Login page
+Log in: 로그인
+Remember me on this computer: 이 컴퓨터에 사용자 이름 및 암호 저장
+Forgot your password?: 암호를 잊으셨습니까?
+Username or Email: 사용자 이름 또는 이메일
+Forgot Password: 암호 분실
+Request: 요청
+Check Email: 이메일 확인
+password_reset_email_sent: 사용자에게 이메일이 전송되었습니다. 이 이메일에는 암호를 재설정할 수 있는 링크가 포함되어 있습니다.
+Go to homepage: 홈페이지로 이동

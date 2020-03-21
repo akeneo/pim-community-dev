@@ -1,5 +1,5 @@
 pim_dashboard:
-  title: ダッシュ ボード
+  title: ダッシュボード
   version: バージョン
   link.label:
     product: 商品管理
@@ -13,7 +13,7 @@ pim_dashboard:
     completeness:
       title: チャンネルとロケールについての完全性
     last_operations:
-      title: 最後の操作
+      title: 前回の操作
       empty: 操作が見つかりません
       status: ステータス
       date: 日付
@@ -24,5 +24,6 @@ pim_dashboard:
         import: インポート
         export: エクスポート
         mass_edit: 一括編集
-        quick_export: クイック エクスポート
-        compute_product_models_descendants: 製品モデルの子孫を計算します。
+        quick_export: クイックエクスポート
+        compute_product_models_descendants: 商品モデルの下位を全て計算
+        mass_delete: 製品を一括削除

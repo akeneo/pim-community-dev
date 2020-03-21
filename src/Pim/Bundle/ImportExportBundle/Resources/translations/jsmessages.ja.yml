@@ -10,20 +10,21 @@ pim_connector:
           title: カテゴリ選択
           cancel: キャンセル
           confirm: 確認
-        label: "{0} すべての製品 |{1} 1つのカテゴリの選択 |]1、Inf [{{ count }} カテゴリの選択"
+        label: "{0} すべての製品 |{1} 1つのカテゴリが選択済 |]1、Inf [{{ count }} カテゴリが選択済"
         edit: 編集
         title: カテゴリ選択
     locales:
       validation:
-        not_blank: ロケールは 1 つ選択する必要があります。エクスポートするロケールを選択してください。
+        not_blank: ロケールは 1 つ選択する必要があります。エクスポートするロケールを選択してください
+#Page titles
 page_title:
-  pim_importexport_export_profile_index: エクスポート プロファイルの管理
-  pim_importexport_export_profile_edit: '{{ job.label }}のエクスポートプロファイル |編集'
-  pim_importexport_export_profile_show: '{{ job.label }}のエクスポートプロファイル |表示'
+  pim_importexport_export_profile_index: エクスポートプロファイルの管理
+  pim_importexport_export_profile_edit: エクスポートプロファイル{{ job.label }} |編集
+  pim_importexport_export_profile_show: エクスポートプロファイル{{ job.label }} |表示
   pim_importexport_export_execution_index: 実行履歴をエクスポート
   pim_importexport_export_execution_show: エクスポートの実行 |詳細
-  pim_importexport_import_profile_index: インポート プロファイル管理
-  pim_importexport_import_profile_edit: '{{ job.label }}のインポート プロファイル |編集'
-  pim_importexport_import_profile_show: '{{ job.label }}のインポートプロファイル |表示'
+  pim_importexport_import_profile_index: インポートプロファイル管理
+  pim_importexport_import_profile_edit: インポートプロファイル{{ job.label }} |編集
+  pim_importexport_import_profile_show: インポートプロファイル{{ job.label }} |表示
   pim_importexport_import_execution_index: インポート実行履歴
   pim_importexport_import_execution_show: インポートの実行 |詳細

@@ -1,0 +1,253 @@
+pim_connector:
+  steps:
+    dummy_reader.title: 더미 리더
+    product_reader.title: 제품 추출
+    entity_reader.title: 엔터티 추출
+    csv_reader:
+      title: CSV 리더
+    file_reader:
+      invalid_item_columns_count: '%totalColumnsCount%개 열이 필요하지만, 실제로는 %itemColumnsCount%개가 %filePath%:%lineno%에 있습니다'
+    csv_product_reader.title: CSV 제품 리더
+    csv_category_reader.title: CSV 카테고리 리더
+    dummy_processor.title: 더미 프로세서
+    product_processor.title: 제품 만들기
+    category_processor.title: Category 생성
+    association_processor.title: 연결 만들기
+    product_association_processor.title: Association 생성
+    group_processor.title: 그룹 만들기
+    attribute_processor.title: 특성 만들기
+    attribute_option_processor.title: 특성 옵션 만들기
+    heterogeneous_processor.title: CSV 제품 시리얼라이저
+    homogeneous_processor.title: CSV 엔터티 시리얼라이저
+    transformer_processor.title: 변환
+    dummy_writer.title: 더미 라이터
+    file_writer.title: 출력
+    product_writer.title: 제품 스토리지
+    category_writer.title: 카테고리 스토리지
+    writer.title: 엔터티 스토리지
+    csv_writer.title: Csv 라이터
+job_execution.summary:
+  read: 읽음
+  write: 작성함
+  skip: 건너뜀
+  create: 생성됨
+  process: 처리함
+  update_products: 업데이트한 제품
+  process_products: 처리한 제품
+  skip_products: 건너뛴 제품
+  displayed: 첫 번째 경고 표시됨
+  charset_validator:
+    title: '파일 인코딩:'
+    skipped: 건너뜀, 화이트리스트에 확장명 있음
+  product_skipped_no_diff: 제품 건너뜀(차이 없음)
+  product_skipped_no_associations: 제품 건너뜀(연결 검색 안 됨)
+  product_model_skipped_no_associations: 제품 모델 건너뜀(연결 검색 안 됨)
+  product_model_skipped_no_diff: 제품 모델 건너뜀(차이 없음)
+  item_position: 읽은 라인
+  skipped_in_root_product_model: 상위가 포함된 제품 모델 건너뜀
+  skipped_in_sub_product_model: 상위가 포함되지 않은 제품 모델 건너뜀
+#Job labels
+batch_jobs:
+  csv_product_export:
+    label: CSV로 제품 내보내기
+    export.label: 제품 내보내기
+  csv_product_model_export:
+    label: CSV로 제품 모델 내보내기
+    export.label: 제품 모델 내보내기
+  csv_category_export:
+    label: CSV로 카테고리 내보내기
+    export.label: 카테고리 내보내기
+  csv_attribute_export:
+    label: CSV로 특성 내보내기
+    export.label: 특성 내보내기
+  csv_attribute_option_export:
+    label: CSV로 특성 옵션 내보내기
+    export.label: 특성 옵션 내보내기
+  csv_association_type_export:
+    label: CSV로 연결 유형 내보내기
+    export.label: 연결 유형 내보내기
+  csv_group_export:
+    label: CSV로 그룹 내보내기
+    export.label: 그룹 내보내기
+  csv_family_export:
+    label: CSV로 패밀리 내보내기
+    export.label: 패밀리 내보내기
+  csv_family_variant_export:
+    label: CSV로 패밀리 변형 내보내기
+    export.label: 패밀리 변형 내보내기
+  csv_product_import:
+    label: CSV로 제품 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 제품 가져오기
+    import_associations.label: 연결 가져오기
+  csv_product_model_import:
+    label: CSV로 제품 모델 가져오기
+    validation.label: 파일 유효성 검사
+    import_root_product_model.label: 루트 제품 모델 가져오기
+    import_sub_product_model.label: 하위 제품 모델 가져오기
+    import_product_model_descendants.label: 제품 모델 하위 항목 계산
+  csv_category_import:
+    label: CSV로 카테고리 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 카테고리 가져오기
+  csv_attribute_import:
+    label: CSV로 특성 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 특성 가져오기
+  csv_attribute_option_import:
+    label: CSV로 특성 옵션 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 특성 옵션 가져오기
+  csv_association_type_import:
+    label: CSV로 연결 유형 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 연결 유형 가져오기
+  csv_family_import:
+    label: CSV로 패밀리 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 패밀리 가져오기
+  csv_family_variant_import:
+    label: CSV로 패밀리 변형 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 패밀리 변형 가져오기
+  csv_group_import:
+    label: CSV로 그룹 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 그룹 가져오기
+  csv_channel_export:
+    label: CSV로 채널 내보내기
+    export.label: 채널 내보내기
+  csv_locale_export:
+    label: CSV로 로케일 내보내기
+    export.label: 로케일 내보내기
+  csv_attribute_group_export:
+    label: CSV로 특성 그룹 내보내기
+    export.label: 특성 그룹 내보내기
+  csv_currency_export:
+    label: CSV로 통화 내보내기
+    export.label: 통화 내보내기
+  csv_group_type_export:
+    label: CSV로 그룹 유형 내보내기
+    export.label: 그룹 유형 내보내기
+  csv_channel_import:
+    label: CSV로 채널 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 채널 가져오기
+  csv_locale_import:
+    label: CSV로 로케일 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 로케일 가져오기
+  csv_attribute_group_import:
+    label: CSV로 특성 그룹 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 특성 그룹 가져오기
+  csv_currency_import:
+    label: CSV로 통화 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 통화 가져오기
+  csv_group_type_import:
+    label: CSV로 그룹 유형 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 그룹 유형 가져오기
+  xlsx_category_import:
+    label: XLSX로 카테고리 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 카테고리 가져오기
+  xlsx_association_type_import:
+    label: XLSX로 연결 유형 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 연결 유형 가져오기
+  xlsx_attribute_import:
+    label: XLSX로 특성 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 특성 가져오기
+  xlsx_attribute_option_import:
+    label: XLSX로 특성 옵션 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 특성 옵션 가져오기
+  xlsx_family_import:
+    label: XLSX로 패밀리 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 패밀리 가져오기
+  xlsx_family_variant_import:
+    label: XLSX로 패밀리 변형 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 패밀리 변형 가져오기
+  xlsx_product_export:
+    label: XLSX로 제품 내보내기
+    export.label: 제품 내보내기
+  xlsx_product_model_export:
+    label: XLSX로 제품 모델 내보내기
+    export.label: 제품 모델 내보내기
+  xlsx_product_import:
+    label: XLSX로 제품 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 제품 가져오기
+    import_associations.label: 연결 가져오기
+  xlsx_product_model_import:
+    label: XLSX로 제품 모델 가져오기
+    validation.label: 파일 유효성 검사
+    import_root_product_model.label: 루트 제품 모델 가져오기
+    import_sub_product_model.label: 하위 제품 모델 가져오기
+    import_product_model_descendants.label: 제품 모델 하위 항목 계산
+    import_associations.label: 연결 가져오기
+  xlsx_group_export:
+    label: XLSX로 그룹 내보내기
+    export.label: 그룹 내보내기
+  xlsx_group_import:
+    label: XLSX로 그룹 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 그룹 가져오기
+  xlsx_family_export:
+    label: XLSX로 패밀리 내보내기
+    export.label: 패밀리 내보내기
+  xlsx_family_variant_export:
+    label: XLSX로 패밀리 변형 내보내기
+    export.label: 패밀리 변형 내보내기
+  xlsx_category_export:
+    label: XLSX로 카테고리 내보내기
+    export.label: 카테고리 내보내기
+  xlsx_attribute_export:
+    label: XLSX로 특성 내보내기
+    export.label: XLSX로 특성 내보내기
+  xlsx_attribute_option_export:
+    label: XLSX로 특성 옵션 내보내기
+    export.label: XLSX로 특성 옵션 내보내기
+  xlsx_association_type_export:
+    label: XLSX로 연결 유형 내보내기
+    export.label: XLSX로 연결 유형 내보내기
+  xlsx_channel_export:
+    label: XLSX로 채널 내보내기
+    export.label: 채널 내보내기
+  xlsx_locale_export:
+    label: XLSX로 로케일 내보내기
+    export.label: 로케일 내보내기
+  xlsx_attribute_group_export:
+    label: XLSX로 특성 그룹 내보내기
+    export.label: 특성 그룹 내보내기
+  xlsx_currency_export:
+    label: XLSX로 통화 내보내기
+    export.label: 통화 내보내기
+  xlsx_group_type_export:
+    label: XLSX로 그룹 유형 내보내기
+    export.label: 그룹 유형 내보내기
+  xlsx_channel_import:
+    label: XLSX로 채널 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 채널 가져오기
+  xlsx_locale_import:
+    label: XLSX로 로케일 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 로케일 가져오기
+  xlsx_attribute_group_import:
+    label: XLSX로 특성 그룹 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 특성 그룹 가져오기
+  xlsx_currency_import:
+    label: XLSX로 통화 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 통화 가져오기
+  xlsx_group_type_import:
+    label: XLSX로 그룹 유형 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 그룹 유형 가져오기

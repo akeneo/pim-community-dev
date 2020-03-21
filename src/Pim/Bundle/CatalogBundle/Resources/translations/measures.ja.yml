@@ -54,10 +54,10 @@ WATT: ワット
 Speed: 速度
 FOOT_PER_SECOND: フィート/秒
 FOOT_PER_HOUR: フィート/時
-KILOMETER_PER_HOUR: Km/時
-METER_PER_HOUR: m/時
-METER_PER_MINUTE: m/分
-METER_PER_SECOND: m/秒
+KILOMETER_PER_HOUR: キロメートル/時
+METER_PER_HOUR: メートル/時
+METER_PER_MINUTE: メートル/分
+METER_PER_SECOND: メートル/秒
 MILE_PER_HOUR: マイル/時
 YARD_PER_HOUR: ヤード/時
 Temperature: 温度
@@ -84,7 +84,7 @@ OUNCE: オンス
 PINT: パイント
 Weight: 重量
 DENIER: デニール
-GRAIN: 粒
+GRAIN: グレーン
 GRAM: グラム
 KILOGRAM: キログラム
 LIVRE: リーブル

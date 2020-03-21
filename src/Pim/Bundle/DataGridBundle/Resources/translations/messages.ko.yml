@@ -1,0 +1,33 @@
+"oro_datagrid.no_data_hint %entityHint%": '%entityHint%이(가) 없습니다.'
+oro_datagrid.not_found_hint: 죄송합니다. 검색 결과가 없습니다.
+oro_datagrid.label_add_filter: 필터 관리
+oro_datagrid.label_loading_mask: 로드 중 . . .
+oro.grid.mass_action.selected_rows: 선택된 행
+oro.grid.mass_action.confirm_title: 대량 작업 확인
+oro.grid.mass_action.confirm_content: 이 작업을 수행하시겠습니까?
+oro.grid.mass_action.confirm_ok: 예, 수행합니다
+oro.grid.mass_action.error_title: 대량 작업 오류
+oro.grid.mass_action.error_content: 대량 작업을 수행할 수 없음
+oro.grid.mass_action.delete.label: 삭제
+oro.grid.mass_action.delete.confirm_title: 대량 삭제 확인
+oro.grid.mass_action.delete.confirm_content: 선택된 항목을 제거하시겠습니까?
+oro.grid.mass_action.delete.item_limit: '%limit%개 넘는 제품(%count%개 선택됨)은 대량 삭제할 수 없습니다'
+oro.grid.datagrid.page_size.all: 모두
+oro.grid.mass_action.delete.success_message: "{0} 엔터티를 제거하지 못했습니다|{1} 1개 엔터티가 제거되었습니다|] 1, Inf [%count%개 엔터티가 제거되었습니다"
+#Datagrid views constraints
+datagrid_view:
+  columns:
+    min_message: 표시할 데이터 그리드 열을 하나 이상 선택해야 합니다
+  label:
+    unique_message: 레이블은 고유해야 합니다
+    not_blank_message: 이 레이블은 비워둘 수 없습니다
+#View selector flash messages
+grid.view_selector.flash:
+  created: 데이터 그리드 보기 생성됨
+  removed: 데이터 그리드 보기 제거됨
+  not_removable: 이 보기를 제거할 수 있는 권한이 없습니다
+quick_export: 빠른 내보내기
+import: 가져오기
+export: 내보내기
+mass_edit: 대량 편집
+mass_delete: 대량 삭제

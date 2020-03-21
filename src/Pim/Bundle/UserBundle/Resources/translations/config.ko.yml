@@ -1,0 +1,6 @@
+entity.user.name: 사용자
+entity.user.description: 사용자 프로필
+entity.role.name: 역할
+entity.role.description: 사용자 역할
+entity.group.name: 그룹
+entity.group.description: 역할 그룹
