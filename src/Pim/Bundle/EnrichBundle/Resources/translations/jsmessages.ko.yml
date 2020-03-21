@@ -1,0 +1,1511 @@
+#Grid action messages
+confirmation:
+  title: 확인
+  remove:
+    item: 이 항목을 삭제하시겠습니까?
+    association_type: 이 연결 유형을 삭제하시겠습니까?
+    attribute: 이 특성을 삭제하시겠습니까?
+    attribute_group: 이 특성 그룹을 삭제하시겠습니까?
+    family: 이 패밀리를 삭제하시겠습니까?
+    family_variant: 이 패밀리 변형을 삭제하시겠습니까?
+    product: 이 제품을 삭제하시겠습니까?
+    product_model: 이 제품 모델을 삭제하시겠습니까? 모든 하위 모델, 제품 모델 및 변형 제품도 삭제됩니다.
+    channel: 이 채널을 삭제하시겠습니까?
+    group: 이 그룹을 삭제하시겠습니까?
+    group_type: 이 그룹 유형을 삭제하시겠습니까?
+    import_profile: 이 가져오기 프로필을 삭제하시겠습니까?
+    export_profile: 이 내보내기 프로필을 삭제하시겠습니까?
+    user: 이 사용자를 삭제하시겠습니까?
+    role: 이 역할을 삭제하시겠습니까?
+    job_instance: 이 작업 인스턴스를 삭제하시겠습니까?
+    api_connection: 이 API 연결을 취소하시겠습니까? 이 연결을 통해 이루어진 모든 API 호출이 이제 오류를 발생시킵니다.
+    products_and_product_models: 선택한 제품 및 제품 모델을 삭제하시겠습니까? 제품 모델의 하위 모델도 모두 삭제됩니다.
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: 일괄 작업
+    quick_export:
+      label: 빠른 내보내기
+  mass_action:
+    delete:
+      label: 삭제
+      confirm_content: 선택한 제품을 삭제하시겠습니까?
+      success: 선택한 제품이 삭제되었습니다.
+      error: 선택한 제품을 삭제하는 중에 오류가 발생했습니다. 다시 시도하십시오.
+  view_selector:
+    view: 보기
+    create_view_modal:
+      create: 만들기
+      confirm: 확인
+      cancel: 취소
+flash:
+  item:
+    removed: 항목 제거됨
+  association_type:
+    removed: 연결 유형 제거됨
+  attribute:
+    removed: 특성 제거됨
+  attribute_group:
+    removed: 특성 그룹 제거됨
+  family:
+    removed: 패밀리 제거됨
+  family_variant:
+    removed: 패밀리 변형 제거됨
+  product:
+    removed: 제품 제거됨
+  product_model:
+    removed: 제품 모델 제거됨
+  channel:
+    removed: 채널 제거됨
+  group:
+    removed: 그룹 제거됨
+  group_type:
+    removed: 그룹 유형 제거됨
+  import_profile:
+    removed: 가져오기 프로필 제거됨
+  export_profile:
+    removed: 내보내기 프로필 제거됨
+  user:
+    removed: 사용자 제거됨
+  role:
+    removed: 역할 제거됨
+  job_instance:
+    removed: 작업 인스턴스 제거됨
+  api_connection:
+    removed: API 연결 취소됨
+error:
+  common: 오류 발생함
+  creating:
+    product: 제품 식별자로 특성이 구성되지 않았거나 특성을 편집할 권한이 없습니다.
+  removing:
+    item: 이 항목을 삭제할 수 없음
+    association_type: 이 연결 유형을 삭제할 수 없음
+    attribute: 이 특성을 삭제할 수 없음
+    family: 이 패밀리를 삭제할 수 없음
+    product: 이 제품을 삭제할 수 없음
+    channel: 이 채널을 삭제할 수 없음
+    group: 이 그룹을 삭제할 수 없음
+    group type: 이 그룹 유형을 삭제할 수 없음
+    import profile: 이 가져오기 프로필을 삭제할 수 없음
+    export profile: 이 내보내기 프로필을 삭제할 수 없음
+    user: 이 사용자를 삭제할 수 없음
+    role: 이 역할을 삭제할 수 없음
+    attribute_option: 특성 옵션 삭제 중에 오류 발생
+  saving:
+    attribute_option: 특성 옵션을 저장할 수 없음
+    export_profile: 내보내기 프로필을 저장할 수 없습니다. 모든 필터가 제대로 채워졌는지 확인하십시오.
+alert:
+  attribute_option:
+    error_occured_during_submission: 서버에서 양식 제출 중에 오류가 발생했습니다
+    save_before_edit_other: 이 내용을 편집하기 전에 다른 행의 수정 사항을 등록하십시오
+  session_storage:
+    not_available: 해당 웹 브라우저는 sessionStorage와 호환되지 않는 것 같습니다. 관리자에게 문의하십시오.
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: '경고: 저장되지 않은 데이터는 손실됩니다. 이 새로운 옵션의 수정을 취소하시겠습니까?'
+    cancel_edition_on_new_option_title: 수정 취소
+label:
+  attribute_option:
+    add_option: 옵션 추가
+Code: 코드
+Edit: 편집
+Delete: 삭제
+Edit attributes of the product: 제품 특성 편집
+Classify the product: 제품 분류
+Delete the product: 제품 삭제
+Change status: 상태 변경
+Toggle status: 상태 토글
+mass_delete: 대량 삭제
+#Quick export labels
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (모든 특성)
+        csv_grid_context: CSV (그리드 컨텍스트)
+        xlsx_all: Excel (모든 특성)
+        xlsx_grid_context: Excel (그리드 컨텍스트)
+      delete: 삭제
+      mass_edit: 일괄 작업
+      category_edit: 카테고리의 제품 이동
+      sequential_edit: 순차 편집
+#Jstree context menu actions
+jstree.create: 만들기
+jstree.done: 완료
+switch_on: "예"
+switch_off: "아니요"
+pim_enrich:
+  item:
+    list:
+      delete.label: 삭제
+      delete.error: 항목 삭제 중에 오류 발생
+    delete:
+      confirm.content: 이 {{ itemName }}을(를) 삭제하시겠습니까? 이 작업은 실행 취소할 수 없습니다.
+      confirm.title: 이 {{ itemName }} 삭제
+  navigation:
+    link:
+      back_to_grid: 그리드로 돌아가기
+    other_actions: 기타 작업
+  entity:
+    save:
+      label: 저장
+    info:
+      update_failed: 업데이트 실패
+      update_successful: 업데이트 성공
+    create_popin:
+      code: 코드
+      label: 레이블
+      labels:
+        save: 저장
+        cancel: 취소
+    product:
+      navigation: 제품 탐색
+      infos: 제품 정보
+      index_title: "] -Inf, 1] {{ count }} 결과|] 1, Inf [{{ count }} 결과"
+      title: 제품
+      locale: 로케일
+      category: 카테고리
+      create: 만들기
+      subTitle: 제품 만들기
+      modalTitle: 작업 선택
+      filters: 필터
+      selected: 선택한 결과
+      common: 공통
+      btn:
+        enabled: 활성화됨
+        disabled: 비활성화됨
+        download_pdf: PDF
+        compare_translate: 비교/번역
+        delete: 삭제
+        save: 저장
+      history:
+        version: 버전
+        author: 작성자
+        logged_at: '기록:'
+        from: 시작
+        modified: 수정됨
+        old_value: 이전 값
+        new_value: 새 값
+        actions: 작업
+      info:
+        deletion_successful: 제품이 삭제되었습니다.
+        deletion_failed: 제품을 삭제할 수 없습니다.
+        update_successful: 제품이 업데이트되었습니다.
+        update_failed: 제품을 업데이트할 수 없습니다.
+        field_not_ready: "이 제품은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+        already_in_upload: 파일이 이미 로케일 "{{ locale }}" 및 범위 "{{ scope }}"에서 이 특성에 대해 업로드되어 있습니다.
+      error:
+        upload: 파일을 업로드하는 중에 오류가 발생했습니다
+      meta:
+        created: 생성됨
+        created_by: '-'
+        updated_by: '-'
+        updated: 마지막 업데이트
+        family:
+          title: 패밀리
+          none: 없음
+        family_variant:
+          title: 변형
+          none: 없음
+        groups:
+          title: 그룹
+          modal:
+            title: 그룹 {{ group }}
+            view_group: 그룹 보기
+            group_label: 레이블
+            more_products: '제품 {{ count }}개 더 보기...'
+            close: 닫기
+        status: 상태
+        scope: 채널
+        locale: 로케일
+      copy:
+        select: 선택
+        all: 모두
+        all_visible: 모두 표시
+        none: 없음
+        copy: 복사
+      optional_attribute:
+        remove: 이 특성 제거
+      locale_specific_attribute:
+        unavailable: 이 로케일 관련 필드는 이 로케일에서 사용할 수 없습니다
+      localizable:
+        channel_locale_unavailable: 이 지역화 가능 필드는 로케일 '{{ locale }}' 및 채널 '{{ channel }}'에 사용할 수 없습니다
+      media:
+        upload: 끌어다 놓아 업로드하거나 여기를 클릭
+      create_popin:
+        type: 제품
+        title: 만들기
+        labels:
+          family: 패밀리 선택
+          family_variant: 패밀리 변형 선택
+          save: 저장
+          cancel: 취소
+      message:
+        created: 제품 생성됨
+      completeness: 완료
+      sequential_edit:
+        item_limit: 이 순차 편집에서 처음 1000개 항목만 표시됨({{ count }}개 선택됨)
+        empty: 아무것도 선택하지 않았습니다. 검색 조건을 변경하십시오.
+    product_model:
+      create_popin:
+        type: 제품 모델
+        title: 제품 모델 만들기
+        content: 제품 모델은 변형 제품을 모아 공통 속성 보강을 용이하게 합니다
+      info:
+        create_successful: 제품 모델 생성됨
+        update_successful: 제품 모델이 업데이트되었습니다. 변형 제품의 완성도가 다시 계산됩니다
+        deletion_successful: 제품 모델이 삭제되었습니다.
+        update_failed: 제품 모델을 업데이트할 수 없습니다.
+        field_not_ready: "이 제품 모델은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      read_only_parent_attribute_from_common: 이 특성은 공통 특성에서 업데이트할 수 있습니다.
+      read_only_parent_attribute_from_model: "이 특성은 {{ axes }}에 의해 특성에서 업데이트될 수 있습니다."
+      variant_axis: 변형 축
+      title: 제품 모델
+      add_child:
+        create: 새로 추가
+        cancel: 취소
+        confirm: 확인
+        create_label: "새 {{ axes }} 추가"
+        fields:
+          required_label: (변형 축)
+          code: 코드
+    association_type:
+      info:
+        deletion_successful: 연결 유형이 삭제되었습니다.
+        deletion_failed: 연결 유형을 삭제할 수 없습니다.
+        update_successful: 연결 유형이 업데이트되었습니다.
+        update_failed: 연결 유형을 업데이트할 수 없습니다.
+        field_not_ready: "이 연결 유형은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      meta:
+        created: 생성됨
+        created_by: 생성자
+        updated: 업데이트됨
+        updated_by: 업데이트한 사람
+      btn:
+        save: 저장
+      title: 연결 유형
+      create_popin:
+        title: 만들기
+      message:
+        created: 연결 유형 생성됨
+    group_type:
+      info:
+        deletion_successful: 그룹 유형이 삭제되었습니다.
+        deletion_failed: 그룹 유형을 삭제할 수 없습니다.
+        update_successful: 그룹 유형이 업데이트되었습니다.
+        update_failed: 그룹 유형을 업데이트할 수 없습니다.
+        field_not_ready: "이 그룹 유형은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      meta:
+        created: 생성됨
+        created_by: 생성자
+        updated: 업데이트됨
+        updated_by: 업데이트한 사람
+      btn:
+        save: 저장
+      title: 그룹 유형
+      create_popin:
+        title: 만들기
+      message:
+        created: 그룹 유형 생성됨
+    channel:
+      title: 채널
+      info:
+        deletion_successful: 채널이 삭제되었습니다.
+        deletion_failed: 채널을 삭제할 수 없습니다.
+        update_successful: 채널이 업데이트되었습니다.
+        update_failed: 채널을 업데이트할 수 없습니다.
+        create_successful: 채널이 생성되었습니다.
+        create_failed: 채널을 생성할 수 없습니다.
+        field_not_ready: "이 채널은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      meta:
+        created: 생성됨
+        created_by: 생성자
+        updated: 업데이트됨
+        updated_by: 업데이트한 사람
+      btn:
+        save: 저장
+    family:
+      title: 패밀리
+      selected: 선택한 패밀리
+      info:
+        update_successful: 패밀리가 업데이트되었습니다.
+        create_successful: 채널이 생성되었습니다.
+        update_failed: 패밀리를 업데이트하는 중에 오류가 발생했습니다.
+        cant_remove_attribute_as_label: 레이블로 사용되는 특성을 제거할 수 없음
+        cant_remove_attribute_as_image: 기본 그림으로 사용되는 특성을 제거할 수 없음
+        attribute_edit_permission_is_not_granted: 패밀리의 특성을 편집할 권한이 없습니다
+        cant_remove_attribute_used_as_axis: 패밀리 변형에서 변형 축으로 사용되는 이 특성을 제거할 수 없음
+      meta:
+        created: 생성됨
+        created_by: 생성자
+        updated: 업데이트됨
+        updated_by: 업데이트한 사람
+      btn:
+        save: 저장
+      create_popin:
+        title: 만들기
+      message:
+        created: 패밀리 생성됨
+      variant:
+        common:
+          title: 공통 특성
+          empty: 공통 특성이 없습니다
+        axis.label: 변형 축
+        level_1.label: 변형 특성 레벨 1
+        level_2.label: 변형 특성 레벨 2
+        add_variant: 변형 추가
+        create_label: 새 패밀리 변형 생성
+        create_description: 패밀리 변형에서는 변형이 포함된 제품의 구조를 정의할 수 있습니다. 관리되는 변형 레벨의 수, 각 레벨의 변형 축으로 사용되는 특성을 선택하고, 특성이 분산되는 방법을 정의하십시오.
+        update_description: 선택한 변형 레벨로 특성을 끌어다 놓아 해당 특성이 변형 레벨에서 관리되도록 하십시오
+        update_translation: 패밀리 변형 레이블 번역
+        create: 만들기
+        cancel: 취소
+        code: 코드
+        label: 레이블
+        levels: 변형 레벨
+        axis_level: 변형 축 레벨
+        required: 필수
+        confirm_attribute_removal:
+          title: 특성 제거 확인
+          message: 해당 특성을 제거하면, 패밀리 변형의 공통 특성에 다시 넣은 후 변형 제품에서 해당 값을 제거하게 됩니다
+    family_variant:
+      info:
+        update_successful: 패밀리 변형이 업데이트되었습니다. 변형이 포함된 제품은 해당 변경 사항과 함께 업데이트됩니다
+    attribute_option:
+      code: 코드
+      label: 레이블
+      actions: 작업
+    group:
+      title: 그룹
+      info:
+        deletion_successful: 그룹이 삭제되었습니다.
+        deletion_failed: 그룹을 삭제할 수 없습니다.
+        update_successful: 그룹이 업데이트되었습니다.
+        update_failed: 그룹을 업데이트할 수 없습니다.
+        field_not_ready: "이 그룹은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      btn:
+        save: 저장
+      meta:
+        product_count: 제품
+        created: 생성됨
+        created_by: 생성자
+        updated: 업데이트됨
+        updated_by: 업데이트한 사람
+      create_popin:
+        title: 만들기
+      message:
+        created: 그룹 생성됨
+    job_instance:
+      title: 작업 프로필
+      info:
+        update_failed: 작업 프로필을 업데이트할 수 없습니다.
+        update_successful: 작업 프로필이 업데이트되었습니다.
+    attribute:
+      info:
+        deletion_successful: 특성이 삭제되었습니다.
+        deletion_failed: 특성을 삭제할 수 없습니다.
+        update_successful: 특성이 업데이트되었습니다.
+        update_failed: 특성을 업데이트할 수 없습니다.
+        create_successful: 특성이 생성되었습니다.
+        create_failed: 특성을 생성할 수 없습니다.
+        field_not_ready: "이 특성은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      scopable: 확장 가능
+      type:
+        pim_catalog_identifier: 식별자
+        pim_catalog_text: 텍스트
+        pim_catalog_textarea: 텍스트 영역
+        pim_catalog_number: 번호
+        pim_catalog_price_collection: 가격
+        pim_catalog_multiselect: 다중 선택
+        pim_catalog_simpleselect: 단일 선택
+        pim_catalog_file: 파일
+        pim_catalog_image: 이미지
+        pim_catalog_boolean: "예/아니요"
+        pim_catalog_date: 날짜
+        pim_catalog_metric: 메트릭
+        pim_reference_data_simpleselect: 참조 데이터 단일 선택
+        pim_reference_data_multiselect: 참조 데이터 다중 선택
+      validation_rule:
+        email: 이메일
+        regexp: 정규식
+        url: URL
+      title: 특성
+    attribute_group:
+      info:
+        update_failed: 특성 그룹을 업데이트할 수 없습니다
+        update_successful: 특성 그룹 업데이트됨
+    api_connection:
+      create_popin:
+        title: 만들기
+      message:
+        created: API 연결 생성됨
+  confirmation:
+    leave: 이 페이지를 나가시겠습니까?
+    discard_changes: 이 페이지를 나가면 {{ entity }}에 대한 변경 사항이 손실됩니다.
+    delete_item: 삭제 확인
+    remove_item: 제거 확인
+    remove: 제거
+    delete:
+      attribute: 제품에서 이 특성을 삭제하시겠습니까?
+      attribute_group: 이 특성 그룹에서 {{ attribute }} 특성을 제거하시겠습니까?
+      product_model: 삭제 확인
+  info:
+    not_applicable: 해당 없음
+    entity:
+      updated: 저장되지 않은 변경 사항이 있습니다.
+  error:
+    upload: 파일을 업로드하는 중에 오류가 발생했습니다
+  alert:
+    not_allowed: 금지되었습니다. 이 페이지에 액세스할 권한이 없습니다.
+    error_occured: 페이지를 로드하는 중에 오류가 발생했습니다
+  form:
+    required: (필수)
+    product_model:
+      choose_product_model: 제품 모델 선택
+      choose_variant: 변형 선택
+      complete_variant_product: 변형 제품
+      complete_variant_products: 변형 제품
+      family_variant: 변형
+      product_model: 제품 모델
+      flash:
+        product_model_added: 제품 모델이 해당 제품 모델에 추가됨
+        variant_product_added: 변형 제품이 해당 제품 모델에 추가됨
+    product:
+      tab:
+        associations:
+          title: 연결
+          info:
+            none_exist: 연결 유형이 없습니다.
+            show_products: 제품 표시
+            show_groups: 그룹 표시
+            number_of_associations: "{{ productCount }} 제품, {{ productModelCount }} 제품 모델 및 {{ groupCount }} 그룹"
+          association_type_selector: 연결 유형
+          target: 대상
+          manage: '{{ associationType }} 연결 추가'
+          manage_description: 현재 제품과 연결할 제품 선택
+          add_associations: 연결 추가
+        attributes:
+          title: 특성
+          btn:
+            add: 추가
+            add_attributes: 특성 추가
+          info:
+            search_attributes: 검색...
+            no_available_attributes: 추가할 특성이 더 이상 없습니다
+            attributes_selected: "{{ itemsCount }}개 특성 선택됨"
+            no_match: 일치 항목 없음
+            load_more: 추가 결과 로드 중...
+          attribute_group_selector: 특성 그룹
+          attribute_group_all: 모두
+          attribute_group.to_fill_count: "{1}1 누락 필수 특성|]1, Inf [{{ count }} 누락 필수 특성"
+          attribute_filter:
+            display: 표시
+            all: 모든 특성
+            missing_required: 모든 누락 필수 특성
+            at_this_level: 모든 레벨 관련 특성
+        categories:
+          title: 카테고리
+      panel:
+        completeness:
+          title: 완성도
+          info:
+            no_family: 패밀리가 정의되지 않았습니다. 패밀리를 정의하여 이 제품의 완성도를 계산하십시오.
+            no_completeness: 제품의 패밀리를 방금 변경했습니다. 이 패밀리를 먼저 저장하고 새 패밀리에 대한 완성도를 계산하십시오.
+          missing_values: "{1}1 누락 값|] 1, Inf [{{ count }} 누락 값"
+        history:
+          title: 기록
+      switch:
+        "no": "아니요"
+        "yes": "예"
+      sequential_edit:
+        info:
+          products: 제품
+          previous: 저장하지 않고 {{ product }}(으)로 다시 건너뜁니다.
+          next: 저장하지 않고 {{ product }}(으)로 건너뜁니다.
+        btn:
+          save_and_next: 저장 후 다음
+          save_and_finish: 저장 후 완료
+      change_family:
+        modal:
+          title: 제품 패밀리 변경
+          merge_attributes: 현재 특성은 새 패밀리의 특성과 병합됩니다.
+          keep_attributes: 제거할 특성이 없습니다.
+          change_family_to: '패밀리를 다음으로 변경:'
+          empty_selection: 패밀리 선택
+      flash:
+        attribute_deletion_error: 특성을 삭제하는 중에 오류가 발생했습니다
+      mass_edit:
+        select_attributes: 특성 선택
+        select: 선택
+    association_type:
+      tab:
+        properties:
+          title: 특성값
+          general: 일반 속성
+          code: 코드
+          label_translations: 레이블 번역
+        history:
+          title: 기록
+    group_type:
+      tab:
+        properties:
+          title: 속성
+          general: 일반 속성
+          code: 코드
+          label_translations: 레이블 번역
+        history:
+          title: 기록
+    channel:
+      tab:
+        history:
+          title: 기록
+        properties:
+          title: 속성
+          general: 일반
+          code: 코드
+          currencies: 통화
+          locales: 로케일
+          category_tree: 카테고리 트리
+          label_translations: 레이블 번역
+          label_conversion_units: 제품 내보내기 중에 사용되는 각 메트릭 특성에 대한 변환 단위 선택
+          conversion_unit:
+            do_not_convert: 변환 안 함
+    family:
+      tab:
+        properties:
+          title: 속성
+          general: 일반
+          code: 코드
+          attribute_as_label: 레이블로 사용되는 특성
+          attribute_as_image: 기본 그림으로 사용되는 특성
+          empty_attribute_as_image: 선택하지 않음
+          label_translations: 레이블 번역
+        attributes:
+          title: 특성
+          label_label: 레이블
+          toolbox:
+            select_attributes_by_groups: 그룹별 추가
+            select_attributes: 특성 추가
+            add: 추가
+            attributes_groups_selected: '{{ itemsCount }}개 그룹 선택됨'
+          not_required_label: 필수 아님
+          required_label: 필수
+        variant:
+          title: 변형
+          flash:
+            family_variant_created: 패밀리 변형 생성됨
+        history:
+          title: 기록
+    family_variant:
+      tab:
+        attributes:
+          title: 변형 특성
+        labels:
+          title: 레이블 번역
+    attribute_option:
+      flash:
+        option_created: 특성 옵션 생성됨
+        error_creating_option: 특성 옵션을 생성하는 중에 오류가 발생했습니다
+      add_option_modal:
+        title: 특성 옵션 추가
+        confirm: 추가
+        cancel: 취소
+    entity:
+      switch:
+        "no": "아니요"
+        "yes": "예"
+    group:
+      tab:
+        properties:
+          title: 속성
+          general: 일반 속성
+          code: 코드
+          type: 유형
+          label_translations: 레이블 번역
+        history:
+          title: 기록
+        products:
+          title: 제품
+    attribute_group:
+      tab:
+        properties:
+          title: 속성
+          general: 일반 속성
+          code: 코드
+          label_translations: 레이블 번역
+        attribute:
+          title: 특성
+          table:
+            name: 이름
+            type: 유형
+            scopable: 확장 가능
+            localizable: 지역화 가능
+        history.title: 기록
+    common:
+      tab:
+        attributes:
+          btn:
+            add: 추가
+            add_attributes: 특성 추가
+          info:
+            search_attributes: 검색...
+            no_available_attributes: 추가할 특성이 더 이상 없습니다
+    job_execution:
+      loading: 로드 중...
+      title.details: 실행 세부 정보
+      refreshBtn.title: 새로 고침
+      meta:
+        status.title: 상태
+      button:
+        show_profile.title: 프로필 표시
+        download_log.title: 로그 다운로드
+        download_file.title: 생성된 파일 다운로드
+        download_archive.title: 생성된 아카이브 다운로드
+      summary:
+        fetching: 작업 실행에 대한 데이터 수집 중...
+        warning: 경고
+        header.step: 단계
+        header.status: 상태
+        header.warnings: 경고
+        header.summary: 요약
+        header.start: 시작
+        header.end: 종료
+    job_instance:
+      fail:
+        launch: 작업 프로필을 실행하지 못했습니다. 이 프로필이 유효한지 그리고 이 프로필을 실행할 권한이 있는지 확인하십시오.
+        save: 작업 프로필을 저장하지 못했습니다. 이 프로필을 편집할 권한이 있는지 확인하십시오.
+      title:
+        import: 가져오기 프로필
+        export: 내보내기 프로필
+      button:
+        edit.title: 편집
+        export.title: 지금 내보내기
+        import.launch: 지금 가져오기
+        import.upload: 지금 업로드 및 가져오기
+        import.upload_file: 파일 업로드
+      meta:
+        job: 작업
+        connector: 커넥터
+      subsection:
+        last_executions: 마지막 실행
+      tab:
+        content:
+          title: 콘텐츠
+        properties:
+          title: 속성
+          code:
+            title: 코드
+          label:
+            title: 레이블
+          decimal_separator:
+            title: 소수 구분 기호
+            help: 소수 구분 기호 결정
+          date_format:
+            title: 날짜 형식
+            help: 날짜 필드 형식 결정
+          file_path:
+            title: 파일 경로
+            help: 파일 시스템에서 생성된 파일을 쓰는 위치
+          delimiter:
+            title: 구분 기호
+            help: 필드 구분 기호를 설정하는 데 사용되는 문자 하나
+          enclosure:
+            title: 인클로저
+            help: 필드 인클로저를 설정하는 데 사용되는 문자 하나
+          with_header:
+            title: 헤더 포함
+            help: 열 이름 인쇄 여부
+          with_media:
+            title: 파일 및 이미지 내보내기
+            help: 제품 파일 및 이미지 내보내기 여부
+          lines_per_file:
+            title: 파일당 라인 수
+            help: 파일당 라인의 제한 수 정의
+          upload_allowed:
+            title: 파일 업로드 허용
+            help: 파일 직접 업로드 허용 여부
+          categories_column:
+            title: 카테고리 열
+            help: 카테고리 열 이름
+          escape:
+            title: 이스케이프
+            help: 필드 이스케이프를 설정하는 데 사용되는 문자 하나
+          family_column:
+            title: 패밀리 열
+            help: 패밀리 열 이름
+          groups_column:
+            title: 그룹 열
+            help: 그룹 열 이름
+          enabled:
+            title: 제품 활성화
+            help: 가져온 제품 활성화 여부
+          enabled_comparison:
+            title: 값 비교
+            help: 원래 값과 가져온 값 사이에 비교를 활성화합니다. 가져온 값이 원래 값과 매우 유사한 경우 가져오기 속도가 올라갈 수 있습니다.
+          real_time_versioning:
+            title: 실시간 기록 업데이트
+            help: 제품 기록이 자동으로 업데이트됩니다. 자동 업데이트를 해제하면 성능이 향상됩니다.
+          family_variant_column:
+            title: 패밀리 변형 열
+        history:
+          title: 기록
+      file_path: 파일 경로
+    attribute:
+      meta:
+        created: 생성됨
+        created_by: '-'
+        updated: 마지막 업데이트
+        updated_by: '-'
+      tab:
+        properties:
+          title: 속성
+          section:
+            common: 일반 매개변수
+            type_specific: 유형 관련 매개변수
+            validation: 유효성 검사 매개변수
+          label:
+            allowed_extensions: 허용된 확장
+            auto_option_sorting: 알파벳순으로 옵션 자동 정렬
+            available_locales: 사용 가능한 로케일
+            code: 코드
+            date_max: 최대 날짜
+            date_min: 최소 날짜
+            decimals_allowed: 소수 값 허용됨
+            default_metric_unit: 기본 메트릭 단위
+            group: 특성 그룹
+            is_locale_specific: 로케일 관련
+            localizable: 로케일별 값
+            max_characters: 최대 문자수
+            max_file_size: 최대 파일 크기(MB)
+            metric_family: 메트릭 패밀리
+            minimum_input_length: 자동 완성의 최소 길이
+            negative_allowed: 음수 값 허용됨
+            number_max: 최대수
+            number_min: 최소수
+            reference_data_name: 참조 데이터 유형
+            scopable: 채널별 값
+            type: 유형
+            unique: 고유한 값
+            useable_as_grid_filter: 그리드에서 사용 가능
+            validation_regexp: 정규식
+            validation_rule: 유효성 검사 규칙
+            wysiwyg_enabled: 서식 있는 텍스트 편집기 활성화됨
+          default_label:
+            default_metric_unit: 단위 선택
+            group: 특성 그룹 선택
+            metric_family: 패밀리 선택
+            reference_data_name: 참조 데이터 유형 선택
+        labels:
+          title: 레이블 번역
+        choices:
+          title: 옵션
+        history:
+          title: 기록
+    mass_edit:
+      family:
+        attributes:
+          label_label: 레이블
+          toolbox:
+            select_attributes_by_groups: 그룹별 추가
+            select_attributes: 특성 추가
+            add: 추가
+            attributes_groups_selected: '{{ itemsCount }}개 그룹 선택됨'
+    basket:
+      title: 장바구니
+      empty_basket: 장바구니가 비어 있습니다
+  job:
+    upload: 여기에 {{ type }} 파일을 놓거나, 클릭하여 디스크 찾아보기
+  export:
+    product:
+      data:
+        title: 제품 필터링
+      structure:
+        title: 데이터 필터링
+        attributes:
+          title: 특성
+      filter:
+        channel:
+          title: 채널
+          help: 채널은 제품 값에 대한 범위, 데이터를 선택하는 데 사용되는 로케일 및 제품을 선택하는 데 사용되는 트리를 정의합니다.
+        locales:
+          title: 로케일
+          help: "로케일은 내보낼 지역화된 제품 값을 정의합니다. 예: 프랑스어의 제품 정보만"
+        attributes:
+          title: 특성
+          edit: 편집
+          label: "{0}모든 특성|{1}1개 특성 선택됨|]1,Inf[{{ count }}개 특성 선택됨"
+          help: "내보낼 제품 정보를 선택합니다. 예: 기술 특성만 "
+          empty: 모든 특성을 내보냅니다
+          modal:
+            apply: 적용
+            cancel: 취소
+            title: 특성 선택
+        attributes_selector:
+          attribute_group: 특성 그룹
+          attributes: "{{ itemsCount }} 특성에서 검색"
+          selected: "선택한 특성"
+          clear: 지우기
+          all_group: 모든 그룹
+          empty_selection: 모든 특성을 내보냅니다
+          title: 특성
+          description: 내보낼 제품 정보 선택
+        family:
+          title: 패밀리
+          help: "패밀리별로 내보낼 제품을 선택합니다. 예: 신발과 드레스만 내보냅니다."
+          operators:
+            IN: 목록에 있음
+            "NOT IN": 목록에 없음
+            EMPTY: 패밀리가 없는 제품
+            "NOT EMPTY": 패밀리가 있는 제품
+          empty_selection: 패밀리의 조건 없음
+        updated:
+          title: 시간 조건
+          operators:
+            ALL: 날짜 조건 없음
+            "SINCE LAST N DAYS": '지난 n일 동안(예: 6일) 업데이트된 제품'
+            ">": 이 날짜 이후에 업데이트된 제품
+            "SINCE LAST JOB": 마지막 내보내기 이후에 업데이트된 제품
+        enabled:
+          title: 상태
+          help: "상태별로 내보낼 제품을 선택합니다. 예: 상태에 관계없이 제품을 내보냅니다."
+          value:
+            all: 모두
+            enabled: 활성화됨
+            disabled: 비활성화됨
+        completeness:
+          title: 완성도
+          help: 완성도별로 내보낼 제품을 선택하십시오.
+          operators:
+            ALL: 완성도의 조건 없음
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": 선택한 하나 이상의 로케일에서 완료
+            "GREATER OR EQUALS THAN ON ALL LOCALES": 선택한 모든 로케일에서 완료
+            LOWER THAN ON ALL LOCALES: 선택한 모든 로케일에서 완료 안 됨
+            AT LEAST COMPLETE: 선택한 하나의 로케일에서 하나 이상의 하위 제품 완료
+            ALL COMPLETE: 선택한 모든 로케일에서 모든 하위 제품 완료
+          empty_selection: 패밀리 선택
+        category:
+          title: 카테고리
+          help: 트리의 제품 카테고리(위의 채널에 의해 정의됨)를 사용하여 내보낼 제품 선택 
+        identifier:
+          title: 식별자
+          help: 내보내려는 제품 식별자를 쉼표, 공백 또는 줄 바꿈으로 구분하여 사용
+        metric:
+          operators:
+            "=": 같음
+            "!=": 같지 않음
+            ">=": 보다 크거나 같음
+            ">": 보다 큼
+            "<=": 보다 작거나 같음
+            "<": 보다 작음
+            EMPTY: 비어 있음
+            NOT EMPTY: 비어 있지 않음
+        string:
+          operators:
+            ALL: 모두
+            CONTAINS: 포함
+            DOES NOT CONTAIN: 포함하지 않음
+            "=": 같음
+            STARTS WITH: 다음으로 시작
+            ENDS WITH: 다음으로 끝남
+            EMPTY: 비어 있음
+            NOT EMPTY: 비어 있지 않음
+        price-collection:
+          operators:
+            "=": 같음
+            "!=": 같지 않음
+            ">=": 보다 크거나 같음
+            ">": 보다 큼
+            "<=": 보다 작거나 같음
+            "<": 보다 작음
+            EMPTY: 비어 있음
+            NOT EMPTY: 비어 있지 않음
+        multi_select:
+          operators:
+            IN: 목록에 있음
+            EMPTY: 비어 있음
+            NOT EMPTY: 비어 있지 않음
+        media:
+          operators:
+            CONTAINS: 포함
+            DOES NOT CONTAIN: 포함하지 않음
+            "=": 같음
+            STARTS WITH: 다음으로 시작
+            ENDS WITH: 다음으로 끝남
+            EMPTY: 비어 있음
+            NOT EMPTY: 비어 있지 않음
+        date:
+          operators:
+            ">": 보다 큼
+            "<": 보다 작음
+            "=": 같음
+            "!=": 같지 않음
+            BETWEEN: 사이
+            NOT BETWEEN: 사이에 없음
+            EMPTY: 비어 있음
+            NOT EMPTY: 비어 있지 않음
+        number:
+          operators:
+            "=": 같음
+            "!=": 같지 않음
+            ">=": 보다 크거나 같음
+            ">": 보다 큼
+            "<=": 보다 작거나 같음
+            "<": 보다 작음
+            EMPTY: 비어 있음
+            NOT EMPTY: 비어 있지 않음
+      properties:
+        title: 속성
+      global_settings:
+        title: 전역 설정
+  mass_edit_action:
+    edit_common_attributes:
+      description: 선택한 제품의 패밀리에 속하는 특성만 <span class="highlight">{{ locale }}</span> 로케일 및 <span class="highlight">{{ channel }}</span> 채널에 대한 다음 데이터를 사용하여 편집됩니다.
+  index:
+    association_type:
+      title: "] -Inf, 1] {{ count }} 특성 유형|] 1, Inf [{{ count }} 특성 유형"
+      create_btn: 연결 유형 만들기
+    import_profiles:
+      title: "] -Inf, 1] {{ count }} 가져오기 프로필|] 1, Inf [{{ count }} 가져오기 프로필"
+      create_btn: 가져오기 프로필 만들기
+      list: 직업 선택
+      create_popin:
+        title: 만들기
+      message:
+        created: 가져오기 프로필 생성됨
+    import_history:
+      title: 가져오기 보고서
+    group:
+      title: "] -Inf, 1] {{ count }} 그룹|] 1, Inf [{{ count }} 그룹"
+      create_btn: 그룹 만들기
+    export_profiles:
+      title: "] -Inf, 1] {{ count }} 내보내기 프로필|] 1, Inf [{{ count }} 내보내기 프로필"
+      create_btn: 내보내기 프로필 만들기
+      create_popin:
+        title: 만들기
+      message:
+        created: 내보내기 프로필 생성됨
+    export_history:
+      title: 내보내기 보고서
+    family:
+      title: "] -Inf, 1] {{ count }} 패밀리|] 1, Inf [{{ count }} 패밀리"
+      create_btn: 패밀리 만들기
+    grouptype:
+      title: "] -Inf, 1] {{ count }} 그룹 유형|] 1, Inf [{{ count }} 그룹 유형"
+      create_btn: 그룹 유형 만들기
+    currency:
+      title: "] -Inf, 1] {{ count }} 통화|] 1, Inf [{{ count }} 통화"
+    locale:
+      title: "] -Inf, 1] {{ count }} 로케일|] 1, Inf [{{ count }} 로케일"
+    user:
+      title: "] -Inf, 1] {{ count }} 사용자|] 1, Inf [{{ count }} 사용자"
+      create_btn: 사용자 만들기
+    user_role:
+      title: "] -Inf, 1] {{ count }} 역할|] 1, Inf [{{ count }} 역할"
+      create_btn: 역할 만들기
+    user_group:
+      title: "] -Inf, 1] {{ count }} 그룹|] 1, Inf [{{ count }} 그룹"
+      create_btn: 그룹 만들기
+    process_tracker:
+      title: "] -Inf, 1] {{ count }} 작업|] 1, Inf [{{ count }} 작업"
+    channel:
+      title: "] -Inf, 1] {{ count }} 채널|] 1, Inf [{{ count }} 채널"
+      create_btn: 채널 만들기
+    attribute:
+      title: "] -Inf, 1] {{ count }} 특성|] 1, Inf [{{ count }} 특성"
+      create_btn: 특성 만들기
+      modal_title: 특성 유형 선택
+    attribute_group:
+      title: 특성 그룹
+      create_btn: 만들기
+    api_connection:
+      title: "] -Inf, 1] {{ count }} API 연결|] 1, Inf [{{ count }} API 연결"
+      create_btn: 만들기
+  mass_edit:
+    next: 다음
+    previous: 뒤로
+    cancel: 취소
+    confirm: 확인
+    product:
+      title: 제품 일괄 작업
+      confirm: "{1}다음 정보로 1개 제품을 업데이트하려고 합니다. 확인해주십시오.|] 1, Inf [다음 정보로 {{ itemsCount }}개 제품을 업데이트하려고 합니다. 확인해주십시오."
+      step:
+        select:
+          label: 제품 선택
+        choose:
+          title: 제품 일괄 작업
+          label_count: "] 0, Inf [작업 선택"
+        configure:
+          label: 구성
+        confirm:
+          label: 확인
+        launch_error:
+          label: 대량 편집 작업을 실행하는 중에 오류가 발생했습니다
+        launched:
+          label: 일괄 작업 "{{ operation }}"이(가) 실행되었습니다. 완료되면 알림이 전송됩니다.
+      operation:
+        change_status:
+          label: 상태 변경
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span> 상태 변경|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span> 상태 변경"
+          description: 선택한 제품이 활성화 또는 비활성화됩니다.
+          field: 활성화하려면
+        edit_common:
+          label: 특성 값 편집
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>의 특성 값 편집|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>의 특성 값 편집"
+          description: 선택한 제품의 패밀리에 속하는 특성만 {{ locale }} 로케일 및 {{ scope }} 채널에 대한 다음 데이터를 사용하여 편집됩니다.
+        add_attribute_value:
+          label: 특성 값 추가
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>의 특성 값 추가|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>의 특성 값 추가"
+          description: 제품 패밀리에 속하는 다중 값 특성만 {{ locale }} 로케일 및 {{ scope }} 채널에 대한 다음 데이터와 함께 편집됩니다. 특성 값이 추가되고, 이전 값은 유지됩니다
+        change_family:
+          label: 패밀리 변경
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>의 패밀리 변경|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>의 패밀리 변경"
+          description: 선택한 제품의 패밀리가 선택한 패밀리로 변경됩니다
+          field: 패밀리
+        add_to_group:
+          label: 그룹에 추가
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>을 그룹에 추가|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>을 그룹에 추가"
+          description: 선택한 제품을 추가할 그룹을 선택합니다
+          field: 그룹
+        add_to_category:
+          label: 카테고리에 추가
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>을 카테고리에 추가|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>을 카테고리에 추가"
+          description: 해당 제품은 다음 카테고리로 분류되고, 기존 분류는 유지됩니다.
+        move_to_category:
+          label: 카테고리 간 이동
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>을 카테고리 간에 이동|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>을 카테고리 간에 이동"
+          description: 해당 제품은 다음 카테고리로 분류되고, 기존 분류는 손실됩니다.
+        remove_from_category:
+          label: 카테고리에서 제거
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>을 카테고리에서 제거|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>을 카테고리에서 제거"
+          description: 다음 카테고리에서 제품이 제거됩니다.
+        add_to_existing_product_model:
+          label: 기존 제품 모델에 추가
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>을 기존 제품 모델에 추가|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>을 기존 제품 모델에 추가"
+          description: 선택된 제품 모델은 제품을 모으고 공통 속성 보강을 허용합니다
+        associate_to_product_and_product_model:
+          label: 연결
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>을 제품 또는 제품 모델에 추가|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>을 제품 또는 제품 모델에 추가"
+          description: 그리드에서 선택된 제품은 선택된 연결 유형에 대한 선택된 제품 및 제품 모델에 연결됩니다
+          validate: 다음 단계로 이동하기 전에 연결을 추가하십시오
+        change_parent_product_model:
+          label: 상위 제품 모델 변경
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>의 상위 제품 모델 변경|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>의 상위 제품 모델 변경"
+          description: 그리드에서 선택된 변형 제품 또는 하위 제품 모델의 상위 모델이 선택된 제품 모델로 변경됩니다.
+    family:
+      title: 패밀리 일괄 작업
+      confirm: "{1}다음 정보로 1개 패밀리를 업데이트하려고 합니다. 확인해주십시오.|] 1, Inf [다음 정보로 {{ itemsCount }}개 패밀리를 업데이트하려고 합니다. 확인해주십시오."
+      step:
+        select:
+          label: 패밀리 선택
+        choose:
+          title: 패밀리 일괄 작업
+          label_count: "] 0, Inf [작업 선택"
+        configure:
+          label: 구성
+        confirm:
+          label: 확인
+        launched:
+          label: 일괄 작업 "{{ operation }}"이(가) 실행되었습니다. 완료되면 알림이 전송됩니다.
+      operation:
+        set_requirements:
+          label: 특성 요구 사항 설정
+          description: 다음 특성 요구 사항은 선택된 패밀리에 적용됩니다.
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 패밀리</span>의 특성 요구 사항 설정|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 패밀리</span>의 특성 요구 사항 설정"
+pim_enrich.error:
+  exception.title: 죄송합니다! {{ status_code }} 오류가 발생했습니다...
+  http:
+    403: 금지되었습니다. 이 페이지에 액세스할 권한이 없습니다.
+#Page titles
+page_title:
+  oro_default: 대시보드
+  pim_enrich_attributegroup_index: 특성 그룹
+  pim_enrich_attributegroup_create: 특성 그룹 | 만들기
+  pim_enrich_attributegroup_edit: 특성 그룹 {{ group.label }} | 편집
+  pim_enrich_catalog_volume_index: 카탈로그 볼륨 모니터링
+  pim_enrich_categorytree_index: 카테고리 트리
+  pim_enrich_categorytree_create: 카테고리 트리 | 만들기
+  pim_enrich_categorytree_edit: 카테고리 트리 {{ category.label }} | 편집
+  pim_enrich_categorytree_create_tree: 카테고리 트리 | 만들기
+  pim_enrich_attribute_index: 특성
+  pim_enrich_attribute_create: 특성 | 만들기
+  pim_enrich_attribute_edit: 특성 {{ attribute.label }} | 편집
+  pim_enrich_product_index: 제품
+  pim_enrich_product_edit: 제품 {{ product.label }} | 편집
+  pim_enrich_product_model_edit: 제품 모델 {{ product.label }} | 편집
+  pim_enrich_family_index: 패밀리
+  pim_enrich_family_edit: 패밀리 {{ family.label }} | 편집
+  pim_enrich_channel_index: 채널
+  pim_enrich_channel_create: 채널 | 만들기
+  pim_enrich_channel_edit: 채널 {{ channel.label }} | 편집
+  pim_enrich_currency_index: 통화
+  pim_enrich_locale_index: 로케일
+  pim_enrich_group_index: 그룹
+  pim_enrich_group_edit: 그룹 {{ group.label }} | 편집
+  pim_enrich_associationtype_index: 연결 유형
+  pim_enrich_associationtype_edit: 연결 유형 {{ association type.label }} | 편집
+  pim_enrich_grouptype_index: 그룹 유형
+  pim_enrich_grouptype_edit: 그룹 유형 {{ group type.label }} | 편집
+  pim_enrich_mass_edit_action_choose: 대량 편집 | 선택
+  pim_enrich_mass_edit_action_configure: 대량 편집 | 구성
+  pim_enrich_mass_edit_action_perform: 대량 편집 | 수행
+  pim_enrich_job_tracker_index: 프로세스 트래커
+  pim_enrich_job_tracker_show: 프로세스 트래커 | 작업 표시
+  pim_enrich_api_connection_index: API 연결
+  pim_enrich_api_connection_create: API 연결 | 만들기
+  pim_enrich_mass_edit_action: 대량 편집
+  pim_analytics_system_info_index: 시스템 정보
+#Batch job labels
+batch_jobs:
+  add_product_value:
+    label: 제품 값 추가
+    perform:
+      label: 제품 값 추가
+  update_product_value:
+    label: 제품 값 업데이트
+    perform:
+      label: 제품 값 업데이트
+  add_to_group:
+    label: 그룹에 추가
+    perform:
+      label: 그룹에 추가
+  edit_common_attributes:
+    label: 특성 편집
+    perform:
+      label: 특성 편집
+    cleaner:
+      label: 특성에 대한 파일 지우기
+  add_to_category:
+    label: 카테고리에 추가
+    perform:
+      label: 카테고리에 추가
+  move_to_category:
+    label: 카테고리로 이동
+    perform:
+      label: 카테고리로 이동
+  remove_from_category:
+    label: 카테고리에서 제거
+    perform:
+      label: 카테고리에서 제거
+  add_association:
+    label: 연결
+    perform:
+      label: 연결
+  add_to_existing_product_model:
+    label: 기존 제품 모델에 추가
+    perform:
+      label: 기존 제품 모델에 추가
+  set_attribute_requirements:
+    label: 특성 요구 사항 설정
+    perform:
+      label: 특성 요구 사항 설정
+  csv_product_quick_export:
+    quick_export.label: CSV 제품의 빠른 내보내기
+    quick_export_product_model.label: CSV 제품 모델의 빠른 내보내기
+    perform:
+      label: CSV 제품의 빠른 내보내기
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV 제품 그리드 컨텍스트의 빠른 내보내기
+    quick_export_product_model.label: CSV 제품 모델 그리드 컨텍스트의 빠른 내보내기
+    perform:
+      label: CSV 제품 그리드 컨텍스트의 빠른 내보내기
+  xlsx_product_quick_export:
+    quick_export.label: XSLX 제품의 빠른 내보내기
+    quick_export_product_model.label: XSLX 제품 모델의 빠른 내보내기
+    perform:
+      label: XSLX 제품의 빠른 내보내기
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XSLX 제품 그리드 컨텍스트의 빠른 내보내기
+    quick_export_product_model.label: XSLX 제품 모델 그리드 컨텍스트의 빠른 내보내기
+    perform:
+      label: XSLX 제품 그리드 컨텍스트의 빠른 내보내기
+  csv_product_export:
+    label: CSV로 제품 내보내기
+    export.label: 제품 내보내기
+  csv_product_model_export:
+    label: CSV로 제품 모델 내보내기
+    export.label: 제품 내보내기
+  csv_category_export:
+    label: CSV로 카테고리 내보내기
+    export.label: 카테고리 내보내기
+  csv_attribute_export:
+    label: CSV로 특성 내보내기
+    export.label: 특성 내보내기
+  csv_attribute_option_export:
+    label: CSV로 특성 옵션 내보내기
+    export.label: 특성 옵션 내보내기
+  csv_association_type_export:
+    label: CSV로 연결 유형 내보내기
+    export.label: 연결 유형 내보내기
+  csv_group_export:
+    label: CSV로 그룹 내보내기
+    export.label: 그룹 내보내기
+  csv_family_export:
+    label: CSV로 패밀리 내보내기
+    export.label: 패밀리 내보내기
+  csv_family_variant_export:
+    label: CSV로 패밀리 변형 내보내기
+    export.label: 패밀리 변형 내보내기
+  csv_product_import:
+    label: CSV로 제품 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 제품 가져오기
+    import_associations.label: 연결 가져오기
+  csv_product_model_import:
+    label: CSV로 제품 모델 가져오기
+  csv_category_import:
+    label: CSV로 카테고리 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 카테고리 가져오기
+  csv_attribute_import:
+    label: CSV로 특성 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 특성 가져오기
+  csv_attribute_option_import:
+    label: CSV로 특성 옵션 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 특성 옵션 가져오기
+  csv_association_type_import:
+    label: CSV로 연결 유형 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 연결 유형 가져오기
+  csv_family_import:
+    label: CSV로 패밀리 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 패밀리 가져오기
+    compute_data_related_to_family_variants.label: 제품 모델 데이터 계산
+    compute_data_related_to_family_root_product_models.label: 루트 제품 모델 데이터 계산
+    compute_data_related_to_family_sub_product_models.label: 하위 제품 모델 데이터 계산
+    compute_data_related_to_family_products.label: 제품 데이터 계산
+  csv_family_variant_import:
+    label: CSV로 패밀리 변형 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 패밀리 변형 가져오기
+  csv_group_import:
+    label: CSV로 그룹 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 그룹 가져오기
+  csv_channel_export:
+    label: CSV로 채널 내보내기
+    export.label: 채널 내보내기
+  csv_locale_export:
+    label: CSV로 로케일 내보내기
+    export.label: 로케일 내보내기
+  csv_attribute_group_export:
+    label: CSV로 특성 그룹 내보내기
+    export.label: 특성 그룹 내보내기
+  csv_currency_export:
+    label: CSV로 통화 내보내기
+    export.label: 통화 내보내기
+  csv_group_type_export:
+    label: CSV로 그룹 유형 내보내기
+    export.label: 그룹 유형 내보내기
+  csv_channel_import:
+    label: CSV로 채널 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 채널 가져오기
+  csv_locale_import:
+    label: CSV로 로케일 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 로케일 가져오기
+  csv_attribute_group_import:
+    label: CSV로 특성 그룹 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 특성 그룹 가져오기
+  csv_currency_import:
+    label: CSV로 통화 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 통화 가져오기
+  csv_group_type_import:
+    label: CSV로 그룹 유형 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 그룹 유형 가져오기
+  xlsx_category_import:
+    label: XLSX로 카테고리 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 카테고리 가져오기
+  xlsx_association_type_import:
+    label: XLSX로 연결 유형 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 연결 유형 가져오기
+  xlsx_attribute_import:
+    label: XLSX로 특성 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 특성 가져오기
+  xlsx_attribute_option_import:
+    label: XLSX로 특성 옵션 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 특성 옵션 가져오기
+  xlsx_family_import:
+    label: XLSX로 패밀리 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 패밀리 가져오기
+    compute_data_related_to_family_variants.label: 제품 모델 데이터 계산
+    compute_data_related_to_family_root_product_models.label: 루트 제품 모델 데이터 계산
+    compute_data_related_to_family_sub_product_models.label: 하위 제품 모델 데이터 계산
+    compute_data_related_to_family_products.label: 제품 데이터 계산
+  xlsx_family_variant_import:
+    label: XLSX로 패밀리 변형 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 패밀리 변형 가져오기
+  xlsx_product_export:
+    label: XLSX로 제품 내보내기
+    export.label: 제품 내보내기
+  xlsx_product_model_export:
+    label: XLSX로 제품 모델 내보내기
+    export.label: 제품 모델 내보내기
+  xlsx_product_import:
+    label: XLSX로 제품 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 제품 가져오기
+    import_associations.label: 연결 가져오기
+  xlsx_product_model_import:
+    label: XLSX로 제품 모델 가져오기
+  xlsx_group_export:
+    label: XLSX로 그룹 내보내기
+    export.label: 그룹 내보내기
+  xlsx_group_import:
+    label: XLSX로 그룹 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 그룹 가져오기
+  xlsx_family_export:
+    label: XLSX로 패밀리 내보내기
+    export.label: 패밀리 내보내기
+  xlsx_family_variant_export:
+    label: XLSX로 패밀리 변형 내보내기
+    export.label: 패밀리 변형 내보내기
+  xlsx_category_export:
+    label: XLSX로 카테고리 내보내기
+    export.label: 카테고리 내보내기
+  xlsx_attribute_export:
+    label: XLSX로 특성 내보내기
+    export.label: XLSX로 특성 내보내기
+  xlsx_attribute_option_export:
+    label: XLSX로 특성 옵션 내보내기
+    export.label: XLSX로 특성 옵션 내보내기
+  xlsx_association_type_export:
+    label: XLSX로 연결 유형 내보내기
+    export.label: XLSX로 연결 유형 내보내기
+  xlsx_channel_export:
+    label: XLSX로 채널 내보내기
+    export.label: 채널 내보내기
+  xlsx_locale_export:
+    label: XLSX로 로케일 내보내기
+    export.label: 로케일 내보내기
+  xlsx_attribute_group_export:
+    label: XLSX로 특성 그룹 내보내기
+    export.label: 특성 그룹 내보내기
+  xlsx_currency_export:
+    label: XLSX로 통화 내보내기
+    export.label: 통화 내보내기
+  xlsx_group_type_export:
+    label: XLSX로 그룹 유형 내보내기
+    export.label: 그룹 유형 내보내기
+  xlsx_channel_import:
+    label: XLSX로 채널 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 채널 가져오기
+  xlsx_locale_import:
+    label: XLSX로 로케일 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 로케일 가져오기
+  xlsx_attribute_group_import:
+    label: XLSX로 특성 그룹 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 특성 그룹 가져오기
+  xlsx_currency_import:
+    label: XLSX로 통화 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 통화 가져오기
+  xlsx_group_type_import:
+    label: XLSX로 그룹 유형 가져오기
+    validation.label: 파일 유효성 검사
+    import.label: 그룹 유형 가져오기
+job_tracker:
+  download_archive:
+    archive: 생성된 아카이브 다운로드
+    output: 생성된 파일 다운로드
+    input: 읽은 파일 다운로드
+    invalid_xlsx: 잘못된 데이터 다운로드
+    invalid_csv: 잘못된 데이터 다운로드
+pim_menu:
+  tab:
+    activity: 활동
+    imports: 가져오기
+    products: 제품
+    exports: 내보내기
+    settings: 설정
+    system: 시스템
+    help:
+      title: 도움말
+      helper: Akeneo 도움말 센터
+  item:
+    association_type: 연결 유형
+    attribute: 특성
+    attribute_group: 특성 그룹
+    category: 카테고리
+    channel: 채널
+    currency: 통화
+    dashboard: 대시보드
+    family: 패밀리
+    group: 그룹
+    group_type: 그룹 유형
+    locale: 로케일
+    product: 제품
+    product_model: 제품 모델
+    published_product: 게시 제품
+    export_history: 내보내기 기록
+    export_profile: 내보내기 프로필
+    import_history: 가져오기 기록
+    import_profile: 가져오기 프로필
+    configuration: 구성
+    catalog_volume: 카탈로그 볼륨 모니터링
+    user_management: 사용자 관리
+    user: 사용자
+    user_group: 그룹
+    user_role: 역할
+    info: 시스템 정보
+    job_tracker: 프로세스 트래커
+    api_connection: API 연결
+  navigation:
+    activity: 활동 탐색
+    system: 시스템 탐색
+    user: 사용자 관리 탐색
+    settings: 설정 탐색
+  user:
+    logout: 로그아웃
+    user_account: 내 계정
+pim_notification:
+  mark_all_as_read: 모두 읽음으로 표시
+  no_notifications: 알림 없음
+  loading: 로드 중...
+catalog_volume:
+  product_values: "해당 PIM에 <span>{{values}}</span> 제품 값이 있습니다! 평균적으로, 제품당 <span>{{average}}</span> 제품 값입니다!&nbsp;💪"
+  product_values_description: '제품 값 및 PIM 값이 클수록 ROI가 높아집니다! 자세한 내용은 <a href="{{link}}" target="_blank">여기</a>를 클릭하십시오.'
+  section:
+    product_values:
+      hint: 'PIM의 총 제품 값 수가 다음 축에 직접 링크되어 있다는 것을 알고 계십니까?<br/>자세한 내용 확인을 위해 <a href="{{link}}" target="_blank">이 문서를 탐색</a>할 수 있도록 초대합니다.'
+      title: 제품 값 수를 이용하는 축
+    catalog_structure:
+      hint: 우수한 카탈로그 구조가 매우 중요하며, 효율적인 보강을 위한 조건임을 알고 계실 수 있습니다. 다음은 카탈로그 구조를 모니터링하기 위한 다양한 축입니다.
+      title: 카탈로그 구조와 관련된 축
+    variant_modelling:
+      hint: 변형 모델을 사용할 경우, 해당 볼륨 모터링에 도움이 되는 축은 다음과 같습니다.
+      title: 변형 모델링 관련 축
+  axis:
+    count_products: 제품
+    average_max_attributes_per_family: 패밀리별 특성
+    count_channels: 채널
+    count_locales: 로케일(활성화됨)
+    count_scopable_attributes: 확장 가능 특성
+    count_localizable_and_scopable_attributes: 지역화 가능 및 확장 가능 특성
+    count_localizable_attributes: 지역화 가능 특성
+    count_families: 패밀리
+    count_attributes: 특성
+    average_max_options_per_attribute: 특성 기준 옵션
+    count_categories: 카테고리
+    count_category_trees: 카테고리 트리
+    count_variant_products: 변형 제품
+    count_product_models: 제품 모델
+    warning: 주의! 이 축에서 레코드에 도달했습니다! 이러한 유형의 볼륨에 대해 도움이 필요한 경우는 언제든지 문의해주십시오.
+  mean: '평균:'
+  max: '최대:'

@@ -1,0 +1,129 @@
+Item deleted: 항목 삭제됨
+Are you sure you want to delete this item?: 이 항목을 삭제하시겠습니까?
+Delete Error: 삭제 오류
+Are you sure you want to do remove selected items?: 선택된 항목을 제거하시겠습니까?
+Selected items were removed.: 선택된 항목이 제거되었습니다.
+Selected items were not removed.: 선택된 항목이 제거되지 않았습니다.
+Please, select items to remove.: 제거할 항목을 선택하십시오.
+Cannot delete item.: 항목을 삭제할 수 없습니다.
+Refresh Confirmation: 새로 고침 확인
+Your local changes will be lost. Are you sure you want to refresh grid?: 로컬 변경 사항이 손실됩니다. 그리드를 새로 고치시겠습니까?
+Reset Confirmation: 재설정 확인
+Your local changes will be lost. Are you sure you want to reset grid?: 로컬 변경 사항이 손실됩니다. 그리드를 재설정하시겠습니까?
+Confirmation: 확인
+edit: 편집
+copy: 복사
+remove: 제거
+Status: 상태
+All: 모두
+Per page: 페이지당
+Mass Action Confirmation: 대량 작업 확인
+Mass action performed.: 대량 작업이 수행되었습니다.
+Mass action is not performed.: 대량 작업이 수행되지 않았습니다.
+Please, select items to perform mass action.: 대량 작업을 수행할 항목을 선택하십시오.
+Execution Confirmation: 실행 확인
+Are you sure you want to do this?: 이 작업을 수행하시겠습니까?
+Action performed.: 작업이 수행되었습니다.
+Action is not performed.: 작업이 수행되지 않았습니다.
+Please, select item to perform action.: 작업을 수행할 항목을 선택하십시오.
+View per page: 페이지별 보기
+Enabled: 활성화됨
+Disabled: 비활성화됨
+not_available: 해당 없음
+Yes: true
+No: false
+oro.datagrid.entityHint: 엔터티
+oro.datagrid.noentities: 레코드 찾지 못함
+oro.datagrid.noresults: "죄송합니다. 검색 결과가 없습니다."
+oro.datagrid.noresults_subTitle: "새 검색 조건으로 다시 시도하십시오."
+oro.datagrid.nocolumns: 이 그리드에 대한 컬럼이 구성되지 않음
+oro.datagrid.pagination.label: "페이지"
+oro.datagrid.pagination.totalPages: "/ {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }}개 레코드"
+#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
+oro.datagrid.pagination.limit_warning: "이 그리드는 결과를 {{ limit }}개 넘게 표시할 수 없습니다. 추가 검색 조건에서 필터링해보십시오."
+oro.datagrid.action.reset: "재설정"
+oro.datagrid.action.refresh: "새로 고침"
+oro_datagrid.select.all: "모두"
+oro_datagrid.select.visible: "모두 표시"
+oro_datagrid.select.none: "없음"
+oro_datagrid.select.select: "선택"
+pim.grid.ajax_choice_filter.label_empty: 비어 있음
+pim.grid.ajax_choice_filter.label_not_empty: 비어 있지 않음
+pim:
+  grid:
+    choice_filter:
+      label_contains: 다음을 포함
+      label_does_not_contain: 다음을 포함하지 않음
+      label_equal: 같음
+      label_start_with: 다음으로 시작
+      label_empty: 비어 있음
+      label_not_empty: 비어 있지 않음
+      label_in_list: 목록에 있음
+      operator: 연산자
+    price_filter:
+      label: 통화
+    category_filter:
+      done: 완료
+#Column configuration
+Available Columns: 사용 가능한 열
+Displayed Columns: 선택된 열
+datagrid_view.columns.min_message: 표시할 데이터 그리드 열을 하나 이상 선택해야 합니다
+pim_datagrid:
+  column_configurator:
+    label: 열
+    title: 열 구성
+    all_groups: 모든 그룹
+    search: 검색
+    clear: 지우기
+    displayed_columns: 선택된 열
+    apply: 적용
+    cancel: 취소
+    remove_column: 제거
+    description: 열로 표시하려는 정보를 선택합니다
+    attribute_groups: 특성 그룹
+  mass_action:
+    delete:
+      confirm_title: 삭제 확인
+      confirm_ok: 확인
+      empty_selection: 선택한 제품 없음
+#Quick export
+pim.grid.mass_action.quick_export.title: 빠른 내보내기
+pim.grid.mass_action.quick_export.launched: 빠른 내보내기가 실행되었습니다
+#Custom actions
+pim.grid.action.launch.title: 실행
+pim.grid.action.show.title: 표시
+Please select view: 보기를 선택하십시오
+Loading...: 로드 중...
+View: 보기
+#Datetimepicker
+from: 시작
+to: 종료
+#View selector
+grid.view_selector:
+  default_view: 기본 보기
+  save_changes: 이 보기 저장
+  remove: 이 보기 삭제
+  create_view: 보기 만들기
+  create: 만들기
+  search: 검색
+  views: 보기
+  placeholder: 새 보기 이름
+  choose_label: 보기의 레이블 선택
+  confirmation:
+    remove: 이 보기를 삭제하시겠습니까?
+    delete: 삭제 확인
+#View selector flash messages
+grid.view_selector.flash.updated: 데이터 그리드 보기 업데이트됨
+#Display selector
+grid.display_selector:
+  label: 표시
+  gallery: 갤러리
+  list: 목록
+#Credentials cell
+Client ID: 클라이언트 ID
+Secret: 비밀
+grid.empty_results:
+  associated_product:
+    hint: 연결된 제품이 없습니다
+    subHint: '이 제품을 연결하려면 "연결 추가" 버튼을 클릭하십시오'

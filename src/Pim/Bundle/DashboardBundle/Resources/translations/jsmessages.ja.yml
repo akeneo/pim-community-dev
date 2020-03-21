@@ -12,11 +12,14 @@ pim_dashboard:
         import: インポート
         export: エクスポート
         mass_edit: 一括編集
-        quick_export: クイック エクスポート
-        compute_product_models_descendants: 製品モデルの子孫を計算します。
+        quick_export: クイックエクスポート
+        compute_product_models_descendants: 商品モデルの下位を全て計算
+        compute_family_variant_structure_changes: ファミリーバリエーションの変更を計算
+        compute_completeness_of_products_family: 商品ファミリーの完全性を検算
+        mass_delete: 商品を一括削除
     completeness:
       load_more: 'さらに読み込む...'
     header:
       view_all: 全て表示
 page_title:
-  pim_dashboard_index: ダッシュ ボード
+  pim_dashboard_index: ダッシュボード

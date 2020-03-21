@@ -1,0 +1,21 @@
+oro.filter.form.label_type_equal: '='
+oro.filter.form.label_type_greater_equal: '>='
+oro.filter.form.label_type_greater_than: '>'
+oro.filter.form.label_type_less_equal: '<='
+oro.filter.form.label_type_less_than: '<'
+oro.filter.form.label_type_yes: "예"
+oro.filter.form.label_type_no: "아니요"
+oro.filter.form.label_type_contains: 다음을 포함
+oro.filter.form.label_type_not_contains: 다음을 포함하지 않음
+oro.filter.form.label_type_equals: 같음
+oro.filter.form.label_type_start_with: 다음으로 시작
+oro.filter.form.label_type_end_with: 다음으로 끝남
+oro.filter.form.label_type_empty: 비어 있음
+oro.filter.form.label_type_not_empty: 비어 있지 않음
+oro.filter.form.label_type_in_list: 목록에 있음
+oro.filter.form.label_date_type_between: 사이
+oro.filter.form.label_date_type_not_between: 사이에 없음
+oro.filter.form.label_date_type_more_than: 보다 큼
+oro.filter.form.label_date_type_less_than: 보다 작음
+oro.filter.form.label_not_selected: 선택되지 않음
+oro.filter.form.label_selected: 선택됨

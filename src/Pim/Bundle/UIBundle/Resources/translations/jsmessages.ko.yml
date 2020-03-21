@@ -1,0 +1,124 @@
+#ORO messages
+Close: 닫기
+Update: 업데이트
+Selected Rows: 선택된 행
+"Yes": "예"
+"Yes, Delete": "예, 삭제합니다"
+"Yes, I Agree": "예, 동의합니다"
+"Yes, do it": "예, 수행합니다"
+"No": "아니요"
+"Ok, got it.": "예, 알겠습니다"
+"Cancel": "취소"
+"Delete Confirmation": "삭제 확인"
+"Edit": "편집"
+"Unexpected error occured. Please contact system administrator.": "예기치 않은 오류가 발생했습니다. 시스템 관리자에게 문의하십시오."
+"Yes, revoke": "예, 취소합니다"
+"Revoke Confirmation": "취소 확인"
+Now: 지금
+Prev: 이전
+Next: 다음
+Today: 오늘
+Wk: 주
+Done: 완료
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "시간 선택"
+Time: 시간
+Hour: 시간
+Minute: 분
+Second: 초
+Millisecond: 밀리초
+Microsecond: 마이크로초
+"Time Zone": "시간대"
+#PIM messages
+Localized value: 지역화된 값
+Columns: 열
+Datagrid Configuration: 데이터그리드 구성
+Apply: 적용
+#Filters
+Action: 작업
+Unit: 단위
+Currency: 통화
+jstree:
+  all: 모든 제품
+  unclassified: 미분류 제품
+  product:
+    all: 모든 제품
+    unclassified: 미분류 제품
+  no_tree: 사용 가능한 트리 없음
+  include_sub: 하위 카테고리 포함
+  loading: 로드 중...
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: 일요일
+    Monday: 월요일
+    Tuesday: 화요일
+    Wednesday: 수요일
+    Thursday: 목요일
+    Friday: 금요일
+    Saturday: 토요일
+  daysShort:
+    Sun: 일
+    Mon: 월
+    Tue: 화
+    Wed: 수
+    Thu: 목
+    Fri: 금
+    Sat: 토
+  daysMin:
+    Su: 일
+    Mo: 월
+    Tu: 화
+    We: 수
+    Th: 목
+    Fr: 금
+    Sa: 토
+  months:
+    January: 1월
+    February: 2월
+    March: 3월
+    April: 4월
+    May: 5월
+    June: 6월
+    July: 7월
+    August: 8월
+    September: 9월
+    October: 10월
+    November: 11월
+    December: 12월
+  monthsShort:
+    Jan: 1월
+    Feb: 2월
+    Mar: 3월
+    Apr: 4월
+    May: 5월
+    Jun: 6월
+    Jul: 7월
+    Aug: 8월
+    Sep: 9월
+    Oct: 10월
+    Nov: 11월
+    Dec: 12월
+#ORO
+oro_config:
+  form:
+    config:
+      title: 시스템 구성
+      tab:
+        system:
+          title: 시스템
+      group:
+        localization:
+          title: 지역화
+          system_locale: 언어
+        notification:
+          title: 알림
+          system_notification: 새 버전 알림
+        loading_message:
+          title: 로딩 메시지
+          label: 로딩 메시지 활성화
+        loading_messages:
+          label: 사용 가능한 로딩 메시지

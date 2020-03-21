@@ -1,6 +1,6 @@
 entity.user.name: ユーザー
 entity.user.description: ユーザープロフィール
-entity.role.name: ロール
-entity.role.description: ユーザー ロール
+entity.role.name: 権限
+entity.role.description: ユーザー権限
 entity.group.name: グループ
-entity.group.description: ロールグループ
+entity.group.description: 権限グループ

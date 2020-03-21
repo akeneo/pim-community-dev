@@ -1,0 +1,28 @@
+btn:
+  post: 새 코멘트 추가
+  reply: 답변
+  cancel: 취소
+confirmation:
+  remove:
+    comment: 이 코멘트를 삭제하시겠습니까?
+flash:
+  comment:
+    create:
+      success: 코멘트가 생성되었습니다.
+      error: 코멘트를 생성하는 중에 오류가 발생했습니다.
+    delete:
+      success: 코멘트가 삭제되었습니다.
+      error: 코멘트를 삭제하는 중에 오류가 발생했습니다.
+    reply:
+      success: 답변이 생성되었습니다.
+      error: 답변을 생성하는 중에 오류가 발생했습니다.
+comment:
+  index:
+    empty: 현재, 코멘트 없음
+    header_comment: '{{user}} 님이 제품에 코멘트합니다'
+    header_reply: '{{ user }} 님이 코멘트에 답변합니다'
+  placeholder:
+    new: 새 코멘트 작성...
+    reply: 이 코멘트에 대한 답변...
+pim_comment:
+  product.panel.comment.title: 코멘트

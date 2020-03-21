@@ -1,0 +1,30 @@
+job_execution:
+  summary:
+    display_item: 항목 표시
+    hide_item: 항목 숨기기
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: 카테고리 선택
+          cancel: 취소
+          confirm: 확인
+        label: "{0} 모든 제품|{1} 1개 카테고리 선택됨|]1,Inf[ {{ count }}개 카테고리 선택됨"
+        edit: 편집
+        title: 카테고리 선택
+    locales:
+      validation:
+        not_blank: 로케일 하나를 선택해야 합니다. 내보낼 로케일을 선택하십시오.
+#Page titles
+page_title:
+  pim_importexport_export_profile_index: 내보내기 프로필 관리
+  pim_importexport_export_profile_edit: 내보내기 프로필 {{ job.label }} | 편집
+  pim_importexport_export_profile_show: 내보내기 프로필 {{ job.label }} | 표시
+  pim_importexport_export_execution_index: 내보내기 실행 기록
+  pim_importexport_export_execution_show: 내보내기 실행 | 세부 정보
+  pim_importexport_import_profile_index: 가져오기 프로필 관리
+  pim_importexport_import_profile_edit: 가져오기 프로필 {{ job.label }} | 편집
+  pim_importexport_import_profile_show: 가져오기 프로필 {{ job.label }} | 표시
+  pim_importexport_import_execution_index: 가져오기 실행 기록
+  pim_importexport_import_execution_show: 가져오기 실행 | 세부 정보

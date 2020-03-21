@@ -1,0 +1,3 @@
+pim_notification:
+  no_notifications: 새 알림 없음
+  mark_all_as_read: 모두 읽음으로 표시

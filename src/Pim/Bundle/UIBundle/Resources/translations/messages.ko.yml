@@ -1,0 +1,49 @@
+User: 사용자
+Run demo: 데모 실행
+Product: 제품
+Attribute list: 특성 목록
+Attribute Group list: 특성 그룹 목록
+Users: 사용자
+Roles: 역할
+Groups: 그룹
+Configuration: 구성
+Currency list: 통화 목록
+Locale list: 로케일 목록
+Logged in as: '로그인 계정:'
+Logout: 로그아웃
+Login: 로그인
+Previous: 이전
+Next: 다음
+Channel list: 채널 목록
+Select file: 파일 선택
+Change file: 파일 변경
+Remove file: 파일 제거
+Delete: 삭제
+Save: 저장
+Cancel: 취소
+Get help: 도움말 이용
+My User: 내 계정
+oro.form.choose_value: 값 선택...
+Read more: 더 보기
+oro.form.click_here_to_select: 선택하려면 여기를 클릭...
+Add: 추가
+"Learn how to use this space": "이 공간을 사용하는 방법 알아보기"
+"How To Use Pinbar": "핀바를 사용하는 방법"
+Pinbar: 핀바
+Favorites: 즐겨찾기
+Most Viewed: 최다 조회
+"Add this page to favorites": "즐겨찾기에 이 페이지 추가"
+"Minimize the window to the pinbar": "핀바로 창 최소화"
+"Loading ...": "로드 중..."
+"Yes": "예"
+"No": "아니요"
+required: (필수)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: 로딩 메시지 활성화
+    loading_message_enabled.tooltip: 페이지 로드 대기 중에 사용자 안내 메시지 표시
+    loading_messages.label: 사용 가능한 로딩 메시지
+    loading_messages.tooltip: 줄 바꿈으로 구분된 사용 가능한 모든 로딩 메시지
+  group:
+    loading_message.title: 로딩 메시지
+other_actions: 기타 작업

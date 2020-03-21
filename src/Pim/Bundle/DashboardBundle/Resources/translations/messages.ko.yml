@@ -1,0 +1,29 @@
+pim_dashboard:
+  title: 대시보드
+  version: 버전
+  link.label:
+    product: 제품 관리
+    category: 카테고리 관리
+    attribute: 특성 관리
+    family: 패밀리 관리
+  widget:
+    error:
+      title: 위젯 로드 중에 오류 발생
+      message: '''%alias%'' 위젯이 존재하지 않습니다'
+    completeness:
+      title: 채널 및 로케일에 대한 완성도
+    last_operations:
+      title: 마지막 작업
+      empty: 작업 없음
+      status: 상태
+      date: 날짜
+      type: 유형
+      "profile name": 프로필 이름
+      details: 세부 정보
+      job_type:
+        import: 가져오기
+        export: 내보내기
+        mass_edit: 대량 편집
+        quick_export: 빠른 내보내기
+        compute_product_models_descendants: 제품 모델 하위 항목 계산
+        mass_delete: 제품 대량 삭제

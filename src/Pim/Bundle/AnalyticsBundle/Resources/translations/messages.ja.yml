@@ -6,7 +6,7 @@ pim_analytics:
       version_update.title: バージョンアップデート
     form:
       version_update.label: 新しいバージョンの通知
-      version_update.tooltip: 新しいバージョンの通知を受け取るために外部サーバーにリクエストを送信します
+      version_update.tooltip: 外部サーバーにリクエストを送信して新しいパッチのリリース情報を受け取りましょう
   system_info:
     title: システム情報
     download: TXT
@@ -19,12 +19,29 @@ pim_analytics:
     registered_bundles: 登録済みバンドル
     nb_channels: チャンネル数
     nb_products: 商品数
-    nb_scopable_attributes: Scopable 属性の数
-    nb_localizable_attributes: Localizable 属性の数
-    nb_scopable_localizable_attributes: Localizable 属性とScopable 属性の数
-    nb_locales: ロケールの数
-    nb_families: 家族の数
-    nb_users: ユーザ数
+    nb_product_models: 商品モデル数
+    nb_variant_products: 商品のバリエーション数
+    nb_family_variants: ファミリーバリエーション数
+    nb_attributes: 属性数
+    nb_scopable_attributes: 参照可の属性数
+    nb_localizable_attributes: ローカライズ可の属性数
+    nb_scopable_localizable_attributes: ローカライズ可の属性数ならびに参照可の属性数
+    nb_useable_as_grid_filter_attributes: グリッドフィルターとして使用可能な属性数
+    avg_percentage_scopable_attributes_per_family: ファミリーごとに参照可能な属性の平均パーセンテージ (%)
+    avg_percentage_localizable_attributes_per_family: ファミリーごとにローカライズ可能な属性の平均パーセンテージ (%)
+    avg_percentage_scopable_localizable_attributes_per_family: ファミリーごとにローカライズ可能、参照可能な属性の平均パーセンテージ (%)
+    avg_number_attributes_per_family: ファミリーごとの平均属性数
+    nb_locales: ロケール数
+    nb_families: ファミリー数
+    nb_users: ユーザー数
+    nb_categories: カテゴリ数
+    nb_category_trees: カテゴリツリー数
+    max_category_in_one_category: 1つのカテゴリにおける最大カテゴリ数
+    max_category_levels: 最大カテゴリレベル数
+    nb_product_values: 商品価格の数値
+    avg_product_values_by_product: 商品ごとの商品価格の平均数値
+    avg_product_values_by_family: ファミリー毎の潜在的商品価値の平均数値
+    max_product_values_by_family: ファミリーごとの潜在的商品価値の最大数値
     pim_storage_version: ストレージ バージョン
     os_version: OSバージョン
     php_version: PHPバージョン
@@ -32,7 +49,7 @@ pim_analytics:
     mariadb_version: MariaDB バージョン
     mongodb_version: MongoDB バージョン
     server_version: サーバーのバージョン
-    php_extensions: PHP の拡張モジュール
+    php_extensions: PHP拡張モジュール
   acl:
     system_info:
       index: システム情報
