@@ -107,7 +107,7 @@ akeneo_franklin_insights:
           ok: Bestätigen
       constraint:
         missing_target_key: 'Fehlender Zielschlüssel für das Mapping'
-        missing_attribute_key: 'Fehlender {{ expectedKey }}} Schlüssel für die Zuordnung mit Zielschlüssel "{{ targetKey }}"'
+        missing_attribute_key: 'Fehlender {{ expectedKey }} Schlüssel für die Zuordnung mit Zielschlüssel "{{ targetKey }}"'
         invalid_attribute_type_mapping: 'Franklin-Attribute können nicht dem PIM-Attributtyp "{{ pimType }}" zugeordnet werden.'
         empty_mapping: 'Franklin-Attribute können nicht mit einem leeren Mapping abgebildet werden.'
         localizable_not_allowed: 'Franklin-Attribute können nicht auf ein PIM-lokalisierbares Attribut abgebildet werden.'
