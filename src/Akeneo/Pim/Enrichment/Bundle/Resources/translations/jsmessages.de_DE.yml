@@ -274,7 +274,7 @@ pim_enrich.mass_edit.product:
       select_attributes: Attribute auswählen
     change_status:
       label: Status ändern
-      label_count: "{1}Ändern Sie den Status von <span class=\"AknFullPage-Titel--Highlight\">1 Produkt</span>|]1, Inf[Ändern des Status von <span class=\"AknFullPage-Titel--Highlight\">{{ itemsCount }}} Produkte</span>"
+      label_count: "{1}Ändern Sie den Status von <span class=\"AknFullPage-Titel--Highlight\">1 Produkt</span>|]1, Inf[Ändern des Status von <span class=\"AknFullPage-Titel--Highlight\">{{ itemsCount }} Produkte</span>"
       description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
       field: Aktivieren
     edit_common:
