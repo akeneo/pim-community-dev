@@ -233,7 +233,7 @@ pim_enrich.entity.fallback:
       title: '{{ itemName }} löschen'
       alternative_title: Entfernen bestätigen
       item: Möchten Sie dieses Element wirklich löschen?
-      item_placeholder: Sind Sie sicher, dass Sie {{ itemName }}} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.
+      item_placeholder: Sind Sie sicher, dass Sie {{ itemName }} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.
     edit:
       leave: Möchten Sie diese Seite wirklich verlassen?
       discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
