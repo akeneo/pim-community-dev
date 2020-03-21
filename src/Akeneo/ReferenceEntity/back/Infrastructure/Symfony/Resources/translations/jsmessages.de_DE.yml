@@ -91,12 +91,12 @@ pim_reference_entity:
       link: Klicken Sie hier, um Ihre erste Benutzergruppe hinzuzufügen.
   record:
     validation:
-      limit_reached: 'Sie können den Datensatz "{{ %record_label% }}}" nicht erstellen, da Sie die Grenze von {{ %limit% }}} Datensätzen für diese Referenzentität erreicht haben.'
+      limit_reached: 'Sie können den Datensatz "{{ %record_label% }}" nicht erstellen, da Sie die Grenze von {{ %limit% }} Datensätzen für diese Referenzentität erreicht haben.'
       code:
         pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
         should_be_unique: 'Dieser Code existiert bereits für diese Entität.'
     no_data:
-      title: Es existiert kein Datensatz für {{ entityLabel }}}
+      title: Es existiert kein Datensatz für {{ entityLabel }}
       subtitle: Klicken Sie auf den Button "Add new", um den ersten Datensatz zu erstellen.
     no_result:
       title: Es gibt kein Ergebnis für Ihre Suche.
@@ -104,7 +104,7 @@ pim_reference_entity:
     selector:
       no_value: Klicken Sie hier, um einen Datensatz auszuwählen.
     error:
-      value: Upsala, es scheint, dass das Rendern des Feldes "{{{ fieldName }}}" fehlgeschlagen ist. Weitere Informationen finden Sie in der Entwicklerkonsole.
+      value: Upsala, es scheint, dass das Rendern des Feldes "{{ fieldName }}" fehlgeschlagen ist. Weitere Informationen finden Sie in der Entwicklerkonsole.
     button:
       save: Speichern
       create: Hinzufügen
@@ -120,17 +120,17 @@ pim_reference_entity:
       header:
         title: Anlegen
       subtitle: Referenz Entitäten
-      title: Neu hinzufügen {{ entityLabel }}}} 
+      title: Neu hinzufügen {{ entityLabel }}
       input:
         label: Bezeichnung
         code: Code (erforderlich)
         create_another: Einen weiteren Datensatz anlegen
       confirm: Speichern
     delete:
-      message: Sind Sie sicher, dass Sie den Datensatz "{{ recordLabel }}}" löschen möchten? Wenn dieser mit Produkten oder Datensätzen verlinkt ist, werden die Links entfernt.
+      message: Sind Sie sicher, dass Sie den Datensatz "{{ recordLabel }}" löschen möchten? Wenn dieser mit Produkten oder Datensätzen verlinkt ist, werden die Links entfernt.
       title: Datensatz
     delete_all:
-      confirm: Sind Sie sicher, dass Sie alle "{{ entityIdentifier }}}" Datensätze löschen möchten? Wenn diese mit Produkten verlinkt sind, werden die Links zu den Produkten entfernt.
+      confirm: Sind Sie sicher, dass Sie alle "{{ entityIdentifier }}" Datensätze löschen möchten? Wenn diese mit Produkten verlinkt sind, werden die Links zu den Produkten entfernt.
     grid:
       search: Suche nach Label-, Code- und Textattributen
       filter:
@@ -148,11 +148,11 @@ pim_reference_entity:
         action: Aktionen
       more_result:
         title: Das ist es nicht!
-        description: Sie haben gerade die ersten 500 Ergebnisse aus {{{ total }}} Datensätzen durchblättert. Um mehr zu sehen, versuchen Sie es mit genaueren Suchkriterien.
+        description: Sie haben gerade die ersten 500 Ergebnisse aus {{ total }} Datensätzen durchblättert. Um mehr zu sehen, versuchen Sie es mit genaueren Suchkriterien.
       completeness:
         title_no_required: Kein Attribut erforderlich
-        title_non_complete: 0 von {{notwendigen }}} Attributen sind vollständig ausgefüllt
-        title_ongoing: '{{ complete }}} aus {{ required }} Attributen vollständig'
+        title_non_complete: 0 von {{ required }} Attributen sind vollständig ausgefüllt
+        title_ongoing: '{{ complete }} aus {{ required }} Attributen vollständig'
         title_complete: Alle {{ required }} Attribute sind vollständig
     tab:
       enrich: Anreichern
@@ -165,16 +165,16 @@ pim_reference_entity:
         success: Datensatz erfolgreich erstellt.
         fail: Bei der Erstellung des Datensatzes ist ein Fehler aufgetreten
       delete:
-        success: Datensatz "{{ code }}}" wurde erfolgreich gelöscht.
+        success: Datensatz "{{ code }}" wurde erfolgreich gelöscht.
         fail: Beim Löschen des Datensatzes ist ein Fehler aufgetreten
       delete_all:
-        success: Alle "{{ entityIdentifier }}}" Datensätze wurden erfolgreich gelöscht.
+        success: Alle "{{ entityIdentifier }}" Datensätze wurden erfolgreich gelöscht.
         fail: Beim Löschen aller Datensätze dieser Referenz-Entität ist ein Fehler aufgetreten
     completeness:
       label: Vollständig
   attribute:
     validation:
-      limit_reached: 'Sie können das Attribut "{{ %attribute_label% }}}" nicht anlegen, da Sie die Grenze von {{ %limit% }}} Attributen für diese Referenzentität erreicht haben.'
+      limit_reached: 'Sie können das Attribut "{{ %attribute_label% }}" nicht anlegen, da Sie die Grenze von {{ %limit% }} Attributen für diese Referenzentität erreicht haben.'
     default:
       code: Code
       label: Bezeichnung
@@ -188,7 +188,7 @@ pim_reference_entity:
       option_collection: Mehrfachfunktion
     is_required: zur Vollständigkeit erforderlich
     no_data:
-      title: Es gibt keine benutzerdefinierten Attribute für {{ entityLabel }}}
+      title: Es gibt keine benutzerdefinierten Attribute für {{ entityLabel }}
       subtitle: Klicken Sie auf den Button " Attribut hinzufügen ", um Ihr erstes benutzerdefiniertes Attribut zu konfigurieren.
     button:
       add: Ein Attribut hinzufügen
@@ -243,7 +243,7 @@ pim_reference_entity:
             regular_expression: Regulärer Ausdruck
             url: URL
     delete:
-      message: Sind Sie sicher, dass Sie das Attribut "{{ attributeLabel }}}" löschen wollen?
+      message: Sind Sie sicher, dass Sie das Attribut "{{ attributeLabel }}" löschen wollen?
       title: Attribut
     notification:
       list:
@@ -285,7 +285,7 @@ pim_enrich:
           identifier: Zugehörige Referenzentität (erforderlich)
           default_label: Bitte wählen Sie eine Referenzentität aus
 permission:
-  mass_action: Wenden Sie {{ rightLevel }}} Rechte auf alle Gruppen an.
+  mass_action: Wenden Sie {{ rightLevel }} Rechte auf alle Gruppen an.
 #Analytics
 pim_catalog_volume:
   section:

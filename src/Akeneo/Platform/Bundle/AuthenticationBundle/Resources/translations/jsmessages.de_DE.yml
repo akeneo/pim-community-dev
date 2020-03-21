@@ -8,7 +8,7 @@ authentication:
       info:
         update_successful: Die Konfiguration wurde gespeichert
         update_failed: Die Konfiguration konnte nicht gespeichert werden
-        fields_not_ready: "Die Konfiguration kann zur Zeit nicht gespeichert werden. Die folgenden Felder sind noch nicht ausgefüllt: Felder }}}}"
+        fields_not_ready: "Die Konfiguration kann zur Zeit nicht gespeichert werden. Die folgenden Felder sind noch nicht ausgefüllt: {{ fields }}"
       section:
         activation:
           title: SSO-Aktivierung
