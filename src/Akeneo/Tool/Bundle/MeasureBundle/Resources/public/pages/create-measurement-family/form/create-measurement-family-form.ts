@@ -1,7 +1,6 @@
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Operator} from 'akeneomeasure/model/operation';
-
-type LocaleCode = string;
+import {LocaleCode} from 'akeneomeasure/model/locale';
 
 type CreateMeasurementFamilyForm = {
   family_code: string;

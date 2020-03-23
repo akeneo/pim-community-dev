@@ -1,7 +1,6 @@
 import {Operation, Operator} from 'akeneomeasure/model/operation';
 import {Unit} from 'akeneomeasure/model/unit';
-
-type LocaleCode = string;
+import {LocaleCode} from 'akeneomeasure/model/locale';
 
 type CreateUnitForm = {
   code: string;
