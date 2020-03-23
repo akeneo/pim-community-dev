@@ -202,7 +202,7 @@ const UnitTab = ({
                       setUnitLabel(measurementFamily, selectedUnitCode, locale.code, event.currentTarget.value)
                     )
                   }
-                  errors={filterErrors(errors, `[${selectedUnitIndex}][labels]`)} //TODO fix label indexing
+                  errors={filterErrors(errors, `[${selectedUnitIndex}][labels][${locale.code}]`)}
                 />
               ))}
           </FormGroup>
