@@ -1,0 +1,3 @@
+services:
+    pim_analytics.query.email_domains:
+        class: AkeneoTest\Platform\Acceptance\Analytics\Query\Sql\EmailDomainsInMemory
