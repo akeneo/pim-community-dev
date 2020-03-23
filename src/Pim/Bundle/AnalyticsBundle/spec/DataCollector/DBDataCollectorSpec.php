@@ -16,6 +16,7 @@ class DBDataCollectorSpec extends ObjectBehavior
         CountQuery        $productCountQuery,
         CountQuery        $localeCountQuery,
         CountQuery        $familyCountQuery,
+        CountQuery        $attributeCountQuery,
         CountQuery        $userCountQuery,
         CountQuery        $productModelCountQuery,
         CountQuery        $variantProductCountQuery,
@@ -33,6 +34,7 @@ class DBDataCollectorSpec extends ObjectBehavior
             $productCountQuery,
             $localeCountQuery,
             $familyCountQuery,
+            $attributeCountQuery,
             $userCountQuery,
             $productModelCountQuery,
             $variantProductCountQuery,
@@ -58,6 +60,7 @@ class DBDataCollectorSpec extends ObjectBehavior
         $productCountQuery,
         $localeCountQuery,
         $familyCountQuery,
+        $attributeCountQuery,
         $userCountQuery,
         $productModelCountQuery,
         $variantProductCountQuery,
@@ -74,6 +77,7 @@ class DBDataCollectorSpec extends ObjectBehavior
         $productCountQuery->fetch()->willReturn(new CountVolume(1121, -1, 'count_products'));
         $localeCountQuery->fetch()->willReturn(new CountVolume(3, -1, 'count_locales'));
         $familyCountQuery->fetch()->willReturn(new CountVolume(14, -1, 'count_families'));
+        $attributeCountQuery->fetch()->willReturn(new CountVolume(110, -1, 'count_attributes'));
         $userCountQuery->fetch()->willReturn(new CountVolume(5, -1, 'count_users'));
         $productModelCountQuery->fetch()->willReturn(new CountVolume(123, -1, 'count_product_models'));
         $variantProductCountQuery->fetch()->willReturn(new CountVolume(89, -1, 'count_variant_products'));
@@ -94,6 +98,7 @@ class DBDataCollectorSpec extends ObjectBehavior
                 'nb_product_models'     => 123,
                 'nb_variant_products'   => 89,
                 "nb_families"           => 14,
+                "nb_attributes"         => 110,
                 "nb_users"              => 5,
                 'nb_categories'         => 250,
                 'nb_category_trees'     => 3,
