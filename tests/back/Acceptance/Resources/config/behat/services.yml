@@ -103,3 +103,6 @@ services:
             - '@validator'
             - '@pim_user.repository.group'
 
+    # do no pull-up this service configuration in 3.2 (already defined somewhere else)
+    pim_analytics.query.email_domains:
+        class: AkeneoTest\Platform\Acceptance\Analytics\Query\Sql\EmailDomainsInMemory
