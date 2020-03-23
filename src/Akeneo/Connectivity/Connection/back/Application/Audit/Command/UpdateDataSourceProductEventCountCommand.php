@@ -11,7 +11,7 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class UpdateProductEventCountCommand
+final class UpdateDataSourceProductEventCountCommand
 {
     /** @var HourlyInterval */
     private $hourlyInterval;

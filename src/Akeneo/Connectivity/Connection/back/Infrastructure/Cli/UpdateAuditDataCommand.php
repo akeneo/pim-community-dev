@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
 
-use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountCommand;
-use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountHandler;
+use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountCommand;
+use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\PurgeAuditProductQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectHourlyIntervalsToRefreshQuery;
@@ -22,8 +22,8 @@ class UpdateAuditDataCommand extends Command
 {
     protected static $defaultName = 'akeneo:connectivity-audit:update-data';
 
-    /** @var UpdateProductEventCountHandler */
-    private $updateProductEventCountHandler;
+    /** @var UpdateDataSourceProductEventCountHandler */
+    private $updateDataSourceProductEventCountHandler;
 
     /** @var DbalSelectHourlyIntervalsToRefreshQuery */
     private $selectHourlyIntervalsToRefreshQuery;
@@ -32,13 +32,13 @@ class UpdateAuditDataCommand extends Command
     private $purgeQuery;
 
     public function __construct(
-        UpdateProductEventCountHandler $updateProductEventCountHandler,
+        UpdateDataSourceProductEventCountHandler $updateDataSourceProductEventCountHandler,
         DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery,
         PurgeAuditProductQuery $purgeQuery
     ) {
         parent::__construct();
 
-        $this->updateProductEventCountHandler = $updateProductEventCountHandler;
+        $this->updateDataSourceProductEventCountHandler = $updateDataSourceProductEventCountHandler;
         $this->selectHourlyIntervalsToRefreshQuery = $selectHourlyIntervalsToRefreshQuery;
         $this->purgeQuery = $purgeQuery;
     }
@@ -76,8 +76,8 @@ class UpdateAuditDataCommand extends Command
 
     private function updateProductEventCount(HourlyInterval $hourlyInterval): void
     {
-        $this->updateProductEventCountHandler->handle(
-            new UpdateProductEventCountCommand($hourlyInterval)
+        $this->updateDataSourceProductEventCountHandler->handle(
+            new UpdateDataSourceProductEventCountCommand($hourlyInterval)
         );
     }
 }
