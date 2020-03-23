@@ -8,6 +8,7 @@
 - PIM-9114: fix errors on mass action when the parent filter is set to empty
 - PIM-9110: avoid deadlock error when loading product and product models in parallel with the API
 - PIM-9113: Locale Specific attribute breaks product grid
+- PIM-9157: Fix performance issue when loading the data of a product group
 
 ## New features
 
@@ -47,6 +48,8 @@
     - add `Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface $measurementFamilyRepository`
     - add `Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository $baseCachedObjectRepository`
     - add `Psr\Log\LoggerInterface $logger`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\GroupNormalizer` to
+    - add `Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers`
 - Change `Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager` to remove method `setMeasureConfig(array $config)`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\DependencyInjection\Configuration`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\AreaFamilyInterface`
