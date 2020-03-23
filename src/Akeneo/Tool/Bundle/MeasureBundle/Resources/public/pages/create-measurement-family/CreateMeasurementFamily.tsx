@@ -9,12 +9,12 @@ import {HELPER_LEVEL_WARNING, SubsectionHelper} from 'akeneomeasure/shared/compo
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {Button} from 'akeneomeasure/shared/components/Button';
-import {useCreateMeasurementFamilyState} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-state';
 import {useCreateMeasurementFamilySaver} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
-import {createMeasurementFamilyFromFormState} from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
+import {CreateMeasurementFamilyForm, initializeCreateMeasurementFamilyForm, createMeasurementFamilyFromForm} from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
 import {ValidationError} from 'akeneomeasure/model/validation-error';
 import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
+import {useForm} from 'akeneomeasure/hooks/use-form';
 
 type CreateMeasurementFamilyProps = {
   onClose: () => void;
@@ -25,7 +25,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
   const notify = useContext(NotifyContext);
   const locale = useContext(UserContext)('uiLocale');
 
-  const [form, setFieldValue] = useCreateMeasurementFamilyState();
+  const [form, setFormValue] = useForm<CreateMeasurementFamilyForm>(initializeCreateMeasurementFamilyForm());
   const saveMeasurementFamily = useCreateMeasurementFamilySaver();
   const [errors, setErrors] = useState<ValidationError[]>([]);
 
@@ -35,7 +35,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
 
   const handleSave = useCallback(async () => {
     try {
-      const measurementFamily = createMeasurementFamilyFromFormState(form, locale);
+      const measurementFamily = createMeasurementFamilyFromForm(form, locale);
       const response = await saveMeasurementFamily(measurementFamily);
 
       switch (response.success) {
@@ -69,7 +69,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
               id="measurements.measurement_family.create.family_code"
               label={__('pim_common.code')}
               value={form.family_code}
-              onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('family_code', e.currentTarget.value)}
+              onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('family_code', e.currentTarget.value)}
               required={true}
               errors={errors.filter(error => error.property === 'code')}
             />
@@ -77,7 +77,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
               id="measurements.measurement_family.create.family_label"
               label={__('pim_common.label')}
               value={form.family_label}
-              onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('family_label', e.currentTarget.value)}
+              onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('family_label', e.currentTarget.value)}
               flag={locale}
               errors={errors.filter(error => error.property === 'labels')}
             />
@@ -93,7 +93,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
               id="measurements.measurement_family.create.standard_unit_code"
               label={__('pim_common.code')}
               value={form.standard_unit_code}
-              onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('standard_unit_code', e.currentTarget.value)}
+              onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('standard_unit_code', e.currentTarget.value)}
               required={true}
               errors={errors.filter(error => error.property === 'units[0][code]')}
             />
@@ -101,7 +101,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
               id="measurements.measurement_family.create.standard_unit_label"
               label={__('pim_common.label')}
               value={form.standard_unit_label}
-              onChange={(e: FormEvent<HTMLInputElement>) => setFieldValue('standard_unit_label', e.currentTarget.value)}
+              onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('standard_unit_label', e.currentTarget.value)}
               flag={locale}
               errors={errors.filter(error => error.property === 'units[0][labels]')}
             />
@@ -110,7 +110,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
               label={__('measurements.form.input.symbol')}
               value={form.standard_unit_symbol}
               onChange={(e: FormEvent<HTMLInputElement>) =>
-                setFieldValue('standard_unit_symbol', e.currentTarget.value)
+                setFormValue('standard_unit_symbol', e.currentTarget.value)
               }
               errors={errors.filter(error => error.property === 'units[0][symbol]')}
             />

@@ -155,6 +155,4 @@ const CreateUnit = ({
   );
 };
 
-export {
-  CreateUnit
-};
+export {CreateUnit};

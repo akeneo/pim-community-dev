@@ -2,13 +2,13 @@
 
 import '@testing-library/jest-dom/extend-expect';
 import {
-  createFormState,
-  createMeasurementFamilyFromFormState,
+  initializeCreateMeasurementFamilyForm,
+  createMeasurementFamilyFromForm,
 } from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
 
 describe('create-measurement-family-form', () => {
   test('It can create an empty form state', () => {
-    const state = createFormState();
+    const state = initializeCreateMeasurementFamilyForm();
 
     expect(state).toEqual({
       family_code: '',
@@ -20,9 +20,9 @@ describe('create-measurement-family-form', () => {
   });
 
   test('It can create a measurement family from an empty form state', () => {
-    const state = createFormState();
+    const state = initializeCreateMeasurementFamilyForm();
     const locale = 'en_US';
-    const measurementFamily = createMeasurementFamilyFromFormState(state, locale);
+    const measurementFamily = createMeasurementFamilyFromForm(state, locale);
 
     expect(measurementFamily).toEqual({
       code: '',
@@ -57,7 +57,7 @@ describe('create-measurement-family-form', () => {
       standard_unit_symbol: 'm',
     };
     const locale = 'en_US';
-    const measurementFamily = createMeasurementFamilyFromFormState(state, locale);
+    const measurementFamily = createMeasurementFamilyFromForm(state, locale);
 
     expect(measurementFamily).toEqual({
       code: 'custom_metric',

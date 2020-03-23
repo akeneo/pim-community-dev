@@ -4,6 +4,14 @@ import '@testing-library/jest-dom/extend-expect';
 import {renderHook} from '@testing-library/react-hooks';
 import {useCreateMeasurementFamilySaver} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
 
+declare global {
+  namespace NodeJS {
+    interface Global {
+      fetch: any;
+    }
+  }
+}
+
 const measurementFamily = Object.freeze({
   code: 'custom_metric',
   labels: {
