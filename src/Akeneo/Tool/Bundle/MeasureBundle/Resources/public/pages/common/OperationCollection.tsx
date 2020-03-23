@@ -1,9 +1,9 @@
-import React, {useState, useContext, useCallback, useEffect} from 'react';
-import styled, {css} from 'styled-components';
+import React, {useState, useContext, useCallback, useEffect, ChangeEvent} from 'react';
+import styled, {css, ThemeContext} from 'styled-components';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Button, TransparentButton} from 'akeneomeasure/shared/components/Button';
 import {DownIcon} from 'akeneomeasure/shared/icons/DownIcon';
-import {akeneoTheme} from 'akeneomeasure/shared/theme';
+import {LockIcon} from 'akeneomeasure/shared/icons/LockIcon';
 import {CloseIcon} from 'akeneomeasure/shared/icons/CloseIcon';
 import {SubArrowRightIcon} from 'akeneomeasure/shared/icons/SubArrowRightIcon';
 import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
@@ -11,6 +11,7 @@ import {Key} from 'akeneomeasure/shared/key';
 import {Operation, Operator, emptyOperation, MAX_OPERATION_COUNT} from 'akeneomeasure/model/operation';
 import {ValidationError, filterErrors, getErrorsForPath} from 'akeneomeasure/model/validation-error';
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
+import {Input, InputContainer} from 'akeneomeasure/shared/components/TextField';
 
 const AknFieldContainer = styled.div`
   margin-bottom: 20px;
@@ -37,26 +38,6 @@ const OperationCollectionLabel = styled.div`
 
 const StyledArrow = styled(SubArrowRightIcon)`
   margin: 0 4px 10px 2px;
-`;
-
-const OperationContainer = styled.div<{readOnly: boolean}>`
-  border: 1px solid ${props => props.theme.color.grey80};
-  background-color: ${props => (props.readOnly ? props.theme.color.grey70 : 'inherit')};
-  cursor: ${props => (props.readOnly ? 'not-allowed' : 'inherit')};
-  height: 40px;
-  display: flex;
-  flex: 1;
-  align-items: center;
-  padding: 0 15px;
-`;
-
-const OperationValue = styled.input<{readOnly: boolean}>`
-  background-color: transparent;
-  border: none;
-  flex: 1;
-  color: ${props => (props.readOnly ? props.theme.color.grey120 : props.theme.color.grey140)};
-  outline: none;
-  cursor: inherit;
 `;
 
 const OperationOperator = styled.span`
@@ -148,6 +129,7 @@ const OperationCollection = ({
   onOperationsChange,
 }: OperationCollectionProps) => {
   const __ = useContext(TranslateContext);
+  const akeneoTheme = useContext(ThemeContext);
   const [openOperatorSelector, setOpenOperatorSelector] = useState<number | null>(null);
 
   const closeOperatorSelector = useCallback(() => setOpenOperatorSelector(null), [setOpenOperatorSelector]);
@@ -173,23 +155,29 @@ const OperationCollection = ({
           <Container key={index} level={index}>
             <OperationLine>
               {0 < index && <StyledArrow color={akeneoTheme.color.grey100} size={18} />}
-              <OperationContainer readOnly={readOnly}>
-                <OperationValue
+              <InputContainer readOnly={readOnly} invalid={0 < operationErrors.length}>
+                <Input
                   role="operation-value-input"
                   value={operation.value}
                   disabled={readOnly}
                   readOnly={readOnly}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
                     onOperationsChange(
                       operations.map((operation: Operation, currentIndex: number) =>
-                        currentIndex === index ? {...operation, value: event.currentTarget.value} : operation
+                        currentIndex === index
+                          ? {...operation, value: event.currentTarget.value.replace(/[^\d]+/g, '')}
+                          : operation
                       )
-                    );
-                  }}
+                    )
+                  }
                 />
                 <OperationOperator onClick={() => setOpenOperatorSelector(index)}>
                   <span>{__(`measurements.unit.operator.${operation.operator}`)}</span>
-                  {!readOnly && <DownIcon color={akeneoTheme.color.grey100} size={18} />}
+                  {readOnly ? (
+                    <LockIcon color={akeneoTheme.color.grey100} size={18} />
+                  ) : (
+                    <DownIcon color={akeneoTheme.color.grey100} size={18} />
+                  )}
                 </OperationOperator>
                 {!readOnly && openOperatorSelector === index && (
                   <>
@@ -215,7 +203,7 @@ const OperationCollection = ({
                     </OperatorSelector>
                   </>
                 )}
-              </OperationContainer>
+              </InputContainer>
               {1 < operations.length && (
                 <RemoveOperationButton
                   title={__('pim_common.remove')}

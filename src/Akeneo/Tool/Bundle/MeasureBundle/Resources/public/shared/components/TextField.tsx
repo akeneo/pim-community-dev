@@ -5,15 +5,26 @@ import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Flag} from 'akeneomeasure/shared/components/Flag';
 import {useFocus} from 'akeneomeasure/shared/hooks/use-focus';
+import {LockIcon} from 'akeneomeasure/shared/icons/LockIcon';
+import {akeneoTheme} from 'akeneomeasure/shared/theme';
 
-type InputProps = {
-  invalid: boolean;
-} & InputHTMLAttributes<HTMLInputElement>;
+const Input = styled.input`
+  background-color: transparent;
+  border: none;
+  flex: 1;
 
-const Input = styled.input.attrs<InputProps>(() => ({
-  className: 'AknTextField',
-}))<InputProps>`
+  outline: none;
+  cursor: inherit;
+`;
+
+const InputContainer = styled.div<{readOnly?: boolean; invalid: boolean}>`
   border: 1px solid ${props => props.theme.color.grey80};
+  background-color: ${props => (props.readOnly ? props.theme.color.grey70 : 'inherit')};
+  cursor: ${props => (props.readOnly ? 'not-allowed' : 'inherit')};
+  height: 40px;
+  display: flex;
+  flex: 1;
+  align-items: center;
   padding: 0 15px;
 
   ${props =>
@@ -21,6 +32,10 @@ const Input = styled.input.attrs<InputProps>(() => ({
     css`
       border-color: ${props => props.theme.color.red100};
     `};
+
+  ${Input} {
+    color: ${props => (props.readOnly ? props.theme.color.grey100 : props.theme.color.grey140)};
+  }
 `;
 
 type TextFieldProps = {
@@ -45,6 +60,7 @@ const TextField = ({
   onChange,
   errors,
   flag,
+  readOnly,
   ...props
 }: TextFieldProps & InputHTMLAttributes<HTMLInputElement>) => {
   const __ = useContext(TranslateContext);
@@ -58,21 +74,22 @@ const TextField = ({
         </label>
         {flag && <Flag localeCode={flag} />}
       </div>
-      <div className="AknFieldContainer-inputContainer">
+      <InputContainer readOnly={readOnly} invalid={undefined !== errors && 0 < errors.length}>
         <Input
-          type="text"
-          autoComplete="off"
-          id={id}
           ref={autofocus ? focusRef : undefined}
-          invalid={undefined !== errors && errors.length > 0}
+          readOnly={readOnly}
+          id={id}
           value={value}
           onChange={onChange}
+          type="text"
+          autoComplete="off"
           {...props}
         />
-      </div>
+        {readOnly && <LockIcon color={akeneoTheme.color.grey100} size={18} />}
+      </InputContainer>
       <InputErrors errors={errors} />
     </div>
   );
 };
 
-export {TextField};
+export {TextField, Input, InputContainer};
