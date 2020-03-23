@@ -21,9 +21,9 @@ use Symfony\Component\HttpFoundation\Response;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class CountDailyEventsByConnectionEndToEnd extends WebTestCase
+class WeeklyAuditEndToEnd extends WebTestCase
 {
-    public function test_it_finds_connections_event_by_created_product()
+    public function test_it_get_weekly_audit_for_created_product()
     {
         $this->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE);
         $this->createConnection('sap', 'SAP', FlowType::DATA_SOURCE);
@@ -34,6 +34,7 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
                 ->setTimezone(new \DateTimeZone('UTC')),
             (new \DateTimeImmutable('2020-01-09 00:00:00', new \DateTimeZone('Asia/Tokyo')))
                 ->setTimezone(new \DateTimeZone('UTC')),
+            EventTypes::PRODUCT_CREATED
         );
         $weeklyEventCountsPerConnection = $this->hourlyToWeeklyEventCounts(
             '2020-01-01',
@@ -48,9 +49,53 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
 
         $this->client->request(
             'GET',
-            '/rest/connections/audit/source-connections-event',
+            '/rest/connections/audit/weekly',
             [
                 'event_type' => 'product_created',
+                'end_date' => '2020-01-08'
+            ],
+        );
+        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $expectedResult = array_reduce(
+            $weeklyEventCountsPerConnection,
+            function (array $data, WeeklyEventCounts $weeklyEventCounts) {
+                return array_merge($data, $weeklyEventCounts->normalize());
+            },
+            []
+        );
+
+        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        Assert::assertEquals($expectedResult, $result);
+    }
+
+    public function test_it_get_weekly_audit_for_read_product()
+    {
+        $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
+
+        $hourlyEventCountsPerConnection = $this->createHourlyEventCountsPerConnection(
+            ['magento'],
+            (new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('Asia/Tokyo')))
+                ->setTimezone(new \DateTimeZone('UTC')),
+            (new \DateTimeImmutable('2020-01-09 00:00:00', new \DateTimeZone('Asia/Tokyo')))
+                ->setTimezone(new \DateTimeZone('UTC')),
+            EventTypes::PRODUCT_READ
+        );
+        $weeklyEventCountsPerConnection = $this->hourlyToWeeklyEventCounts(
+            '2020-01-01',
+            '2020-01-08',
+            'Asia/Tokyo',
+            $hourlyEventCountsPerConnection
+        );
+
+        $user = $this->authenticateAsAdmin();
+        $user->setTimezone('Asia/Tokyo');
+        $this->get('pim_user.saver.user')->save($user);
+
+        $this->client->request(
+            'GET',
+            '/rest/connections/audit/weekly',
+            [
+                'event_type' => 'product_read',
                 'end_date' => '2020-01-08'
             ],
         );
@@ -70,7 +115,8 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
     private function createHourlyEventCountsPerConnection(
         array $connectionCodes,
         \DateTimeImmutable $startDateTime,
-        \DateTimeImmutable $endDateTime
+        \DateTimeImmutable $endDateTime,
+        string $eventType
     ): array {
         $period = new \DatePeriod($startDateTime, new \DateInterval('PT1H'), $endDateTime);
         $hourlyEventCountsPerConnection = [];
@@ -86,7 +132,7 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
                     $connectionCode,
                     HourlyInterval::createFromDateTime($dateTime),
                     $count,
-                    EventTypes::PRODUCT_CREATED
+                    $eventType
                 );
             }
 
@@ -94,7 +140,7 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
                 AllConnectionCode::CODE,
                 HourlyInterval::createFromDateTime($dateTime),
                 $allCount,
-                EventTypes::PRODUCT_CREATED
+                $eventType
             );
         }
 

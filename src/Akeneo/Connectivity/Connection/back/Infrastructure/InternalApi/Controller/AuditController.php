@@ -32,7 +32,7 @@ class AuditController
         $this->countDailyEventsByConnectionHandler = $countDailyEventsByConnectionHandler;
     }
 
-    public function sourceConnectionsEvent(Request $request): JsonResponse
+    public function getWeeklyAudit(Request $request): JsonResponse
     {
         $eventType = $request->get('event_type');
         $endDateUser = $request->get('end_date');

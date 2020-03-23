@@ -1,0 +1,6 @@
+weekly:
+    path: '/weekly'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.audit:getWeeklyAudit }
+    methods: [GET]
+    requirements:
+        event_type: '[a-zA-Z_]+'
