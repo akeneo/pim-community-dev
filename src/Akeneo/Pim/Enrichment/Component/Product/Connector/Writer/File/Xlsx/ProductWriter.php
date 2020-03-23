@@ -40,6 +40,8 @@ class ProductWriter extends AbstractItemMediaWriter implements
     /** @var GenerateFlatHeadersFromAttributeCodesInterface */
     protected $generateHeadersFromAttributeCodes;
 
+    private $hasItems;
+
     public function __construct(
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
@@ -71,6 +73,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
     public function initialize()
     {
         $this->familyCodes = [];
+        $this->hasItems = false;
 
         parent::initialize();
     }
@@ -80,6 +83,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
      */
     public function write(array $items)
     {
+        $this->hasItems = true;
         foreach ($items as $item) {
             if (isset($item['family']) && !in_array($item['family'], $this->familyCodes)) {
                 $this->familyCodes[] = $item['family'];
@@ -119,7 +123,8 @@ class ProductWriter extends AbstractItemMediaWriter implements
         $attributeCodes = [];
 
         if (isset($filters['structure']['attributes'])
-            && !empty($filters['structure']['attributes'])) {
+            && !empty($filters['structure']['attributes'])
+            && $this->hasItems === true) {
             $attributeCodes = $filters['structure']['attributes'];
         } elseif ($parameters->has('selected_properties')) {
             $attributeCodes = $parameters->get('selected_properties');

@@ -11,22 +11,20 @@ namespace Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
  */
 final class DailyEventCount
 {
+    /** @var string */
+    private $date;
+
     /** @var int */
     private $count;
 
-    /** @var \DateTimeInterface */
-    private $date;
-
-    public function __construct(int $count, \DateTimeInterface $date)
+    public function __construct(string $date, int $count)
     {
-        $this->count = $count;
         $this->date = $date;
+        $this->count = $count;
     }
 
     public function normalize(): array
     {
-        return [
-            $this->date->format('Y-m-d') => $this->count
-        ];
+        return [$this->date => $this->count];
     }
 }

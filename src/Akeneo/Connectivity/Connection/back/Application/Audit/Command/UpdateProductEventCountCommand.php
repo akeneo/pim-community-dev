@@ -4,31 +4,25 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Audit\Command;
 
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+
 /**
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class UpdateProductEventCountCommand
+final class UpdateProductEventCountCommand
 {
-    /** @var string */
-    private $eventDate;
+    /** @var HourlyInterval */
+    private $hourlyInterval;
 
-    public function __construct(string $eventDate)
+    public function __construct(HourlyInterval $hourlyInterval)
     {
-        try {
-            new \DateTime($eventDate, new \DateTimeZone('UTC'));
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException(
-                sprintf('Parameter event date "%s" should be in a date format (YYYY-mm-dd).', $eventDate)
-            );
-        }
-
-        $this->eventDate = $eventDate;
+        $this->hourlyInterval = $hourlyInterval;
     }
 
-    public function eventDate(): string
+    public function hourlyInterval(): HourlyInterval
     {
-        return $this->eventDate;
+        return $this->hourlyInterval;
     }
 }

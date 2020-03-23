@@ -16,6 +16,12 @@ type Props = {
     eventType: AuditEventType;
     theme: VictoryThemeDefinition;
 };
+type ChartEntry = {
+    x: number;
+    y: number;
+    xLabel: string;
+    yLabel: string;
+};
 
 const EventChartContainer = styled.div`
     padding-bottom: 25px;
@@ -24,7 +30,7 @@ const EventChartContainer = styled.div`
 export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
     const state = useDashboardState();
 
-    const [selectedConnectionCode, setSelectedConnectionCode] = useState();
+    const [selectedConnectionCode, setSelectedConnectionCode] = useState<string>();
     useEffect(() => {
         if (0 === Object.keys(state.sourceConnections).length) {
             setSelectedConnectionCode(undefined);
@@ -34,27 +40,29 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
     }, [state.sourceConnections, selectedConnectionCode]);
 
     const connectionsAuditData = useFetchConnectionsAuditData(eventType);
-    const [chartData, setChartData] = useState();
+    const [chartData, setChartData] = useState<Array<ChartEntry>>();
     const formatDate = useDateFormatter();
     const formatNumber = useNumberFormatter();
     const translate = useTranslate();
     useEffect(() => {
         setChartData(undefined);
-        if (undefined === connectionsAuditData[selectedConnectionCode]) {
+        if (undefined === selectedConnectionCode || undefined === connectionsAuditData[selectedConnectionCode]) {
             return;
         }
 
         const selectedConnectionAuditData = connectionsAuditData[selectedConnectionCode];
         const numberOfData = Object.keys(selectedConnectionAuditData).length;
-        const chartData = Object.entries(selectedConnectionAuditData).map(([date, value], index) => ({
-            x: index,
-            y: value,
-            xLabel:
-                index + 1 !== numberOfData
-                    ? formatDate(date, {weekday: 'long', month: 'short', day: 'numeric'})
-                    : translate('akeneo_connectivity.connection.dashboard.charts.legend.today'),
-            yLabel: 0 === index ? '' : formatNumber(value),
-        }));
+        const chartData = Object.entries(selectedConnectionAuditData).map(
+            ([date, value], index): ChartEntry => ({
+                x: index,
+                y: value,
+                xLabel:
+                    index + 1 !== numberOfData
+                        ? formatDate(date, {weekday: 'long', month: 'short', day: 'numeric'})
+                        : translate('akeneo_connectivity.connection.dashboard.charts.legend.today'),
+                yLabel: 0 === index ? '' : formatNumber(value),
+            })
+        );
 
         setChartData(chartData);
     }, [formatDate, translate, connectionsAuditData, selectedConnectionCode]);
@@ -70,11 +78,7 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
     return (
         <EventChartContainer>
             <Section title={title}>
-                <ConnectionSelect
-                    connections={connections}
-                    code={selectedConnectionCode}
-                    onChange={code => setSelectedConnectionCode(code)}
-                />
+                <ConnectionSelect connections={connections} onChange={code => setSelectedConnectionCode(code)} />
             </Section>
 
             {chartData && <Chart data={chartData} theme={theme} />}

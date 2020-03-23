@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository;
 
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
+
 /**
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -11,5 +13,8 @@ namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository;
  */
 interface EventCountRepository
 {
-    public function bulkInsert(array $dailyEventCount): void;
+    /**
+     * @param HourlyEventCount[] $hourlyEventCounts
+     */
+    public function bulkInsert(array $hourlyEventCounts): void;
 }

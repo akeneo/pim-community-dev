@@ -68,9 +68,11 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
-            'Akeneo\Connectivity\Connection\Infrastructure\WrongCredentialsConnection\Install',
+            'Doctrine\DBAL\Connection',
             'Doctrine\DBAL\Driver\Connection',
             'Symfony\Component',
+            'Akeneo\Connectivity\Connection\Application',
+            'Akeneo\Connectivity\Connection\Domain'
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Install'),
 
@@ -87,6 +89,8 @@ $rules = [
             'Symfony\Component\Security\Core\Exception\AccessDeniedException',
             'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
+            // Dependency to retrieve the current User (and his timezone).
+            'Akeneo\UserManagement\Bundle\Context\UserContext',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\InternalApi'),
 

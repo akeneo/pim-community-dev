@@ -40,7 +40,7 @@ const Helper = styled.span`
 const ImageUploader = ({image, onChange, onError}: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [ratio, setRatio] = useState(0);
-    const [uploadingImage, setUploadingImage] = useState();
+    const [uploadingImage, setUploadingImage] = useState<string | null>();
 
     const handleDuringUpload = (e: {loaded: number; total: number}) => {
         const currentRatio = Math.round((e.loaded / e.total) * 100);
@@ -58,7 +58,7 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
         reader.onload = (event: ProgressEvent<FileReader>) => {
             const target = event.target;
             if (null !== target) {
-                setUploadingImage(target.result);
+                setUploadingImage(target.result as string);
             }
         };
         reader.readAsDataURL(file);
@@ -111,7 +111,7 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
     };
 
     let previewImage = null;
-    if (undefined !== uploadingImage && 0 !== uploadingImage.length) {
+    if (undefined !== uploadingImage && null !== uploadingImage && 0 !== uploadingImage.length) {
         previewImage = uploadingImage;
     } else if (null !== image) {
         previewImage = generateMediaUrl(image);
