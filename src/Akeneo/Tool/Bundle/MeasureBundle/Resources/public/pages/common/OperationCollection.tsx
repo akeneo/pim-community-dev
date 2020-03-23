@@ -1,4 +1,4 @@
-import React, {useState, useContext, useCallback} from 'react';
+import React, {useState, useContext, useCallback, useEffect} from 'react';
 import styled, {css} from 'styled-components';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Button, TransparentButton} from 'akeneomeasure/shared/components/Button';
@@ -34,8 +34,10 @@ const StyledArrow = styled(SubArrowRightIcon)`
   margin: 0 4px 10px 2px;
 `;
 
-const OperationContainer = styled.div`
+const OperationContainer = styled.div<{readOnly: boolean}>`
   border: 1px solid ${props => props.theme.color.grey80};
+  background-color: ${props => (props.readOnly ? props.theme.color.grey70 : 'inherit')};
+  cursor: ${props => (props.readOnly ? 'not-allowed' : 'inherit')};
   height: 40px;
   display: flex;
   flex: 1;
@@ -43,11 +45,13 @@ const OperationContainer = styled.div`
   padding: 0 15px;
 `;
 
-const OperationValue = styled.input`
+const OperationValue = styled.input<{readOnly: boolean}>`
+  background-color: transparent;
   border: none;
   flex: 1;
-  color: ${props => props.theme.color.grey140};
+  color: ${props => (props.readOnly ? props.theme.color.grey120 : props.theme.color.grey140)};
   outline: none;
+  cursor: inherit;
 `;
 
 const OperationOperator = styled.span`
@@ -56,7 +60,7 @@ const OperationOperator = styled.span`
   align-items: center;
   padding-left: 10px;
   color: ${props => props.theme.color.grey100};
-  cursor: default;
+  cursor: pointer;
 
   span:first-child {
     margin-right: 10px;
@@ -119,16 +123,29 @@ const Footer = styled.div`
 type OperationCollectionProps = {
   operations: Operation[];
   errors?: ValidationError[];
+  readOnly?: boolean;
   onOperationsChange: (operations: Operation[]) => void;
 };
 
-const OperationCollection = ({operations, errors = [], onOperationsChange}: OperationCollectionProps) => {
+const OperationCollection = ({
+  operations,
+  errors = [],
+  readOnly = false,
+  onOperationsChange,
+}: OperationCollectionProps) => {
   const __ = useContext(TranslateContext);
   const [openOperatorSelector, setOpenOperatorSelector] = useState<number | null>(null);
 
   const closeOperatorSelector = useCallback(() => setOpenOperatorSelector(null), [setOpenOperatorSelector]);
 
   useShortcut(Key.Escape, closeOperatorSelector);
+
+  // As the operations are not indexed, we need to hide the errors as soon as th user removes an operation
+  // To avoid to display an error on a previous operation
+  const [shouldHideErrors, setShouldHideErrors] = useState(false);
+  useEffect(() => {
+    setShouldHideErrors(false);
+  }, [JSON.stringify(errors)]);
 
   return (
     <>
@@ -142,10 +159,12 @@ const OperationCollection = ({operations, errors = [], onOperationsChange}: Oper
           <Container key={index} level={index}>
             <OperationLine>
               {0 < index && <StyledArrow color={akeneoTheme.color.grey100} size={18} />}
-              <OperationContainer>
+              <OperationContainer readOnly={readOnly}>
                 <OperationValue
                   role="operation-value-input"
                   value={operation.value}
+                  disabled={readOnly}
+                  readOnly={readOnly}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     onOperationsChange(
                       operations.map((operation: Operation, currentIndex: number) =>
@@ -156,9 +175,9 @@ const OperationCollection = ({operations, errors = [], onOperationsChange}: Oper
                 />
                 <OperationOperator onClick={() => setOpenOperatorSelector(index)}>
                   <span>{__(`measurements.unit.operator.${operation.operator}`)}</span>
-                  <DownIcon color={akeneoTheme.color.grey100} size={18} />
+                  {!readOnly && <DownIcon color={akeneoTheme.color.grey100} size={18} />}
                 </OperationOperator>
-                {openOperatorSelector === index && (
+                {!readOnly && openOperatorSelector === index && (
                   <>
                     <OperatorSelectorMask onClick={closeOperatorSelector} />
                     <OperatorSelector>
@@ -188,6 +207,7 @@ const OperationCollection = ({operations, errors = [], onOperationsChange}: Oper
                   title={__('pim_common.remove')}
                   onClick={() => {
                     closeOperatorSelector();
+                    setShouldHideErrors(true);
                     onOperationsChange(
                       operations.filter((_operation: Operation, currentIndex: number) => index !== currentIndex)
                     );
@@ -197,21 +217,23 @@ const OperationCollection = ({operations, errors = [], onOperationsChange}: Oper
                 </RemoveOperationButton>
               )}
             </OperationLine>
-            <InputErrors errors={operationErrors} />
+            <InputErrors errors={shouldHideErrors ? [] : operationErrors} />
           </Container>
         );
       })}
-      <Footer>
-        <Button
-          color="grey"
-          outline={true}
-          disabled={MAX_OPERATION_COUNT <= operations.length}
-          onClick={() => onOperationsChange([...operations, emptyOperation()])}
-        >
-          {__('measurements.unit.operation.add')}
-        </Button>
-      </Footer>
-      <InputErrors errors={getErrorsForPath(errors, '')} />
+      {!readOnly && (
+        <Footer>
+          <Button
+            color="grey"
+            outline={true}
+            disabled={MAX_OPERATION_COUNT <= operations.length}
+            onClick={() => onOperationsChange([...operations, emptyOperation()])}
+          >
+            {__('measurements.unit.operation.add')}
+          </Button>
+        </Footer>
+      )}
+      <InputErrors errors={shouldHideErrors ? [] : getErrorsForPath(errors, '')} />
     </>
   );
 };
