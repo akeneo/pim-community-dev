@@ -206,10 +206,17 @@ SELECT COUNT(DISTINCT product_id)
 FROM pimee_data_quality_insights_criteria_evaluation
 SQL
         );
-
         $this->outputAsTable($io, $stmt->fetchAll());
 
-        $io->comment('Status of criteria evaluation - total');
+        $io->comment('Number of product models with criteria evaluated');
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT COUNT(DISTINCT product_id)
+FROM pimee_data_quality_insights_product_model_criteria_evaluation
+SQL
+        );
+        $this->outputAsTable($io, $stmt->fetchAll());
+
+        $io->comment('Status of product criteria evaluations - total');
         $stmt = $this->db->executeQuery(<<<SQL
 SELECT status, COUNT(status), MAX(ended_at)
 FROM pimee_data_quality_insights_criteria_evaluation
@@ -217,10 +224,19 @@ GROUP BY status
 ORDER BY status
 SQL
         );
-
         $this->outputAsTable($io, $stmt->fetchAll());
 
-        $io->comment('Criteria on error with last error date');
+        $io->comment('Status of product model criteria evaluations - total');
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT status, COUNT(status), MAX(ended_at)
+FROM pimee_data_quality_insights_product_model_criteria_evaluation
+GROUP BY status
+ORDER BY status
+SQL
+        );
+        $this->outputAsTable($io, $stmt->fetchAll());
+
+        $io->comment('Product criteria on error with last error date');
         $stmt = $this->db->executeQuery(<<<SQL
 SELECT status, criterion_code, COUNT(status), MAX(started_at)
 FROM pimee_data_quality_insights_criteria_evaluation
@@ -229,7 +245,17 @@ GROUP BY status, criterion_code
 ORDER BY status
 SQL
         );
+        $this->outputAsTable($io, $stmt->fetchAll());
 
+        $io->comment('Product models criteria on error with last error date');
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT status, criterion_code, COUNT(status), MAX(started_at)
+FROM pimee_data_quality_insights_product_model_criteria_evaluation
+WHERE status='error'
+GROUP BY status, criterion_code
+ORDER BY status
+SQL
+        );
         $this->outputAsTable($io, $stmt->fetchAll());
     }
 
@@ -496,7 +522,7 @@ SQL;
 
     private function outputEvaluationJobInfo(SymfonyStyle $io)
     {
-        $io->section('Evaluation jobs data');
+        $io->section('Product and product models evaluation jobs data');
 
         $query = <<<SQL
 SELECT
