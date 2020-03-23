@@ -4,12 +4,14 @@ import {FlowType} from '../../model/flow-type.enum';
 import {fetchResult} from '../../shared/fetch-result';
 import {isOk} from '../../shared/fetch-result/result';
 import {useRoute} from '../../shared/router';
-import {sourceConnectionsFetched} from '../actions/dashboard-actions';
+import {connectionsFetched} from '../actions/dashboard-actions';
 import {useDashboardDispatch, useDashboardState} from '../dashboard-context';
 import {SourceConnection} from '../model/source-connection';
 import {NoConnection} from './NoConnection';
 import {UserSurvey} from './UserSurvey';
 import {DataSourceCharts} from './DataSourceCharts';
+import {DestinationConnection} from '../model/destination-connection';
+import {DataDestinationCharts} from '../components/DataDestinationCharts';
 
 export const Charts = () => {
     const dispatch = useDashboardDispatch();
@@ -22,8 +24,12 @@ export const Charts = () => {
                 const sourceConnections = result.value.filter(
                     (connection): connection is SourceConnection => FlowType.DATA_SOURCE === connection.flowType
                 );
+                const destinationConnections = result.value.filter(
+                    (connection): connection is DestinationConnection =>
+                        FlowType.DATA_DESTINATION === connection.flowType
+                );
 
-                dispatch(sourceConnectionsFetched(sourceConnections));
+                dispatch(connectionsFetched({source: sourceConnections, destination: destinationConnections}));
             }
         });
         return () => {
@@ -32,13 +38,14 @@ export const Charts = () => {
     }, [route, dispatch]);
 
     const state = useDashboardState();
-    if (0 === Object.keys(state.sourceConnections).length) {
-        return <NoConnection />;
-    }
 
     return (
         <>
-            <DataSourceCharts />
+            {0 === Object.keys(state.destinationConnections).length &&
+                0 === Object.keys(state.destinationConnections).length && <NoConnection />}
+            {0 !== Object.keys(state.sourceConnections).length && <DataSourceCharts />}
+            {0 !== Object.keys(state.destinationConnections).length && <DataDestinationCharts />}
+
             <UserSurvey />
         </>
     );

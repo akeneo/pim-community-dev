@@ -1,5 +1,13 @@
 import React from 'react';
-import {DomainTuple, VictoryAxis, VictoryChart, VictoryLine, VictoryScatter, VictoryThemeDefinition} from 'victory';
+import {
+    DomainTuple,
+    VictoryAxis,
+    VictoryChart,
+    VictoryChartProps,
+    VictoryLine,
+    VictoryScatter,
+    VictoryThemeDefinition,
+} from 'victory';
 import {grey, lightGreyStroke, purple} from '../event-chart-themes';
 
 const yAxeTheme = {
@@ -34,8 +42,13 @@ const gridYAxesTheme = {
 };
 
 type ChartData = {x: number; y: number; xLabel: string; yLabel: string};
+type Props = {
+    data: ChartData[];
+    theme: VictoryThemeDefinition;
+    chartOptions?: VictoryChartProps;
+};
 
-export const Chart = ({data, theme}: {data: ChartData[]; theme: VictoryThemeDefinition}) => {
+export const Chart = ({data, theme, chartOptions}: Props) => {
     let yMax = data.reduce((maxY, {y}) => (y > maxY ? y : maxY), 0);
     let yMin = data.reduce((minY, {y}) => (y < minY ? y : minY), yMax);
 
@@ -81,7 +94,7 @@ export const Chart = ({data, theme}: {data: ChartData[]; theme: VictoryThemeDefi
 
     // The rendering order is based on the elements order. Axes must be first to be draw in background.
     return (
-        <VictoryChart padding={0} domain={domain} theme={theme}>
+        <VictoryChart {...chartOptions} padding={0} domain={domain} theme={theme}>
             <VictoryAxis padding={0} offsetY={25} tickValues={xDaysValues} style={daysAxeTheme} />
             <VictoryAxis dependentAxis tickValues={yGridAxes} style={yAxeTheme} />
             {[1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5].map((value, index) => {

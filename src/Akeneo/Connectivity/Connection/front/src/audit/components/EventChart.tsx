@@ -1,5 +1,5 @@
 import React, {FC, ReactNode, useEffect, useState} from 'react';
-import {VictoryThemeDefinition} from 'victory';
+import {VictoryChartProps, VictoryThemeDefinition} from 'victory';
 import {AuditEventType} from '../../model/audit-event-type.enum';
 import {useDateFormatter} from '../../shared/formatter/use-date-formatter';
 import {useNumberFormatter} from '../../shared/formatter/use-number-formatter';
@@ -13,7 +13,9 @@ type Props = {
     title: ReactNode;
     eventType: AuditEventType;
     theme: VictoryThemeDefinition;
+    dateFormat: Intl.DateTimeFormatOptions;
     selectedConnectionCode?: string;
+    chartOptions?: VictoryChartProps;
 };
 type ChartEntry = {
     x: number;
@@ -28,13 +30,17 @@ const Title = styled.div`
     line-height: 44px;
     text-transform: uppercase;
     font-weight: bold;
+    display: block;
 `;
 
-const EventChartContainer = styled.div`
-    width: 49%;
-`;
-
-export const EventChart: FC<Props> = ({title, eventType, theme, selectedConnectionCode}: Props) => {
+export const EventChart: FC<Props> = ({
+    title,
+    eventType,
+    theme,
+    dateFormat,
+    selectedConnectionCode,
+    chartOptions,
+}: Props) => {
     const connectionsAuditData = useFetchConnectionsAuditData(eventType);
     const [chartData, setChartData] = useState<Array<ChartEntry>>();
     const formatDate = useDateFormatter();
@@ -54,7 +60,7 @@ export const EventChart: FC<Props> = ({title, eventType, theme, selectedConnecti
                 y: value,
                 xLabel:
                     index + 1 !== numberOfData
-                        ? formatDate(date, {month: 'short', day: 'numeric'})
+                        ? formatDate(date, dateFormat)
                         : translate('akeneo_connectivity.connection.dashboard.charts.legend.today'),
                 yLabel: 0 === index ? '' : formatNumber(value),
             })
@@ -66,10 +72,10 @@ export const EventChart: FC<Props> = ({title, eventType, theme, selectedConnecti
     return (
         <>
             {chartData && (
-                <EventChartContainer>
+                <>
                     <Title>{title}</Title>
-                    <Chart data={chartData} theme={theme} />
-                </EventChartContainer>
+                    <Chart chartOptions={chartOptions} data={chartData} theme={theme} />
+                </>
             )}
         </>
     );

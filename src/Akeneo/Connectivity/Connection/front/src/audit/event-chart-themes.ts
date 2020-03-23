@@ -2,8 +2,10 @@ import {VictoryThemeDefinition} from 'victory';
 import {CSSProperties} from 'react';
 
 export const blue = '#3b438c';
+export const green = '#3d7170';
 export const grey = '#67768a';
 export const lightBlue = '#dee0ef';
+export const lightGreen = '#bbe6e6';
 export const lightGrey = '#e8ebee';
 export const lightPurple = '#ded5e4';
 export const purple = '#52267d';
@@ -63,6 +65,31 @@ export const blueTheme: VictoryThemeDefinition = {
             },
             data: {
                 fill: blue,
+            },
+        },
+        ...themeBaseProps,
+    },
+};
+
+export const greenTheme: VictoryThemeDefinition = {
+    line: {
+        style: {
+            data: {
+                stroke: lightGreen,
+            },
+        },
+        ...themeBaseProps,
+    },
+    scatter: {
+        style: {
+            labels: {
+                fontSize: 13,
+                fontWeight: 'normal',
+                fill: green,
+                padding: 10,
+            },
+            data: {
+                fill: green,
             },
         },
         ...themeBaseProps,

@@ -1,10 +1,10 @@
-import {connectionsAuditDataFetched, sourceConnectionsFetched} from '@src/audit/actions/dashboard-actions';
+import {connectionsAuditDataFetched, connectionsFetched} from '@src/audit/actions/dashboard-actions';
 import {reducer, State} from '@src/audit/reducers/dashboard-reducer';
 import {AuditEventType} from '@src/model/audit-event-type.enum';
 import {FlowType} from '@src/model/flow-type.enum';
 
 describe('Dashboard reducer', () => {
-    it('handles SOURCE_CONNECTIONS_FETCHED action', () => {
+    it('handles CONNECTIONS_FETCHED action', () => {
         const initialState: State = {
             sourceConnections: {},
             events: {
@@ -13,7 +13,7 @@ describe('Dashboard reducer', () => {
             },
         };
 
-        const action = sourceConnectionsFetched([
+        const action = connectionsFetched([
             {
                 code: 'franklin',
                 label: 'Franklin',
