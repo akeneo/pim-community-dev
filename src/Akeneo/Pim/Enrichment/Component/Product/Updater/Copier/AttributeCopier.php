@@ -96,6 +96,10 @@ class AttributeCopier extends AbstractAttributeCopier
         $toScope
     ) {
         $fromValue = $fromEntityWithValues->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        if (null === $fromValue) {
+            return;
+        }
+
         $standardData = $this->normalizer->normalize($fromValue, 'standard');
         $this->entityWithValuesBuilder->addOrReplaceValue(
             $toEntityWithValues,
