@@ -97,7 +97,7 @@ describe('measurement family', () => {
     expect(newMeasurementFamily.units[0].symbol).toEqual('new symbol');
   });
 
-  it('should return the standard unit from the measurement family', () => {
+  it('should return the unit index in the measurement family unit list', () => {
     expect(getUnitIndex(measurementFamily, 'SQUARE_METER')).toEqual(0);
     expect(getUnitIndex(measurementFamily, 'UNKNOWN')).toEqual(-1);
   });

@@ -13,7 +13,7 @@ type InputErrorsProps = {
 };
 
 const InputErrors = ({errors = []}: InputErrorsProps) => {
-  if (errors.length === 0) return null;
+  if (0 === errors.length) return null;
 
   return (
     <Container className="AknFieldContainer-footer AknFieldContainer-validationErrors">
