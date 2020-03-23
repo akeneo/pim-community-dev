@@ -9,16 +9,21 @@ import {SubArrowRightIcon} from 'akeneomeasure/shared/icons/SubArrowRightIcon';
 import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
 import {Operation, Operator, emptyOperation, MAX_OPERATION_COUNT} from 'akeneomeasure/model/operation';
+import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
+import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 
 const Container = styled.div<{level: number}>`
-  display: flex;
-  align-items: center;
   position: relative;
   margin-left: ${props => (props.level > 1 ? 24 * (props.level - 1) : 0)}px;
 
   :not(:first-child) {
     margin-top: 10px;
   }
+`;
+
+const OperationLine = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const OperationCollectionLabel = styled.div`
@@ -113,10 +118,11 @@ const Footer = styled.div`
 
 type OperationCollectionProps = {
   operations: Operation[];
+  errors?: ValidationError[];
   onOperationsChange: (operations: Operation[]) => void;
 };
 
-const OperationCollection = ({operations, onOperationsChange}: OperationCollectionProps) => {
+const OperationCollection = ({operations, errors = [], onOperationsChange}: OperationCollectionProps) => {
   const __ = useContext(TranslateContext);
   const [openOperatorSelector, setOpenOperatorSelector] = useState<number | null>(null);
 
@@ -129,65 +135,72 @@ const OperationCollection = ({operations, onOperationsChange}: OperationCollecti
       <OperationCollectionLabel>
         {__('measurements.unit.convert_from_standard')} {__('pim_common.required_label')}
       </OperationCollectionLabel>
-      {operations.map((operation: Operation, index: number) => (
-        <Container level={index} key={index}>
-          {0 < index && <StyledArrow color={akeneoTheme.color.grey100} size={18} />}
-          <OperationContainer>
-            <OperationValue
-              role="operation-value-input"
-              value={operation.value}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onOperationsChange(
-                  operations.map((operation: Operation, currentIndex: number) =>
-                    currentIndex === index ? {...operation, value: event.currentTarget.value} : operation
-                  )
-                );
-              }}
-            />
-            <OperationOperator onClick={() => setOpenOperatorSelector(index)}>
-              <span>{__(`measurements.unit.operator.${operation.operator}`)}</span>
-              <DownIcon color={akeneoTheme.color.grey100} size={18} />
-            </OperationOperator>
-            {openOperatorSelector === index && (
-              <>
-                <OperatorSelectorMask onClick={closeOperatorSelector} />
-                <OperatorSelector>
-                  <OperatorSelectorLabel>{__('measurements.unit.operator.select')}</OperatorSelectorLabel>
-                  {Object.values(Operator).map((operator: string) => (
-                    <OperatorOption
-                      key={operator}
-                      isSelected={operator === operation.operator}
-                      onClick={() => {
-                        closeOperatorSelector();
-                        onOperationsChange(
-                          operations.map((operation: Operation, currentIndex: number) =>
-                            currentIndex === index ? {...operation, operator} : operation
-                          )
-                        );
-                      }}
-                    >
-                      {__(`measurements.unit.operator.${operator}`)}
-                    </OperatorOption>
-                  ))}
-                </OperatorSelector>
-              </>
-            )}
-          </OperationContainer>
-          {1 < operations.length && (
-            <RemoveOperationButton
-              title={__('pim_common.remove')}
-              onClick={() => {
-                closeOperatorSelector();
-                onOperationsChange(
-                  operations.filter((_operation: Operation, currentIndex: number) => index !== currentIndex)
-                );
-              }}
-            >
-              <CloseIcon color={akeneoTheme.color.grey100} size={18} />
-            </RemoveOperationButton>
-          )}
-        </Container>
-      ))}
+      {operations.map((operation: Operation, index: number) => {
+        const operationErrors = filterErrors(errors, `[${index}]`);
+
+        return (
+          <Container key={index} level={index}>
+            <OperationLine>
+              {0 < index && <StyledArrow color={akeneoTheme.color.grey100} size={18} />}
+              <OperationContainer>
+                <OperationValue
+                  role="operation-value-input"
+                  value={operation.value}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    onOperationsChange(
+                      operations.map((operation: Operation, currentIndex: number) =>
+                        currentIndex === index ? {...operation, value: event.currentTarget.value} : operation
+                      )
+                    );
+                  }}
+                />
+                <OperationOperator onClick={() => setOpenOperatorSelector(index)}>
+                  <span>{__(`measurements.unit.operator.${operation.operator}`)}</span>
+                  <DownIcon color={akeneoTheme.color.grey100} size={18} />
+                </OperationOperator>
+                {openOperatorSelector === index && (
+                  <>
+                    <OperatorSelectorMask onClick={closeOperatorSelector} />
+                    <OperatorSelector>
+                      <OperatorSelectorLabel>{__('measurements.unit.operator.select')}</OperatorSelectorLabel>
+                      {Object.values(Operator).map((operator: string) => (
+                        <OperatorOption
+                          key={operator}
+                          isSelected={operator === operation.operator}
+                          onClick={() => {
+                            closeOperatorSelector();
+                            onOperationsChange(
+                              operations.map((operation: Operation, currentIndex: number) =>
+                                currentIndex === index ? {...operation, operator} : operation
+                              )
+                            );
+                          }}
+                        >
+                          {__(`measurements.unit.operator.${operator}`)}
+                        </OperatorOption>
+                      ))}
+                    </OperatorSelector>
+                  </>
+                )}
+              </OperationContainer>
+              {1 < operations.length && (
+                <RemoveOperationButton
+                  title={__('pim_common.remove')}
+                  onClick={() => {
+                    closeOperatorSelector();
+                    onOperationsChange(
+                      operations.filter((_operation: Operation, currentIndex: number) => index !== currentIndex)
+                    );
+                  }}
+                >
+                  <CloseIcon color={akeneoTheme.color.grey100} size={18} />
+                </RemoveOperationButton>
+              )}
+            </OperationLine>
+            <InputErrors errors={operationErrors} />
+          </Container>
+        );
+      })}
       <Footer>
         <Button
           color="grey"
@@ -198,6 +211,7 @@ const OperationCollection = ({operations, onOperationsChange}: OperationCollecti
           {__('measurements.unit.operation.add')}
         </Button>
       </Footer>
+      <InputErrors errors={errors.filter(error => '' === error.property)} />
     </>
   );
 };

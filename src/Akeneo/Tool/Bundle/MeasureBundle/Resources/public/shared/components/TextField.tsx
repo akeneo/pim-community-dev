@@ -63,7 +63,7 @@ const TextField = ({
           {...props}
         />
       </div>
-      {errors && <InputErrors errors={errors} />}
+      <InputErrors errors={errors} />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import {
   setUnitLabel,
   setUnitOperations,
   removeUnit,
+  getUnitIndex,
 } from 'akeneomeasure/model/measurement-family';
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
@@ -21,8 +22,10 @@ import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {Table, HeaderCell, Row, LabelCell} from 'akeneomeasure/pages/common/Table';
+import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
 import {Unit, UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
 import {Operation} from 'akeneomeasure/model/operation';
+import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 
 const UnitList = styled.div`
   flex: 1;
@@ -36,6 +39,8 @@ const UnitDetails = styled.div`
 `;
 
 const CodeCell = styled.td`
+  padding-right: 15px;
+
   > span {
     display: flex;
     align-items: center;
@@ -65,17 +70,21 @@ const StandardUnitBadge = styled.span`
   border-radius: 2px;
   padding: 0 5px;
   text-transform: uppercase;
-  margin-right: 10px;
+
+  :not(:last-child) {
+    margin-right: 15px;
+  }
 `;
 
 type UnitRowProps = {
   unit: Unit;
   isStandardUnit: boolean;
   isSelected?: boolean;
+  invalid?: boolean;
   onRowSelected: (unitCode: UnitCode) => void;
 };
 
-const UnitRow = ({unit, isStandardUnit, isSelected = false, onRowSelected}: UnitRowProps) => {
+const UnitRow = ({unit, isStandardUnit, isSelected = false, invalid = false, onRowSelected}: UnitRowProps) => {
   const __ = useContext(TranslateContext);
   const locale = useContext(UserContext)('uiLocale');
 
@@ -86,6 +95,7 @@ const UnitRow = ({unit, isStandardUnit, isSelected = false, onRowSelected}: Unit
         <span>
           <span>{unit.code}</span>
           {isStandardUnit && <StandardUnitBadge>{__('measurements.family.standard_unit')}</StandardUnitBadge>}
+          {invalid && <ErrorBadge />}
         </span>
       </CodeCell>
     </Row>
@@ -94,9 +104,11 @@ const UnitRow = ({unit, isStandardUnit, isSelected = false, onRowSelected}: Unit
 
 const UnitTab = ({
   measurementFamily,
+  errors,
   onMeasurementFamilyChange,
 }: {
   measurementFamily: MeasurementFamily;
+  errors: ValidationError[];
   onMeasurementFamilyChange: (measurementFamily: MeasurementFamily) => void;
 }) => {
   const __ = useContext(TranslateContext);
@@ -104,6 +116,7 @@ const UnitTab = ({
   const [searchValue, setSearchValue] = useState('');
   const [selectedUnitCode, selectUnitCode] = useState<UnitCode>(measurementFamily.standard_unit_code);
   const selectedUnit = getUnit(measurementFamily, selectedUnitCode);
+  const selectedUnitIndex = getUnitIndex(measurementFamily, selectedUnitCode);
 
   const filteredUnits = measurementFamily.units.filter(filterOnLabelOrCode(searchValue, locale));
   const locales = useUiLocales();
@@ -129,12 +142,13 @@ const UnitTab = ({
               </tr>
             </thead>
             <tbody>
-              {filteredUnits.map(unit => (
+              {filteredUnits.map((unit, index) => (
                 <UnitRow
                   key={unit.code}
                   unit={unit}
                   isStandardUnit={unit.code === measurementFamily.standard_unit_code}
                   isSelected={unit.code === selectedUnitCode}
+                  invalid={0 < filterErrors(errors, `[${index}]`).length}
                   onRowSelected={selectUnitCode}
                 />
               ))}
@@ -153,6 +167,7 @@ const UnitTab = ({
             value={selectedUnit.code}
             required={true}
             readOnly={true}
+            errors={filterErrors(errors, `[${selectedUnitIndex}][code]`)}
           />
           <TextField
             id="measurements.unit.properties.symbol"
@@ -161,12 +176,14 @@ const UnitTab = ({
             onChange={(event: FormEvent<HTMLInputElement>) =>
               onMeasurementFamilyChange(setUnitSymbol(measurementFamily, selectedUnit.code, event.currentTarget.value))
             }
+            errors={filterErrors(errors, `[${selectedUnitIndex}][symbol]`)}
           />
           <OperationCollection
             operations={selectedUnit.convert_from_standard}
             onOperationsChange={(operations: Operation[]) => {
               onMeasurementFamilyChange(setUnitOperations(measurementFamily, selectedUnit.code, operations));
             }}
+            errors={filterErrors(errors, `[${selectedUnitIndex}][convert_from_standard]`)}
           />
         </FormGroup>
         <FormGroup>
@@ -185,6 +202,7 @@ const UnitTab = ({
                       setUnitLabel(measurementFamily, selectedUnitCode, locale.code, event.currentTarget.value)
                     )
                   }
+                  errors={filterErrors(errors, `[${selectedUnitIndex}][labels]`)} //TODO fix label indexing
                 />
               ))}
           </FormGroup>
