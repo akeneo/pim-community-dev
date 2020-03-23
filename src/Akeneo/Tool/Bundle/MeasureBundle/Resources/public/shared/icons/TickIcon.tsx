@@ -14,6 +14,4 @@ const TickIcon = ({className = ''}: {className?: string}) => (
   </svg>
 );
 
-export {
-  TickIcon,
-};
+export {TickIcon};

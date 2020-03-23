@@ -73,6 +73,4 @@ const Checkbox = ({
   );
 };
 
-export {
-  Checkbox,
-};
+export {Checkbox};
