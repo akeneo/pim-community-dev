@@ -1,4 +1,4 @@
-import React, {useState, useContext, useCallback, useEffect, ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback, useContext, useState} from 'react';
 import styled, {css, ThemeContext} from 'styled-components';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Button, TransparentButton} from 'akeneomeasure/shared/components/Button';
@@ -8,8 +8,8 @@ import {CloseIcon} from 'akeneomeasure/shared/icons/CloseIcon';
 import {SubArrowRightIcon} from 'akeneomeasure/shared/icons/SubArrowRightIcon';
 import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
-import {Operation, Operator, emptyOperation, MAX_OPERATION_COUNT} from 'akeneomeasure/model/operation';
-import {ValidationError, filterErrors, getErrorsForPath} from 'akeneomeasure/model/validation-error';
+import {emptyOperation, MAX_OPERATION_COUNT, Operation, Operator} from 'akeneomeasure/model/operation';
+import {filterErrors, getErrorsForPath, ValidationError} from 'akeneomeasure/model/validation-error';
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 import {Input, InputContainer} from 'akeneomeasure/shared/components/TextField';
 
@@ -108,6 +108,28 @@ type OperationCollectionProps = {
   onOperationsChange: (operations: Operation[]) => void;
 };
 
+type MappedErrors = {
+  [key: string]: ValidationError[];
+};
+
+const useMemoizedErrorsByOperation = (operations: Operation[], errors: ValidationError[])
+  : (operation: Operation) => ValidationError[] => {
+
+  const [mappedErrors, setMappedErrors] = useState<MappedErrors>({});
+  const [prevErrors, setPrevErrors] = useState<ValidationError[]>([]);
+
+  if (JSON.stringify(errors) !== JSON.stringify(prevErrors)) {
+    const newMappedErrors: MappedErrors = {};
+    operations.forEach((operation: Operation, index: number) => {
+      newMappedErrors[JSON.stringify(operation)] = filterErrors(errors, `[${index}]`);
+    });
+    setMappedErrors(newMappedErrors);
+    setPrevErrors(errors);
+  }
+
+  return (operation: Operation) => mappedErrors[JSON.stringify(operation)] || [];
+};
+
 const OperationCollection = ({
   operations,
   errors = [],
@@ -122,12 +144,7 @@ const OperationCollection = ({
 
   useShortcut(Key.Escape, closeOperatorSelector);
 
-  // As the operations are not indexed, we need to hide the errors as soon as th user removes an operation
-  // To avoid to display an error on a previous operation
-  const [shouldHideErrors, setShouldHideErrors] = useState(false);
-  useEffect(() => {
-    setShouldHideErrors(false);
-  }, [JSON.stringify(errors)]);
+  const getOperationErrors = useMemoizedErrorsByOperation(operations, errors);
 
   return (
     <>
@@ -135,7 +152,7 @@ const OperationCollection = ({
         {__('measurements.unit.convert_from_standard')} {__('pim_common.required_label')}
       </OperationCollectionLabel>
       {operations.map((operation: Operation, index: number) => {
-        const operationErrors = filterErrors(errors, `[${index}]`);
+        const operationErrors = getOperationErrors(operation);
 
         return (
           <Container key={index} level={index}>
@@ -151,7 +168,7 @@ const OperationCollection = ({
                     onOperationsChange(
                       operations.map((operation: Operation, currentIndex: number) =>
                         currentIndex === index
-                          ? {...operation, value: event.currentTarget.value.replace(/[^\d]+/g, '')}
+                          ? {...operation, value: event.currentTarget.value}
                           : operation
                       )
                     )
@@ -195,7 +212,6 @@ const OperationCollection = ({
                   title={__('pim_common.remove')}
                   onClick={() => {
                     closeOperatorSelector();
-                    setShouldHideErrors(true);
                     onOperationsChange(
                       operations.filter((_operation: Operation, currentIndex: number) => index !== currentIndex)
                     );
@@ -205,7 +221,7 @@ const OperationCollection = ({
                 </RemoveOperationButton>
               )}
             </OperationLine>
-            <InputErrors errors={shouldHideErrors ? [] : operationErrors} />
+            <InputErrors errors={operationErrors} />
           </Container>
         );
       })}
@@ -221,7 +237,7 @@ const OperationCollection = ({
           </Button>
         </Footer>
       )}
-      <InputErrors errors={shouldHideErrors ? [] : getErrorsForPath(errors, '')} />
+      <InputErrors errors={getErrorsForPath(errors, '')} />
     </>
   );
 };
