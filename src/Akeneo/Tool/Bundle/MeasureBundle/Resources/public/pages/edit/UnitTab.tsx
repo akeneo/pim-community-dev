@@ -1,4 +1,4 @@
-import React, {useState, useContext, FormEvent} from 'react';
+import React, {useState, useContext, FormEvent, useCallback} from 'react';
 import styled from 'styled-components';
 import {
   MeasurementFamily,
@@ -26,6 +26,7 @@ import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-erro
 import {Unit, UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
 import {Operation} from 'akeneomeasure/model/operation';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
+import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 
 const UnitList = styled.div`
   flex: 1;
@@ -115,16 +116,33 @@ const UnitTab = ({
   const locale = useContext(UserContext)('uiLocale');
   const [searchValue, setSearchValue] = useState('');
   const [selectedUnitCode, selectUnitCode] = useState<UnitCode>(measurementFamily.standard_unit_code);
+  const [isConfirmDeleteUnitModalOpen, setConfirmDeleteUnitModalOpen] = useState<boolean>(false);
+  const locales = useUiLocales();
+
   const selectedUnit = getUnit(measurementFamily, selectedUnitCode);
   const selectedUnitIndex = getUnitIndex(measurementFamily, selectedUnitCode);
-
   const filteredUnits = measurementFamily.units.filter(filterOnLabelOrCode(searchValue, locale));
-  const locales = useUiLocales();
+
+  const closeConfirmDeleteUnitModal = useCallback(() => setConfirmDeleteUnitModalOpen(false), [
+    setConfirmDeleteUnitModalOpen,
+  ]);
+  const removeUnitHandler = useCallback(() => {
+    onMeasurementFamilyChange(removeUnit(measurementFamily, selectedUnitCode));
+    selectUnitCode(measurementFamily.standard_unit_code);
+    closeConfirmDeleteUnitModal();
+  }, [measurementFamily, selectedUnitCode, onMeasurementFamilyChange, selectUnitCode, removeUnit]);
 
   if (undefined === selectedUnit) return null;
 
   return (
     <>
+      {isConfirmDeleteUnitModalOpen && (
+        <ConfirmDeleteModal
+          description={__('measurements.unit.delete.confirm')}
+          onConfirm={removeUnitHandler}
+          onCancel={closeConfirmDeleteUnitModal}
+        />
+      )}
       <UnitList>
         <SearchBar count={measurementFamily.units.length} searchValue={searchValue} onSearchChange={setSearchValue} />
         {0 === filteredUnits.length && (
@@ -209,15 +227,8 @@ const UnitTab = ({
         </FormGroup>
         {selectedUnitCode !== measurementFamily.standard_unit_code && (
           <Footer>
-            <Button
-              color="red"
-              outline={true}
-              onClick={() => {
-                onMeasurementFamilyChange(removeUnit(measurementFamily, selectedUnitCode));
-                selectUnitCode(measurementFamily.standard_unit_code);
-              }}
-            >
-              {__('measurements.unit.delete')}
+            <Button color="red" outline={true} onClick={() => setConfirmDeleteUnitModalOpen(true)}>
+              {__('measurements.unit.delete.button')}
             </Button>
           </Footer>
         )}

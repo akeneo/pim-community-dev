@@ -34,7 +34,9 @@ measurements:
     unit:
         title: Edit {{ unitLabel }}
         symbol: Symbol
-        delete: Delete unit
+        delete:
+            button: Delete unit
+            confirm: Are you sure you want to delete this measurement unit?
         add: Add unit
         operation:
             add: Add new operation
