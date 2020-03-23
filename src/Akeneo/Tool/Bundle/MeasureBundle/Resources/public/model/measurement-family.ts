@@ -12,6 +12,7 @@ type MeasurementFamily = {
   labels: LabelCollection;
   standard_unit_code: string;
   units: Unit[];
+  is_locked: boolean;
 };
 
 const getMeasurementFamilyLabel = (measurementFamily: MeasurementFamily, locale: LocaleCode) =>

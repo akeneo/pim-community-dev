@@ -24,6 +24,7 @@ import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
 import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
+import {SubsectionHelper, HELPER_LEVEL_WARNING} from 'akeneomeasure/shared/components/SubsectionHelper';
 
 enum Tab {
   Units = 'units',
@@ -36,12 +37,15 @@ const Container = styled.div`
   display: flex;
 `;
 
-const TabContainer = styled.div`
+const TabsContainer = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Tabs = styled.div`
   display: flex;
   width: 100%;
   height: 50px;
   border-bottom: 1px solid ${props => props.theme.color.grey80};
-  margin-bottom: 20px;
 `;
 
 const TabSelector = styled.div<{isActive: boolean}>`
@@ -107,12 +111,12 @@ const Edit = () => {
     }
   }, [measurementFamily, locale, saveMeasurementFamily, notify, __, setErrors]);
 
-  const handleNewUnit = useCallback((unit: Unit) => {
-    null !== measurementFamily && setMeasurementFamily(addUnit(measurementFamily, unit));
-  }, [
-    setMeasurementFamily,
-    measurementFamily,
-  ]);
+  const handleNewUnit = useCallback(
+    (unit: Unit) => {
+      null !== measurementFamily && setMeasurementFamily(addUnit(measurementFamily, unit));
+    },
+    [setMeasurementFamily, measurementFamily]
+  );
 
   if (undefined === measurementFamilyCode || null === measurementFamily) {
     return null;
@@ -120,13 +124,9 @@ const Edit = () => {
 
   return (
     <>
-      {isAddUnitModalOpen &&
-        <CreateUnit
-            measurementFamily={measurementFamily}
-            onClose={closeAddUnitModal}
-            onNewUnit={handleNewUnit}
-        />
-      }
+      {isAddUnitModalOpen && (
+        <CreateUnit measurementFamily={measurementFamily} onClose={closeAddUnitModal} onNewUnit={handleNewUnit} />
+      )}
 
       <PageHeader
         userButtons={
@@ -145,11 +145,7 @@ const Edit = () => {
               {__('measurements.family.delete')}
             </DropdownLink>
           </SecondaryActionsDropdownButton>,
-          <Button
-            color="blue"
-            outline={true}
-            onClick={openAddUnitModal}
-          >
+          <Button color="blue" outline={true} onClick={openAddUnitModal}>
             {__('measurements.unit.add')}
           </Button>,
           <Button onClick={handleSave}>{__('pim_common.save')}</Button>,
@@ -171,14 +167,19 @@ const Edit = () => {
       </PageHeader>
 
       <PageContent>
-        <TabContainer>
-          {Object.values(Tab).map((tab: Tab) => (
-            <TabSelector key={tab} onClick={() => setCurrentTab(tab)} isActive={currentTab === tab}>
-              {__(`measurements.family.tab.${tab}`)}
-              {hasTabErrors(tab, errors) && <ErrorBadge />}
-            </TabSelector>
-          ))}
-        </TabContainer>
+        <TabsContainer>
+          <Tabs>
+            {Object.values(Tab).map((tab: Tab) => (
+              <TabSelector key={tab} onClick={() => setCurrentTab(tab)} isActive={currentTab === tab}>
+                {__(`measurements.family.tab.${tab}`)}
+                {hasTabErrors(tab, errors) && <ErrorBadge />}
+              </TabSelector>
+            ))}
+          </Tabs>
+          {measurementFamily.is_locked && (
+            <SubsectionHelper level={HELPER_LEVEL_WARNING}>{__('measurements.family.is_locked')}</SubsectionHelper>
+          )}
+        </TabsContainer>
         <Container>
           {currentTab === Tab.Units && (
             <UnitTab

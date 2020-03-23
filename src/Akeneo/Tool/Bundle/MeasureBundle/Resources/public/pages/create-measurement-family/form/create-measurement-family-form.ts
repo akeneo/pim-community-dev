@@ -42,6 +42,7 @@ const createMeasurementFamilyFromForm = (data: CreateMeasurementFamilyForm, loca
         ],
       },
     ],
+    is_locked: false,
   };
 };
 

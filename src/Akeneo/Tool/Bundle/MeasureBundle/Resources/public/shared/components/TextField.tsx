@@ -12,7 +12,6 @@ const Input = styled.input`
   background-color: transparent;
   border: none;
   flex: 1;
-
   outline: none;
   cursor: inherit;
 `;
