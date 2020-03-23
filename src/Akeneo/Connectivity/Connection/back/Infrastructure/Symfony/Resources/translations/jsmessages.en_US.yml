@@ -146,8 +146,9 @@ akeneo_connectivity.connection:
             title: Source connections
             all: All
         charts:
-            number_of_products_created: Number of products created
-            number_of_products_updated: Number of products updated
+            inbound: Inbound
+            number_of_products_created: Products created
+            number_of_products_updated: Products updated
             legend:
                 during_the_last_seven_days: During the last seven days
                 today: Today

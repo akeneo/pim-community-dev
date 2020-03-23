@@ -2,7 +2,6 @@ import {VictoryThemeDefinition} from 'victory';
 import {CSSProperties} from 'react';
 
 export const blue = '#3b438c';
-export const darkGrey = '#11324d';
 export const grey = '#67768a';
 export const lightBlue = '#dee0ef';
 export const lightGrey = '#e8ebee';
@@ -15,8 +14,8 @@ export const lightGreyStroke: CSSProperties = {
 };
 
 const themeBaseProps: {width: number; height: number; colorScale: string[]} = {
-    width: 1000,
-    height: 300,
+    width: 0,
+    height: 0,
     colorScale: [],
 };
 
