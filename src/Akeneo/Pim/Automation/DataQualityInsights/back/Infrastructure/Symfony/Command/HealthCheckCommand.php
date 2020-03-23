@@ -46,6 +46,7 @@ final class HealthCheckCommand extends Command
     {
         $this->setName('pimee:data-quality-insights:health-check')
             ->addOption('products', 'p', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY)
+            ->addOption('productModels', 'pm', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY)
             ->setHidden(true);
     }
 
@@ -63,6 +64,10 @@ final class HealthCheckCommand extends Command
 
         if (count($productIds = $input->getOption('products')) > 0) {
             $this->outputTargetedProductsInfo($io, $productIds);
+        }
+
+        if (count($productModelsIds = $input->getOption('productModels')) > 0) {
+            $this->outputTargetedProductModelsInfo($io, $productModelsIds);
         }
     }
 
@@ -383,6 +388,89 @@ SQL;
         $stmt = $this->prepareStatementWithProductIds($query, $productIds);
 
         $this->outputAsTable($io, $stmt->fetchAll());
+    }
+
+    private function outputTargetedProductModelsInfo(SymfonyStyle $io, array $productModelsIds)
+    {
+        $this->outputAverageTimePerCriterionPerProductModels($io, $productModelsIds);
+        $this->outputProductAxisRatesPerProductModels($io, $productModelsIds);
+        $this->outputLastEvaluationResultPerProductModels($io, $productModelsIds);
+    }
+
+    private function outputAverageTimePerCriterionPerProductModels(SymfonyStyle $io, array $productModelsIds)
+    {
+        $io->section('Average time per criterion per product models');
+
+        $query = <<<SQL
+SELECT
+    product_id,
+    criterion_code,
+    AVG(TIMESTAMPDIFF(MICROSECOND , started_at, ended_at)) AS evaluation_time_in_microsecond,
+    AVG(TIMESTAMPDIFF(SECOND , created_at, started_at)) AS handle_time_in_second
+FROM pimee_data_quality_insights_product_model_criteria_evaluation
+WHERE product_id IN (:product_ids)
+GROUP BY product_id, criterion_code
+ORDER BY product_id, criterion_code
+SQL;
+
+        $stmt = $this->prepareStatementWithProductIds($query, $productModelsIds);
+
+        $this->outputAsTable($io, $stmt->fetchAll());
+    }
+
+    private function outputProductAxisRatesPerProductModels(SymfonyStyle $io, array $productModelIds)
+    {
+        $io->section('Product Axis Rates per product models');
+
+        $query = <<<SQL
+SELECT
+    product_id, axis_code, evaluated_at, rates
+FROM pimee_data_quality_insights_product_model_axis_rates
+WHERE product_id IN (:product_ids)
+ORDER BY product_id, axis_code
+SQL;
+
+        $stmt = $this->prepareStatementWithProductIds($query, $productModelIds);
+        $this->outputAsTable($io, $stmt->fetchAll());
+    }
+
+    private function outputLastEvaluationResultPerProductModels(SymfonyStyle $io, array $productIds)
+    {
+        $io->section('Last evaluation result per product models');
+
+        $productIds = array_map(function ($productId) {
+            return intval($productId);
+        },
+            $productIds
+        );
+
+        foreach ($productIds as $productId) {
+            $query = <<<SQL
+SELECT
+       latest_evaluation.product_id,
+       latest_evaluation.criterion_code,
+       latest_evaluation.status,
+       latest_evaluation.result
+FROM pimee_data_quality_insights_product_model_criteria_evaluation AS latest_evaluation
+LEFT JOIN pimee_data_quality_insights_product_model_criteria_evaluation AS other_evaluation
+    ON other_evaluation.product_id = :product_id
+    AND latest_evaluation.criterion_code = other_evaluation.criterion_code
+    AND latest_evaluation.created_at < other_evaluation.created_at
+WHERE latest_evaluation.product_id = :product_id
+    AND other_evaluation.id IS NULL;
+SQL;
+            $stmt = $this->db->executeQuery($query, ['product_id' => $productId], ['product_id' => \PDO::PARAM_INT]);
+
+            $data = $stmt->fetchAll();
+
+            if (empty($data)) {
+                $io->warning('No data found.');
+
+                return;
+            }
+
+            $io->horizontalTable(array_keys(current($data)), $data);
+        }
     }
 
     private function outputPeriodicTasksInfo(SymfonyStyle $io)
