@@ -26,12 +26,12 @@ final class UpdateDataDestinationProductEventCountHandler
     public function handle(UpdateDataDestinationProductEventCountCommand $command): void
     {
         $hourlyEventCount = new HourlyEventCount(
-            $command->code(),
+            $command->connectionCode(),
             $command->hourlyInterval(),
             $command->productEventCount(),
             EventTypes::PRODUCT_READ
         );
 
-        $this->eventCountRepository->bulkUpsert([$hourlyEventCount]);
+        $this->eventCountRepository->upsert($hourlyEventCount);
     }
 }

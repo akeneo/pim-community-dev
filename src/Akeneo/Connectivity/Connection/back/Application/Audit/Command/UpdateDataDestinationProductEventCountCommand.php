@@ -32,7 +32,7 @@ final class UpdateDataDestinationProductEventCountCommand
         $this->productEventCount = $productEventCount;
     }
 
-    public function code(): string
+    public function connectionCode(): string
     {
         return $this->connectionCode;
     }
