@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Component\Query\PublicApi\AssociationType;
+namespace Akeneo\Pim\Enrichment\Component\Product\Query\AssociationType;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>

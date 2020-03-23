@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Test\Acceptance\AssociationType;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\AssociationType\GetAssociationTypeCodes;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AssociationType\GetAssociationTypeCodes;
 use Akeneo\Test\Acceptance\AssociationType\InMemoryAssociationTypeRepository;
 use Akeneo\Test\Acceptance\AssociationType\InMemoryGetAssociationTypeCodes;
 use PhpSpec\ObjectBehavior;

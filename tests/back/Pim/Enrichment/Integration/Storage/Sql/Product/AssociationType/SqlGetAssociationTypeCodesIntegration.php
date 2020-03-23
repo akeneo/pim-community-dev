@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Query\PublicApi\AssociationType\Sql;
+namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product\AssociationType;
 
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\AssociationType\Sql\SqlGetAssociationTypeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\AssociationType\SqlGetAssociationTypeCodes;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -27,7 +26,7 @@ final class SqlGetAssociationTypeCodesIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->sqlGetAssociationTypeCodes = $this->get('akeneo.pim.structure.query.get_association_type_codes');
+        $this->sqlGetAssociationTypeCodes = $this->get('akeneo.pim.enrichment.product.query.get_association_type_codes');
 
         $associationTypes = array_map(function (string $code): AssociationType {
             $associationType = new AssociationType();

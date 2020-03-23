@@ -261,3 +261,13 @@ services:
         class: 'Akeneo\Channel\Bundle\Doctrine\Query\GetChannelActiveLocaleCodes'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.get_association_type_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\AssociationType\SqlGetAssociationTypeCodes'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.cached_get_association_type_codes:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Query\AssociationType\CachedGetAssociationTypeCodes'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_association_type_codes'

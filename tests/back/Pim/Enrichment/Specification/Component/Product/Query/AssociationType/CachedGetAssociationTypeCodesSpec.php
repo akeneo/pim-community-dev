@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Structure\Bundle\Query\PublicApi\AssociationType\Cache;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Query\AssociationType;
 
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\AssociationType\Cache\CachedGetAssociationTypeCodes;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AssociationType\GetAssociationTypeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Query\AssociationType\CachedGetAssociationTypeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Query\AssociationType\GetAssociationTypeCodes;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
 

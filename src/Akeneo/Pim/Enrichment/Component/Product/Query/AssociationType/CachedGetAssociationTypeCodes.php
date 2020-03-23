@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\AssociationType\Cache;
-
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AssociationType\GetAssociationTypeCodes;
+namespace Akeneo\Pim\Enrichment\Component\Product\Query\AssociationType;
 
 /**
  * Cache for association type codes fetching. If there is too much codes to set in cache, no cache is done

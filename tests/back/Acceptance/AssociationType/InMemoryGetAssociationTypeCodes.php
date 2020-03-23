@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\AssociationType;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\AssociationType\GetAssociationTypeCodes;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AssociationType\GetAssociationTypeCodes;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -24,7 +24,6 @@ final class InMemoryGetAssociationTypeCodes implements GetAssociationTypeCodes
 
     public function findAll(): \Iterator
     {
-        /** @var AssociationType $associationType */
         foreach ($this->associationTypeRepository->findAll() as $associationType) {
             yield $associationType->getCode();
         }

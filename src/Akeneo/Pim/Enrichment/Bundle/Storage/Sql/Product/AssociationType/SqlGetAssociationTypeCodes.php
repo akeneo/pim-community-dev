@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\AssociationType\Sql;
+namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\AssociationType;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AssociationType\GetAssociationTypeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Query\AssociationType\GetAssociationTypeCodes;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 
