@@ -31,6 +31,7 @@ measurements:
             flash:
                 success: Measurement family successfully saved.
                 error: Sorry, an error occured while saving the measurement family.
+        is_locked: A product attribute is linked to this measurement family. You can only add units or change the translated labels and symbol of existing units.
     unit:
         title: Edit {{ unitLabel }}
         symbol: Symbol

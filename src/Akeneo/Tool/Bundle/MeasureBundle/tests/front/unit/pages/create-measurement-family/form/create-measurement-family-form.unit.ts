@@ -45,6 +45,7 @@ describe('create-measurement-family-form', () => {
           ],
         },
       ],
+      is_locked: false,
     });
   });
 
@@ -80,6 +81,7 @@ describe('create-measurement-family-form', () => {
           ],
         },
       ],
+      is_locked: false,
     });
   });
 });

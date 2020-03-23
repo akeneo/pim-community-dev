@@ -180,7 +180,7 @@ const UnitTab = ({
           />
           <OperationCollection
             operations={selectedUnit.convert_from_standard}
-            readOnly={selectedUnit.code === measurementFamily.standard_unit_code}
+            readOnly={measurementFamily.is_locked || selectedUnit.code === measurementFamily.standard_unit_code}
             onOperationsChange={(operations: Operation[]) => {
               onMeasurementFamilyChange(setUnitOperations(measurementFamily, selectedUnit.code, operations));
             }}

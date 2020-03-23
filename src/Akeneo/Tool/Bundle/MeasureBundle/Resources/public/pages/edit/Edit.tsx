@@ -21,6 +21,7 @@ import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-con
 import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
 import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family-saver';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
+import {SubsectionHelper, HELPER_LEVEL_WARNING} from 'akeneomeasure/shared/components/SubsectionHelper';
 
 enum Tab {
   Units = 'units',
@@ -33,12 +34,15 @@ const Container = styled.div`
   display: flex;
 `;
 
-const TabContainer = styled.div`
+const TabsContainer = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Tabs = styled.div`
   display: flex;
   width: 100%;
   height: 50px;
   border-bottom: 1px solid ${props => props.theme.color.grey80};
-  margin-bottom: 20px;
 `;
 
 const TabSelector = styled.div<{isActive: boolean}>`
@@ -154,14 +158,19 @@ const Edit = () => {
       </PageHeader>
 
       <PageContent>
-        <TabContainer>
-          {Object.values(Tab).map((tab: Tab) => (
-            <TabSelector key={tab} onClick={() => setCurrentTab(tab)} isActive={currentTab === tab}>
-              {__(`measurements.family.tab.${tab}`)}
-              {hasTabErrors(tab, errors) && <ErrorBadge />}
-            </TabSelector>
-          ))}
-        </TabContainer>
+        <TabsContainer>
+          <Tabs>
+            {Object.values(Tab).map((tab: Tab) => (
+              <TabSelector key={tab} onClick={() => setCurrentTab(tab)} isActive={currentTab === tab}>
+                {__(`measurements.family.tab.${tab}`)}
+                {hasTabErrors(tab, errors) && <ErrorBadge />}
+              </TabSelector>
+            ))}
+          </Tabs>
+          {measurementFamily.is_locked && (
+            <SubsectionHelper level={HELPER_LEVEL_WARNING}>{__('measurements.family.is_locked')}</SubsectionHelper>
+          )}
+        </TabsContainer>
         <Container>
           {currentTab === Tab.Units && (
             <UnitTab

@@ -43,6 +43,7 @@ const createMeasurementFamilyFromFormState = (data: FormState, locale: LocaleCod
         ],
       },
     ],
+    is_locked: false,
   };
 };
 

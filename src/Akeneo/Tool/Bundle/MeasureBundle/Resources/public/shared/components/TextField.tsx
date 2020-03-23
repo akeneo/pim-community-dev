@@ -8,11 +8,10 @@ import {useFocus} from 'akeneomeasure/shared/hooks/use-focus';
 import {LockIcon} from 'akeneomeasure/shared/icons/LockIcon';
 import {akeneoTheme} from 'akeneomeasure/shared/theme';
 
-const Input = styled.input<{readOnly: boolean}>`
+const Input = styled.input`
   background-color: transparent;
   border: none;
   flex: 1;
-
   outline: none;
   cursor: inherit;
 `;
