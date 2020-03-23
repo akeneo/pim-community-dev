@@ -19,7 +19,7 @@ use Webmozart\Assert\Assert;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  */
-final class ProductTarget
+final class ProductClearAction implements ProductClearActionInterface
 {
     /** @var string */
     private $field;
@@ -30,32 +30,47 @@ final class ProductTarget
     /** @var string|null */
     private $scope;
 
-    private function __construct(string $field, ?string $scope, ?string $locale)
+    public function __construct(array $data)
     {
-        $this->field = strtolower($field);
-        $this->scope = $scope;
-        $this->locale = $locale;
+        Assert::keyExists($data, 'field', 'The clear configuration requires a "field" key.');
+        Assert::string($data['field'], 'The clear field configuration must be a string.');
+        Assert::nullOrString($data['locale'] ?? null, 'The clear locale configuration must be a string or null.');
+        Assert::nullOrString($data['scope'] ?? null, 'The clear scope configuration must be a string or null.');
+
+        $this->field = strtolower($data['field']);
+        $this->locale = $data['locale'] ?? null;
+        $this->scope = $data['scope'] ?? null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getField(): string
     {
         return $this->field;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getLocale(): ?string
     {
         return $this->locale;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getScope(): ?string
     {
         return $this->scope;
     }
 
-    public static function fromNormalized(array $normalized): self
+    /**
+     * {@inheritDoc}
+     */
+    public function getImpactedFields()
     {
-        Assert::keyExists($normalized, 'field', 'Concatenate target configuration requires a "field" key.');
-
-        return new self($normalized['field'], $normalized['scope'] ?? null, $normalized['locale'] ?? null);
+        return [$this->field];
     }
 }
