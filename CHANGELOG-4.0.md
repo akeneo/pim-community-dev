@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9155: Fix the creation of product link rules in the asset manager
+
 # 4.0.13 (2020-03-30)
 
 ## Bug fixes
