@@ -205,7 +205,7 @@ jobs:
           name: Install database
           command: APP_ENV=behat make database
       - run:
-          name: Non critical Behat
+          name: End to end Behat tests
           command: make end-to-end-legacy SUITE=$TESTSUITE
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
@@ -236,6 +236,9 @@ jobs:
         - run:
               name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
               command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+        - run:
+            name: Front type checking
+            command: make javascript-dev-strict
         - run:
             name: Front linter
             command: make lint-front
@@ -276,6 +279,10 @@ jobs:
           path: var/logs
 
   build_prod:
+      parameters:
+          is_pull_request:
+              type: boolean
+              default: true
       environment:
         <<: *envVarsDeployDev
       machine:
@@ -284,6 +291,16 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
+          - when:
+                condition: << parameters.is_pull_request >>
+                steps:
+                    - run:
+                          name: Update composer.json if same branch exists in CE
+                          command: >
+                              curl --output /dev/null --silent --head --fail
+                              https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
+                              sed -i "s/dev-master/dev-${CIRCLE_BRANCH}/" composer.json ||
+                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
           - run:
               name: Build PROD PIM docker image
               command: IMAGE_TAG=$CIRCLE_SHA1 IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
@@ -320,7 +337,7 @@ jobs:
                 echo "DEPLOY FAILED - Delete CI env PFID=srnt-ci-$CIRCLE_SHA1"
                 IMAGE_TAG=$CIRCLE_SHA1 make delete
 
-  deploy_upgrade_pim3_environment:
+  deploy_upgrade_oldest_prod_environment:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -330,13 +347,13 @@ jobs:
           - add_ssh_keys
           - set_gcloud_config_dev
           - run:
-              name: PIM3 deployment on kubernetes
+              name: Oldest SaaS prod (PIM v3) deployment on kubernetes
               command: |
                 ssh-keyscan github.com >> ~/.ssh/known_hosts
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
           - run:
-              name: Upgrade PIM3 env
+              name: Upgrade oldest SaaS prod (PIM v3) to master
               command: |
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy
@@ -381,6 +398,19 @@ jobs:
                 command: |
                     ssh-keyscan github.com >> ~/.ssh/known_hosts
                     ENV_NAME=preprod make deploy_latest_release_for_helpdesk
+
+  deploy_pr_environment:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: Deploy PR environment
+                command: |
+                    ENV_NAME=dev make deploy_pr_environment
 
   test_back_missing_structure_migrations:
       machine:
@@ -456,6 +486,17 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
+          - deploy_pr_environment?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
+                requires:
+                    - build_prod
+          - deploy_pr_environment:
+                requires:
+                    - deploy_pr_environment?
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -516,12 +557,13 @@ workflows:
                 requires:
                     - checkout
           - build_prod:
+                is_pull_request: false
                 requires:
                     - checkout
           - deploy_master_environment:
                 requires:
                     - build_prod
-          - deploy_upgrade_pim3_environment:
+          - deploy_upgrade_oldest_prod_environment:
                 requires:
                     - deploy_master_environment
           - test_back_static_and_acceptance:
@@ -550,7 +592,7 @@ workflows:
                     - test_back_performance
                     - back_behat_legacy
                     - deploy_master_environment
-                    - deploy_upgrade_pim3_environment
+                    - deploy_upgrade_oldest_prod_environment
                     - test_back_data_migrations
 
   on_demand:
@@ -568,12 +610,13 @@ workflows:
                 requires:
                     - checkout
           - build_prod:
+                is_pull_request: false
                 requires:
                     - checkout
           - deploy_master_environment:
                 requires:
                     - build_prod
-          - deploy_upgrade_pim3_environment:
+          - deploy_upgrade_oldest_prod_environment:
                 requires:
                     - deploy_master_environment
           - test_back_static_and_acceptance:
@@ -602,7 +645,7 @@ workflows:
                     - test_back_performance
                     - back_behat_legacy
                     - deploy_master_environment
-                    - deploy_upgrade_pim3_environment
+                    - deploy_upgrade_oldest_prod_environment
                     - test_back_data_migrations
 
 commands:

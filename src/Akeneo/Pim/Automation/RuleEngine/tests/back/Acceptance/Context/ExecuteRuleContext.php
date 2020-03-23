@@ -163,6 +163,12 @@ rules:
                   - field: connectivity
                   - field: connectivity
                     label_locale: fr_FR
+                  - field: designer
+                  - field: designer
+                    label_locale: fr_FR
+                  - field: designers
+                  - field: designers
+                    label_locale: fr_FR
               to:
                   field: name
                   locale: en_US
@@ -186,7 +192,7 @@ YAML;
         }
 
         Assert::notNull($productValue, 'The value is empty for this product.');
-        Assert::same($value, $productValue->__toString());
+        Assert::same($productValue->__toString(), $value);
     }
 
     /**

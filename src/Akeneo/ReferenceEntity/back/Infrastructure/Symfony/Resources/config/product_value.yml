@@ -158,3 +158,8 @@ services:
         public: false
         tags:
             - { name: akeneo.pim.enrichment.factory.product_value }
+
+    akeneo_referenceentity.updater.value_converter.referenceentity_to_string:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Updater\Converter\ReferenceEntityToStringDataConverter
+        tags:
+            - { name: pim_catalog.updater.value_data_converter }

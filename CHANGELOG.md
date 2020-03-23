@@ -1,8 +1,10 @@
 ## Bug fixes
 
+- Fixes memory leak when indexing product models with a lot of product models in the same family (see https://github.com/akeneo/pim-community-dev/pull/11742)
 - PIM-9109: Fix SSO not working behind reverse proxy.
 - PIM-9133: Fix product and product model save when the user has no permission on some attribute groups
 - PIM-9149: Fix compare/translate on product 
+- PIM-9138: Rules import not working with asset manager
 
 ## Improvements
 
@@ -13,7 +15,9 @@
 - DAPI-739: Add coefficients by criterion to the calculation of the axes rates
 - DAPI-635: Add spellcheck on WYSIWG editors
 - DAPI-798: Allow spelling suggestions after a title formatter check
+- RUL-20: Rule engine - As Julia, I would like to copy values from/to different attribute types
 
 ## New features
 
 - DAPI-854: Data quality - Variant products are also evaluated
+- RUL-17: Rules engine - Add the concatenate action type to concatenate some attribute values into a single attribute value

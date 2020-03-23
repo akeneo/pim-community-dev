@@ -18,4 +18,4 @@ Feature: Export rules
   Scenario: Export rules
     When I export all the rules
     Then no exception has been thrown
-    Then the export data contains all rules
+    And the export data contains all rules

@@ -10,8 +10,9 @@ final class DictionaryWord
 
     public function __construct(string $word)
     {
-        if (preg_match('~^[a-zA-Z]+$~', $word) !== 1) {
-            throw new \InvalidArgumentException('A word must be contain only alphabetical characters.');
+        $anyKindOfLetterFromAnyLanguageRegex = '~^\p{L}+$~u';
+        if (preg_match('~^\p{L}+$~u', $word) !== 1) {
+            throw new \InvalidArgumentException('A word must contain only letters.');
         }
 
         $this->word = $word;

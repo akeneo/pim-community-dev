@@ -12,7 +12,9 @@
         "price",
         "weight",
         "color",
-        "connectivity"
+        "connectivity",
+        "designer",
+        "designers"
     ],
     "attribute_as_label": "name",
     "attribute_as_image": "picture",

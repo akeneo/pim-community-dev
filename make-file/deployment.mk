@@ -90,7 +90,7 @@ create-ci-values: $(INSTANCE_DIR)
 	cp $(PIM_SRC_DIR)/deployments/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true	
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
 endif
 
@@ -143,3 +143,10 @@ deploy_latest_release_for_helpdesk:
 .PHONY: slack_helpdesk
 slack_helpdesk:
 	curl -X POST -H 'Content-type: application/json' --data '{"text":"Serenity env has been deployed with the last tag $(IMAGE_TAG) : https://pimci-helpdesk.preprod.cloud.akeneo.com"}' $${SLACK_URL_HELPDESK};
+
+.PHONY: deploy_pr_environment
+deploy_pr_environment:
+	PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/} && \
+	echo "\n\nThis environment will be available at https://pimci-pr-$${PR_NUMBER}.$(GOOGLE_MANAGED_ZONE_DNS) once deployed :)\n\n" && \
+	INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
+	INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make deploy

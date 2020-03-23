@@ -21,6 +21,24 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordDetails;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
 use Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository;
@@ -88,6 +106,15 @@ final class DataFixturesContext implements Context
     /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
+    /** @var InMemoryReferenceEntityRepository */
+    private $referenceEntityRepository;
+
+    /** @var InMemoryRecordRepository */
+    private $recordRepository;
+
+    /** @var InMemoryFindRecordDetails */
+    private $findRecordDetails;
+
     public function __construct(
         InMemoryProductRepository $productRepository,
         ProductBuilderInterface $productBuilder,
@@ -104,7 +131,10 @@ final class DataFixturesContext implements Context
         InMemoryAttributeOptionRepository $attributeOptionRepository,
         InMemoryCurrencyRepository $currencyRepository,
         EntityBuilder $optionBuilder,
-        WriteValueCollectionFactory $valueCollectionFactory
+        WriteValueCollectionFactory $valueCollectionFactory,
+        InMemoryReferenceEntityRepository $referenceEntityRepository,
+        InMemoryRecordRepository $recordRepository,
+        InMemoryFindRecordDetails $findRecordDetails
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
@@ -122,6 +152,9 @@ final class DataFixturesContext implements Context
         $this->productUpdater = $productUpdater;
         $this->optionBuilder = $optionBuilder;
         $this->valueCollectionFactory = $valueCollectionFactory;
+        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->recordRepository = $recordRepository;
+        $this->findRecordDetails = $findRecordDetails;
     }
 
     /**
@@ -237,6 +270,68 @@ final class DataFixturesContext implements Context
         $dollarCurrency->setCode('USD');
         $dollarCurrency->setActivated(true);
         $this->currencyRepository->save($dollarCurrency);
+    }
+
+    /**
+     * @Given the following :code reference entity
+     */
+    public function theFollowingReferenceEntity(string $code): void
+    {
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString($code),
+            [],
+            Image::createEmpty()
+        );
+        $referenceEntity->updateAttributeAsLabelReference(AttributeAsLabelReference::createFromNormalized('label'));
+        $this->referenceEntityRepository->create($referenceEntity);
+    }
+
+    /**
+     * @Given /^the following records?:$/
+     */
+    public function theFollowingRecords(TableNode $records): void
+    {
+        foreach ($records as $normalizedRecord) {
+            $record = Record::create(
+                RecordIdentifier::fromString($normalizedRecord['code']),
+                ReferenceEntityIdentifier::fromString($normalizedRecord['ref entity']),
+                RecordCode::fromString($normalizedRecord['code']),
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label'),
+                        ChannelReference::noReference(),
+                        LocaleReference::createFromNormalized('en_US'),
+                        TextData::fromString('us ' . $normalizedRecord['code'])
+                    ),
+                    Value::create(
+                        AttributeIdentifier::fromString('label'),
+                        ChannelReference::noReference(),
+                        LocaleReference::createFromNormalized('fr_FR'),
+                        TextData::fromString('fr ' . $normalizedRecord['code'])
+                    ),
+                ])
+            );
+            $this->recordRepository->create($record);
+
+            $recordDetails = new RecordDetails(
+                RecordIdentifier::fromString($normalizedRecord['code']),
+                ReferenceEntityIdentifier::fromString($normalizedRecord['ref entity']),
+                RecordCode::fromString($normalizedRecord['code']),
+                LabelCollection::fromArray([
+                    'en_US' => 'us ' . $normalizedRecord['code'],
+                    'fr_FR' => 'fr ' . $normalizedRecord['code'],
+                ]),
+                Image::createEmpty(),
+                [
+                    'label' => [
+                        'en_US' => 'us ' . $normalizedRecord['code'],
+                        'fr_FR' => 'fr ' . $normalizedRecord['code'],
+                    ],
+                ],
+                true
+            );
+            $this->findRecordDetails->save($recordDetails);
+        }
     }
 
     /**
