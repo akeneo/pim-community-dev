@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
@@ -61,7 +62,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
     {
         return [
             ApiAuthenticationEvent::class => 'checkApiCredentialsCombination',
-            ReadProductsEvent::class => 'collectReadProducts',
+            ReadProductsEvent::class => 'saveReadProducts',
         ];
     }
 
@@ -78,9 +79,9 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Collect ReadProduct events.
+     * Save ReadProduct events.
      */
-    public function collectReadProducts(ReadProductsEvent $event): void
+    public function saveReadProducts(ReadProductsEvent $event): void
     {
         if (null === $this->clientId) {
             return;
@@ -97,7 +98,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
         $this->updateDataDestinationProductEventCountHandler->handle(
             new UpdateDataDestinationProductEventCountCommand(
                 (string) $connection->code(),
-                new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
+                HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC'))),
                 count($event->productIds())
             )
         );
