@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetAction;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -20,6 +24,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
 {
+    private const ASSET_CODE_DUMMY = 'VALIDATION_TEST';
+
     /** @var DenormalizerInterface */
     private $actionDenormalizer;
 
@@ -52,16 +58,17 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
         $productAction = $this->createProductAction($normalizedProductAssignment);
 
         $ruleEngineViolations = $this->productAtionValidator->validate($productAction);
+        $result = $this->removeCannotFindAssetViolation($ruleEngineViolations);
 
-        return $ruleEngineViolations;
+        return $result;
     }
 
     private function createProductAction(array $productAssignment): ActionInterface
     {
         $productAssignment['type'] = $this->getRuleEngineActionType($productAssignment['mode']);
         $productAssignment['field'] = $productAssignment['attribute'];
-        $productAssignment['items'] = ['VALIDATION_TEST'];
-        $productAssignment['value'] = ['VALIDATION_TEST'];
+        $productAssignment['items'] = [self::ASSET_CODE_DUMMY];
+        $productAssignment['value'] = [self::ASSET_CODE_DUMMY];
         $productAssignment['scope'] = $productAssignment['channel'] ?? null;
         $productAssignment['locale'] = $productAssignment['locale'] ?? null;
 
@@ -75,5 +82,53 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
         }
 
         return $type;
+    }
+
+    private function removeCannotFindAssetViolation(ConstraintViolationListInterface $ruleEngineViolations): ConstraintViolationListInterface
+    {
+        $otherViolations = new ConstraintViolationList();
+        /** @var ConstraintViolationInterface $ruleEngineViolation */
+        foreach ($ruleEngineViolations as $ruleEngineViolation) {
+            if ($this->violationHasDummyAssetCode($ruleEngineViolation)) {
+                continue;
+            }
+            $otherViolations->add($ruleEngineViolation);
+        }
+
+        return $otherViolations;
+    }
+
+    private function violationHasDummyAssetCode(ConstraintViolationInterface $ruleEngineViolation): bool
+    {
+        $root = $ruleEngineViolation->getRoot();
+        if ($root instanceof ProductSetAction) {
+            return $this->isDummyAssetCodeViolationWithSetOperation($root);
+        }
+
+        if ($root instanceof ProductAddAction) {
+            return $this->isDummyAssetCodeViolationWithAddOperation($root);
+        }
+
+        return false;
+    }
+
+    private function isDummyAssetCodeViolationWithSetOperation(ProductSetAction $root): bool
+    {
+        $value = $root->getValue();
+        if (!is_array($value) || empty($value)) {
+            return false;
+        }
+
+        return self::ASSET_CODE_DUMMY === current($value);
+    }
+
+    private function isDummyAssetCodeViolationWithAddOperation(ProductAddAction $root): bool
+    {
+        $value = $root->getItems();
+        if (!is_array($value) || empty($value)) {
+            return false;
+        }
+
+        return self::ASSET_CODE_DUMMY === current($value);
     }
 }
