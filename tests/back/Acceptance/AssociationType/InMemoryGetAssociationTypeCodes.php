@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Test\Acceptance\AssociationType;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\AssociationType\GetAssociationTypeCodes;
-use Akeneo\Pim\Structure\Component\Model\AssociationType;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
