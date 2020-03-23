@@ -93,6 +93,8 @@ const Edit = () => {
       return;
     }
 
+    setErrors([]);
+
     try {
       const response = await saveMeasurementFamily(measurementFamily);
 

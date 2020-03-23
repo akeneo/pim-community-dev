@@ -164,9 +164,7 @@ const OperationCollection = ({
                   onChange={(event: ChangeEvent<HTMLInputElement>) =>
                     onOperationsChange(
                       operations.map((operation: Operation, currentIndex: number) =>
-                        currentIndex === index
-                          ? {...operation, value: event.currentTarget.value.replace(/[^\d]+/g, '')}
-                          : operation
+                        currentIndex === index ? {...operation, value: event.currentTarget.value} : operation
                       )
                     )
                   }

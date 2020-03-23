@@ -226,7 +226,7 @@ const UnitTab = ({
               ))}
           </FormGroup>
         </FormGroup>
-        {selectedUnitCode !== measurementFamily.standard_unit_code && (
+        {!measurementFamily.is_locked && selectedUnitCode !== measurementFamily.standard_unit_code && (
           <Footer>
             <Button color="red" outline={true} onClick={() => setConfirmDeleteUnitModalOpen(true)}>
               {__('measurements.unit.delete.button')}
