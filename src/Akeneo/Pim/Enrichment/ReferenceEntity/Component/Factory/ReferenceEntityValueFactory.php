@@ -91,16 +91,6 @@ class ReferenceEntityValueFactory extends AbstractValueFactory
             throw InvalidPropertyException::expected($exception->getMessage(), RecordCode::class);
         }
 
-        try {
-            $record = $this->recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
-        } catch (RecordNotFoundException $exception) {
-            if ($ignoreUnknownData) {
-                // The record has been removed, we don't crash the app but set record to null.
-                return null;
-            }
-            throw $exception;
-        }
-
-        return $record->getCode();
+        return $recordCode;
     }
 }

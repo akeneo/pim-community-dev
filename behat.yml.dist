@@ -953,6 +953,8 @@ acceptance:
                 - test.catalog.product_validation.context
                 - test.asset_manager.asset_creation.context
                 - akeneo_assetmanager.tests.back.acceptance.context.edit_asset_family_context
+                - akeneo_referenceentity.tests.back.acceptance.context.create_reference_entity_context
+                - akeneo_referenceentity.tests.back.acceptance.context.create_record_context
             filters:
                 tags: '@acceptance-back'
         franklin-insights:

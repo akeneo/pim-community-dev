@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9123: Fix validation of reference entity attribute values
+
 # 3.2.45 (2020-03-20)
 
 # 3.2.44 (2020-03-13)

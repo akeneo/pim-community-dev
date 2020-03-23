@@ -18,8 +18,8 @@ use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityCollect
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
@@ -76,7 +76,7 @@ class ReferenceEntityCollectionValueFactory extends AbstractValueFactory
             }
         }
 
-        return $this->getRecordCodeCollection($attribute, $data);
+        return $this->getRecordCodeCollection($attribute, $data, $ignoreUnknownData);
     }
 
     /**
@@ -84,25 +84,32 @@ class ReferenceEntityCollectionValueFactory extends AbstractValueFactory
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function getRecordCodeCollection(AttributeInterface $attribute, array $recordCodes): array
+    protected function getRecordCodeCollection(AttributeInterface $attribute, array $recordCodes, bool $ignoreUnknownData): array
     {
         $collection = [];
 
         foreach ($recordCodes as $code) {
             $referenceEntityIdentifier = $attribute->getReferenceDataName();
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-            $recordCode = RecordCode::fromString($code);
-
             try {
-                $record = $this->recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
-            } catch (RecordNotFoundException $e) {
-                // The record has been removed, we can go on and continue to load the rest of the records.
-
-                continue;
+                $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+            } catch (\InvalidArgumentException $exception) {
+                if ($ignoreUnknownData) {
+                    return null;
+                }
+                throw InvalidPropertyException::expected($exception->getMessage(), ReferenceEntityIdentifier::class);
             }
 
-            if (!in_array($record->getCode(), $collection, true)) {
-                $collection[] = $record->getCode();
+            try {
+                $recordCode = RecordCode::fromString($code);
+            } catch (\InvalidArgumentException $exception) {
+                if ($ignoreUnknownData) {
+                    return null;
+                }
+                throw InvalidPropertyException::expected($exception->getMessage(), RecordCode::class);
+            }
+
+            if (!in_array($recordCode, $collection, true)) {
+                $collection[] = $recordCode;
             }
         }
 
