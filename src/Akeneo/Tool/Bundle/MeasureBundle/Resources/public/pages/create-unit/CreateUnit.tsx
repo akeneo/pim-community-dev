@@ -97,16 +97,16 @@ const CreateUnit = ({
 
   return (
     <Modal>
-      <ModalCloseButton title={__('close')} onClick={handleClose}/>
+      <ModalCloseButton title={__('pim_common.close')} onClick={handleClose}/>
       <ModalBodyWithIllustration illustration={<MeasurementFamilyIllustration/>}>
         <ModalTitle
-          title={__('measurements.family.add_new_unit')}
+          title={__('measurements.unit.add_new')}
           subtitle={`${__('measurements.title.measurement')} / ${measurementFamilyLabel}`}
         />
         <Subsection>
           {measurementFamilyIsAlreadyUsed &&
             <SubsectionHelper level={HELPER_LEVEL_WARNING}>
-              {__('measurements.family.is_already_used_and_this_new_unit_will_be_read_only_after_creation')}
+              {__('measurements.unit.will_be_read_only')}
             </SubsectionHelper>
           }
           <FormGroup>
@@ -142,7 +142,7 @@ const CreateUnit = ({
             />
             <CheckboxField
               id="measurements.unit.create_another"
-              label={__('measurements.family.create_another_unit')}
+              label={__('measurements.unit.create_another')}
               value={createAnotherUnit}
               readOnly={isReadOnly}
               onChange={(checked: boolean) => setCreateAnotherUnit(checked)}
