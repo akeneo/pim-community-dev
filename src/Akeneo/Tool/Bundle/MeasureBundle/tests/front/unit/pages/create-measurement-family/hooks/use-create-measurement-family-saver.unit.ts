@@ -56,10 +56,7 @@ test('It returns a list of errors when there is a validation problem', async () 
 
   global.fetch = jest.fn().mockImplementation(() => ({
     ok: false,
-    json: () =>
-      Promise.resolve({
-        errors: errors,
-      }),
+    json: () => Promise.resolve(errors),
   }));
 
   const {result} = renderHook(() => useCreateMeasurementFamilySaver());

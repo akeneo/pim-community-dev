@@ -7,7 +7,6 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
-use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,17 +25,12 @@ class GetMeasurementFamiliesAction
     /** @var ParameterValidatorInterface */
     private $parameterValidator;
 
-    /** @var array */
-    private $apiConfiguration;
-
     public function __construct(
         MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
-        ParameterValidatorInterface $parameterValidator,
-        array $apiConfiguration
+        ParameterValidatorInterface $parameterValidator
     ) {
         $this->measurementFamilyRepository = $measurementFamilyRepository;
         $this->parameterValidator = $parameterValidator;
-        $this->apiConfiguration = $apiConfiguration;
     }
 
     public function __invoke(Request $request): JsonResponse

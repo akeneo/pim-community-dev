@@ -184,7 +184,7 @@ const UnitTab = ({
             onOperationsChange={(operations: Operation[]) => {
               onMeasurementFamilyChange(setUnitOperations(measurementFamily, selectedUnit.code, operations));
             }}
-            errors={filterErrors(errors, `[${selectedUnitIndex}].convert_from_standard`)}
+            errors={filterErrors(errors, `[${selectedUnitIndex}][convert_from_standard]`)}
           />
         </FormGroup>
         <FormGroup>
