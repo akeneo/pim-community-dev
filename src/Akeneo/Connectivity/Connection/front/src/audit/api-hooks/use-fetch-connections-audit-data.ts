@@ -13,7 +13,7 @@ export const useFetchConnectionsAuditData = (eventType: AuditEventType): Connect
     const state = useDashboardState();
     const dispatch = useDashboardDispatch();
 
-    const route = useRoute('akeneo_connectivity_connection_rest_audit_source_connections_event');
+    const route = useRoute('akeneo_connectivity_connection_audit_rest_weekly');
 
     useEffect(() => {
         let cancelled = false;

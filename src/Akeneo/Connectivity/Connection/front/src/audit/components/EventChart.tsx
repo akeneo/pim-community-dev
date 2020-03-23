@@ -1,5 +1,5 @@
 import React, {FC, ReactNode, useContext, useEffect, useState} from 'react';
-import {VictoryThemeDefinition} from 'victory';
+import {VictoryChartProps, VictoryThemeDefinition} from 'victory';
 import {AuditEventType} from '../../model/audit-event-type.enum';
 import {useNumberFormatter} from '../../shared/formatter/use-number-formatter';
 import {useTranslate} from '../../shared/translate';
@@ -13,7 +13,9 @@ type Props = {
     title: ReactNode;
     eventType: AuditEventType;
     theme: VictoryThemeDefinition;
+    dateFormat: Intl.DateTimeFormatOptions;
     selectedConnectionCode?: string;
+    chartOptions?: VictoryChartProps;
 };
 type ChartEntry = {
     x: number;
@@ -28,13 +30,17 @@ const Title = styled.div`
     line-height: 44px;
     text-transform: uppercase;
     font-weight: bold;
+    display: block;
 `;
 
-const EventChartContainer = styled.div`
-    width: 49%;
-`;
-
-export const EventChart: FC<Props> = ({title, eventType, theme, selectedConnectionCode}: Props) => {
+export const EventChart: FC<Props> = ({
+    title,
+    eventType,
+    theme,
+    dateFormat,
+    selectedConnectionCode,
+    chartOptions,
+}: Props) => {
     const connectionsAuditData = useFetchConnectionsAuditData(eventType);
     const [chartData, setChartData] = useState<Array<ChartEntry>>();
     const uiLocale = useContext(UserContext).get('uiLocale');
@@ -50,11 +56,10 @@ export const EventChart: FC<Props> = ({title, eventType, theme, selectedConnecti
         const numberOfData = Object.keys(selectedConnectionAuditData).length;
         const chartData = Object.entries(selectedConnectionAuditData).map(
             ([date, value], index): ChartEntry => {
-                const xLabel = new Intl.DateTimeFormat(uiLocale.replace('_', '-'), {
-                    weekday: 'long',
-                    month: 'short',
-                    day: 'numeric',
-                }).format(new Date(date));
+                const xLabel = new Intl.DateTimeFormat(
+                    uiLocale.replace('_', '-'),
+                    dateFormat
+                ).format(new Date(date));
 
                 return {
                     x: index,
@@ -74,10 +79,10 @@ export const EventChart: FC<Props> = ({title, eventType, theme, selectedConnecti
     return (
         <>
             {chartData && (
-                <EventChartContainer>
+                <>
                     <Title>{title}</Title>
-                    <Chart data={chartData} theme={theme} />
-                </EventChartContainer>
+                    <Chart chartOptions={chartOptions} data={chartData} theme={theme} />
+                </>
             )}
         </>
     );

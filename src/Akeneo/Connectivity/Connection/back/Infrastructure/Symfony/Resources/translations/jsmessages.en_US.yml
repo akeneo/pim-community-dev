@@ -147,8 +147,10 @@ akeneo_connectivity.connection:
             all: All
         charts:
             inbound: Inbound
+            outbound: Outbound
             number_of_products_created: Products created
             number_of_products_updated: Products updated
+            number_of_products_sent: Products sent
             legend:
                 during_the_last_seven_days: During the last seven days
                 today: Today
