@@ -1,16 +1,9 @@
+import {BreadcrumbRouterLink, RouterContext} from '@src/shared/router';
 import {act, render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as React from 'react';
-import {create} from 'react-test-renderer';
-import {BreadcrumbRouterLink, RouterContext} from '@src/shared/router';
 
 describe('BreadcrumbRouterLink', () => {
-    it('should render', () => {
-        const component = create(<BreadcrumbRouterLink route='a_route'>content</BreadcrumbRouterLink>);
-
-        expect(component.toJSON()).toMatchSnapshot();
-    });
-
     it('should redirect to a route', async () => {
         const router = {
             generate: jest.fn().mockReturnValue('/an_url'),

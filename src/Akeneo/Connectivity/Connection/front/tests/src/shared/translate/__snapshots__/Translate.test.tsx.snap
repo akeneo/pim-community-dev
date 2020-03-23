@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Translate should display the translation 1`] = `"No product."`;
-
-exports[`Translate should handle pluralization and placeholders 1`] = `"9 products"`;
