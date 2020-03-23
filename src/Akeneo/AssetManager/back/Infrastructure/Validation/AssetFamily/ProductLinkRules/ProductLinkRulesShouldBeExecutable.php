@@ -24,6 +24,8 @@ class ProductLinkRulesShouldBeExecutable extends Constraint
     public const CHANNEL_NOT_SUPPORTED_FOR_FIELD = 'pim_asset_manager.asset_family.validation.rule_template.channel_not_supported_for_field';
     public const LOCALE_NOT_SUPPORTED_FOR_FIELD = 'pim_asset_manager.asset_family.validation.rule_template.locale_not_supported_for_field';
     public const ASSIGNMENT_ATTRIBUTE_DOES_NOT_SUPPORT_THIS_ASSET_FAMILY = 'pim_asset_manager.asset_family.validation.rule_template.assignmement_attribute_does_not_support_this_asset_family';
+    public const ASSIGNMENT_ATTRIBUTE_DOES_NOT_EXISTS = 'pim_asset_manager.asset_family.validation.rule_template.assignmement_attribute_does_not_exist';
+    public const ASSIGNMENT_ATTRIBUTE_IS_NOT_AN_ASSET_COLLECTION = 'pim_asset_manager.asset_family.validation.rule_template.assignmement_attribute_is_not_an_asset_collection';
 
     public function validatedBy()
     {

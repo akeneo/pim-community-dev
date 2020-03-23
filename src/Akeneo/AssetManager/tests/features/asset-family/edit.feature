@@ -272,7 +272,16 @@ Feature: Edit an asset family
   Scenario: Cannot update an asset family with a product link rule having an assignment attribute referencing an attribute which is not of the same type of the asset family we are trying to update
     Given an asset family with no product link rules
     When the user updates this asset family with a product link rule having an assignment attribute which references a product attribute which type does not point to the asset we are trying to update
-    Then there should be a validation error stating that this attribute has not the same of the reference entity we are trying to update
+    # Fix the step below which has a new validation message (maybe new step too)
+    Then there should be a validation error stating that this attribute has not the same type of the asset family we are trying to update
+
+  # Implement test cases below
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having an assignment attribute referencing an attribute which is does not exist
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having an assignment attribute which references a product attribute which does not exist
+    Then there should be a validation error stating that this product attribute does not exist
+
 
   @acceptance-back @error
   Scenario: Cannot update an asset family with a product link rule having a dynamic assignment attribute referencing an unsupported attribute type

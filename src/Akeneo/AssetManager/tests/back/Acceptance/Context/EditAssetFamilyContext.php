@@ -1558,7 +1558,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @Then /^there should be a validation error stating that this attribute has not the same of the reference entity we are trying to update$/
+     * @Then /^there should be a validation error stating that this attribute has not the same type of the asset family we are trying to update$/
      */
     public function thereShouldBeAValidationErrorStatingThatThisAttributeHasNotTheSameOfTheReferenceEntityWeAreTryingToUpdate()
     {

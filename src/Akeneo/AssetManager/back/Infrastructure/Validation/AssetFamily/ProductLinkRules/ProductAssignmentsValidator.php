@@ -170,22 +170,35 @@ class ProductAssignmentsValidator
         $result = $validator->validate(
             $productAssignment['attribute'],
             new Callback(function ($productAttributeCode, ExecutionContextInterface $context) use ($expectedAssetFamilyIdentifier) {
-                $actualAssetFamilyIdentifier = $this->findAssetCollectionTypeACL->fetch($productAttributeCode);
-                if ($expectedAssetFamilyIdentifier !== $actualAssetFamilyIdentifier) {
-                    $context
-                        ->buildViolation(
-                            ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_DOES_NOT_SUPPORT_THIS_ASSET_FAMILY,
-                            [
-                                '%product_attribute_code%'  => $productAttributeCode,
-                                '%asset_family_identifier%' => $expectedAssetFamilyIdentifier,
-                            ]
-                        )
-                        ->addViolation();
+                try {
+                    $actualAssetFamilyIdentifier = $this->findAssetCollectionTypeACL->fetch($productAttributeCode);
+                    if ($expectedAssetFamilyIdentifier !== $actualAssetFamilyIdentifier) {
+                        $context
+                            ->buildViolation(
+                                ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_DOES_NOT_SUPPORT_THIS_ASSET_FAMILY,
+                                [
+                                    '%product_attribute_code%'  => $productAttributeCode,
+                                    '%asset_family_identifier%' => $expectedAssetFamilyIdentifier,
+                                ]
+                            )
+                            ->addViolation();
+                    }
+                } catch (ProductAttributeCannotContainAssetsException $exception) {
+                    // I don't know why, but it does not seem to add the violation in the context
+                    $context->buildViolation(
+                        ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_DOES_NOT_EXISTS,
+                        ['%product_attribute_code%' => $productAttributeCode]
+                    );
+                } catch (ProductAttributeDoesNotExistException $exception) {
+                    $context->buildViolation(
+                        ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_IS_NOT_AN_ASSET_COLLECTION,
+                        ['%product_attribute_code%' => $productAttributeCode]
+                    );
                 }
             }
             )
         );
 
-        return $result;
+        return $result; // when violations are built in the catch {}, they are not present here when we return :s
     }
 }
