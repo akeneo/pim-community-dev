@@ -50,8 +50,8 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.persistence.query.select_connections_event_count_by_day'
 
-    akeneo_connectivity.connection.application.audit.handler.update_product_event_count:
-        class: Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountHandler
+    akeneo_connectivity.connection.application.audit.handler.update_data_source_product_event_count:
+        class: Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler
         arguments:
             - '@akeneo_connectivity.connection.persistence.query.extract_connections_product_event_count'
             - '@akeneo_connectivity.connection.persistence.repository.event_count'

@@ -2,7 +2,7 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Cli\UpdateAuditDataCommand:
         class: Akeneo\Connectivity\Connection\Infrastructure\Cli\UpdateAuditDataCommand
         arguments:
-            - '@akeneo_connectivity.connection.application.audit.handler.update_product_event_count'
+            - '@akeneo_connectivity.connection.application.audit.handler.update_data_source_product_event_count'
             - '@akeneo_connectivity_connection.persistence.query.select_hourly_intervals_to_refresh'
             - '@akeneo_connectivity_connection.persistence.query.purge_audit_product'
         tags:
