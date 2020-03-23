@@ -5,7 +5,7 @@ services:
         public: true
         arguments:
             - '@validator'
-            - '@pim_api.normalizer.exception.violation'
+            - '@serializer'
             - '@akeneo_measure.application.create_measurement_family_handler'
 
     pim_api.controller.internal_api.delete_measurement_family:
@@ -21,11 +21,11 @@ services:
         arguments:
             - '@validator'
             - '@akeneo_measure.application.save_measurement_family_handler'
-            - '@pim_api.normalizer.exception.violation'
+            - '@serializer'
 
     pim_api.controller.internal_api.validate_unit:
         class: Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi\ValidateUnitAction
         public: true
         arguments:
             - '@validator'
-            - '@pim_api.normalizer.exception.violation'
+            - '@serializer'
