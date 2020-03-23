@@ -7,11 +7,21 @@ type Props = PropsWithChildren<InputProps>;
 
 export const Checkbox = forwardRef(({children, ...props}: Props, ref: Ref<HTMLInputElement>) => (
     <label>
-        <input {...props} ref={ref} type='checkbox' />
+        <InputCheckbox {...props} ref={ref} type='checkbox' />
         &nbsp;
         <CheckboxLabel disabled={props.disabled}>{children}</CheckboxLabel>
     </label>
 ));
+
+const InputCheckbox = styled.input<{disabled?: boolean}>`
+    ::before {
+        ${({disabled}) =>
+            disabled &&
+            css`
+                cursor: default !important;
+            `}
+    }
+`;
 
 const CheckboxLabel = styled.span<{disabled?: boolean}>`
     color: ${({theme}: PropsWithTheme) => theme.color.grey140};
