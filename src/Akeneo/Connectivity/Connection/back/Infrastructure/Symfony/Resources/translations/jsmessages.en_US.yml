@@ -144,9 +144,10 @@ akeneo_connectivity.connection:
                 during_the_last_seven_days: During the last seven days
                 today: Today
         no_connection:
-            title: No source connection declared yet.
+            title: Want to see some fancy charts about your connections?
             message_with_permission:
-                link: Create one here!
+                message: Create and start tracking your first connection right
+                link: here.
             message_without_permission:
                 message: Ask your administrator to create one.
                 link: Learn more about connections here...
