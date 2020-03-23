@@ -3,6 +3,7 @@
 namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
+use Pim\Bundle\AnalyticsBundle\Query\EmailDomainsQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 
@@ -69,6 +70,9 @@ class DBDataCollector implements DataCollectorInterface
     /** @var AverageMaxQuery */
     protected $productValuePerFamilyAverageMaxQuery;
 
+    /** @var EmailDomainsQuery */
+    protected $emailDomainsQuery;
+
     /**
      * @merge TODO - on master - remove '= null'
      * @param CountQuery      $channelCountQuery
@@ -100,7 +104,8 @@ class DBDataCollector implements DataCollectorInterface
         AverageMaxQuery   $categoryLevelsAverageMax,
         CountQuery        $productValueCountQuery,
         AverageMaxQuery   $productValueAverageMaxQuery,
-        AverageMaxQuery   $productValuePerFamilyAverageMaxQuery = null
+        AverageMaxQuery   $productValuePerFamilyAverageMaxQuery = null,
+        EmailDomainsQuery $emailDomainsQuery = null
     ) {
         $this->channelCountQuery = $channelCountQuery;
         $this->productCountQuery = $productCountQuery;
@@ -116,6 +121,7 @@ class DBDataCollector implements DataCollectorInterface
         $this->productValueCountQuery = $productValueCountQuery;
         $this->productValueAverageMaxQuery = $productValueAverageMaxQuery;
         $this->productValuePerFamilyAverageMaxQuery = $productValuePerFamilyAverageMaxQuery;
+        $this->emailDomainsQuery = $emailDomainsQuery;
     }
 
     /**
@@ -146,6 +152,7 @@ class DBDataCollector implements DataCollectorInterface
             'avg_product_values_by_product'  => $this->productValueAverageMaxQuery->fetch()->getAverageVolume(),
             'avg_product_values_by_family'  => $averageOfProductValuePerFamily,
             'max_product_values_by_family'  => $maxOfProductValuePerFamily,
+            'email_domains' => $this->emailDomainsQuery !== null ? $this->emailDomainsQuery->fetch() : []
         ];
     }
 }
