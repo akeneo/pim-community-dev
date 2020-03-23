@@ -147,6 +147,6 @@ slack_helpdesk:
 .PHONY: deploy_pr_environment
 deploy_pr_environment:
 	PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/} && \
-	echo "\n\nThis environment will be available at https://pimci-pr-$${PR_NUMBER}.dev.cloud.akeneo.com once deployed :)\n\n" && \
+	echo "\n\nThis environment will be available at https://pimci-pr-$${PR_NUMBER}.$(GOOGLE_MANAGED_ZONE_DNS) once deployed :)\n\n" && \
 	INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
 	INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make deploy
