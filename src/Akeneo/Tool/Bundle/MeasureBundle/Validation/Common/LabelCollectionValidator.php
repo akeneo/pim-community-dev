@@ -34,7 +34,7 @@ class LabelCollectionValidator extends ConstraintValidator
 
         foreach ($labels as $localeCode => $label) {
             $this->validateLocaleCode($validator, $localeCode);
-            $this->validateLabelForLocale($validator, $label);
+            $this->validateLabelForLocale($validator, $label, $localeCode);
         }
     }
 
@@ -54,12 +54,14 @@ class LabelCollectionValidator extends ConstraintValidator
                 $this->context->buildViolation(
                     $violation->getMessage(),
                     $violation->getParameters()
-                )->addViolation();
+                )
+                ->atPath(sprintf('[%s]', $localeCode))
+                ->addViolation();
             }
         }
     }
 
-    private function validateLabelForLocale(ValidatorInterface $validator, $label): void
+    private function validateLabelForLocale(ValidatorInterface $validator, string $label, string $localeCode): void
     {
         $violations = $validator->validate($label, [
             new Constraints\NotNull(),
@@ -72,7 +74,9 @@ class LabelCollectionValidator extends ConstraintValidator
                 $this->context->buildViolation(
                     $violation->getMessage(),
                     $violation->getParameters()
-                )->addViolation();
+                )
+                ->atPath(sprintf('[%s]', $localeCode))
+                ->addViolation();
             }
         }
     }
