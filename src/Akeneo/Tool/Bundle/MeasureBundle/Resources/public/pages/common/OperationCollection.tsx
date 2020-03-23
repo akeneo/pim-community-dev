@@ -9,7 +9,7 @@ import {SubArrowRightIcon} from 'akeneomeasure/shared/icons/SubArrowRightIcon';
 import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
 import {Operation, Operator, emptyOperation, MAX_OPERATION_COUNT} from 'akeneomeasure/model/operation';
-import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
+import {ValidationError, filterErrors, getErrorsForPath} from 'akeneomeasure/model/validation-error';
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 
 const AknFieldContainer = styled.div`
@@ -225,7 +225,7 @@ const OperationCollection = ({operations, errors = [], onOperationsChange}: Oper
           {__('measurements.unit.operation.add')}
         </Button>
       </Footer>
-      <InputErrors errors={errors.filter(error => '' === error.property)} />
+      <InputErrors errors={getErrorsForPath(errors, '')} />
     </AknFieldContainer>
   );
 };

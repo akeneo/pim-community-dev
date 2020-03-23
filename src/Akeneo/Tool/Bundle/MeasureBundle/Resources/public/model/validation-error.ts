@@ -1,11 +1,19 @@
 type ValidationError = {
-  property: string;
+  messageTemplate: string;
+  parameters: {
+    [key: string]: string;
+  };
   message: string;
+  propertyPath: string;
+  invalidValue: any;
 };
 
-const filterErrors = (errors: ValidationError[], property: string) =>
+const filterErrors = (errors: ValidationError[], propertyPath: string) =>
   errors
-    .filter(error => error.property.startsWith(property))
-    .map(error => ({...error, property: error.property.replace(property, '')}));
+    .filter(error => error.propertyPath.startsWith(propertyPath))
+    .map(error => ({...error, propertyPath: error.propertyPath.replace(propertyPath, '')}));
 
-export {ValidationError, filterErrors};
+const getErrorsForPath = (errors: ValidationError[], propertyPath: string) =>
+  errors.filter(error => error.propertyPath === propertyPath);
+
+export {ValidationError, filterErrors, getErrorsForPath};
