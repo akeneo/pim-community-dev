@@ -198,10 +198,11 @@ const UnitTab = ({
           />
           <OperationCollection
             operations={selectedUnit.convert_from_standard}
+            readOnly={selectedUnit.code === measurementFamily.standard_unit_code}
             onOperationsChange={(operations: Operation[]) => {
               onMeasurementFamilyChange(setUnitOperations(measurementFamily, selectedUnit.code, operations));
             }}
-            errors={filterErrors(errors, `[${selectedUnitIndex}][convert_from_standard]`)}
+            errors={filterErrors(errors, `[${selectedUnitIndex}].convert_from_standard`)}
           />
         </FormGroup>
         <FormGroup>
