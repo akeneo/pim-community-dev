@@ -52,7 +52,7 @@ const CreateUnit = ({
   const measurementFamilyLabel = getMeasurementFamilyLabel(measurementFamily, locale);
   const measurementFamilyCode = measurementFamily.code;
 
-  // @TODO
+  // @TODO Replace when the MeasurementFamily model will contains this value
   const measurementFamilyIsAlreadyUsed = true;
 
   const handleAdd = useCallback(async () => {
