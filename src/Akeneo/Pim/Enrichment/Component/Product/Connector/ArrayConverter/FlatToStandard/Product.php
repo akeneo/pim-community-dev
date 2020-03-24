@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\AttributeColumnsResolverInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
@@ -25,7 +26,7 @@ use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
  */
 class Product implements ArrayConverterInterface
 {
-    /** @var AttributeColumnsResolver */
+    /** @var AttributeColumnsResolverInterface */
     protected $attrColumnsResolver;
 
     /** @var AssociationColumnsResolver */
@@ -52,19 +53,9 @@ class Product implements ArrayConverterInterface
     /** @var ArrayConverterInterface */
     protected $productValueConverter;
 
-    /**
-     * @param AssociationColumnsResolver      $assocColumnsResolver
-     * @param AttributeColumnsResolver        $attrColumnsResolver
-     * @param FieldConverter                  $fieldConverter
-     * @param ColumnsMerger                   $columnsMerger
-     * @param ColumnsMapper                   $columnsMapper
-     * @param FieldsRequirementChecker        $fieldChecker
-     * @param AttributeRepositoryInterface    $attributeRepository
-     * @param ArrayConverterInterface         $productValueConverter
-     */
     public function __construct(
         AssociationColumnsResolver $assocColumnsResolver,
-        AttributeColumnsResolver $attrColumnsResolver,
+        AttributeColumnsResolverInterface $attrColumnsResolver,
         FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,

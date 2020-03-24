@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\AttributeColumnsResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -14,7 +15,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeColumnsResolver
+class AttributeColumnsResolver implements AttributeColumnsResolverInterface
 {
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
@@ -31,11 +32,6 @@ class AttributeColumnsResolver
     /** @var string */
     protected $identifierField;
 
-    /**
-     * @param AttributeRepositoryInterface     $attributeRepository
-     * @param CurrencyRepositoryInterface      $currencyRepository
-     * @param AttributeValuesResolverInterface $valuesResolver
-     */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         CurrencyRepositoryInterface $currencyRepository,
@@ -46,10 +42,7 @@ class AttributeColumnsResolver
         $this->valuesResolver = $valuesResolver;
     }
 
-    /**
-     * @return string
-     */
-    public function resolveIdentifierField()
+    public function resolveIdentifierField(): string
     {
         if (empty($this->identifierField)) {
             $this->identifierField = $this->attributeRepository->getIdentifierCode();
@@ -58,10 +51,7 @@ class AttributeColumnsResolver
         return $this->identifierField;
     }
 
-    /**
-     * @return array
-     */
-    public function resolveAttributeColumns()
+    public function resolveAttributeColumns(): array
     {
         if (empty($this->attributesFields)) {
             // TODO: Put a Cursor to avoid a findAll on attributes (╯°□°)╯︵ ┻━┻
@@ -79,15 +69,7 @@ class AttributeColumnsResolver
         return $this->attributesFields;
     }
 
-    /**
-     * Resolves the attribute field name
-     *
-     * @param array $value
-     * @param array $currencyCodes
-     *
-     * @return array
-     */
-    protected function resolveAttributeField(array $value, array $currencyCodes)
+    protected function resolveAttributeField(array $value, array $currencyCodes): array
     {
         $field = $this->resolveFlatAttributeName($value['attribute'], $value['locale'], $value['scope']);
 
@@ -116,14 +98,8 @@ class AttributeColumnsResolver
      *  description-en_US-mobile
      *  name-ecommerce
      *  weight
-     *
-     * @param string $attributeCode
-     * @param string $localeCode
-     * @param string $scopeCode
-     *
-     * @return string
      */
-    public function resolveFlatAttributeName($attributeCode, $localeCode, $scopeCode)
+    public function resolveFlatAttributeName(string $attributeCode, ?string $localeCode, ?string $scopeCode): string
     {
         $field = $attributeCode;
 

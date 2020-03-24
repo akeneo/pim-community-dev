@@ -2,11 +2,12 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
-use PhpSpec\ObjectBehavior;
+use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\AttributeColumnsResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 
 class AttributeColumnsResolverSpec extends ObjectBehavior
 {
@@ -16,6 +17,11 @@ class AttributeColumnsResolverSpec extends ObjectBehavior
         AttributeValuesResolverInterface $valuesResolver
     ) {
         $this->beConstructedWith($attributeRepository, $currencyRepository, $valuesResolver);
+    }
+
+    function it_is_an_attribute_column_resolver()
+    {
+        $this->shouldImplement(AttributeColumnsResolverInterface::class);
     }
 
     function it_resolves_identifier_field($attributeRepository)

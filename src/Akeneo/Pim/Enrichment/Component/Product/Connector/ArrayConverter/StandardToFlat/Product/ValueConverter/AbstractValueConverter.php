@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\AttributeColumnsResolverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
@@ -12,17 +12,13 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 abstract class AbstractValueConverter implements ValueConverterInterface
 {
-    /** @var AttributeColumnsResolver */
+    /** @var AttributeColumnsResolverInterface */
     protected $columnsResolver;
 
     /** @var array */
     protected $supportedAttributeTypes;
 
-    /**
-     * @param AttributeColumnsResolver $columnsResolver
-     * @param array                    $supportedAttributeTypes
-     */
-    public function __construct(AttributeColumnsResolver $columnsResolver, array $supportedAttributeTypes)
+    public function __construct(AttributeColumnsResolverInterface $columnsResolver, array $supportedAttributeTypes)
     {
         $this->columnsResolver = $columnsResolver;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
