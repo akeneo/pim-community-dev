@@ -73,6 +73,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
       }
     } catch (error) {
       console.error(error);
+      setReadOnly(false);
       notify(NotificationLevel.ERROR, __('measurements.add_unit.flash.error'));
     }
   }, [
