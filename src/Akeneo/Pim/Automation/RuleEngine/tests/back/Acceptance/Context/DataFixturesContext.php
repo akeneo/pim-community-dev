@@ -207,10 +207,6 @@ final class DataFixturesContext implements Context
 
     /**
      * @Given the following family:
-     *
-     * @param TableNode $table
-     *
-     * @throws \Exception
      */
     public function theFollowingFamily(TableNode $table): void
     {
@@ -332,6 +328,16 @@ final class DataFixturesContext implements Context
             );
             $this->findRecordDetails->save($recordDetails);
         }
+    }
+
+    /**
+     * @Given I set the :code attribute in read only
+     */
+    public function setTheAttributeInReadOny(string $code): void
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier($code);
+        $attribute->setProperty('is_read_only', true);
+        $this->attributeRepository->save($attribute);
     }
 
     /**
