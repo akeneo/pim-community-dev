@@ -10,7 +10,7 @@ import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
 import {Button} from 'akeneomeasure/shared/components/Button';
-import {getMeasurementFamilyLabel, addUnit} from 'akeneomeasure/model/measurement-family';
+import {getMeasurementFamilyLabel, addUnit, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Unit} from 'akeneomeasure/model/unit';
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
@@ -25,6 +25,9 @@ import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
 import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
 import {SubsectionHelper, HELPER_LEVEL_WARNING} from 'akeneomeasure/shared/components/SubsectionHelper';
+import {useEffect} from 'react';
+import {useUnsavedChanges} from 'akeneomeasure/shared/hooks/use-unsaved-changes';
+import {UnsavedChanges} from 'akeneomeasure/shared/components/UnsavedChanges';
 
 enum Tab {
   Units = 'units',
@@ -87,6 +90,13 @@ const Edit = () => {
   const saveMeasurementFamily = useSaveMeasurementFamilySaver();
   const notify = useContext(NotifyContext);
   const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useToggleState(false);
+  const [isModified, updateState, resetState] = useUnsavedChanges<MeasurementFamily | null>(
+    __('pim_ui.flash.unsaved_changes')
+  );
+
+  useEffect(() => {
+    updateState(measurementFamily);
+  }, [measurementFamily]);
 
   const handleSave = useCallback(async () => {
     if (null === measurementFamily) {
@@ -97,9 +107,9 @@ const Edit = () => {
 
     try {
       const response = await saveMeasurementFamily(measurementFamily);
-
       switch (response.success) {
         case true:
+          resetState(measurementFamily);
           notify(NotificationLevel.SUCCESS, __('measurements.family.save.flash.success'));
           break;
 
@@ -158,6 +168,7 @@ const Edit = () => {
             <BreadcrumbItem onClick={() => history.push('/')}>{__('pim_menu.item.measurements')}</BreadcrumbItem>
           </Breadcrumb>
         }
+        state={isModified && <UnsavedChanges />}
       >
         {null === measurementFamily ? (
           <div className={`AknLoadingPlaceHolderContainer`}>

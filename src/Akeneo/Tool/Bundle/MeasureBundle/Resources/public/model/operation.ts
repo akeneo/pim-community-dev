@@ -13,8 +13,8 @@ type Operation = {
 };
 
 const emptyOperation = (): Operation => ({
-  value: '',
   operator: Operator.MUL,
+  value: '',
 });
 
 export {MAX_OPERATION_COUNT, Operation, Operator, emptyOperation};
