@@ -21,3 +21,7 @@
 
 - DAPI-854: Data quality - Variant products are also evaluated
 - RUL-17: Rules engine - Add the concatenate action type to concatenate some attribute values into a single attribute value
+
+## BC Breaks
+
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet\ImpactedProductCountTasklet` to change last argument from `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface` to `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`
