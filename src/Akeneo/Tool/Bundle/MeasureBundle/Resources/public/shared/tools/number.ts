@@ -13,8 +13,6 @@ const unformatNumber = (decimalSeparator: string) => (numberToUnformat: string):
 };
 
 const formatNumber = (decimalSeparator: string) => (number: string): string =>
-  Number(number)
-    .toString()
-    .replace(new RegExp('\\' + STANDARD_DECIMAL_SEPARATOR, 'g'), decimalSeparator || STANDARD_DECIMAL_SEPARATOR);
+  number.replace(new RegExp('\\' + STANDARD_DECIMAL_SEPARATOR, 'g'), decimalSeparator || STANDARD_DECIMAL_SEPARATOR);
 
 export {unformatNumber, formatNumber};
