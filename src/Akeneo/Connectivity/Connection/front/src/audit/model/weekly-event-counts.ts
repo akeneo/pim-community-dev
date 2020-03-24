@@ -1,3 +1,6 @@
 export type WeeklyEventCounts = {
-    [eventDate: string]: number;
+    daily: {
+        [eventDate: string]: number;
+    };
+    weekly_count: number;
 };
