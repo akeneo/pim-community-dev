@@ -44,14 +44,18 @@ final class DashboardOverviewController
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
-        if ($request->query->has('category')) {
-            $category = new CategoryCode($request->query->getAlnum('category'));
-            $rates = $this->getDashboardRatesQuery->byCategory(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod), $category);
-        } elseif ($request->query->has('family')) {
-            $family = new FamilyCode($request->query->getAlnum('family'));
-            $rates = $this->getDashboardRatesQuery->byFamily(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod), $family);
-        } else {
-            $rates = $this->getDashboardRatesQuery->byCatalog(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod));
+        try {
+            if ($request->query->has('category')) {
+                $category = new CategoryCode($request->query->get('category'));
+                $rates = $this->getDashboardRatesQuery->byCategory(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod), $category);
+            } elseif ($request->query->has('family')) {
+                $family = new FamilyCode($request->query->get('family'));
+                $rates = $this->getDashboardRatesQuery->byFamily(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod), $family);
+            } else {
+                $rates = $this->getDashboardRatesQuery->byCatalog(new ChannelCode($channel), new LocaleCode($locale), new TimePeriod($timePeriod));
+            }
+        } catch (\InvalidArgumentException $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
         if (empty($rates)) {
