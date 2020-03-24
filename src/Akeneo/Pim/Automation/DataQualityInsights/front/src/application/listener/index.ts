@@ -16,6 +16,7 @@ import PageContextListener, {
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_TAB_CHANGED,
+  PRODUCT_MODEL_LEVEL_CHANGED,
 } from "./PageContextListener";
 
 import EditorHighlightPopoverContextListener from "./EditorHighlightPopoverContextListener";
@@ -40,6 +41,7 @@ export {
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
+  PRODUCT_MODEL_LEVEL_CHANGED,
   EditorHighlightPopoverContextListener,
   EditorContextListener,
   TextAttributesContextListener,

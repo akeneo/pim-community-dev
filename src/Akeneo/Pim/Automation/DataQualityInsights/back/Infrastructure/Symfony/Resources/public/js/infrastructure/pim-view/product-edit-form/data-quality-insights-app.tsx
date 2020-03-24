@@ -16,7 +16,8 @@ import {
   ProductEditFormApp,
   ProductModelEditFormApp,
   PRODUCT_ATTRIBUTES_TAB_NAME,
-  PRODUCT_MODEL_ATTRIBUTES_TAB_NAME
+  PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
+  PRODUCT_MODEL_LEVEL_CHANGED,
 } from 'akeneodataqualityinsights-react';
 
 const UserContext = require('pim/user-context');
@@ -42,6 +43,11 @@ interface TabEvent {
       tab: string;
     };
   };
+}
+
+interface LevelNavigationEvent {
+  id: number;
+  model_type: string;
 }
 
 class DataQualityInsightsApp extends BaseView {
@@ -106,6 +112,15 @@ class DataQualityInsightsApp extends BaseView {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', () => {
       window.dispatchEvent(new Event(DATA_QUALITY_INSIGHTS_PRODUCT_SAVED));
     });
+
+    this.listenTo(this.getRoot(), 'pim:product:variant-navigation:navigate-to-level:before', (event: LevelNavigationEvent) => {
+      window.dispatchEvent(new CustomEvent(PRODUCT_MODEL_LEVEL_CHANGED, {detail: {
+          id: event.id,
+          model_type: event.model_type,
+        }}));
+    });
+
+    window.dispatchEvent(new Event(DATA_QUALITY_INSIGHTS_PRODUCT_SAVED));
 
     return super.configure();
   }
