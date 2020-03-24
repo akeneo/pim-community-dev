@@ -152,7 +152,7 @@ akeneo_connectivity.connection:
             number_of_products_updated: Products updated
             number_of_products_sent: Products sent
             legend:
-                during_the_last_seven_days: During the last seven days
+                during_the_last_seven_days: 'Total over the last 7 days:'
                 today: Today
         no_connection:
             title:
