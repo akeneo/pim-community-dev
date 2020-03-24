@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\UnableToRetrieveDictionaryException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Dictionary;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
@@ -32,14 +33,22 @@ final class AspellDictionary implements AspellDictionaryInterface
     /** @var AspellDictionaryLocalFilesystemInterface */
     private $localFilesystemProvider;
 
-    public function __construct(MountManager $mountManager, Clock $clock, AspellDictionaryLocalFilesystemInterface $localFilesystemProvider)
-    {
+    /** @var SupportedLocaleValidator */
+    private $supportedLocaleValidator;
+
+    public function __construct(
+        MountManager $mountManager,
+        Clock $clock,
+        AspellDictionaryLocalFilesystemInterface $localFilesystemProvider,
+        SupportedLocaleValidator $supportedLocaleValidator
+    ) {
         $this->mountManager = $mountManager;
         $this->clock = $clock;
 
         $this->sharedFilesystem = $mountManager->getFilesystem('dataQualityInsightsSharedAdapter');
         $this->localFilesystem = $localFilesystemProvider->getFilesystem();
         $this->localFilesystemProvider = $localFilesystemProvider;
+        $this->supportedLocaleValidator = $supportedLocaleValidator;
     }
 
     public function persistDictionaryToSharedFilesystem(Dictionary $dictionary, LanguageCode $languageCode): void
@@ -70,9 +79,9 @@ final class AspellDictionary implements AspellDictionaryInterface
      */
     public function getUpToDateSpellerDictionary(LocaleCode $localeCode): ?Speller\Dictionary
     {
-        $languageCode = $this->extractLanguageCode($localeCode);
+        $languageCode = $this->supportedLocaleValidator->extractLanguageCode($localeCode);
 
-        if (false === $this->isDictionaryExists($languageCode)) {
+        if ($languageCode === null || false === $this->isDictionaryExists($languageCode)) {
             return null;
         }
 
@@ -171,13 +180,6 @@ final class AspellDictionary implements AspellDictionaryInterface
             $languageCode->__toString(),
             count($dictionary)
         );
-    }
-
-    private function extractLanguageCode(LocaleCode $localeCode): LanguageCode
-    {
-        preg_match('~^(?<language_code>[a-z]{2})_[A-Z]{2}$~', $localeCode->__toString(), $matches);
-
-        return new LanguageCode($matches['language_code']);
     }
 
     private function getRelativeFilePath(LanguageCode $languageCode): string

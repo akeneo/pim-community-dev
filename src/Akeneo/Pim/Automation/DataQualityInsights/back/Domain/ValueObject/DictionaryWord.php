@@ -11,7 +11,7 @@ final class DictionaryWord
     public function __construct(string $word)
     {
         $anyKindOfLetterFromAnyLanguageRegex = '~^\p{L}+$~u';
-        if (preg_match('~^\p{L}+$~u', $word) !== 1) {
+        if (preg_match($anyKindOfLetterFromAnyLanguageRegex, $word) !== 1) {
             throw new \InvalidArgumentException('A word must contain only letters.');
         }
 

@@ -5,9 +5,9 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\DictionarySource;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Dictionary;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\LocaleCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAllActivatedLocalesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryInterface;
@@ -18,31 +18,28 @@ final class AspellDictionaryGeneratorSpec extends ObjectBehavior
 {
     public function let(
         AspellDictionaryInterface $aspellDictionary,
-        GetAllActivatedLocalesQueryInterface $allActivatedLocalesQuery,
+        SupportedLocaleValidator $supportedLocaleValidator,
         Clock $clock
     ) {
-        $this->beConstructedWith($aspellDictionary, $allActivatedLocalesQuery, $clock);
+        $this->beConstructedWith($aspellDictionary, $supportedLocaleValidator, $clock);
     }
 
     public function it_generate_a_dictionary_by_language_code(
         $aspellDictionary,
-        $allActivatedLocalesQuery,
+        $supportedLocaleValidator,
         DictionarySource $dictionarySource
     ) {
-        $localeCollection = new LocaleCollection([
-            new LocaleCode('en_US'),
-            new LocaleCode('en_GB'),
-        ]);
+        $supportedLocaleCollection = [
+            'en' => new LocaleCollection([
+                new LocaleCode('en_US'),
+                new LocaleCode('en_GB'),
+            ]),
+        ];
 
-        $allActivatedLocalesQuery->execute()->willReturn($localeCollection);
-
-        $filteredEnLocaleCollection = new LocaleCollection([
-            new LocaleCode('en_US'),
-            new LocaleCode('en_GB'),
-        ]);
+        $supportedLocaleValidator->getSupportedLocaleCollection()->willYield($supportedLocaleCollection);
 
         $enDictionary = new Dictionary(['silence', 'is', 'gold']);
-        $dictionarySource->getDictionary($filteredEnLocaleCollection)->willReturn($enDictionary);
+        $dictionarySource->getDictionary($supportedLocaleCollection['en'])->willReturn($enDictionary);
 
         $aspellDictionary->persistDictionaryToSharedFilesystem($enDictionary, new LanguageCode('en'))->shouldBeCalled();
 
@@ -51,33 +48,28 @@ final class AspellDictionaryGeneratorSpec extends ObjectBehavior
 
     public function it_generate_severals_dictionaries_by_language_code(
         $aspellDictionary,
-        $allActivatedLocalesQuery,
+        $supportedLocaleValidator,
         DictionarySource $dictionarySource
     ) {
-        $localeCollection = new LocaleCollection([
-            new LocaleCode('en_US'),
-            new LocaleCode('en_GB'),
-            new LocaleCode('fr_FR'),
-        ]);
+        $supportedLocaleCollection = [
+            'en' => new LocaleCollection([
+                new LocaleCode('en_US'),
+                new LocaleCode('en_GB'),
+            ]),
+            'fr' => new LocaleCollection([
+                new LocaleCode('fr_FR'),
+            ]),
+        ];
 
-        $allActivatedLocalesQuery->execute()->willReturn($localeCollection);
-
-        $filteredEnLocaleCollection = new LocaleCollection([
-            new LocaleCode('en_US'),
-            new LocaleCode('en_GB'),
-        ]);
+        $supportedLocaleValidator->getSupportedLocaleCollection()->willYield($supportedLocaleCollection);
 
         $enDictionary = new Dictionary(['silence', 'is', 'gold']);
-        $dictionarySource->getDictionary($filteredEnLocaleCollection)->willReturn($enDictionary);
+        $dictionarySource->getDictionary($supportedLocaleCollection['en'])->willReturn($enDictionary);
 
         $aspellDictionary->persistDictionaryToSharedFilesystem($enDictionary, new LanguageCode('en'))->shouldBeCalled();
 
-        $filteredEnLocaleCollection = new LocaleCollection([
-            new LocaleCode('fr_FR'),
-        ]);
-
         $enDictionary = new Dictionary(['silence', 'est', 'or']);
-        $dictionarySource->getDictionary($filteredEnLocaleCollection)->willReturn($enDictionary);
+        $dictionarySource->getDictionary($supportedLocaleCollection['fr'])->willReturn($enDictionary);
 
         $aspellDictionary->persistDictionaryToSharedFilesystem($enDictionary, new LanguageCode('fr'))->shouldBeCalled();
 
@@ -86,21 +78,18 @@ final class AspellDictionaryGeneratorSpec extends ObjectBehavior
 
     public function it_skips_the_generation_if_dictionary_not_enough_old(
         $aspellDictionary,
-        $allActivatedLocalesQuery,
+        $supportedLocaleValidator,
         $clock,
         DictionarySource $dictionarySource
     ) {
-        $localeCollection = new LocaleCollection([
-            new LocaleCode('en_US'),
-            new LocaleCode('en_GB'),
-        ]);
+        $supportedLocaleCollection = [
+            'en' => new LocaleCollection([
+                new LocaleCode('en_US'),
+                new LocaleCode('en_GB'),
+            ]),
+        ];
 
-        $allActivatedLocalesQuery->execute()->willReturn($localeCollection);
-
-        $filteredEnLocaleCollection = new LocaleCollection([
-            new LocaleCode('en_US'),
-            new LocaleCode('en_GB'),
-        ]);
+        $supportedLocaleValidator->getSupportedLocaleCollection()->willYield($supportedLocaleCollection);
 
         $aspellDictionary->getSharedDictionaryTimestamp(new LanguageCode('en'))->willReturn(1234);
 
@@ -110,7 +99,7 @@ final class AspellDictionaryGeneratorSpec extends ObjectBehavior
         $clock->fromTimestamp(1234)->willReturn($fileDate);
         $clock->getCurrentTime()->willReturn($now);
 
-        $dictionarySource->getDictionary($filteredEnLocaleCollection)->shouldNotBeCalled();
+        $dictionarySource->getDictionary($supportedLocaleCollection['en'])->shouldNotBeCalled();
         $aspellDictionary->persistDictionaryToSharedFilesystem(Argument::any())->shouldNotBeCalled();
 
         $this->generate($dictionarySource);
@@ -118,21 +107,18 @@ final class AspellDictionaryGeneratorSpec extends ObjectBehavior
 
     public function it_generate_a_dictionary_by_language_code_by_checking_the_timestamp(
         $aspellDictionary,
-        $allActivatedLocalesQuery,
+        $supportedLocaleValidator,
         $clock,
         DictionarySource $dictionarySource
     ) {
-        $localeCollection = new LocaleCollection([
-            new LocaleCode('en_US'),
-            new LocaleCode('en_GB'),
-        ]);
+        $supportedLocaleCollection = [
+            'en' => new LocaleCollection([
+                new LocaleCode('en_US'),
+                new LocaleCode('en_GB'),
+            ]),
+        ];
 
-        $allActivatedLocalesQuery->execute()->willReturn($localeCollection);
-
-        $filteredEnLocaleCollection = new LocaleCollection([
-            new LocaleCode('en_US'),
-            new LocaleCode('en_GB'),
-        ]);
+        $supportedLocaleValidator->getSupportedLocaleCollection()->willYield($supportedLocaleCollection);
 
         $aspellDictionary->getSharedDictionaryTimestamp(new LanguageCode('en'))->willReturn(1234);
 
@@ -143,7 +129,7 @@ final class AspellDictionaryGeneratorSpec extends ObjectBehavior
         $clock->getCurrentTime()->willReturn($now);
 
         $enDictionary = new Dictionary(['silence', 'is', 'gold']);
-        $dictionarySource->getDictionary($filteredEnLocaleCollection)->willReturn($enDictionary);
+        $dictionarySource->getDictionary($supportedLocaleCollection['en'])->willReturn($enDictionary);
 
         $aspellDictionary->persistDictionaryToSharedFilesystem($enDictionary, new LanguageCode('en'))->shouldBeCalled();
 

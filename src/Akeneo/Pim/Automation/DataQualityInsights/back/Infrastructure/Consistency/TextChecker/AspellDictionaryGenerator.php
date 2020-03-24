@@ -6,9 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\T
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\DictionaryGenerator;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\DictionarySource;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Filter\LocaleCodeByLanguageCodeFilterIterator;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\LocaleCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAllActivatedLocalesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
 
 final class AspellDictionaryGenerator implements DictionaryGenerator
@@ -18,29 +16,30 @@ final class AspellDictionaryGenerator implements DictionaryGenerator
     /** @var AspellDictionaryInterface */
     private $aspellDictionary;
 
-    /** @var GetAllActivatedLocalesQueryInterface */
-    private $allActivatedLocalesQuery;
-
     /** @var Clock */
     private $clock;
 
     /** @var bool */
     private $ignoreCheckTimestamp;
+    /**
+     * @var SupportedLocaleValidator
+     */
+    private $supportedLocaleValidator;
 
     public function __construct(
         AspellDictionaryInterface $aspellDictionary,
-        GetAllActivatedLocalesQueryInterface $allActivatedLocalesQuery,
+        SupportedLocaleValidator $supportedLocaleValidator,
         Clock $clock
     ) {
         $this->aspellDictionary = $aspellDictionary;
-        $this->allActivatedLocalesQuery = $allActivatedLocalesQuery;
         $this->clock = $clock;
         $this->ignoreCheckTimestamp = false;
+        $this->supportedLocaleValidator = $supportedLocaleValidator;
     }
 
     public function generate(DictionarySource $dictionarySource): void
     {
-        foreach ($this->getFilteredLocaleCollectionsBySupportedLanguageCode() as $languageCode => $localeCollection) {
+        foreach ($this->supportedLocaleValidator->getSupportedLocaleCollection() as $languageCode => $localeCollection) {
             $languageCode = new LanguageCode($languageCode);
 
             if (false === $this->isGenerationAllowed($languageCode)) {
@@ -50,26 +49,6 @@ final class AspellDictionaryGenerator implements DictionaryGenerator
             $dictionary = $dictionarySource->getDictionary($localeCollection);
 
             $this->aspellDictionary->persistDictionaryToSharedFilesystem($dictionary, $languageCode);
-        }
-    }
-
-    private function getFilteredLocaleCollectionsBySupportedLanguageCode(): \Generator
-    {
-        $allActivatedLocales = $this->allActivatedLocalesQuery->execute();
-
-        foreach (SupportedPrefixLocaleChecker::AVAILABLE_LANGUAGE_CODE as $supportedLanguageCode) {
-            $filteredLocalesCode = iterator_to_array(
-                new LocaleCodeByLanguageCodeFilterIterator(
-                    $allActivatedLocales->getIterator(),
-                    new LanguageCode($supportedLanguageCode)
-                )
-            );
-
-            if (count($filteredLocalesCode) === 0) {
-                continue;
-            }
-
-            yield $supportedLanguageCode => new LocaleCollection($filteredLocalesCode);
         }
     }
 

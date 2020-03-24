@@ -38,7 +38,7 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\BuildProductValues'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetLocalesByChannelQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetTextAttributeCodesCompatibleWithSpellingQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetTextareaAttributeCodesCompatibleWithSpellingQuery'
             - '@monolog.logger.quality'

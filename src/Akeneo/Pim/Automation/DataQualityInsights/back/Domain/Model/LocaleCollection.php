@@ -26,6 +26,11 @@ final class LocaleCollection implements \IteratorAggregate, \Countable
         $this->localeCodes[$localeCode->__toString()] = $localeCode;
     }
 
+    public function has(LocaleCode $localeCode): bool
+    {
+        return isset($this->localeCodes[$localeCode->__toString()]);
+    }
+
     public function getIterator(): \Iterator
     {
         return new \ArrayIterator($this->localeCodes);

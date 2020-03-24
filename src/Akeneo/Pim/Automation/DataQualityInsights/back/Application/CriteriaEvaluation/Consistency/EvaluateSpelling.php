@@ -47,8 +47,8 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     /** @var GetLocalesByChannelQueryInterface */
     private $localesByChannelQuery;
 
-    /** @var SupportedLocaleChecker */
-    private $supportedLocaleChecker;
+    /** @var SupportedLocaleValidator */
+    private $supportedLocaleValidator;
 
     /** @var GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface */
     private $getTextAttributeCodesCompatibleWithSpellingQuery;
@@ -63,7 +63,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         TextChecker $textChecker,
         BuildProductValuesInterface $buildProductValues,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        SupportedLocaleChecker $supportedLocaleChecker,
+        SupportedLocaleValidator $supportedLocaleValidator,
         GetTextAttributeCodesCompatibleWithSpellingQueryInterface $getTextAttributeCodesCompatibleWithSpellingQuery,
         GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery,
         LoggerInterface $logger
@@ -71,7 +71,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         $this->textChecker = $textChecker;
         $this->buildProductValues = $buildProductValues;
         $this->localesByChannelQuery = $localesByChannelQuery;
-        $this->supportedLocaleChecker = $supportedLocaleChecker;
+        $this->supportedLocaleValidator = $supportedLocaleValidator;
         $this->getTextAttributeCodesCompatibleWithSpellingQuery = $getTextAttributeCodesCompatibleWithSpellingQuery;
         $this->getTextareaAttributeCodesCompatibleWithSpellingQuery = $getTextareaAttributeCodesCompatibleWithSpellingQuery;
         $this->logger = $logger;
@@ -105,7 +105,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         array $textProductValues,
         array $textareaProductValues
     ): void {
-        if (!$this->supportedLocaleChecker->isSupported($localeCode)) {
+        if (!$this->supportedLocaleValidator->isSupported($localeCode)) {
             $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::notApplicable());
             return;
         }

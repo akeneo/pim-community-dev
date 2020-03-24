@@ -16,7 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Cr
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
@@ -43,19 +43,19 @@ class EvaluateSpellingSpec extends ObjectBehavior
         TextChecker $textChecker,
         BuildProductValuesInterface $buildProductValues,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        SupportedLocaleChecker $supportedLocaleChecker,
+        SupportedLocaleValidator $supportedLocaleValidator,
         GetTextAttributeCodesCompatibleWithSpellingQueryInterface $getTextAttributeCodesCompatibleWithSpellingQuery,
         GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery,
         LoggerInterface $logger
     ) {
-        $this->beConstructedWith($textChecker, $buildProductValues, $localesByChannelQuery, $supportedLocaleChecker, $getTextAttributeCodesCompatibleWithSpellingQuery, $getTextareaAttributeCodesCompatibleWithSpellingQuery, $logger);
+        $this->beConstructedWith($textChecker, $buildProductValues, $localesByChannelQuery, $supportedLocaleValidator, $getTextAttributeCodesCompatibleWithSpellingQuery, $getTextareaAttributeCodesCompatibleWithSpellingQuery, $logger);
     }
 
     public function it_evaluates_rates_for_textarea_and_text_values(
         $textChecker,
         $buildProductValues,
         $localesByChannelQuery,
-        $supportedLocaleChecker,
+        $supportedLocaleValidator,
         $getTextAttributeCodesCompatibleWithSpellingQuery,
         $getTextareaAttributeCodesCompatibleWithSpellingQuery,
         $logger,
@@ -118,9 +118,9 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $localeFr = new LocaleCode('fr_FR');
         $localeIt = new LocaleCode('it_IT');
 
-        $supportedLocaleChecker->isSupported($localeEn)->willReturn(true);
-        $supportedLocaleChecker->isSupported($localeFr)->willReturn(true);
-        $supportedLocaleChecker->isSupported($localeIt)->willReturn(false);
+        $supportedLocaleValidator->isSupported($localeEn)->willReturn(true);
+        $supportedLocaleValidator->isSupported($localeFr)->willReturn(true);
+        $supportedLocaleValidator->isSupported($localeIt)->willReturn(false);
 
         $textCheckResultTextareaEcommerceEn->count()->willReturn(1);
         $textCheckResultTextareaPrintEn->count()->willReturn(0);
@@ -163,7 +163,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         TextChecker $textChecker,
         BuildProductValuesInterface $buildProductValues,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        SupportedLocaleChecker $supportedLocaleChecker,
+        SupportedLocaleValidator $supportedLocaleValidator,
         GetTextAttributeCodesCompatibleWithSpellingQueryInterface $getTextAttributeCodesCompatibleWithSpellingQuery,
         GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery,
         TextCheckResultCollection $textCheckResultTextareaPrintEn,
@@ -199,8 +199,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
-        $supportedLocaleChecker->isSupported($localeEn)->willReturn(true);
-        $supportedLocaleChecker->isSupported($localeFr)->willReturn(true);
+        $supportedLocaleValidator->isSupported($localeEn)->willReturn(true);
+        $supportedLocaleValidator->isSupported($localeFr)->willReturn(true);
 
         $logger->error(Argument::cetera())->shouldBeCalled();
         $logger->info(Argument::cetera())->shouldBeCalledTimes(2);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Filter;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 
 final class LocaleCodeByLanguageCodeFilterIterator extends \FilterIterator
 {
@@ -25,6 +26,19 @@ final class LocaleCodeByLanguageCodeFilterIterator extends \FilterIterator
             $this->languageCode->__toString()
         );
 
-        return preg_match($pattern, $localeCode->__toString()) === 1;
+        if (preg_match($pattern, $localeCode->__toString()) === 1) {
+            return true;
+        }
+
+        if ($this->isPortugueseLocale($localeCode) && strval($this->languageCode) === strval($localeCode)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function isPortugueseLocale(LocaleCode $localeCode): bool
+    {
+        return (in_array(strval($localeCode), ['pt_BR']));
     }
 }

@@ -136,8 +136,21 @@ services:
             - '@monolog.logger.quality'
             - '%env(ASPELL_BINARY_PATH)%'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedPrefixLocaleChecker'
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedPrefixLocaleChecker: ~
+    Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedLocale\ChainedSupportedLocaleValidator'
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedLocale\SupportedPrefixLocaleValidator:
+        arguments:
+            $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllActivatedLocalesQuery'
+        tags:
+            - { name: pimee_data_quality_insights.inner_supported_locale_validator }
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedLocale\SupportedPortugueseLocaleValidator:
+        arguments:
+            $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllActivatedLocalesQuery'
+        tags:
+            - { name: pimee_data_quality_insights.inner_supported_locale_validator }
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedLocale\ChainedSupportedLocaleValidator:
+        arguments:
+            $supportedLocaleValidatorList: !tagged pimee_data_quality_insights.inner_supported_locale_validator
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Result\AspellGlobalOffsetCalculator: ~
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\Result\AspellLineNumberCalculator: ~
 
@@ -153,12 +166,13 @@ services:
             $mountManager: '@oneup_flysystem.mount_manager'
             $clock: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
             $localFilesystemProvider : '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryLocalFilesystem'
+            $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryGenerator:
         public: true
         arguments:
             $aspellDictionary: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionary'
-            $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllActivatedLocalesQuery'
+            $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator'
             $clock: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductTitleSuggestion:

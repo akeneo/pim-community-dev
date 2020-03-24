@@ -14,7 +14,7 @@ const fetchTextAnalysis = async (text: string, locale: string) => {
 
   const data = await response.json();
 
-  if (data === {}) {
+  if (data === {} || !Array.isArray(data)) {
     return [];
   }
 
