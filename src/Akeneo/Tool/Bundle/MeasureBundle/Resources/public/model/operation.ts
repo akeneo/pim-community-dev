@@ -13,7 +13,7 @@ type Operation = {
 };
 
 const emptyOperation = (): Operation => ({
-  value: '1',
+  value: '',
   operator: Operator.MUL,
 });
 

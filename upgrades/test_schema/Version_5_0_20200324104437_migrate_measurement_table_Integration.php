@@ -8,11 +8,11 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use PHPUnit\Framework\Assert;
 use Pim\Upgrade\Schema\Tests\ExecuteMigrationTrait;
 
-final class Version_5_0_20200217155537_add_measurement_table_Integration extends TestCase
+final class Version_5_0_20200324104437_migrate_measurement_table_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '_5_0_20200217155537_add_measurement_table';
+    private const MIGRATION_LABEL = '_5_0_20200324104437_migrate_measurement_table';
 
     protected function getConfiguration()
     {
@@ -24,7 +24,7 @@ final class Version_5_0_20200217155537_add_measurement_table_Integration extends
         parent::setUp();
     }
 
-    public function test_it_creates_the_measurement_table()
+    public function test_it_updates_the_measurement_table()
     {
         $this->dropMeasurementTable();
 
@@ -73,5 +73,21 @@ final class Version_5_0_20200217155537_add_measurement_table_Integration extends
         $stmt = $connection->executeQuery('SELECT COUNT(*) FROM akeneo_measurement;');
         $actualNumberOfMeasurements = $stmt->fetch(\PDO::FETCH_COLUMN);
         Assert::assertEquals($expectedNumberOfMeasurements, $actualNumberOfMeasurements);
+    }
+
+    private function assertUnitConvertionsDoesNotContainScientificNotation(): void
+    {
+        /** @var Connection $connection */
+        $connection = $this->get('database_connection');
+        $operationValuesSql = <<<SQL
+SELECT JSON_ARRAYAGG(operation_value) AS concatenated_operations
+FROM (
+  SELECT JSON_EXTRACT(units, "$[*].convert_from_standard[*].value") as operation_value
+  FROM akeneo_measurement as raw_json_value
+) as operation_values
+SQL;
+        $operationValues = $this->dbalConnection->fetchAll($operationValuesSql);
+
+        var_dump($operationValues);
     }
 }

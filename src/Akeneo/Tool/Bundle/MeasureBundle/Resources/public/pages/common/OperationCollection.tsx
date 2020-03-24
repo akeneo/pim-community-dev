@@ -160,6 +160,7 @@ const OperationCollection = ({
               <InputContainer readOnly={readOnly} invalid={0 < operationErrors.length}>
                 <Input
                   role="operation-value-input"
+                  placeholder={__('measurements.unit.operation.placeholder')}
                   value={formatNumber(operation.value)}
                   disabled={readOnly}
                   readOnly={readOnly}

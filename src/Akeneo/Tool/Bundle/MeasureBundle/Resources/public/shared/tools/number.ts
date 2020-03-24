@@ -11,6 +11,8 @@ const unformatNumber = (decimalSeparator: string) => (numberToUnformat: string):
 };
 
 const formatNumberForUILocale = (decimalSeparator: string) => (number: string): string =>
-  number.replace(new RegExp('\\' + STANDARD_DECIMAL_SEPARATOR, 'g'), decimalSeparator);
+  Number(number)
+    .toString()
+    .replace(new RegExp('\\' + STANDARD_DECIMAL_SEPARATOR, 'g'), decimalSeparator);
 
 export {unformatNumber, formatNumberForUILocale};

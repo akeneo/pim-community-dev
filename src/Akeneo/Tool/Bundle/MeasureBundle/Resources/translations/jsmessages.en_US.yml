@@ -42,6 +42,7 @@ measurements:
         add_new: Add a new unit
         operation:
             add: Add new operation
+            placeholder: Operation value
         operator:
             add: Add
             sub: Substract
