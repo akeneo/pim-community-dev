@@ -13,7 +13,7 @@ test('It can create an empty form state', () => {
     operations: [
       {
         operator: 'mul',
-        value: '1',
+        value: '',
       },
     ],
   });
@@ -33,7 +33,7 @@ test('It can create an unit from an empty form state', () => {
     convert_from_standard: [
       {
         operator: 'mul',
-        value: '1',
+        value: '',
       },
     ],
   });

@@ -3,7 +3,7 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent, getByLabelText, getByText} from '@testing-library/react';
+import {act, fireEvent, getAllByRole, getByLabelText, getByText} from '@testing-library/react';
 import {AkeneoThemeProvider} from 'akeneomeasure/AkeneoThemeProvider';
 import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
 import {UserContext} from 'akeneomeasure/context/user-context';
@@ -19,6 +19,11 @@ declare global {
 const changeTextInputValue = async (container: HTMLElement, label: string, value: string) => {
   const input = getByLabelText(container, label, {exact: false, trim: true}) as HTMLInputElement;
   await fireEvent.change(input, {target: {value: value}});
+};
+
+const changeOperationValue = async (container: HTMLElement, index: number, value: string) => {
+  const inputs = getAllByRole(container, 'operation-value-input') as HTMLInputElement[];
+  await fireEvent.change(inputs[index], {target: {value: value}});
 };
 
 let container: HTMLElement;
@@ -101,6 +106,7 @@ test('I can fill the fields, validate and the modal is closed.', async () => {
     await changeTextInputValue(container, 'pim_common.code', 'KILOMETER');
     await changeTextInputValue(container, 'pim_common.label', 'Kilometer');
     await changeTextInputValue(container, 'measurements.form.input.symbol', 'km');
+    await changeOperationValue(container, 0, '10');
 
     const button = getByText(container, 'pim_common.add');
     await fireEvent.click(button);
@@ -110,10 +116,10 @@ test('I can fill the fields, validate and the modal is closed.', async () => {
     'akeneo_measurements_validate_unit_rest?measurement_family_code=custom_metric',
     {
       body:
-        '{"code":"KILOMETER","labels":{"en_US":"Kilometer"},"symbol":"km","convert_from_standard":[{"operator":"mul","value":"1"}]}',
+        '{"code":"KILOMETER","labels":{"en_US":"Kilometer"},"symbol":"km","convert_from_standard":[{"operator":"mul","value":"10"}]}',
       headers: [
         ['Content-type', 'application/json'],
-        ['X-Requested-With', 'XMLHttpRequest'],
+        ['X-Requested-With', 'XMLHttpRequest']
       ],
       method: 'POST',
     }
@@ -127,7 +133,7 @@ test('I can fill the fields, validate and the modal is closed.', async () => {
     convert_from_standard: [
       {
         operator: 'mul',
-        value: '1',
+        value: '10',
       },
     ],
   });
@@ -176,10 +182,10 @@ test('I can submit invalid values and have the errors displayed.', async () => {
     'akeneo_measurements_validate_unit_rest?measurement_family_code=custom_metric',
     {
       body:
-        '{"code":"invalid unit code","labels":{"en_US":""},"symbol":"","convert_from_standard":[{"operator":"mul","value":"1"}]}',
+        '{"code":"invalid unit code","labels":{"en_US":""},"symbol":"","convert_from_standard":[{"operator":"mul","value":""}]}',
       headers: [
         ['Content-type', 'application/json'],
-        ['X-Requested-With', 'XMLHttpRequest'],
+        ['X-Requested-With', 'XMLHttpRequest']
       ],
       method: 'POST',
     }
