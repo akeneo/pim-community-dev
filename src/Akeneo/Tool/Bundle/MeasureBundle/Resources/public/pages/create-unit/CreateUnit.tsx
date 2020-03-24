@@ -13,7 +13,7 @@ import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
 import {getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Unit} from 'akeneomeasure/model/unit';
-import {ValidationError} from 'akeneomeasure/model/validation-error';
+import {filterErrors, ValidationError} from 'akeneomeasure/model/validation-error';
 import {
   CreateUnitForm,
   createUnitFromForm,
@@ -135,6 +135,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
             <OperationCollection
               operations={form.operations}
               onOperationsChange={(operations: Operation[]) => setFormValue('operations', operations)}
+              errors={filterErrors(errors, `convert_from_standard`)}
             />
             <CheckboxField
               id="measurements.unit.create_another"

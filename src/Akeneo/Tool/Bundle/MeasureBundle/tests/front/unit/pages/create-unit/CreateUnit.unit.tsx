@@ -140,6 +140,10 @@ test('I can submit invalid values and have the errors displayed.', async () => {
       propertyPath: 'code',
       message: 'This field can only contain letters, numbers, and underscores.',
     },
+    {
+      property: 'convert_from_standard[0][value]',
+      message: 'The conversion value should be a number',
+    },
   ]);
   const mockFetch = jest.fn().mockImplementationOnce(() => ({
     ok: false,
