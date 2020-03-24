@@ -6,7 +6,7 @@ import {Translate} from '../../shared/translate';
 import {Section} from '../../common';
 import {ConnectionSelect} from './ConnectionSelect';
 import styled from 'styled-components';
-import useConnectionSelect from '../useConnectionSelector';
+import useConnectionSelect from '../useConnectionSelect';
 import {FlowType} from '../../model/flow-type.enum';
 import {NoConnection} from './NoConnection';
 import {PropsWithTheme} from '../../common/theme';

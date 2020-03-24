@@ -6,7 +6,7 @@ import {EventChart} from '../components/EventChart';
 import {AuditEventType} from '../../model/audit-event-type.enum';
 import {greenTheme} from '../event-chart-themes';
 import styled from 'styled-components';
-import useConnectionSelect from '../useConnectionSelector';
+import useConnectionSelect from '../useConnectionSelect';
 import {FlowType} from '../../model/flow-type.enum';
 import {NoConnection} from './NoConnection';
 import {PropsWithTheme} from '../../common/theme';

@@ -9,12 +9,12 @@ exports[`NoConnection should render 1`] = `
     src="test-file-stub"
   />
   <div
-    className="sc-jTzLTM blxAcO"
+    className="sc-jTzLTM flkTlX"
   >
     akeneo_connectivity.connection.no_connection.title
   </div>
   <div
-    className="sc-fjdhpX kasnXz"
+    className="sc-fjdhpX cZBmJB"
   >
     akeneo_connectivity.connection.no_connection.message
      

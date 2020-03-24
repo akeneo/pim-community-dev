@@ -1,6 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 import styled from 'styled-components';
-import defaultImgUrl from '../assets/illustrations/charts.svg';
+import defaultImgUrl from '../assets/illustrations/api.svg';
 import {PropsWithTheme} from '../theme';
 
 type Props = {
