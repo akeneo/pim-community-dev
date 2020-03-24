@@ -39,7 +39,6 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   const [form, setFormValue, clearForm] = useForm<CreateUnitForm>(initializeCreateUnitForm());
   const validate = useCreateUnitValidator();
   const [createAnotherUnit, setCreateAnotherUnit] = useState<boolean>(false);
-  const [isReadOnly, setReadOnly] = useState<boolean>(false);
   const handleClose = useCallback(() => {
     clearForm();
     onClose();
@@ -54,30 +53,25 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   const handleAdd = useCallback(async () => {
     try {
       setErrors([]);
-      setReadOnly(true);
 
       const unit = createUnitFromForm(form, locale);
       const response = await validate(measurementFamilyCode, unit);
 
       switch (response.valid) {
         case true:
-          setReadOnly(false);
           onNewUnit(unit);
           createAnotherUnit ? clearForm() : handleClose();
           break;
 
         case false:
-          setReadOnly(false);
           setErrors(response.errors);
           break;
       }
     } catch (error) {
       console.error(error);
-      setReadOnly(false);
       notify(NotificationLevel.ERROR, __('measurements.add_unit.flash.error'));
     }
   }, [
-    setReadOnly,
     form,
     locale,
     validate,
@@ -113,7 +107,6 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
               value={form.code}
               onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('code', e.currentTarget.value)}
               required={true}
-              readOnly={isReadOnly}
               errors={errors.filter(error => error.propertyPath === 'code')}
             />
             <TextField
@@ -122,7 +115,6 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
               value={form.label}
               onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('label', e.currentTarget.value)}
               flag={locale}
-              readOnly={isReadOnly}
               errors={errors.filter(error => error.propertyPath === 'label')}
             />
             <TextField
@@ -130,7 +122,6 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
               label={__('measurements.form.input.symbol')}
               value={form.symbol}
               onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('symbol', e.currentTarget.value)}
-              readOnly={isReadOnly}
               errors={errors.filter(error => error.propertyPath === 'symbol')}
             />
             <OperationCollection
@@ -142,7 +133,6 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
               id="measurements.unit.create_another"
               label={__('measurements.unit.create_another')}
               value={createAnotherUnit}
-              readOnly={isReadOnly}
               onChange={(checked: boolean) => setCreateAnotherUnit(checked)}
             />
           </FormGroup>
