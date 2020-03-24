@@ -3,18 +3,17 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\FieldAdderInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 class AssociationFieldAdderSpec extends ObjectBehavior
 {
@@ -24,7 +23,13 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder
     ) {
-        $this->beConstructedWith($productRepository, $productModelRepository, $groupRepository, $missingAssociationAdder, ['associations']);
+        $this->beConstructedWith(
+            $productRepository,
+            $productModelRepository,
+            $groupRepository,
+            $missingAssociationAdder,
+            ['associations']
+        );
     }
 
     function it_is_an_adder()
@@ -72,36 +77,6 @@ class AssociationFieldAdderSpec extends ObjectBehavior
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
                 AssociationFieldAdder::class,
-                ['assoc_type_code' => ['products' => []]]
-            )
-        )->during('addFieldData', [$product, 'associations', ['assoc_type_code' => ['products' => []]]]);
-
-        $this->shouldThrow(
-            InvalidPropertyTypeException::validArrayStructureExpected(
-                'associations',
-                'association format is not valid for the association type "assoc_type_code".',
-                AssociationFieldAdder::class,
-                ['assoc_type_code' => ['groups' => []]]
-            )
-        )->during('addFieldData', [$product, 'associations', ['assoc_type_code' => ['groups' => []]]]);
-
-        $this->shouldThrow(
-            InvalidPropertyTypeException::validArrayStructureExpected(
-                'associations',
-                'association format is not valid for the association type "assoc_type_code".',
-                AssociationFieldAdder::class,
-                ['assoc_type_code' => ['products' => [1], 'groups' => [], 'product_models' => [],]]
-            )
-        )->during(
-            'addFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => [1], 'groups' => [], 'product_models' => [],]]]
-        );
-
-        $this->shouldThrow(
-            InvalidPropertyTypeException::validArrayStructureExpected(
-                'associations',
-                'association format is not valid for the association type "assoc_type_code".',
-                AssociationFieldAdder::class,
                 ['assoc_type_code' => ['products' => [], 'groups' => [2], 'product_models' => [],]]
             )
         )->during(
@@ -123,11 +98,89 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_association_field(
-        $productRepository,
-        $productModelRepository,
-        $groupRepository,
-        $missingAssociationAdder,
+    function it_adds_product_associations(
+        IdentifiableObjectRepositoryInterface $productRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        ProductInterface $product,
+        AssociationInterface $xsellAssociation,
+        ProductInterface $associated1,
+        ProductInterface $associated2
+    ) {
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+
+        $productRepository->findOneByIdentifier('associated_1')->willReturn($associated1);
+        $productRepository->findOneByIdentifier('associated_2')->willReturn($associated2);
+
+        $product->getAssociationForTypeCode('X_SELL')->willReturn($xsellAssociation);
+        $xsellAssociation->addProduct($associated1)->shouldBeCalled();
+        $xsellAssociation->addProduct($associated2)->shouldBeCalled();
+
+        $data = [
+            'X_SELL' => [
+                'products' => ['associated_1', 'associated_2'],
+            ],
+        ];
+
+        $this->addFieldData($product, 'associations', $data);
+    }
+
+    function it_adds_product_model_associations(
+        IdentifiableObjectRepositoryInterface $productModelRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        ProductInterface $product,
+        AssociationInterface $xsellAssociation,
+        ProductModelInterface $model1,
+        ProductModelInterface $model2
+    ) {
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+
+        $productModelRepository->findOneByIdentifier('model_1')->willReturn($model1);
+        $productModelRepository->findOneByIdentifier('model_2')->willReturn($model2);
+
+        $product->getAssociationForTypeCode('X_SELL')->willReturn($xsellAssociation);
+        $xsellAssociation->addProductModel($model1)->shouldBeCalled();
+        $xsellAssociation->addProductModel($model2)->shouldBeCalled();
+
+        $data = [
+            'X_SELL' => [
+                'product_models' => ['model_1', 'model_2'],
+            ],
+        ];
+
+        $this->addFieldData($product, 'associations', $data);
+    }
+
+    function it_adds_group_associations(
+        IdentifiableObjectRepositoryInterface $groupRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        ProductInterface $product,
+        AssociationInterface $xsellAssociation,
+        GroupInterface $blackFriday,
+        GroupInterface $halloween
+    ) {
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+
+        $groupRepository->findOneByIdentifier('black_friday')->willReturn($blackFriday);
+        $groupRepository->findOneByIdentifier('halloween')->willReturn($halloween);
+
+        $product->getAssociationForTypeCode('X_SELL')->willReturn($xsellAssociation);
+        $xsellAssociation->addGroup($blackFriday)->shouldBeCalled();
+        $xsellAssociation->addGroup($halloween)->shouldBeCalled();
+
+        $data = [
+            'X_SELL' => [
+                'groups' => ['black_friday', 'halloween'],
+            ],
+        ];
+
+        $this->addFieldData($product, 'associations', $data);
+    }
+
+    function it_adds_several_associations(
+        IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
+        IdentifiableObjectRepositoryInterface $groupRepository,
+        MissingAssociationAdder $missingAssociationAdder,
         ProductInterface $product,
         AssociationInterface $xsellAssociation,
         AssociationInterface $upsellAssociation,
