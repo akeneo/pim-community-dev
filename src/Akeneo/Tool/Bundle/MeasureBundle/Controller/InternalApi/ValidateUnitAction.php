@@ -7,12 +7,12 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\ValidateUnit\ValidateUnitCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -24,12 +24,12 @@ class ValidateUnitAction
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var ViolationNormalizer */
+    /** @var NormalizerInterface */
     private $violationNormalizer;
 
     public function __construct(
         ValidatorInterface $validator,
-        ViolationNormalizer $violationNormalizer
+        NormalizerInterface $violationNormalizer
     ) {
         $this->validator = $validator;
         $this->violationNormalizer = $violationNormalizer;
