@@ -22,3 +22,10 @@ services:
             - '@akeneo_rule_engine.repository.rule_relation'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.resolver.fqcn'
+
+    pimee_enrich.controller.get_rule_definition:
+        public: true
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetRuleDefinitionController'
+        arguments:
+            - '@akeneo_rule_engine.repository.rule_definition'
+            - '@akeneo_rule_engine.normalizer.rule_definition'
