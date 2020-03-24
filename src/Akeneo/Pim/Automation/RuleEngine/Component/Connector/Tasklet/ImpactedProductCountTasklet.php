@@ -61,7 +61,7 @@ class ImpactedProductCountTasklet implements TaskletInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $ruleIds = $jobParameters->get('ruleIds');
-        foreach(array_chunk($ruleIds, self::CHUNK_SIZE) as $ruleIdsChunk) {
+        foreach (array_chunk($ruleIds, self::CHUNK_SIZE) as $ruleIdsChunk) {
             $ruleDefinitions = $this->ruleDefinitionRepo->findBy(['id' => $ruleIdsChunk]);
 
             foreach ($ruleDefinitions as $ruleDefinition) {
