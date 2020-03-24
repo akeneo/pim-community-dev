@@ -27,6 +27,7 @@ import {Unit, UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
 import {Operation} from 'akeneomeasure/model/operation';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
+import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 
 const UnitList = styled.div`
   flex: 1;
@@ -116,16 +117,13 @@ const UnitTab = ({
   const locale = useContext(UserContext)('uiLocale');
   const [searchValue, setSearchValue] = useState('');
   const [selectedUnitCode, selectUnitCode] = useState<UnitCode>(measurementFamily.standard_unit_code);
-  const [isConfirmDeleteUnitModalOpen, setConfirmDeleteUnitModalOpen] = useState<boolean>(false);
+  const [isConfirmDeleteUnitModalOpen, openConfirmDeleteUnitModal, closeConfirmDeleteUnitModal] = useToggleState(false);
   const locales = useUiLocales();
 
   const selectedUnit = getUnit(measurementFamily, selectedUnitCode);
   const selectedUnitIndex = getUnitIndex(measurementFamily, selectedUnitCode);
   const filteredUnits = measurementFamily.units.filter(filterOnLabelOrCode(searchValue, locale));
 
-  const closeConfirmDeleteUnitModal = useCallback(() => setConfirmDeleteUnitModalOpen(false), [
-    setConfirmDeleteUnitModalOpen,
-  ]);
   const removeUnitHandler = useCallback(() => {
     onMeasurementFamilyChange(removeUnit(measurementFamily, selectedUnitCode));
     selectUnitCode(measurementFamily.standard_unit_code);
@@ -228,7 +226,7 @@ const UnitTab = ({
         </FormGroup>
         {!measurementFamily.is_locked && selectedUnitCode !== measurementFamily.standard_unit_code && (
           <Footer>
-            <Button color="red" outline={true} onClick={() => setConfirmDeleteUnitModalOpen(true)}>
+            <Button color="red" outline={true} onClick={openConfirmDeleteUnitModal}>
               {__('measurements.unit.delete.button')}
             </Button>
           </Footer>

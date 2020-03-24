@@ -1,8 +1,6 @@
-import {useState, useCallback, useEffect} from 'react';
+import {useState, useCallback, useEffect, EffectCallback} from 'react';
 
-const useUnsavedChanges = <ValueType>(
-  beforeUnloadMessage: string
-): [boolean, (newValue: ValueType) => void, (newValue: ValueType) => void] => {
+const useUnsavedChanges = <ValueType>(entity: ValueType, beforeUnloadMessage: string): [boolean, EffectCallback] => {
   const [isModified, setModified] = useState<boolean>(false);
   const [initialValue, setInitialValue] = useState<string | null>(null);
   const updateValue = useCallback(
@@ -22,13 +20,10 @@ const useUnsavedChanges = <ValueType>(
     [setModified, setInitialValue, initialValue]
   );
 
-  const resetValue = useCallback(
-    (newValue: ValueType) => {
-      setInitialValue(JSON.stringify(newValue));
-      setModified(false);
-    },
-    [setModified, setInitialValue]
-  );
+  const resetValue = useCallback(() => {
+    setInitialValue(JSON.stringify(entity));
+    setModified(false);
+  }, [setModified, setInitialValue, entity]);
 
   /* istanbul ignore next */
   const handleUnload = useCallback(
@@ -52,7 +47,9 @@ const useUnsavedChanges = <ValueType>(
     return () => window.removeEventListener('beforeunload', handleUnload);
   }, [handleUnload]);
 
-  return [isModified, updateValue, resetValue];
+  useEffect(() => updateValue(entity), [entity]);
+
+  return [isModified, resetValue];
 };
 
 export {useUnsavedChanges};

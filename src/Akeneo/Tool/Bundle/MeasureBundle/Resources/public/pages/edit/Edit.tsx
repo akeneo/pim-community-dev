@@ -25,7 +25,6 @@ import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
 import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
 import {SubsectionHelper, HELPER_LEVEL_WARNING} from 'akeneomeasure/shared/components/SubsectionHelper';
-import {useEffect} from 'react';
 import {useUnsavedChanges} from 'akeneomeasure/shared/hooks/use-unsaved-changes';
 import {UnsavedChanges} from 'akeneomeasure/shared/components/UnsavedChanges';
 
@@ -90,13 +89,10 @@ const Edit = () => {
   const saveMeasurementFamily = useSaveMeasurementFamilySaver();
   const notify = useContext(NotifyContext);
   const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useToggleState(false);
-  const [isModified, updateState, resetState] = useUnsavedChanges<MeasurementFamily | null>(
+  const [isModified, resetState] = useUnsavedChanges<MeasurementFamily | null>(
+    measurementFamily,
     __('pim_ui.flash.unsaved_changes')
   );
-
-  useEffect(() => {
-    updateState(measurementFamily);
-  }, [measurementFamily]);
 
   const handleSave = useCallback(async () => {
     if (null === measurementFamily) {
@@ -107,9 +103,10 @@ const Edit = () => {
 
     try {
       const response = await saveMeasurementFamily(measurementFamily);
+
       switch (response.success) {
         case true:
-          resetState(measurementFamily);
+          resetState();
           notify(NotificationLevel.SUCCESS, __('measurements.family.save.flash.success'));
           break;
 
