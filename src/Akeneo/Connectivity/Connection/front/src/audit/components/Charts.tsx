@@ -35,14 +35,27 @@ export const Charts = () => {
         connection => FlowType.DATA_DESTINATION === connection.flowType
     );
 
-    return (
-        <>
-            {0 === sourceConnections.length &&
-                0 === destinationConnections.length && <NoConnection />}
-            {0 !== sourceConnections.length && <DataSourceCharts />}
-            {0 !== destinationConnections.length && <DataDestinationCharts />}
+    let render = <NoConnection />;
+    const displayNone = 0 === sourceConnections.length && 0 === destinationConnections.length;
+    const displayOne = !displayNone && (0 === sourceConnections.length || 0 === destinationConnections.length);
+    const displaySourceFirst = displayOne && 0 !== sourceConnections.length;
+    const displayDestinationFirst = displayOne && 0 !== destinationConnections.length;
+    const displayAll = 0 !== sourceConnections.length && 0 !== destinationConnections.length;
+    if (displayAll || displaySourceFirst) {
+        render =
+            <>
+                <DataSourceCharts />
+                <DataDestinationCharts />
+                <UserSurvey />
+            </>;
+    } else if (displayDestinationFirst) {
+        render =
+            <>
+                <DataDestinationCharts />
+                <DataSourceCharts />
+                <UserSurvey />
+            </>;
+    }
 
-            <UserSurvey />
-        </>
-    );
+    return <>{render}</>;
 };
