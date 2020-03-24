@@ -14,3 +14,4 @@ export {
 
 export const SUB_PRODUCT_MODEL_LEVEL = 1;
 export const ROOT_PRODUCT_MODEL_LEVEL = 0;
+export const MAX_VARIATION_LEVELS = 3;

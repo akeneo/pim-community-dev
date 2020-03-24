@@ -5,8 +5,8 @@ import {isSimpleProduct} from "../../../../helper/ProductEditForm/Product";
 import {
   PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
   ROOT_PRODUCT_MODEL_LEVEL,
-  SUB_PRODUCT_MODEL_LEVEL
-} from "../../../../constant";
+  SUB_PRODUCT_MODEL_LEVEL, MAX_VARIATION_LEVELS
+} from '../../../../constant';
 import {ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY} from "../AttributesTabContent";
 
 const Router = require('pim/router');
@@ -28,10 +28,15 @@ const handleClick = (attributeCode: string, product: Product) => {
   } else {
     sessionStorage.setItem(ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY, attributeCode);
     sessionStorage.setItem('current_column_tab', PRODUCT_MODEL_ATTRIBUTES_TAB_NAME);
-    let modelId = product.meta.variant_navigation[SUB_PRODUCT_MODEL_LEVEL].selected.id;
-    if(! product.meta.hasOwnProperty('parent_attributes') || ! product.meta.parent_attributes.includes(attributeCode)) {
-      modelId = product.meta.variant_navigation[ROOT_PRODUCT_MODEL_LEVEL].selected.id;
+
+    let modelId: number = product.meta.variant_navigation[ROOT_PRODUCT_MODEL_LEVEL].selected.id;
+    if (product.meta.variant_navigation.length === MAX_VARIATION_LEVELS) {
+      modelId = product.meta.variant_navigation[SUB_PRODUCT_MODEL_LEVEL].selected.id;
+      if(! product.meta.hasOwnProperty('parent_attributes') || ! product.meta.parent_attributes.includes(attributeCode)) {
+        modelId = product.meta.variant_navigation[ROOT_PRODUCT_MODEL_LEVEL].selected.id;
+      }
     }
+
     window.location.href = '#' + Router.generate('pim_enrich_product_model_edit', {id: modelId});
   }
 };
