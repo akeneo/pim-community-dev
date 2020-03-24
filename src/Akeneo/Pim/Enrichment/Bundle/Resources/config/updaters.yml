@@ -562,3 +562,8 @@ services:
         arguments:
             - '@akeneo.pim.structure.query.get_attributes'
             - !tagged_iterator pim_catalog.updater.clearer
+
+    pim_catalog.updater.clearer.attributes:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\AttributeClearer'
+        tags:
+            - { name: 'pim_catalog.updater.clearer' }
