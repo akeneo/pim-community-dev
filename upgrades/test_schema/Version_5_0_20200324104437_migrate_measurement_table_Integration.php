@@ -26,8 +26,6 @@ final class Version_5_0_20200324104437_migrate_measurement_table_Integration ext
 
     public function test_it_updates_the_measurement_table()
     {
-        $this->dropMeasurementTable();
-
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
         $this->assertMeasurementTableExist();
@@ -40,11 +38,7 @@ final class Version_5_0_20200324104437_migrate_measurement_table_Integration ext
             ]
         );
         $this->assertNumberOfMeasurements(23);
-    }
-
-    private function dropMeasurementTable(): void
-    {
-        $this->get('database_connection')->executeQuery('DROP TABLE akeneo_measurement');
+        $this->assertUnitConvertionsDoesNotContainScientificNotation();
     }
 
     private function assertMeasurementTableExist()
@@ -77,8 +71,6 @@ final class Version_5_0_20200324104437_migrate_measurement_table_Integration ext
 
     private function assertUnitConvertionsDoesNotContainScientificNotation(): void
     {
-        /** @var Connection $connection */
-        $connection = $this->get('database_connection');
         $operationValuesSql = <<<SQL
 SELECT JSON_ARRAYAGG(operation_value) AS concatenated_operations
 FROM (
@@ -86,8 +78,14 @@ FROM (
   FROM akeneo_measurement as raw_json_value
 ) as operation_values
 SQL;
-        $operationValues = $this->dbalConnection->fetchAll($operationValuesSql);
+        /** @var Connection $connection */
+        $connection = $this->get('database_connection');
+        $operationValues = json_decode($connection->fetchAll($operationValuesSql)[0]['concatenated_operations']);
 
-        var_dump($operationValues);
+        foreach ($operationValues as $operationValue) {
+            foreach($operationValue as $value) {
+                Assert::assertIsNumeric($value);
+            }
+        }
     }
 }
