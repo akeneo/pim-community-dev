@@ -132,23 +132,23 @@ final class EvaluateLowerCaseWordsSpec extends ObjectBehavior
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelEcommerce, $localeEn, new Rate(28))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelEcommerce, $localeEn, ['textarea_2'])
+            ->addRateByAttributes($channelEcommerce, $localeEn, ['textarea_2' => 28])
 
             ->addRate($channelEcommerce, $localeFr, new Rate(64))
             ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelEcommerce, $localeFr, ['textarea_2'])
+            ->addRateByAttributes($channelEcommerce, $localeFr, ['textarea_1' => 100, 'textarea_2' => 28])
 
             ->addRate($channelMobile, $localeEn, new Rate(40))
             ->addStatus($channelMobile, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelMobile, $localeEn, ['textarea_1', 'textarea_2'])
+            ->addRateByAttributes($channelMobile, $localeEn, ['textarea_1' => 76, 'textarea_2' => 4])
 
             ->addRate($channelMobile, $localeFr, new Rate(26))
             ->addStatus($channelMobile, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelMobile, $localeFr, ['textarea_1', 'textarea_2'])
+            ->addRateByAttributes($channelMobile, $localeFr, ['textarea_1' => 52, 'textarea_2' => 0])
 
             ->addRate($channelPrint, $localeFr, new Rate(100))
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelPrint, $localeFr, [])
+            ->addRateByAttributes($channelPrint, $localeFr, ['textarea_2' => 100])
 
             ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::notApplicable())
         ;
