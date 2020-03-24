@@ -53,6 +53,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
 
   const handleAdd = useCallback(async () => {
     try {
+      setErrors([]);
       setReadOnly(true);
 
       const unit = createUnitFromForm(form, locale);
