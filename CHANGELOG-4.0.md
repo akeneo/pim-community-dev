@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.12 (2020-03-24)
+
 ## Bug fixes
 
 - API-1010: Change collect of Audit Data Source events to support Timezone.
