@@ -46,7 +46,7 @@ export const EventChart: FC<Props> = ({title, eventType, theme, selectedConnecti
             return;
         }
 
-        const selectedConnectionAuditData = connectionsAuditData[selectedConnectionCode];
+        const selectedConnectionAuditData = connectionsAuditData[selectedConnectionCode].daily;
         const numberOfData = Object.keys(selectedConnectionAuditData).length;
         const chartData = Object.entries(selectedConnectionAuditData).map(
             ([date, value], index): ChartEntry => {
