@@ -60,7 +60,6 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
 
       switch (response.valid) {
         case true:
-          notify(NotificationLevel.SUCCESS, __('measurements.add_unit.flash.success'));
           setReadOnly(false);
           onNewUnit(unit);
           createAnotherUnit ? clearForm() : handleClose();
