@@ -14,6 +14,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyClearerInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
@@ -23,14 +24,19 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
  */
 class PropertyClearerSpec extends ObjectBehavior
 {
-    function let(ClearerRegistryInterface $clearerRegistry, GetAttributes $getAttributes)
+    function let(GetAttributes $getAttributes, ClearerRegistryInterface $clearerRegistry)
     {
-        $this->beConstructedWith($clearerRegistry, $getAttributes);
+        $this->beConstructedWith($getAttributes, $clearerRegistry);
     }
 
     function it_is_initializable()
     {
         $this->shouldBeAnInstanceOf(PropertyClearer::class);
+    }
+
+    function it_is_a_property_clearer()
+    {
+        $this->shouldImplement(PropertyClearerInterface::class);
     }
 
     function it_clears_a_product_attribute_value(

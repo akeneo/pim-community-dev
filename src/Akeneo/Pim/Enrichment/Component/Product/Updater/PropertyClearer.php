@@ -21,16 +21,16 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
  */
 final class PropertyClearer implements PropertyClearerInterface
 {
-    /** @var ClearerRegistryInterface */
-    private $clearerRegistry;
-
     /** @var GetAttributes */
     private $getAttributes;
 
-    public function __construct(ClearerRegistryInterface $clearerRegistry, GetAttributes $getAttributes)
+    /** @var ClearerRegistryInterface */
+    private $clearerRegistry;
+
+    public function __construct(GetAttributes $getAttributes, ClearerRegistryInterface $clearerRegistry)
     {
-        $this->clearerRegistry = $clearerRegistry;
         $this->getAttributes = $getAttributes;
+        $this->clearerRegistry = $clearerRegistry;
     }
 
     public function clear($entity, string $property, array $options = []): void
