@@ -17,7 +17,7 @@ import {ValidationError} from 'akeneomeasure/model/validation-error';
 import {
   CreateUnitForm,
   createUnitFromForm,
-  initializeCreateUnitForm
+  initializeCreateUnitForm,
 } from 'akeneomeasure/pages/create-unit/form/create-unit-form';
 import {useCreateUnitValidator} from 'akeneomeasure/pages/create-unit/hooks/use-create-unit-validator';
 import {CheckboxField} from 'akeneomeasure/shared/components/CheckboxField';
@@ -31,11 +31,7 @@ type CreateUnitProps = {
   onNewUnit: (unit: Unit) => void;
 };
 
-const CreateUnit = ({
-  onClose,
-  onNewUnit,
-  measurementFamily,
-}: CreateUnitProps) => {
+const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) => {
   const __ = useContext(TranslateContext);
   const notify = useContext(NotifyContext);
   const locale = useContext(UserContext)('uiLocale');
@@ -97,18 +93,18 @@ const CreateUnit = ({
 
   return (
     <Modal>
-      <ModalCloseButton title={__('pim_common.close')} onClick={handleClose}/>
-      <ModalBodyWithIllustration illustration={<MeasurementFamilyIllustration/>}>
+      <ModalCloseButton title={__('pim_common.close')} onClick={handleClose} />
+      <ModalBodyWithIllustration illustration={<MeasurementFamilyIllustration />}>
         <ModalTitle
           title={__('measurements.unit.add_new')}
           subtitle={`${__('measurements.title.measurement')} / ${measurementFamilyLabel}`}
         />
         <Subsection>
-          {measurementFamilyIsAlreadyUsed &&
+          {measurementFamilyIsAlreadyUsed && (
             <SubsectionHelper level={HELPER_LEVEL_WARNING}>
               {__('measurements.unit.will_be_read_only')}
             </SubsectionHelper>
-          }
+          )}
           <FormGroup>
             <TextField
               id="measurements.unit.create.code"
@@ -117,7 +113,7 @@ const CreateUnit = ({
               onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('code', e.currentTarget.value)}
               required={true}
               readOnly={isReadOnly}
-              errors={errors.filter(error => error.property === 'code')}
+              errors={errors.filter(error => error.propertyPath === 'code')}
             />
             <TextField
               id="measurements.unit.create.label"
@@ -126,7 +122,7 @@ const CreateUnit = ({
               onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('label', e.currentTarget.value)}
               flag={locale}
               readOnly={isReadOnly}
-              errors={errors.filter(error => error.property === 'label')}
+              errors={errors.filter(error => error.propertyPath === 'label')}
             />
             <TextField
               id="measurements.unit.create.symbol"
@@ -134,7 +130,7 @@ const CreateUnit = ({
               value={form.symbol}
               onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('symbol', e.currentTarget.value)}
               readOnly={isReadOnly}
-              errors={errors.filter(error => error.property === 'symbol')}
+              errors={errors.filter(error => error.propertyPath === 'symbol')}
             />
             <OperationCollection
               operations={form.operations}

@@ -1,12 +1,11 @@
 import React, {ChangeEventHandler, InputHTMLAttributes, useContext} from 'react';
-import styled, {css} from 'styled-components';
+import styled, {css, ThemeContext} from 'styled-components';
 import {ValidationError} from 'akeneomeasure/model/validation-error';
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Flag} from 'akeneomeasure/shared/components/Flag';
 import {useFocus} from 'akeneomeasure/shared/hooks/use-focus';
 import {LockIcon} from 'akeneomeasure/shared/icons/LockIcon';
-import {akeneoTheme} from 'akeneomeasure/shared/theme';
 
 const Input = styled.input`
   background-color: transparent;
@@ -63,6 +62,7 @@ const TextField = ({
   ...props
 }: TextFieldProps & InputHTMLAttributes<HTMLInputElement>) => {
   const __ = useContext(TranslateContext);
+  const akeneoTheme = useContext(ThemeContext);
   const [focusRef] = useFocus();
 
   return (

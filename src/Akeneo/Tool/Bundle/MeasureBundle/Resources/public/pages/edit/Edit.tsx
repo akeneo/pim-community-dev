@@ -22,7 +22,7 @@ import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-con
 import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
 import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family-saver';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
-import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
+import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
 import {SubsectionHelper, HELPER_LEVEL_WARNING} from 'akeneomeasure/shared/components/SubsectionHelper';
 import {useUnsavedChanges} from 'akeneomeasure/shared/hooks/use-unsaved-changes';

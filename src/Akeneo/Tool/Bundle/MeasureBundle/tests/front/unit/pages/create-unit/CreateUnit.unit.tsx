@@ -70,11 +70,7 @@ test('It renders without errors', async () => {
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
-        <CreateUnit
-          measurementFamily={measurementFamily}
-          onClose={() => {}}
-          onNewUnit={() => {}}
-        />
+        <CreateUnit measurementFamily={measurementFamily} onClose={() => {}} onNewUnit={() => {}} />
       </AkeneoThemeProvider>,
       container
     );
@@ -94,11 +90,7 @@ test('I can fill the fields, validate and the modal is closed.', async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
         <UserContext.Provider value={mockUserContext}>
-          <CreateUnit
-            measurementFamily={measurementFamily}
-            onClose={mockOnClose}
-            onNewUnit={mockOnNewUnit}
-          />
+          <CreateUnit measurementFamily={measurementFamily} onClose={mockOnClose} onNewUnit={mockOnNewUnit} />
         </UserContext.Provider>
       </AkeneoThemeProvider>,
       container
@@ -115,11 +107,15 @@ test('I can fill the fields, validate and the modal is closed.', async () => {
   });
 
   expect(mockFetch).toHaveBeenCalledWith(
-    "akeneo_measurements_validate_unit_rest?measurement_family_code=custom_metric",
+    'akeneo_measurements_validate_unit_rest?measurement_family_code=custom_metric',
     {
-      'body': '{"code":"KILOMETER","labels":{"en_US":"Kilometer"},"symbol":"km","convert_from_standard":[{"operator":"mul","value":"1"}]}',
-      'headers': [['Content-type', 'application/json'], ['X-Requested-With', 'XMLHttpRequest']],
-      'method': 'POST'
+      body:
+        '{"code":"KILOMETER","labels":{"en_US":"Kilometer"},"symbol":"km","convert_from_standard":[{"operator":"mul","value":"1"}]}',
+      headers: [
+        ['Content-type', 'application/json'],
+        ['X-Requested-With', 'XMLHttpRequest'],
+      ],
+      method: 'POST',
     }
   );
   expect(mockOnNewUnit).toHaveBeenCalledWith({
@@ -141,7 +137,7 @@ test('I can fill the fields, validate and the modal is closed.', async () => {
 test('I can submit invalid values and have the errors displayed.', async () => {
   const errors = Object.freeze([
     {
-      property: 'code',
+      propertyPath: 'code',
       message: 'This field can only contain letters, numbers, and underscores.',
     },
   ]);
@@ -158,11 +154,7 @@ test('I can submit invalid values and have the errors displayed.', async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
         <UserContext.Provider value={mockUserContext}>
-          <CreateUnit
-            measurementFamily={measurementFamily}
-            onClose={mockOnClose}
-            onNewUnit={mockOnNewUnit}
-          />
+          <CreateUnit measurementFamily={measurementFamily} onClose={mockOnClose} onNewUnit={mockOnNewUnit} />
         </UserContext.Provider>
       </AkeneoThemeProvider>,
       container
@@ -177,11 +169,15 @@ test('I can submit invalid values and have the errors displayed.', async () => {
   });
 
   expect(mockFetch).toHaveBeenCalledWith(
-    "akeneo_measurements_validate_unit_rest?measurement_family_code=custom_metric",
+    'akeneo_measurements_validate_unit_rest?measurement_family_code=custom_metric',
     {
-      'body': '{"code":"invalid unit code","labels":{"en_US":""},"symbol":"","convert_from_standard":[{"operator":"mul","value":"1"}]}',
-      'headers': [['Content-type', 'application/json'], ['X-Requested-With', 'XMLHttpRequest']],
-      'method': 'POST'
+      body:
+        '{"code":"invalid unit code","labels":{"en_US":""},"symbol":"","convert_from_standard":[{"operator":"mul","value":"1"}]}',
+      headers: [
+        ['Content-type', 'application/json'],
+        ['X-Requested-With', 'XMLHttpRequest'],
+      ],
+      method: 'POST',
     }
   );
   expect(mockOnNewUnit).not.toHaveBeenCalled();
