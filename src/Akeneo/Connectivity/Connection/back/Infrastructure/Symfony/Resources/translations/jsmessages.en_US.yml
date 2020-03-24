@@ -155,9 +155,12 @@ akeneo_connectivity.connection:
                 during_the_last_seven_days: During the last seven days
                 today: Today
         no_connection:
-            title: Want to see some fancy charts about your connections?
+            title:
+                default: Want to see some fancy charts about your connections?
+                data_source: Want to see some fancy charts about your source connections?
+                data_destination: Want to see some fancy charts about your destination connections?
             message_with_permission:
-                message: Create and start tracking your first connection right
+                message: Create and start tracking your first one
                 link: here.
             message_without_permission:
                 message: Ask your administrator to create one.
