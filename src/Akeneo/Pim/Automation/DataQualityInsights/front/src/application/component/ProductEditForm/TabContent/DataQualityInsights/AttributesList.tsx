@@ -68,7 +68,7 @@ const AttributesList = ({product, criterionCode, attributes, axis, evaluation}: 
     );
   } else {
     return (
-      <TooManyAttributesLink axis={axis} attributes={allAttributes} numOfAttributes={attributes.length}/>
+      <TooManyAttributesLink axis={axis} attributes={allAttributes} numOfAttributes={attributes.length} product={product}/>
     );
   }
 };

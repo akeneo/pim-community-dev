@@ -21,7 +21,6 @@ beforeEach(() =>  {
   jest.resetModules();
 });
 
-window.dispatchEvent = jest.fn();
 UserContext.get.mockReturnValue('en_US');
 
 describe('Product evaluation tab', () => {

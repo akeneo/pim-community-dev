@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import {useCatalogContext, useFetchProductFamilyInformation, useProduct} from '../../../../../infrastructure/hooks';
+import {useCatalogContext, useFetchProductFamilyInformation} from '../../../../../infrastructure/hooks';
 import AttributeWithRecommendation from '../../../../../domain/AttributeWithRecommendation.interface';
 import AttributesList from './AttributesList';
 import AttributesListWithVariations from './AttributesListWithVariations';
@@ -30,10 +30,9 @@ const getAttributeLabel = (attributeCode: string, productFamilyInformation: any,
   return attributeItem.labels[locale];
 };
 
-const RecommendationAttributesList: FunctionComponent<RecommendationAttributesListProps> = ({criterion, attributes, axis, evaluation}) => {
+const RecommendationAttributesList: FunctionComponent<RecommendationAttributesListProps> = ({criterion, attributes, axis, evaluation, product}) => {
   const {locale} = useCatalogContext();
   const productFamilyInformation = useFetchProductFamilyInformation();
-  const product = useProduct();
 
   let attributesLabels: AttributeWithRecommendation[] = [];
   if (locale && productFamilyInformation) {

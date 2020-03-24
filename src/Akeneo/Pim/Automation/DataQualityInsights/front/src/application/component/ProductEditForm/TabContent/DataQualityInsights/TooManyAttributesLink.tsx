@@ -2,14 +2,11 @@ import React, {FunctionComponent} from 'react';
 import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES
-} from "../../../../listener";
-import {isRootProductModel, isSimpleProduct} from "../../../../helper/ProductEditForm/Product";
-import {useProduct} from "../../../../../infrastructure/hooks";
-import {Product} from "../../../../../domain";
-import {ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY} from "../AttributesTabContent";
-import {
-  PRODUCT_MODEL_ATTRIBUTES_TAB_NAME
-} from "../../../../constant";
+} from '../../../../listener';
+import {isRootProductModel, isSimpleProduct} from '../../../../helper/ProductEditForm/Product';
+import {Product} from '../../../../../domain';
+import {ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY} from '../AttributesTabContent';
+import {PRODUCT_MODEL_ATTRIBUTES_TAB_NAME} from '../../../../constant';
 
 const Router = require('pim/router');
 
@@ -22,6 +19,7 @@ interface TooManyAttributesLinkProps {
   axis: string;
   attributes: string[];
   numOfAttributes : number;
+  product: Product;
 }
 
 const handleClick = (product: Product, attributes: string[], axis: string ) => {
@@ -59,10 +57,7 @@ const handleClick = (product: Product, attributes: string[], axis: string ) => {
   }
 };
 
-  const TooManyAttributesLink: FunctionComponent<TooManyAttributesLinkProps> = ({axis, attributes, numOfAttributes}) => {
-
-    const product = useProduct();
-
+  const TooManyAttributesLink: FunctionComponent<TooManyAttributesLinkProps> = ({axis, attributes, numOfAttributes, product}) => {
     return (
       <>
         <button onClick={() => handleClick(product, attributes, axis)}
