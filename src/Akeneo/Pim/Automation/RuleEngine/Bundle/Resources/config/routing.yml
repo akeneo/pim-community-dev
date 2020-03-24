@@ -24,3 +24,10 @@ pimee_enrich_rule_relation_get:
     requirements:
         relationType: '[a-z]+'
     methods: [GET]
+
+pimee_enrich_rule_definition_get:
+    path: /rest/rule_definition/{ruleCode}
+    defaults: { _controller: pimee_enrich.controller.get_rule_definition }
+    requirements:
+        ruleCode: '[a-z0-9_]+'
+    methods: [GET]

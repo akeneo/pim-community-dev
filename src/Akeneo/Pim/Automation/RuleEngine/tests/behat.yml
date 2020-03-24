@@ -1,4 +1,4 @@
-default:
+acceptance:
     suites:
         rule_engine_acceptance:
             paths:
@@ -23,3 +23,39 @@ default:
                 class: Kernel
                 environment: test_fake
                 debug: false
+
+integration:
+    suites:
+        rule_engine_integration:
+            paths:
+                - '%paths.base%/features'
+            contexts:
+                - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\CatalogConfigurationContext:
+                    - '@akeneo_integration_tests.catalogs_enterprise'
+                    - '@akeneo_integration_tests.loader.fixtures_loader'
+                    - '%%kernel.project_dir%%'
+
+                - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\DataFixturesContext:
+                    - '@test.service_container'
+
+                - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\ExecuteRuleContext:
+                    - '@doctrine.dbal.default_connection'
+                    - '@pim_catalog.repository.product_without_permission'
+                    - '@akeneo_rule_engine.runner.chained'
+                    - '@akeneo_rule_engine.repository.rule_definition'
+                    - '@pimee_catalog_rule.builder.product'
+                    - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+                    - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+
+            filters:
+                tags: '@integration-back'
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                bootstrap: config/bootstrap.php
+                path: src/Kernel.php
+                class: Kernel
+                env: test
+                debug: false
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~

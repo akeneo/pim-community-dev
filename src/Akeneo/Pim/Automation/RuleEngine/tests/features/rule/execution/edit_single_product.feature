@@ -1,4 +1,3 @@
-@javascript
 Feature: Read a single product by applying rules
   In order ease the enrichment of the catalog
   As a regular user
@@ -6,9 +5,8 @@ Feature: Read a single product by applying rules
 
   Background:
     Given a "clothing" catalog configuration
-    And I add the "french" locale to the "mobile" channel
-    And I am logged in as "Julia"
 
+  @integration-back
   Scenario: Successfully execute a rule with an "equals" condition
     Given the following products:
       | sku       | family  |
@@ -32,10 +30,10 @@ Feature: Read a single product by applying rules
             value: My jacket
             locale: en_US
       """
-    Given the product rule "set_name" is executed
-    When I am on the "my-jacket" product page
-    Then the product Name should be "My jacket"
+    When the product rule "set_name" is executed
+    Then the en_US unscoped name of "my-jacket" should be "My jacket"
 
+  @integration-back
   Scenario: Successfully execute a rule with a "not equal" condition
     Given the following products:
       | sku         | family  |
@@ -61,17 +59,13 @@ Feature: Read a single product by applying rules
             value: My jacket
             locale: en_US
       """
-    And the product rule "set_name" is executed
-    When I am on the "my-jacket" product page
-    Then the product Name should be "My jacket"
-    When I switch the scope to "mobile"
-    Then the product Description should be "A stylish white jacket"
-    When I switch the locale to "fr_FR"
-    Then the product Nom should be "Veste blanche"
-    When I am on the "my-cardigan" product page
-    When I switch the locale to "en_US"
-    Then the product Name should be "Red cardigan"
+    When the product rule "set_name" is executed
+    Then the en_US unscoped name of "my-jacket" should be "My jacket"
+    And the en_US mobile description of "my-jacket" should be "A stylish white jacket"
+    And the fr_FR unscoped name of "my-jacket" should be "Veste blanche"
+    And the en_US unscoped name of "my-cardigan" should be "Red cardigan"
 
+  @integration-back
   Scenario: Successfully execute a rule with a "not empty" condition
     Given the following products:
       | sku       | family  |
@@ -99,12 +93,11 @@ Feature: Read a single product by applying rules
             value: New name
             locale: en_US
       """
-    And the product rule "set_name" is executed
-    When I am on the "my-jacket" product page
-    Then the product Name should be ""
-    When I am on the "my-boot" product page
-    Then the product Name should be "New name"
+    When the product rule "set_name" is executed
+    Then the en_US unscoped name of "my-jacket" should be ""
+    And the en_US unscoped name of "my-boot" should be "New name"
 
+  @integration-back
   Scenario: Successfully execute a rule with a "starts with" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -128,10 +121,10 @@ Feature: Read a single product by applying rules
             value: My jacket
             locale: en_US
       """
-    And the product rule "set_name" is executed
-    When I am on the "my-jacket" product page
-    Then the product Name should be "My jacket"
+    When the product rule "set_name" is executed
+    Then the en_US unscoped name of "my-jacket" should be "My jacket"
 
+  @integration-back
   Scenario: Successfully execute a rule with an "ends with" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -155,10 +148,10 @@ Feature: Read a single product by applying rules
             value: My jacket
             locale: en_US
       """
-    And the product rule "set_name" is executed
-    When I am on the "my-jacket" product page
-    Then the product Name should be "My jacket"
+    When the product rule "set_name" is executed
+    Then the en_US unscoped name of "my-jacket" should be "My jacket"
 
+  @integration-back
   Scenario: Successfully execute a rule with a "contains" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -182,10 +175,10 @@ Feature: Read a single product by applying rules
             value: My jacket
             locale: en_US
       """
-    And the product rule "set_name" is executed
-    When I am on the "my-jacket" product page
-    Then the product Name should be "My jacket"
+    When the product rule "set_name" is executed
+    Then the en_US unscoped name of "my-jacket" should be "My jacket"
 
+  @integration-back
   Scenario: Successfully execute a rule with a "does not contain" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -209,10 +202,10 @@ Feature: Read a single product by applying rules
             value: My jacket
             locale: en_US
       """
-    And the product rule "set_name" is executed
-    When I am on the "my-jacket" product page
-    Then the product Name should be "My jacket"
+    When the product rule "set_name" is executed
+    Then the en_US unscoped name of "my-jacket" should be "My jacket"
 
+  @integration-back
   Scenario: Successfully execute a rule with an "IN" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -237,10 +230,10 @@ Feature: Read a single product by applying rules
             value: My jacket
             locale: en_US
       """
-    And the product rule "set_name" is executed
-    When I am on the "my-jacket" product page
-    Then the product Name should be "My jacket"
+    When the product rule "set_name" is executed
+    Then the en_US unscoped name of "my-jacket" should be "My jacket"
 
+  @integration-back
   Scenario: Successfully execute a rule with setter actions to update non empty values on all kind of fields
     Given the following products:
       | sku       | family  | name-fr_FR | weather_conditions | enabled | categories |
@@ -336,7 +329,7 @@ Feature: Read a single product by applying rules
     Then product "my-jacket" should be disabled
     And the category of the product "my-jacket" should be "winter_top, tshirts"
 
-
+  @integration-back
   Scenario: Successfully execute a rule with copier actions to update non empty values on all kind of attributes
     Given the following attributes:
       | code            | label-en_US     | type                         | scopable | localizable | allowed_extensions | metric_family | default_metric_unit | group | decimals_allowed |
@@ -348,7 +341,7 @@ Feature: Read a single product by applying rules
     And the following products:
       | sku       | family  | weather_conditions |
       | my-jacket | jackets | dry                |
-    And the following "climate" attribute options: hot and cold
+    And the following "climate" attribute options: hot, cold
     And the following product values:
       | product   | attribute          | value                  | locale | scope  |
       | my-jacket | handmade           | 1                      |        |        |
@@ -444,6 +437,7 @@ Feature: Read a single product by applying rules
       | description-en_US-mobile | A stylish white jacket |
       | description-fr_FR-tablet | A stylish white jacket |
 
+  @integration-back
   Scenario: Successfully execute a rule with copier actions to update empty values on all kind of attributes
     Given the following attributes:
       | code            | label-en_US     | type                         | scopable | localizable | allowed_extensions | metric_family | default_metric_unit | group | decimals_allowed |
@@ -455,7 +449,7 @@ Feature: Read a single product by applying rules
     And the following products:
       | sku       | family  | weather_conditions |
       | my-jacket | jackets | dry                |
-    And the following "climate" attribute options: hot and cold
+    And the following "climate" attribute options: hot, cold
     And the following product values:
       | product   | attribute          | value                  | locale | scope  |
       | my-jacket | handmade           |                        |        |        |
@@ -551,6 +545,7 @@ Feature: Read a single product by applying rules
       | description-en_US-mobile |           |
       | description-fr_FR-tablet |           |
 
+  @integration-back
   Scenario: Successfully execute a rule with adder actions to update non empty values on all kind of fields
     Given the following products:
       | sku       | family  | categories |
@@ -585,6 +580,7 @@ Feature: Read a single product by applying rules
       | weather_conditions | [cold], [dry], [hot], [wet] |
     And the category of the product "my-jacket" should be "jackets, tshirts"
 
+  @integration-back
   Scenario: Successfully execute a rule with an "equals" condition
     Given the following products:
       | sku       | family  |
@@ -594,9 +590,7 @@ Feature: Read a single product by applying rules
       | my-jacket | name        | White jacket           | en_US  |        |
       | my-jacket | name        | Mocassin blanc         | fr_FR  |        |
       | my-jacket | description | A stylish white jacket | en_US  | mobile |
-    And I am on the "my-jacket" product page
-    When I visit the "Completeness" column tab
-    Then I should see the completeness:
+    Then the completeness for the product "my-jacket" should be:
       | channel | locale | state   | missing_values | ratio |
       | tablet  | de_DE  | warning | 8              | 11%   |
       | tablet  | en_US  | warning | 7              | 22%   |
@@ -618,12 +612,9 @@ Feature: Read a single product by applying rules
             value: My jacket
             locale: en_US
             scope: tablet
-    """
-    Then the product rule "set_name" is executed
-    And I am on the products grid
-    When I am on the "my-jacket" product page
-    When I visit the "Completeness" column tab
-    Then I should see the completeness:
+      """
+    When the product rule "set_name" is executed
+    Then the completeness for the product "my-jacket" should be:
       | channel | locale | state   | missing_values | ratio |
       | tablet  | de_DE  | warning | 8              | 11%   |
       | tablet  | en_US  | warning | 6              | 33%   |
@@ -632,6 +623,7 @@ Feature: Read a single product by applying rules
       | mobile  | en_US  | warning | 3              | 40%   |
       | mobile  | fr_FR  | warning | 3              | 40%   |
 
+  @integration-back
   Scenario: Successfully execute a rule with a "remove" action on a single category
     Given the following products:
       | sku       | family  | categories                                  | enabled |
@@ -658,6 +650,7 @@ Feature: Read a single product by applying rules
     When the product rule "rule_remove_category_jacket" is executed
     Then the categories of the product "my-jacket" should be "summer_collection, jackets"
 
+  @integration-back
   Scenario: Successfully execute a rule with a "remove" action on a category and its children
     Given the following products:
       | sku       | family  | categories                                                     | enabled |

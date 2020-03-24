@@ -65,5 +65,9 @@ else
 endif
 
 .PHONY: rule-engine-acceptance-back
-rule-engine-acceptance-back: var/tests/behat/rule-engine
-	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Pim/Automation/RuleEngine/tests/behat.yml --format pim --out var/tests/behat/rule-engine --format progress --out std --colors $(O)
+rule-engine-acceptance-back: var/tests/behat/rule-engine-acceptance
+	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Pim/Automation/RuleEngine/tests/behat.yml --profile acceptance --format pim --out var/tests/behat/rule-engine-acceptance --format progress --out std --colors $(O)
+
+.PHONY: rule-engine-integration-back
+rule-engine-integration-back: var/tests/behat/rule-engine-integration
+	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Pim/Automation/RuleEngine/tests/behat.yml --profile integration --format pim --out var/tests/behat/rule-engine-integration --format progress --out std --colors $(O)
