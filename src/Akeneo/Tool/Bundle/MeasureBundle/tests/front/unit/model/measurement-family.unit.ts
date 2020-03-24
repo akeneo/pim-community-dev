@@ -10,6 +10,7 @@ import {
   filterOnLabelOrCode,
   getUnitIndex,
   removeUnit,
+  addUnit,
 } from 'akeneomeasure/model/measurement-family';
 
 const measurementFamily = {
@@ -24,12 +25,26 @@ const measurementFamily = {
       labels: {
         en_US: 'Square Meter',
       },
+      symbol: '',
+      convert_from_standard: [
+        {
+          operator: 'mul',
+          value: '1',
+        },
+      ],
     },
     {
       code: 'SQUARE_KILOMETER',
       labels: {
         en_US: 'Square Kilometer',
       },
+      symbol: '',
+      convert_from_standard: [
+        {
+          operator: 'mul',
+          value: '1000',
+        },
+      ],
     },
   ],
 };
@@ -91,6 +106,26 @@ describe('measurement family', () => {
     expect(newMeasurementFamily.units.length).toEqual(1);
   });
 
+  it('should add the provided unit in the measurement family', () => {
+    expect(measurementFamily.units.length).toEqual(2);
+
+    const newMeasurementFamily = addUnit(measurementFamily, {
+      code: 'CUSTOM',
+      labels: {
+        en_US: 'Custom',
+      },
+      symbol: 'c',
+      convert_from_standard: [
+        {
+          operator: 'mul',
+          value: '1',
+        },
+      ],
+    });
+
+    expect(newMeasurementFamily.units.length).toEqual(3);
+  });
+
   it('should set the provided symbol on the unit in the measurement family', () => {
     const newMeasurementFamily = setUnitSymbol(measurementFamily, 'SQUARE_METER', 'new symbol');
 
@@ -108,6 +143,13 @@ describe('measurement family', () => {
       labels: {
         en_US: 'Square Meter',
       },
+      symbol: '',
+      convert_from_standard: [
+        {
+          operator: 'mul',
+          value: '1',
+        },
+      ],
     });
   });
 

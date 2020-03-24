@@ -7,9 +7,17 @@ import {act, fireEvent, getByLabelText, getByText} from '@testing-library/react'
 import {AkeneoThemeProvider} from 'akeneomeasure/AkeneoThemeProvider';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
 
-const changeTextInputValue = (container: HTMLElement, label: string, value: string) => {
+declare global {
+  namespace NodeJS {
+    interface Global {
+      fetch: any;
+    }
+  }
+}
+
+const changeTextInputValue = async (container: HTMLElement, label: string, value: string) => {
   const input = getByLabelText(container, label, {exact: false, trim: true});
-  fireEvent.change(input, {target: {value: value}});
+  await fireEvent.change(input, {target: {value: value}});
 };
 
 const getFormSectionByTitle = (container: HTMLElement, title: string): HTMLElement => {
@@ -60,15 +68,15 @@ test('I can fill the fields and save', async () => {
 
   await act(async () => {
     const propertiesSection = getFormSectionByTitle(container, 'pim_common.properties');
-    changeTextInputValue(propertiesSection, 'pim_common.code', 'custom_metric');
-    changeTextInputValue(propertiesSection, 'pim_common.label', 'My custom metric');
+    await changeTextInputValue(propertiesSection, 'pim_common.code', 'custom_metric');
+    await changeTextInputValue(propertiesSection, 'pim_common.label', 'My custom metric');
     const standardUnitSection = getFormSectionByTitle(container, 'measurements.family.standard_unit');
-    changeTextInputValue(standardUnitSection, 'pim_common.code', 'METER');
-    changeTextInputValue(standardUnitSection, 'pim_common.label', 'Meters');
-    changeTextInputValue(standardUnitSection, 'measurements.form.input.symbol', 'm');
+    await changeTextInputValue(standardUnitSection, 'pim_common.code', 'METER');
+    await changeTextInputValue(standardUnitSection, 'pim_common.label', 'Meters');
+    await changeTextInputValue(standardUnitSection, 'measurements.form.input.symbol', 'm');
 
     const button = getByText(container, 'pim_common.save');
-    fireEvent.click(button);
+    await fireEvent.click(button);
   });
 
   expect(mockFetch).toHaveBeenCalled();

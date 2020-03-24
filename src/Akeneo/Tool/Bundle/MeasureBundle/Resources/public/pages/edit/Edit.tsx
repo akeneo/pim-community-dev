@@ -10,7 +10,8 @@ import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
 import {Button} from 'akeneomeasure/shared/components/Button';
-import {getMeasurementFamilyLabel} from 'akeneomeasure/model/measurement-family';
+import {getMeasurementFamilyLabel, addUnit} from 'akeneomeasure/model/measurement-family';
+import {Unit} from 'akeneomeasure/model/unit';
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {
@@ -21,6 +22,8 @@ import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-con
 import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
 import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family-saver';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
+import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
+import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
 
 enum Tab {
   Units = 'units',
@@ -79,6 +82,7 @@ const Edit = () => {
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const saveMeasurementFamily = useSaveMeasurementFamilySaver();
   const notify = useContext(NotifyContext);
+  const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useToggleState(false);
 
   const handleSave = useCallback(async () => {
     if (null === measurementFamily) {
@@ -103,12 +107,27 @@ const Edit = () => {
     }
   }, [measurementFamily, locale, saveMeasurementFamily, notify, __, setErrors]);
 
+  const handleNewUnit = useCallback((unit: Unit) => {
+    null !== measurementFamily && setMeasurementFamily(addUnit(measurementFamily, unit));
+  }, [
+    setMeasurementFamily,
+    measurementFamily,
+  ]);
+
   if (undefined === measurementFamilyCode || null === measurementFamily) {
     return null;
   }
 
   return (
     <>
+      {isAddUnitModalOpen &&
+        <CreateUnit
+            measurementFamily={measurementFamily}
+            onClose={closeAddUnitModal}
+            onNewUnit={handleNewUnit}
+        />
+      }
+
       <PageHeader
         userButtons={
           <PimView
@@ -129,9 +148,7 @@ const Edit = () => {
           <Button
             color="blue"
             outline={true}
-            onClick={() => {
-              //TODO add unit
-            }}
+            onClick={openAddUnitModal}
           >
             {__('measurements.unit.add')}
           </Button>,
