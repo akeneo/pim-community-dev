@@ -12,6 +12,7 @@ import {Operation, Operator, emptyOperation, MAX_OPERATION_COUNT} from 'akeneome
 import {ValidationError, filterErrors, getErrorsForPath} from 'akeneomeasure/model/validation-error';
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 import {Input, InputContainer} from 'akeneomeasure/shared/components/TextField';
+import {useLocalizedNumber} from 'akeneomeasure/shared/hooks/use-localized-number';
 
 const AknFieldContainer = styled.div`
   margin-bottom: 20px;
@@ -131,12 +132,13 @@ const OperationCollection = ({
   const __ = useContext(TranslateContext);
   const akeneoTheme = useContext(ThemeContext);
   const [openOperatorSelector, setOpenOperatorSelector] = useState<number | null>(null);
+  const [formatNumber, unformatNumber] = useLocalizedNumber();
 
   const closeOperatorSelector = useCallback(() => setOpenOperatorSelector(null), [setOpenOperatorSelector]);
 
   useShortcut(Key.Escape, closeOperatorSelector);
 
-  // As the operations are not indexed, we need to hide the errors as soon as th user removes an operation
+  // As the operations are not indexed, we need to hide the errors as soon as the user removes an operation
   // To avoid to display an error on a previous operation
   const [shouldHideErrors, setShouldHideErrors] = useState(false);
   useEffect(() => {
@@ -158,13 +160,15 @@ const OperationCollection = ({
               <InputContainer readOnly={readOnly} invalid={0 < operationErrors.length}>
                 <Input
                   role="operation-value-input"
-                  value={operation.value}
+                  value={formatNumber(operation.value)}
                   disabled={readOnly}
                   readOnly={readOnly}
                   onChange={(event: ChangeEvent<HTMLInputElement>) =>
                     onOperationsChange(
                       operations.map((operation: Operation, currentIndex: number) =>
-                        currentIndex === index ? {...operation, value: event.currentTarget.value} : operation
+                        currentIndex === index
+                          ? {...operation, value: unformatNumber(event.currentTarget.value)}
+                          : operation
                       )
                     )
                   }
