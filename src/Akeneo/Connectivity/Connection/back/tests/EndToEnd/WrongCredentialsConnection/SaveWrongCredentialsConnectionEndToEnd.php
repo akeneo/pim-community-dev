@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\WrongCredentialsConnection;
 
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Read\WrongCredentialsCombinations;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -18,7 +19,7 @@ class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
 {
     public function test_that_authentication_with_good_combination_does_not_save_wrong_credentials()
     {
-        $apiConnection = $this->createConnection('magento');
+        $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
 
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request('POST', 'api/oauth/v1/token',
@@ -43,8 +44,8 @@ class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
 
     public function test_that_wrong_credentials_combination_is_saved_after_authentication()
     {
-        $magentoConnection = $this->createConnection('magento');
-        $bynderConnection = $this->createConnection('bynder');
+        $magentoConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
+        $bynderConnection = $this->createConnection('bynder', 'Magento', FlowType::DATA_DESTINATION);
 
         $apiClient = static::createClient(['debug' => false]);
         $apiClient->request('POST', 'api/oauth/v1/token',
