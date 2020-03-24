@@ -15,9 +15,9 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
-use Akeneo\Tool\Component\Batch\Job\Job;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -29,20 +29,20 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
         DryRunnerInterface $productRuleRunner,
         BulkSaverInterface $saver,
-        BulkObjectDetacherInterface $detacher,
+        EntityManagerClearerInterface $cacheClearer,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($ruleDefinitionRepo, $productRuleRunner, $saver, $detacher);
+        $this->beConstructedWith($ruleDefinitionRepo, $productRuleRunner, $saver, $cacheClearer);
 
         $this->setStepExecution($stepExecution);
     }
 
     function it_executes_impacted_product_by_rules(
-        $ruleDefinitionRepo,
-        $productRuleRunner,
-        $saver,
-        $detacher,
-        $stepExecution,
+        RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
+        DryRunnerInterface $productRuleRunner,
+        BulkSaverInterface $saver,
+        EntityManagerClearerInterface $cacheClearer,
+        StepExecution $stepExecution,
         RuleDefinitionInterface $ruleDefinition1,
         RuleDefinitionInterface $ruleDefinition2,
         RuleSubjectSetInterface $ruleSubjectSet1,
@@ -74,7 +74,7 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('rule_calculated')->shouldBeCalled();
 
         $saver->saveAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();
-        $detacher->detachAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
 
         $this->execute();
     }
