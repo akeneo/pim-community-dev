@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.12 (2020-03-24)
+
 ## Bug fixes
 
 - PIM-9159: Fix filter by family and category on the DQI dashboard
