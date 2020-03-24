@@ -15,7 +15,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInter
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 
 /**
@@ -25,6 +25,8 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
  */
 class ImpactedProductCountTasklet implements TaskletInterface
 {
+    const CHUNK_SIZE = 300;
+
     /** @var StepExecution */
     protected $stepExecution;
 
@@ -37,25 +39,19 @@ class ImpactedProductCountTasklet implements TaskletInterface
     /** @var BulkSaverInterface */
     protected $saver;
 
-    /** @var BulkObjectDetacherInterface */
-    protected $detacher;
+    /** @var EntityManagerClearerInterface */
+    protected $cacheClearer;
 
-    /**
-     * @param RuleDefinitionRepositoryInterface $ruleDefinitionRepo
-     * @param DryRunnerInterface                $productRuleRunner
-     * @param BulkSaverInterface                $saver
-     * @param BulkObjectDetacherInterface       $detacher
-     */
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
         DryRunnerInterface $productRuleRunner,
         BulkSaverInterface $saver,
-        BulkObjectDetacherInterface $detacher
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $this->ruleDefinitionRepo = $ruleDefinitionRepo;
         $this->productRuleRunner = $productRuleRunner;
         $this->saver = $saver;
-        $this->detacher = $detacher;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -64,16 +60,20 @@ class ImpactedProductCountTasklet implements TaskletInterface
     public function execute()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $ruleDefinitions = $this->ruleDefinitionRepo->findBy(['id' => $jobParameters->get('ruleIds')]);
-        foreach ($ruleDefinitions as $ruleDefinition) {
-            $ruleSubjectSet = $this->productRuleRunner->dryRun($ruleDefinition);
-            $ruleDefinition->setImpactedSubjectCount($ruleSubjectSet->getSubjectsCursor()->count());
+        $ruleIds = $jobParameters->get('ruleIds');
+        foreach(array_chunk($ruleIds, self::CHUNK_SIZE) as $ruleIdsChunk) {
+            $ruleDefinitions = $this->ruleDefinitionRepo->findBy(['id' => $ruleIdsChunk]);
 
-            $this->stepExecution->incrementSummaryInfo('rule_calculated');
+            foreach ($ruleDefinitions as $ruleDefinition) {
+                $ruleSubjectSet = $this->productRuleRunner->dryRun($ruleDefinition);
+                $ruleDefinition->setImpactedSubjectCount($ruleSubjectSet->getSubjectsCursor()->count());
+
+                $this->stepExecution->incrementSummaryInfo('rule_calculated');
+            }
+
+            $this->saver->saveAll($ruleDefinitions);
+            $this->cacheClearer->clear();
         }
-
-        $this->saver->saveAll($ruleDefinitions);
-        $this->detacher->detachAll($ruleDefinitions);
     }
 
     /**
