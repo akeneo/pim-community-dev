@@ -109,7 +109,7 @@ test('I can add an operation', async () => {
       value: '25',
       operator: 'add',
     },
-    {value: '1', operator: 'mul'},
+    {value: '', operator: 'mul'},
   ]);
 });
 
