@@ -47,14 +47,12 @@ class ValidateUnitAction
         $validateUnitCommand = $this->createValidateUnitCommand($measurementFamilyCode, $decodedRequest);
 
         try {
-            $this->validateValidateUnitCommand($validateUnitCommand);
+            $violations = $this->validator->validate($validateUnitCommand);
+            if ($violations->count() > 0) {
+                return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
         } catch (MeasurementFamilyNotFoundException $ex) {
             return new Response(null, Response::HTTP_NOT_FOUND);
-        } catch (ViolationHttpException $exception) {
-            return new JsonResponse(
-                $this->violationNormalizer->normalize($exception),
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
         }
 
         return new Response(null, Response::HTTP_OK);
@@ -83,20 +81,5 @@ class ValidateUnitAction
         $command->symbol = $decodedRequest['symbol'];
 
         return $command;
-    }
-
-    /**
-     * @throws MeasurementFamilyNotFoundException
-     */
-    private function validateValidateUnitCommand(ValidateUnitCommand $command)
-    {
-        $violations = $this->validator->validate($command);
-
-        if (count($violations) > 0) {
-            throw new ViolationHttpException(
-                $violations,
-                'The unit cannot be added to the measurement family.'
-            );
-        }
     }
 }
