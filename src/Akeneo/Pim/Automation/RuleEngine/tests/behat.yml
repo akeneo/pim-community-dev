@@ -30,6 +30,11 @@ integration:
             paths:
                 - '%paths.base%/features'
             contexts:
+                - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\AssociationContext:
+                      - '@pim_catalog.repository.product_without_permission'
+                      - '@pim_catalog.updater.product'
+                      - '@pim_catalog.saver.product_without_permission'
+
                 - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\CatalogConfigurationContext:
                     - '@akeneo_integration_tests.catalogs_enterprise'
                     - '@akeneo_integration_tests.loader.fixtures_loader'
