@@ -33,6 +33,7 @@ import {
   MeasurementFamilyRemoverResult,
 } from 'akeneomeasure/hooks/use-measurement-family-remover';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
+import {SecurityContext} from 'akeneomeasure/context/security-context';
 
 enum Tab {
   Units = 'units',
@@ -88,6 +89,7 @@ const Edit = () => {
   const __ = useContext(TranslateContext);
   const history = useHistory();
   const locale = useContext(UserContext)('uiLocale');
+  const {isGranted} = useContext(SecurityContext);
   const {measurementFamilyCode} = useParams() as {measurementFamilyCode: string};
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.Units);
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
@@ -169,6 +171,32 @@ const Edit = () => {
     return null;
   }
 
+  const buttons = [];
+  if (isGranted('akeneo_measurements_measurement_family_delete') && !measurementFamily.is_locked) {
+    buttons.push(
+      <SecondaryActionsDropdownButton title={__('pim_common.other_actions')} key={0}>
+        <DropdownLink onClick={openConfirmDeleteMeasurementFamilyModal}>
+          {__('measurements.family.delete')}
+        </DropdownLink>
+      </SecondaryActionsDropdownButton>
+    );
+  }
+
+  if (isGranted('akeneo_measurements_measurement_unit_add')) {
+    buttons.push(
+      <Button color="blue" outline={true} onClick={openAddUnitModal}>
+        {__('measurements.unit.add')}
+      </Button>
+    );
+  }
+
+  if (
+    isGranted('akeneo_measurements_measurement_unit_edit') ||
+    isGranted('akeneo_measurements_measurement_family_edit_properties')
+  ) {
+    buttons.push(<Button onClick={handleSaveMeasurementFamily}>{__('pim_common.save')}</Button>);
+  }
+
   return (
     <>
       {isAddUnitModalOpen && (
@@ -190,21 +218,7 @@ const Edit = () => {
             viewName="pim-measurements-user-navigation"
           />
         }
-        buttons={[
-          ...(!measurementFamily.is_locked
-            ? [
-                <SecondaryActionsDropdownButton title={__('pim_common.other_actions')} key={0}>
-                  <DropdownLink onClick={openConfirmDeleteMeasurementFamilyModal}>
-                    {__('measurements.family.delete.button')}
-                  </DropdownLink>
-                </SecondaryActionsDropdownButton>,
-              ]
-            : []),
-          <Button color="blue" outline={true} onClick={openAddUnitModal}>
-            {__('measurements.unit.add')}
-          </Button>,
-          <Button onClick={handleSaveMeasurementFamily}>{__('pim_common.save')}</Button>,
-        ]}
+        buttons={buttons}
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbItem>{__('pim_menu.tab.settings')}</BreadcrumbItem>

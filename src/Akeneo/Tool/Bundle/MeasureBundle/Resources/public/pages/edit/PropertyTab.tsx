@@ -7,6 +7,7 @@ import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
+import {SecurityContext} from 'akeneomeasure/context/security-context';
 
 const Container = styled.div`
   display: flex;
@@ -26,6 +27,7 @@ const PropertyTab = ({
 }) => {
   const __ = useContext(TranslateContext);
   const locales = useUiLocales();
+  const {isGranted} = useContext(SecurityContext);
 
   return (
     <Container>
@@ -51,6 +53,7 @@ const PropertyTab = ({
               errors={filterErrors(errors, `labels[${locale.code}]`)}
               key={locale.code}
               flag={locale.code}
+              readOnly={!isGranted('akeneo_measurements_measurement_family_edit_properties')}
               value={measurementFamily.labels[locale.code] || ''}
               onChange={(event: FormEvent<HTMLInputElement>) =>
                 onMeasurementFamilyChange(

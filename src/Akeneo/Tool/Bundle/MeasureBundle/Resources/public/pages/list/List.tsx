@@ -19,6 +19,7 @@ import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
 import {Direction} from 'akeneomeasure/model/direction';
+import {SecurityContext} from 'akeneomeasure/context/security-context';
 
 const useSorting = (
   defaultColumn: string
@@ -40,6 +41,7 @@ const useSorting = (
 
 const List = () => {
   const __ = useContext(TranslateContext);
+  const {isGranted} = useContext(SecurityContext);
   const [searchValue, setSearchValue] = useState('');
   const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
 
@@ -75,7 +77,11 @@ const List = () => {
             viewName="pim-measurements-user-navigation"
           />
         }
-        buttons={[<Button onClick={openCreateModal}>{__('pim_common.create')}</Button>]}
+        buttons={
+          isGranted('akeneo_measurements_measurement_family_create')
+            ? [<Button onClick={openCreateModal}>{__('pim_common.create')}</Button>]
+            : []
+        }
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbItem>{__('pim_menu.tab.settings')}</BreadcrumbItem>

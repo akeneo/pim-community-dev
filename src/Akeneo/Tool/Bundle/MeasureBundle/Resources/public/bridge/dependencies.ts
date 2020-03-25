@@ -4,6 +4,7 @@ const router = require('pim/router');
 const viewBuilder = require('pim/form-builder');
 const userContext = require('pim/user-context');
 const messenger = require('oro/messenger');
+const securityContext = require('pim/security-context');
 
 const dependencies = {
   router,
@@ -19,6 +20,9 @@ const dependencies = {
   },
   user: userContext.get.bind(userContext),
   notify: messenger.notify.bind(messenger),
+  security: {
+    isGranted: securityContext.isGranted.bind(securityContext),
+  },
 };
 
 export {dependencies};
