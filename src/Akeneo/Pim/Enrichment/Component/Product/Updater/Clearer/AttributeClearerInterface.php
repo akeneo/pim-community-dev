@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 
 /**
- * Clear the attribute value of an entity.
+ * Clears the attribute value of an entity.
  *
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -20,6 +20,10 @@ interface AttributeClearerInterface extends ClearerInterface
 
     /**
      * Clears the attribute value of the entity.
+     *
+     * @param EntityWithValuesInterface $entity
+     * @param Attribute $attribute
+     * @param array $options
      */
     public function clear(EntityWithValuesInterface $entity, Attribute $attribute, array $options = []): void;
 }

@@ -62,11 +62,8 @@ final class ClearerRegistry implements ClearerRegistryInterface
     public function getClearer(string $property): ?ClearerInterface
     {
         $attribute = $this->getAttributes->forCode($property);
-        if (null !== $attribute) {
-            return $this->getAttributeClearer($attribute);
-        }
 
-        return $this->getFieldClearer($property);
+        return null !== $attribute ? $this->getAttributeClearer($attribute) : $this->getFieldClearer($property);
     }
 
     /**
