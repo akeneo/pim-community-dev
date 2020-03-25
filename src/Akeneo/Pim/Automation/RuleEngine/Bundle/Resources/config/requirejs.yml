@@ -11,3 +11,4 @@ config:
         pimee/attribute-edit-form/rules/rules-grid: akeneopimruleengine/controllers/rules-grid
         pimee/attribute-edit-form/rules/edit-rules: akeneopimruleengine/controllers/edit-rules
         pimee/attribute-edit-form/rules/create-rules: akeneopimruleengine/controllers/create-rules
+        pimee/data-grid/cell/actions-new: akeneopimruleengine/js/data-grid/cell/actions-new-cell
