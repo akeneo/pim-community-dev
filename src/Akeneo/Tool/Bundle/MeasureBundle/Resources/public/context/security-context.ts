@@ -1,9 +1,7 @@
 import {createContext} from 'react';
 
-type SecurityContextValue = {
-  isGranted: (acl: string) => boolean;
-};
+type SecurityContextValue = (acl: string) => boolean;
 
-const SecurityContext = createContext<SecurityContextValue>({isGranted: () => true});
+const SecurityContext = createContext<SecurityContextValue>(() => true);
 
 export {SecurityContextValue, SecurityContext};

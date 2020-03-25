@@ -20,9 +20,7 @@ const dependencies = {
   },
   user: userContext.get.bind(userContext),
   notify: messenger.notify.bind(messenger),
-  security: {
-    isGranted: securityContext.isGranted.bind(securityContext),
-  },
+  security: securityContext.isGranted.bind(securityContext),
 };
 
 export {dependencies};

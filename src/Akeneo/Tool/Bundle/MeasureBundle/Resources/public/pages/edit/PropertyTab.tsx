@@ -27,7 +27,7 @@ const PropertyTab = ({
 }) => {
   const __ = useContext(TranslateContext);
   const locales = useUiLocales();
-  const {isGranted} = useContext(SecurityContext);
+  const isGranted = useContext(SecurityContext);
 
   return (
     <Container>

@@ -41,7 +41,7 @@ const useSorting = (
 
 const List = () => {
   const __ = useContext(TranslateContext);
-  const {isGranted} = useContext(SecurityContext);
+  const isGranted = useContext(SecurityContext);
   const [searchValue, setSearchValue] = useState('');
   const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
 
