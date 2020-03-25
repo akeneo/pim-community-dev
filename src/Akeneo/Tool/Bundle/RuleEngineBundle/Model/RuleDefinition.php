@@ -41,6 +41,9 @@ class RuleDefinition implements RuleDefinitionInterface
     /** @var ArrayCollection */
     protected $relations;
 
+    /** @var ArrayCollection */
+    protected $translations;
+
     /**
      * Constructor
      */
