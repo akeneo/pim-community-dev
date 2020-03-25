@@ -50,6 +50,7 @@ class RuleDefinition implements RuleDefinitionInterface
     public function __construct()
     {
         $this->relations = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**
