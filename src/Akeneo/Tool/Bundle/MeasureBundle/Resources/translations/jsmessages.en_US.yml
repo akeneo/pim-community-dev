@@ -26,7 +26,12 @@ measurements:
         tab:
             units: Units
             properties: Properties
-        delete: Delete measurement family
+        delete:
+            button: Delete measurement family
+            confirm: Are you sure you want to delete this measurement family?
+            flash:
+                success: Measurement family successfully deleted.
+                error: Sorry, an error occured while deleting the measurement family.
         save:
             flash:
                 success: Measurement family successfully saved.

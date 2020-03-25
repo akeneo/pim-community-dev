@@ -28,6 +28,11 @@ import {SubsectionHelper, HELPER_LEVEL_WARNING} from 'akeneomeasure/shared/compo
 import {useUnsavedChanges} from 'akeneomeasure/shared/hooks/use-unsaved-changes';
 import {UnsavedChanges} from 'akeneomeasure/shared/components/UnsavedChanges';
 import {UnsavedChangesContext} from 'akeneomeasure/context/unsaved-changes-context';
+import {
+  useMeasurementFamilyRemover,
+  MeasurementFamilyRemoverResult,
+} from 'akeneomeasure/hooks/use-measurement-family-remover';
+import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 
 enum Tab {
   Units = 'units',
@@ -88,9 +93,13 @@ const Edit = () => {
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
   const [selectedUnitCode, selectUnitCode] = useState<UnitCode|null>(null);
   const [errors, setErrors] = useState<ValidationError[]>([]);
-  const saveMeasurementFamily = useSaveMeasurementFamilySaver();
   const notify = useContext(NotifyContext);
   const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useToggleState(false);
+  const [
+    isConfirmDeleteMeasurementFamilyModalOpen,
+    openConfirmDeleteMeasurementFamilyModal,
+    closeConfirmDeleteMeasurementFamilyModal,
+  ] = useToggleState(false);
 
   const {setHasUnsavedChanges} = useContext(UnsavedChangesContext);
   const [isModified, resetState] = useUnsavedChanges<MeasurementFamily | null>(
@@ -108,7 +117,8 @@ const Edit = () => {
     selectUnitCode(measurementFamily.standard_unit_code);
   }, [measurementFamily?.code]);
 
-  const handleSave = useCallback(async () => {
+  const saveMeasurementFamily = useSaveMeasurementFamilySaver();
+  const handleSaveMeasurementFamily = useCallback(async () => {
     if (null === measurementFamily) {
       return;
     }
@@ -132,7 +142,27 @@ const Edit = () => {
       console.error(error);
       notify(NotificationLevel.ERROR, __('measurements.family.save.flash.error'));
     }
-  }, [measurementFamily, locale, saveMeasurementFamily, notify, __, setErrors]);
+  }, [measurementFamily, locale, saveMeasurementFamily, notify, __, setErrors, resetState]);
+
+  const removeMeasurementFamily = useMeasurementFamilyRemover();
+  const handleRemoveMeasurementFamily = useCallback(async () => {
+    try {
+      const response = await removeMeasurementFamily(measurementFamilyCode);
+
+      switch (response) {
+        case MeasurementFamilyRemoverResult.Success:
+          notify(NotificationLevel.SUCCESS, __('measurements.family.delete.flash.success'));
+          history.push('/');
+          break;
+        case MeasurementFamilyRemoverResult.NotFound:
+        case MeasurementFamilyRemoverResult.Unprocessable:
+          throw Error(`Error while deleting the measurement family: ${response}`);
+      }
+    } catch (error) {
+      console.error(error);
+      notify(NotificationLevel.ERROR, __('measurements.family.delete.flash.error'));
+    }
+  }, [measurementFamilyCode, removeMeasurementFamily, history, notify, __]);
 
   const handleNewUnit = useCallback((unit: Unit) => {
     if (null === measurementFamily) {
@@ -157,6 +187,14 @@ const Edit = () => {
         <CreateUnit measurementFamily={measurementFamily} onClose={closeAddUnitModal} onNewUnit={handleNewUnit} />
       )}
 
+      {isConfirmDeleteMeasurementFamilyModalOpen && (
+        <ConfirmDeleteModal
+          description={__('measurements.family.delete.confirm')}
+          onConfirm={handleRemoveMeasurementFamily}
+          onCancel={closeConfirmDeleteMeasurementFamilyModal}
+        />
+      )}
+
       <PageHeader
         userButtons={
           <PimView
@@ -165,19 +203,19 @@ const Edit = () => {
           />
         }
         buttons={[
-          <SecondaryActionsDropdownButton title={__('pim_common.other_actions')} key={0}>
-            <DropdownLink
-              onClick={() => {
-                //TODO delete measurement family
-              }}
-            >
-              {__('measurements.family.delete')}
-            </DropdownLink>
-          </SecondaryActionsDropdownButton>,
+          ...(!measurementFamily.is_locked
+            ? [
+                <SecondaryActionsDropdownButton title={__('pim_common.other_actions')} key={0}>
+                  <DropdownLink onClick={openConfirmDeleteMeasurementFamilyModal}>
+                    {__('measurements.family.delete.button')}
+                  </DropdownLink>
+                </SecondaryActionsDropdownButton>,
+              ]
+            : []),
           <Button color="blue" outline={true} onClick={openAddUnitModal}>
             {__('measurements.unit.add')}
           </Button>,
-          <Button onClick={handleSave}>{__('pim_common.save')}</Button>,
+          <Button onClick={handleSaveMeasurementFamily}>{__('pim_common.save')}</Button>,
         ]}
         breadcrumb={
           <Breadcrumb>
