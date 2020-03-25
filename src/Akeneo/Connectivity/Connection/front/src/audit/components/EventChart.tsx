@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {VictoryThemeDefinition} from 'victory';
 import {Section} from '../../common';
 import {AuditEventType} from '../../model/audit-event-type.enum';
-import {useDateFormatter} from '../../shared/formatter/use-date-formatter';
 import {useNumberFormatter} from '../../shared/formatter/use-number-formatter';
 import {useTranslate} from '../../shared/translate';
 import {useFetchConnectionsAuditData} from '../api-hooks/use-fetch-connections-audit-data';
@@ -41,7 +40,6 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
 
     const connectionsAuditData = useFetchConnectionsAuditData(eventType);
     const [chartData, setChartData] = useState<Array<ChartEntry>>();
-    const formatDate = useDateFormatter();
     const formatNumber = useNumberFormatter();
     const translate = useTranslate();
     useEffect(() => {
@@ -58,14 +56,14 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
                 y: value,
                 xLabel:
                     index + 1 !== numberOfData
-                        ? formatDate(date, {weekday: 'long', month: 'short', day: 'numeric'})
+                        ? date
                         : translate('akeneo_connectivity.connection.dashboard.charts.legend.today'),
                 yLabel: 0 === index ? '' : formatNumber(value),
             })
         );
 
         setChartData(chartData);
-    }, [formatDate, translate, connectionsAuditData, selectedConnectionCode]);
+    }, [translate, connectionsAuditData, selectedConnectionCode]);
 
     const connections = Object.values(state.sourceConnections);
     connections.unshift({

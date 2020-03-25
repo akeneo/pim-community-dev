@@ -94,7 +94,7 @@ final class WeeklyEventCounts
         foreach ($period as $dateTime) {
             $date = $dateTime->format('Y-m-d');
 
-            $dailyEventCounts[] = new DailyEventCount($date, (int) ($eventData[$date] ?? 0));
+            $dailyEventCounts[] = new DailyEventCount($dateTime->format('M, j'), (int) ($eventData[$date] ?? 0));
         }
 
         return $dailyEventCounts;
