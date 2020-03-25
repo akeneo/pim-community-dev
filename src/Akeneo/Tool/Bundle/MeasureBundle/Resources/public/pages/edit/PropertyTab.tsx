@@ -48,7 +48,7 @@ const PropertyTab = ({
               autofocus={0 === index}
               id={`measurements.family.properties.label.${locale.code}`}
               label={locale.label}
-              errors={filterErrors(errors, 'labels')} //TODO fix label indexing
+              errors={filterErrors(errors, `labels[${locale.code}]`)}
               key={locale.code}
               flag={locale.code}
               value={measurementFamily.labels[locale.code] || ''}

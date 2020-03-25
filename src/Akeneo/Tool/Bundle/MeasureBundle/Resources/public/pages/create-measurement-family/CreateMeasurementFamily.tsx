@@ -10,8 +10,12 @@ import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {useCreateMeasurementFamilySaver} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
-import {CreateMeasurementFamilyForm, initializeCreateMeasurementFamilyForm, createMeasurementFamilyFromForm} from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
-import {ValidationError} from 'akeneomeasure/model/validation-error';
+import {
+  CreateMeasurementFamilyForm,
+  initializeCreateMeasurementFamilyForm,
+  createMeasurementFamilyFromForm,
+} from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
+import {ValidationError, getErrorsForPath} from 'akeneomeasure/model/validation-error';
 import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
 import {useForm} from 'akeneomeasure/hooks/use-form';
@@ -71,7 +75,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
               value={form.family_code}
               onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('family_code', e.currentTarget.value)}
               required={true}
-              errors={errors.filter(error => error.property === 'code')}
+              errors={getErrorsForPath(errors, 'code')}
             />
             <TextField
               id="measurements.measurement_family.create.family_label"
@@ -79,7 +83,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
               value={form.family_label}
               onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('family_label', e.currentTarget.value)}
               flag={locale}
-              errors={errors.filter(error => error.property === 'labels')}
+              errors={getErrorsForPath(errors, `labels[${locale}]`)}
             />
           </FormGroup>
         </Subsection>
@@ -95,7 +99,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
               value={form.standard_unit_code}
               onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('standard_unit_code', e.currentTarget.value)}
               required={true}
-              errors={errors.filter(error => error.property === 'units[0][code]')}
+              errors={getErrorsForPath(errors, 'units[0][code]')}
             />
             <TextField
               id="measurements.measurement_family.create.standard_unit_label"
@@ -103,16 +107,14 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
               value={form.standard_unit_label}
               onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('standard_unit_label', e.currentTarget.value)}
               flag={locale}
-              errors={errors.filter(error => error.property === 'units[0][labels]')}
+              errors={getErrorsForPath(errors, `units[0][labels][${locale}]`)}
             />
             <TextField
               id="measurements.measurement_family.create.standard_unit_symbol"
               label={__('measurements.form.input.symbol')}
               value={form.standard_unit_symbol}
-              onChange={(e: FormEvent<HTMLInputElement>) =>
-                setFormValue('standard_unit_symbol', e.currentTarget.value)
-              }
-              errors={errors.filter(error => error.property === 'units[0][symbol]')}
+              onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('standard_unit_symbol', e.currentTarget.value)}
+              errors={getErrorsForPath(errors, 'units[0][symbol]')}
             />
           </FormGroup>
         </Subsection>

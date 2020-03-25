@@ -1,47 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
+namespace Pim\Upgrade\Schema;
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\Installer;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Doctrine\DBAL\Driver\Connection;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-/**
- * @author    Samir Boulil <samir.boulil@akeneo.com>
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-class MeasurementInstaller implements EventSubscriberInterface
+final class Version_5_0_20200324104437_migrate_measurement_table extends AbstractMigration
 {
-    /** @var Connection */
-    private $connection;
-
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            InstallerEvents::POST_DB_CREATE => ['createMeasurementTableAndStandardMeasurementFamilies'],
-        ];
-    }
-
-    public function createMeasurementTableAndStandardMeasurementFamilies(): void
-    {
-        $this->createMeasurementTable();
-        $this->loadStandardMeasurementFamilies();
-    }
-
-    public function loadStandardMeasurementFamilies(): void
+    public function up(Schema $schema) : void
     {
         $sql = <<<SQL
+TRUNCATE TABLE `akeneo_measurement`;
+
 INSERT INTO `akeneo_measurement` (`code`, `labels`, `standard_unit`, `units`)
 VALUES
     ('Area', '{"ca_ES":"Àrea","da_DK":"Areal","de_DE":"Fläche","en_GB":"Area","en_NZ":"Area","en_US":"Area","es_ES":"Superficie","fi_FI":"Alue","fr_FR":"Surface","it_IT":"Area","ja_JP":"エリア","pt_BR":"Área","ru_RU":"Площадь","sv_SE":"Område"}', 'SQUARE_METER', '[{"code":"SQUARE_MILLIMETER","labels":{"ca_ES":"Mil·límetre quadrat","da_DK":"Kvadrat millimeter","de_DE":"Quadratmillimeter","en_GB":"Square millimetre","en_NZ":"Square millimetre","en_US":"Square millimeter","es_ES":"Milímetro cuadrado","fi_FI":"Neliömillimetri","fr_FR":"Millimètre carré","it_IT":"Millimetro quadrato","ja_JP":"平方ミリメートル","pt_BR":"Milímetro quadrado","ru_RU":"Квадратный миллиметр","sv_SE":"Kvadratmillimeter"},"convert_from_standard":[{"operator":"mul","value":"0.000001"}],"symbol":"mm²"},{"code":"SQUARE_CENTIMETER","labels":{"ca_ES":"Centímetre quadrat","da_DK":"Kvadratcentimeter","de_DE":"Quadratzentimeter","en_GB":"Square centimetre","en_NZ":"Square centimetre","en_US":"Square centimeter","es_ES":"Centímetro cuadrado","fi_FI":"Neliösenttimetri","fr_FR":"Centimètre carré","it_IT":"Centimetro quadrato","ja_JP":"平方センチメートル","pt_BR":"Centímetro quadrado","ru_RU":"Квадратный сантиметр","sv_SE":"Kvadratcentimeter"},"convert_from_standard":[{"operator":"mul","value":"0.0001"}],"symbol":"cm²"},{"code":"SQUARE_DECIMETER","labels":{"ca_ES":"Decímetre quadrat","da_DK":"Kvadrat decimeter","de_DE":"Quadratdezimeter","en_GB":"Square decimetre","en_NZ":"Square decimetre","en_US":"Square decimeter","es_ES":"Decímetro cuadrado","fi_FI":"Neliödesimetri","fr_FR":"Décimètre carré","it_IT":"Decimetro quadrato","ja_JP":"平方デシメートル","pt_BR":"Decímetro quadrado","ru_RU":"Квадратный дециметр","sv_SE":"Kvadratdecimeter"},"convert_from_standard":[{"operator":"mul","value":"0.01"}],"symbol":"dm²"},{"code":"SQUARE_METER","labels":{"ca_ES":"Metre quadrat","da_DK":"Kvadratmeter","de_DE":"Quadratmeter","en_GB":"Square metre","en_NZ":"Square metre","en_US":"Square meter","es_ES":"Metro cuadrado","fi_FI":"Neliömetri","fr_FR":"Mètre carré","it_IT":"Metro quadrato","ja_JP":"平方メートル","pt_BR":"Metro quadrado","ru_RU":"Квадратный метр","sv_SE":"Kvadratmeter"},"convert_from_standard":[{"operator":"mul","value":"1"}],"symbol":"m²"},{"code":"CENTIARE","labels":{"ca_ES":"Centiàrees","da_DK":"Centiare","de_DE":"Quadratmeter","en_GB":"Centiare","en_NZ":"Centiare","en_US":"Centiare","es_ES":"Centiáreas","fi_FI":"Senttiaari","fr_FR":"Centiare","it_IT":"Centiara","ja_JP":"センチアール","pt_BR":"Centiare","ru_RU":"Центнер","sv_SE":"Kvadratmeter"},"convert_from_standard":[{"operator":"mul","value":"1"}],"symbol":"ca"},{"code":"SQUARE_DEKAMETER","labels":{"ca_ES":"Decàmetre quadrat","da_DK":"Kvadrat dekameter","de_DE":"Quadratdekameter","en_GB":"Square decametre","en_NZ":"Square dekametre","en_US":"Square dekameter","es_ES":"Dekametro cuadrado","fi_FI":"Neliödekametri","fr_FR":"Décamètre carré","it_IT":"Decametro quadrato","ja_JP":"平方デカメートル","pt_BR":"Decametro quadrado","ru_RU":"Квадратный декаметр","sv_SE":"Kvadratdekameter"},"convert_from_standard":[{"operator":"mul","value":"100"}],"symbol":"dam²"},{"code":"ARE","labels":{"ca_ES":"Àrea","da_DK":"Are","de_DE":"Ar","en_GB":"Sú","en_NZ":"Are","en_US":"Are","es_ES":"Área","fi_FI":"Aari","fr_FR":"Are","it_IT":"Ara","ja_JP":"アール","pt_BR":"Area","ru_RU":"Ар","sv_SE":"Hektar"},"convert_from_standard":[{"operator":"mul","value":"100"}],"symbol":"a"},{"code":"SQUARE_HECTOMETER","labels":{"ca_ES":"Hectòmetre quadrat","da_DK":"Kvadrat hectometer","de_DE":"Quadrathektometer","en_GB":"Square hectometre","en_NZ":"Square hectometre","en_US":"Square hectometer","es_ES":"Hectómetro cuadrado","fi_FI":"Neliöhehtometri","fr_FR":"Hectomètre carré","it_IT":"Ettometro quadrato","ja_JP":"平方ヘクトメートル","pt_BR":"Hectómetro quadrado","ru_RU":"Квадратный гектометр","sv_SE":"Kvadrathektameter"},"convert_from_standard":[{"operator":"mul","value":"10000"}],"symbol":"hm²"},{"code":"HECTARE","labels":{"ca_ES":"Hectàrees","da_DK":"Hektar","de_DE":"Hektar","en_GB":"Hectare","en_NZ":"Hectare","en_US":"Hectare","es_ES":"Hectárea","fi_FI":"Hehtaari","fr_FR":"Hectare","it_IT":"Ettaro","ja_JP":"ヘクタール","pt_BR":"Um hectare (conhecido também como hectômetro/hectómetro quadrado [hm²]), representado pelo símbolo ha,[1] é uma unidade de medida de área equivalente a 100 (cem) ares ou a 10. 000 (dez mil) metros quadrados","ru_RU":"Гектар","sv_SE":"Hektar"},"convert_from_standard":[{"operator":"mul","value":"10000"}],"symbol":"ha"},{"code":"SQUARE_KILOMETER","labels":{"ca_ES":"Quilòmetre quadrat","da_DK":"Kvadrat kilometer","de_DE":"Quadratkilometer","en_GB":"Square kilometre","en_NZ":"Square kilometre","en_US":"Square kilometer","es_ES":"Kilómetro cuadrado","fi_FI":"Neliökilometri","fr_FR":"Kilomètre carré","it_IT":"Chilometro quadrato","ja_JP":"平方キロメートル","pt_BR":"Quilômetro quadrado","ru_RU":"Квадратный километр","sv_SE":"Kvadratkilometer"},"convert_from_standard":[{"operator":"mul","value":"1000000"}],"symbol":"km²"},{"code":"SQUARE_MIL","labels":{"ca_ES":"Mil quadrat","da_DK":"Kvadrat mil","de_DE":"Quadratmil","en_GB":"Square mil","en_NZ":"Square mil","en_US":"Square mil","es_ES":"Mil cuadrado","fi_FI":"Neliötuhannesosatuuma","fr_FR":"Mil carré","it_IT":"Mil quadrati","ja_JP":"平方ミル","pt_BR":"Mil quadrada","ru_RU":"Квадратная миля","sv_SE":"Kvadratmil"},"convert_from_standard":[{"operator":"mul","value":"0.00000000064516"}],"symbol":"sq mil"},{"code":"SQUARE_INCH","labels":{"ca_ES":"Polzada quadrada","da_DK":"Kvadrattomme","de_DE":"Quadratzoll","en_GB":"Square inch","en_NZ":"Square inch","en_US":"Square inch","es_ES":"Pulgada cuadrada","fi_FI":"Neliötuuma","fr_FR":"Pouce carré","it_IT":"Pollice quadrato","ja_JP":"平方インチ","pt_BR":"Polegada quadrada","ru_RU":"Квадратный дюйм","sv_SE":"Kvadrattum"},"convert_from_standard":[{"operator":"mul","value":"0.00064516"}],"symbol":"in²"},{"code":"SQUARE_FOOT","labels":{"ca_ES":"Peu quadrat","da_DK":"Kvadratfod","de_DE":"Quadratfuß","en_GB":"Square foot","en_NZ":"Square foot","en_US":"Square foot","es_ES":"Pies cuadrados","fi_FI":"Neliöjalka","fr_FR":"Pied carré","it_IT":"Piede quadrato","ja_JP":"平方フィート","pt_BR":"Pé quadrado","ru_RU":"Квадратный фут","sv_SE":"Kvadratfot"},"convert_from_standard":[{"operator":"mul","value":"0.09290304"}],"symbol":"ft²"},{"code":"SQUARE_YARD","labels":{"ca_ES":"Iarda quadrada","da_DK":"Kvadrat yard","de_DE":"Quadratyard","en_GB":"Square yard","en_NZ":"Square yard","en_US":"Square yard","es_ES":"Yarda cuadrada","fi_FI":"Neliöjaardi","fr_FR":"Yard carré","it_IT":"Yard quadrata","ja_JP":"平方ヤード","pt_BR":"Jarda quadrada","ru_RU":"Квадратный ярд","sv_SE":"Kvadratyard"},"convert_from_standard":[{"operator":"mul","value":"0.83612736"}],"symbol":"yd²"},{"code":"ARPENT","labels":{"ca_ES":"Arpent","da_DK":"Arpent","de_DE":"Arpent","en_GB":"Arpent","en_NZ":"Arpent","en_US":"Arpent","es_ES":"Arpende","fi_FI":"Eekkeri","fr_FR":"Arpent","it_IT":"Arpenti","ja_JP":"アルパン","pt_BR":"Arpent","ru_RU":"Арпан","sv_SE":"Arpent"},"convert_from_standard":[{"operator":"mul","value":"3418.89"}],"symbol":"arpent"},{"code":"ACRE","labels":{"ca_ES":"Acre","da_DK":"Tønder","de_DE":"Morgen","en_GB":"Acre","en_NZ":"Acre","en_US":"Acre","es_ES":"Acre","fi_FI":"Eekkeri","fr_FR":"Acre","it_IT":"Acri","ja_JP":"エーカー","pt_BR":"Acre é o nome de uma antiga unidade de medida usada para medir terras. Atualmente, o acre é uma unidade de área utilizada no sistema imperial e no sistema tradicional dos Estados Unidos. O acre não é mais usado na maioria dos países, apesar de algumas exceções notáveis, que incluem os EUA, Austrália, Índia, Paquistão e Birmânia. A partir de 2010, o acre deixou de ser oficialmente utilizado no Reino Unido, embora ainda seja usado em descrições de imóveis. Ele continua sendo usado, ainda, em certa medida, no Canadá. No Brasil e em Portugal, essa medida nunca foi utilizada, sendo que nestes países se utiliza o alqueire e o hectare (que seria a unidade mais simples de utilização) como unidades de medida em áreas rurais.","ru_RU":"Акр","sv_SE":"Tunnland"},"convert_from_standard":[{"operator":"mul","value":"4046.856422"}],"symbol":"A"},{"code":"SQUARE_FURLONG","labels":{"ca_ES":"Furlong quadrat","da_DK":"Kvadratisk furlong","de_DE":"Quadrat-Achtelmeile","en_GB":"Square furlong","en_NZ":"Square furlong","en_US":"Square furlong","es_ES":"Estadio cuadrado","fi_FI":"Vakomitta","fr_FR":"Furlong carré","it_IT":"Furlong quadrato","ja_JP":"平方ハロン","pt_BR":"Furlong quadrado","ru_RU":"Квадратный фурлонг","sv_SE":"Kvadratfurlong"},"convert_from_standard":[{"operator":"mul","value":"40468.726"}],"symbol":"fur²"},{"code":"SQUARE_MILE","labels":{"ca_ES":"Milla quadrada","da_DK":"Kvadrat mil","de_DE":"Quadratmeile","en_GB":"Square mile","en_NZ":"Square mile","en_US":"Square mile","es_ES":"Milla cuadrada","fi_FI":"Neliömaili","fr_FR":"Mile carré","it_IT":"Miglio quadrato","ja_JP":"平方マイル","pt_BR":"Milha quadrada","ru_RU":"Квадратная миля","sv_SE":"Kvadratmile"},"convert_from_standard":[{"operator":"mul","value":"2589988.110336"}],"symbol":"mi²"}]'),
@@ -69,21 +39,11 @@ VALUES
     ('VolumeFlow', '{"de_DE":"Volumenstrom","fr_FR":"Débit volumétrique","en_US":"Volume flow"}', 'CUBIC_METER_PER_SECOND', '[{"code":"CUBIC_METER_PER_SECOND","labels":{"fr_FR":"Mètre cube par seconde","en_US":"Cubic meter per second"},"convert_from_standard":[{"operator":"mul","value":"1"}],"symbol":"m³/s"},{"code":"CUBIC_METER_PER_MINUTE","labels":{"fr_FR":"Mètre cube par minute","en_US":"Cubic meter per minute"},"convert_from_standard":[{"operator":"mul","value":"60"}],"symbol":"m³/min"},{"code":"CUBIC_METER_PER_HOUR","labels":{"fr_FR":"Mètre cube par heure","en_US":"Cubic meter per hour"},"convert_from_standard":[{"operator":"mul","value":"3600"}],"symbol":"m³/h"},{"code":"CUBIC_METER_PER_DAY","labels":{"fr_FR":"Mètre cube par jour","en_US":"Cubic meter per day"},"convert_from_standard":[{"operator":"mul","value":"86400"}],"symbol":"m³/d"},{"code":"MILLILITER_PER_SECOND","labels":{"fr_FR":"Millilitre par seconde","en_US":"Milliliter per second"},"convert_from_standard":[{"operator":"mul","value":"0.000001"}],"symbol":"ml/s"},{"code":"MILLILITER_PER_MINUTE","labels":{"fr_FR":"Millilitre par minute","en_US":"Milliliter per minute"},"convert_from_standard":[{"operator":"mul","value":"0.000001"},{"operator":"mul","value":"60"}],"symbol":"ml/min"},{"code":"MILLILITER_PER_HOUR","labels":{"fr_FR":"Millilitre par heure","en_US":"Milliliter per hour"},"convert_from_standard":[{"operator":"mul","value":"0.000001"},{"operator":"mul","value":"3600"}],"symbol":"ml/h"},{"code":"MILLILITER_PER_DAY","labels":{"fr_FR":"Millilitre par jour","en_US":"Milliliter per day"},"convert_from_standard":[{"operator":"mul","value":"0.000001"},{"operator":"mul","value":"86400"}],"symbol":"ml/d"},{"code":"CUBIC_CENTIMETER_PER_SECOND","labels":{"fr_FR":"Centimètre cube par seconde","en_US":"Cubic centimeter per second"},"convert_from_standard":[{"operator":"mul","value":"0.000001"}],"symbol":"cm³/s"},{"code":"CUBIC_CENTIMETER_PER_MINUTE","labels":{"fr_FR":"Centimètre cube par minute","en_US":"Cubic centimeter per minute"},"convert_from_standard":[{"operator":"mul","value":"0.000001"},{"operator":"mul","value":"60"}],"symbol":"cm³/min"},{"code":"CUBIC_CENTIMETER_PER_HOUR","labels":{"fr_FR":"Centimètre cube par heure","en_US":"Cubic centimeter per hour"},"convert_from_standard":[{"operator":"mul","value":"0.000001"},{"operator":"mul","value":"3600"}],"symbol":"cm³/h"},{"code":"CUBIC_CENTIMETER_PER_DAY","labels":{"fr_FR":"Centimètre cube par jour","en_US":"Cubic centimeter per day"},"convert_from_standard":[{"operator":"mul","value":"0.000001"},{"operator":"mul","value":"86400"}],"symbol":"cm³/d"},{"code":"CUBIC_DECIMETER_PER_MINUTE","labels":{"fr_FR":"Décimètre cube par minute","en_US":"Cubic decimeter per minute"},"convert_from_standard":[{"operator":"mul","value":"0.001"},{"operator":"mul","value":"60"}],"symbol":"dm³/min"},{"code":"CUBIC_DECIMETER_PER_HOUR","labels":{"fr_FR":"Décimètre cube par heure","en_US":"Cubic decimeter per hour"},"convert_from_standard":[{"operator":"mul","value":"0.001"},{"operator":"mul","value":"3600"}],"symbol":"dm³/h"},{"code":"LITER_PER_SECOND","labels":{"fr_FR":"Litre par seconde","en_US":"Liter per second"},"convert_from_standard":[{"operator":"mul","value":"0.001"}],"symbol":"l/s"},{"code":"LITER_PER_MINUTE","labels":{"fr_FR":"Litre par minute","en_US":"Liter per minute"},"convert_from_standard":[{"operator":"mul","value":"0.001"},{"operator":"mul","value":"60"}],"symbol":"l/min"},{"code":"LITER_PER_HOUR","labels":{"fr_FR":"Litre par heure","en_US":"Liter per hour"},"convert_from_standard":[{"operator":"mul","value":"0.001"},{"operator":"mul","value":"3600"}],"symbol":"l/h"},{"code":"LITER_PER_DAY","labels":{"fr_FR":"Litre par jour","en_US":"Liter per day"},"convert_from_standard":[{"operator":"mul","value":"0.001"},{"operator":"mul","value":"86400"}],"symbol":"l/d"},{"code":"KILOLITER_PER_HOUR","labels":{"fr_FR":"Kilolitre par jour","en_US":"Kiloliter per day"},"convert_from_standard":[{"operator":"mul","value":"3600"}],"symbol":"kl/h"}]');
 SQL;
 
-        $this->connection->exec($sql);
+        $this->addSql($sql);
     }
 
-    private function createMeasurementTable(): void
+    public function down(Schema $schema) : void
     {
-        $sql = <<<SQL
-CREATE TABLE `akeneo_measurement` (
-  `code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
-  `labels` JSON NOT NULL,
-  `standard_unit` varchar(100) NOT NULL,
-  `units` JSON NOT NULL,
-  PRIMARY KEY (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
-SQL;
-
-        $this->connection->exec($sql);
+        $this->throwIrreversibleMigrationException();
     }
 }

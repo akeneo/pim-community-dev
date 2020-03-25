@@ -11,6 +11,12 @@ const dependencies = {
   legacy: {
     viewBuilder,
   },
+  unsavedChanges: {
+    hasUnsavedChanges: false,
+    setHasUnsavedChanges: (newValue: boolean) => {
+      dependencies.unsavedChanges.hasUnsavedChanges = newValue;
+    },
+  },
   user: userContext.get.bind(userContext),
   notify: messenger.notify.bind(messenger),
 };

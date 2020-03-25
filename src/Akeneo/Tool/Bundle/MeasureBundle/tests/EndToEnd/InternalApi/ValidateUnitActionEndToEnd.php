@@ -59,18 +59,46 @@ class ValidateUnitActionEndToEnd extends WebTestCase
         );
 
         $response = $this->requestValidationEndpoint($measurementFamilyCode, $unit);
+        $expectedResponse =
+<<<JSON
+[
+    {
+        "messageTemplate": "pim_measurements.validation.unit.code.must_be_unique",
+        "parameters": [],
+        "plural": null,
+        "message": "This unit code already exists.",
+        "root": {
+        "measurementFamilyCode": "Power",
+        "code": "WATT",
+        "labels": {
+            "en_US": "Custom unit",
+            "fr_FR": "Unité personalisée"
+        },
+        "convert_from_standard": [
+            {
+                "operator": "mul",
+                "value": "0.1"
+            }
+        ],
+        "symbol": "cu"
+        },
+        "propertyPath": "code",
+        "invalidValue": "WATT",
+        "constraint": {
+        "targets": "class",
+        "defaultOption": null,
+        "requiredOptions": [],
+        "message": "pim_measurements.validation.unit.code.must_be_unique",
+        "payload": null
+        },
+        "cause": null,
+        "code": null
+    }
+]
+JSON;
 
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame([
-            'code' => 422,
-            'message' => 'The unit cannot be added to the measurement family.',
-            'errors' => [
-                [
-                    'property' => 'code',
-                    'message' => 'This unit code already exists.',
-                ],
-            ],
-        ], json_decode($response->getContent(), true));
+        $this->assertEquals(json_decode($expectedResponse), json_decode($response->getContent()));
     }
 
     /**

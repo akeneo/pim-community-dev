@@ -7,12 +7,12 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\ValidateUnit\ValidateUnitCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -24,12 +24,12 @@ class ValidateUnitAction
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var ViolationNormalizer */
+    /** @var NormalizerInterface */
     private $violationNormalizer;
 
     public function __construct(
         ValidatorInterface $validator,
-        ViolationNormalizer $violationNormalizer
+        NormalizerInterface $violationNormalizer
     ) {
         $this->validator = $validator;
         $this->violationNormalizer = $violationNormalizer;
@@ -47,14 +47,12 @@ class ValidateUnitAction
         $validateUnitCommand = $this->createValidateUnitCommand($measurementFamilyCode, $decodedRequest);
 
         try {
-            $this->validateValidateUnitCommand($validateUnitCommand);
+            $violations = $this->validator->validate($validateUnitCommand);
+            if ($violations->count() > 0) {
+                return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
         } catch (MeasurementFamilyNotFoundException $ex) {
             return new Response(null, Response::HTTP_NOT_FOUND);
-        } catch (ViolationHttpException $exception) {
-            return new JsonResponse(
-                $this->violationNormalizer->normalize($exception),
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
         }
 
         return new Response(null, Response::HTTP_OK);
@@ -83,20 +81,5 @@ class ValidateUnitAction
         $command->symbol = $decodedRequest['symbol'];
 
         return $command;
-    }
-
-    /**
-     * @throws MeasurementFamilyNotFoundException
-     */
-    private function validateValidateUnitCommand(ValidateUnitCommand $command)
-    {
-        $violations = $this->validator->validate($command);
-
-        if (count($violations) > 0) {
-            throw new ViolationHttpException(
-                $violations,
-                'The unit cannot be added to the measurement family.'
-            );
-        }
     }
 }

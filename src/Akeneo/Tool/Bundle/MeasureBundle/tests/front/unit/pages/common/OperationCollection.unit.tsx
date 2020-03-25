@@ -109,7 +109,7 @@ test('I can add an operation', async () => {
       value: '25',
       operator: 'add',
     },
-    {value: '1', operator: 'mul'},
+    {value: '', operator: 'mul'},
   ]);
 });
 
@@ -274,7 +274,7 @@ test('It renders the given operations errors', async () => {
         <OperationCollection
           operations={operations}
           onOperationsChange={() => {}}
-          errors={[{property: '', message: 'message'}]}
+          errors={[{propertyPath: '', message: 'message'}]}
         />
       </AkeneoThemeProvider>,
       container

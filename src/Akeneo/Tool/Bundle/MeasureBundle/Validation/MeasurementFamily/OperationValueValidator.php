@@ -29,8 +29,8 @@ class OperationValueValidator extends ConstraintValidator
             [
                 new NotBlank(),
                 new Callback(
-                    function ($value, ExecutionContextInterface $context, $payload) {
-                        if (null !== $value && !is_numeric($value)) {
+                    function ($value, ExecutionContextInterface $context) {
+                        if (null !== $value && '' !== $value && !is_numeric($value)) {
                             $context->buildViolation(OperationValue::VALUE_SHOULD_BE_A_NUMBER_IN_A_STRING)
                                 ->addViolation();
                         }

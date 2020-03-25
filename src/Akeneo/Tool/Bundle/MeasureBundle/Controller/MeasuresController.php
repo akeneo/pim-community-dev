@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Controller;
 
+use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,9 +19,15 @@ class MeasuresController
     /** @var MeasurementFamilyRepositoryInterface */
     private $measurementFamilyRepository;
 
-    public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
-    {
+    /** @var IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily */
+    private $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
+
+    public function __construct(
+        MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
+        IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily
+    ) {
         $this->measurementFamilyRepository = $measurementFamilyRepository;
+        $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily = $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
     }
 
     /**
@@ -29,7 +36,11 @@ class MeasuresController
     public function indexAction()
     {
         $normalizedMeasurementFamilies = array_map(function (MeasurementFamily $family) {
-            return $family->normalize();
+            $normalizedMeasurementFamily = $family->normalize();
+            $normalizedMeasurementFamily['is_locked'] = $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily
+                ->execute($normalizedMeasurementFamily['code']);
+
+            return $normalizedMeasurementFamily;
         }, $this->measurementFamilyRepository->all());
 
         return new JsonResponse($normalizedMeasurementFamilies);

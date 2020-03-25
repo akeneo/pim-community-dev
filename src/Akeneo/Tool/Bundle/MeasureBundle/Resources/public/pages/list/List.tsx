@@ -15,7 +15,7 @@ import {UserContext} from 'akeneomeasure/context/user-context';
 import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
 import {Button} from 'akeneomeasure/shared/components/Button';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
-import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
+import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
 import {Direction} from 'akeneomeasure/model/direction';

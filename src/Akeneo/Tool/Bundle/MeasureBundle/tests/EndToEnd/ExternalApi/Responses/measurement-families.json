@@ -45,7 +45,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     }
                 ],
                 "symbol": "µrad"
@@ -87,7 +87,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "4.848137E-6"
+                        "value": "0.000004848137"
                     }
                 ],
                 "symbol": "\""
@@ -3916,7 +3916,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     }
                 ],
                 "symbol": "μl"
@@ -4417,7 +4417,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     }
                 ],
                 "symbol": "ml/s"
@@ -4431,7 +4431,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     },
                     {
                         "operator": "mul",
@@ -4449,7 +4449,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     },
                     {
                         "operator": "mul",
@@ -4467,7 +4467,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     },
                     {
                         "operator": "mul",
@@ -4485,7 +4485,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     }
                 ],
                 "symbol": "cm³/s"
@@ -4499,7 +4499,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     },
                     {
                         "operator": "mul",
@@ -4517,7 +4517,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     },
                     {
                         "operator": "mul",
@@ -4535,7 +4535,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     },
                     {
                         "operator": "mul",
@@ -4693,7 +4693,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     }
                 ],
                 "symbol": "μg"

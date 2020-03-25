@@ -1,4 +1,4 @@
-import React, {useState, useContext, useCallback} from 'react';
+import React, {useState, useContext, useCallback, useEffect} from 'react';
 import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-family';
@@ -10,7 +10,7 @@ import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
 import {Button} from 'akeneomeasure/shared/components/Button';
-import {getMeasurementFamilyLabel, addUnit} from 'akeneomeasure/model/measurement-family';
+import {getMeasurementFamilyLabel, addUnit, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Unit} from 'akeneomeasure/model/unit';
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
@@ -22,8 +22,12 @@ import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-con
 import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
 import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family-saver';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
-import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
+import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
+import {SubsectionHelper, HELPER_LEVEL_WARNING} from 'akeneomeasure/shared/components/SubsectionHelper';
+import {useUnsavedChanges} from 'akeneomeasure/shared/hooks/use-unsaved-changes';
+import {UnsavedChanges} from 'akeneomeasure/shared/components/UnsavedChanges';
+import {UnsavedChangesContext} from 'akeneomeasure/context/unsaved-changes-context';
 
 enum Tab {
   Units = 'units',
@@ -36,12 +40,15 @@ const Container = styled.div`
   display: flex;
 `;
 
-const TabContainer = styled.div`
+const TabsContainer = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Tabs = styled.div`
   display: flex;
   width: 100%;
   height: 50px;
   border-bottom: 1px solid ${props => props.theme.color.grey80};
-  margin-bottom: 20px;
 `;
 
 const TabSelector = styled.div<{isActive: boolean}>`
@@ -84,16 +91,26 @@ const Edit = () => {
   const notify = useContext(NotifyContext);
   const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useToggleState(false);
 
+  const {setHasUnsavedChanges} = useContext(UnsavedChangesContext);
+  const [isModified, resetState] = useUnsavedChanges<MeasurementFamily | null>(
+    measurementFamily,
+    __('pim_ui.flash.unsaved_changes')
+  );
+  useEffect(() => setHasUnsavedChanges(isModified), [isModified]);
+
   const handleSave = useCallback(async () => {
     if (null === measurementFamily) {
       return;
     }
+
+    setErrors([]);
 
     try {
       const response = await saveMeasurementFamily(measurementFamily);
 
       switch (response.success) {
         case true:
+          resetState();
           notify(NotificationLevel.SUCCESS, __('measurements.family.save.flash.success'));
           break;
 
@@ -107,12 +124,12 @@ const Edit = () => {
     }
   }, [measurementFamily, locale, saveMeasurementFamily, notify, __, setErrors]);
 
-  const handleNewUnit = useCallback((unit: Unit) => {
-    null !== measurementFamily && setMeasurementFamily(addUnit(measurementFamily, unit));
-  }, [
-    setMeasurementFamily,
-    measurementFamily,
-  ]);
+  const handleNewUnit = useCallback(
+    (unit: Unit) => {
+      null !== measurementFamily && setMeasurementFamily(addUnit(measurementFamily, unit));
+    },
+    [setMeasurementFamily, measurementFamily]
+  );
 
   if (undefined === measurementFamilyCode || null === measurementFamily) {
     return null;
@@ -120,13 +137,9 @@ const Edit = () => {
 
   return (
     <>
-      {isAddUnitModalOpen &&
-        <CreateUnit
-            measurementFamily={measurementFamily}
-            onClose={closeAddUnitModal}
-            onNewUnit={handleNewUnit}
-        />
-      }
+      {isAddUnitModalOpen && (
+        <CreateUnit measurementFamily={measurementFamily} onClose={closeAddUnitModal} onNewUnit={handleNewUnit} />
+      )}
 
       <PageHeader
         userButtons={
@@ -145,11 +158,7 @@ const Edit = () => {
               {__('measurements.family.delete')}
             </DropdownLink>
           </SecondaryActionsDropdownButton>,
-          <Button
-            color="blue"
-            outline={true}
-            onClick={openAddUnitModal}
-          >
+          <Button color="blue" outline={true} onClick={openAddUnitModal}>
             {__('measurements.unit.add')}
           </Button>,
           <Button onClick={handleSave}>{__('pim_common.save')}</Button>,
@@ -160,6 +169,7 @@ const Edit = () => {
             <BreadcrumbItem onClick={() => history.push('/')}>{__('pim_menu.item.measurements')}</BreadcrumbItem>
           </Breadcrumb>
         }
+        state={isModified && <UnsavedChanges />}
       >
         {null === measurementFamily ? (
           <div className={`AknLoadingPlaceHolderContainer`}>
@@ -171,14 +181,19 @@ const Edit = () => {
       </PageHeader>
 
       <PageContent>
-        <TabContainer>
-          {Object.values(Tab).map((tab: Tab) => (
-            <TabSelector key={tab} onClick={() => setCurrentTab(tab)} isActive={currentTab === tab}>
-              {__(`measurements.family.tab.${tab}`)}
-              {hasTabErrors(tab, errors) && <ErrorBadge />}
-            </TabSelector>
-          ))}
-        </TabContainer>
+        <TabsContainer>
+          <Tabs>
+            {Object.values(Tab).map((tab: Tab) => (
+              <TabSelector key={tab} onClick={() => setCurrentTab(tab)} isActive={currentTab === tab}>
+                {__(`measurements.family.tab.${tab}`)}
+                {hasTabErrors(tab, errors) && <ErrorBadge />}
+              </TabSelector>
+            ))}
+          </Tabs>
+          {measurementFamily.is_locked && (
+            <SubsectionHelper level={HELPER_LEVEL_WARNING}>{__('measurements.family.is_locked')}</SubsectionHelper>
+          )}
+        </TabsContainer>
         <Container>
           {currentTab === Tab.Units && (
             <UnitTab
