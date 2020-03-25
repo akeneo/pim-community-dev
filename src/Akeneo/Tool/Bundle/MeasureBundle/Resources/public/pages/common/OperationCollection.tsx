@@ -41,13 +41,17 @@ const StyledArrow = styled(SubArrowRightIcon)`
   margin: 0 4px 10px 2px;
 `;
 
-const OperationOperator = styled.span`
+const OperationOperator = styled.span<{readOnly: boolean}>`
   text-transform: uppercase;
   display: flex;
   align-items: center;
   padding-left: 10px;
   color: ${props => props.theme.color.grey100};
-  cursor: pointer;
+  ${props =>
+    !props.readOnly &&
+    css`
+      cursor: pointer;
+    `}
 
   span:first-child {
     margin-right: 10px;
@@ -174,7 +178,7 @@ const OperationCollection = ({
                     )
                   }
                 />
-                <OperationOperator onClick={() => setOpenOperatorSelector(index)}>
+                <OperationOperator readOnly={readOnly} onClick={() => !readOnly && setOpenOperatorSelector(index)}>
                   <span>{__(`measurements.unit.operator.${operation.operator}`)}</span>
                   {readOnly ? (
                     <LockIcon color={akeneoTheme.color.grey100} size={18} />
