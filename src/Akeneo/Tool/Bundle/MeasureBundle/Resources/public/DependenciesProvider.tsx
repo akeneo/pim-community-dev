@@ -5,6 +5,7 @@ import {UserContext, UserContextValue} from 'akeneomeasure/context/user-context'
 import {RouterContext, RouterContextValue} from 'akeneomeasure/context/router-context';
 import {NotifyContext, NotifyContextValue} from 'akeneomeasure/context/notify-context';
 import {UnsavedChangesContextValue, UnsavedChangesContext} from 'akeneomeasure/context/unsaved-changes-context';
+import {SecurityContext, SecurityContextValue} from 'akeneomeasure/context/security-context';
 
 type DependenciesProviderProps = {
   dependencies: {
@@ -14,21 +15,24 @@ type DependenciesProviderProps = {
     user: UserContextValue;
     router: RouterContextValue;
     notify: NotifyContextValue;
+    security: SecurityContextValue;
   };
 };
 
 const DependenciesProvider = ({dependencies, children}: PropsWithChildren<DependenciesProviderProps>) => (
   <StrictMode>
     <TranslateContext.Provider value={dependencies.translate}>
-      <LegacyContext.Provider value={dependencies.legacy}>
-        <UnsavedChangesContext.Provider value={dependencies.unsavedChanges}>
-          <UserContext.Provider value={dependencies.user}>
-            <RouterContext.Provider value={dependencies.router}>
-              <NotifyContext.Provider value={dependencies.notify}>{children}</NotifyContext.Provider>
-            </RouterContext.Provider>
-          </UserContext.Provider>
-        </UnsavedChangesContext.Provider>
-      </LegacyContext.Provider>
+      <SecurityContext.Provider value={dependencies.security}>
+        <LegacyContext.Provider value={dependencies.legacy}>
+          <UnsavedChangesContext.Provider value={dependencies.unsavedChanges}>
+            <UserContext.Provider value={dependencies.user}>
+              <RouterContext.Provider value={dependencies.router}>
+                <NotifyContext.Provider value={dependencies.notify}>{children}</NotifyContext.Provider>
+              </RouterContext.Provider>
+            </UserContext.Provider>
+          </UnsavedChangesContext.Provider>
+        </LegacyContext.Provider>
+      </SecurityContext.Provider>
     </TranslateContext.Provider>
   </StrictMode>
 );

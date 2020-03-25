@@ -28,6 +28,7 @@ import {Operation} from 'akeneomeasure/model/operation';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
+import {SecurityContext} from 'akeneomeasure/context/security-context';
 
 const UnitList = styled.div`
   flex: 1;
@@ -114,6 +115,7 @@ const UnitTab = ({
   onMeasurementFamilyChange: (measurementFamily: MeasurementFamily) => void;
 }) => {
   const __ = useContext(TranslateContext);
+  const isGranted = useContext(SecurityContext);
   const locale = useContext(UserContext)('uiLocale');
   const [searchValue, setSearchValue] = useState('');
   const [selectedUnitCode, selectUnitCode] = useState<UnitCode>(measurementFamily.standard_unit_code);
@@ -189,6 +191,7 @@ const UnitTab = ({
             id="measurements.unit.properties.symbol"
             label={__('measurements.unit.symbol')}
             value={selectedUnit.symbol}
+            readOnly={!isGranted('akeneo_measurements_measurement_unit_edit')}
             onChange={(event: FormEvent<HTMLInputElement>) =>
               onMeasurementFamilyChange(setUnitSymbol(measurementFamily, selectedUnit.code, event.currentTarget.value))
             }
@@ -196,7 +199,11 @@ const UnitTab = ({
           />
           <OperationCollection
             operations={selectedUnit.convert_from_standard}
-            readOnly={measurementFamily.is_locked || selectedUnit.code === measurementFamily.standard_unit_code}
+            readOnly={
+              !isGranted('akeneo_measurements_measurement_unit_edit') ||
+              measurementFamily.is_locked ||
+              selectedUnit.code === measurementFamily.standard_unit_code
+            }
             onOperationsChange={(operations: Operation[]) => {
               onMeasurementFamilyChange(setUnitOperations(measurementFamily, selectedUnit.code, operations));
             }}
@@ -213,6 +220,7 @@ const UnitTab = ({
                   label={locale.label}
                   key={locale.code}
                   flag={locale.code}
+                  readOnly={!isGranted('akeneo_measurements_measurement_unit_edit')}
                   value={selectedUnit.labels[locale.code] || ''}
                   onChange={(event: FormEvent<HTMLInputElement>) =>
                     onMeasurementFamilyChange(
@@ -224,13 +232,15 @@ const UnitTab = ({
               ))}
           </FormGroup>
         </FormGroup>
-        {!measurementFamily.is_locked && selectedUnitCode !== measurementFamily.standard_unit_code && (
-          <Footer>
-            <Button color="red" outline={true} onClick={openConfirmDeleteUnitModal}>
-              {__('measurements.unit.delete.button')}
-            </Button>
-          </Footer>
-        )}
+        {isGranted('akeneo_measurements_measurement_unit_delete') &&
+          !measurementFamily.is_locked &&
+          selectedUnitCode !== measurementFamily.standard_unit_code && (
+            <Footer>
+              <Button color="red" outline={true} onClick={openConfirmDeleteUnitModal}>
+                {__('measurements.unit.delete.button')}
+              </Button>
+            </Footer>
+          )}
       </UnitDetails>
     </>
   );

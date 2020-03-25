@@ -8,11 +8,12 @@ use Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteM
 use Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyHandler;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -27,18 +28,28 @@ class DeleteMeasurementFamilyAction
     /** @var DeleteMeasurementFamilyHandler */
     private $deleteMeasurementFamilyHandler;
 
+    /** @var SecurityFacade */
+    private $securityFacade;
+
     public function __construct(
         ValidatorInterface $validator,
-        DeleteMeasurementFamilyHandler $deleteMeasurementFamilyHandler
+        DeleteMeasurementFamilyHandler $deleteMeasurementFamilyHandler,
+        SecurityFacade $securityFacade
     ) {
-        $this->validator = $validator;
+        $this->validator                      = $validator;
         $this->deleteMeasurementFamilyHandler = $deleteMeasurementFamilyHandler;
+        $this->securityFacade                 = $securityFacade;
     }
 
     public function __invoke(Request $request, string $code): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+        if (!$this->securityFacade->isGranted('akeneo_measurements_manage_settings') ||
+            !$this->securityFacade->isGranted('akeneo_measurements_measurement_family_delete')
+        ) {
+            throw new AccessDeniedException();
         }
 
         try {
