@@ -412,6 +412,19 @@ jobs:
                 command: |
                     ENV_NAME=dev make deploy_pr_environment
 
+  delete_pr_environments:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: delete PR environment
+                command: |
+                    make delete_pr_environments
+
   test_back_missing_structure_migrations:
       machine:
         image: ubuntu-1604:201903-01
@@ -538,6 +551,21 @@ workflows:
       jobs:
           - checkout
           - deploy_helpdesk_environment:
+                requires:
+                    - checkout
+
+  nightly_cleanup:
+      triggers:
+          - schedule:
+                cron: "0 0 * * *"
+                filters:
+                    branches:
+                        only:
+                            - master
+
+      jobs:
+          - checkout
+          - delete_pr_environments:
                 requires:
                     - checkout
 
