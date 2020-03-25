@@ -110,7 +110,7 @@ const List = () => {
             <HelperText>
               {__('measurements.helper.text')}
               <br />
-              <Link href="https://help.akeneo.com/" target="_blank">
+              <Link href="https://help.akeneo.com/pim/articles/what-about-measurements.html" target="_blank">
                 {__('measurements.helper.link')}
               </Link>
             </HelperText>
