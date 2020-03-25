@@ -38,24 +38,22 @@ final class ClearerRegistry implements ClearerRegistryInterface
      */
     public function register(ClearerInterface $clearer): void
     {
+        if (!$clearer instanceof AttributeClearerInterface && !$clearer instanceof FieldClearerInterface) {
+            throw new \InvalidArgumentException(sprintf(
+                'Clearer must be an instance of %s or %s, %s given.',
+                AttributeClearerInterface::class,
+                FieldClearerInterface::class,
+                get_class($clearer)
+            ));
+        }
+
         if ($clearer instanceof AttributeClearerInterface) {
             $this->attributeClearers[] = $clearer;
-
-            return;
         }
 
         if ($clearer instanceof FieldClearerInterface) {
             $this->fieldClearers[] = $clearer;
-
-            return;
         }
-
-        throw new \InvalidArgumentException(sprintf(
-            'Clearer must be an instance of %s or %s, %s given.',
-            AttributeClearerInterface::class,
-            FieldClearerInterface::class,
-            get_class($clearer)
-        ));
     }
 
     /**
