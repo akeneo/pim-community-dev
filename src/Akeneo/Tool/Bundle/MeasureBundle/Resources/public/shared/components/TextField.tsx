@@ -1,10 +1,9 @@
-import React, {ChangeEventHandler, InputHTMLAttributes, useContext} from 'react';
+import React, {ChangeEventHandler, InputHTMLAttributes, RefObject, useContext} from 'react';
 import styled, {css, ThemeContext} from 'styled-components';
 import {ValidationError} from 'akeneomeasure/model/validation-error';
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Flag} from 'akeneomeasure/shared/components/Flag';
-import {useFocus} from 'akeneomeasure/shared/hooks/use-focus';
 import {LockIcon} from 'akeneomeasure/shared/icons/LockIcon';
 
 const Input = styled.input`
@@ -40,7 +39,7 @@ type TextFieldProps = {
   id: string;
   label: string;
   required?: boolean;
-  autofocus?: boolean;
+  readOnly?: boolean;
 
   value: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
@@ -49,21 +48,21 @@ type TextFieldProps = {
   flag?: string;
 };
 
-const TextField = ({
+const TextField = React.forwardRef(({
   id,
   label,
   required = false,
-  autofocus = false,
+  readOnly = false,
   value,
   onChange,
   errors,
   flag,
-  readOnly,
   ...props
-}: TextFieldProps & InputHTMLAttributes<HTMLInputElement>) => {
+}: TextFieldProps & InputHTMLAttributes<HTMLInputElement>,
+  ref: RefObject<HTMLInputElement>
+) => {
   const __ = useContext(TranslateContext);
   const akeneoTheme = useContext(ThemeContext);
-  const [focusRef] = useFocus();
 
   return (
     <div className="AknFieldContainer">
@@ -75,7 +74,7 @@ const TextField = ({
       </div>
       <InputContainer readOnly={readOnly} invalid={undefined !== errors && 0 < errors.length}>
         <Input
-          ref={autofocus ? focusRef : undefined}
+          ref={ref}
           readOnly={readOnly}
           id={id}
           value={value}
@@ -89,6 +88,6 @@ const TextField = ({
       <InputErrors errors={errors} />
     </div>
   );
-};
+});
 
 export {TextField, Input, InputContainer};

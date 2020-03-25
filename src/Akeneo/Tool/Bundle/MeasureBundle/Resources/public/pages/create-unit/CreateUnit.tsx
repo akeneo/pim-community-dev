@@ -1,4 +1,4 @@
-import React, {FormEvent, useCallback, useContext, useState} from 'react';
+import React, {FormEvent, useCallback, useContext, useRef, useState} from 'react';
 import {Modal, ModalBodyWithIllustration, ModalCloseButton, ModalTitle} from 'akeneomeasure/shared/components/Modal';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {UserContext} from 'akeneomeasure/context/user-context';
@@ -25,6 +25,7 @@ import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-con
 import {Operation} from 'akeneomeasure/model/operation';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {ConfigContext, ConfigContextValue} from 'akeneomeasure/context/config-context';
+import {useAutoFocus} from 'akeneomeasure/shared/hooks/use-auto-focus';
 
 type CreateUnitProps = {
   measurementFamily: MeasurementFamily;
@@ -49,6 +50,9 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   const measurementFamilyLabel = getMeasurementFamilyLabel(measurementFamily, locale);
   const measurementFamilyCode = measurementFamily.code;
 
+  const firstFieldRef = useRef<HTMLInputElement | null>(null);
+  const focusFirstField = useAutoFocus(firstFieldRef);
+
   const handleAdd = useCallback(async () => {
     try {
       setErrors([]);
@@ -59,6 +63,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
       switch (response.valid) {
         case true:
           onNewUnit(unit);
+          focusFirstField();
           createAnotherUnit ? clearForm() : handleClose();
           break;
 
@@ -84,6 +89,8 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   ]);
 
   useShortcut(Key.Escape, handleClose);
+  useShortcut(Key.Enter, handleAdd);
+  useShortcut(Key.NumpadEnter, handleAdd);
 
   return (
     <Modal>
@@ -101,6 +108,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
           )}
           <FormGroup>
             <TextField
+              ref={firstFieldRef}
               id="measurements.unit.create.code"
               label={__('pim_common.code')}
               value={form.code}
