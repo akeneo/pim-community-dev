@@ -1,6 +1,7 @@
 import React, {useState, useContext, useCallback, useEffect, ChangeEvent} from 'react';
 import styled, {css, ThemeContext} from 'styled-components';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
+import {ConfigContext, ConfigContextValue} from 'akeneomeasure/context/config-context';
 import {Button, TransparentButton} from 'akeneomeasure/shared/components/Button';
 import {DownIcon} from 'akeneomeasure/shared/icons/DownIcon';
 import {LockIcon} from 'akeneomeasure/shared/icons/LockIcon';
@@ -8,7 +9,7 @@ import {CloseIcon} from 'akeneomeasure/shared/icons/CloseIcon';
 import {SubArrowRightIcon} from 'akeneomeasure/shared/icons/SubArrowRightIcon';
 import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
-import {Operation, Operator, emptyOperation, MAX_OPERATION_COUNT} from 'akeneomeasure/model/operation';
+import {Operation, Operator, emptyOperation} from 'akeneomeasure/model/operation';
 import {ValidationError, filterErrors, getErrorsForPath} from 'akeneomeasure/model/validation-error';
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 import {Input, InputContainer} from 'akeneomeasure/shared/components/TextField';
@@ -135,6 +136,7 @@ const OperationCollection = ({
 }: OperationCollectionProps) => {
   const __ = useContext(TranslateContext);
   const akeneoTheme = useContext(ThemeContext);
+  const config = useContext(ConfigContext) as ConfigContextValue;
   const [openOperatorSelector, setOpenOperatorSelector] = useState<number | null>(null);
   const [formatNumber, unformatNumber] = useLocalizedNumber();
 
@@ -235,7 +237,7 @@ const OperationCollection = ({
           <Button
             color="grey"
             outline={true}
-            disabled={MAX_OPERATION_COUNT <= operations.length}
+            disabled={config.operations_max <= operations.length}
             onClick={() => onOperationsChange([...operations, emptyOperation()])}
           >
             {__('measurements.unit.operation.add')}

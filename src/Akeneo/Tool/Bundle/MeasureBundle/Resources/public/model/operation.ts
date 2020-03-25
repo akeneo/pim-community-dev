@@ -1,5 +1,3 @@
-const MAX_OPERATION_COUNT = 5;
-
 enum Operator {
   MUL = 'mul',
   DIV = 'div',
@@ -17,4 +15,4 @@ const emptyOperation = (): Operation => ({
   value: '',
 });
 
-export {MAX_OPERATION_COUNT, Operation, Operator, emptyOperation};
+export {Operation, Operator, emptyOperation};

@@ -24,6 +24,7 @@ import {CheckboxField} from 'akeneomeasure/shared/components/CheckboxField';
 import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
 import {Operation} from 'akeneomeasure/model/operation';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
+import {ConfigContext, ConfigContextValue} from 'akeneomeasure/context/config-context';
 
 type CreateUnitProps = {
   measurementFamily: MeasurementFamily;
@@ -35,6 +36,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   const __ = useContext(TranslateContext);
   const notify = useContext(NotifyContext);
   const locale = useContext(UserContext)('uiLocale');
+  const config = useContext(ConfigContext) as ConfigContextValue;
 
   const [form, setFormValue, clearForm] = useForm<CreateUnitForm>(initializeCreateUnitForm());
   const validate = useCreateUnitValidator();
@@ -134,7 +136,12 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
             />
           </FormGroup>
         </Subsection>
-        <Button onClick={handleAdd}>{__('pim_common.add')}</Button>
+        <Button
+          onClick={handleAdd}
+          disabled={config.units_max <= measurementFamily.units.length}
+        >
+          {__('pim_common.add')}
+        </Button>
       </ModalBodyWithIllustration>
     </Modal>
   );

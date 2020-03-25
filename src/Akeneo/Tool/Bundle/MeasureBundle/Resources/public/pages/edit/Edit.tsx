@@ -34,6 +34,7 @@ import {
 } from 'akeneomeasure/hooks/use-measurement-family-remover';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {SecurityContext} from 'akeneomeasure/context/security-context';
+import {ConfigContext, ConfigContextValue} from 'akeneomeasure/context/config-context';
 
 enum Tab {
   Units = 'units',
@@ -90,6 +91,7 @@ const Edit = () => {
   const history = useHistory();
   const locale = useContext(UserContext)('uiLocale');
   const isGranted = useContext(SecurityContext);
+  const config = useContext(ConfigContext) as ConfigContextValue;
   const {measurementFamilyCode} = useParams() as {measurementFamilyCode: string};
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.Units);
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
@@ -196,7 +198,12 @@ const Edit = () => {
 
   if (isGranted('akeneo_measurements_measurement_unit_add')) {
     buttons.push(
-      <Button color="blue" outline={true} onClick={openAddUnitModal}>
+      <Button
+        color="blue"
+        outline={true}
+        onClick={openAddUnitModal}
+        disabled={config.units_max <= measurementFamily.units.length}
+      >
         {__('measurements.unit.add')}
       </Button>
     );
