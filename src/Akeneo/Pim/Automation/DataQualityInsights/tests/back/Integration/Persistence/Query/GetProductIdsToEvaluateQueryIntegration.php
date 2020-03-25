@@ -45,14 +45,19 @@ class GetProductIdsToEvaluateQueryIntegration extends TestCase
         $this->repository = $this->get(CriterionEvaluationRepository::class);
     }
 
-    public function test_it_returns_all_product_id_with_pending_criteria()
+    public function test_it_returns_all_product_id_with_pending_criteria_and_ignores_unknown_products()
     {
         $this->assertEquals([], iterator_to_array($this->query->execute(4, 2)));
-        $this->createDataset();
+
+        $product1Id = $this->createProduct('p1');
+        $product2Id = $this->createProduct('p2');
+        $product3Id = $this->createProduct('p3');
+        $product4Id = $this->createProduct('p4');
+        $this->createDataset($product1Id, $product2Id, $product3Id, $product4Id);
 
         $expectedProductIds = [
-            [42, 123],
-            [456, 321],
+            [$product1Id->toInt(), $product2Id->toInt()],
+            [$product3Id->toInt(), $product4Id->toInt()],
         ];
 
         $productIds = iterator_to_array($this->query->execute(4, 2));
@@ -60,34 +65,41 @@ class GetProductIdsToEvaluateQueryIntegration extends TestCase
         $this->assertEqualsCanonicalizing($expectedProductIds, $productIds);
     }
 
-    private function createDataset(): void
+    private function createDataset(ProductId $product1Id, ProductId $product2Id, ProductId $product3Id, ProductId $product4Id): void
     {
         $criteria = (new CriterionEvaluationCollection)
             ->add(new CriterionEvaluation(
+                new CriterionEvaluationId('9a7e76b6-220d-498d-aa97-3db425f2fa25'),
+                new CriterionCode('completeness'),
+                new ProductId(9999),
+                new \DateTimeImmutable('2019-10-28 10:41:56.001'),
+                CriterionEvaluationStatus::pending()
+            ))
+            ->add(new CriterionEvaluation(
                 new CriterionEvaluationId('95f124de-45cd-495e-ac58-349086ad6cd4'),
                 new CriterionCode('completeness'),
-                new ProductId(42),
+                $product1Id,
                 new \DateTimeImmutable('2019-10-28 10:41:56.123'),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new CriterionEvaluation(
                 new CriterionEvaluationId('d7bcae1e-30c9-4626-9c4f-d06cae03e77e'),
                 new CriterionCode('completion'),
-                new ProductId(123),
+                $product2Id,
                 new \DateTimeImmutable('2019-10-28 10:41:57.987'),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new CriterionEvaluation(
                 new CriterionEvaluationId('dd292dbf-4c15-4b17-87ac-98997859d8af'),
                 new CriterionCode('completion'),
-                new ProductId(123),
+                $product2Id,
                 new \DateTimeImmutable('2019-10-28 10:41:56.987'),
                 CriterionEvaluationStatus::done()
             ))
             ->add(new CriterionEvaluation(
                 new CriterionEvaluationId('8c94ed27-1394-4bce-8167-a81fe363b061'),
                 new CriterionCode('completion'),
-                new ProductId(456),
+                $product3Id,
                 new \DateTimeImmutable('2019-10-28 10:41:58.987'),
                 CriterionEvaluationStatus::pending()
             ))
@@ -101,7 +113,7 @@ class GetProductIdsToEvaluateQueryIntegration extends TestCase
             ->add(new CriterionEvaluation(
                 new CriterionEvaluationId('46f6cfd0-ea65-4521-b572-629ca8057d2f'),
                 new CriterionCode('completion'),
-                new ProductId(321),
+                $product4Id,
                 new \DateTimeImmutable('2019-10-28 10:41:59.234'),
                 CriterionEvaluationStatus::pending()
             ))
@@ -113,6 +125,16 @@ class GetProductIdsToEvaluateQueryIntegration extends TestCase
                 CriterionEvaluationStatus::pending()
             ));
         $this->repository->create($criteria);
+    }
+
+    private function createProduct(string $identifier)
+    {
+        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
+            ->withIdentifier($identifier)
+            ->build();
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        return new ProductId((int) $product->getId());
     }
 
     protected function getConfiguration()
