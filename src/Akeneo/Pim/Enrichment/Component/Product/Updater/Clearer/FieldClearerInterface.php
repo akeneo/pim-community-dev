@@ -13,5 +13,8 @@ interface FieldClearerInterface extends ClearerInterface
 {
     public function supportsField(string $field): bool;
 
+    /**
+     * Clears the field value of the entity.
+     */
     public function clear($entity, string $field, array $options = []): void;
 }

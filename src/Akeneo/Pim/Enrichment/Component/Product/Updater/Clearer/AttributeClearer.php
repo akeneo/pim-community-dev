@@ -21,6 +21,9 @@ final class AttributeClearer implements AttributeClearerInterface
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function clear(EntityWithValuesInterface $entity, Attribute $attribute, array $options = []): void
     {
         $value = $entity->getValue($attribute->code(), $options['locale'] ?? null, $options['scope'] ?? null);

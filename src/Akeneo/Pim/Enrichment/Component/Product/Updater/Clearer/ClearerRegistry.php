@@ -18,10 +18,10 @@ final class ClearerRegistry implements ClearerRegistryInterface
     /** @var GetAttributes */
     private $getAttributes;
 
-    /** @var array */
+    /** @var AttributeClearerInterface[] */
     private $attributeClearers = [];
 
-    /** @var array */
+    /** @var FieldClearerInterface[] */
     private $fieldClearers = [];
 
     public function __construct(GetAttributes $getAttributes, iterable $clearers)
@@ -33,6 +33,9 @@ final class ClearerRegistry implements ClearerRegistryInterface
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function register(ClearerInterface $clearer): void
     {
         if ($clearer instanceof AttributeClearerInterface) {
@@ -55,6 +58,9 @@ final class ClearerRegistry implements ClearerRegistryInterface
         ));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getClearer(string $property): ?ClearerInterface
     {
         $attribute = $this->getAttributes->forCode($property);
@@ -65,6 +71,9 @@ final class ClearerRegistry implements ClearerRegistryInterface
         return $this->getFieldClearer($property);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getAttributeClearer(Attribute $attribute): ?AttributeClearerInterface
     {
         foreach ($this->attributeClearers as $clearer) {
@@ -76,6 +85,9 @@ final class ClearerRegistry implements ClearerRegistryInterface
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getFieldClearer(string $field): ?FieldClearerInterface
     {
         foreach ($this->fieldClearers as $clearer) {
