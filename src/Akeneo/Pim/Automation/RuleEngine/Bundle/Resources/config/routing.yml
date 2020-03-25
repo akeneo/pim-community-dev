@@ -38,7 +38,7 @@ pimee_enrich_rule_definition_get:
     methods: [GET]
 
 pimee_enrich_rule_definition_create:
-    path: /rest/rule_definition/{ruleCode}
+    path: /rest/rule_definition/
     defaults: { _controller: pimee_enrich.controller.rule_definition.create }
     methods: [PUT]
 

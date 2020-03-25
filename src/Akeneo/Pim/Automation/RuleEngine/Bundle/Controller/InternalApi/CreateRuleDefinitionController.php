@@ -16,7 +16,6 @@ namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ViolationNormalizer;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,27 +31,27 @@ class CreateRuleDefinitionController
     /** @var RuleDefinitionSaver */
     private $ruleDefinitionSaver;
 
+    /** @var NormalizerInterface */
+    private $normalizer;
+
     /** @var ValidatorInterface */
     private $validator;
 
     /** @var ViolationNormalizer */
     private $violationNormalizer;
 
-    /** @var NormalizerInterface */
-    private $normalizer;
-
     public function __construct(
         ObjectUpdaterInterface $ruleDefinitionUpdater,
         RuleDefinitionSaver $ruleDefinitionSaver,
+        NormalizerInterface $normalizer,
         ValidatorInterface $validator,
-        ViolationNormalizer $violationNormalizer,
-        NormalizerInterface $normalizer
+        ViolationNormalizer $violationNormalizer
     ) {
         $this->ruleDefinitionUpdater = $ruleDefinitionUpdater;
         $this->ruleDefinitionSaver = $ruleDefinitionSaver;
+        $this->normalizer = $normalizer;
         $this->validator = $validator;
         $this->violationNormalizer = $violationNormalizer;
-        $this->normalizer = $normalizer;
     }
 
     public function __invoke(Request $request)

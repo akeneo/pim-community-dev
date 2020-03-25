@@ -35,29 +35,29 @@ class UpdateRuleDefinitionController
     /** @var RuleDefinitionSaver */
     private $ruleDefinitionSaver;
 
+    /** @var NormalizerInterface */
+    private $normalizer;
+
     /** @var ValidatorInterface */
     private $validator;
 
     /** @var ViolationNormalizer */
     private $violationNormalizer;
 
-    /** @var NormalizerInterface */
-    private $normalizer;
-
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
         ObjectUpdaterInterface $ruleDefinitionUpdater,
         RuleDefinitionSaver $ruleDefinitionSaver,
+        NormalizerInterface $normalizer,
         ValidatorInterface $validator,
-        ViolationNormalizer $violationNormalizer,
-        NormalizerInterface $normalizer
+        ViolationNormalizer $violationNormalizer
     ) {
         $this->ruleDefinitionRepository = $ruleDefinitionRepository;
         $this->ruleDefinitionUpdater = $ruleDefinitionUpdater;
         $this->ruleDefinitionSaver = $ruleDefinitionSaver;
+        $this->normalizer = $normalizer;
         $this->validator = $validator;
         $this->violationNormalizer = $violationNormalizer;
-        $this->normalizer = $normalizer;
     }
 
     public function __invoke(string $ruleDefinitionCode, Request $request)

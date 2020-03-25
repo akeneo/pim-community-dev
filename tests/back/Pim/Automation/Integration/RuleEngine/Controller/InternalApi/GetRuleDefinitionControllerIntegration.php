@@ -92,7 +92,6 @@ class GetRuleControllerIntegration extends ControllerIntegrationTestCase
         );
     }
 
-
     private function loadFixtures()
     {
         $ruleDefinitions = [];
@@ -115,7 +114,7 @@ class GetRuleControllerIntegration extends ControllerIntegrationTestCase
             ->setType('add')
         ;
 
-        foreach($ruleDefinitions as $ruleDefinition) {
+        foreach ($ruleDefinitions as $ruleDefinition) {
             $this->ruleDefinitionRepository->save($ruleDefinition);
         }
     }
