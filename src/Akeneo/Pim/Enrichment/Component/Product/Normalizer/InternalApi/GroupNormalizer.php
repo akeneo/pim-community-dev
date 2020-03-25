@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -32,22 +33,21 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     /** @var NormalizerInterface */
     protected $versionNormalizer;
 
-    /**
-     * @param NormalizerInterface               $groupNormalizer
-     * @param StructureVersionProviderInterface $structureVersionProvider
-     * @param VersionManager                    $versionManager
-     * @param NormalizerInterface               $versionNormalizer
-     */
+    /** @var GetGroupProductIdentifiers */
+    private $getGroupProductIdentifiers;
+
     public function __construct(
         NormalizerInterface $groupNormalizer,
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
-        NormalizerInterface $versionNormalizer
+        NormalizerInterface $versionNormalizer,
+        GetGroupProductIdentifiers $getGroupProductIdentifiers
     ) {
         $this->groupNormalizer = $groupNormalizer;
         $this->structureVersionProvider = $structureVersionProvider;
         $this->versionManager = $versionManager;
         $this->versionNormalizer = $versionNormalizer;
+        $this->getGroupProductIdentifiers = $getGroupProductIdentifiers;
     }
 
     /**
@@ -57,10 +57,7 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     {
         $normalizedGroup = $this->groupNormalizer->normalize($group, 'standard', $context);
 
-        $normalizedGroup['products'] = [];
-        foreach ($group->getProducts() as $product) {
-            $normalizedGroup['products'][] = $product->getIdentifier();
-        }
+        $normalizedGroup['products'] = $this->getGroupProductIdentifiers->byGroupId($group->getId());
 
         $firstVersion = $this->versionManager->getOldestLogEntry($group);
         $lastVersion = $this->versionManager->getNewestLogEntry($group);

@@ -261,3 +261,8 @@ services:
         class: 'Akeneo\Channel\Bundle\Doctrine\Query\GetChannelActiveLocaleCodes'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.group.query.get_group_product_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Group\SqlGetGroupProductIdentifiers'
+        arguments:
+            - '@database_connection'
