@@ -108,7 +108,7 @@ const Edit = () => {
   useEffect(() => setHasUnsavedChanges(isModified), [isModified]);
 
   const saveMeasurementFamily = useSaveMeasurementFamilySaver();
-  const saveMeasurementFamilyHandler = useCallback(async () => {
+  const handleSaveMeasurementFamily = useCallback(async () => {
     if (null === measurementFamily) {
       return;
     }
@@ -132,10 +132,10 @@ const Edit = () => {
       console.error(error);
       notify(NotificationLevel.ERROR, __('measurements.family.save.flash.error'));
     }
-  }, [measurementFamily, locale, saveMeasurementFamily, notify, __, setErrors]);
+  }, [measurementFamily, locale, saveMeasurementFamily, notify, __, setErrors, resetState]);
 
   const removeMeasurementFamily = useMeasurementFamilyRemover();
-  const removeMeasurementFamilyHandler = useCallback(async () => {
+  const handleRemoveMeasurementFamily = useCallback(async () => {
     try {
       const response = await removeMeasurementFamily(measurementFamilyCode);
 
@@ -146,16 +146,22 @@ const Edit = () => {
           break;
         case MeasurementFamilyRemoverResult.NotFound:
         case MeasurementFamilyRemoverResult.Unprocessable:
-          break;
+          throw Error(`Error while deleting the measurement family: ${response}`);
       }
     } catch (error) {
       console.error(error);
       notify(NotificationLevel.ERROR, __('measurements.family.delete.flash.error'));
     }
-  }, [measurementFamilyCode, removeMeasurementFamily, history]);
+  }, [measurementFamilyCode, removeMeasurementFamily, history, notify, __]);
 
-  const newUnitHandler = useCallback(
-    (unit: Unit) => null !== measurementFamily && setMeasurementFamily(addUnit(measurementFamily, unit)),
+  const handleNewUnit = useCallback(
+    (unit: Unit) => {
+      if (null === measurementFamily) {
+        return;
+      }
+
+      setMeasurementFamily(addUnit(measurementFamily, unit));
+    },
     [setMeasurementFamily, measurementFamily]
   );
 
@@ -166,13 +172,13 @@ const Edit = () => {
   return (
     <>
       {isAddUnitModalOpen && (
-        <CreateUnit measurementFamily={measurementFamily} onClose={closeAddUnitModal} onNewUnit={newUnitHandler} />
+        <CreateUnit measurementFamily={measurementFamily} onClose={closeAddUnitModal} onNewUnit={handleNewUnit} />
       )}
 
       {isConfirmDeleteMeasurementFamilyModalOpen && (
         <ConfirmDeleteModal
           description={__('measurements.family.delete.confirm')}
-          onConfirm={removeMeasurementFamilyHandler}
+          onConfirm={handleRemoveMeasurementFamily}
           onCancel={closeConfirmDeleteMeasurementFamilyModal}
         />
       )}
@@ -197,7 +203,7 @@ const Edit = () => {
           <Button color="blue" outline={true} onClick={openAddUnitModal}>
             {__('measurements.unit.add')}
           </Button>,
-          <Button onClick={saveMeasurementFamilyHandler}>{__('pim_common.save')}</Button>,
+          <Button onClick={handleSaveMeasurementFamily}>{__('pim_common.save')}</Button>,
         ]}
         breadcrumb={
           <Breadcrumb>
