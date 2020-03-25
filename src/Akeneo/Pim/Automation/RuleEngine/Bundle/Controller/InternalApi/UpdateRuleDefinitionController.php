@@ -18,6 +18,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSave
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -60,8 +61,12 @@ class UpdateRuleDefinitionController
         $this->violationNormalizer = $violationNormalizer;
     }
 
-    public function __invoke(string $ruleDefinitionCode, Request $request)
+    public function __invoke(string $ruleDefinitionCode, Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $ruleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier($ruleDefinitionCode);
         if (null === $ruleDefinition) {
             throw new NotFoundHttpException(sprintf('The rule definition "%s" is not found', $ruleDefinitionCode));

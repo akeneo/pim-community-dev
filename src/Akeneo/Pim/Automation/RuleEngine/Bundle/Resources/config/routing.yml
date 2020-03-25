@@ -40,11 +40,11 @@ pimee_enrich_rule_definition_get:
 pimee_enrich_rule_definition_create:
     path: /rest/rule_definition/
     defaults: { _controller: pimee_enrich.controller.rule_definition.create }
-    methods: [PUT]
+    methods: [POST]
 
 pimee_enrich_rule_definition_update:
     path: /rest/rule_definition/{ruleCode}
     defaults: { _controller: pimee_enrich.controller.rule_definition.update }
     requirements:
         ruleCode: '[a-z0-9_]+'
-    methods: [POST]
+    methods: [PUT]

@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ViolationNormalizer;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -37,30 +38,30 @@ class CreateRuleDefinitionController
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var ViolationNormalizer */
-    private $violationNormalizer;
-
     public function __construct(
         ObjectUpdaterInterface $ruleDefinitionUpdater,
         RuleDefinitionSaver $ruleDefinitionSaver,
         NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        ViolationNormalizer $violationNormalizer
+        ValidatorInterface $validator
     ) {
         $this->ruleDefinitionUpdater = $ruleDefinitionUpdater;
         $this->ruleDefinitionSaver = $ruleDefinitionSaver;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
-        $this->violationNormalizer = $violationNormalizer;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
+        $content = json_decode($request->getContent(), true);
         $ruleDefinition = new RuleDefinition();
-        $this->ruleDefinitionUpdater->update($ruleDefinition, json_decode($request->getContent(), true));
+        $this->ruleDefinitionUpdater->update($ruleDefinition, $content);
         $violations = $this->validator->validate($ruleDefinition);
         if (0 < $violations->count()) {
-            $errors = $this->violationNormalizer->normalize($violations, 'internal_api');
+            $errors = $this->normalizer->normalize($violations, 'internal_api');
 
             return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
         }

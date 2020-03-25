@@ -24,9 +24,23 @@ class RuleDefinitionUpdater implements ObjectUpdaterInterface
         Assert::isInstanceOf($ruleDefinition, RuleDefinitionInterface::class);
 
         /** @var $ruleDefinition RuleDefinitionInterface */
-        $ruleDefinition->setCode($data['code']);
-        $ruleDefinition->setType($data['type']);
-        $ruleDefinition->setPriority($data['priority']);
-        $ruleDefinition->setContent($data['content']);
+        foreach ($data as $key => $value) {
+            switch ($key) {
+                case 'code':
+                    $ruleDefinition->setCode($data['code']);
+                    break;
+                case 'type':
+                    $ruleDefinition->setType($data['type']);
+                    break;
+                case 'priority':
+                    $ruleDefinition->setPriority($data['priority']);
+                    break;
+                case 'content':
+                    $ruleDefinition->setContent($data['content']);
+                    break;
+                default:
+                    throw new \InvalidArgumentException(sprintf('Unknown property "%s"', $key));
+            }
+        }
     }
 }

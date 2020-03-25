@@ -35,9 +35,8 @@ services:
         arguments:
             - '@akeneo_rule_engine.updater.rule_definition'
             - '@akeneo_rule_engine.saver.rule_definition'
-            - '@akeneo_rule_engine.normalizer.rule_definition'
+            - '@serializer'
             - '@validator'
-            - '@pim_enrich.normalizer.violation'
 
     pimee_enrich.controller.rule_definition.update:
         class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\UpdateRuleDefinitionController'

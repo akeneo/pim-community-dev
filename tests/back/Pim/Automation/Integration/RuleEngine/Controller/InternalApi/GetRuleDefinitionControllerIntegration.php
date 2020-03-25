@@ -8,16 +8,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-class GetRuleControllerIntegration extends ControllerIntegrationTestCase
+class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCase
 {
     private $webClientHelper;
     private $ruleDefinitionRepository;
