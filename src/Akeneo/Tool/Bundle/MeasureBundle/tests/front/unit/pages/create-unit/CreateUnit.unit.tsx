@@ -154,7 +154,7 @@ test('I can submit invalid values and have the errors displayed.', async () => {
   ]);
   const mockFetch = jest.fn().mockImplementationOnce(() => ({
     ok: false,
-    json: () => Promise.resolve({errors}),
+    json: () => Promise.resolve(errors),
   }));
   const mockOnClose = jest.fn();
   const mockOnNewUnit = jest.fn();
