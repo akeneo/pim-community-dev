@@ -32,7 +32,7 @@ const useCreateUnitValidator = (): Validator => {
     if (!response.ok) {
       return {
         valid: false,
-        errors: (await response.json()).errors,
+        errors: await response.json(),
       };
     }
 
