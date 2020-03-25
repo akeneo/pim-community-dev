@@ -16,6 +16,12 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
  */
 interface AttributeClearerInterface extends ClearerInterface
 {
+    /**
+     * Returns true if the clearer supports the given attribute.
+     *
+     * @param Attribute $attribute
+     * @return bool
+     */
     public function supportsAttribute(Attribute $attribute): bool;
 
     /**

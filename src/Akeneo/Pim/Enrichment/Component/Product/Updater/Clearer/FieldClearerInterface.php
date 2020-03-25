@@ -13,6 +13,12 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer;
  */
 interface FieldClearerInterface extends ClearerInterface
 {
+    /**
+     * Returns true if the clearer supports the given field.
+     *
+     * @param string $field
+     * @return bool
+     */
     public function supportsField(string $field): bool;
 
     /**
