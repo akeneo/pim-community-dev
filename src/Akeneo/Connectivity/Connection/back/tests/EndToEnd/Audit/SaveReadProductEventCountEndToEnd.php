@@ -36,7 +36,7 @@ class SaveReadProductEventCountEndToEnd extends ApiTestCase
 
         sleep(1); // we have to wait for ES indexation
 
-        $apiConnection = $this->createConnection('ecommerce', 'Ecommerce',FlowType::DATA_DESTINATION);
+        $apiConnection = $this->createConnection('ecommerce', 'Ecommerce', FlowType::DATA_DESTINATION);
 
         $apiClient = $this->createAuthenticatedClient(
             [],
@@ -60,8 +60,8 @@ class SaveReadProductEventCountEndToEnd extends ApiTestCase
 
         sleep(1); // we have to wait for ES indexation
 
-        $apiConnectionEcommerce = $this->createConnection('ecommerce', 'Ecommerce',FlowType::DATA_DESTINATION);
-        $this->createConnection('magento', 'Magento',FlowType::DATA_DESTINATION);
+        $apiConnectionEcommerce = $this->createConnection('ecommerce', 'Ecommerce', FlowType::DATA_DESTINATION);
+        $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
 
         $apiClient = $this->createAuthenticatedClient(
             [],
