@@ -17,7 +17,7 @@ const initializeCreateUnitForm = () => {
     operations: [
       {
         operator: Operator.MUL,
-        value: '1',
+        value: '',
       },
     ],
   });

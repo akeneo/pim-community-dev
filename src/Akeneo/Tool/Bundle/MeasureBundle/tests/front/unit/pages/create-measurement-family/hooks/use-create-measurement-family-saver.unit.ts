@@ -33,6 +33,7 @@ const measurementFamily = Object.freeze({
       ],
     },
   ],
+  is_locked: false,
 });
 
 afterEach(() => {
@@ -57,7 +58,7 @@ test('It returns a success response when saving', async () => {
 test('It returns a list of errors when there is a validation problem', async () => {
   const errors = [
     {
-      property: 'code',
+      propertyPath: 'code',
       message: 'This field can only contain letters, numbers, and underscores.',
     },
   ];

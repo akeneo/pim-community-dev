@@ -47,6 +47,7 @@ const measurementFamily = {
       ],
     },
   ],
+  is_locked: false,
 };
 
 describe('measurement family', () => {
@@ -291,6 +292,7 @@ describe('measurement family', () => {
               },
             },
           ],
+          is_locked: false,
         },
         {
           code: 'AREB',
@@ -306,6 +308,7 @@ describe('measurement family', () => {
               },
             },
           ],
+          is_locked: false,
         }
       )
     ).toEqual(1);
@@ -330,6 +333,7 @@ describe('measurement family', () => {
               },
             },
           ],
+          is_locked: false,
         },
         {
           code: 'AREB',
@@ -338,6 +342,7 @@ describe('measurement family', () => {
             fr_FR: 'Aire',
           },
           units: [],
+          is_locked: false,
         }
       )
     ).toEqual(1);

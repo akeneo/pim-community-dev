@@ -46,7 +46,7 @@ class CodeMustBeUniqueValidator extends ConstraintValidator
         $measurementFamily = $this->measurementFamilyRepository->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
 
         foreach ($measurementFamily->normalize()['units'] as $unit) {
-            if ($unit['code'] === $code) {
+            if (strtolower($unit['code']) === strtolower($code)) {
                 return true;
             }
         }

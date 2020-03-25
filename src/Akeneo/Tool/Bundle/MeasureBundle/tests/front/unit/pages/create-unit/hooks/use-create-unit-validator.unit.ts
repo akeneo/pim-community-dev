@@ -33,7 +33,7 @@ const unit = {
 };
 const errors = [
   {
-    property: 'code',
+    propertyPath: 'code',
     message: 'This field can only contain letters, numbers, and underscores.',
   },
 ];
@@ -55,10 +55,7 @@ test('It returns a success response if submitted data is valid', async () => {
 test('It returns a list of errors when there is a validation problem', async () => {
   global.fetch = jest.fn().mockImplementationOnce(() => ({
     ok: false,
-    json: () =>
-      Promise.resolve({
-        errors: errors,
-      }),
+    json: () => Promise.resolve(errors),
   }));
 
   const {result} = renderHook(() => useCreateUnitValidator());

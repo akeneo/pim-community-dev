@@ -109,16 +109,19 @@ const UnitTab = ({
   measurementFamily,
   errors,
   onMeasurementFamilyChange,
+  selectedUnitCode,
+  selectUnitCode,
 }: {
   measurementFamily: MeasurementFamily;
   errors: ValidationError[];
   onMeasurementFamilyChange: (measurementFamily: MeasurementFamily) => void;
+  selectedUnitCode: UnitCode;
+  selectUnitCode: (unitCode: UnitCode) => void;
 }) => {
   const __ = useContext(TranslateContext);
   const isGranted = useContext(SecurityContext);
   const locale = useContext(UserContext)('uiLocale');
   const [searchValue, setSearchValue] = useState('');
-  const [selectedUnitCode, selectUnitCode] = useState<UnitCode>(measurementFamily.standard_unit_code);
   const [isConfirmDeleteUnitModalOpen, openConfirmDeleteUnitModal, closeConfirmDeleteUnitModal] = useToggleState(false);
   const locales = useUiLocales();
 

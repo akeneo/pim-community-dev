@@ -13,7 +13,7 @@ import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
 import {getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Unit} from 'akeneomeasure/model/unit';
-import {ValidationError} from 'akeneomeasure/model/validation-error';
+import {filterErrors, ValidationError} from 'akeneomeasure/model/validation-error';
 import {
   CreateUnitForm,
   createUnitFromForm,
@@ -39,7 +39,6 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   const [form, setFormValue, clearForm] = useForm<CreateUnitForm>(initializeCreateUnitForm());
   const validate = useCreateUnitValidator();
   const [createAnotherUnit, setCreateAnotherUnit] = useState<boolean>(false);
-  const [isReadOnly, setReadOnly] = useState<boolean>(false);
   const handleClose = useCallback(() => {
     clearForm();
     onClose();
@@ -48,26 +47,20 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   const measurementFamilyLabel = getMeasurementFamilyLabel(measurementFamily, locale);
   const measurementFamilyCode = measurementFamily.code;
 
-  // @TODO Replace when the MeasurementFamily model will contains this value
-  const measurementFamilyIsAlreadyUsed = true;
-
   const handleAdd = useCallback(async () => {
     try {
-      setReadOnly(true);
+      setErrors([]);
 
       const unit = createUnitFromForm(form, locale);
       const response = await validate(measurementFamilyCode, unit);
 
       switch (response.valid) {
         case true:
-          notify(NotificationLevel.SUCCESS, __('measurements.add_unit.flash.success'));
-          setReadOnly(false);
           onNewUnit(unit);
           createAnotherUnit ? clearForm() : handleClose();
           break;
 
         case false:
-          setReadOnly(false);
           setErrors(response.errors);
           break;
       }
@@ -76,7 +69,6 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
       notify(NotificationLevel.ERROR, __('measurements.add_unit.flash.error'));
     }
   }, [
-    setReadOnly,
     form,
     locale,
     validate,
@@ -100,7 +92,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
           subtitle={`${__('measurements.title.measurement')} / ${measurementFamilyLabel}`}
         />
         <Subsection>
-          {measurementFamilyIsAlreadyUsed && (
+          {measurementFamily.is_locked && (
             <SubsectionHelper level={HELPER_LEVEL_WARNING}>
               {__('measurements.unit.will_be_read_only')}
             </SubsectionHelper>
@@ -112,7 +104,6 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
               value={form.code}
               onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('code', e.currentTarget.value)}
               required={true}
-              readOnly={isReadOnly}
               errors={errors.filter(error => error.propertyPath === 'code')}
             />
             <TextField
@@ -121,7 +112,6 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
               value={form.label}
               onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('label', e.currentTarget.value)}
               flag={locale}
-              readOnly={isReadOnly}
               errors={errors.filter(error => error.propertyPath === 'label')}
             />
             <TextField
@@ -129,18 +119,17 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
               label={__('measurements.form.input.symbol')}
               value={form.symbol}
               onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('symbol', e.currentTarget.value)}
-              readOnly={isReadOnly}
               errors={errors.filter(error => error.propertyPath === 'symbol')}
             />
             <OperationCollection
               operations={form.operations}
               onOperationsChange={(operations: Operation[]) => setFormValue('operations', operations)}
+              errors={filterErrors(errors, `convert_from_standard`)}
             />
             <CheckboxField
               id="measurements.unit.create_another"
               label={__('measurements.unit.create_another')}
               value={createAnotherUnit}
-              readOnly={isReadOnly}
               onChange={(checked: boolean) => setCreateAnotherUnit(checked)}
             />
           </FormGroup>

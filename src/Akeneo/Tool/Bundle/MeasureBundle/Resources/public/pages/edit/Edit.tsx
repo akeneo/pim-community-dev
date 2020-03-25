@@ -1,5 +1,5 @@
-import React, {useState, useContext, useCallback, useEffect} from 'react';
-import {useParams, useHistory} from 'react-router-dom';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {useHistory, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-family';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
@@ -10,16 +10,16 @@ import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
 import {Button} from 'akeneomeasure/shared/components/Button';
-import {getMeasurementFamilyLabel, addUnit, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
-import {Unit} from 'akeneomeasure/model/unit';
+import {addUnit, getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
+import {Unit, UnitCode} from 'akeneomeasure/model/unit';
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {
-  SecondaryActionsDropdownButton,
   DropdownLink,
+  SecondaryActionsDropdownButton,
 } from 'akeneomeasure/shared/components/SecondaryActionsDropdownButton';
 import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
-import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
+import {filterErrors, ValidationError} from 'akeneomeasure/model/validation-error';
 import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family-saver';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
@@ -93,6 +93,7 @@ const Edit = () => {
   const {measurementFamilyCode} = useParams() as {measurementFamilyCode: string};
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.Units);
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
+  const [selectedUnitCode, selectUnitCode] = useState<UnitCode|null>(null);
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const notify = useContext(NotifyContext);
   const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useToggleState(false);
@@ -108,6 +109,15 @@ const Edit = () => {
     __('pim_ui.flash.unsaved_changes')
   );
   useEffect(() => setHasUnsavedChanges(isModified), [isModified]);
+
+  // If the measurement family code changes, we select the standard unit code by default
+  useEffect(() => {
+    if (null === measurementFamily) {
+      return;
+    }
+
+    selectUnitCode(measurementFamily.standard_unit_code);
+  }, [measurementFamily?.code]);
 
   const saveMeasurementFamily = useSaveMeasurementFamilySaver();
   const handleSaveMeasurementFamily = useCallback(async () => {
@@ -156,16 +166,18 @@ const Edit = () => {
     }
   }, [measurementFamilyCode, removeMeasurementFamily, history, notify, __]);
 
-  const handleNewUnit = useCallback(
-    (unit: Unit) => {
-      if (null === measurementFamily) {
-        return;
-      }
+  const handleNewUnit = useCallback((unit: Unit) => {
+    if (null === measurementFamily) {
+      return;
+    }
 
-      setMeasurementFamily(addUnit(measurementFamily, unit));
-    },
-    [setMeasurementFamily, measurementFamily]
-  );
+    setMeasurementFamily(addUnit(measurementFamily, unit));
+    selectUnitCode(unit.code);
+  }, [
+    setMeasurementFamily,
+    measurementFamily,
+    selectUnitCode,
+  ]);
 
   if (undefined === measurementFamilyCode || null === measurementFamily) {
     return null;
@@ -251,11 +263,13 @@ const Edit = () => {
           )}
         </TabsContainer>
         <Container>
-          {currentTab === Tab.Units && (
+          {currentTab === Tab.Units && null !== selectedUnitCode && (
             <UnitTab
               measurementFamily={measurementFamily}
               onMeasurementFamilyChange={setMeasurementFamily}
               errors={filterErrors(errors, 'units')}
+              selectedUnitCode={selectedUnitCode}
+              selectUnitCode={selectUnitCode}
             />
           )}
           {currentTab === Tab.Properties && (
