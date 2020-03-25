@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateMissingCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductIdsToEvaluateQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Psr\Log\LoggerInterface;
@@ -45,22 +46,28 @@ class EvaluateProductModelsCriteriaTasklet implements TaskletInterface
     /** @var LoggerInterface */
     private $logger;
 
+    /** @var CriterionEvaluationRepositoryInterface */
+    private $productModelCriterionEvaluationRepository;
+
     public function __construct(
         EvaluatePendingCriteria $evaluatePendingCriteria,
         ConsolidateAxesRates $consolidateAxisRates,
         GetProductIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery,
         CreateMissingCriteriaEvaluations $createMissingCriteriaEvaluations,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        CriterionEvaluationRepositoryInterface $productModelCriterionEvaluationRepository
     ) {
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
         $this->consolidateAxisRates = $consolidateAxisRates;
         $this->getProductModelsIdsToEvaluateQuery = $getProductModelsIdsToEvaluateQuery;
         $this->createMissingCriteriaEvaluations = $createMissingCriteriaEvaluations;
         $this->logger = $logger;
+        $this->productModelCriterionEvaluationRepository = $productModelCriterionEvaluationRepository;
     }
 
     public function execute(): void
     {
+        $this->cleanCriteriaOfDeletedProductModels();
         $this->createMissingCriteriaEvaluations();
 
         foreach ($this->getProductModelsIdsToEvaluateQuery->execute(self::NB_PRODUCT_MODELS_MAX, self::BULK_SIZE) as $productModelIds) {
@@ -93,5 +100,10 @@ class EvaluateProductModelsCriteriaTasklet implements TaskletInterface
                 ]
             );
         }
+    }
+
+    private function cleanCriteriaOfDeletedProductModels()
+    {
+        $this->productModelCriterionEvaluationRepository->deleteUnknownProductsPendingEvaluations();
     }
 }

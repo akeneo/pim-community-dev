@@ -52,4 +52,3 @@ services:
             $db: '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
-

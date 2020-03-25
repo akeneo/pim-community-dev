@@ -16,22 +16,19 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\DeadlockException;
 use Doctrine\DBAL\Statement;
 
-final class CriterionEvaluationRepository implements CriterionEvaluationRepositoryInterface
+final class ProductModelCriterionEvaluationRepository implements CriterionEvaluationRepositoryInterface
 {
     /** @var Connection */
     private $db;
 
-    /** @var string */
-    private $tableName;
-
-    public function __construct(Connection $db, string $tableName)
+    public function __construct(Connection $db)
     {
         $this->db = $db;
-        $this->tableName = $tableName;
     }
 
     public function create(Write\CriterionEvaluationCollection $criteriaEvaluations): void
@@ -44,7 +41,7 @@ final class CriterionEvaluationRepository implements CriterionEvaluationReposito
 
         $query = sprintf(
             'INSERT IGNORE INTO %s (id, criterion_code, product_id, created_at, status, pending) VALUES %s',
-            $this->tableName,
+            'pimee_data_quality_insights_product_model_criteria_evaluation',
             $valuesPlaceholders
         );
 
@@ -98,7 +95,7 @@ final class CriterionEvaluationRepository implements CriterionEvaluationReposito
         try {
             $this->db->executeQuery('SET autocommit=0');
             $this->db->executeQuery('SET foreign_key_checks=0');
-            $this->db->executeQuery('LOCK TABLES pimee_data_quality_insights_criteria_evaluation WRITE');
+            $this->db->executeQuery('LOCK TABLES pimee_data_quality_insights_product_model_criteria_evaluation WRITE');
             $statement->execute();
             $this->db->executeQuery('COMMIT');
         } finally {
@@ -110,10 +107,8 @@ final class CriterionEvaluationRepository implements CriterionEvaluationReposito
 
     public function update(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
-        $criterionEvaluationTable = $this->tableName;
-
         $sql = <<<SQL
-UPDATE $criterionEvaluationTable
+UPDATE pimee_data_quality_insights_product_model_criteria_evaluation
 SET criterion_code = ?, product_id = ?, created_at = ?, started_at = ?, ended_at = ?, status = ?, pending = ?, result = ?
 WHERE id = ?
 SQL;
@@ -154,12 +149,10 @@ SQL;
 
     public function purgeUntil(\DateTimeImmutable $date): void
     {
-        $criterionEvaluationTable = $this->tableName;
-
         $query = <<<SQL
 DELETE old_evaluations
-FROM $criterionEvaluationTable AS old_evaluations
-INNER JOIN $criterionEvaluationTable AS younger_evaluations
+FROM pimee_data_quality_insights_product_model_criteria_evaluation AS old_evaluations
+INNER JOIN pimee_data_quality_insights_product_model_criteria_evaluation AS younger_evaluations
     ON younger_evaluations.product_id = old_evaluations.product_id
     AND younger_evaluations.criterion_code = old_evaluations.criterion_code
     AND younger_evaluations.created_at > old_evaluations.created_at
@@ -170,5 +163,19 @@ SQL;
             $query,
             ['purge_date' => $date->format('Y-m-d 00:00:00')]
         );
+    }
+
+    public function deleteUnknownProductsPendingEvaluations(): void
+    {
+        $query = <<<SQL
+DELETE evaluation
+FROM pimee_data_quality_insights_product_model_criteria_evaluation AS evaluation
+LEFT JOIN pim_catalog_product_model AS product_model ON(evaluation.product_id = product_model.id)
+WHERE evaluation.status = :status
+AND product_model.id IS NULL
+SQL;
+        $this->db->executeQuery($query, [
+            'status' => CriterionEvaluationStatus::PENDING,
+        ]);
     }
 }

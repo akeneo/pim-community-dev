@@ -24,43 +24,44 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\G
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
-class GetProductIdsToEvaluateQueryIntegration extends TestCase
+class GetProductModelIdsToEvaluateQueryIntegration extends TestCase
 {
     /** @var Connection */
     private $db;
 
-    /** @var GetProductIdsToEvaluateQuery */
-    private $productQuery;
+        /** @var GetProductIdsToEvaluateQuery */
+    private $productModelQuery;
 
     /** @var CriterionEvaluationRepositoryInterface */
-    private $productCriterionEvaluationRepository;
+    private $productModelCriterionEvaluationRepository;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->db = $this->get('database_connection');
-        $this->productQuery = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_ids_to_evaluate');
-        $this->productCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
+        $this->productModelQuery = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_to_evaluate');
+        $this->productModelCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation');
     }
 
     public function test_it_returns_all_product_id_with_pending_criteria_and_ignores_unknown_products()
     {
-        $this->assertEquals([], iterator_to_array($this->productQuery->execute(4, 2)));
+        $this->assertEquals([], iterator_to_array($this->productModelQuery->execute(4, 2)));
 
-        $product1Id = $this->createProduct('p1');
-        $product2Id = $this->createProduct('p2');
-        $product3Id = $this->createProduct('p3');
-        $product4Id = $this->createProduct('p4');
+        $product1Id = $this->createProductModel('p1');
+        $product2Id = $this->createProductModel('p2');
+        $product3Id = $this->createProductModel('p3');
+        $product4Id = $this->createProductModel('p4');
         $criteria = $this->getCriteriaEvaluationsSample($product1Id, $product2Id, $product3Id, $product4Id);
 
-        $this->productCriterionEvaluationRepository->create($criteria);
+        $this->productModelCriterionEvaluationRepository->create($criteria);
 
         $expectedProductIds = [
             [$product1Id->toInt(), $product2Id->toInt()],
             [$product3Id->toInt(), $product4Id->toInt()],
         ];
 
-        $productIds = iterator_to_array($this->productQuery->execute(4, 2));
+        $productIds = iterator_to_array($this->productModelQuery->execute(4, 2));
 
         $this->assertEqualsCanonicalizing($expectedProductIds, $productIds);
     }
@@ -126,18 +127,19 @@ class GetProductIdsToEvaluateQueryIntegration extends TestCase
             ));
     }
 
-    private function createProduct(string $identifier)
+    private function createProductModel(string $identifier)
     {
-        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier($identifier)
+        $product = $this->get('akeneo_integration_tests.catalog.product_model.builder')
+            ->withCode($identifier)
+            ->withFamilyVariant('familyVariantA1')
             ->build();
-        $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.saver.product_model')->save($product);
 
         return new ProductId((int) $product->getId());
     }
 
     protected function getConfiguration()
     {
-        return $this->catalog->useMinimalCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 }

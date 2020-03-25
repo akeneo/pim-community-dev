@@ -78,6 +78,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_ids_to_evaluate'
             - '@akeneo.pim.automation.data_quality_insights.create_missing_products_criteria_evaluations'
             - '@logger'
+            - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductModelsCriteriaTasklet:
         arguments:
@@ -86,6 +87,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_to_evaluate'
             - '@akeneo.pim.automation.data_quality_insights.create_missing_product_models_criteria_evaluations'
             - '@logger'
+            - '@akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\ConsolidateDashboardRatesTasklet:
         arguments:

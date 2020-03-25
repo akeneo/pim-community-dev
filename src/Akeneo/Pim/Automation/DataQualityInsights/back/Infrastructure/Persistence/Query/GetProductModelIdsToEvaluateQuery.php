@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductIdsToEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Doctrine\DBAL\Connection;
 
-final class GetProductIdsToEvaluateQuery implements GetProductIdsToEvaluateQueryInterface
+final class GetProductModelIdsToEvaluateQuery implements GetProductIdsToEvaluateQueryInterface
 {
     /** @var Connection */
     private $db;
@@ -31,8 +31,8 @@ final class GetProductIdsToEvaluateQuery implements GetProductIdsToEvaluateQuery
     {
         $sql = <<<SQL
 SELECT product_id, MIN(created_at) as creation_date
-FROM pimee_data_quality_insights_criteria_evaluation
-INNER JOIN pim_catalog_product AS product ON(product.id = pimee_data_quality_insights_criteria_evaluation.product_id)
+FROM pimee_data_quality_insights_product_model_criteria_evaluation
+INNER JOIN pim_catalog_product_model AS product_model ON(product_model.id = pimee_data_quality_insights_product_model_criteria_evaluation.product_id)
 WHERE status = :status
 GROUP BY product_id
 ORDER BY creation_date

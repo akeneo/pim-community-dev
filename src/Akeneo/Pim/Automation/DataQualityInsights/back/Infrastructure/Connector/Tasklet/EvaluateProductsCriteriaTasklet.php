@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateMissingCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductIdsToEvaluateQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -51,13 +52,17 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
     /** @var LoggerInterface */
     private $logger;
 
+    /** @var CriterionEvaluationRepositoryInterface */
+    private $productCriterionEvaluationRepository;
+
     public function __construct(
         EvaluatePendingCriteria $evaluatePendingCriteria,
         ConsolidateAxesRates $consolidateProductAxisRates,
         IndexProductRates $indexProductRates,
         GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery,
         CreateMissingCriteriaEvaluations $createMissingProductsCriteriaEvaluations,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        CriterionEvaluationRepositoryInterface $productCriterionEvaluationRepository
     ) {
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
         $this->consolidateProductAxisRates = $consolidateProductAxisRates;
@@ -65,10 +70,12 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
         $this->getProductIdsToEvaluateQuery = $getProductIdsToEvaluateQuery;
         $this->createMissingProductsCriteriaEvaluations = $createMissingProductsCriteriaEvaluations;
         $this->logger = $logger;
+        $this->productCriterionEvaluationRepository = $productCriterionEvaluationRepository;
     }
 
     public function execute(): void
     {
+        $this->cleanCriteriaOfDeletedProducts();
         $this->createMissingCriteriaEvaluations();
 
         foreach ($this->getProductIdsToEvaluateQuery->execute(self::NB_PRODUCTS_MAX, self::BULK_SIZE) as $productIds) {
@@ -103,5 +110,10 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
                 ]
             );
         }
+    }
+
+    private function cleanCriteriaOfDeletedProducts()
+    {
+        $this->productCriterionEvaluationRepository->deleteUnknownProductsPendingEvaluations();
     }
 }

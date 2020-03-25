@@ -167,13 +167,11 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdsToEvaluateQuery
         arguments:
             - '@database_connection'
-            - '%akeneo.pim.automation.data_quality_insights.persistence.product_criterion_evaluation_table%'
 
     akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_to_evaluate:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdsToEvaluateQuery
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductModelIdsToEvaluateQuery
         arguments:
             - '@database_connection'
-            - '%akeneo.pim.automation.data_quality_insights.persistence.product_model_criterion_evaluation_table%'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpdatedProductsWithoutUpToDateEvaluationQuery:
         arguments:
