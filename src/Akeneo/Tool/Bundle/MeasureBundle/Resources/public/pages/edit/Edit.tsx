@@ -1,4 +1,4 @@
-import React, {useState, useContext, useCallback} from 'react';
+import React, {useState, useContext, useCallback, useEffect} from 'react';
 import {useParams, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-family';
@@ -27,6 +27,7 @@ import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
 import {SubsectionHelper, HELPER_LEVEL_WARNING} from 'akeneomeasure/shared/components/SubsectionHelper';
 import {useUnsavedChanges} from 'akeneomeasure/shared/hooks/use-unsaved-changes';
 import {UnsavedChanges} from 'akeneomeasure/shared/components/UnsavedChanges';
+import {UnsavedChangesContext} from 'akeneomeasure/context/unsaved-changes-context';
 
 enum Tab {
   Units = 'units',
@@ -89,10 +90,13 @@ const Edit = () => {
   const saveMeasurementFamily = useSaveMeasurementFamilySaver();
   const notify = useContext(NotifyContext);
   const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useToggleState(false);
+
+  const {setHasUnsavedChanges} = useContext(UnsavedChangesContext);
   const [isModified, resetState] = useUnsavedChanges<MeasurementFamily | null>(
     measurementFamily,
     __('pim_ui.flash.unsaved_changes')
   );
+  useEffect(() => setHasUnsavedChanges(isModified), [isModified]);
 
   const handleSave = useCallback(async () => {
     if (null === measurementFamily) {

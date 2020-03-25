@@ -3,6 +3,7 @@ import {useState, useCallback, useEffect, EffectCallback} from 'react';
 const useUnsavedChanges = <ValueType>(entity: ValueType, beforeUnloadMessage: string): [boolean, EffectCallback] => {
   const [isModified, setModified] = useState<boolean>(false);
   const [initialValue, setInitialValue] = useState<string | null>(null);
+
   const updateValue = useCallback(
     (newValue: ValueType) => {
       if (null === newValue) {
