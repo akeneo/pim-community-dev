@@ -6,11 +6,13 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -30,14 +32,19 @@ class SaveMeasurementFamilyAction
     /** @var SaveMeasurementFamilyHandler */
     private $saveMeasurementFamilyHandler;
 
+    /** @var SecurityFacade */
+    private $securityFacade;
+
     public function __construct(
         ValidatorInterface $validator,
         SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler,
-        NormalizerInterface $violationNormalizer
+        NormalizerInterface $violationNormalizer,
+        SecurityFacade $securityFacade
     ) {
-        $this->validator = $validator;
-        $this->violationNormalizer = $violationNormalizer;
+        $this->validator                    = $validator;
         $this->saveMeasurementFamilyHandler = $saveMeasurementFamilyHandler;
+        $this->violationNormalizer          = $violationNormalizer;
+        $this->securityFacade               = $securityFacade;
     }
 
     public function __invoke(Request $request): Response
@@ -50,6 +57,19 @@ class SaveMeasurementFamilyAction
                 'The identifier provided in the route and the one given in the body of the request are different',
                 Response::HTTP_BAD_REQUEST
             );
+        }
+        if (!(
+                $this->securityFacade->isGranted('akeneo_measurements_manage_settings') &&
+                (
+                    $this->securityFacade->isGranted('akeneo_measurements_measurement_family_edit_properties') ||
+                    $this->securityFacade->isGranted('akeneo_measurements_measurement_family_delete') ||
+                    $this->securityFacade->isGranted('akeneo_measurements_measurement_unit_add') ||
+                    $this->securityFacade->isGranted('akeneo_measurements_measurement_unit_edit') ||
+                    $this->securityFacade->isGranted('akeneo_measurements_measurement_unit_delete')
+                )
+            )
+        ) {
+            throw new AccessDeniedException();
         }
 
         $decodedRequest = $this->decodeRequest($request);
