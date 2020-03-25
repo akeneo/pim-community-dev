@@ -8,7 +8,7 @@ acceptance:
                 - test.channel.context
                 - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\DataFixturesContext
                 - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\UserContext
-                - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ExceptionContext
+                - Akeneo\Test\Pim\Automation\RuleEngine\Common\Context\ExceptionContext
                 - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\EventSubscriberContext
                 - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ImportRuleContext
                 - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ExportRuleContext
@@ -46,6 +46,21 @@ integration:
                     - '@pimee_catalog_rule.builder.product'
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+
+                - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\ExportRuleContext:
+                    - '@akeneo_rule_engine.repository.rule_definition'
+                    - '@pimee_catalog_rule.processor.normalization.rule_definition'
+
+                - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\ImportRuleContext:
+                    - '@pimee_catalog_rule.processor.denormalization.rule_definition'
+                    - '@akeneo_rule_engine.repository.rule_definition'
+                    - '@akeneo_rule_engine.saver.rule_definition'
+
+                - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\VersionContext:
+                    - '@pim_catalog.repository.product_without_permission'
+                    - '@pim_versioning.repository.version'
+
+                - Akeneo\Test\Pim\Automation\RuleEngine\Common\Context\ExceptionContext:
 
             filters:
                 tags: '@integration-back'

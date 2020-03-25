@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\Product
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Test\Pim\Automation\RuleEngine\Common\Context\ExceptionContext;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;

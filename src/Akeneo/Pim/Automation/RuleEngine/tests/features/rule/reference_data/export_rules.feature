@@ -1,14 +1,13 @@
-@javascript
 Feature: Export rules
   In order to be able to access and modify rules outside PIM
   As an administrator
   I need to be able to export rules
 
+  @integration-back
   Scenario: Successfully export rules with reference data
     Given a "clothing" catalog configuration
-    And I add the "french" locale to the "mobile" channel
-    And I add the "french" locale to the "tablet" channel
-    And the following "sleeve_color" attribute reference data: orange
+    And I add the "fr_FR" locale to the "mobile" channel
+    And I add the "fr_FR" locale to the "tablet" channel
     And the following product rule definitions:
       """
       set_reference_data:
@@ -18,7 +17,6 @@ Feature: Export rules
             operator: IN
             value:
               - red
-              - orange
           - field:    sleeve_fabric.code
             operator: IN
             value:
@@ -44,13 +42,8 @@ Feature: Export rules
             from_scope: mobile
             to_scope: tablet
       """
-    And the following job "clothing_rule_export" configuration:
-      | filePath | %tmp%/rule_export/rule_export.yml |
-    And I am logged in as "Peter"
-    And I am on the "clothing_rule_export" export job page
-    When I launch the export job
-    And I wait for the "clothing_rule_export" job to finish
-    Then exported yaml file of "clothing_rule_export" should contain:
+    And I export all the rules
+    Then the exported yaml file should contain:
     """
     rules:
         set_reference_data:
@@ -61,7 +54,6 @@ Feature: Export rules
                     operator: IN
                     value:
                         - red
-                        - orange
                 -
                     field: sleeve_fabric.code
                     operator: IN

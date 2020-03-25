@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context;
+namespace Akeneo\Test\Pim\Automation\RuleEngine\Common\Context;
 
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
@@ -66,7 +66,7 @@ final class ExceptionContext implements Context
         $message = str_replace('\\"', '"', $message);
 
         foreach (static::$exceptions as $exception) {
-            if (trim($exception->getMessage()) === trim($message)) {
+            if (strpos(trim($exception->getMessage()), trim($message)) !== false) {
                 return;
             }
         }
