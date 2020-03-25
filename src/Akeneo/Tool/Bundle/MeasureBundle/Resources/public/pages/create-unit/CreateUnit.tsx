@@ -47,9 +47,6 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   const measurementFamilyLabel = getMeasurementFamilyLabel(measurementFamily, locale);
   const measurementFamilyCode = measurementFamily.code;
 
-  // @TODO Replace when the MeasurementFamily model will contains this value
-  const measurementFamilyIsAlreadyUsed = true;
-
   const handleAdd = useCallback(async () => {
     try {
       setErrors([]);
@@ -95,7 +92,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
           subtitle={`${__('measurements.title.measurement')} / ${measurementFamilyLabel}`}
         />
         <Subsection>
-          {measurementFamilyIsAlreadyUsed && (
+          {measurementFamily.is_locked && (
             <SubsectionHelper level={HELPER_LEVEL_WARNING}>
               {__('measurements.unit.will_be_read_only')}
             </SubsectionHelper>

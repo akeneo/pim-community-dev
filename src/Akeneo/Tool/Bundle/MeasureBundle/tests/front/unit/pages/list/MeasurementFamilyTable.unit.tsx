@@ -22,6 +22,7 @@ const measurementFamilies = [
         },
       },
     ],
+    is_locked: false,
   },
   {
     code: 'LENGTH',
@@ -37,6 +38,7 @@ const measurementFamilies = [
         },
       },
     ],
+    is_locked: false,
   },
 ];
 

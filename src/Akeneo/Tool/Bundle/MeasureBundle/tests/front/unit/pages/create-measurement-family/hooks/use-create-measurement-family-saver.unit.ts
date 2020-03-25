@@ -33,6 +33,7 @@ const measurementFamily = Object.freeze({
       ],
     },
   ],
+  is_locked: false,
 });
 
 afterEach(() => {

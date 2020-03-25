@@ -60,6 +60,7 @@ const measurementFamily = Object.freeze({
       ],
     },
   ],
+  is_locked: false,
 });
 
 const mockUserContext = (key: string) => {
@@ -147,7 +148,7 @@ test('I can submit invalid values and have the errors displayed.', async () => {
       message: 'This field can only contain letters, numbers, and underscores.',
     },
     {
-      property: 'convert_from_standard[0][value]',
+      propertyPath: 'convert_from_standard[0][value]',
       message: 'The conversion value should be a number',
     },
   ]);
