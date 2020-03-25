@@ -25,6 +25,11 @@ pimee_enrich_rule_relation_get:
         relationType: '[a-z]+'
     methods: [GET]
 
+pimee_catalog_rule_edit:
+    path: /configuration/rules/edit/{code}
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+        
 pimee_enrich_rule_definition_get:
     path: /rest/rule_definition/{ruleCode}
     defaults: { _controller: pimee_enrich.controller.get_rule_definition }
