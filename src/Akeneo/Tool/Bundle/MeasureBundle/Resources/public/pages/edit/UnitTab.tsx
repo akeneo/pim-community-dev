@@ -124,7 +124,7 @@ const UnitTab = ({
   const selectedUnitIndex = getUnitIndex(measurementFamily, selectedUnitCode);
   const filteredUnits = measurementFamily.units.filter(filterOnLabelOrCode(searchValue, locale));
 
-  const removeUnitHandler = useCallback(() => {
+  const handleRemoveUnit = useCallback(() => {
     onMeasurementFamilyChange(removeUnit(measurementFamily, selectedUnitCode));
     selectUnitCode(measurementFamily.standard_unit_code);
     closeConfirmDeleteUnitModal();
@@ -137,7 +137,7 @@ const UnitTab = ({
       {isConfirmDeleteUnitModalOpen && (
         <ConfirmDeleteModal
           description={__('measurements.unit.delete.confirm')}
-          onConfirm={removeUnitHandler}
+          onConfirm={handleRemoveUnit}
           onCancel={closeConfirmDeleteUnitModal}
         />
       )}
