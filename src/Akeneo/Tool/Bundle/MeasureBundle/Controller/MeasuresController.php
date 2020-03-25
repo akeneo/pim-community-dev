@@ -38,7 +38,7 @@ class MeasuresController
         $normalizedMeasurementFamilies = array_map(function (MeasurementFamily $family) {
             $normalizedMeasurementFamily = $family->normalize();
             $normalizedMeasurementFamily['is_locked'] = $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily
-            ->execute($normalizedMeasurementFamily['code']);
+                ->execute($normalizedMeasurementFamily['code']);
 
             return $normalizedMeasurementFamily;
         }, $this->measurementFamilyRepository->all());
