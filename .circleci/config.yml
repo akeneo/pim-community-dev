@@ -488,6 +488,70 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
+  test_onboarder_bundle:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Create an empty service account
+                command: |
+                    mkdir secret
+                    echo "{}" > secret/serviceAccount.json
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+          - run:
+                name: Load make commands
+                command: cp vendor/akeneo/pim-onboarder/.circleci/config/onboarder.mk make-file/
+          - run:
+                name: Add configuration files to run the bundle tests from the PIM
+                command: |
+                    make clear-setup-parameters
+                    make setup-onboarder-parameters
+                    PIM_VERSION=master make setup-onboarder-tests
+                    docker-compose run --rm php php /usr/local/bin/composer dumpautoload
+          - run:
+                name: Change owner of PIM as some files have been created with wrong owner
+                command: sudo chown -R 1000:1000 ~/project
+          - run:
+                name: Execute static analysis
+                command: make test-static-analysis
+          - run:
+                name: PHP coupling detector
+                command: make test-coupling-detector
+          - run:
+                name: Execute specifications
+                command: make test-spec
+          - run:
+                name: Install Akeneo PIM with Onboarder specific configuration (channel, attribute, ...)
+                command: ENVIRONMENT=test make onboarder-install
+          - run:
+                name: Execute acceptance tests
+                command: make test-acceptance
+          - run:
+                name: Execute PHPUnit integration tests
+                command: make test-integration
+          - run:
+                name: Start Apache/FPM and Selenium for End to End tests
+                command: make up APP_ENV=behat C='fpm httpd selenium'
+          - run:
+                name: Execute end-to-end tests
+                command: make test-end-to-end
+          - store_test_results:
+                path: ~/project/pim/var/tests
+          - store_artifacts:
+                path: ~/project/pim/var/tests
+          - store_artifacts:
+                path: ~/project/pim/var/logs
+
 workflows:
   version: 2
   pull_request:
@@ -536,16 +600,22 @@ workflows:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
+          - test_onboarder_bundle:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
                     - test_back_data_migrations
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
+                    - test_onboarder_bundle
           - test_back_performance:
                 requires:
                     - test_back_data_migrations
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
+                    - test_onboarder_bundle
 
   nightly_helpdesk:
       triggers:
@@ -611,6 +681,9 @@ workflows:
           - test_back_phpunit:
                 requires:
                     - build_dev
+          - test_onboarder_bundle:
+                requires:
+                    - build_dev
           - back_behat_legacy:
                 requires:
                     - build_dev
@@ -625,6 +698,7 @@ workflows:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
+                    - test_onboarder_bundle
                     - test_back_performance
                     - back_behat_legacy
                     - deploy_master_environment
@@ -664,6 +738,9 @@ workflows:
           - test_back_phpunit:
                 requires:
                     - build_dev
+          - test_onboarder_bundle:
+                requires:
+                    - build_dev
           - back_behat_legacy:
                 requires:
                     - build_dev
@@ -678,6 +755,7 @@ workflows:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
+                    - test_onboarder_bundle
                     - test_back_performance
                     - back_behat_legacy
                     - deploy_master_environment
