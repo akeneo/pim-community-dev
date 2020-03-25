@@ -127,8 +127,11 @@ abstract class ApiTestCase extends WebTestCase
     /**
      * Creates an API Connection and returns it with its credentials
      */
-    protected function createConnection(string $code, string $label, string $flowType): ConnectionWithCredentials
-    {
+    protected function createConnection(
+        string $code = 'API_Test',
+        ?string $label = 'API_Test',
+        ?string $flowType = FlowType::OTHER
+    ): ConnectionWithCredentials {
         $createConnectionCommand = new CreateConnectionCommand($code, $label, $flowType);
 
         return $this->get('akeneo_connectivity.connection.application.handler.create_connection')
