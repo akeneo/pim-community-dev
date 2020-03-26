@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\TextCheckerDictionaryRepositoryInterface;
@@ -29,7 +30,7 @@ class AddProductModelWordInDictionaryController
 {
     private $featureFlag;
 
-    private $supportedLocaleChecker;
+    private $supportedLocaleValidator;
 
     private $textCheckerDictionaryRepository;
 
@@ -37,12 +38,12 @@ class AddProductModelWordInDictionaryController
 
     public function __construct(
         FeatureFlag $featureFlag,
-        SupportedLocaleChecker $supportedLocaleChecker,
+        SupportedLocaleValidator $supportedLocaleChecker,
         TextCheckerDictionaryRepositoryInterface $textCheckerDictionaryRepository,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->featureFlag = $featureFlag;
-        $this->supportedLocaleChecker = $supportedLocaleChecker;
+        $this->supportedLocaleValidator = $supportedLocaleChecker;
         $this->textCheckerDictionaryRepository = $textCheckerDictionaryRepository;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -54,7 +55,7 @@ class AddProductModelWordInDictionaryController
             $localeCode = new LocaleCode($request->request->get('locale'));
             $productId = new ProductId($request->request->getInt('product_id'));
 
-            if (!$this->supportedLocaleChecker->isSupported($localeCode)) {
+            if (!$this->supportedLocaleValidator->isSupported($localeCode)) {
                 throw new \InvalidArgumentException('Unable to process locales that are not handled by spellchecker');
             }
 
