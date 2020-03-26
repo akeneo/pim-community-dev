@@ -23,6 +23,8 @@ export const NoConnection = () => {
                     </>
                 }
             >
+                <Translate id='akeneo_connectivity.connection.dashboard.no_connection.message_with_permission.message' />
+                &nbsp;
                 <Link onClick={() => redirect('/connections')}>
                     <Translate id='akeneo_connectivity.connection.dashboard.no_connection.message_with_permission.link' />
                 </Link>
