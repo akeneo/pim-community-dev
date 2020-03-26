@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9161: Fix performance issue on product normalization
+
 # 4.0.12 (2020-03-24)
 
 ## Bug fixes
