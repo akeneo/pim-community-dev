@@ -1,5 +1,5 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {useHistory, useParams} from 'react-router-dom';
+import {useHistory, useParams, Prompt} from 'react-router-dom';
 import styled from 'styled-components';
 import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-family';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
@@ -210,6 +210,7 @@ const Edit = () => {
 
   return (
     <>
+      <Prompt when={isModified} message={() => __('pim_ui.flash.unsaved_changes')} />
       {isAddUnitModalOpen && (
         <CreateUnit measurementFamily={measurementFamily} onClose={closeAddUnitModal} onNewUnit={handleNewUnit} />
       )}
