@@ -1,43 +1,19 @@
-import React, {useState, useContext, FormEvent, useCallback} from 'react';
+import React, {useState, useContext} from 'react';
 import styled from 'styled-components';
-import {
-  MeasurementFamily,
-  getUnit,
-  filterOnLabelOrCode,
-  setUnitSymbol,
-  setUnitLabel,
-  setUnitOperations,
-  removeUnit,
-  getUnitIndex,
-} from 'akeneomeasure/model/measurement-family';
+import {MeasurementFamily, filterOnLabelOrCode} from 'akeneomeasure/model/measurement-family';
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {NoDataSection, NoDataTitle} from 'akeneomeasure/shared/components/NoData';
 import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
-import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
-import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
-import {TextField} from 'akeneomeasure/shared/components/TextField';
-import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
-import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
-import {Button} from 'akeneomeasure/shared/components/Button';
 import {Table, HeaderCell, Row, LabelCell} from 'akeneomeasure/pages/common/Table';
 import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
 import {Unit, UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
-import {Operation} from 'akeneomeasure/model/operation';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
-import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
-import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
-import {SecurityContext} from 'akeneomeasure/context/security-context';
+import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
 
 const UnitList = styled.div`
   flex: 1;
-  overflow: auto;
-`;
-
-const UnitDetails = styled.div`
-  margin-left: 40px;
-  width: 400px;
   overflow: auto;
 `;
 
@@ -52,17 +28,6 @@ const CodeCell = styled.td`
       flex: 1;
     }
   }
-`;
-
-const Footer = styled.div`
-  background: ${props => props.theme.color.white};
-  border-top: 1px solid ${props => props.theme.color.grey80};
-  padding: 10px 0 40px;
-  position: sticky;
-  bottom: 0;
-  display: flex;
-  justify-content: flex-end;
-  z-index: 10;
 `;
 
 const StandardUnitBadge = styled.span`
@@ -105,47 +70,29 @@ const UnitRow = ({unit, isStandardUnit, isSelected = false, invalid = false, onR
   );
 };
 
+type UnitTabProps = {
+  measurementFamily: MeasurementFamily;
+  errors: ValidationError[];
+  onMeasurementFamilyChange: (measurementFamily: MeasurementFamily) => void;
+  selectedUnitCode: UnitCode;
+  selectUnitCode: (unitCode: UnitCode) => void;
+};
+
 const UnitTab = ({
   measurementFamily,
   errors,
   onMeasurementFamilyChange,
   selectedUnitCode,
   selectUnitCode,
-}: {
-  measurementFamily: MeasurementFamily;
-  errors: ValidationError[];
-  onMeasurementFamilyChange: (measurementFamily: MeasurementFamily) => void;
-  selectedUnitCode: UnitCode;
-  selectUnitCode: (unitCode: UnitCode) => void;
-}) => {
+}: UnitTabProps) => {
   const __ = useContext(TranslateContext);
-  const isGranted = useContext(SecurityContext);
   const locale = useContext(UserContext)('uiLocale');
   const [searchValue, setSearchValue] = useState('');
-  const [isConfirmDeleteUnitModalOpen, openConfirmDeleteUnitModal, closeConfirmDeleteUnitModal] = useToggleState(false);
-  const locales = useUiLocales();
 
-  const selectedUnit = getUnit(measurementFamily, selectedUnitCode);
-  const selectedUnitIndex = getUnitIndex(measurementFamily, selectedUnitCode);
   const filteredUnits = measurementFamily.units.filter(filterOnLabelOrCode(searchValue, locale));
-
-  const handleRemoveUnit = useCallback(() => {
-    onMeasurementFamilyChange(removeUnit(measurementFamily, selectedUnitCode));
-    selectUnitCode(measurementFamily.standard_unit_code);
-    closeConfirmDeleteUnitModal();
-  }, [measurementFamily, selectedUnitCode, onMeasurementFamilyChange, selectUnitCode, removeUnit]);
-
-  if (undefined === selectedUnit) return null;
 
   return (
     <>
-      {isConfirmDeleteUnitModalOpen && (
-        <ConfirmDeleteModal
-          description={__('measurements.unit.delete.confirm')}
-          onConfirm={handleRemoveUnit}
-          onCancel={closeConfirmDeleteUnitModal}
-        />
-      )}
       <UnitList>
         <SearchBar count={measurementFamily.units.length} searchValue={searchValue} onSearchChange={setSearchValue} />
         {0 === filteredUnits.length && (
@@ -177,74 +124,13 @@ const UnitTab = ({
           </Table>
         )}
       </UnitList>
-      <UnitDetails>
-        <SubsectionHeader top={0}>
-          {__('measurements.unit.title', {unitLabel: getUnitLabel(selectedUnit, locale)})}
-        </SubsectionHeader>
-        <FormGroup>
-          <TextField
-            id="measurements.unit.properties.code"
-            label={__('pim_common.code')}
-            value={selectedUnit.code}
-            required={true}
-            readOnly={true}
-            errors={filterErrors(errors, `[${selectedUnitIndex}][code]`)}
-          />
-          <TextField
-            id="measurements.unit.properties.symbol"
-            label={__('measurements.unit.symbol')}
-            value={selectedUnit.symbol}
-            readOnly={!isGranted('akeneo_measurements_measurement_unit_edit')}
-            onChange={(event: FormEvent<HTMLInputElement>) =>
-              onMeasurementFamilyChange(setUnitSymbol(measurementFamily, selectedUnit.code, event.currentTarget.value))
-            }
-            errors={filterErrors(errors, `[${selectedUnitIndex}][symbol]`)}
-          />
-          <OperationCollection
-            operations={selectedUnit.convert_from_standard}
-            readOnly={
-              !isGranted('akeneo_measurements_measurement_unit_edit') ||
-              measurementFamily.is_locked ||
-              selectedUnit.code === measurementFamily.standard_unit_code
-            }
-            onOperationsChange={(operations: Operation[]) => {
-              onMeasurementFamilyChange(setUnitOperations(measurementFamily, selectedUnit.code, operations));
-            }}
-            errors={filterErrors(errors, `[${selectedUnitIndex}][convert_from_standard]`)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <SubsectionHeader top={0}>{__('measurements.label_translations')}</SubsectionHeader>
-          <FormGroup>
-            {null !== locales &&
-              locales.map(locale => (
-                <TextField
-                  id={`measurements.family.properties.label.${locale.code}`}
-                  label={locale.label}
-                  key={locale.code}
-                  flag={locale.code}
-                  readOnly={!isGranted('akeneo_measurements_measurement_unit_edit')}
-                  value={selectedUnit.labels[locale.code] || ''}
-                  onChange={(event: FormEvent<HTMLInputElement>) =>
-                    onMeasurementFamilyChange(
-                      setUnitLabel(measurementFamily, selectedUnitCode, locale.code, event.currentTarget.value)
-                    )
-                  }
-                  errors={filterErrors(errors, `[${selectedUnitIndex}][labels][${locale.code}]`)}
-                />
-              ))}
-          </FormGroup>
-        </FormGroup>
-        {isGranted('akeneo_measurements_measurement_unit_delete') &&
-          !measurementFamily.is_locked &&
-          selectedUnitCode !== measurementFamily.standard_unit_code && (
-            <Footer>
-              <Button color="red" outline={true} onClick={openConfirmDeleteUnitModal}>
-                {__('measurements.unit.delete.button')}
-              </Button>
-            </Footer>
-          )}
-      </UnitDetails>
+      <UnitDetails
+        measurementFamily={measurementFamily}
+        selectedUnitCode={selectedUnitCode}
+        onMeasurementFamilyChange={onMeasurementFamilyChange}
+        selectUnitCode={selectUnitCode}
+        errors={errors}
+      />
     </>
   );
 };

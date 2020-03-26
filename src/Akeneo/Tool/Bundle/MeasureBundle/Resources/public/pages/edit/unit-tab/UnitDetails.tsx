@@ -1,0 +1,159 @@
+import React, {useContext, FormEvent, useCallback} from 'react';
+import styled from 'styled-components';
+import {TranslateContext} from 'akeneomeasure/context/translate-context';
+import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
+import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
+import {TextField} from 'akeneomeasure/shared/components/TextField';
+import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
+import {Button} from 'akeneomeasure/shared/components/Button';
+import {
+  setUnitSymbol,
+  setUnitLabel,
+  setUnitOperations,
+  getUnitIndex,
+  MeasurementFamily,
+  getUnit,
+  removeUnit,
+} from 'akeneomeasure/model/measurement-family';
+import {Operation} from 'akeneomeasure/model/operation';
+import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
+import {SecurityContext} from 'akeneomeasure/context/security-context';
+import {UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
+import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
+import {filterErrors, ValidationError} from 'akeneomeasure/model/validation-error';
+import {UserContext} from 'akeneomeasure/context/user-context';
+import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
+
+const Container = styled.div`
+  margin-left: 40px;
+  width: 400px;
+  overflow: auto;
+`;
+
+const Footer = styled.div`
+  background: ${props => props.theme.color.white};
+  border-top: 1px solid ${props => props.theme.color.grey80};
+  padding: 10px 0 40px;
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 10;
+`;
+
+type UnitDetailsProps = {
+  measurementFamily: MeasurementFamily;
+  selectedUnitCode: UnitCode;
+  onMeasurementFamilyChange: (measurementFamily: MeasurementFamily) => void;
+  selectUnitCode: (unitCode: UnitCode) => void;
+  errors: ValidationError[];
+};
+
+const UnitDetails = ({
+  measurementFamily,
+  selectedUnitCode,
+  onMeasurementFamilyChange,
+  selectUnitCode,
+  errors,
+}: UnitDetailsProps) => {
+  const __ = useContext(TranslateContext);
+  const isGranted = useContext(SecurityContext);
+  const locales = useUiLocales();
+  const locale = useContext(UserContext)('uiLocale');
+  const selectedUnitIndex = getUnitIndex(measurementFamily, selectedUnitCode);
+  const selectedUnit = getUnit(measurementFamily, selectedUnitCode);
+  const [isConfirmDeleteUnitModalOpen, openConfirmDeleteUnitModal, closeConfirmDeleteUnitModal] = useToggleState(false);
+
+  const handleRemoveUnit = useCallback(() => {
+    onMeasurementFamilyChange(removeUnit(measurementFamily, selectedUnitCode));
+    selectUnitCode(measurementFamily.standard_unit_code);
+    closeConfirmDeleteUnitModal();
+  }, [measurementFamily, selectedUnitCode, onMeasurementFamilyChange, selectUnitCode, removeUnit]);
+
+  if (undefined === selectedUnit) return null;
+
+  return (
+    <>
+      {isConfirmDeleteUnitModalOpen && (
+        <ConfirmDeleteModal
+          description={__('measurements.unit.delete.confirm')}
+          onConfirm={handleRemoveUnit}
+          onCancel={closeConfirmDeleteUnitModal}
+        />
+      )}
+      <Container>
+        <SubsectionHeader top={0}>
+          {__('measurements.unit.title', {unitLabel: getUnitLabel(selectedUnit, locale)})}
+        </SubsectionHeader>
+        <FormGroup>
+          <TextField
+            role="unit-code-input"
+            id="measurements.unit.properties.code"
+            label={__('pim_common.code')}
+            value={selectedUnit.code}
+            required={true}
+            readOnly={true}
+            errors={filterErrors(errors, `[${selectedUnitIndex}][code]`)}
+          />
+          <TextField
+            id="measurements.unit.properties.symbol"
+            label={__('measurements.unit.symbol')}
+            value={selectedUnit.symbol}
+            readOnly={!isGranted('akeneo_measurements_measurement_unit_edit')}
+            role="unit-symbol-input"
+            onChange={(event: FormEvent<HTMLInputElement>) =>
+              onMeasurementFamilyChange(setUnitSymbol(measurementFamily, selectedUnit.code, event.currentTarget.value))
+            }
+            errors={filterErrors(errors, `[${selectedUnitIndex}][symbol]`)}
+          />
+          <OperationCollection
+            operations={selectedUnit.convert_from_standard}
+            readOnly={
+              !isGranted('akeneo_measurements_measurement_unit_edit') ||
+              measurementFamily.is_locked ||
+              selectedUnit.code === measurementFamily.standard_unit_code
+            }
+            onOperationsChange={(operations: Operation[]) => {
+              onMeasurementFamilyChange(setUnitOperations(measurementFamily, selectedUnit.code, operations));
+            }}
+            errors={filterErrors(errors, `[${selectedUnitIndex}][convert_from_standard]`)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <SubsectionHeader top={0}>{__('measurements.label_translations')}</SubsectionHeader>
+          <FormGroup>
+            {null !== locales &&
+              locales.map(locale => (
+                <TextField
+                  role={`unit-label-input-${locale.code}`}
+                  id={`measurements.family.properties.label.${locale.code}`}
+                  label={locale.label}
+                  key={locale.code}
+                  flag={locale.code}
+                  readOnly={!isGranted('akeneo_measurements_measurement_unit_edit')}
+                  value={selectedUnit.labels[locale.code] || ''}
+                  onChange={(event: FormEvent<HTMLInputElement>) =>
+                    onMeasurementFamilyChange(
+                      setUnitLabel(measurementFamily, selectedUnitCode, locale.code, event.currentTarget.value)
+                    )
+                  }
+                  errors={filterErrors(errors, `[${selectedUnitIndex}][labels][${locale.code}]`)}
+                />
+              ))}
+          </FormGroup>
+        </FormGroup>
+        {isGranted('akeneo_measurements_measurement_unit_delete') &&
+          !measurementFamily.is_locked &&
+          selectedUnitCode !== measurementFamily.standard_unit_code && (
+            <Footer>
+              <Button color="red" outline={true} onClick={openConfirmDeleteUnitModal}>
+                {__('measurements.unit.delete.button')}
+              </Button>
+            </Footer>
+          )}
+      </Container>
+    </>
+  );
+};
+
+export {UnitDetails};
