@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
@@ -16,11 +17,16 @@ use Webmozart\Assert\Assert;
  */
 class GroupFieldClearerSpec extends ObjectBehavior
 {
+    function it_is_a_clearer()
+    {
+        $this->shouldImplement(ClearerInterface::class);
+    }
+
     function it_supports_only_groups_field()
     {
-        $this->supportsField('categories')->shouldReturn(false);
-        $this->supportsField('groups')->shouldReturn(true);
-        $this->supportsField('other')->shouldReturn(false);
+        $this->supportsProperty('categories')->shouldReturn(false);
+        $this->supportsProperty('groups')->shouldReturn(true);
+        $this->supportsProperty('other')->shouldReturn(false);
     }
 
     function it_removes_all_groups_of_a_product()

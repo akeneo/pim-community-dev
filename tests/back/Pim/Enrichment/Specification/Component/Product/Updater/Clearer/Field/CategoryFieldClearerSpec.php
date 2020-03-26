@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
@@ -17,11 +18,16 @@ use Webmozart\Assert\Assert;
  */
 class CategoryFieldClearerSpec extends ObjectBehavior
 {
+    function it_is_a_clearer()
+    {
+        $this->shouldImplement(ClearerInterface::class);
+    }
+
     function it_supports_only_categories_field()
     {
-        $this->supportsField('categories')->shouldReturn(true);
-        $this->supportsField('groups')->shouldReturn(false);
-        $this->supportsField('other')->shouldReturn(false);
+        $this->supportsProperty('categories')->shouldReturn(true);
+        $this->supportsProperty('groups')->shouldReturn(false);
+        $this->supportsProperty('other')->shouldReturn(false);
     }
 
     function it_removes_all_categories_of_a_product()

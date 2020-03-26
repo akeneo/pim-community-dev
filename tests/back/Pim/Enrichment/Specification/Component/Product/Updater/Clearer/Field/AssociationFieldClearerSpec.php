@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
@@ -18,11 +19,16 @@ use Webmozart\Assert\Assert;
  */
 class AssociationFieldClearerSpec extends ObjectBehavior
 {
+    function it_is_a_clearer()
+    {
+        $this->shouldImplement(ClearerInterface::class);
+    }
+
     function it_supports_only_associations_field()
     {
-        $this->supportsField('categories')->shouldReturn(false);
-        $this->supportsField('associations')->shouldReturn(true);
-        $this->supportsField('other')->shouldReturn(false);
+        $this->supportsProperty('categories')->shouldReturn(false);
+        $this->supportsProperty('associations')->shouldReturn(true);
+        $this->supportsProperty('other')->shouldReturn(false);
     }
 
     function it_removes_all_association_of_a_product()
