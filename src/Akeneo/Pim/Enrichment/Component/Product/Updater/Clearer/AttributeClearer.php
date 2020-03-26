@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Webmozart\Assert\Assert;
 
 /**
@@ -14,14 +15,22 @@ use Webmozart\Assert\Assert;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class AttributeClearer implements AttributeClearerInterface
+final class AttributeClearer implements ClearerInterface
 {
+    /** @var GetAttributes */
+    private $getAttributes;
+
+    public function __construct(GetAttributes $getAttributes)
+    {
+        $this->getAttributes = $getAttributes;
+    }
+
     /**
      * {@inheritDoc}
      */
-    public function supportsAttributeCode(string $attributeCode): bool
+    public function supportsProperty(string $property): bool
     {
-        return true;
+        return null !== $this->getAttributes->forCode($property);
     }
 
     /**
@@ -30,6 +39,10 @@ final class AttributeClearer implements AttributeClearerInterface
     public function clear($entity, string $attributeCode, array $options = []): void
     {
         Assert::isInstanceOf($entity, EntityWithValuesInterface::class);
+        Assert::true(
+            $this->supportsProperty($attributeCode),
+            sprintf('The clearer does not handle the "%s" property.', $attributeCode)
+        );
 
         $value = $entity->getValue($attributeCode, $options['locale'] ?? null, $options['scope'] ?? null);
         if (null !== $value) {

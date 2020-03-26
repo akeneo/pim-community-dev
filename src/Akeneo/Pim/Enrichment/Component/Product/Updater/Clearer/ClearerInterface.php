@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -13,6 +11,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
  */
 interface ClearerInterface
 {
+    /**
+     * Returns true if the clearer supports the given property.
+     *
+     * @param string $property
+     * @return bool
+     */
+    public function supportsProperty(string $property): bool;
+
     /**
      * Clears the property value of the entity.
      *

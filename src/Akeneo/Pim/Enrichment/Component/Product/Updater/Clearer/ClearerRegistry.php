@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Webmozart\Assert\Assert;
 
 /**
@@ -14,18 +13,11 @@ use Webmozart\Assert\Assert;
  */
 final class ClearerRegistry implements ClearerRegistryInterface
 {
-    /** @var GetAttributes */
-    private $getAttributes;
+    /** @var ClearerInterface[] */
+    private $clearers = [];
 
-    /** @var AttributeClearerInterface[] */
-    private $attributeClearers = [];
-
-    /** @var FieldClearerInterface[] */
-    private $fieldClearers = [];
-
-    public function __construct(GetAttributes $getAttributes, iterable $clearers)
+    public function __construct(iterable $clearers)
     {
-        $this->getAttributes = $getAttributes;
         foreach ($clearers as $clearer) {
             Assert::implementsInterface($clearer, ClearerInterface::class);
             $this->register($clearer);
@@ -37,22 +29,7 @@ final class ClearerRegistry implements ClearerRegistryInterface
      */
     public function register(ClearerInterface $clearer): void
     {
-        if (!$clearer instanceof AttributeClearerInterface && !$clearer instanceof FieldClearerInterface) {
-            throw new \InvalidArgumentException(sprintf(
-                'Clearer must be an instance of %s or %s, %s given.',
-                AttributeClearerInterface::class,
-                FieldClearerInterface::class,
-                get_class($clearer)
-            ));
-        }
-
-        if ($clearer instanceof AttributeClearerInterface) {
-            $this->attributeClearers[] = $clearer;
-        }
-
-        if ($clearer instanceof FieldClearerInterface) {
-            $this->fieldClearers[] = $clearer;
-        }
+        $this->clearers[] = $clearer;
     }
 
     /**
@@ -60,26 +37,8 @@ final class ClearerRegistry implements ClearerRegistryInterface
      */
     public function getClearer(string $property): ?ClearerInterface
     {
-        $attribute = $this->getAttributes->forCode($property);
-
-        return null !== $attribute ? $this->getAttributeClearer($property) : $this->getFieldClearer($property);
-    }
-
-    private function getAttributeClearer(string $attributeCode): ?AttributeClearerInterface
-    {
-        foreach ($this->attributeClearers as $clearer) {
-            if ($clearer->supportsAttributeCode($attributeCode)) {
-                return $clearer;
-            }
-        }
-
-        return null;
-    }
-
-    private function getFieldClearer(string $field): ?FieldClearerInterface
-    {
-        foreach ($this->fieldClearers as $clearer) {
-            if ($clearer->supportsField($field)) {
+        foreach ($this->clearers as $clearer) {
+            if ($clearer->supportsProperty($property)) {
                 return $clearer;
             }
         }

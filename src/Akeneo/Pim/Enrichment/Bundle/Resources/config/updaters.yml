@@ -559,10 +559,11 @@ services:
     pim_catalog.updater.clearer.registry:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerRegistry'
         arguments:
-            - '@akeneo.pim.structure.query.get_attributes'
             - !tagged_iterator pim_catalog.updater.clearer
 
     pim_catalog.updater.clearer.attributes:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\AttributeClearer'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: 'pim_catalog.updater.clearer' }

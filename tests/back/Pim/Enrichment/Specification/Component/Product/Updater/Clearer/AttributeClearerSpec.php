@@ -7,8 +7,11 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\AttributeClearer;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\AttributeClearerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
 
@@ -18,6 +21,11 @@ use Webmozart\Assert\Assert;
  */
 class AttributeClearerSpec extends ObjectBehavior
 {
+    function let(GetAttributes $getAttributes)
+    {
+        $this->beConstructedWith($getAttributes);
+    }
+
     function it_is_initializable()
     {
         $this->shouldBeAnInstanceOf(AttributeClearer::class);
@@ -25,16 +33,21 @@ class AttributeClearerSpec extends ObjectBehavior
 
     function it_is_an_attribute_clearer()
     {
-        $this->shouldImplement(AttributeClearerInterface::class);
+        $this->shouldImplement(ClearerInterface::class);
     }
 
-    function it_supports_all_attributes()
+    function it_supports_only_attributes(GetAttributes $getAttributes)
     {
-        $this->supportsAttributeCode('title')->shouldReturn(true);
+        $getAttributes->forCode('title')->willReturn($this->buildAttribute('title'));
+        $getAttributes->forCode('categories')->willReturn(null);
+
+        $this->supportsProperty('title')->shouldReturn(true);
+        $this->supportsProperty('categories')->shouldReturn(false);
     }
 
-    function it_clears_an_attribute_value_of_a_product()
+    function it_clears_an_attribute_value_of_a_product(GetAttributes $getAttributes)
     {
+        $getAttributes->forCode('title')->willReturn($this->buildAttribute('title'));
         $product = new Product();
         $product->setValues(new WriteValueCollection([
             ScalarValue::value('title', 'the title'),
@@ -44,8 +57,9 @@ class AttributeClearerSpec extends ObjectBehavior
         Assert::null($product->getValue('title'));
     }
 
-    function it_clears_a_localizable_scopable_attribute_value_of_a_product()
+    function it_clears_a_localizable_scopable_attribute_value_of_a_product(GetAttributes $getAttributes)
     {
+        $getAttributes->forCode('title')->willReturn($this->buildAttribute('title'));
         $product = new Product();
         $product->setValues(new WriteValueCollection([
             ScalarValue::scopableLocalizableValue('title', 'the title1', 'ecommerce', 'fr_FR'),
@@ -63,8 +77,9 @@ class AttributeClearerSpec extends ObjectBehavior
         Assert::notNull($product->getValue('description', 'en_US', 'print'));
     }
 
-    function it_clears_nothing_when_the_value_does_not_exist()
+    function it_clears_nothing_when_the_value_does_not_exist(GetAttributes $getAttributes)
     {
+        $getAttributes->forCode('title')->willReturn($this->buildAttribute('title'));
         $product = new Product();
         $product->setValues(new WriteValueCollection([
             ScalarValue::scopableLocalizableValue('title', 'the title', 'ecommerce', 'en_US'),
@@ -74,5 +89,29 @@ class AttributeClearerSpec extends ObjectBehavior
         $this->clear($product, 'title', ['locale' => 'de_DE', 'scope' => 'print']);
         Assert::notNull($product->getValue('title', 'en_US', 'ecommerce'));
         Assert::notNull($product->getValue('description', 'en_US', 'print'));
+    }
+
+    function it_cannot_clear_if_the_property_is_not_an_attribute(GetAttributes $getAttributes)
+    {
+        $getAttributes->forCode('title')->willReturn(null);
+        $product = new Product();
+
+        $this->shouldThrow(new \InvalidArgumentException('The clearer does not handle the "title" property.'))
+            ->during('clear', [$product, 'title', ['locale' => null, 'scope' => null]]);
+    }
+
+    private function buildAttribute(string $code): Attribute
+    {
+        return new Attribute(
+            $code,
+            AttributeTypes::BACKEND_TYPE_TEXT,
+            [],
+            false,
+            false,
+            null,
+            true,
+            '',
+            []
+        );
     }
 }
