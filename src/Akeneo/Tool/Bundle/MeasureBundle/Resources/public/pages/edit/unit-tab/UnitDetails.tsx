@@ -10,7 +10,6 @@ import {
   setUnitSymbol,
   setUnitLabel,
   setUnitOperations,
-  getUnitIndex,
   MeasurementFamily,
   getUnit,
   removeUnit,
@@ -60,7 +59,6 @@ const UnitDetails = ({
   const isGranted = useContext(SecurityContext);
   const locales = useUiLocales();
   const locale = useContext(UserContext)('uiLocale');
-  const selectedUnitIndex = getUnitIndex(measurementFamily, selectedUnitCode);
   const selectedUnit = getUnit(measurementFamily, selectedUnitCode);
   const [isConfirmDeleteUnitModalOpen, openConfirmDeleteUnitModal, closeConfirmDeleteUnitModal] = useToggleState(false);
 
@@ -87,24 +85,24 @@ const UnitDetails = ({
         </SubsectionHeader>
         <FormGroup>
           <TextField
-            role="unit-code-input"
             id="measurements.unit.properties.code"
+            role="unit-code-input"
             label={__('pim_common.code')}
             value={selectedUnit.code}
             required={true}
             readOnly={true}
-            errors={filterErrors(errors, `[${selectedUnitIndex}][code]`)}
+            errors={filterErrors(errors, '[code]')}
           />
           <TextField
             id="measurements.unit.properties.symbol"
+            role="unit-symbol-input"
             label={__('measurements.unit.symbol')}
             value={selectedUnit.symbol}
             readOnly={!isGranted('akeneo_measurements_measurement_unit_edit')}
-            role="unit-symbol-input"
             onChange={(event: FormEvent<HTMLInputElement>) =>
               onMeasurementFamilyChange(setUnitSymbol(measurementFamily, selectedUnit.code, event.currentTarget.value))
             }
-            errors={filterErrors(errors, `[${selectedUnitIndex}][symbol]`)}
+            errors={filterErrors(errors, '[symbol]')}
           />
           <OperationCollection
             operations={selectedUnit.convert_from_standard}
@@ -113,10 +111,10 @@ const UnitDetails = ({
               measurementFamily.is_locked ||
               selectedUnit.code === measurementFamily.standard_unit_code
             }
-            onOperationsChange={(operations: Operation[]) => {
-              onMeasurementFamilyChange(setUnitOperations(measurementFamily, selectedUnit.code, operations));
-            }}
-            errors={filterErrors(errors, `[${selectedUnitIndex}][convert_from_standard]`)}
+            onOperationsChange={(operations: Operation[]) =>
+              onMeasurementFamilyChange(setUnitOperations(measurementFamily, selectedUnit.code, operations))
+            }
+            errors={filterErrors(errors, '[convert_from_standard]')}
           />
         </FormGroup>
         <FormGroup>
@@ -125,8 +123,8 @@ const UnitDetails = ({
             {null !== locales &&
               locales.map(locale => (
                 <TextField
-                  role={`unit-label-input-${locale.code}`}
                   id={`measurements.family.properties.label.${locale.code}`}
+                  role={`unit-label-input-${locale.code}`}
                   label={locale.label}
                   key={locale.code}
                   flag={locale.code}
@@ -137,7 +135,7 @@ const UnitDetails = ({
                       setUnitLabel(measurementFamily, selectedUnitCode, locale.code, event.currentTarget.value)
                     )
                   }
-                  errors={filterErrors(errors, `[${selectedUnitIndex}][labels][${locale.code}]`)}
+                  errors={filterErrors(errors, `[labels][${locale.code}]`)}
                 />
               ))}
           </FormGroup>

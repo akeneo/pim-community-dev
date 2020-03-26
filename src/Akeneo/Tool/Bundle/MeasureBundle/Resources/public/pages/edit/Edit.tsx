@@ -3,7 +3,7 @@ import {useHistory, useParams, Prompt} from 'react-router-dom';
 import styled from 'styled-components';
 import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-family';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
-import {UnitTab} from 'akeneomeasure/pages/edit/UnitTab';
+import {UnitTab} from 'akeneomeasure/pages/edit/unit-tab';
 import {PropertyTab} from 'akeneomeasure/pages/edit/PropertyTab';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';

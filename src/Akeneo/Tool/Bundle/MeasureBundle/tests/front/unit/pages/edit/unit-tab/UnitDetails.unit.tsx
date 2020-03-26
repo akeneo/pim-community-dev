@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Router} from 'react-router';
 import {act, getByRole, getByText, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {AkeneoThemeProvider} from 'akeneomeasure/AkeneoThemeProvider';
@@ -59,11 +58,15 @@ beforeEach(() => {
       {
         code: 'en_US',
       },
+      {
+        code: 'fr_FR',
+      },
     ],
   }));
 
   global.fetch = mockFetch;
 });
+
 afterEach(() => {
   document.body.removeChild(container);
   container = null;
@@ -78,6 +81,7 @@ test('It displays a details edit form', async () => {
     selectedUnitCode = newSelectedUnitCode;
   };
   const errors = [];
+
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
@@ -107,6 +111,7 @@ test('It allows symbol edition', async () => {
     selectedUnitCode = newSelectedUnitCode;
   };
   const errors = [];
+
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
@@ -140,6 +145,7 @@ test('It allows convertion value edition', async () => {
     selectedUnitCode = newSelectedUnitCode;
   };
   const errors = [];
+
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
@@ -173,6 +179,7 @@ test('It allows label edition', async () => {
     selectedUnitCode = newSelectedUnitCode;
   };
   const errors = [];
+
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
@@ -206,6 +213,7 @@ test('It allows to delete the unit', async () => {
     selectedUnitCode = newSelectedUnitCode;
   };
   const errors = [];
+
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
@@ -225,6 +233,7 @@ test('It allows to delete the unit', async () => {
     const deleteButton = getByText(container, 'measurements.unit.delete.button');
     fireEvent.click(deleteButton);
   });
+
   act(() => {
     const confirmButton = getByText(container, 'pim_common.delete');
     fireEvent.click(confirmButton);
@@ -243,6 +252,7 @@ test('It does not render if the selected unit is not found', async () => {
     selectedUnitCode = newSelectedUnitCode;
   };
   const errors = [];
+
   await act(async () => {
     ReactDOM.render(
       <AkeneoThemeProvider>
@@ -260,90 +270,3 @@ test('It does not render if the selected unit is not found', async () => {
 
   expect(container.children.length).toBe(0);
 });
-
-// test('It displays some measurement families', async () => {
-//   const history = createMemoryHistory();
-
-//   await act(async () => {
-//     ReactDOM.render(
-//       <Router history={history}>
-//         <AkeneoThemeProvider>
-//           <MeasurementFamilyTable
-//             measurementFamilies={measurementFamilies}
-//             toggleSortDirection={() => {}}
-//             getSortDirection={() => {}}
-//           />
-//         </AkeneoThemeProvider>
-//       </Router>,
-//       container
-//     );
-//   });
-
-//   expect(container.querySelectorAll('tbody tr').length).toEqual(2);
-// });
-
-// test('It toggles the sort direction on the columns', async () => {
-//   const history = createMemoryHistory();
-//   let sortDirections = {
-//     label: 'Ascending',
-//     code: 'Ascending',
-//     standard_unit: 'Ascending',
-//     unit_count: 'Ascending',
-//   };
-
-//   await act(async () => {
-//     ReactDOM.render(
-//       <Router history={history}>
-//         <AkeneoThemeProvider>
-//           <MeasurementFamilyTable
-//             measurementFamilies={measurementFamilies}
-//             toggleSortDirection={(columnCode: string) => (sortDirections[columnCode] = 'Descending')}
-//             getSortDirection={(columnCode: string) => sortDirections[columnCode]}
-//           />
-//         </AkeneoThemeProvider>
-//       </Router>,
-//       container
-//     );
-//   });
-
-//   const labelCell = container.querySelector('th[title="pim_common.label"]');
-//   const codeCell = container.querySelector('th[title="pim_common.code"]');
-//   const standardUnitCell = container.querySelector('th[title="measurements.list.header.standard_unit"]');
-//   const unitCountCell = container.querySelector('th[title="measurements.list.header.unit_count"]');
-
-//   await act(async () => {
-//     fireEvent.click(labelCell);
-//     fireEvent.click(codeCell);
-//     fireEvent.click(standardUnitCell);
-//     fireEvent.click(unitCountCell);
-//   });
-
-//   expect(Object.values(sortDirections).every(direction => direction === 'Descending')).toBe(true);
-// });
-
-// test('It changes the history when clicking on a row', async () => {
-//   const history = createMemoryHistory();
-
-//   await act(async () => {
-//     ReactDOM.render(
-//       <Router history={history}>
-//         <AkeneoThemeProvider>
-//           <MeasurementFamilyTable
-//             measurementFamilies={measurementFamilies}
-//             toggleSortDirection={() => {}}
-//             getSortDirection={() => {}}
-//           />
-//         </AkeneoThemeProvider>
-//       </Router>,
-//       container
-//     );
-//   });
-
-//   const areaRow = container.querySelector('tbody tr[title="[AREA]"]');
-
-//   await act(async () => {
-//     fireEvent.click(areaRow);
-//   });
-
-//   expect(history.location.pathname).toEqual('/AREA');
-// });
