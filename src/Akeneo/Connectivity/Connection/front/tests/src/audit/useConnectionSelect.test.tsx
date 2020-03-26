@@ -8,13 +8,13 @@ import {State} from '@src/audit/reducers/dashboard-reducer';
 
 const initialState: State = {
     connections: {
-        'bynder': {
+        bynder: {
             code: 'bynder',
             label: 'Bynder',
             flowType: FlowType.DATA_SOURCE,
             image: null,
         },
-        'magento': {
+        magento: {
             code: 'magento',
             label: 'Magento',
             flowType: FlowType.DATA_DESTINATION,
@@ -25,7 +25,7 @@ const initialState: State = {
         [AuditEventType.PRODUCT_CREATED]: {},
         [AuditEventType.PRODUCT_UPDATED]: {},
         [AuditEventType.PRODUCT_READ]: {},
-    }
+    },
 };
 
 const wrapper = ({children}: PropsWithChildren<{}>) => (
@@ -34,10 +34,7 @@ const wrapper = ({children}: PropsWithChildren<{}>) => (
 
 describe('Select connection', () => {
     it('selects a connection', () => {
-         const {result} = renderHook(
-            () => useConnectionSelect(FlowType.DATA_DESTINATION),
-            {wrapper}
-        );
+        const {result} = renderHook(() => useConnectionSelect(FlowType.DATA_DESTINATION), {wrapper});
         const [connections, defaultConnectionCode, setSelectedConnectionCode] = result.current;
         expect(connections).toStrictEqual([
             {

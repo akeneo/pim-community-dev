@@ -30,25 +30,25 @@ export const DataDestinationCharts = () => {
     return (
         <DataDestinationChartsContainer>
             <Section title={<Translate id='akeneo_connectivity.connection.dashboard.charts.outbound' />}>
-                {!noConnection &&
+                {!noConnection && (
                     <ConnectionSelect connections={connections} onChange={code => setSelectedConnectionCode(code)} />
-                }
+                )}
             </Section>
 
-            {noConnection ?
+            {noConnection ? (
                 <NoConnectionContainer>
                     <NoConnection flowType={FlowType.DATA_DESTINATION} />
                 </NoConnectionContainer>
-                :
+            ) : (
                 <EventChart
                     eventType={AuditEventType.PRODUCT_READ}
                     theme={greenTheme}
-                    title={<Translate id='akeneo_connectivity.connection.dashboard.charts.number_of_products_sent'/>}
+                    title={<Translate id='akeneo_connectivity.connection.dashboard.charts.number_of_products_sent' />}
                     selectedConnectionCode={selectedConnectionCode}
                     dateFormat={{weekday: 'long', month: 'short', day: 'numeric'}}
                     chartOptions={{height: 283, width: 1000}}
                 />
-            }
+            )}
         </DataDestinationChartsContainer>
     );
 };

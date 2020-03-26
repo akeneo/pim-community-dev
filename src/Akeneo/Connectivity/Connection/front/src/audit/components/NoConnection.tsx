@@ -10,7 +10,7 @@ import imgUrl from '../../common/assets/illustrations/charts.svg';
 
 type Props = {
     flowType?: FlowType.DATA_SOURCE | FlowType.DATA_DESTINATION | 'default';
-}
+};
 
 export const NoConnection = ({flowType = 'default'}: Props) => {
     const {redirect} = useContext(RouterContext);

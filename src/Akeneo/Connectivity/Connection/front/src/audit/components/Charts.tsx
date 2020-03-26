@@ -43,15 +43,19 @@ export const Charts = () => {
         return <NoConnection />;
     }
 
-    let orderedCharts = <>
-        <DataSourceCharts />
-        <DataDestinationCharts />
-    </>;
-    if (0 === sourceConnections.length && 0 !== destinationConnections.length) {
-        orderedCharts = <>
-            <DataDestinationCharts />
+    let orderedCharts = (
+        <>
             <DataSourceCharts />
-        </>;
+            <DataDestinationCharts />
+        </>
+    );
+    if (0 === sourceConnections.length && 0 !== destinationConnections.length) {
+        orderedCharts = (
+            <>
+                <DataDestinationCharts />
+                <DataSourceCharts />
+            </>
+        );
     }
 
     return (

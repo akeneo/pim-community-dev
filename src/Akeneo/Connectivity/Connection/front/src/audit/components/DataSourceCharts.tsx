@@ -36,15 +36,15 @@ export const DataSourceCharts = () => {
     return (
         <DataSourceChartsContainer>
             <Section title={<Translate id='akeneo_connectivity.connection.dashboard.charts.inbound' />}>
-                {!noConnection &&
+                {!noConnection && (
                     <ConnectionSelect connections={connections} onChange={code => setSelectedConnectionCode(code)} />
-                }
+                )}
             </Section>
-            {noConnection ?
+            {noConnection ? (
                 <NoConnectionContainer>
                     <NoConnection flowType={FlowType.DATA_SOURCE} />
                 </NoConnectionContainer>
-                :
+            ) : (
                 <ChartsContainer>
                     <EventChartContainer>
                         <EventChart
@@ -71,8 +71,7 @@ export const DataSourceCharts = () => {
                         />
                     </EventChartContainer>
                 </ChartsContainer>
-            }
-
+            )}
         </DataSourceChartsContainer>
     );
 };

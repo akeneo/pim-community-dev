@@ -74,19 +74,19 @@ describe('Dashboard reducer', () => {
                     '31-12-2019': 0,
                     '01-01-2020': 10,
                 },
-                weekly_total: 10
+                weekly_total: 10,
             },
             franklin: {
                 daily: {
                     '31-12-2019': 0,
                 },
-                weekly_total: 0
+                weekly_total: 0,
             },
             bynder: {
                 daily: {
                     '01-01-2020': 10,
                 },
-                weekly_total: 10
+                weekly_total: 10,
             },
         });
 
@@ -101,19 +101,19 @@ describe('Dashboard reducer', () => {
                             '31-12-2019': 0,
                             '01-01-2020': 10,
                         },
-                        weekly_total: 10
+                        weekly_total: 10,
                     },
                     franklin: {
                         daily: {
                             '31-12-2019': 0,
                         },
-                        weekly_total: 0
+                        weekly_total: 0,
                     },
                     bynder: {
                         daily: {
                             '01-01-2020': 10,
                         },
-                        weekly_total: 10
+                        weekly_total: 10,
                     },
                 },
                 [AuditEventType.PRODUCT_UPDATED]: {},
