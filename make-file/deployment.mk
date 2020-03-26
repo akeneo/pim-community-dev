@@ -106,7 +106,6 @@ create-pim-main-tf: $(INSTANCE_DIR)
 	@echo "backend \"gcs\" {" >> $(INSTANCE_DIR)/main.tf
 	@echo "bucket  = \"akecld-terraform\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "prefix  = \"saas/$(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)/$(PFID)/\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "project = \"akeneo-cloud\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "}" >> $(INSTANCE_DIR)/main.tf
 	@echo "}" >> $(INSTANCE_DIR)/main.tf
 	@echo "module \"pim\" {" >> $(INSTANCE_DIR)/main.tf

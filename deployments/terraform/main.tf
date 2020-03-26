@@ -5,8 +5,8 @@ terraform {
 }
 
 provider "google" {
-  project = "${var.google_project_id}"
-  version = "~> 2.14.0"
+  project = var.google_project_id
+  version = "~> 3.14.0"
 }
 
 provider "helm" {
@@ -19,7 +19,7 @@ locals {
 }
 
 data "template_file" "mailgun_login" {
-  template = "${format ("%s-%s", local.pfid, var.google_project_id)}"
+  template = format("%s-%s", local.pfid, var.google_project_id)
 }
 
 resource "random_string" "mailgun_password" {
@@ -28,10 +28,10 @@ resource "random_string" "mailgun_password" {
 }
 
 resource "null_resource" "mailgun_credential" {
-  triggers {
-    mailgun_password    = "${random_string.mailgun_password.result}"
-    mailgun_login_email = "${local.mailgun_login_email}"
-    mailgun_domain      = "${var.mailgun_domain}"
+  triggers = {
+    mailgun_password    = random_string.mailgun_password.result
+    mailgun_login_email = local.mailgun_login_email
+    mailgun_domain      = var.mailgun_domain
   }
 
   provisioner "local-exec" {
@@ -43,10 +43,11 @@ curl -s --user 'api:${var.mailgun_api_key}' \
 		-F login='${local.mailgun_login_email}' \
 		-F password='${random_string.mailgun_password.result}'
 EOF
+
   }
 
   provisioner "local-exec" {
-    when        = "destroy"
+    when        = destroy
     interpreter = ["/usr/bin/env", "bash", "-c"]
 
     command = <<EOF
@@ -55,19 +56,20 @@ EOF
 curl -s --user 'api:${var.mailgun_api_key}' -X DELETE \
 		https://api.mailgun.net/v3/domains/${var.mailgun_domain}/credentials/${local.mailgun_login_email}
 EOF
+
   }
 }
 
 data "google_dns_managed_zone" "main" {
-  name    = "${var.dns_zone}"
-  project = "${var.dns_project}"
+  name    = var.dns_zone
+  project = var.dns_project
 }
 
 resource "google_dns_record_set" "main" {
-  name         = "${var.dns_external}"
+  name         = var.dns_external
   type         = "CNAME"
   ttl          = 300
-  managed_zone = "${var.dns_zone}"
-  rrdatas      = ["${var.dns_internal}"]
-  project      = "${var.dns_project}"
+  managed_zone = var.dns_zone
+  rrdatas      = [var.dns_internal]
+  project      = var.dns_project
 }

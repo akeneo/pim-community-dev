@@ -1,9 +1,9 @@
 variable "google_project_id" {
-  type = "string"
+  type = string
 }
 
 variable "google_project_zone" {
-  type        = "string"
+  type        = string
   description = "Google zone where the project is deployed (Used for backup)."
 }
 
@@ -12,38 +12,38 @@ variable "papo_project_code" {
 }
 
 variable "pager_duty_service_key" {
-  type        = "string"
+  type        = string
   description = "PagerDuty Service key, get it on the pagerduty page of the service"
 }
 
 variable "instance_name" {
-  type = "string"
+  type = string
 }
 
 variable "dns_external" {
-  type = "string"
+  type = string
 }
 
 variable "dns_internal" {
-  type = "string"
+  type = string
 }
 
 variable "dns_zone" {
-  type = "string"
+  type = string
 }
 
 variable "dns_project" {
-  type    = "string"
+  type    = string
   default = "akeneo-cloud"
 }
 
 variable "mailgun_api_key" {
-  type    = "string"
+  type    = string
   default = "key-b66ddfb72ed72e53eb4371a1ffa7f4f8"
 }
 
 variable "mailgun_domain" {
-  type    = "string"
+  type    = string
   default = "mg.cloud.akeneo.com"
 }
 
@@ -60,7 +60,7 @@ variable "bucket_name" {
 }
 
 variable "google_storage_location" {
-  type = "string"
+  type = string
 }
 
 variable "force_destroy_storage" {
@@ -68,10 +68,11 @@ variable "force_destroy_storage" {
 }
 
 variable "monitoring_authentication_token" {
-  type    = "string"
+  type    = string
   default = ""
 }
 
 variable "pim_version" {
   default = ""
 }
+
