@@ -94,7 +94,6 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\PropertyClearer'
         public: true
         arguments:
-            - '@akeneo.pim.structure.query.get_attributes'
             - '@pim_catalog.updater.clearer.registry'
 
     pim_catalog.updater.category:

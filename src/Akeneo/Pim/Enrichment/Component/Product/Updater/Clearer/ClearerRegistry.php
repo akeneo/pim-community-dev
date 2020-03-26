@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Webmozart\Assert\Assert;
 
@@ -63,16 +62,13 @@ final class ClearerRegistry implements ClearerRegistryInterface
     {
         $attribute = $this->getAttributes->forCode($property);
 
-        return null !== $attribute ? $this->getAttributeClearer($attribute) : $this->getFieldClearer($property);
+        return null !== $attribute ? $this->getAttributeClearer($property) : $this->getFieldClearer($property);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getAttributeClearer(Attribute $attribute): ?AttributeClearerInterface
+    private function getAttributeClearer(string $attributeCode): ?AttributeClearerInterface
     {
         foreach ($this->attributeClearers as $clearer) {
-            if ($clearer->supportsAttribute($attribute)) {
+            if ($clearer->supportsAttributeCode($attributeCode)) {
                 return $clearer;
             }
         }
@@ -80,10 +76,7 @@ final class ClearerRegistry implements ClearerRegistryInterface
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getFieldClearer(string $field): ?FieldClearerInterface
+    private function getFieldClearer(string $field): ?FieldClearerInterface
     {
         foreach ($this->fieldClearers as $clearer) {
             if ($clearer->supportsField($field)) {

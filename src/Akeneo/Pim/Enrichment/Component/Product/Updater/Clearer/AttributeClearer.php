@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Webmozart\Assert\Assert;
 
 /**
  * Clear the attribute value of an entity.
@@ -16,7 +16,10 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
  */
 final class AttributeClearer implements AttributeClearerInterface
 {
-    public function supportsAttribute(Attribute $attribute): bool
+    /**
+     * {@inheritDoc}
+     */
+    public function supportsAttributeCode(string $attributeCode): bool
     {
         return true;
     }
@@ -24,9 +27,11 @@ final class AttributeClearer implements AttributeClearerInterface
     /**
      * {@inheritDoc}
      */
-    public function clear(EntityWithValuesInterface $entity, Attribute $attribute, array $options = []): void
+    public function clear($entity, string $attributeCode, array $options = []): void
     {
-        $value = $entity->getValue($attribute->code(), $options['locale'] ?? null, $options['scope'] ?? null);
+        Assert::isInstanceOf($entity, EntityWithValuesInterface::class);
+
+        $value = $entity->getValue($attributeCode, $options['locale'] ?? null, $options['scope'] ?? null);
         if (null !== $value) {
             $entity->removeValue($value);
         }

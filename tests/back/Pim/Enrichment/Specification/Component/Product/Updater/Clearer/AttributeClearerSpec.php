@@ -32,8 +32,7 @@ class AttributeClearerSpec extends ObjectBehavior
 
     function it_supports_all_attributes()
     {
-        $titleAttribute = $this->buildAttribute('title');
-        $this->supportsAttribute($titleAttribute)->shouldReturn(true);
+        $this->supportsAttributeCode('title')->shouldReturn(true);
     }
 
     function it_clears_an_attribute_value_of_a_product()
@@ -42,9 +41,8 @@ class AttributeClearerSpec extends ObjectBehavior
         $product->setValues(new WriteValueCollection([
             ScalarValue::value('title', 'the title'),
         ]));
-        $titleAttribute = $this->buildAttribute('title');
 
-        $this->clear($product, $titleAttribute, ['locale' => null, 'scope' => null]);
+        $this->clear($product, 'title', ['locale' => null, 'scope' => null]);
         Assert::null($product->getValue('title'));
     }
 
@@ -58,9 +56,8 @@ class AttributeClearerSpec extends ObjectBehavior
             ScalarValue::scopableLocalizableValue('title', 'the title4', 'print', 'en_US'),
             ScalarValue::scopableLocalizableValue('description', 'description', 'print', 'en_US'),
         ]));
-        $titleAttribute = $this->buildAttribute('title');
 
-        $this->clear($product, $titleAttribute, ['locale' => 'en_US', 'scope' => 'print']);
+        $this->clear($product, 'title', ['locale' => 'en_US', 'scope' => 'print']);
         Assert::null($product->getValue('title', 'en_US', 'print'));
         Assert::notNull($product->getValue('title', 'en_US', 'ecommerce'));
         Assert::notNull($product->getValue('title', 'fr_FR', 'ecommerce'));
@@ -75,25 +72,9 @@ class AttributeClearerSpec extends ObjectBehavior
             ScalarValue::scopableLocalizableValue('title', 'the title', 'ecommerce', 'en_US'),
             ScalarValue::scopableLocalizableValue('description', 'description', 'print', 'en_US'),
         ]));
-        $titleAttribute = $this->buildAttribute('title');
 
-        $this->clear($product, $titleAttribute, ['locale' => 'de_DE', 'scope' => 'print']);
+        $this->clear($product, 'title', ['locale' => 'de_DE', 'scope' => 'print']);
         Assert::notNull($product->getValue('title', 'en_US', 'ecommerce'));
         Assert::notNull($product->getValue('description', 'en_US', 'print'));
-    }
-
-    private function buildAttribute(string $code): Attribute
-    {
-        return new Attribute(
-            $code,
-            AttributeTypes::BACKEND_TYPE_TEXT,
-            [],
-            false,
-            false,
-            null,
-            true,
-            '',
-            []
-        );
     }
 }

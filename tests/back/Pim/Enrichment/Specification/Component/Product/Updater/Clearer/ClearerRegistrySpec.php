@@ -46,10 +46,9 @@ class ClearerRegistrySpec extends ObjectBehavior
     {
         $attribute = $this->buildAttribute('title');
         $getAttributes->forCode('title')->willReturn($attribute);
-        $attributeClearer->supportsAttribute($attribute)->willReturn(true);
+        $attributeClearer->supportsAttributeCode('title')->willReturn(true);
 
         $this->getClearer('title')->shouldReturn($attributeClearer);
-        $this->getAttributeClearer($attribute)->shouldReturn($attributeClearer);
     }
 
     function it_returns_a_field_clearer(
@@ -62,7 +61,6 @@ class ClearerRegistrySpec extends ObjectBehavior
         $fieldClearer2->supportsField('categories')->willReturn(true);
 
         $this->getClearer('categories')->shouldReturn($fieldClearer2);
-        $this->getFieldClearer('categories')->shouldReturn($fieldClearer2);
     }
 
     function it_returns_null_for_an_attribute_when_no_clearer_is_found(
@@ -71,10 +69,9 @@ class ClearerRegistrySpec extends ObjectBehavior
     ) {
         $attribute = $this->buildAttribute('title');
         $getAttributes->forCode('title')->willReturn($attribute);
-        $attributeClearer->supportsAttribute($attribute)->willReturn(false);
+        $attributeClearer->supportsAttributeCode('title')->willReturn(false);
 
         $this->getClearer('title')->shouldReturn(null);
-        $this->getAttributeClearer($attribute)->shouldReturn(null);
     }
 
     function it_returns_null_for_a_field_when_no_clearer_is_found(
@@ -87,7 +84,6 @@ class ClearerRegistrySpec extends ObjectBehavior
         $fieldClearer2->supportsField('categories')->willReturn(false);
 
         $this->getClearer('categories')->shouldReturn(null);
-        $this->getFieldClearer('categories')->shouldReturn(null);
     }
 
     private function buildAttribute(string $code): Attribute
