@@ -1,7 +1,7 @@
 import React, {useState, useContext, useCallback, useEffect, ChangeEvent} from 'react';
 import styled, {css, ThemeContext} from 'styled-components';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
-import {ConfigContext, ConfigContextValue} from 'akeneomeasure/context/config-context';
+import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {Button, TransparentButton} from 'akeneomeasure/shared/components/Button';
 import {DownIcon} from 'akeneomeasure/shared/icons/DownIcon';
 import {LockIcon} from 'akeneomeasure/shared/icons/LockIcon';
@@ -136,7 +136,7 @@ const OperationCollection = ({
 }: OperationCollectionProps) => {
   const __ = useContext(TranslateContext);
   const akeneoTheme = useContext(ThemeContext);
-  const config = useContext(ConfigContext) as ConfigContextValue;
+  const config = useContext(ConfigContext);
   const [openOperatorSelector, setOpenOperatorSelector] = useState<number | null>(null);
   const [formatNumber, unformatNumber] = useLocalizedNumber();
 
