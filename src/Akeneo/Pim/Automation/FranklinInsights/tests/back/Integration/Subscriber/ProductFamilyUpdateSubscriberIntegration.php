@@ -39,9 +39,6 @@ class ProductFamilyUpdateSubscriberIntegration extends TestCase
 
     public function test_it_removes_the_subscription_only_if_the_family_is_removed_from_the_subscribed_product()
     {
-        // TODO: unskip at next pullup
-        $this->markTestSkipped();
-
         $productA = $this->createProduct('product_A');
         $productB = $this->createProduct('product_B');
         $productC = $this->createProduct('product_C');
