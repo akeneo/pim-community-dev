@@ -1,0 +1,53 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field;
+
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
+use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
+use Webmozart\Assert\Assert;
+
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class AssociationFieldClearerSpec extends ObjectBehavior
+{
+    function it_supports_only_associations_field()
+    {
+        $this->supportsField('categories')->shouldReturn(false);
+        $this->supportsField('associations')->shouldReturn(true);
+        $this->supportsField('other')->shouldReturn(false);
+    }
+
+    function it_removes_all_association_of_a_product()
+    {
+
+        $product = new Product();
+        $associations = new ArrayCollection();
+        $associations->add(new ProductAssociation());
+        $associations->add(new ProductAssociation());
+        $product->setAssociations($associations);
+
+        $this->clear($product, 'associations');
+        Assert::count($product->getAssociations(), 0);
+    }
+
+    function it_removes_all_association_of_a_product_model()
+    {
+
+        $productModel = new ProductModel();
+        $associations = new ArrayCollection();
+        $associations->add(new ProductModelAssociation());
+        $associations->add(new ProductModelAssociation());
+        $productModel->setAssociations($associations);
+
+        $this->clear($productModel, 'associations');
+        Assert::count($productModel->getAssociations(), 0);
+    }
+}
