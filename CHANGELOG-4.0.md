@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9164: Fix build property path for localized attributes validation
+
 # 4.0.12 (2020-03-24)
 
 ## Bug fixes
