@@ -6,10 +6,11 @@ import {FlowType} from '@src/model/flow-type.enum';
 describe('Dashboard reducer', () => {
     it('handles CONNECTIONS_FETCHED action', () => {
         const initialState: State = {
-            sourceConnections: {},
+            connections: {},
             events: {
                 [AuditEventType.PRODUCT_CREATED]: {},
                 [AuditEventType.PRODUCT_UPDATED]: {},
+                [AuditEventType.PRODUCT_READ]: {},
             },
         };
 
@@ -23,7 +24,7 @@ describe('Dashboard reducer', () => {
             {
                 code: 'bynder',
                 label: 'Bynder',
-                flowType: FlowType.DATA_SOURCE,
+                flowType: FlowType.DATA_DESTINATION,
                 image: null,
             },
         ]);
@@ -31,7 +32,7 @@ describe('Dashboard reducer', () => {
         const newState = reducer(initialState, action);
 
         expect(newState).toStrictEqual({
-            sourceConnections: {
+            connections: {
                 franklin: {
                     code: 'franklin',
                     label: 'Franklin',
@@ -41,57 +42,78 @@ describe('Dashboard reducer', () => {
                 bynder: {
                     code: 'bynder',
                     label: 'Bynder',
-                    flowType: FlowType.DATA_SOURCE,
+                    flowType: FlowType.DATA_DESTINATION,
                     image: null,
                 },
             },
             events: {
                 [AuditEventType.PRODUCT_CREATED]: {},
                 [AuditEventType.PRODUCT_UPDATED]: {},
+                [AuditEventType.PRODUCT_READ]: {},
             },
         });
     });
 
     it('handles CONNECTIONS_AUDIT_DATA_FETCHED action', () => {
         const initialState: State = {
-            sourceConnections: {},
+            connections: {},
             events: {
                 [AuditEventType.PRODUCT_CREATED]: {},
                 [AuditEventType.PRODUCT_UPDATED]: {},
+                [AuditEventType.PRODUCT_READ]: {},
             },
         };
 
         const action = connectionsAuditDataFetched(AuditEventType.PRODUCT_CREATED, {
             '<all>': {
-                '31-12-2019': 0,
-                '01-01-2020': 10,
+                daily: {
+                    '31-12-2019': 0,
+                    '01-01-2020': 10,
+                },
+                weekly_total: 10
             },
             franklin: {
-                '31-12-2019': 0,
+                daily: {
+                    '31-12-2019': 0,
+                },
+                weekly_total: 0
             },
             bynder: {
-                '01-01-2020': 10,
+                daily: {
+                    '01-01-2020': 10,
+                },
+                weekly_total: 10
             },
         });
 
         const newState = reducer(initialState, action);
 
         expect(newState).toStrictEqual({
-            sourceConnections: {},
+            connections: {},
             events: {
                 [AuditEventType.PRODUCT_CREATED]: {
                     '<all>': {
-                        '31-12-2019': 0,
-                        '01-01-2020': 10,
+                        daily: {
+                            '31-12-2019': 0,
+                            '01-01-2020': 10,
+                        },
+                        weekly_total: 10
                     },
                     franklin: {
-                        '31-12-2019': 0,
+                        daily: {
+                            '31-12-2019': 0,
+                        },
+                        weekly_total: 0
                     },
                     bynder: {
-                        '01-01-2020': 10,
+                        daily: {
+                            '01-01-2020': 10,
+                        },
+                        weekly_total: 10
                     },
                 },
                 [AuditEventType.PRODUCT_UPDATED]: {},
+                [AuditEventType.PRODUCT_READ]: {},
             },
         });
     });

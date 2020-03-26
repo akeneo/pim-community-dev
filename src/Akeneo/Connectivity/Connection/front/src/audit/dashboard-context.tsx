@@ -1,12 +1,12 @@
 import React, {createContext, Dispatch, useContext, PropsWithChildren, useReducer} from 'react';
 import {Actions} from './actions/dashboard-actions';
-import {State, initialState, reducer} from './reducers/dashboard-reducer';
+import {State, initialState as defaultState, reducer} from './reducers/dashboard-reducer';
 
 const StateContext = createContext<State | undefined>(undefined);
 const DispatchContext = createContext<Dispatch<Actions> | undefined>(undefined);
 
-export const DashboardProvider = ({children}: PropsWithChildren<{}>) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+export const DashboardProvider = ({children, initialState}: PropsWithChildren<{initialState?: State}>) => {
+    const [state, dispatch] = useReducer(reducer, initialState || defaultState);
 
     return (
         <StateContext.Provider value={state}>
