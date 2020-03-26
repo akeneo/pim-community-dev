@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context;
 
+use AcmeEnterprise\Bundle\AppBundle\Entity\Color;
+use AcmeEnterprise\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -46,6 +49,20 @@ final class DataFixturesContext implements Context
     public function getContainer(): ContainerInterface
     {
         return $this->container;
+    }
+
+    /**
+     * @Given /^I add the "([^"]*)" locale to the "([^"]*)" channel$/
+     */
+    public function iAddTheLocaleToTheChannel(string $localeCode, string $channelCode)
+    {
+        $channel = $this->getContainer()->get('pim_catalog.repository.channel')->findOneByIdentifier($channelCode);
+        $locale = $this->getContainer()->get('pim_catalog.repository.locale')->findOneByIdentifier($localeCode);
+
+        $channel->addLocale($locale);
+        $this->validate($channel);
+        $this->getContainer()->get('pim_catalog.saver.channel')->save($channel);
+        $this->getContainer()->get('pim_catalog.saver.locale')->save($locale);
     }
 
     /**
@@ -233,6 +250,31 @@ final class DataFixturesContext implements Context
     }
 
     /**
+     * @Then /^the history of the product "([^"]*)" has been built$/
+     */
+    public function theHistoryOfTheProductHasBeenBuilt($identifier)
+    {
+        $product = $this->getContainer()->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+
+        $this->getVersionManager()->setRealTimeVersioning(true);
+        $versions = $this->getVersionManager()->buildPendingVersions($product);
+        foreach ($versions as $version) {
+            $this->validate($version);
+            $this->getContainer()->get('pim_versioning.saver.version')->save($version);
+        }
+    }
+
+    /**
+     * @Given /^the following reference data?:$/
+     */
+    public function theFollowingReferenceData(TableNode $table): void
+    {
+        foreach ($table->getHash() as $row) {
+            $this->createReferenceData(trim($row['type']), trim($row['code']), trim($row['label'] ?? ''));
+        }
+    }
+
+    /**
      * @throws \InvalidArgumentException
      */
     protected function validate($object): void
@@ -268,6 +310,54 @@ final class DataFixturesContext implements Context
             $this->validate($version);
             $this->getContainer()->get('pim_versioning.saver.version')->save($version);
         }
+    }
+
+    protected function createReferenceData(string $type, string $code, string $label): ReferenceDataInterface
+    {
+        switch ($type) {
+            case 'color':
+            case 'colors':
+                $referenceData = $this->createColorReferenceData($code, $label);
+                $this->validate($referenceData);
+                $this->getContainer()->get('acme_app.saver.color')->save($referenceData);
+                break;
+            case 'fabric':
+            case 'fabrics':
+                $referenceData = $this->createFabricReferenceData($code, $label);
+                $this->getContainer()->get('acme_app.saver.fabric')->save($referenceData);
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Unknown reference data type "%s".', $type));
+        }
+
+        return $referenceData;
+    }
+
+    protected function createColorReferenceData(string $code, string $label): Color
+    {
+        $color = new Color();
+        $color->setCode($code);
+        $color->setName($label);
+        $color->setHex('#' . strtolower($code));
+        $color->setRed(rand(0, 100));
+        $color->setGreen(rand(0, 100));
+        $color->setBlue(rand(0, 100));
+        $color->setHue(rand(0, 100));
+        $color->setHslSaturation(rand(0, 100));
+        $color->setLight(rand(0, 100));
+        $color->setHsvSaturation(rand(0, 100));
+        $color->setValue(rand(0, 100));
+
+        return $color;
+    }
+
+    protected function createFabricReferenceData(string $code, string $label): Fabric
+    {
+        $fabric = new Fabric();
+        $fabric->setCode($code);
+        $fabric->setName($label);
+
+        return $fabric;
     }
 
     protected function getProductSaver(): SaverInterface

@@ -1,4 +1,3 @@
-@javascript
 Feature: Update multiple product by applying rules
   In order ease the enrichment of the catalog
   As a regular user
@@ -6,9 +5,8 @@ Feature: Update multiple product by applying rules
 
   Background:
     Given a "footwear" catalog configuration
-    And I add the "french" locale to the "tablet" channel
-    And I am logged in as "Julia"
 
+  @integration-back
   Scenario: Successfully execute a rule with a setter action on multiple products
     Given the following products:
     | sku         | family  |
@@ -39,19 +37,16 @@ Feature: Update multiple product by applying rules
             value: new name
             locale: en_US
       """
-    Given the product rule "set_name" is executed
-    And I am on the "a-my-loafer" product page
-    Then the product Name should be "new name"
-    When I am on the "a-boot" product page
-    Then the product Name should be "new name"
-    When I am on the "a-fork" product page
-    Then the product Name should be "new name"
-    When I am on the "a-rangers" product page
-    Then the product Name should be "new name"
-    When I am on the "mug" product page
-    Then the product Name should be "Mug"
+    When the product rule "set_name" is executed
+    Then the en_US unscoped name of "a-my-loafer" should be "new name"
+    And the fr_FR unscoped name of "a-my-loafer" should be "Mocassin blanc"
+    And the en_US unscoped name of "a-boot" should be "new name"
+    And the en_US unscoped name of "a-fork" should be "new name"
+    And the en_US unscoped name of "a-rangers" should be "new name"
+    And the en_US unscoped name of "mug" should be "Mug"
 
-  Scenario: Successfully execute a rule with a setter action on multiple products
+  @integration-back
+  Scenario: Successfully execute a rule with a copy action on multiple products
     Given the following products:
     | sku       | family  |
     | my-loafer | sandals |
@@ -86,19 +81,13 @@ Feature: Update multiple product by applying rules
             from_locale: en_US
             to_locale:   fr_FR
       """
-    Given the product rule "copy_name" is executed
-    And I am on the "my-loafer" product page
-    And I visit the "Product information" group
-    When I switch the locale to "fr_FR"
-    Then the product [name] should be "Mocassin blanc"
-    When I am on the "boot" product page
-    And I switch the locale to "fr_FR"
-    Then the product [name] should be "Boots"
-    When I am on the "rangers" product page
-    And I switch the locale to "fr_FR"
-    Then the product [name] should be "Rangers"
+    When the product rule "copy_name" is executed
+    Then the fr_FR unscoped name of "my-loafer" should be "Mocassin blanc"
+    And the fr_FR unscoped name of "boot" should be "Boots"
+    And the fr_FR unscoped name of "rangers" should be "Rangers"
 
-  Scenario: Successfully execute a rule with a setter action and a NOT EMPTY condition on multiple products
+  @integration-back
+  Scenario: Successfully execute a rule with a copy action and a NOT EMPTY condition on multiple products
     Given the following products:
       | sku       | family  |
       | my-loafer | sandals |
@@ -127,13 +116,7 @@ Feature: Update multiple product by applying rules
             from_locale: en_US
             to_locale:   fr_FR
       """
-    Given the product rule "copy_name" is executed
-    And I am on the "my-loafer" product page
-    When I switch the locale to "fr_FR"
-    Then the product [name] should be "White loafer"
-    When I am on the "fork" product page
-    And I switch the locale to "fr_FR"
-    Then the product [name] should be ""
-    When I am on the "rangers" product page
-    And I switch the locale to "fr_FR"
-    Then the product [name] should be "Rangers"
+    When the product rule "copy_name" is executed
+    Then the fr_FR unscoped name of "my-loafer" should be "White loafer"
+    And the fr_FR unscoped name of "fork" should be ""
+    And the fr_FR unscoped name of "rangers" should be "Rangers"

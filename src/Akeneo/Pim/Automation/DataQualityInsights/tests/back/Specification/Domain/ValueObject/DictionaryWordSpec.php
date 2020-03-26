@@ -35,5 +35,8 @@ final class DictionaryWordSpec extends ObjectBehavior
 
         $this->beConstructedWith('!?*$#');
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+
+        $this->beConstructedWith('-');
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

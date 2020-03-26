@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 
-/**
- * @author Olivier Pontier <olivier.pontier@akeneo.com>
- */
-interface SupportedLocaleChecker
+interface SupportedLocaleValidator
 {
     public function isSupported(LocaleCode $localeCode): bool;
+
+    public function getSupportedLocaleCollection(): \Generator;
+
+    public function extractLanguageCode(LocaleCode $localeCode): ?LanguageCode;
 }

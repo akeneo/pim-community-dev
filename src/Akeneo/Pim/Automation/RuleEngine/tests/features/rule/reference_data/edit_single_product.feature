@@ -1,19 +1,17 @@
-@javascript
-Feature: Update a single product by applying rules
+Feature: Update a single product by applying rules which concern reference data
   In order ease the enrichment of the catalog
   As a regular user
   I need that the relevant rules are executed and correctly applied to the product
 
   Background:
     Given a "footwear" catalog configuration
-    And I add the "french" locale to the "mobile" channel
-    And I add the "french" locale to the "tablet" channel
+    And I add the "fr_FR" locale to the "tablet" channel
     And the following reference data:
       | type   | code     |
       | color  | orange   |
       | fabric | cashmere |
-    And I am logged in as "Julia"
 
+  @integration-back
   Scenario: Successfully execute a rule with setter actions to update non empty values on reference data attributes
     Given the family "heels" has the attributes "cap_color, lace_fabric"
     And the following products:
@@ -70,7 +68,7 @@ Feature: Update a single product by applying rules
             locale: en_US
             scope:  mobile
       """
-    Given the product rule "rule_set_heels " is executed
+    When the product rule "rule_set_heels " is executed
     Then the product "red-heels" should have the following values:
       | sole_color               | [orange]                         |
       | sole_fabric              | [chiffon], [leather], [satin]    |
@@ -79,6 +77,7 @@ Feature: Update a single product by applying rules
       | lace_fabric-en_US-tablet | [cashmere], [toile]              |
       | lace_fabric-en_US-mobile | [cashmere], [gore-tex], [toile]  |
 
+  @integration-back
   Scenario: Successfully execute a rule with copier actions to update non empty values on reference data attributes
     Given the family "heels" has the attributes "cap_color"
     And the following products:

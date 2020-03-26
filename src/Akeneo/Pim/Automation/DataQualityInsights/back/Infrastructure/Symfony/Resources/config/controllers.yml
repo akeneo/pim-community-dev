@@ -50,14 +50,14 @@ services:
         arguments:
             $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $textChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellChecker'
-            $supportedLocaleChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker'
+            $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator'
             $logger: '@monolog.logger.quality'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddWordInDictionaryController:
         public: true
         arguments:
             $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            $supportedLocaleChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedPrefixLocaleChecker'
+            $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator'
             $textCheckerDictionaryRepository: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository'
             $eventDispatcher: '@event_dispatcher'
 

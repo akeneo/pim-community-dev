@@ -42,8 +42,8 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     /** @var GetLocalesByChannelQueryInterface */
     private $localesByChannelQuery;
 
-    /** @var SupportedLocaleChecker */
-    private $supportedLocaleChecker;
+    /** @var SupportedLocaleValidator */
+    private $supportedLocaleValidator;
 
     /** @var LoggerInterface */
     private $logger;
@@ -51,12 +51,12 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     public function __construct(
         TextChecker $textChecker,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        SupportedLocaleChecker $supportedLocaleChecker,
+        SupportedLocaleValidator $supportedLocaleValidator,
         LoggerInterface $logger
     ) {
         $this->textChecker = $textChecker;
         $this->localesByChannelQuery = $localesByChannelQuery;
-        $this->supportedLocaleChecker = $supportedLocaleChecker;
+        $this->supportedLocaleValidator = $supportedLocaleValidator;
         $this->logger = $logger;
     }
 
@@ -80,7 +80,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         LocaleCode $localeCode,
         ProductValuesCollection $productValues
     ): void {
-        if (!$this->supportedLocaleChecker->isSupported($localeCode)) {
+        if (!$this->supportedLocaleValidator->isSupported($localeCode)) {
             $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::notApplicable());
             return;
         }

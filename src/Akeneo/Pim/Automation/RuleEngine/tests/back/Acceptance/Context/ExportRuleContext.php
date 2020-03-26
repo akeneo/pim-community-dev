@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor;
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Normalization\RuleDefinitionProcessor as RuleDefinitionNormalizerProcessor;
+use Akeneo\Test\Pim\Automation\RuleEngine\Common\Context\ExceptionContext;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Yaml\Yaml;

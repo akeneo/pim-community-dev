@@ -1,8 +1,7 @@
-@javascript
-Feature: Execute rules from the user interface
+Feature: Execute rules without permissions applied
   In order to run the rules
   As a product manager
-  I need to be able to launch their execution from the "Settings/Rules" screen without permissions applied
+  I need to be able to launch their execution without permissions applied
 
   Background:
     Given a "clothing" catalog configuration
@@ -10,7 +9,6 @@ Feature: Execute rules from the user interface
       | sku        | categories | family  |
       | navy_blue  | jackets    | jackets |
       | light_blue | jeans      | pants   |
-    And I am logged in as "Julia"
     And the following product rule definitions:
       """
       copy_description:
@@ -23,9 +21,8 @@ Feature: Execute rules from the user interface
             scope:  mobile
       """
 
+  @integration-back
   Scenario: Successfully execute all rules from the user interface on all products
     Given the product rule "copy_description" is executed
-    Then the product "navy_blue" should have the following values:
-      | description-en_US-mobile | Nice description |
-    Then the product "light_blue" should have the following values:
-      | description-en_US-mobile | Nice description |
+    Then the en_US mobile description of "navy_blue" should be "Nice description"
+    And the en_US mobile description of "light_blue" should be "Nice description"

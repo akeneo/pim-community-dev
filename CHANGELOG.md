@@ -16,8 +16,13 @@
 - DAPI-635: Add spellcheck on WYSIWG editors
 - DAPI-798: Allow spelling suggestions after a title formatter check
 - RUL-20: Rule engine - As Julia, I would like to copy values from/to different attribute types
+- DAPI-895: As Julia, I'd like spell-check to be available for Norwegian
 
 ## New features
 
 - DAPI-854: Data quality - Variant products are also evaluated
 - RUL-17: Rules engine - Add the concatenate action type to concatenate some attribute values into a single attribute value
+
+## BC Breaks
+
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet\ImpactedProductCountTasklet` to change last argument from `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface` to `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`

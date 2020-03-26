@@ -1,3 +1,10 @@
 config:
+    config:
+        pim/controller-registry:
+            controllers:
+                pimee_catalog_rule_edit:
+                    module: pimee/attribute-edit-form/rules/edit-rules
+
     paths:
-        pimee/attribute-edit-form/rules/rules-grid: akeneopimruleengine/js/attribute/form/rules/rules-grid
+        pimee/attribute-edit-form/rules/rules-grid: akeneopimruleengine/js/attribute/form/rules/contollers/rules-grid
+        pimee/attribute-edit-form/rules/edit-rules: akeneopimruleengine/js/attribute/form/rules/contollers/edit-rules

@@ -93,6 +93,11 @@ ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
 endif
+ifeq ($(INSTANCE_NAME),pimci-helpdesk)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
+endif
 
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
@@ -150,3 +155,17 @@ deploy_pr_environment:
 	echo "\n\nThis environment will be available at https://pimci-pr-$${PR_NUMBER}.$(GOOGLE_MANAGED_ZONE_DNS) once deployed :)\n\n" && \
 	INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
 	INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make deploy
+
+.PHONY: delete_pr_environments
+delete_pr_environments:
+	kubectl get ns|grep "srnt-pimci-pr"; \
+	for namespace in $$(kubectl get ns|grep "srnt-pimci-pr"|awk '{print $$1}'); do \
+		NS_INFO=$$(kubectl get ns |grep $${namespace}); \
+		NS_STATUS=$$(echo $${NS_INFO}|awk '{print $$2}'); \
+		NS_AGE=$$(echo $${NS_INFO}|awk '{print $$3}'); \
+		INSTANCE_NAME=$$(echo $${namespace} | awk -F'srnt-pimci-pr-' '{print $$NF}'); \
+		echo "---[DELETE] namespace $${namespace} with status $${NS_STATUS} since $${NS_AGE} (instance_name=$${INSTANCE_NAME})"; \
+		INSTANCE_NAME=pimci-pr-$${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
+		INSTANCE_NAME_PREFIX=pimci-pr IMAGE_TAG=$${INSTANCE_NAME} make delete; \
+		echo "---[DELETED] namespace $${namespace}"; \
+	done

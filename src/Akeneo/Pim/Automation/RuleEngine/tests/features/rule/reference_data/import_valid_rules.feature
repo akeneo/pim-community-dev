@@ -1,4 +1,3 @@
-@javascript
 Feature: Import rules
   In order ease the enrichment of the catalog
   As an administrator
@@ -6,10 +5,10 @@ Feature: Import rules
 
   Background:
     Given a "clothing" catalog configuration
-    And I add the "french" locale to the "mobile" channel
-    And I add the "french" locale to the "tablet" channel
-    And I am logged in as "Peter"
+    And I add the "fr_FR" locale to the "mobile" channel
+    And I add the "fr_FR" locale to the "tablet" channel
 
+  @integration-back
   Scenario: Successfully import a rule for "reference data" attributes
     Given the following yaml file to import:
     """
@@ -45,17 +44,37 @@ Feature: Import rules
                   from_locale: en_US
                   to_locale:   en_US
     """
-    And the following job "clothing_rule_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "clothing_rule_import" import job page
-    And I launch the import job
-    And I wait for the "clothing_rule_import" job to finish
-    And I am on the "sleeve_color" attribute page
-    And I visit the "Rules" tab
-    Then the row "set_reference_data" should contain the texts:
-      | column    | value                                                                     |
-      | Condition | If sleeve_color.code in red, grizzly                                      |
-      | Condition | If sleeve_fabric.code in kevlar, chiffon                                  |
-      | Action    | Then yellow is set into sleeve_color                                      |
-      | Action    | Then kevlar, chiffon, satin, wool is set into sleeve_fabric               |
-      | Action    | Then zip_color [ en \| mobile ] is copied into zip_color [ en \| tablet ] |
+    Then no exception has been thrown
+    And the rule list contains the rule:
+    """
+    set_reference_data:
+        conditions:
+            - field:    sleeve_color.code
+              operator: IN
+              value:
+                - red
+                - grizzly
+            - field:    sleeve_fabric.code
+              operator: IN
+              value:
+                - kevlar
+                - chiffon
+        actions:
+            - type:  set
+              field: sleeve_color
+              value: yellow
+            - type:  set
+              field: sleeve_fabric
+              value:
+                - kevlar
+                - chiffon
+                - satin
+                - wool
+            - type:        copy
+              from_field:  zip_color
+              to_field:    zip_color
+              from_scope:  mobile
+              to_scope:    tablet
+              from_locale: en_US
+              to_locale:   en_US
+    """
