@@ -9,8 +9,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\AttributeClearer;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\AttributeClearerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
 
