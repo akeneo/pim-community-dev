@@ -3,7 +3,7 @@ import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES
 } from '../../../../listener';
-import {isRootProductModel, isSimpleProduct} from '../../../../helper/ProductEditForm/Product';
+import {isRootProductModel, isSimpleProduct, isVariantProduct} from '../../../../helper/ProductEditForm/Product';
 import {Product} from '../../../../../domain';
 import {ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY} from '../AttributesTabContent';
 import {PRODUCT_MODEL_ATTRIBUTES_TAB_NAME} from '../../../../constant';
@@ -27,7 +27,7 @@ const handleClick = (product: Product, attributes: string[], axis: string ) => {
   const attributeToImprove = attributes[0];
 
   // @ts-ignore
-  if (isSimpleProduct(product) || isRootProductModel(product)) {
+  if (isSimpleProduct(product) || isVariantProduct(product) || isRootProductModel(product)) {
     switch (axis) {
       case 'enrichment':
         window.dispatchEvent(new CustomEvent(DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES, {

@@ -1,7 +1,7 @@
 import {useCallback} from "react";
 import {useCatalogContext, useGetEditorHighlightWidgetsList, useProduct} from "../../index";
 import {fetchIgnoreTextIssue} from "../../../fetcher";
-import {isSimpleProduct} from '../../../../application/helper/ProductEditForm/Product';
+import {isSimpleProduct, isVariantProduct} from '../../../../application/helper/ProductEditForm/Product';
 import fetchProductModelIgnoreTextIssue from '../../../fetcher/fetchProductModelIgnoreTextIssue';
 
 const useFetchIgnoreTextIssue = () => {
@@ -15,7 +15,7 @@ const useFetchIgnoreTextIssue = () => {
     }
 
     (async () => {
-      if (isSimpleProduct(product)) {
+      if (isSimpleProduct(product) || isVariantProduct(product)) {
         await fetchIgnoreTextIssue(word, locale, product.meta.id as number);
       } else {
         await fetchProductModelIgnoreTextIssue(word, locale, product.meta.id as number);

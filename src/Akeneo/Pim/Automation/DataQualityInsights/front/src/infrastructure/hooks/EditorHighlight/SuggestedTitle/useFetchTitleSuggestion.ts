@@ -5,7 +5,7 @@ import {fetchTitleSuggestion} from "../../../fetcher";
 import {useCatalogContext, useProduct} from "../../index";
 import {setHasSuggestedTitleAction, updateWidgetContentAnalysis} from "../../../reducer";
 import useProductAxesRates from "../../useProductAxesRates";
-import {isSimpleProduct} from '../../../../application/helper/ProductEditForm/Product';
+import {isSimpleProduct, isVariantProduct} from '../../../../application/helper/ProductEditForm/Product';
 import fetchProductModelTitleSuggestion from '../../../fetcher/fetchProductModelTitleSuggestion';
 
 const useFetchTitleSuggestion = (widget: WidgetElement) => {
@@ -28,7 +28,7 @@ const useFetchTitleSuggestion = (widget: WidgetElement) => {
           return;
         }
 
-        const result: string|null = await (isSimpleProduct(product) ?
+        const result: string|null = await (isSimpleProduct(product) || isVariantProduct(product) ?
           fetchTitleSuggestion(product, channel, locale) :
           fetchProductModelTitleSuggestion(product, channel, locale));
 
