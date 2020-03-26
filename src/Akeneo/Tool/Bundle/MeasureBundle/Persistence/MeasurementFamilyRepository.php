@@ -22,6 +22,12 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
     /** @var Connection */
     private $sqlConnection;
 
+    /** @var MeasurementFamily[] */
+    private $allMeasurementFamiliesCache = [];
+
+    /** @var MeasurementFamily[] */
+    private $measurementFamilyCache = [];
+
     public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
@@ -29,12 +35,20 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
 
     public function all(): array
     {
-        return $this->loadMeasurementFamilies();
+        if (empty($this->allMeasurementFamiliesCache)) {
+            $this->allMeasurementFamiliesCache = $this->loadAssetFamiliesIndexByCodes();
+        }
+
+        return array_values($this->allMeasurementFamiliesCache);
     }
 
     public function getByCode(MeasurementFamilyCode $measurementFamilyCode): MeasurementFamily
     {
-        return $this->loadMeasurementFamily($measurementFamilyCode);
+        if (!isset($this->measurementFamilyCache[$measurementFamilyCode->normalize()])) {
+            $this->measurementFamilyCache[$measurementFamilyCode->normalize()] = $this->loadAssetFamily($measurementFamilyCode);
+        }
+
+        return $this->measurementFamilyCache[$measurementFamilyCode->normalize()];
     }
 
     public function save(MeasurementFamily $measurementFamily)
@@ -67,6 +81,9 @@ SQL;
                 sprintf('Expected to create/update one measurement family, but %d were affected', $affectedRows)
             );
         }
+
+        $this->allMeasurementFamiliesCache[$normalizedMeasurementFamily['code']] = $measurementFamily;
+        $this->measurementFamilyCache[$normalizedMeasurementFamily['code']] = $measurementFamily;
     }
 
     public function countAllOthers(MeasurementFamilyCode $excludedMeasurementFamilyCode): int
@@ -100,6 +117,13 @@ SQL;
 
         if (1 !== $affectedRows) {
             throw new MeasurementFamilyNotFoundException();
+        }
+
+        if (isset($this->measurementFamilyCache[$measurementFamilyCode->normalize()])) {
+            unset($this->measurementFamilyCache[$measurementFamilyCode->normalize()]);
+        }
+        if (isset($this->allMeasurementFamiliesCache[$measurementFamilyCode->normalize()])) {
+            unset($this->allMeasurementFamiliesCache[$measurementFamilyCode->normalize()]);
         }
     }
 
@@ -157,7 +181,7 @@ SQL;
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function loadMeasurementFamilies(): array
+    private function loadAssetFamiliesIndexByCodes(): array
     {
         $selectAllQuery = <<<SQL
     SELECT
@@ -170,17 +194,20 @@ SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
         $results = $statement->fetchAll();
 
-        return array_map(function ($measurementFamily) {
-            return $this->hydrateMeasurementFamily(
-                $measurementFamily['code'],
-                $measurementFamily['labels'],
-                $measurementFamily['standard_unit'],
-                $measurementFamily['units']
+        $measurementFamiliesIndexByCodes = [];
+        foreach ($results as $result) {
+            $measurementFamiliesIndexByCodes[$result['code']] = $this->hydrateMeasurementFamily(
+                $result['code'],
+                $result['labels'],
+                $result['standard_unit'],
+                $result['units']
             );
-        }, $results);
+        }
+
+        return $measurementFamiliesIndexByCodes;
     }
 
-    private function loadMeasurementFamily(MeasurementFamilyCode $measurementFamilyCode): ?MeasurementFamily
+    private function loadAssetFamily(MeasurementFamilyCode $measurementFamilyCode): ?MeasurementFamily
     {
         $sql = <<<SQL
     SELECT
