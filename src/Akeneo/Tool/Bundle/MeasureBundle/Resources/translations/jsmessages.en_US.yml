@@ -28,7 +28,7 @@ measurements:
             properties: Properties
         delete:
             button: Delete measurement family
-            confirm: Are you sure you want to delete this measurement family?
+            confirm: Are you sure you want to delete this measurement family with all its units?
             flash:
                 success: Measurement family successfully deleted.
                 error: Sorry, an error occured while deleting the measurement family.

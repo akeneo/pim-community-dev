@@ -2,7 +2,7 @@ pim_enrich.acl_group.measurements: Measurements
 
 measurements:
     acl:
-        manage_settings: Manage measurements
+        manage_settings: List measurements
         family:
             create: Create a measurement family
             edit:

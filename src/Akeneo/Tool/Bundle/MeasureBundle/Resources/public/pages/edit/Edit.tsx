@@ -93,7 +93,7 @@ const Edit = () => {
   const {measurementFamilyCode} = useParams() as {measurementFamilyCode: string};
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.Units);
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
-  const [selectedUnitCode, selectUnitCode] = useState<UnitCode|null>(null);
+  const [selectedUnitCode, selectUnitCode] = useState<UnitCode | null>(null);
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const notify = useContext(NotifyContext);
   const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useToggleState(false);
@@ -166,18 +166,17 @@ const Edit = () => {
     }
   }, [measurementFamilyCode, removeMeasurementFamily, history, notify, __]);
 
-  const handleNewUnit = useCallback((unit: Unit) => {
-    if (null === measurementFamily) {
-      return;
-    }
+  const handleNewUnit = useCallback(
+    (unit: Unit) => {
+      if (null === measurementFamily) {
+        return;
+      }
 
-    setMeasurementFamily(addUnit(measurementFamily, unit));
-    selectUnitCode(unit.code);
-  }, [
-    setMeasurementFamily,
-    measurementFamily,
-    selectUnitCode,
-  ]);
+      setMeasurementFamily(addUnit(measurementFamily, unit));
+      selectUnitCode(unit.code);
+    },
+    [setMeasurementFamily, measurementFamily, selectUnitCode]
+  );
 
   if (undefined === measurementFamilyCode || null === measurementFamily) {
     return null;
@@ -188,7 +187,7 @@ const Edit = () => {
     buttons.push(
       <SecondaryActionsDropdownButton title={__('pim_common.other_actions')} key={0}>
         <DropdownLink onClick={openConfirmDeleteMeasurementFamilyModal}>
-          {__('measurements.family.delete')}
+          {__('measurements.family.delete.button')}
         </DropdownLink>
       </SecondaryActionsDropdownButton>
     );
