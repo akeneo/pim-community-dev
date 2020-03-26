@@ -7,7 +7,6 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Updater;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\PropertyClearer;
 use Akeneo\Test\Integration\TestCase;
-use Webmozart\Assert\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -94,10 +93,10 @@ class PropertyClearerIntegration extends TestCase
             ],
         ];
         $product = $this->createProduct('a_product_with_association', $parameters);
-        Assert::greaterThan($product->getAssociations()->count(), 0);
+        $this->assertGreaterThan(0, $product->getAssociations()->count());
 
         $this->propertyClearer->clear($product, 'associations');
-        Assert::count($product->getAssociations(), 0);
+        $this->assertCount(0, $product->getAssociations());
     }
 
     public function test_it_clears_categories(): void
@@ -106,10 +105,10 @@ class PropertyClearerIntegration extends TestCase
             'categories' => ['categoryA', 'categoryB'],
         ];
         $product = $this->createProduct('a_product_with_categories', $parameters);
-        Assert::greaterThan($product->getCategories()->count(), 0);
+        $this->assertGreaterThan(0, $product->getCategories()->count());
 
         $this->propertyClearer->clear($product, 'categories');
-        Assert::count($product->getCategories(), 0);
+        $this->assertCount(0, $product->getCategories());
     }
 
     public function test_it_clears_groups(): void
@@ -118,10 +117,10 @@ class PropertyClearerIntegration extends TestCase
             'groups' => ['groupA', 'groupB'],
         ];
         $product = $this->createProduct('a_product_with_categories', $parameters);
-        Assert::greaterThan($product->getGroups()->count(), 0);
+        $this->assertGreaterThan(0, $product->getGroups()->count());
 
         $this->propertyClearer->clear($product, 'groups');
-        Assert::count($product->getGroups(), 0);
+        $this->assertCount(0, $product->getGroups());
     }
 
     public function getConfiguration()
