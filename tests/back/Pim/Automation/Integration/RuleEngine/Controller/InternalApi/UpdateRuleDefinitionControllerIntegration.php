@@ -10,7 +10,7 @@ use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCas
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTestCase
+class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTestCase
 {
     // TODO This is the ref entity one. We need ourself.
     /** @var WebClientHelper  */
@@ -29,33 +29,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         $this->loadFixtures();
     }
 
-    public function test_it_creates_a_rule_defintion()
-    {
-        $normalizedRuleDefinition = [
-            'code' => '345',
-            'content' => [
-                'conditions' => [],
-                'actions' => [
-                    ['type' => 'set', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
-                ]
-            ],
-            'type' => 'add',
-            'priority' => 0,
-        ];
-
-        $this->createRuleDefinition($normalizedRuleDefinition);
-
-        $response = $this->client->getResponse();
-        Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
-
-        $content = json_decode($response->getContent(), true);
-        Assert::arrayHasKey($content, 'id');
-        unset($content['id']);
-
-        Assert::assertEqualsCanonicalizing($content, $normalizedRuleDefinition);
-    }
-
-    public function test_it_fail_on_existing_code()
+    public function test_it_updates_a_rule_defintion()
     {
         $normalizedRuleDefinition = [
             'code' => '123',
@@ -69,13 +43,19 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
             'priority' => 0,
         ];
 
-        $this->createRuleDefinition($normalizedRuleDefinition);
+        $this->updateRuleDefinition('123', $normalizedRuleDefinition);
 
         $response = $this->client->getResponse();
-        Assert::assertSame($response->getStatusCode(), Response::HTTP_BAD_REQUEST);
+        Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
+
+        $content = json_decode($response->getContent(), true);
+        Assert::arrayHasKey($content, 'id');
+        unset($content['id']);
+
+        Assert::assertEqualsCanonicalizing($content, $normalizedRuleDefinition);
     }
 
-    public function test_if_fails_with_a_wrong_format()
+    public function test_it_fail_on_non_existing_code()
     {
         $normalizedRuleDefinition = [
             'code' => 'abc',
@@ -84,13 +64,15 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
                 'actions' => [
                     ['type' => 'set', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
                 ]
-            ]
+            ],
+            'type' => 'add',
+            'priority' => 0,
         ];
 
-        $this->createRuleDefinition($normalizedRuleDefinition);
+        $this->updateRuleDefinition('abc', $normalizedRuleDefinition);
 
         $response = $this->client->getResponse();
-        Assert::assertSame($response->getStatusCode(), Response::HTTP_BAD_REQUEST);
+        Assert::assertSame($response->getStatusCode(), Response::HTTP_NOT_FOUND);
     }
 
     private function loadFixtures()
@@ -108,13 +90,13 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         $this->ruleDefinitionRepository->save($ruleDefinition);
     }
 
-    private function createRuleDefinition(array $normalizedRuleDefinition)
+    private function updateRuleDefinition(string $ruleDefinitionCode, array $normalizedRuleDefinition)
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            'pimee_enrich_rule_definition_create',
-            [],
-            'POST',
+            'pimee_enrich_rule_definition_update',
+            ['ruleDefinitionCode' => $ruleDefinitionCode],
+            'PUT',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',

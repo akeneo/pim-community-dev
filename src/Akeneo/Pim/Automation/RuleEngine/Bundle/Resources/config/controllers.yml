@@ -35,6 +35,7 @@ services:
         arguments:
             - '@akeneo_rule_engine.updater.rule_definition'
             - '@akeneo_rule_engine.saver.rule_definition'
+            - '@akeneo_rule_engine.normalizer.rule_definition'
             - '@serializer'
             - '@validator'
 
@@ -45,5 +46,5 @@ services:
             - '@akeneo_rule_engine.updater.rule_definition'
             - '@akeneo_rule_engine.saver.rule_definition'
             - '@akeneo_rule_engine.normalizer.rule_definition'
+            - '@serializer'
             - '@validator'
-            - '@pim_enrich.normalizer.violation'

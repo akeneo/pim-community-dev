@@ -33,9 +33,12 @@ class InMemoryRuleDefinitionRepository implements IdentifiableObjectRepositoryIn
     public function save($ruleDefinition, array $options = [])
     {
         Assert::assertInstanceOf(RuleDefinitionInterface::class, $ruleDefinition);
+        /** @var RuleDefinitionInterface $ruleDefinition */
         if (null === $ruleDefinition->getId()) {
             $ruleDefinition->setId(mt_rand());
         }
+        $ruleDefinition->setImpactedSubjectCount(null);
+        $ruleDefinition->setRelations(new ArrayCollection());
 
         $this->ruleDefinitions->set($ruleDefinition->getCode(), $ruleDefinition);
     }

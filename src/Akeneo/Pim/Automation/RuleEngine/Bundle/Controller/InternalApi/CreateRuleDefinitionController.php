@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,6 +32,9 @@ class CreateRuleDefinitionController
     /** @var RuleDefinitionSaver */
     private $ruleDefinitionSaver;
 
+    /** @var RuleDefinitionNormalizer */
+    private $ruleDefinitionNormalizer;
+
     /** @var NormalizerInterface */
     private $normalizer;
 
@@ -41,11 +44,13 @@ class CreateRuleDefinitionController
     public function __construct(
         ObjectUpdaterInterface $ruleDefinitionUpdater,
         RuleDefinitionSaver $ruleDefinitionSaver,
+        RuleDefinitionNormalizer $ruleDefinitionNormalizer,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator
     ) {
         $this->ruleDefinitionUpdater = $ruleDefinitionUpdater;
         $this->ruleDefinitionSaver = $ruleDefinitionSaver;
+        $this->ruleDefinitionNormalizer = $ruleDefinitionNormalizer;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
     }
@@ -67,6 +72,6 @@ class CreateRuleDefinitionController
         }
         $this->ruleDefinitionSaver->save($ruleDefinition);
 
-        return new JsonResponse($this->normalizer->normalize($ruleDefinition, 'internal_api'));
+        return new JsonResponse($this->ruleDefinitionNormalizer->normalize($ruleDefinition));
     }
 }
