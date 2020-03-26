@@ -103,6 +103,24 @@ class GetProductEvaluationSpec extends ObjectBehavior
                         ],
                         "criteria" => [
                             [
+                                "code" =>"consistency_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_text_title_formatting",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
                                 "code" => "consistency_textarea_lowercase_words",
                                 "rate" => [
                                     "value" => 50,
@@ -110,6 +128,15 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 ],
                                 "improvable_attributes" => ["short_description", "long_description"],
                                 "status" => CriterionEvaluationResultStatus::DONE,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                         ],
                     ],
@@ -120,7 +147,34 @@ class GetProductEvaluationSpec extends ObjectBehavior
                         ],
                         "criteria" => [
                             [
+                                "code" =>"consistency_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_text_title_formatting",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
                                 "code" => "consistency_textarea_lowercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_uppercase_words",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -139,7 +193,34 @@ class GetProductEvaluationSpec extends ObjectBehavior
                         ],
                         "criteria" => [
                             [
+                                "code" =>"consistency_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_text_title_formatting",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
                                 "code" => "consistency_textarea_lowercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_uppercase_words",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -325,21 +406,21 @@ class GetProductEvaluationSpec extends ObjectBehavior
                         ],
                         "criteria" => [
                             [
-                                "code" => "completeness_of_non_required_attributes",
-                                "rate" => [
-                                    "value" => 50,
-                                    "rank" => "E",
-                                ],
-                                "improvable_attributes" => ["title", "meta_title"],
-                                "status" => CriterionEvaluationResultStatus::DONE,
-                            ],
-                            [
                                 "code" => "completeness_of_required_attributes",
                                 "rate" => [
                                     "value" => 100,
                                     "rank" => "A",
                                 ],
                                 "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::DONE,
+                            ],
+                            [
+                                "code" => "completeness_of_non_required_attributes",
+                                "rate" => [
+                                    "value" => 50,
+                                    "rank" => "E",
+                                ],
+                                "improvable_attributes" => ["title", "meta_title"],
                                 "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                         ],
@@ -351,7 +432,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                         ],
                         "criteria" => [
                             [
-                                "code" => "completeness_of_non_required_attributes",
+                                "code" => "completeness_of_required_attributes",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -360,7 +441,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                             [
-                                "code" => "completeness_of_required_attributes",
+                                "code" => "completeness_of_non_required_attributes",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -379,7 +460,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                         ],
                         "criteria" => [
                             [
-                                "code" => "completeness_of_non_required_attributes",
+                                "code" =>"completeness_of_required_attributes",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -388,7 +469,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                             [
-                                "code" =>"completeness_of_required_attributes",
+                                "code" => "completeness_of_non_required_attributes",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -430,6 +511,24 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 ],
                                 "status" => CriterionEvaluationResultStatus::DONE,
                             ],
+                            [
+                                "code" =>"consistency_textarea_lowercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
                         ],
                     ],
                     "fr_FR" => [
@@ -458,6 +557,24 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 ],
                                 "improvable_attributes" => [],
                                 "status" => CriterionEvaluationResultStatus::NOT_APPLICABLE,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_lowercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                         ],
                     ],
@@ -488,6 +605,24 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                    "title", "meta_title",
                                 ],
                                 "status" => CriterionEvaluationResultStatus::DONE,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_lowercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                         ],
                     ],

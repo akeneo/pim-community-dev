@@ -26,10 +26,10 @@ final class Consistency implements Axis
     public const AXIS_CODE = 'consistency';
 
     public const CRITERIA_CODES = [
-        EvaluateUppercaseWords::CRITERION_CODE,
-        EvaluateTitleFormatting::CRITERION_CODE,
         EvaluateSpelling::CRITERION_CODE,
+        EvaluateTitleFormatting::CRITERION_CODE,
         LowerCaseWords::CRITERION_CODE,
+        EvaluateUppercaseWords::CRITERION_CODE,
     ];
 
     private const CRITERIA_COEFFICIENTS = [

@@ -117,8 +117,15 @@ class GetProductEvaluation
     {
         $criteriaRates = [];
 
-        foreach ($axisEvaluation->getCriteriaEvaluations() as $criterionEvaluation) {
-            $criteriaRates[] = $this->formatCriterionEvaluation($criterionEvaluation->getCriterionCode(), $criterionEvaluation->getResult(), $channelCode, $localeCode);
+        $axis = $this->axisRegistry->get($axisEvaluation->getAxisCode());
+        foreach ($axis->getCriteriaCodes() as $criterionCode) {
+            $criterionEvaluation = $axisEvaluation->getCriteriaEvaluations()->get($criterionCode);
+            $criteriaRates[] = $this->formatCriterionEvaluation(
+                $criterionCode,
+                $criterionEvaluation !== null ? $criterionEvaluation->getResult() : null,
+                $channelCode,
+                $localeCode
+            );
         }
 
         if (empty($criteriaRates)) {
