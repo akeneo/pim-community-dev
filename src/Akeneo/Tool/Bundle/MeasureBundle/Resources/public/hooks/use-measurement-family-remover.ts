@@ -13,14 +13,15 @@ const useMeasurementFamilyRemover = (): Remover => {
   const router = useContext(RouterContext);
 
   return async (measurementFamilyCode: string) => {
-    const response = await fetch(router.generate('akeneo_measurements_measurement_family_delete_rest', {
-      code: measurementFamilyCode,
-    }), {
-      method: 'DELETE',
-      headers: [
-        ['X-Requested-With', 'XMLHttpRequest'],
-      ],
-    });
+    const response = await fetch(
+      router.generate('akeneo_measurements_measurement_family_delete_rest', {
+        code: measurementFamilyCode,
+      }),
+      {
+        method: 'DELETE',
+        headers: [['X-Requested-With', 'XMLHttpRequest']],
+      }
+    );
 
     switch (response.status) {
       case 204:
@@ -35,7 +36,4 @@ const useMeasurementFamilyRemover = (): Remover => {
   };
 };
 
-export {
-  useMeasurementFamilyRemover,
-  MeasurementFamilyRemoverResult
-};
+export {useMeasurementFamilyRemover, MeasurementFamilyRemoverResult};

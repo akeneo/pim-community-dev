@@ -1,6 +1,6 @@
 import {RefObject, useCallback, useEffect} from 'react';
 
-const useAutoFocus = (ref: RefObject<HTMLInputElement>): () => void => {
+const useAutoFocus = (ref: RefObject<HTMLInputElement>): (() => void) => {
   const focus = useCallback(() => {
     if (ref.current !== null) ref.current.focus();
   }, [ref]);
@@ -11,18 +11,3 @@ const useAutoFocus = (ref: RefObject<HTMLInputElement>): () => void => {
 };
 
 export {useAutoFocus};
-
-// import {useRef, useCallback, useEffect, RefObject} from 'react';
-
-// const useFocus = (): [RefObject<HTMLInputElement>, () => void] => {
-//   const ref = useRef<HTMLInputElement | null>(null);
-//   const setFocus = useCallback(() => {
-//     if (ref.current !== null) ref.current.focus();
-//   }, [ref]);
-//
-//   useEffect(setFocus, []);
-//
-//   return [ref, setFocus];
-// };
-//
-// export {useFocus};

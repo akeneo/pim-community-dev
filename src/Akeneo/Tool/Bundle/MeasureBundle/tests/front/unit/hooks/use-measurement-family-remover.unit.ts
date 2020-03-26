@@ -2,7 +2,10 @@
 
 import '@testing-library/jest-dom/extend-expect';
 import {renderHook} from '@testing-library/react-hooks';
-import {useMeasurementFamilyRemover, MeasurementFamilyRemoverResult} from 'akeneomeasure/hooks/use-measurement-family-remover';
+import {
+  useMeasurementFamilyRemover,
+  MeasurementFamilyRemoverResult,
+} from 'akeneomeasure/hooks/use-measurement-family-remover';
 
 afterEach(() => {
   global.fetch && global.fetch.mockClear();
@@ -19,10 +22,10 @@ test('It returns a success response when removing', async () => {
   const remove = result.current;
 
   expect(await remove('custom_metric')).toEqual(MeasurementFamilyRemoverResult.Success);
-  expect(fetchMock).toHaveBeenCalledWith(
-    'akeneo_measurements_measurement_family_delete_rest?code=custom_metric',
-    {"headers": [["X-Requested-With", "XMLHttpRequest"]], "method": "DELETE"}
-  );
+  expect(fetchMock).toHaveBeenCalledWith('akeneo_measurements_measurement_family_delete_rest?code=custom_metric', {
+    headers: [['X-Requested-With', 'XMLHttpRequest']],
+    method: 'DELETE',
+  });
 });
 
 test('It returns a not found response when removing an unknown measurement family', async () => {
