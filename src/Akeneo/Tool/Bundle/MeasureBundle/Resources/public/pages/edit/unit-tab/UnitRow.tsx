@@ -37,11 +37,11 @@ type UnitRowProps = {
   unit: Unit;
   isStandardUnit: boolean;
   isSelected?: boolean;
-  invalid?: boolean;
+  isInvalid?: boolean;
   onRowSelected: (unitCode: UnitCode) => void;
 };
 
-const UnitRow = ({unit, isStandardUnit, isSelected = false, invalid = false, onRowSelected}: UnitRowProps) => {
+const UnitRow = ({unit, isStandardUnit, isSelected = false, isInvalid = false, onRowSelected}: UnitRowProps) => {
   const __ = useContext(TranslateContext);
   const locale = useContext(UserContext)('uiLocale');
 
@@ -52,7 +52,7 @@ const UnitRow = ({unit, isStandardUnit, isSelected = false, invalid = false, onR
         <span>
           <span>{unit.code}</span>
           {isStandardUnit && <StandardUnitBadge>{__('measurements.family.standard_unit')}</StandardUnitBadge>}
-          {invalid && <ErrorBadge />}
+          {isInvalid && <ErrorBadge />}
         </span>
       </CodeCell>
     </Row>

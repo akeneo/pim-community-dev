@@ -53,16 +53,23 @@ let container;
 beforeEach(() => {
   container = document.createElement('div');
   document.body.appendChild(container);
-  const mockFetch = jest.fn().mockImplementationOnce(() => ({
-    json: () => [
-      {
-        code: 'en_US',
-      },
-      {
-        code: 'fr_FR',
-      },
-    ],
-  }));
+  const mockFetch = jest.fn().mockImplementationOnce(route => {
+    switch (route) {
+      case 'pim_localization_locale_index':
+        return {
+          json: () => [
+            {
+              code: 'en_US',
+            },
+            {
+              code: 'fr_FR',
+            },
+          ],
+        };
+      default:
+        return {json: () => []};
+    }
+  });
 
   global.fetch = mockFetch;
 });

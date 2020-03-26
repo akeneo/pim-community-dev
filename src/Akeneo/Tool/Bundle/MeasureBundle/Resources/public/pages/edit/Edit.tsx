@@ -34,6 +34,7 @@ import {
 } from 'akeneomeasure/hooks/use-measurement-family-remover';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {SecurityContext} from 'akeneomeasure/context/security-context';
+import {ErrorBlock} from 'akeneomeasure/shared/components/ErrorBlock';
 
 enum Tab {
   Units = 'units',
@@ -180,6 +181,16 @@ const Edit = () => {
 
   if (undefined === measurementFamilyCode || null === measurementFamily) {
     return null;
+  }
+
+  if (undefined === measurementFamily) {
+    return (
+      <ErrorBlock
+        title={__('error.exception', {status_code: '404'})}
+        message={__('measurements.family.not_found')}
+        code={404}
+      />
+    );
   }
 
   const buttons = [];

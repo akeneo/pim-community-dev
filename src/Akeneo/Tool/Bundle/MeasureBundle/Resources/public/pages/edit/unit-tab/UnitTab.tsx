@@ -63,7 +63,7 @@ const UnitTab = ({
                   unit={unit}
                   isStandardUnit={unit.code === measurementFamily.standard_unit_code}
                   isSelected={unit.code === selectedUnitCode}
-                  invalid={0 < filterErrors(errors, `[${index}]`).length}
+                  isInvalid={0 < filterErrors(errors, `[${index}]`).length}
                   onRowSelected={selectUnitCode}
                 />
               ))}
