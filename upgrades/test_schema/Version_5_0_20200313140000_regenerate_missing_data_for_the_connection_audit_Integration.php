@@ -108,9 +108,9 @@ SQL;
         $this->assertAuditProductTableEntryCount(1296);
 
         $selectAuditProductSql = <<<SQL
-SELECT * FROM akeneo_connectivity_connection_audit_product
+SELECT connection_code, event_type, event_count FROM akeneo_connectivity_connection_audit_product
 WHERE event_count != 0
-ORDER BY event_datetime ASC, connection_code, event_type
+ORDER BY event_type, connection_code
 SQL;
         $auditRows = $this->dbalConnection->fetchAll($selectAuditProductSql);
 
@@ -122,6 +122,8 @@ SQL;
             ['connection_code' => 'cnet', 'event_count' => 2, 'event_type' => 'product_updated'],
             ['connection_code' => 'franklin', 'event_count' => 1, 'event_type' => 'product_updated'],
         ];
+
+        $this->assertEquals($expectedRows, $auditRows);
     }
 
     private function ensureAuditProductTableIsFilled(): void
@@ -172,6 +174,6 @@ SQL;
     {
         return $this
             ->get('akeneo_connectivity.connection.fixtures.connection_loader')
-            ->createConnection($connectionCode, $connectionCode, FlowType::DATA_SOURCE);
+            ->createConnection($connectionCode, $connectionCode, FlowType::DATA_SOURCE, true);
     }
 }
