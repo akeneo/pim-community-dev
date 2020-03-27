@@ -37,11 +37,13 @@ abstract class WebTestCase extends TestCase
             ->handle($createConnectionCommand);
     }
 
-    protected function authenticateAsAdmin()
+    protected function authenticateAsAdmin(): UserInterface
     {
         $user = $this->createAdminUser();
 
         $this->authenticate($user);
+
+        return $user;
     }
 
     private function authenticate(UserInterface $user)

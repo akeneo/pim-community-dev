@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\EntityWithValuesFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
@@ -91,26 +92,9 @@ class ProductModelController
     /** @var Client */
     private $productAndProductModelClient;
 
-    /**
-     * @param ProductModelRepositoryInterface   $productModelRepository
-     * @param NormalizerInterface               $normalizer
-     * @param UserContext                       $userContext
-     * @param ObjectFilterInterface             $objectFilter
-     * @param AttributeConverterInterface       $localizedConverter
-     * @param EntityWithValuesFilter            $emptyValuesFilter
-     * @param ConverterInterface                $productValueConverter
-     * @param ObjectUpdaterInterface            $productModelUpdater
-     * @param RemoverInterface                  $productModelRemover
-     * @param ValidatorInterface                $validator
-     * @param SaverInterface                    $productModelSaver
-     * @param NormalizerInterface               $constraintViolationNormalizer
-     * @param NormalizerInterface               $entityWithFamilyVariantNormalizer
-     * @param SimpleFactoryInterface            $productModelFactory
-     * @param NormalizerInterface               $violationNormalizer
-     * @param FamilyVariantRepositoryInterface  $familyVariantRepository
-     * @param AttributeFilterInterface          $productModelAttributeFilter
-     * @param Client                            $productAndProductModelClient
-     */
+    /** @var CollectionFilterInterface */
+    private $productEditDataFilter;
+
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
         NormalizerInterface $normalizer,
@@ -129,7 +113,8 @@ class ProductModelController
         NormalizerInterface $violationNormalizer,
         FamilyVariantRepositoryInterface $familyVariantRepository,
         AttributeFilterInterface $productModelAttributeFilter,
-        Client $productAndProductModelClient
+        Client $productAndProductModelClient,
+        CollectionFilterInterface $productEditDataFilter
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->normalizer = $normalizer;
@@ -149,6 +134,7 @@ class ProductModelController
         $this->familyVariantRepository = $familyVariantRepository;
         $this->productModelAttributeFilter = $productModelAttributeFilter;
         $this->productAndProductModelClient = $productAndProductModelClient;
+        $this->productEditDataFilter = $productEditDataFilter;
     }
 
     /**
@@ -263,6 +249,7 @@ class ProductModelController
 
         $productModel = $this->findProductModelOr404($id);
         $data = json_decode($request->getContent(), true);
+        $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $productModel]);
 
         $this->updateProductModel($productModel, $data);
 

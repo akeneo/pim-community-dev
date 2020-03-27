@@ -114,6 +114,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlSaveProductCompletenesses'
         arguments:
             - '@database_connection'
+            - '@logger'
 
     akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductIdentifiers'
@@ -258,5 +259,10 @@ services:
 
     pim_catalog.query.get_channel_active_locale_codes:
         class: 'Akeneo\Channel\Bundle\Doctrine\Query\GetChannelActiveLocaleCodes'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.group.query.get_group_product_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Group\SqlGetGroupProductIdentifiers'
         arguments:
             - '@database_connection'

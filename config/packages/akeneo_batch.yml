@@ -1,3 +1,2 @@
 akeneo_batch:
-    sender_email:             '%mailer_from_address%'
     enable_mail_notification: true

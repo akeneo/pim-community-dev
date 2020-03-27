@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Manager;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Yaml\Yaml;
 
@@ -14,16 +14,37 @@ use Symfony\Component\Yaml\Yaml;
  */
 class MeasureManagerSpec extends ObjectBehavior
 {
-    function let()
+    function let(LegacyMeasurementProvider $provider)
     {
-        $filename = realpath(dirname(__FILE__) .'/../Resources/config/measure-test.yml');
-        if (!file_exists($filename)) {
-            throw new \Exception(sprintf('Config file "%s" does not exist', $filename));
-        }
+        $yaml = <<<YAML
+measures_config:
+    Length:
+        standard: METER
+        units:
+            CENTIMETER:
+                convert: [{'div': 0.01}]
+                format: cm
+            METER:
+                convert: [{'test': 1}]
+                format: m
+    Weight:
+        standard: GRAM
+        units:
+            MILLIGRAM:
+                convert: [{'mul': 0.001}]
+                symbol: mg
+            GRAM:
+                convert: [{'mul': 1}]
+                symbol: g
+            KILOGRAM:
+                convert: [{'mul': 1000}]
+                symbol: kg
+YAML;
 
-        $config = Yaml::parse(file_get_contents($filename));
+        $config = Yaml::parse($yaml);
 
-        $this->setMeasureConfig($config['measures_config']);
+        $provider->getMeasurementFamilies()->willReturn($config['measures_config']);
+        $this->beConstructedWith($provider);
     }
 
     public function it_throws_an_exception_when_try_to_get_symbols_of_unknown_family()
@@ -44,7 +65,7 @@ class MeasureManagerSpec extends ObjectBehavior
     public function it_returns_unit_symbols_list_from_a_family()
     {
         $this
-            ->getUnitSymbolsForFamily(WeightFamilyInterface::FAMILY)
+            ->getUnitSymbolsForFamily('Weight')
             ->shouldReturn(
                 [
                     'MILLIGRAM' => 'mg',
@@ -57,36 +78,36 @@ class MeasureManagerSpec extends ObjectBehavior
     public function it_indicates_wether_a_unit_symbol_exists_for_a_family()
     {
         $this
-            ->unitSymbolExistsInFamily('mg', WeightFamilyInterface::FAMILY)
+            ->unitSymbolExistsInFamily('mg', 'Weight')
             ->shouldReturn(true);
 
         $this
-            ->unitSymbolExistsInFamily('foo', WeightFamilyInterface::FAMILY)
+            ->unitSymbolExistsInFamily('foo', 'Weight')
             ->shouldReturn(false);
     }
 
     public function it_returns_standard_unit_for_a_family()
     {
         $this
-            ->getStandardUnitForFamily(WeightFamilyInterface::FAMILY)
-            ->shouldReturn(WeightFamilyInterface::GRAM);
+            ->getStandardUnitForFamily('Weight')
+            ->shouldReturn('GRAM');
     }
 
     public function it_returns_unit_codes_for_a_family()
     {
         $this
-            ->getUnitCodesForFamily(WeightFamilyInterface::FAMILY)
+            ->getUnitCodesForFamily('Weight')
             ->shouldReturn(['MILLIGRAM', 'GRAM', 'KILOGRAM']);
     }
 
     public function it_indicates_wether_a_unit_code_exists_for_a_family()
     {
         $this
-            ->unitCodeExistsInFamily(WeightFamilyInterface::GRAM, WeightFamilyInterface::FAMILY)
+            ->unitCodeExistsInFamily('GRAM', 'Weight')
             ->shouldReturn(true);
 
         $this
-            ->unitCodeExistsInFamily('FOO', WeightFamilyInterface::FAMILY)
+            ->unitCodeExistsInFamily('FOO', 'Weight')
             ->shouldReturn(false);
     }
 }

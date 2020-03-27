@@ -4,7 +4,16 @@ services:
         class: 'Akeneo\Test\Acceptance\Attribute\InMemoryGetAttributes'
         arguments:
             - '@pim_catalog.repository.attribute'
+
     akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes:
         class: 'Akeneo\Test\Acceptance\AttributeOption\InMemoryGetExistingAttributeOptionCodes'
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
+
+    akeneo.pim.structure.query.is_there_at_least_one_attribute_configured_with_measurement_family:
+        class: Akeneo\Test\Acceptance\Attribute\InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub
+
+    akeneo.pim.structure.query.get_existing_attribute_options_with_values:
+        class: 'Akeneo\Test\Acceptance\AttributeOption\InMemoryGetExistingAttributeOptionsWithValues'
         arguments:
             - '@pim_catalog.repository.attribute_option'

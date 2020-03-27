@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query;
 
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
+
 /**
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -11,11 +14,23 @@ namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query;
  */
 interface ExtractConnectionsProductEventCountQuery
 {
-    public function extractCreatedProductsByConnection(string $date): array;
+    /**
+     * @return HourlyEventCount[]
+     */
+    public function extractCreatedProductsByConnection(HourlyInterval $hourlyInterval): array;
 
-    public function extractAllCreatedProducts(string $date): array;
+    /**
+     * @return HourlyEventCount[]
+     */
+    public function extractAllCreatedProducts(HourlyInterval $hourlyInterval): array;
 
-    public function extractUpdatedProductsByConnection(string $date): array;
+    /**
+     * @return HourlyEventCount[]
+     */
+    public function extractUpdatedProductsByConnection(HourlyInterval $hourlyInterval): array;
 
-    public function extractAllUpdatedProducts(string $date): array;
+    /**
+     * @return HourlyEventCount[]
+     */
+    public function extractAllUpdatedProducts(HourlyInterval $hourlyInterval): array;
 }

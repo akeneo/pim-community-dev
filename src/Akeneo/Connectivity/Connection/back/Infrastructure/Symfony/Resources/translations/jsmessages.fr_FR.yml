@@ -117,7 +117,6 @@ akeneo_connectivity.connection:
     flash:
       success: Connexion supprimée avec succès.
   helper:
-    title: '👋 Bienvenue dans cette fonctionnalité qui vous aidera à bien connecter votre PIM !'
     description: Un PIM non connecté, c'est un peu inutile, non ? Grâce aux connexions, vous pouvez déclarer facilement tous les flux de données qui sont envoyés dans votre PIM, ainsi que ceux qui en sortent.
     link: Envie d'en savoir plus ? Découvrez ce qu'est une connexion et comment en tirer le meilleur parti ici !
   flow_type_helper:
@@ -132,7 +131,6 @@ akeneo_connectivity.connection:
   grid.wrong_credentials_combination_helper: Certaines des connexions ci-dessous n'utilisent pas leur username. Elles sont identifiées par un warning jaune.
   dashboard:
     helper:
-      title: '👋 Bienvenue dans le tableau de bord de vos connexions !'
       description: Ici, vous pouvez suivre tous les flux de données qui circulent via vos connexions, que ce soit des données entrantes provenant de vos sources ou de données sortantes distribuées sur vos destinations.
       link: Envie d'en savoir plus ? Rendez-vous ici !
     user_survey:

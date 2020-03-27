@@ -11,14 +11,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 
 class NumberFilterSpec extends ObjectBehavior
 {
-    function let(AttributeValidatorHelper $attributeValidatorHelper)
+    function let(ElasticsearchFilterValidator $filterValidator)
     {
         $this->beConstructedWith(
-            $attributeValidatorHelper,
+            $filterValidator,
             ['pim_catalog_number'],
             ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -68,15 +68,15 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_lower_than(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $size,
         SearchQueryBuilder $sqb
     ) {
         $size->getCode()->willReturn('size');
         $size->getBackendType()->willReturn('decimal');
 
-        $attributeValidatorHelper->validateLocale($size, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($size, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('size', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('size', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -91,15 +91,15 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_lower_or_equal_than(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $size,
         SearchQueryBuilder $sqb
     ) {
         $size->getCode()->willReturn('size');
         $size->getBackendType()->willReturn('decimal');
 
-        $attributeValidatorHelper->validateLocale($size, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($size, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('size', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('size', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -114,15 +114,15 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_equals(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $size,
         SearchQueryBuilder $sqb
     ) {
         $size->getCode()->willReturn('size');
         $size->getBackendType()->willReturn('decimal');
 
-        $attributeValidatorHelper->validateLocale($size, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($size, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('size', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('size', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -137,15 +137,15 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_equal(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $size,
         SearchQueryBuilder $sqb
     ) {
         $size->getCode()->willReturn('size');
         $size->getBackendType()->willReturn('decimal');
 
-        $attributeValidatorHelper->validateLocale($size, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($size, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('size', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('size', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(
             [
@@ -168,15 +168,15 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_greater_or_equal_than(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $size,
         SearchQueryBuilder $sqb
     ) {
         $size->getCode()->willReturn('size');
         $size->getBackendType()->willReturn('decimal');
 
-        $attributeValidatorHelper->validateLocale($size, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($size, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('size', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('size', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -191,15 +191,15 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_greater_than(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $size,
         SearchQueryBuilder $sqb
     ) {
         $size->getCode()->willReturn('size');
         $size->getBackendType()->willReturn('decimal');
 
-        $attributeValidatorHelper->validateLocale($size, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($size, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('size', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('size', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -214,15 +214,15 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_empty(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $size,
         SearchQueryBuilder $sqb
     ) {
         $size->getCode()->willReturn('size');
         $size->getBackendType()->willReturn('decimal');
 
-        $attributeValidatorHelper->validateLocale($size, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($size, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('size', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('size', 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot(
             [
@@ -238,15 +238,15 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_not_empty(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $size,
         SearchQueryBuilder $sqb
     ) {
         $size->getCode()->willReturn('size');
         $size->getBackendType()->willReturn('decimal');
 
-        $attributeValidatorHelper->validateLocale($size, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($size, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('size', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('size', 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter(
             [
@@ -269,15 +269,15 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_given_value_is_not_a_numeric(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $size,
         SearchQueryBuilder $sqb
     ) {
         $size->getCode()->willReturn('size');
         $size->getBackendType()->willReturn('decimal');
 
-        $attributeValidatorHelper->validateLocale($size, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($size, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('size', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('size', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -291,15 +291,15 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $size,
         SearchQueryBuilder $sqb
     ) {
         $size->getCode()->willReturn('size');
         $size->getBackendType()->willReturn('decimal');
 
-        $attributeValidatorHelper->validateLocale($size, 'en_US')->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($size, 'ecommerce')->shouldBeCalled();
+        $filterValidator->validateLocaleForAttribute('size', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('size', 'ecommerce')->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
 
@@ -312,7 +312,7 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_locale_validation(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $size,
         SearchQueryBuilder $sqb
     ) {
@@ -322,7 +322,7 @@ class NumberFilterSpec extends ObjectBehavior
         $size->getAvailableLocaleCodes('fr_FR');
 
         $e = new \LogicException('Attribute "size" expects a locale, none given.');
-        $attributeValidatorHelper->validateLocale($size, 'en_US')->willThrow($e);
+        $filterValidator->validateLocaleForAttribute('size', 'en_US')->willThrow($e);
 
         $this->setQueryBuilder($sqb);
 
@@ -336,7 +336,7 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_scope_validation(
-        $attributeValidatorHelper,
+        $filterValidator,
         AttributeInterface $size,
         SearchQueryBuilder $sqb
     ) {
@@ -345,7 +345,7 @@ class NumberFilterSpec extends ObjectBehavior
         $size->isScopable()->willReturn(false);
 
         $e = new \LogicException('Attribute "size" does not expect a scope, "ecommerce" given.');
-        $attributeValidatorHelper->validateLocale($size, 'en_US')->willThrow($e);
+        $filterValidator->validateLocaleForAttribute('size', 'en_US')->willThrow($e);
 
         $this->setQueryBuilder($sqb);
 

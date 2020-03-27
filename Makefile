@@ -36,17 +36,22 @@ css:
 
 .PHONY: javascript-prod
 javascript-prod:
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
+	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack
 
 .PHONY: javascript-dev
 javascript-dev:
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
+	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev
+
+.PHONY: javascript-dev-strict
+javascript-dev-strict:
+	$(NODE_RUN) rm -rf public/dist
+	$(YARN_RUN) run webpack-dev --strict
 
 .PHONY: javascript-test
 javascript-test:
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
+	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-test
 
 .PHONY: front

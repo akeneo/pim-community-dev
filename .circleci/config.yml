@@ -194,6 +194,9 @@ jobs:
               name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
               command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
         - run:
+              name: Front type checking
+              command: make javascript-dev-strict
+        - run:
               name: Front linter
               command: make lint-front
         - run:

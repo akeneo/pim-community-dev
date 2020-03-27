@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -23,17 +23,12 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
     const DATETIME_FORMAT = 'Y-m-d';
     const HUMAN_DATETIME_FORMAT = "yyyy-mm-dd";
 
-    /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array $supportedAttributeTypes
-     * @param array $supportedOperators
-     */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
+        ElasticsearchFilterValidator $filterValidator,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
+        $this->filterValidator = $filterValidator;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators = $supportedOperators;
     }

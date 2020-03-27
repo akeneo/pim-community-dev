@@ -87,7 +87,7 @@ final class InMemoryCategoryRepository implements
      */
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->categories->toArray();
     }
 
     /**
@@ -119,7 +119,14 @@ final class InMemoryCategoryRepository implements
      */
     public function getCategoriesByCodes(array $categoryCodes = [])
     {
-        throw new NotImplementedException(__METHOD__);
+        $categories = [];
+        foreach ($this->categories as $category) {
+            if (in_array($category->getCode(), $categoryCodes)) {
+                $categories[] = $category;
+            }
+        }
+
+        return $categories;
     }
 
     /**
@@ -143,7 +150,21 @@ final class InMemoryCategoryRepository implements
      */
     public function getAllChildrenCodes(CategoryInterface $parent, $includeNode = false)
     {
-        throw new NotImplementedException(__METHOD__);
+        $categoryCodes = $includeNode ? [$parent->getCode()] : [];
+        /** @var CategoryInterface $category */
+        foreach ($this->categories as $category) {
+            $tmpParent = $category->getParent();
+            if (null === $tmpParent) {
+                continue;
+            }
+
+            if ($parent->getCode() === $tmpParent->getCode()) {
+                $categoryCodes[] = $category->getCode();
+                $categoryCodes = array_merge($categoryCodes, $this->getAllChildrenCodes($category, false));
+            }
+        }
+
+        return $categoryCodes;
     }
 
     /**

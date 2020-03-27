@@ -118,7 +118,7 @@ final class ProductModelImagesFromCodes
                 SELECT 
                     pm.code as product_model_code,
                     COUNT(all_attribute_sets.family_variant_id) as number_level,
-                    pm.lvl as product_model_level,
+                    if(pm.parent_id is null, 0, 1) as product_model_level,
                     fv_set.level as image_code_level
                 FROM
                     pim_catalog_product_model pm

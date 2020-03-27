@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Manager;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
+
 /**
  * Measure manager
  *
@@ -11,19 +13,12 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Manager;
  */
 class MeasureManager
 {
-    /**
-     * @var array $config
-     */
-    protected $config = [];
+    /** @var LegacyMeasurementProvider */
+    private $legacyMeasurementProvider;
 
-    /**
-     * Set measure config
-     *
-     * @param array $config
-     */
-    public function setMeasureConfig(array $config)
+    public function __construct(LegacyMeasurementProvider $legacyMeasurementProvider)
     {
-        $this->config = $config;
+        $this->legacyMeasurementProvider = $legacyMeasurementProvider;
     }
 
     /**
@@ -110,12 +105,13 @@ class MeasureManager
      */
     protected function getFamilyConfig($family)
     {
-        if (!isset($this->config[$family])) {
+        $families = $this->legacyMeasurementProvider->getMeasurementFamilies();
+        if (!isset($families[$family])) {
             throw new \InvalidArgumentException(
                 sprintf('Undefined measure family "%s"', $family)
             );
         }
 
-        return $this->config[$family];
+        return $families[$family];
     }
 }

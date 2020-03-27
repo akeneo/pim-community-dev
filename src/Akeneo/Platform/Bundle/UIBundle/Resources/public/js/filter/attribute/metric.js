@@ -86,8 +86,13 @@ define([
                 BaseFilter.prototype.getTemplateContext.apply(this, arguments),
                 FetcherRegistry.getFetcher('measure').fetchAll()
             ).then(function (templateContext, measures) {
+                const measurementFamily = measures.find(family =>
+                    family.code === templateContext.attribute.metric_family);
+
                 return _.extend({}, templateContext, {
-                    units: measures[templateContext.attribute.metric_family]
+                    units: measurementFamily.units,
+                    i18n,
+                    locale: UserContext.get('uiLocale')
                 });
             }.bind(this));
         },

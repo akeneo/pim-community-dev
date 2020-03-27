@@ -17,7 +17,7 @@ class CountDailyEventsByConnectionQuerySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(EventTypes::PRODUCT_CREATED, '2019-12-10', '2019-12-12');
+        $this->beConstructedWith(EventTypes::PRODUCT_CREATED, '2019-12-10', '2019-12-12', 'Europe/Paris');
     }
 
     function it_is_initializable()
@@ -38,5 +38,10 @@ class CountDailyEventsByConnectionQuerySpec extends ObjectBehavior
     function it_returns_the_end_date()
     {
         $this->endDate()->shouldReturn('2019-12-12');
+    }
+
+    function it_returns_the_timezone()
+    {
+        $this->timezone()->shouldReturn('Europe/Paris');
     }
 }
