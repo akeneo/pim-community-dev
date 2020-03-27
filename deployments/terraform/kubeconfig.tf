@@ -1,7 +1,7 @@
 data "google_container_cluster" "main" {
-  name     = "${var.google_project_zone}"
-  location = "${var.google_project_zone}"
-  project  = "${var.google_project_id}"
+  name     = var.google_project_zone
+  location = var.google_project_zone
+  project  = var.google_project_id
 }
 
 # From https://github.com/terraform-providers/terraform-provider-kubernetes/blob/master/kubernetes/test-infra/gke/main.tf
@@ -19,6 +19,8 @@ clusters:
 - name: ${data.google_container_cluster.main.name}
   cluster:
     server: https://${data.google_container_cluster.main.endpoint}
-    certificate-authority-data: ${data.google_container_cluster.main.master_auth.0.cluster_ca_certificate}                                                                                                 
+    certificate-authority-data: ${data.google_container_cluster.main.master_auth[0].cluster_ca_certificate}                                                                                                 
 EOF
+
 }
+

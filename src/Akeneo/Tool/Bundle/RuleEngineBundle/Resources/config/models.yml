@@ -3,3 +3,4 @@ parameters:
     akeneo_rule_engine.model.rule_relation.class:    Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelation
     akeneo_rule_engine.model.rule.class:             Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule
     akeneo_rule_engine.model.rule_subject_set.class: Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSet
+    akeneo_rule_engine.model.rule_definition_translation.class: Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslation

@@ -41,12 +41,16 @@ class RuleDefinition implements RuleDefinitionInterface
     /** @var ArrayCollection */
     protected $relations;
 
+    /** @var ArrayCollection */
+    protected $translations;
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->relations = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**

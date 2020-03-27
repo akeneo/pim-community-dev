@@ -35,3 +35,9 @@ Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition:
         relations:
             targetEntity: Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelationInterface
             mappedBy: rule
+        translations:
+            targetEntity: Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslationInterface
+            mappedBy: foreignKey
+            cascade:
+                - persist
+                - detach

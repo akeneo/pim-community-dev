@@ -62,4 +62,7 @@ elasticsearch:
       requests:
         cpu: "25m"
         memory: "512Mi"
+image:
+  pim:
+    repository: eu.gcr.io/akeneo-ci/pim-enterprise-cloud
 

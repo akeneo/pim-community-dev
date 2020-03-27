@@ -1,0 +1,30 @@
+Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslation:
+    type: entity
+    table: akeneo_rule_engine_rule_definition_translation
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    uniqueConstraints:
+        locale_foreign_key_idx:
+            columns:
+                - locale
+                - foreign_key
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        label:
+            type: string
+            length: 100
+            nullable: true
+        locale:
+            type: string
+            length: 20
+    manyToOne:
+        foreignKey:
+            targetEntity: Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
+            inversedBy: translations
+            joinColumns:
+                foreign_key:
+                    referencedColumnName: id
+                    onDelete: CASCADE
