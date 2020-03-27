@@ -11,18 +11,17 @@ const createValidationError = (propertyPath: string, message: string = 'error'):
 };
 
 it('should filter errors based on the property', () => {
-  const errors = [
-    createValidationError('code', 'bad code'),
-    createValidationError('labels', 'bad labels'),
-  ];
+  const errors = [createValidationError('code', 'bad code'), createValidationError('labels', 'bad labels')];
 
-  expect(filterErrors(errors, 'code')).toEqual([{
-    propertyPath: '',
-    message: 'bad code',
-    messageTemplate: '',
-    parameters: {},
-    invalidValue: null,
-  }]);
+  expect(filterErrors(errors, 'code')).toEqual([
+    {
+      propertyPath: '',
+      message: 'bad code',
+      messageTemplate: '',
+      parameters: {},
+      invalidValue: null,
+    },
+  ]);
 });
 
 it('should partition the errors based on a list of filters', () => {

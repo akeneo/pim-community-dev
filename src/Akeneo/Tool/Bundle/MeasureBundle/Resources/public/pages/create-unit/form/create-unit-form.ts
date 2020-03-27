@@ -40,7 +40,7 @@ const createUnitFromForm = (data: CreateUnitForm, locale: LocaleCode): Unit => {
 const validateCreateUnitForm = (
   data: CreateUnitForm,
   measurementFamily: MeasurementFamily,
-  __: TranslateContextValue,
+  __: TranslateContextValue
 ): ValidationError[] => {
   const unitCodes = measurementFamily.units.map((unit: Unit) => unit.code.toLowerCase());
 

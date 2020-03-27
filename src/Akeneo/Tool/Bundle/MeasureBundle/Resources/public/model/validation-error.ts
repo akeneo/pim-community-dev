@@ -16,11 +16,14 @@ const filterErrors = (errors: ValidationError[], propertyPath: string) =>
 const getErrorsForPath = (errors: ValidationError[], propertyPath: string) =>
   errors.filter(error => error.propertyPath === propertyPath);
 
-const partition = <T,>(items: T[], condition: (item: T) => boolean): T[][] => {
-  return items.reduce((result: T[][], item: T) => {
-    result[condition(item) ? 0 : 1].push(item);
-    return result;
-  }, [[], []]);
+const partition = <T>(items: T[], condition: (item: T) => boolean): T[][] => {
+  return items.reduce(
+    (result: T[][], item: T) => {
+      result[condition(item) ? 0 : 1].push(item);
+      return result;
+    },
+    [[], []]
+  );
 };
 
 const partitionErrors = (
@@ -36,10 +39,7 @@ const partitionErrors = (
     restErrors = rest;
   });
 
-  return [
-    ...results,
-    restErrors,
-  ];
+  return [...results, restErrors];
 };
 
 export {ValidationError, filterErrors, getErrorsForPath, partitionErrors};

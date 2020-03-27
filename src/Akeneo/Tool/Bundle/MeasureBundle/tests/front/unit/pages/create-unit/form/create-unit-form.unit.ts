@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {
   createUnitFromForm,
   initializeCreateUnitForm,
-  validateCreateUnitForm
+  validateCreateUnitForm,
 } from 'akeneomeasure/pages/create-unit/form/create-unit-form';
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 
