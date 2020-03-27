@@ -25,7 +25,7 @@ import {CheckboxField} from 'akeneomeasure/shared/components/CheckboxField';
 import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
 import {Operation} from 'akeneomeasure/model/operation';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
-import {ConfigContext, ConfigContextValue} from 'akeneomeasure/context/config-context';
+import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {useAutoFocus} from 'akeneomeasure/shared/hooks/use-auto-focus';
 
 type CreateUnitProps = {

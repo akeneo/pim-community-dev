@@ -34,7 +34,7 @@ import {
 } from 'akeneomeasure/hooks/use-measurement-family-remover';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {SecurityContext} from 'akeneomeasure/context/security-context';
-import {ConfigContext, ConfigContextValue} from 'akeneomeasure/context/config-context';
+import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {ErrorBlock} from 'akeneomeasure/shared/components/ErrorBlock';
 import {ErrorFlashMessage} from 'akeneomeasure/shared/components/ErrorFlashMessage';
 
