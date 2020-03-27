@@ -38,7 +38,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   const __ = useContext(TranslateContext);
   const notify = useContext(NotifyContext);
   const locale = useContext(UserContext)('uiLocale');
-  const config = useContext(ConfigContext) as ConfigContextValue;
+  const config = useContext(ConfigContext);
 
   const [form, setFormValue, clearForm] = useForm<CreateUnitForm>(initializeCreateUnitForm());
   const validate = useCreateUnitValidator();
