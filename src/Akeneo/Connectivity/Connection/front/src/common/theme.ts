@@ -6,6 +6,7 @@ export const theme = {
         blue10: '#f5f9fc',
         blue100: '#5992c7',
         grey60: '#f9f9fb',
+        grey70: '#e8ebee',
         grey80: '#d9dde2',
         grey100: '#a1a9b7',
         grey120: '#67768a',

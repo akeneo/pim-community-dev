@@ -12,7 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCoun
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class UpdateProductEventCountHandler
+final class UpdateDataSourceProductEventCountHandler
 {
     /** @var ExtractConnectionsProductEventCountQuery */
     private $extractConnectionsEventCountQuery;
@@ -28,7 +28,7 @@ final class UpdateProductEventCountHandler
         $this->eventCountRepository = $eventCountRepository;
     }
 
-    public function handle(UpdateProductEventCountCommand $command): void
+    public function handle(UpdateDataSourceProductEventCountCommand $command): void
     {
         $createdProductsCount = $this->extractConnectionsEventCountQuery
             ->extractCreatedProductsByConnection($command->hourlyInterval());

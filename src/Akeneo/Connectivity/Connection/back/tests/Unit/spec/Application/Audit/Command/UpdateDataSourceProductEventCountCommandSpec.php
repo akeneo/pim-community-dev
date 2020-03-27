@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Command;
 
-use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateProductEventCountCommand;
+use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use PhpSpec\ObjectBehavior;
 
@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class UpdateProductEventCountCommandSpec extends ObjectBehavior
+class UpdateDataSourceProductEventCountCommandSpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -24,7 +24,7 @@ class UpdateProductEventCountCommandSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(UpdateProductEventCountCommand::class);
+        $this->shouldBeAnInstanceOf(UpdateDataSourceProductEventCountCommand::class);
     }
 
     public function it_returns_the_hourly_interval(): void

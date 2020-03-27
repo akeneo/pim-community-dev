@@ -1,18 +1,15 @@
 import React, {useEffect} from 'react';
-import {AuditEventType} from '../../model/audit-event-type.enum';
-import {Connection} from '../../model/connection';
 import {FlowType} from '../../model/flow-type.enum';
+import {Connection} from '../../model/connection';
 import {fetchResult} from '../../shared/fetch-result';
 import {isOk} from '../../shared/fetch-result/result';
 import {useRoute} from '../../shared/router';
-import {Translate} from '../../shared/translate';
-import {sourceConnectionsFetched} from '../actions/dashboard-actions';
+import {connectionsFetched} from '../actions/dashboard-actions';
 import {useDashboardDispatch, useDashboardState} from '../dashboard-context';
-import {blueTheme, purpleTheme} from '../event-chart-themes';
-import {SourceConnection} from '../model/source-connection';
-import {EventChart} from './EventChart';
 import {NoConnection} from './NoConnection';
 import {UserSurvey} from './UserSurvey';
+import {DataSourceCharts} from './DataSourceCharts';
+import {DataDestinationCharts} from '../components/DataDestinationCharts';
 
 export const Charts = () => {
     const dispatch = useDashboardDispatch();
@@ -22,11 +19,9 @@ export const Charts = () => {
         let cancelled = false;
         fetchResult<Connection[], never>(route).then(result => {
             if (isOk(result) && !cancelled) {
-                const sourceConnections = result.value.filter(
-                    (connection): connection is SourceConnection => FlowType.DATA_SOURCE === connection.flowType
-                );
+                const auditableConnections = result.value.filter(connection => connection.auditable);
 
-                dispatch(sourceConnectionsFetched(sourceConnections));
+                dispatch(connectionsFetched(auditableConnections));
             }
         });
         return () => {
@@ -35,23 +30,35 @@ export const Charts = () => {
     }, [route, dispatch]);
 
     const state = useDashboardState();
-    if (0 === Object.keys(state.sourceConnections).length) {
+    const sourceConnections = Object.values(state.connections).filter(
+        connection => FlowType.DATA_SOURCE === connection.flowType
+    );
+    const destinationConnections = Object.values(state.connections).filter(
+        connection => FlowType.DATA_DESTINATION === connection.flowType
+    );
+
+    if (0 === sourceConnections.length && 0 === destinationConnections.length) {
         return <NoConnection />;
+    }
+
+    let orderedCharts = (
+        <>
+            <DataSourceCharts />
+            <DataDestinationCharts />
+        </>
+    );
+    if (0 === sourceConnections.length && 0 !== destinationConnections.length) {
+        orderedCharts = (
+            <>
+                <DataDestinationCharts />
+                <DataSourceCharts />
+            </>
+        );
     }
 
     return (
         <>
-            <EventChart
-                eventType={AuditEventType.PRODUCT_CREATED}
-                theme={purpleTheme}
-                title={<Translate id='akeneo_connectivity.connection.dashboard.charts.number_of_products_created' />}
-            />
-            <EventChart
-                eventType={AuditEventType.PRODUCT_UPDATED}
-                theme={blueTheme}
-                title={<Translate id='akeneo_connectivity.connection.dashboard.charts.number_of_products_updated' />}
-            />
-
+            {orderedCharts}
             <UserSurvey />
         </>
     );

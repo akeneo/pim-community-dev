@@ -41,6 +41,9 @@ class ConnectionWithCredentials
     /** @var ?string */
     private $userGroupId;
 
+    /** @var boolean */
+    private $auditable;
+
     public function __construct(
         string $code,
         string $label,
@@ -50,7 +53,8 @@ class ConnectionWithCredentials
         string $secret,
         string $username,
         string $userRoleId,
-        ?string $userGroupId
+        ?string $userGroupId,
+        bool $auditable
     ) {
         $this->code = $code;
         $this->label = $label;
@@ -61,6 +65,7 @@ class ConnectionWithCredentials
         $this->username = $username;
         $this->userRoleId = $userRoleId;
         $this->userGroupId = $userGroupId;
+        $this->auditable = $auditable;
     }
 
     public function code(): string
@@ -118,6 +123,11 @@ class ConnectionWithCredentials
         return $this->userGroupId;
     }
 
+    public function auditable(): bool
+    {
+        return $this->auditable;
+    }
+
     public function normalize(): array
     {
         return [
@@ -131,6 +141,7 @@ class ConnectionWithCredentials
             'password' => $this->password,
             'user_role_id' => $this->userRoleId,
             'user_group_id' => $this->userGroupId,
+            'auditable' => $this->auditable,
         ];
     }
 }

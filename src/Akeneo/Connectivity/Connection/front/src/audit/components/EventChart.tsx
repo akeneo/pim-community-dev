@@ -1,20 +1,21 @@
 import React, {FC, ReactNode, useContext, useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {VictoryThemeDefinition} from 'victory';
-import {Section} from '../../common';
+import {VictoryChartProps, VictoryThemeDefinition} from 'victory';
+import {PropsWithTheme} from '../../common/theme';
 import {AuditEventType} from '../../model/audit-event-type.enum';
 import {useNumberFormatter} from '../../shared/formatter/use-number-formatter';
-import {useTranslate} from '../../shared/translate';
+import {Translate, useTranslate} from '../../shared/translate';
 import {UserContext} from '../../shared/user';
 import {useFetchConnectionsAuditData} from '../api-hooks/use-fetch-connections-audit-data';
-import {useDashboardState} from '../dashboard-context';
 import {Chart} from './Chart';
-import {ConnectionSelect} from './ConnectionSelect';
 
 type Props = {
     title: ReactNode;
     eventType: AuditEventType;
     theme: VictoryThemeDefinition;
+    dateFormat: Intl.DateTimeFormatOptions;
+    selectedConnectionCode?: string;
+    chartOptions?: VictoryChartProps;
 };
 type ChartEntry = {
     x: number;
@@ -23,42 +24,31 @@ type ChartEntry = {
     yLabel: string;
 };
 
-const EventChartContainer = styled.div`
-    padding-bottom: 25px;
-`;
-
-export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
-    const state = useDashboardState();
-
-    const [selectedConnectionCode, setSelectedConnectionCode] = useState<string>();
-    useEffect(() => {
-        if (0 === Object.keys(state.sourceConnections).length) {
-            setSelectedConnectionCode(undefined);
-        } else if (Object.keys(state.sourceConnections).length > 0 && undefined === selectedConnectionCode) {
-            setSelectedConnectionCode('<all>');
-        }
-    }, [state.sourceConnections, selectedConnectionCode]);
-
+export const EventChart: FC<Props> = ({
+    title,
+    eventType,
+    theme,
+    dateFormat,
+    selectedConnectionCode,
+    chartOptions,
+}: Props) => {
     const connectionsAuditData = useFetchConnectionsAuditData(eventType);
     const [chartData, setChartData] = useState<Array<ChartEntry>>();
     const uiLocale = useContext(UserContext).get('uiLocale');
     const formatNumber = useNumberFormatter();
     const translate = useTranslate();
+
     useEffect(() => {
         setChartData(undefined);
         if (undefined === selectedConnectionCode || undefined === connectionsAuditData[selectedConnectionCode]) {
             return;
         }
 
-        const selectedConnectionAuditData = connectionsAuditData[selectedConnectionCode];
+        const selectedConnectionAuditData = connectionsAuditData[selectedConnectionCode].daily;
         const numberOfData = Object.keys(selectedConnectionAuditData).length;
         const chartData = Object.entries(selectedConnectionAuditData).map(
             ([date, value], index): ChartEntry => {
-                const xLabel = new Intl.DateTimeFormat(uiLocale.replace('_', '-'), {
-                    weekday: 'long',
-                    month: 'short',
-                    day: 'numeric',
-                }).format(new Date(date));
+                const xLabel = new Intl.DateTimeFormat(uiLocale.replace('_', '-'), dateFormat).format(new Date(date));
 
                 return {
                     x: index,
@@ -73,23 +63,46 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
         );
 
         setChartData(chartData);
-    }, [uiLocale, formatNumber, translate, connectionsAuditData, selectedConnectionCode]);
+    }, [uiLocale, formatNumber, translate, connectionsAuditData, selectedConnectionCode, formatNumber]);
 
-    const connections = Object.values(state.sourceConnections);
-    connections.unshift({
-        code: '<all>',
-        label: translate('akeneo_connectivity.connection.dashboard.connection_selector.all'),
-        flowType: connections[0].flowType,
-        image: null,
-    });
+    const total = (selectedConnectionCode && connectionsAuditData[selectedConnectionCode]?.weekly_total) || 0;
 
     return (
-        <EventChartContainer>
-            <Section title={title}>
-                <ConnectionSelect connections={connections} onChange={code => setSelectedConnectionCode(code)} />
-            </Section>
-
-            {chartData && <Chart data={chartData} theme={theme} />}
-        </EventChartContainer>
+        <>
+            {chartData && (
+                <>
+                    <Title>{title}</Title>
+                    <SubTitle>
+                        <Translate id='akeneo_connectivity.connection.dashboard.charts.legend.during_the_last_seven_days' />
+                        &nbsp;
+                        <Count>{formatNumber(total)}</Count>
+                    </SubTitle>
+                    <Chart chartOptions={chartOptions} data={chartData} theme={theme} />
+                </>
+            )}
+        </>
     );
 };
+
+const Title = styled.div`
+    color: ${({theme}: PropsWithTheme) => theme.color.purple100};
+    display: block;
+    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.bigger};
+    font-weight: bold;
+    line-height: 21px;
+    text-transform: uppercase;
+    padding-top: 20px;
+    padding-bottom: 5px;
+`;
+
+const SubTitle = styled.div`
+    color: ${({theme}: PropsWithTheme) => theme.color.grey140};
+    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.bigger};
+    font-weight: bold;
+    line-height: 21px;
+    padding-bottom: 20px;
+`;
+
+const Count = styled.span`
+    color: ${({theme}: PropsWithTheme) => theme.color.purple100};
+`;

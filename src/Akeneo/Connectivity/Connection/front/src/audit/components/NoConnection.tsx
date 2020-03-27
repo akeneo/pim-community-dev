@@ -5,12 +5,21 @@ import {PropsWithTheme} from '../../common/theme';
 import {RouterContext} from '../../shared/router';
 import {SecurityGuard} from '../../shared/security';
 import {Translate} from '../../shared/translate';
+import {FlowType} from '../../model/flow-type.enum';
+import imgUrl from '../../common/assets/illustrations/charts.svg';
 
-export const NoConnection = () => {
+type Props = {
+    flowType?: FlowType.DATA_SOURCE | FlowType.DATA_DESTINATION | 'default';
+};
+
+export const NoConnection = ({flowType = 'default'}: Props) => {
     const {redirect} = useContext(RouterContext);
 
     return (
-        <PageError title={<Translate id='akeneo_connectivity.connection.dashboard.no_connection.title' />}>
+        <PageError
+            title={<Translate id={`akeneo_connectivity.connection.dashboard.no_connection.title.${flowType}`} />}
+            imgUrl={imgUrl}
+        >
             <SecurityGuard
                 acl='akeneo_connectivity_connection_manage_settings'
                 fallback={

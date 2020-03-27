@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConne
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\FetchMode;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * Fetch a connection with credentials and permissions included. Only one `user_role` and `user_group` (not counting the
@@ -41,7 +42,8 @@ SELECT
     client.secret,
     u.username,
     urole.role_id,
-    g.id as group_id
+    g.id as group_id,
+    c.auditable
 FROM akeneo_connectivity_connection c
 INNER JOIN pim_api_client client ON c.client_id = client.id
 INNER JOIN oro_user u ON c.user_id = u.id
@@ -52,10 +54,13 @@ LEFT JOIN oro_access_group g ON ugroup.group_id = g.id
 WHERE c.code = :code
 SQL;
 
-        $data = $this->dbalConnection->executeQuery($selectSQL, [
-            'code' => $code,
-            'default_group' => User::GROUP_DEFAULT
-        ])->fetchAll(FetchMode::ASSOCIATIVE);
+        $data = $this->dbalConnection->executeQuery(
+            $selectSQL,
+            [
+                'code' => $code,
+                'default_group' => User::GROUP_DEFAULT
+            ]
+        )->fetchAll(FetchMode::ASSOCIATIVE);
 
         if (0 === count($data)) {
             return null;
@@ -79,6 +84,7 @@ SQL;
             $row['username'],
             $row['role_id'],
             $row['group_id'],
+            (bool) $row['auditable']
         );
     }
 }

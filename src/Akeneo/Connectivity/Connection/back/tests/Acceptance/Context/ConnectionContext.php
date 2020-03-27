@@ -85,7 +85,7 @@ class ConnectionContext implements Context
     {
         $startCount = $this->connectionRepository->count();
 
-        $command = new CreateConnectionCommand(self::slugify($label), $label, self::defineFlowType($flowType));
+        $command = new CreateConnectionCommand(self::slugify($label), $label, self::defineFlowType($flowType), false);
         $this->createConnectionHandler->handle($command);
 
         Assert::eq($this->connectionRepository->count(), $startCount + 1);
@@ -108,7 +108,7 @@ class ConnectionContext implements Context
             $label = str_pad('A', 120, 'a');
         }
         try {
-            $command = new CreateConnectionCommand(self::slugify($label), $label, self::defineFlowType($flowType));
+            $command = new CreateConnectionCommand(self::slugify($label), $label, self::defineFlowType($flowType), false);
             $this->createConnectionHandler->handle($command);
         } catch (ConstraintViolationListException $violationList) {
             $this->violations = $violationList;
@@ -139,13 +139,22 @@ class ConnectionContext implements Context
         if ($newLabel === '<100chars>') {
             $newLabel = str_pad('A', 120, 'a');
         }
+
         if (!isset($data['flow_type']) || empty($data['flow_type'])) {
             throw new \InvalidArgumentException('You need to provide a new flow type to update the Connection.');
         }
         $newFlowType = $data['flow_type'];
+
         $newImage = $data['image'] ?? null;
+
         $newRole = $this->userPermissionsRepository->getRoleIdByIdentifier($data['user_role']);
+
         $newGroup = $this->userPermissionsRepository->getGroupIdByIdentifier($data['user_group']);
+
+        if ($data['auditable'] !== 'yes' && $data['auditable'] !== 'no') {
+            throw new \InvalidArgumentException('Auditable must be equal to "yes" or "no".');
+        }
+        $newAuditable = ($data['auditable'] === 'yes');
 
         try {
             $command = new UpdateConnectionCommand(
@@ -154,7 +163,8 @@ class ConnectionContext implements Context
                 $newFlowType,
                 $newImage,
                 (string) $newRole,
-                (string) $newGroup
+                (string) $newGroup,
+                (bool) $newAuditable
             );
             $this->updateConnectionHandler->handle($command);
         } catch (ConstraintViolationListException $violationList) {
@@ -301,6 +311,26 @@ class ConnectionContext implements Context
         $group = $this->userPermissionsRepository->getUserGroup($connection->userId()->id());
 
         Assert::eq($expectedUserGroup, $group);
+    }
+
+    /**
+     * @Then the Connection :label should be auditable
+     */
+    public function theConnectionShouldBeAuditable(string $label): void
+    {
+        $connection = $this->connectionRepository->findOneByCode(self::slugify($label));
+
+        Assert::eq(true, (bool) $connection->auditable());
+    }
+
+    /**
+     * @Then the Connection :label should not be auditable
+     */
+    public function theConnectionShouldNotBeAuditable(string $label): void
+    {
+        $connection = $this->connectionRepository->findOneByCode(self::slugify($label));
+
+        Assert::eq(false, (bool) $connection->auditable());
     }
 
     /**

@@ -27,7 +27,9 @@ class ConnectionSpec extends ObjectBehavior
             'Magento Connector',
             FlowType::DATA_DESTINATION,
             42,
-            new UserId(24)
+            new UserId(24),
+            null,
+            true
         );
     }
 
@@ -61,6 +63,12 @@ class ConnectionSpec extends ObjectBehavior
         $this->userId()->shouldBeLike(new UserId(24));
     }
 
+    public function it_returns_the_auditable()
+    {
+        $this->auditable()->shouldBeBoolean();
+        $this->auditable()->shouldBe(true);
+    }
+
     public function it_provides_the_image()
     {
         $this->beConstructedWith(
@@ -69,7 +77,8 @@ class ConnectionSpec extends ObjectBehavior
             FlowType::DATA_DESTINATION,
             42,
             new UserId(24),
-            'a/b/c/image_path.jpg'
+            'a/b/c/image_path.jpg',
+            false
         );
 
         $this->image()->shouldBeLike(new ConnectionImage('a/b/c/image_path.jpg'));
@@ -102,5 +111,13 @@ class ConnectionSpec extends ObjectBehavior
 
         $this->setFlowType(new FlowType(FlowType::OTHER));
         $this->flowType()->shouldBeLike(new FlowType(FlowType::OTHER));
+    }
+
+    public function it_changes_the_auditable()
+    {
+        $this->auditable()->shouldBe(true);
+
+        $this->disableAudit();
+        $this->auditable()->shouldBe(false);
     }
 }

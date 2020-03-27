@@ -55,14 +55,23 @@ final class WeeklyEventCounts
 
     public function normalize()
     {
+        $weeklyEventCounts = \array_reduce(
+            $this->dailyEventCounts,
+            function (array $weeklyEventCounts, DailyEventCount $dailyEventCount) {
+                return array_merge($weeklyEventCounts, $dailyEventCount->normalize());
+            },
+            []
+        );
+
+        $total = array_reduce($weeklyEventCounts, function ($total, $count) {
+            return $total + $count;
+        }, 0);
+
         return [
-            $this->connectionCode => \array_reduce(
-                $this->dailyEventCounts,
-                function (array $weeklyEventCounts, DailyEventCount $dailyEventCount) {
-                    return array_merge($weeklyEventCounts, $dailyEventCount->normalize());
-                },
-                []
-            ),
+            $this->connectionCode => [
+                'daily' => $weeklyEventCounts,
+                'weekly_total' => $total
+            ],
         ];
     }
 

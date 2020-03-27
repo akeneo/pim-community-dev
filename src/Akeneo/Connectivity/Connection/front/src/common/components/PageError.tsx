@@ -26,7 +26,7 @@ const Image = styled.img`
 `;
 
 const Title = styled.div`
-    height: 36px;
+    line-height: 28px;
     font-size: ${({theme}: PropsWithTheme) => theme.fontSize.title};
     color: ${({theme}: PropsWithTheme) => theme.color.grey140};
 `;
@@ -34,4 +34,5 @@ const Title = styled.div`
 const Message = styled.div`
     height: 21px;
     font-size: ${({theme}: PropsWithTheme) => theme.fontSize.bigger};
+    margin-top: 5px;
 `;

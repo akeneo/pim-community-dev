@@ -48,7 +48,7 @@ class CreateConnectionHandlerSpec extends ObjectBehavior
         $findAConnectionHandler,
         ConnectionWithCredentials $connectionDTO
     ): void {
-        $command = new CreateConnectionCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
+        $command = new CreateConnectionCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION, true);
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($command)->willReturn($violations);
@@ -77,7 +77,7 @@ class CreateConnectionHandlerSpec extends ObjectBehavior
         $createUser,
         $findAConnectionHandler
     ): void {
-        $command = new CreateConnectionCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
+        $command = new CreateConnectionCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION, true);
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($command)->willReturn($violations);
@@ -99,7 +99,8 @@ class CreateConnectionHandlerSpec extends ObjectBehavior
             'secret',
             'magento_app',
             'user_role_id',
-            'user_group_id'
+            'user_group_id',
+            false
         );
         $findAConnectionHandler
             ->handle(Argument::type(FindAConnectionQuery::class))
@@ -118,7 +119,7 @@ class CreateConnectionHandlerSpec extends ObjectBehavior
         $createUser,
         ConstraintViolationInterface $violation
     ): void {
-        $command = new CreateConnectionCommand('magento', 'Magento Connector', 'Wrong Flow Type');
+        $command = new CreateConnectionCommand('magento', 'Magento Connector', 'Wrong Flow Type', false);
         $violations = new ConstraintViolationList([$violation->getWrappedObject()]);
         $validator->validate($command)->willReturn($violations);
 
