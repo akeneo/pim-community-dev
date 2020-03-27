@@ -12,11 +12,24 @@ type CoreButtonProps = {
     sizeMode?: sizeMode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const getSizeModeValue = ({ sizeMode }: CoreButtonProps): string => {
+const getHeight = ({ sizeMode }: CoreButtonProps): string => {
     if (sizeMode === 'small') {
         return '20px';
     }
     return '32px';
+};
+const getLineHeight = ({ sizeMode }: CoreButtonProps): string => {
+    if (sizeMode === 'small') {
+        return '18px';
+    }
+    return '30px';
+};
+
+const getPadding = ({ sizeMode }: CoreButtonProps): string => {
+    if (sizeMode === 'small') {
+        return '0 10px';
+    }
+    return '0 15px';
 };
 
 const BasicButton = styled.button<CoreButtonProps>`
@@ -24,10 +37,10 @@ const BasicButton = styled.button<CoreButtonProps>`
     cursor: pointer;
     font-size: ${fontSize.default};
     font-weight: 400;
-    height: ${getSizeModeValue};
-    line-height: ${getSizeModeValue};
-    padding: 0 15px;
+    height: ${getHeight};
+    line-height: ${getLineHeight};
     text-transform: uppercase;
+    padding: ${getPadding};
     &:disabled {
         cursor: not-allowed;
     }
