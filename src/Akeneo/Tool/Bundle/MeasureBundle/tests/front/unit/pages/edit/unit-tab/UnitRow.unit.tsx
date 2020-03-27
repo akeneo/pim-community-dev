@@ -82,7 +82,7 @@ test('It displays an error badge if it is invalid', async () => {
       <AkeneoThemeProvider>
         <table>
           <tbody>
-            <UnitRow unit={unit} isStandardUnit={true} invalid={true} onRowSelected={() => {}} />
+            <UnitRow unit={unit} isStandardUnit={true} isInvalid={true} onRowSelected={() => {}} />
           </tbody>
         </table>
       </AkeneoThemeProvider>,

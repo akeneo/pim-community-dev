@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {act, getByRole, getByText, fireEvent} from '@testing-library/react';
+import {act, getByRole, getByText, fireEvent, waitForElement} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {AkeneoThemeProvider} from 'akeneomeasure/AkeneoThemeProvider';
 import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
@@ -12,6 +12,7 @@ declare global {
     }
   }
 }
+
 const measurementFamily = {
   code: 'AREA',
   labels: {
@@ -236,13 +237,11 @@ test('It allows to delete the unit', async () => {
     );
   });
 
-  act(() => {
+  await act(async () => {
     const deleteButton = getByText(container, 'measurements.unit.delete.button');
     fireEvent.click(deleteButton);
-  });
 
-  act(() => {
-    const confirmButton = getByText(container, 'pim_common.delete');
+    const confirmButton = await waitForElement(() => getByText(container, 'pim_common.delete'));
     fireEvent.click(confirmButton);
   });
 
