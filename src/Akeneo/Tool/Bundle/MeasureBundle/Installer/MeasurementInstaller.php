@@ -39,7 +39,7 @@ class MeasurementInstaller implements EventSubscriberInterface
         $this->loadStandardMeasurementFamilies();
     }
 
-    public function loadStandardMeasurementFamilies(): void
+    private function loadStandardMeasurementFamilies(): void
     {
         $sql = <<<SQL
 INSERT INTO `akeneo_measurement` (`code`, `labels`, `standard_unit`, `units`)
@@ -75,6 +75,7 @@ SQL;
     private function createMeasurementTable(): void
     {
         $sql = <<<SQL
+DROP TABLE IF EXISTS `akeneo_measurement`;
 CREATE TABLE `akeneo_measurement` (
   `code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
   `labels` JSON NOT NULL,

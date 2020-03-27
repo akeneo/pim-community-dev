@@ -183,7 +183,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $filesByType = $this->getFilesToLoadByType($files);
 
-        $this->measurementInstaller->loadStandardMeasurementFamilies();
+        $this->measurementInstaller->createMeasurementTableAndStandardMeasurementFamilies();
         $this->loadSqlFiles($filesByType['sql']);
         $this->loadImportFiles($filesByType['import']);
         $this->loadReferenceData();
