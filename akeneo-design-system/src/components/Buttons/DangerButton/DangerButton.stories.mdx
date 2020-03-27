@@ -1,0 +1,57 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import { action } from "@storybook/addon-actions";
+import { DangerButton } from "./DangerButton.tsx";
+import { CoreButton } from "../CoreButton";
+
+
+<Meta title="DangerButton" component={CoreButton} />
+
+# Danger button
+
+There is only one custom prop, the other props come from "React.ButtonHTMLAttributes HTMLButtonElement"
+
+<Props of={CoreButton} />
+
+## Default
+
+This is the default button
+
+<Preview>
+  <Story name="Danger">
+    <DangerButton onClick={action("clicked")}>
+      Click !
+    </DangerButton>
+  </Story>
+</Preview>
+
+
+## Small Danger button
+
+sizeMode | small
+
+  <Story name="Small Danger">
+    <DangerButton sizeMode='small' onClick={action("clicked")}>
+      Click !
+    </DangerButton>
+  </Story>
+
+## Danger button disabled
+
+disabled | true
+
+  <Story name="Danger disabled">
+    <DangerButton disabled onClick={action("clicked")}>
+      Click !
+    </DangerButton>
+  </Story>
+
+## Small Danger button disabled
+
+disabled | true
+sizeMode | small
+
+  <Story name="Small Danger disabled">
+    <DangerButton disabled onClick={action("clicked")} sizeMode='small'>
+      Click !
+    </DangerButton>
+  </Story>
