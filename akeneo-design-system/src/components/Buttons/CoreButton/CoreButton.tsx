@@ -1,23 +1,22 @@
 import React, { ReactNode, Ref } from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 type sizeMode = 'small' | 'large';
 
 type CoreButtonProps = {
-    ariaLabel?: string,
-    ariaLabelledBy?: string,
-    ariaDescribedBy?: string,
-    children: ReactNode,
-    sizeMode?: sizeMode,
-
-} & React.ButtonHTMLAttributes<HTMLButtonElement>
+    ariaLabel?: string;
+    ariaLabelledBy?: string;
+    ariaDescribedBy?: string;
+    children: ReactNode;
+    sizeMode?: sizeMode;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const getSizeModeValue = ({ sizeMode }: CoreButtonProps): string => {
     if (sizeMode === 'small') {
-        return '20px'
+        return '20px';
     }
-    return '32px'
-}
+    return '32px';
+};
 
 const BasicButton = styled.button<CoreButtonProps>`
     border-radius: 16px;
@@ -31,9 +30,9 @@ const BasicButton = styled.button<CoreButtonProps>`
     &:disabled {
         cursor: not-allowed;
     }
-`
-const CoreButton =
-    React.forwardRef<HTMLButtonElement, CoreButtonProps>(function CoreButton(
+`;
+const CoreButton = React.forwardRef<HTMLButtonElement, CoreButtonProps>(
+    function CoreButton(
         {
             ariaDescribedBy,
             ariaLabel,
@@ -45,27 +44,32 @@ const CoreButton =
             type = 'button',
             ...rest
         },
-        forwardedRef: Ref<HTMLButtonElement>) {
+        forwardedRef: Ref<HTMLButtonElement>
+    ) {
         // https://www.w3.org/TR/wai-aria-practices/#button
-        const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+        const handleKeyDown = (
+            event: React.KeyboardEvent<HTMLButtonElement>
+        ) => {
             if (onKeyDown && (event.keyCode === 32 || event.keyCode === 13)) {
-                onKeyDown(event)
+                onKeyDown(event);
             }
-        }
-        return <BasicButton
-            aria-disabled={disabled}
-            aria-describedby={ariaDescribedBy}
-            aria-labelledby={ariaLabelledBy}
-            aria-label={ariaLabel}
-            disabled={disabled}
-            onKeyDown={handleKeyDown}
-            ref={forwardedRef}
-            role='button'
-            sizeMode={sizeMode}
-            {...rest}
-        >
-            {children}
-        </BasicButton>
-    })
+        };
+        return (
+            <BasicButton
+                aria-disabled={disabled}
+                aria-describedby={ariaDescribedBy}
+                aria-labelledby={ariaLabelledBy}
+                aria-label={ariaLabel}
+                disabled={disabled}
+                onKeyDown={handleKeyDown}
+                ref={forwardedRef}
+                role='button'
+                sizeMode={sizeMode}
+                {...rest}>
+                {children}
+            </BasicButton>
+        );
+    }
+);
 
 export { CoreButton };
