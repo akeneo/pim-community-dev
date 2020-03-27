@@ -19,7 +19,7 @@ import {
   SecondaryActionsDropdownButton,
 } from 'akeneomeasure/shared/components/SecondaryActionsDropdownButton';
 import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
-import {filterErrors, ValidationError} from 'akeneomeasure/model/validation-error';
+import {filterErrors, ValidationError, partitionErrors} from 'akeneomeasure/model/validation-error';
 import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family-saver';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
@@ -36,6 +36,7 @@ import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteM
 import {SecurityContext} from 'akeneomeasure/context/security-context';
 import {ConfigContext, ConfigContextValue} from 'akeneomeasure/context/config-context';
 import {ErrorBlock} from 'akeneomeasure/shared/components/ErrorBlock';
+import {ErrorFlashMessage} from 'akeneomeasure/shared/components/ErrorFlashMessage';
 
 enum Tab {
   Units = 'units',
@@ -74,17 +75,18 @@ const TabSelector = styled.div<{isActive: boolean}>`
   }
 `;
 
-const hasTabErrors = (tab: Tab, errors: ValidationError[]): boolean => {
-  const unitsErrorCount = filterErrors(errors, 'units').length;
-
-  switch (tab) {
-    case Tab.Units:
-      return 0 < unitsErrorCount;
-    case Tab.Properties:
-      return 0 < errors.length - unitsErrorCount;
-    default:
-      return false;
+const Errors = ({errors}: {errors: ValidationError[]}) => {
+  if (0 === errors.length) {
+    return null;
   }
+
+  return (
+    <>
+      {errors.map((error: ValidationError, index: number) => (
+        <ErrorFlashMessage key={index}>{error.message}</ErrorFlashMessage>
+      ))}
+    </>
+  );
 };
 
 const Edit = () => {
@@ -226,6 +228,11 @@ const Edit = () => {
     buttons.push(<Button onClick={handleSaveMeasurementFamily}>{__('pim_common.save')}</Button>);
   }
 
+  const [unitsErrors, propertiesErrors, otherErrors] = partitionErrors(errors, [
+    (error) => error.propertyPath.startsWith('units'),
+    (error) => error.propertyPath.startsWith('code') || error.propertyPath.startsWith('labels'),
+  ]);
+
   return (
     <>
       <Prompt when={isModified} message={() => __('pim_ui.flash.unsaved_changes')} />
@@ -267,12 +274,14 @@ const Edit = () => {
       </PageHeader>
 
       <PageContent>
+        <Errors errors={otherErrors}/>
         <TabsContainer>
           <Tabs>
             {Object.values(Tab).map((tab: Tab) => (
               <TabSelector key={tab} onClick={() => setCurrentTab(tab)} isActive={currentTab === tab}>
                 {__(`measurements.family.tab.${tab}`)}
-                {hasTabErrors(tab, errors) && <ErrorBadge />}
+                {tab === Tab.Units && 0 < unitsErrors.length && <ErrorBadge/>}
+                {tab === Tab.Properties && 0 < propertiesErrors.length && <ErrorBadge/>}
               </TabSelector>
             ))}
           </Tabs>
@@ -285,7 +294,7 @@ const Edit = () => {
             <UnitTab
               measurementFamily={measurementFamily}
               onMeasurementFamilyChange={setMeasurementFamily}
-              errors={filterErrors(errors, 'units')}
+              errors={filterErrors(unitsErrors, 'units')}
               selectedUnitCode={selectedUnitCode}
               selectUnitCode={selectUnitCode}
             />
@@ -294,7 +303,7 @@ const Edit = () => {
             <PropertyTab
               measurementFamily={measurementFamily}
               onMeasurementFamilyChange={setMeasurementFamily}
-              errors={errors}
+              errors={propertiesErrors}
             />
           )}
         </Container>

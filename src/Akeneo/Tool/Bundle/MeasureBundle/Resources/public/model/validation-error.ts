@@ -16,4 +16,30 @@ const filterErrors = (errors: ValidationError[], propertyPath: string) =>
 const getErrorsForPath = (errors: ValidationError[], propertyPath: string) =>
   errors.filter(error => error.propertyPath === propertyPath);
 
-export {ValidationError, filterErrors, getErrorsForPath};
+const partition = <T,>(items: T[], condition: (item: T) => boolean): T[][] => {
+  return items.reduce((result: T[][], item: T) => {
+    result[condition(item) ? 0 : 1].push(item);
+    return result;
+  }, [[], []]);
+};
+
+const partitionErrors = (
+  errors: ValidationError[],
+  conditions: ((item: ValidationError) => boolean)[]
+): ValidationError[][] => {
+  const results: ValidationError[][] = [];
+  let restErrors = [...errors];
+
+  conditions.forEach(condition => {
+    const [match, rest] = partition<ValidationError>(restErrors, condition);
+    results.push(match);
+    restErrors = rest;
+  });
+
+  return [
+    ...results,
+    restErrors,
+  ];
+};
+
+export {ValidationError, filterErrors, getErrorsForPath, partitionErrors};

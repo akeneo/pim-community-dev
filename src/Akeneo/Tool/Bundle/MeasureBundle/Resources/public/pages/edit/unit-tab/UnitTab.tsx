@@ -25,7 +25,7 @@ const TabColumns = styled.div`
   overflow: hidden;
 `;
 
-const Errors = styled.div`
+const ErrorsContainer = styled.div`
   margin-bottom: 20px;
 `;
 
@@ -40,6 +40,20 @@ type UnitTabProps = {
   onMeasurementFamilyChange: (measurementFamily: MeasurementFamily) => void;
   selectedUnitCode: UnitCode;
   selectUnitCode: (unitCode: UnitCode) => void;
+};
+
+const Errors = ({errors}: {errors: ValidationError[]}) => {
+  if (0 === errors.length) {
+    return null;
+  }
+
+  return (
+    <ErrorsContainer>
+      {errors.map((error: ValidationError, index: number) => (
+        <ErrorFlashMessage key={index}>{error.message}</ErrorFlashMessage>
+      ))}
+    </ErrorsContainer>
+  );
 };
 
 const UnitTab = ({
@@ -59,13 +73,7 @@ const UnitTab = ({
 
   return (
     <TabContainer>
-      {0 < tabErrors.length && (
-        <Errors>
-          {tabErrors.map((error: ValidationError) => (
-            <ErrorFlashMessage>{error.message}</ErrorFlashMessage>
-          ))}
-        </Errors>
-      )}
+      <Errors errors={tabErrors}/>
       <TabColumns>
         <UnitList>
           <SearchBar count={measurementFamily.units.length} searchValue={searchValue} onSearchChange={setSearchValue} />
