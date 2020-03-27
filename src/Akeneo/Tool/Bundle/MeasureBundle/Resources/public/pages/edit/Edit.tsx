@@ -229,8 +229,8 @@ const Edit = () => {
   }
 
   const [unitsErrors, propertiesErrors, otherErrors] = partitionErrors(errors, [
-    (error) => error.propertyPath.startsWith('units'),
-    (error) => error.propertyPath.startsWith('code') || error.propertyPath.startsWith('labels'),
+    error => error.propertyPath.startsWith('units'),
+    error => error.propertyPath.startsWith('code') || error.propertyPath.startsWith('labels'),
   ]);
 
   return (
