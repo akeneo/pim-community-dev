@@ -32,7 +32,7 @@ ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	.circleci/find_non_executed_phpspec.sh
 else
-	${PHP_RUN} vendor/bin/phpspec run
+	${PHP_RUN} vendor/bin/phpspec run -v
 endif
 
 .PHONY: unit-front
