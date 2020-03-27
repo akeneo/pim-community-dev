@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { CoreButton } from '../CoreButton';
 import * as theme from '../../../theme/akeneoTheme';
 
-const SecondaryButton = styled(CoreButton)`
+const TertiaryButton = styled(CoreButton)`
     color: ${theme.color.white};
     border-color: ${theme.color.grey100};
     background-color: ${theme.color.grey100};
@@ -23,4 +23,4 @@ const SecondaryButton = styled(CoreButton)`
     }
 `;
 
-export { SecondaryButton };
+export { TertiaryButton };
