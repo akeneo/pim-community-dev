@@ -1,5 +1,17 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9161: Fix performance issue on product normalization
+
+# 4.0.12 (2020-03-24)
+
+## Bug fixes
+
+- PIM-9159: Fix filter by family and category on the DQI dashboard
+
+# 4.0.11 (2020-03-20)
+
 # 4.0.10 (2020-03-18)
 
 - PIM-9153: Remove useless GLOB_BRACE flag from standard Kernel

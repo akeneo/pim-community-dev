@@ -13,9 +13,9 @@ services:
         decoration_inner_name: 'not_granted_published_product'
         arguments:
             - '@not_granted_published_product'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.locale'
-            - '@security.authorization_checker'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pimee_security.cached_authorization_checker'
 
     pim_catalog.product.fill_missing_values_with_permission:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\FillGrantedMissingValues'
@@ -23,9 +23,9 @@ services:
         decoration_inner_name: 'not_granted_product'
         arguments:
             - '@not_granted_product'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.locale'
-            - '@security.authorization_checker'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pimee_security.cached_authorization_checker'
 
     pim_catalog.product_model.fill_missing_values_with_permission:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\FillGrantedMissingValues'
@@ -33,6 +33,6 @@ services:
         decoration_inner_name: 'not_granted_product_model'
         arguments:
             - '@not_granted_product_model'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.locale'
-            - '@security.authorization_checker'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pimee_security.cached_authorization_checker'
