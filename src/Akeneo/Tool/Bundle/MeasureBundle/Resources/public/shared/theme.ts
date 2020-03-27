@@ -30,6 +30,7 @@ type AkeneoTheme = {
     blue100: string;
     blue120: string;
     blue140: string;
+    red10: string;
     red20: string;
     red40: string;
     red60: string;
@@ -88,6 +89,7 @@ const akeneoTheme: AkeneoTheme = {
     blue100: '#5992c7',
     blue120: '#47749f',
     blue140: '#355777',
+    red10: '#faefed',
     red20: '#f6dfdc',
     red40: '#eebfb9',
     red60: '#e59f95',
