@@ -48,10 +48,7 @@ export const EventChart: FC<Props> = ({
         const numberOfData = Object.keys(selectedConnectionAuditData).length;
         const chartData = Object.entries(selectedConnectionAuditData).map(
             ([date, value], index): ChartEntry => {
-                const xLabel = new Intl.DateTimeFormat(
-                    uiLocale.replace('_', '-'),
-                    dateFormat
-                ).format(new Date(date));
+                const xLabel = new Intl.DateTimeFormat(uiLocale.replace('_', '-'), dateFormat).format(new Date(date));
 
                 return {
                     x: index,

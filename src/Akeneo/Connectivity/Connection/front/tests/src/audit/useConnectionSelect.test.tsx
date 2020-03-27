@@ -13,12 +13,14 @@ const initialState: State = {
             label: 'Bynder',
             flowType: FlowType.DATA_SOURCE,
             image: null,
+            auditable: true,
         },
         magento: {
             code: 'magento',
             label: 'Magento',
             flowType: FlowType.DATA_DESTINATION,
             image: null,
+            auditable: true,
         },
     },
     events: {
@@ -42,12 +44,14 @@ describe('Select connection', () => {
                 label: 'akeneo_connectivity.connection.dashboard.connection_selector.all',
                 flowType: FlowType.DATA_DESTINATION,
                 image: null,
+                auditable: true,
             },
             {
                 code: 'magento',
                 label: 'Magento',
                 flowType: FlowType.DATA_DESTINATION,
                 image: null,
+                auditable: true,
             },
         ]);
         expect(defaultConnectionCode).toBe('<all>');

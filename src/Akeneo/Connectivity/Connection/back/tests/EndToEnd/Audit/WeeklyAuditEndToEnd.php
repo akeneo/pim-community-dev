@@ -70,7 +70,7 @@ class WeeklyAuditEndToEnd extends WebTestCase
 
     public function test_it_get_weekly_audit_for_read_product()
     {
-        $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
+        $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION, true);
 
         $hourlyEventCountsPerConnection = $this->createHourlyEventCountsPerConnection(
             ['magento'],
