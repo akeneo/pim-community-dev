@@ -66,6 +66,10 @@ measurements:
     form:
         input:
             symbol: "Symbol (eg: km)"
+    validation:
+        unit:
+            code:
+                must_be_unique: 'This unit code already exists.'
     create_family:
         flash:
             success: Measurement family successfully created.

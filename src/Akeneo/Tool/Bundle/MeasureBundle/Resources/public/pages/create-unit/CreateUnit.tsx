@@ -18,6 +18,7 @@ import {
   CreateUnitForm,
   createUnitFromForm,
   initializeCreateUnitForm,
+  validateCreateUnitForm,
 } from 'akeneomeasure/pages/create-unit/form/create-unit-form';
 import {useCreateUnitValidator} from 'akeneomeasure/pages/create-unit/hooks/use-create-unit-validator';
 import {CheckboxField} from 'akeneomeasure/shared/components/CheckboxField';
@@ -48,7 +49,6 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   }, [clearForm, onClose]);
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const measurementFamilyLabel = getMeasurementFamilyLabel(measurementFamily, locale);
-  const measurementFamilyCode = measurementFamily.code;
 
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
   const focusFirstField = useAutoFocus(firstFieldRef);
@@ -57,8 +57,14 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
     try {
       setErrors([]);
 
+      const formValidationErrors = validateCreateUnitForm(form, measurementFamily, __);
+      if (0 < formValidationErrors.length) {
+        setErrors(formValidationErrors);
+        return;
+      }
+
       const unit = createUnitFromForm(form, locale);
-      const response = await validate(measurementFamilyCode, unit);
+      const response = await validate(measurementFamily.code, unit);
 
       switch (response.valid) {
         case true:
@@ -79,13 +85,14 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
     form,
     locale,
     validate,
-    measurementFamilyCode,
+    measurementFamily,
     notify,
     onNewUnit,
     createAnotherUnit,
     clearForm,
     handleClose,
     setErrors,
+    __,
   ]);
 
   useShortcut(Key.Escape, handleClose);

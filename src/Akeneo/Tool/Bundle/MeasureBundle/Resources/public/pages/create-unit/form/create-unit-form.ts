@@ -1,6 +1,9 @@
 import {Operation, Operator} from 'akeneomeasure/model/operation';
 import {Unit} from 'akeneomeasure/model/unit';
 import {LocaleCode} from 'akeneomeasure/model/locale';
+import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
+import {ValidationError} from 'akeneomeasure/model/validation-error';
+import {TranslateContextValue} from 'akeneomeasure/context/translate-context';
 
 type CreateUnitForm = {
   code: string;
@@ -34,4 +37,26 @@ const createUnitFromForm = (data: CreateUnitForm, locale: LocaleCode): Unit => {
   };
 };
 
-export {CreateUnitForm, initializeCreateUnitForm, createUnitFromForm};
+const validateCreateUnitForm = (
+  data: CreateUnitForm,
+  measurementFamily: MeasurementFamily,
+  __: TranslateContextValue,
+): ValidationError[] => {
+  const unitCodes = measurementFamily.units.map((unit: Unit) => unit.code.toLowerCase());
+
+  if (unitCodes.includes(data.code.toLowerCase())) {
+    return [
+      {
+        messageTemplate: 'measurements.validation.unit.code.must_be_unique',
+        parameters: {},
+        message: __('measurements.validation.unit.code.must_be_unique'),
+        propertyPath: 'code',
+        invalidValue: data.code,
+      },
+    ];
+  }
+
+  return [];
+};
+
+export {CreateUnitForm, initializeCreateUnitForm, createUnitFromForm, validateCreateUnitForm};

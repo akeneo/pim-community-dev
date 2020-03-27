@@ -1,7 +1,12 @@
 'use strict';
 
 import '@testing-library/jest-dom/extend-expect';
-import {createUnitFromForm, initializeCreateUnitForm} from 'akeneomeasure/pages/create-unit/form/create-unit-form';
+import {
+  createUnitFromForm,
+  initializeCreateUnitForm,
+  validateCreateUnitForm
+} from 'akeneomeasure/pages/create-unit/form/create-unit-form';
+import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 
 test('It can create an empty form state', () => {
   const state = initializeCreateUnitForm();
@@ -67,4 +72,75 @@ test('It can create a measurement family from a form state with values', () => {
       },
     ],
   });
+});
+
+test('It validate the uniqueness of the unit code', () => {
+  const translator = (id: string) => id;
+
+  const measurementFamily: MeasurementFamily = {
+    code: 'foo',
+    labels: {},
+    standard_unit_code: 'METER',
+    units: [
+      {
+        code: 'METER',
+        labels: {},
+        convert_from_standard: [
+          {
+            operator: 'mul',
+            value: '1',
+          },
+        ],
+        symbol: 'm',
+      },
+    ],
+    is_locked: false,
+  };
+
+  const state = {
+    ...initializeCreateUnitForm(),
+    code: 'SOMETHING_ELSE',
+  };
+
+  expect(validateCreateUnitForm(state, measurementFamily, translator)).toEqual([]);
+});
+
+test('It returns an error if the code already exists', () => {
+  const translator = jest.fn().mockImplementation((id: string) => id);
+
+  const measurementFamily: MeasurementFamily = {
+    code: 'foo',
+    labels: {},
+    standard_unit_code: 'METER',
+    units: [
+      {
+        code: 'METER',
+        labels: {},
+        convert_from_standard: [
+          {
+            operator: 'mul',
+            value: '1',
+          },
+        ],
+        symbol: 'm',
+      },
+    ],
+    is_locked: false,
+  };
+
+  const state = {
+    ...initializeCreateUnitForm(),
+    code: 'METER',
+  };
+
+  expect(validateCreateUnitForm(state, measurementFamily, translator)).toEqual([
+    {
+      propertyPath: 'code',
+      message: 'measurements.validation.unit.code.must_be_unique',
+      messageTemplate: 'measurements.validation.unit.code.must_be_unique',
+      parameters: {},
+      invalidValue: 'METER',
+    },
+  ]);
+  expect(translator).toHaveBeenCalledWith('measurements.validation.unit.code.must_be_unique');
 });
