@@ -19,9 +19,7 @@ export const Charts = () => {
         let cancelled = false;
         fetchResult<Connection[], never>(route).then(result => {
             if (isOk(result) && !cancelled) {
-                const auditableConnections = result.value.filter(
-                    connection => connection.auditable
-                );
+                const auditableConnections = result.value.filter(connection => connection.auditable);
 
                 dispatch(connectionsFetched(auditableConnections));
             }

@@ -25,6 +25,7 @@ const useConnectionSelect = (
         label: translate('akeneo_connectivity.connection.dashboard.connection_selector.all'),
         flowType,
         image: null,
+        auditable: true,
     });
 
     return [connections, selectedConnectionCode, setSelectedConnectionCode];
