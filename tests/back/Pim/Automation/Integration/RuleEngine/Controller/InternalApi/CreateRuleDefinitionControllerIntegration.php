@@ -55,7 +55,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         Assert::assertEqualsCanonicalizing($content, $normalizedRuleDefinition);
     }
 
-    public function test_it_fail_on_existing_code()
+    public function test_it_fails_on_existing_code()
     {
         $normalizedRuleDefinition = [
             'code' => '123',

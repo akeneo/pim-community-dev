@@ -70,7 +70,7 @@ class UpdateRuleDefinitionController
 
         $ruleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier($ruleDefinitionCode);
         if (null === $ruleDefinition) {
-            throw new NotFoundHttpException(sprintf('The rule definition "%s" is not found', $ruleDefinitionCode));
+            throw new NotFoundHttpException(sprintf('The "%s" rule definition is not found', $ruleDefinitionCode));
         }
         $content = json_decode($request->getContent(), true);
         unset($content['code']);

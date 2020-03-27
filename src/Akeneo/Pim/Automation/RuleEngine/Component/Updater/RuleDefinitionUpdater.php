@@ -39,7 +39,7 @@ class RuleDefinitionUpdater implements ObjectUpdaterInterface
                     $ruleDefinition->setContent($data['content']);
                     break;
                 default:
-                    throw new \InvalidArgumentException(sprintf('Unknown property "%s"', $key));
+                    throw new \InvalidArgumentException(sprintf('Unknown "%s" property', $key));
             }
         }
     }
