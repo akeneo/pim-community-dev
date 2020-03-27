@@ -25,6 +25,8 @@ interface RuleDefinitionInterface
      */
     public function getId();
 
+    public function setId(int $id): RuleDefinitionInterface;
+
     /**
      * @return string
      */

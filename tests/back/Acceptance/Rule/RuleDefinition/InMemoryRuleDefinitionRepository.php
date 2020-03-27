@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Assert;
 
 class InMemoryRuleDefinitionRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, RuleDefinitionRepositoryInterface
 {
@@ -31,9 +32,13 @@ class InMemoryRuleDefinitionRepository implements IdentifiableObjectRepositoryIn
 
     public function save($ruleDefinition, array $options = [])
     {
-        if (!$ruleDefinition instanceof RuleDefinitionInterface) {
-            throw new \InvalidArgumentException('The object argument should be a rule definition');
+        Assert::assertInstanceOf(RuleDefinitionInterface::class, $ruleDefinition);
+        /** @var RuleDefinitionInterface $ruleDefinition */
+        if (null === $ruleDefinition->getId()) {
+            $ruleDefinition->setId(mt_rand());
         }
+        $ruleDefinition->setImpactedSubjectCount(null);
+        $ruleDefinition->setRelations(new ArrayCollection());
 
         $this->ruleDefinitions->set($ruleDefinition->getCode(), $ruleDefinition);
     }

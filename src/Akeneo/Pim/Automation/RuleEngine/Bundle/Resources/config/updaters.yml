@@ -1,0 +1,3 @@
+services:
+    akeneo_rule_engine.updater.rule_definition:
+        class: Akeneo\Pim\Automation\RuleEngine\Component\Updater\RuleDefinitionUpdater

@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class RuleDefinitionNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var string[] */
-    protected $supportedFormats = ['array'];
+    protected $supportedFormats = ['array', 'internal_api'];
 
     /**
      * {@inheritdoc}

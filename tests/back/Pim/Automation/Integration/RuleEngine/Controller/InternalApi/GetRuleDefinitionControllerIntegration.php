@@ -8,16 +8,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-class GetRuleControllerIntegration extends ControllerIntegrationTestCase
+class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCase
 {
     private $webClientHelper;
     private $ruleDefinitionRepository;
@@ -49,7 +40,7 @@ class GetRuleControllerIntegration extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_OK,
-            '{"id":null,"code":"123","type":"add","priority":0,"content":{"conditions":[],"actions":["action1","action2"]}}'
+            '{"id":123456789,"code":"123","type":"add","priority":0,"content":{"conditions":[],"actions":["action1","action2"]}}'
         );
     }
 
@@ -69,7 +60,7 @@ class GetRuleControllerIntegration extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_OK,
-            '{"id":null,"code":"234","type":"add","priority":0,"content":{"conditions":["condition1"],"actions":["action3","action4"]}}'
+            '{"id":987654321,"code":"234","type":"add","priority":0,"content":{"conditions":["condition1"],"actions":["action3","action4"]}}'
         );
     }
 
@@ -92,7 +83,6 @@ class GetRuleControllerIntegration extends ControllerIntegrationTestCase
         );
     }
 
-
     private function loadFixtures()
     {
         $ruleDefinitions = [];
@@ -104,6 +94,7 @@ class GetRuleControllerIntegration extends ControllerIntegrationTestCase
                 'actions' => ['action1', 'action2'],
             ])
             ->setType('add')
+            ->setId(123456789)
         ;
 
         $ruleDefinitions[] = (new RuleDefinition())
@@ -113,9 +104,10 @@ class GetRuleControllerIntegration extends ControllerIntegrationTestCase
                 'actions' => ['action3', 'action4'],
             ])
             ->setType('add')
+            ->setId(987654321)
         ;
 
-        foreach($ruleDefinitions as $ruleDefinition) {
+        foreach ($ruleDefinitions as $ruleDefinition) {
             $this->ruleDefinitionRepository->save($ruleDefinition);
         }
     }

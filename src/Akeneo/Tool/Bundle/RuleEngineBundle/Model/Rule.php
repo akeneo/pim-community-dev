@@ -109,6 +109,13 @@ class Rule implements RuleInterface
         return $this->definition->getId();
     }
 
+    public function setId(int $id): RuleDefinitionInterface
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     /**
      * {@inheritdoc}
      */

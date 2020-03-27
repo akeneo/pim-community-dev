@@ -29,10 +29,22 @@ pimee_catalog_rule_edit:
     path: /configuration/rules/edit/{code}
     requirements:
         code: '[a-zA-Z0-9_]+'
-        
+
 pimee_enrich_rule_definition_get:
     path: /rest/rule_definition/{ruleCode}
-    defaults: { _controller: pimee_enrich.controller.get_rule_definition }
+    defaults: { _controller: pimee_enrich.controller.rule_definition.get }
     requirements:
         ruleCode: '[a-z0-9_]+'
     methods: [GET]
+
+pimee_enrich_rule_definition_create:
+    path: /rest/rule_definition/
+    defaults: { _controller: pimee_enrich.controller.rule_definition.create }
+    methods: [POST]
+
+pimee_enrich_rule_definition_update:
+    path: /rest/rule_definition/{ruleDefinitionCode}
+    defaults: { _controller: pimee_enrich.controller.rule_definition.update }
+    requirements:
+        ruleDefinitionCode: '[a-z0-9_]+'
+    methods: [PUT]

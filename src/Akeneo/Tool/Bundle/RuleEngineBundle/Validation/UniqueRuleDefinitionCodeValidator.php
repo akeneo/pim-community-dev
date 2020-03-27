@@ -45,7 +45,7 @@ final class UniqueRuleDefinitionCodeValidator extends ConstraintValidator
 
         if ($existingRuleDefinition->getId() !== $ruleDefinition->getId()) {
             $this->context->buildViolation($constraint->message)
-                ->atPath($constraint->errorPath)
+                ->atPath('code')
                 ->addViolation();
         }
     }

@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition\InMemoryRuleDefinitionRepository;
 use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\ExpectationFailedException;
 
 class InMemoryRuleDefinitionRepositorySpec extends ObjectBehavior
 {
@@ -63,7 +64,7 @@ class InMemoryRuleDefinitionRepositorySpec extends ObjectBehavior
     function it_saves_only_rule_definitions()
     {
         $this
-            ->shouldThrow(\InvalidArgumentException::class)
+            ->shouldThrow(ExpectationFailedException::class)
             ->during('save', ['a_thing']);
     }
 
