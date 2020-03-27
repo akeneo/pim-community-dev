@@ -213,7 +213,7 @@ const OperationCollection = ({
                   </>
                 )}
               </InputContainer>
-              {1 < operations.length && (
+              {!readOnly && 1 < operations.length && (
                 <RemoveOperationButton
                   title={__('pim_common.remove')}
                   onClick={() => {
