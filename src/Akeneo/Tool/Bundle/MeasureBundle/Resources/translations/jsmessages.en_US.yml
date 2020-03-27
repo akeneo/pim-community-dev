@@ -15,6 +15,7 @@ measurements:
         placeholder: Search on label or code
     family:
         result_count: "{0}0 Measurement families|{1}1 Measurement family|]1, Inf[{{ itemsCount }} Measurement families"
+        not_found: Measurement family not found
         no_data:
             title: Sorry there is no measurement family!
             link: Click here to add one
@@ -28,7 +29,7 @@ measurements:
             properties: Properties
         delete:
             button: Delete measurement family
-            confirm: Are you sure you want to delete this measurement family?
+            confirm: Are you sure you want to delete this measurement family with all its units?
             flash:
                 success: Measurement family successfully deleted.
                 error: Sorry, an error occured while deleting the measurement family.

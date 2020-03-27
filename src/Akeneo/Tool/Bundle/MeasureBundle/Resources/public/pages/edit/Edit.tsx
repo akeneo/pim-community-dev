@@ -1,9 +1,9 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {useHistory, useParams} from 'react-router-dom';
+import {useHistory, useParams, Prompt} from 'react-router-dom';
 import styled from 'styled-components';
 import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-family';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
-import {UnitTab} from 'akeneomeasure/pages/edit/UnitTab';
+import {UnitTab} from 'akeneomeasure/pages/edit/unit-tab';
 import {PropertyTab} from 'akeneomeasure/pages/edit/PropertyTab';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
@@ -34,6 +34,7 @@ import {
 } from 'akeneomeasure/hooks/use-measurement-family-remover';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {SecurityContext} from 'akeneomeasure/context/security-context';
+import {ErrorBlock} from 'akeneomeasure/shared/components/ErrorBlock';
 
 enum Tab {
   Units = 'units',
@@ -93,7 +94,7 @@ const Edit = () => {
   const {measurementFamilyCode} = useParams() as {measurementFamilyCode: string};
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.Units);
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
-  const [selectedUnitCode, selectUnitCode] = useState<UnitCode|null>(null);
+  const [selectedUnitCode, selectUnitCode] = useState<UnitCode | null>(null);
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const notify = useContext(NotifyContext);
   const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useToggleState(false);
@@ -166,21 +167,30 @@ const Edit = () => {
     }
   }, [measurementFamilyCode, removeMeasurementFamily, history, notify, __]);
 
-  const handleNewUnit = useCallback((unit: Unit) => {
-    if (null === measurementFamily) {
-      return;
-    }
+  const handleNewUnit = useCallback(
+    (unit: Unit) => {
+      if (null === measurementFamily) {
+        return;
+      }
 
-    setMeasurementFamily(addUnit(measurementFamily, unit));
-    selectUnitCode(unit.code);
-  }, [
-    setMeasurementFamily,
-    measurementFamily,
-    selectUnitCode,
-  ]);
+      setMeasurementFamily(addUnit(measurementFamily, unit));
+      selectUnitCode(unit.code);
+    },
+    [setMeasurementFamily, measurementFamily, selectUnitCode]
+  );
 
   if (undefined === measurementFamilyCode || null === measurementFamily) {
     return null;
+  }
+
+  if (undefined === measurementFamily) {
+    return (
+      <ErrorBlock
+        title={__('error.exception', {status_code: '404'})}
+        message={__('measurements.family.not_found')}
+        code={404}
+      />
+    );
   }
 
   const buttons = [];
@@ -188,7 +198,7 @@ const Edit = () => {
     buttons.push(
       <SecondaryActionsDropdownButton title={__('pim_common.other_actions')} key={0}>
         <DropdownLink onClick={openConfirmDeleteMeasurementFamilyModal}>
-          {__('measurements.family.delete')}
+          {__('measurements.family.delete.button')}
         </DropdownLink>
       </SecondaryActionsDropdownButton>
     );
@@ -211,6 +221,7 @@ const Edit = () => {
 
   return (
     <>
+      <Prompt when={isModified} message={() => __('pim_ui.flash.unsaved_changes')} />
       {isAddUnitModalOpen && (
         <CreateUnit measurementFamily={measurementFamily} onClose={closeAddUnitModal} onNewUnit={handleNewUnit} />
       )}

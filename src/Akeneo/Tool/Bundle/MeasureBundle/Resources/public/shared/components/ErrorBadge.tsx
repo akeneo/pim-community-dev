@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const ErrorBadge = styled.div`
+const ErrorBadge = styled.div.attrs(() => ({role: 'error-badge'}))`
   width: 10px;
   height: 10px;
   background-color: ${props => props.theme.color.red100};
