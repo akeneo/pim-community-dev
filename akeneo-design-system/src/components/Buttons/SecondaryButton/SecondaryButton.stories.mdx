@@ -1,0 +1,57 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import { action } from "@storybook/addon-actions";
+import { SecondaryButton } from "./SecondaryButton.tsx";
+import { CoreButton } from "../CoreButton";
+
+
+<Meta title="SecondaryButton" component={CoreButton} />
+
+# Secondary button
+
+There is only one custom prop, the other props come from "React.ButtonHTMLAttributes HTMLButtonElement"
+
+<Props of={CoreButton} />
+
+## Default
+
+This is the default button
+
+<Preview>
+  <Story name="Secondary">
+    <SecondaryButton onClick={action("clicked")}>
+      Click !
+    </SecondaryButton>
+  </Story>
+</Preview>
+
+
+## Small Secondary button
+
+sizeMode | small
+
+  <Story name="Small secondary">
+    <SecondaryButton sizeMode='small' onClick={action("clicked")}>
+      Click !
+    </SecondaryButton>
+  </Story>
+
+## Secondary button disabled
+
+disabled | true
+
+  <Story name="Secondary disabled">
+    <SecondaryButton disabled onClick={action("clicked")}>
+      Click !
+    </SecondaryButton>
+  </Story>
+
+## Small Secondary button disabled
+
+disabled | true
+sizeMode | small
+
+  <Story name="Small Secondary disabled">
+    <SecondaryButton disabled onClick={action("clicked")} sizeMode='small'>
+      Click !
+    </SecondaryButton>
+  </Story>
