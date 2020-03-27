@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { CoreButton } from '../CoreButton'
-import * as theme from '../../../theme/mainTheme';
+import * as theme from '../../../theme/akeneoTheme';
 
 const PrimaryButton = styled(CoreButton)`
     color: ${theme.color.white};

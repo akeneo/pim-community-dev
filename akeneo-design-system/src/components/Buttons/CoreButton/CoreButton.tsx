@@ -1,7 +1,7 @@
 import React, { ReactNode, Ref } from 'react';
 import styled from 'styled-components'
 
-import { fontSize } from '../../../theme/mainTheme';
+import { fontSize } from '../../../theme/akeneoTheme';
 
 type sizeMode = 'small' | 'large';
 
