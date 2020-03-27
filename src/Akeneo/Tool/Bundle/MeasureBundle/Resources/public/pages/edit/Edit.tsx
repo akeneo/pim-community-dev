@@ -94,7 +94,7 @@ const Edit = () => {
   const history = useHistory();
   const locale = useContext(UserContext)('uiLocale');
   const isGranted = useContext(SecurityContext);
-  const config = useContext(ConfigContext) as ConfigContextValue;
+  const config = useContext(ConfigContext);
   const {measurementFamilyCode} = useParams() as {measurementFamilyCode: string};
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.Units);
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
