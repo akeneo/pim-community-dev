@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ViolationNormalizer;
+use Akeneo\Pim\Automation\RuleEngine\Component\Updater\RuleDefinitionUpdaterInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +30,7 @@ class UpdateRuleDefinitionController
     /** @var RuleDefinitionRepositoryInterface */
     private $ruleDefinitionRepository;
 
-    /** @var ObjectUpdaterInterface */
+    /** @var RuleDefinitionUpdaterInterface */
     private $ruleDefinitionUpdater;
 
     /** @var RuleDefinitionSaver */
@@ -48,7 +47,7 @@ class UpdateRuleDefinitionController
 
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
-        ObjectUpdaterInterface $ruleDefinitionUpdater,
+        RuleDefinitionUpdaterInterface $ruleDefinitionUpdater,
         RuleDefinitionSaver $ruleDefinitionSaver,
         RuleDefinitionNormalizer $ruleDefinitionNormalizer,
         NormalizerInterface $normalizer,

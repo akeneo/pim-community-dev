@@ -14,16 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Updater;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Webmozart\Assert\Assert;
 
-class RuleDefinitionUpdater implements ObjectUpdaterInterface
+class RuleDefinitionUpdater implements RuleDefinitionUpdaterInterface
 {
-    public function update($ruleDefinition, array $data, array $options = []): void
+    public function update(RuleDefinitionInterface $ruleDefinition, array $data): void
     {
-        Assert::isInstanceOf($ruleDefinition, RuleDefinitionInterface::class);
-
-        /** @var $ruleDefinition RuleDefinitionInterface */
         foreach ($data as $key => $value) {
             switch ($key) {
                 case 'code':
