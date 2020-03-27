@@ -1,21 +1,26 @@
-import styled from 'styled-components'
-import { CoreButton } from '../CoreButton'
+import styled from 'styled-components';
+import { CoreButton } from '../CoreButton';
+import * as theme from '../../../theme/akeneoTheme';
 
 const SecondaryButton = styled(CoreButton)`
-    color: white;
-    background-color: #5992c7;
+    color: ${theme.color.white};
+    border-color: ${theme.color.blue100};
+    background-color: ${theme.color.blue100};
     &:hover {
-        background-color: #47749f;
+        border-color: ${theme.color.blue120};
+        background-color: ${theme.color.blue120};
     }
     &:active {
-        background-color: #355777;
+        border-color: ${theme.color.blue140};
+        background-color: ${theme.color.blue140};
     }
     &:focus {
-        border-color: #5992c7;
+        border-color: ${theme.color.blue100};
     }
     &:disabled {
-        background-color: #bdd3e9;
+        border-color: ${theme.color.blue40};
+        background-color: ${theme.color.blue40};
     }
-`
+`;
 
-export { SecondaryButton }
+export { SecondaryButton };

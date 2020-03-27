@@ -1,27 +1,25 @@
 import styled from 'styled-components'
-
 import { CoreButton } from '../CoreButton'
-
+import * as theme from '../../../theme/akeneoTheme';
 
 const PrimaryButton = styled(CoreButton)`
-    color: white;
-    border-color: #67B373;
-    background-color: #67B373;
+    color: ${theme.color.white};
+    border-color: ${theme.color.green100};
+    background-color: ${theme.color.green100};
     &:hover {
-        border-color: #528f5c;
-        background-color: #528f5c;
+        border-color: ${theme.color.green120};
+        background-color: ${theme.color.green120};
     }
     &:active {
-        border-color: #3d6b45;
-        background-color: #3d6b45;
+        border-color: ${theme.color.green140};
+        background-color: ${theme.color.green140};
     }
     &:focus {
-        border-color: blue;
+        border-color: ${theme.color.green100};
     }
     &:disabled {
-        border-color: #c2e1c7;
-        background-color: #c2e1c7;
+        border-color: ${theme.color.green40};
+        background-color: ${theme.color.green40};
     }
 `
-
 export { PrimaryButton }
