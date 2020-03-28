@@ -139,9 +139,6 @@ akeneo_connectivity.connection:
         during_the_last_seven_days: In den letzten sieben Tagen
         today: Heute
     no_connection:
-      title: Noch keine Quellverbindung deklariert.
-      message_with_permission:
-        link: Hier einen erstellen!
       message_without_permission:
         message: Bitten Sie Ihren Administrator, einen zu erstellen.
         link: Erfahren Sie hier mehr über Verbindungen...

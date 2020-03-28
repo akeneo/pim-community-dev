@@ -139,9 +139,6 @@ akeneo_connectivity.connection:
         during_the_last_seven_days: Au cours des sept derniers jours
         today: Aujourd'hui
     no_connection:
-      title: Il y a 0 connexion pour le moment.
-      message_with_permission:
-        link: Créez-en une nouvelle juste ici !
       message_without_permission:
         message: Demandez à votre administrateur d'en créer une.
         link: En savoir plus sur les connexions ici...
