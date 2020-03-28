@@ -102,7 +102,7 @@ alert:
     not_available: 해당 웹 브라우저는 sessionStorage와 호환되지 않는 것 같습니다. 관리자에게 문의하십시오.
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: '경고: 저장되지 않은 데이터는 손실됩니다. 이 새로운 옵션의 수정을 취소하시겠습니까?'
+    cancel_edition_on_new_option_text: '경고: 저장되지 않은 데이터는 손실됩니다. 이 새로운 옵션에 대한 수정을 취소하시겠습니까?'
     cancel_edition_on_new_option_title: 수정 취소
 label:
   attribute_option:
@@ -193,7 +193,7 @@ pim_enrich:
         update_successful: 제품이 업데이트되었습니다.
         update_failed: 제품을 업데이트할 수 없습니다.
         field_not_ready: "이 제품은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
-        already_in_upload: 파일이 이미 로케일 "{{ locale }}" 및 범위 "{{ scope }}"에서 이 특성에 대해 업로드되어 있습니다.
+        already_in_upload: 이미 로케일 "{{ locale }}" 및 범위 "{{ scope }}"에서 이 특성에 대한 파일이 업로드되었습니다.
       error:
         upload: 파일을 업로드하는 중에 오류가 발생했습니다
       meta:
@@ -227,7 +227,7 @@ pim_enrich:
       optional_attribute:
         remove: 이 특성 제거
       locale_specific_attribute:
-        unavailable: 이 로케일 관련 필드는 이 로케일에서 사용할 수 없습니다
+        unavailable: 이 로케일 관련 필드는 해당 로케일에서 사용할 수 없습니다
       localizable:
         channel_locale_unavailable: 이 지역화 가능 필드는 로케일 '{{ locale }}' 및 채널 '{{ channel }}'에 사용할 수 없습니다
       media:
@@ -354,7 +354,7 @@ pim_enrich:
         level_1.label: 변형 특성 레벨 1
         level_2.label: 변형 특성 레벨 2
         add_variant: 변형 추가
-        create_label: 새 패밀리 변형 생성
+        create_label: 새 패밀리 변형 만들기
         create_description: 패밀리 변형에서는 변형이 포함된 제품의 구조를 정의할 수 있습니다. 관리되는 변형 레벨의 수, 각 레벨의 변형 축으로 사용되는 특성을 선택하고, 특성이 분산되는 방법을 정의하십시오.
         update_description: 선택한 변형 레벨로 특성을 끌어다 놓아 해당 특성이 변형 레벨에서 관리되도록 하십시오
         update_translation: 패밀리 변형 레이블 번역
@@ -529,7 +529,7 @@ pim_enrich:
         modal:
           title: 제품 패밀리 변경
           merge_attributes: 현재 특성은 새 패밀리의 특성과 병합됩니다.
-          keep_attributes: 제거할 특성이 없습니다.
+          keep_attributes: 제거되는 특성이 없습니다.
           change_family_to: '패밀리를 다음으로 변경:'
           empty_selection: 패밀리 선택
       flash:
@@ -888,7 +888,7 @@ pim_enrich:
           help: 트리의 제품 카테고리(위의 채널에 의해 정의됨)를 사용하여 내보낼 제품 선택 
         identifier:
           title: 식별자
-          help: 내보내려는 제품 식별자를 쉼표, 공백 또는 줄 바꿈으로 구분하여 사용
+          help: 제품 식별자를 사용하여 쉼표, 공백 또는 줄 바꿈으로 구분하여 내보내기
         metric:
           operators:
             "=": 같음
@@ -1055,7 +1055,7 @@ pim_enrich:
         add_attribute_value:
           label: 특성 값 추가
           label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>의 특성 값 추가|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>의 특성 값 추가"
-          description: 제품 패밀리에 속하는 다중 값 특성만 {{ locale }} 로케일 및 {{ scope }} 채널에 대한 다음 데이터와 함께 편집됩니다. 특성 값이 추가되고, 이전 값은 유지됩니다
+          description: 제품 패밀리에 속하는 다중 값 특성만 {{ locale }} 로케일 및 {{ scope }} 채널에 대한 다음 데이터를 사용하여 편집됩니다. 특성 값이 추가되고, 이전 값은 유지됩니다
         change_family:
           label: 패밀리 변경
           label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>의 패밀리 변경|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>의 패밀리 변경"
@@ -1084,8 +1084,8 @@ pim_enrich:
           description: 선택된 제품 모델은 제품을 모으고 공통 속성 보강을 허용합니다
         associate_to_product_and_product_model:
           label: 연결
-          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>을 제품 또는 제품 모델에 추가|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>을 제품 또는 제품 모델에 추가"
-          description: 그리드에서 선택된 제품은 선택된 연결 유형에 대한 선택된 제품 및 제품 모델에 연결됩니다
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>을 제품 또는 제품 모델에 연결|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>을 제품 또는 제품 모델에 연결"
+          description: 그리드에서 선택된 제품은 선택된 연결 유형의 선택된 제품 및 제품 모델에 연결됩니다
           validate: 다음 단계로 이동하기 전에 연결을 추가하십시오
         change_parent_product_model:
           label: 상위 제품 모델 변경
@@ -1109,7 +1109,7 @@ pim_enrich:
       operation:
         set_requirements:
           label: 특성 요구 사항 설정
-          description: 다음 특성 요구 사항은 선택된 패밀리에 적용됩니다.
+          description: 선택된 패밀리에 다음 특성 요구 사항이 적용됩니다.
           label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 패밀리</span>의 특성 요구 사항 설정|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 패밀리</span>의 특성 요구 사항 설정"
 pim_enrich.error:
   exception.title: 죄송합니다! {{ status_code }} 오류가 발생했습니다...
@@ -1489,7 +1489,7 @@ catalog_volume:
       hint: 우수한 카탈로그 구조가 매우 중요하며, 효율적인 보강을 위한 조건임을 알고 계실 수 있습니다. 다음은 카탈로그 구조를 모니터링하기 위한 다양한 축입니다.
       title: 카탈로그 구조와 관련된 축
     variant_modelling:
-      hint: 변형 모델을 사용할 경우, 해당 볼륨 모터링에 도움이 되는 축은 다음과 같습니다.
+      hint: 변형 모델을 사용할 경우, 해당 볼륨 모니터링에 유용한 축은 다음과 같습니다.
       title: 변형 모델링 관련 축
   axis:
     count_products: 제품

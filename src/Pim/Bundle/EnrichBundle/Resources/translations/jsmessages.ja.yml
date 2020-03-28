@@ -16,7 +16,7 @@ confirmation:
     import_profile: このインポートのプロファイルを削除してもよろしいですか？
     export_profile: このエクスポートプロファイルを削除してもよろしいですか？
     user: このユーザーを削除してもよろしいですか？
-    role: このロールを削除してもよろしいですか？
+    role: この権限を削除してもよろしいですか？
     job_instance: 本当にこのジョブインスタンスを削除しますか？
     api_connection: この API接続を解除しますか？　この接続によるAPI 呼び出しが全てエラーになります
     products_and_product_models: 選択した商品および商品モデルを削除してもよろしいですか？ 　商品モデル下位も全て削除されます
@@ -68,7 +68,7 @@ flash:
   user:
     removed: ユーザーを正常に削除しました
   role:
-    removed: ロールを正常に削除しました
+    removed: 権限を正常に削除しました
   job_instance:
     removed: ジョブインスタンスを正常に削除しました
   api_connection:
@@ -89,7 +89,7 @@ error:
     import profile: このインポートプロファイルは削除できません
     export profile: このエクスポートプロファイルは削除できません
     user: このユーザーは削除できません
-    role: このロールは削除できません
+    role: この権限は削除できません
     attribute_option: 属性オプションの削除中にエラーが発生しました
   saving:
     attribute_option: 属性オプションを保存できません
@@ -250,7 +250,7 @@ pim_enrich:
       create_popin:
         type: 商品モデル
         title: 商品モデルを作成
-        content: "商品モデルは商品のバリエーションを集め、共通の性質を抽出することを容易にします\n"
+        content: "商品モデルは商品のバリエーションを集積したものであり、共通の性質を簡単に抽出できるようになります。\n"
       info:
         create_successful: 商品モデルを正常に作成しました
         update_successful: 商品モデルが正常に更新されました。商品バリエーションの完全性が再計算されます
@@ -423,8 +423,8 @@ pim_enrich:
         pim_catalog_boolean: "Yes/No"
         pim_catalog_date: 日付
         pim_catalog_metric: メトリック
-        pim_reference_data_simpleselect: 参照データの単一選択
-        pim_reference_data_multiselect: 参照データの複数選択
+        pim_reference_data_simpleselect: 単一選択データの参照
+        pim_reference_data_multiselect: 複数選択データの参照
       validation_rule:
         email: E-mail
         regexp: 正規表現
@@ -761,7 +761,7 @@ pim_enrich:
           title: プロパティ
           section:
             common: パラメータ全般
-            type_specific: タイプ固有のパラメーター
+            type_specific: タイプ固有のパラメータ
             validation: パラメータによる値チェック
           label:
             allowed_extensions: 利用できる拡張子
@@ -1000,8 +1000,8 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }} ユーザー|] 1, Inf [{{ count }} ユーザー"
       create_btn: ユーザーを作成
     user_role:
-      title: "] -Inf, 1] {{ count }}ロール|] 1, Inf [{{ count }} ロール"
-      create_btn: ロールを作成
+      title: "] -Inf, 1] {{ count }}権限|] 1, Inf [{{ count }} 権限"
+      create_btn: 権限を作成
     user_group:
       title: "] -Inf, 1] {{ count }} グループ|] 1, Inf [{{ count }} グループ"
       create_btn: グループを作成
@@ -1486,7 +1486,7 @@ catalog_volume:
       hint: 'PIMの商品値の合計数が次の軸に直接リンクしていることをご存知でしょうか？<br/>詳細については<a href="{{link}}" target="_blank">この記事を参照してください</a>。'
       title: 商品値の数値を活用する軸
     catalog_structure:
-      hint: 良いカタログ構造が大変重要であり、効率的な強化の条件です。 以下に、カタログ構造をモニターするさまざまな軸を示します
+      hint: カタログ構造が良好であることが大変重要であり、効率的な強化の条件です。 以下に、カタログ構造をモニターするさまざまな軸を示します
       title: カタログ構造に関連する軸
     variant_modelling:
       hint: バリアントモデリングを使用している場合は、こちらの軸を利用するとボリューム監視に役立ちます

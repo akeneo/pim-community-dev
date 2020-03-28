@@ -12,7 +12,7 @@ pim_connector:
           confirm: 確認
         label: "{0} すべての製品 |{1} 1つのカテゴリが選択済 |]1、Inf [{{ count }} カテゴリが選択済"
         edit: 編集
-        title: カテゴリ選択
+        title: カテゴリを選択
     locales:
       validation:
         not_blank: ロケールは 1 つ選択する必要があります。エクスポートするロケールを選択してください

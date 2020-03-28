@@ -50,6 +50,7 @@ pim_analytics:
     mongodb_version: MongoDB 버젼
     server_version: 서버 버전
     php_extensions: PHP 확장
+    email_domains: 연결된 이메일 도메인
   acl:
     system_info:
       index: 시스템 정보
