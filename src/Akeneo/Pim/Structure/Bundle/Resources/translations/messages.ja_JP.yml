@@ -1,22 +1,26 @@
 pim_enrich:
+  #Attribute
   attribute:
     tab:
       parameter.title: パラメータ
       value.title: 値
       history.title: 履歴
+  #Family
   family:
     info:
-      cant_remove_attribute_used_as_axis: ファミリーバリアントで使われるバリアント軸である属性は削除できません
+      cant_remove_attribute_used_as_axis: ファミリーバリエーションでバリエーション軸として使用中の属性は削除できません
+  #Group type
   group_type:
     tab:
       property.title: プロパティ
+  #Mass edit operations
   mass_edit_action:
     family:
       page_title: ファミリー
-      page_subtitle: 一括編集(1 件)|一括編集 (%count% 件)
+      page_subtitle: 一括編集(ファミリー1 件)|一括編集 (ファミリー%count% 件)
       title: 操作を選択
-      subtitle: 選択したファミリーで実行したい操作を選択してください | 選択した %count% 件のファミリーで実行したい操作を選択してください
-      confirm: 更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。
+      subtitle: 指定したファミリーに対して実行したい操作を選択してください|指定した %count% 件のファミリーに対して実行したい操作を選択してください
+      confirm: 更新しようとしている以下のファミリーの内容について、ご確認ください。|更新しようとしている以下の %count% 件のファミリーの内容について、ご確認ください。
       steps:
         first: ファミリーを選択
         second: 操作を選択
@@ -28,8 +32,8 @@ pim_enrich_attribute_form:
   reference_data_name: 参照データ名
   scopable: チャンネルごとの値
   localizable: ロケールごとの値
-  unique: ユニーク値
+  unique: 固有値
   availableLocales: 使用可能なロケール
   locale_specific: ロケール固有
   group: 属性グループ
-  useableAsGridFilter: グリッドで使用可能
+  useableAsGridFilter: 一覧表で使用可能
