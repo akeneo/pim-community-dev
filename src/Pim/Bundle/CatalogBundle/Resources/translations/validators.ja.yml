@@ -32,9 +32,9 @@ product_model.code.unique.message: 同じコードが、既に別の商品モデ
 product_model.family_variant.not_blank.message: 商品モデルのファミリーバリアントは空にしないでください
 pim_catalog:
   constraint:
-    can_have_family_variant_empty_axis_value: 'この属性%attribute%は当該エンティティの主軸に定義済みであるため空にできません'
+    can_have_family_variant_empty_axis_value: 'この属性「%attribute%」は当該エンティティの主軸に定義済みであるため空にできません'
     product_model_with_same_axis_value_already_exists: '商品モデル 「%sibling_with_same_value%」がこの値であるため、商品モデル 「%validated_entity%」 の属性軸 「%attributes%」に値「%values%」を設定できません'
-    variant_product_with_same_axis_value_already_exists: '商品バリアント「%sibling_with_same_value%」がこの値であるため、商品バリアント「%validated_entity%」 の属性軸 「%attributes%」 に値「%values%」を設定できません'
+    variant_product_with_same_axis_value_already_exists: 'バリエーション商品「%sibling_with_same_value%」がこの値であるため、バリエーション商品「%validated_entity%」 の属性軸 「%attributes%」 に値「%values%」を設定できません'
     can_have_family_variant_unexpected_attribute: '属性セットにないため、このエンティティにプロパティ「%attribute%」をセットできません'
     cannot_have_product_model_as_parent: '商品モデル「%product_model%」は商品モデル「%parent_product_model%」を上位に設定できません'
     cannot_have_parent: '商品モデル「%product_model%」は上位を持つことができません'

@@ -234,7 +234,7 @@ batch_jobs:
   xlsx_channel_import:
     label: チャンネルをXLSX形式でインポート
     validation.label: ファイルの検証
-    import.label: 地域のインポート
+    import.label: チャンネルのインポート
   xlsx_locale_import:
     label: ロケールをXLSX形式でインポート
     validation.label: ファイルの検証

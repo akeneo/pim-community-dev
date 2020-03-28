@@ -17,7 +17,7 @@ pim_api:
       edit: 패밀리 생성 및 업데이트
       list: 패밀리 나열
     family_variant:
-      edit: 패밀리 변형 생성 및 업데이트
+      edit: 패밀리 변형 만들기 및 업데이트
       list: 패밀리 변형 나열
     channel:
       edit: 채널 생성 및 업데이트

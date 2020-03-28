@@ -227,7 +227,7 @@ pim_enrich:
     group_type:
       index: グループタイプを一覧表示
       create: グループタイプを作成
-      edit: グループタイプを作成
+      edit: グループタイプを編集
       remove: グループタイプを削除
     association_type:
       index: 関連タイプを一覧表示
@@ -506,7 +506,7 @@ Parameters: パラメータ
 System: システム
 Values: 値
 General parameters: パラメータ全般
-Backend parameters: バックエンドのパラメーター
+Backend parameters: バックエンドのパラメータ
 Label: ラベル
 Default label: 既定ラベル
 Default value: 既定値
@@ -646,8 +646,8 @@ pim_catalog_image: イメージ
 pim_catalog_boolean: "Yes/No"
 pim_catalog_date: 日付
 pim_catalog_metric: メトリック
-pim_reference_data_simpleselect: 参照データの単一選択
-pim_reference_data_multiselect: 参照データの複数選択
+pim_reference_data_simpleselect: 単一選択データの参照
+pim_reference_data_multiselect: 複数選択データの参照
 #Locales
 Activated: アクティベート
 Disable: 無効
