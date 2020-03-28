@@ -2,13 +2,14 @@ pim_user:
   user:
     title: ユーザー
     fields:
-      name_prefix: 尊称
-      email: 電子メール
+      name_prefix: 敬称
+      email: E-mail
       username: ユーザー名
       first_name: 名
       middle_name: ミドルネーム
       last_name: 姓
-      name_suffix: 尊称
+      name_suffix: 敬称
+      phone: 電話
       date_of_birth: 生年月日
       avatar: アバター
       timezone: タイムゾーン
@@ -16,9 +17,9 @@ pim_user:
       groups: グループ
       password: パスワード
       password_again: パスワード再入力
-      product_grid_filters: 製品グリッドフィルター
+      product_grid_filters: 商品グリッドフィルター
       catalog_locale: カタログのロケール
-      catalog_scope: カタログのスコープ
+      catalog_scope: カタログのフィルタ
       default_tree: 既定のツリー
       current_password: 現在のパスワード
       new_password: 新しいパスワード
@@ -26,50 +27,55 @@ pim_user:
       default_grid_view:
         none: なし
       default_product_grid_view:
-        label: デフォルト製品のグリッドビュー
+        label: デフォルト商品の一覧表
       ui_locale: UI ロケール
       last_logged_in: 最終ログイン
       login_count: ログイン回数
       user_salt: ユーザソルト
-      created: 作成日時
-      updated: 更新日時
+      created: '作成:'
+      updated: '更新:'
       status: ステータス
       capabilities: 機能
-      has_role: ロールあり
+      has_role: 権限あり
       has_group: グループあり
-      active: アクティブ
-      inactive: 非アクティブ
+      active: 有効
+      inactive: 無効
     tabs:
       general:
         title: 全般
+        basic_information: 基本情報
         contact_information: 連絡先情報
       additional:
         title: 追加
+      additional_data:
+        title: 追加データ
       interfaces:
         title: インタフェース
-      group_and_role.title: グループとロール
+      group_and_role.title: グループと権限
       password.title: パスワード
       business_unit.title: 部署
       email_synchronization.title: メール同期設定
-    removed_user: 削除されたユーザ
+    removed_user: 削除済みのユーザー
     login:
-      username_or_email: ユーザー名またはメールアドレス
+      username_or_email: ユーザー名またはEmail
       remember_me: ログイン状態を維持する
       password_forgotten: パスワードをお忘れですか?
       log_in: ログイン
-      forgot_password: パスワードを忘れた
+      forgot_password: パスワードのリセット
       request: リクエスト
+      password_reset: パスワードリセット
       reset: リセット
+      password_reset_email_sent: メールがユーザーに送信されました。パスワードをリセットするためのリンクが含まれています。
       homepage: ホームページに移動
   group:
     tab:
       general.title: 全般
       users.title: ユーザー
   roles:
-    title: ロール
+    title: 権限
     tab:
       general: 全般
-      action: パーミッション
+      action: 許可
       users: ユーザー
   controller:
     group:
@@ -77,7 +83,7 @@ pim_user:
         saved: "グループが保存されました"
     role:
       message:
-        saved: "ロールを保存しました"
+        saved: "権限を保存しました"
     user:
       message:
         saved: "ユーザーを保存しました"
@@ -92,13 +98,13 @@ pim_datagrid:
       name: "名前"
 confirmation:
   remove:
-    role: このロールを削除してもよろしいですか？
+    role: この権限を削除してもよろしいですか？
     user: このユーザーを削除してもよろしいですか?
 flash:
   role:
-    removed: ロールを削除しました
+    removed: 権限を正常に削除しました
   user:
-    removed: ユーザーを削除しました
+    removed: ユーザーを正常に削除しました
 oro_security:
   acl_group:
     user: ユーザー
@@ -106,22 +112,23 @@ oro_security:
     group: ユーザーグループ
   acl:
     user:
-      view: ユーザー一覧
+      view: ユーザーを一覧表示
       create: ユーザーを作成
       edit: ユーザーを編集
       delete: ユーザーを削除
     role:
-      view: 権限一覧
+      view: 権限を一覧表示
       create: 権限を作成
       edit: 権限を編集
       delete: 権限を削除
     group:
-      view: ユーザーグループ一覧
+      view: ユーザーグループを一覧表示
       create: ユーザーグループを作成
       edit: ユーザーグループを編集
       delete: ユーザーグループを削除
+#Security
 (default): エンティティの既定のアクセス許可
-VIEW: ビュー
+VIEW: 表示
 CREATE: 作成
 EDIT: 編集
 DELETE: 削除

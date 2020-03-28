@@ -2,46 +2,75 @@ pim_title:
   pim_user_index: ユーザー
   pim_user_role_index: 権限
   pim_user_group_index: ユーザーグループ
-  oro_config_configuration_system: 設定
+  oro_config_configuration_system: 構成
+  pim_user_edit: 'ユーザ {{ username }} | 編集'
+  pim_user_create: 'ユーザー | 作成'
+  pim_user_role_update: '権限 {{ role }} | 編集'
+  pim_user_role_create: '権限 | 作成'
   pim_user_security_login: ログイン
-  pim_user_reset_request: パスワードを忘れた
+  pim_user_reset_reset: パスワードリセット
+  pim_user_reset_request: パスワードのリセット
+  pim_user_reset_check_email: パスワードリセット | Email確認
+  pim_user_group_create: 'グループ | 作成'
+  pim_user_group_update: 'グループ {{ group }} | 編集'
 confirmation:
   remove:
     user: このユーザーを削除してもよろしいですか?
-    group: このグループを削除してもよろしいですか。
+    group: 本当にこのグループを削除してもよろしいですか？
 pim_enrich:
   entity:
     user:
+      flash:
+        delete:
+          fail: ユーザを削除できません
+          success: ユーザーが削除されました
       module:
         delete:
           confirm: このユーザーを削除してもよろしいですか?
 pim_user_management:
   entity:
     user:
+      label: ユーザー
+      flash:
+        update:
+          success: ユーザを正常に更新しました
+          fail: ユーザを更新できませんでした
+          fields_not_ready: "このユーザーは現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
+        create:
+          success: ユーザーは正常に作成されました。
+      page_title:
+        index: "]-Inf, 1] {{ count }} ユーザー |]1, Inf [{{ count }} ユーザー"
       properties:
         username: ユーザー名
-        name_prefix: 尊称
+        name_prefix: 敬称
         first_name: 名
         middle_name: ミドルネーム
         last_name: 姓
-        name_suffix: 尊称
+        name_suffix: 敬称
+        phone: 電話
         avatar: アバター
-        email: 電子メール
+        email: Email
         catalog_locale: カタログのロケール
-        catalog_scope: カタログのスコープ
+        catalog_scope: カタログのフィルタ
         default_tree: 既定のツリー
         default_asset_tree: デフォルトのアセットツリー
-        product_grid_filters: 製品グリッドフィルター
+        product_grid_filters: 商品グリッドフィルター
         current_password: 現在のパスワード
         new_password: 新しいパスワード
         new_password_repeat: 新しいパスワード (再入力)
         password: パスワード
+        password_repeat: パスワード(再入力)
+        last_logged_in: 前回ログイン
+        login_count: ログイン回数
         ui_locale: UI ロケール
         timezone: タイムゾーン
-        default_product_grid_view: デフォルト製品のグリッドビュー
-        default_published_product_grid_view: デフォルト公開商品のグリッドビュー
-        proposals_to_review_notification: 新しい提案をレビューするとき
-        proposals_state_notifications: 提案が受け入れまたは拒否されたとき
+        default_product_grid_view: デフォルト商品の一覧表
+        default_published_product_grid_view: デフォルト公開商品のグリッドビュー #EE Only
+        proposals_to_review_notification: レビューの新規提案に際して #EE Only
+        proposals_state_notifications: 提案の受領または拒否に際して #EE Only
+      meta:
+        created: '作成:'
+        updated: '更新:'
       module:
         create:
           button: ユーザー作成
@@ -49,18 +78,23 @@ pim_user_management:
           confirm: このユーザーを削除してもよろしいですか?
         update:
           additional: 追加
+          groups_and_roles: グループと権限
           password: パスワード
           interfaces: インタフェース
-          notifications: お知らせ
+          notifications: お知らせ #TODO EE Only
     role:
       plural_label: 権限
+      page_title:
+        index: "] -Inf, 1] {{ count }}権限|] 1, Inf [{{ count }} 権限"
       module:
         create:
           button: 権限を作成
         delete:
-          confirm: このロールを削除してもよろしいですか？
+          confirm: この権限を削除してもよろしいですか？
     group:
       plural_label: ユーザーグループ
+      page_title:
+        index: "]-Inf, 1] {{ count }} グループ |]1, Inf [{{ count }} グループ"
       module:
         create:
           button: グループを作成

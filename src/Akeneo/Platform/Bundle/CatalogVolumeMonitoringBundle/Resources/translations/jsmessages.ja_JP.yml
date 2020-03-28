@@ -1,9 +1,31 @@
 pim_catalog_volume:
+  product_values: "PIMに商品値が<span>{{values}}</span> あります。商品ごとに平均して<span>{{average}}</span> の商品値があります!&nbsp;💪"
+  product_values_description: '商品値およびPIMの値が多いほど、ROIが高くなります! 詳細は<a href="{{link}}" target="_blank">こちら</a>'
+  section:
+    product_values:
+      hint: 'PIMの商品値の合計数が次の軸に直接リンクしていることをご存知でしょうか？<br/>詳細については<a href="{{link}}" target="_blank">この記事を参照してください</a>。'
+      title: 商品値の数値を活用する軸
+    catalog_structure:
+      hint: カタログ構造が良好であることが大変重要であり、効率的な強化の条件です。 以下に、カタログ構造をモニターするさまざまな軸を示します
+      title: カタログ構造に関連する軸
+    variant_modelling:
+      hint: バリアントモデリングを使用している場合は、こちらの軸を利用するとボリューム監視に役立ちます。
+      title: バリアントモデリングに関する軸
   axis:
-    count_products: 製品
+    count_products: 商品
+    average_max_attributes_per_family: ファミリーごとの属性
     count_channels: チャンネル
+    count_locales: ロケール（有効）
+    count_scopable_attributes: 参照可能な属性
+    count_localizable_and_scopable_attributes: ローカライズ可能な属性および参照可能な属性
+    count_localizable_attributes: ローカライズ可能な属性
     count_families: ファミリー
     count_attributes: 属性
+    average_max_options_per_attribute: 属性ごとのオプション
     count_categories: カテゴリ
     count_category_trees: カテゴリツリー
-    count_product_models: 製品モデル
+    count_variant_products: バリエーション商品
+    count_product_models: 商品モデル
+    warning: ご注意！この軸の記録に到達しました！ このようなボリュームに関してお困りの場合は、お気軽にお問い合わせください。
+  mean: '平均:'
+  max: '最大:'
