@@ -1,0 +1,5 @@
+pim_asset_manager:
+  product_value:
+    validation:
+      asset_multiple_link:
+        limit_reached: 'コレクション毎の上限%limit%アセットに達しました。これ以上コレクションにアセットを追加できません。'
