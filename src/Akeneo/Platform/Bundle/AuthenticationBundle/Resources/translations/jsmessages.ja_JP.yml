@@ -1,0 +1,44 @@
+pim_menu.item.sso: SAML シングルサインオン
+pim_title:
+  authentication_sso_configuration_edit: SAML シングルサインオン構成
+authentication:
+  sso:
+    configuration:
+      download_logs_button: ログをダウンロード
+      info:
+        update_successful: 構成を保存しました
+        update_failed: 構成を保存できませんでした
+        fields_not_ready: "この構成は現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
+      section:
+        activation:
+          title: SSO有効化
+          info:
+            description: SSO証明を有効にする場合、現在のセッションは無効になります。構成を保存した後ログアウトされ、アイデンティティプロバイダにリダイレクトされます。
+        identity_provider:
+          title: アイデンティティプロバイダ (IdP)
+          info:
+            description: IdPとの通信に必要なパラメータはここで全て設定できます。情報は全てIdPから提供されます。その情報を取得するため、ご利用のSSO管理者に連絡してください。
+        service_provider:
+          title: サービスプロバイダー (SP)
+          info:
+            description: 下記にサービスプロバイダーについての情報があります。こちらは自動生成値です。必要に応じて編集してください。 この情報は、IdP構成を目的としてSSO管理者に提供されることになります。
+      field:
+        activation:
+          label: SSO有効
+        entity_id:
+          label: エンティティ ID
+        sign_on_url:
+          label: サインオンURL
+        logout_url:
+          label: ログアウト URL
+        certificate:
+          label: 証明書
+          expiration_warning: この証明書の有効期限は{{date}}です。
+        private_key:
+          label: 秘密鍵
+        metadata_url:
+          label: メタデータURL
+          tooltip_label: URLをコピー
+        acs_url:
+          label: ACS URL
+          tooltip_label: URLをコピー

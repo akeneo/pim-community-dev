@@ -1,127 +1,317 @@
+pim_title:
+  akeneo_reference_entities_reference_entity_index: エンティティを新規作成
+  akeneo_reference_entities_reference_entity_edit: 参照エンティティの編集
+  akeneo_reference_entities_record_edit: 記録を編集
 pim_reference_entity:
   app:
     image:
       wide:
-        upload: アップロードするためにドラッグアンドドロップするか、ここをクリック
+        remove: 画像を削除
+        download: 画像をダウンロード
+        upload: ドラッグ＆ドロップでアップロードするか、こちらをクリック
       small:
         remove: 削除
         download: ダウンロード
+        upload: ドラッグ＆ドロップでアップロード
+  editor:
+    embedded:
+      invalid_link:
+        title: 不審な埋め込みリンク
+        message: 申し訳ございませんがこの埋め込みアイテムは表示できません。保存は正しく実行されます。
+  grid:
+    counter: '{{ count }} 件の結果|{{ count }} 件の結果'
   reference_entity:
+    validation:
+      code:
+        pattern: 'このフィールドに含めることができるのは半角英数字とアンダースコアのみです。'
+        should_be_unique: 'このコードは該当エンティティにすでに使用されています。'
+        limit_reached: '参照エンティティ「{{ %reference_entity_label% }}」を作成できません。参照エンティティの上限{{ %limit% }}件に達しています'
     button:
       save: 保存
       save_permission: 保存
       create: 作成
+    permission:
+      title: エンティティ権限
+    title: エンティティ
+    breadcrumb: 参照エンティティ
+    img: 名称が「{{ label }}」である参照エンティティのメイン画像
     tab:
+      records: 記録
       attribute: 属性
       properties: プロパティ
-      permission: パーミッション
+      permission: 許可
     properties:
+      title: エンティティのプロパティ
       identifier: コード
       label: ラベル
-      image: イメージ
+      image: 画像
+    attribute:
+      title: 記録属性
+    module:
+      delete:
+        button: エンティティを削除
+        confirm: このエンティティを削除してもよろしいですか?
+    index:
+      grid:
+        count: '{0} 参照エンティティがありません|{1} {{ count }} 件の参照エンティティ|]1,Inf] {{ count }} 件の参照エンティティ'
+        help:
+          title: '参照エンティティへようこそ!'
+          description_part_one: '商品の関連情報を充実させる(例: ブランド、製造元、色、素材、原材料…)'
+          description_part_two: それにより顧客により良い商品体験を提供することができます。
+          description_part_three: '「作成」ボタンをクリックして第1の参照エンティティを作成します。属性および記録を設定します。'
+          description_part_four: 次に、商品をリンクさせるためにこの参照エンティティに関連する商品属性タイプを作成します。
+          description_part_five: さらに詳しくは、この記事をご覧ください。
     create:
       header:
         title: 作成
+      subtitle: 参照エンティティ
+      title: 新しいエンティティを作成
       input:
         label: ラベル
+        code: コード（必須）
       confirm: 保存
     delete:
+      message: エンティティ 「{{ referenceEntityLabel }}」を削除してもよろしいですか？
       title: 属性
+    notification:
+      save:
+        success: 参照エンティティが正常に更新されました。
+      create:
+        success: 参照エンティティが正常に作成されました。
+      delete:
+        success: 参照エンティティが正常に削除されました。
+  permission:
+    notification:
+      save:
+        success: 参照エンティティの権限が正常に更新されました。
+        fail: このエンティティに対する編集権限を少なくとも1つのユーザグループに付与する必要があります
+    no_data:
+      title: ユーザーグループがありません
+      subtitle: 参照エンティティに対する権限を管理するには、少なくとも1つのユーザグループが必要です。
+      link: クリックして最初のユーザグループを追加
   record:
+    validation:
+      limit_reached: '記録「%record_label%」を作成できません。この参照エンティティに対する記録の上限「%limit%」に達しています。'
+      code:
+        pattern: 'このフィールドに含めることができるのは半角英数字とアンダースコアのみです。'
+        should_be_unique: 'このコードは該当エンティティにすでに使用されています。'
+    no_data:
+      title: '{{ entityLabel }} の記録がありません'
+      subtitle: 最初のレコードを作成するには、「新規追加」 ボタンをクリックして下さい。
     no_result:
-      subtitle: 新しい検索条件を再度実行してください。
+      title: 検索結果はありません。
+      subtitle: 新しい検索条件で再試行してください
+    selector:
+      no_value: クリックして記録を選択
+    error:
+      value: 申し訳ございません。「{{ fieldName }}」フィールドのレンダリングに失敗したようです。 詳細は開発者コンソールを見てください。
     button:
       save: 保存
-      create: 新しく追加
+      create: 新規追加
       delete: 削除
+      delete_all: 全記録を削除
+      back: 一覧に戻る
+    product:
+      attribute: 商品属性
+      counter: '{{ totalCount }}件の結果|{{ totalCount }} 件の結果'
+      dropdown:
+        attribute: 商品属性
+      title: 商品
+      no_attribute:
+        title: 参照エンティティ「{{ entityLabel }}」にリンクされた商品属性はありません
+        subtitle: "商品を参照エンティティにリンクするためには新規作成してください:"
+        link: 商品属性の新規作成
+      not_enough_items:
+        title: 表示数が上限を超えているため{{ productCount }}/{{ totalCount }}商品を表示します。
+        subtitle:
+          usable_in_grid: リンクされた商品をすべて確認するには以下をクリック！
+          not_usable_in_grid: リンクされた商品をすべて確認するには商品属性を「一覧表で利用可能」に設定してください。
+        button: 商品をすべて表示
+      no_product:
+        title: 商品属性「{{ entityLabel }}」にリンクされた商品はありません
+        subtitle: "商品をこの属性にリンクさせてここで表示"
     enrich:
+      title: 記録属性
       code: コード
       label: ラベル
+    title: 記録
     create:
       header:
         title: 作成
+      subtitle: 参照エンティティ
+      title: '{{ entityLabel }} 新規追加'
       input:
         label: ラベル
+        code: コード（必須）
+        create_another: 他のレコードを作成
       confirm: 保存
+    delete:
+      message: 記録「{{ recordLabel }}」を削除してもよろしいですか。これが商品や他の記録とリンクされている場合は、リンクも削除されます。
+      title: 記録
+    delete_all:
+      confirm: 全ての「{{ entityIdentifier }}」記録を削除してもよろしいですか。記録が商品とリンクされている場合は、商品へのリンクも削除されます。
     grid:
+      search: ラベル、コード、テキスト属性で検索
       filter:
         completeness:
-          label: 網羅率
+          label: 完了
           all: すべて
           'yes': 'はい'
           'no': 'いいえ'
         option:
           all: すべて
+          no_value: オプションを選択してフィルタリング
           operator:
             in: リストに存在する
       column:
         code: コード
-        image: イメージ
+        image: 画像
         label: ラベル
-        complete: 網羅率
+        complete: 完了
         action: アクション
+      more_result:
+        title: それではありません！
+        description: 記録{{ total }}件ののはじめの500件をスクロールしました。もっと見るには限定する検索用語を追加してください。
+      completeness:
+        title_no_required: 属性は必要ありません
+        title_non_complete: '{{ required }}件の属性のうち0件が完了'
+        title_ongoing: '{{ required }}件の属性のうち{{ complete }}件が完了'
+        title_complete: '{{ required }}件の属性全て完了'
     tab:
-      enrich: マスタ
+      enrich: 充実させる
+      product: 商品
+    notification:
+      save:
+        success: 記録が正常に更新されました。
+        validation_error: 記録を更新できませんでした。
+      create:
+        success: 記録が正常に作成されました。
+      delete:
+        success: 記録「{{ code }}」 が正常に削除されました。
+      delete_all:
+        success: '「{{ entityIdentifier }}」件の記録全てが問題なく削除されました。'
     completeness:
-      label: 網羅率
+      label: 完了
   attribute:
+    validation:
+      limit_reached: '属性「{{ %attribute_label% }}」を作成できません。この参照エンティティに対する属性の上限 {{ %limit% }} に達しています'
     default:
       code: コード
       label: ラベル
-      image: イメージ
+      image: 画像
     type:
       text: テキスト
-      image: イメージ
+      image: 画像
+      record: 参照エンティティの単一リンク
+      record_collection: 参照エンティティの複数リンク
+      option: 単一オプション
+      option_collection: 複数オプション
+      number: 数値
+    is_required: 完全性のために必要
+    no_data:
+      title: '{{ entityLabel }}のカスタム属性はありません'
+      subtitle: 最初のカスタム属性を追加するには、「属性を追加」ボタンをクリックして下さい
+    button:
+      add: 属性を追加
     create:
       header:
         title: 作成
+      subtitle: 参照エンティティ
+      title: 新しい記録属性の追加
+      description: ラベルを除いた次のパラメータは属性の作成後に更新できません
       input:
+        code: コード（必須）
         label: ラベル
         type: 属性タイプ
+        record_type: 参照エンティティへのリンク (必須)
         value_per_locale: ロケールごとの値
         value_per_channel: チャンネルごとの値
+      placeholder:
+        record_type: リンク先の参照エンティティを選択してください
       confirm: 保存
     edit:
+      delete: 属性を削除
+      title: 属性 {{ code }}を編集
       save: 保存
       cancel: キャンセル
       input:
+        code: コード（必須）
         label: ラベル
         type: 属性タイプ
+        record_type: 関連する参照エンティティ (必須)
         value_per_locale: ロケールごとの値
         value_per_channel: チャンネルごとの値
+        is_required: 完全性のために必要
         max_length: 最大文字数
-        textarea: テキスト エリア
+        textarea: テキストエリア
+        is_rich_text_editor: リッチテキストエディタ
         max_file_size: 最大ファイル サイズ (MB)
         allowed_extensions: 利用できる拡張子
         validation_rule: 値チェックルール
         regular_expression: 正規表現
+        min_value: 最小値
+        max_value: 最大値
+        manage_options:
+          confirmation:
+            discard_changes: このページから移動する場合はオプションのリストに対する変更が失われます。
+          quick_edit:
+            label: オプションを管理
+          option:
+            label:
+              placeholder: 新規オプションラベルをここに入力
         options:
           validation_rule:
             none: なし
-            email: 電子メール
+            email: E-mail
             regular_expression: 正規表現
             url: URL
+        decimals_allowed: 少数が使用できます
     delete:
+      message: 属性 「{{ attributeLabel }}」を削除してもよろしいですか？
       title: 属性
     notification:
       save:
-        success: 属性を更新しました
+        success: 属性は正常に更新されました
+        validation_error: 属性を更新できませんでした。
       create:
-        success: 属性を作成しました
+        success: 属性は正常に作成されました
+        validation_error: 属性を作成できませんでした
       delete:
-        success: 属性を削除しました
+        success: 属性は正常に削除されました
     options:
+      no_value: クリックしてオプションを選択
+      sub_title: 参照エンティティ
       helper:
         title: ラベルの翻訳
   modal:
     delete:
-      subtitle: 削除を確認する
+      subtitle: 削除を確認
       button:
         cancel: キャンセル
         confirm: 削除
 pim_enrich:
+  confirmation:
+    discard_changes: 'このページから移動する場合は 「{{ entity }}」 に対する変更が失われます。'
   entity:
     attribute:
       property:
+        type:
+          akeneo_reference_entity_collection: 参照エンティティの複数リンク
+          akeneo_reference_entity: 参照エンティティの単一リンク
         section:
           type_specific: タイプ固有のパラメーター
+        reference_entity:
+          identifier: 関連する参照エンティティ (必須)
+          default_label: 参照エンティティを選択して下さい
+permission:
+  mass_action: グループ全てに{{ rightLevel }}を適用
+#Analytics
+pim_catalog_volume:
+  section:
+    reference_entity:
+      title: 参照エンティティの軸
+      hint: 参照エンティティを使用している場合は、こちらの軸を利用するとボリューム監視に役立ちます。
+  axis:
+    count_reference_entity: 参照エンティティ
+    average_max_records_per_reference_entity: 参照エンティティごとの記録
+    average_max_attributes_per_reference_entity: 参照エンティティごとの属性
