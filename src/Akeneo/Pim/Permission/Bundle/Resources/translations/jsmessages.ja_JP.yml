@@ -6,22 +6,22 @@ pim_enrich:
 pimee_enrich.entity.category:
   module:
     permissions:
-      grant: グループ<strong>{{ group }}</strong>は、このカテゴリでは<strong>{{ permission }}</strong>される
-      revoke: グループ<strong>{{ group }}</strong>は、このカテゴリでは<strong>{{ permission }}</strong>されない
+      grant: このグループ<strong>{{ group }}</strong>は、このカテゴリで<strong>{{ permission }}</strong>されます
+      revoke: このグループ<strong>{{ group }}</strong>は、このカテゴリでは<strong>{{ permission }}</strong>されません
 pimee_enrich.entity.locale:
   module:
     permissions:
-      grant: グループ<strong>{{ group }}</strong>は、このロケールでは<strong>{{ permission }}</strong>される
-      revoke: グループ<strong>{{ group }}</strong>は、このロケールでは<strong>{{ permission }}</strong>されません
+      grant: このグループ<strong>{{ group }}</strong>は、このロケールで<strong>{{ permission }}</strong>されます
+      revoke: このグループ<strong>{{ group }}</strong>は、このロケールでは<strong>{{ permission }}</strong>されません
 pimee_enrich.entity.attribute group:
   module:
     permissions:
-      grant: グループ<strong>{{ group }}</strong>は、この属性グループでは<strong>{{ permission }}</strong>される
-      revoke: グループ<strong>{{ group }}</strong>は、この属性グループでは<strong>{{ permission }}</strong>されない
+      grant: このグループ<strong>{{ group }}</strong>は、この属性グループで<strong>{{ permission }}</strong>されます
+      revoke: このグループ<strong>{{ group }}</strong>は、この属性グループでは<strong>{{ permission }}</strong>されません
 pimee_enrich.entity.attribute_group:
   module:
     permissions:
-      added: グループ {{ group }} は、{{ permission }} 属性のグループが許可されます
+      added: グループ {{ group }} は、{{ permission }} 属性グループが許可されます
       view: 属性の表示を許可
       edit: 属性の編集を許可
       removed: グループ {{ group }} は、{{ permission }} 属性のグループが許可されません
@@ -34,14 +34,19 @@ pimee_enrich.entity.job_instance:
       removed: グループ {{ group }} は、{{ permission }} ジョブのプロファイルが許可されません
 batch_jobs:
   add_product_value_with_permission_and_rules:
-    label: 許可チェック＆ルール適用による製品価値の追加
-    perform.label: 製品の値を追加
+    label: 許可チェック＆ルール適用による商品値の追加
+    perform.label: 商品値を追加
   update_product_value_with_permission_and_rules:
-    label: 許可チェック＆ルール適用による製品価値の更新
-    perform.label: 製品の値を更新
+    label: 許可チェック＆ルール適用により商品値を更新
+    perform.label: 商品の値を更新
   remove_product_value_with_permission_and_rules:
-    label: 許可チェック＆ルール適用による製品価値の削除
-    perform.label: 製品の値を削除
+    label: 許可チェック＆ルール適用によりよる商品値を削除
+    perform.label: 商品値を削除
   edit_common_attributes_with_permission_and_rules:
+    label: 許可チェック＆ルール適用により属性を編集
     perform.label: 属性を編集
     cleaner.label: 一時ファイルを削除
+  default_steps:
+    send_for_approval: 承認のために送信
+pim_title:
+  pimee_enrich_locale_edit: ロケール | 編集

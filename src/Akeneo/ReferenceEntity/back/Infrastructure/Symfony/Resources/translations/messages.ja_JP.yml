@@ -1,0 +1,33 @@
+akeneo_referenceentity:
+  acl_group:
+    reference_entity: 参照エンティティ
+  acl:
+    reference_entity:
+      create: エンティティを作成
+      edit: エンティティのプロパティを編集
+      delete: エンティティを削除
+      manage_permission: 参照エンティティのアクセス権限を管理
+    record:
+      create: 記録を作成
+      edit: レコードを編集
+      delete: レコードを削除
+      delete_all: エンティティの記録をすべて削除
+      list_product: 記録にリンクされた商品を一覧表示
+    attribute:
+      create: 参照エンティティに属性を追加
+      edit: 参照エンティティの属性を編集
+      delete: 参照エンティティの属性を削除
+    option:
+      edit: オプションを編集
+      delete: オプションを削除
+pim_analytics:
+  info_type:
+    nb_reference_entities: 参照エンティティ数
+    max_number_of_records_per_reference_entity: 参照エンティティごとの最大記録数
+    average_number_of_values_per_records: 全参照エンティティの記録ごとの平均値
+    average_number_of_records_per_reference_entity: 参照エンティティごとの平均記録数
+    max_number_of_attributes_per_reference_entity: 参照エンティティごとの最大属性数
+    average_number_of_attributes_per_reference_entity: 参照エンティティごとの平均属性数
+    average_percentage_localizable_only_attributes: 参照エンティティごとにローカライズ可能な属性のみの平均パーセンテージ (%)
+    average_percentage_scopable_only_attributes: 参照エンティティごとに参照可能な属性のみの平均パーセンテージ (%)
+    average_percentage_scopable_and_localizable_attributes: 参照エンティティごとにローカライズ可能かつ参照可能な属性のみの平均パーセンテージ (%)
