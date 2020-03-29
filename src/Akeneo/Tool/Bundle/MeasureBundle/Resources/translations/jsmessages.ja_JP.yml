@@ -1,0 +1,44 @@
+pim_menu.item:
+  measurements: 測定
+pim_title:
+  akeneo_measurements_settings_index: 測定
+measurements:
+  helper:
+    title: 測定へようこそ！
+    text: ここでは、ユニットを利用したマイ測定の作成や既存の測定ファミリーへのユニット追加を行うことができます。
+    link: さらに詳しく説明していきましょう！
+  search:
+    placeholder: ラベルもしくはコードでの検索
+  family:
+    result_count: "{0}0 測定ファミリー|{1}1 測定ファミリー|]1, Inf[{{ itemsCount }} 測定ファミリー"
+    no_data:
+      title: 測定ファミリーがありません！
+      link: ここをクリックして追加してください
+    no_result:
+      title: 検索結果がありません
+    properties: プロパティ
+    standard_unit: スタンダードユニット
+    standard_unit_is_not_editable_after_creation: 最後にスタンダードユニットがに設定されました。 他のユニットを変換する場合に使用されます。
+    add_new_measurement_family: 新規測定ファミリーを追加
+    create: 作成
+  list:
+    result_count: "{0}0 結果|{1}1 結果|]1, Inf[{{ itemsCount }} 結果"
+    header:
+      label: ラベル
+      code: コード
+      standard_unit: スタンダードユニット
+      unit_count: ユニット数
+  close: 閉じる
+  form:
+    required_suffix: (必須)
+    input:
+      code: コード
+      label: ラベル
+      symbol: "記号 (例: km)"
+    save: 保存
+  create_family:
+    flash:
+      success: 測定ファミリーが正常に作成されました。
+      error: 測定ファミリーの作成中にエラーが発生。
+  title:
+    measurement: 測定

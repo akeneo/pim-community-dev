@@ -8,7 +8,8 @@ pim_connector:
       selector:
         modal:
           title: カテゴリ選択
-        title: カテゴリ選択
+        label: "{0}全商品 |{1}1件の選択済カテゴリ|]1,Inf[{{ count }} 件の選択済カテゴリ"
+        title: カテゴリを選択
     locales:
       validation:
         not_blank: ロケールは 1 つ選択する必要があります。エクスポートするロケールを選択してください。
@@ -26,18 +27,24 @@ pim_import_export:
       uppercase_label: プロファイルをインポート
       flash:
         create:
-          success: インポートプロファイルを作成しました
+          success: インポートプロファイルが正常に作成されました
+        upload:
+          error: ファイルをアップロードできません。お使いのPHPあるいはHTTPサーバー構成の最大アップロードサイズを超過しているようです。
+      page_title:
+        index: "]-Inf, 1] {{ count }} インポートプロファイル|]1, Inf [{{ count }} インポートプロファイル"
       module:
         create:
-          button: インポート プロファイルを作成
+          button: インポートプロファイルを作成
     export_profile:
       uppercase_label: プロファイルをエクスポート
       flash:
         create:
-          success: エクスポートプロファイルを作成しました
+          success: エクスポートプロファイルが正常に作成されました
+      page_title:
+        index: "]-Inf, 1] {{ count }} エクスポートプロファイル|]1, Inf [{{ count }} エクスポートプロファイル"
       module:
         create:
-          button: エクスポート プロファイルを作成
+          button: エクスポートプロファイルを作成
   form:
     job_execution:
       title.details: 実行の詳細
@@ -45,30 +52,30 @@ pim_import_export:
       button:
         show_profile.title: プロファイルを表示
         download_log.title: ログをダウンロード
-        download_file.title: 生成されたファイルをダウンロードする
-        download_archive.title: 生成されたアーカイブをダウンロードする
+        download_file.title: 生成されたファイルをダウンロード
+        download_archive.title: 生成されたアーカイブをダウンロード
       summary:
-        fetching: ジョブの実行に関するデータを収集しています...
+        fetching: ジョブ実行データを収集中...
         warning: 警告
         header.step: ステップ
         header.warnings: 警告
-        header.summary: サマリ
+        header.summary: 概要
         header.start: 開始
         header.end: 終了
     job_instance:
       fail:
-        launch: ジョブプロファイルを処理できませんでした。ジョブプロファイルが有効で、処理する権限があるか確認して下さい。
+        launch: ジョブプロファイルを起動できません。ジョブプロファイルが有効か、起動権限があるかを確認して下さい
         save: ジョブプロファイルを保存できませんでした。ジョブプロファイルの編集権限があるか確認して下さい。
       button:
         export.title: 今すぐエクスポート
         import.launch: 今すぐインポート
-        import.upload: アップロードしてインポートする
-        import.upload_file: ファイルのアップロード
+        import.upload: 今すぐアップロードおよびインポート
+        import.upload_file: ファイルをアップロード
       meta:
         job: ジョブ
         connector: コネクター
       subsection:
-        last_executions: 最後の実行
+        last_executions: 前回の実行
       tab:
         content:
           title: コンテンツ
@@ -77,52 +84,53 @@ pim_import_export:
             title: 小数点の区切り
             help: 小数点の区切り文字を決定する
           date_format:
-            title: 日付フォーマット
+            title: 日付の形式
             help: 日付フィールドの形式を決定
           file_path:
-            title: ファイルのパス
-            help: ファイル システムで生成されたファイルの書き込み先
+            title: ファイルパス
+            help: ファイルシステムで生成されたファイルの書き込み先
+            help_import: インポート時に使用するファイルディレクトリ
           delimiter:
             title: 区切り文字
-            help: 特定の文字をフィールド区切り文字として使用
+            help: 1文字をフィールド区切り文字として使用中
           enclosure:
             title: エンクロージャ
-            help: 特定の文字をフィールドのエンクロージャーとして使用
+            help: 1文字をフィールドのエンクロージャとして使用中
           with_header:
-            title: ヘッダー行あり
+            title: ヘッダーあり
             help: 列名を出力するかどうか
           with_media:
-            title: エクスポート ファイルと画像
-            help: 製品ファイルと画像をエクスポートするかどうか
+            title: ファイルと画像をエクスポート
+            help: 商品ファイルと画像をエクスポートするかどうか
           lines_per_file:
             title: ファイルごとの行数
-            help: 1ファイルあたりの行の数を定義する
+            help: 1ファイルあたりの行数を定義
           upload_allowed:
             title: ファイルのアップロードを許可
-            help: 直接ファイルのアップロードを許可するかどうか
+            help: ファイルの直接アップロードを許可するかどうか
           categories_column:
             title: カテゴリ列
             help: カテゴリ列の名前
           escape:
             title: エスケープ
-            help: 特定の文字をフィールドのエスケープ文字として使用
+            help: 1文字をフィールドエスケープ設定に使用中
           family_column:
             title: ファミリー列
             help: ファミリー列の名前
           groups_column:
-            title: グループ]列
-            help: グループ]列の名前
+            title: グループ列
+            help: グループ列の名前
           enabled:
-            title: 製品を有効にする
-            help: インポートした製品を有効にするか否か
+            title: 商品を有効にする
+            help: インポートした商品を有効にするか否か
           enabled_comparison:
             title: 値を比較
-            help: 比較機能を有効にすると、インポート前と後の値を比較できます。インポートされた値が元の値に近い場合はインポート処理が速くなります。
+            help: インポート前と後の値に関する比較機能を有効にしましょう。インポートされた値が元の値に近い場合はインポート処理が速くなります。
           real_time_versioning:
-            title: リアルタイム更新履歴
-            help: 商品履歴は自動的にアップデートされます。自動アップデートをオフにするとパフォーマンスが向上します。
+            title: リアルタイムの更新履歴
+            help: 商品履歴が自動的にアップデートされます。自動アップデートをオフにするとパフォーマンスが向上します。
           family_variant_column:
-            title: ファミリーバリアントの列
+            title: ファミリーバリエーションの列
       file_path: ファイルのパス
   widget:
     last_operations:
@@ -135,7 +143,11 @@ pim_import_export:
         import: インポート
         export: エクスポート
         mass_edit: 一括編集
-        quick_export: クイック エクスポート
+        mass_edit_rule: ルールの設定
+        quick_export: クイックエクスポート
+        compute_family_variant_structure_changes: ファミリーバリエーションの変更を計算
+        compute_completeness_of_products_family: 商品ファミリーの完全性を検算
+        mass_delete: 商品を一括削除
       header.view_all: 全て表示
   batch_status:
     1: 完了
@@ -144,11 +156,11 @@ pim_import_export:
     4: 停止中
     5: 停止
     6: 失敗
-    7: 破棄された
+    7: 破棄済
     8: 不明
 confirmation:
   remove:
-    import_profile: このインポートのプロファイルを削除してもよろしいですか。
+    import_profile: このインポートプロファイルを削除してもよろしいですか。
     export_profile: このエクスポートプロファイルを削除してもよろしいですか。
     job_instance: 本当にこのジョブインスタンスを削除しますか？
 pim_enrich:
@@ -156,19 +168,19 @@ pim_enrich:
     import_profile:
       module:
         delete:
-          confirm: このインポートのプロファイルを削除してもよろしいですか。
+          confirm: このインポートプロファイルを削除してもよろしいですか。
     export_profile:
       module:
         delete:
           confirm: このエクスポートプロファイルを削除してもよろしいですか。
 pim_title:
-  pim_importexport_export_profile_index: エクスポート プロファイルの管理
-  pim_importexport_export_profile_edit: '{{ job.label }}のエクスポートプロファイル |編集'
-  pim_importexport_export_profile_show: '{{ job.label }}のエクスポートプロファイル |表示'
+  pim_importexport_export_profile_index: エクスポートプロファイルの管理
+  pim_importexport_export_profile_edit: エクスポートプロファイル {{ job.label }}|編集
+  pim_importexport_export_profile_show: エクスポートプロファイル{{ job.label }}|表示
   pim_importexport_export_execution_index: 実行履歴をエクスポート
   pim_importexport_export_execution_show: エクスポートの実行 |詳細
-  pim_importexport_import_profile_index: インポート プロファイル管理
-  pim_importexport_import_profile_edit: '{{ job.label }}のインポート プロファイル |編集'
-  pim_importexport_import_profile_show: '{{ job.label }}のインポートプロファイル |表示'
+  pim_importexport_import_profile_index: インポートプロファイル管理
+  pim_importexport_import_profile_edit: インポートプロファイル{{ job.label }} |編集
+  pim_importexport_import_profile_show: インポートプロファイル{{ job.label }} |表示
   pim_importexport_import_execution_index: インポート実行履歴
   pim_importexport_import_execution_show: インポートの実行 |詳細
