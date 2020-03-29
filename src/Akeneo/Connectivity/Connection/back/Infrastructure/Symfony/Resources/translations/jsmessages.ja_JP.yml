@@ -1,0 +1,30 @@
+akeneo_connectivity.connection:
+  connection:
+    auditable: この接続をダッシュボード上で追跡
+  edit_connection:
+    credentials:
+      wrong_credentials_combinations:
+        single: この接続で使用しているユーザーネームは{{ wrong_username }}です(前回使用日時は{{ date }}の{{ time }})。今回はユーザーネームとして代わりに{{ good_username }}をおすすめします。
+        link: これを使用する理由
+        link_list: このユーザーネームが推奨される理由。
+        several: この接続で使用しているユーザーネームは{{ good_username }}です。
+        list: '過去7日間で使用したユーザーネームの一覧は次の通りです:'
+        username_date: '{{ date }}、{{ time }}に{{ wrong_username }}'
+  auditable_helper:
+    message: 追跡できるのは「接続元」および「接続先」のみです。
+  grid.wrong_credentials_combination_helper: 以下の接続には、接続用ユーザーネームを使用していないものがあります。該当するものを黄色の警告サインで示しています。
+  dashboard:
+    charts:
+      inbound: 受信
+      outbound: 送信
+      number_of_products_created: 作成済の商品
+      number_of_products_updated: 更新済の商品
+      number_of_products_sent: 送信済の商品
+      legend:
+        during_the_last_seven_days: '過去7日間の合計:'
+    no_connection:
+      title:
+        data_source: 接続元について想定図の表示を希望しますか？
+        data_destination: 接続先について想定図の表示を希望しますか？
+      message_with_permission:
+        message: 最初のものを作成し追跡をはじめる
