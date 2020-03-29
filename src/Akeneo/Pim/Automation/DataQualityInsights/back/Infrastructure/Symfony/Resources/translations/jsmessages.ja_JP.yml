@@ -1,0 +1,23 @@
+akeneo_data_quality_insights:
+  dqi_dashboard:
+    helper:
+      title: Akeneoで紹介しているデータ品質について
+      description: データ品質ダッシュボードでは、カタログデータの品質を測定できます。カテゴリまたはファミリーに特化することも可能です。
+      help_center: 詳細は弊社へルブセンターを参照ください
+    time_period:
+      label: 周期
+      daily: 毎日
+      weekly: 毎週
+      monthly: 毎月
+    average_grade: 平均の等級
+    category_modal_filter:
+      subtitle: カテゴリでフィルタ
+      message: カテゴリを選択してダッシュボードにエクスポート
+    widgets:
+      family_modal:
+        subtitle: ファミリーを追加
+        message: ファミリーを選択してダッシュボードに追加
+        max_families_msg: 恐れ入りますがダッシュボードでは {{ count }} ファミリー以上を追加できません
+      category_modal:
+        subtitle: カテゴリを追加
+        message: カテゴリを選択してダッシュボードに追加

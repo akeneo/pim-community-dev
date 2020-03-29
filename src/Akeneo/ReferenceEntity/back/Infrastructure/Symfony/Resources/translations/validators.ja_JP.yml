@@ -1,0 +1,22 @@
+pim_reference_entity:
+  record:
+    validation:
+      number:
+        should_be_string: 'このフィールドは列でなければなりません'
+        should_be_integer: 'このフィールドは整数でなければなりません'
+        integer_too_long: 'この整数は大きすぎます'
+        should_be_numeric: 'このフィールドは正しい小数点を付した数値でなければなりません'
+  attribute:
+    validation:
+      min_value:
+        should_be_a_number: 'この値は正しい小数点を付した数字でなければなりません。'
+        cannot_be_greater_than_max: '最小値は最大値より大きく指定できません'
+      max_value:
+        should_be_a_number: 'この値は正しい小数点を付した数字でなければなりません。'
+        cannot_be_lower_than_min: '最大値は最小値より小さく指定できません'
+      prefix:
+        should_not_be_empty: '接頭辞は空にできません。'
+      suffix:
+        should_not_be_empty: '接尾辞は空にできません。'
+      media_type:
+        not_expected: '指定したメディアタイプは必要なタイプに対応していません(%supported_media_types%)。'

@@ -1,92 +1,98 @@
-pimee_enrich.acl.locale.edit_permissions: ロケールのアクセス権限の管理
-pimee_enrich.acl.category.edit_permissions: カテゴリ権限の管理
-pimee_enrich.acl.attribute_group.edit_permissions: 属性グループの権限管理
-pimee_importexport.acl.export_profile.edit_permissions: エクスポートプロファイルの権限管理
-pimee_importexport.acl.import_profile.edit_permissions: インポートプロファイルの権限管理
+pimee_enrich.acl.locale.edit_permissions: ロケール権限を管理
+pimee_enrich.acl.category.edit_permissions: カテゴリ権限を管理
+pimee_enrich.acl.attribute_group.edit_permissions: 属性グループの権限を管理
+pimee_importexport.acl.export_profile.edit_permissions: エクスポートプロファイルの権限を管理
+pimee_importexport.acl.import_profile.edit_permissions: インポートプロファイルの権限を管理
 pimee_enrich.groups.label: 所有者グループ
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: 属性を編集
-add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: 許可を得て製品の値を追加
-update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: 許可を得て製品の値を更新
-remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: 許可を得て製品の値を削除
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: 許可を得て商品値を追加
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: 許可を得て商品値を更新
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: 許可を得て商品値を削除
+edit_common_attributes_with_permission: 許可を得て属性を編集
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: 許可を得て属性を編集
 pim_analytics:
   info_type:
-    nb_custom_locale_accesses: カスタム ロケールのアクセス数
-    nb_custom_category_accesses: カスタムカテゴリーアクセスの数
-    nb_custom_attribute_group_accesses: カスタム属性グループアクセスの数
+    nb_custom_locale_accesses: カスタムロケールのアクセス数
+    nb_custom_category_accesses: カスタムカテゴリーのアクセスの数
+    nb_custom_attribute_group_accesses: カスタム属性グループのアクセスの数
 job_profile.permissions:
-  execute.label: ジョブプロファイルの実行を許可
-  edit.label: ジョブプロファイルの編集を許可
+  execute.label: ジョブプロファイルの実行が許可されました
+  edit.label: ジョブプロファイルの編集が許可されました
 pim_title.locale:
   edit: "ロケール %locale.code% |編集"
 attribute group.permissions:
-  view.label: 属性の表示を許可
-  view.help: この属性グループの製品を表示することができます。
-  edit.label: 属性の編集を許可
-  edit.help: この属性グループの製品を編集することを許可する
-  no_access_to_attributes: この製品のすべての属性へのアクセス権限がありません。管理者に問い合わせてください。
+  view.label: 属性の表示を許可済
+  view.help: この属性グループの商品表示を許可
+  edit.label: 属性の編集を許可済
+  edit.help: この属性グループの商品編集を許可
+  no_access_to_attributes: この商品の属性にはいずれもアクセス権限がありません。管理者に問い合わせてください。
 category.permissions:
-  view.label: 製品の表示を許可
-  view.help: このカテゴリの製品を表示することができます。
-  edit.label: 製品の編集を許可
-  edit.help: このカテゴリ内の商品を編集する (アクセス権限の許可を意味する)
-  own.label: 製品の所有を許可
-  own.help: 関連製品をレビュー、公開、非公開、分類することを許可する( 編集権限許可を意味する)
-  no_access_to_products: 全てのツリーにおいて、製品へのアクセス権限がありません。管理者に問い合わせてください。
-  apply_on_children.label: 子要素に変更を適用します。
-  apply_on_children.help: 全ての子要素の権限をコピーし、すでに存在する権限は保持される
+  view.label: 商品の表示を許可済
+  view.help: このカテゴリの商品表示を許可
+  edit.label: 商品の編集を許可済
+  edit.help: このカテゴリ内の商品を編集許可 (閲覧許可もともなう)
+  own.label: 商品の所有を許可済
+  own.help: 関連商品をレビュー、公開、非公開、分類することを許可( 編集許可もともなう)
+  no_access_to_products: どのツリーにおいても商品データへのアクセス権限がありません。管理者に問い合わせてください。
+  apply_on_children.label: 下位への変更を適用
+  apply_on_children.help: 下位すべてに対する変更許可のコピーおよび下位への既存のアクセス許可が保持されています
 locale.permissions:
-  no_access_to_products: 全ての有効なロケールにおいて、製品データへのアクセス権限がありません。管理者に問い合わせてください。
+  view.label: 情報の表示を許可
+  view.help: このロケールで製品情報を表示することを許可する
+  edit.label: 情報の編集を許可済
+  edit.help: このロケール内の情報を編集許可 (閲覧許可もともなう)
+  no_access_to_products: どの有効なロケールにおいても商品データへのアクセス権限がありません。管理者に問い合わせてください。
 flash.locale.updated: ロケールおよびアクセス権限が更新されました
 pim_enrich:
   mass_edit_action:
     product:
-      not_editable: 製品「%identifiers%」を編集する権限がありません。
-      page_title: 製品
+      not_editable: 商品「%identifiers%」を編集する権限がありません
+      page_title: 商品
       page_subtitle: 一括編集(1件)|一括編集(%count% 件)
       title: 操作を選択
-      subtitle: 選択した商品に対して実行したい操作を選択してください|選択した %count% 件の商品に対して実行したい操作を選択してください
-      confirm: 更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。
+      subtitle: 指定した商品に対して実行したい操作を選択してください|指定した %count% 件の商品に対して実行したい操作を選択してください
+      confirm: 更新しようとしている以下の商品の内容を確認ください。|更新しようとしている以下の %count% 件の商品の内容を確認ください。
       steps:
-        first: 商品を選択してください
+        first: 商品を選択
         second: 操作を選択
         third: 構成
         fourth: 確認
     publish:
       message:
-        error: あなたは製品の所有者ではないため、それを公開することはできません。
-        warning: あなたは選択した全ての製品の所有者ではありません。製品「%notGranted%」を公開できません。
-      not_editable: 製品「%identifiers%」を編集する権限がありません。
+        error: 商品の所有者ではないため公開することはできません
+        warning: 指定した商品すべての所有者ではありません。商品「%notGranted%」を公開できません
+      not_editable: 商品「%identifiers%」を編集する権限がありません
     unpublish:
       message:
-        error: あなたは製品の所有者ではないため、それを非公開にすることはできません。
-        warning: あなたは選択した全ての製品の所有者ではありません。製品「%notGranted%」を非公開にできません。
-        info: 選択した %nbProducts% の製品を非公開予定です。
-      not_editable: 製品「%identifiers%」を編集する権限がありません。
+        error: 商品の所有者ではないため非公開にすることはできません
+        warning: 指定した商品すべての所有者ではありません。商品「%notGranted%」を非公開にできません
+        info: 選択した%nbProducts%商品は公開されません
+      not_editable: 商品「%identifiers%」を編集する権限がありません
     classify:
       message:
-        error: あなたは製品の所有者ではないため、それを分類することはできません。
-        warning: あなたは選択した全ての製品の所有者ではありません。製品「%notGranted%」を分類できません。
+        error: 商品の所有者ではないため分類することはできません
+        warning: 指定した商品すべての所有者ではありません。商品「%notGranted%」を分類できません
     edit_common_attributes:
       message:
-        error: あなたは製品の所有者ではないため、それを編集することはできません。
+        error: 商品の所有者ではないため編集することはできません
 pimee_enrich:
   attribute_group:
     tab:
-      permission.title: パーミッション
+      permission.title: 許可
   acl.product_ownership.title: 所有権
   attributes:
     empty: なし
   category:
     tab:
       permission:
-        title: パーミッション
+        title: 許可
   groups:
     label: 所有者グループ
     empty: なし
 add_product_value_with_permission_and_rules:
-  steps.perform: 製品の値を追加
+  steps.perform: 商品値を追加
 update_product_value_with_permission_and_rules:
-  steps.perform: 製品の値を更新
+  steps.perform: 商品値を更新
 edit_common_attributes_with_permission_and_rules:
   steps.perform: 属性を編集
   steps.edit_common_attributes_processor.title: 属性を編集

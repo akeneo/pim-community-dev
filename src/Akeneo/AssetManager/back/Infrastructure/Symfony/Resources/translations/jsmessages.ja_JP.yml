@@ -1,127 +1,103 @@
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: 不審な埋め込みリンク
+        message: 申し訳ございませんがこの埋め込みアイテムは表示できません。保存は正しくじっこうされます。
+  asset_collection:
+    add_asset: 'アセットの追加'
+    add_asset_title: 'アセットピッカーを開きコレクションにアセットを追加'
+    no_asset_in_collection: '申し訳ございませんが、このコレクションにアセットはありません。'
+    helper:
+      link: 'アセットコレクションを追加するには？'
+    notification:
+      product_rule: 'このコレクションは次の商品ルールに基づき更新されます:'
+      limit: 'コレクション毎の上限{{ limit }}アセットに達しました。これ以上コレクションにアセットを追加できません。'
+    edit_asset: アセットを編集
+    remove_one_asset: アセット{{ assetName }}をアセットコレクションから削除
+    remove_all_assets: アセットをすべて消去
+    other_actions: その他の操作
+    open_other_actions: その他の操作を開く
+    dismiss_other_actions: その他の操作を中止
+    move_asset_to_left: アセット{{ assetName }}を左に移動
+    move_asset_to_right: アセット{{ assetName }}を右に移動
+    legacy_helper:
+      moved_to_assets_tab: アセットコレクション{{ label }}を表示するには商品のアセットセクションに移動してください。
+      is_missing_required: アセットコレクション{{ label }}が必須です。商品アセットコレクションを充実させましょう。
+  asset_picker:
+    title: 商品にアセットを追加
+    sub_title: コレクション{{ attributeLabel }}内の商品{{ productLabel }}に適用させるアセットを選択
+    no_result:
+      title: 申し訳ございません。検索条件に合致するアセットはありません
+      sub_title: 新しい検索条件で再試行してください
+    filter:
+      title: アセットフィルター
+    basket:
+      title: '{{ assetCount }}件の選択済アセット|{{ assetCount }}件の選択済アセット'
+      empty_title: 買い物かごには何も入っていません。
+      remove_one_asset: アセット{{ assetName }}をアセットセレクションから削除
+      remove_all_assets: すべて削除
+  asset_preview:
+    previous: 前のアセット
+    next: 次のアセット
+    edit_asset: アセットを編集
+    download: ダウンロード
+    copy_url: URLをコピー
+  close: モダルを閉じる
+  breadcrumb:
+    products: 商品
   app:
     image:
-      wide:
-        upload: アップロードするためにドラッグアンドドロップするか、ここをクリック
       small:
-        remove: 削除
         download: ダウンロード
+  grid:
+    counter: '{{ resultCount }}件の結果'
+    counter_empty: '結果0'
   asset_family:
-    button:
-      save: 保存
-      save_permission: 保存
-      create: 作成
+    title: アセット
     tab:
-      attribute: 属性
-      properties: プロパティ
-      permission: パーミッション
-    properties:
-      identifier: コード
-      label: ラベル
-      image: イメージ
-    create:
-      header:
-        title: 作成
-      input:
-        label: ラベル
-      confirm: 保存
-    delete:
-      title: 属性
+      assets: アセット
   asset:
-    no_result:
-      subtitle: 新しい検索条件を再度実行してください。
-    button:
-      save: 保存
-      create: 新しく追加
-      delete: 削除
+    selector:
+      no_value: ここをクリックしてアセットを選択
+    product:
+      title: 商品
     enrich:
-      code: コード
-      label: ラベル
-    create:
-      header:
-        title: 作成
-      input:
-        label: ラベル
-      confirm: 保存
+      edit_subsection: アセットを編集
+    title: アセット
+    upload:
+      remove_all: すべて削除
     grid:
+      search: ラベル、コード、テキスト属性で検索
       filter:
         completeness:
-          label: 網羅率
+          label: 完了
           all: すべて
           'yes': 'はい'
           'no': 'いいえ'
         option:
           all: すべて
+          no_value: オプションを選択してフィルタリング
           operator:
             in: リストに存在する
+      more_result:
+        title: それではありません！
+        description: '{{ total }}アセットのはじめ{{ maxDisplayedAssets }}件をスクロールしました。もっと見るには限定する検索用語を追加してください。'
       column:
-        code: コード
-        image: イメージ
-        label: ラベル
-        complete: 網羅率
-        action: アクション
+        complete: 完了
     tab:
-      enrich: マスタ
+      product: 商品
     completeness:
-      label: 網羅率
+      label: 完了
   attribute:
-    default:
-      code: コード
-      label: ラベル
-      image: イメージ
-    type:
-      text: テキスト
-      image: イメージ
-    create:
-      header:
-        title: 作成
-      input:
-        label: ラベル
-        type: 属性タイプ
-        value_per_locale: ロケールごとの値
-        value_per_channel: チャンネルごとの値
-      confirm: 保存
+    is_required: 完全性のために必要
     edit:
-      save: 保存
-      cancel: キャンセル
       input:
-        label: ラベル
-        type: 属性タイプ
-        value_per_locale: ロケールごとの値
-        value_per_channel: チャンネルごとの値
-        max_length: 最大文字数
-        textarea: テキスト エリア
-        max_file_size: 最大ファイル サイズ (MB)
-        allowed_extensions: 利用できる拡張子
-        validation_rule: 値チェックルール
-        regular_expression: 正規表現
-        options:
-          validation_rule:
-            none: なし
-            email: 電子メール
-            regular_expression: 正規表現
-            url: URL
-    delete:
-      title: 属性
-    notification:
-      save:
-        success: 属性を更新しました
-      create:
-        success: 属性を作成しました
-      delete:
-        success: 属性を削除しました
-    options:
-      helper:
-        title: ラベルの翻訳
-  modal:
-    delete:
-      subtitle: 削除を確認する
-      button:
-        cancel: キャンセル
-        confirm: 削除
+        asset_type: 関連するアセットファミリー(必須)
 pim_enrich:
   entity:
     attribute:
       property:
-        section:
-          type_specific: タイプ固有のパラメーター
+        asset_family:
+          identifier: 関連するアセットファミリー(必須)
+          default_label: アセットファミリーを選択してください
