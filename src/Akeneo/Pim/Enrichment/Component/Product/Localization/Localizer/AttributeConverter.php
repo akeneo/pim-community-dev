@@ -175,23 +175,16 @@ class AttributeConverter implements AttributeConverterInterface
      * Build the property path of the attribute
      *
      * @param array  $data
-     * @param string $code
+     * @param string $attributeCode
      *
      * @return string
      */
-    protected function buildPropertyPath(array $data, $code)
+    protected function buildPropertyPath(array $data, $attributeCode)
     {
-        $path = $code;
+        $channelCode = isset($data['scope']) && '' !== $data['scope'] ? $data['scope'] : '<all_channels>';
+        $localeCode = isset($data['locale']) && '' !== $data['locale'] ? $data['locale'] : '<all_locales>';
 
-        if (isset($data['scope']) && '' !== $data['scope']) {
-            $path .= sprintf('-%s', $data['scope']);
-        }
-
-        if (isset($data['locale']) && '' !== $data['locale']) {
-            $path .= sprintf('-%s', $data['locale']);
-        }
-
-        return sprintf('values[%s]', $path);
+        return sprintf('values[%s-%s-%s]', $attributeCode, $channelCode, $localeCode);
     }
 
     /**
