@@ -15,6 +15,7 @@ akeneo_connectivity.connection:
     label: Libellé
     flow_type: Type de flux
     image: Image
+    auditable: Suivre cette connexion dans le tableau de bord
     client_id: Client ID
     secret: Secret
     username: Username
@@ -117,11 +118,15 @@ akeneo_connectivity.connection:
     flash:
       success: Connexion supprimée avec succès.
   helper:
+    title: '👋 Bienvenue dans cette fonctionnalité qui vous aidera à bien connecter votre PIM !'
     description: Un PIM non connecté, c'est un peu inutile, non ? Grâce aux connexions, vous pouvez déclarer facilement tous les flux de données qui sont envoyés dans votre PIM, ainsi que ceux qui en sortent.
     link: Envie d'en savoir plus ? Découvrez ce qu'est une connexion et comment en tirer le meilleur parti ici !
   flow_type_helper:
     message: Mais qu'est-ce qu'un type de flux ?
     link: Nous pouvons vous aider ici !
+  auditable_helper:
+    message: Vous ne pouvez suivre que les connexions de type "Source" et "Destination".
+    link: En savoir plus…
   edit_image:
     upload_helper: Changez votre image, glissez-déposez là ou
     remove_helper: Supprimer l'image
@@ -131,6 +136,7 @@ akeneo_connectivity.connection:
   grid.wrong_credentials_combination_helper: Certaines des connexions ci-dessous n'utilisent pas leur username. Elles sont identifiées par un warning jaune.
   dashboard:
     helper:
+      title: '👋 Bienvenue dans le tableau de bord de vos connexions !'
       description: Ici, vous pouvez suivre tous les flux de données qui circulent via vos connexions, que ce soit des données entrantes provenant de vos sources ou de données sortantes distribuées sur vos destinations.
       link: Envie d'en savoir plus ? Rendez-vous ici !
     user_survey:
@@ -141,15 +147,22 @@ akeneo_connectivity.connection:
       title: Connexions sources
       all: Toutes
     charts:
-      number_of_products_created: Nombre de produits créés
-      number_of_products_updated: Nombre de produits mis à jour
+      inbound: En entrée du PIM
+      outbound: En sortie du PIM
+      number_of_products_created: Produits créés
+      number_of_products_updated: Produits mis à jour
+      number_of_products_sent: Produits envoyés
       legend:
-        during_the_last_seven_days: Au cours des sept derniers jours
+        during_the_last_seven_days: 'Total sur les 7 derniers jours :'
         today: Aujourd'hui
     no_connection:
-      title: Il y a 0 connexion pour le moment.
+      title:
+        default: Envie de suivre vos connexions à l'aide de beaux graphiques ?
+        data_source: Envie de suivre vos connexions source à l'aide de beaux graphiques ?
+        data_destination: Envie de suivre vos connexions destination à l'aide de beaux graphiques ?
       message_with_permission:
-        link: Créez-en une nouvelle juste ici !
+        message: Créez-en une et activez son suivi 
+        link: ici !
       message_without_permission:
         message: Demandez à votre administrateur d'en créer une.
         link: En savoir plus sur les connexions ici...

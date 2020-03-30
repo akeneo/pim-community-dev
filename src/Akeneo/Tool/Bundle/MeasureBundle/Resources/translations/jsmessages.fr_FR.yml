@@ -1,0 +1,44 @@
+pim_menu.item:
+  measurements: Mesures
+pim_title:
+  akeneo_measurements_settings_index: Mesures
+measurements:
+  helper:
+    title: Bienvenue dans la gestion des mesures !
+    text: Vous pouvez créer ici vos propres familles de mesure avec leur unités ou ajouter des unités aux familles de mesure existantes.
+    link: Vous voulez en savoir plus ? C'est parti !
+  search:
+    placeholder: Rechercher sur le libellé ou le code
+  family:
+    result_count: "{0}0 Familles de mesure |{1}1 Famille de mesure|]1, Inf[{{ itemsCount }} Familles de mesure"
+    no_data:
+      title: Désolé il n'y a pas de famille de mesure !
+      link: Cliquez ici pour en ajouter une
+    no_result:
+      title: Désolé, il n'y a pas de résultat pour votre recherche.
+    properties: Propriétés
+    standard_unit: Unité standard
+    standard_unit_is_not_editable_after_creation: Cette unité standard est définie une fois pour toutes. Elle sera utilisée pour convertir les autres unités.
+    add_new_measurement_family: Ajouter une nouvelle famille de mesure
+    create: Créer
+  list:
+    result_count: "{0}0 résultats|{1}1 résultat|]1, Inf[{{ itemsCount }} résultats"
+    header:
+      label: Libellé
+      code: Code
+      standard_unit: Unité standard
+      unit_count: Nombre d'unités
+  close: Fermer
+  form:
+    required_suffix: (obligatoire)
+    input:
+      code: Code
+      label: Libellé
+      symbol: "Symbole (ex: km)"
+    save: Enregistrer
+  create_family:
+    flash:
+      success: Famille de mesure créée avec succès.
+      error: Désolé, une erreur s'est produite lors de la création de la famille de mesure.
+  title:
+    measurement: Mesure
