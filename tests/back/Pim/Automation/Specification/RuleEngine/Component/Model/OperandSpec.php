@@ -77,4 +77,11 @@ class OperandSpec extends ObjectBehavior
         $this->shouldThrow(new \InvalidArgumentException('An operation expects one of the "field" or "value" keys'))
             ->duringInstantiation();
     }
+
+    function it_cannot_be_constructed_with_both_field_and_value()
+    {
+        $this->beConstructedThrough('fromNormalized', [['field' => 'width', 'value' => 3.1415927]]);
+        $this->shouldThrow(new \InvalidArgumentException('An operation cannot be defined with both the "field" and "value" keys'))
+            ->duringInstantiation();
+    }
 }

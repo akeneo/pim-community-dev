@@ -37,7 +37,7 @@ final class Operand
     /** @var float|null */
     private $constantValue;
 
-    public function __construct(?string $attributeCode, ?string $channelCode, ?string $localeCode, ?float $constantValue)
+    private function __construct(?string $attributeCode, ?string $channelCode, ?string $localeCode, ?float $constantValue)
     {
         $this->attributeCode = $attributeCode;
         $this->channelCode = $channelCode;
@@ -47,9 +47,9 @@ final class Operand
 
     public static function fromNormalized(array $data): self
     {
-        if (isset($data['field'])) {
+        if (array_key_exists('field', $data)) {
             return self::fromAttributeValue($data);
-        } elseif (isset($data['value'])) {
+        } elseif (array_key_exists('value', $data)) {
             return self::fromConstant($data);
         }
         throw new \InvalidArgumentException('An operation expects one of the "field" or "value" keys');
@@ -57,6 +57,8 @@ final class Operand
 
     private static function fromAttributeValue(array $data): self
     {
+        Assert::keyNotExists($data, 'value', 'An operation cannot be defined with both the "field" and "value" keys');
+
         Assert::string($data['field']);
         $channelCode = $data['scope'] ?? null;
         Assert::nullOrString($channelCode);
@@ -68,6 +70,10 @@ final class Operand
 
     private static function fromConstant(array $data): self
     {
+        Assert::keyNotExists($data, 'field');
+        Assert::keyNotExists($data, 'scope');
+        Assert::keyNotExists($data, 'locale');
+
         Assert::numeric($data['value'], 'Operand expects a numeric "value" key');
 
         return new self(null, null, null, (float) $data['value']);

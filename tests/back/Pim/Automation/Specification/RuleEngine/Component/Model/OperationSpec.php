@@ -17,14 +17,14 @@ class OperationSpec extends ObjectBehavior
         $this->getOperand()->shouldBeLike(Operand::fromNormalized(['field' => 'length']));
     }
 
-    function it_cannot_ba_instantiated_without_an_operator()
+    function it_cannot_be_instantiated_without_an_operator()
     {
         $this->beConstructedThrough('fromNormalized', [['field' => 'length']]);
         $this->shouldThrow(new \InvalidArgumentException('Operation expects an "operator" key'))
             ->duringInstantiation();
     }
 
-    function it_cannot_ba_instantiated_with_an_invalid_operator()
+    function it_cannot_be_instantiated_with_an_invalid_operator()
     {
         $this->beConstructedThrough('fromNormalized', [['operator' => 'my_custom_operator', 'field' => 'length']]);
         $this->shouldThrow(new \InvalidArgumentException('Operation expects one of the following operators: multiply, add, divide, substract'))

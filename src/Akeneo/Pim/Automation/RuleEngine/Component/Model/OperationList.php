@@ -12,7 +12,7 @@ use Webmozart\Assert\Assert;
  */
 final class OperationList implements \IteratorAggregate
 {
-    /** @var Operation[]] */
+    /** @var Operation[] */
     private $operations = [];
 
     private function __construct(array $operations)
