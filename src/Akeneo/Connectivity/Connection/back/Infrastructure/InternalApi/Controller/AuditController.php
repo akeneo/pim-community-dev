@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
+use Akeneo\Connectivity\Connection\Infrastructure\AggregateProductEventCounts;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,16 +36,29 @@ class AuditController
     {
         $eventType = $request->get('event_type');
         $endDateUser = $request->get('end_date');
-        $timezone = $this->userContext->getUserTimezone();
+        $timezone = new \DateTimeZone($this->userContext->getUserTimezone());
 
         if (null === $endDateUser) {
             $endDateUser = (new \DateTimeImmutable('now', new \DateTimeZone($timezone)))->format('Y-m-d');
         }
 
+        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval($endDateUser, $timezone);
+        [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
+
+        $query = new CountDailyEventsByConnectionQuery($eventType, $fromDateTime, $upToDateTime);
+        $periodEventCounts = $this->countDailyEventsByConnectionHandler->handle($query);
+
+        $data = AggregateProductEventCounts::normalize($startDateTimeUser, $endDateTimeUser, $timezone, $periodEventCounts);
+
+        return new JsonResponse($data);
+    }
+
+    private function createUserDateTimeInterval(string $endDateUser, \DateTimeZone $timezone): array
+    {
         $endDateTimeUser = \DateTimeImmutable::createFromFormat(
             'Y-m-d',
             $endDateUser,
-            new \DateTimeZone($timezone)
+            $timezone
         );
         if (false === $endDateTimeUser) {
             throw new \InvalidArgumentException(sprintf(
@@ -54,19 +67,22 @@ class AuditController
             ));
         }
 
-        $startDateUser = $endDateTimeUser->sub(new \DateInterval('P7D'))->format('Y-m-d');
+        $startDateTimeUser = $endDateTimeUser->sub(new \DateInterval('P7D'));
 
-        $query = new CountDailyEventsByConnectionQuery($eventType, $startDateUser, $endDateUser, $timezone);
-        $dailyEventCountsPerConnection = $this->countDailyEventsByConnectionHandler->handle($query);
+        return [$startDateTimeUser, $endDateTimeUser];
+    }
 
-        $data = \array_reduce(
-            $dailyEventCountsPerConnection,
-            function (array $data, WeeklyEventCounts $weeklyEventCounts) {
-                return array_merge($data, $weeklyEventCounts->normalize());
-            },
-            []
-        );
+    private function createUtcDateTimeInterval(\DateTimeImmutable $startDateTimeUser, \DateTimeImmutable $endDateTimeUser): array
+    {
+        $fromDateTime = $startDateTimeUser
+            ->setTime(0, 0)
+            ->setTimezone(new \DateTimeZone('UTC'));
 
-        return new JsonResponse($data);
+        $upToDateTime = $endDateTimeUser
+            ->setTime(0, 0)
+            ->add(new \DateInterval('P1D'))
+            ->setTimezone(new \DateTimeZone('UTC'));
+
+        return [$fromDateTime, $upToDateTime];
     }
 }

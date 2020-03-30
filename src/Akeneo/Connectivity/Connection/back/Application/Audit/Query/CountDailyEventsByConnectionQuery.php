@@ -14,25 +14,24 @@ class CountDailyEventsByConnectionQuery
     /** @var string */
     private $eventType;
 
-    /** @var string */
-    private $startDate;
+    /** @var \DateTimeInterface */
+    private $fromDateTime;
 
-    /** @var string */
-    private $endDate;
-
-    /** @var string */
-    private $timezone;
+    /** @var \DateTimeInterface */
+    private $upToDateTime;
 
     public function __construct(
         string $eventType,
-        string $startDate,
-        string $endDate,
-        string $timezone
+        \DateTimeImmutable $fromDateTime,
+        \DateTimeImmutable $upToDateTime
     ) {
         $this->eventType = $eventType;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->timezone = $timezone;
+
+        $this->checkTimezoneIsUtc($fromDateTime);
+        $this->fromDateTime = $fromDateTime;
+
+        $this->checkTimezoneIsUtc($upToDateTime);
+        $this->upToDateTime = $upToDateTime;
     }
 
     public function eventType(): string
@@ -40,18 +39,26 @@ class CountDailyEventsByConnectionQuery
         return $this->eventType;
     }
 
-    public function startDate(): string
+    public function fromDateTime(): \DateTimeImmutable
     {
-        return $this->startDate;
+        return $this->fromDateTime;
     }
 
-    public function endDate(): string
+    public function upToDateTime(): \DateTimeImmutable
     {
-        return $this->endDate;
+        return $this->upToDateTime;
     }
 
-    public function timezone(): string
+    private function checkTimezoneIsUtc(\DateTimeImmutable $dateTime): void
     {
-        return $this->timezone;
+        if ('UTC' !== $dateTime->getTimezone()->getName() && '+00:00' !== $dateTime->getTimezone()->getName()) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Parameter `$dateTime` "%s" with timezone "%s" must have a timezone "UTC".',
+                    $dateTime->format(\DateTimeInterface::ATOM),
+                    $dateTime->getTimezone()->getName()
+                )
+            );
+        }
     }
 }

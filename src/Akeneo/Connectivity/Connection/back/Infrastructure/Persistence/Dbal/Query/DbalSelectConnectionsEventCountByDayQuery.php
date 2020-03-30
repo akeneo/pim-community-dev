@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -143,14 +144,14 @@ SQL;
                 }
 
                 if (null !== $row['event_datetime'] && null !== $row['event_count']) {
-                    $data[$connectionCode][] = [
+                    $data[$connectionCode][] = new HourlyEventCount(
                         \DateTimeImmutable::createFromFormat(
                             $format,
                             $row['event_datetime'],
                             new \DateTimeZone('UTC')
                         ),
                         (int) $row['event_count']
-                    ];
+                    );
                 }
 
                 return $data;
