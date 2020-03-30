@@ -1,4 +1,4 @@
-import React, {useContext, FormEvent} from 'react';
+import React, {useContext, FormEvent, useRef} from 'react';
 import styled from 'styled-components';
 import {MeasurementFamily, setMeasurementFamilyLabel} from 'akeneomeasure/model/measurement-family';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
@@ -8,6 +8,7 @@ import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
 import {SecurityContext} from 'akeneomeasure/context/security-context';
+import {useAutoFocus} from 'akeneomeasure/shared/hooks/use-auto-focus';
 
 const Container = styled.div`
   display: flex;
@@ -29,6 +30,9 @@ const PropertyTab = ({
   const locales = useUiLocales();
   const isGranted = useContext(SecurityContext);
 
+  const firstFieldRef = useRef<HTMLInputElement | null>(null);
+  useAutoFocus(firstFieldRef);
+
   return (
     <Container>
       <SubsectionHeader top={0}>{__('pim_common.general_properties')}</SubsectionHeader>
@@ -47,7 +51,7 @@ const PropertyTab = ({
         {null !== locales &&
           locales.map((locale, index) => (
             <TextField
-              autofocus={0 === index}
+              ref={0 === index ? firstFieldRef : undefined}
               id={`measurements.family.properties.label.${locale.code}`}
               label={locale.label}
               errors={filterErrors(errors, `labels[${locale.code}]`)}

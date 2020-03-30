@@ -39,6 +39,7 @@ const SubsectionHelperContainer = styled.div<{level: Level}>`
   display: flex;
   font-weight: 600;
   margin-bottom: 1px;
+  padding-right: 15px;
 `;
 
 const SubsectionHelperIconContainer = styled.div<{level: Level}>`

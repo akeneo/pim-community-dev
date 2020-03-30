@@ -6,6 +6,7 @@ import {RouterContext, RouterContextValue} from 'akeneomeasure/context/router-co
 import {NotifyContext, NotifyContextValue} from 'akeneomeasure/context/notify-context';
 import {UnsavedChangesContextValue, UnsavedChangesContext} from 'akeneomeasure/context/unsaved-changes-context';
 import {SecurityContext, SecurityContextValue} from 'akeneomeasure/context/security-context';
+import {ConfigContext, ConfigContextValue} from 'akeneomeasure/context/config-context';
 
 type DependenciesProviderProps = {
   dependencies: {
@@ -16,6 +17,7 @@ type DependenciesProviderProps = {
     router: RouterContextValue;
     notify: NotifyContextValue;
     security: SecurityContextValue;
+    config: ConfigContextValue;
   };
 };
 
@@ -27,7 +29,11 @@ const DependenciesProvider = ({dependencies, children}: PropsWithChildren<Depend
           <UnsavedChangesContext.Provider value={dependencies.unsavedChanges}>
             <UserContext.Provider value={dependencies.user}>
               <RouterContext.Provider value={dependencies.router}>
-                <NotifyContext.Provider value={dependencies.notify}>{children}</NotifyContext.Provider>
+                <NotifyContext.Provider value={dependencies.notify}>
+                  <ConfigContext.Provider value={dependencies.config}>
+                    {children}
+                  </ConfigContext.Provider>
+                </NotifyContext.Provider>
               </RouterContext.Provider>
             </UserContext.Provider>
           </UnsavedChangesContext.Provider>

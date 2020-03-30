@@ -21,6 +21,8 @@ const dependencies = {
   user: userContext.get.bind(userContext),
   notify: messenger.notify.bind(messenger),
   security: securityContext.isGranted.bind(securityContext),
+  // @ts-ignore
+  config: __moduleConfig,
 };
 
 export {dependencies};

@@ -1,4 +1,4 @@
-import React, {FormEvent, useCallback, useContext, useState} from 'react';
+import React, {FormEvent, useCallback, useContext, useRef, useState} from 'react';
 import {Modal, ModalBodyWithIllustration, ModalCloseButton, ModalTitle} from 'akeneomeasure/shared/components/Modal';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {UserContext} from 'akeneomeasure/context/user-context';
@@ -18,12 +18,15 @@ import {
   CreateUnitForm,
   createUnitFromForm,
   initializeCreateUnitForm,
+  validateCreateUnitForm,
 } from 'akeneomeasure/pages/create-unit/form/create-unit-form';
 import {useCreateUnitValidator} from 'akeneomeasure/pages/create-unit/hooks/use-create-unit-validator';
 import {CheckboxField} from 'akeneomeasure/shared/components/CheckboxField';
 import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
 import {Operation} from 'akeneomeasure/model/operation';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
+import {ConfigContext} from 'akeneomeasure/context/config-context';
+import {useAutoFocus} from 'akeneomeasure/shared/hooks/use-auto-focus';
 
 type CreateUnitProps = {
   measurementFamily: MeasurementFamily;
@@ -35,6 +38,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   const __ = useContext(TranslateContext);
   const notify = useContext(NotifyContext);
   const locale = useContext(UserContext)('uiLocale');
+  const config = useContext(ConfigContext);
 
   const [form, setFormValue, clearForm] = useForm<CreateUnitForm>(initializeCreateUnitForm());
   const validate = useCreateUnitValidator();
@@ -45,18 +49,27 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   }, [clearForm, onClose]);
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const measurementFamilyLabel = getMeasurementFamilyLabel(measurementFamily, locale);
-  const measurementFamilyCode = measurementFamily.code;
+
+  const firstFieldRef = useRef<HTMLInputElement | null>(null);
+  const focusFirstField = useAutoFocus(firstFieldRef);
 
   const handleAdd = useCallback(async () => {
     try {
       setErrors([]);
 
+      const formValidationErrors = validateCreateUnitForm(form, measurementFamily, __);
+      if (0 < formValidationErrors.length) {
+        setErrors(formValidationErrors);
+        return;
+      }
+
       const unit = createUnitFromForm(form, locale);
-      const response = await validate(measurementFamilyCode, unit);
+      const response = await validate(measurementFamily.code, unit);
 
       switch (response.valid) {
         case true:
           onNewUnit(unit);
+          focusFirstField();
           createAnotherUnit ? clearForm() : handleClose();
           break;
 
@@ -72,16 +85,19 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
     form,
     locale,
     validate,
-    measurementFamilyCode,
+    measurementFamily,
     notify,
     onNewUnit,
     createAnotherUnit,
     clearForm,
     handleClose,
     setErrors,
+    __,
   ]);
 
   useShortcut(Key.Escape, handleClose);
+  useShortcut(Key.Enter, handleAdd);
+  useShortcut(Key.NumpadEnter, handleAdd);
 
   return (
     <Modal>
@@ -99,6 +115,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
           )}
           <FormGroup>
             <TextField
+              ref={firstFieldRef}
               id="measurements.unit.create.code"
               label={__('pim_common.code')}
               value={form.code}
@@ -134,7 +151,12 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
             />
           </FormGroup>
         </Subsection>
-        <Button onClick={handleAdd}>{__('pim_common.add')}</Button>
+        <Button
+          onClick={handleAdd}
+          disabled={config.units_max <= measurementFamily.units.length}
+        >
+          {__('pim_common.add')}
+        </Button>
       </ModalBodyWithIllustration>
     </Modal>
   );

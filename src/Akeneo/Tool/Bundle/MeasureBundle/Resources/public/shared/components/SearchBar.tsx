@@ -1,9 +1,9 @@
-import React, {useContext, ChangeEvent} from 'react';
+import React, {useContext, ChangeEvent, useRef} from 'react';
 import styled from 'styled-components';
 import {SearchIcon} from 'akeneomeasure/shared/icons/SearchIcon';
 import {ResultCount} from 'akeneomeasure/shared/components/ResultCount';
 import {TranslateContext} from 'akeneomeasure/context/translate-context';
-import {useFocus} from 'akeneomeasure/shared/hooks/use-focus';
+import {useAutoFocus} from 'akeneomeasure/shared/hooks/use-auto-focus';
 
 const Container = styled.div`
   display: flex;
@@ -43,14 +43,15 @@ type SearchBarProps = {
 
 const SearchBar = ({className, count, searchValue, onSearchChange}: SearchBarProps) => {
   const __ = useContext(TranslateContext);
-  const [searchFocusRef] = useFocus();
+  const searchFieldRef = useRef<HTMLInputElement | null>(null);
+  useAutoFocus(searchFieldRef);
 
   return (
     <Container className={className}>
       <SearchContainer>
         <SearchIcon />
         <SearchInput
-          ref={searchFocusRef}
+          ref={searchFieldRef}
           placeholder={__('measurements.search.placeholder')}
           value={searchValue}
           onChange={(event: ChangeEvent<HTMLInputElement>) => onSearchChange(event.target.value)}

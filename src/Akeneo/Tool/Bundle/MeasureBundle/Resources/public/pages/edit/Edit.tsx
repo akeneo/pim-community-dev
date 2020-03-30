@@ -19,7 +19,7 @@ import {
   SecondaryActionsDropdownButton,
 } from 'akeneomeasure/shared/components/SecondaryActionsDropdownButton';
 import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
-import {filterErrors, ValidationError} from 'akeneomeasure/model/validation-error';
+import {filterErrors, ValidationError, partitionErrors} from 'akeneomeasure/model/validation-error';
 import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family-saver';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
@@ -34,7 +34,9 @@ import {
 } from 'akeneomeasure/hooks/use-measurement-family-remover';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {SecurityContext} from 'akeneomeasure/context/security-context';
+import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {ErrorBlock} from 'akeneomeasure/shared/components/ErrorBlock';
+import {ErrorFlashMessage} from 'akeneomeasure/shared/components/ErrorFlashMessage';
 
 enum Tab {
   Units = 'units',
@@ -73,17 +75,18 @@ const TabSelector = styled.div<{isActive: boolean}>`
   }
 `;
 
-const hasTabErrors = (tab: Tab, errors: ValidationError[]): boolean => {
-  const unitsErrorCount = filterErrors(errors, 'units').length;
-
-  switch (tab) {
-    case Tab.Units:
-      return 0 < unitsErrorCount;
-    case Tab.Properties:
-      return 0 < errors.length - unitsErrorCount;
-    default:
-      return false;
+const Errors = ({errors}: {errors: ValidationError[]}) => {
+  if (0 === errors.length) {
+    return null;
   }
+
+  return (
+    <>
+      {errors.map((error: ValidationError, index: number) => (
+        <ErrorFlashMessage key={index}>{error.message}</ErrorFlashMessage>
+      ))}
+    </>
+  );
 };
 
 const Edit = () => {
@@ -91,6 +94,7 @@ const Edit = () => {
   const history = useHistory();
   const locale = useContext(UserContext)('uiLocale');
   const isGranted = useContext(SecurityContext);
+  const config = useContext(ConfigContext);
   const {measurementFamilyCode} = useParams() as {measurementFamilyCode: string};
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.Units);
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
@@ -206,7 +210,12 @@ const Edit = () => {
 
   if (isGranted('akeneo_measurements_measurement_unit_add')) {
     buttons.push(
-      <Button color="blue" outline={true} onClick={openAddUnitModal}>
+      <Button
+        color="blue"
+        outline={true}
+        onClick={openAddUnitModal}
+        disabled={config.units_max <= measurementFamily.units.length}
+      >
         {__('measurements.unit.add')}
       </Button>
     );
@@ -218,6 +227,11 @@ const Edit = () => {
   ) {
     buttons.push(<Button onClick={handleSaveMeasurementFamily}>{__('pim_common.save')}</Button>);
   }
+
+  const [unitsErrors, propertiesErrors, otherErrors] = partitionErrors(errors, [
+    error => error.propertyPath.startsWith('units'),
+    error => error.propertyPath.startsWith('code') || error.propertyPath.startsWith('labels'),
+  ]);
 
   return (
     <>
@@ -260,12 +274,14 @@ const Edit = () => {
       </PageHeader>
 
       <PageContent>
+        <Errors errors={otherErrors}/>
         <TabsContainer>
           <Tabs>
             {Object.values(Tab).map((tab: Tab) => (
               <TabSelector key={tab} onClick={() => setCurrentTab(tab)} isActive={currentTab === tab}>
                 {__(`measurements.family.tab.${tab}`)}
-                {hasTabErrors(tab, errors) && <ErrorBadge />}
+                {tab === Tab.Units && 0 < unitsErrors.length && <ErrorBadge/>}
+                {tab === Tab.Properties && 0 < propertiesErrors.length && <ErrorBadge/>}
               </TabSelector>
             ))}
           </Tabs>
@@ -278,7 +294,7 @@ const Edit = () => {
             <UnitTab
               measurementFamily={measurementFamily}
               onMeasurementFamilyChange={setMeasurementFamily}
-              errors={filterErrors(errors, 'units')}
+              errors={filterErrors(unitsErrors, 'units')}
               selectedUnitCode={selectedUnitCode}
               selectUnitCode={selectUnitCode}
             />
@@ -287,7 +303,7 @@ const Edit = () => {
             <PropertyTab
               measurementFamily={measurementFamily}
               onMeasurementFamilyChange={setMeasurementFamily}
-              errors={errors}
+              errors={propertiesErrors}
             />
           )}
         </Container>
