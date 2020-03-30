@@ -107,4 +107,6 @@ interface RuleDefinitionInterface
      * @return Collection of RuleDefinitionInterface
      */
     public function getTranslations(): Collection;
+
+    public function setLabel(string $locale, string $label): void;
 }

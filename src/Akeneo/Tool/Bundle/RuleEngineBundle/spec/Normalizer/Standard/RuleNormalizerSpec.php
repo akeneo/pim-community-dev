@@ -3,6 +3,8 @@
 namespace spec\Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\Standard;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslation;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -34,6 +36,16 @@ class RuleNormalizerSpec extends ObjectBehavior
             'conditions' => ['my conditions should be here'],
             'actions' => ['my actions should be there'],
         ]);
+        $translationEn = new RuleDefinitionTranslation();
+        $translationEn->setLocale('en_US');
+        $translationEn->setLabel('Tshirt price');
+        $translationFr = new RuleDefinitionTranslation();
+        $translationFr->setLocale('fr_FR');
+        $translationFr->setLabel('Prix Tshirt');
+        $definition->getTranslations()->willReturn(new ArrayCollection([
+            $translationEn,
+            $translationFr
+        ]));
 
         $this->normalize($definition, Argument::cetera())->shouldReturn(
             [
@@ -42,6 +54,10 @@ class RuleNormalizerSpec extends ObjectBehavior
                 'priority' => 100,
                 'conditions' => ['my conditions should be here'],
                 'actions' => ['my actions should be there'],
+                'labels' => [
+                    'en_US' => 'Tshirt price',
+                    'fr_FR' => 'Prix Tshirt'
+                ]
             ]
         );
     }

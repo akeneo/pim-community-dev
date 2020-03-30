@@ -6,6 +6,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalizati
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslation;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -13,6 +14,7 @@ use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -129,6 +131,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
                 ],
             ]
         );
+        $rule->getTranslations()->willReturn(new ArrayCollection([]));
 
         $definition = new RuleDefinition();
         $definition->setCode('discharge_fr_description');
@@ -230,6 +233,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
                 ],
             ]
         );
+        $rule->getTranslations()->willReturn(new ArrayCollection([]));
 
         $definition = new RuleDefinition();
         $definition->setCode('discharge_fr_description');
