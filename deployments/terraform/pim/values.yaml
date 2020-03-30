@@ -107,6 +107,9 @@ pim:
     requests:
       cpu: "200m"
       memory: "512Mi"
+  elasticsearch:
+    settings:
+      totalFieldsLimit: 10000
   defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
   defaultAdminUser:
     login : nil # Fill me
