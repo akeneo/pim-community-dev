@@ -21,13 +21,10 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
-use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Translation\Reader\TranslationReaderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

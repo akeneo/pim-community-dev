@@ -185,22 +185,22 @@ class RuleDefinition implements RuleDefinitionInterface
         return $this->translations;
     }
 
-
-    public function setLabel(string $locale, string $label): void
+    public function setLabel(string $locale, string $label): RuleDefinitionInterface
     {
         foreach ($this->translations as $translation) {
             /** @var $translation RuleDefinitionTranslationInterface */
             if ($translation->getLocale() === $locale) {
                 $translation->setLabel($label);
 
-                return;
+                return $this;
             }
         }
         $translation = new RuleDefinitionTranslation();
         $translation->setLocale($locale);
         $translation->setLabel($label);
         $translation->setForeignKey($this);
-
         $this->translations->add($translation);
+
+        return $this;
     }
 }
