@@ -54,7 +54,7 @@ final class ProductTarget
 
     public static function fromNormalized(array $normalized): self
     {
-        Assert::keyExists($normalized, 'field', 'Concatenate target configuration requires a "field" key.');
+        Assert::keyExists($normalized, 'field', 'Target configuration requires a "field" key.');
 
         return new self($normalized['field'], $normalized['scope'] ?? null, $normalized['locale'] ?? null);
     }
