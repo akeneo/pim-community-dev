@@ -2,7 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration;
 
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Yaml\Parser;
 
@@ -22,7 +21,7 @@ class Loader
     /** @var array */
     private $configurationFiles;
 
-    /** @var ParameterBag */
+    /** @var ParameterBagInterface */
     private $parameterBag;
 
     /**
