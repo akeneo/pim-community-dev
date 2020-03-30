@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
+namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\SaveMeasurementFamily;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -17,7 +17,7 @@ class StandardUnitCodeCannotBeChanged extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_measurement.validation.measurement_family.standard_unit_code_cannot_be_changed';
+        return 'akeneo_measurement.validation.save_measurement_family.standard_unit_code_cannot_be_changed';
     }
 
     public function getTargets()

@@ -30,24 +30,24 @@ class CountValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($saveMeasurementFamilyCommand, Constraint $constraint)
+    public function validate($createMeasurementFamilyCommand, Constraint $constraint)
     {
         if (!$constraint instanceof Count) {
             throw new UnexpectedTypeException($constraint, Count::class);
         }
 
-        if (!$saveMeasurementFamilyCommand instanceof CreateMeasurementFamilyCommand) {
-            throw new UnexpectedTypeException($saveMeasurementFamilyCommand, CreateMeasurementFamilyCommand::class);
+        if (!$createMeasurementFamilyCommand instanceof CreateMeasurementFamilyCommand) {
+            throw new UnexpectedTypeException(createMeasurementFamilyCommand, CreateMeasurementFamilyCommand::class);
         }
 
-        $excludedMeasurementFamilyCode = MeasurementFamilyCode::fromString($saveMeasurementFamilyCommand->code);
+        $excludedMeasurementFamilyCode = MeasurementFamilyCode::fromString($createMeasurementFamilyCommand->code);
 
         $count = $this->measurementFamilyRepository->countAllOthers($excludedMeasurementFamilyCode);
 
         if ($count >= $this->max) {
             $this->context->buildViolation(Count::MAX_MESSAGE)
                 ->setParameter('%limit%', $this->max)
-                ->setInvalidValue($saveMeasurementFamilyCommand)
+                ->setInvalidValue($createMeasurementFamilyCommand)
                 ->setPlural((int)$this->max)
                 ->addViolation();
         }

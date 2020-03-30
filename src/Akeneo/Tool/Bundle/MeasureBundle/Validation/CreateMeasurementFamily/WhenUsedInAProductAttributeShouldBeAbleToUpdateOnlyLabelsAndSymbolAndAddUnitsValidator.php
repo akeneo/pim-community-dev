@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
+namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily;
 
 use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
-use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
+use Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
@@ -84,7 +84,7 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
         }
     }
 
-    private function isTryingToRemoveAUnit(MeasurementFamily $measurementFamily, SaveMeasurementFamilyCommand $saveMeasurementFamily): array
+    private function isTryingToRemoveAUnit(MeasurementFamily $measurementFamily, CreateMeasurementFamilyCommand $saveMeasurementFamily): array
     {
         $normalizedMeasurementFamily = $measurementFamily->normalize();
         $actualUnitCodes = array_map(
@@ -102,7 +102,7 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
 
     private function isTryingToUpdateTheConvertionOperations(
         MeasurementFamily $measurementFamily,
-        SaveMeasurementFamilyCommand $saveMeasurementFamily
+        CreateMeasurementFamilyCommand $saveMeasurementFamily
     ): array {
         $serializedUpdatedOperationsPerUnit = $this->serializeUpdatedOperationsPerUnit($saveMeasurementFamily);
         $serializedActualOperationsPerUnit = $this->serializeActualOperationsPerUnit($measurementFamily);
@@ -118,7 +118,7 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
         return $unitsBeingUpdated;
     }
 
-    private function serializeUpdatedOperationsPerUnit(SaveMeasurementFamilyCommand $saveMeasurementFamily): array
+    private function serializeUpdatedOperationsPerUnit(CreateMeasurementFamilyCommand $saveMeasurementFamily): array
     {
         $operationsPerUnit = [];
         foreach ($saveMeasurementFamily->units as $unit) {

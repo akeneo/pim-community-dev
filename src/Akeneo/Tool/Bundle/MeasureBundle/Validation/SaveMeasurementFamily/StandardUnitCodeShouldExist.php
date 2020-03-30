@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
+namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\SaveMeasurementFamily;
 
 use Symfony\Component\Validator\Constraint;
 

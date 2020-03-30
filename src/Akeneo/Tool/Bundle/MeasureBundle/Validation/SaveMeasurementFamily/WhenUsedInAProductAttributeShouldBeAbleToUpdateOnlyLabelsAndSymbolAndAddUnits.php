@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
+namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\SaveMeasurementFamily;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -23,6 +23,6 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
 
     public function validatedBy(): string
     {
-        return 'akeneo_measure.validator.asset.when_used_in_a_product_attribute_should_be_able_to_update_only_labels_and_symbol_and_add_units';
+        return 'akeneo_measurement.validation.save_measurement_family.when_used_in_a_product_attribute_should_be_able_to_update_only_labels_and_symbol_and_add_units';
     }
 }

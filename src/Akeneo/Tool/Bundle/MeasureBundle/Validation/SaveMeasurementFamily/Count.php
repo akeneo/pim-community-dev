@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
+namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\SaveMeasurementFamily;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -20,7 +20,7 @@ class Count extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_measurement.validation.measurement_family.count';
+        return 'akeneo_measurement.validation.save_measurement_family.count';
     }
 
     public function getTargets()
