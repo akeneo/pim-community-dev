@@ -31,7 +31,6 @@ class GroupFieldClearerSpec extends ObjectBehavior
 
     function it_removes_all_groups_of_a_product()
     {
-
         $product = new Product();
         $groups = new ArrayCollection();
         $groups->add(new Group());

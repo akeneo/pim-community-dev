@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
@@ -33,7 +34,6 @@ class AssociationFieldClearerSpec extends ObjectBehavior
 
     function it_removes_all_association_of_a_product()
     {
-
         $product = new Product();
         $associations = new ArrayCollection();
         $associations->add(new ProductAssociation());
@@ -41,12 +41,11 @@ class AssociationFieldClearerSpec extends ObjectBehavior
         $product->setAssociations($associations);
 
         $this->clear($product, 'associations');
-        Assert::count($product->getAssociations(), 0);
+        Assert::same($this->getAssociationsCount($product), 0);
     }
 
     function it_removes_all_association_of_a_product_model()
     {
-
         $productModel = new ProductModel();
         $associations = new ArrayCollection();
         $associations->add(new ProductModelAssociation());
@@ -54,6 +53,18 @@ class AssociationFieldClearerSpec extends ObjectBehavior
         $productModel->setAssociations($associations);
 
         $this->clear($productModel, 'associations');
-        Assert::count($productModel->getAssociations(), 0);
+        Assert::same($this->getAssociationsCount($productModel), 0);
+    }
+
+    private function getAssociationsCount(EntityWithAssociationsInterface $entity): int
+    {
+        $count = 0;
+        foreach ($entity->getAssociations() as $association) {
+            $count += $association->getProducts()->count();
+            $count += $association->getProductModels()->count();
+            $count += $association->getGroups()->count();
+        };
+
+        return $count;
     }
 }

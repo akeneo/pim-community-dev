@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Webmozart\Assert\Assert;
 
 /**
@@ -35,7 +35,15 @@ final class AssociationFieldClearer implements ClearerInterface
             sprintf('The clearer does not handle the "%s" property.', $property)
         );
 
-        // getAssociations() can return an array or a Collection. We handle both.
-        $entity->setAssociations(new ArrayCollection());
+        if ($entity instanceof EntityWithAssociationsInterface) {
+            // getAssociations() can return an array or a Collection. We handle both.
+            // We cannot clear the association directly, doctrine does not understand. We have to clear the
+            // products,m product models and groups of each assocations.
+            foreach ($entity->getAssociations() as $association) {
+                $association->getProducts()->clear();
+                $association->getProductModels()->clear();
+                $association->getGroups()->clear();
+            }
+        }
     }
 }

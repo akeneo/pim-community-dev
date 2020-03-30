@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field;
 
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
+use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Webmozart\Assert\Assert;
 
@@ -35,6 +36,11 @@ final class CategoryFieldClearer implements ClearerInterface
             sprintf('The clearer does not handle the "%s" property.', $property)
         );
 
-        $entity->setCategories(new ArrayCollection());
+        if ($entity instanceof CategoryAwareInterface) {
+            // The `$entity->getCategories()->clear();` does not work on ProductModel. We have to remove one by one.
+            foreach ($entity->getCategories() as $category) {
+                $entity->removeCategory($category);
+            }
+        }
     }
 }

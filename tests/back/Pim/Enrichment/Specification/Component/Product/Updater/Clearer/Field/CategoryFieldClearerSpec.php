@@ -32,7 +32,6 @@ class CategoryFieldClearerSpec extends ObjectBehavior
 
     function it_removes_all_categories_of_a_product()
     {
-
         $product = new Product();
         $categories = new ArrayCollection();
         $categories->add(new Category());
@@ -45,7 +44,6 @@ class CategoryFieldClearerSpec extends ObjectBehavior
 
     function it_removes_all_categories_of_a_product_model()
     {
-
         $productModel = new ProductModel();
         $categories = new ArrayCollection();
         $categories->add(new Category());
