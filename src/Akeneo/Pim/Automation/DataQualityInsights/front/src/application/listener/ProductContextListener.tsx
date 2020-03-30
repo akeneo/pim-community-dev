@@ -2,10 +2,12 @@ import React, {FunctionComponent, useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
 import {Product} from "../../domain";
 import {getProductFamilyInformationAction, initializeProductAction} from "../../infrastructure/reducer";
-import {fetchFamilyInformation, fetchProduct} from "../../infrastructure/fetcher";
+import {fetchFamilyInformation} from "../../infrastructure/fetcher";
+import ProductFetcher from '../../infrastructure/fetcher/ProductFetcher';
 
 interface ProductContextListenerProps {
   product: Product;
+  productFetcher: ProductFetcher;
 }
 
 export const DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE = 'data-quality:product:show_attribute';
@@ -17,7 +19,7 @@ export const DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY = 'data-quality:das
 export const DATA_QUALITY_INSIGHTS_PRODUCT_SAVING = 'data-quality:product:saving';
 export const DATA_QUALITY_INSIGHTS_PRODUCT_SAVED = 'data-quality:product:saved';
 
-const ProductContextListener: FunctionComponent<ProductContextListenerProps> = ({product}) => {
+const ProductContextListener: FunctionComponent<ProductContextListenerProps> = ({product, productFetcher}) => {
   const [productHasToBeReloaded, setProductHasToBeReloaded] = useState(false);
   const dispatchAction = useDispatch();
 
@@ -57,8 +59,8 @@ const ProductContextListener: FunctionComponent<ProductContextListenerProps> = (
   useEffect(() => {
     if (productHasToBeReloaded) {
       (async () => {
-        const data = await fetchProduct(product.meta.id as number);
-        dispatchAction(initializeProductAction(data as Product));
+        const data = await productFetcher(product.meta.id as number);
+        dispatchAction(initializeProductAction(data));
         setProductHasToBeReloaded(false);
       })();
     }

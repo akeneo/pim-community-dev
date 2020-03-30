@@ -22,4 +22,6 @@ interface CriterionEvaluationRepositoryInterface
     public function update(Write\CriterionEvaluationCollection $criteriaEvaluations): void;
 
     public function purgeUntil(\DateTimeImmutable $date): void;
+
+    public function deleteUnknownProductsPendingEvaluations(): void;
 }

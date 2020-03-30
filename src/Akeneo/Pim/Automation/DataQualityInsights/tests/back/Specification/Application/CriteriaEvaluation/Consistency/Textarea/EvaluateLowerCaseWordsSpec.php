@@ -13,11 +13,15 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Textarea;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCodesInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleDataCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
@@ -30,17 +34,12 @@ use PhpSpec\ObjectBehavior;
 
 final class EvaluateLowerCaseWordsSpec extends ObjectBehavior
 {
-    public function let(
-        BuildProductValuesInterface $buildProductValues,
-        GetProductAttributesCodesInterface $getProductAttributesCodes,
-        GetLocalesByChannelQueryInterface $localesByChannelQuery
-    ) {
-        $this->beConstructedWith($buildProductValues, $getProductAttributesCodes, $localesByChannelQuery);
+    public function let(GetLocalesByChannelQueryInterface $localesByChannelQuery)
+    {
+        $this->beConstructedWith($localesByChannelQuery);
     }
 
     public function it_sets_the_result_status_as_not_applicable_when_a_product_has_no_values_to_evaluate(
-        BuildProductValuesInterface $buildProductValues,
-        GetProductAttributesCodesInterface $getProductAttributesCodes,
         GetLocalesByChannelQueryInterface $localesByChannelQuery
     ) {
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
@@ -49,10 +48,6 @@ final class EvaluateLowerCaseWordsSpec extends ObjectBehavior
                 'mobile' => ['en_US'],
             ]
         ));
-
-        $productId = new ProductId(1);
-        $getProductAttributesCodes->getTextarea($productId)->willReturn([]);
-        $buildProductValues->buildForProductIdAndAttributeCodes($productId, [])->willReturn([]);
 
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable())
@@ -67,15 +62,13 @@ final class EvaluateLowerCaseWordsSpec extends ObjectBehavior
                 new ProductId(1),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending()
-            )
+            ),
+            new ProductValuesCollection()
         )->shouldBeLike($expectedResult);
     }
 
-    public function it_evaluates_product_values(
-        BuildProductValuesInterface $buildProductValues,
-        GetProductAttributesCodesInterface $getProductAttributesCodes,
-        GetLocalesByChannelQueryInterface $localesByChannelQuery
-    ) {
+    public function it_evaluates_product_values(GetLocalesByChannelQueryInterface $localesByChannelQuery)
+    {
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
             [
                 'ecommerce' => ['en_US', 'fr_FR'],
@@ -84,38 +77,51 @@ final class EvaluateLowerCaseWordsSpec extends ObjectBehavior
             ]
         ));
 
-        $productId = new ProductId(1);
-        $getProductAttributesCodes->getTextarea($productId)->willReturn(['textarea_1', 'textarea_2']);
-        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['textarea_1', 'textarea_2'])->willReturn([
-            'textarea_1' => [
-                'ecommerce' => [
-                    'en_US' => '<p><br></p>',
-                    'fr_FR' => '<div>Text HTML without error.</div>',
-                ],
-                'mobile' => [
-                    'en_US' => 'There is: one error',
-                    'fr_FR' => '<p>there is: two errors</p>',
-                ],
-                'print' => [
-                    'en_US' => null,
-                    'fr_FR' => null,
-                ],
+        $textarea1 = $this->givenAnAttributeOfTypeTextarea('textarea_1');
+        $textarea2 = $this->givenAnAttributeOfTypeTextarea('textarea_2');
+        $textNotToEvaluate = $this->givenAnAttributeOfTypeText('a_text');
+
+        $textarea1Values = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '<p><br></p>',
+                'fr_FR' => '<div>Text HTML without error.</div>',
             ],
-            'textarea_2' => [
-                'ecommerce' => [
-                    'en_US' => 'is there: three errors? yes.',
-                    'fr_FR' => 'is there: three errors? yes.',
-                ],
-                'mobile' => [
-                    'en_US' => 'four errors. is worst! than three? indeed.',
-                    'fr_FR' => 'five: errors. are? too: much!',
-                ],
-                'print' => [
-                    'en_US' => null,
-                    'fr_FR' => 'Text without error.',
-                ],
+            'mobile' => [
+                'en_US' => 'There is: one error',
+                'fr_FR' => '<p>there is: two errors</p>',
             ],
-        ]);
+            'print' => [
+                'en_US' => null,
+                'fr_FR' => null,
+            ],
+        ], function ($value) { return $value; });
+
+        $textarea2Values = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => 'is there: three errors? yes.',
+                'fr_FR' => 'is there: three errors? yes.',
+            ],
+            'mobile' => [
+                'en_US' => 'four errors. is worst! than three? indeed.',
+                'fr_FR' => 'five: errors. are? too: much!',
+            ],
+            'print' => [
+                'en_US' => null,
+                'fr_FR' => 'Text without error.',
+            ],
+        ], function ($value) { return $value; });
+
+        $textNotToEvaluateValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => 'Whatever',
+                'fr_FR' => 'Peu importe',
+            ],
+        ], function ($value) { return $value; });
+
+        $productValues = (new ProductValuesCollection())
+            ->add(new ProductValues($textarea1, $textarea1Values))
+            ->add(new ProductValues($textarea2, $textarea2Values))
+            ->add(new ProductValues($textNotToEvaluate, $textNotToEvaluateValues));
 
         $channelEcommerce = new ChannelCode('ecommerce');
         $channelMobile = new ChannelCode('mobile');
@@ -126,23 +132,23 @@ final class EvaluateLowerCaseWordsSpec extends ObjectBehavior
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelEcommerce, $localeEn, new Rate(28))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelEcommerce, $localeEn, ['textarea_2'])
+            ->addRateByAttributes($channelEcommerce, $localeEn, ['textarea_2' => 28])
 
             ->addRate($channelEcommerce, $localeFr, new Rate(64))
             ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelEcommerce, $localeFr, ['textarea_2'])
+            ->addRateByAttributes($channelEcommerce, $localeFr, ['textarea_1' => 100, 'textarea_2' => 28])
 
             ->addRate($channelMobile, $localeEn, new Rate(40))
             ->addStatus($channelMobile, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelMobile, $localeEn, ['textarea_1', 'textarea_2'])
+            ->addRateByAttributes($channelMobile, $localeEn, ['textarea_1' => 76, 'textarea_2' => 4])
 
             ->addRate($channelMobile, $localeFr, new Rate(26))
             ->addStatus($channelMobile, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelMobile, $localeFr, ['textarea_1', 'textarea_2'])
+            ->addRateByAttributes($channelMobile, $localeFr, ['textarea_1' => 52, 'textarea_2' => 0])
 
             ->addRate($channelPrint, $localeFr, new Rate(100))
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelPrint, $localeFr, [])
+            ->addRateByAttributes($channelPrint, $localeFr, ['textarea_2' => 100])
 
             ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::notApplicable())
         ;
@@ -154,7 +160,18 @@ final class EvaluateLowerCaseWordsSpec extends ObjectBehavior
                 new ProductId(1),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending()
-            )
+            ),
+            $productValues
         )->shouldBeLike($expectedResult);
+    }
+
+    private function givenAnAttributeOfTypeText(string $code): Attribute
+    {
+        return new Attribute(new AttributeCode($code), AttributeType::text(), true, false);
+    }
+
+    private function givenAnAttributeOfTypeTextarea(string $code): Attribute
+    {
+        return new Attribute(new AttributeCode($code), AttributeType::textarea(), true, false);
     }
 }

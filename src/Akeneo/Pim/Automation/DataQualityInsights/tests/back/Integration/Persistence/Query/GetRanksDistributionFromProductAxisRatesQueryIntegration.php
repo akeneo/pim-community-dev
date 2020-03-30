@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductAxisRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -23,7 +24,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetRanksDistributionFromProductAxisRatesQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository;
 use Akeneo\Test\Integration\TestCase;
 
 final class GetRanksDistributionFromProductAxisRatesQueryIntegration extends TestCase
@@ -36,14 +36,14 @@ final class GetRanksDistributionFromProductAxisRatesQueryIntegration extends Tes
     /** @var GetRanksDistributionFromProductAxisRatesQuery */
     private $query;
 
-    /** @var ProductAxisRateRepository */
+    /** @var ProductAxisRateRepositoryInterface */
     private $productAxisRateRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->productAxisRateRepository = $this->get(ProductAxisRateRepository::class);
+        $this->productAxisRateRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_axis_rate');
         $this->query = $this->get(GetRanksDistributionFromProductAxisRatesQuery::class);
         $this->lastProductId = 0;
     }

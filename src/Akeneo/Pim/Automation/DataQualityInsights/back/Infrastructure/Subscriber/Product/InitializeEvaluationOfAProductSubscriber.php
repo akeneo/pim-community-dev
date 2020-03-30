@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateAxesRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -22,7 +22,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     /** @var FeatureFlag */
     private $dataQualityInsightsFeature;
 
-    /** @var CreateProductsCriteriaEvaluations */
+    /** @var CreateCriteriaEvaluations */
     private $createProductsCriteriaEvaluations;
 
     /** @var LoggerInterface */
@@ -31,7 +31,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     /** @var EvaluatePendingCriteria */
     private $evaluatePendingCriteria;
 
-    /** @var ConsolidateProductAxisRates */
+    /** @var ConsolidateAxesRates */
     private $consolidateProductAxisRates;
 
     /** @var IndexProductRates */
@@ -39,10 +39,10 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
 
     public function __construct(
         FeatureFlag $dataQualityInsightsFeature,
-        CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations,
+        CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         LoggerInterface $logger,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateProductAxisRates $consolidateProductAxisRates,
+        ConsolidateAxesRates $consolidateProductAxisRates,
         IndexProductRates $indexProductRates
     ) {
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;

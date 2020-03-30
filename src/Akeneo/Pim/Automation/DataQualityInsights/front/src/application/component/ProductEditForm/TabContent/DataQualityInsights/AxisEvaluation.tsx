@@ -3,7 +3,7 @@ import {uniq as _uniq} from 'lodash';
 
 import Rate from "../../../Rate";
 import AllAttributesLink from "./AllAttributesLink";
-import {Evaluation, Product} from "../../../../../domain";
+import {Evaluation} from "../../../../../domain";
 import CriteriaList from "./CriteriaList";
 import AxisError from "./AxisError";
 import {
@@ -12,7 +12,6 @@ import {
   CriterionEvaluationResult
 } from "../../../../../domain/Evaluation.interface";
 import AxisGradingInProgress from "./AxisGradingInProgress";
-import {useProduct} from "../../../../../infrastructure/hooks";
 
 const __ = require('oro/translator');
 
@@ -34,8 +33,8 @@ const getAxisAttributesWithRecommendations = (criteria: CriterionEvaluationResul
   return _uniq(attributes);
 };
 
-const canDisplayAllAttributesLink = (attributes: string[], product: Product) => {
-  return product.meta.level === null && attributes.length > 0;
+const canDisplayAllAttributesLink = (attributes: string[]) => {
+  return attributes.length > 0;
 };
 
 const isAxisInError = (criteria: CriterionEvaluationResult[]) => {
@@ -55,7 +54,6 @@ const AxisEvaluation: FunctionComponent<AxisEvaluationProps> = ({evaluation, axi
   const allAttributes = getAxisAttributesWithRecommendations(criteria);
   const axisHasError: boolean = isAxisInError(criteria);
   const axisGradingInProgress: boolean = isAxisGradingInProgress(criteria);
-  const product = useProduct();
 
   return (
     <div className='AknSubsection AxisEvaluationContainer'>
@@ -65,7 +63,7 @@ const AxisEvaluation: FunctionComponent<AxisEvaluationProps> = ({evaluation, axi
           <Rate value={evaluation.rate ? evaluation.rate.rank : null}/>
         </span>
         <span>
-          {canDisplayAllAttributesLink(allAttributes, product) && (
+          {canDisplayAllAttributesLink(allAttributes) && (
             <AllAttributesLink axis={axis} attributes={allAttributes}/>
           )}
         </span>
@@ -74,7 +72,7 @@ const AxisEvaluation: FunctionComponent<AxisEvaluationProps> = ({evaluation, axi
       { axisHasError && (<AxisError/>) }
       { axisGradingInProgress && !axisHasError && (<AxisGradingInProgress/>) }
 
-      <CriteriaList axis={axis} criteria={criteria}/>
+      <CriteriaList axis={axis} criteria={criteria} evaluation={evaluation}/>
     </div>
   )
 };

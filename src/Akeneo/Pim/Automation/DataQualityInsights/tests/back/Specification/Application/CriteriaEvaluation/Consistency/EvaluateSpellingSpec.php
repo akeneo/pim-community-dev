@@ -14,17 +14,20 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleDataCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetTextAttributeCodesCompatibleWithSpellingQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
@@ -41,23 +44,17 @@ class EvaluateSpellingSpec extends ObjectBehavior
 {
     public function let(
         TextChecker $textChecker,
-        BuildProductValuesInterface $buildProductValues,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleValidator $supportedLocaleValidator,
-        GetTextAttributeCodesCompatibleWithSpellingQueryInterface $getTextAttributeCodesCompatibleWithSpellingQuery,
-        GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery,
         LoggerInterface $logger
     ) {
-        $this->beConstructedWith($textChecker, $buildProductValues, $localesByChannelQuery, $supportedLocaleValidator, $getTextAttributeCodesCompatibleWithSpellingQuery, $getTextareaAttributeCodesCompatibleWithSpellingQuery, $logger);
+        $this->beConstructedWith($textChecker, $localesByChannelQuery, $supportedLocaleValidator, $logger);
     }
 
     public function it_evaluates_rates_for_textarea_and_text_values(
         $textChecker,
-        $buildProductValues,
         $localesByChannelQuery,
         $supportedLocaleValidator,
-        $getTextAttributeCodesCompatibleWithSpellingQuery,
-        $getTextareaAttributeCodesCompatibleWithSpellingQuery,
         $logger,
         TextCheckResultCollection $textCheckResultTextareaEcommerceEn,
         TextCheckResultCollection $textCheckResultTextareaPrintEn,
@@ -80,37 +77,55 @@ class EvaluateSpellingSpec extends ObjectBehavior
             'print' => ['en_US', 'fr_FR'],
         ]));
 
-        $getTextareaAttributeCodesCompatibleWithSpellingQuery->byProductId($productId)->willReturn(['textarea_1']);
-        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['textarea_1'])->willReturn([
-            'textarea_1' => [
-                'ecommerce' => [
-                    'en_US' => '<p>Typos hapen. </p>',
-                    'fr_FR' => '<p>Les fautes de frappe arrivent. </p>',
-                    'it_IT' => '<p>I refusi accadono. </p>',
-                ],
-                'print' => [
-                    'en_US' => '<p>Typos happen. </p>',
-                    'fr_FR' => '',
-                    'it_IT' => 'I refusi accadono.',
-                ],
-            ]
-        ]);
+        $attributeText = $this->givenALocalizableAttributeOfTypeText('text_1');
+        $attributeTextNotToEvaluate = $this->givenANotLocalizableAttributeOfTypeText('text_2');
+        $attributeTextarea = $this->givenALocalizableAttributeOfTypeTextarea('textarea_1');
+        $attributeTextareaNotToEvaluate = $this->givenANotLocalizableAttributeOfTypeTextarea('textarea_2');
 
-        $getTextAttributeCodesCompatibleWithSpellingQuery->byProductId($productId)->willReturn(['text_1']);
-        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['text_1'])->willReturn([
-            'text_1' => [
-                'ecommerce' => [
-                    'en_US' => 'Typos happen.',
-                    'fr_FR' => 'Les fautes de frappe arrivent',
-                    'it_IT' => 'I refusi accadono.',
-                ],
-                'print' => [
-                    'en_US' => 'Typos hapen.',
-                    'fr_FR' => null,
-                    'it_IT' => 'I refusi accadono.',
-                ],
+        $textareaValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '<p>Typos hapen. </p>',
+                'fr_FR' => '<p>Les fautes de frappe arrivent. </p>',
+                'it_IT' => '<p>I refusi accadono. </p>',
             ],
-        ]);
+            'print' => [
+                'en_US' => '<p>Typos happen. </p>',
+                'fr_FR' => '',
+                'it_IT' => 'I refusi accadono.',
+            ],
+        ], function ($value) { return $value; });
+
+        $textValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => 'Typos happen.',
+                'fr_FR' => 'Les fautes de frappe arrivent',
+                'it_IT' => 'I refusi accadono.',
+            ],
+            'print' => [
+                'en_US' => 'Typos hapen.',
+                'fr_FR' => null,
+                'it_IT' => 'I refusi accadono.',
+            ],
+        ], function ($value) { return $value; });
+
+        $textValuesNotToEvaluate = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => 'Whatever',
+            ],
+        ], function ($value) { return $value; });
+
+        $textareaValuesNotToEvaluate = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => 'Whatever',
+                'fr_FR' => null,
+            ],
+        ], function ($value) { return $value; });
+
+        $productValues = (new ProductValuesCollection())
+            ->add(new ProductValues($attributeText, $textValues))
+            ->add(new ProductValues($attributeTextNotToEvaluate, $textValuesNotToEvaluate))
+            ->add(new ProductValues($attributeTextarea, $textareaValues))
+            ->add(new ProductValues($attributeTextareaNotToEvaluate, $textareaValuesNotToEvaluate));
 
         $channelEcommerce = new ChannelCode('ecommerce');
         $channelPrint = new ChannelCode('print');
@@ -156,16 +171,13 @@ class EvaluateSpellingSpec extends ObjectBehavior
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::notApplicable())
         ;
 
-        $this->evaluate($criterionEvaluation)->shouldBeLike($expectedEvaluationResult);
+        $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedEvaluationResult);
     }
 
     public function it_sets_status_in_error_when_the_text_checking_fails(
         TextChecker $textChecker,
-        BuildProductValuesInterface $buildProductValues,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleValidator $supportedLocaleValidator,
-        GetTextAttributeCodesCompatibleWithSpellingQueryInterface $getTextAttributeCodesCompatibleWithSpellingQuery,
-        GetTextareaAttributeCodesCompatibleWithSpellingQueryInterface $getTextareaAttributeCodesCompatibleWithSpellingQuery,
         TextCheckResultCollection $textCheckResultTextareaPrintEn,
         $logger
     ) {
@@ -182,18 +194,16 @@ class EvaluateSpellingSpec extends ObjectBehavior
             'print' => ['en_US', 'fr_FR'],
         ]));
 
-        $getTextAttributeCodesCompatibleWithSpellingQuery->byProductId($productId)->willReturn([]);
-        $buildProductValues->buildForProductIdAndAttributeCodes($productId, [])->willReturn([]);
+        $attributeTextarea = $this->givenALocalizableAttributeOfTypeTextarea('textarea_1');
+        $textareaValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'print' => [
+                'en_US' => 'Success',
+                'fr_FR' => 'Fail',
+            ],
+        ], function ($value) { return $value; });
 
-        $getTextareaAttributeCodesCompatibleWithSpellingQuery->byProductId($productId)->willReturn(['textarea_1']);
-        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['textarea_1'])->willReturn([
-            'textarea_1' => [
-                'print' => [
-                    'en_US' => 'Success',
-                    'fr_FR' => 'Fail',
-                ],
-            ]
-        ]);
+        $productValues = (new ProductValuesCollection())
+            ->add(new ProductValues($attributeTextarea, $textareaValues));
 
         $channelPrint = new ChannelCode('print');
         $localeEn = new LocaleCode('en_US');
@@ -218,6 +228,26 @@ class EvaluateSpellingSpec extends ObjectBehavior
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::error())
         ;
 
-        $this->evaluate($criterionEvaluation)->shouldBeLike($expectedEvaluationResult);
+        $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedEvaluationResult);
+    }
+
+    private function givenALocalizableAttributeOfTypeText(string $code): Attribute
+    {
+        return new Attribute(new AttributeCode($code), AttributeType::text(), true, false);
+    }
+
+    private function givenANotLocalizableAttributeOfTypeText(string $code): Attribute
+    {
+        return new Attribute(new AttributeCode($code), AttributeType::text(), false, false);
+    }
+
+    private function givenALocalizableAttributeOfTypeTextarea(string $code): Attribute
+    {
+        return new Attribute(new AttributeCode($code), AttributeType::textarea(), true, false);
+    }
+
+    private function givenANotLocalizableAttributeOfTypeTextarea(string $code): Attribute
+    {
+        return new Attribute(new AttributeCode($code), AttributeType::textarea(), false, false);
     }
 }

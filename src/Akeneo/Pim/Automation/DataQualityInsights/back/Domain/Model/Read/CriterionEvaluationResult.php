@@ -47,6 +47,23 @@ final class CriterionEvaluationResult
 
     public function getAttributes(): ChannelLocaleDataCollection
     {
+        $attributes = $this->data['attributes_with_rates'] ?? [];
+
+        if (count($attributes) > 0) {
+            return ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($attributes, function ($attributes) {
+                if (false === is_array($attributes)) {
+                    return [];
+                }
+
+                $attributes = array_keys(array_filter($attributes, function ($rate) {
+                    return $rate < 100;
+                }));
+
+                return $attributes;
+            });
+        }
+
+        // The 'attributes' array key is deprecated but kept here to allow backward compatibility
         $attributes = $this->data['attributes'] ?? [];
 
         return ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($attributes, function ($attributeCodes) {

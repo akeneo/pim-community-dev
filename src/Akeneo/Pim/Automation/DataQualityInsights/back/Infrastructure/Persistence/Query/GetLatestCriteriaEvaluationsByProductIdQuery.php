@@ -33,14 +33,20 @@ final class GetLatestCriteriaEvaluationsByProductIdQuery implements GetLatestCri
     /** @var Clock */
     private $clock;
 
-    public function __construct(Connection $db, Clock $clock)
+    /** @var string */
+    private $tableName;
+
+    public function __construct(Connection $db, Clock $clock, string $tableName)
     {
         $this->db = $db;
         $this->clock = $clock;
+        $this->tableName = $tableName;
     }
 
     public function execute(ProductId $productId): Read\CriterionEvaluationCollection
     {
+        $criterionEvaluationTable = $this->tableName;
+
         $sql = <<<SQL
 SELECT 
        latest_evaluation.id,
@@ -51,8 +57,8 @@ SELECT
        latest_evaluation.started_at,
        latest_evaluation.ended_at,
        latest_evaluation.result
-FROM pimee_data_quality_insights_criteria_evaluation AS latest_evaluation
-LEFT JOIN pimee_data_quality_insights_criteria_evaluation AS other_evaluation
+FROM $criterionEvaluationTable AS latest_evaluation
+LEFT JOIN $criterionEvaluationTable AS other_evaluation
     ON other_evaluation.product_id = :product_id
     AND latest_evaluation.criterion_code = other_evaluation.criterion_code
     AND latest_evaluation.created_at < other_evaluation.created_at

@@ -12,7 +12,7 @@ const fetchTitleSuggestion = async (product: Product, channel: string, locale: s
       Accept: "application/json"
     },
     // @ts-ignore
-    body: `productId=${encodeURIComponent(product.meta.id)}&productType=${encodeURIComponent(product.meta.model_type)}&channel=${encodeURIComponent(channel)}&locale=${encodeURIComponent(locale)}`
+    body: `productId=${encodeURIComponent(product.meta.id)}&channel=${encodeURIComponent(channel)}&locale=${encodeURIComponent(locale)}`
   });
 
   const data = await response.json();

@@ -13,11 +13,15 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Textarea;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCodesInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleDataCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
@@ -30,17 +34,12 @@ use PhpSpec\ObjectBehavior;
 
 final class EvaluateUppercaseWordsSpec extends ObjectBehavior
 {
-    public function let(
-        BuildProductValuesInterface $buildProductValues,
-        GetProductAttributesCodesInterface $getProductAttributesCodes,
-        GetLocalesByChannelQueryInterface $localesByChannelQuery
-    ) {
-        $this->beConstructedWith($buildProductValues, $getProductAttributesCodes, $localesByChannelQuery);
+    public function let(GetLocalesByChannelQueryInterface $localesByChannelQuery)
+    {
+        $this->beConstructedWith($localesByChannelQuery);
     }
 
     public function it_sets_the_result_status_as_not_applicable_when_a_product_has_no_values_to_evaluate(
-        BuildProductValuesInterface $buildProductValues,
-        GetProductAttributesCodesInterface $getProductAttributesCodes,
         GetLocalesByChannelQueryInterface $localesByChannelQuery
     ) {
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
@@ -49,10 +48,6 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
                 'mobile' => ['en_US', 'fr_FR'],
             ]
         ));
-
-        $productId = new ProductId(1);
-        $getProductAttributesCodes->getTextarea($productId)->willReturn([]);
-        $buildProductValues->buildForProductIdAndAttributeCodes($productId, [])->willReturn([]);
 
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable())
@@ -68,15 +63,13 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
                 new ProductId(1),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending()
-            )
+            ),
+            new ProductValuesCollection()
         )->shouldBeLike($expectedResult);
     }
 
-    public function it_evaluates_product_values(
-        BuildProductValuesInterface $buildProductValues,
-        GetProductAttributesCodesInterface $getProductAttributesCodes,
-        GetLocalesByChannelQueryInterface $localesByChannelQuery
-    ) {
+    public function it_evaluates_product_values(GetLocalesByChannelQueryInterface $localesByChannelQuery)
+    {
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
             [
                 'ecommerce' => ['en_US', 'fr_FR'],
@@ -85,52 +78,68 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
             ]
         ));
 
-        $productId = new ProductId(1);
-        $getProductAttributesCodes->getTextarea($productId)->willReturn(['textarea_1', 'textarea_2', 'textarea_3']);
-        $buildProductValues->buildForProductIdAndAttributeCodes($productId, ['textarea_1', 'textarea_2', 'textarea_3'])->willReturn([
-            'textarea_1' => [
-                'ecommerce' => [
-                    'en_US' => '<p><br></p>',
-                    'fr_FR' => 'Textarea1 text',
-                ],
-                'mobile' => [
-                    'en_US' => 'TEXTAREA1 TEXT',
-                    'fr_FR' => 'TEXTAREA1 TEXT',
-                ],
-                'print' => [
-                    'en_US' => null,
-                    'fr_FR' => null,
-                ],
+        $textarea1 = $this->givenAnAttributeOfTypeTextarea('textarea_1');
+        $textarea2 = $this->givenAnAttributeOfTypeTextarea('textarea_2');
+        $textarea3 = $this->givenAnAttributeOfTypeTextarea('textarea_3');
+        $textNotToEvaluate = $this->givenAnAttributeOfTypeText('text_not_to_evaluate');
+
+        $textarea1Values = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '<p><br></p>',
+                'fr_FR' => 'Textarea1 text',
             ],
-            'textarea_2' => [
-                'ecommerce' => [
-                    'en_US' => '<strong>textarea2 ecommerce éèâö</strong>',
-                    'fr_FR' => '<strong>TEXTAREA2 ECOMMERCE ÉÈÂÖ</strong>',
-                ],
-                'mobile' => [
-                    'en_US' => '<STRONG>TEXTAREA2 MOBILE EN_US</STRONG>',
-                    'fr_FR' => '<STRONG>Textarea2 mobile fr_fr</STRONG>',
-                ],
-                'print' => [
-                    'en_US' => null,
-                    'fr_FR' => 'text',
-                ],
+            'mobile' => [
+                'en_US' => 'TEXTAREA1 TEXT',
+                'fr_FR' => 'TEXTAREA1 TEXT',
             ],
-            'textarea_3' => [
-                'ecommerce' => [
-                    'en_US' => '123456',
-                    'fr_FR' => '123 456',
-                ],
-                'mobile' => [
-                    'en_US' => '12.34',
-                    'fr_FR' => '12-23',
-                ],
-                'print' => [
-                    'en_US' => '12_34',
-                    'fr_FR' => '1234!!',
-                ],
+            'print' => [
+                'en_US' => null,
+                'fr_FR' => null,
             ],
-        ]);
+        ], function ($value) { return $value; });
+
+        $textarea2Values = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '<strong>textarea2 ecommerce éèâö</strong>',
+                'fr_FR' => '<strong>TEXTAREA2 ECOMMERCE ÉÈÂÖ</strong>',
+            ],
+            'mobile' => [
+                'en_US' => '<STRONG>TEXTAREA2 MOBILE EN_US</STRONG>',
+                'fr_FR' => '<STRONG>Textarea2 mobile fr_fr</STRONG>',
+            ],
+            'print' => [
+                'en_US' => null,
+                'fr_FR' => 'text',
+            ],
+        ], function ($value) { return $value; });
+
+        $textarea3Values = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '123456',
+                'fr_FR' => '123 456',
+            ],
+            'mobile' => [
+                'en_US' => '12.34',
+                'fr_FR' => '12-23',
+            ],
+            'print' => [
+                'en_US' => '12_34',
+                'fr_FR' => '1234!!',
+            ],
+        ], function ($value) { return $value; });
+
+        $textNotToEvaluateValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => 'Whatever',
+                'fr_FR' => 'Peu importe',
+            ],
+        ], function ($value) { return $value; });
+
+        $productValues = (new ProductValuesCollection())
+            ->add(new ProductValues($textarea1, $textarea1Values))
+            ->add(new ProductValues($textarea2, $textarea2Values))
+            ->add(new ProductValues($textarea3, $textarea3Values))
+            ->add(new ProductValues($textNotToEvaluate, $textNotToEvaluateValues));
 
         $channelEcommerce = new ChannelCode('ecommerce');
         $channelMobile = new ChannelCode('mobile');
@@ -171,7 +180,18 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
                 new ProductId(1),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending()
-            )
+            ),
+            $productValues
         )->shouldBeLike($expectedResult);
+    }
+
+    private function givenAnAttributeOfTypeText(string $code): Attribute
+    {
+        return new Attribute(new AttributeCode($code), AttributeType::text(), true, false);
+    }
+
+    private function givenAnAttributeOfTypeTextarea(string $code): Attribute
+    {
+        return new Attribute(new AttributeCode($code), AttributeType::textarea(), true, false);
     }
 }

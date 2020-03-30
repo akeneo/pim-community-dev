@@ -28,16 +28,22 @@ class IgnoredTitleSuggestionRepository implements IgnoredTitleSuggestionReposito
 {
     private $db;
 
-    public function __construct(Connection $db)
+    /** @var string */
+    private $tableName;
+
+    public function __construct(Connection $db, string $tableName)
     {
         $this->db = $db;
+        $this->tableName = $tableName;
     }
 
     public function find(ProductId $productId): ?Read\IgnoredTitleSuggestion
     {
+        $tableName = $this->tableName;
+
         $query = <<<SQL
 SELECT product_id, ignored_suggestions
-FROM pimee_data_quality_insights_title_formatting_ignore
+FROM $tableName
 WHERE product_id = :product_id
 SQL;
         $statement = $this->db->executeQuery($query, [
@@ -60,6 +66,8 @@ SQL;
 
     public function save(Write\IgnoredTitleSuggestion $ignoredTitleSuggestion): void
     {
+        $tableName = $this->tableName;
+
         $channel = strval($ignoredTitleSuggestion->getChannel());
         $locale = strval($ignoredTitleSuggestion->getLocale());
 
@@ -70,7 +78,7 @@ SQL;
         ];
 
         $query = <<<SQL
-INSERT INTO  pimee_data_quality_insights_title_formatting_ignore (product_id, ignored_suggestions)
+INSERT INTO  $tableName (product_id, ignored_suggestions)
 VALUES (:product_id, :ignored_suggestions)
 ON DUPLICATE KEY UPDATE
     ignored_suggestions = JSON_MERGE_PATCH(ignored_suggestions, :ignored_suggestions)

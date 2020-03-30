@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpdatedProductsWithoutUpToDateEvaluationQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductCriterionEvaluationRepository;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\AssertionFailedError;
@@ -40,7 +40,7 @@ final class GetUpdatedProductsWithoutUpToDateEvaluationQueryIntegration extends 
 
         $this->db = $this->get('database_connection');
         $this->query = $this->get(GetUpdatedProductsWithoutUpToDateEvaluationQuery::class);
-        $this->criterionEvaluationRepository = $this->get(CriterionEvaluationRepository::class);
+        $this->criterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
     }
 
     protected function getConfiguration()

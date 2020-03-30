@@ -16,16 +16,16 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 class GetProductAxesRates
 {
-    /** @var GetLatestProductAxesRatesQueryInterface */
+    /** @var GetLatestAxesRatesQueryInterface */
     private $getLatestProductAxesRatesQuery;
 
-    public function __construct(GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery)
+    public function __construct(GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery)
     {
         $this->getLatestProductAxesRatesQuery = $getLatestProductAxesRatesQuery;
     }

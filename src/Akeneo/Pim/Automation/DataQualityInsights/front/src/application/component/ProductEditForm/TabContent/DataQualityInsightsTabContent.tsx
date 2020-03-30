@@ -2,17 +2,21 @@ import React, {Fragment, FunctionComponent} from 'react';
 import {get as _get} from 'lodash';
 import AxisEvaluation from "./DataQualityInsights/AxisEvaluation";
 import {useCatalogContext, useFetchProductDataQualityEvaluation} from "../../../../infrastructure/hooks";
-import {Evaluation} from "../../../../domain";
+import {Evaluation, Product} from '../../../../domain';
 import TabContentWithPortalDecorator from "./TabContentWithPortalDecorator";
-import {DATA_QUALITY_INSIGHTS_TAB_NAME} from "../../../constant";
+import {PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME, PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME} from '../../../constant';
+import ProductEvaluationFetcher from "../../../../infrastructure/fetcher/ProductEvaluationFetcher";
 
 export const CONTAINER_ELEMENT_ID = 'data-quality-insights-product-tab-content';
 
-export interface DataQualityInsightsTabContentProps {}
+export interface DataQualityInsightsTabContentProps {
+  productEvaluationFetcher: ProductEvaluationFetcher;
+  product: Product;
+}
 
-const BaseDataQualityInsightsTabContent: FunctionComponent<DataQualityInsightsTabContentProps> = () => {
+const BaseDataQualityInsightsTabContent: FunctionComponent<DataQualityInsightsTabContentProps> = ({productEvaluationFetcher}: DataQualityInsightsTabContentProps) => {
   const {locale, channel} = useCatalogContext();
-  const productEvaluation = useFetchProductDataQualityEvaluation();
+  const productEvaluation = useFetchProductDataQualityEvaluation(productEvaluationFetcher);
 
   return (
     <>
@@ -42,10 +46,12 @@ const BaseDataQualityInsightsTabContent: FunctionComponent<DataQualityInsightsTa
 };
 
 const DataQualityInsightsTabContent: FunctionComponent<DataQualityInsightsTabContentProps> = (props) => {
+  const {product} = props;
+  const tabName = product.meta.model_type === "product" ? PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME : PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME;
   return TabContentWithPortalDecorator(BaseDataQualityInsightsTabContent)({
     ...props,
     containerId: CONTAINER_ELEMENT_ID,
-    tabName: DATA_QUALITY_INSIGHTS_TAB_NAME,
+    tabName: tabName,
   });
 };
 

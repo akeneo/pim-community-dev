@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateDashboardRates;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\DictionarySource;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateProductsCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
@@ -45,17 +45,26 @@ final class DemoHelperCommand extends Command
     /** @var Connection */
     private $db;
 
-    /** @var CreateProductsCriteriaEvaluations */
+    /** @var CreateCriteriaEvaluations */
     private $createProductsCriteriaEvaluations;
 
     /** @var EvaluatePendingCriteria */
     private $evaluatePendingCriteria;
 
-    /** @var ConsolidateProductAxisRates */
+    /** @var ConsolidateAxesRates */
     private $consolidateProductAxisRates;
 
     /** @var IndexProductRates */
     private $indexProductRates;
+
+    /** @var CreateCriteriaEvaluations */
+    private $createProductModelsCriteriaEvaluations;
+
+    /** @var EvaluatePendingCriteria */
+    private $evaluateProductModelsPendingCriteria;
+
+    /** @var ConsolidateAxesRates */
+    private $consolidateProductModelsAxisRates;
 
     public function __construct(
         DictionarySource $productValueInDatabaseDictionarySource,
@@ -63,10 +72,13 @@ final class DemoHelperCommand extends Command
         ConsolidateDashboardRates $consolidateDashboardRates,
         DashboardRatesProjectionRepository $dashboardRatesProjectionRepository,
         Connection $db,
-        CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations,
+        CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateProductAxisRates $consolidateProductAxisRates,
-        IndexProductRates $indexProductRates
+        ConsolidateAxesRates $consolidateProductAxisRates,
+        IndexProductRates $indexProductRates,
+        CreateCriteriaEvaluations $createProductModelsCriteriaEvaluations,
+        EvaluatePendingCriteria $evaluateProductModelsPendingCriteria,
+        ConsolidateAxesRates $consolidateProductModelsAxisRates
     ) {
         $this->productValueInDatabaseDictionarySource = $productValueInDatabaseDictionarySource;
         $this->aspellDictionaryGenerator = $aspellDictionaryGenerator;
@@ -77,6 +89,9 @@ final class DemoHelperCommand extends Command
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
         $this->consolidateProductAxisRates = $consolidateProductAxisRates;
         $this->indexProductRates = $indexProductRates;
+        $this->createProductModelsCriteriaEvaluations = $createProductModelsCriteriaEvaluations;
+        $this->evaluateProductModelsPendingCriteria = $evaluateProductModelsPendingCriteria;
+        $this->consolidateProductModelsAxisRates = $consolidateProductModelsAxisRates;
 
         parent::__construct();
     }
@@ -143,8 +158,12 @@ final class DemoHelperCommand extends Command
 
         if ($input->getOption('full-catalog-evaluation') === true) {
             $io->section('Execute synchronous criteria evaluation for all products');
-            $this->fullSynchronousCriteriaEvaluation($io);
-            $io->success('full criteria evaluation done');
+            $this->fullSynchronousProductsCriteriaEvaluation($io);
+            $io->success('full products criteria evaluation done');
+
+            $io->section('Execute synchronous criteria evaluation for all product models');
+            $this->fullSynchronousProductModelsCriteriaEvaluation($io);
+            $io->success('full products model criteria evaluation done');
         } else {
             $io->section('Execute synchronous criteria evaluation for one product of each family');
             $this->partialSynchronousCriteriaEvaluation($io);
@@ -320,9 +339,9 @@ final class DemoHelperCommand extends Command
         return $numberOfProducts;
     }
 
-    private function fullSynchronousCriteriaEvaluation(SymfonyStyle $io): void
+    private function fullSynchronousProductsCriteriaEvaluation(SymfonyStyle $io): void
     {
-        $query = $this->db->executeQuery('select count(*) as nb from pim_catalog_product where product_model_id is null');
+        $query = $this->db->executeQuery('select count(*) as nb from pim_catalog_product');
         $nbProducts = $query->fetch();
 
         $nbProducts = intval($nbProducts['nb']);
@@ -337,12 +356,42 @@ final class DemoHelperCommand extends Command
         $progressBar->start();
 
         for ($i = 0; $i<$nbSteps; $i++) {
-            $stmt = $this->db->query('select id from pim_catalog_product where product_model_id is null LIMIT ' . $i*100 . ',100');
+            $stmt = $this->db->query('select id from pim_catalog_product LIMIT ' . $i*100 . ',100');
             $ids = array_map(function ($id) {
                 return intval($id);
             }, $stmt->fetchAll(FetchMode::COLUMN, 0));
 
             $this->evaluateProducts($ids);
+
+            $progressBar->advance(count($ids));
+        }
+
+        $progressBar->finish();
+    }
+
+    private function fullSynchronousProductModelsCriteriaEvaluation(SymfonyStyle $io): void
+    {
+        $query = $this->db->executeQuery('select count(*) as nb from pim_catalog_product_model');
+        $nbProducts = $query->fetch();
+
+        $nbProducts = intval($nbProducts['nb']);
+        if ($nbProducts===0) {
+            return;
+        }
+
+        $nbSteps = intval(ceil($nbProducts/100));
+
+        $io->comment(sprintf('Launch the evaluation of %d product models', $nbProducts));
+        $progressBar = new ProgressBar($io, $nbProducts);
+        $progressBar->start();
+
+        for ($i = 0; $i<$nbSteps; $i++) {
+            $stmt = $this->db->query('select id from pim_catalog_product_model LIMIT ' . $i*100 . ',100');
+            $ids = array_map(function ($id) {
+                return intval($id);
+            }, $stmt->fetchAll(FetchMode::COLUMN, 0));
+
+            $this->evaluateProductModels($ids);
 
             $progressBar->advance(count($ids));
         }
@@ -379,5 +428,16 @@ final class DemoHelperCommand extends Command
         $this->evaluatePendingCriteria->evaluateAllCriteria($ids);
         $this->consolidateProductAxisRates->consolidate($ids);
         $this->indexProductRates->execute($ids);
+    }
+
+    private function evaluateProductModels(array $ids): void
+    {
+        $productIds = array_map(function ($id) {
+            return new ProductId($id);
+        }, $ids);
+
+        $this->createProductModelsCriteriaEvaluations->create($productIds);
+        $this->evaluateProductModelsPendingCriteria->evaluateAllCriteria($ids);
+        $this->consolidateProductModelsAxisRates->consolidate($ids);
     }
 }

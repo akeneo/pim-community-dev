@@ -22,6 +22,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Criterion\LowerCaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisEvaluationCollection;
@@ -85,6 +86,157 @@ class GetProductEvaluationSpec extends ObjectBehavior
         $this->get($productId)->shouldBeLike($expectedEvaluation);
     }
 
+    public function it_handle_deprecated_improvable_attribute_structure(
+        GetLatestProductEvaluationQueryInterface $getLatestProductEvaluationQuery
+    ) {
+        $productId = new ProductId(39);
+        $productEvaluation = $this->givenADeprecatedProductEvaluation($productId);
+        $getLatestProductEvaluationQuery->execute($productId)->willReturn($productEvaluation);
+
+        $expectedEvaluation = [
+            "consistency" => [
+                "ecommerce" => [
+                    "en_US" => [
+                        "rate" => [
+                            "value" => 50,
+                            "rank" => "E",
+                        ],
+                        "criteria" => [
+                            [
+                                "code" =>"consistency_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_text_title_formatting",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" => "consistency_textarea_lowercase_words",
+                                "rate" => [
+                                    "value" => 50,
+                                    "rank" => "E",
+                                ],
+                                "improvable_attributes" => ["short_description", "long_description"],
+                                "status" => CriterionEvaluationResultStatus::DONE,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                        ],
+                    ],
+                    "fr_FR" => [
+                        "rate" => [
+                            "value" => null,
+                            "rank" => null,
+                        ],
+                        "criteria" => [
+                            [
+                                "code" =>"consistency_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_text_title_formatting",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" => "consistency_textarea_lowercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                        ],
+                    ],
+                ],
+                "mobile" => [
+                    "en_US" => [
+                        "rate" => [
+                            "value" => null,
+                            "rank" => null,
+                        ],
+                        "criteria" => [
+                            [
+                                "code" =>"consistency_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_text_title_formatting",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" => "consistency_textarea_lowercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                        ],
+                    ],
+                ]
+            ]
+        ];
+
+        $this->get($productId)->shouldBeLike($expectedEvaluation);
+    }
+
     private function generateCriterionEvaluation(ProductId $productId, string $code, string $status, ChannelLocaleRateCollection $resultRates, CriterionEvaluationResultStatusCollection $resultStatusCollection, array $resultData)
     {
         return new CriterionEvaluation(
@@ -125,9 +277,9 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ->add($channelCodeEcommerce, $localeCodeEn, CriterionEvaluationResultStatus::done());
 
         $completenessOfNonRequiredAttributesData = [
-            "attributes" => [
+            "attributes_with_rates" => [
                 "ecommerce" => [
-                    "en_US" => ["title", "meta_title"]
+                    "en_US" => ["title" => 50, "meta_title" => 50]
                 ]
             ]
         ];
@@ -139,8 +291,8 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ->add($channelCodeEcommerce, $localeCodeEn, CriterionEvaluationResultStatus::done());
 
         $completenessOfRequiredAttributesData = [
-            "attributes" => [
-                "ecommerce" => []
+            "attributes_with_rates" => [
+                "ecommerce" => ["long_description" => 100]
             ]
         ];
 
@@ -192,10 +344,10 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ->add($channelCodeMobile, $localeCodeEn, CriterionEvaluationResultStatus::done())
         ;
         $evaluateSpellingData = [
-            "attributes" => [
+            "attributes_with_rates" => [
                 "ecommerce" => [
-                    "en_US" => ["description"],
-                    "fr_FR" => ["description", "short_description"],
+                    "en_US" => ["description" => 86],
+                    "fr_FR" => ["description" => 68, "short_description" => 68],
                 ]
             ]
         ];
@@ -210,12 +362,12 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ->add($channelCodeMobile, $localeCodeEn, CriterionEvaluationResultStatus::done())
         ;
         $evaluateTitleFormattingData = [
-            "attributes" => [
+            "attributes_with_rates" => [
                 "ecommerce" => [
-                    "en_US" => ["title"],
+                    "en_US" => ["title" => 84],
                 ],
                 "mobile" => [
-                    "en_US" => ["title", "meta_title"]
+                    "en_US" => ["title" => 0, "meta_title" => 0]
                 ]
             ]
         ];
@@ -254,21 +406,21 @@ class GetProductEvaluationSpec extends ObjectBehavior
                         ],
                         "criteria" => [
                             [
-                                "code" => "completeness_of_non_required_attributes",
-                                "rate" => [
-                                    "value" => 50,
-                                    "rank" => "E",
-                                ],
-                                "improvable_attributes" => ["title", "meta_title"],
-                                "status" => CriterionEvaluationResultStatus::DONE,
-                            ],
-                            [
                                 "code" => "completeness_of_required_attributes",
                                 "rate" => [
                                     "value" => 100,
                                     "rank" => "A",
                                 ],
                                 "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::DONE,
+                            ],
+                            [
+                                "code" => "completeness_of_non_required_attributes",
+                                "rate" => [
+                                    "value" => 50,
+                                    "rank" => "E",
+                                ],
+                                "improvable_attributes" => ["title", "meta_title"],
                                 "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                         ],
@@ -280,7 +432,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                         ],
                         "criteria" => [
                             [
-                                "code" => "completeness_of_non_required_attributes",
+                                "code" => "completeness_of_required_attributes",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -289,7 +441,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                             [
-                                "code" => "completeness_of_required_attributes",
+                                "code" => "completeness_of_non_required_attributes",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -308,7 +460,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                         ],
                         "criteria" => [
                             [
-                                "code" => "completeness_of_non_required_attributes",
+                                "code" =>"completeness_of_required_attributes",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -317,7 +469,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                             [
-                                "code" =>"completeness_of_required_attributes",
+                                "code" => "completeness_of_non_required_attributes",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -359,6 +511,24 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 ],
                                 "status" => CriterionEvaluationResultStatus::DONE,
                             ],
+                            [
+                                "code" =>"consistency_textarea_lowercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
                         ],
                     ],
                     "fr_FR" => [
@@ -387,6 +557,24 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 ],
                                 "improvable_attributes" => [],
                                 "status" => CriterionEvaluationResultStatus::NOT_APPLICABLE,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_lowercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                         ],
                     ],
@@ -417,6 +605,24 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                    "title", "meta_title",
                                 ],
                                 "status" => CriterionEvaluationResultStatus::DONE,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_lowercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                         ],
                     ],
@@ -471,5 +677,52 @@ class GetProductEvaluationSpec extends ObjectBehavior
         }
 
         return $productEvaluations;
+    }
+
+    private function givenADeprecatedProductEvaluation(ProductId $productId): ProductEvaluation
+    {
+        $axesEvaluations = (new AxisEvaluationCollection())
+            ->add($this->givenADeprecatedConsistencyEvaluation($productId))
+        ;
+
+        return new ProductEvaluation($productId, $axesEvaluations);
+    }
+
+    private function givenADeprecatedConsistencyEvaluation(ProductId $productId): AxisEvaluation
+    {
+        $consistency = new Consistency();
+        $channelCodeEcommerce = new ChannelCode('ecommerce');
+        $localeCodeEn = new LocaleCode('en_US');
+
+
+        $consistencyRates = (new ChannelLocaleRateCollection())
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(50));
+
+        $lowercaseWordsRates = (new ChannelLocaleRateCollection())
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(50));
+
+        $lowercaseWordsAttributesDataDeprecatedFormat = [
+            "attributes" => [
+                "ecommerce" => [
+                    "en_US" => ["short_description", "long_description"]
+                ]
+            ]
+        ];
+
+        $lowercaseWordsStatus = (new CriterionEvaluationResultStatusCollection())
+            ->add($channelCodeEcommerce, $localeCodeEn, CriterionEvaluationResultStatus::done());
+
+        $consistencyCriteriaEvaluations = (new CriterionEvaluationCollection())
+            ->add($this->generateCriterionEvaluation(
+                $productId,
+                LowerCaseWords::CRITERION_CODE,
+                CriterionEvaluationStatus::DONE,
+                $lowercaseWordsRates,
+                $lowercaseWordsStatus,
+                $lowercaseWordsAttributesDataDeprecatedFormat
+            ))
+        ;
+
+        return new AxisEvaluation($consistency->getCode(), $consistencyRates, $consistencyCriteriaEvaluations);
     }
 }

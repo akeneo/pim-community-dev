@@ -13,7 +13,11 @@ import {
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_TAB_CHANGED,
-  ProductEditFormApp
+  ProductEditFormApp,
+  ProductModelEditFormApp,
+  PRODUCT_ATTRIBUTES_TAB_NAME,
+  PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
+  PRODUCT_MODEL_LEVEL_CHANGED,
 } from 'akeneodataqualityinsights-react';
 
 const UserContext = require('pim/user-context');
@@ -39,6 +43,11 @@ interface TabEvent {
       tab: string;
     };
   };
+}
+
+interface LevelNavigationEvent {
+  id: number;
+  model_type: string;
 }
 
 class DataQualityInsightsApp extends BaseView {
@@ -104,19 +113,32 @@ class DataQualityInsightsApp extends BaseView {
       window.dispatchEvent(new Event(DATA_QUALITY_INSIGHTS_PRODUCT_SAVED));
     });
 
+    this.listenTo(this.getRoot(), 'pim:product:variant-navigation:navigate-to-level:before', (event: LevelNavigationEvent) => {
+      window.dispatchEvent(new CustomEvent(PRODUCT_MODEL_LEVEL_CHANGED, {detail: {
+          id: event.id,
+          model_type: event.model_type,
+        }}));
+    });
+
+    window.dispatchEvent(new Event(DATA_QUALITY_INSIGHTS_PRODUCT_SAVED));
+
     return super.configure();
   }
 
   public redirectToProductEditForm() {
+
+    const productData = this.getFormData();
+    const tab = productData.meta.model_type === 'product_model' ? PRODUCT_MODEL_ATTRIBUTES_TAB_NAME : PRODUCT_ATTRIBUTES_TAB_NAME;
+
     this.getRoot().trigger('column-tab:change-tab', {
       currentTarget: {
         dataset: {
-          tab: 'pim-product-edit-form-attributes'
+          tab: tab
         }
       },
       target: {
         dataset: {
-          tab: 'pim-product-edit-form-attributes'
+          tab: tab
         }
       }
     });
@@ -132,7 +154,10 @@ class DataQualityInsightsApp extends BaseView {
     const productData = this.getFormData();
 
     ReactDOM.render(
-      <ProductEditFormApp catalogLocale={catalogLocale} catalogChannel={catalogChannel} product={productData} />,
+      productData.meta.model_type === 'product_model'
+        ? <ProductModelEditFormApp catalogLocale={catalogLocale} catalogChannel={catalogChannel} product={productData} />
+        : <ProductEditFormApp catalogLocale={catalogLocale} catalogChannel={catalogChannel} product={productData} />
+    ,
       this.el
     );
 

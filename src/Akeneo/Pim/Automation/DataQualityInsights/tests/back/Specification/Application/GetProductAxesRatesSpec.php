@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -27,12 +27,12 @@ use PhpSpec\ObjectBehavior;
 
 final class GetProductAxesRatesSpec extends ObjectBehavior
 {
-    public function let(GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery)
+    public function let(GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery)
     {
         $this->beConstructedWith($getLatestProductAxesRatesQuery);
     }
 
-    public function it_returns_the_axes_rates_of_a_product(GetLatestProductAxesRatesQueryInterface $getLatestProductAxesRatesQuery)
+    public function it_returns_the_axes_rates_of_a_product(GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery)
     {
         $productId = new ProductId(42);
         $channelMobile = new ChannelCode('mobile');

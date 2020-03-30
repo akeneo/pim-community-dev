@@ -21,7 +21,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductAxisRateRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -32,18 +31,40 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
     private $db;
 
     /** @var ProductAxisRateRepositoryInterface */
-    private $repository;
+    private $productAxisRateRepository;
+
+    /** @var ProductAxisRateRepositoryInterface */
+    private $productModelAxisRateRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->db = $this->get('database_connection');
-        $this->repository = $this->get(ProductAxisRateRepository::class);
+        $this->productAxisRateRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_axis_rate');
+        $this->productModelAxisRateRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_model_axis_rate');
     }
 
     public function test_it_saves_multiple_product_rates_by_axis()
     {
+        $this->assertItSavesMultipleProductRatesByAxis(
+            $this->productAxisRateRepository,
+            function () { return $this->findAllProductAxisRates(); }
+        );
+    }
+
+    public function test_it_saves_multiple_product_model_rates_by_axis()
+    {
+        $this->assertItSavesMultipleProductRatesByAxis(
+            $this->productModelAxisRateRepository,
+            function () { return $this->findAllProductModelAxisRates(); }
+        );
+    }
+
+    private function assertItSavesMultipleProductRatesByAxis(
+        ProductAxisRateRepositoryInterface $axisRateRepository,
+        callable $findAllAxisRates
+    ) {
         $productAxisRates = $this->findAllProductAxisRates();
         $this->assertEmpty($productAxisRates);
 
@@ -110,7 +131,7 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
             ],
         ];
 
-        $this->repository->save([
+        $axisRateRepository->save([
             new ProductAxisRates(
                 new AxisCode('consistency'),
                 new ProductId(123),
@@ -125,7 +146,7 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
             )
         ]);
 
-        $productAxisRates = $this->findAllProductAxisRates();
+        $productAxisRates = $findAllAxisRates();
 
         $this->assertCount(2, $productAxisRates);
         $this->assertSame(123, (int) $productAxisRates[0]['product_id']);
@@ -161,7 +182,7 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
                 ],
             ],
         ];
-        $this->repository->save([
+        $axisRateRepository->save([
             new ProductAxisRates(
                 new AxisCode('consistency'),
                 new ProductId(123),
@@ -170,7 +191,7 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
             )
         ]);
 
-        $productAxisRates = $this->findAllProductAxisRates();
+        $productAxisRates = $findAllAxisRates();
 
         $this->assertCount(2, $productAxisRates);
         $this->assertSame(123, (int) $productAxisRates[0]['product_id']);
@@ -181,6 +202,27 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
 
     public function test_it_purges_product_axis_rates_older_than_a_given_date()
     {
+        $this->assertItPurgesAxesRatesOlderThanAGivenDate(
+            $this->productAxisRateRepository,
+            function ($expectedCount) { $this->assertCountProductAxisRates($expectedCount); },
+            function ($axisRates) { $this->assertProductAxisRatesExists($axisRates); }
+        );
+    }
+
+    public function test_it_purges_product_model_axis_rates_older_than_a_given_date()
+    {
+        $this->assertItPurgesAxesRatesOlderThanAGivenDate(
+            $this->productModelAxisRateRepository,
+            function ($expectedCount) { $this->assertCountProductModelAxisRates($expectedCount); },
+            function ($axisRates) { $this->assertProductModelAxisRatesExists($axisRates); }
+        );
+    }
+
+    private function assertItPurgesAxesRatesOlderThanAGivenDate(
+        ProductAxisRateRepositoryInterface $axisRateRepository,
+        callable $assertCountProductAxisRates,
+        callable $assertProductAxisRatesExists
+    ) {
         $consistency = new AxisCode('consistency');
         $productAxisRates = [
             'product_123_consistency_last_rates' => new ProductAxisRates(
@@ -222,21 +264,28 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
             )
         ];
 
-        $this->repository->save(array_values($productAxisRates));
-        $this->assertCountProductAxisRates(6);
+        $axisRateRepository->save(array_values($productAxisRates));
+        $assertCountProductAxisRates(6);
 
-        $this->repository->purgeUntil(new \DateTimeImmutable('2019-12-16'));
-        $this->assertCountProductAxisRates(4);
+        $axisRateRepository->purgeUntil(new \DateTimeImmutable('2019-12-16'));
+        $assertCountProductAxisRates(4);
 
-        $this->assertProductAxisRatesExists($productAxisRates['product_123_consistency_last_rates']);
-        $this->assertProductAxisRatesExists($productAxisRates['product_123_consistency_young_rates']);
-        $this->assertProductAxisRatesExists($productAxisRates['product_123_enrichment_old_but_last_rates']);
-        $this->assertProductAxisRatesExists($productAxisRates['product_42_consistency_last_rates']);
+        $assertProductAxisRatesExists($productAxisRates['product_123_consistency_last_rates']);
+        $assertProductAxisRatesExists($productAxisRates['product_123_consistency_young_rates']);
+        $assertProductAxisRatesExists($productAxisRates['product_123_enrichment_old_but_last_rates']);
+        $assertProductAxisRatesExists($productAxisRates['product_42_consistency_last_rates']);
     }
 
     private function findAllProductAxisRates(): array
     {
         $stmt = $this->db->query('SELECT * FROM pimee_data_quality_insights_product_axis_rates ORDER BY product_id');
+
+        return $stmt->fetchAll();
+    }
+
+    private function findAllProductModelAxisRates(): array
+    {
+        $stmt = $this->db->query('SELECT * FROM pimee_data_quality_insights_product_model_axis_rates ORDER BY product_id');
 
         return $stmt->fetchAll();
     }
@@ -256,10 +305,41 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
         $this->assertSame($expectedCount, $count);
     }
 
+    private function assertCountProductModelAxisRates(int $expectedCount): void
+    {
+        $stmt = $this->db->executeQuery(
+            'SELECT COUNT(*) FROM pimee_data_quality_insights_product_model_axis_rates'
+        );
+        $count = intval($stmt->fetchColumn());
+
+        $this->assertSame($expectedCount, $count);
+    }
+
     private function assertProductAxisRatesExists(ProductAxisRates $productAxisRates): void
     {
         $query = <<<SQL
 SELECT 1 FROM pimee_data_quality_insights_product_axis_rates 
+WHERE product_id = :product_id
+    AND axis_code = :axis_code
+    AND evaluated_at = :evaluated_at
+SQL;
+
+        $stmt = $this->db->executeQuery(
+            $query,
+            [
+                'product_id' => $productAxisRates->getProductId()->toInt(),
+                'axis_code' => $productAxisRates->getAxisCode(),
+                'evaluated_at' => $productAxisRates->getEvaluatedAt()->format('Y-m-d')
+            ]
+        );
+
+        $this->assertTrue((bool) $stmt->fetchColumn());
+    }
+
+    private function assertProductModelAxisRatesExists(ProductAxisRates $productAxisRates): void
+    {
+        $query = <<<SQL
+SELECT 1 FROM pimee_data_quality_insights_product_model_axis_rates 
 WHERE product_id = :product_id
     AND axis_code = :axis_code
     AND evaluated_at = :evaluated_at

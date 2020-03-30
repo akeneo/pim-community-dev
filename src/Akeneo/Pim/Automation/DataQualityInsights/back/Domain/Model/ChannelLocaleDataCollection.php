@@ -74,4 +74,9 @@ final class ChannelLocaleDataCollection implements \IteratorAggregate
 
         return $mappedData;
     }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->channelLocaleData);
+    }
 }

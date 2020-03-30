@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Textarea;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\BuildProductValuesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAttributesCodesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Criterion\LowerCaseWords;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -27,25 +27,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
 final class EvaluateLowerCaseWords implements EvaluateCriterionInterface
 {
-    /** @var BuildProductValuesInterface */
-    private $buildProductValues;
-
-    /** @var GetProductAttributesCodesInterface */
-    private $getProductAttributesCodes;
-
     /** @var GetLocalesByChannelQueryInterface */
     private $localesByChannelQuery;
 
     /** @var LowerCaseWords */
     private $criterion;
 
-    public function __construct(
-        BuildProductValuesInterface $buildProductValues,
-        GetProductAttributesCodesInterface $getProductAttributesCodes,
-        GetLocalesByChannelQueryInterface $localesByChannelQuery
-    ) {
-        $this->buildProductValues = $buildProductValues;
-        $this->getProductAttributesCodes = $getProductAttributesCodes;
+    public function __construct(GetLocalesByChannelQueryInterface $localesByChannelQuery)
+    {
         $this->localesByChannelQuery = $localesByChannelQuery;
         $this->criterion = new LowerCaseWords();
     }
@@ -55,11 +44,9 @@ final class EvaluateLowerCaseWords implements EvaluateCriterionInterface
         return $this->criterion->getCode();
     }
 
-    public function evaluate(Write\CriterionEvaluation $criterionEvaluation): Write\CriterionEvaluationResult
+    public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
-        $attributesCodes = $this->getProductAttributesCodes->getTextarea($criterionEvaluation->getProductId());
-        $productValues = $this->buildProductValues->buildForProductIdAndAttributeCodes($criterionEvaluation->getProductId(), $attributesCodes);
 
         $evaluationResult = new Write\CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localeCodes) {
@@ -71,15 +58,17 @@ final class EvaluateLowerCaseWords implements EvaluateCriterionInterface
         return $evaluationResult;
     }
 
-    private function evaluateChannelLocaleRate(Write\CriterionEvaluationResult $evaluationResult, ChannelCode $channelCode, LocaleCode $localeCode, array $productValues): void
+    private function evaluateChannelLocaleRate(Write\CriterionEvaluationResult $evaluationResult, ChannelCode $channelCode, LocaleCode $localeCode, ProductValuesCollection $productValues): void
     {
         $attributesRates = [];
-        foreach ($productValues as $attributeCode => $productValueByChannelAndLocale) {
-            $productValue = $productValueByChannelAndLocale[strval($channelCode)][strval($localeCode)] ?? null;
+        /** @var ProductValues $productValueByChannelAndLocale */
+        foreach ($productValues->getTextareaValues() as $productValueByChannelAndLocale) {
+            $attributeCode = $productValueByChannelAndLocale->getAttribute()->getCode();
+            $productValue = $productValueByChannelAndLocale->getValueByChannelAndLocale($channelCode, $localeCode);
             $rate = $this->computeProductValueRate($productValue);
 
             if ($rate !== null) {
-                $attributesRates[$attributeCode] = $rate;
+                $attributesRates[strval($attributeCode)] = $rate;
             }
         }
 
@@ -89,12 +78,12 @@ final class EvaluateLowerCaseWords implements EvaluateCriterionInterface
         }
 
         $rate = $this->calculateChannelLocaleRate($attributesRates);
-        $improvableAttributes = $this->computeImprovableAttributes($attributesRates);
+        $rateByAttributes = $this->getRateByAttributes($attributesRates);
 
         $evaluationResult
             ->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::done())
             ->addRate($channelCode, $localeCode, $rate)
-            ->addImprovableAttributes($channelCode, $localeCode, $improvableAttributes);
+            ->addRateByAttributes($channelCode, $localeCode, $rateByAttributes);
     }
 
     private function computeProductValueRate(?string $productValue): ?Rate
@@ -121,10 +110,10 @@ final class EvaluateLowerCaseWords implements EvaluateCriterionInterface
         return new Rate((int) round(array_sum($channelLocaleRates) / count($channelLocaleRates), 0, PHP_ROUND_HALF_DOWN));
     }
 
-    private function computeImprovableAttributes(array $attributesRates): array
+    private function getRateByAttributes(array $attributesRates): array
     {
-        return array_keys(array_filter($attributesRates, function (Rate $attributeRate) {
-            return !$attributeRate->isPerfect();
-        }));
+        return array_map(function (Rate $attributeRate) {
+            return $attributeRate->toInt();
+        }, $attributesRates);
     }
 }

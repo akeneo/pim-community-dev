@@ -55,6 +55,7 @@ $rules = [
             //Subscribers for product updates
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface',
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
             'Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository',
@@ -67,10 +68,13 @@ $rules = [
             'Akeneo\Tool\Component\Batch\Model\StepExecution',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
 
-            //Necessary for GetNonRequiredAttributesMasksQuery
+            //Necessary for the Completeness calculation
             'Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks',
             'Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask',
             'Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale',
+            'Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask',
+            'Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks',
+            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
 
             //Datagrid filters, columns, sorting and ES indexation needs
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter',

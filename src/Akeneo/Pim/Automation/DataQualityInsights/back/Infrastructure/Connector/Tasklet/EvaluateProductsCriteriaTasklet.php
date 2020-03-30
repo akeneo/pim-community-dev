@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateMissingProductsCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateAxesRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateMissingCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductIdsToEvaluateQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -36,7 +37,7 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var ConsolidateProductAxisRates */
+    /** @var ConsolidateAxesRates */
     private $consolidateProductAxisRates;
 
     /** @var IndexProductRates */
@@ -45,19 +46,23 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
     /** @var GetProductIdsToEvaluateQueryInterface */
     private $getProductIdsToEvaluateQuery;
 
-    /** @var CreateMissingProductsCriteriaEvaluations */
+    /** @var CreateMissingCriteriaEvaluations */
     private $createMissingProductsCriteriaEvaluations;
 
     /** @var LoggerInterface */
     private $logger;
 
+    /** @var CriterionEvaluationRepositoryInterface */
+    private $productCriterionEvaluationRepository;
+
     public function __construct(
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateProductAxisRates $consolidateProductAxisRates,
+        ConsolidateAxesRates $consolidateProductAxisRates,
         IndexProductRates $indexProductRates,
         GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery,
-        CreateMissingProductsCriteriaEvaluations $createMissingProductsCriteriaEvaluations,
-        LoggerInterface $logger
+        CreateMissingCriteriaEvaluations $createMissingProductsCriteriaEvaluations,
+        LoggerInterface $logger,
+        CriterionEvaluationRepositoryInterface $productCriterionEvaluationRepository
     ) {
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
         $this->consolidateProductAxisRates = $consolidateProductAxisRates;
@@ -65,10 +70,12 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
         $this->getProductIdsToEvaluateQuery = $getProductIdsToEvaluateQuery;
         $this->createMissingProductsCriteriaEvaluations = $createMissingProductsCriteriaEvaluations;
         $this->logger = $logger;
+        $this->productCriterionEvaluationRepository = $productCriterionEvaluationRepository;
     }
 
     public function execute(): void
     {
+        $this->cleanCriteriaOfDeletedProducts();
         $this->createMissingCriteriaEvaluations();
 
         foreach ($this->getProductIdsToEvaluateQuery->execute(self::NB_PRODUCTS_MAX, self::BULK_SIZE) as $productIds) {
@@ -96,12 +103,17 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
             );
         } catch (\Throwable $exception) {
             $this->logger->error(
-                'Unable to create all missing criteria evaluations',
+                'Unable to create all missing criteria evaluations for the products',
                 [
                     'error_code' => 'unable_to_create_missing_product_criteria_evaluation',
                     'error_message' => $exception->getMessage(),
                 ]
             );
         }
+    }
+
+    private function cleanCriteriaOfDeletedProducts()
+    {
+        $this->productCriterionEvaluationRepository->deleteUnknownProductsPendingEvaluations();
     }
 }
