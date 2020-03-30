@@ -1774,7 +1774,7 @@
                 "symbol": "kN"
             },
             {
-                "code": "MEGATON",
+                "code": "MEGANEWTON",
                 "labels": {
                     "en_US": "Meganewton",
                     "fr_FR": "Méganewton"
@@ -4651,8 +4651,8 @@
             {
                 "code": "KILOLITER_PER_HOUR",
                 "labels": {
-                    "en_US": "Kiloliter per day",
-                    "fr_FR": "Kilolitre par jour"
+                    "en_US": "Kiloliter per hour",
+                    "fr_FR": "Kilolitre par heure"
                 },
                 "convert_from_standard": [
                     {
