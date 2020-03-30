@@ -715,7 +715,7 @@ JSON;
             "symbol": "kN"
         },
         {
-            "code": "MEGATON",
+            "code": "MEGANEWTON",
             "convert": {
                 "mul": "1000000"
             },
