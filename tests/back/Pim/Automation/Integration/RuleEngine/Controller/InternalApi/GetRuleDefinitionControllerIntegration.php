@@ -40,7 +40,7 @@ class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCa
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_OK,
-            '{"id":123456789,"code":"123","type":"add","priority":0,"content":{"conditions":[],"actions":["action1","action2"]}}'
+            '{"id":123456789,"code":"123","type":"add","priority":0,"content":{"conditions":[],"actions":["action1","action2"]},"labels":[]}'
         );
     }
 
@@ -60,7 +60,7 @@ class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCa
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_OK,
-            '{"id":987654321,"code":"234","type":"add","priority":0,"content":{"conditions":["condition1"],"actions":["action3","action4"]}}'
+            '{"id":987654321,"code":"234","type":"add","priority":0,"content":{"conditions":["condition1"],"actions":["action3","action4"]},"labels":[]}'
         );
     }
 

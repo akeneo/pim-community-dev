@@ -12,6 +12,7 @@
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Rule definition stored in database
@@ -41,7 +42,7 @@ class RuleDefinition implements RuleDefinitionInterface
     /** @var ArrayCollection */
     protected $relations;
 
-    /** @var ArrayCollection */
+    /** @var Collection */
     protected $translations;
 
     /**
@@ -174,5 +175,13 @@ class RuleDefinition implements RuleDefinitionInterface
     public function getRelations()
     {
         return $this->relations;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTranslations(): Collection
+    {
+        return $this->translations;
     }
 }

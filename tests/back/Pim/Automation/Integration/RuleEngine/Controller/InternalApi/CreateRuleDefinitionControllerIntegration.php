@@ -53,6 +53,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         $expectedContent = $normalizedRuleDefinition;
         $expectedContent['id'] = $content['id'];
         $expectedContent['type'] = 'product';
+        $expectedContent['labels'] = [];
 
         ksort($expectedContent);
         ksort($content);

@@ -51,6 +51,7 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         $content = json_decode($response->getContent(), true);
         Assert::arrayHasKey($content, 'id');
         unset($content['id']);
+        $normalizedRuleDefinition['labels'] = [];
 
         Assert::assertEqualsCanonicalizing($content, $normalizedRuleDefinition);
     }
