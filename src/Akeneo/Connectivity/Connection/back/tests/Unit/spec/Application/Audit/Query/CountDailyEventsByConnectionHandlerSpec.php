@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByCon
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
 use PhpSpec\ObjectBehavior;
 
@@ -50,9 +50,9 @@ class CountDailyEventsByConnectionHandlerSpec extends ObjectBehavior
             )->willReturn($connectionsEventCounts);
 
         $expectedResult = [
-            new WeeklyEventCounts(AllConnectionCode::CODE, '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts[AllConnectionCode::CODE]),
-            new WeeklyEventCounts('sap', '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts['sap']),
-            new WeeklyEventCounts('bynder', '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts['bynder']),
+            new PeriodEventCount(AllConnectionCode::CODE, '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts[AllConnectionCode::CODE]),
+            new PeriodEventCount('sap', '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts['sap']),
+            new PeriodEventCount('bynder', '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts['bynder']),
         ];
 
         $query = new CountDailyEventsByConnectionQuery(

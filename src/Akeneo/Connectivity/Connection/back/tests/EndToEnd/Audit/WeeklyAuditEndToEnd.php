@@ -9,7 +9,7 @@ use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditLoader;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Test\Integration\Configuration;
@@ -28,6 +28,21 @@ class WeeklyAuditEndToEnd extends WebTestCase
         $this->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE, true);
         $this->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
 
+        $this->createHourlyEventCounts([
+            'product_created' => [
+                'bynder' => [
+                    ['2020-', 10],
+                    ['', 10],
+                ],
+                'sap' => [
+
+                ]
+            ],
+        ]);
+
+
+
+
         $hourlyEventCountsPerConnection = $this->createHourlyEventCountsPerConnection(
             ['bynder', 'sap'],
             (new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('Asia/Tokyo')))
@@ -36,7 +51,7 @@ class WeeklyAuditEndToEnd extends WebTestCase
                 ->setTimezone(new \DateTimeZone('UTC')),
             EventTypes::PRODUCT_CREATED
         );
-        $weeklyEventCountsPerConnection = $this->hourlyToWeeklyEventCounts(
+        $periodEventCountsPerConnection = $this->hourlyToWeeklyEventCounts(
             '2020-01-01',
             '2020-01-08',
             'Asia/Tokyo',
@@ -57,8 +72,8 @@ class WeeklyAuditEndToEnd extends WebTestCase
         );
         $result = json_decode($this->client->getResponse()->getContent(), true);
         $expectedResult = array_reduce(
-            $weeklyEventCountsPerConnection,
-            function (array $data, WeeklyEventCounts $weeklyEventCounts) {
+            $periodEventCountsPerConnection,
+            function (array $data, PeriodEventCount $weeklyEventCounts) {
                 return array_merge($data, $weeklyEventCounts->normalize());
             },
             []
@@ -162,7 +177,7 @@ class WeeklyAuditEndToEnd extends WebTestCase
         $weeklyEventCountsPerConnection = [];
 
         foreach ($hourlyEventCountsPerConnection as $connectionCode => $hourlyEventCounts) {
-            $weeklyEventCountsPerConnection[] = new WeeklyEventCounts(
+            $weeklyEventCountsPerConnection[] = new PeriodEventCount(
                 $connectionCode,
                 $startDate,
                 $endDate,

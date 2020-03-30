@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class WeeklyEventCountsSpec extends ObjectBehavior
+class PeriodEventCountSpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -21,7 +21,7 @@ class WeeklyEventCountsSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(WeeklyEventCounts::class);
+        $this->shouldBeAnInstanceOf(PeriodEventCount::class);
     }
 
     public function it_normalizes_a_connection_without_data(): void

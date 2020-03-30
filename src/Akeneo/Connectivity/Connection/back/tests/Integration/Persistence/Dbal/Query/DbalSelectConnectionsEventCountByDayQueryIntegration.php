@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoa
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
