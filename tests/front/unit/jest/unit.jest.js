@@ -12,6 +12,7 @@ const unitConfig = {
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/icons/',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/illustrations/',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-measurement-family/CreateMeasurementFamily.tsx',
+    'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-unit/CreateUnit.tsx',
   ],
   moduleNameMapper: {
     '^require-context$': `${__dirname}/../../../../frontend/webpack/require-context.js`,

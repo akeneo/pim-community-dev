@@ -45,7 +45,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     }
                 ],
                 "symbol": "µrad"
@@ -87,7 +87,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "4.848137E-6"
+                        "value": "0.000004848137"
                     }
                 ],
                 "symbol": "\""
@@ -378,7 +378,7 @@
                     "fr_FR": "Hectare",
                     "it_IT": "Ettaro",
                     "ja_JP": "ヘクタール",
-                    "pt_BR": "Um hectare (conhecido também como hectômetro/hectómetro quadrado [hm²]), representado pelo símbolo ha,[1] é uma unidade de medida de área equivalente a 100 (cem) ares ou a 10. 000 (dez mil) metros quadrados",
+                    "pt_BR": "Hectare",
                     "ru_RU": "Гектар",
                     "sv_SE": "Hektar"
                 },
@@ -560,7 +560,7 @@
                     "fr_FR": "Acre",
                     "it_IT": "Acri",
                     "ja_JP": "エーカー",
-                    "pt_BR": "Acre é o nome de uma antiga unidade de medida usada para medir terras. Atualmente, o acre é uma unidade de área utilizada no sistema imperial e no sistema tradicional dos Estados Unidos. O acre não é mais usado na maioria dos países, apesar de algumas exceções notáveis, que incluem os EUA, Austrália, Índia, Paquistão e Birmânia. A partir de 2010, o acre deixou de ser oficialmente utilizado no Reino Unido, embora ainda seja usado em descrições de imóveis. Ele continua sendo usado, ainda, em certa medida, no Canadá. No Brasil e em Portugal, essa medida nunca foi utilizada, sendo que nestes países se utiliza o alqueire e o hectare (que seria a unidade mais simples de utilização) como unidades de medida em áreas rurais.",
+                    "pt_BR": "Acre",
                     "ru_RU": "Акр",
                     "sv_SE": "Tunnland"
                 },
@@ -1774,7 +1774,7 @@
                 "symbol": "kN"
             },
             {
-                "code": "MEGATON",
+                "code": "MEGANEWTON",
                 "labels": {
                     "en_US": "Meganewton",
                     "fr_FR": "Méganewton"
@@ -3916,7 +3916,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     }
                 ],
                 "symbol": "μl"
@@ -4417,7 +4417,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     }
                 ],
                 "symbol": "ml/s"
@@ -4431,7 +4431,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     },
                     {
                         "operator": "mul",
@@ -4449,7 +4449,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     },
                     {
                         "operator": "mul",
@@ -4467,7 +4467,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     },
                     {
                         "operator": "mul",
@@ -4485,7 +4485,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     }
                 ],
                 "symbol": "cm³/s"
@@ -4499,7 +4499,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     },
                     {
                         "operator": "mul",
@@ -4517,7 +4517,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     },
                     {
                         "operator": "mul",
@@ -4535,7 +4535,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     },
                     {
                         "operator": "mul",
@@ -4651,8 +4651,8 @@
             {
                 "code": "KILOLITER_PER_HOUR",
                 "labels": {
-                    "en_US": "Kiloliter per day",
-                    "fr_FR": "Kilolitre par jour"
+                    "en_US": "Kiloliter per hour",
+                    "fr_FR": "Kilolitre par heure"
                 },
                 "convert_from_standard": [
                     {
@@ -4693,7 +4693,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "1.0E-6"
+                        "value": "0.000001"
                     }
                 ],
                 "symbol": "μg"

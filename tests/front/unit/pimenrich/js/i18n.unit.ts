@@ -35,4 +35,12 @@ describe('>>>TOOLS --- i18n', () => {
   test('Generate nothing if the locale is not specified', () => {
     expect(i18n.getFlag()).toBe('');
   });
+
+  test('Generate an empty flag with the language if the locale code is not formatted well', () => {
+    expect(i18n.getFlag('NOTFOUND')).toBe(`
+<span class=\"flag-language\">
+  <i class=\"flag flag-\"></i>
+  <span class=\"language\">NOTFOUND</span>
+</span>`);
+  });
 });

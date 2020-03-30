@@ -1,22 +1,12 @@
 import React, {useContext} from 'react';
-import styled from 'styled-components';
+import {useHistory} from 'react-router-dom';
 import {
   MeasurementFamily,
   getMeasurementFamilyLabel,
   getStandardUnitLabel,
 } from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
-
-const Container = styled.tr`
-  height: 54px;
-  border-bottom: 1px solid ${props => props.theme.color.grey70};
-`;
-
-const MeasurementFamilyLabelCell = styled.td`
-  color: ${props => props.theme.color.purple100};
-  font-style: italic;
-  font-weight: bold;
-`;
+import {LabelCell, Row} from 'akeneomeasure/pages/common/Table';
 
 type MeasurementFamilyRowProps = {
   measurementFamily: MeasurementFamily;
@@ -24,14 +14,16 @@ type MeasurementFamilyRowProps = {
 
 const MeasurementFamilyRow = ({measurementFamily}: MeasurementFamilyRowProps) => {
   const locale = useContext(UserContext)('uiLocale');
+  const history = useHistory();
+  const measurementFamilyLabel = getMeasurementFamilyLabel(measurementFamily, locale);
 
   return (
-    <Container>
-      <MeasurementFamilyLabelCell>{getMeasurementFamilyLabel(measurementFamily, locale)}</MeasurementFamilyLabelCell>
+    <Row title={measurementFamilyLabel} onClick={() => history.push(`/${measurementFamily.code}`)}>
+      <LabelCell>{measurementFamilyLabel}</LabelCell>
       <td>{measurementFamily.code}</td>
       <td>{getStandardUnitLabel(measurementFamily, locale)}</td>
       <td>{measurementFamily.units.length}</td>
-    </Container>
+    </Row>
   );
 };
 

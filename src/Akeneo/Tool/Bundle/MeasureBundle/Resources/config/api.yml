@@ -8,6 +8,7 @@ services:
         public: true
         arguments:
             - '@akeneo_measure.persistence.measurement_family_repository'
+            - '@akeneo.pim.structure.query.is_there_at_least_one_attribute_configured_with_measurement_family'
 
     legacy_pim_api.controller.measure_family:
         class: '%legacy_pim_api.controller.measure_family.class%'

@@ -31,7 +31,7 @@ class StandardUnitCodeOperationShouldBeMultiplyByOneValidator extends Constraint
             $this->context
                 ->buildViolation(StandardUnitCodeOperationShouldBeMultiplyByOne::ERROR_MESSAGE)
                 ->setParameter('%measurement_family_code%', $saveMeasurementFamily->code)
-                ->atPath('units[0].convert_from_standard')
+                ->atPath('units[0][convert_from_standard]')
                 ->addViolation();
         }
     }
