@@ -19,6 +19,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInterface
 {
+    use CheckProductAndEventTrait;
+
     /** @var ProductAndAncestorsIndexer */
     private $productAndAncestorsIndexer;
 
@@ -41,14 +43,10 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
     public function deleteProduct(RemoveEvent $event) : void
     {
         $product = $event->getSubject();
-        if (!$product instanceof ProductInterface) {
+        if (!$this->checkProduct($product)) {
             return;
         }
-        // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-        if (get_class($product) == 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
-            return;
-        }
-        if (!$event->hasArgument('unitary') || true !== $event->getArgument('unitary')) {
+        if (!$this->checkEvent($event)) {
             return;
         }
 
@@ -65,9 +63,7 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
             return;
         }
         $products = array_filter($products, function ($product) {
-            return $product instanceof ProductInterface
-                // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-                && get_class($product) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
+            return $this->checkProduct($product);
         });
 
         if (!empty($products)) {
