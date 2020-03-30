@@ -30,8 +30,8 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
     public function it_creates_multiple_measurement_families()
     {
         $multipleMeasurementFamilies = [
-            $this->normalizeExternal($this->measurementFamily1()),
-            $this->normalizeExternal($this->measurementFamily2()),
+            $this->measurementFamily1()->normalize(),
+            $this->measurementFamily2()->normalize()
         ];
         $client = $this->createAuthenticatedClient();
 
@@ -86,40 +86,40 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
                 'code'               => 'custom_metric_1',
                 'standard_unit_code' => 'CUSTOM_UNIT_1_1',
                 'units'              =>
-                [
-                    'CUSTOM_UNIT_1_1' => [
-                        'code'                  => 'CUSTOM_UNIT_1_1',
-                        'labels'                =>
+                    [
                         [
-                            'en_US' => 'Custom unit 1_1',
-                            'fr_FR' => 'Unité personalisée 1_1',
+                            'code'                  => 'CUSTOM_UNIT_1_1',
+                            'labels'                =>
+                                [
+                                    'en_US' => 'Custom unit 1_1',
+                                    'fr_FR' => 'Unité personalisée 1_1',
+                                ],
+                            'convert_from_standard' =>
+                                [
+                                    [
+                                        'operator' => 'mul',
+                                        'value'    => '0.000001',
+                                    ],
+                                ],
+                            'symbol'                => 'mm²',
                         ],
-                        'convert_from_standard' =>
                         [
-                            [
-                                'operator' => 'mul',
-                                'value'    => '0.000001',
-                            ],
+                            'code'                  => 'CUSTOM_UNIT_2_1',
+                            'labels'                =>
+                                [
+                                    'en_US' => 'Custom unit 2_1',
+                                    'fr_FR' => 'Unité personalisée 2_1',
+                                ],
+                            'convert_from_standard' =>
+                                [
+                                    [
+                                        'operator' => 'mul',
+                                        'value'    => '0.0001',
+                                    ],
+                                ],
+                            'symbol'                => 'cm²',
                         ],
-                        'symbol'                => 'mm²',
                     ],
-                    'CUSTOM_UNIT_2_1' => [
-                        'code'                  => 'CUSTOM_UNIT_2_1',
-                        'labels'                =>
-                        [
-                            'en_US' => 'Custom unit 2_1',
-                            'fr_FR' => 'Unité personalisée 2_1',
-                        ],
-                        'convert_from_standard' =>
-                        [
-                            [
-                                'operator' => 'mul',
-                                'value'    => '0.0001',
-                            ],
-                        ],
-                        'symbol'                => 'cm²',
-                    ],
-                ],
             ]
         ];
         $client = $this->createAuthenticatedClient();
@@ -142,12 +142,12 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
                 'status_code' => 422,
                 'message'     => 'The measurement family has an invalid format.',
                 'errors'      =>
-                [
                     [
-                        'property' => 'labels',
-                        'message'  => 'The property labels is required',
+                        [
+                            'property' => 'labels',
+                            'message'  => 'The property labels is required',
+                        ],
                     ],
-                ],
             ],
             current($responseBody)
         );
@@ -177,15 +177,15 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
                     LabelCollection::fromArray(['en_US' => 'Custom unit 1_1', 'fr_FR' => 'Unité personalisée 1_1']),
                     [Operation::create('mul', '1')],
                     'mm²',
-                ),
+                    ),
                 Unit::create(
                     UnitCode::fromString('CUSTOM_UNIT_2_1'),
                     LabelCollection::fromArray(['en_US' => 'Custom unit 2_1', 'fr_FR' => 'Unité personalisée 2_1']),
                     [Operation::create('mul', '0.0001')],
                     'cm²',
-                )
+                    )
             ],
-        );
+            );
     }
 
     private function measurementFamily2(): MeasurementFamily
@@ -201,13 +201,13 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
                     LabelCollection::fromArray(['en_US' => 'Custom unit 1_1', 'fr_FR' => 'Unité personalisée 1_1']),
                     [Operation::create('mul', '1')],
                     'mm²',
-                ),
+                    ),
                 Unit::create(
                     UnitCode::fromString('CUSTOM_UNIT_2_1'),
                     LabelCollection::fromArray(['en_US' => 'Custom unit 2_1', 'fr_FR' => 'Unité personalisée 2_1']),
                     [Operation::create('mul', '0.0001')],
                     'cm²',
-                )
+                    )
             ]
         );
     }
@@ -218,17 +218,5 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
         $actual = $this->measurementFamilyRepository->getByCode($measurementFamilyCode);
 
         $this->assertEquals($expected, $actual);
-    }
-
-    private function normalizeExternal(MeasurementFamily $measurementFamily)
-    {
-        $normalizedMeasurementFamily = $measurementFamily->normalize();
-        $normalizedMeasurementFamily['units'] = array_reduce($normalizedMeasurementFamily['units'], function ($indexedUnit, $unit) {
-            $indexedUnit[$unit['code']] = $unit;
-
-            return $indexedUnit;
-        }, []);
-
-        return $normalizedMeasurementFamily;
     }
 }

@@ -63,8 +63,7 @@ class SaveMeasurementFamiliesAction
                     'code'    => Response::HTTP_BAD_REQUEST,
                     'message' => 'The list of measurement families has an invalid format.',
                     'errors'  => JsonSchemaErrorsFormatter::format($structureErrors),
-                ],
-                Response::HTTP_BAD_REQUEST
+                ], Response::HTTP_BAD_REQUEST
             );
         }
 
@@ -115,7 +114,6 @@ class SaveMeasurementFamiliesAction
             ];
         }
 
-        $normalizedMeasurementFamily['units'] = array_values($normalizedMeasurementFamily['units']);
         $saveMeasurementFamilyCommand = $this->saveMeasurementFamilyCommand($normalizedMeasurementFamily);
         $violations = $this->validator->validate($saveMeasurementFamilyCommand);
         if ($violations->count() > 0) {

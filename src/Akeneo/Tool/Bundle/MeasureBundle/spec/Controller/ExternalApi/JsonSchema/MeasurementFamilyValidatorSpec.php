@@ -40,46 +40,46 @@ class MeasurementFamilyValidatorSpec extends ObjectBehavior
         $measurementFamily = [
             'code'               => 'custom_metric_1',
             'labels'             =>
-            [
-                'en_US' => 'Custom measurement 1',
-                'fr_FR' => 'Mesure personalisée 1',
-            ],
+                [
+                    'en_US' => 'Custom measurement 1',
+                    'fr_FR' => 'Mesure personalisée 1',
+                ],
             'standard_unit_code' => 'CUSTOM_UNIT_1_1',
             'units'              =>
-            [
-                'CUSTOM_UNIT_1_1' => [
-                    'code'                  => 'CUSTOM_UNIT_1_1',
-                    'labels'                =>
+                [
                     [
-                        'en_US' => 'Custom unit 1_1',
-                        'fr_FR' => 'Unité personalisée 1_1',
+                        'code'                  => 'CUSTOM_UNIT_1_1',
+                        'labels'                =>
+                            [
+                                'en_US' => 'Custom unit 1_1',
+                                'fr_FR' => 'Unité personalisée 1_1',
+                            ],
+                        'convert_from_standard' =>
+                            [
+                                [
+                                    'operator' => 'mul',
+                                    'value'    => '0.000001',
+                                ],
+                            ],
+                        'symbol'                => 'mm²',
                     ],
-                    'convert_from_standard' =>
                     [
-                        [
-                            'operator' => 'mul',
-                            'value'    => '0.000001',
-                        ],
+                        'code'                  => 'CUSTOM_UNIT_2_1',
+                        'labels'                =>
+                            [
+                                'en_US' => 'Custom unit 2_1',
+                                'fr_FR' => 'Unité personalisée 2_1',
+                            ],
+                        'convert_from_standard' =>
+                            [
+                                [
+                                    'operator' => 'mul',
+                                    'value'    => '0.0001',
+                                ],
+                            ],
+                        'symbol'                => 'cm²',
                     ],
-                    'symbol'                => 'mm²',
                 ],
-                'CUSTOM_UNIT_2_1' => [
-                    'code'                  => 'CUSTOM_UNIT_2_1',
-                    'labels'                =>
-                    [
-                        'en_US' => 'Custom unit 2_1',
-                        'fr_FR' => 'Unité personalisée 2_1',
-                    ],
-                    'convert_from_standard' =>
-                    [
-                        [
-                            'operator' => 'mul',
-                            'value'    => '0.0001',
-                        ],
-                    ],
-                    'symbol'                => 'cm²',
-                ],
-            ],
         ];
 
         $this->validate($measurementFamily)->shouldReturn([]);
