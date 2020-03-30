@@ -7,8 +7,8 @@
             "fr_FR": "Angle"
         },
         "standard_unit_code": "RADIAN",
-        "units": [
-            {
+        "units": {
+            "RADIAN": {
                 "code": "RADIAN",
                 "labels": {
                     "en_US": "Radian",
@@ -22,7 +22,7 @@
                 ],
                 "symbol": "rad"
             },
-            {
+            "MILLIRADIAN": {
                 "code": "MILLIRADIAN",
                 "labels": {
                     "en_US": "Milliradian",
@@ -36,7 +36,7 @@
                 ],
                 "symbol": "mrad"
             },
-            {
+            "MICRORADIAN": {
                 "code": "MICRORADIAN",
                 "labels": {
                     "en_US": "Microradian",
@@ -50,7 +50,7 @@
                 ],
                 "symbol": "µrad"
             },
-            {
+            "DEGREE": {
                 "code": "DEGREE",
                 "labels": {
                     "en_US": "Degree",
@@ -64,7 +64,7 @@
                 ],
                 "symbol": "°"
             },
-            {
+            "MINUTE": {
                 "code": "MINUTE",
                 "labels": {
                     "en_US": "Minute",
@@ -78,7 +78,7 @@
                 ],
                 "symbol": "'"
             },
-            {
+            "SECOND": {
                 "code": "SECOND",
                 "labels": {
                     "en_US": "Second",
@@ -92,7 +92,7 @@
                 ],
                 "symbol": "\""
             },
-            {
+            "GON": {
                 "code": "GON",
                 "labels": {
                     "en_US": "Gon",
@@ -106,7 +106,7 @@
                 ],
                 "symbol": "gon"
             },
-            {
+            "MIL": {
                 "code": "MIL",
                 "labels": {
                     "en_US": "Mil",
@@ -120,7 +120,7 @@
                 ],
                 "symbol": "mil"
             },
-            {
+            "REVOLUTION": {
                 "code": "REVOLUTION",
                 "labels": {
                     "en_US": "Revolution",
@@ -134,7 +134,7 @@
                 ],
                 "symbol": "rev"
             }
-        ]
+        }
     },
     {
         "code": "Area",
@@ -155,8 +155,8 @@
             "sv_SE": "Område"
         },
         "standard_unit_code": "SQUARE_METER",
-        "units": [
-            {
+        "units": {
+            "SQUARE_MILLIMETER": {
                 "code": "SQUARE_MILLIMETER",
                 "labels": {
                     "ca_ES": "Mil·límetre quadrat",
@@ -182,7 +182,7 @@
                 ],
                 "symbol": "mm²"
             },
-            {
+            "SQUARE_CENTIMETER": {
                 "code": "SQUARE_CENTIMETER",
                 "labels": {
                     "ca_ES": "Centímetre quadrat",
@@ -208,7 +208,7 @@
                 ],
                 "symbol": "cm²"
             },
-            {
+            "SQUARE_DECIMETER": {
                 "code": "SQUARE_DECIMETER",
                 "labels": {
                     "ca_ES": "Decímetre quadrat",
@@ -234,7 +234,7 @@
                 ],
                 "symbol": "dm²"
             },
-            {
+            "SQUARE_METER": {
                 "code": "SQUARE_METER",
                 "labels": {
                     "ca_ES": "Metre quadrat",
@@ -260,7 +260,7 @@
                 ],
                 "symbol": "m²"
             },
-            {
+            "CENTIARE": {
                 "code": "CENTIARE",
                 "labels": {
                     "ca_ES": "Centiàrees",
@@ -286,7 +286,7 @@
                 ],
                 "symbol": "ca"
             },
-            {
+            "SQUARE_DEKAMETER": {
                 "code": "SQUARE_DEKAMETER",
                 "labels": {
                     "ca_ES": "Decàmetre quadrat",
@@ -312,7 +312,7 @@
                 ],
                 "symbol": "dam²"
             },
-            {
+            "ARE": {
                 "code": "ARE",
                 "labels": {
                     "ca_ES": "Àrea",
@@ -338,7 +338,7 @@
                 ],
                 "symbol": "a"
             },
-            {
+            "SQUARE_HECTOMETER": {
                 "code": "SQUARE_HECTOMETER",
                 "labels": {
                     "ca_ES": "Hectòmetre quadrat",
@@ -364,7 +364,7 @@
                 ],
                 "symbol": "hm²"
             },
-            {
+            "HECTARE": {
                 "code": "HECTARE",
                 "labels": {
                     "ca_ES": "Hectàrees",
@@ -390,7 +390,7 @@
                 ],
                 "symbol": "ha"
             },
-            {
+            "SQUARE_KILOMETER": {
                 "code": "SQUARE_KILOMETER",
                 "labels": {
                     "ca_ES": "Quilòmetre quadrat",
@@ -416,7 +416,7 @@
                 ],
                 "symbol": "km²"
             },
-            {
+            "SQUARE_MIL": {
                 "code": "SQUARE_MIL",
                 "labels": {
                     "ca_ES": "Mil quadrat",
@@ -442,7 +442,7 @@
                 ],
                 "symbol": "sq mil"
             },
-            {
+            "SQUARE_INCH": {
                 "code": "SQUARE_INCH",
                 "labels": {
                     "ca_ES": "Polzada quadrada",
@@ -468,7 +468,7 @@
                 ],
                 "symbol": "in²"
             },
-            {
+            "SQUARE_FOOT": {
                 "code": "SQUARE_FOOT",
                 "labels": {
                     "ca_ES": "Peu quadrat",
@@ -494,7 +494,7 @@
                 ],
                 "symbol": "ft²"
             },
-            {
+            "SQUARE_YARD": {
                 "code": "SQUARE_YARD",
                 "labels": {
                     "ca_ES": "Iarda quadrada",
@@ -520,7 +520,7 @@
                 ],
                 "symbol": "yd²"
             },
-            {
+            "ARPENT": {
                 "code": "ARPENT",
                 "labels": {
                     "ca_ES": "Arpent",
@@ -546,7 +546,7 @@
                 ],
                 "symbol": "arpent"
             },
-            {
+            "ACRE": {
                 "code": "ACRE",
                 "labels": {
                     "ca_ES": "Acre",
@@ -572,7 +572,7 @@
                 ],
                 "symbol": "A"
             },
-            {
+            "SQUARE_FURLONG": {
                 "code": "SQUARE_FURLONG",
                 "labels": {
                     "ca_ES": "Furlong quadrat",
@@ -598,7 +598,7 @@
                 ],
                 "symbol": "fur²"
             },
-            {
+            "SQUARE_MILE": {
                 "code": "SQUARE_MILE",
                 "labels": {
                     "ca_ES": "Milla quadrada",
@@ -624,7 +624,7 @@
                 ],
                 "symbol": "mi²"
             }
-        ]
+        }
     },
     {
         "code": "Binary",
@@ -645,8 +645,8 @@
             "sv_SE": "Binär"
         },
         "standard_unit_code": "BYTE",
-        "units": [
-            {
+        "units": {
+            "CHAR": {
                 "code": "CHAR",
                 "labels": {
                     "en_US": "Char",
@@ -660,7 +660,7 @@
                 ],
                 "symbol": "char"
             },
-            {
+            "KILOBIT": {
                 "code": "KILOBIT",
                 "labels": {
                     "en_US": "Kilobit",
@@ -674,7 +674,7 @@
                 ],
                 "symbol": "kbit"
             },
-            {
+            "MEGABIT": {
                 "code": "MEGABIT",
                 "labels": {
                     "en_US": "Megabit",
@@ -688,7 +688,7 @@
                 ],
                 "symbol": "Mbit"
             },
-            {
+            "GIGABIT": {
                 "code": "GIGABIT",
                 "labels": {
                     "en_US": "Gigabit",
@@ -702,7 +702,7 @@
                 ],
                 "symbol": "Gbit"
             },
-            {
+            "BIT": {
                 "code": "BIT",
                 "labels": {
                     "ca_ES": "Bit",
@@ -728,7 +728,7 @@
                 ],
                 "symbol": "b"
             },
-            {
+            "BYTE": {
                 "code": "BYTE",
                 "labels": {
                     "ca_ES": "Byte",
@@ -754,7 +754,7 @@
                 ],
                 "symbol": "B"
             },
-            {
+            "KILOBYTE": {
                 "code": "KILOBYTE",
                 "labels": {
                     "ca_ES": "Kilobyte",
@@ -780,7 +780,7 @@
                 ],
                 "symbol": "kB"
             },
-            {
+            "MEGABYTE": {
                 "code": "MEGABYTE",
                 "labels": {
                     "ca_ES": "Megabyte",
@@ -806,7 +806,7 @@
                 ],
                 "symbol": "MB"
             },
-            {
+            "GIGABYTE": {
                 "code": "GIGABYTE",
                 "labels": {
                     "ca_ES": "Gigabyte",
@@ -832,7 +832,7 @@
                 ],
                 "symbol": "GB"
             },
-            {
+            "TERABYTE": {
                 "code": "TERABYTE",
                 "labels": {
                     "ca_ES": "Terabyte",
@@ -858,7 +858,7 @@
                 ],
                 "symbol": "TB"
             }
-        ]
+        }
     },
     {
         "code": "Brightness",
@@ -868,8 +868,8 @@
             "fr_FR": "Luminosité"
         },
         "standard_unit_code": "LUMEN",
-        "units": [
-            {
+        "units": {
+            "LUMEN": {
                 "code": "LUMEN",
                 "labels": {
                     "de_DE": "Lumen",
@@ -884,7 +884,7 @@
                 ],
                 "symbol": "lm"
             },
-            {
+            "NIT": {
                 "code": "NIT",
                 "labels": {
                     "de_DE": "Nit",
@@ -899,7 +899,7 @@
                 ],
                 "symbol": "nits"
             }
-        ]
+        }
     },
     {
         "code": "Capacitance",
@@ -909,8 +909,8 @@
             "fr_FR": "Capacité électrique"
         },
         "standard_unit_code": "FARAD",
-        "units": [
-            {
+        "units": {
+            "ATTOFARAD": {
                 "code": "ATTOFARAD",
                 "labels": {
                     "en_US": "Attofarad",
@@ -924,7 +924,7 @@
                 ],
                 "symbol": "aF"
             },
-            {
+            "PICOFARAD": {
                 "code": "PICOFARAD",
                 "labels": {
                     "en_US": "Picofarad",
@@ -938,7 +938,7 @@
                 ],
                 "symbol": "pF"
             },
-            {
+            "NANOFARAD": {
                 "code": "NANOFARAD",
                 "labels": {
                     "en_US": "Nanofarad",
@@ -952,7 +952,7 @@
                 ],
                 "symbol": "nF"
             },
-            {
+            "MICROFARAD": {
                 "code": "MICROFARAD",
                 "labels": {
                     "en_US": "Microfarad",
@@ -966,7 +966,7 @@
                 ],
                 "symbol": "µF"
             },
-            {
+            "MILLIFARAD": {
                 "code": "MILLIFARAD",
                 "labels": {
                     "en_US": "Millifarad",
@@ -980,7 +980,7 @@
                 ],
                 "symbol": "mF"
             },
-            {
+            "FARAD": {
                 "code": "FARAD",
                 "labels": {
                     "en_US": "Farad",
@@ -994,7 +994,7 @@
                 ],
                 "symbol": "F"
             },
-            {
+            "KILOFARAD": {
                 "code": "KILOFARAD",
                 "labels": {
                     "en_US": "Kilofarad",
@@ -1008,7 +1008,7 @@
                 ],
                 "symbol": "kF"
             }
-        ]
+        }
     },
     {
         "code": "CaseBox",
@@ -1029,8 +1029,8 @@
             "sv_SE": "Förpackning"
         },
         "standard_unit_code": "PIECE",
-        "units": [
-            {
+        "units": {
+            "PIECE": {
                 "code": "PIECE",
                 "labels": {
                     "ca_ES": "Peça",
@@ -1056,7 +1056,7 @@
                 ],
                 "symbol": "Pc"
             },
-            {
+            "DOZEN": {
                 "code": "DOZEN",
                 "labels": {
                     "ca_ES": "Dotzena",
@@ -1082,7 +1082,7 @@
                 ],
                 "symbol": "Dz"
             }
-        ]
+        }
     },
     {
         "code": "Decibel",
@@ -1103,8 +1103,8 @@
             "sv_SE": "Decibel"
         },
         "standard_unit_code": "DECIBEL",
-        "units": [
-            {
+        "units": {
+            "DECIBEL": {
                 "code": "DECIBEL",
                 "labels": {
                     "ca_ES": "Decibel",
@@ -1130,7 +1130,7 @@
                 ],
                 "symbol": "dB"
             }
-        ]
+        }
     },
     {
         "code": "Duration",
@@ -1151,8 +1151,8 @@
             "sv_SE": "Varaktighet"
         },
         "standard_unit_code": "SECOND",
-        "units": [
-            {
+        "units": {
+            "MILLISECOND": {
                 "code": "MILLISECOND",
                 "labels": {
                     "ca_ES": "Mil·lisegon",
@@ -1178,7 +1178,7 @@
                 ],
                 "symbol": "ms"
             },
-            {
+            "SECOND": {
                 "code": "SECOND",
                 "labels": {
                     "ca_ES": "Segon",
@@ -1204,7 +1204,7 @@
                 ],
                 "symbol": "s"
             },
-            {
+            "MINUTE": {
                 "code": "MINUTE",
                 "labels": {
                     "ca_ES": "Minut",
@@ -1230,7 +1230,7 @@
                 ],
                 "symbol": "m"
             },
-            {
+            "HOUR": {
                 "code": "HOUR",
                 "labels": {
                     "ca_ES": "Hora",
@@ -1256,7 +1256,7 @@
                 ],
                 "symbol": "h"
             },
-            {
+            "DAY": {
                 "code": "DAY",
                 "labels": {
                     "ca_ES": "Dia",
@@ -1282,7 +1282,7 @@
                 ],
                 "symbol": "d"
             },
-            {
+            "WEEK": {
                 "code": "WEEK",
                 "labels": {
                     "ca_ES": "Setmana",
@@ -1308,7 +1308,7 @@
                 ],
                 "symbol": "week"
             },
-            {
+            "MONTH": {
                 "code": "MONTH",
                 "labels": {
                     "ca_ES": "Mes",
@@ -1334,7 +1334,7 @@
                 ],
                 "symbol": "month"
             },
-            {
+            "YEAR": {
                 "code": "YEAR",
                 "labels": {
                     "ca_ES": "Any",
@@ -1360,7 +1360,7 @@
                 ],
                 "symbol": "year"
             }
-        ]
+        }
     },
     {
         "code": "ElectricCharge",
@@ -1381,8 +1381,8 @@
             "sv_SE": "Elektrisk laddning"
         },
         "standard_unit_code": "AMPEREHOUR",
-        "units": [
-            {
+        "units": {
+            "MILLIAMPEREHOUR": {
                 "code": "MILLIAMPEREHOUR",
                 "labels": {
                     "ca_ES": "Microampers per hora",
@@ -1408,7 +1408,7 @@
                 ],
                 "symbol": "mAh"
             },
-            {
+            "AMPEREHOUR": {
                 "code": "AMPEREHOUR",
                 "labels": {
                     "ca_ES": "Ampers per hora",
@@ -1434,7 +1434,7 @@
                 ],
                 "symbol": "Ah"
             },
-            {
+            "MILLICOULOMB": {
                 "code": "MILLICOULOMB",
                 "labels": {
                     "ca_ES": "Mil·licoulomb",
@@ -1460,7 +1460,7 @@
                 ],
                 "symbol": "mC"
             },
-            {
+            "CENTICOULOMB": {
                 "code": "CENTICOULOMB",
                 "labels": {
                     "ca_ES": "Centicoulomb",
@@ -1486,7 +1486,7 @@
                 ],
                 "symbol": "cC"
             },
-            {
+            "DECICOULOMB": {
                 "code": "DECICOULOMB",
                 "labels": {
                     "ca_ES": "Decicoulomb",
@@ -1512,7 +1512,7 @@
                 ],
                 "symbol": "dC"
             },
-            {
+            "COULOMB": {
                 "code": "COULOMB",
                 "labels": {
                     "ca_ES": "Coulomb",
@@ -1538,7 +1538,7 @@
                 ],
                 "symbol": "C"
             },
-            {
+            "DEKACOULOMB": {
                 "code": "DEKACOULOMB",
                 "labels": {
                     "ca_ES": "Decacoulomb",
@@ -1564,7 +1564,7 @@
                 ],
                 "symbol": "daC"
             },
-            {
+            "HECTOCOULOMB": {
                 "code": "HECTOCOULOMB",
                 "labels": {
                     "ca_ES": "Hectocoulomb",
@@ -1590,7 +1590,7 @@
                 ],
                 "symbol": "hC"
             },
-            {
+            "KILOCOULOMB": {
                 "code": "KILOCOULOMB",
                 "labels": {
                     "ca_ES": "Quilocoulomb",
@@ -1616,7 +1616,7 @@
                 ],
                 "symbol": "kC"
             }
-        ]
+        }
     },
     {
         "code": "Energy",
@@ -1637,8 +1637,8 @@
             "sv_SE": "Energi"
         },
         "standard_unit_code": "JOULE",
-        "units": [
-            {
+        "units": {
+            "JOULE": {
                 "code": "JOULE",
                 "labels": {
                     "de_DE": "Joule",
@@ -1653,7 +1653,7 @@
                 ],
                 "symbol": "J"
             },
-            {
+            "CALORIE": {
                 "code": "CALORIE",
                 "labels": {
                     "de_DE": "Kalorien",
@@ -1668,7 +1668,7 @@
                 ],
                 "symbol": "cal"
             },
-            {
+            "KILOCALORIE": {
                 "code": "KILOCALORIE",
                 "labels": {
                     "ca_ES": "quilocalories",
@@ -1694,7 +1694,7 @@
                 ],
                 "symbol": "kcal"
             },
-            {
+            "KILOJOULE": {
                 "code": "KILOJOULE",
                 "labels": {
                     "ca_ES": "kilojoule",
@@ -1720,7 +1720,7 @@
                 ],
                 "symbol": "kJ"
             }
-        ]
+        }
     },
     {
         "code": "Force",
@@ -1730,8 +1730,8 @@
             "fr_FR": "Force"
         },
         "standard_unit_code": "NEWTON",
-        "units": [
-            {
+        "units": {
+            "MILLINEWTON": {
                 "code": "MILLINEWTON",
                 "labels": {
                     "en_US": "Millinewton",
@@ -1745,7 +1745,7 @@
                 ],
                 "symbol": "mN"
             },
-            {
+            "NEWTON": {
                 "code": "NEWTON",
                 "labels": {
                     "en_US": "Newton",
@@ -1759,7 +1759,7 @@
                 ],
                 "symbol": "N"
             },
-            {
+            "KILONEWTON": {
                 "code": "KILONEWTON",
                 "labels": {
                     "en_US": "Kilonewton",
@@ -1773,7 +1773,7 @@
                 ],
                 "symbol": "kN"
             },
-            {
+            "MEGATON": {
                 "code": "MEGATON",
                 "labels": {
                     "en_US": "Meganewton",
@@ -1787,7 +1787,7 @@
                 ],
                 "symbol": "MN"
             }
-        ]
+        }
     },
     {
         "code": "Frequency",
@@ -1808,8 +1808,8 @@
             "sv_SE": "Frekvens"
         },
         "standard_unit_code": "HERTZ",
-        "units": [
-            {
+        "units": {
+            "HERTZ": {
                 "code": "HERTZ",
                 "labels": {
                     "ca_ES": "Hertz",
@@ -1835,7 +1835,7 @@
                 ],
                 "symbol": "Hz"
             },
-            {
+            "KILOHERTZ": {
                 "code": "KILOHERTZ",
                 "labels": {
                     "ca_ES": "Kilohertz",
@@ -1861,7 +1861,7 @@
                 ],
                 "symbol": "kHz"
             },
-            {
+            "MEGAHERTZ": {
                 "code": "MEGAHERTZ",
                 "labels": {
                     "ca_ES": "Megahertz",
@@ -1887,7 +1887,7 @@
                 ],
                 "symbol": "MHz"
             },
-            {
+            "GIGAHERTZ": {
                 "code": "GIGAHERTZ",
                 "labels": {
                     "ca_ES": "Gigahertz",
@@ -1913,7 +1913,7 @@
                 ],
                 "symbol": "GHz"
             },
-            {
+            "TERAHERTZ": {
                 "code": "TERAHERTZ",
                 "labels": {
                     "ca_ES": "Terahertz",
@@ -1939,7 +1939,7 @@
                 ],
                 "symbol": "THz"
             }
-        ]
+        }
     },
     {
         "code": "Intensity",
@@ -1960,8 +1960,8 @@
             "sv_SE": "Intensitet"
         },
         "standard_unit_code": "AMPERE",
-        "units": [
-            {
+        "units": {
+            "MILLIAMPERE": {
                 "code": "MILLIAMPERE",
                 "labels": {
                     "ca_ES": "Mil·liamper",
@@ -1987,7 +1987,7 @@
                 ],
                 "symbol": "mA"
             },
-            {
+            "CENTIAMPERE": {
                 "code": "CENTIAMPERE",
                 "labels": {
                     "ca_ES": "Centiamper",
@@ -2013,7 +2013,7 @@
                 ],
                 "symbol": "cA"
             },
-            {
+            "DECIAMPERE": {
                 "code": "DECIAMPERE",
                 "labels": {
                     "ca_ES": "Deciamper",
@@ -2039,7 +2039,7 @@
                 ],
                 "symbol": "dA"
             },
-            {
+            "AMPERE": {
                 "code": "AMPERE",
                 "labels": {
                     "ca_ES": "Amper",
@@ -2065,7 +2065,7 @@
                 ],
                 "symbol": "A"
             },
-            {
+            "DEKAMPERE": {
                 "code": "DEKAMPERE",
                 "labels": {
                     "ca_ES": "Decaamper",
@@ -2091,7 +2091,7 @@
                 ],
                 "symbol": "daA"
             },
-            {
+            "HECTOAMPERE": {
                 "code": "HECTOAMPERE",
                 "labels": {
                     "ca_ES": "Hectoamper",
@@ -2117,7 +2117,7 @@
                 ],
                 "symbol": "hA"
             },
-            {
+            "KILOAMPERE": {
                 "code": "KILOAMPERE",
                 "labels": {
                     "ca_ES": "Quiloampere",
@@ -2143,7 +2143,7 @@
                 ],
                 "symbol": "kA"
             }
-        ]
+        }
     },
     {
         "code": "Length",
@@ -2164,8 +2164,8 @@
             "sv_SE": "Längd"
         },
         "standard_unit_code": "METER",
-        "units": [
-            {
+        "units": {
+            "MICROMETER": {
                 "code": "MICROMETER",
                 "labels": {
                     "en_US": "Micrometer",
@@ -2179,7 +2179,7 @@
                 ],
                 "symbol": "μm"
             },
-            {
+            "NAUTICAL_MILE": {
                 "code": "NAUTICAL_MILE",
                 "labels": {
                     "en_US": "Nautical mile",
@@ -2193,7 +2193,7 @@
                 ],
                 "symbol": "nm"
             },
-            {
+            "MILLIMETER": {
                 "code": "MILLIMETER",
                 "labels": {
                     "ca_ES": "Mil·límetre",
@@ -2219,7 +2219,7 @@
                 ],
                 "symbol": "mm"
             },
-            {
+            "CENTIMETER": {
                 "code": "CENTIMETER",
                 "labels": {
                     "ca_ES": "Centímetre",
@@ -2245,7 +2245,7 @@
                 ],
                 "symbol": "cm"
             },
-            {
+            "DECIMETER": {
                 "code": "DECIMETER",
                 "labels": {
                     "ca_ES": "Decímetre",
@@ -2271,7 +2271,7 @@
                 ],
                 "symbol": "dm"
             },
-            {
+            "METER": {
                 "code": "METER",
                 "labels": {
                     "ca_ES": "Metre",
@@ -2297,7 +2297,7 @@
                 ],
                 "symbol": "m"
             },
-            {
+            "DEKAMETER": {
                 "code": "DEKAMETER",
                 "labels": {
                     "ca_ES": "Decàmetre",
@@ -2323,7 +2323,7 @@
                 ],
                 "symbol": "dam"
             },
-            {
+            "HECTOMETER": {
                 "code": "HECTOMETER",
                 "labels": {
                     "ca_ES": "Hectòmetre",
@@ -2349,7 +2349,7 @@
                 ],
                 "symbol": "hm"
             },
-            {
+            "KILOMETER": {
                 "code": "KILOMETER",
                 "labels": {
                     "ca_ES": "Quilòmetre",
@@ -2375,7 +2375,7 @@
                 ],
                 "symbol": "km"
             },
-            {
+            "MIL": {
                 "code": "MIL",
                 "labels": {
                     "ca_ES": "Mil",
@@ -2401,7 +2401,7 @@
                 ],
                 "symbol": "mil"
             },
-            {
+            "INCH": {
                 "code": "INCH",
                 "labels": {
                     "ca_ES": "Polzada",
@@ -2427,7 +2427,7 @@
                 ],
                 "symbol": "in"
             },
-            {
+            "FEET": {
                 "code": "FEET",
                 "labels": {
                     "ca_ES": "Peus",
@@ -2453,7 +2453,7 @@
                 ],
                 "symbol": "ft"
             },
-            {
+            "YARD": {
                 "code": "YARD",
                 "labels": {
                     "ca_ES": "Iarda",
@@ -2479,7 +2479,7 @@
                 ],
                 "symbol": "yd"
             },
-            {
+            "CHAIN": {
                 "code": "CHAIN",
                 "labels": {
                     "ca_ES": "Cadena",
@@ -2505,7 +2505,7 @@
                 ],
                 "symbol": "ch"
             },
-            {
+            "FURLONG": {
                 "code": "FURLONG",
                 "labels": {
                     "ca_ES": "Furlong",
@@ -2531,7 +2531,7 @@
                 ],
                 "symbol": "fur"
             },
-            {
+            "MILE": {
                 "code": "MILE",
                 "labels": {
                     "ca_ES": "Milla",
@@ -2557,7 +2557,7 @@
                 ],
                 "symbol": "mi"
             }
-        ]
+        }
     },
     {
         "code": "Power",
@@ -2578,8 +2578,8 @@
             "sv_SE": "Ström"
         },
         "standard_unit_code": "WATT",
-        "units": [
-            {
+        "units": {
+            "WATT": {
                 "code": "WATT",
                 "labels": {
                     "ca_ES": "Watt",
@@ -2605,7 +2605,7 @@
                 ],
                 "symbol": "W"
             },
-            {
+            "KILOWATT": {
                 "code": "KILOWATT",
                 "labels": {
                     "ca_ES": "Quilowatt",
@@ -2631,7 +2631,7 @@
                 ],
                 "symbol": "kW"
             },
-            {
+            "MEGAWATT": {
                 "code": "MEGAWATT",
                 "labels": {
                     "ca_ES": "Megawatt",
@@ -2657,7 +2657,7 @@
                 ],
                 "symbol": "MW"
             },
-            {
+            "GIGAWATT": {
                 "code": "GIGAWATT",
                 "labels": {
                     "ca_ES": "Gigawatt",
@@ -2683,7 +2683,7 @@
                 ],
                 "symbol": "GW"
             },
-            {
+            "TERAWATT": {
                 "code": "TERAWATT",
                 "labels": {
                     "ca_ES": "Terawatt",
@@ -2709,7 +2709,7 @@
                 ],
                 "symbol": "TW"
             }
-        ]
+        }
     },
     {
         "code": "Pressure",
@@ -2730,8 +2730,8 @@
             "sv_SE": "Tryck"
         },
         "standard_unit_code": "BAR",
-        "units": [
-            {
+        "units": {
+            "CENTIBAR": {
                 "code": "CENTIBAR",
                 "labels": {
                     "en_US": "Centibar",
@@ -2745,7 +2745,7 @@
                 ],
                 "symbol": "cbar"
             },
-            {
+            "DECIBAR": {
                 "code": "DECIBAR",
                 "labels": {
                     "en_US": "Decibar",
@@ -2759,7 +2759,7 @@
                 ],
                 "symbol": "dbar"
             },
-            {
+            "KILOBAR": {
                 "code": "KILOBAR",
                 "labels": {
                     "en_US": "Kilobar",
@@ -2773,7 +2773,7 @@
                 ],
                 "symbol": "kbar"
             },
-            {
+            "MEGABAR": {
                 "code": "MEGABAR",
                 "labels": {
                     "en_US": "Megabar",
@@ -2787,7 +2787,7 @@
                 ],
                 "symbol": "Mbar"
             },
-            {
+            "KILOPASCAL": {
                 "code": "KILOPASCAL",
                 "labels": {
                     "en_US": "Kilopascal",
@@ -2801,7 +2801,7 @@
                 ],
                 "symbol": "kPa"
             },
-            {
+            "MEGAPASCAL": {
                 "code": "MEGAPASCAL",
                 "labels": {
                     "en_US": "Megapascal",
@@ -2815,7 +2815,7 @@
                 ],
                 "symbol": "MPa"
             },
-            {
+            "GIGAPASCAL": {
                 "code": "GIGAPASCAL",
                 "labels": {
                     "en_US": "Gigapascal",
@@ -2829,7 +2829,7 @@
                 ],
                 "symbol": "GPa"
             },
-            {
+            "BAR": {
                 "code": "BAR",
                 "labels": {
                     "ca_ES": "Bar",
@@ -2855,7 +2855,7 @@
                 ],
                 "symbol": "Bar"
             },
-            {
+            "PASCAL": {
                 "code": "PASCAL",
                 "labels": {
                     "ca_ES": "Pascal",
@@ -2881,7 +2881,7 @@
                 ],
                 "symbol": "Pa"
             },
-            {
+            "HECTOPASCAL": {
                 "code": "HECTOPASCAL",
                 "labels": {
                     "ca_ES": "hectopascal",
@@ -2907,7 +2907,7 @@
                 ],
                 "symbol": "hPa"
             },
-            {
+            "MILLIBAR": {
                 "code": "MILLIBAR",
                 "labels": {
                     "ca_ES": "mil·libar",
@@ -2933,7 +2933,7 @@
                 ],
                 "symbol": "mBar"
             },
-            {
+            "ATM": {
                 "code": "ATM",
                 "labels": {
                     "ca_ES": "Atmosfera",
@@ -2959,7 +2959,7 @@
                 ],
                 "symbol": "atm"
             },
-            {
+            "PSI": {
                 "code": "PSI",
                 "labels": {
                     "ca_ES": "Lliura per polzada quadrada",
@@ -2985,7 +2985,7 @@
                 ],
                 "symbol": "PSI"
             },
-            {
+            "TORR": {
                 "code": "TORR",
                 "labels": {
                     "ca_ES": "Torr",
@@ -3011,7 +3011,7 @@
                 ],
                 "symbol": "Torr"
             },
-            {
+            "MMHG": {
                 "code": "MMHG",
                 "labels": {
                     "ca_ES": "mil·límetre de Mercuri",
@@ -3037,7 +3037,7 @@
                 ],
                 "symbol": "mmHg"
             }
-        ]
+        }
     },
     {
         "code": "Resistance",
@@ -3058,8 +3058,8 @@
             "sv_SE": "Motstånd"
         },
         "standard_unit_code": "OHM",
-        "units": [
-            {
+        "units": {
+            "MILLIOHM": {
                 "code": "MILLIOHM",
                 "labels": {
                     "ca_ES": "Mil·liohm",
@@ -3085,7 +3085,7 @@
                 ],
                 "symbol": "mΩ"
             },
-            {
+            "CENTIOHM": {
                 "code": "CENTIOHM",
                 "labels": {
                     "ca_ES": "Centiohm",
@@ -3111,7 +3111,7 @@
                 ],
                 "symbol": "cΩ"
             },
-            {
+            "DECIOHM": {
                 "code": "DECIOHM",
                 "labels": {
                     "ca_ES": "Deciohm",
@@ -3137,7 +3137,7 @@
                 ],
                 "symbol": "dΩ"
             },
-            {
+            "OHM": {
                 "code": "OHM",
                 "labels": {
                     "ca_ES": "Ohm",
@@ -3163,7 +3163,7 @@
                 ],
                 "symbol": "Ω"
             },
-            {
+            "DEKAOHM": {
                 "code": "DEKAOHM",
                 "labels": {
                     "ca_ES": "Decaohm",
@@ -3189,7 +3189,7 @@
                 ],
                 "symbol": "daΩ"
             },
-            {
+            "HECTOHM": {
                 "code": "HECTOHM",
                 "labels": {
                     "ca_ES": "Hectohm",
@@ -3215,7 +3215,7 @@
                 ],
                 "symbol": "hΩ"
             },
-            {
+            "KILOHM": {
                 "code": "KILOHM",
                 "labels": {
                     "ca_ES": "Quilohm",
@@ -3241,7 +3241,7 @@
                 ],
                 "symbol": "kΩ"
             },
-            {
+            "MEGOHM": {
                 "code": "MEGOHM",
                 "labels": {
                     "ca_ES": "Megohm",
@@ -3267,7 +3267,7 @@
                 ],
                 "symbol": "MΩ"
             }
-        ]
+        }
     },
     {
         "code": "Speed",
@@ -3288,8 +3288,8 @@
             "sv_SE": "Hastighet"
         },
         "standard_unit_code": "METER_PER_SECOND",
-        "units": [
-            {
+        "units": {
+            "METER_PER_SECOND": {
                 "code": "METER_PER_SECOND",
                 "labels": {
                     "ca_ES": "Metre per segon",
@@ -3315,7 +3315,7 @@
                 ],
                 "symbol": "m/s"
             },
-            {
+            "METER_PER_MINUTE": {
                 "code": "METER_PER_MINUTE",
                 "labels": {
                     "ca_ES": "Metre per minut",
@@ -3341,7 +3341,7 @@
                 ],
                 "symbol": "m/mn"
             },
-            {
+            "METER_PER_HOUR": {
                 "code": "METER_PER_HOUR",
                 "labels": {
                     "ca_ES": "Metre per hora",
@@ -3371,7 +3371,7 @@
                 ],
                 "symbol": "m/h"
             },
-            {
+            "KILOMETER_PER_HOUR": {
                 "code": "KILOMETER_PER_HOUR",
                 "labels": {
                     "ca_ES": "Quilòmetre per hora",
@@ -3401,7 +3401,7 @@
                 ],
                 "symbol": "km/h"
             },
-            {
+            "FOOT_PER_SECOND": {
                 "code": "FOOT_PER_SECOND",
                 "labels": {
                     "ca_ES": "Peu per segon",
@@ -3427,7 +3427,7 @@
                 ],
                 "symbol": "ft/s"
             },
-            {
+            "FOOT_PER_HOUR": {
                 "code": "FOOT_PER_HOUR",
                 "labels": {
                     "ca_ES": "Peu per hora",
@@ -3457,7 +3457,7 @@
                 ],
                 "symbol": "ft/h"
             },
-            {
+            "YARD_PER_HOUR": {
                 "code": "YARD_PER_HOUR",
                 "labels": {
                     "ca_ES": "Iarda per hora",
@@ -3487,7 +3487,7 @@
                 ],
                 "symbol": "yd/h"
             },
-            {
+            "MILE_PER_HOUR": {
                 "code": "MILE_PER_HOUR",
                 "labels": {
                     "ca_ES": "Milla per hora",
@@ -3517,7 +3517,7 @@
                 ],
                 "symbol": "mi/h"
             }
-        ]
+        }
     },
     {
         "code": "Temperature",
@@ -3538,8 +3538,8 @@
             "sv_SE": "Temperatur"
         },
         "standard_unit_code": "KELVIN",
-        "units": [
-            {
+        "units": {
+            "CELSIUS": {
                 "code": "CELSIUS",
                 "labels": {
                     "ca_ES": "Celsius",
@@ -3565,7 +3565,7 @@
                 ],
                 "symbol": "°C"
             },
-            {
+            "FAHRENHEIT": {
                 "code": "FAHRENHEIT",
                 "labels": {
                     "ca_ES": "Fahrenheit",
@@ -3599,7 +3599,7 @@
                 ],
                 "symbol": "°F"
             },
-            {
+            "KELVIN": {
                 "code": "KELVIN",
                 "labels": {
                     "ca_ES": "Kelvin",
@@ -3625,7 +3625,7 @@
                 ],
                 "symbol": "°K"
             },
-            {
+            "RANKINE": {
                 "code": "RANKINE",
                 "labels": {
                     "ca_ES": "Rankine",
@@ -3651,7 +3651,7 @@
                 ],
                 "symbol": "°R"
             },
-            {
+            "REAUMUR": {
                 "code": "REAUMUR",
                 "labels": {
                     "ca_ES": "Reaumur",
@@ -3681,7 +3681,7 @@
                 ],
                 "symbol": "°r"
             }
-        ]
+        }
     },
     {
         "code": "Voltage",
@@ -3702,8 +3702,8 @@
             "sv_SE": "Spänning"
         },
         "standard_unit_code": "VOLT",
-        "units": [
-            {
+        "units": {
+            "MILLIVOLT": {
                 "code": "MILLIVOLT",
                 "labels": {
                     "ca_ES": "Mil·livolt",
@@ -3729,7 +3729,7 @@
                 ],
                 "symbol": "mV"
             },
-            {
+            "CENTIVOLT": {
                 "code": "CENTIVOLT",
                 "labels": {
                     "ca_ES": "Centivolt",
@@ -3755,7 +3755,7 @@
                 ],
                 "symbol": "cV"
             },
-            {
+            "DECIVOLT": {
                 "code": "DECIVOLT",
                 "labels": {
                     "ca_ES": "Decivolt",
@@ -3781,7 +3781,7 @@
                 ],
                 "symbol": "dV"
             },
-            {
+            "VOLT": {
                 "code": "VOLT",
                 "labels": {
                     "ca_ES": "Volt",
@@ -3807,7 +3807,7 @@
                 ],
                 "symbol": "V"
             },
-            {
+            "DEKAVOLT": {
                 "code": "DEKAVOLT",
                 "labels": {
                     "ca_ES": "Decavolt",
@@ -3833,7 +3833,7 @@
                 ],
                 "symbol": "daV"
             },
-            {
+            "HECTOVOLT": {
                 "code": "HECTOVOLT",
                 "labels": {
                     "ca_ES": "Hectovolt",
@@ -3859,7 +3859,7 @@
                 ],
                 "symbol": "hV"
             },
-            {
+            "KILOVOLT": {
                 "code": "KILOVOLT",
                 "labels": {
                     "ca_ES": "Quilovolt",
@@ -3885,7 +3885,7 @@
                 ],
                 "symbol": "kV"
             }
-        ]
+        }
     },
     {
         "code": "Volume",
@@ -3906,8 +3906,8 @@
             "sv_SE": "Volym"
         },
         "standard_unit_code": "CUBIC_METER",
-        "units": [
-            {
+        "units": {
+            "MICROLITER": {
                 "code": "MICROLITER",
                 "labels": {
                     "en_US": "Microliter",
@@ -3921,7 +3921,7 @@
                 ],
                 "symbol": "μl"
             },
-            {
+            "HECTOLITER": {
                 "code": "HECTOLITER",
                 "labels": {
                     "en_US": "Hectoliter",
@@ -3935,7 +3935,7 @@
                 ],
                 "symbol": "hl"
             },
-            {
+            "CUBIC_MILLIMETER": {
                 "code": "CUBIC_MILLIMETER",
                 "labels": {
                     "ca_ES": "Mil·límetre cúbic",
@@ -3961,7 +3961,7 @@
                 ],
                 "symbol": "mm³"
             },
-            {
+            "CUBIC_CENTIMETER": {
                 "code": "CUBIC_CENTIMETER",
                 "labels": {
                     "ca_ES": "Centímetre cúbic",
@@ -3987,7 +3987,7 @@
                 ],
                 "symbol": "cm³"
             },
-            {
+            "MILLILITER": {
                 "code": "MILLILITER",
                 "labels": {
                     "ca_ES": "Mililitre",
@@ -4013,7 +4013,7 @@
                 ],
                 "symbol": "ml"
             },
-            {
+            "CENTILITER": {
                 "code": "CENTILITER",
                 "labels": {
                     "ca_ES": "Centilitre",
@@ -4039,7 +4039,7 @@
                 ],
                 "symbol": "cl"
             },
-            {
+            "DECILITER": {
                 "code": "DECILITER",
                 "labels": {
                     "ca_ES": "Decilitre",
@@ -4065,7 +4065,7 @@
                 ],
                 "symbol": "dl"
             },
-            {
+            "CUBIC_DECIMETER": {
                 "code": "CUBIC_DECIMETER",
                 "labels": {
                     "ca_ES": "Decímetre cúbic",
@@ -4091,7 +4091,7 @@
                 ],
                 "symbol": "dm³"
             },
-            {
+            "LITER": {
                 "code": "LITER",
                 "labels": {
                     "ca_ES": "Litre",
@@ -4117,7 +4117,7 @@
                 ],
                 "symbol": "l"
             },
-            {
+            "CUBIC_METER": {
                 "code": "CUBIC_METER",
                 "labels": {
                     "ca_ES": "Metre cúbic",
@@ -4143,7 +4143,7 @@
                 ],
                 "symbol": "m³"
             },
-            {
+            "OUNCE": {
                 "code": "OUNCE",
                 "labels": {
                     "ca_ES": "Unça",
@@ -4173,7 +4173,7 @@
                 ],
                 "symbol": "oz"
             },
-            {
+            "PINT": {
                 "code": "PINT",
                 "labels": {
                     "ca_ES": "Pinta",
@@ -4203,7 +4203,7 @@
                 ],
                 "symbol": "pt"
             },
-            {
+            "BARREL": {
                 "code": "BARREL",
                 "labels": {
                     "ca_ES": "Barril",
@@ -4229,7 +4229,7 @@
                 ],
                 "symbol": "bbl"
             },
-            {
+            "GALLON": {
                 "code": "GALLON",
                 "labels": {
                     "ca_ES": "Galó",
@@ -4255,7 +4255,7 @@
                 ],
                 "symbol": "gal"
             },
-            {
+            "CUBIC_FOOT": {
                 "code": "CUBIC_FOOT",
                 "labels": {
                     "ca_ES": "Peu cúbic",
@@ -4285,7 +4285,7 @@
                 ],
                 "symbol": "ft³"
             },
-            {
+            "CUBIC_INCH": {
                 "code": "CUBIC_INCH",
                 "labels": {
                     "ca_ES": "Polzada cúbica",
@@ -4315,7 +4315,7 @@
                 ],
                 "symbol": "in³"
             },
-            {
+            "CUBIC_YARD": {
                 "code": "CUBIC_YARD",
                 "labels": {
                     "ca_ES": "Iarda cúbica",
@@ -4341,7 +4341,7 @@
                 ],
                 "symbol": "yd³"
             }
-        ]
+        }
     },
     {
         "code": "VolumeFlow",
@@ -4351,8 +4351,8 @@
             "fr_FR": "Débit volumétrique"
         },
         "standard_unit_code": "CUBIC_METER_PER_SECOND",
-        "units": [
-            {
+        "units": {
+            "CUBIC_METER_PER_SECOND": {
                 "code": "CUBIC_METER_PER_SECOND",
                 "labels": {
                     "en_US": "Cubic meter per second",
@@ -4366,7 +4366,7 @@
                 ],
                 "symbol": "m³/s"
             },
-            {
+            "CUBIC_METER_PER_MINUTE": {
                 "code": "CUBIC_METER_PER_MINUTE",
                 "labels": {
                     "en_US": "Cubic meter per minute",
@@ -4380,7 +4380,7 @@
                 ],
                 "symbol": "m³/min"
             },
-            {
+            "CUBIC_METER_PER_HOUR": {
                 "code": "CUBIC_METER_PER_HOUR",
                 "labels": {
                     "en_US": "Cubic meter per hour",
@@ -4394,7 +4394,7 @@
                 ],
                 "symbol": "m³/h"
             },
-            {
+            "CUBIC_METER_PER_DAY": {
                 "code": "CUBIC_METER_PER_DAY",
                 "labels": {
                     "en_US": "Cubic meter per day",
@@ -4408,7 +4408,7 @@
                 ],
                 "symbol": "m³/d"
             },
-            {
+            "MILLILITER_PER_SECOND": {
                 "code": "MILLILITER_PER_SECOND",
                 "labels": {
                     "en_US": "Milliliter per second",
@@ -4422,7 +4422,7 @@
                 ],
                 "symbol": "ml/s"
             },
-            {
+            "MILLILITER_PER_MINUTE": {
                 "code": "MILLILITER_PER_MINUTE",
                 "labels": {
                     "en_US": "Milliliter per minute",
@@ -4440,7 +4440,7 @@
                 ],
                 "symbol": "ml/min"
             },
-            {
+            "MILLILITER_PER_HOUR": {
                 "code": "MILLILITER_PER_HOUR",
                 "labels": {
                     "en_US": "Milliliter per hour",
@@ -4458,7 +4458,7 @@
                 ],
                 "symbol": "ml/h"
             },
-            {
+            "MILLILITER_PER_DAY": {
                 "code": "MILLILITER_PER_DAY",
                 "labels": {
                     "en_US": "Milliliter per day",
@@ -4476,7 +4476,7 @@
                 ],
                 "symbol": "ml/d"
             },
-            {
+            "CUBIC_CENTIMETER_PER_SECOND": {
                 "code": "CUBIC_CENTIMETER_PER_SECOND",
                 "labels": {
                     "en_US": "Cubic centimeter per second",
@@ -4490,7 +4490,7 @@
                 ],
                 "symbol": "cm³/s"
             },
-            {
+            "CUBIC_CENTIMETER_PER_MINUTE": {
                 "code": "CUBIC_CENTIMETER_PER_MINUTE",
                 "labels": {
                     "en_US": "Cubic centimeter per minute",
@@ -4508,7 +4508,7 @@
                 ],
                 "symbol": "cm³/min"
             },
-            {
+            "CUBIC_CENTIMETER_PER_HOUR": {
                 "code": "CUBIC_CENTIMETER_PER_HOUR",
                 "labels": {
                     "en_US": "Cubic centimeter per hour",
@@ -4526,7 +4526,7 @@
                 ],
                 "symbol": "cm³/h"
             },
-            {
+            "CUBIC_CENTIMETER_PER_DAY": {
                 "code": "CUBIC_CENTIMETER_PER_DAY",
                 "labels": {
                     "en_US": "Cubic centimeter per day",
@@ -4544,7 +4544,7 @@
                 ],
                 "symbol": "cm³/d"
             },
-            {
+            "CUBIC_DECIMETER_PER_MINUTE": {
                 "code": "CUBIC_DECIMETER_PER_MINUTE",
                 "labels": {
                     "en_US": "Cubic decimeter per minute",
@@ -4562,7 +4562,7 @@
                 ],
                 "symbol": "dm³/min"
             },
-            {
+            "CUBIC_DECIMETER_PER_HOUR": {
                 "code": "CUBIC_DECIMETER_PER_HOUR",
                 "labels": {
                     "en_US": "Cubic decimeter per hour",
@@ -4580,7 +4580,7 @@
                 ],
                 "symbol": "dm³/h"
             },
-            {
+            "LITER_PER_SECOND": {
                 "code": "LITER_PER_SECOND",
                 "labels": {
                     "en_US": "Liter per second",
@@ -4594,7 +4594,7 @@
                 ],
                 "symbol": "l/s"
             },
-            {
+            "LITER_PER_MINUTE": {
                 "code": "LITER_PER_MINUTE",
                 "labels": {
                     "en_US": "Liter per minute",
@@ -4612,7 +4612,7 @@
                 ],
                 "symbol": "l/min"
             },
-            {
+            "LITER_PER_HOUR": {
                 "code": "LITER_PER_HOUR",
                 "labels": {
                     "en_US": "Liter per hour",
@@ -4630,7 +4630,7 @@
                 ],
                 "symbol": "l/h"
             },
-            {
+            "LITER_PER_DAY": {
                 "code": "LITER_PER_DAY",
                 "labels": {
                     "en_US": "Liter per day",
@@ -4648,7 +4648,7 @@
                 ],
                 "symbol": "l/d"
             },
-            {
+            "KILOLITER_PER_HOUR": {
                 "code": "KILOLITER_PER_HOUR",
                 "labels": {
                     "en_US": "Kiloliter per day",
@@ -4662,7 +4662,7 @@
                 ],
                 "symbol": "kl/h"
             }
-        ]
+        }
     },
     {
         "code": "Weight",
@@ -4683,8 +4683,8 @@
             "sv_SE": "Vikt"
         },
         "standard_unit_code": "KILOGRAM",
-        "units": [
-            {
+        "units": {
+            "MICROGRAM": {
                 "code": "MICROGRAM",
                 "labels": {
                     "en_US": "Microgram",
@@ -4698,7 +4698,7 @@
                 ],
                 "symbol": "μg"
             },
-            {
+            "MILLIGRAM": {
                 "code": "MILLIGRAM",
                 "labels": {
                     "ca_ES": "Mil·ligram",
@@ -4724,7 +4724,7 @@
                 ],
                 "symbol": "mg"
             },
-            {
+            "GRAM": {
                 "code": "GRAM",
                 "labels": {
                     "ca_ES": "Gram",
@@ -4750,7 +4750,7 @@
                 ],
                 "symbol": "g"
             },
-            {
+            "KILOGRAM": {
                 "code": "KILOGRAM",
                 "labels": {
                     "ca_ES": "Quilogram",
@@ -4776,7 +4776,7 @@
                 ],
                 "symbol": "kg"
             },
-            {
+            "TON": {
                 "code": "TON",
                 "labels": {
                     "ca_ES": "Tona",
@@ -4802,7 +4802,7 @@
                 ],
                 "symbol": "t"
             },
-            {
+            "GRAIN": {
                 "code": "GRAIN",
                 "labels": {
                     "ca_ES": "Gra",
@@ -4828,7 +4828,7 @@
                 ],
                 "symbol": "gr"
             },
-            {
+            "DENIER": {
                 "code": "DENIER",
                 "labels": {
                     "ca_ES": "Denier",
@@ -4854,7 +4854,7 @@
                 ],
                 "symbol": "denier"
             },
-            {
+            "ONCE": {
                 "code": "ONCE",
                 "labels": {
                     "ca_ES": "Unça",
@@ -4880,7 +4880,7 @@
                 ],
                 "symbol": "once"
             },
-            {
+            "MARC": {
                 "code": "MARC",
                 "labels": {
                     "ca_ES": "Marc",
@@ -4906,7 +4906,7 @@
                 ],
                 "symbol": "marc"
             },
-            {
+            "LIVRE": {
                 "code": "LIVRE",
                 "labels": {
                     "ca_ES": "Lliura",
@@ -4932,7 +4932,7 @@
                 ],
                 "symbol": "livre"
             },
-            {
+            "OUNCE": {
                 "code": "OUNCE",
                 "labels": {
                     "ca_ES": "Unça",
@@ -4962,7 +4962,7 @@
                 ],
                 "symbol": "oz"
             },
-            {
+            "POUND": {
                 "code": "POUND",
                 "labels": {
                     "ca_ES": "Lliura",
@@ -4988,6 +4988,6 @@
                 ],
                 "symbol": "lb"
             }
-        ]
+        }
     }
 ]

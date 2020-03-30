@@ -6,12 +6,7 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
-use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
-use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
-use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -23,30 +18,14 @@ class GetMeasurementFamiliesAction
     /** @var MeasurementFamilyRepositoryInterface */
     private $measurementFamilyRepository;
 
-    /** @var ParameterValidatorInterface */
-    private $parameterValidator;
-
-    /** @var array */
-    private $apiConfiguration;
-
-    public function __construct(
-        MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
-        ParameterValidatorInterface $parameterValidator,
-        array $apiConfiguration
-    ) {
+    public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
+    {
         $this->measurementFamilyRepository = $measurementFamilyRepository;
-        $this->parameterValidator = $parameterValidator;
-        $this->apiConfiguration = $apiConfiguration;
+        $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(): JsonResponse
     {
-        try {
-            $this->parameterValidator->validate($request->query->all());
-        } catch (PaginationParametersException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        }
-
         $measurementFamilies = $this->measurementFamilyRepository->all();
         $normalizedMeasurementFamilies = $this->normalizeMeasurementFamilies($measurementFamilies);
 
@@ -55,11 +34,19 @@ class GetMeasurementFamiliesAction
 
     private function normalizeMeasurementFamilies(array $measurementFamilies): array
     {
-        return array_map(
-            function (MeasurementFamily $measurementFamily) {
-                return $measurementFamily->normalize();
-            },
-            $measurementFamilies
-        );
+        $normalizedMeasurementFamilies = [];
+
+        /** @var MeasurementFamily */
+        foreach ($measurementFamilies as $measurementFamily) {
+            $normalizedMeasurementFamily = $measurementFamily->normalize();
+            $normalizedMeasurementFamily['units'] = array_reduce($normalizedMeasurementFamily['units'], function ($indexedUnit, $unit) {
+                $indexedUnit[$unit['code']] = $unit;
+
+                return $indexedUnit;
+            }, []);
+            $normalizedMeasurementFamilies[] = $normalizedMeasurementFamily;
+        }
+
+        return $normalizedMeasurementFamilies;
     }
 }
