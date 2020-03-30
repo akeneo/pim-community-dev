@@ -45,33 +45,31 @@ class MeasurementFamilyValidator
                 ],
                 'standard_unit_code' => ['type' => 'string'],
                 'units'              => [
-                    'type'  => 'object',
-                    'patternProperties' => [
-                        '.+' => [
-                            'type'       => 'object',
-                            'required'   => ['code', 'labels', 'convert_from_standard', 'symbol'],
-                            'properties' => [
-                                'code'                  => ['type' => 'string'],
-                                'labels'                => [
-                                    'type'              => ['object', 'array'],
-                                    'patternProperties' => [
-                                        '.+' => ['type' => 'string'],
+                    'type'  => 'array',
+                    'items' => [
+                        'type'       => 'object',
+                        'required'   => ['code', 'labels', 'convert_from_standard', 'symbol'],
+                        'properties' => [
+                            'code'                  => ['type' => 'string'],
+                            'labels'                => [
+                                'type'              => ['object', 'array'],
+                                'patternProperties' => [
+                                    '.+' => ['type' => 'string'],
+                                ],
+                            ],
+                            'convert_from_standard' => [
+                                'type'  => 'array',
+                                'items' => [
+                                    'type'       => 'object',
+                                    'properties' => [
+                                        'operator' => ['type' => 'string'],
+                                        'value'    => ['type' => 'string']
                                     ],
-                                ],
-                                'convert_from_standard' => [
-                                    'type'  => 'array',
-                                    'items' => [
-                                        'type'       => 'object',
-                                        'properties' => [
-                                            'operator' => ['type' => 'string'],
-                                            'value'    => ['type' => 'string']
-                                        ],
-                                        'required'   => ['operator', 'value'],
-                                    ]
-                                ],
-                                'symbol'                => ['type' => 'string']
-                            ]
-                        ],
+                                    'required'   => ['operator', 'value'],
+                                ]
+                            ],
+                            'symbol'                => ['type' => 'string']
+                        ]
                     ]
                 ]
             ],
