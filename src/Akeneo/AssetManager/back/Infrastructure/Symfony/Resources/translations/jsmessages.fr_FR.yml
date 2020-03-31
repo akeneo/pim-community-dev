@@ -93,7 +93,9 @@ pim_asset_manager:
         unknown_extra_field: 'La propriété {{ {{ field }} }} n''était pas attendue.'
       naming_convention:
         property_should_exist: 'La propriété "{{ %property% }}" n''existe pas pour cette famille de ressources.'
+        not_main_media_attribute_code: 'La propriété doit correspondre au code de l''attribut défini comme média principal.'
       rule_template:
+        limit_reached: 'Vous avez atteint la limite de %limit% règles de rattachement automatique aux produits pour la famille de ressources "%asset_family_identifier%".'
         product_selection_cannot_be_empty: 'Vous devez spécifier au moins une sélection de produits dans votre règle de rattachement aux produits.'
         product_assignment_cannot_be_empty: 'Vous devez spécifier au moins une affectation de produits dans votre règle de rattachement aux produits.'
         extrapolated_attribute_type_should_be_supported: 'L''attribut "{{ %attribute_code% }}" de type "{{ %attribute_type% }}" n''est pas pris en charge. Seuls les types d''attributs suivants sont supportés pour ce champ : {{ %supported_attribute_type% }}.'
@@ -104,6 +106,7 @@ pim_asset_manager:
         assignment_mode_not_supported: 'Le mode d''affectation "{{ %assignment_mode% }}" trouvé dans une règle de rattachement aux produits n''est pas valide. Seuls les modes suivants sont acceptés : "remplacer" ou "ajouter".'
         channel_not_supported_for_field: 'Vous ne pouvez pas spécifier de canal pour le champ "{{ %product_field% }}".'
         locale_not_supported_for_field: 'Vous ne pouvez pas spécifier de locale pour le champ "{{ %product_field% }}".'
+        assignmement_attribute_does_not_support_this_asset_family: 'L''attribut produit "%product_attribute_code%" ne peut pas contenir de ressources de la famille de ressources "%asset_family_identifier%"'
     button:
       save: Enregistrer
       save_permission: Enregistrer
@@ -296,6 +299,7 @@ pim_asset_manager:
         invalid: erreur
         created: créé
     delete:
+      message: Êtes-vous sûr de vouloir supprimer la ressource "{{ assetLabel }}" ? Si elle est liée à des produits, les liens vers ces derniers seront supprimés.
       title: Ressource
     delete_all:
       confirm: Êtes-vous sûr de vouloir supprimer toutes les ressources "{{ entityIdentifier }}" ? Si elles sont liées à des produits, les liens vers les produits seront supprimés.
