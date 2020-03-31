@@ -36,6 +36,7 @@ services:
         arguments:
             - '@pimee_catalog_rule.processor.denormalization.rule_definition'
             - '@akeneo_rule_engine.repository.rule_definition'
+            - '@akeneo_rule_engine.normalizer.rule_definition'
 
     Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ExportRuleContext:
         arguments:

@@ -65,6 +65,14 @@ services:
         tags:
             - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
 
+    pimee_catalog_rule.denormalizer.product_rule.calculate_action:
+        class: '%pimee_catalog_rule.denormalizer.product_rule.action.class%'
+        arguments:
+            - 'Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateAction'
+            - 'calculate'
+        tags:
+            - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
+
     pimee_catalog_rule.denormalizer.product_rule.content:
         class: '%pimee_catalog_rule.denormalizer.product_rule.content.class%'
         arguments:

@@ -16,6 +16,7 @@ namespace Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context;
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor;
 use Akeneo\Test\Pim\Automation\RuleEngine\Common\Context\ExceptionContext;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer;
 use AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition\InMemoryRuleDefinitionRepository;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Yaml\Yaml;
@@ -33,12 +34,19 @@ final class ImportRuleContext implements Context
     /** @var InMemoryRuleDefinitionRepository */
     private $ruleDefinitionRepository;
 
+    /** @var RuleDefinitionNormalizer */
+    private $ruleDefinitionNormalizer;
+
+    private $importedRules = [];
+
     public function __construct(
         RuleDefinitionProcessor $ruleDefinitionProcessor,
-        InMemoryRuleDefinitionRepository $ruleDefinitionRepository
+        InMemoryRuleDefinitionRepository $ruleDefinitionRepository,
+        RuleDefinitionNormalizer $ruleDefinitionNormalizer
     ) {
         $this->ruleDefinitionProcessor = $ruleDefinitionProcessor;
         $this->ruleDefinitionRepository = $ruleDefinitionRepository;
+        $this->ruleDefinitionNormalizer = $ruleDefinitionNormalizer;
     }
 
     /**
@@ -48,7 +56,7 @@ final class ImportRuleContext implements Context
     {
         $rulesConfig = <<<YAML
 rules:
-    test1:
+    concatenate:
         priority: 90
         conditions:
             - field: family
@@ -89,26 +97,47 @@ YAML;
     }
 
     /**
-     * @Then /^the rule list contains the valid concatenate rule/
+     * @When /^I import a valid calculate rule$/
      */
-    public function theRuleListContainsTheValidConcatenateRule()
+    public function importAValidCalculateRule(): void
     {
-        $code = 'test1';
-        $ruleDefinitions = $this->ruleDefinitionRepository->findAll();
+        $rulesConfig = <<<YAML
+rules:
+    calculate:
+        priority: 90
+        conditions:
+            - field: family
+              operator: IN
+              value:
+                  - camcorders
+        actions:
+            - type: calculate
+              destination:
+                field: weight
+              source:
+                field: item_weight
+              operation_list:
+                - operator: multiply
+                  value: 1000
+YAML;
+        $this->importRules($rulesConfig);
+    }
 
-        /** @var RuleDefinitionInterface $ruleDefinition */
-        foreach ($ruleDefinitions as $ruleDefinition) {
-            if ($ruleDefinition->getCode() === $code) {
-                $content = $ruleDefinition->getContent();
-
-                Assert::count($content['actions'], 1);
-                Assert::eq($content['actions'][0]['type'], 'concatenate');
-
-                return;
-            }
+    /**
+     * @Then the rule list contains the imported :code rule
+     */
+    public function theRuleListContainsTheValidRule(string $code)
+    {
+        $ruleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier($code);
+        if (null === $ruleDefinition)  {
+            throw new \LogicException(sprintf('The "%s" rule was not found.', $code));
         }
 
-        throw new \LogicException(sprintf('The "%s" rule was not found.', $code));
+        $normalizedRule = $this->ruleDefinitionNormalizer->normalize($ruleDefinition);
+
+        Assert::eq($normalizedRule['priority'], $this->importedRules[$code]['priority'] ?? 0);
+        Assert::eq($normalizedRule['content']['conditions'], $this->importedRules[$code]['conditions']);
+        Assert::eq($normalizedRule['content']['actions'], $this->importedRules[$code]['actions']);
     }
 
     /**
@@ -316,6 +345,7 @@ YAML;
             try {
                 $ruleDefinition = $this->ruleDefinitionProcessor->process($normalizedRule);
                 $this->ruleDefinitionRepository->save($ruleDefinition);
+                $this->importedRules[$code] = $normalizedRule;
             } catch (\Exception $e) {
                 ExceptionContext::addException($e);
             }

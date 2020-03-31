@@ -14,7 +14,7 @@ Feature: Import concatenate action rules
   Scenario: Import a concatenate rule with valid values for attribute of type text and text in actions
     When I import a valid concatenate rule
     Then no exception has been thrown
-    And the rule list contains the valid concatenate rule
+    And the rule list contains the imported concatenate rule
 
   @acceptance-back
   Scenario: Import a concatenate rule with invalid source attributes
