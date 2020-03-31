@@ -14,7 +14,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\JsonSchema\Measureme
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
-use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepository;
+use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -51,7 +51,7 @@ class SaveMeasurementFamiliesAction
     /** @var CreateMeasurementFamilyHandler */
     private $createMeasurementFamilyHandler;
 
-    /** @var MeasurementFamilyRepository */
+    /** @var MeasurementFamilyRepositoryInterface */
     private $measurementFamilyRepository;
 
     public function __construct(
@@ -62,7 +62,7 @@ class SaveMeasurementFamiliesAction
         ViolationNormalizer $violationNormalizer,
         SaveMeasurementFamilyHandler $saveMeasurementFamilyHandler,
         CreateMeasurementFamilyHandler $createMeasurementFamilyHandler,
-        MeasurementFamilyRepository $measurementFamilyRepository
+        MeasurementFamilyRepositoryInterface $measurementFamilyRepository
     ) {
         $this->measurementFamilyListValidator = $measurementFamilyListValidator;
         $this->measurementFamilyCommonStructureValidator = $measurementFamilyCommonStructureValidator;
@@ -113,13 +113,13 @@ class SaveMeasurementFamiliesAction
                 }
             } catch (\InvalidArgumentException $exception) {
                 $responses[] = [
-                    'code'        => $normalizedMeasurementFamily['code'],
+                    'code' => $normalizedMeasurementFamily['code'],
                     'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                    'message'     => $exception->getMessage()
+                    'message' => $exception->getMessage()
                 ];
             } catch (ViolationHttpException $exception) {
                 $response = [
-                    'code'        => $normalizedMeasurementFamily['code'],
+                    'code' => $normalizedMeasurementFamily['code'],
                     'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY
                 ];
                 $response += $this->violationNormalizer->normalize($exception);
@@ -169,8 +169,10 @@ class SaveMeasurementFamiliesAction
         ];
     }
 
-    private function updateMeasurementFamily(array $normalizedMeasurementFamily, MeasurementFamily $measurementFamily): array
-    {
+    private function updateMeasurementFamily(
+        array $normalizedMeasurementFamily,
+        MeasurementFamily $measurementFamily
+    ): array {
         $normalizedMeasurementFamily = array_replace_recursive(
             $measurementFamily->normalizeWithIndexedUnits(),
             $normalizedMeasurementFamily
