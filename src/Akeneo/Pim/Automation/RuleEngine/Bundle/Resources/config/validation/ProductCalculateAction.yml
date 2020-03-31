@@ -1,0 +1,17 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateAction:
+    properties:
+        source:
+            - Valid: ~
+        operationList:
+            - Valid:
+                  traverse: true
+
+Akeneo\Pim\Automation\RuleEngine\Component\Model\Operation:
+    properties:
+        operand:
+            - Valid: ~
+
+Akeneo\Pim\Automation\RuleEngine\Component\Model\Operand:
+    properties:
+        attributeCode:
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\AttributeShouldBeNumeric: ~

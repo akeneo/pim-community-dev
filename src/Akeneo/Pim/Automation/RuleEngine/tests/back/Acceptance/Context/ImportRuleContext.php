@@ -170,6 +170,33 @@ YAML;
     }
 
     /**
+     * @When I import a calculate rule with invalid attribute types
+     */
+    public function importACalculateRuleWithAnInvalidSourceAttributeType(): void
+    {
+        $rulesConfig = <<<YAML
+rules:
+    calculate:
+        priority: 90
+        conditions:
+            - field: family
+              operator: IN
+              value:
+                  - camcorders
+        actions:
+            - type: calculate
+              destination:
+                field: weight
+              source:
+                field: description
+              operation_list:
+                - operator: multiply
+                  field: color
+YAML;
+        $this->importRules($rulesConfig);
+    }
+
+    /**
      * @When /^I import a concatenate rule with unknown target attribute$/
      */
     public function importAConcatenateRuleWithUnknownTargetAttributes(): void

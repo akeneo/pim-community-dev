@@ -112,3 +112,10 @@ services:
             - '@pimee_catalog_rule.query.cache.channel_exists_and_bound_to_context'
         tags:
             - { name: validator.constraint_validator }
+
+    pimee_catalog_rule.validator.attribute_should_be_numeric:
+        class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\AttributeShouldBeNumericValidator
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_attribute_should_be_numeric_validator }
