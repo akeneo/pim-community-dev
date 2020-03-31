@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Technical Improvements
+
+- PIM-9168: Bump symfony/http-foundation to 4.4.7
+
 # 4.0.13 (2020-03-30)
 
 ## Bug fixes
