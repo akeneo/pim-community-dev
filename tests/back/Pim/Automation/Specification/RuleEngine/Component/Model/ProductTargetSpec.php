@@ -55,7 +55,7 @@ class ProductTargetSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('fromNormalized', [['locale' => 'en_US']]);
 
-        $this->shouldThrow(new \LogicException('Concatenate target configuration requires a "field" key.'))
+        $this->shouldThrow(new \LogicException('Target configuration requires a "field" key.'))
             ->duringInstantiation();
     }
 
