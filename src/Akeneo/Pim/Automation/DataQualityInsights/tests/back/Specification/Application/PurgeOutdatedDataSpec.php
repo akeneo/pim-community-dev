@@ -28,10 +28,18 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
 {
     public function let(
         DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository,
-        CriterionEvaluationRepositoryInterface $criterionEvaluationRepository,
-        ProductAxisRateRepositoryInterface $productAxisRateRepository
+        CriterionEvaluationRepositoryInterface $productCriterionEvaluationRepository,
+        CriterionEvaluationRepositoryInterface $productModelCriterionEvaluationRepository,
+        ProductAxisRateRepositoryInterface $productAxisRateRepository,
+        ProductAxisRateRepositoryInterface $productModelAxisRateRepository
     ) {
-        $this->beConstructedWith($dashboardRatesProjectionRepository, $criterionEvaluationRepository, $productAxisRateRepository);
+        $this->beConstructedWith(
+            $dashboardRatesProjectionRepository,
+            $productCriterionEvaluationRepository,
+            $productModelCriterionEvaluationRepository,
+            $productAxisRateRepository,
+            $productModelAxisRateRepository
+        );
     }
 
     public function it_purges_dashboard_projection_rates(
@@ -61,26 +69,38 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
         $this->purgeDashboardProjectionRatesFrom($purgeDate);
     }
 
-    public function it_purges_outdated_product_axis_rates(ProductAxisRateRepositoryInterface $productAxisRateRepository)
-    {
+    public function it_purges_outdated_axis_rates(
+        ProductAxisRateRepositoryInterface $productAxisRateRepository,
+        ProductAxisRateRepositoryInterface $productModelAxisRateRepository
+    ) {
         $purgeDate = new \DateTimeImmutable('2019-12-31');
 
         $productAxisRateRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
             $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
-        }));
+        }))->shouldBeCalled();
+        $productModelAxisRateRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
+            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
+            return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
+        }))->shouldBeCalled();
 
         $this->purgeProductAxisRatesFrom($purgeDate);
     }
 
-    public function it_purges_outdated_criterion_evaluations(CriterionEvaluationRepositoryInterface $criterionEvaluationRepository)
-    {
+    public function it_purges_outdated_criterion_evaluations(
+        CriterionEvaluationRepositoryInterface $productCriterionEvaluationRepository,
+        CriterionEvaluationRepositoryInterface $productModelCriterionEvaluationRepository
+    ) {
         $purgeDate = new \DateTimeImmutable('2019-12-31');
 
-        $criterionEvaluationRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
+        $productCriterionEvaluationRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
             $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
-        }));
+        }))->shouldBeCalled();
+        $productModelCriterionEvaluationRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
+            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
+            return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
+        }))->shouldBeCalled();
 
         $this->purgeCriterionEvaluationsFrom($purgeDate);
     }

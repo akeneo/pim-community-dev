@@ -103,7 +103,7 @@ final class PurgeOutdatedDataCommand extends Command
 
     private function purgeProductAxisRates(\DateTimeImmutable $purgeDate, OutputInterface $output): void
     {
-        $output->writeln('Start to purge product axis rates.');
+        $output->writeln('Start to purge axis rates.');
         $this->purgeOutdatedData->purgeProductAxisRatesFrom($purgeDate);
         $output->writeln('Purge done.');
     }

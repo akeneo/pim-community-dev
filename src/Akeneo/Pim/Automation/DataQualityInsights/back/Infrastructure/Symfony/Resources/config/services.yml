@@ -147,7 +147,9 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
+            - '@akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_axis_rate'
+            - '@akeneo.pim.automation.data_quality_insights.repository.product_model_axis_rate'
 
 # PIM enrichment BC anti-corruption layers
     akeneo.pim.automation.calculate_product_completeness_of_required_attributes:

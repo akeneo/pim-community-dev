@@ -31,19 +31,29 @@ final class PurgeOutdatedData
     private $dashboardRatesProjectionRepository;
 
     /** @var CriterionEvaluationRepositoryInterface */
-    private $criterionEvaluationRepository;
+    private $productCriterionEvaluationRepository;
 
     /** @var ProductAxisRateRepositoryInterface */
     private $productAxisRateRepository;
 
+    /** @var CriterionEvaluationRepositoryInterface */
+    private $productModelCriterionEvaluationRepository;
+
+    /** @var ProductAxisRateRepositoryInterface */
+    private $productModelAxisRateRepository;
+
     public function __construct(
         DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository,
-        CriterionEvaluationRepositoryInterface $criterionEvaluationRepository,
-        ProductAxisRateRepositoryInterface $productAxisRateRepository
+        CriterionEvaluationRepositoryInterface $productCriterionEvaluationRepository,
+        CriterionEvaluationRepositoryInterface $productModelCriterionEvaluationRepository,
+        ProductAxisRateRepositoryInterface $productAxisRateRepository,
+        ProductAxisRateRepositoryInterface $productModelAxisRateRepository
     ) {
         $this->dashboardRatesProjectionRepository = $dashboardRatesProjectionRepository;
-        $this->criterionEvaluationRepository = $criterionEvaluationRepository;
+        $this->productCriterionEvaluationRepository = $productCriterionEvaluationRepository;
+        $this->productModelCriterionEvaluationRepository = $productModelCriterionEvaluationRepository;
         $this->productAxisRateRepository = $productAxisRateRepository;
+        $this->productModelAxisRateRepository = $productModelAxisRateRepository;
     }
 
     public function purgeDashboardProjectionRatesFrom(\DateTimeImmutable $date): void
@@ -76,12 +86,14 @@ final class PurgeOutdatedData
     public function purgeCriterionEvaluationsFrom(\DateTimeImmutable $date): void
     {
         $purgeDate = $date->modify(sprintf('-%d DAY', self::RETENTION_DAYS));
-        $this->criterionEvaluationRepository->purgeUntil($purgeDate);
+        $this->productCriterionEvaluationRepository->purgeUntil($purgeDate);
+        $this->productModelCriterionEvaluationRepository->purgeUntil($purgeDate);
     }
 
     public function purgeProductAxisRatesFrom(\DateTimeImmutable $date): void
     {
         $purgeDate = $date->modify(sprintf('-%d DAY', self::RETENTION_DAYS));
         $this->productAxisRateRepository->purgeUntil($purgeDate);
+        $this->productModelAxisRateRepository->purgeUntil($purgeDate);
     }
 }
