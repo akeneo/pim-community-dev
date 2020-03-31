@@ -103,7 +103,7 @@
         "symfony/lock": "^4.4.0",
         "symfony/yaml": "^4.4.0",
         "symfony/event-dispatcher": "^4.4.0",
-        "symfony/http-foundation": "^4.4.0",
+        "symfony/http-foundation": "^4.4.7",
         "symfony/dependency-injection": "^4.4.0",
         "symfony/process": "^4.4.0",
         "symfony/http-kernel": "^4.4.0",
