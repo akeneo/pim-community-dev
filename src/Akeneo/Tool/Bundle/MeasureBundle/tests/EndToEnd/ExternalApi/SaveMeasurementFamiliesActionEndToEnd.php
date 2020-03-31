@@ -49,7 +49,7 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
             ]
         );
 
-        $response = $this->request([$this->normalizeExternal($measurementFamily)]);
+        $response = $this->request([$measurementFamily->normalizeWithIndexedUnits()]);
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertSame([
@@ -116,7 +116,7 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
 
         $this->measurementFamilyRepository->save($measurementFamily);
 
-        $response = $this->request([$this->normalizeExternal($measurementFamily)]);
+        $response = $this->request([$measurementFamily->normalizeWithIndexedUnits()]);
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertSame([
@@ -156,18 +156,20 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
             [
                 'code' => 'custom_metric_1',
                 'units' => [
-                    'code' => 'CUSTOM_UNIT_3_1',
-                    'labels' => [
-                        'ca_ES' => 'Centímetre quadrat'
+                    'CUSTOM_UNIT_3_1' => [
+                        'code' => 'CUSTOM_UNIT_3_1',
+                        'labels' => [
+                            'ca_ES' => 'Centímetre quadrat'
+                        ],
+                        'convert_from_standard' => [
+                            [
+                                'operator' => 'mul',
+                                'value' => '0.00001'
+                            ]
+                        ],
+                        'symbol' => 'km²'
                     ],
-                    'convert_from_standard' => [
-                        [
-                            'operator' => 'mul',
-                            'value' => '0.00001'
-                        ]
-                    ],
-                    'symbol' => 'km²'
-                ],
+                ]
             ]
         ]);
 
@@ -297,6 +299,82 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
     /**
      * @test
      */
+    public function it_update_an_unit_operations()
+    {
+        $measurementFamily = MeasurementFamily::create(
+            MeasurementFamilyCode::fromString('custom_metric_1'),
+            LabelCollection::fromArray(['en_US' => 'Custom measurement 1']),
+            UnitCode::fromString('CUSTOM_UNIT_1_1'),
+            [
+                Unit::create(
+                    UnitCode::fromString('CUSTOM_UNIT_1_1'),
+                    LabelCollection::fromArray(['en_US' => 'Custom unit 1_1']),
+                    [Operation::create('mul', '1')],
+                    'mm²'
+                ),
+                Unit::create(
+                    UnitCode::fromString('CUSTOM_UNIT_2_1'),
+                    LabelCollection::fromArray(['en_US' => 'Custom unit 2_1']),
+                    [Operation::create('mul', '0.0001')],
+                    'cm²'
+                ),
+            ]
+        );
+
+        $this->measurementFamilyRepository->save($measurementFamily);
+
+        $response = $this->request([
+            [
+                'code' => 'custom_metric_1',
+                'units' => [
+                    'CUSTOM_UNIT_2_1' => [
+                        'convert_from_standard' => [
+                            [
+                                'operator' => 'mul',
+                                'value' => '0.1'
+                            ],
+                            [
+                                'operator' => 'add',
+                                'value' => '10'
+                            ],
+                        ],
+                    ]
+                ]
+            ]
+        ]);
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame([
+            ['code' => 'custom_metric_1', 'status_code' => 204],
+        ], json_decode($response->getContent(), true));
+
+        $this->assertMeasurementFamilyIsPersisted(MeasurementFamily::create(
+            MeasurementFamilyCode::fromString('custom_metric_1'),
+            LabelCollection::fromArray(['en_US' => 'Custom measurement 1']),
+            UnitCode::fromString('CUSTOM_UNIT_1_1'),
+            [
+                Unit::create(
+                    UnitCode::fromString('CUSTOM_UNIT_1_1'),
+                    LabelCollection::fromArray(['en_US' => 'Custom unit 1_1']),
+                    [Operation::create('mul', '1')],
+                    'mm²'
+                ),
+                Unit::create(
+                    UnitCode::fromString('CUSTOM_UNIT_2_1'),
+                    LabelCollection::fromArray(['en_US' => 'Custom unit 2_1']),
+                    [
+                        Operation::create('mul', '0.1'),
+                        Operation::create('add', '10'),
+                    ],
+                    'cm²'
+                ),
+            ]
+        ));
+    }
+
+    /**
+     * @test
+     */
     public function it_creates_multiple_measurement_families()
     {
         $measurementFamilies = [
@@ -322,16 +400,16 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
             MeasurementFamily::create(
                 MeasurementFamilyCode::fromString('custom_metric_2'),
                 LabelCollection::fromArray(['en_US' => 'Custom measurement 1', 'fr_FR' => 'Mesure personalisée 1']),
-                UnitCode::fromString('CUSTOM_UNIT_2_2'),
+                UnitCode::fromString('CUSTOM_UNIT_3_1'),
                 [
                     Unit::create(
-                        UnitCode::fromString('CUSTOM_UNIT_1_1'),
+                        UnitCode::fromString('CUSTOM_UNIT_3_1'),
                         LabelCollection::fromArray(['en_US' => 'Custom unit 1_1', 'fr_FR' => 'Unité personalisée 1_1']),
                         [Operation::create('mul', '1')],
                         'mm²'
                     ),
                     Unit::create(
-                        UnitCode::fromString('CUSTOM_UNIT_2_1'),
+                        UnitCode::fromString('CUSTOM_UNIT_3_2'),
                         LabelCollection::fromArray(['en_US' => 'Custom unit 2_1', 'fr_FR' => 'Unité personalisée 2_1']),
                         [Operation::create('mul', '0.0001')],
                         'cm²'
@@ -341,7 +419,7 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
         ];
 
         $response = $this->request(array_map(function (MeasurementFamily $measurementFamily) {
-            return $measurementFamily->normalize();
+            return $measurementFamily->normalizeWithIndexedUnits();
         }, $measurementFamilies));
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
@@ -472,18 +550,6 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function normalizeExternal(MeasurementFamily $measurementFamily): array
-    {
-        $normalizedMeasurementFamily = $measurementFamily->normalize();
-        $normalizedMeasurementFamily['units'] = array_reduce($normalizedMeasurementFamily['units'],
-            function ($indexedUnit, $unit) {
-                $indexedUnit[$unit['code']] = $unit;
-                return $indexedUnit;
-            }, []);
-
-        return $normalizedMeasurementFamily;
-    }
-
     private function request(array $measurementFamilies): Response
     {
         $client = $this->createAuthenticatedClient();
@@ -502,6 +568,8 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
 
     private function assertMeasurementFamilyIsPersisted(MeasurementFamily $expected): void
     {
+        $this->measurementFamilyRepository->clear();
+
         $measurementFamilyCode = MeasurementFamilyCode::fromString($expected->normalize()['code']);
         $actual = $this->measurementFamilyRepository->getByCode($measurementFamilyCode);
 
