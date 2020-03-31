@@ -15,6 +15,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundExceptio
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\UnitsMustBeIndexedByCode;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,6 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -151,15 +153,10 @@ class SaveMeasurementFamiliesAction
             ];
         }
 
-        $normalizedMeasurementFamily['units'] = array_values($normalizedMeasurementFamily['units']);
+        $this->assertUnitsAreCorrectlyIndexed($normalizedMeasurementFamily);
+
         $createMeasurementFamilyCommand = $this->createMeasurementFamilyCommand($normalizedMeasurementFamily);
-        $violations = $this->validator->validate($createMeasurementFamilyCommand);
-        if ($violations->count() > 0) {
-            throw new ViolationHttpException(
-                $violations,
-                'The measurement family has data that does not comply with the business rules.'
-            );
-        }
+        $this->assertCreateMeasurementFamilyCommandIsValid($createMeasurementFamilyCommand);
 
         $this->createMeasurementFamilyHandler->handle($createMeasurementFamilyCommand);
 
@@ -167,6 +164,21 @@ class SaveMeasurementFamiliesAction
             'code' => $createMeasurementFamilyCommand->code,
             'status_code' => Response::HTTP_CREATED,
         ];
+    }
+
+    /**
+     * @throws ViolationHttpException
+     */
+    private function assertCreateMeasurementFamilyCommandIsValid(
+        CreateMeasurementFamilyCommand $createMeasurementFamilyCommand
+    ) {
+        $violations = $this->validator->validate($createMeasurementFamilyCommand);
+        if ($violations->count() > 0) {
+            throw new ViolationHttpException(
+                $violations,
+                'The measurement family has data that does not comply with the business rules.'
+            );
+        }
     }
 
     private function updateMeasurementFamily(
@@ -188,15 +200,10 @@ class SaveMeasurementFamiliesAction
             ];
         }
 
-        $normalizedMeasurementFamily['units'] = array_values($normalizedMeasurementFamily['units']);
+        $this->assertUnitsAreCorrectlyIndexed($normalizedMeasurementFamily);
+
         $saveMeasurementFamilyCommand = $this->saveMeasurementFamilyCommand($normalizedMeasurementFamily);
-        $violations = $this->validator->validate($saveMeasurementFamilyCommand);
-        if ($violations->count() > 0) {
-            throw new ViolationHttpException(
-                $violations,
-                'The measurement family has data that does not comply with the business rules.'
-            );
-        }
+        $this->assertSaveMeasurementFamilyCommandIsValid($saveMeasurementFamilyCommand);
 
         $this->saveMeasurementFamilyHandler->handle($saveMeasurementFamilyCommand);
 
@@ -204,6 +211,42 @@ class SaveMeasurementFamiliesAction
             'code' => $saveMeasurementFamilyCommand->code,
             'status_code' => Response::HTTP_NO_CONTENT,
         ];
+    }
+
+    /**
+     * @throws ViolationHttpException
+     */
+    private function assertSaveMeasurementFamilyCommandIsValid(
+        SaveMeasurementFamilyCommand $saveMeasurementFamilyCommand
+    ) {
+        $violations = $this->validator->validate($saveMeasurementFamilyCommand);
+        if ($violations->count() > 0) {
+            throw new ViolationHttpException(
+                $violations,
+                'The measurement family has data that does not comply with the business rules.'
+            );
+        }
+    }
+
+    /**
+     * @throws ViolationHttpException
+     */
+    private function assertUnitsAreCorrectlyIndexed(array $normalizedMeasurementFamily)
+    {
+        $violations = $this->validator->validate($normalizedMeasurementFamily, [
+            new Assert\Collection([
+                'fields' => [
+                    'units' => new UnitsMustBeIndexedByCode(),
+                ],
+                'allowExtraFields' => true,
+            ]),
+        ]);
+        if ($violations->count() > 0) {
+            throw new ViolationHttpException(
+                $violations,
+                'The measurement family has data that does not comply with the business rules.'
+            );
+        }
     }
 
     private function getNormalizedMeasurementFamiliesFromRequest(Request $request): array
@@ -223,7 +266,7 @@ class SaveMeasurementFamiliesAction
         $saveMeasurementFamilyCommand->code = $normalizedMeasurementFamily['code'];
         $saveMeasurementFamilyCommand->standardUnitCode = $normalizedMeasurementFamily['standard_unit_code'];
         $saveMeasurementFamilyCommand->labels = $normalizedMeasurementFamily['labels'];
-        $saveMeasurementFamilyCommand->units = $normalizedMeasurementFamily['units'];
+        $saveMeasurementFamilyCommand->units = array_values($normalizedMeasurementFamily['units']);
 
         return $saveMeasurementFamilyCommand;
     }
@@ -234,7 +277,7 @@ class SaveMeasurementFamiliesAction
         $createMeasurementFamilyCommand->code = $normalizedMeasurementFamily['code'];
         $createMeasurementFamilyCommand->standardUnitCode = $normalizedMeasurementFamily['standard_unit_code'];
         $createMeasurementFamilyCommand->labels = $normalizedMeasurementFamily['labels'];
-        $createMeasurementFamilyCommand->units = $normalizedMeasurementFamily['units'];
+        $createMeasurementFamilyCommand->units = array_values($normalizedMeasurementFamily['units']);
 
         return $createMeasurementFamilyCommand;
     }

@@ -92,6 +92,68 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
     /**
      * @test
      */
+    public function it_returns_an_error_when_the_units_are_not_correctly_indexed()
+    {
+        $measurementFamily = MeasurementFamily::create(
+            MeasurementFamilyCode::fromString('custom_metric_1'),
+            LabelCollection::fromArray(['en_US' => 'Custom measurement 1', 'fr_FR' => 'Mesure personalisée 1']),
+            UnitCode::fromString('CUSTOM_UNIT_1_1'),
+            [
+                Unit::create(
+                    UnitCode::fromString('CUSTOM_UNIT_1_1'),
+                    LabelCollection::fromArray(['en_US' => 'Custom unit 1_1', 'fr_FR' => 'Unité personalisée 1_1']),
+                    [Operation::create('mul', '1')],
+                    'mm²'
+                ),
+                Unit::create(
+                    UnitCode::fromString('CUSTOM_UNIT_2_1'),
+                    LabelCollection::fromArray(['en_US' => 'Custom unit 2_1', 'fr_FR' => 'Unité personalisée 2_1']),
+                    [Operation::create('mul', '0.0001')],
+                    'cm²'
+                )
+            ]
+        );
+
+        $this->measurementFamilyRepository->save($measurementFamily);
+
+        $response = $this->request([
+            [
+                'code' => 'custom_metric_1',
+                'units' => [
+                    'CUSTOM_UNIT_2_1' => [
+                        'code' => 'SOME_OTHER_UNIT_CODE',
+                        'labels' => ['en_US' => 'Some other unit'],
+                        'convert_from_standard' => [
+                            [
+                                'operator' => 'mul',
+                                'value' => '0.00001',
+                            ],
+                        ],
+                        'symbol' => 'O',
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame([
+            [
+                'code' => 'custom_metric_1',
+                'status_code' => 422,
+                'message' => 'The measurement family has data that does not comply with the business rules.',
+                'errors' => [
+                    [
+                        'property' => '[units][CUSTOM_UNIT_2_1]',
+                        'message' => 'The index does not match the unit code.',
+                    ]
+                ],
+            ]
+        ], json_decode($response->getContent(), true));
+    }
+
+    /**
+     * @test
+     */
     public function it_does_nothing_when_the_measurement_family_already_exists_and_is_exactly_the_same()
     {
         $measurementFamily = MeasurementFamily::create(
