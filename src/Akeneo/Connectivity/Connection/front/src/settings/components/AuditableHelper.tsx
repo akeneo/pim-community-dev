@@ -7,7 +7,7 @@ export const AuditableHelper = () => {
             <Translate id='akeneo_connectivity.connection.auditable_helper.message' />
             &nbsp;
             <a
-                href='https://help.akeneo.com/pim/articles/manage-your-connections.html#choose-your-flow-type'
+                href='https://help.akeneo.com/pim/articles/manage-your-connections.html#enable-the-tracking'
                 target='_blank'
                 rel='noopener noreferrer'
             >
