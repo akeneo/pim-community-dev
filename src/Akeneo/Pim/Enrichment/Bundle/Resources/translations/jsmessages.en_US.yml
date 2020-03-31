@@ -84,7 +84,7 @@ pim_enrich.entity.product:
             save_and_next: Save and next
             save_and_finish: Save and finish
         associations:
-            title: Associations
+            title: Associations ({{ count }})
             none_exist: No association types exist.
             show_products: Display products
             show_groups: Display groups

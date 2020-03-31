@@ -72,7 +72,7 @@ define(
 
                 const row = this.renderedRow;
 
-                row.off('`');
+                row.off('click');
 
                 $('.AknIconButton--remove', row).on('click', () => {
                     mediator.trigger('datagrid:unselectModel:association-product-grid', this.model);

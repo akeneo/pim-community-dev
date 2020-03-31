@@ -62,6 +62,7 @@ define([
     },
     datagrids: {},
     config: {},
+    associationCount: 0,
 
     /**
      * {@inheritdoc}
@@ -167,6 +168,17 @@ define([
      * {@inheritdoc}
      */
     render: function() {
+      const newAssociationCount = this.getAssociationCount();
+      if (this.associationCount !== newAssociationCount) {
+        this.associationCount = newAssociationCount;
+
+        this.trigger('tab:register', {
+          code: undefined === this.config.tabCode ? this.code : this.config.tabCode,
+          isVisible: this.isVisible.bind(this),
+          label: __('pim_enrich.entity.product.module.associations.title', {count: newAssociationCount}),
+        });
+      }
+
       const code = undefined === this.config.tabCode ? this.code : this.config.tabCode;
 
       if (!this.configured || code !== this.getParent().getCurrentTab()) {
@@ -715,5 +727,11 @@ define([
 
       return deferred.promise();
     },
+
+    getAssociationCount: function() {
+      return Object.values(this.getFormData().associations).reduce((typeCount, typeItem) => {
+        return typeCount + Object.values(typeItem).reduce((count, item) => count + item.length, 0);
+      }, 0);
+    }
   });
 });
