@@ -13,7 +13,8 @@ define(
         'pim/media-url-generator',
         'pim/template/product/tab/associated-product-row',
         'oro/mediator',
-        'pim/security-context'
+        'pim/security-context',
+        'pim/router'
     ],
     function(
         _,
@@ -22,7 +23,8 @@ define(
         mediaUrlGenerator,
         thumbnailTemplate,
         mediator,
-        SecurityContext
+        SecurityContext,
+        router
     ) {
         return BaseRow.extend({
             thumbnailTemplate: _.template(thumbnailTemplate),
@@ -55,7 +57,10 @@ define(
                     label,
                     identifier: this.model.get('identifier'),
                     imagePath: this.getThumbnailImagePath(),
-                    canRemoveAssociation
+                    canRemoveAssociation,
+                    redirectUrl: router.generate(
+                        this.isProductModel() ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit',
+                        {id: this.isProductModel() ? this.model.id.replace('product-model-', '') : this.model.id.replace('product-', '')})
                 };
             },
 
@@ -67,7 +72,7 @@ define(
 
                 const row = this.renderedRow;
 
-                row.off('click');
+                row.off('`');
 
                 $('.AknIconButton--remove', row).on('click', () => {
                     mediator.trigger('datagrid:unselectModel:association-product-grid', this.model);
