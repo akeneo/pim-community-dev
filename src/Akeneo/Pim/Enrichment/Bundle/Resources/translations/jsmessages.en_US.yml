@@ -92,7 +92,7 @@ pim_enrich.entity.product:
             association_type_selector: Association type
             target: Target
             manage: Add {{ associationType }} associations
-            manage_description: Select the products you want to associate with the current product
+            manage_description: Select the products you want to associate with product "{{ productIdentifier }}"
             add_associations: Add associations
         attribute_filter:
             display: Display
