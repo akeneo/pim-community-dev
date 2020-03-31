@@ -76,6 +76,39 @@ final class DataFixturesContext implements Context
     }
 
     /**
+     * @Given /the following family variants?:/
+     */
+    public function theFollowingFamilyVariants(TableNode $table)
+    {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.family_variant');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family_variant');
+        $saver = $this->getContainer()->get('pim_catalog.saver.family_variant');
+
+        foreach ($table->getHash() as $data) {
+            $saver->save($processor->process($converter->convert($data)));
+        }
+    }
+
+    /**
+     * @Given the root product model :productModel with family variant :variantFamily
+     */
+    public function createRootProductModel(string $productModelCode, string $variantFamilyCode)
+    {
+        $productModel = $this->getContainer()->get('pim_catalog.factory.product_model')->create();
+        $this->getContainer()->get('pim_catalog.updater.product_model')->update(
+            $productModel,
+            [
+                'code' => $productModelCode,
+                'parent' => null,
+                'family_variant' => $variantFamilyCode,
+            ]
+        );
+
+        $this->validate($productModel);
+        $this->getContainer()->get('pim_catalog.saver.product_model')->save($productModel);
+    }
+
+    /**
      * @param array|string $data
      *
      * @Given /^a "([^"]*)" product$/
