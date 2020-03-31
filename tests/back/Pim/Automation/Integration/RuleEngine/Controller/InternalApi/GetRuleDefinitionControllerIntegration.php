@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCase
 {
+    // TODO RUL-117 Decouple
     private $webClientHelper;
     private $ruleDefinitionRepository;
 
