@@ -200,7 +200,6 @@ SQL;
         // The YAML writer does this merge before write the line. We do the same thing to compare.
         $normalizedRules = call_user_func_array('array_merge', static::$normalizedRules);
 
-        var_dump($normalizedRules);
         Assert::eq($normalizedRules, $expectedLines['rules']);
     }
 

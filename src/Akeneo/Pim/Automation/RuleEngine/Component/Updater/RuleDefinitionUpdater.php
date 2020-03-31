@@ -33,6 +33,11 @@ class RuleDefinitionUpdater implements RuleDefinitionUpdaterInterface
                 case 'content':
                     $ruleDefinition->setContent($data['content']);
                     break;
+                case 'labels':
+                    foreach ($value as $locale => $label) {
+                        $ruleDefinition->setLabel($locale, $label);
+                    }
+                    break;
                 default:
                     throw new \InvalidArgumentException(sprintf('Unknown "%s" property', $key));
             }

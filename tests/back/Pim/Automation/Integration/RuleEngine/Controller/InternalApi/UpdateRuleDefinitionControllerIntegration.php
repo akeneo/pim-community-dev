@@ -41,6 +41,10 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
             ],
             'type' => 'add',
             'priority' => 0,
+            'labels' => [
+                'en_US' => '123 english',
+                'fr_FR' => '123 french',
+            ]
         ];
 
         $this->updateRuleDefinition('123', $normalizedRuleDefinition);
@@ -51,7 +55,6 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         $content = json_decode($response->getContent(), true);
         Assert::arrayHasKey($content, 'id');
         unset($content['id']);
-        $normalizedRuleDefinition['labels'] = [];
 
         Assert::assertEqualsCanonicalizing($content, $normalizedRuleDefinition);
     }

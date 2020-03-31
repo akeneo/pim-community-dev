@@ -40,6 +40,10 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
                 ]
             ],
             'priority' => 0,
+            'labels' => [
+                'en_US' => '345 english',
+                'fr_FR' => '345 french',
+            ]
         ];
 
         $this->createRuleDefinition($normalizedRuleDefinition);
@@ -53,7 +57,6 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         $expectedContent = $normalizedRuleDefinition;
         $expectedContent['id'] = $content['id'];
         $expectedContent['type'] = 'product';
-        $expectedContent['labels'] = [];
 
         ksort($expectedContent);
         ksort($content);
