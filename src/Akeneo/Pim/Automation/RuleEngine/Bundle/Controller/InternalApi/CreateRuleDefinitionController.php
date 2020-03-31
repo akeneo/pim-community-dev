@@ -62,7 +62,8 @@ class CreateRuleDefinitionController
         }
 
         $content = json_decode($request->getContent(), true);
-        $ruleDefinition = new RuleDefinition();
+        unset($content['type']);
+        $ruleDefinition = (new RuleDefinition())->setType('product');
         $this->ruleDefinitionUpdater->update($ruleDefinition, $content);
         $violations = $this->validator->validate($ruleDefinition);
         if (0 < $violations->count()) {
