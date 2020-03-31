@@ -104,7 +104,7 @@ interface RuleDefinitionInterface
     public function getRelations();
 
     /**
-     * @return Collection of RuleDefinitionInterface
+     * @return Collection of RuleDefinitionTranslationInterface
      */
     public function getTranslations(): Collection;
 
