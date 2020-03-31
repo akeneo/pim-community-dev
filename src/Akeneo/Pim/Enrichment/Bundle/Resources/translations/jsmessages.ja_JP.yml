@@ -5,10 +5,13 @@ flash:
   comment:
     create:
       success: コメントが正常に作成されました。
+      error: コメントの作成中にエラーが発生しました。
     delete:
       success: コメントは正常に削除されました。
+      error: コメントの削除中にエラーが発生しました。
     reply:
       success: 返信が正常に作成されました。
+      error: 返信の作成中にエラーが発生しました。
 pim_enrich.entity.product:
   label: 商品
   uppercase_label: 商品
@@ -19,6 +22,7 @@ pim_enrich.entity.product:
       fail: 商品を更新できませんでした
       fields_not_ready: "この商品は現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
       already_in_upload: ファイルはすでに {{ locale }} ローケル と {{ scope }} スコープでこの属性のためにアップロードされています
+      file_upload: ファイルをアップロード中にエラーが発生しました
     delete:
       success: 商品を正常に削除しました
       fail: 商品を削除できませんでした
@@ -113,6 +117,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} さんが商品にコメントしています'
       header_reply: '{{ user }} さんがコメントに返信しています'
       delete_confirm: 本当にこのコメントを削除しますか？
+      removed_author: 削除済みのユーザー
     asset:
       title: アセット
 pim_enrich.entity.product_model:
@@ -269,6 +274,8 @@ pim_enrich.mass_edit.product:
       label: 構成
     confirm:
       label: 確認
+    launch_error:
+      label: 一括編集操作の起動中にエラーが発生しました
     launched:
       label: 一括操作「{{ operation }}」が開始されました。終了後に通知されます
   operation:
@@ -310,6 +317,7 @@ pim_enrich.mass_edit.product:
       label: カテゴリから削除
       label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>を数点カテゴリから削除|{1}<span class=\"AknFullPage-title--highlight\">商品</span>|]を1点カテゴリから削除1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>を{{ itemsCount }}カテゴリから削除"
       description: 次のカテゴリから商品が削除されます。
+      no_update: 選択した製品を削除するカテゴリがチェックされていません。
     add_to_existing_product_model:
       label: 既存の商品モデルに追加
       label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>を数点、既存の商品モデルに追加|{1}<span class=\"AknFullPage-title--highlight\">商品</span>|]を1点、既存の商品モデルに追加1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>を{{ itemsCount }}点、既存の商品モデルに追加"
@@ -334,6 +342,7 @@ pim_datagrid:
     delete:
       confirm_content: 選択した商品を削除してもよろしいですか？
       success: 選択した商品が正常に削除されました
+      error: 商品の削除中にエラーが発生しました　再度試行してください
     quick_export:
       csv_all: CSV (すべての属性)
       csv_grid_context: CSV (グリッドコンテキスト)

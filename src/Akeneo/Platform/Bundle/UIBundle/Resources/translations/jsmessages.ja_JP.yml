@@ -3,6 +3,7 @@
 "Yes, do it": "はい、実行します"
 "Ok, got it.": "はい、理解しました"
 "Edit": "編集"
+"Unexpected error occurred. Please contact system administrator.": "予期しないエラーが発生しました。システム管理者に問い合わせてください。"
 "Yes, revoke": "はい、取り消します"
 "Revoke Confirmation": "取消の確認"
 Prev: 前
@@ -151,7 +152,9 @@ pim_common:
   and: および
   apply: 適用
   before: 前
+  by: by
   cancel: キャンセル
+  close: 閉じる
   code: コード
   confirm: 確認
   confirm_deletion: 削除を確認する
@@ -167,6 +170,7 @@ pim_common:
   history: 履歴
   label: ラベル
   label_translations: ラベルの翻訳
+  Label or identifier: ラベルもしくは識別子
   less_than: <
   loading: 読み込み中…
   media_upload: ドラッグ＆ドロップでアップロードするか、こちらをクリック
@@ -177,6 +181,7 @@ pim_common:
   not_available: N/A
   now: 今
   ok: OK
+  other_actions: その他の操作
   permissions: 許可
   previous: 前
   properties: プロパティ
@@ -208,14 +213,17 @@ pim_common:
     STARTS WITH: で始まる
     ENDS WITH: 終了部分：
 error:
+  exception: 申し訳ありません！ エラー{{ status_code }} が発生しました
   forbidden: このページにアクセスすることはできません
 alert:
   attribute_option:
+    error_occurred_during_submission: フォームの情報をサーバーに送信中にエラーが発生しました
     save_before_edit_other: 編集する前に、他の行で行った変更を確定してください
   session_storage:
     not_available: お使いのウェブブラウザはsessionStorageと互換性がありません。管理者に問い合わせてください。
 pim_enrich.entity.fallback:
   flash:
+    generic_error: エラーが発生しました。
     update:
       fail: 更新に失敗しました
       success: 正常に更新されました

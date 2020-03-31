@@ -1,8 +1,69 @@
+pim_menu.item:
+  connection_settings: 接続
+  connection_audit: 接続ダッシュボード
+pim_title:
+  akeneo_connectivity_connection_settings_index: 接続
+  akeneo_connectivity_connection_settings_any: 接続
+  akeneo_connectivity_connection_audit_index: 接続ダッシュボード
+  akeneo_connectivity_connection_audit_any: 接続ダッシュボード
 akeneo_connectivity.connection:
+  connections: 接続
+  secondary_actions:
+    title: その他の操作
   connection:
+    code: コード
+    label: ラベル
+    flow_type: フロータイプ
+    image: 画像
     auditable: この接続をダッシュボード上で追跡
+    client_id: クライアントID
+    secret: 非公開
+    username: ユーザー名
+    password: パスワード
+    user_role_id: 権限
+    user_group_id: グループ
+    constraint:
+      code:
+        required: 接続コードは必須項目です。
+        invalid: 接続コードに利用できるのは半角英数字とアンダースコアのみです。
+        too_short: 接続コードが短すぎます。3文字以上必要です。
+        too_long: 接続コードが長すぎます。100文字以下にしてください。
+        must_be_unique: 接続コードは固有でなければなりません。
+      label:
+        required: 接続ラベルは必須項目です。
+        too_short: 接続ラベルが短すぎます。3文字以上必要です。
+        too_long: 接続ラベルが長すぎます。100文字以下にしてください。
+      flow_type:
+        invalid: 接続フロータイプは「data_source」「data_destination」「その他」が可能です。
+      image:
+        must_exist: 画像が検出されませんでした。もう一度やり直してください。
+  flow_type:
+    data_source: データソース | データソース
+    data_destination: データの行先 | データの行先
+    other: その他 | その他
+  connection_count: '接続 {{ count }} 件 | 接続 {{ count }}'
+  no_connection:
+    title: 宣言された接続はまだありません。
+    message: 最初のコネクションを追加するには上の「作成」ボタンをクリックするか
+    message_link: ここをクリック
+  create_connection:
+    title: 新しい接続を作成
+    description: 接続は50件まで作成できます
+    flash:
+      success: 接続は正常に作成されました。
+      error: 申し訳ございません、接続の作成中にエラーが発生しました。
   edit_connection:
+    subtitle: 設定
+    flash:
+      success: 接続は正常に更新されました。
+      error: 申し訳ございません、接続の編集中にエラーが発生しました。
+    image_uploader:
+      extension_not_allowed: 申し訳ございません、アップロードしようとしているファイルには許可されていない拡張子があります。
     credentials:
+      title: 認証情報
+      helper:
+        message: 'コネクター{{ label }}で使用する認証情報です。'
+        link: 詳細はこちら…
       wrong_credentials_combinations:
         single: この接続で使用しているユーザーネームは{{ wrong_username }}です(前回使用日時は{{ date }}の{{ time }})。今回はユーザーネームとして代わりに{{ good_username }}をおすすめします。
         link: これを使用する理由
@@ -10,10 +71,81 @@ akeneo_connectivity.connection:
         several: この接続で使用しているユーザーネームは{{ good_username }}です。
         list: '過去7日間で使用したユーザーネームの一覧は次の通りです:'
         username_date: '{{ date }}、{{ time }}に{{ wrong_username }}'
+      password_helper:
+        message: パスワードを忘れた場合はこちらで変更できます。
+        link: さらに詳しく…
+      clear_password_helper:
+        message: 今後このパスワードは表示されません。しっかりと保存しましょう。
+        link: さらに詳しく…
+      action:
+        copy: クリップボードにコピー
+        regenerate: 再生成
+      flash:
+        copied: 'クリップボードにコピー済{{ name }}'
+    permissions:
+      title: 許可
+      helper:
+        message: 'このセクションでは、接続{{ label }}の許可内容を定義できます。'
+        link: 接続許可についてさらに詳しく…
+      user_role_helper:
+        message: 既定の役割「{{ role }}」は設定された接続にとって最適ではありません。合致した役割を選び直すように強くおすすめします。
+        link: 詳しい情報...
+      user_group_helper:
+        message: お使いの接続に合致したグループを選択するように強くおすすめします。
+        link: 詳しい情報...
+  regenerate_secret:
+    title: 再生成を確認
+    description: 本当に接続の非公開を再生成しますか？影響についてご存知ありませんか？
+    link: 何が起こるかご確認ください。
+    action:
+      regenerate: 再生成
+    flash:
+      success: 接続の非公開は問題なく再生成されました。
+      error: 申し訳ございません、接続の非公開を再生成中にエラーが発生しました。
+  regenerate_password:
+    title: 再生成を確認
+    description: 本当に接続パスワードを再生成しますか？影響についてご存知ありませんか？
+    link: 何が起こるかご確認ください。
+    action:
+      regenerate: 再生成
+    flash:
+      success: 接続パスワードは問題なく再生成されました。
+      error: 申し訳ございません、接続のパスワードを再生成中にエラーが発生しました。
+  delete_connection:
+    title: 削除を確認
+    description: 本当に接続を削除しますか？影響についてご存知ありませんか？
+    link: 何が起こるかご確認ください。
+    flash:
+      success: 接続は正常に削除されました。
+  helper:
+    title: '👋 ようこそ、PIMの適切な接続を行う機能紹介です！'
+    description: サードパーティーを一切利用しないPIMは利用価値がないとお考えですか？接続があれば、PIMの内部ではプッシュされ外部ではプルされるすべてのデータフローを宣言することが可能です。
+    link: さらに詳しく知りたいですか？今すぐここで、接続について、そして接続の行い方を説明しましょう！
+  flow_type_helper:
+    message: フロータイプについてお困りですか？
+    link: 今すぐここで説明しましょう！
   auditable_helper:
     message: 追跡できるのは「接続元」および「接続先」のみです。
+    link: さらに詳しく…
+  edit_image:
+    upload_helper: 画像を変更しましょう。ドラッグ＆ドロップか
+    remove_helper: 画像を削除
+    click_here: ここをクリック
+    flash:
+      extension_not_allowed: 申し訳ございません、アップロードしようとしているファイルには許可されていない拡張子があります。
   grid.wrong_credentials_combination_helper: 以下の接続には、接続用ユーザーネームを使用していないものがあります。該当するものを黄色の警告サインで示しています。
   dashboard:
+    helper:
+      title: '👋 接続ダッシュボードへようこそ！'
+      description: ここで追跡できるようになるのは、接続によりPIMに集積されたデータフロー全て、ならびに接続によってチャンネルに分配されたデータフロー全てです。
+      link: さらに詳しく説明していきましょう！
+    user_survey:
+      title: ダッシュボードにあるそのほかのデータとは？
+      content: フィードバックは私たちにとってとても貴重です。このアンケート調査に回答して、次のウィジェットを選択する参考にさせてください。
+      button: はじめよう！
+    connection_selector:
+      title: ソース接続
+      all: すべて
     charts:
       inbound: 受信
       outbound: 送信
@@ -22,9 +154,19 @@ akeneo_connectivity.connection:
       number_of_products_sent: 送信済の商品
       legend:
         during_the_last_seven_days: '過去7日間の合計:'
+        today: 本日
     no_connection:
       title:
+        default: 接続について想定図の表示を希望しますか？
         data_source: 接続元について想定図の表示を希望しますか？
         data_destination: 接続先について想定図の表示を希望しますか？
       message_with_permission:
         message: 最初のものを作成し追跡をはじめる
+        link: こちら
+      message_without_permission:
+        message: 管理者に連絡して新規作成。
+        link: 接続について、こちらでさらに詳しく…
+  runtime_error:
+    error_message: 申し訳ありません！ エラーが発生しました…
+    reload_helper: ページをリロードして再試行してください。
+    reload_button: リロード
