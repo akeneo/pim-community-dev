@@ -25,5 +25,6 @@ spec:
       cat $LOGIN_DATA;
       curl --connect-timeout 5 --cookie-jar $COOKIE_JAR $TARGET/user/login | grep "_csrf_token" | cut -d '"' -f 6 >> $LOGIN_DATA;
       curl --connect-timeout 5 -XPOST --cookie $COOKIE_JAR --cookie-jar $COOKIE_JAR --data @$LOGIN_DATA $TARGET/user/login-check;
-      curl -w "%{http_code}" --insecure --cookie $COOKIE_JAR $TARGET/dashboard | grep 200;
+      curl -L -m 5 --cookie $COOKIE_JAR $TARGET/dashboard;
+      curl -L -m 5 -w "%{http_code}" --cookie $COOKIE_JAR $TARGET/dashboard | grep 200;
   restartPolicy: Never
