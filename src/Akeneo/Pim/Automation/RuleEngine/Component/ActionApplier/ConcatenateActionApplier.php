@@ -70,7 +70,7 @@ final class ConcatenateActionApplier implements ActionApplierInterface
             try {
                 $this->concatenateDataOnEntityWithFamilyVariant($entityWithValues, $action);
             } catch (\LogicException $e) {
-                // Throw exception when the runner will be executed in a job.
+                // @TODO RUL-90 throw exception when the runner will be executed in a job.
                 // For now just skip the exception otherwise the process will stop.
 //                throw new InvalidItemException(
 //                    $e->getMessage(),

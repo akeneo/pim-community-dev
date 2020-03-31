@@ -7,7 +7,8 @@
     "values": {
         "name": {
             "<all_channels>": {
-                "en_US": "75025"
+                "en_US": "75025",
+                "fr_FR": "75025"
             }
         },
         "pim_brand": {

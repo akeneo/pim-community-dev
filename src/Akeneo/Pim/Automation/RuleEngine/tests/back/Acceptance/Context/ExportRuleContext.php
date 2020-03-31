@@ -104,6 +104,37 @@ rules:
           field: description
           locale: en_US
           scope: ecommerce
+  test_clear:
+    priority: 90
+    conditions:
+      - field: family
+        operator: IN
+        value:
+          - camcorders
+    actions:
+      - type: clear
+        field: name
+        locale: en_US
+      - type: clear
+        field: pim_brand
+      - type: clear
+        field: processor
+      - type: clear
+        field: price
+      - type: clear
+        field: color
+      - type: clear
+        field: release_date
+      - type: clear
+        field: weight
+      - type: clear
+        field: sub_description
+      - type: clear
+        field: description
+        locale: en_US
+        scope: ecommerce
+      - type: clear
+        field: connectivity
 SQL;
 
     private static $normalizedRules = [];
@@ -128,7 +159,7 @@ SQL;
     }
 
     /**
-     * @Given /^I import several rules$/
+     * @Given I import several rules
      */
     public function importSeveralRules(): void
     {
@@ -136,7 +167,7 @@ SQL;
     }
 
     /**
-     * @When /^I export all the rules$/
+     * @When I export all the rules
      */
     public function exportAllTheRules()
     {
@@ -153,7 +184,7 @@ SQL;
     }
 
     /**
-     * @Then /^the export data contains all rules$/
+     * @Then the export data contains all rules
      */
     public function theExportFileContainsAllRules()
     {

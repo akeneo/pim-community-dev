@@ -192,6 +192,115 @@ YAML;
         $this->importRules($rulesConfig);
     }
 
+    /**
+     * @When I import a valid clear rule
+     */
+    public function importAValidClearRule(): void
+    {
+        $rulesConfig = <<<YAML
+rules:
+    test_clear:
+        priority: 90
+        conditions:
+            - field: family
+              operator: IN
+              value:
+                  - camcorders
+        actions:
+            - type: clear
+              field: name
+              locale: en_US
+            - type: clear
+              field: pim_brand
+            - type: clear
+              field: processor
+            - type: clear
+              field: price
+            - type: clear
+              field: color
+            - type: clear
+              field: release_date
+            - type: clear
+              field: weight
+            - type: clear
+              field: sub_description
+            - type: clear
+              field: description
+              locale: en_US
+              scope: ecommerce
+            - type: clear
+              field: connectivity
+YAML;
+        $this->importRules($rulesConfig);
+    }
+
+    /**
+     * @Then the rule list contains the valid clear rule
+     */
+    public function theRuleListContainsTheClearConcatenateRule()
+    {
+        $code = 'test_clear';
+        $ruleDefinitions = $this->ruleDefinitionRepository->findAll();
+
+        /** @var RuleDefinitionInterface $ruleDefinition */
+        foreach ($ruleDefinitions as $ruleDefinition) {
+            if ($ruleDefinition->getCode() === $code) {
+                $content = $ruleDefinition->getContent();
+
+                Assert::count($content['actions'], 10);
+                Assert::eq($content['actions'][0]['type'], 'clear');
+
+                return;
+            }
+        }
+
+        throw new \LogicException(sprintf('The "%s" rule was not found.', $code));
+    }
+
+    /**
+     * @When I import a clear rule with unknown attribute
+     */
+    public function importAClearRuleWithUnknownAttribute(): void
+    {
+        $rulesConfig = <<<YAML
+rules:
+    test_clear:
+        priority: 90
+        conditions:
+            - field: family
+              operator: IN
+              value:
+                  - camcorders
+        actions:
+            - type: clear
+              field: unknown
+YAML;
+        $this->importRules($rulesConfig);
+    }
+
+    /**
+     * @When I import a clear rule with localized attribute and without locale
+     */
+    public function importAClearRuleWithLocalizedAttributeAndWithoutLocale(): void
+    {
+        $rulesConfig = <<<YAML
+rules:
+    test_clear:
+        priority: 90
+        conditions:
+            - field: family
+              operator: IN
+              value:
+                  - camcorders
+        actions:
+            - type: clear
+              field: name
+YAML;
+        $this->importRules($rulesConfig);
+    }
+
+
+
     private function importRules(string $yaml)
     {
         $normalizedRules = Yaml::parse($yaml);

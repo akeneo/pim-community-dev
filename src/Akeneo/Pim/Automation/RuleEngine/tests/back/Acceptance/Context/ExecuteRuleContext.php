@@ -25,6 +25,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\PyStringNode;
 use Symfony\Component\Yaml\Yaml;
 use Webmozart\Assert\Assert;
 
@@ -34,11 +35,6 @@ use Webmozart\Assert\Assert;
  */
 final class ExecuteRuleContext implements Context
 {
-    const NON_IMPACTED_PRODUCT_IDENTIFIER = '75024';
-    const UPDATED_PRODUCT_IDENTIFIER = '75025';
-    const UPDATED_TEXT_ATTRIBUTE_CODE = 'name';
-    const UPDATED_TEXTAREA_ATTRIBUTE_CODE = 'description';
-
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
@@ -197,6 +193,20 @@ YAML;
     }
 
     /**
+     * @Then /^there should be no ((?!product)\w+) (\w+) (\w+) value for the product "([^"]*)"$/
+     */
+    public function thereShouldBeNoValueForTheProduct($locale, $scope, $attribute, $identifier)
+    {
+        $locale = 'unlocalized' === $locale ? null : $locale;
+        $scope = 'unscoped' === $scope ? null : $scope;
+
+        $product = $this->getProduct($identifier);
+        $productValue = $product->getValue($attribute, $locale, $scope);
+
+        Assert::null($productValue, 'The value exists for this product.');
+    }
+
+    /**
      * @Given /^A rule that concatenates given attribute values to a textarea attribute value$/
      */
     public function aRuleThatConcatenatesGivenAttributeValuesToATextareaAttributeValue(): void
@@ -291,6 +301,32 @@ rules:
                   locale: en_US
 YAML;
         $this->importRules($rulesConfig);
+    }
+
+    /**
+     * @Given Rules with following configuration:
+     */
+    public function aRuleWithFollowingConfiguration(PyStringNode $rulesConfiguration): void
+    {
+        $this->importRules($rulesConfiguration->getRaw());
+    }
+
+    /**
+     * @When I execute the ":ruleName" rule on products
+     */
+    public function executeTheRuleOnProducts(string $ruleName): void
+    {
+        $rule = $this->getRule($ruleName);
+        $this->executeRulesOnSubjects([$rule], $this->productRepository->findAll());
+    }
+
+    /**
+     * @When I execute the clear rule on products
+     */
+    public function executeTheClearRuleOnProducts(): void
+    {
+        $rule = $this->getRule('clear_rule');
+        $this->executeRulesOnSubjects([$rule], $this->productRepository->findAll());
     }
 
     private function getProduct(string $identifier): ProductInterface
