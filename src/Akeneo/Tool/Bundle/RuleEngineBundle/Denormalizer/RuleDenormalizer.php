@@ -57,7 +57,9 @@ class RuleDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwar
         $this->checkRuleKeys($data);
 
         $rule = $this->getRuleDefinition($context);
-        $rule->setCode($data['code']);
+        if (isset($data['code'])) {
+            $rule->setCode($data['code']);
+        }
         $rule->setType($this->type);
 
         if (isset($data['priority'])) {
