@@ -90,6 +90,12 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.updater.copier.registry'
 
+    pim_catalog.updater.property_clearer:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\PropertyClearer'
+        public: true
+        arguments:
+            - '@pim_catalog.updater.clearer.registry'
+
     pim_catalog.updater.category:
         class: '%akeneo_classification.updater.category.class%'
         arguments:
@@ -548,3 +554,16 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\CollectionToArrayDataConverter'
         tags:
             - { name: 'pim_catalog.updater.value_data_converter' }
+
+    # Clearers
+    pim_catalog.updater.clearer.registry:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerRegistry'
+        arguments:
+            - !tagged_iterator pim_catalog.updater.clearer
+
+    pim_catalog.updater.clearer.attributes:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\AttributeClearer'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: 'pim_catalog.updater.clearer' }
