@@ -36,15 +36,9 @@ class GetMeasurementFamiliesAction
     {
         $normalizedMeasurementFamilies = [];
 
-        /** @var MeasurementFamily */
+        /** @var MeasurementFamily $measurementFamily */
         foreach ($measurementFamilies as $measurementFamily) {
-            $normalizedMeasurementFamily = $measurementFamily->normalize();
-            $normalizedMeasurementFamily['units'] = array_reduce($normalizedMeasurementFamily['units'], function ($indexedUnit, $unit) {
-                $indexedUnit[$unit['code']] = $unit;
-
-                return $indexedUnit;
-            }, []);
-            $normalizedMeasurementFamilies[] = $normalizedMeasurementFamily;
+            $normalizedMeasurementFamilies[] = $measurementFamily->normalizeWithIndexedUnits();
         }
 
         return $normalizedMeasurementFamilies;
