@@ -19,9 +19,10 @@ import {ValidationError, getErrorsForPath} from 'akeneomeasure/model/validation-
 import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
 import {useForm} from 'akeneomeasure/hooks/use-form';
+import {MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
 
 type CreateMeasurementFamilyProps = {
-  onClose: () => void;
+  onClose: (createdMeasurementFamilyCode?: MeasurementFamilyCode) => void;
 };
 
 const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
@@ -45,7 +46,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
       switch (response.success) {
         case true:
           notify(NotificationLevel.SUCCESS, __('measurements.create_family.flash.success'));
-          handleClose();
+          handleClose(measurementFamily.code);
           break;
 
         case false:
