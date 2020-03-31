@@ -15,8 +15,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -123,13 +121,24 @@ SQL;
         $this->saveAverageRanks($ratesProjection);
     }
 
-    public function removeRates(TimePeriod $timePeriod, ConsolidationDate $date): void
+    public function purgeRates(Write\DashboardPurgeDateCollection $purgeDates): void
     {
-        $pathToRemove = sprintf('\'$."%s"."%s"\'', $timePeriod, $date->format());
+        $pathsToRemove = [];
+
+        /** @var Write\DashboardPurgeDate $purgeDate */
+        foreach ($purgeDates as $purgeDate) {
+            $pathsToRemove[] = sprintf('\'$."%s"."%s"\'', strval($purgeDate->getPeriod()), $purgeDate->getDate()->format());
+        }
+
+        if (empty($pathsToRemove)) {
+            return;
+        }
+
+        $pathsToRemove = implode(', ', $pathsToRemove);
 
         $query = <<<SQL
 UPDATE pimee_data_quality_insights_dashboard_rates_projection
-SET rates = JSON_REMOVE(rates, $pathToRemove)
+SET rates = JSON_REMOVE(rates, $pathsToRemove)
 SQL;
 
         $this->db->executeQuery($query);

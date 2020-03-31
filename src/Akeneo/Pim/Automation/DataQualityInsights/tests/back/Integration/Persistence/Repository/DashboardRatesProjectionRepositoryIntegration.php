@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Repository;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
@@ -42,34 +43,42 @@ final class DashboardRatesProjectionRepositoryIntegration extends TestCase
         $this->repository = $this->get(DashboardRatesProjectionRepository::class);
     }
 
-    public function test_it_removes_rates_for_a_given_time_period_and_a_given_date()
+    public function test_it_purges_rates_for_given_dates()
     {
         $commonDay = new ConsolidationDate(new \DateTimeImmutable('2019-12-19'));
-        $lastDayOfWeek = new ConsolidationDate(new \DateTimeImmutable('2019-12-22'));
+        $dayToPurge = new ConsolidationDate(new \DateTimeImmutable('2019-11-17'));
+        $weekToPurge = new ConsolidationDate(new \DateTimeImmutable('2019-12-01'));
         $lastDayOfMonth = new ConsolidationDate(new \DateTimeImmutable('2019-12-31'));
-
-        $ranksDistributionCollection = $this->getRanksDistributionCollection();
-        $this->insertCatalogRatesProjection($commonDay, $ranksDistributionCollection);
-        $this->insertCatalogRatesProjection($lastDayOfWeek, $ranksDistributionCollection);
-        $this->insertCatalogRatesProjection($lastDayOfMonth, $ranksDistributionCollection);
-
-        $this->insertCategoryRatesProjection($commonDay, $ranksDistributionCollection);
-        $this->insertCategoryRatesProjection($lastDayOfWeek, $ranksDistributionCollection);
-        $this->insertCategoryRatesProjection($lastDayOfMonth, $ranksDistributionCollection);
 
         $daily = TimePeriod::daily();
         $monthly = TimePeriod::monthly();
+        $weekly = TimePeriod::weekly();
+
+        $ranksDistributionCollection = $this->getRanksDistributionCollection();
+        $this->insertCatalogRatesProjection($commonDay, $ranksDistributionCollection);
+        $this->insertCatalogRatesProjection($dayToPurge, $ranksDistributionCollection);
+        $this->insertCatalogRatesProjection($weekToPurge, $ranksDistributionCollection);
+        $this->insertCatalogRatesProjection($lastDayOfMonth, $ranksDistributionCollection);
+        $this->insertCategoryRatesProjection($dayToPurge, $ranksDistributionCollection);
+        $this->insertCategoryRatesProjection($commonDay, $ranksDistributionCollection);
+        $this->insertCategoryRatesProjection($lastDayOfMonth, $ranksDistributionCollection);
+
+        $this->assertCountRatesByDate(2, $daily, $dayToPurge);
+        $this->assertCountRatesByDate(1, $weekly, $weekToPurge);
+        $this->assertCountRatesByDate(2, $monthly, $lastDayOfMonth);
+
+        $datesToPurge = (new DashboardPurgeDateCollection())
+            ->add($daily, $dayToPurge)
+            ->add($weekly, $weekToPurge)
+            ->add($monthly, $lastDayOfMonth);
+
+        $this->repository->purgeRates($datesToPurge);
+
         $this->assertCountRatesByDate(2, $daily, $lastDayOfMonth);
-        $this->assertCountRatesByDate(2, $monthly, $lastDayOfMonth);
-
-        $this->repository->removeRates($daily, $lastDayOfMonth);
-
-        $this->assertCountRatesByDate(0, $daily, $lastDayOfMonth);
         $this->assertCountRatesByDate(2, $daily, $commonDay);
-        $this->assertCountRatesByDate(2, TimePeriod::weekly(), $lastDayOfWeek);
-        $this->assertCountRatesByDate(2, $monthly, $lastDayOfMonth);
 
-        $this->repository->removeRates($monthly, $lastDayOfMonth);
+        $this->assertCountRatesByDate(0, $daily, $dayToPurge);
+        $this->assertCountRatesByDate(0, $weekly, $weekToPurge);
         $this->assertCountRatesByDate(0, $monthly, $lastDayOfMonth);
     }
 
