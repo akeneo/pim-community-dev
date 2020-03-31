@@ -15,3 +15,7 @@ services:
         arguments:
             - '@pim_localization.provider.ui_locale'
             - '@pim_internal_api_serializer'
+
+    pim_ui.controller.feature_flag:
+        public: true
+        class: 'Akeneo\Platform\Bundle\UIBundle\Controller\FeatureFlagController'

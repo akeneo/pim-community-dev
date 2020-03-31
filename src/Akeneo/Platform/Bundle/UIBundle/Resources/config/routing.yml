@@ -10,3 +10,8 @@ pim_localization_locale_index:
 measures:
     resource: '@PimUIBundle/Resources/config/routing/internal_api/measures.yml'
     prefix: /configuration/measures
+
+feature_flag:
+    path: /system/feature-flag/{feature}
+    defaults: { _controller: pim_ui.controller.feature_flag:isEnabledAction }
+    methods: [GET]
