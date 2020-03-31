@@ -1,4 +1,5 @@
 import React, {useCallback, useContext, useState} from 'react';
+import {useHistory} from 'react-router-dom';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
@@ -10,7 +11,11 @@ import {Link} from 'akeneomeasure/shared/components/Link';
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/NoData';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
-import {sortMeasurementFamily, filterOnLabelOrCode} from 'akeneomeasure/model/measurement-family';
+import {
+  sortMeasurementFamily,
+  filterOnLabelOrCode,
+  MeasurementFamilyCode,
+} from 'akeneomeasure/model/measurement-family';
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
 import {Button} from 'akeneomeasure/shared/components/Button';
@@ -42,18 +47,22 @@ const useSorting = (
 const List = () => {
   const __ = useContext(TranslateContext);
   const isGranted = useContext(SecurityContext);
+  const locale = useContext(UserContext)('uiLocale');
+  const history = useHistory();
   const [searchValue, setSearchValue] = useState('');
   const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
-
-  const [measurementFamilies, fetchMeasurementFamilies] = useMeasurementFamilies();
-  const locale = useContext(UserContext)('uiLocale');
-
+  const [measurementFamilies] = useMeasurementFamilies();
   const [isCreateModalOpen, openCreateModal, closeCreateModal] = useToggleState(false);
 
-  const handleModalClose = useCallback(() => {
-    closeCreateModal();
-    fetchMeasurementFamilies();
-  }, [closeCreateModal, fetchMeasurementFamilies]);
+  const handleModalClose = useCallback(
+    (createdMeasurementFamilyCode?: MeasurementFamilyCode) => {
+      closeCreateModal();
+      if (undefined !== createdMeasurementFamilyCode) {
+        history.push(`/${createdMeasurementFamilyCode}`);
+      }
+    },
+    [closeCreateModal, history]
+  );
 
   const filteredMeasurementFamilies =
     null === measurementFamilies
