@@ -99,7 +99,12 @@ resource "google_monitoring_alert_policy" "alert_policy" {
   display_name = local.pfid
   combiner     = "OR"
   project      = var.google_project_id
-  depends_on   = [google_logging_metric.login-response-time-distribution]
+  depends_on   = [
+    "google_logging_metric.login-response-time-distribution",
+    "google_logging_metric.login_count",
+    "google_logging_metric.logs-count",
+    "google_monitoring_uptime_check_config.https"
+    ]
 
   conditions {
     # Basically it should ring if the volume utilization is > 90% during 15min
@@ -190,4 +195,3 @@ resource "random_string" "monitoring_authentication_token" {
   length  = 32
   special = false
 }
-
