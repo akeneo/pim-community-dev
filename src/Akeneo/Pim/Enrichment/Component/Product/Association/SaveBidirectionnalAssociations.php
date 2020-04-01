@@ -53,35 +53,64 @@ class SaveBidirectionnalAssociations implements EventSubscriberInterface
     {
         foreach ($product->getAssociations() as $association) {
             if ($association->getAssociationType()->isBidirectional()) {
-                $this->saveBidirectionalLinks($association, $product);
+                $this->saveBidirectionalProductAssociations($association, $product);
+                // TODO: $this->saveBidirectionalProductModelAssociations($association, $product);
+                // TODO: $this->saveBidirectionalProductModelToProductAssociations($association, $product);
+                // TODO: $this->saveBidirectionalProductToProductModelAssociations($association, $product);
             }
         }
     }
 
-    private function saveBidirectionalLinks(AssociationInterface $association, ProductInterface $product): void
-    {
-        $productIds = $association->getProducts()->map(function(ProductInterface $product) {
-            return $product->getId();
-        });
-        $this->saveBidirectionalProductAssociation($association, $productIds, $product->getId());
-//        $this->saveProductModelBidirectionalLinks($association, $productIds);
+    private function saveBidirectionalProductAssociations(
+        AssociationInterface $association,
+        ProductInterface $product
+    ): void {
+        $this->removeAllInvertedProductAssociations($association, $product);
+        $this->saveBidirectionalProductAssociation($association, $product->getId());
     }
 
-    /**
-     * @param AssociationInterface $productAssociation
-     * @param                      $productIds
-     *
-     * @throws \Throwable
-     */
-    private function saveBidirectionalProductAssociation(AssociationInterface $productAssociation, $productIds, $ownerProductId): void
-    {
+    private function removeAllInvertedProductAssociations(
+        AssociationInterface $association,
+        ProductInterface $product
+    ): void {
+        $query = <<<SQL
+DELETE FROM pim_catalog_association_product
+WHERE association_id IN (
+	SELECT association_id FROM (
+		SELECT a.id
+	FROM pim_catalog_association a INNER JOIN pim_catalog_association_product ap ON ap.association_id = a.id
+	WHERE association_type_id = :association_type_id AND product_id = :owner_id
+	) as association_id_to_delete
+);
+SQL;
+        $this->connection->executeUpdate(
+            $query,
+            [
+                'association_type_id' => $association->getAssociationType()->getId(),
+                'owner_id'            => $product->getId()
+            ]
+        );
+    }
+
+    private function saveBidirectionalProductAssociation(
+        AssociationInterface $productAssociation,
+        $ownerProductId
+    ): void {
+        $productIds = $productAssociation->getProducts()->map(
+            function (ProductInterface $product) {
+                return $product->getId();
+            }
+        );
         if ($productIds->isEmpty()) {
             return;
         }
 
         foreach ($productIds as $productId) {
             $this->saveNewAssociation($productAssociation, $productId);
-            $newAssociationId = $this->fetchAssociationId($productAssociation->getAssociationType()->getId(), $productId);
+            $newAssociationId = $this->fetchAssociationId(
+                $productAssociation->getAssociationType()->getId(),
+                $productId
+            );
             $this->saveProductAssociation($newAssociationId, $ownerProductId);
         }
     }
@@ -117,7 +146,7 @@ SQL;
             throw new \LogicException('Something went wrong');
         }
 
-        return (int) $result;
+        return (int)$result;
     }
 
     private function saveProductAssociation($newAssociationId, $ownerProductId)
@@ -131,6 +160,9 @@ ON DUPLICATE KEY UPDATE
     product_id = :product_id
 ;
 SQL;
-        $this->connection->executeUpdate($insertProductAssociation, ['association_id' => $newAssociationId, 'product_id' => $ownerProductId]);
+        $this->connection->executeUpdate(
+            $insertProductAssociation,
+            ['association_id' => $newAssociationId, 'product_id' => $ownerProductId]
+        );
     }
 }
