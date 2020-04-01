@@ -135,51 +135,12 @@ jobs:
                 path: var/logs
 
   back_behat_legacy:
-    machine:
-      image: ubuntu-1604:201903-01
-    parallelism: 20
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run:
-            name: Get Behat Suite name to run
-            command: |
-                TESTSUITE=$(echo $CIRCLE_BRANCH | sed -e 's/^.*-\([^-]*\)$/\1/g')
-                if ! [[ $TESTSUITE =~ ^(weasel|chipmunk|raccoon)$ ]] ; then
-                  TESTSUITE="all"
-                fi
-                echo "Behat Suite to run: "$TESTSUITE
-                echo "export TESTSUITE=$TESTSUITE" >> $BASH_ENV
-      - run:
-            name: Change owner on project dir in order to archive the project into the workspace
-            command: sudo chown -R 1000:1000 ../project
-      - run:
-            name: Start containers
-            command: |
-                APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium' make up
-                docker/wait_docker_up.sh
-      - run:
-            name: Install database
-            command: APP_ENV=behat make database
-      - run:
-            name: Behat legacy
-            command: make end-to-end-legacy SUITE=$TESTSUITE
-      - run:
-          name: Gather Junit test result files in the same directory to improve the render of failing tests
-          command: |
-              set -e
-              cd var/tests/behat
-              sudo chmod -R 777 .
-              for subdir in */*; do mv "${subdir}" "${subdir/\//_}"; done
-          when: always
-      - store_test_results:
-          path: var/tests/behat
-      - store_artifacts:
-          path: var/tests/behat
-      - store_artifacts:
-          path: var/tests/screenshots
-      - store_artifacts:
-          path: var/logs
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - run:
+                name: echo "hello world"
+                command: echo "hello world"
 
   test_front_static_acceptance_and_integration:
       machine:
@@ -267,32 +228,9 @@ workflows:
                     branches:
                         ignore:
                             - master
-          - build_dev:
-                requires:
-                    - wait_for_user_approval
-          - test_back_static_and_acceptance:
-                requires:
-                    - build_dev
-          - test_front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
-          - test_back_missing_structure_migrations:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-          - test_back_data_migrations:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-          - test_back_phpunit:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
-                    - test_back_data_migrations
-                    - test_back_missing_structure_migrations
-                    - test_back_phpunit
+                    - wait_for_user_approval
 
   nightly:
       triggers:
