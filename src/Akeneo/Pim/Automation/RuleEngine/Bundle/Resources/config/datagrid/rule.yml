@@ -13,7 +13,7 @@ datagrid:
             entity: '%akeneo_rule_engine.model.rule_definition.class%'
         columns:
             label:
-                label: Label
+                label: pimee_catalog_rule.datagrid.rule-grid.column.label
                 frontend_type: label
             conditions:
                 label: pimee_catalog_rule.datagrid.rule-grid.column.conditions
@@ -69,7 +69,7 @@ datagrid:
                 label:
                     type: search
                     data_name: translation.label
-                    label: Label
+                    label: pimee_catalog_rule.datagrid.rule-grid.column.label
         sorters:
             columns:
                 label:

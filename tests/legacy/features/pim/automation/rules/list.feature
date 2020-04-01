@@ -48,6 +48,8 @@ Feature: List all rules
             to_locale:   fr_FR
             from_scope:  mobile
             to_scope:    tablet
+        labels:
+          en_US: Copy Description
       update_tees_collection:
         priority: 20
         conditions:
@@ -140,9 +142,9 @@ Feature: List all rules
     And I am on the rules page
 
   Scenario: Successfully show rules
-    Then the rows should be sorted ascending by code
+    Then the rows should be sorted ascending by label
     And the grid should contain 4 elements
-    And I should be able to sort the rows by code
+    And I should be able to sort the rows by label
 
     And the row "copy_description" should contain the texts:
       | column    | value                                                                         |
@@ -183,7 +185,7 @@ Feature: List all rules
   Scenario: Successfully search rules
     When I search "description"
     Then the grid should contain 1 element
-    And I should see entity copy_description
+    And I should see entity Copy Description
 
   Scenario: Successfully delete a rule
     When I click on the "Delete" action of the row which contains "copy_description"
