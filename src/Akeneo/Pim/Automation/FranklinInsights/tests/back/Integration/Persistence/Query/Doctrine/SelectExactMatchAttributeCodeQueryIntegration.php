@@ -125,6 +125,22 @@ final class SelectExactMatchAttributeCodeQueryIntegration extends TestCase
         );
     }
 
+    public function test_it_returns_pim_attribute_code_on_attribute_label_with_invalid_codes()
+    {
+        $this->createAttribute('attribute__weight_', ['en_US' => 'weight']);
+        $this->createAttribute('attribute_size', ['en_US' => 'size',]);
+        $this->createFamily('a_family', ['attribute__weight_', 'attribute_size']);
+
+        $attributeCodes = $this->query->execute(new FamilyCode('a_family'), ['attribute (weight)', 'size']);
+        $this->assertSame(
+            [
+                'attribute (weight)' => 'attribute__weight_',
+                'size' => 'attribute_size'
+            ],
+            $attributeCodes
+        );
+    }
+
     public function test_it_returns_no_attribute_code()
     {
         $this->createAttribute('attribute_weight', ['en_US' => 'attribute weight']);
