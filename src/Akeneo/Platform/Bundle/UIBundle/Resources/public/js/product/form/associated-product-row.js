@@ -60,7 +60,8 @@ define(
                     canRemoveAssociation,
                     redirectUrl: router.generate(
                         this.isProductModel() ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit',
-                        {id: this.isProductModel() ? this.model.id.replace('product-model-', '') : this.model.id.replace('product-', '')})
+                        {id: this.model.id.replace(/product-model-|product-/g, '')}
+                    )
                 };
             },
 

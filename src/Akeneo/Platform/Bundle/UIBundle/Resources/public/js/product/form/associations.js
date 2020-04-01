@@ -125,7 +125,7 @@ define([
       this.trigger('tab:register', {
         code: undefined === this.config.tabCode ? this.code : this.config.tabCode,
         isVisible: this.isVisible.bind(this),
-        label: __('pim_enrich.entity.product.module.associations.title'),
+        label: __('pim_enrich.entity.product.module.associations.title', {count: this.associationCount}),
       });
 
       _.each(
@@ -703,7 +703,10 @@ define([
               title: __('pim_enrich.entity.product.module.associations.manage', {
                 associationType: associationType.labels[UserContext.get('catalogLocale')],
               }),
-              innerDescription: __('pim_enrich.entity.product.module.associations.manage_description', {productIdentifier: this.getFormData().identifier}),
+              innerDescription: __(
+                'pim_enrich.entity.product.module.associations.manage_description',
+                {productIdentifier: this.getFormData().identifier}
+              ),
               content: '',
               okText: __('pim_common.confirm'),
               template: this.modalTemplate,
