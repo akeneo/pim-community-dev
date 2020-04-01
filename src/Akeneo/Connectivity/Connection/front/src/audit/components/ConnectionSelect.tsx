@@ -1,17 +1,17 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import styled from 'styled-components';
 import {Select} from '../../common';
 import {PropsWithTheme} from '../../common/theme';
 import {Connection} from '../../model/connection';
 import {useMediaUrlGenerator} from '../../settings/use-media-url-generator';
-import {Translate} from '../../shared/translate';
 
 interface Props {
     connections: Connection[];
     onChange: (code?: string) => void;
+    label: ReactNode;
 }
 
-export const ConnectionSelect = ({connections, onChange}: Props) => {
+export const ConnectionSelect = ({connections, onChange, label}: Props) => {
     const generate = useMediaUrlGenerator();
 
     const data = connections.reduce((data, connection) => {
@@ -24,14 +24,8 @@ export const ConnectionSelect = ({connections, onChange}: Props) => {
 
     return (
         <>
-            <Label>
-                <Translate id='akeneo_connectivity.connection.dashboard.connection_selector.title' />
-            </Label>
-            <Select
-                data={data}
-                onChange={onChange}
-                dropdownTitle={<Translate id='akeneo_connectivity.connection.dashboard.connection_selector.title' />}
-            />
+            <Label>{label}</Label>
+            <Select data={data} onChange={onChange} dropdownTitle={label} />
         </>
     );
 };
