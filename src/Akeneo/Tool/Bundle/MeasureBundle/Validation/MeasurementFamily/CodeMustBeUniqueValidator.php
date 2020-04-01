@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily;
+namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;

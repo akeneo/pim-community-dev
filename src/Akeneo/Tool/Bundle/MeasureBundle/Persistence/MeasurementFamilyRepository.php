@@ -101,6 +101,12 @@ SQL;
         return (int) $statement->fetch(\PDO::FETCH_COLUMN);
     }
 
+    public function clear(): void
+    {
+        $this->allMeasurementFamiliesCache = [];
+        $this->measurementFamilyCache = [];
+    }
+
     private function hydrateMeasurementFamily(
         string $code,
         string $normalizedLabels,
