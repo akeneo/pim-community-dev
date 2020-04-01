@@ -111,6 +111,8 @@ pim_asset_manager:
         channel_not_supported_for_field: 'You cannot specify a channel for the field "{{ %product_field% }}"'
         locale_not_supported_for_field: 'You cannot specify a locale for the field "{{ %product_field% }}"'
         assignmement_attribute_does_not_support_this_asset_family: 'The product attribute "{{ %product_attribute_code% }}" cannot contain assets of asset family "{{ %asset_family_identifier% }}"'
+        assignmement_attribute_does_not_exist: 'product attribute "{{ %product_attribute_code% }}" does not exist'
+        assignmement_attribute_is_not_an_asset_collection: 'product attribute "{{ %product_attribute_code% }}" is not an attribute of type asset collection'
     button:
       save: Save
       save_permission: Save
