@@ -185,7 +185,7 @@ rules:
         actions:
             - type: calculate
               destination:
-                field: weight
+                field: name
               source:
                 field: description
               operation_list:

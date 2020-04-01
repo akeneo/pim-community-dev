@@ -119,3 +119,8 @@ services:
             - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: validator.constraint_validator, alias: pimee_attribute_should_be_numeric_validator }
+
+    pimee_catalog_rule.validator.existing_calculate_action_field:
+        class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingCalculateActionFieldValidator
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_calculate_field_validator }
