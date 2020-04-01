@@ -4,11 +4,11 @@ resource "google_logging_metric" "login_count" {
   filter = "resource.type=k8s_container AND jsonPayload.http.path=\"/user/login\" AND resource.labels.namespace_name=${pfid}"
   lable_extractors = {
     "response_code"= "EXTRACT(jsonPayload.http.response_code)"
-  },
+  }
   metric_descriptor = {
     metric_kind= "DELTA"
     value_type = "INT64"
-    labels {
+    labels = {
         key =  "response_code"
         value_type =  "INT64"
       }
@@ -34,7 +34,7 @@ resource "google_logging_metric" "login-response-time-distribution" {
     metric_kind = "DELTA"
     value_type = "DISTRIBUTION"
     unit = "us"
-    labels {
+    labels = {
         key = "response_code"
         value_type = "INT64"
       }
