@@ -1,14 +1,14 @@
 resource "google_logging_metric" "login_count" {
-  name = "${pfid}-login-count"
+  name = "${local.pfid}-login-count"
   description = "Counter of access logs on the /user/login url."
-  filter = "resource.type=k8s_container AND jsonPayload.http.path=\"/user/login\" AND resource.labels.namespace_name=${pfid}"
-  lable_extractors = {
-    "response_code"= "EXTRACT(jsonPayload.http.response_code)"
+  filter = "resource.type=k8s_container AND jsonPayload.http.path=\"/user/login\" AND resource.labels.namespace_name=${local.pfid}"
+  label_extractors = {
+    "response_code" = "EXTRACT(jsonPayload.http.response_code)"
   }
-  metric_descriptor = {
+  metric_descriptor {
     metric_kind= "DELTA"
     value_type = "INT64"
-    labels = {
+    labels {
         key =  "response_code"
         value_type =  "INT64"
       }
@@ -16,12 +16,12 @@ resource "google_logging_metric" "login_count" {
 }
 
 resource "google_logging_metric" "login-response-time-distribution" {
-  name = "${pfid}-login-response-time-distribution"
+  name = "${local.pfid}-login-response-time-distribution"
   description = "Distribution of response time on the /user/login url."
-  filter = "resource.type=k8s_container AND jsonPayload.http.path=\"/user/login\" AND resource.labels.namespace_name=${pfid}"
+  filter = "resource.type=k8s_container AND jsonPayload.http.path=\"/user/login\" AND resource.labels.namespace_name=${local.pfid}"
   value_extractor = "EXTRACT(jsonPayload.http.duration_micros)"
-  lable_extractors= {
-    "response_code"= "EXTRACT(jsonPayload.http.response_code)"
+  label_extractors = {
+    "response_code" = "EXTRACT(jsonPayload.http.response_code)"
   }
   bucket_options {
     exponential_buckets {
@@ -30,11 +30,11 @@ resource "google_logging_metric" "login-response-time-distribution" {
       scale = 5
     }
   }
-  metric_descriptor = {
+  metric_descriptor {
     metric_kind = "DELTA"
     value_type = "DISTRIBUTION"
     unit = "us"
-    labels = {
+    labels {
         key = "response_code"
         value_type = "INT64"
       }
@@ -42,10 +42,10 @@ resource "google_logging_metric" "login-response-time-distribution" {
 }
 
 resource "google_logging_metric" "logs-count" {
-  name = "${pfid}-logs-count"
+  name = "${local.pfid}-logs-count"
   description = "Counter of container logs."
-  filter = "resource.type=k8s_container AND resource.labels.namespace_name=${pfid}"
-  lable_extractors = {
+  filter = "resource.type=k8s_container AND resource.labels.namespace_name=${local.pfid}"
+  label_extractors = {
     "container_name" = "EXTRACT(resource.labels.container_name)"
     "pod_name" = "EXTRACT(resource.labels.pod_name)"
   }
@@ -99,7 +99,7 @@ resource "google_monitoring_alert_policy" "alert_policy" {
   display_name = local.pfid
   combiner     = "OR"
   project      = var.google_project_id
-  depends_on   = [null_resource.metric]
+  depends_on   = [google_logging_metric.login-response-time-distribution]
 
   conditions {
     # Basically it should ring if the volume utilization is > 90% during 15min
