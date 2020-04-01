@@ -17,7 +17,7 @@
 - DAPI-798: Allow spelling suggestions after a title formatter check
 - DAPI-895: As Julia, I'd like spell-check to be available for Norwegian
 - RUL-20: Rule engine - As Julia, I would like to copy values from/to different attribute types
-- RUL-49: Rule engine - As Peter, I would like to clear attribute values
+- RUL-49: Rule engine - As Peter, I would like to clear attribute values, associations, categories and groups
 - RUL-77: Rule engine - As Peter, I would like to add labels to my rules
 
 ## New features

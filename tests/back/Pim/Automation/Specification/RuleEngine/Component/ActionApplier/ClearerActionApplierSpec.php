@@ -194,20 +194,16 @@ class ClearerActionApplierSpec extends ObjectBehavior
         $this->applyAction($clearerAction, [$product]);
     }
 
-    function it_does_not_apply_action_if_attribute_is_unknown(
-        PropertyClearerInterface $propertyClearer,
-        GetAttributes $getAttributes
-    ) {
-        $clearerAction = new ProductClearAction(['field' => 'name']);
+    function it_applies_clear_action_on_product_field(PropertyClearerInterface $propertyClearer)
+    {
+        $clearerAction = new ProductClearAction(['field' => 'categories']);
         $product = new Product();
 
-        $getAttributes->forCode('name')->willReturn(null);
-
         $propertyClearer->clear(
-            Argument::any(),
-            Argument::any(),
-            Argument::any()
-        )->shouldNotBeCalled();
+            $product,
+            'categories',
+            ['locale' => null, 'scope' => null]
+        )->shouldBeCalled();
 
         $this->applyAction($clearerAction, [$product]);
     }

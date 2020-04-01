@@ -230,6 +230,12 @@ rules:
               scope: ecommerce
             - type: clear
               field: connectivity
+            - type: clear
+              field: categories
+            - type: clear
+              field: groups
+            - type: clear
+              field: associations
 YAML;
         $this->importRules($rulesConfig);
     }
@@ -247,7 +253,7 @@ YAML;
             if ($ruleDefinition->getCode() === $code) {
                 $content = $ruleDefinition->getContent();
 
-                Assert::count($content['actions'], 10);
+                Assert::count($content['actions'], 13);
                 Assert::eq($content['actions'][0]['type'], 'clear');
 
                 return;

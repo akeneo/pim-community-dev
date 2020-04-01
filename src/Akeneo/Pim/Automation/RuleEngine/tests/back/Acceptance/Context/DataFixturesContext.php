@@ -17,10 +17,14 @@ use Akeneo\Channel\Component\Model\Currency;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\GroupType;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordDetails;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository;
@@ -39,9 +43,11 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReferenc
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
+use Akeneo\Test\Acceptance\AssociationType\InMemoryAssociationTypeRepository;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
 use Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository;
+use Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository;
 use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
 use Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
@@ -100,7 +106,7 @@ final class DataFixturesContext implements Context
     /** @var ObjectUpdaterInterface */
     private $productUpdater;
 
-    /** EntityBuilder */
+    /** @var EntityBuilder */
     private $optionBuilder;
 
     /** @var WriteValueCollectionFactory */
@@ -114,6 +120,12 @@ final class DataFixturesContext implements Context
 
     /** @var InMemoryFindRecordDetails */
     private $findRecordDetails;
+
+    /** @var InMemoryGroupRepository */
+    private $groupRepository;
+
+    /** @var InMemoryAssociationTypeRepository */
+    private $associationTypeRepository;
 
     public function __construct(
         InMemoryProductRepository $productRepository,
@@ -134,7 +146,9 @@ final class DataFixturesContext implements Context
         WriteValueCollectionFactory $valueCollectionFactory,
         InMemoryReferenceEntityRepository $referenceEntityRepository,
         InMemoryRecordRepository $recordRepository,
-        InMemoryFindRecordDetails $findRecordDetails
+        InMemoryFindRecordDetails $findRecordDetails,
+        InMemoryGroupRepository $groupRepository,
+        InMemoryAssociationTypeRepository $associationTypeRepository
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
@@ -155,6 +169,8 @@ final class DataFixturesContext implements Context
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->recordRepository = $recordRepository;
         $this->findRecordDetails = $findRecordDetails;
+        $this->groupRepository = $groupRepository;
+        $this->associationTypeRepository = $associationTypeRepository;
     }
 
     /**
@@ -338,6 +354,106 @@ final class DataFixturesContext implements Context
         $attribute = $this->attributeRepository->findOneByIdentifier($code);
         $attribute->setProperty('is_read_only', true);
         $this->attributeRepository->save($attribute);
+    }
+
+    /**
+     * @Given the product :identifier has category :categoryCode
+     */
+    public function theProductHasCategory(string $identifier, string $categoryCode): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        if (in_array($categoryCode, $product->getCategoryCodes())) {
+            return;
+        }
+
+        $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
+        if (null === $category) {
+            $category = $this->categoryBuilder->build(['code' => $categoryCode]);
+            $this->categoryRepository->save($category);
+        }
+
+        $product->addCategory($category);
+        $this->productRepository->save($product);
+    }
+
+    /**
+     * @Given /^the following product groups?:$/
+     */
+    public function theFollowingProductGroups(TableNode $table): void
+    {
+        $groupTypes = [];
+        foreach ($table->getHash() as $data) {
+            $groupTypeCode = $data['type'];
+            if (!array_key_exists($groupTypeCode, $groupTypes)) {
+                $groupType = new GroupType();
+                $groupType->setCode($groupTypeCode);
+            } else {
+                $groupType = $groupTypes[$groupTypeCode];
+            }
+
+            $group = new Group();
+            $group->setCode($data['code']);
+            $group->setType($groupType);
+
+            foreach ($data as $key => $value) {
+                if (strpos($key, 'label-') !== false) {
+                    $chunks = explode('-', $key);
+                    $group->setLocale($chunks[1]);
+                    $group->setLabel($value);
+
+                    break;
+                }
+            }
+
+            $this->groupRepository->save($group);
+        }
+    }
+
+    /**
+     * @Given the product :identifier has group :groupCode
+     */
+    public function theProductHasGroup(string $identifier, string $groupCode): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        if (in_array($groupCode, $product->getGroupCodes())) {
+            return;
+        }
+
+        $group = $this->groupRepository->findOneByIdentifier($groupCode);
+        $product->addGroup($group);
+        $this->productRepository->save($product);
+    }
+
+    /**
+     * @Given the product :identifier has :associationType association with product :associatedProduct
+     */
+    public function theProductHasAssociationWithProduct(
+        string $identifier,
+        string $associationType,
+        string $associatedIdentifier
+    ): void {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        $associatedProduct = $this->productRepository->findOneByIdentifier($associatedIdentifier);
+
+        $associationTypeCode = $associationType;
+        $associationType = $this->associationTypeRepository->findOneByIdentifier($associationTypeCode);
+        if (null === $associationType) {
+            $associationType = new AssociationType();
+            $associationType->setCode($associationTypeCode);
+            $this->associationTypeRepository->save($associationType);
+        }
+
+        $association = $product->getAssociationForType($associationType);
+        if (null === $association) {
+            $productAssociation = new ProductAssociation();
+            $productAssociation->setAssociationType($associationType);
+            $productAssociation->addProduct($associatedProduct);
+            $product->addAssociation($productAssociation);
+        } else {
+            $association->addProduct($associatedProduct);
+        }
+
+        $this->productRepository->save($product);
     }
 
     /**

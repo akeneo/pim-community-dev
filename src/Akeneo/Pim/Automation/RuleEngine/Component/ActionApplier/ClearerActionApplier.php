@@ -75,7 +75,8 @@ final class ClearerActionApplier implements ActionApplierInterface
 
         $attribute = $this->getAttributes->forCode($field);
         if (null === $attribute) {
-            // @TODO RUL-89: call clearDataOnEntityWithValues to clear the field.
+            $this->clearDataOnEntityWithValues($entityWithFamilyVariant, $action);
+
             return;
         }
 

@@ -92,3 +92,82 @@ Feature: Execute clear rules
     And there should be no unlocalized unscoped connectivity value for the product "75025"
     And there should be no unlocalized unscoped designer value for the product "75025"
     And there should be no unlocalized unscoped designers value for the product "75025"
+
+  @acceptance-back
+  Scenario: Successfully execute a clear rule on product categories
+    Given the following categories:
+      | code       | parent |
+      | camera     |        |
+      | camcorders | camera |
+    And the product 75024 has category camera
+    And the product 75025 has category camera
+    And the product 75025 has category camcorders
+    And Rules with following configuration:
+    """
+    rules:
+        clear_categories_rule:
+            priority: 90
+            conditions:
+                - field: family
+                  operator: IN
+                  value:
+                      - camcorders
+            actions:
+                - type: clear
+                  field: categories
+    """
+    When I execute the "clear_categories_rule" rule on products
+    Then no exception has been thrown
+    And the product 75024 should not have any category
+    And the product 75025 should not have any category
+
+  @acceptance-back
+  Scenario: Successfully execute a clear rule on product groups
+    Given the following product groups:
+      | code       | label-en_US | type  |
+      | CROSS_SELL | Cross Sell  | XSELL |
+      | MUG        | MUG         | XSELL |
+    And the product 75024 has group CROSS_SELL
+    And the product 75025 has group CROSS_SELL
+    And the product 75025 has group MUG
+    And Rules with following configuration:
+    """
+    rules:
+        clear_groups_rule:
+            priority: 90
+            conditions:
+                - field: family
+                  operator: IN
+                  value:
+                      - camcorders
+            actions:
+                - type: clear
+                  field: groups
+    """
+    When I execute the "clear_groups_rule" rule on products
+    Then no exception has been thrown
+    And the product 75024 should not be in any group
+    And the product 75025 should not be in any group
+
+  @acceptance-back
+  Scenario: Successfully execute a clear rule on product associations
+    Given the product 75024 has XSELL association with product 75025
+    And the product 75025 has PACK association with product 75024
+    And Rules with following configuration:
+    """
+    rules:
+        clear_associations_rule:
+            priority: 90
+            conditions:
+                - field: family
+                  operator: IN
+                  value:
+                      - camcorders
+            actions:
+                - type: clear
+                  field: associations
+    """
+    When I execute the "clear_associations_rule" rule on products
+    Then no exception has been thrown
+    And the product 75024 should not have any association
+    And the product 75025 should not have any association

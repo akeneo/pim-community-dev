@@ -24,6 +24,8 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.repository.association_type'
 
     Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\UserContext:
         arguments:
@@ -74,3 +76,12 @@ services:
         class: 'AkeneoEnterprise\Test\Acceptance\Enrichment\InMemory\InMemoryFindAllExistentRecordsForReferenceEntityIdentifiers'
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    # In EE GrantedCategoryFieldSetter is used in place of CategoryFieldSetter.
+    # As the entity manager is used in it (need MySQL server), the acceptance tests don't work.
+    # We fix that by using CategoryFieldSetter and skip permission checks.
+    pim_catalog.updater.category_field_without_permission:
+        alias: pim_catalog.updater.setter.category_field
+
+    pimee_catalog.security.updater.setter.granted_category_field:
+        alias: pim_catalog.updater.setter.category_field

@@ -142,6 +142,12 @@ rules:
         scope: ecommerce
       - type: clear
         field: connectivity
+      - type: clear
+        field: categories
+      - type: clear
+        field: groups
+      - type: clear
+        field: associations
     labels: []
 SQL;
 

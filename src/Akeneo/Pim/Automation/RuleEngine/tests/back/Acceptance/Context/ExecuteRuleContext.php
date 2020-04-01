@@ -329,6 +329,50 @@ YAML;
         $this->executeRulesOnSubjects([$rule], $this->productRepository->findAll());
     }
 
+    /**
+     * @Then the product :identifier should not have any category
+     */
+    public function theProductShouldNotHaveAnyCategory(string $identifier): void
+    {
+        $productCategoryCodes = $this->getProduct($identifier)->getCategoryCodes();
+
+        Assert::isEmpty($productCategoryCodes, sprintf(
+            "Expected empty category, having '%s'.",
+            json_encode($productCategoryCodes)
+        ));
+    }
+
+    /**
+     * @Then the product :identifier should not be in any group
+     */
+    public function theProductShouldNotBeInAnyGroup(string $identifier): void
+    {
+        $expectedGroupCodes = $this->getProduct($identifier)->getGroupCodes();
+
+        Assert::isEmpty($expectedGroupCodes, sprintf(
+            "Expected empty group, having '%s'.",
+            json_encode($expectedGroupCodes)
+        ));
+    }
+
+    /**
+    * @Then the product :identifier should not have any association
+    */
+    public function theProductShouldNotHaveAnyAssociation(string $identifier): void
+    {
+        $associationsCount = 0;
+        foreach ($this->getProduct($identifier)->getAssociations() as $association) {
+            $associationsCount += count($association->getProducts());
+            $associationsCount += count($association->getProductModels());
+            $associationsCount += count($association->getGroups());
+        }
+
+        Assert::same($associationsCount, 0, sprintf(
+            "Expected empty association, having '%d' association(s).",
+            $associationsCount
+        ));
+    }
+
     private function getProduct(string $identifier): ProductInterface
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
