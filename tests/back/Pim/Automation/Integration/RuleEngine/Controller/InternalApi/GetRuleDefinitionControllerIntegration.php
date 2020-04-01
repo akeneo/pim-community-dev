@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCase
 {
+    // TODO RUL-117 Decouple
     private $webClientHelper;
     private $ruleDefinitionRepository;
 
@@ -40,7 +41,7 @@ class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCa
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_OK,
-            '{"id":123456789,"code":"123","type":"add","priority":0,"content":{"conditions":[],"actions":["action1","action2"]}}'
+            '{"id":123456789,"code":"123","type":"add","priority":0,"content":{"conditions":[],"actions":["action1","action2"]},"labels":{"en_US":"123 english","fr_FR":"123 french"}}'
         );
     }
 
@@ -60,7 +61,7 @@ class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCa
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_OK,
-            '{"id":987654321,"code":"234","type":"add","priority":0,"content":{"conditions":["condition1"],"actions":["action3","action4"]}}'
+            '{"id":987654321,"code":"234","type":"add","priority":0,"content":{"conditions":["condition1"],"actions":["action3","action4"]},"labels":[]}'
         );
     }
 
@@ -95,6 +96,8 @@ class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCa
             ])
             ->setType('add')
             ->setId(123456789)
+            ->setLabel('en_US', '123 english')
+            ->setLabel('fr_FR', '123 french')
         ;
 
         $ruleDefinitions[] = (new RuleDefinition())

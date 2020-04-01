@@ -40,6 +40,9 @@ rules:
         field: name
         value: 'My loafer'
         locale: en_US
+    labels:
+      en_US: 'Set name'
+      fr_FR: 'Change le nom'
   set_another_name:
     priority: 20
     conditions:
@@ -52,6 +55,7 @@ rules:
         value: 'A stylish white loafer'
         locale: en_US
         scope: mobile
+    labels: []
   copy_name_loafer:
     priority: 30
     conditions:
@@ -68,6 +72,7 @@ rules:
         to_field: name
         from_locale: en_US
         to_locale: fr_FR
+    labels: []
   remove_categories:
     priority: 40
     conditions:
@@ -80,6 +85,7 @@ rules:
         items:
           - 2014_collection
         include_children: true
+    labels: []
   concatenate:
     priority: 90
     conditions:
@@ -104,6 +110,7 @@ rules:
           field: description
           locale: en_US
           scope: ecommerce
+    labels: []
   test_clear:
     priority: 90
     conditions:
@@ -135,6 +142,7 @@ rules:
         scope: ecommerce
       - type: clear
         field: connectivity
+    labels: []
 SQL;
 
     private static $normalizedRules = [];

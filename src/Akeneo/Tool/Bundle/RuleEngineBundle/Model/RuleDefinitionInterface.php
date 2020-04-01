@@ -12,6 +12,7 @@
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Rule interface
@@ -101,4 +102,11 @@ interface RuleDefinitionInterface
      * @return ArrayCollection
      */
     public function getRelations();
+
+    /**
+     * @return Collection of RuleDefinitionTranslationInterface
+     */
+    public function getTranslations(): Collection;
+
+    public function setLabel(string $locale, string $label): RuleDefinitionInterface;
 }

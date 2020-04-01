@@ -12,6 +12,7 @@
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Decores a rule definition to be able to select its subjects and apply it.
@@ -32,6 +33,9 @@ class Rule implements RuleInterface
     /** @var ArrayCollection */
     protected $relations;
 
+    /** @var Collection */
+    protected $translations;
+
     /**
      * The constructor
      *
@@ -43,6 +47,7 @@ class Rule implements RuleInterface
         $this->actions = [];
         $this->conditions = [];
         $this->relations = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -222,5 +227,32 @@ class Rule implements RuleInterface
     public function getRelations()
     {
         return $this->relations;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTranslations(): Collection
+    {
+        return $this->translations;
+    }
+
+    public function setLabel(string $locale, string $label): RuleDefinitionInterface
+    {
+        foreach ($this->translations as $translation) {
+            /** @var $translation RuleDefinitionTranslationInterface */
+            if ($translation->getLocale() === $locale) {
+                $translation->setLabel($label);
+
+                return $this;
+            }
+        }
+        $translation = new RuleDefinitionTranslation();
+        $translation->setLocale($locale);
+        $translation->setLabel($label);
+        $translation->setForeignKey($this);
+        $this->translations->add($translation);
+
+        return $this;
     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTestCase
 {
-    // TODO This is the ref entity one. We need ourself.
+    // TODO RUL-117 This is the ref entity one. We need ourself.
     /** @var WebClientHelper  */
     private $webClientHelper;
 
@@ -41,6 +41,10 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
             ],
             'type' => 'add',
             'priority' => 0,
+            'labels' => [
+                'en_US' => '123 english',
+                'fr_FR' => '123 french',
+            ]
         ];
 
         $this->updateRuleDefinition('123', $normalizedRuleDefinition);

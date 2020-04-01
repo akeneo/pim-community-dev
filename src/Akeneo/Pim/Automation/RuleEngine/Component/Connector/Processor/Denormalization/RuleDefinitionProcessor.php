@@ -14,16 +14,15 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denorma
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslationInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
-use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -136,6 +135,10 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
         $ruleDefinition->setPriority($rule->getPriority());
         $ruleDefinition->setType($rule->getType());
         $ruleDefinition->setContent($rule->getContent());
+        foreach ($rule->getTranslations() as $translation) {
+            /** @var $translation RuleDefinitionTranslationInterface */
+            $ruleDefinition->setLabel($translation->getLocale(), $translation->getLabel());
+        };
 
         return $ruleDefinition;
     }

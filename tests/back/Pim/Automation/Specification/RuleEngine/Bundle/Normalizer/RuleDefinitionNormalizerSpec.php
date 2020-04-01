@@ -12,11 +12,11 @@
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslation;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class RuleDefinitionNormalizerSpec extends ObjectBehavior
 {
@@ -37,10 +37,21 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
         PresenterInterface $metricPresenter,
         PresenterInterface $numberPresenter
     ) {
+        $translationEn = new RuleDefinitionTranslation();
+        $translationEn->setLocale('en_US');
+        $translationEn->setLabel('Tshirt price');
+        $translationFr = new RuleDefinitionTranslation();
+        $translationFr->setLocale('fr_FR');
+        $translationFr->setLabel('Prix Tshirt');
+
         $ruleDefinition->getId()->willReturn(42);
         $ruleDefinition->getCode()->willReturn('set_tshirt_price');
         $ruleDefinition->getType()->willReturn('product');
         $ruleDefinition->getPriority()->willReturn(0);
+        $ruleDefinition->getTranslations()->willReturn(new ArrayCollection([
+            $translationEn,
+            $translationFr
+        ]));
         $ruleDefinition->getContent()->willReturn(
             [
                 'conditions' => [
@@ -95,6 +106,10 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
                             'data' => '500,1234', 'unit' => 'GRAM'
                         ]],
                     ],
+                ],
+                'labels' => [
+                    'en_US' => 'Tshirt price',
+                    'fr_FR' => 'Prix Tshirt',
                 ]
             ]
         );
