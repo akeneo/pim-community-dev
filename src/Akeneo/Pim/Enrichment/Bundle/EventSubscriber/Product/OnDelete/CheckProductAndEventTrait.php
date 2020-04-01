@@ -15,12 +15,13 @@ use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-trait CheckProductAndEventTrait {
-    private function checkProduct(Product $product): bool
+trait CheckProductAndEventTrait
+{
+    private function checkProduct($product): bool
     {
         return $product instanceof ProductInterface
             // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-            && !$product instanceOf PublishedProduct;
+            && !$product instanceof PublishedProduct;
     }
 
     private function checkEvent(RemoveEvent $event): bool
