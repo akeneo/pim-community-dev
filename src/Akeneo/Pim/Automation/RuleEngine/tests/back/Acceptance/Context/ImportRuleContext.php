@@ -15,7 +15,6 @@ namespace Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor;
 use Akeneo\Test\Pim\Automation\RuleEngine\Common\Context\ExceptionContext;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer;
 use AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition\InMemoryRuleDefinitionRepository;
 use Behat\Behat\Context\Context;
@@ -172,7 +171,7 @@ YAML;
     /**
      * @When I import a calculate rule with invalid attribute types
      */
-    public function importACalculateRuleWithAnInvalidSourceAttributeType(): void
+    public function importACalculateRuleWithAnInvalidAttributeTypes(): void
     {
         $rulesConfig = <<<YAML
 rules:
@@ -186,7 +185,7 @@ rules:
         actions:
             - type: calculate
               destination:
-                field: weight
+                field: name
               source:
                 field: description
               operation_list:

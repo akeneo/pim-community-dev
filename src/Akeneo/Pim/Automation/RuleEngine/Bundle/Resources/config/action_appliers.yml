@@ -4,6 +4,7 @@ parameters:
     pimee_catalog_rule.action_applier.adder.class:   Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\AdderActionApplier
     pimee_catalog_rule.action_applier.remover.class: Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier
     pimee_catalog_rule.action_applier.concatenate.class: Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\ConcatenateActionApplier
+    pimee_catalog_rule.action_applier.calculate.class: Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\CalculateActionApplier
 
 services:
     pimee_catalog_rule.action_applier.setter:
@@ -53,6 +54,11 @@ services:
             - '@pim_catalog.updater.property_setter'
             - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierRegistry'
             - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: akeneo_rule_engine.action_applier, priority: 100 }
+
+    pimee_catalog_rule.action_applier.calculate:
+        class: '%pimee_catalog_rule.action_applier.calculate.class%'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 

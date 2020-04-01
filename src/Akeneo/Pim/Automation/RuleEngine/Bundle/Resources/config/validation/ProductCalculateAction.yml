@@ -1,4 +1,6 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateAction:
+    constraints:
+        - Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\PropertyAction: ~
     properties:
         source:
             - Valid: ~
