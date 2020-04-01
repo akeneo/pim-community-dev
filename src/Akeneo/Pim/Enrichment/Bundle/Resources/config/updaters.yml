@@ -567,3 +567,18 @@ services:
             - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: 'pim_catalog.updater.clearer' }
+
+    pim_catalog.updater.clearer.association_field:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\AssociationFieldClearer'
+        tags:
+            - { name: 'pim_catalog.updater.clearer' }
+
+    pim_catalog.updater.clearer.category_field:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\CategoryFieldClearer'
+        tags:
+            - { name: 'pim_catalog.updater.clearer' }
+
+    pim_catalog.updater.clearer.group_field:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\GroupFieldClearer'
+        tags:
+            - { name: 'pim_catalog.updater.clearer' }
