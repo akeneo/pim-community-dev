@@ -15,11 +15,11 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 
-class ExistingCalculateActionField extends Constraint
+class CalculateActionFields extends Constraint
 {
     public function validatedBy()
     {
-        return 'pimee_calculate_field_validator';
+        return 'pimee_calculate_fields_validator';
     }
 
     public function getTargets()

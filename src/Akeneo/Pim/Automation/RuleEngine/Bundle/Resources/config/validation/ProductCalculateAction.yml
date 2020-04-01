@@ -1,4 +1,4 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateAction:
     constraints:
         - Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\PropertyAction: ~
-        - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingCalculateActionField: ~
+        - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\CalculateActionFields: ~
