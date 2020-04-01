@@ -5,14 +5,16 @@ datagrid:
             entityHint: rule
             requireJSModules:
                 - oro/datagrid/pagination-input
+            locale_parameter: localeCode
         source:
             acl_resource: pimee_catalog_rule_rule_view_permissions
             repository_method: createDatagridQueryBuilder
             type: pim_datasource_rule
             entity: '%akeneo_rule_engine.model.rule_definition.class%'
         columns:
-            code:
-                label: pimee_catalog_rule.datagrid.rule-grid.column.code
+            label:
+                label: Label
+                frontend_type: label
             conditions:
                 label: pimee_catalog_rule.datagrid.rule-grid.column.conditions
                 type: twig
@@ -64,17 +66,18 @@ datagrid:
                 acl_resource:  pimee_catalog_rule_rule_delete_permissions
         filters:
             columns:
-                code:
+                label:
                     type: search
-                    data_name: r.code
+                    data_name: translation.label
+                    label: Label
         sorters:
             columns:
-                code:
-                    data_name: r.code
+                label:
+                    data_name: label
                 impactedSubjectCount:
                     data_name: r.impactedSubjectCount
             default:
-                code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         mass_actions:
             impacted_product_count:
                 type: ajax
