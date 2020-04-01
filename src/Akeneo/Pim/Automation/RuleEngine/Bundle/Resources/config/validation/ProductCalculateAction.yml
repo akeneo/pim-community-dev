@@ -16,4 +16,4 @@ Akeneo\Pim\Automation\RuleEngine\Component\Model\Operation:
 Akeneo\Pim\Automation\RuleEngine\Component\Model\Operand:
     properties:
         attributeCode:
-            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\AttributeShouldBeNumeric: ~
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AttributeShouldBeNumeric: ~

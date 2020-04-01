@@ -128,7 +128,7 @@ YAML;
     public function theRuleListContainsTheValidRule(string $code)
     {
         $ruleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier($code);
-        if (null === $ruleDefinition)  {
+        if (null === $ruleDefinition) {
             throw new \LogicException(sprintf('The "%s" rule was not found.', $code));
         }
 
@@ -171,7 +171,7 @@ YAML;
     /**
      * @When I import a calculate rule with invalid attribute types
      */
-    public function importACalculateRuleWithAnInvalidAttributeTypes(): void
+    public function importACalculateRuleWithInvalidAttributeTypes(): void
     {
         $rulesConfig = <<<YAML
 rules:
@@ -185,7 +185,7 @@ rules:
         actions:
             - type: calculate
               destination:
-                field: name
+                field: weight
               source:
                 field: description
               operation_list:

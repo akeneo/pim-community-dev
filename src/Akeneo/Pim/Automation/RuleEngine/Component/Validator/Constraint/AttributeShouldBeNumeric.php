@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
+namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -19,4 +19,9 @@ class AttributeShouldBeNumeric extends Constraint
 {
     // TODO RUL-59/RUL-60: Update error message
     public $message = 'Invalid attribute type for "%attribute_code%", expected a number attribute';
+
+    public function validatedBy()
+    {
+        return 'pimee_attribute_should_be_numeric_validator';
+    }
 }
