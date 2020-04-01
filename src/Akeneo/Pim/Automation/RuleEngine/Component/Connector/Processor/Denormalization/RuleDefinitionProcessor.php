@@ -167,6 +167,10 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
     private function storeMedias(array $item): array
     {
         $mediaAttributeCodes = $this->attributeRepository->findMediaAttributeCodes();
+        // This check is performed by validators. It's not the responsibility of this class to make the check.
+        if (!array_key_exists('actions', $item)) {
+            return $item;
+        }
 
         foreach ($item['actions'] as $key => $action) {
             if (!isset($action['value'])) {
@@ -178,6 +182,7 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
 
             if (null !== $attribute &&
                 in_array($attribute->getCode(), $mediaAttributeCodes) &&
+                is_string($action['value']) &&
                 file_exists($action['value'])
             ) {
                 $fileInfo = $this->fileStorer->store(

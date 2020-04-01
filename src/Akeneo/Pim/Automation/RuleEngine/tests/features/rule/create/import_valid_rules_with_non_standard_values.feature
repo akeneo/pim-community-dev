@@ -1,15 +1,14 @@
-@javascript
 Feature: Import rules
   In order ease the enrichment of the catalog
   As an administrator
-  I need to be able to import rules
+  I need to be able to import rules with non standard values
 
   Background:
     Given a "clothing" catalog configuration
-    And I am logged in as "Peter"
 
+  @integration-back
   Scenario: Import a rule with valid but non standard values
-    Given the following yaml file to import:
+    When the following yaml file is imported:
     """
     rules:
         canon_beautiful_media:
@@ -44,14 +43,5 @@ Feature: Import rules
                   from_field:  side_view
                   to_field:    side_view
     """
-    And the following job "clothing_rule_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "clothing_rule_import" import job page
-    And I launch the import job
-    And I wait for the "clothing_rule_import" job to finish
-    Then I should not see the text "skipped"
-    And I should see the text "created 1"
-    When I am on the "side_view" attribute page
-    And I visit the "Rules" tab
-    Then I should see the text "side_view"
-    Then I should see the text "is copied into"
+    Then no exception has been thrown
+    And the rule list contains the imported rules
