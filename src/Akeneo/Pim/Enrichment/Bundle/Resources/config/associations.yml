@@ -14,3 +14,10 @@ services:
 
     pim_catalog.association.filter.parent_associations:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter'
+
+    pim_catalog.association.save_bidirectional:
+        class: Akeneo\Pim\Enrichment\Component\Product\Association\SaveBidirectionnalAssociations
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }

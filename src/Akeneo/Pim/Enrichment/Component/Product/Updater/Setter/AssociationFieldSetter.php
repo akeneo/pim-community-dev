@@ -33,6 +33,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
 
     /** @var MissingAssociationAdder */
     private $missingAssociationAdder;
+
     /**
      * @var AssociationFieldAdder
      */
@@ -230,22 +231,22 @@ class AssociationFieldSetter extends AbstractFieldSetter
             }
             $association->addProduct($associatedProduct);
 
-            if ($association->getAssociationType()->isBidirectional()) {
-//                 Fetch the product association corresponding to the $productToAssociate->productWhichAssociationsAreBeingUpdated
-                $entityWithAssociations = $association->getOwner()->getIdentifier();
-                $reverseAssociation = [
-                    $association->getAssociationType()->getCode() => [
-                        'products' => [$entityWithAssociations],
-                        'product_models' => [],
-                        'groups' => []
-                    ]
-                ];
-                $this->associationFieldAdder->addFieldData(
-                    $associatedProduct,
-                    'associations',
-                    $reverseAssociation
-                );
-            }
+//            if ($association->getAssociationType()->isBidirectional()) {
+////                 Fetch the product association corresponding to the $productToAssociate->productWhichAssociationsAreBeingUpdated
+//                $entityWithAssociations = $association->getOwner()->getIdentifier();
+//                $reverseAssociation = [
+//                    $association->getAssociationType()->getCode() => [
+//                        'products' => [$entityWithAssociations],
+//                        'product_models' => [],
+//                        'groups' => []
+//                    ]
+//                ];
+//                $this->associationFieldAdder->addFieldData(
+//                    $associatedProduct,
+//                    'associations',
+//                    $reverseAssociation
+//                );
+//            }
         }
     }
 
