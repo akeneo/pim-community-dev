@@ -168,8 +168,8 @@ final class ImportRuleContext implements Context
     private function assertSameRuleContent(array $value, array $expected): void
     {
         // Media files are modified during the import. We have to remove them to compare.
-        $value = $this->replaceMediaFilesInRuleContent($value);
-        $expected = $this->replaceMediaFilesInRuleContent($expected);
+        $value = $this->addLabelsIfNotSet($this->replaceMediaFilesInRuleContent($value));
+        $expected = $this->addLabelsIfNotSet($this->replaceMediaFilesInRuleContent($expected));
 
         Assert::eq($value, $expected, sprintf(
             "Expecting '%s', got '%s'.",
@@ -188,6 +188,15 @@ final class ImportRuleContext implements Context
             if (strpos($action['value'], '.') !== false && strpos($action['value'], '/') !== false) {
                 $ruleContent['actions'][$key]['value'] = 'media.jpg';
             }
+        }
+
+        return $ruleContent;
+    }
+
+    private function addLabelsIfNotSet(array $ruleContent): array
+    {
+        if (!array_key_exists('labels', $ruleContent)) {
+            $ruleContent['labels'] = [];
         }
 
         return $ruleContent;
