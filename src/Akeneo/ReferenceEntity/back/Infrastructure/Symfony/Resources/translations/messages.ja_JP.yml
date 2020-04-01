@@ -31,3 +31,5 @@ pim_analytics:
     average_percentage_localizable_only_attributes: 参照エンティティごとにローカライズ可能な属性のみの平均パーセンテージ (%)
     average_percentage_scopable_only_attributes: 参照エンティティごとに参照可能な属性のみの平均パーセンテージ (%)
     average_percentage_scopable_and_localizable_attributes: 参照エンティティごとにローカライズ可能かつ参照可能な属性のみの平均パーセンテージ (%)
+akeneo_reference_entity: 参照エンティティの単一のリンク
+akeneo_reference_entity_collection: 参照エンティティの複数のリンク
