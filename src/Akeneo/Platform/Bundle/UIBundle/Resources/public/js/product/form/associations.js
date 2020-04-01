@@ -27,6 +27,7 @@ define([
   'require-context',
   'pim/form-builder',
   'pim/security-context',
+  'pim/i18n'
 ], function(
   $,
   _,
@@ -46,7 +47,8 @@ define([
   DatagridState,
   requireContext,
   FormBuilder,
-  securityContext
+  securityContext,
+  {getLabel}
 ) {
   let state = {};
 
@@ -237,10 +239,11 @@ define([
           this.$('.tab-content > .association-type').remove();
           this.$('.tab-content').prepend(
             this.panesTemplate({
-              __: __,
+              __,
+              getLabel,
               label: __('pim_enrich.entity.product.module.associations.association_type_selector'),
               locale: UserContext.get('catalogLocale'),
-              associationTypes: associationTypes,
+              associationTypes,
               currentAssociationType: this.getCurrentAssociationType(),
               currentAssociationTarget: this.getCurrentAssociationTarget(),
               numberAssociationLabelKey: 'pim_enrich.entity.product.module.associations.number_of_associations',
@@ -694,6 +697,10 @@ define([
             // TODO Delete setCustomTitle if possible
             //form.setCustomTitle();
 
+            const formData = this.getFormData();
+            const locale = UserContext.get('catalogLocale');
+            const productIdentifier = getLabel(formData.meta.label, locale, formData.code || formData.identifier);
+
             let modal = new Backbone.BootstrapModal({
               modalOptions: {
                 backdrop: 'static',
@@ -701,11 +708,11 @@ define([
               },
               okCloses: false,
               title: __('pim_enrich.entity.product.module.associations.manage', {
-                associationType: associationType.labels[UserContext.get('catalogLocale')],
+                associationType: getLabel(associationType.labels, locale, associationType.code),
               }),
               innerDescription: __(
                 'pim_enrich.entity.product.module.associations.manage_description',
-                {productIdentifier: this.getFormData().identifier}
+                {productIdentifier}
               ),
               content: '',
               okText: __('pim_common.confirm'),
