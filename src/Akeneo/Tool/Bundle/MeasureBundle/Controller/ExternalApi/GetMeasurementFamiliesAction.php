@@ -27,20 +27,10 @@ class GetMeasurementFamiliesAction
     public function __invoke(): JsonResponse
     {
         $measurementFamilies = $this->measurementFamilyRepository->all();
-        $normalizedMeasurementFamilies = $this->normalizeMeasurementFamilies($measurementFamilies);
+        $normalizedMeasurementFamilies = array_map(function (MeasurementFamily $measurementFamily) {
+            return $measurementFamily->normalizeWithIndexedUnits();
+        }, $measurementFamilies);
 
         return new JsonResponse($normalizedMeasurementFamilies);
-    }
-
-    private function normalizeMeasurementFamilies(array $measurementFamilies): array
-    {
-        $normalizedMeasurementFamilies = [];
-
-        /** @var MeasurementFamily $measurementFamily */
-        foreach ($measurementFamilies as $measurementFamily) {
-            $normalizedMeasurementFamilies[] = $measurementFamily->normalizeWithIndexedUnits();
-        }
-
-        return $normalizedMeasurementFamilies;
     }
 }
