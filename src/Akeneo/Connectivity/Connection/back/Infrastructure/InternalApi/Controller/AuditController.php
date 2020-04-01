@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
-use Akeneo\Connectivity\Connection\Infrastructure\AggregateProductEventCounts;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateProductEventCounts;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,13 +34,13 @@ class AuditController
 
     public function sourceConnectionsEvent(Request $request): JsonResponse
     {
-        $eventType = $request->get('event_type');
-        $endDateUser = $request->get('end_date');
         $timezone = new \DateTimeZone($this->userContext->getUserTimezone());
 
-        if (null === $endDateUser) {
-            $endDateUser = (new \DateTimeImmutable('now', new \DateTimeZone($timezone)))->format('Y-m-d');
-        }
+        $eventType = $request->get('event_type');
+        $endDateUser = $request->get(
+            'end_date',
+            (new \DateTimeImmutable('now', $timezone))->format('Y-m-d')
+        );
 
         [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval($endDateUser, $timezone);
         [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
@@ -48,7 +48,7 @@ class AuditController
         $query = new CountDailyEventsByConnectionQuery($eventType, $fromDateTime, $upToDateTime);
         $periodEventCounts = $this->countDailyEventsByConnectionHandler->handle($query);
 
-        $data = AggregateProductEventCounts::normalize($startDateTimeUser, $endDateTimeUser, $timezone, $periodEventCounts);
+        $data = AggregateProductEventCounts::normalize($periodEventCounts, $timezone);
 
         return new JsonResponse($data);
     }

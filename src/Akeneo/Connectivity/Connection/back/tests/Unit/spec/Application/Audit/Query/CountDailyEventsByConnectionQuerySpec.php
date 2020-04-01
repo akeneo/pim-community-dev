@@ -15,33 +15,52 @@ use PhpSpec\ObjectBehavior;
  */
 class CountDailyEventsByConnectionQuerySpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
-        $this->beConstructedWith(EventTypes::PRODUCT_CREATED, '2019-12-10', '2019-12-12', 'Europe/Paris');
+        $this->beConstructedWith(
+            EventTypes::PRODUCT_CREATED,
+            new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC'))
+        );
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(CountDailyEventsByConnectionQuery::class);
     }
 
-    function it_returns_the_event_type()
+    public function it_returns_the_event_type(): void
     {
         $this->eventType()->shouldReturn(EventTypes::PRODUCT_CREATED);
     }
 
-    function it_returns_the_start_date()
+    public function it_returns_the_from_date_time(): void
     {
-        $this->startDate()->shouldReturn('2019-12-10');
+        $this->fromDateTime()->shouldBeLike(new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC')));
     }
 
-    function it_returns_the_end_date()
+    public function it_returns_the_up_to_date_time(): void
     {
-        $this->endDate()->shouldReturn('2019-12-12');
+        $this->upToDateTime()->shouldBeLike(new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC')));
     }
 
-    function it_returns_the_timezone()
+    public function it_checks_that_the_from_date_time_is_utc(): void
     {
-        $this->timezone()->shouldReturn('Europe/Paris');
+        $this->beConstructedWith(
+            EventTypes::PRODUCT_CREATED,
+            new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('Europe/Paris')),
+            new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC'))
+        );
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_checks_that_the_up_to_date_time_is_utc(): void
+    {
+        $this->beConstructedWith(
+            EventTypes::PRODUCT_CREATED,
+            new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('Europe/Paris'))
+        );
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

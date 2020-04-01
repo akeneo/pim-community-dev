@@ -9,8 +9,8 @@ use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoa
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Test\Integration\Configuration;
@@ -47,33 +47,31 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
         $this->connectionLoader->createConnection('sap', 'SAP', FlowType::DATA_SOURCE);
         $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE);
 
-        array_map(function (HourlyEventCount $hourlyEventCount) {
-            $this->auditLoader->insert($hourlyEventCount);
-        }, [
-            new HourlyEventCount('sap', HourlyInterval::createFromDateTime(new \DateTime('2020-01-01 12:00:00', new \DateTimeZone('UTC'))), 5, EventTypes::PRODUCT_UPDATED),
-            new HourlyEventCount(AllConnectionCode::CODE, HourlyInterval::createFromDateTime(new \DateTime('2020-01-01 23:00:00', new \DateTimeZone('UTC'))), 12, EventTypes::PRODUCT_UPDATED),
+        $this->createHourlyEventCounts([
+            ['sap', EventTypes::PRODUCT_UPDATED, '2020-01-01 12:00:00', 5],
+            [AllConnectionCode::CODE, EventTypes::PRODUCT_UPDATED, '2020-01-01 23:00:00', 12],
             // Expected results
-            new HourlyEventCount('sap', HourlyInterval::createFromDateTime(new \DateTime('2020-01-02 00:00:00', new \DateTimeZone('UTC'))), 10, EventTypes::PRODUCT_UPDATED),
-            new HourlyEventCount(AllConnectionCode::CODE, HourlyInterval::createFromDateTime(new \DateTime('2020-01-02 12:00:00', new \DateTimeZone('UTC'))), 8, EventTypes::PRODUCT_UPDATED),
-            new HourlyEventCount('sap', HourlyInterval::createFromDateTime(new \DateTime('2020-01-03 23:00:00', new \DateTimeZone('UTC'))), 4, EventTypes::PRODUCT_UPDATED),
+            ['sap', EventTypes::PRODUCT_UPDATED, '2020-01-02 00:00:00', 10],
+            [AllConnectionCode::CODE, EventTypes::PRODUCT_UPDATED, '2020-01-02 12:00:00', 8],
+            ['sap', EventTypes::PRODUCT_UPDATED, '2020-01-03 23:00:00', 4],
             // End of expected results
-            new HourlyEventCount('bynder', HourlyInterval::createFromDateTime(new \DateTime('2020-01-04 00:00:00', new \DateTimeZone('UTC'))), 2, EventTypes::PRODUCT_UPDATED),
+            ['bynder', EventTypes::PRODUCT_UPDATED, '2020-01-04 00:00:00', 2],
         ]);
 
         $result = $this->selectConnectionsEventCountByDayQuery->execute(
             EventTypes::PRODUCT_UPDATED,
             new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC')),
-            new \DateTimeImmutable('2020-01-03 23:00:00', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2020-01-04 00:00:00', new \DateTimeZone('UTC')),
         );
 
         $expectedResult = [
             'bynder' => [],
             'sap' => [
-                [new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC')), 10],
-                [new \DateTimeImmutable('2020-01-03 23:00:00', new \DateTimeZone('UTC')), 4]
+                new Read\HourlyEventCount(new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC')), 10),
+                new Read\HourlyEventCount(new \DateTimeImmutable('2020-01-03 23:00:00', new \DateTimeZone('UTC')), 4)
             ],
-            AllConnectionCode::CODE => [
-                [new \DateTimeImmutable('2020-01-02 12:00:00', new \DateTimeZone('UTC')), 8]
+            '<all>' => [
+                new Read\HourlyEventCount(new \DateTimeImmutable('2020-01-02 12:00:00', new \DateTimeZone('UTC')), 8)
             ]
         ];
 
@@ -92,7 +90,7 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
 
         $expectedResult = [
             'sap' => [],
-            AllConnectionCode::CODE => []
+            '<all>' => []
         ];
 
         Assert::assertSame($expectedResult, $result);
@@ -101,5 +99,21 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function createHourlyEventCounts(array $hourlyEventCountData): void
+    {
+        foreach ($hourlyEventCountData as [$connectionCode, $eventType, $dateTimeStr, $eventCount]) {
+            $utcDateTime = (new \DateTimeImmutable($dateTimeStr, new \DateTimeZone('UTC')));
+
+            $hourlyEventCount = new Write\HourlyEventCount(
+                $connectionCode,
+                HourlyInterval::createFromDateTime($utcDateTime),
+                $eventCount,
+                $eventType
+            );
+
+            $this->auditLoader->insert($hourlyEventCount);
+        }
     }
 }

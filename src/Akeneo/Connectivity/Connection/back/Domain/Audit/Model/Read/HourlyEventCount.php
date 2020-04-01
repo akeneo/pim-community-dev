@@ -32,6 +32,4 @@ final class HourlyEventCount
     {
         return $this->count;
     }
-
-
 }

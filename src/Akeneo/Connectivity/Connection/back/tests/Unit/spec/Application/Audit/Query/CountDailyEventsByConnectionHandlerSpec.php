@@ -6,7 +6,6 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Query;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
@@ -19,48 +18,42 @@ use PhpSpec\ObjectBehavior;
  */
 class CountDailyEventsByConnectionHandlerSpec extends ObjectBehavior
 {
-    function let(SelectConnectionsEventCountByDayQuery $selectConnectionsEventCountByDayQuery)
+    public function let(SelectConnectionsEventCountByDayQuery $selectConnectionsEventCountByDayQuery): void
     {
         $this->beConstructedWith($selectConnectionsEventCountByDayQuery);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(CountDailyEventsByConnectionHandler::class);
     }
 
-    function it_handles_the_event_count($selectConnectionsEventCountByDayQuery)
+    public function it_handles_the_event_count($selectConnectionsEventCountByDayQuery): void
     {
-        $connectionsEventCounts = [
-            AllConnectionCode::CODE => [
-                [new \DateTimeImmutable('2020-01-01 12:00:00', new \DateTimeZone('UTC')), 3],
+        $fromDateTime = new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC'));
+        $upToDateTime = new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC'));
+
+        $hourlyEventCountsPerConnection = [
+            '<all>' => [
+                [new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC')), 1],
             ],
             'sap' => [
-                [new \DateTimeImmutable('2020-01-01 12:00:00', new \DateTimeZone('UTC')), 1],
+                [new \DateTimeImmutable('2020-01-02 00:12:00', new \DateTimeZone('UTC')), 2],
             ],
             'bynder' => [
-                [new \DateTimeImmutable('2020-01-01 12:00:00', new \DateTimeZone('UTC')), 2],
+                [new \DateTimeImmutable('2020-01-03 00:23:00', new \DateTimeZone('UTC')), 3],
             ]
         ];
-        $selectConnectionsEventCountByDayQuery
-            ->execute(
-                EventTypes::PRODUCT_CREATED,
-                new \DateTimeImmutable('2019-12-31 23:00:00', new \DateTimeZone('UTC')),
-                new \DateTimeImmutable('2020-01-02 23:00:00', new \DateTimeZone('UTC')),
-            )->willReturn($connectionsEventCounts);
+        $selectConnectionsEventCountByDayQuery->execute(EventTypes::PRODUCT_CREATED, $fromDateTime, $upToDateTime)
+            ->willReturn($hourlyEventCountsPerConnection);
 
         $expectedResult = [
-            new PeriodEventCount(AllConnectionCode::CODE, '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts[AllConnectionCode::CODE]),
-            new PeriodEventCount('sap', '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts['sap']),
-            new PeriodEventCount('bynder', '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts['bynder']),
+            new PeriodEventCount('<all>', $fromDateTime, $upToDateTime, $hourlyEventCountsPerConnection['<all>']),
+            new PeriodEventCount('sap', $fromDateTime, $upToDateTime, $hourlyEventCountsPerConnection['sap']),
+            new PeriodEventCount('bynder', $fromDateTime, $upToDateTime, $hourlyEventCountsPerConnection['bynder']),
         ];
 
-        $query = new CountDailyEventsByConnectionQuery(
-            EventTypes::PRODUCT_CREATED,
-            '2020-01-01',
-            '2020-01-02',
-            'Europe/Paris'
-        );
+        $query = new CountDailyEventsByConnectionQuery(EventTypes::PRODUCT_CREATED, $fromDateTime, $upToDateTime);
         $this->handle($query)->shouldIterateLike($expectedResult);
     }
 }

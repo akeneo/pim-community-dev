@@ -54,7 +54,7 @@ class DbalSelectConnectionsEventCountByDayQuery implements SelectConnectionsEven
 SELECT conn.code as connection_code, audit.event_datetime, audit.event_count
 FROM akeneo_connectivity_connection conn
 LEFT JOIN akeneo_connectivity_connection_audit_product audit ON audit.connection_code = conn.code
-AND audit.event_datetime >= :from_datetime AND audit.event_datetime < DATE_ADD(:up_to_datetime, INTERVAL 1 HOUR)
+AND audit.event_datetime >= :from_datetime AND audit.event_datetime < :up_to_datetime
 AND audit.event_type = :event_type
 ORDER BY conn.code, audit.event_datetime
 SQL;
@@ -114,21 +114,11 @@ SQL;
     }
 
     /**
-     * Return normalized data.
-     *
-     * Type:
-     * { [connectionCode: string]: Array<[DateTime, int]> }
-     *
-     * Example:
-     * [
-     *   'erp' => [
-     *     [DateTime(2020-01-01 00:00:00), 1],
-     *     [DateTime(2020-01-01 01:00:00), 3],
-     *     ...
-     *     [DateTime(2020-01-09 00:00:00), 7]
-     *   ],
-     *   ...
+     * @param array $hourlyEventCountsData = [
+     *      ['connection_code => $connectionCode, 'event_datetime' => '2020-01-01 00:00:00', 'event_count' => 3],
      * ]
+     *
+     * @return array [$connectionCode => HourlyEventCount[]]
      */
     private function normalizeHourlyEventCountsData(array $hourlyEventCountsData): array
     {
