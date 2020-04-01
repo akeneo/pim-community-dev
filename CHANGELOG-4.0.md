@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.14 (2020-04-01)
+
 ## Technical Improvements
 
 - PIM-9168: Bump symfony/* dependencies to 4.4.7
