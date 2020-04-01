@@ -33,6 +33,8 @@ use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
+use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductAttributeCannotContainAssetsException;
+use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductAttributeDoesNotExistException;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -1558,6 +1560,36 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
+     * @When /^the user updates this asset family with a product link rule having an assignment attribute which references a product attribute which does not exist$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAnAssignmentAttributeWhichReferencesAProductAttributeWhichTypeDoesNotExist()
+    {
+        $attributeDoesNotExistException = new ProductAttributeDoesNotExistException(
+            'Expected product attribute to exist, none found'
+        );
+        $this->inMemoryFindAssetCollectionTypeACL->stubWithException($attributeDoesNotExistException);
+
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator' => '=',
+                    'value' => '123456789',
+                ]
+            ],
+            'assign_assets_to' => [
+                [
+                    'mode' => 'replace',
+                    'attribute' => self::ATTRIBUTE_CODE,
+                ]
+            ]
+        ];
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
+        $this->editAssetFamily($command);
+    }
+
+    /**
      * @Then /^there should be a validation error stating that this attribute has not the same type of the asset family we are trying to update$/
      */
     public function thereShouldBeAValidationErrorStatingThatThisAttributeHasNotTheSameOfTheReferenceEntityWeAreTryingToUpdate()
@@ -1637,5 +1669,59 @@ final class EditAssetFamilyContext implements Context
         )->getAttributeAsMainMediaReference()->getIdentifier();
 
         return (string) $this->attributeRepository->getByIdentifier($attributeIdentifier)->getCode();
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that this product attribute does not exist$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatThisProductAttributeDoesNotExist()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf(
+                'product attribute "%s" does not exist',
+                self::ATTRIBUTE_CODE
+            )
+        );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having an assignment attribute which references a product attribute which cannot contain an asset$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAnAssignmentAttributeWhichReferencesAProductAttributeWhichCannotContainAnAsset()
+    {
+        $attributeDoesNotExistException = new ProductAttributeCannotContainAssetsException();
+        $this->inMemoryFindAssetCollectionTypeACL->stubWithException($attributeDoesNotExistException);
+
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator' => '=',
+                    'value' => '123456789',
+                ]
+            ],
+            'assign_assets_to' => [
+                [
+                    'mode' => 'replace',
+                    'attribute' => self::ATTRIBUTE_CODE,
+                ]
+            ]
+        ];
+        $attributeAsMainMedia = $this->getAttributeAsMainMediaCodeForFamily(self::ASSET_FAMILY_IDENTIFIER);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [$productLinkRule], [], null);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that this product attribute cannot contain assets$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatThisProductAttributeCannotContainAssets()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf(
+                'product attribute "%s" is not an attribute of type asset collection',
+                self::ATTRIBUTE_CODE
+            )
+        );
     }
 }

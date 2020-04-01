@@ -184,21 +184,20 @@ class ProductAssignmentsValidator
                             ->addViolation();
                     }
                 } catch (ProductAttributeCannotContainAssetsException $exception) {
-                    // I don't know why, but it does not seem to add the violation in the context
-                    $context->buildViolation(
-                        ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_DOES_NOT_EXISTS,
-                        ['%product_attribute_code%' => $productAttributeCode]
-                    );
-                } catch (ProductAttributeDoesNotExistException $exception) {
                     $context->buildViolation(
                         ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_IS_NOT_AN_ASSET_COLLECTION,
                         ['%product_attribute_code%' => $productAttributeCode]
-                    );
+                    )->addViolation();
+                } catch (ProductAttributeDoesNotExistException $exception) {
+                    $context->buildViolation(
+                        ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_DOES_NOT_EXISTS,
+                        ['%product_attribute_code%' => $productAttributeCode]
+                    )->addViolation();
                 }
             }
             )
         );
 
-        return $result; // when violations are built in the catch {}, they are not present here when we return :s
+        return $result;
     }
 }
