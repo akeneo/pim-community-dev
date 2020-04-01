@@ -14,10 +14,10 @@ class CountDailyEventsByConnectionQuery
     /** @var string */
     private $eventType;
 
-    /** @var \DateTimeInterface */
+    /** @var \DateTimeImmutable */
     private $fromDateTime;
 
-    /** @var \DateTimeInterface */
+    /** @var \DateTimeImmutable */
     private $upToDateTime;
 
     public function __construct(
@@ -51,7 +51,7 @@ class CountDailyEventsByConnectionQuery
 
     private function checkTimezoneIsUtc(\DateTimeImmutable $dateTime): void
     {
-        if ('UTC' !== $dateTime->getTimezone()->getName() && '+00:00' !== $dateTime->getTimezone()->getName()) {
+        if ('UTC' !== $dateTime->getTimezone()->getName()) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Parameter `$dateTime` "%s" with timezone "%s" must have a timezone "UTC".',

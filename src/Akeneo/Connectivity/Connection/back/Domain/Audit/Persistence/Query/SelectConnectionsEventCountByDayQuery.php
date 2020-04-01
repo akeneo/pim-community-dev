@@ -12,13 +12,13 @@ namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query;
 interface SelectConnectionsEventCountByDayQuery
 {
     /**
-     * Return normalized data of hourly event counts per connection and the sum for all connections (<all>).
+     * Select hourly event counts per connection AND the sum for all the connections (with the code '<all>').
      *
-     * Type:
-     * {
-     *   '<all>': Array<[DateTime, int]>,
-     *   [connectionCode: string]: Array<[DateTime, int]>
-     * }
+     * @param string $eventType Value from the EventTypes enum
+     * @param \DateTimeInterface $fromDateTime Starting from $fromDateTime
+     * @param \DateTimeInterface $upToDateTime Ending before $upToDateTime ($upToDateTime not included)
+     *
+     * @return array ['<all>' => HourlyEventCount[], $connectionCode => HourlyEventCount[]]
      */
     public function execute(
         string $eventType,

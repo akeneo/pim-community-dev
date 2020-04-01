@@ -16,11 +16,24 @@ class HourlyEventCountSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith(DateTime::createFromFormat('', '2019-12-03 15:00:00'), 5);
+        $this->beConstructedWith(
+            new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC')),
+            5
+        );
     }
 
     public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(HourlyEventCount::class);
+    }
+
+    public function it_returns_the_date_time(): void
+    {
+        $this->dateTime()->shouldBeLike(new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC')));
+    }
+
+    public function it_returns_the_count(): void
+    {
+        $this->count()->shouldReturn(5);
     }
 }
