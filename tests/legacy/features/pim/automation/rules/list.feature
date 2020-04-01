@@ -104,6 +104,8 @@ Feature: List all rules
           - type:        set
             field:       enabled
             value:       true
+        labels:
+          en_US: Update Tees Collection
       unclassify_2014_collection_tees:
         priority: 30
         conditions:
@@ -120,6 +122,8 @@ Feature: List all rules
             items:
               - 2014_collection
             include_children: true
+        labels:
+          en_US: Unclassify 2014 Collection Tees
       concatenate_rule:
         priority: 90
         conditions:
@@ -137,6 +141,8 @@ Feature: List all rules
               field: description
               scope: tablet
               locale: en_US
+        labels:
+          en_US: Concatenate Rule
       """
     And I am logged in as "Julia"
     And I am on the rules page
@@ -146,7 +152,7 @@ Feature: List all rules
     And the grid should contain 4 elements
     And I should be able to sort the rows by label
 
-    And the row "copy_description" should contain the texts:
+    And the row "Copy Description" should contain the texts:
       | column    | value                                                                         |
       | Condition | If name equals My nice tshirt [ en ]                                          |
       | Condition | If weather_conditions.code in dry, wet                                        |
@@ -156,7 +162,7 @@ Feature: List all rules
       | Action    | Then description [ en \| mobile ] is copied into description [ fr \| mobile ] |
       | Action    | Then description [ en \| mobile ] is copied into description [ fr \| tablet ] |
 
-    And the row "update_tees_collection" should contain the texts:
+    And the row "Update Tees Collection" should contain the texts:
       | column    | value                                                               |
       | Condition | If categories in tees                                               |
       | Condition | If enabled equals false                                             |
@@ -171,13 +177,13 @@ Feature: List all rules
       | Action    | Then name [ en ] is copied into name [ de ]                         |
       | Action    | Then true is set into enabled                                       |
 
-    And the row "unclassify_2014_collection_tees" should contain the texts:
+    And the row "Unclassify 2014 Collection Tees" should contain the texts:
       | column    | value                                                               |
       | Condition | If family in tees                                                   |
       | Condition | If enabled equals false                                             |
       | Action    | Then 2014_collection and children is removed from categories        |
 
-    And the row "concatenate_rule" should contain the texts:
+    And the row "Concatenate Rule" should contain the texts:
       | column    | value                                                                                |
       | Condition | If family in tees                                                                    |
       | Action    | Then sku, release_date [ mobile ] are concatenated into description [ en \| tablet ] |
@@ -188,14 +194,14 @@ Feature: List all rules
     And I should see entity Copy Description
 
   Scenario: Successfully delete a rule
-    When I click on the "Delete" action of the row which contains "copy_description"
+    When I click on the "Delete" action of the row which contains "Copy Description"
     And I should see the text "Confirm deletion"
     And I should see the text "Are you sure you want to delete this rule?"
     And I confirm the deletion
     And the grid should contain 3 elements
 
   Scenario: Successfully delete a set of rules using bulk action
-    When I select rows copy_description and update_tees_collection and unclassify_2014_collection_tees and concatenate_rule
+    When I select rows Copy Description and Update Tees Collection and Unclassify 2014 Collection Tees and Concatenate Rule
     And I press the "Delete" bottom button
     Then I should see the text "Confirm deletion"
     And I should see the text "Are you sure you want to delete the selected rules?"
