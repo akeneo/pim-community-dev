@@ -49,13 +49,13 @@ class AggregateProductEventCountsSpec extends ObjectBehavior
 
         $this::normalize($periodEventCounts, $dateTimeZone)->shouldReturn([
             '<all>' => [
-                ['2020-01-01', 10],
-                ['2020-01-02', 0],
+                '2020-01-01' => 10,
+                '2020-01-02' => 0,
             ],
             'magento' => [
-                ['2020-01-02', 0],
-                ['2020-01-03', 0],
-                ['2020-01-04', 100],
+                '2020-01-02' => 0,
+                '2020-01-03' => 0,
+                '2020-01-04' => 100,
             ]
         ]);
     }
@@ -91,9 +91,9 @@ class AggregateProductEventCountsSpec extends ObjectBehavior
 
         $this::normalize($periodEventCounts, $dateTimeZone)->shouldReturn([
             '<all>' => [
-                ['2020-01-01', 10],
-                ['2020-01-02', 1100],
-                ['2020-01-03', 10000],
+                '2020-01-01' => 10,
+                '2020-01-02' => 1100,
+                '2020-01-03' => 10000,
             ],
         ]);
     }

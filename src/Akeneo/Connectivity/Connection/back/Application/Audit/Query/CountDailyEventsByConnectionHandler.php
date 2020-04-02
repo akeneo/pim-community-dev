@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Audit\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountsQuery;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -14,12 +14,12 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnecti
  */
 class CountDailyEventsByConnectionHandler
 {
-    /** @var SelectConnectionsEventCountByDayQuery */
-    private $selectConnectionsEventCountByDayQuery;
+    /** @var SelectPeriodEventCountsQuery */
+    private $selectPeriodEventCountsQuery;
 
-    public function __construct(SelectConnectionsEventCountByDayQuery $selectConnectionsEventCountByDayQuery)
+    public function __construct(SelectPeriodEventCountsQuery $selectPeriodEventCountsQuery)
     {
-        $this->selectConnectionsEventCountByDayQuery = $selectConnectionsEventCountByDayQuery;
+        $this->selectPeriodEventCountsQuery = $selectPeriodEventCountsQuery;
     }
 
     /**
@@ -28,7 +28,7 @@ class CountDailyEventsByConnectionHandler
     public function handle(CountDailyEventsByConnectionQuery $query): array
     {
         $periodEventCounts = $this
-            ->selectConnectionsEventCountByDayQuery
+            ->selectPeriodEventCountsQuery
             ->execute($query->eventType(), $query->fromDateTime(), $query->upToDateTime());
 
         return $periodEventCounts;
