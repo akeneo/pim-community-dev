@@ -16,8 +16,16 @@ final class AggregateProductEventCounts
 {
     /**
      * @param PeriodEventCount[] $periodEventCounts
+     *
+     * @return array [
+     *      [$connectionCode] => [
+     *          2020-01-01 => 3,
+     *          2020-01-02 => 0,
+     *          2020-01-03 => 6,
+     *      ]
+     * ]
      */
-    public static function normalize(array $periodEventCounts, \DateTimeZone $dateTimeZone)
+    public static function normalize(array $periodEventCounts, \DateTimeZone $dateTimeZone): array
     {
         return array_reduce(
             $periodEventCounts,
@@ -66,9 +74,9 @@ final class AggregateProductEventCounts
      * @param array $dailyEventCounts = ['2020-01-01' => 3, '2020-01-03' => 6]
      *
      * @return array [
-     *      [2020-01-01, 3],
-     *      [2020-01-02, 0],
-     *      [2020-01-03, 6],
+     *      2020-01-01 => 3,
+     *      2020-01-02 => 0,
+     *      2020-01-03 => 6,
      * ]
      */
     private static function normalizeDailyEventCounts(
@@ -82,7 +90,7 @@ final class AggregateProductEventCounts
         foreach ($period as $dateTime) {
             $date = $dateTime->format('Y-m-d');
 
-            $data[] = [$date, (int) ($dailyEventCounts[$date] ?? 0)];
+            $data[$date] = (int) ($dailyEventCounts[$date] ?? 0);
         }
 
         return $data;

@@ -7,9 +7,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Audit;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditLoader;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Test\Integration\Configuration;
@@ -42,34 +40,34 @@ class CountDailyEventsByConnectionEndToEnd extends WebTestCase
 
         $expectedResult = [
             'bynder' => [
-                ['2020-01-01', 3],
-                ['2020-01-02', 0],
-                ['2020-01-03', 0],
-                ['2020-01-04', 12],
-                ['2020-01-05', 0],
-                ['2020-01-06', 0],
-                ['2020-01-07', 0],
-                ['2020-01-08', 0],
+                '2020-01-01' => 3,
+                '2020-01-02' => 0,
+                '2020-01-03' => 0,
+                '2020-01-04' => 12,
+                '2020-01-05' => 0,
+                '2020-01-06' => 0,
+                '2020-01-07' => 0,
+                '2020-01-08' => 0,
             ],
             'sap' => [
-                ['2020-01-01', 0],
-                ['2020-01-02', 0],
-                ['2020-01-03', 0],
-                ['2020-01-04', 40],
-                ['2020-01-05', 0],
-                ['2020-01-06', 0],
-                ['2020-01-07', 0],
-                ['2020-01-08', 50],
+                '2020-01-01' => 0,
+                '2020-01-02' => 0,
+                '2020-01-03' => 0,
+                '2020-01-04' => 40,
+                '2020-01-05' => 0,
+                '2020-01-06' => 0,
+                '2020-01-07' => 0,
+                '2020-01-08' => 50,
             ],
             '<all>' => [
-                ['2020-01-01', 100],
-                ['2020-01-02', 0],
-                ['2020-01-03', 0],
-                ['2020-01-04', 0],
-                ['2020-01-05', 0],
-                ['2020-01-06', 0],
-                ['2020-01-07', 0],
-                ['2020-01-08', 0],
+                '2020-01-01' => 100,
+                '2020-01-02' => 0,
+                '2020-01-03' => 0,
+                '2020-01-04' => 0,
+                '2020-01-05' => 0,
+                '2020-01-06' => 0,
+                '2020-01-07' => 0,
+                '2020-01-08' => 0,
             ]
         ];
 

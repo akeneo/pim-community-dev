@@ -23,7 +23,7 @@ use PHPUnit\Framework\Assert;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
+class DbalSelectPeriodEventCountsQueryIntegration extends TestCase
 {
     /** @var ConnectionLoader */
     private $connectionLoader;
@@ -32,7 +32,7 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
     private $auditLoader;
 
     /** @var SelectPeriodEventCountsQuery */
-    private $selectConnectionsEventCountByDayQuery;
+    private $selectPeriodEventCountsQuery;
 
     protected function setUp(): void
     {
@@ -40,7 +40,7 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
         $this->auditLoader = $this->get('akeneo_connectivity.connection.fixtures.audit_loader');
-        $this->selectConnectionsEventCountByDayQuery = $this->get('akeneo_connectivity.connection.persistence.query.select_connections_event_count_by_day');
+        $this->selectPeriodEventCountsQuery = $this->get('akeneo_connectivity.connection.persistence.query.select_period_event_counts');
     }
 
     public function test_it_gets_data_for_connections_with_audit_data(): void
@@ -61,7 +61,7 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
 
         $fromDateTime = new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC'));
         $upToDateTime = new \DateTimeImmutable('2020-01-04 00:00:00', new \DateTimeZone('UTC'));
-        $result = $this->selectConnectionsEventCountByDayQuery->execute(
+        $result = $this->selectPeriodEventCountsQuery->execute(
             EventTypes::PRODUCT_UPDATED,
             $fromDateTime,
             $upToDateTime,
@@ -87,7 +87,7 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
 
         $fromDateTime = new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC'));
         $upToDateTime = new \DateTimeImmutable('2020-01-08 00:00:00', new \DateTimeZone('UTC'));
-        $result = $this->selectConnectionsEventCountByDayQuery->execute(
+        $result = $this->selectPeriodEventCountsQuery->execute(
             EventTypes::PRODUCT_UPDATED,
             $fromDateTime,
             $upToDateTime,

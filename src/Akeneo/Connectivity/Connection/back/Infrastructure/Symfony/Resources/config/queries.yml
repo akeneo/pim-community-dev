@@ -9,8 +9,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity.connection.persistence.query.select_connections_event_count_by_day:
-        class: 'Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectConnectionsEventCountByDayQuery'
+    akeneo_connectivity.connection.persistence.query.select_period_event_counts:
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectPeriodEventCountsQuery'
         arguments:
             - '@database_connection'
 
