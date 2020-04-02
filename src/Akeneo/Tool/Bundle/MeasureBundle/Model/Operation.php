@@ -26,7 +26,11 @@ final class Operation
     private function __construct(string $operator, string $value)
     {
         Assert::oneOf($operator, self::SUPPORTED_OPERATORS);
-        Assert::numeric($value);
+        Assert::regex(
+            $value,
+            '~^[0-9]*\.?[0-9]+$~',
+            sprintf('Expecting operation value to be a numeric, %s given', $value)
+        );
 
         $this->operator = $operator;
         $this->value = $value;

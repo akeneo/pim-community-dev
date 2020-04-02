@@ -43,4 +43,10 @@ class OperationSpec extends ObjectBehavior
             ->during('create', [self::OPERATOR, $invalidValue]);
 
     }
+
+    function it_cannot_be_constructed_with_a_scientific_annotation()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('create', [self::OPERATOR, '7E-10']);
+    }
 }

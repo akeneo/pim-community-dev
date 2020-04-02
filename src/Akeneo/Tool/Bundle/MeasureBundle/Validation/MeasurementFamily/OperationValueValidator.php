@@ -20,8 +20,8 @@ class OperationValueValidator extends ConstraintValidator
             [
                 new NotBlank(),
                 new Callback(
-                    function ($value, ExecutionContextInterface $context) {
-                        if (null !== $value && '' !== $value && !is_numeric($value)) {
+                    function ($value, ExecutionContextInterface $context, $payload) {
+                        if (null !== $value && '' !== $value && !$this->isStringNumericWithoutScientificNotation($value)) {
                             $context->buildViolation(OperationValue::VALUE_SHOULD_BE_A_NUMBER_IN_A_STRING)
                                 ->addViolation();
                         }
@@ -39,5 +39,10 @@ class OperationValueValidator extends ConstraintValidator
                 );
             }
         }
+    }
+
+    private function isStringNumericWithoutScientificNotation($value)
+    {
+        return is_string($value) && preg_match('~^[0-9]*\.?[0-9]+$~', $value) === 1;
     }
 }
