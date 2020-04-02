@@ -337,13 +337,6 @@ jobs:
           - run:
               name: Remove env on kubernetes
               command: IMAGE_TAG=$CIRCLE_SHA1 make delete
-          - run:
-              name: Delete FAILED validation env
-              when: on_fail
-              shell: "/bin/bash -eo pipefail"
-              command: |
-                echo "DEPLOY FAILED - Delete CI env PFID=srnt-ci-$CIRCLE_SHA1"
-                IMAGE_TAG=$CIRCLE_SHA1 make delete
 
   deploy_upgrade_oldest_prod_environment:
       environment:
@@ -371,13 +364,6 @@ jobs:
           - run:
               name: Remove upgraded env
               command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
-          - run:
-              name: Delete FAILED validation env
-              when: on_fail
-              shell: "/bin/bash -eo pipefail"
-              command: |
-                echo "DEPLOY FAILED - Delete CI env PFID=srnt-ci-$CIRCLE_SHA1"
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
 
   release:
       environment:
@@ -648,14 +634,14 @@ workflows:
                     - checkout
 
   nightly:
-      triggers:
-          - schedule:
-                cron: "0 2 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-
+          #      triggers:
+          #          - schedule:
+          #                cron: "0 2 * * *"
+          #                filters:
+          #                    branches:
+          #                        only:
+          #                            - master
+          #
       jobs:
           - checkout
           - build_dev:

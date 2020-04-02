@@ -81,4 +81,5 @@ Feature: Export rules
                     to_locale: en_US
                     to_scope: tablet
                     type: copy
+            labels: {}
     """

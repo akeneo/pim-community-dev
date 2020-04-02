@@ -23,6 +23,7 @@ akeneo_franklin_insights:
         already_subscribed_product: '商品は登録済です。'
         variant_product: 'バリエーション商品をフランクリンインサイトに登録できません。'
         inactive_connection: '商品をフランクリンインサイトに登録できません。フランクリンインサイトへの接続を構成してください。'
+        product_subscription_with_same_identifier_already_exist: '1件以上の同一識別子を持つ別の商品をすでに登録済です。'
     attributes_mapping:
       notification:
         new_attributes_to_map: 'ファミリー「%familyLabel%」のマップをするための新規属性があります'

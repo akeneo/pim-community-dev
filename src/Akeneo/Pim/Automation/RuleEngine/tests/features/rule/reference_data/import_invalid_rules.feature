@@ -10,7 +10,7 @@ Feature: Import rules
 
   @integration-back
   Scenario: Successfully import a rule for "reference data" attributes
-    Given the following yaml file to import:
+    When the following yaml file is imported:
     """
     rules:
         set_reference_data:
@@ -41,4 +41,4 @@ Feature: Import rules
     And an exception with message "Property \"sleeve_fabric\" expects a valid code. No reference data \"fabrics\" with code \"amazing_kevlar\" has been found, \"amazing_kevlar,chiffon\" given" has been thrown
     And an exception with message "Property \"sleeve_color\" expects a valid reference data code. The code \"mr_green\" of the reference data \"color\" does not exist" has been thrown
     And an exception with message "Property \"sleeve_fabric\" expects valid codes. The following codes for reference data \"fabrics\" do not exist: \"amazing_kevlar, amazing_wool\"" has been thrown
-    And the rule list does not contain the rule "set_reference_data"
+    And the rule list does not contain the "set_reference_data" rule

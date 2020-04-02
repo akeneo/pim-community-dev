@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 
 interface DashboardRatesProjectionRepositoryInterface
 {
     public function save(Write\DashboardRatesProjection $dashboardRates): void;
 
-    public function removeRates(TimePeriod $timePeriod, ConsolidationDate $date): void;
+    public function purgeRates(Write\DashboardPurgeDateCollection $purgeDates): void;
 }

@@ -40,11 +40,13 @@ pimee_catalog_rule:
           confirm_title: 実行を確認
           confirm_content: 選択中のルールを実行しますか？
           success: 選択されたルールの影響を受ける一括操作が開始されています。終了後に通知されます。
+          error: ルールの実行中にエラーが発生しました。
           empty_selection: ルールが選択されていません。
         delete:
           confirm_title: 実行を確認
           confirm_content: 選択中のルールを本当に削除しますか？
           success: ルールは正常に削除されました
+          error: ルールの削除中にエラーが発生しました
           empty_selection: ルールが選択されていません。
   form:
     attribute:

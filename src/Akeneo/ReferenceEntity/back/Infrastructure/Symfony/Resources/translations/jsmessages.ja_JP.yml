@@ -47,6 +47,10 @@ pim_reference_entity:
       image: 画像
     attribute:
       title: 記録属性
+      attribute:
+        error:
+          render_list: '属性「{{ %attribute_code% }}」のレンダリング中にエラーが発生しました'
+          render_edit: '属性「{{ %attribute_code% }}」の追加プロパティフィールドのレンダリング中にエラーが発生しました'
     module:
       delete:
         button: エンティティを削除
@@ -76,10 +80,13 @@ pim_reference_entity:
     notification:
       save:
         success: 参照エンティティが正常に更新されました。
+        fail: 参照エンティティの保存中にエラーが発生しました。
       create:
         success: 参照エンティティが正常に作成されました。
+        fail: 参照エンティティの作成中にエラーが発生しました。
       delete:
         success: 参照エンティティが正常に削除されました。
+        fail: 参照エンティティの削除中にエラーが発生しました。
   permission:
     notification:
       save:
@@ -183,13 +190,17 @@ pim_reference_entity:
     notification:
       save:
         success: 記録が正常に更新されました。
+        fail: 記録の保存中にエラーが発生しました。
         validation_error: 記録を更新できませんでした。
       create:
         success: 記録が正常に作成されました。
+        fail: 記録の作成中にエラーが発生しました。
       delete:
         success: 記録「{{ code }}」 が正常に削除されました。
+        fail: 記録の削除中にエラーが発生しました。
       delete_all:
         success: '「{{ entityIdentifier }}」件の記録全てが問題なく削除されました。'
+        fail: この参照エンティティの全記録を削除する間にエラーが発生しました
     completeness:
       label: 完了
   attribute:
@@ -270,14 +281,19 @@ pim_reference_entity:
       message: 属性 「{{ attributeLabel }}」を削除してもよろしいですか？
       title: 属性
     notification:
+      list:
+        fail: 属性リストの更新中にエラーが発生しました
       save:
         success: 属性は正常に更新されました
+        fail: 属性の保存中にエラーが発生しました
         validation_error: 属性を更新できませんでした。
       create:
         success: 属性は正常に作成されました
+        fail: 属性の作成中にエラーが発生しました
         validation_error: 属性を作成できませんでした
       delete:
         success: 属性は正常に削除されました
+        fail: 属性の削除中にエラーが発生しました
     options:
       no_value: クリックしてオプションを選択
       sub_title: 参照エンティティ

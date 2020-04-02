@@ -15,6 +15,7 @@ $rules = [
         'Akeneo\Tool',
         'Akeneo\Pim\Automation\RuleEngine\Component',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
+        'Webmozart\Assert\Assert',
 
         // TODO: the rule feature uses the datagrid
         'Oro\Bundle\PimDataGridBundle',
@@ -76,6 +77,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface', // the engine creates a fake product to allow validation
 
         // TIP-1011: Create a Versioning component

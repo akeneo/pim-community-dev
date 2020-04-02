@@ -19,6 +19,9 @@ Feature: Export rules
           field: name
           value: 'My loafer'
           locale: en_US
+      labels:
+        en_US: 'Set name'
+        fr_FR: 'Met le nom'
     set_another_name:
       priority: 20
       conditions:
@@ -82,6 +85,9 @@ Feature: Export rules
                     locale: en_US
                     type: set
                     value: 'My loafer'
+            labels:
+                en_US: 'Set name'
+                fr_FR: 'Met le nom'
         set_another_name:
             priority: 20
             conditions:
@@ -96,6 +102,7 @@ Feature: Export rules
                     scope: mobile
                     type: set
                     value: 'A stylish white loafer'
+            labels: {}
         copy_name_loafer:
             priority: 30
             conditions:
@@ -114,6 +121,7 @@ Feature: Export rules
                     to_field: name
                     to_locale: fr_FR
                     type: copy
+            labels: {}
         remove_categories:
             priority: 40
             conditions:
@@ -128,4 +136,5 @@ Feature: Export rules
                     items:
                         - 2014_collection
                     type:  remove
+            labels: {}
     """

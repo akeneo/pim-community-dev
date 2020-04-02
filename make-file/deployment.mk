@@ -101,6 +101,7 @@ endif
 
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
+	touch $(INSTANCE_DIR)/values.yaml
 	@echo $(INSTANCE_NAME_PREFIX)
 	@echo "terraform {" > $(INSTANCE_DIR)/main.tf
 	@echo "backend \"gcs\" {" >> $(INSTANCE_DIR)/main.tf
@@ -126,7 +127,7 @@ create-pim-main-tf: $(INSTANCE_DIR)
 .PHONY: test-prod
 test-prod:
 	export KUBECONFIG=$(INSTANCE_DIR)/.kubeconfig
-	helm test ${PFID}
+	helm test --debug --logs ${PFID}
 
 .PHONY: release
 release:

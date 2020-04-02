@@ -15,6 +15,10 @@
                 '%fields%': action.from|map(f => f.field|append_locale_and_scope_context(f.locale|default, f.scope|default)|highlight)|join(', '),
                 '%to_field%': action.to.field|append_locale_and_scope_context(action.to.locale|default, action.to.scope|default)|highlight,
             } %}
+        {% elseif action.type == "clear" %}
+            {% set parameters = {
+                '%field%': action.field|append_locale_and_scope_context(action.options.locale|default, action.options.scope|default)|highlight,
+            } %}
         {% else %}
             {% set parameters = {
                 '%field%': action.field|append_locale_and_scope_context(action.locale|default, action.scope|default)|highlight,

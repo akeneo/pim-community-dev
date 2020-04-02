@@ -26,8 +26,8 @@ class ListProductWithApiPerformance extends AbstractApiPerformance
         $profileConfig = new Configuration();
         $profileConfig->setTitle('Export products with the API');
 
-        $profileConfig->assert('metrics.sql.queries.count < 53', 'SQL queries');
-        $profileConfig->assert('main.wall_time < 9s', 'Total time');
+        $profileConfig->assert('metrics.sql.queries.count < 55', 'SQL queries');
+        $profileConfig->assert('main.wall_time < 10s', 'Total time');
         $profileConfig->assert('main.peak_memory < 100mb', 'Memory');
 
         $client = $this->createAuthenticatedClient('data_destination');

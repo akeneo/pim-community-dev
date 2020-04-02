@@ -76,6 +76,12 @@ class RuleDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwar
             $rule->addAction($action);
         }
 
+        if (isset($data['labels'])) {
+            foreach ($data['labels'] as $locale => $label) {
+                $rule->setLabel($locale, $label);
+            }
+        }
+
         return $rule;
     }
 

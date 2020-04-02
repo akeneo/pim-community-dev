@@ -40,6 +40,9 @@ rules:
         field: name
         value: 'My loafer'
         locale: en_US
+    labels:
+      en_US: 'Set name'
+      fr_FR: 'Change le nom'
   set_another_name:
     priority: 20
     conditions:
@@ -52,6 +55,7 @@ rules:
         value: 'A stylish white loafer'
         locale: en_US
         scope: mobile
+    labels: []
   copy_name_loafer:
     priority: 30
     conditions:
@@ -68,6 +72,7 @@ rules:
         to_field: name
         from_locale: en_US
         to_locale: fr_FR
+    labels: []
   remove_categories:
     priority: 40
     conditions:
@@ -80,6 +85,7 @@ rules:
         items:
           - 2014_collection
         include_children: true
+    labels: []
   concatenate:
     priority: 90
     conditions:
@@ -104,6 +110,45 @@ rules:
           field: description
           locale: en_US
           scope: ecommerce
+    labels: []
+  test_clear:
+    priority: 90
+    conditions:
+      - field: family
+        operator: IN
+        value:
+          - camcorders
+    actions:
+      - type: clear
+        field: name
+        locale: en_US
+      - type: clear
+        field: pim_brand
+      - type: clear
+        field: processor
+      - type: clear
+        field: price
+      - type: clear
+        field: color
+      - type: clear
+        field: release_date
+      - type: clear
+        field: weight
+      - type: clear
+        field: sub_description
+      - type: clear
+        field: description
+        locale: en_US
+        scope: ecommerce
+      - type: clear
+        field: connectivity
+      - type: clear
+        field: categories
+      - type: clear
+        field: groups
+      - type: clear
+        field: associations
+    labels: []
 SQL;
 
     private static $normalizedRules = [];
@@ -128,7 +173,7 @@ SQL;
     }
 
     /**
-     * @Given /^I import several rules$/
+     * @Given I import several rules
      */
     public function importSeveralRules(): void
     {
@@ -136,7 +181,7 @@ SQL;
     }
 
     /**
-     * @When /^I export all the rules$/
+     * @When I export all the rules
      */
     public function exportAllTheRules()
     {
@@ -153,7 +198,7 @@ SQL;
     }
 
     /**
-     * @Then /^the export data contains all rules$/
+     * @Then the export data contains all rules
      */
     public function theExportFileContainsAllRules()
     {

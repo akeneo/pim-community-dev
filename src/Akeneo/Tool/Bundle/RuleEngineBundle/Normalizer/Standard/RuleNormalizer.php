@@ -12,8 +12,10 @@
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\Standard;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslationInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Transforms a RuleDefinition object to a normalized Rule (ie: content is replace by actions + conditions)
@@ -25,22 +27,30 @@ class RuleNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($ruleDefinition, $format = null, array $context = [])
     {
+        Assert::isInstanceOf($ruleDefinition, RuleDefinitionInterface::class);
+
+        /** @var $ruleDefinition RuleDefinitionInterface */
         $data = [
-            'code'       => $object->getCode(),
-            'type'       => $object->getType(),
-            'priority'   => $object->getPriority(),
+            'code'       => $ruleDefinition->getCode(),
+            'type'       => $ruleDefinition->getType(),
+            'priority'   => $ruleDefinition->getPriority(),
             'conditions' => [],
             'actions'    => [],
+            'labels'     => [],
         ];
 
-        $content = $object->getContent();
+        $content = $ruleDefinition->getContent();
         if (isset($content['conditions'])) {
             $data['conditions'] = $content['conditions'];
         }
         if (isset($content['actions'])) {
             $data['actions'] = $content['actions'];
+        }
+        foreach ($ruleDefinition->getTranslations() as $translation) {
+            /** @var $translation RuleDefinitionTranslationInterface */
+            $data['labels'][$translation->getLocale()] = $translation->getLabel();
         }
 
         return $data;

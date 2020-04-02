@@ -1,6 +1,7 @@
 pimee_workflow:
   product_draft:
     author: 作成者
+    source: ソース
     created: '提案:'
     changes: 変更
     locale: ロケールのコンテキスト

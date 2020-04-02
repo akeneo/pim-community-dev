@@ -1,0 +1,35 @@
+akeneo_referenceentity:
+  acl_group:
+    reference_entity: 참조 엔터티
+  acl:
+    reference_entity:
+      create: 엔터티 만들기
+      edit: 엔터티 속성 편집
+      delete: 엔터티 삭제
+      manage_permission: 참조 엔터티 권한 관리
+    record:
+      create: 레코드 만들기
+      edit: 레코드 편집
+      delete: 레코드 삭제
+      delete_all: 모든 엔터티 레코드 삭제
+      list_product: 레코드에 대한 링크된 제품 나열
+    attribute:
+      create: 참조 엔터티에 특성 추가
+      edit: 참조 엔터티의 특성 편집
+      delete: 참조 엔터티의 특성 삭제
+    option:
+      edit: 옵션 편집
+      delete: 옵션 제거
+pim_analytics:
+  info_type:
+    nb_reference_entities: 참조 엔터티 수
+    max_number_of_records_per_reference_entity: 참조 엔터티별 최대 레코드 수
+    average_number_of_values_per_records: 모든 참조 엔터티의 레코드별 평균 값 수
+    average_number_of_records_per_reference_entity: 참조 엔터티별 평균 레코드 수
+    max_number_of_attributes_per_reference_entity: 참조 엔터티별 최대 특성 수
+    average_number_of_attributes_per_reference_entity: 참조 엔터티별 평균 특성 수
+    average_percentage_localizable_only_attributes: 참조 엔터티당 지역화만 가능한 특성의 평균 퍼센트
+    average_percentage_scopable_only_attributes: 참조 엔터티당 확장만 가능한 특성의 평균 퍼센트
+    average_percentage_scopable_and_localizable_attributes: 참조 엔터티당 지역화 가능 및 확장 가능 특성의 평균 퍼센트
+akeneo_reference_entity: 참조 엔터티 단일 링크
+akeneo_reference_entity_collection: 참조 엔터티 다중 링크

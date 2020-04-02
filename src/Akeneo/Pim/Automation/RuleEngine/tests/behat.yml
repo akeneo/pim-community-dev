@@ -60,6 +60,9 @@ integration:
                     - '@pimee_catalog_rule.processor.denormalization.rule_definition'
                     - '@akeneo_rule_engine.repository.rule_definition'
                     - '@akeneo_rule_engine.saver.rule_definition'
+                    - '@pimee_catalog_rule.processor.normalization.rule_definition'
+                    - '@pim_connector.doctrine.cache_clearer'
+                    - '%%kernel.root_dir%%'
 
                 - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\VersionContext:
                     - '@pim_catalog.repository.product_without_permission'

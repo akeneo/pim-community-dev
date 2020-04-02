@@ -10,7 +10,7 @@ Feature: Import rules
 
   @integration-back
   Scenario: Successfully import a rule for "reference data" attributes
-    Given the following yaml file to import:
+    When the following yaml file is imported:
     """
     rules:
         set_reference_data:
@@ -48,6 +48,7 @@ Feature: Import rules
     And the rule list contains the rule:
     """
     set_reference_data:
+        priority: 0
         conditions:
             - field:    sleeve_color.code
               operator: IN
