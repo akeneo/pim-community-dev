@@ -3,8 +3,16 @@ INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
 PFID ?= srnt-$(INSTANCE_NAME)
 
+PHONY: create-main-tf-for-pim3-with-last-tag
+create-main-tf-for-pim3-with-last-tag:
+	git clone git@github.com:akeneo/pim-enterprise-cloud.git; \
+	RELEASE_TO_DEPLOY=$$(cd pim-enterprise-cloud; git describe --tags $$(git rev-list --tags --max-count=1)); \
+	echo $${RELEASE_TO_DEPLOY}; \
+	PEC_TAG=$${RELEASE_TO_DEPLOY} make create-main-tf-for-pim3
+
 PHONY: create-main-tf-for-pim3
 create-main-tf-for-pim3:
+	@echo $(PEC_TAG);
 	mkdir -p ~/3.2/
 	@echo "terraform {" >> ~/3.2/main.tf
 	@echo "backend \"gcs\" {" >> ~/3.2/main.tf
@@ -24,9 +32,6 @@ create-main-tf-for-pim3:
 	@echo "google_storage_location             = \"eu\"" >> ~/3.2/main.tf
 	@echo "papo_project_code                   = \"NOT_ON_PAPO_$(PFID)\"" >> ~/3.2/main.tf
 	@echo "force_destroy_storage               = true" >> ~/3.2/main.tf
-	@echo "pager_duty_service_name             = \"Serenity_Staging_outage\"" >> ~/3.2/main.tf
-	@echo "datadog_app_key                     = \"$(DATADOG_APP_KEY)\""  >> ~/3.2/main.tf
-	@echo "datadog_api_key                     = \"$(DATADOG_API_KEY)\""  >> ~/3.2/main.tf
 	@echo "}" >> ~/3.2/main.tf
 
 PHONY: create-pimyaml-for-pim3
@@ -36,7 +41,7 @@ create-pimyaml-for-pim3:
 	cat ~/project/deployments/config/catalog-3.2.yaml >> ~/3.2/values.yaml
 
 .PHONY: deploy-pim3
-deploy-pim3: create-main-tf-for-pim3 terraform-init-for-pim3 create-pimyaml-for-pim3 terraform-apply-for-pim3
+deploy-pim3: create-main-tf-for-pim3-with-last-tag terraform-init-for-pim3 create-pimyaml-for-pim3 terraform-apply-for-pim3
 
 .PHONY: terraform-init-for-pim3
 terraform-init-for-pim3:
@@ -50,4 +55,3 @@ terraform-apply-for-pim3:
 .PHONY: terraform-destroy-for-pim3
 terraform-destroy-for-pim3:
 	cd ~/3.2 && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
-
