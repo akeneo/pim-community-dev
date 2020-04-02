@@ -38,7 +38,7 @@ define(
 
                         if (ruleRelation && field.isEditable()) {
                             let ruleLabel = ruleRelation.labels[UserContext.get('catalogLocale')];
-                            if (undefined === ruleLabel) {
+                            if ('undefined' === typeof ruleLabel) {
                                 ruleLabel = '[' + ruleRelation.rule + ']';
                             }
                             var $element = this.template({
