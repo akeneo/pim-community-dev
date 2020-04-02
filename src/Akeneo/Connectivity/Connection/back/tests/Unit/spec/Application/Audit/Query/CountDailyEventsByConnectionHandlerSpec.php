@@ -33,27 +33,13 @@ class CountDailyEventsByConnectionHandlerSpec extends ObjectBehavior
         $fromDateTime = new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC'));
         $upToDateTime = new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC'));
 
-        $hourlyEventCountsPerConnection = [
-            '<all>' => [
-                [new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC')), 1],
-            ],
-            'sap' => [
-                [new \DateTimeImmutable('2020-01-02 00:12:00', new \DateTimeZone('UTC')), 2],
-            ],
-            'bynder' => [
-                [new \DateTimeImmutable('2020-01-03 00:23:00', new \DateTimeZone('UTC')), 3],
-            ]
+        $periodEventCounts = [
+            new PeriodEventCount('erp', $fromDateTime, $upToDateTime, [])
         ];
         $selectConnectionsEventCountByDayQuery->execute(EventTypes::PRODUCT_CREATED, $fromDateTime, $upToDateTime)
-            ->willReturn($hourlyEventCountsPerConnection);
-
-        $expectedResult = [
-            new PeriodEventCount('<all>', $fromDateTime, $upToDateTime, $hourlyEventCountsPerConnection['<all>']),
-            new PeriodEventCount('sap', $fromDateTime, $upToDateTime, $hourlyEventCountsPerConnection['sap']),
-            new PeriodEventCount('bynder', $fromDateTime, $upToDateTime, $hourlyEventCountsPerConnection['bynder']),
-        ];
+            ->willReturn($periodEventCounts);
 
         $query = new CountDailyEventsByConnectionQuery(EventTypes::PRODUCT_CREATED, $fromDateTime, $upToDateTime);
-        $this->handle($query)->shouldIterateLike($expectedResult);
+        $this->handle($query)->shouldReturn($periodEventCounts);
     }
 }

@@ -27,19 +27,9 @@ class CountDailyEventsByConnectionHandler
      */
     public function handle(CountDailyEventsByConnectionQuery $query): array
     {
-        $hourlyEventCountsPerConnection = $this
+        $periodEventCounts = $this
             ->selectConnectionsEventCountByDayQuery
             ->execute($query->eventType(), $query->fromDateTime(), $query->upToDateTime());
-
-        $periodEventCounts = [];
-        foreach ($hourlyEventCountsPerConnection as $connectionCode => $hourlyEventCounts) {
-            $periodEventCounts[] = new PeriodEventCount(
-                $connectionCode,
-                $query->fromDateTime(),
-                $query->upToDateTime(),
-                $hourlyEventCounts
-            );
-        }
 
         return $periodEventCounts;
     }

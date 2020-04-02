@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\HourlyEventCount;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -27,28 +28,32 @@ class DbalSelectConnectionsEventCountByDayQuery implements SelectConnectionsEven
 
     public function execute(
         string $eventType,
-        \DateTimeInterface $fromDateTime,
-        \DateTimeInterface $upToDateTime
+        \DateTimeImmutable $fromDateTime,
+        \DateTimeImmutable $upToDateTime
     ): array {
-        $hourlyEventCountsPerConnection = $this->getHourlyEventCountsPerConnection(
+        $hourlyEventCountsPerConnectionData = $this->getHourlyEventCountsPerConnection(
             $eventType,
             $fromDateTime,
             $upToDateTime
         );
 
-        $sumOfHourlyEventCountsForAllConnections = $this->getHourlyEventCountsForAllConnections(
+        $hourlyEventCountsForAllConnectionsData = $this->getHourlyEventCountsForAllConnections(
             $eventType,
             $fromDateTime,
             $upToDateTime
         );
 
-        return array_merge($hourlyEventCountsPerConnection, $sumOfHourlyEventCountsForAllConnections);
+        return $this->createPeriodEventCounts(
+            array_merge($hourlyEventCountsPerConnectionData, $hourlyEventCountsForAllConnectionsData),
+            $fromDateTime,
+            $upToDateTime
+        );
     }
 
     private function getHourlyEventCountsPerConnection(
         string $eventType,
-        \DateTimeInterface $fromDateTime,
-        \DateTimeInterface $upToDateTime
+        \DateTimeImmutable $fromDateTime,
+        \DateTimeImmutable $upToDateTime
     ): array {
         $sql = <<<SQL
 SELECT conn.code as connection_code, audit.event_datetime, audit.event_count
@@ -72,13 +77,13 @@ SQL;
             ]
         )->fetchAll();
 
-        return $this->normalizeHourlyEventCountsData($hourlyEventCountsData);
+        return $hourlyEventCountsData;
     }
 
     private function getHourlyEventCountsForAllConnections(
         string $eventType,
-        \DateTimeInterface $fromDateTime,
-        \DateTimeInterface $upToDateTime
+        \DateTimeImmutable $fromDateTime,
+        \DateTimeImmutable $upToDateTime
     ): array {
         $sql = <<<SQL
 SELECT connection_code, event_datetime, event_count
@@ -110,7 +115,7 @@ SQL;
             ];
         }
 
-        return $this->normalizeHourlyEventCountsData($hourlyEventCountsData);
+        return $hourlyEventCountsData;
     }
 
     /**
@@ -118,13 +123,16 @@ SQL;
      *      ['connection_code => $connectionCode, 'event_datetime' => '2020-01-01 00:00:00', 'event_count' => 3],
      * ]
      *
-     * @return array [$connectionCode => HourlyEventCount[]]
+     * @return PeriodEventCount[]
      */
-    private function normalizeHourlyEventCountsData(array $hourlyEventCountsData): array
-    {
+    private function createPeriodEventCounts(
+        array $hourlyEventCountsData,
+        \DateTimeImmutable $fromDateTime,
+        \DateTimeImmutable $upToDateTime
+    ): array {
         $format = $this->dbalConnection->getDatabasePlatform()->getDateTimeFormatString();
 
-        return array_reduce(
+        $hourlyEventCountsPerConnection = array_reduce(
             $hourlyEventCountsData,
             function (array $data, array $row) use ($format) {
                 $connectionCode = $row['connection_code'];
@@ -148,5 +156,17 @@ SQL;
             },
             []
         );
+
+        $periodEventCounts = [];
+        foreach ($hourlyEventCountsPerConnection as $connectionCode => $hourlyEventCounts) {
+            $periodEventCounts[] = new PeriodEventCount(
+                $connectionCode,
+                $fromDateTime,
+                $upToDateTime,
+                $hourlyEventCounts
+            );
+        }
+
+        return $periodEventCounts;
     }
 }
