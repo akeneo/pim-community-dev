@@ -11,7 +11,8 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountsQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -30,7 +31,7 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
     /** @var AuditLoader */
     private $auditLoader;
 
-    /** @var SelectConnectionsEventCountByDayQuery */
+    /** @var SelectPeriodEventCountsQuery */
     private $selectConnectionsEventCountByDayQuery;
 
     protected function setUp(): void
@@ -58,21 +59,23 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
             ['bynder', EventTypes::PRODUCT_UPDATED, '2020-01-04 00:00:00', 2],
         ]);
 
+        $fromDateTime = new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC'));
+        $upToDateTime = new \DateTimeImmutable('2020-01-04 00:00:00', new \DateTimeZone('UTC'));
         $result = $this->selectConnectionsEventCountByDayQuery->execute(
             EventTypes::PRODUCT_UPDATED,
-            new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC')),
-            new \DateTimeImmutable('2020-01-04 00:00:00', new \DateTimeZone('UTC')),
+            $fromDateTime,
+            $upToDateTime,
         );
 
         $expectedResult = [
-            'bynder' => [],
-            'sap' => [
+            new PeriodEventCount('bynder', $fromDateTime, $upToDateTime, []),
+            new PeriodEventCount('sap', $fromDateTime, $upToDateTime, [
                 new Read\HourlyEventCount(new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC')), 10),
                 new Read\HourlyEventCount(new \DateTimeImmutable('2020-01-03 23:00:00', new \DateTimeZone('UTC')), 4)
-            ],
-            '<all>' => [
+            ]),
+            new PeriodEventCount('<all>', $fromDateTime, $upToDateTime, [
                 new Read\HourlyEventCount(new \DateTimeImmutable('2020-01-02 12:00:00', new \DateTimeZone('UTC')), 8)
-            ]
+            ])
         ];
 
         Assert::assertEquals($expectedResult, $result);
@@ -82,18 +85,20 @@ class DbalSelectConnectionsEventCountByDayQueryIntegration extends TestCase
     {
         $this->connectionLoader->createConnection('sap', 'SAP', FlowType::DATA_SOURCE);
 
+        $fromDateTime = new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC'));
+        $upToDateTime = new \DateTimeImmutable('2020-01-08 00:00:00', new \DateTimeZone('UTC'));
         $result = $this->selectConnectionsEventCountByDayQuery->execute(
             EventTypes::PRODUCT_UPDATED,
-            new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC')),
-            new \DateTimeImmutable('2020-01-08 00:00:00', new \DateTimeZone('UTC')),
+            $fromDateTime,
+            $upToDateTime,
         );
 
         $expectedResult = [
-            'sap' => [],
-            '<all>' => []
+            new PeriodEventCount('sap', $fromDateTime, $upToDateTime, []),
+            new PeriodEventCount('<all>', $fromDateTime, $upToDateTime, []),
         ];
 
-        Assert::assertSame($expectedResult, $result);
+        Assert::assertEquals($expectedResult, $result);
     }
 
     protected function getConfiguration(): Configuration
