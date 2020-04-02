@@ -31,7 +31,7 @@ class AttributeShouldBeNumericValidatorSpec extends ObjectBehavior
 
     function it_throw_an_exception_when_the_constraint_is_invalid()
     {
-        $this->shouldThrow(UnexpectedTypeException::class)
+        $this->shouldThrow(\InvalidArgumentException::class)
             ->during('validate', ['weight', new IsNull()]);
     }
 
@@ -43,11 +43,14 @@ class AttributeShouldBeNumericValidatorSpec extends ObjectBehavior
         $this->validate(null, new AttributeShouldBeNumeric());
     }
 
-    function it_throws_an_exception_if_the_attribute_does_not_exist(GetAttributes $getAttributes)
-    {
+    function it_does_nothing_if_the_attribute_does_not_exist(
+        GetAttributes $getAttributes,
+        ExecutionContextInterface $context
+    ) {
         $getAttributes->forCode('unknown_attribute')->shouldBeCalled()->willReturn(null);
-        $this->shouldThrow(new \InvalidArgumentException('Attribute "unknown_attribute" does not exist'))
-            ->during('validate', ['unknown_attribute', new AttributeShouldBeNumeric()]);
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+
+        $this->validate('unknown_attribute', new AttributeShouldBeNumeric());
     }
 
     function it_does_not_build_a_violation_if_attribute_is_a_number(

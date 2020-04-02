@@ -18,7 +18,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Webmozart\Assert\Assert;
 
 class AttributeShouldBeNumericValidator extends ConstraintValidator
 {
@@ -32,17 +32,15 @@ class AttributeShouldBeNumericValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof AttributeShouldBeNumeric) {
-            throw new UnexpectedTypeException($constraint, AttributeShouldBeNumeric::class);
-        }
-
+        Assert::isInstanceOf($constraint, AttributeShouldBeNumeric::class);
         if (null === $value) {
             return;
         }
 
         $attribute = $this->getAttributes->forCode($value);
         if (null === $attribute) {
-            throw new \InvalidArgumentException(sprintf('Attribute "%s" does not exist', $value));
+            // not the responsibility of this validator
+            return;
         }
 
         // TODO RUL-59 / RUL-60: Allow metrics and prices

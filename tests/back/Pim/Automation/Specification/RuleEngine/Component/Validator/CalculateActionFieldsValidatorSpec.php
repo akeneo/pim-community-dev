@@ -7,11 +7,9 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Validator\CalculateActionFieldsVa
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AttributeShouldBeNumeric;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\CalculateActionFields;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ContextualValidatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -35,13 +33,13 @@ class CalculateActionFieldsValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_the_constraint_is_invalid()
     {
-        $this->shouldThrow(UnexpectedTypeException::class)
+        $this->shouldThrow(\InvalidArgumentException::class)
              ->during('validate', [$this->productCalculateAction(), new IsNull()]);
     }
 
     function it_throws_an_exception_if_the_value_is_not_a_product_calculate_action()
     {
-        $this->shouldThrow(UnexpectedTypeException::class)
+        $this->shouldThrow(\InvalidArgumentException::class)
              ->during('validate', [new \stdClass(), new CalculateActionFields()]);
     }
 
@@ -87,9 +85,9 @@ class CalculateActionFieldsValidatorSpec extends ObjectBehavior
                     ],
                     [
                         'operator' => 'multiply',
-                        'value' => 3.1415927
+                        'value' => 3.1415927,
                     ],
-                ]
+                ],
             ]
         );
     }
