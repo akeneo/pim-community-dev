@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_catalog.completeness.remover:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemover'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Remover\CompletenessRemover'
         arguments:
             - '@database_connection'
 

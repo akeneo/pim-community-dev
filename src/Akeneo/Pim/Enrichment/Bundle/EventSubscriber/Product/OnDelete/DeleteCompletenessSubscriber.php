@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Remover\CompletenessRemover;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Removes completness information related to deleted product.
@@ -31,19 +35,19 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents() : array
     {
         return [
-            StorageEvents::POST_REMOVE   => ['deleteProduct'],
-            StorageEvents::POST_REMOVE_ALL => ['deleteAllProducts'],
+            StorageEvents::POST_REMOVE      => 'deleteProduct',
+            StorageEvents::POST_REMOVE_ALL  => 'deleteAllProducts',
         ];
     }
 
     public function deleteProduct(RemoveEvent $event) : void
     {
         $product = $event->getSubject();
-        if (!$this->checkProduct($product) || !$this->checkEvent($product)) {
+        if (!$this->checkProduct($product) || !$this->checkEvent($event)) {
             return;
         }
 
-        $this->completenessRemover->deleteOneProduct($product->getId());
+        $this->completenessRemover->deleteOneProduct($event->getSubjectId());
     }
 
     public function deleteAllProducts(RemoveEvent $event)

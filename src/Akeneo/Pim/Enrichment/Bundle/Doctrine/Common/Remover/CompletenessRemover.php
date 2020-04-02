@@ -18,7 +18,6 @@ class CompletenessRemover
 
     public function __construct(Connection $connection)
     {
-        parent::__construct();
         $this->connection = $connection;
     }
 
@@ -27,7 +26,7 @@ class CompletenessRemover
      */
     public function deleteOneProduct(int $productId): int
     {
-        return deleteProducts([$productId]);
+        return $this->deleteProducts([$productId]);
     }
 
     /**
@@ -41,9 +40,9 @@ class CompletenessRemover
 DELETE FROM pim_catalog_completeness AS pcc
 WHERE pcc.product_id in (?)
 SQL;
-        $stmt = $this->connection->executeQuery
+        $stmt = $this->connection->executeQuery(
             $sql,
-            [$product_ids],
+            [$productIds],
             [\Doctrine\DBAL\Connection::PARAM_INT_ARRAY]
         );
         $count = $stmt->rowCount();
