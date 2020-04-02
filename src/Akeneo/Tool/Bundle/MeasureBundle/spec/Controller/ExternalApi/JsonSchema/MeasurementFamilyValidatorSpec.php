@@ -18,7 +18,7 @@ class MeasurementFamilyValidatorSpec extends ObjectBehavior
     {
         $asset = [
             'values' => null,
-            'foo'    => 'bar',
+            'foo' => 'bar',
         ];
 
         $errors = $this->validate($asset);
@@ -26,21 +26,21 @@ class MeasurementFamilyValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(6);
     }
 
-    function it_returns_an_empty_array_if_all_the_asset_properties_are_valid()
+    function it_returns_an_empty_array_if_all_the_measurement_family_properties_are_valid()
     {
         $measurementFamily = [
-            'code'               => 'custom_metric_1',
-            'labels'             =>
+            'code' => 'custom_metric_1',
+            'labels' =>
                 [
                     'en_US' => 'Custom measurement 1',
                     'fr_FR' => 'Mesure personalisée 1',
                 ],
             'standard_unit_code' => 'CUSTOM_UNIT_1_1',
-            'units'              =>
+            'units' =>
                 [
-                    [
-                        'code'                  => 'CUSTOM_UNIT_1_1',
-                        'labels'                =>
+                    'CUSTOM_UNIT_1_1' => [
+                        'code' => 'CUSTOM_UNIT_1_1',
+                        'labels' =>
                             [
                                 'en_US' => 'Custom unit 1_1',
                                 'fr_FR' => 'Unité personalisée 1_1',
@@ -49,14 +49,14 @@ class MeasurementFamilyValidatorSpec extends ObjectBehavior
                             [
                                 [
                                     'operator' => 'mul',
-                                    'value'    => '0.000001',
+                                    'value' => '0.000001',
                                 ],
                             ],
-                        'symbol'                => 'mm²',
+                        'symbol' => 'mm²',
                     ],
                     [
-                        'code'                  => 'CUSTOM_UNIT_2_1',
-                        'labels'                =>
+                        'code' => 'CUSTOM_UNIT_2_1',
+                        'labels' =>
                             [
                                 'en_US' => 'Custom unit 2_1',
                                 'fr_FR' => 'Unité personalisée 2_1',
@@ -65,10 +65,10 @@ class MeasurementFamilyValidatorSpec extends ObjectBehavior
                             [
                                 [
                                     'operator' => 'mul',
-                                    'value'    => '0.0001',
+                                    'value' => '0.0001',
                                 ],
                             ],
-                        'symbol'                => 'cm²',
+                        'symbol' => 'cm²',
                     ],
                 ],
         ];

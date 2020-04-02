@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
+namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
+use Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 class StandardUnitCodeOperationShouldBeMultiplyByOneValidator extends ConstraintValidator
 {
     /**
-     * @param SaveMeasurementFamilyCommand $saveMeasurementFamily
+     * @param CreateMeasurementFamilyCommand $saveMeasurementFamily
      */
     public function validate($saveMeasurementFamily, Constraint $constraint)
     {
@@ -31,13 +31,13 @@ class StandardUnitCodeOperationShouldBeMultiplyByOneValidator extends Constraint
             $this->context
                 ->buildViolation(StandardUnitCodeOperationShouldBeMultiplyByOne::ERROR_MESSAGE)
                 ->setParameter('%measurement_family_code%', $saveMeasurementFamily->code)
-                ->atPath('units[0][convert_from_standard]')
+                ->atPath('units[0].convert_from_standard')
                 ->addViolation();
         }
     }
 
     /**
-     * @param SaveMeasurementFamilyCommand $saveMeasurementFamily
+     * @param CreateMeasurementFamilyCommand $saveMeasurementFamily
      */
     private function standardUnit($saveMeasurementFamily): array
     {
