@@ -6,10 +6,19 @@ define(
         'underscore',
         'backbone',
         'pim/form',
+        'pim/user-context',
         'pimee/rule-manager',
         'pimee/template/product/tab/attribute/smart-attribute'
     ],
-    function ($, _, Backbone, BaseForm, RuleManager, smartAttributeTemplate) {
+    function (
+        $,
+        _,
+        Backbone,
+        BaseForm,
+        UserContext,
+        RuleManager,
+        smartAttributeTemplate
+    ) {
         return BaseForm.extend({
             template: _.template(smartAttributeTemplate),
             configure: function () {
@@ -28,8 +37,12 @@ define(
                         var ruleRelation = _.findWhere(ruleRelations, {attribute: field.attribute.code});
 
                         if (ruleRelation && field.isEditable()) {
+                            let ruleLabel = ruleRelation.labels[UserContext.get('catalogLocale')];
+                            if (undefined === ruleLabel) {
+                                ruleLabel = '[' + ruleRelation.rule + ']';
+                            }
                             var $element = this.template({
-                                ruleRelation: ruleRelation
+                                ruleLabel: ruleLabel
                             });
 
                             field.addElement('footer', 'from_smart', $element);
