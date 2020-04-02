@@ -30,7 +30,7 @@ class ListProductWithApiPerformance extends AbstractApiPerformance
         $profileConfig->assert('main.wall_time < 9s', 'Total time');
         $profileConfig->assert('main.peak_memory < 100mb', 'Memory');
 
-        $client = $this->createAuthenticatedClient();
+        $client = $this->createAuthenticatedClient('data_destination');
 
         /** @var Profile $profile */
         $profile = $this->assertBlackfire($profileConfig, function () use ($client) {
@@ -42,6 +42,6 @@ class ListProductWithApiPerformance extends AbstractApiPerformance
         $products = json_decode($response->getContent(), true)['_embedded']['items'];
         Assert::assertSame(100, count($products));
 
-        echo PHP_EOL. 'Profile complete: ' . $profile->getUrl() . PHP_EOL;
+        echo PHP_EOL . 'Profile complete: ' . $profile->getUrl() . PHP_EOL;
     }
 }

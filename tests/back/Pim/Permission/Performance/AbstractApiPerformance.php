@@ -35,9 +35,9 @@ abstract class AbstractApiPerformance extends WebTestCase
             ->createSystemUser();
     }
 
-    protected function createAuthenticatedClient()
+    protected function createAuthenticatedClient(string $connectionFlowType = null)
     {
-        [$clientId, $secret, $username, $password] = $this->createOAuthClient();
+        [$clientId, $secret, $username, $password] = $this->createApiConnection($connectionFlowType);
         $this->promoteUserToAdmin($username);
 
         [$accessToken] = $this->authenticate($clientId, $secret, $username, $password);
@@ -51,16 +51,19 @@ abstract class AbstractApiPerformance extends WebTestCase
         return $client;
     }
 
-    private function createOAuthClient(): array
+    private function createApiConnection(string $flowType = null): array
     {
         $consoleApp = new Application(static::$kernel);
         $consoleApp->setAutoExit(false);
+
         $input = new ArrayInput([
             'command' => 'akeneo:connectivity-connection:create',
-            'code'   => 'testcase_' . rand(),
+            'code' => 'testcase_' . rand(),
+            '--flow-type' => $flowType,
         ]);
         $output = new BufferedOutput();
         $consoleApp->run($input, $output);
+
         $content = $output->fetch();
         preg_match('/Client ID: (.+)\nSecret: (.+)\nUsername: (.+)\nPassword: (.+)$/', $content, $matches);
 
