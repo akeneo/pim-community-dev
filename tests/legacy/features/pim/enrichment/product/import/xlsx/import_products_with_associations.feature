@@ -26,8 +26,8 @@ Feature: Execute a job
     And I wait for the "xlsx_footwear_product_import" job to finish
     Then there should be 3 products
     Given I edit the "SKU-001" product
-    When I visit the "Associations" column tab
-    And I visit the "Cross sell" association type
+    When I visit the "Associations (3)" column tab
+    And I visit the "Cross sell (2)" association type
     Then I should see the text "2 product(s), 0 product model(s) and 1 group(s)"
 
   Scenario: Successfully skip associations with not existing product (owner side)
@@ -78,8 +78,8 @@ Feature: Execute a job
     And I wait for the "xlsx_footwear_product_import" job to finish
     Then there should be 3 products
     Given I edit the "SKU-001" product
-    When I visit the "Associations" column tab
-    And I visit the "Cross sell" association type
+    When I visit the "Associations (3)" column tab
+    And I visit the "Cross sell (2)" association type
     Then I should see the text "2 product(s), 0 product model(s) and 1 group(s)"
     And the english localizable value name of "SKU-001" should be "Before"
 
@@ -89,8 +89,8 @@ Feature: Execute a job
       | SKU-001 | sku-001    |
       | SKU-002 | sku-002    |
     When I edit the "SKU-001" product
-    And I visit the "Associations" column tab
-    And I visit the "Cross sell" association type
+    And I visit the "Associations (0)" column tab
+    And I visit the "Cross sell (0)" association type
     And I add associations
     Then I check the rows "SKU-002"
     And I press the "Confirm" button in the popin
@@ -113,8 +113,8 @@ Feature: Execute a job
       | SKU-001 | sku-001    |
       | SKU-002 | sku-002    |
     When I edit the "SKU-001" product
-    And I visit the "Associations" column tab
-    And I visit the "Cross sell" association type
+    And I visit the "Associations (0)" column tab
+    And I visit the "Cross sell (0)" association type
     And I add associations
     Then I check the rows "SKU-002"
     And I press the "Confirm" button in the popin
@@ -129,8 +129,8 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish
     When I edit the "SKU-001" product
-    And I visit the "Associations" column tab
-    And I visit the "Cross sell" association type
+    And I visit the "Associations (0)" column tab
+    And I visit the "Cross sell (0)" association type
     Then I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
 
   @jira https://akeneo.atlassian.net/browse/PIM-5696
@@ -146,6 +146,6 @@ Feature: Execute a job
     When I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish
     And I edit the "123" product
-    And I visit the "Associations" column tab
-    And I visit the "Cross sell" association type
+    And I visit the "Associations (1)" column tab
+    And I visit the "Cross sell (0)" association type
     Then I should see the text "0 product(s), 0 product model(s) and 1 group(s)"
