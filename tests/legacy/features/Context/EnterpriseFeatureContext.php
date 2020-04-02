@@ -5,6 +5,7 @@ namespace Context;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Mink\Element\Element;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Pim\Behat\Context\AttributeValidationContext;
@@ -102,15 +103,26 @@ class EnterpriseFeatureContext extends FeatureContext
      *
      * @return bool
      *
-     * @Then /^I should see that (.*) is a smart$/
+     * @Then /^I should see that (.*) is a smart attribute with (.*)$/
      */
-    public function iShouldSeeThatAttributeIsASmart($attribute)
+    public function iShouldSeeThatAttributeIsASmartAttribute(string $attribute, string $ruleLabel): void
     {
         $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($attribute);
 
         foreach ($icons as $icon) {
-            if ($icon->getParent()->hasClass('from-smart')) {
-                return true;
+            /** @var Element $parent */
+            $parent = $icon->getParent();
+            if ($parent->hasClass('from-smart')) {
+                $expected = sprintf('This attribute can be updated by a rule: %s', $ruleLabel);
+                if (trim($parent->getText()) !== $expected) {
+                    throw $this->createExpectationException(sprintf(
+                        'Smart attribute helper does not match: "%s" found, expected "%s"',
+                        trim($parent->getText()),
+                        $expected
+                    ));
+                }
+
+                return;
             }
         }
 
@@ -124,9 +136,9 @@ class EnterpriseFeatureContext extends FeatureContext
      *
      * @return bool
      *
-     * @Then /^I should not see that (.*) is a smart$/
+     * @Then /^I should not see that (.*) is a smart attribute$/
      */
-    public function iShouldNotSeeThatAttributeIsASmart($attribute)
+    public function iShouldNotSeeThatAttributeIsASmartAttribute($attribute)
     {
         $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($attribute);
 
