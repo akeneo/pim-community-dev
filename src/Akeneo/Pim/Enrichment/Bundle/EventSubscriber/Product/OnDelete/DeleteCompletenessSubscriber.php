@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Remover\CompletenessRemover;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,8 +20,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class DeleteCompletenessSubscriber implements EventSubscriberInterface
 {
-    use CheckProductAndEventTrait;
-
     /** @var CompletenessRemover */
     private $completenessRemover;
 
@@ -43,11 +42,12 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
     public function deleteProduct(RemoveEvent $event) : void
     {
         $product = $event->getSubject();
-        if (!$this->checkProduct($product) || !$this->checkEvent($event)) {
+        if (!$this->checkProduct($product) || !$this->checkEventUnitary($event)) {
             return;
         }
 
-        $this->completenessRemover->deleteOneProduct($event->getSubjectId());
+        $this->completenessRemover
+            ->deleteOneProduct($event->getSubjectId());
     }
 
     public function deleteAllProducts(RemoveEvent $event)
@@ -62,5 +62,18 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
         if (!empty($products)) {
             $this->completenessRemover->deleteProducts($products);
         }
+    }
+
+    private function checkProduct($product): bool
+    {
+        return $product instanceof ProductInterface
+            // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
+            && !($product instanceof PublishedProduct);
+    }
+
+    private function checkEventUnitary(RemoveEvent $event): bool
+    {
+        return $event->hasArgument('unitary')
+            && true === $event->getArgument('unitary');
     }
 }
