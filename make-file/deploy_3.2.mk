@@ -1,7 +1,13 @@
-PEC_TAG ?= master
 INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
 PFID ?= srnt-$(INSTANCE_NAME)
+
+PHONY: get-last-pec-tag
+get-last-pec-tag:
+	git clone git@github.com:akeneo/pim-enterprise-cloud.git; \
+	export RELEASE_TO_DEPLOY=$$(cd pim-enterprise-cloud; git describe --tags $$(git rev-list --tags --max-count=1)); \
+	echo $${RELEASE_TO_DEPLOY};
+	PEC_TAG := $${RELEASE_TO_DEPLOY}
 
 PHONY: create-main-tf-for-pim3
 create-main-tf-for-pim3:
@@ -36,7 +42,7 @@ create-pimyaml-for-pim3:
 	cat ~/project/deployments/config/catalog-3.2.yaml >> ~/3.2/values.yaml
 
 .PHONY: deploy-pim3
-deploy-pim3: create-main-tf-for-pim3 terraform-init-for-pim3 create-pimyaml-for-pim3 terraform-apply-for-pim3
+deploy-pim3: get-last-pec-tag create-main-tf-for-pim3 terraform-init-for-pim3 create-pimyaml-for-pim3 terraform-apply-for-pim3
 
 .PHONY: terraform-init-for-pim3
 terraform-init-for-pim3:
@@ -50,4 +56,3 @@ terraform-apply-for-pim3:
 .PHONY: terraform-destroy-for-pim3
 terraform-destroy-for-pim3:
 	cd ~/3.2 && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
-
