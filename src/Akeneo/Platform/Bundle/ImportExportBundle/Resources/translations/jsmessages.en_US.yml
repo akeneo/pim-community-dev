@@ -58,7 +58,7 @@ pim_import_export:
                 show_profile.title: Show profile
                 download_log.title: Download log
                 download_file.title: Download generated file
-                download_archive.title: Downlaod generated archive
+                download_archive.title: Download generated archive
             summary:
                 fetching:        Collecting data about job execution...
                 warning:         Warning
