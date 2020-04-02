@@ -144,7 +144,8 @@ akeneo_connectivity.connection:
       content: 여러분의 피드백은 매우 중요합니다. 질문 하나가 나오는 이 설문조사에 답하여 다음 위젯을 선택하는 데 도움을 주시기 바랍니다.
       button: 시작!
     connection_selector:
-      title: 소스 연결
+      title:
+        source: 소스 연결
       all: 모두
     charts:
       inbound: 인바운드

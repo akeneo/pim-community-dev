@@ -144,7 +144,8 @@ akeneo_connectivity.connection:
       content: フィードバックは私たちにとってとても貴重です。このアンケート調査に回答して、次のウィジェットを選択する参考にさせてください。
       button: はじめよう！
     connection_selector:
-      title: ソース接続
+      title:
+        source: ソース接続
       all: すべて
     charts:
       inbound: 受信
