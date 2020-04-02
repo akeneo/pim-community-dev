@@ -15,6 +15,7 @@ $rules = [
         'Akeneo\Tool',
         'Akeneo\Pim\Automation\RuleEngine\Component',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
+        'Webmozart\Assert\Assert',
 
         // TODO: the rule feature uses the datagrid
         'Oro\Bundle\PimDataGridBundle',
