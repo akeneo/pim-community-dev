@@ -699,7 +699,7 @@ define([
 
             const formData = this.getFormData();
             const locale = UserContext.get('catalogLocale');
-            const productIdentifier = getLabel(formData.meta.label, locale, formData.code || formData.identifier);
+            const productLabel = getLabel(formData.meta.label, locale, formData.code || formData.identifier);
 
             let modal = new Backbone.BootstrapModal({
               modalOptions: {
@@ -712,7 +712,7 @@ define([
               }),
               innerDescription: __(
                 'pim_enrich.entity.product.module.associations.manage_description',
-                {productIdentifier}
+                {productLabel}
               ),
               content: '',
               okText: __('pim_common.confirm'),
