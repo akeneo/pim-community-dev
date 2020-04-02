@@ -21,7 +21,6 @@ class GetMeasurementFamiliesAction
     public function __construct(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
     {
         $this->measurementFamilyRepository = $measurementFamilyRepository;
-        $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
     public function __invoke(): JsonResponse

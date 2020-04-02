@@ -7,6 +7,18 @@ const Header = styled.header`
   padding: 40px 40px 20px;
   background: white;
   z-index: 10;
+  height: 130px;
+`;
+
+const PageHeaderPlaceholder = styled.div`
+  width: 200px;
+  height: 34px;
+`;
+
+const ButtonCollection = styled.div.attrs(() => ({className: 'AknTitleContainer-actionsContainer AknButtonList'}))`
+  > :not(:first-child) {
+    margin-left: 10px;
+  }
 `;
 
 type PageHeaderProps = {
@@ -17,7 +29,14 @@ type PageHeaderProps = {
   imageSrc?: string;
 };
 
-const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, imageSrc}: PropsWithChildren<PageHeaderProps>) => (
+const PageHeader = ({
+  children: title,
+  breadcrumb,
+  buttons,
+  userButtons,
+  state,
+  imageSrc,
+}: PropsWithChildren<PageHeaderProps>) => (
   <Header>
     <div className="AknTitleContainer-line">
       {imageSrc && (
@@ -33,11 +52,11 @@ const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, i
             <div className="AknTitleContainer-buttonsContainer">
               {userButtons}
               {buttons && (
-                <div className="AknTitleContainer-actionsContainer AknButtonList">
+                <ButtonCollection>
                   {buttons.map((button, index) => (
                     <Fragment key={index}>{button}</Fragment>
                   ))}
-                </div>
+                </ButtonCollection>
               )}
             </div>
           </div>
@@ -51,4 +70,4 @@ const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, i
   </Header>
 );
 
-export {PageHeader};
+export {PageHeader, PageHeaderPlaceholder};

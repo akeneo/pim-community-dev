@@ -164,6 +164,7 @@ pim_common:
     before: Before
     by: by
     cancel: Cancel
+    close: Close
     code: Code
     confirm: Confirm
     confirm_deletion: Confirm deletion
@@ -190,6 +191,7 @@ pim_common:
     not_available: N/A
     now: Now
     ok: OK
+    other_actions: Other actions
     permissions: Permissions
     previous: Previous
     properties: Properties

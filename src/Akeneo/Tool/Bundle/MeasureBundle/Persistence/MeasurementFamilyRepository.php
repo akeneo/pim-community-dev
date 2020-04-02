@@ -107,6 +107,32 @@ SQL;
         $this->measurementFamilyCache = [];
     }
 
+    public function deleteByCode(MeasurementFamilyCode $measurementFamilyCode)
+    {
+        $sql = <<<SQL
+    DELETE FROM akeneo_measurement
+    WHERE code = :code
+SQL;
+
+        $affectedRows = $this->sqlConnection->executeUpdate(
+            $sql,
+            [
+                'code' => $measurementFamilyCode->normalize(),
+            ]
+        );
+
+        if (1 !== $affectedRows) {
+            throw new MeasurementFamilyNotFoundException();
+        }
+
+        if (isset($this->measurementFamilyCache[$measurementFamilyCode->normalize()])) {
+            unset($this->measurementFamilyCache[$measurementFamilyCode->normalize()]);
+        }
+        if (isset($this->allMeasurementFamiliesCache[$measurementFamilyCode->normalize()])) {
+            unset($this->allMeasurementFamiliesCache[$measurementFamilyCode->normalize()]);
+        }
+    }
+
     private function hydrateMeasurementFamily(
         string $code,
         string $normalizedLabels,

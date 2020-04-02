@@ -1,8 +1,8 @@
-import {MeasurementFamily, Operator} from 'akeneomeasure/model/measurement-family';
+import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
+import {Operator} from 'akeneomeasure/model/operation';
+import {LocaleCode} from 'akeneomeasure/model/locale';
 
-type LocaleCode = string;
-
-type FormState = {
+type CreateMeasurementFamilyForm = {
   family_code: string;
   family_label: string;
   standard_unit_code: string;
@@ -10,7 +10,7 @@ type FormState = {
   standard_unit_symbol: string;
 };
 
-const createFormState = () => {
+const initializeCreateMeasurementFamilyForm = () => {
   return Object.freeze({
     family_code: '',
     family_label: '',
@@ -20,7 +20,7 @@ const createFormState = () => {
   });
 };
 
-const createMeasurementFamilyFromFormState = (data: FormState, locale: LocaleCode): MeasurementFamily => {
+const createMeasurementFamilyFromForm = (data: CreateMeasurementFamilyForm, locale: LocaleCode): MeasurementFamily => {
   return {
     code: data.family_code,
     labels: {
@@ -42,7 +42,8 @@ const createMeasurementFamilyFromFormState = (data: FormState, locale: LocaleCod
         ],
       },
     ],
+    is_locked: false,
   };
 };
 
-export {FormState, createFormState, createMeasurementFamilyFromFormState};
+export {CreateMeasurementFamilyForm, initializeCreateMeasurementFamilyForm, createMeasurementFamilyFromForm};

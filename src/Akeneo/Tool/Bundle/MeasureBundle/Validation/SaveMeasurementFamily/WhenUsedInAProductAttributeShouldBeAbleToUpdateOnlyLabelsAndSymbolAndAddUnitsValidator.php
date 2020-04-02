@@ -11,10 +11,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Validator\Validation;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

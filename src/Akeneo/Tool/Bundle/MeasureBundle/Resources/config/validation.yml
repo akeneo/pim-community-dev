@@ -84,3 +84,36 @@ Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasu
         - Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\StandardUnitCodeOperationShouldBeMultiplyByOne: { groups: [other_constraints] }
         - Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnits: { groups: [other_constraints] }
         - Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\Count: { groups: [other_constraints] }
+
+Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyCommand:
+    constraints:
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\DeleteMeasurementFamily\ShouldNotBeUsedByProductAttribute: ~
+
+Akeneo\Tool\Bundle\MeasureBundle\Application\ValidateUnit\ValidateUnitCommand:
+    group_sequence:
+        - ValidateUnitCommand
+        - other_constraints
+    constraints:
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\Unit\CodeMustBeUnique: { groups: [other_constraints] }
+    properties:
+        code:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
+        labels:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
+        symbol:
+            - Type: string
+            - Length:
+                  max: 255
+        convert_from_standard:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationCount: ~
+            - All:
+                - Collection:
+                    fields:
+                        operator:
+                            - NotBlank: ~
+                            - Type: string
+                            - Choice:
+                                choices: [mul, div, add, sub]
+                                message: pim_measurements.validation.measurement_family.units.operation.invalid_operator
+                        value:
+                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationValue: ~

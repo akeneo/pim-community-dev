@@ -42,16 +42,22 @@ const ModalTitleContainer = styled.div.attrs(() => ({className: 'AknFullPage-tit
   margin-bottom: 16px;
 `;
 
+const ModalDescription = styled.div`
+  font-size: ${props => props.theme.fontSize.bigger};
+  line-height: 1.5;
+  margin-bottom: 10px;
+`;
+
 type ModalTitleProps = {
   title: string;
   subtitle?: string;
 };
 
-const ModalTitle = ({title, subtitle}: ModalTitleProps) => (
-  <ModalTitleContainer>
+const ModalTitle = ({title, subtitle, ...props}: ModalTitleProps) => (
+  <ModalTitleContainer {...props}>
     {subtitle && <div className="AknFullPage-subTitle">{subtitle}</div>}
     <div className="AknFullPage-title">{title}</div>
   </ModalTitleContainer>
 );
 
-export {Modal, ModalCloseButton, ModalBodyWithIllustration, ModalTitle};
+export {Modal, ModalCloseButton, ModalBodyWithIllustration, ModalTitle, ModalDescription};

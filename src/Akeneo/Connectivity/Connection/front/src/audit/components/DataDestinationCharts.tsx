@@ -31,7 +31,13 @@ export const DataDestinationCharts = () => {
         <DataDestinationChartsContainer>
             <Section title={<Translate id='akeneo_connectivity.connection.dashboard.charts.outbound' />}>
                 {!noConnection && (
-                    <ConnectionSelect connections={connections} onChange={code => setSelectedConnectionCode(code)} />
+                    <ConnectionSelect
+                        connections={connections}
+                        onChange={code => setSelectedConnectionCode(code)}
+                        label={
+                            <Translate id='akeneo_connectivity.connection.dashboard.connection_selector.title.destination' />
+                        }
+                    />
                 )}
             </Section>
 

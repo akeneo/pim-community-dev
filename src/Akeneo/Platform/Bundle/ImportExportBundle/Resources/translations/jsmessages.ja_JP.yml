@@ -169,10 +169,16 @@ pim_enrich:
       module:
         delete:
           confirm: このインポートプロファイルを削除してもよろしいですか。
+      flash:
+        delete:
+          success: インポートプロファイルを正常に削除しました
     export_profile:
       module:
         delete:
           confirm: このエクスポートプロファイルを削除してもよろしいですか。
+      flash:
+        delete:
+          success: エクスポートプロファイルを正常に削除しました
 pim_title:
   pim_importexport_export_profile_index: エクスポートプロファイルの管理
   pim_importexport_export_profile_edit: エクスポートプロファイル {{ job.label }}|編集

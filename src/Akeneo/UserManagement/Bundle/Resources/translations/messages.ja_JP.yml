@@ -40,6 +40,13 @@ pim_user:
       has_group: グループあり
       active: 有効
       inactive: 無効
+    fields_errors:
+      new_password:
+        minimum_length: パスワードは2文字以上必要です
+      new_password_repeat:
+        not_match: パスワードが一致しません
+      current_password:
+        wrong: パスワードが間違っています
     tabs:
       general:
         title: 全般

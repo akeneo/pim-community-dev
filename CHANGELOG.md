@@ -9,6 +9,7 @@
 - PIM-9110: avoid deadlock error when loading product and product models in parallel with the API
 - PIM-9113: Locale Specific attribute breaks product grid
 - PIM-9157: Fix performance issue when loading the data of a product group
+- PIM-9163: total_fields limit of elasticsearch should be configurable
 
 ## New features
 
@@ -24,6 +25,8 @@
 
 ### Codebase
 
+- Change constructor of `Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader` to
+    - add `Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelController` to
     - add `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface $productEditDataFilter`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController` to

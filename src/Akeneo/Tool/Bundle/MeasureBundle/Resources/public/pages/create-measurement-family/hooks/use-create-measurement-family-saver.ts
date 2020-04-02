@@ -26,7 +26,7 @@ const useCreateMeasurementFamilySaver = (): Saver => {
     if (!response.ok) {
       return {
         success: false,
-        errors: (await response.json()).errors,
+        errors: await response.json(),
       };
     }
 

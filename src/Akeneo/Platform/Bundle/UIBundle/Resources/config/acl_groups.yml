@@ -10,6 +10,8 @@ pim_enrich.acl_group.channel:
     order: 50
 pim_enrich.acl_group.currency:
     order: 60
+pim_enrich.acl_group.measurements:
+    order: 65
 pim_enrich.acl_group.family:
     order: 70
 pim_enrich.acl_group.group:

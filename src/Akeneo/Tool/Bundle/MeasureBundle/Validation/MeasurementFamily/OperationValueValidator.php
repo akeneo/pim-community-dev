@@ -1,15 +1,6 @@
 <?php
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
 
 use Symfony\Component\Validator\Constraint;
@@ -29,8 +20,8 @@ class OperationValueValidator extends ConstraintValidator
             [
                 new NotBlank(),
                 new Callback(
-                    function ($value, ExecutionContextInterface $context, $payload) {
-                        if (null !== $value && !is_numeric($value)) {
+                    function ($value, ExecutionContextInterface $context) {
+                        if (null !== $value && '' !== $value && !is_numeric($value)) {
                             $context->buildViolation(OperationValue::VALUE_SHOULD_BE_A_NUMBER_IN_A_STRING)
                                 ->addViolation();
                         }

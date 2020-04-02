@@ -4,6 +4,14 @@ import '@testing-library/jest-dom/extend-expect';
 import {renderHook} from '@testing-library/react-hooks';
 import {useCreateMeasurementFamilySaver} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
 
+declare global {
+  namespace NodeJS {
+    interface Global {
+      fetch: any;
+    }
+  }
+}
+
 const measurementFamily = Object.freeze({
   code: 'custom_metric',
   labels: {
@@ -25,6 +33,7 @@ const measurementFamily = Object.freeze({
       ],
     },
   ],
+  is_locked: false,
 });
 
 afterEach(() => {
@@ -49,17 +58,14 @@ test('It returns a success response when saving', async () => {
 test('It returns a list of errors when there is a validation problem', async () => {
   const errors = [
     {
-      property: 'code',
+      propertyPath: 'code',
       message: 'This field can only contain letters, numbers, and underscores.',
     },
   ];
 
   global.fetch = jest.fn().mockImplementation(() => ({
     ok: false,
-    json: () =>
-      Promise.resolve({
-        errors: errors,
-      }),
+    json: () => Promise.resolve(errors),
   }));
 
   const {result} = renderHook(() => useCreateMeasurementFamilySaver());

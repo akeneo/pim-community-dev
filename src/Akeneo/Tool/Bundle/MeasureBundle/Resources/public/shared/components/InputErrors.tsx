@@ -1,18 +1,29 @@
 import React from 'react';
+import styled from 'styled-components';
 import {ValidationError} from 'akeneomeasure/model/validation-error';
 
+const Container = styled.div`
+  .AknFieldContainer-validationError {
+    background-size: 20px;
+  }
+`;
+
 type InputErrorsProps = {
-  errors: ValidationError[];
+  errors?: ValidationError[];
 };
 
-const InputErrors = ({errors}: InputErrorsProps) => (
-  <div className="AknFieldContainer-footer AknFieldContainer-validationErrors">
-    {errors.map((error: ValidationError, key: number) => (
-      <span className="AknFieldContainer-validationError error-message" key={key}>
-        {error.message}
-      </span>
-    ))}
-  </div>
-);
+const InputErrors = ({errors = []}: InputErrorsProps) => {
+  if (0 === errors.length) return null;
+
+  return (
+    <Container className="AknFieldContainer-footer AknFieldContainer-validationErrors">
+      {errors.map((error: ValidationError, key: number) => (
+        <span className="AknFieldContainer-validationError error-message" key={key}>
+          {error.message}
+        </span>
+      ))}
+    </Container>
+  );
+};
 
 export {InputErrors};

@@ -1,15 +1,6 @@
 <?php
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\Common;
 
 use Symfony\Component\Validator\Constraint;
@@ -34,7 +25,7 @@ class LabelCollectionValidator extends ConstraintValidator
 
         foreach ($labels as $localeCode => $label) {
             $this->validateLocaleCode($validator, $localeCode);
-            $this->validateLabelForLocale($validator, $label);
+            $this->validateLabelForLocale($validator, $label, $localeCode);
         }
     }
 
@@ -54,12 +45,14 @@ class LabelCollectionValidator extends ConstraintValidator
                 $this->context->buildViolation(
                     $violation->getMessage(),
                     $violation->getParameters()
-                )->addViolation();
+                )
+                ->atPath(sprintf('[%s]', $localeCode))
+                ->addViolation();
             }
         }
     }
 
-    private function validateLabelForLocale(ValidatorInterface $validator, $label): void
+    private function validateLabelForLocale(ValidatorInterface $validator, string $label, string $localeCode): void
     {
         $violations = $validator->validate($label, [
             new Constraints\NotNull(),
@@ -72,7 +65,9 @@ class LabelCollectionValidator extends ConstraintValidator
                 $this->context->buildViolation(
                     $violation->getMessage(),
                     $violation->getParameters()
-                )->addViolation();
+                )
+                ->atPath(sprintf('[%s]', $localeCode))
+                ->addViolation();
             }
         }
     }

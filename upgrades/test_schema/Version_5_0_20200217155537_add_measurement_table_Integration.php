@@ -61,7 +61,7 @@ final class Version_5_0_20200217155537_add_measurement_table_Integration extends
         $schemaManager = $this->get('database_connection')->getSchemaManager();
         $tableColumns = $schemaManager->listTableColumns('akeneo_measurement');
         foreach ($tableColumns as $actualColumn) {
-            $actualColumnsAndTypes[$actualColumn->getName()] =  $actualColumn->getType()->getName();
+            $actualColumnsAndTypes[$actualColumn->getName()] = $actualColumn->getType()->getName();
         }
         Assert::assertEquals($expectedColumnsAndTypes, $actualColumnsAndTypes);
     }
