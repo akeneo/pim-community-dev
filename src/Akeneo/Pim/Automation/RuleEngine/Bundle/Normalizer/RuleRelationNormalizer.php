@@ -11,10 +11,12 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer;
 
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslationInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelationInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Rule relation normalizer
@@ -42,10 +44,14 @@ class RuleRelationNormalizer implements NormalizerInterface, CacheableSupportsMe
      */
     public function normalize($ruleRelation, $format = null, array $context = [])
     {
+        Assert::isInstanceOf($ruleRelation, RuleRelationInterface::class);
+
+        /** @var $ruleRelation RuleRelationInterface */
         return [
             'rule'      => $ruleRelation->getRuleDefinition()->getCode(),
             'attribute' => $this->doctrine->getManagerForClass($ruleRelation->getResourceName())
-                ->find($ruleRelation->getResourceName(), $ruleRelation->getResourceId())->getCode()
+                ->find($ruleRelation->getResourceName(), $ruleRelation->getResourceId())->getCode(),
+            'labels'    => $this->getRuleDefintionLabels($ruleRelation),
         ];
     }
 
@@ -60,5 +66,16 @@ class RuleRelationNormalizer implements NormalizerInterface, CacheableSupportsMe
     public function hasCacheableSupportsMethod(): bool
     {
         return true;
+    }
+
+    private function getRuleDefintionLabels(RuleRelationInterface $ruleRelation): array
+    {
+        $result = [];
+        foreach ($ruleRelation->getRuleDefinition()->getTranslations() as $translation) {
+            /** @var $translation RuleDefinitionTranslationInterface */
+            $result[$translation->getLocale()] = $translation->getLabel();
+        }
+
+        return $result;
     }
 }
