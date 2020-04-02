@@ -64,7 +64,6 @@ extensions:
         position: 1000
         config:
             alias: rule-grid
-            localeKey: dataLocale
 
     pim-rule-index-confirm-button:
         module: pim/form/common/index/confirm-button

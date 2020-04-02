@@ -6,7 +6,7 @@ pimee_catalog_rule:
                 execute: Execute
             title: Rules
             column:
-                code: Code
+                label: Label
                 conditions: Condition
                 actions: Action
                 impacted_product_count:
