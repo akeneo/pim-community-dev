@@ -29,7 +29,7 @@ final class Operation
         Assert::regex(
             $value,
             '~^[0-9]*\.?[0-9]+$~',
-            sprintf('Expecting operation value to be a numeric, %s given', $value)
+            sprintf('Expecting operation value to be a numeric, "%s" given', $value)
         );
 
         $this->operator = $operator;
