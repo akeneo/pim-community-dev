@@ -9,3 +9,16 @@ services:
             - '@logger'
         tags:
             - { name: kernel.event_subscriber }
+
+    akeneo_rule_engine.event_subscriber.installer:
+        class: Akeneo\Tool\Bundle\RuleEngineBundle\EventSubscriber\InstallerSubscriber
+        arguments:
+            - '@akeneo_rule_engine.event_subscriber.rules_installer'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_rule_engine.event_subscriber.rules_installer:
+        class: Akeneo\Tool\Bundle\RuleEngineBundle\EventSubscriber\RulesInstaller
+        arguments:
+            - '@filesystem'
+            - '%kernel.project_dir%'
