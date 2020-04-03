@@ -45,6 +45,7 @@ services:
             - '@pim_volume_monitoring.persistence.query.count_products'
             - '@pim_volume_monitoring.persistence.query.count_locales'
             - '@pim_volume_monitoring.persistence.query.count_families'
+            - '@pim_volume_monitoring.persistence.query.count_attributes'
             - '@pim_volume_monitoring.persistence.query.count_users'
             - '@pim_volume_monitoring.persistence.query.count_product_models'
             - '@pim_volume_monitoring.persistence.query.count_variant_products'
