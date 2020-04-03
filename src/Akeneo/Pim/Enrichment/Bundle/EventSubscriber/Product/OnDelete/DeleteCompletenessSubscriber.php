@@ -51,15 +51,23 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
 
     public function deleteAllProducts(RemoveEvent $event)
     {
-        $products = $event->getSubject();
-        if (!is_array($products) || !is_array($event->getSubjectId())) {
+        $products = array_values($event->getSubject());
+        $productIds = $event->getSubjectId();
+
+        if (!is_array($products) || !is_array($productIds)) {
             return;
         }
-        $products = array_filter($products, function ($product) {
-            return $this->checkProduct($product);
-        });
-        if (!empty($products)) {
-            $this->completenessRemover->deleteProducts($products);
+        $productGoodIds =[];
+
+        foreach ($products as $key => $product) {
+            if ($this->checkProduct($product)) {
+                $productGoodIds[] = $productIds[$key];
+            }
+        }
+
+        if (!empty($productGoodIds)) {
+            $this->completenessRemover
+                ->deleteProducts($productGoodIds);
         }
     }
 

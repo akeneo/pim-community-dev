@@ -35,6 +35,38 @@ class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompleten
         $this->assertEquals(1, $completeness->count());
     }
 
+    public function testCompletenessIsUpdatedWhenProductsAreDeleted()
+    {
+        $products = $this->get('pim_catalog.repository.product')
+            ->findAll();
+
+        if (count($products) !== 3) {
+            throw new \RuntimeException("There should be 3 products.");
+        }
+        // remove product with even ID from deletion scheme
+        $productsToDelete = array_filter($products, function($p) {
+            return $p->getId() % 2 != 0;
+        });
+        // create a map of expected completeness
+        $expectedCompleteness = [];
+        foreach ($products as $product) {
+            $expectedCompleteness[$product->getId()] =
+                $product->getId() % 2 != 0 ? 0 : 1;
+        }
+
+        // mass remove all products in deletion scheme
+        $this->get('pim_catalog.remover.product')
+            ->removeAll($productsToDelete);
+
+        foreach ($expectedCompleteness as $id => $cplt) {
+            $this->assertEquals(
+                $cplt,
+                $this->getProductCompletenesses()->fromProductId($id)->count(),
+                sprintf("Check completeness of product %d is %d.", $id, $cplt)
+            );
+        }
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -53,6 +85,15 @@ class RemoveCompletenessWhenDeletingProductIntegration extends AbstractCompleten
         );
         $this->createProduct(
             'my_product2',
+            [
+                'family' => 'family',
+                'values' => [
+                    'a_text' => [['scope' => null, 'locale' => null, 'data' => true]],
+                ],
+            ]
+        );
+        $this->createProduct(
+            'my_product3',
             [
                 'family' => 'family',
                 'values' => [
