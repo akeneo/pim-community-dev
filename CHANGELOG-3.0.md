@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.72 (2020-04-03)
+
 - PIM-9169: Fix error message when deleting user that created a project
 
 # 3.0.71 (2020-03-20)
