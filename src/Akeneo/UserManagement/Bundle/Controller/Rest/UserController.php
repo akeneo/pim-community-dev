@@ -13,6 +13,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -204,12 +205,9 @@ class UserController
     }
 
     /**
-     * @param Request $request
-     * @param int     $identifier
-     *
+     * @return JsonResponse|RedirectResponse
      * @throws \HttpException
      *
-     * @return JsonResponse|RedirectResponse
      */
     public function updateProfileAction(Request $request, int $identifier): Response
     {
@@ -314,7 +312,11 @@ class UserController
             return new Response(null, Response::HTTP_FORBIDDEN);
         }
 
-        $this->remover->remove($user);
+        try {
+            $this->remover->remove($user);
+        } catch (UserCannotBeDeletedException $e) {
+            return new JsonResponse(['message' => $this->translator->trans($e->getMessage())], 400);
+        }
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

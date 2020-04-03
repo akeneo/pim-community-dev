@@ -41,6 +41,9 @@ class DBDataCollector implements DataCollectorInterface
     protected $familyCountQuery;
 
     /** @var CountQuery */
+    protected $attributeCountQuery;
+
+    /** @var CountQuery */
     protected $userCountQuery;
 
     /** @var CountQuery */
@@ -78,6 +81,7 @@ class DBDataCollector implements DataCollectorInterface
         CountQuery        $productCountQuery,
         CountQuery        $localeCountQuery,
         CountQuery        $familyCountQuery,
+        CountQuery        $attributeCountQuery,
         CountQuery        $userCountQuery,
         CountQuery        $productModelCountQuery,
         CountQuery        $variantProductCountQuery,
@@ -96,6 +100,7 @@ class DBDataCollector implements DataCollectorInterface
         $this->variantProductCountQuery = $variantProductCountQuery;
         $this->localeCountQuery = $localeCountQuery;
         $this->familyCountQuery = $familyCountQuery;
+        $this->attributeCountQuery = $attributeCountQuery;
         $this->userCountQuery = $userCountQuery;
         $this->categoryCountQuery = $categoryCountQuery;
         $this->categoriesInOneCategoryAverageMax = $categoriesInOneCategoryAverageMax;
@@ -119,6 +124,7 @@ class DBDataCollector implements DataCollectorInterface
             'nb_product_models'              => $this->productModelCountQuery->fetch()->getVolume(),
             'nb_variant_products'            => $this->variantProductCountQuery->fetch()->getVolume(),
             'nb_families'                    => $this->familyCountQuery->fetch()->getVolume(),
+            'nb_attributes'                  => $this->attributeCountQuery->fetch()->getVolume(),
             'nb_users'                       => $this->userCountQuery->fetch()->getVolume(),
             'nb_categories'                  => $this->categoryCountQuery->fetch()->getVolume(),
             'nb_category_trees'              => $this->categoryTreeCountQuery->fetch()->getVolume(),
