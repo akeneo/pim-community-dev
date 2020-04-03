@@ -28,8 +28,18 @@ class RuleDefinitionRepository extends EntityRepository implements RuleDefinitio
     public function createDatagridQueryBuilder()
     {
         $qb = new RuleQueryBuilder($this->_em);
-        $qb->select('r.id, r.code, r.content, r.impactedSubjectCount');
         $qb->from($this->_entityName, 'r');
+
+        $labelExpr = '(CASE WHEN translation.label IS NULL THEN CONCAT(\'[\', r.code, \']\') ELSE translation.label END)';
+        $qb->leftJoin('r.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
+
+        $qb
+            ->addSelect('r.id')
+            ->addSelect('r.code')
+            ->addSelect('r.content')
+            ->addSelect('r.impactedSubjectCount')
+            ->addSelect('translation.label')
+            ->addSelect(sprintf('%s AS label', $labelExpr));
 
         return $qb;
     }
