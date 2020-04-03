@@ -70,6 +70,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue',
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface',

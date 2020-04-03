@@ -23,6 +23,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use Webmozart\Assert\Assert;
 
 class CalculateActionApplier implements ActionApplierInterface
 {
@@ -36,12 +37,7 @@ class CalculateActionApplier implements ActionApplierInterface
 
     public function applyAction(ActionInterface $action, array $items = [])
     {
-        if (!$this->supports($action)) {
-            throw new \LogicException(
-                sprintf('Action must be an instance of %s.', ProductCalculateActionInterface::class)
-            );
-        }
-
+        Assert::isInstanceOf($action, ProductCalculateActionInterface::class);
         foreach ($items as $item) {
             if ($this->actionCanBeAppliedToEntity($item, $action)) {
                 try {
@@ -74,8 +70,8 @@ class CalculateActionApplier implements ActionApplierInterface
     /**
      * We do not apply the action if:
      *  - entity has no family
-     *  - destination is not part of the family
-     *  - entity is variant (variant product or product model) and destination is not on the entity's variation level
+     *  - destination attribute does not belong to the family
+     *  - entity is variant (variant product or product model) and destination attribute is not on the entity's variation level
      */
     private function actionCanBeAppliedToEntity(
         EntityWithFamilyVariantInterface $entity,
@@ -101,12 +97,11 @@ class CalculateActionApplier implements ActionApplierInterface
         $value = $this->getOperandValue($entity, $action->getSource());
 
         foreach ($action->getOperationList() as $operation) {
-            $secondOperand = $this->getOperandValue($entity, $operation->getOperand());
-            if (null === $value || null === $secondOperand) {
-                // TODO: better error message
-                throw new NonApplicableActionException('Cannot apply operation: null argument');
-            }
-            $value = $this->applyOperation($operation->getOperator(), $value, $secondOperand);
+            $value = $this->applyOperation(
+                $operation->getOperator(),
+                $value,
+                $this->getOperandValue($entity, $operation->getOperand())
+            );
         }
 
         return $value;
@@ -132,7 +127,7 @@ class CalculateActionApplier implements ActionApplierInterface
         }
     }
 
-    private function getOperandValue(EntityWithValuesInterface $entity, Operand $operand): ?float
+    private function getOperandValue(EntityWithValuesInterface $entity, Operand $operand): float
     {
         if (null !== $operand->getConstantValue()) {
             return $operand->getConstantValue();
@@ -144,6 +139,13 @@ class CalculateActionApplier implements ActionApplierInterface
             return (float) $value->getData();
         }
 
-        return null;
+        throw new NonApplicableActionException(
+            sprintf(
+                'The entity has no value for %s-%s-%s',
+                $operand->getAttributeCode(),
+                $operand->getChannelCode() ?: '<all_channels>',
+                $operand->getLocaleCode() ?: '<all_locales>'
+            )
+        );
     }
 }
