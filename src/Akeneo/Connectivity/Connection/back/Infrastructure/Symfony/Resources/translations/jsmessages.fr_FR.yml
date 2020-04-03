@@ -144,7 +144,9 @@ akeneo_connectivity.connection:
       content: Vos retours sont très précieux à nos yeux. Voter pour le prochain widget que vous souhaitez voir apparaître sur ce tableau de bord !
       button: C'est parti !
     connection_selector:
-      title: Connexions sources
+      title:
+        source: Connexions sources
+        destination: Connexions destinations
       all: Toutes
     charts:
       inbound: En entrée du PIM
