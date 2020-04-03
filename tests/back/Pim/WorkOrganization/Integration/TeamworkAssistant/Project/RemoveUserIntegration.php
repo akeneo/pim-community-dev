@@ -35,6 +35,22 @@ class RemoveUserIntegration extends TeamworkAssistantTestCase
         $this->get('pim_user.remover.user')->remove($julia);
     }
 
+    function testThatAUserOwnerOfProjectCannotBeRemoved()
+    {
+        $this->expectException(UserCannotBeDeletedException::class);
+
+        $project = $this->createProject('High-Tech project', 'julia', 'en_US', 'ecommerce', [
+            [
+                'field'    => 'categories',
+                'operator' => 'IN',
+                'value'    => ['high_tech'],
+            ],
+        ]);
+
+        $julia = $this->get('pim_user.repository.user')->findOneByIdentifier('julia');
+        $this->get('pim_user.remover.user')->remove($julia);
+    }
+
     function testThatAUserNotLinkedToAProjectCanBeRemoved()
     {
         $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'ecommerce', [
