@@ -51,6 +51,7 @@
     },
     "require": {
         "akeneo/pim-community-dev": "dev-master",
+        "akeneo/pim-onboarder": "dev-master",
         "guzzlehttp/guzzle": "6.3.3",
         "hslavich/oneloginsaml-bundle": "1.4.1",
         "justinrainbow/json-schema": "^5.2",
@@ -109,5 +110,12 @@
         "before-commit-re": "Run all the checks on the Reference Entity Bounded Context",
         "before-commit-am": "Run all the checks on the Asset Manager Bounded Context"
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "repositories": {
+        "onboarder": {
+            "type": "vcs",
+            "url": "https://github.com/akeneo/pim-onboarder.git",
+            "branch": "master"
+        }
+    }
 }
