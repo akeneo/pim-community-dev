@@ -19,6 +19,7 @@ class OperandSpec extends ObjectBehavior
         $this->getAttributeCode()->shouldReturn('height');
         $this->getChannelCode()->shouldReturn(null);
         $this->getLocaleCode()->shouldReturn(null);
+        $this->getCurrencyCode()->shouldReturn(null);
         $this->getConstantValue()->shouldReturn(null);
     }
 
@@ -28,6 +29,7 @@ class OperandSpec extends ObjectBehavior
         $this->getAttributeCode()->shouldReturn('height');
         $this->getChannelCode()->shouldReturn('ecommerce');
         $this->getLocaleCode()->shouldReturn(null);
+        $this->getCurrencyCode()->shouldReturn(null);
         $this->getConstantValue()->shouldReturn(null);
     }
 
@@ -37,15 +39,27 @@ class OperandSpec extends ObjectBehavior
         $this->getAttributeCode()->shouldReturn('height');
         $this->getChannelCode()->shouldReturn(null);
         $this->getLocaleCode()->shouldReturn('en_US');
+        $this->getCurrencyCode()->shouldReturn(null);
         $this->getConstantValue()->shouldReturn(null);
     }
 
-    function it_can_represent_a_scopable__and_localizable_attribute_value()
+    function it_can_represent_a_scopable_and_localizable_attribute_value()
     {
         $this->beConstructedThrough('fromNormalized', [['field' => 'height', 'scope' => 'ecommerce', 'locale' => 'en_US']]);
         $this->getAttributeCode()->shouldReturn('height');
         $this->getChannelCode()->shouldReturn('ecommerce');
         $this->getLocaleCode()->shouldReturn('en_US');
+        $this->getCurrencyCode()->shouldReturn(null);
+        $this->getConstantValue()->shouldReturn(null);
+    }
+
+    function it_can_represent_a_price_value()
+    {
+        $this->beConstructedThrough('fromNormalized', [['field' => 'base_price', 'currency' => 'USD']]);
+        $this->getAttributeCode()->shouldReturn('base_price');
+        $this->getChannelCode()->shouldReturn(null);
+        $this->getLocaleCode()->shouldReturn(null);
+        $this->getCurrencyCode()->shouldReturn('USD');
         $this->getConstantValue()->shouldReturn(null);
     }
 
@@ -55,6 +69,7 @@ class OperandSpec extends ObjectBehavior
         $this->getAttributeCode()->shouldReturn(null);
         $this->getChannelCode()->shouldReturn(null);
         $this->getLocaleCode()->shouldReturn(null);
+        $this->getCurrencyCode()->shouldReturn(null);
         $this->getConstantValue()->shouldReturn(14.5);
     }
 

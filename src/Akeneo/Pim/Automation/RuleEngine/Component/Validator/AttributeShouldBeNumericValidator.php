@@ -22,6 +22,11 @@ use Webmozart\Assert\Assert;
 
 class AttributeShouldBeNumericValidator extends ConstraintValidator
 {
+    private const ALLOOWED_ATTRIBUTE_TYPES = [
+        AttributeTypes::NUMBER,
+        AttributeTypes::PRICE_COLLECTION,
+    ];
+
     /** @var GetAttributes */
     private $getAttributes;
 
@@ -44,7 +49,7 @@ class AttributeShouldBeNumericValidator extends ConstraintValidator
         }
 
         // TODO RUL-59 / RUL-60: Allow metrics and prices
-        if (AttributeTypes::NUMBER !== $attribute->type()) {
+        if (!in_array($attribute->type(), self::ALLOOWED_ATTRIBUTE_TYPES)) {
             $this->context->buildViolation(
                 $constraint->message,
                 ['%attribute_code%' => $attribute->code()]

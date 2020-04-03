@@ -12,7 +12,6 @@ use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class AttributeShouldBeNumericValidatorSpec extends ObjectBehavior
@@ -65,7 +64,7 @@ class AttributeShouldBeNumericValidatorSpec extends ObjectBehavior
             false,
             null,
             true,
-            'number',
+            'decimal',
             []
         ));
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
@@ -73,7 +72,29 @@ class AttributeShouldBeNumericValidatorSpec extends ObjectBehavior
         $this->validate('length', new AttributeShouldBeNumeric());
     }
 
-    function it_builds_a_violation_if_attribute_is_not_a_number(
+    function it_does_not_build_a_violation_if_attribute_is_a_price_collection(
+        GetAttributes $getAttributes,
+        ExecutionContextInterface $context
+    ) {
+        $getAttributes->forCode('price')->willReturn(
+            new Attribute(
+                'price',
+                AttributeTypes::PRICE_COLLECTION,
+                [],
+                false,
+                false,
+                null,
+                false,
+                'prices',
+                []
+            )
+        );
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate('price', new AttributeShouldBeNumeric());
+    }
+
+    function it_builds_a_violation_if_attribute_is_not_numeric(
         GetAttributes $getAttributes,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
@@ -92,7 +113,6 @@ class AttributeShouldBeNumericValidatorSpec extends ObjectBehavior
                 []
             )
         );
-
 
         $context->buildViolation($constraint->message, ['%attribute_code%' => 'description'])
                 ->shouldBeCalled()->willReturn($violationBuilder);

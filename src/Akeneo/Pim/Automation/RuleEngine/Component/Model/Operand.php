@@ -34,14 +34,23 @@ final class Operand
     /** @var string|null */
     private $localeCode;
 
+    /** @var string|null */
+    private $currencyCode;
+
     /** @var float|null */
     private $constantValue;
 
-    private function __construct(?string $attributeCode, ?string $channelCode, ?string $localeCode, ?float $constantValue)
-    {
+    private function __construct(
+        ?string $attributeCode,
+        ?string $channelCode,
+        ?string $localeCode,
+        ?string $currencyCode,
+        ?float $constantValue
+    ) {
         $this->attributeCode = $attributeCode;
         $this->channelCode = $channelCode;
         $this->localeCode = $localeCode;
+        $this->currencyCode = $currencyCode;
         $this->constantValue = $constantValue;
     }
 
@@ -64,8 +73,10 @@ final class Operand
         Assert::nullOrString($channelCode);
         $localeCode = $data['locale'] ?? null;
         Assert::nullOrString($localeCode);
+        $currencyCode = $data['currency'] ?? null;
+        Assert::nullOrString($currencyCode);
 
-        return new self($data['field'], $channelCode, $localeCode, null);
+        return new self($data['field'], $channelCode, $localeCode, $currencyCode, null);
     }
 
     private static function fromConstant(array $data): self
@@ -73,10 +84,11 @@ final class Operand
         Assert::keyNotExists($data, 'field');
         Assert::keyNotExists($data, 'scope');
         Assert::keyNotExists($data, 'locale');
+        Assert::keyNotExists($data, 'currency');
 
         Assert::numeric($data['value'], 'Operand expects a numeric "value" key');
 
-        return new self(null, null, null, (float) $data['value']);
+        return new self(null, null, null, null, (float) $data['value']);
     }
 
     public function getAttributeCode(): ?string
@@ -92,6 +104,11 @@ final class Operand
     public function getLocaleCode(): ?string
     {
         return $this->localeCode;
+    }
+
+    public function getCurrencyCode(): ?string
+    {
+        return $this->currencyCode;
     }
 
     public function getConstantValue(): ?float

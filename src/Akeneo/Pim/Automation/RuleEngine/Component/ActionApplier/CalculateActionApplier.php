@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operation;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
@@ -134,17 +135,24 @@ class CalculateActionApplier implements ActionApplierInterface
         }
 
         $value = $entity->getValue($operand->getAttributeCode(), $operand->getLocaleCode(), $operand->getChannelCode());
-        // TODO RUL-59 / RUL-60: get value from metric and price collection values
+        // TODO RUL-59 : get value from metric values
         if ($value instanceof ScalarValue && is_numeric($value->getData())) {
             return (float) $value->getData();
+        } elseif ($value instanceof PriceCollectionValueInterface) {
+            Assert::notNull($operand->getCurrencyCode());
+            $price = $value->getPrice($operand->getCurrencyCode());
+            if (null !== $price) {
+                return $price->getData();
+            }
         }
 
         throw new NonApplicableActionException(
             sprintf(
-                'The entity has no value for %s-%s-%s',
+                'The entity has no value for %s-%s-%s%s',
                 $operand->getAttributeCode(),
                 $operand->getChannelCode() ?: '<all_channels>',
-                $operand->getLocaleCode() ?: '<all_locales>'
+                $operand->getLocaleCode() ?: '<all_locales>',
+                $operand->getCurrencyCode() ? sprintf(' (%s)', $operand->getCurrencyCode()) : ''
             )
         );
     }

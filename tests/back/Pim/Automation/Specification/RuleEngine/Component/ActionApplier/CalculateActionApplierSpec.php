@@ -6,7 +6,10 @@ use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\CalculateActionAppl
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
+use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -116,13 +119,21 @@ class CalculateActionApplierSpec extends ObjectBehavior
         $product1 = (new Product())->setFamily($family->getWrappedObject());
         $product1->addValue(ScalarValue::localizableValue('total', 15, 'fr_FR'));
         $product1->addValue(ScalarValue::localizableValue('total', 50, 'en_US'));
+        $product1->addValue(PriceCollectionValue::value(
+            'base_price',
+            new PriceCollection([new ProductPrice(20.35,'EUR'), new ProductPrice(25, 'USD')])
+        ));
 
         $product2 = (new Product())->setFamily($family->getWrappedObject());
         $product2->addValue(ScalarValue::localizableValue('total', 15, 'fr_FR'));
         $product2->addValue(ScalarValue::localizableValue('total', 40, 'en_US'));
+        $product2->addValue(PriceCollectionValue::value(
+            'base_price',
+            new PriceCollection([new ProductPrice(17.75, 'EUR')])
+        ));
 
-        $propertySetter->setData($product1, 'ratio_fr_en', 30.0, ['scope' => null, 'locale' => null])->shouldBeCalled();
-        $propertySetter->setData($product2, 'ratio_fr_en', 37.5, ['scope' => null, 'locale' => null])->shouldBeCalled();
+        $propertySetter->setData($product1, 'ratio_fr_en', 50.35, ['scope' => null, 'locale' => null])->shouldBeCalled();
+        $propertySetter->setData($product2, 'ratio_fr_en', 55.25, ['scope' => null, 'locale' => null])->shouldBeCalled();
 
         $this->applyAction($this->productCalculateAction(), [$product1, $product2]);
     }
@@ -142,6 +153,11 @@ class CalculateActionApplierSpec extends ObjectBehavior
                     [
                         'operator' => 'multiply',
                         'value' => 100,
+                    ],
+                    [
+                        'operator' => 'add',
+                        'field' => 'base_price',
+                        'currency' => 'EUR',
                     ],
                 ],
             ]
