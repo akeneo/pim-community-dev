@@ -23,7 +23,7 @@ class MeasurementFamilyValidatorSpec extends ObjectBehavior
 
         $errors = $this->validate($asset);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(6);
+        $errors->shouldHaveCount(5);
     }
 
     function it_returns_an_empty_array_if_all_the_measurement_family_properties_are_valid()
@@ -49,7 +49,7 @@ class MeasurementFamilyValidatorSpec extends ObjectBehavior
                             [
                                 [
                                     'operator' => 'mul',
-                                    'value' => '0.000001',
+                                    'value' => '1',
                                 ],
                             ],
                         'symbol' => 'mm²',
@@ -71,6 +71,27 @@ class MeasurementFamilyValidatorSpec extends ObjectBehavior
                         'symbol' => 'cm²',
                     ],
                 ],
+        ];
+
+        $this->validate($measurementFamily)->shouldReturn([]);
+    }
+
+    function it_returns_an_empty_array_if_only_the_required_properties_are_given()
+    {
+        $measurementFamily = [
+            'code' => 'custom_metric_1',
+            'standard_unit_code' => 'CUSTOM_UNIT_1_1',
+            'units' => [
+                'CUSTOM_UNIT_1_1' => [
+                    'code' => 'CUSTOM_UNIT_1_1',
+                    'convert_from_standard' => [
+                        [
+                            'operator' => 'mul',
+                            'value' => '1',
+                        ],
+                    ],
+                ]
+            ],
         ];
 
         $this->validate($measurementFamily)->shouldReturn([]);

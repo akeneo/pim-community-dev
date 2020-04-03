@@ -27,7 +27,7 @@ class MeasurementFamilyValidator
             'type'                 => 'object',
             'properties'           => [
                 '_links'             => ['type' => 'object'],
-                'code'               => ['type' => ['string'],],
+                'code'               => ['type' => 'string'],
                 'labels'             => [
                     'type'              => ['object', 'array'],
                     'patternProperties' => [
@@ -40,7 +40,6 @@ class MeasurementFamilyValidator
                     'patternProperties' => [
                         '.+' => [
                             'type'       => 'object',
-                            'required'   => ['code', 'labels', 'convert_from_standard', 'symbol'],
                             'properties' => [
                                 'code'                  => ['type' => 'string'],
                                 'labels'                => [
@@ -61,12 +60,14 @@ class MeasurementFamilyValidator
                                     ]
                                 ],
                                 'symbol'                => ['type' => 'string']
-                            ]
+                            ],
+                            'required' => ['code', 'convert_from_standard'],
+                            'additionalProperties' => false,
                         ],
                     ]
                 ]
             ],
-            'required'             => ['code', 'labels', 'units', 'standard_unit_code'],
+            'required'             => ['code', 'units', 'standard_unit_code'],
             'additionalProperties' => false,
         ];
     }

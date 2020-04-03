@@ -537,10 +537,6 @@ class SaveMeasurementFamiliesActionEndToEnd extends ApiTestCase
                 'errors' =>
                     [
                         [
-                            'property' => 'labels',
-                            'message' => 'The property labels is required',
-                        ],
-                        [
                             'property' => 'units',
                             'message' => 'The property units is required',
                         ],
