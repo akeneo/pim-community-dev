@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * This commands reset the database fixtures for the asset family.
- * It also is an event listener used during the PIM isntallation.
+ * It also is an event listener used during the PIM installation.
  *
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
