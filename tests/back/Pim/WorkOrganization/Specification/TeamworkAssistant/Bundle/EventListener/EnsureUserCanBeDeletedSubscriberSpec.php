@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Eve
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\EnsureUserCanBeDeletedSubscriber;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\IsUserLinkedToProjectsQueryInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\IsUserOwnerOfProjectsQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
@@ -16,9 +17,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class EnsureUserCanBeDeletedSubscriberSpec extends ObjectBehavior
 {
-    function let(IsUserLinkedToProjectsQueryInterface $isUserLinkedToProjectsQuery)
-    {
-        $this->beConstructedWith($isUserLinkedToProjectsQuery);
+    function let(
+        IsUserLinkedToProjectsQueryInterface $isUserLinkedToProjectsQuery,
+        IsUserOwnerOfProjectsQueryInterface $isUserOwnerOfProjectsQuery
+    ) {
+        $this->beConstructedWith($isUserLinkedToProjectsQuery, $isUserOwnerOfProjectsQuery);
     }
 
     function it_is_initializable()
@@ -43,8 +46,24 @@ class EnsureUserCanBeDeletedSubscriberSpec extends ObjectBehavior
         $this->ensureUserCanBeDeleted($event)->shouldReturn(null);
     }
 
+    function it_throws_an_exception_if_user_is_owner_of_a_project(
+        IsUserLinkedToProjectsQueryInterface $isUserLinkedToProjectsQuery,
+        IsUserOwnerOfProjectsQueryInterface $isUserOwnerOfProjectsQuery,
+        GenericEvent $event,
+        UserInterface $user
+    ) {
+        $event->getSubject()->willReturn($user);
+        $user->getId()->willReturn(1);
+
+        $isUserLinkedToProjectsQuery->execute(1)->shouldNotBeCalled();
+        $isUserOwnerOfProjectsQuery->execute(1)->shouldBeCalled()->willReturn(true);
+
+        $this->shouldThrow(UserCannotBeDeletedException::class)->during('ensureUserCanBeDeleted', [$event]);
+    }
+
     function it_throws_an_exception_if_user_is_linked_to_a_project(
-        $isUserLinkedToProjectsQuery,
+        IsUserLinkedToProjectsQueryInterface $isUserLinkedToProjectsQuery,
+        IsUserOwnerOfProjectsQueryInterface $isUserOwnerOfProjectsQuery,
         GenericEvent $event,
         UserInterface $user
     ) {
@@ -52,12 +71,14 @@ class EnsureUserCanBeDeletedSubscriberSpec extends ObjectBehavior
         $user->getId()->willReturn(1);
 
         $isUserLinkedToProjectsQuery->execute(1)->shouldBeCalled()->willReturn(true);
+        $isUserOwnerOfProjectsQuery->execute(1)->shouldBeCalled()->willReturn(false);
 
         $this->shouldThrow(UserCannotBeDeletedException::class)->during('ensureUserCanBeDeleted', [$event]);
     }
 
-    function it_does_not_throw_an_exception_if_user_is_not_linked_to_a_project(
-        $isUserLinkedToProjectsQuery,
+    function it_does_not_throw_an_exception_if_user_is_not_linked_to_or_owner_of_a_project(
+        IsUserLinkedToProjectsQueryInterface $isUserLinkedToProjectsQuery,
+        IsUserOwnerOfProjectsQueryInterface $isUserOwnerOfProjectsQuery,
         GenericEvent $event,
         UserInterface $user
     ) {
@@ -65,6 +86,7 @@ class EnsureUserCanBeDeletedSubscriberSpec extends ObjectBehavior
         $user->getId()->willReturn(1);
 
         $isUserLinkedToProjectsQuery->execute(1)->shouldBeCalled()->willReturn(false);
+        $isUserOwnerOfProjectsQuery->execute(1)->shouldBeCalled()->willReturn(false);
 
         $this->ensureUserCanBeDeleted($event);
     }
