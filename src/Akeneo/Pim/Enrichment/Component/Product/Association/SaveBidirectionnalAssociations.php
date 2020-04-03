@@ -84,8 +84,10 @@ class SaveBidirectionnalAssociations implements EventSubscriberInterface
             }
         );
 
-        $ownerProductIds[] = $product->getId();
-        $ownerProductIdsFormatted = implode(", ", $ownerProductIds->toArray());
+        $ownerProductIdsFormatted = "''";
+        if (!empty($ownerProductIds->toArray())) {
+            $ownerProductIdsFormatted = implode(", ", $ownerProductIds->toArray());
+        }
 
         $query = <<<SQL
 DELETE FROM pim_catalog_association_product
