@@ -27,7 +27,7 @@ Feature: Execute a job
     Then there should be 3 products
     Given I edit the "SKU-001" product
     When I visit the "Associations (3)" column tab
-    And I visit the "Cross sell (2)" association type
+    And I visit the "Cross sell (3)" association type
     Then I should see the text "2 product(s), 0 product model(s) and 1 group(s)"
 
   @pim-2445
@@ -86,7 +86,7 @@ Feature: Execute a job
     Then there should be 3 products
     Given I edit the "SKU-001" product
     When I visit the "Associations (3)" column tab
-    And I visit the "Cross sell (2)" association type
+    And I visit the "Cross sell (3)" association type
     Then I should see the text "2 product(s), 0 product model(s) and 1 group(s)"
     And the english localizable value name of "SKU-001" should be "Before"
 

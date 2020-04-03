@@ -27,7 +27,7 @@ Feature: Execute a job
     Then there should be 3 products
     Given I edit the "SKU-001" product
     When I visit the "Associations (3)" column tab
-    And I visit the "Cross sell (2)" association type
+    And I visit the "Cross sell (3)" association type
     Then I should see the text "2 product(s), 0 product model(s) and 1 group(s)"
 
   Scenario: Successfully skip associations with not existing product (owner side)
@@ -79,7 +79,7 @@ Feature: Execute a job
     Then there should be 3 products
     Given I edit the "SKU-001" product
     When I visit the "Associations (3)" column tab
-    And I visit the "Cross sell (2)" association type
+    And I visit the "Cross sell (3)" association type
     Then I should see the text "2 product(s), 0 product model(s) and 1 group(s)"
     And the english localizable value name of "SKU-001" should be "Before"
 
@@ -147,5 +147,5 @@ Feature: Execute a job
     And I wait for the "xlsx_footwear_product_import" job to finish
     And I edit the "123" product
     And I visit the "Associations (1)" column tab
-    And I visit the "Cross sell (0)" association type
+    And I visit the "Cross sell (1)" association type
     Then I should see the text "0 product(s), 0 product model(s) and 1 group(s)"
