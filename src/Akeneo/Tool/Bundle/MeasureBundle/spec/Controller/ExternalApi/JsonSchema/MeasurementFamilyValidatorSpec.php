@@ -75,4 +75,25 @@ class MeasurementFamilyValidatorSpec extends ObjectBehavior
 
         $this->validate($measurementFamily)->shouldReturn([]);
     }
+
+    function it_returns_an_empty_array_if_only_the_required_properties_are_given()
+    {
+        $measurementFamily = [
+            'code' => 'custom_metric_1',
+            'standard_unit_code' => 'CUSTOM_UNIT_1_1',
+            'units' => [
+                'CUSTOM_UNIT_1_1' => [
+                    'code' => 'CUSTOM_UNIT_1_1',
+                    'convert_from_standard' => [
+                        [
+                            'operator' => 'mul',
+                            'value' => '0.000001',
+                        ],
+                    ],
+                ]
+            ],
+        ];
+
+        $this->validate($measurementFamily)->shouldReturn([]);
+    }
 }
