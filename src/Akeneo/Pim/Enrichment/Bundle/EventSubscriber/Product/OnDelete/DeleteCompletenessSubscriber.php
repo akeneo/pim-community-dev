@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Remover\CompletenessRemover;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -68,7 +67,7 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
     {
         return $product instanceof ProductInterface
             // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-            && !($product instanceof PublishedProduct);
+            && get_class($product) != 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
     }
 
     private function checkEventUnitary(RemoveEvent $event): bool
