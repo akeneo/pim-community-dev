@@ -52,12 +52,16 @@ class SaveBidirectionnalAssociations implements EventSubscriberInterface
     public function execute(ProductInterface $product): void
     {
         foreach ($product->getAssociations() as $association) {
-            if ($association->getAssociationType()->isBidirectional()) {
-                $this->saveBidirectionalProductAssociations($association, $product);
-                // TODO: $this->saveBidirectionalProductModelAssociations($association, $product);
-                // TODO: $this->saveBidirectionalProductModelToProductAssociations($association, $product);
-                // TODO: $this->saveBidirectionalProductToProductModelAssociations($association, $product);
-            }
+            $this->connection->transactional(
+                function () use ($association, $product) {
+                    if ($association->getAssociationType()->isBidirectional()) {
+                        $this->saveBidirectionalProductAssociations($association, $product);
+                        // TODO: $this->saveBidirectionalProductModelAssociations($association, $product);
+                        // TODO: $this->saveBidirectionalProductModelToProductAssociations($association, $product);
+                        // TODO: $this->saveBidirectionalProductToProductModelAssociations($association, $product);}
+                    }
+                }
+            );
         }
     }
 
