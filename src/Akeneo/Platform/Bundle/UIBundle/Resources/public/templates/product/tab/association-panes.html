@@ -11,7 +11,7 @@
                     <% _.each(associationTypes, function (associationTypeSwitch) { %>
                         <li data-association-type="<%- associationTypeSwitch.code %>">
                             <a class="AknDropdown-menuLink<% if (associationType === associationTypeSwitch) { %> AknDropdown-menuLink--active<% } %> label">
-                                <%- `${getLabel(associationTypeSwitch.labels, locale, associationTypeSwitch.code)} (${associationTypeSwitch.productCount + associationTypeSwitch.productModelCount})` %>
+                                <%- `${getLabel(associationTypeSwitch.labels, locale, associationTypeSwitch.code)} (${associationTypeSwitch.productCount + associationTypeSwitch.productModelCount + associationTypeSwitch.groupCount})` %>
                             </a>
                         </li>
                     <% }) %>
