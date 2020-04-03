@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Remover\CompletenessRemover;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
