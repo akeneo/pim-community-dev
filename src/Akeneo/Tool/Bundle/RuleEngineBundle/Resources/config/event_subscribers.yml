@@ -13,12 +13,12 @@ services:
     akeneo_rule_engine.event_subscriber.installer:
         class: Akeneo\Tool\Bundle\RuleEngineBundle\EventSubscriber\InstallerSubscriber
         arguments:
-            - '@akeneo_rule_engine.event_subscriber.rules_installer'
+            - '@akeneo_rule_engine.event_subscriber.assets_installer'
         tags:
             - { name: kernel.event_subscriber }
 
-    akeneo_rule_engine.event_subscriber.rules_installer:
-        class: Akeneo\Tool\Bundle\RuleEngineBundle\EventSubscriber\RulesInstaller
+    akeneo_rule_engine.event_subscriber.assets_installer:
+        class: Akeneo\Tool\Bundle\RuleEngineBundle\EventSubscriber\AssetsInstaller
         arguments:
             - '@filesystem'
             - '%kernel.project_dir%'

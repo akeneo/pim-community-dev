@@ -8,7 +8,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class RulesInstaller
+class AssetsInstaller
 {
     /** @var Filesystem */
     private $filesystem;
@@ -22,7 +22,7 @@ class RulesInstaller
         $this->projectDir = $projectDir;
     }
 
-    public function installRules(bool $shouldSymlink): void
+    public function installAssets(bool $shouldSymlink): void
     {
         $originDir = __DIR__ . '/../../../../Pim/Automation/RuleEngine/front/src';
         $targetDir = $this->projectDir . '/public/bundles/akeneopimruleengine';

@@ -18,18 +18,15 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * This commands reset the database fixtures for the rules
  * It also is an event listener used during the PIM installation.
- *
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class InstallerSubscriber implements EventSubscriberInterface
 {
-    /** @var RulesInstaller */
-    private $rulesInstaller;
+    /** @var AssetsInstaller */
+    private $assetsInstaller;
 
-    public function __construct(RulesInstaller $rulesInstaller)
+    public function __construct(AssetsInstaller $assetsInstaller)
     {
-        $this->rulesInstaller = $rulesInstaller;
+        $this->assetsInstaller = $assetsInstaller;
     }
 
     /**
@@ -38,14 +35,14 @@ class InstallerSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            InstallerEvents::POST_SYMFONY_ASSETS_DUMP => ['installRules'],
-            InstallerEvents::POST_ASSETS_DUMP         => ['installRules']
+            InstallerEvents::POST_SYMFONY_ASSETS_DUMP => ['installAssets'],
+            InstallerEvents::POST_ASSETS_DUMP         => ['installAssets']
         ];
     }
 
-    public function installRules(GenericEvent $event): void
+    public function installAssets(GenericEvent $event): void
     {
         $shouldSymlink = $event->getArgument('symlink');
-        $this->rulesInstaller->installRules($shouldSymlink);
+        $this->assetsInstaller->installAssets($shouldSymlink);
     }
 }
