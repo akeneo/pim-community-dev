@@ -205,9 +205,6 @@ class UserController
     }
 
     /**
-     * @param Request $request
-     * @param int     $identifier
-     *
      * @return JsonResponse|RedirectResponse
      * @throws \HttpException
      *
@@ -339,7 +336,7 @@ class UserController
 
     /**
      * @param UserInterface $user
-     * @param array         $data
+     * @param array $data
      *
      * @return JsonResponse
      */
