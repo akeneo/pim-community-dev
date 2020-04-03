@@ -53,7 +53,6 @@ pim_import_export:
         show_profile.title: プロファイルを表示
         download_log.title: ログをダウンロード
         download_file.title: 生成されたファイルをダウンロード
-        download_archive.title: 生成されたアーカイブをダウンロード
       summary:
         fetching: ジョブ実行データを収集中...
         warning: 警告
