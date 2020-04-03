@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Permission\Performance;
 
+use Akeneo\UserManagement\Component\Model\User;
 use Blackfire\Bridge\PhpUnit\TestCaseTrait;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -24,9 +25,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
  */
 abstract class AbstractApiPerformance extends WebTestCase
 {
-    const USERNAME = 'admin';
-    const PASSWORD = 'admin';
-
     use TestCaseTrait;
 
     protected function setUp(): void
@@ -37,9 +35,12 @@ abstract class AbstractApiPerformance extends WebTestCase
             ->createSystemUser();
     }
 
-    protected function createAuthenticatedClient() {
-        [$clientId, $secret] = $this->createOAuthClient();
-        [$accessToken, $refreshToken] = $this->authenticate($clientId, $secret, self::USERNAME, self::PASSWORD);
+    protected function createAuthenticatedClient(string $connectionFlowType = null)
+    {
+        [$clientId, $secret, $username, $password] = $this->createApiConnection($connectionFlowType);
+        $this->promoteUserToAdmin($username);
+
+        [$accessToken] = $this->authenticate($clientId, $secret, $username, $password);
 
         $client = static::createClient();
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $accessToken);
@@ -50,26 +51,54 @@ abstract class AbstractApiPerformance extends WebTestCase
         return $client;
     }
 
-    private function createOAuthClient(): array
+    private function createApiConnection(string $flowType = null): array
     {
         $consoleApp = new Application(static::$kernel);
         $consoleApp->setAutoExit(false);
+
         $input = new ArrayInput([
-            'command' => 'pim:oauth-server:create-client',
-            'label'   => 'Api test case client ' . rand(),
+            'command' => 'akeneo:connectivity-connection:create',
+            'code' => 'testcase_' . rand(),
+            '--flow-type' => $flowType,
         ]);
         $output = new BufferedOutput();
         $consoleApp->run($input, $output);
-        $content = $output->fetch();
-        preg_match('/client_id: (.+)\nsecret: (.+)\nlabel: (.+)$/', $content, $matches);
 
-        return [$matches[1], $matches[2]];
+        $content = $output->fetch();
+        preg_match('/Client ID: (.+)\nSecret: (.+)\nUsername: (.+)\nPassword: (.+)$/', $content, $matches);
+
+        return [$matches[1], $matches[2], $matches[3], $matches[4]];
+    }
+
+    private function promoteUserToAdmin(string $username)
+    {
+        $user = $this->get('pim_user.manager')->loadUserByUsername($username);
+
+        $adminRole = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        if (null !== $adminRole) {
+            $user->addRole($adminRole);
+        }
+
+        $userRole = $this->get('pim_user.repository.role')->findOneByIdentifier(User::ROLE_DEFAULT);
+        if (null !== $userRole) {
+            $user->removeRole($userRole);
+        }
+
+        $group = $this->get('pim_user.repository.group')->findOneByIdentifier('IT support');
+        if (null !== $group) {
+            $user->addGroup($group);
+        }
+
+        $this->get('validator')->validate($user);
+        $this->get('pim_user.saver.user')->save($user);
     }
 
     private function authenticate(string $clientId, string $secret, string $username, string $password): array
     {
         $webClient = static::createClient();
-        $webClient->request('POST', 'api/oauth/v1/token',
+        $webClient->request(
+            'POST',
+            'api/oauth/v1/token',
             [
                 'username'   => $username,
                 'password'   => $password,

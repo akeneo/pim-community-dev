@@ -57,7 +57,7 @@ class ImportVariantProductsWithApiPerformance extends AbstractApiPerformance
         // Original value: 329ms
         $profileConfig->assert('metrics.completeness_calculation.wall_time < 420ms', 'Completeness calculation time');
 
-        $client = $this->createAuthenticatedClient();
+        $client = $this->createAuthenticatedClient('data_source');
 
         $profile = $this->assertBlackfire($profileConfig, function () use ($client) {
             $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
@@ -67,13 +67,14 @@ class ImportVariantProductsWithApiPerformance extends AbstractApiPerformance
         $response = $client->getResponse();
         Assert::assertSame(200, $response->getStatusCode());
 
-        echo PHP_EOL. 'Profile complete: ' . $profile->getUrl() . PHP_EOL;
+        echo PHP_EOL . 'Profile complete: ' . $profile->getUrl() . PHP_EOL;
     }
 
-    private function getVariantProductIdentifiers(int $limit) {
+    private function getVariantProductIdentifiers(int $limit)
+    {
         $sql = <<<SQL
 SELECT MIN(product.identifier) AS identifier
-FROM pim_catalog_product product 
+FROM pim_catalog_product product
 WHERE product.product_model_id IS NOT NULL
 GROUP BY family_id
 LIMIT ${limit}
@@ -87,7 +88,8 @@ SQL;
         return $variantProductIdentifiers;
     }
 
-    private function getCategoryCodes(int $limit) {
+    private function getCategoryCodes(int $limit)
+    {
         $sql = <<<SQL
 SELECT category.code AS code
 FROM pim_catalog_category category
