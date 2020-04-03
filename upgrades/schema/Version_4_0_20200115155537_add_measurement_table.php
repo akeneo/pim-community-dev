@@ -1,3 +1,8 @@
+/**
+ * This migration will create the table "akeneo_measurement" because next migration "Version_4_0_20200116122239_remove_product_empty_raw_values.php" use it
+ * https://www.notion.so/akeneo/Feedback-migration-Serenity-3-x-4-x-e645367d5cc94a13a9d16417b7c5aa4d
+ */
+
 <?php declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
