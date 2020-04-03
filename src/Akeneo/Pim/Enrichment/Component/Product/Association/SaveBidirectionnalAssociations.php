@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -69,29 +70,39 @@ class SaveBidirectionnalAssociations implements EventSubscriberInterface
         AssociationInterface $association,
         ProductInterface $product
     ): void {
-        $this->removeAllInvertedProductAssociations($association, $product);
+        $this->removeInvertedProductAssociationsDeleted($association, $product);
         $this->saveBidirectionalProductAssociation($association, $product->getId());
     }
 
-    private function removeAllInvertedProductAssociations(
+    private function removeInvertedProductAssociationsDeleted(
         AssociationInterface $association,
         ProductInterface $product
     ): void {
+        $ownerProductIds = $association->getProducts()->map(
+            function (ProductInterface $ownerProduct) {
+                return $ownerProduct->getId();
+            }
+        );
+
+        $ownerProductIds[] = $product->getId();
+        $ownerProductIdsFormatted = implode(", ", $ownerProductIds->toArray());
+
         $query = <<<SQL
 DELETE FROM pim_catalog_association_product
 WHERE association_id IN (
-	SELECT association_id FROM (
+	SELECT * FROM (
 		SELECT a.id
-	FROM pim_catalog_association a INNER JOIN pim_catalog_association_product ap ON ap.association_id = a.id
-	WHERE association_type_id = :association_type_id AND product_id = :owner_id
+	    FROM pim_catalog_association a INNER JOIN pim_catalog_association_product ap ON ap.association_id = a.id
+	    WHERE association_type_id = :association_type_id AND product_id = :product_id AND owner_id NOT IN ($ownerProductIdsFormatted)
 	) as association_id_to_delete
 );
 SQL;
+
         $this->connection->executeUpdate(
             $query,
             [
                 'association_type_id' => $association->getAssociationType()->getId(),
-                'owner_id'            => $product->getId()
+                'product_id' => $product->getId(),
             ]
         );
     }
