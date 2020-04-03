@@ -265,8 +265,8 @@ class SaveMeasurementFamiliesAction
         $saveMeasurementFamilyCommand = new SaveMeasurementFamilyCommand;
         $saveMeasurementFamilyCommand->code = $normalizedMeasurementFamily['code'];
         $saveMeasurementFamilyCommand->standardUnitCode = $normalizedMeasurementFamily['standard_unit_code'];
-        $saveMeasurementFamilyCommand->labels = $normalizedMeasurementFamily['labels'];
-        $saveMeasurementFamilyCommand->units = array_values($normalizedMeasurementFamily['units']);
+        $saveMeasurementFamilyCommand->labels = $normalizedMeasurementFamily['labels'] ?? [];
+        $saveMeasurementFamilyCommand->units = $this->getNormalizedUnitsFromNormalizedMeasurementFamily($normalizedMeasurementFamily);
 
         return $saveMeasurementFamilyCommand;
     }
@@ -276,9 +276,24 @@ class SaveMeasurementFamiliesAction
         $createMeasurementFamilyCommand = new CreateMeasurementFamilyCommand();
         $createMeasurementFamilyCommand->code = $normalizedMeasurementFamily['code'];
         $createMeasurementFamilyCommand->standardUnitCode = $normalizedMeasurementFamily['standard_unit_code'];
-        $createMeasurementFamilyCommand->labels = $normalizedMeasurementFamily['labels'];
-        $createMeasurementFamilyCommand->units = array_values($normalizedMeasurementFamily['units']);
+        $createMeasurementFamilyCommand->labels = $normalizedMeasurementFamily['labels'] ?? [];
+        $createMeasurementFamilyCommand->units = $this->getNormalizedUnitsFromNormalizedMeasurementFamily($normalizedMeasurementFamily);
 
         return $createMeasurementFamilyCommand;
+    }
+
+    /**
+     * This method ensures that the units will have all the properties, even the optional ones.
+     */
+    private function getNormalizedUnitsFromNormalizedMeasurementFamily(array $normalizedMeasurementFamily): array
+    {
+        return array_map(function (array $unit) {
+            return [
+              'code' => $unit['code'],
+              'convert_from_standard' => $unit['convert_from_standard'],
+              'labels' => $unit['labels'] ?? [],
+              'symbol' => $unit['symbol'] ?? '',
+            ];
+        }, array_values($normalizedMeasurementFamily['units'] ?? []));
     }
 }
