@@ -1,0 +1,43 @@
+akeneo_assetmanager:
+  acl_group:
+    asset_manager: アセットマネージャー
+  acl:
+    asset_family:
+      create: アセットファミリーを作成
+      edit: アセットファミリープロパティーを編集
+      delete: アセットファミリーを削除
+      manage_permission: アセットファミリー許可を管理
+      manage_transformation: アセットファミリー変換を管理
+      manage_product_link_rule: アセットファミリー商品リンクルールを管理
+      execute_product_link_rule: アセットファミリーのアセット全てに対して商品リンクルールを実行
+    asset:
+      create: アセットを作成
+      edit: アセットを編集
+      delete: アセットを削除
+      delete_all: アセットをすべて削除
+      list_product: アセットにリンクされた商品を一覧表示
+    attribute:
+      create: アセットファミリーに属性を追加
+      edit: アセットファミリーの属性を編集
+      delete: アセットファミリーの属性を削除
+    option:
+      edit: オプションを編集
+      delete: オプションを削除
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "アセット変換を計算"
+        asset_manager_link_assets_to_products: "アセットを商品にリンク"
+#pim_analytics:
+#info_type:
+#nb_asset_families: Number of asset families
+#max_number_of_assets_per_asset_family: Max number of assets per asset family
+#average_number_of_values_per_assets: Average number of values per asset on all asset families
+#average_number_of_assets_per_asset_family: Average number of assets per asset family
+#max_number_of_attributes_per_asset_family: Max number of attributes per asset family
+#average_number_of_attributes_per_asset_family: Average number of attributes per asset family
+#average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
+#average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
+#average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
+pim_catalog_asset_collection: アセットコレクション

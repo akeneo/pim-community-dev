@@ -57,6 +57,7 @@ pim_asset_manager:
     edit_asset: Modifier l'asset
     download: Télécharger
     copy_url: Copier l'URL
+    error: Une erreur s'est produite lors du chargement de l'aperçu.
   close: Fermez la fenêtre
   breadcrumb:
     products: Produits
@@ -82,6 +83,7 @@ pim_asset_manager:
     validation:
       code:
         pattern: 'Ce champ ne peut être composé que de lettres, de chiffres et d''underscores.'
+        should_be_unique: 'Une famille de ressources portant le code "%asset_family_identifier%" existe déjà.'
         limit_reached: 'Vous ne pouvez pas créer la famille de ressource "{{ %asset_family_label% }}" car vous avez atteint la limite de {{ %limit% }} familles de ressources'
       transformation:
         limit_reached: 'Vous avez atteint la limite de transformations de {{ %limit%}}'
@@ -93,9 +95,12 @@ pim_asset_manager:
         unknown_extra_field: 'La propriété {{ {{ field }} }} n''était pas attendue.'
       naming_convention:
         property_should_exist: 'La propriété "{{ %property% }}" n''existe pas pour cette famille de ressources.'
+        not_main_media_attribute_code: 'La propriété doit correspondre au code de l''attribut défini comme média principal.'
       rule_template:
+        limit_reached: 'Vous avez atteint la limite de %limit% règles de rattachement automatique aux produits pour la famille de ressources "%asset_family_identifier%".'
         product_selection_cannot_be_empty: 'Vous devez spécifier au moins une sélection de produits dans votre règle de rattachement aux produits.'
         product_assignment_cannot_be_empty: 'Vous devez spécifier au moins une affectation de produits dans votre règle de rattachement aux produits.'
+        extrapolated_attribute_should_exist: 'L''attribut "{{ %attribute_code% }}" n''existe pas dans cette famille de ressources.'
         extrapolated_attribute_type_should_be_supported: 'L''attribut "{{ %attribute_code% }}" de type "{{ %attribute_type% }}" n''est pas pris en charge. Seuls les types d''attributs suivants sont supportés pour ce champ : {{ %supported_attribute_type% }}.'
         channel_should_exist: 'Le canal "{{ %channel_code% }}" n''existe pas.'
         locale_should_exist: 'La locale "{{ %locale_code% }}" n''est pas activée ou n''existe pas.'
@@ -104,6 +109,7 @@ pim_asset_manager:
         assignment_mode_not_supported: 'Le mode d''affectation "{{ %assignment_mode% }}" trouvé dans une règle de rattachement aux produits n''est pas valide. Seuls les modes suivants sont acceptés : "remplacer" ou "ajouter".'
         channel_not_supported_for_field: 'Vous ne pouvez pas spécifier de canal pour le champ "{{ %product_field% }}".'
         locale_not_supported_for_field: 'Vous ne pouvez pas spécifier de locale pour le champ "{{ %product_field% }}".'
+        assignmement_attribute_does_not_support_this_asset_family: 'L''attribut produit "%product_attribute_code%" ne peut pas contenir de ressources de la famille de ressources "%asset_family_identifier%"'
     button:
       save: Enregistrer
       save_permission: Enregistrer
@@ -125,16 +131,22 @@ pim_asset_manager:
       product_link_rules: Règles de rattachement aux produits
     transformations:
       help:
+        title: 'Bienvenue dans votre nouvel espace de gestion des ressources !'
         description: 'Vous pouvez définir ici jusqu''à 10 transformations par famille de ressources.'
         link: 'Si vous voulez mieux comprendre comment fonctionnent les nouvelles transformations du gestionnaire de ressources, cliquez ici'
       subsection: 'Propriétés de la transformation'
     product_link_rules:
       naming_convention_subsection: 'Propriétés de la convention de nommage'
       product_link_rules_subsection: 'Propriétés des règles de rattachement aux produits'
+      help:
+        title: 'Bienvenue dans votre nouvel espace de gestion des ressources !'
+        description: 'Vous pouvez définir ici jusqu''à 2 règles de rattachement automatique aux produits par famille de ressources.'
+        link: 'Si vous voulez en savoir plus sur les règles de rattachement automatique aux produits, cliquez ici.'
       execute_rules:
         confirm_title: Confirmer l’exécution
         confirm_content: Êtes-vous certain de vouloir exécuter toutes les règles ? (cela peut prendre un certain temps)
         execute_rules: Exécuter les règles
+        cancel: Annuler
     properties:
       title: Propriétés de la famille de ressources
       identifier: Code
@@ -143,6 +155,10 @@ pim_asset_manager:
       attribute_as_main_media: Attribut comme média principal
     attribute:
       title: Attributs de la ressource
+      attribute:
+        error:
+          render_list: 'Une erreur s’est produite lors de l''affichage de l’attribut « {{ %attribute_code% }} ».'
+          render_edit: 'Une erreur s’est produite pendant l''affichage des champs de propriétés additionnelles de l’attribut « {{ %attribute_code% }} ».'
     module:
       delete:
         button: Supprimer la famille de ressources
@@ -174,12 +190,16 @@ pim_asset_manager:
     notification:
       save:
         success: Famille de ressources mise à jour avec succès.
+        fail: Une erreur s'est produite pendant la sauvegarde de la famille de ressources.
       create:
         success: Famille de ressources créée avec succès.
+        fail: Une erreur s'est produite pendant la création de la famille de ressources.
       delete:
         success: Famille de ressources supprimée avec succès.
+        fail: Une erreur s'est produite pendant la suppression de la famille de ressources.
       compute_transformations:
         success: Les transformations ont été lancées. Une fois cette tâche terminée, vous verrez vos nouvelles variations mises à jour dans vos ressources.
+        fail: Une erreur est survenue lors de l'exécution des transformations.
       execute_product_link_rules:
         success: Les règles de rattachement aux produits ont été lancées.
         fail: Une erreur s'est produite lors du lancement des règles de rattachement aux produits.
@@ -189,6 +209,7 @@ pim_asset_manager:
         text: Il n'y a pas de ressources dans la famille {{ family }}. Cliquez sur "Créer" et choisissez si vous voulez créer une ressource vide ou si vous préférez charger en masse des ressources.
       no_asset_family:
         text: Une bibliothèque qui rassemble vos ressources (images, vidéos, documents...), filtrées par familles de ressources. Créez votre première famille de ressources, définissez ses attributs et chargez des ressources !
+        link: Pour plus d'informations, nous vous invitons à lire cet article.
     no_data:
       no_asset:
         title: Désolé, il n'y a pas de ressource !
@@ -211,6 +232,7 @@ pim_asset_manager:
       limit_reached: 'Vous ne pouvez pas créer la ressource « {{ %asset_label% }} » car vous avez atteint la limite de {{ %limit% }} ressources pour cette famille de ressources'
       code:
         pattern: 'Ce champ ne peut être composé que de lettres, de chiffres et d''underscores.'
+        should_be_unique: 'Ce code existe déjà pour une autre ressource.'
     no_data:
       title: Il n'y a aucune ressource pour {{ entityLabel }}.
       subtitle: Cliquez sur le bouton "Créer" pour ajouter la première ressource
@@ -229,6 +251,7 @@ pim_asset_manager:
       delete_all: Supprimer toutes les ressources
       back: Retour à la liste
       launch_transformations: Lancer les transformations
+      fullscreen: Plein écran
     product:
       attribute: Attribut produit
       counter: '{{ totalCount }} résultat|{{ totalCount }} résultats'
@@ -246,6 +269,7 @@ pim_asset_manager:
           not_usable_in_grid: Pour découvrir tous les produits liés, l'attribut produit doit être défini comme "utilisable dans la grille".
         button: Voir tous les produits
       no_product:
+        title: Cette ressource n'est liée à aucun produit via l'attribut produit "{{ entityLabel }}".
         subtitle: 'Commencez à lier les produits à cet attribut pour les voir ici'
     no_linked_products: Cette ressource n'est liée à aucun produit.
     enrich:
@@ -260,6 +284,7 @@ pim_asset_manager:
       header:
         title: Créer
       subtitle: Familles de ressources
+      title: Ajouter une nouvelle ressource dans {{ entityLabel }}
       input:
         label: Libellé
         code: Code (requis)
@@ -296,6 +321,7 @@ pim_asset_manager:
         invalid: erreur
         created: créé
     delete:
+      message: Êtes-vous sûr de vouloir supprimer la ressource "{{ assetLabel }}" ? Si elle est liée à des produits, les liens vers ces derniers seront supprimés.
       title: Ressource
     delete_all:
       confirm: Êtes-vous sûr de vouloir supprimer toutes les ressources "{{ entityIdentifier }}" ? Si elles sont liées à des produits, les liens vers les produits seront supprimés.
@@ -332,13 +358,17 @@ pim_asset_manager:
     notification:
       save:
         success: Ressource mise à jour avec succès.
+        fail: Une erreur s'est produite lors de la sauvegarde de la ressource.
         validation_error: La ressource n'a pas pu être mise à jour
       create:
         success: Ressource créée avec succès.
+        fail: Une erreur s'est produite lors de la création de la ressource.
       delete:
         success: La ressource «{{ code }}» a été supprimée avec succès.
+        fail: Une erreur s'est produite lors de la suppression de la ressource.
       delete_all:
         success: Toutes les ressources de «{{ entityIdentifier }}» ont été supprimées avec succès.
+        fail: Une erreur s'est produite pendant la suppression des ressources de la famille.
     completeness:
       label: Complet
   attribute:
@@ -358,6 +388,7 @@ pim_asset_manager:
       number: Nombre
       media_link: Lien médias
     is_required: requis pour la complétude
+    is_read_only: Lecture uniquement dans l'interface
     media_type_preview: Aperçu du type de média
     no_data:
       title: Il n'y a aucun attribut personnalisé pour {{ entityLabel }}
@@ -393,6 +424,7 @@ pim_asset_manager:
         value_per_locale: Valeur par locale
         value_per_channel: Valeur par canal
         is_required: Requis pour la complétude
+        is_read_only: Lecture uniquement dans l'interface
         max_length: Nombre maximum de caractères
         textarea: Zone de texte
         is_rich_text_editor: Éditeur de texte enrichi
@@ -424,14 +456,19 @@ pim_asset_manager:
       message: Êtes-vous sûr de vouloir supprimer l’attribut «{{ attributeLabel }} » ?
       title: Attribut
     notification:
+      list:
+        fail: Une erreur s'est produite pendant la mise à jour de la liste d'attributs.
       save:
         success: Attribut mis à jour avec succès.
+        fail: Une erreur s'est produite pendant la sauvegarde de l'attribut.
         validation_error: L'attribut n'a pas pu être mis à jour
       create:
         success: Attribut créé avec succès.
+        fail: Une erreur s'est produite pendant la création de l'attribut.
         validation_error: L'attribut n'a pas pu être créé
       delete:
         success: Attribut supprimé avec succès.
+        fail: Une erreur s'est produite pendant la suppression de l'attribut.
     options:
       no_value: Cliquez ici pour choisir une option.
       sub_title: Familles de ressources
@@ -441,6 +478,7 @@ pim_asset_manager:
       placeholder: Insérer le lien du média ici
       read_only: Ce lien média est en lecture seule.
     media_file:
+      placeholder: Glissez et déposez un fichier pour le charger ou cliquez ici
       read_only: Ce fichier est en lecture seule.
   modal:
     delete:
@@ -473,3 +511,9 @@ pim_catalog_volume:
     count_asset_family: Familles de ressources
     average_max_assets_per_asset_family: Ressources par famille de ressouces
     average_max_attributes_per_asset_family: Attributs par famille de ressources
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "Exécuter les transformations de ressources"
+        asset_manager_link_assets_to_products: "Lier les ressources aux produits"
