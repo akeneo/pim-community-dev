@@ -6,7 +6,6 @@ pimee_catalog_rule:
         execute: 실행
       title: 규칙
       column:
-        code: 코드
         conditions: 조건
         actions: 작업
         impacted_product_count:
