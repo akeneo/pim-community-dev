@@ -19,6 +19,7 @@ pim_asset_manager:
         product_selection_cannot_be_empty: 'プロダクトリンクルールで1商品以上を選択する必要があります。'
         product_assignment_cannot_be_empty: 'プロダクトリンクルールで1商品以上を割り当てる必要があります。'
         extrapolated_attribute_should_exist: 'このアセットファミリーには属性「%attribute_code%」がありません。'
+        extrapolated_attribute_type_should_be_supported: '「 %attribute_type% 」タイプの属性「%attribute_code% 」はサポート対象外です。このフィールドのサポート対象は次の属性のみです:  %supported_attribute_type% '
         channel_should_exist: 'チャンネル「%channel_code%」はありません'
         locale_should_exist: 'ロケール「%locale_code%」は有効ではない、もしくは存在しません'
         extrapolated_attribute_type_should_not_have_one_value_per_channel: '属性「%attribute_code%」は外挿に用いることができません。チャンネルごとの値が1件であるためです。'

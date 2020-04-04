@@ -74,9 +74,9 @@ pimee_catalog_rule:
     tooltip:
       affected_by.title: '다음 규칙의 영향을 받음:'
   steps:
-    product_rule_definition_reader.title: 제품 규칙 가져오기 판독기
+    product_rule_definition_reader.title: 제품 규칙 가져오기 리더
     rule_definition_processor.title: 제품 규칙 가져오기 프로세서
-    product_rule_definition_writer.title: 제품 규칙 가져오기 작성기
+    product_rule_definition_writer.title: 제품 규칙 가져오기 라이터
     rules_execution.title: 규칙 실행
   notification:
     rule:

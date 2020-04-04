@@ -51,14 +51,17 @@ pimee_product_asset:
     flash:
       update:
         success: アセットが更新されました。
+        error: アセットが更新されていません。エラーが発生しました。
       create:
         success: アセットが作成されました。
+        error: アセットが作成されていません。エラーが発生しました。
       remove:
         success: アセットが削除されました。
   enrich_reference:
     flash:
       delete:
         success: 参照ファイルが削除されました。
+        error: 参照ファイルは削除されていません。エラーが発生しました。
   enrich_variation:
     flash:
       transformation:
@@ -72,8 +75,10 @@ pimee_product_asset:
         success: バリエーションファイルは正常に生成されました。
       update:
         success: バリエーションファイルが更新されました。
+        error: バリエーションファイルが更新されていません。エラーが発生しました。
       delete:
         success: バリエーションファイルが削除されました。
+        error: バリエーションファイルが削除されていません。エラーが発生しました。
   popin.create:
     title: アセットの新規作成
     is_localized: ローカライズ可能
@@ -121,6 +126,7 @@ pimee_product_asset:
     import: インポート
     executed: 大量アップロード実行済
     error:
+      upload: アップロード中にエラーが発生しました
       code: 無効なアセットコード形式
       localizable: アセットは存在しますがローカライズできません
       invalid_locale: ロケールが無効です
@@ -178,6 +184,7 @@ pim_datagrid:
   cells:
     type:
       mass_upload: アセットの大量アップロード
+      compute_completeness_of_products_linked_to_assets: アセットに紐づいた商品の完全性を算定する
 pim_analytics:
   info_type:
     nb_assets: アセット数
@@ -229,3 +236,6 @@ pimee_enrich:
       options:
         width: '幅 %value%px'
         height: '高さ %value%px'
+asset_tree:
+  remove:
+    error_linked: このカテゴリツリーはユーザーのデフォルトアセットカテゴリツリーとして設定されているため、削除することはできません。

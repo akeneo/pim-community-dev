@@ -34,16 +34,16 @@ pimee_enrich.entity.job_instance:
       removed: '{{ group }} 그룹은 작업 프로필 {{ permission }}이(가) 허용되지 않습니다'
 batch_jobs:
   add_product_value_with_permission_and_rules:
-    label: 권한 확인 및 규칙 적용으로 제품 값 추가
+    label: 권한 확인 및 규칙 애플리케이션으로 제품 값 추가
     perform.label: 제품 값 추가
   update_product_value_with_permission_and_rules:
-    label: 권한 확인 및 규칙 적용으로 제품 값 업데이트
+    label: 권한 확인 및 규칙 애플리케이션으로 제품 값 업데이트
     perform.label: 제품 값 업데이트
   remove_product_value_with_permission_and_rules:
-    label: 권한 확인 및 규칙 적용으로 제품 값 제거
+    label: 권한 확인 및 규칙 애플리케이션으로 제품 값 제거
     perform.label: 제품 값 제거
   edit_common_attributes_with_permission_and_rules:
-    label: 권한 확인 및 규칙 적용으로 특성 편집
+    label: 권한 확인 및 규칙 애플리케이션으로 특성 편집
     perform.label: 특성 편집
     cleaner.label: 임시 파일 지우기
   default_steps:

@@ -19,6 +19,7 @@ pim_asset_manager:
         product_selection_cannot_be_empty: '제품 링크 규칙에서 하나 이상의 제품 선택을 지정해야 합니다'
         product_assignment_cannot_be_empty: '제품 링크 규칙에서 하나 이상의 제품 할당을 지정해야 합니다'
         extrapolated_attribute_should_exist: '"%attribute_code%" 특성이 이 자산 패밀리에 존재하지 않습니다.'
+        extrapolated_attribute_type_should_be_supported: '"%attribute_type%" 유형의 "%attribute_code%" 특성은 지원되지 않습니다. 다음 특성 유형만 이 필드에서 지원됩니다: %supported_attribute_type%'
         channel_should_exist: '"%channel_code%" 채널이 존재하지 않습니다'
         locale_should_exist: '"%locale_code%" 로케일이 활성화되지 않았거나 존재하지 않습니다'
         extrapolated_attribute_type_should_not_have_one_value_per_channel: '"%attribute_code%" 특성은 채널당 하나의 값을 가지고 있으므로 외삽에 사용할 수 없습니다.'
@@ -76,10 +77,10 @@ pim_asset_manager:
       max_file_size:
         should_be_a_number: '이 값은 숫자여야 합니다.'
       min_value:
-        should_be_a_number: '이 값은 올바른 소수 구분 기호가 포함된 숫자여야 합니다'
+        should_be_a_number: '이 값은 올바른 소수 구분 기호가 포함된 숫자여야 합니다.'
         cannot_be_greater_than_max: '최소값은 최대값보다 클 수 없습니다'
       max_value:
-        should_be_a_number: '이 값은 올바른 소수 구분 기호가 포함된 숫자여야 합니다'
+        should_be_a_number: '이 값은 올바른 소수 구분 기호가 포함된 숫자여야 합니다.'
         cannot_be_lower_than_min: '최대값은 최소값보다 작을 수 없습니다'
       code:
         pattern: '이 필드는 문자, 숫자 및 밑줄만 포함할 수 있습니다. "{{ value }}"이(가) 지정되었습니다.'

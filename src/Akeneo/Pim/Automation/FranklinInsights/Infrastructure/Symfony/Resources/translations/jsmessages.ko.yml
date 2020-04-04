@@ -137,6 +137,7 @@ akeneo_franklin_insights:
         already_subscribed_product: '제품이 이미 구독되었습니다.'
         variant_product: '죄송합니다. 변형 제품을 Franklin Insights에 구독할 수 없습니다.'
         inactive_connection: '죄송합니다. Franklin Insights에 제품을 구독하지 못했습니다. Franklin Insights에 대한 연결을 구성하십시오.'
+        product_subscription_with_same_identifier_already_exist: '동일한 식별자가 하나 이상 포함된 다른 제품을 이미 구독했습니다.'
       module:
         product_edit_form:
           family_required: '제품 패밀리는 필수입니다.'
@@ -164,6 +165,7 @@ akeneo_franklin_insights:
     flash:
       success: Franklin Insights 활성화 코드가 저장되었습니다.
       invalid: 죄송합니다. 잘못된 활성화 코드입니다. 올바른 코드로 다시 시도하십시오.
+      error: 죄송합니다. 오류가 발생했습니다.
     module:
       title:
         sub_title: '<span class="AknDescriptionHeader-title--highlight">제품 정보 AI 어시스턴트</span>입니다!'

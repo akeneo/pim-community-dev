@@ -14,7 +14,7 @@ pim_asset_manager:
     add_asset_title: '자산 선택기를 열어 컬렉션에 자산 추가'
     no_asset_in_collection: '죄송합니다. 이 컬렉션에 자산이 없습니다.'
     helper:
-      title: '새 제품 자산 관리 영역입니다!'
+      title: '새로운 제품 자산 관리 영역입니다!'
       text: '{{ family }} 패밀리에 대한 자산 컬렉션이 없습니다! 자산 컬렉션을 추가하는 방법은?'
       link: '자산 컬렉션을 추가하는 방법은?'
     no_asset:

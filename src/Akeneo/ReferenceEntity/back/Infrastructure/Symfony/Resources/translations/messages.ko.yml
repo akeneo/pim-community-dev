@@ -12,7 +12,7 @@ akeneo_referenceentity:
       edit: 레코드 편집
       delete: 레코드 삭제
       delete_all: 모든 엔터티 레코드 삭제
-      list_product: 기록할 링크된 제품 나열
+      list_product: 레코드에 대한 링크된 제품 나열
     attribute:
       create: 참조 엔터티에 특성 추가
       edit: 참조 엔터티의 특성 편집

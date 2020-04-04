@@ -42,7 +42,9 @@ pimee_product_asset:
       need_refresh: <b>アセットのインポートが開始されました</b><br>商品フォームでインポートされたアセットを確認するには、インポート通知を受信後ただちに商品ページを更新してください
     error:
       list: すでにアップロードされたファイルを読み込めません
+      upload: アップロード中にエラーが発生しました
       delete: サーバーからファイルを削除できません
+      import: インポート中にエラーが発生しました。
       filename: 無効なアセットファイル名
       code: 無効なアセットコード形式
       locale: アセットは存在しますがローカライズできません
@@ -62,6 +64,7 @@ pimee_product_asset:
       delete:
         confirm_content: 選択したアセットを削除してもよろしいですか？
         success: 選択したアセットが正常に削除されました。
+        error: 選択したアセットの削除中にエラーが発生しました。再度試行してください。
         empty_selection: アセットが1つも選択されていません
 pim_enrich:
   entity:
@@ -74,6 +77,7 @@ pim_import_export:
     last_operations:
       job_type:
         mass_upload: 一括アップロード
+        compute_completeness_of_products_linked_to_assets: アセットに紐づいた商品の完全性を算定する
 pim_title:
   pimee_product_asset_mass_upload: アセットをアップロード
   pimee_product_asset_index: アセット
@@ -141,6 +145,8 @@ batch_jobs:
     perform.label: アセットをカテゴリに移動
   add_tags_to_assets:
     perform.label: タグをアセットに追加
+  compute_completeness_of_products_linked_to_assets:
+    compute_completeness_of_products_linked_to_assets.label: アセットに紐づいた商品の完全性を算定する
 jstree:
   asset:
     all: すべてのアセット
