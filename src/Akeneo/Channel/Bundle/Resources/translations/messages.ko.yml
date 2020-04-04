@@ -2,4 +2,4 @@ pim_enrich:
   #Locale
   locale:
     tab:
-      property.title: プロパティ
+      property.title: 속성
