@@ -122,7 +122,7 @@ grid.display_selector:
   list: 목록
 #Credentials cell
 Client ID: 클라이언트 ID
-Secret: 비밀
+Secret: 비밀번호
 grid.empty_results:
   associated_product:
     hint: 연결된 제품이 없습니다
