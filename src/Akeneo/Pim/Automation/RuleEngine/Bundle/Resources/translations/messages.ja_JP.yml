@@ -6,7 +6,6 @@ pimee_catalog_rule:
         execute: 実行
       title: ルール
       column:
-        code: コード
         conditions: 状態
         actions: アクション
         impacted_product_count:
