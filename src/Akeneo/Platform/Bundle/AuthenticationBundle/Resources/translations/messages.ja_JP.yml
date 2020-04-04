@@ -1,0 +1,6 @@
+akeneo_authentication:
+  acl:
+    sso:
+      title: シングルサインオン (SSO)を管理
+  sso:
+    unknown_user_error: あなたはこのアプリケーションにアクセスする権限がありません。 管理者に連絡してください。

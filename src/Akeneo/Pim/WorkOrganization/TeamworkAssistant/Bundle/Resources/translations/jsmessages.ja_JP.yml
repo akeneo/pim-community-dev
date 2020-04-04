@@ -1,16 +1,16 @@
 teamwork_assistant:
   common:
     required: 必須
-    warning: プロジェクトの計算に時間がかかっているため、表示に時間がかかっています。
+    warning: プロジェクト計算は時間がかかることがあります。プロジェクトの表示までに時間がかかることもありますが心配はいりません。
   grid:
     view_selector:
       create: プロジェクトを作成
-      edit: プロジェクトの編集
-      remove: プロジェクトの削除
-      create_from_view: このビューからプロジェクトを作成します。
+      edit: プロジェクトを編集
+      remove: プロジェクトを削除
+      create_from_view: このビューからプロジェクトを作成
       start_new_project: プロジェクトを新規作成
       confirmation:
-        remove: この製品を削除してもよろしいですか？
+        remove: このプロジェクトを本当に削除してもよろしいですか？
       projects: プロジェクト
   project:
     label: 名前
@@ -19,29 +19,30 @@ teamwork_assistant:
     description: 説明
     due_date: 期限
     due_date_past: 過去の日付を選択できません。
-    leaving_scope: プロジェクトのスコープから出る
+    leaving_scope: プロジェクトフィルターを退出しようとしています。
   edit_project_modal:
-    saved: プロジェクトが保存されました
-    title: プロジェクトの編集
+    saved: プロジェクトが保存されました。
+    title: プロジェクトを編集
   create_project_modal:
-    saved: プロジェクトが保存されました、計算が終了するときに通知されます。
+    saved: プロジェクトが保存されました。計算終了時に通知されます。
+    title: プロジェクト
   widget:
     no_project: プロジェクトは現在ありません
     no_project_create: プロジェクトを新規作成
     description: 説明
     due_date: 期日
-    todo: TODO
+    todo: タスク
     in_progress: 処理中
     done: 完了
-    all_contributors: 全ての貢献者
-    display_products: ディスプレイ製品
+    all_contributors: 従事者すべて
+    display_products: 商品を陳列
     placeholder:
-      contributor_selector: 検索の投稿者
+      contributor_selector: 従事者を検索
       project_selector: プロジェクトを検索
     completeness:
-      to_start: 開始する製品
-      in_progress: 処理中の製品
-      done: 製品の実行
+      to_start: 開始する商品
+      in_progress: 処理中の商品
+      done: 完成済商品
 pim_datagrid:
   view_selector:
     project: プロジェクト
@@ -50,17 +51,17 @@ pim_dashboard:
     last_operations:
       job_type:
         refresh_project_completeness_calculation: チームワーク アシスタント
-        project_calculation: チームワーク アシスタント
+        project_calculation: チームワークアシスタント
 batch_jobs:
   project_calculation:
     project_calculation.label: プロジェクトの計算
-    prepare_project_calculation.label: プロジェクト計算の準備をします。
+    prepare_project_calculation.label: プロジェクト計算を準備
     clean_contributor_group.label: プロジェクトのロケールに対するユーザー権限を確認してください。
   refresh_project_completeness_calculation:
-    label: プロジェクトの完全性を更新します。
-    refresh_project_completeness_calculation.label: プロジェクトの完全性を更新します。
+    label: プロジェクトの完全性を更新
+    refresh_project_completeness_calculation.label: プロジェクトの完全性を更新
 pim_notification:
   types:
-    project_created: あなたのための新しいプロジェクト
-    project_finished: プロジェクト完成
+    project_created: 新規プロジェクトがあります
+    project_finished: プロジェクト完成済
     project_calculation: プロジェクトの計算
