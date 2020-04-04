@@ -1,3 +1,3 @@
-flash.version.revert.product: 正常に、製品を以前のバージョンに復元しました。
+flash.version.revert.product: 商品の以前のバージョンへの復元を正常に実行しました
 flash.error.revert.product: このバージョンは復元できません。検証中にエラーが発生しました。
-pimee_versioning.acl.product_version.revert: 製品を復元
+pimee_versioning.acl.product_version.revert: 商品を復元

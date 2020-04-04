@@ -34,6 +34,7 @@ akeneo_data_quality_insights:
         max_categories_msg: Vous ne pouvez pas ajouter plus de {{ count }} catégories sur votre tableau de bord
       add_families: Ajouter des familles
       add_categories: Ajouter des catégories
+      title: Titre
       no_family_helper_msg: Choisissez les familles à ajouter à votre tableau de bord
       no_category_helper_msg: Choisissez les catégories à ajouter à votre tableau de bord
       see_in_grid: Voir sur la grille
@@ -64,6 +65,8 @@ akeneo_data_quality_insights:
       error:
         axis_error: En raison d'une erreur, la note n'a pas pu être entièrement calculée. Réessayez plus tard.
         criterion_error: La note n'a pas pu être calculée.
+      success:
+        criterion: Tout est correct
       grading_in_progress: Calcul en cours
       axis_grading_in_progress: Calcul en cours
   product_edit_form:

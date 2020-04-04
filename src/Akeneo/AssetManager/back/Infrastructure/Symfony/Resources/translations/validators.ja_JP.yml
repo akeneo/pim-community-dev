@@ -1,0 +1,133 @@
+pim_asset_manager:
+  asset_family:
+    validation:
+      code:
+        pattern: 'フィールドには、文字、数字、アンダースコアを含めることができます。'
+        should_be_unique: 'アセットファミリーはすでに「%asset_family_identifier%」というコードで作成済みです'
+        limit_reached: 'アセットファミリー「%asset_family_identifier%」を作成できません。アセットファミリーの上限%limit%に達しているためです'
+      assets:
+        should_have_no_asset: 'アセットがこのファミリーのために現存するため、該当ファミリーを削除できません'
+      asset_family_attributes:
+        should_not_be_linked: 'アセットファミリーの属性がこのファミリーのために現存するため、該当ファミリーを削除できません'
+      asset_family_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'このファミリーに対する編集権限を少なくとも1つのユーザグループに付与する必要があります'
+      product_attributes:
+        should_not_be_linked: '商品属性がこのファミリーに関連付けされているため、該当ファミリーを削除できません'
+      should_exist: 'アセットファミリー「%asset_family_code%」は検出できませんでした。'
+      rule_template:
+        limit_reached: 'アセットファミリー「%asset_family_identifier%」の商品リンクルールの上限 %limit% に達しました。'
+        product_selection_cannot_be_empty: 'プロダクトリンクルールで1商品以上を選択する必要があります。'
+        product_assignment_cannot_be_empty: 'プロダクトリンクルールで1商品以上を割り当てる必要があります。'
+        extrapolated_attribute_should_exist: 'このアセットファミリーには属性「%attribute_code%」がありません。'
+        extrapolated_attribute_type_should_be_supported: '「 %attribute_type% 」タイプの属性「%attribute_code% 」はサポート対象外です。このフィールドのサポート対象は次の属性のみです:  %supported_attribute_type% '
+        channel_should_exist: 'チャンネル「%channel_code%」はありません'
+        locale_should_exist: 'ロケール「%locale_code%」は有効ではない、もしくは存在しません'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: '属性「%attribute_code%」は外挿に用いることができません。チャンネルごとの値が1件であるためです。'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: '属性「%attribute_code%」は外挿に用いることができません。ロケールごとの値が1件であるためです。'
+        assignment_mode_not_supported: '商品リンクルールで無効なアサインモード「%assignment_mode%」が見つかりました。「置き換え」または「追加」が必要です。'
+        channel_not_supported_for_field: '分野「%product_field%」を特定できません'
+        locale_not_supported_for_field: '分野「%product_field%」に対してロケールを特定できません'
+        assignmement_attribute_does_not_support_this_asset_family: '属性「%product_attribute_code%」にはアセットファミリー「%asset_family_identifier%」を含むことができません'
+      attribute_as_main_media:
+        not_found: 'アセットファミリーに設定された主要メディアとしての属性「%attribute_as_main_media%」が存在しません'
+        invalid_type: 'アセットファミリーに主要メディアとして設定するべき属性は次のタイプです:%valid_attribute_as_main_media_types%'
+      transformation:
+        limit_reached: '変換の上限  %limit%  に達しています'
+        same_operation_twice: '操作「 %operation_type% 」は単一変換において2度定義することはできません。'
+        source_can_not_be_a_target: '属性ソース「 %attribute_code% 」は、変換の属性ターゲットにすることはできません。'
+        attribute_reference_should_exist: 'このアセットファミリーには属性「%attribute_code%」がありません。'
+        source_should_be_media_file: 'ソース属性はメディアファイルのタイプです。'
+        target_should_be_media_file: 'ターゲット属性はメディアファイルのタイプです。'
+        filename_is_not_unique: 'ファイル名の接頭辞「%filename_prefix%」およびファイル名の接尾辞「%filename_suffix%」がある変換は、すでに属性ソース「%attribute_code%」に使用中です'
+        target_is_not_unique: '2つの変換に同じターゲットを設定できません。'
+        code_is_not_unique: '同じコード「%transformation_code%」を使って2つの変換を定義できません'
+        filename_prefix_suffix_empty: 'プロパティのファイル名接頭辞あるいはファイル名接尾辞を設定する必要があり、そのうちの1つの列を空にすることはできません。'
+        empty_operation_list: '変換操作は最低1件必要です。'
+        unknown_extra_field: 'プロパティ {{ field }} は存在しません'
+      naming_convention:
+        property_should_exist: 'このアセットファミリーにプロパティ「 %property% 」は存在しません'
+        not_main_media_attribute_code: 'プロパティは主なメディアで定義された属性のコードと一致している必要があります'
+  asset:
+    validation:
+      code:
+        pattern: 'フィールドには、文字、数字、アンダースコアを含めることができます。'
+        should_be_unique: 'アセットはコード「%code%」にて作成済です'
+        should_exist: 'アセットは検出できませんでした'
+      text:
+        incompatible_with_regular_expression: 'このテキストは正規表現「%regular_expression%」と両立できません'
+      file:
+        extension_not_allowed: 'ファイル「%file_extension%」はこの属性に対して許可されていません。許可されているのは次の拡張子です:%allowed_file_extensions%'
+        file_size_exceeded: 'このファイルは、該当の属性に設定された最大ファイルサイズを超過しています。'
+        should_exist: 'ファイル「%file_path%」は検出されませんでした。'
+        target_readonly: '変換のターゲットである値「%attribute_code%」はアップデートできません。'
+      option:
+        code_does_not_exist: '「%option_code%」を持つオプションはこの属性にありません'
+      option_collection:
+        codes_dont_exist: "次のオプションコードはこの属性に存在しません: 「%option_codes%」"
+      asset:
+        should_exist: 'アセット「%asset_code%」は検出されませんでした。'
+      asset_collection:
+        should_exist: 'アセット「%asset_codes%」は検出されませんでした。'
+      limit_reached: 'アセット「%asset_label%」を作成できません。このアセットファミリーに対するアセットの上限「%limit%」に達しています。'
+      channel:
+        is_expected: 'チャンネルが属性「%attribute_code%」に必要です。その属性はチャンネルごとに値があるためです。'
+        is_not_expected: 'チャンネルが属性「%attribute_code%」には必要でありません。その属性はチャンネルごとに値がないためです。'
+        should_exist: 'チャンネル「%channel_identifier%」がありません。'
+      locale:
+        is_expected: 'ロケールが属性「%attribute_code%」に必要です。その属性はロケールごとに値があるためです。'
+        is_not_expected: 'ロケールが属性「%attribute_code%」には必要でありません。その属性はロケールごとに値がないためです。'
+        is_not_activated: 'ロケール「%locale_identifier%」は無効です。'
+        is_not_activated_for_channel: 'ロケール「%locale_identifier%」はチャンネル「%channel_identifier%」に無効です。'
+      number:
+        should_be_string: 'このフィールドは列でなければなりません'
+        should_be_integer: 'このフィールドは整数でなければなりません'
+        integer_too_long: 'この整数は大きすぎます'
+        should_be_numeric: 'このフィールドは正しい小数点を付した数値でなければなりません'
+      main_media:
+        not_main_media_attribute: '主要メディアとして設定可能なものは「%main_media_attribute%」ですが、「%attribute%」が入力されています。'
+  attribute:
+    validation:
+      options:
+        should_exist: 'オプションが見つかりませんでした。'
+        duplicated: 'オプション「%option_code%」は既存です'
+        too_many: '属性ごとの属性オプションの上限{{ limit }}に到達しました。'
+        code:
+          pattern: 'フィールドには、文字、数字、アンダースコアを含めることができます。'
+          should_not_be_blank: 'このオプションコードは空白にできません'
+      max_length:
+        should_be_an_integer: 'この値は整数を指定してください。'
+      max_file_size:
+        should_be_a_number: 'この値は数字を指定してください。'
+      min_value:
+        should_be_a_number: 'この値は正しい小数点を付した数字でなければなりません。'
+        cannot_be_greater_than_max: '最小値は最大値より大きく指定できません'
+      max_value:
+        should_be_a_number: 'この値は正しい小数点を付した数字でなければなりません。'
+        cannot_be_lower_than_min: '最大値は最小値より小さく指定できません'
+      code:
+        pattern: 'フィールドに含めることができるのは、文字、数字、アンダースコアのみです。「{{ value }}」が指定されました。'
+        reserved_codes: 'コードは次の値を指定できません: 「{{ comma_separated_reserved_keywords }}」'
+        should_not_exist: 'この属性はアセットファミリー「{{ asset_family_identifier }}」および属性コード「{{ code }}」にて既存です'
+        should_exist: '属性が見つかりませんでした'
+      regular_expression:
+        invalid_regular_expression: '正規表現が無効です。有効な通常表現は次のようなものです:「[a-z]+[0-9]*/」'
+        should_not_be_empty: '正規表現は空にできません。'
+      should_be_a_textarea_to_update_is_rich_text_editor: 'シンプルテキストの属性ではリッチテキストエディタを利用できません'
+      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'テキストエリア属性は確認ルールを利用できません'
+      cannot_set_a_non_empty_regular_expression: '属性は正規表現を利用できません'
+      cannot_update_the_regular_expression: 'テキスト属性に正規表現を設定できません'
+      limit_reached: '属性「%attribute_label%」を作成できません。このアセットファミリーに対する属性の上限「%limit%」に達しています。'
+      asset_type:
+        is_required: 'アセットファミリーリンク属性を作成するためにはアセットファミリータイプの特定が必要です'
+        asset_family_should_exist: 'アセットファミリー「%asset_family_code%」は検出できませんでした。'
+      prefix:
+        should_not_be_empty: '接頭辞は空にできません。'
+      suffix:
+        should_not_be_empty: '接尾辞は空にできません。'
+      media_type:
+        not_expected: '指定したメディアタイプは必要なタイプに対応していません(%supported_media_types%)。'
+      media_file:
+        cannot_contain_extension_separator: '拡張には拡張区切りを使用できませんが、「%wrong_extension%」が入力されています。'
+        should_only_contain_lowercase_letters_and_numbers: '拡張に含めることができるのは、英小文字、数字です。「%wrong_extension%」が入力されています。'
+        cannot_be_longer_than_max: '拡張子は%expected_length%文字以内に設定してください。%actual_length%文字が入力されています。'
+        there_cannot_be_duplicated_extensions: '拡張は重複できません:が検出されています。'
