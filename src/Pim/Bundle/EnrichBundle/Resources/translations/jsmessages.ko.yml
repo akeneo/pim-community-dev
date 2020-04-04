@@ -1437,7 +1437,7 @@ pim_menu:
     system: 시스템
     help:
       title: 도움말
-      helper: Akeneo 도움말 센터
+      helper: Akeneo 헬프 센터
   item:
     association_type: 연결 유형
     attribute: 특성
