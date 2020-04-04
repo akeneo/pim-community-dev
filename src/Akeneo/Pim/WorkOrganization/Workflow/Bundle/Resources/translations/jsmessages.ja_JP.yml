@@ -1,5 +1,5 @@
-View the product: 製品を表示
-Unpublish the product: 製品の取り下げ
+View the product: 商品を表示
+Unpublish the product: 商品の取り下げ
 Approve: 承認
 Refuse: 拒否
 Approve selected: 承認を選択しました。
@@ -7,8 +7,10 @@ Refuse selected: 選択の拒否
 pim_datagrid:
   no_entities:
     proposal: レビューする提案はありません
+    product_draft: レビューする商品の下書きはありません。
   no_results:
     proposal: レビュー提案がありません。検索条件を変更してください。
+    product_draft: レビューする商品の下書きがありません。検索条件を変更してください。
 pimee_datagrid:
   cells:
     expand:
@@ -18,107 +20,111 @@ pimee_workflow:
   entity:
     published_product:
       btn:
-        original_product: 作業コピーを編集します。
+        original_product: ワーキングコピーを編集
     proposal:
-      modal.title: コメントを残す (255 文字まで)
+      modal.title: コメントを残す (オプションとして255 文字まで)
   proposal:
-    selected: 提案選択済み
+    overview: "]-Inf, 1]{{ count }} 提案|]1, Inf[{{ count }} 提案"
+    selected: 選択した提案
     mass_action_group:
       review:
         label: 一括アクション
     partial_accept:
-      modal.title: 部分的な情報を承認する
-      modal.label: コメント (省略可能)
-      modal.error: エラーが発生しました、提案が部分的に承認されていません
+      modal.title: 部分的な情報を承認
+      modal.label: コメント (任意)
+      modal.error: エラーが発生しました。提案が部分的に承認されていません
       modal.success: 提案は、部分的に正常に検証されました
     partial_approve:
       modal:
-        title: 部分的変更を承認します。
-        label: コメント (省略可能)
-        error: エラーが発生しました、提案が部分的に承認されていません
-        success: 変更が承諾されました。
+        title: 部分的変更を承認
+        label: コメント (任意)
+        error: エラーが発生しました。提案が部分的に承認されていません
+        success: 変更は正常に承認されました
     partial_reject:
       modal:
-        title: 部分的変更を拒否します。
-        label: コメント (省略可能)
+        title: 部分的変更を拒否
+        label: コメント (任意)
         error: エラーが発生しました、提案が部分的に拒否されています
-        success: 変更が拒否されました
+        success: 変更は正常に拒否されました。
 batch_jobs:
   csv_published_product_export:
     label: 公開済み商品をCSVにエクスポート
     export.label: 公開済み商品のエクスポート
   csv_product_proposal_import:
-    label: 製品提案をCSV形式でインポート
-    import.label: 製品提案をインポート
+    label: 商品提案をCSV形式でインポート
+    import.label: 商品提案をインポート
   approve_product_draft:
-    label: 提案を承諾する
-    perform.label: 提案を承諾する
+    label: 提案を承諾
+    perform.label: 提案を承諾
   refuse_product_draft:
-    label: 提案を拒否する
-    perform.label: 提案を拒否する
+    label: 提案を拒否
+    perform.label: 提案を拒否
   xlsx_published_product_export:
-    label: 公開済み商品をXLSX形式でエクスポート
+    label: 公開済み商品のXLSX形式でのエクスポート
     export.label: 公開済み商品のエクスポート
   xlsx_product_proposal_import:
-    label: 製品提案をXLSX形式でインポート
-    import.label: 製品提案をXLSX形式でインポート
+    label: 製品提案のXLSX形式でのインポート
+    import.label: 製品提案のXLSX形式でのインポート
   csv_published_product_quick_export:
-    export.label: Csvの公開済み製品のクイックエクスポート
-    perform.label: Csvの公開済み製品のクイックエクスポート
+    export.label: 公開済CSV商品のクイックエクスポート
+    perform.label: 公開済CSV商品のクイックエクスポート
   csv_published_product_grid_context_quick_export:
-    export.label: Csvの公開済み製品のグリッドコンテキストのクイックエクスポート
-    perform.label: Csvの公開済み製品のグリッドコンテキストのクイックエクスポート
+    export.label: 公開済CSV商品の一覧表コンテキストのクイックエキスポート
+    perform.label: 公開済CSV商品の一覧表コンテキストのクイックエキスポート
   xlsx_published_product_quick_export:
-    export.label: Xlsxの公開済み製品のクイックエクスポート
-    perform.label: Xlsxの公開済み製品のクイックエクスポート
+    export.label: XSLX公開商品のクイックエクスポート
+    perform.label: XSLX公開商品のクイックエクスポート
   xlsx_published_product_grid_context_quick_export:
-    export.label: Xlsxの公開済み製品のグリッドコンテキストのクイックエクスポート
-    perform.label: Xlsxの公開済み製品のグリッドコンテキストのクイックエクスポート
+    export.label: XSLX公開商品の一覧表コンテキストのクイックエクスポート
+    perform.label: XSLX公開商品の一覧表コンテキストのクイックエクスポート
   publish_product:
-    perform.label: 公開製品
+    perform.label: 商品を公開
 pim_notification:
   types:
-    pimee_workflow_product_draft_notification_new_proposal: 新しい提案
-    pimee_workflow_import_notification_new_proposals: インポートからの新しい提案
-    pimee_workflow_product_draft_notification_partial_approve: 提案は、部分的に承認
-    pimee_workflow_product_draft_notification_partial_reject: 提案は、部分的に拒否
-    pimee_workflow_product_draft_notification_partial_remove: 提案は、部分的に削除
-    pimee_workflow_product_draft_notification_approve: 提案の承認
-    pimee_workflow_product_draft_notification_refuse: 提案が却下されました
-    pimee_workflow_product_draft_notification_remove: 提案が削除されました
+    pimee_workflow_product_draft_notification_new_proposal: 新規提案
+    pimee_workflow_import_notification_new_proposals: インポートからの新規提案
+    pimee_workflow_product_draft_notification_partial_approve: 提案は部分的に承認されました
+    pimee_workflow_product_draft_notification_partial_reject: 提案は部分的に却下されました
+    pimee_workflow_product_draft_notification_partial_remove: 提案は部分的に削除されました
+    pimee_workflow_product_draft_notification_approve: 提案は承認されました
+    pimee_workflow_product_draft_notification_refuse: 提案は却下されました
+    pimee_workflow_product_draft_notification_remove: 提案は削除されました
 pimee_dashboard:
   widget:
     product_drafts:
       date: 日付
       author: 作成者
-      product: 製品
+      product: 商品
       review: レビュー
-      empty: レビューに対する提案はありません
+      empty: レビュー提案はありません
 pimee_enrich.entity.product:
   module:
     history:
-      published: 公開済み
+      published: 公開済
       revert: 復元
+    attribute:
+      can_be_updated_by_a_rule: "この属性は、次のルールによって更新することができます:{{ rule }}"
+      value_updated: この値は現在の下書きによって更新されています
     meta:
-      published_version: 公開バージョン
+      published_version: 公開済バージョン
       owner_groups: 所有者グループ
-      draft_status: 下書き状態
+      draft_status: 下書きのステータス
       draft:
         in_progress: 処理中
         sent_for_approval: 承認待ち
-        working_copy: 作業コピー
+        working_copy: ワーキングコピー
     revert:
       title: 復元の確認
-      content: 本当にこのバージョンに製品を復元しますか？
+      content: 本当にこのバージョンに商品を復元してもよろしいですか？
     publish:
-      title: この製品を公開する
-      content: この製品を公開してもよろしいですか？
+      title: この商品を公開する
+      content: この商品を本当に公開してもよろしいですか？
     unpublish:
-      title: 製品の取り下げ
-      content: この製品を非公開にしてもよろしいですか？
+      title: 商品の取り下げ
+      content: この商品を本当に非公開にしてもよろしいですか？
     copy:
-      working_copy: 作業コピー
-      draft: 自分の下書き
+      working_copy: ワーキングコピー
+      draft: マイ下書き
       draft_of: "{{ author }} の下書き"
     approval:
       send: 承認のために送信
@@ -126,19 +132,21 @@ pimee_enrich.entity.product:
 pimee_enrich.entity.published_product:
   flash:
     publish:
-      success: 製品を公開しました
-      fail: この製品を公開できませんでした
+      success: 商品を正常に公開しました
+      fail: この商品を公開できませんでした
     unpublish:
-      success: 製品を非公開にしました
-      fail: この製品を非公開にできませんでした
+      success: 商品を正常に非公開にしました
+      fail: この商品を非公開にできませんでした
     revert:
-      success: 製品を復元しました
+      success: 商品を正常に復元しました
+  page_title:
+    index: "]-Inf, 1]{{ count }} 公開済み製品|]1, Inf[{{ count }} 公開済み製品"
   module:
     publish:
-      label: 公開する
-      publish_this_version: このバージョンを公開する
+      label: 公開
+      publish_this_version: このバージョンを公開
     unpublish:
-      label: 非公開
+      label: 非公開にする
 pimee_enrich.entity.product_draft:
   flash:
     approve:
@@ -149,43 +157,47 @@ pimee_enrich.entity.product_draft:
     remove:
       success: 提案は削除されました。
     update:
-      success: 製品の下書きは正常に保存されました
-      fail: 製品の下書きを更新できませんでした。
+      success: 商品の下書きは正常に保存されました
+      fail: 商品の下書きを更新できませんでした。
     create:
-      success: 製品下書き承認のため送信
-      fail: 承認を得るためにこの下書きは送信できません。
+      success: 商品の下書きが承認のために送信されました
+      fail: 承認のためのこの下書きは送信できません
   module:
-    create:
-      label: 下書きを保存
     proposal:
-      accept: 提案を受け入れる
+      accept: 提案を承認
       accept_selected: 選択した提案を受け入れる
       reject: 提案を拒否
       reject_selected: 選択した提案を拒否
-      remove: 提案を削除する
-      comment_title: あなたの提案のコメント (オプション - 最大 255 文字)
-      comment_chars: 文字数。
+      remove: 提案を削除
+      comment_title: 提案をコメント (オプション - 最大 255 文字)
+      comment_chars: 文字数
       confirm: 送信
     edit:
       discard_changes: 未保存の変更は失われます。変更を保存せずに、下書きを承諾へ送信しますか？
-      discard_changes_title: この下書きを送信してもよろしいですか？
+      discard_changes_title: 本当にこの下書きを送信してもよろしいですか？
 pimee_enrich.mass_edit.product:
   operation:
     publish:
-      label: 公開する
-      description: 製品を公開予定
-      warning: 選択した {{ itemsCount }} の製品を公開予定です。
+      label: 公開
+      label_count: "{1}公開 <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 公開 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
+      description: この商品は公開予定です
+      warning: 選択した {{ itemsCount }} 商品を公開予定です
     unpublish:
-      label: 非公開
-      description: この製品は未公開予定
-      warning: 選択した {{ itemsCount }} の製品を未公開予定です。
+      label: 非公開にする
+      label_count: "{1}未公開 <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 未公開 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
+      description: この商品は公開されません
+      warning: 選択した {{ itemsCount }}商品は公開されません
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: 公開商品にリンクしたカテゴリを削除することはできません。
 pim_menu:
   navigation:
-    published_products: 公開済み製品
+    published_products: 公開済み商品
   item:
     proposal: 提案
-    published_product: 公開済み製品
+    published_product: 公開済み商品
 pim_title:
   pimee_workflow_proposal_index: 提案
-  pimee_workflow_published_product_index: 公開済み製品
-  pimee_workflow_published_product_view: 公開製品 {{ product.label }} | ビュー
+  pimee_workflow_published_product_index: 公開済み商品
+  pimee_workflow_published_product_view: 公開済商品 {{ product.label }} | 表示

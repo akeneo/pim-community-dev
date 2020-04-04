@@ -1,51 +1,52 @@
 pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} ルール|]1, Inf[{{ count }} ルール"
   execution_button: ルールを実行
-  selected: 'ルール選択済み'
+  selected: '選択済ルール'
   popin:
     execute_rules:
-      confirm_title: 実行を確認する
-      confirm_content: すべてのルールを実行しますか？(時間がかかるかもしれません)
+      confirm_title: 実行を確認
+      confirm_content: ルールをすべて実行しますか？(長時間を要することがあります)
   notification:
     fail: この操作は行えません
-    launched: ルールの実行が開始されました。完了後、あなたに通知されます。
+    launched: ルール実行が開始されています。終了後に通知されます。
   attribute:
     list:
       code.label: コード
       condition.label: 状態
       action.label: アクション
-      no_rule_yet.label: 現時点のルールはなし
+      no_rule_yet.label: 現在ルールなし
   rule:
     condition:
-      if.label: もし
+      if.label: '条件:'
     action:
-      then.label: その後
-      set_value.label: セットされています
-      copy_value.label: がコピーされた
-      set.label: セットされています
-      copy.label: がコピーされた
-      add.label: が追加された
-      remove.label: は削除される
+      then.label: '結果:'
+      set_value.label: 'は次にセット済:'
+      copy_value.label: 'は次にコピー済:'
+      set.label: 'は次にセット済:'
+      copy.label: 'は次にコピー済:'
+      add.label: 'は次に追加済:'
+      remove.label: 'は次から削除:'
   datagrid:
     rule-grid:
       actions:
         execute:
-          confirm_title: 実行を確認する
+          confirm_title: 実行を確認
           confirm_content: このルールを実行しますか？
       mass_edit_action:
-        confirm_title: 計算を確認する
+        confirm_title: 計算を確認
         confirm_content: ルールの影響を受ける製品を計算しますか？
       mass_action:
         execute:
-          confirm_title: 実行を確認する
-          confirm_content: 選択中のルールを実行しようとしていますが、よろしいでしょうか？
+          confirm_title: 実行を確認
+          confirm_content: 選択中のルールを実行しますか？
           success: 選択されたルールの影響を受ける一括操作が開始されています。終了後に通知されます。
           error: ルールの実行中にエラーが発生しました。
           empty_selection: ルールが選択されていません。
         delete:
-          confirm_title: 実行を確認する
-          confirm_content: 選択中のルールを削除しようとしていますが、よろしいでしょうか？
-          success: あなたは正常にルールを削除しました
-          error: ルールの削除中にエラーが発生しました。
+          confirm_title: 実行を確認
+          confirm_content: 選択中のルールを本当に削除しますか？
+          success: ルールは正常に削除されました
+          error: ルールの削除中にエラーが発生しました
           empty_selection: ルールが選択されていません。
   form:
     attribute:
@@ -63,11 +64,11 @@ pim_datagrid:
     rule:
       flash:
         delete:
-          success: ルールを削除しました
+          success: ルールを正常に削除しました
 flash:
   rule:
-    impacted_product_count: ルールの影響を受ける製品を計算する一括操作が開始されています。終了後に通知されます。
-    executed: ルールの実行が開始されました。完了後、あなたに通知されます。
+    impacted_product_count: 選択された商品の影響を計算する一括操作が開始されています。終了後に通知されます。
+    executed: ルール実行が開始されています。終了後に通知されます。
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: ルールの設定
 batch_jobs:
   add_attribute_value:
@@ -75,23 +76,28 @@ batch_jobs:
   default_steps:
     execute_rules: ルールの実行
   yml_rule_import:
-    label: ルールを、YAML形式でインポートする
+    label: ルールをYAML形式でインポートする
     import.label: ルールのインポート
   yml_rule_export:
-    label: ルールを、YAML形式でエクスポートする
+    label: ルールをYAML形式でエクスポートする
     export.label: ルールのエクスポート
   rule_impacted_product_count:
-    label: ルールの影響を受ける製品
-    perform.label: 影響を受けた製品をカウント
+    label: ルールの影響を受ける商品
+    perform.label: 影響を受けた商品をカウント
   csv_product_import_with_rules:
-    label: ルールのある CSV 形式で製品をインポート
-    import.label: 製品のインポート
+    label: ルールによりCSV 形式で商品をインポート
+    import.label: 商品のインポート
+  csv_product_model_import_with_rules:
+    label: ルールによりCSV 形式で商品モデルをインポート
   xlsx_product_import_with_rules:
-    label: ルールのあるXLSX 形式で製品のインポート
-    import.label: 製品のインポート
+    label: ルールによりXLSX形式で商品をインポート
+    import.label: 商品のインポート
+  xlsx_product_model_import_with_rules:
+    label: ルールによりXLSX形式で商品モデルをインポート
 pim_notification:
   types:
     rule: ルールの設定
+    mass_edit_rule: 一括編集ルール
 pim_menu:
   item:
     rule: ルール

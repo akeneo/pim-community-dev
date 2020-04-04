@@ -1,0 +1,41 @@
+teamwork_assistant:
+  project:
+    required: 이 값은 비워둘 수 없습니다.
+    label_maxlength: 이 값은 너무 깁니다. {{ max }}자 이하여야 합니다.
+    project_identifier: '{{ project }} 프로젝트가 존재하지 않습니다.'
+    project_locale: 프로젝트 로케일 {{ locale }}이(가) 활성화되어야 합니다.
+    project_due_date: 이전 날짜는 선택할 수 없습니다.
+  notification:
+    project_calculation:
+      error: <strong>%project_label%</strong>에 대한 프로젝트 계산 실패
+      warning: <strong>%project_label%</strong>에 대한 프로젝트 계산 완료 및 경고 발생
+      success: <strong>%project_label%</strong> 프로젝트가 준비되었으며 기여자에게 알림이 전송되었습니다. 시작하십시오!
+      start: 시작
+    message: '"%project_label%"용으로 보강하기 위한 새 제품이 있습니다. 마감일은 "%due_date%"입니다.'
+    project_finished:
+      contributor: 축하합니다! %project_label%(으)로 만든 제품이 100% 완료되었습니다.
+      owner: '%due_date%의 %project_label%이(가) 완료되었습니다.'
+      show: 표시
+    due_date:
+      contributor: '%project_label%(으)로 만든 제품이 %percent% 완료되었습니다. 잊지 말고, %due_date%의 마지막 제품을 기입하십시오.'
+      owner: '%due_date%의 %project_label%이(가) 100% 완료되지 않았습니다.'
+      start: 시작
+  datagrid:
+    project_completeness: 프로젝트 진행률
+    contributor_todo: 할 일
+    contributor_in_progress: 진행 중
+    contributor_done: 완료
+    owner_todo: 할 일(프로젝트 개요)
+    owner_in_progress: 진행 중(프로젝트 개요)
+    owner_done: 완료(프로젝트 개요)
+job_execution:
+  summary:
+    processed_products: 처리한 제품
+pim_analytics:
+  info_type:
+    nb_projects: 프로젝트 수
+pim_datagrid:
+  cells:
+    type:
+      project_calculation: 프로젝트 계산
+      refresh_project_completeness_calculation: 프로젝트 완성도 계산 새로 고침
