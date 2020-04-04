@@ -42,7 +42,9 @@ pimee_product_asset:
       need_refresh: <b>자산 가져오기가 실행되었습니다.</b><br> 제품 양식에서 가져온 자산을 보려면 가져오기 알림을 받은 후 즉시 제품 페이지를 새로 고치십시오.
     error:
       list: 이미 업로드된 파일을 읽을 수 없음
+      upload: 업로드하는 동안 오류가 발생했습니다
       delete: 서버에서 파일을 삭제할 수 없음
+      import: 가져오는 중에 오류가 발생했습니다
       filename: 자산의 잘못된 파일 이름
       code: 자산의 잘못된 코드 형식
       locale: 자산이 존재하지만 지역화 가능하지 않습니다
@@ -62,6 +64,7 @@ pimee_product_asset:
       delete:
         confirm_content: 선택한 자산을 삭제하시겠습니까?
         success: 선택한 자산이 삭제되었습니다.
+        error: 선택한 자산을 삭제하는 중에 오류가 발생했습니다. 다시 시도하십시오.
         empty_selection: 자산 선택 안 함
 pim_enrich:
   entity:
@@ -74,6 +77,7 @@ pim_import_export:
     last_operations:
       job_type:
         mass_upload: 대량 업로드
+        compute_completeness_of_products_linked_to_assets: 자산에 링크된 제품 완성도 계산
 pim_title:
   pimee_product_asset_mass_upload: 자산 업로드
   pimee_product_asset_index: 자산
@@ -141,6 +145,8 @@ batch_jobs:
     perform.label: 카테고리로 자산 이동
   add_tags_to_assets:
     perform.label: 자산에 태그 추가
+  compute_completeness_of_products_linked_to_assets:
+    compute_completeness_of_products_linked_to_assets.label: 자산에 링크된 제품 완성도 계산
 jstree:
   asset:
     all: 모든 자산

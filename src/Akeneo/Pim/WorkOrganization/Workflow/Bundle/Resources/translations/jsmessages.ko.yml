@@ -32,16 +32,19 @@ pimee_workflow:
     partial_accept:
       modal.title: 일부 정보 승인
       modal.label: 코멘트 남기기(옵션)
+      modal.error: 오류가 발생했습니다. 제안 일부가 승인되지 않았습니다
       modal.success: 제안 일부가 검증되었습니다
     partial_approve:
       modal:
         title: 변경 사항 일부 승인
         label: 코멘트 남기기(옵션)
+        error: 오류가 발생했습니다. 제안 일부가 승인되지 않았습니다
         success: 변경 사항이 승인되었습니다
     partial_reject:
       modal:
         title: 변경 사항 일부 거부
         label: 코멘트 남기기(옵션)
+        error: 오류가 발생했습니다. 제안 일부가 거부되지 않았습니다
         success: 변경 사항이 거부되었습니다
 batch_jobs:
   csv_published_product_export:
@@ -195,6 +198,10 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span> 게시 취소|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>게시 취소"
       description: 제품이 게시 취소됩니다
       warning: 선택된 {{ itemsCount }}개 제품이 게시 취소됩니다.
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: 게시된 제품에 링크된 카테고리를 삭제할 수 없습니다.
 pim_menu:
   navigation:
     published_products: 게시된 제품

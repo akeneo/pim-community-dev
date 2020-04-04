@@ -32,16 +32,19 @@ pimee_workflow:
     partial_accept:
       modal.title: 部分的な情報を承認
       modal.label: コメント (任意)
+      modal.error: エラーが発生しました。提案が部分的に承認されていません
       modal.success: 提案は、部分的に正常に検証されました
     partial_approve:
       modal:
         title: 部分的変更を承認
         label: コメント (任意)
+        error: エラーが発生しました。提案が部分的に承認されていません
         success: 変更は正常に承認されました
     partial_reject:
       modal:
         title: 部分的変更を拒否
         label: コメント (任意)
+        error: エラーが発生しました、提案が部分的に拒否されています
         success: 変更は正常に拒否されました。
 batch_jobs:
   csv_published_product_export:
@@ -195,6 +198,10 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}未公開 <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 未公開 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
       description: この商品は公開されません
       warning: 選択した {{ itemsCount }}商品は公開されません
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: 公開商品にリンクしたカテゴリを削除することはできません。
 pim_menu:
   navigation:
     published_products: 公開済み商品

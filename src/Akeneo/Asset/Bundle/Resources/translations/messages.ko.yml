@@ -51,14 +51,17 @@ pimee_product_asset:
     flash:
       update:
         success: 자산이 업데이트되었습니다.
+        error: 자산이 업데이트되지 않았습니다. 오류가 발생했습니다.
       create:
         success: 자산이 생성되었습니다.
+        error: 자산이 생성되지 않았습니다. 오류가 발생했습니다.
       remove:
         success: 자산이 제거되었습니다.
   enrich_reference:
     flash:
       delete:
         success: 참조 파일이 삭제되었습니다.
+        error: 참조 파일이 삭제되지 않았습니다. 오류가 발생했습니다.
   enrich_variation:
     flash:
       transformation:
@@ -72,8 +75,10 @@ pimee_product_asset:
         success: 변형 파일이 생성되었습니다.
       update:
         success: 변형 파일이 업데이트되었습니다.
+        error: 변형 파일이 업데이트되지 않았습니다. 오류가 발생했습니다.
       delete:
         success: 변형 파일이 삭제되었습니다.
+        error: 변형 파일이 삭제되지 않았습니다. 오류가 발생했습니다.
   popin.create:
     title: 새 자산 만들기
     is_localized: 지역화 가능
@@ -121,6 +126,7 @@ pimee_product_asset:
     import: 가져오기
     executed: 대량 업로드 실행됨
     error:
+      upload: 업로드하는 동안 오류가 발생했습니다
       code: 자산의 잘못된 코드 형식
       localizable: 자산이 존재하지만 지역화 가능하지 않습니다
       invalid_locale: 로케일이 비활성화되었거나 잘못되었습니다
@@ -178,6 +184,7 @@ pim_datagrid:
   cells:
     type:
       mass_upload: 자산 대량 업로드
+      compute_completeness_of_products_linked_to_assets: 자산에 링크된 제품 완성도 계산
 pim_analytics:
   info_type:
     nb_assets: 자산 수
@@ -229,3 +236,6 @@ pimee_enrich:
       options:
         width: '%value%px 너비'
         height: '%value%px 높이'
+asset_tree:
+  remove:
+    error_linked: 사용자의 기본 자산 카테고리 트리로 설정되어 있으므로, 이 카테고리 트리를 삭제할 수 없습니다.

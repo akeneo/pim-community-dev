@@ -137,6 +137,7 @@ akeneo_franklin_insights:
         already_subscribed_product: '商品は登録済です。'
         variant_product: '恐れ入りますが、バリエーション商品をフランクリンインサイトに登録できません。'
         inactive_connection: '申し訳ありませんが、商品をフランクリンインサイトに登録できません。フランクリンインサイトへの接続を構成してください。'
+        product_subscription_with_same_identifier_already_exist: '1件以上の同一識別子を持つ別の商品をすでに登録済です。'
       module:
         product_edit_form:
           family_required: '商品ファミリーは必須です。'
@@ -164,6 +165,7 @@ akeneo_franklin_insights:
     flash:
       success: フランクリンインサイト有効化コードが正常に保存されました。
       invalid: 申し訳ありませんが、無効なアクティベーションコードです。有効なコードで再度お試し下さい。
+      error: 申し訳ありません。問題が起きました。
     module:
       title:
         sub_title: '<span class="AknDescriptionHeader-title--highlight">商品情報AIアシスタント</span>にようこそ！'

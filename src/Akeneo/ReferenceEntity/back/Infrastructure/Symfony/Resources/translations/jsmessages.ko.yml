@@ -126,7 +126,7 @@ pim_reference_entity:
       title: 제품
       no_attribute:
         title: 참조 엔터티 "{{ entityLabel }}"에 링크된 제품 특성이 없습니다
-        subtitle: "이 참조 엔터티에 대한 제품 링크를 시작하기 위해 새로 만들 수 있습니다: "
+        subtitle: "이 자산 패밀리에 대한 제품 링크 연결을 시작하기 위해 새로 만들 수 있습니다: "
         link: 새 제품 특성 만들기
       not_enough_items:
         title: 여기는 약간 혼잡합니다. {{ productCount }}/{{ totalCount }}개 제품이 표시됩니다.
@@ -136,7 +136,7 @@ pim_reference_entity:
         button: 모든 제품 보기
       no_product:
         title: 제품 특성 "{{ entityLabel }}"에 대해 링크된 제품이 없습니다
-        subtitle: "여기에 표시하려면 이 특성에 대한 제품 링크를 시작하십시오 "
+        subtitle: "여기에 표시하려면 이 특성에 대한 제품 링크 연결을 시작하십시오 "
     enrich:
       title: 레코드 특성
       code: 코드
