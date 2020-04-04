@@ -5,6 +5,7 @@ pim_enrich.entity.family:
   flash:
     update:
       success: ファミリーが正常に更新されました。
+      fail: ファミリーの更新中にエラーが発生しました
       cant_remove_attribute_as_label: ラベルとして使用中の属性は削除できません
       cant_remove_attribute_as_image: メイン画像として使用中の属性は削除できません
       cant_remove_attribute_used_as_axis: ファミリーバリエーションでバリエーション軸として使用中の属性は削除できません
@@ -68,6 +69,7 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: 属性オプションが正常に作成されました
+      fail: 項目オプションの作成中にエラーが発生しました
     update:
       fail: 属性オプションを保存できません
     delete:

@@ -78,3 +78,5 @@ category:
   overview: カテゴリ
 tree:
   edit: ツリーを編集
+  remove:
+    error_linked: このカテゴリツリーはチャンネルにリンクしているため削除できません。
