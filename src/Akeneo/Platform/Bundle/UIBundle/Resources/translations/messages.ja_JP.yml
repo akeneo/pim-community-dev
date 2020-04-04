@@ -37,6 +37,7 @@ Most Viewed: 閲覧が多いもの
 "Yes": "はい"
 "No": "いいえ"
 required: (必須)
+The element could not be deleted: エレメントを削除できませんでした。
 pim_ui.system_config:
   form:
     loading_message_enabled.label: メッセージの読み込みを有効にする
@@ -79,6 +80,7 @@ pim_enrich:
       associations_view: 商品の関連性を表示
       associations_edit: 商品の関連性を追加
       change_family: 商品ファミリーを変更
+      change_state: 商品のステータスを変更
       add_to_groups: 商品をグループに追加
       mass_edit: 商品一括編集操作
       comment: 商品へコメント
@@ -200,6 +202,7 @@ flash:
     removed: アイテムが削除されました
   attribute:
     identifier_not_removable: 識別子の属性は削除できません
+    used_as_conversion_unit: この属性はチャンネル%channelCodes%の変換ユニットで使用中のため削除できません
   category:
     removed: カテゴリを正常に削除しました
   tree:
@@ -215,6 +218,7 @@ flash:
     created: グループタイプを正常に作成しました
   user:
     removed: ユーザーを正常に削除しました
+  error occurred: アクションに失敗しました。やり直してください。
 #Info messages
 info:
   updated: 保存されていない変更があります。
@@ -254,6 +258,7 @@ info:
 Created: '作成:'
 Updated: '更新:'
 Last update: '最終更新:'
+by: 投稿
 N/A: N/A
 Manage products: 商品管理
 Manage groups: グループ管理

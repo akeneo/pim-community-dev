@@ -96,6 +96,7 @@ pim_measure:
     CENTIAMPERE: センチアンペア
     DECIAMPERE: デシアンペア
     AMPERE: アンペア
+    DEKAMPERE: デカアンペア
     HECTOAMPERE: ヘクトアンペア
     KILOAMPERE: キロアンペア
     MEGAAMPERE: メガアンペア
