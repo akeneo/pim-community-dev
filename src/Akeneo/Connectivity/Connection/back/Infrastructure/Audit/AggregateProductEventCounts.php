@@ -19,9 +19,12 @@ final class AggregateProductEventCounts
      *
      * @return array [
      *      [$connectionCode] => [
-     *          2020-01-01 => 3,
-     *          2020-01-02 => 0,
-     *          2020-01-03 => 6,
+     *          'daily' => [
+     *              2020-01-01 => 3,
+     *              2020-01-02 => 0,
+     *              2020-01-03 => 6,
+     *          ],
+     *          'weekly_total' => 9
      *      ]
      * ]
      */
@@ -35,11 +38,20 @@ final class AggregateProductEventCounts
                     $dateTimeZone
                 );
 
-                $data[$periodEventCount->connectionCode()] = self::normalizeDailyEventCounts(
+                $dailyEventCountsData = self::normalizeDailyEventCounts(
                     $dailyEventCounts,
                     $periodEventCount->fromDateTime()->setTimezone($dateTimeZone),
                     $periodEventCount->upToDateTime()->setTimezone($dateTimeZone),
                 );
+
+                $total = array_reduce($dailyEventCountsData, function (int $total, int $count) {
+                    return $total + $count;
+                }, 0);
+
+                $data[$periodEventCount->connectionCode()] = [
+                    'daily' => $dailyEventCountsData,
+                    'weekly_total' => $total
+                ];
 
                 return $data;
             },
