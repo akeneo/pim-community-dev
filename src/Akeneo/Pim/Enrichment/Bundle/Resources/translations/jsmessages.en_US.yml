@@ -84,7 +84,7 @@ pim_enrich.entity.product:
             save_and_next: Save and next
             save_and_finish: Save and finish
         associations:
-            title: Associations
+            title: Associations ({{ count }})
             none_exist: No association types exist.
             show_products: Display products
             show_groups: Display groups
@@ -92,7 +92,8 @@ pim_enrich.entity.product:
             association_type_selector: Association type
             target: Target
             manage: Add {{ associationType }} associations
-            manage_description: Select the products you want to associate with the current product
+            manage_description: Select the products you want to associate with product "{{ productLabel }}"
+            mass_edit_description: Select the products you want to associate to the {{ productCount }} selected product(s)
             add_associations: Add associations
         attribute_filter:
             display: Display

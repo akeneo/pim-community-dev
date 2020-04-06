@@ -36,6 +36,7 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
 
         $this->setSortOrder(Directions::DESCENDING);
         $this->setParameters(['dataLocale' => 'a_locale']);
+        $this->setParameters(['dataChannel' => 'a_channel']);
     }
 
     function it_is_initializable()
@@ -228,6 +229,7 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
             'locales'       => ['a_locale'],
             'channels'      => ['a_channel'],
             'data_locale'   => 'a_locale',
+            'data_channel'  => 'a_channel',
             'is_associated' => true,
         ])->willReturn([
             'identifier'    => 'associated_product_1',
@@ -247,6 +249,7 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
             'locales'       => ['a_locale'],
             'channels'      => ['a_channel'],
             'data_locale'   => 'a_locale',
+            'data_channel'  => 'a_channel',
             'is_associated' => true,
         ])->willReturn([
             'identifier'    => 'associated_product_2',
@@ -266,6 +269,7 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
             'locales'       => ['a_locale'],
             'channels'      => ['a_channel'],
             'data_locale'   => 'a_locale',
+            'data_channel'  => 'a_channel',
             'is_associated' => true,
         ])->willReturn([
             'identifier'    => 'associated_product_model_1',
