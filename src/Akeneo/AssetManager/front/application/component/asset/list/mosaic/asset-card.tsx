@@ -74,34 +74,38 @@ export const AssetCardWithLink = ({...props}: AssetCardProps) => {
   const assetUrl = getAssetEditUrl(props.asset);
 
   return (
-    <a href={assetUrl} onClick={e => e.preventDefault()}>
+    <a href={assetUrl} onClick={(e) => e.preventDefault()}>
       <AssetCard {...props} />
     </a>
   );
 };
 
-const AssetCard = ({
-  asset,
-  context,
-  isSelected,
-  onSelectionChange,
-  isDisabled,
-  onClick,
-}: AssetCardProps) => {
+const MAX_RETRY = 3;
+const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, onClick}: AssetCardProps) => {
   const [url, setUrl] = React.useState<string | null>(null);
+  const [retryCount, setRetryCount] = React.useState(0);
+
   let isDisplayed = true;
   React.useEffect(() => {
     const imageUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
-    loadImage(imageUrl).then(() => {
-      if (isDisplayed) {
-        setUrl(imageUrl);
-      }
-    });
+    loadImage(imageUrl)
+      .then((value: any) => {
+        if (isDisplayed) {
+          setUrl(imageUrl);
+        }
+      })
+      .catch(() => {
+        if (retryCount < MAX_RETRY) {
+          setRetryCount(retryCount + 1);
+        } else {
+          setUrl('');
+        }
+      });
 
     return () => {
       isDisplayed = false;
     };
-  }, [asset, context.channel, context.locale]);
+  }, [asset, context.channel, context.locale, retryCount]);
 
   return (
     <Container data-asset={asset.code} data-selected={isSelected} isDisabled={isDisabled}>
