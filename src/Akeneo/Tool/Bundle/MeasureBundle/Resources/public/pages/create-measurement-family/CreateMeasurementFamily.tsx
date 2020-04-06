@@ -5,7 +5,7 @@ import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-con
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
 import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
-import {HELPER_LEVEL_WARNING, SubsectionHelper} from 'akeneomeasure/shared/components/SubsectionHelper';
+import {HelperLevel, HelperRibbon} from 'akeneomeasure/shared/components/HelperRibbon';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {Button} from 'akeneomeasure/shared/components/Button';
@@ -90,9 +90,9 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
         </Subsection>
         <Subsection>
           <SubsectionHeader>{__('measurements.family.standard_unit')}</SubsectionHeader>
-          <SubsectionHelper level={HELPER_LEVEL_WARNING}>
+          <HelperRibbon level={HelperLevel.HELPER_LEVEL_WARNING}>
             {__('measurements.family.standard_unit_is_not_editable_after_creation')}
-          </SubsectionHelper>
+          </HelperRibbon>
           <FormGroup>
             <TextField
               id="measurements.measurement_family.create.standard_unit_code"

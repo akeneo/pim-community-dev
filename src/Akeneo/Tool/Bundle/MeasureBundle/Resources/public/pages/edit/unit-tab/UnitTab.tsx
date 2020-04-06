@@ -11,7 +11,6 @@ import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-erro
 import {UnitCode} from 'akeneomeasure/model/unit';
 import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
 import {UnitRow} from 'akeneomeasure/pages/edit/unit-tab/UnitRow';
-import {ErrorFlashMessage} from 'akeneomeasure/shared/components/ErrorFlashMessage';
 
 const TabContainer = styled.div`
   display: flex;
@@ -23,10 +22,6 @@ const TabContainer = styled.div`
 const TabColumns = styled.div`
   display: flex;
   overflow: hidden;
-`;
-
-const ErrorsContainer = styled.div`
-  margin-bottom: 20px;
 `;
 
 const UnitList = styled.div`
@@ -42,20 +37,6 @@ type UnitTabProps = {
   selectUnitCode: (unitCode: UnitCode) => void;
 };
 
-const Errors = ({errors}: {errors: ValidationError[]}) => {
-  if (0 === errors.length) {
-    return null;
-  }
-
-  return (
-    <ErrorsContainer>
-      {errors.map((error: ValidationError, index: number) => (
-        <ErrorFlashMessage key={index}>{error.message}</ErrorFlashMessage>
-      ))}
-    </ErrorsContainer>
-  );
-};
-
 const UnitTab = ({
   measurementFamily,
   errors,
@@ -69,11 +50,8 @@ const UnitTab = ({
 
   const filteredUnits = measurementFamily.units.filter(filterOnLabelOrCode(searchValue, locale));
 
-  const tabErrors = errors.filter((error: ValidationError) => error.propertyPath === '');
-
   return (
     <TabContainer>
-      <Errors errors={tabErrors}/>
       <TabColumns>
         <UnitList>
           <SearchBar count={measurementFamily.units.length} searchValue={searchValue} onSearchChange={setSearchValue} />
