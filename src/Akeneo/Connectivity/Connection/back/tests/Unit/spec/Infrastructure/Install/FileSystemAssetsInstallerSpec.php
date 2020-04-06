@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Install;
 
-
 use Akeneo\Connectivity\Connection\Infrastructure\Install\FileSystemAssetsInstaller;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

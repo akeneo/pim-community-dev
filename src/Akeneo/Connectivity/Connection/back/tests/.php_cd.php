@@ -80,6 +80,7 @@ $rules = [
         [
             'Akeneo\Connectivity\Connection\Application',
             'Akeneo\Connectivity\Connection\Domain',
+            'Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateProductEventCounts',
 
             // Dependency on HTTP foundation for Request/Response
             'Symfony\Component\HttpFoundation',
