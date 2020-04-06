@@ -61,7 +61,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
 
   return (
     <Modal>
-      <ModalCloseButton title={__('pim_common.close')} onClick={handleClose} />
+      <ModalCloseButton title={__('pim_common.close')} onClick={() => handleClose()} />
       <ModalBodyWithIllustration illustration={<MeasurementFamilyIllustration />}>
         <ModalTitle
           title={__('measurements.family.add_new_measurement_family')}
