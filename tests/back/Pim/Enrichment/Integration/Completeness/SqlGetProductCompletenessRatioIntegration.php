@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProductCompletenessRatio;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -16,12 +18,17 @@ use PHPUnit\Framework\Assert;
  */
 class SqlGetProductCompletenessRatioIntegration extends TestCase
 {
+    /** @var GetProductCompletenesses */
+    public $getProductCompletenesses;
     /** @var GetProductCompletenessRatio */
     private $getProductCompletenessRatio;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->getProductCompletenesses = $this->get(
+            'akeneo.pim.enrichment.product.query.get_product_completenesses'
+        );
         $this->getProductCompletenessRatio = $this->get(
             'akeneo.pim.enrichment.product.query.product_completeness_ratio'
         );
@@ -33,17 +40,19 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
     public function it_returns_the_completeness_ratio_of_a_product_for_a_given_channel_and_locale()
     {
         $product = $this->createProduct();
-        $completenesses = $product->getCompletenesses();
+        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
+
         Assert::assertNotEmpty($completenesses);
 
+        /** @var ProductCompleteness $completeness */
         foreach ($completenesses as $completeness) {
             $ratio = $this->getProductCompletenessRatio->forChannelCodeAndLocaleCode(
                 $product->getId(),
-                $completeness->getChannel()->getCode(),
-                $completeness->getLocale()->getCode()
+                $completeness->channelCode(),
+                $completeness->localeCode()
             );
             Assert::assertNotNull($ratio);
-            Assert::assertSame($completeness->getRatio(), $ratio);
+            Assert::assertEquals($completeness->ratio(), $ratio);
         }
     }
 

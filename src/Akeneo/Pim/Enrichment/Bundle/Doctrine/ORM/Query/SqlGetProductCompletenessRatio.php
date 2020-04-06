@@ -24,7 +24,8 @@ class SqlGetProductCompletenessRatio implements GetProductCompletenessRatio
     public function forChannelCodeAndLocaleCode(int $productId, string $channelCode, string $localeCode): ?int
     {
         $sql = <<<SQL
-SELECT completeness.ratio from pim_catalog_completeness completeness
+SELECT FLOOR(((completeness.required_count - completeness.missing_count) / completeness.required_count) * 100) AS ratio
+FROM pim_catalog_completeness completeness
 INNER JOIN pim_catalog_channel channel on completeness.channel_id = channel.id
 INNER JOIN pim_catalog_locale locale on completeness.locale_id = locale.id
 WHERE completeness.product_id = :productId
