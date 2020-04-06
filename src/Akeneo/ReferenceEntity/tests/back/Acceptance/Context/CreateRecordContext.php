@@ -67,6 +67,7 @@ final class CreateRecordContext implements Context
     }
 
     /**
+     * @given /^the "([^"]+)" record for entity "([^"]+)" with:$/
      * @When /^the user creates a record "([^"]+)" for entity "([^"]+)" with:$/
      */
     public function theUserCreatesARecordWith(

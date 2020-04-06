@@ -213,3 +213,11 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.attribute_option_should_exist' }
+
+    akeneo_referenceentity.enrichment.validation.product_value.record_should_exist:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\Constraints\RecordsShouldExistValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_existing_record_codes'
+            - '@pim_catalog.repository.cached_attribute'
+        tags:
+            - { name: validator.constraint_validator, alias: 'akeneo_pim_enrichment_records_should_exist' }

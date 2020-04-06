@@ -90,3 +90,7 @@ pim_reference_entity:
                 should_not_be_empty: 'The suffix cannot be an empty string.'
             media_type:
                 not_expected: 'The media type given is not corresponding to the expected ones (%supported_media_types%).'
+    product_value:
+        validation:
+            record_should_exist: 'Property "%attribute_code%" expects a valid record code. The record "%invalid_record%" does not exist'
+            records_should_exist: 'Property "%attribute_code%" expects valid record codes. The following records do not exist: "%invalid_records%"'

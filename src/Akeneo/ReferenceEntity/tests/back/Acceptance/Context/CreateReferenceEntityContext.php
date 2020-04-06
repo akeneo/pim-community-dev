@@ -67,6 +67,7 @@ final class CreateReferenceEntityContext implements Context
     }
 
     /**
+     * @Given the :code reference entity with:
      * @When /^the user creates a reference entity "([^"]+)" with:$/
      */
     public function theUserCreatesAnReferenceEntityWith($code, TableNode $updateTable)
