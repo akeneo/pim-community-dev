@@ -49,20 +49,4 @@ SQL;
 
         return $count;
     }
-
-    /**
-     * delete the completeness elements related to products that do not exist
-     * anymore. It returns the count of deleted rows.
-     */
-    public function cleanNonExistingProducts(): int
-    {
-        $sql = <<<SQL
-DELETE FROM pim_catalog_completeness AS pcc
-WHERE pcc.product_id NOT IN (SELECT id FROM pim_catalog_product AS pcp)
-SQL;
-        $stmt = $this->connection->executeQuery($sql);
-        $count = $stmt->rowCount();
-
-        return $count;
-    }
 }
