@@ -11,20 +11,28 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class CalculateActionApplierSpec extends ObjectBehavior
 {
-    function let(PropertySetterInterface $propertySetter)
+    function let(
+        PropertySetterInterface $propertySetter,
+        PropertyAdderInterface $propertyAdder,
+        GetAttributes $getAttributes
+    )
     {
-        $this->beConstructedWith($propertySetter);
+        $this->beConstructedWith($propertySetter, $propertyAdder, $getAttributes);
     }
 
     function it_is_an_action_applier()
@@ -110,10 +118,23 @@ class CalculateActionApplierSpec extends ObjectBehavior
         $this->applyAction($this->productCalculateAction(), [$product]);
     }
 
-    function it_calculates_attribute_values(
+    function it_calculates_attribute_values_for_a_number_destination(
         PropertySetterInterface $propertySetter,
-        FamilyInterface $family
+        FamilyInterface $family,
+        GetAttributes $getAttributes
     ) {
+        $getAttributes->forCode('ratio_fr_en')->willReturn(new Attribute(
+            'ratio_fr_en',
+            AttributeTypes::NUMBER,
+            [],
+            false,
+            false,
+            null,
+            true,
+            'decimal',
+            []
+        ));
+
         $family->hasAttributeCode('ratio_fr_en')->willReturn(true);
         $family->getId()->willReturn(42);
         $product1 = (new Product())->setFamily($family->getWrappedObject());
@@ -138,11 +159,65 @@ class CalculateActionApplierSpec extends ObjectBehavior
         $this->applyAction($this->productCalculateAction(), [$product1, $product2]);
     }
 
-    private function productCalculateAction(): ProductCalculateActionInterface
+    function it_calculates_attribute_values_for_a_price_destination(
+        PropertyAdderInterface $propertyAdder,
+        FamilyInterface $family,
+        GetAttributes $getAttributes
+    ) {
+        $getAttributes->forCode('ratio_fr_en')->willReturn(
+            new Attribute(
+                'ratio_fr_en',
+                AttributeTypes::PRICE_COLLECTION,
+                [],
+                false,
+                false,
+                null,
+                true,
+                'prices',
+                []
+            )
+        );
+
+        $family->hasAttributeCode('ratio_fr_en')->willReturn(true);
+        $family->getId()->willReturn(42);
+        $product1 = (new Product())->setFamily($family->getWrappedObject());
+        $product1->addValue(ScalarValue::localizableValue('total', 15, 'fr_FR'));
+        $product1->addValue(ScalarValue::localizableValue('total', 50, 'en_US'));
+        $product1->addValue(
+            PriceCollectionValue::value(
+                'base_price',
+                new PriceCollection([new ProductPrice(20.35, 'EUR'), new ProductPrice(25, 'USD')])
+            )
+        );
+
+        $product2 = (new Product())->setFamily($family->getWrappedObject());
+        $product2->addValue(ScalarValue::localizableValue('total', 15, 'fr_FR'));
+        $product2->addValue(ScalarValue::localizableValue('total', 40, 'en_US'));
+        $product2->addValue(
+            PriceCollectionValue::value(
+                'base_price',
+                new PriceCollection([new ProductPrice(17.75, 'EUR')])
+            )
+        );
+
+        $propertyAdder->addData($product1, 'ratio_fr_en', [['amount' => 50.35, 'currency' => 'EUR']], ['scope' => null, 'locale' => null])->shouldBeCalled();
+        $propertyAdder->addData($product2, 'ratio_fr_en', [['amount' => 55.25, 'currency' => 'EUR']], ['scope' => null, 'locale' => null])->shouldBeCalled();
+
+        $this->applyAction($this->productCalculateAction(), [$product1, $product2]);
+    }
+
+    private function productCalculateAction(bool $destinationIsPrice = true): ProductCalculateActionInterface
     {
+        $destination = [
+            'field' => 'ratio_fr_en',
+        ];
+        if (true === $destinationIsPrice) {
+            $destination['currency'] = 'EUR';
+        }
+
         return new ProductCalculateAction(
             [
-                'destination' => ['field' => 'ratio_fr_en'],
+                'destination' => $destination,
                 'source' => ['field' => 'total', 'locale' => 'fr_FR'],
                 'operation_list' => [
                     [

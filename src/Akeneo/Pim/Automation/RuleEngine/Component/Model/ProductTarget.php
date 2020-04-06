@@ -30,11 +30,15 @@ final class ProductTarget
     /** @var string|null */
     private $scope;
 
-    private function __construct(string $field, ?string $scope, ?string $locale)
+    /** @var string|null */
+    private $currency;
+
+    private function __construct(string $field, ?string $scope, ?string $locale, ?string $currency)
     {
         $this->field = strtolower($field);
         $this->scope = $scope;
         $this->locale = $locale;
+        $this->currency = $currency;
     }
 
     public function getField(): string
@@ -52,10 +56,20 @@ final class ProductTarget
         return $this->scope;
     }
 
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
     public static function fromNormalized(array $normalized): self
     {
         Assert::keyExists($normalized, 'field', 'Target configuration requires a "field" key.');
 
-        return new self($normalized['field'], $normalized['scope'] ?? null, $normalized['locale'] ?? null);
+        return new self(
+            $normalized['field'],
+            $normalized['scope'] ?? null,
+            $normalized['locale'] ?? null,
+            $normalized['currency'] ?? null
+        );
     }
 }

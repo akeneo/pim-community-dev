@@ -17,12 +17,17 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionExce
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operand;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operation;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductTarget;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Webmozart\Assert\Assert;
 
@@ -31,9 +36,20 @@ class CalculateActionApplier implements ActionApplierInterface
     /** @var PropertySetterInterface */
     private $propertySetter;
 
-    public function __construct(PropertySetterInterface $propertySetter)
-    {
+    /** @var PropertyAdderInterface */
+    private $propertyAdder;
+
+    /** @var GetAttributes */
+    private $getAttributes;
+
+    public function __construct(
+        PropertySetterInterface $propertySetter,
+        PropertyAdderInterface $propertyAdder,
+        GetAttributes $getAttributes
+    ) {
         $this->propertySetter = $propertySetter;
+        $this->propertyAdder = $propertyAdder;
+        $this->getAttributes = $getAttributes;
     }
 
     public function applyAction(ActionInterface $action, array $items = [])
@@ -48,17 +64,7 @@ class CalculateActionApplier implements ActionApplierInterface
                     return;
                 }
 
-                // TODO RUL-59 / RUL-60: format data for metric and price collection values
-                $destination = $action->getDestination();
-                $this->propertySetter->setData(
-                    $item,
-                    $destination->getField(),
-                    $result,
-                    [
-                        'scope' => $destination->getScope(),
-                        'locale' => $destination->getLocale(),
-                    ]
-                );
+                $this->updateEntity($item, $action->getDestination(), $result);
             }
         }
     }
@@ -155,5 +161,42 @@ class CalculateActionApplier implements ActionApplierInterface
                 $operand->getCurrencyCode() ? sprintf(' (%s)', $operand->getCurrencyCode()) : ''
             )
         );
+    }
+
+    private function updateEntity(EntityWithValuesInterface $entity, ProductTarget $destination, float $data): void
+    {
+        $targetAttribute = $this->getAttributes->forCode($destination->getField());
+        Assert::isInstanceOf($targetAttribute, Attribute::class);
+
+        if (AttributeTypes::PRICE_COLLECTION === $targetAttribute->type()) {
+            Assert::string($destination->getCurrency());
+            $this->propertyAdder->addData(
+                $entity,
+                $destination->getField(),
+                [
+                    [
+                        'amount' => $data,
+                        'currency' => $destination->getCurrency(),
+                    ],
+                ],
+                [
+                    'scope' => $destination->getScope(),
+                    'locale' => $destination->getLocale(),
+                ]
+            );
+        } elseif (AttributeTypes::NUMBER === $targetAttribute->type()) {
+            $this->propertySetter->setData(
+                $entity,
+                $destination->getField(),
+                $data,
+                [
+                    'scope' => $destination->getScope(),
+                    'locale' => $destination->getLocale(),
+                ]
+            );
+        } else {
+            // TODO RUL-59: Use metric as destination
+            throw new \InvalidArgumentException('Invalid destination attribute type');
+        }
     }
 }
