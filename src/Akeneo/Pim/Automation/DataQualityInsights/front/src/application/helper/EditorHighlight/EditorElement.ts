@@ -40,6 +40,11 @@ export const convertHtmlContent = (htmlContent: string): string => {
   const domParser = new DOMParser()​​;
   let content = htmlContent;
 
+  const isHTML = (new RegExp(/(<([^>]+)>)/i)).test(content);
+  if (! isHTML) {
+    return content;
+  }
+
   content = content.replace("\n", "");
   content = content.replace(new RegExp(`(<\\/(${HTML_BLOCK_LEVEL_ELEMENTS_LIST.join('|')})>)`, 'gim'), "$1\n");
   content = content.replace(new RegExp(`(<(${HTML_BREAKING_LINE_ELEMENTS_LIST.join('|')})\\s*[\\/]?>)`, 'gim'), "$1\n");

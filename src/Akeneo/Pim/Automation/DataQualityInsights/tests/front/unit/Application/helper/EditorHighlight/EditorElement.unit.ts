@@ -120,6 +120,10 @@ describe('EditorElement', () => {
       const expectedContent = "My text\nMy\n text©\nMon texte accentué\n";
       expect(convertHtmlContent(htmlContent)).toEqual(expectedContent);
     });
+    test("it does not convert content that should be HTML but does not contain HTML tags", () => {
+      const htmlContent = "Length: Short\nLining: 100% polyester\nModel: Model is 179 cm and wears a size 36\nCervical Shape: Deep V-neck\nTotal length: 88 cm in size 36\nAdditional Info: zip, lined\nHandle Type: Sleeveless\nComposition: 100% nylon\nCare instructions: hand wash";
+      expect(convertHtmlContent(htmlContent)).toEqual(htmlContent);
+    });
   });
 
   describe('replaceContentFromRange', () => {
