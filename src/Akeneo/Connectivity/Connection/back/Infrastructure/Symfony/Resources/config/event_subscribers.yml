@@ -1,9 +1,15 @@
 services:
-  Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ReadProductsEventSubscriber:
-    arguments:
-      - '@akeneo_connectivity.connection.persistence.query.are_credentials_valid_combination'
-      - '@akeneo_connectivity.connection.persistence.query.select_connection_code_by_client_id'
-      - '@akeneo_connectivity.connection.persistence.repository.connection'
-      - '@akeneo_connectivity.connection.application.audit.handler.update_data_destination_product_event_count'
-    tags:
-      - { name: kernel.event_subscriber }
+    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ReadProductsEventSubscriber:
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.query.are_credentials_valid_combination'
+            - '@akeneo_connectivity.connection.persistence.query.select_connection_code_by_client_id'
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@akeneo_connectivity.connection.application.audit.handler.update_data_destination_product_event_count'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\ApiBusinessErrorEventSubscriber:
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.api_business_error'
+        tags:
+            - { name: kernel.event_subscriber }
