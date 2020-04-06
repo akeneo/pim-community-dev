@@ -298,10 +298,14 @@ class ProductModelController
     public function childrenAction(Request $request): JsonResponse
     {
         $parent = $this->findProductModelOr404($request->get('id'));
-        $children = $this->productModelRepository->findChildrenProductModels($parent);
-        if (empty($children)) {
-            $children = $this->productModelRepository->findChildrenProducts($parent);
+        if ($parent->isRoot() && 2 === $parent->getFamilyVariant()->getNumberOfLevel()) {
+            $children = $parent->getProductModels();
+        } else {
+            $children = $parent->getProducts();
         }
+
+        $localeCode = $request->get('locale', $this->userContext->getCurrentLocaleCode());
+        $channelCode = $request->get('scope', $this->userContext->getUserChannelCode());
 
         $normalizedChildren = [];
         foreach ($children as $child) {
@@ -317,7 +321,10 @@ class ProductModelController
             $normalizedChildren[] = $this->entityWithFamilyVariantNormalizer->normalize(
                 $child,
                 'internal_api',
-                ['locale' => $this->userContext->getCurrentLocaleCode()]
+                [
+                    'locale' => $localeCode,
+                    'channel' => $channelCode,
+                ]
             );
         }
 
