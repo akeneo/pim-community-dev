@@ -18,7 +18,6 @@ services:
             - '@test.category.builder'
             - '@pim_catalog.repository.category'
             - '@pim_catalog.repository.attribute_option'
-            - '@pim_catalog.repository.currency'
             - '@test.attribute_option.builder'
             - '@akeneo.pim.enrichment.factory.write_value_collection'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'

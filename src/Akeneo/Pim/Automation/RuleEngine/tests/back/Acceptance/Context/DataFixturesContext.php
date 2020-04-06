@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context;
 
-use Akeneo\Channel\Component\Model\Currency;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
@@ -59,8 +58,7 @@ use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
 
 /**
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  */
 final class DataFixturesContext implements Context
 {
@@ -100,9 +98,6 @@ final class DataFixturesContext implements Context
     /** @var InMemoryAttributeOptionRepository */
     private $attributeOptionRepository;
 
-    /** @var InMemoryCurrencyRepository */
-    private $currencyRepository;
-
     /** @var ObjectUpdaterInterface */
     private $productUpdater;
 
@@ -141,7 +136,6 @@ final class DataFixturesContext implements Context
         EntityBuilder $categoryBuilder,
         InMemoryCategoryRepository $categoryRepository,
         InMemoryAttributeOptionRepository $attributeOptionRepository,
-        InMemoryCurrencyRepository $currencyRepository,
         EntityBuilder $optionBuilder,
         WriteValueCollectionFactory $valueCollectionFactory,
         InMemoryReferenceEntityRepository $referenceEntityRepository,
@@ -162,7 +156,6 @@ final class DataFixturesContext implements Context
         $this->categoryBuilder = $categoryBuilder;
         $this->categoryRepository = $categoryRepository;
         $this->attributeOptionRepository = $attributeOptionRepository;
-        $this->currencyRepository = $currencyRepository;
         $this->productUpdater = $productUpdater;
         $this->optionBuilder = $optionBuilder;
         $this->valueCollectionFactory = $valueCollectionFactory;
@@ -266,22 +259,6 @@ final class DataFixturesContext implements Context
 
             $this->categoryRepository->save($category);
         }
-    }
-
-    /**
-     * @Given /^some currencies$/
-     */
-    public function someCurrencies(): void
-    {
-        $eurCurrency = new Currency();
-        $eurCurrency->setCode('EUR');
-        $eurCurrency->setActivated(true);
-        $this->currencyRepository->save($eurCurrency);
-
-        $dollarCurrency = new Currency();
-        $dollarCurrency->setCode('USD');
-        $dollarCurrency->setActivated(true);
-        $this->currencyRepository->save($dollarCurrency);
     }
 
     /**

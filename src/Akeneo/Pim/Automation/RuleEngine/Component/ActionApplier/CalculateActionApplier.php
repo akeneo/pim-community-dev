@@ -61,7 +61,7 @@ class CalculateActionApplier implements ActionApplierInterface
                     $result = $this->calculateDataForEntity($item, $action);
                 } catch (NonApplicableActionException $e) {
                     // TODO RUL-90 throw exception when the runner will be executed in a job.
-                    return;
+                    continue;
                 }
 
                 $this->updateEntity($item, $action->getDestination(), $result);
