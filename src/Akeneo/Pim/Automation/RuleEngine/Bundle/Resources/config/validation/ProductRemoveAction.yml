@@ -12,4 +12,4 @@ Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveAction:
            - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingRemoveField: ~
         items:
             - NotBlank:
-                message: The key "items" is missing or empty.
+                message: The "items" key is missing or empty.

@@ -90,3 +90,28 @@ services:
         class: '%pimee_catalog_rule.validator.include_children_option.class%'
         tags:
             - { name: validator.constraint_validator, alias: pimee_include_children_option_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\ChannelShouldExistValidator:
+        class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\ChannelShouldExistValidator
+        arguments:
+            - '@pimee_catalog_rule.query.cache.channel_exists_and_bound_to_context'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\LocaleShouldBeActiveValidator:
+        class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\LocaleShouldBeActiveValidator
+        arguments:
+            - '@pimee_catalog_rule.query.cache.channel_exists_and_bound_to_context'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\IsValidAttributeValidator:
+        class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\IsValidAttributeValidator
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@pimee_catalog_rule.query.cache.channel_exists_and_bound_to_context'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\ProductAddActionValidator:
+        class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\ProductAddActionValidator

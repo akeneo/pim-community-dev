@@ -1,6 +1,7 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddAction:
     constraints:
         - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\PropertyAction: ~
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ProductAddAction: ~
     properties:
         field:
            - Type:
@@ -13,4 +14,4 @@ Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddAction:
             - Type:
                 type: array
             - NotBlank:
-                message: The key "items" is missing or empty.
+                message: The "items" key is missing or empty.
