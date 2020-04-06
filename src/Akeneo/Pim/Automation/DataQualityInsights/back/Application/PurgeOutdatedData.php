@@ -21,10 +21,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 
 final class PurgeOutdatedData
 {
-    public const RETENTION_DAYS = 7;
-    public const RETENTION_WEEKS = 4;
-    public const RETENTION_MONTHS = 15;
-    public const RETENTION_YEARS = 3;
+    public const EVALUATIONS_RETENTION_DAYS = 1;
+
+    public const CONSOLIDATION_RETENTION_DAYS = 7;
+    public const CONSOLIDATION_RETENTION_WEEKS = 4;
+    public const CONSOLIDATION_RETENTION_MONTHS = 15;
+    public const CONSOLIDATION_RETENTION_YEARS = 3;
 
     /** @var DashboardRatesProjectionRepositoryInterface */
     private $dashboardRatesProjectionRepository;
@@ -51,40 +53,40 @@ final class PurgeOutdatedData
 
         $this->dashboardRatesProjectionRepository->removeRates(
             TimePeriod::daily(),
-            $purgeDate->modify(sprintf('-%d DAY', self::RETENTION_DAYS))
+            $purgeDate->modify(sprintf('-%d DAY', self::CONSOLIDATION_RETENTION_DAYS))
         );
 
         if ($purgeDate->isLastDayOfWeek()) {
             $this->dashboardRatesProjectionRepository->removeRates(
                 TimePeriod::weekly(),
-                $purgeDate->modify(sprintf('-%d WEEK', self::RETENTION_WEEKS))
+                $purgeDate->modify(sprintf('-%d WEEK', self::CONSOLIDATION_RETENTION_WEEKS))
             );
         }
 
         if ($purgeDate->isLastDayOfMonth()) {
             $this->dashboardRatesProjectionRepository->removeRates(
                 TimePeriod::monthly(),
-                $purgeDate->modify(sprintf('-%d MONTH', self::RETENTION_MONTHS))
+                $purgeDate->modify(sprintf('-%d MONTH', self::CONSOLIDATION_RETENTION_MONTHS))
             );
         }
 
         if ($purgeDate->isLastDayOfYear()) {
             $this->dashboardRatesProjectionRepository->removeRates(
                 TimePeriod::yearly(),
-                $purgeDate->modify(sprintf('-%d YEAR', self::RETENTION_YEARS))
+                $purgeDate->modify(sprintf('-%d YEAR', self::CONSOLIDATION_RETENTION_YEARS))
             );
         }
     }
 
     public function purgeCriterionEvaluationsFrom(\DateTimeImmutable $date): void
     {
-        $purgeDate = $date->modify(sprintf('-%d DAY', self::RETENTION_DAYS));
+        $purgeDate = $date->modify(sprintf('-%d DAY', self::EVALUATIONS_RETENTION_DAYS));
         $this->criterionEvaluationRepository->purgeUntil($purgeDate);
     }
 
     public function purgeProductAxisRatesFrom(\DateTimeImmutable $date): void
     {
-        $purgeDate = $date->modify(sprintf('-%d DAY', self::RETENTION_DAYS));
+        $purgeDate = $date->modify(sprintf('-%d DAY', self::CONSOLIDATION_RETENTION_DAYS));
         $this->productAxisRateRepository->purgeUntil($purgeDate);
     }
 }

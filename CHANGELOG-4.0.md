@@ -3,6 +3,7 @@
 ## Technical Improvements
 
 - PIM-9174: PHP_IDE_CONFIG is not dependant from the PIM edition
+- DAPI-948: Reduce the number of days of retention of the criteria evaluations
 
 # 4.0.14 (2020-04-01)
 

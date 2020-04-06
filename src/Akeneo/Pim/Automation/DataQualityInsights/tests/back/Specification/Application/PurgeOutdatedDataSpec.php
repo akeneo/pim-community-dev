@@ -37,7 +37,7 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
         $purgeDate = new \DateTimeImmutable('2020-01-08');
 
         $dashboardRatesProjectionRepository->removeRates(TimePeriod::daily(), Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
+            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::CONSOLIDATION_RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
 
@@ -50,12 +50,12 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
         $purgeDate = new \DateTimeImmutable('2019-12-29');
 
         $dashboardRatesProjectionRepository->removeRates(TimePeriod::daily(), Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
+            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::CONSOLIDATION_RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
 
         $dashboardRatesProjectionRepository->removeRates(TimePeriod::weekly(), Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d WEEK', PurgeOutdatedData::RETENTION_WEEKS));
+            $purgeDate = $purgeDate->modify(sprintf('-%d WEEK', PurgeOutdatedData::CONSOLIDATION_RETENTION_WEEKS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
 
@@ -68,12 +68,12 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
         $purgeDate = new \DateTimeImmutable('2019-10-31');
 
         $dashboardRatesProjectionRepository->removeRates(TimePeriod::daily(), Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
+            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::CONSOLIDATION_RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
 
         $dashboardRatesProjectionRepository->removeRates(TimePeriod::monthly(), Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d MONTH', PurgeOutdatedData::RETENTION_MONTHS));
+            $purgeDate = $purgeDate->modify(sprintf('-%d MONTH', PurgeOutdatedData::CONSOLIDATION_RETENTION_MONTHS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
 
@@ -86,17 +86,17 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
         $purgeDate = new \DateTimeImmutable('2019-12-31');
 
         $dashboardRatesProjectionRepository->removeRates(TimePeriod::daily(), Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
+            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::CONSOLIDATION_RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
 
         $dashboardRatesProjectionRepository->removeRates(TimePeriod::monthly(), Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d MONTH', PurgeOutdatedData::RETENTION_MONTHS));
+            $purgeDate = $purgeDate->modify(sprintf('-%d MONTH', PurgeOutdatedData::CONSOLIDATION_RETENTION_MONTHS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
 
         $dashboardRatesProjectionRepository->removeRates(TimePeriod::yearly(), Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d YEAR', PurgeOutdatedData::RETENTION_YEARS));
+            $purgeDate = $purgeDate->modify(sprintf('-%d YEAR', PurgeOutdatedData::CONSOLIDATION_RETENTION_YEARS));
             return $purgeDate->format('Y-m-d') === $date->getDateTime()->format('Y-m-d');
         }))->shouldBeCalled();
 
@@ -108,7 +108,7 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
         $purgeDate = new \DateTimeImmutable('2019-12-31');
 
         $productAxisRateRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
+            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::CONSOLIDATION_RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
         }));
 
@@ -120,7 +120,7 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
         $purgeDate = new \DateTimeImmutable('2019-12-31');
 
         $criterionEvaluationRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
+            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::EVALUATIONS_RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
         }));
 
