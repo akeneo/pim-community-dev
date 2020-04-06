@@ -4,7 +4,7 @@ import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {UserContext} from 'akeneomeasure/context/user-context';
 import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
 import {Subsection} from 'akeneomeasure/shared/components/Subsection';
-import {HELPER_LEVEL_WARNING, SubsectionHelper} from 'akeneomeasure/shared/components/SubsectionHelper';
+import {HelperLevel, HelperRibbon} from 'akeneomeasure/shared/components/HelperRibbon';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {Button} from 'akeneomeasure/shared/components/Button';
@@ -109,9 +109,9 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
         />
         <Subsection>
           {measurementFamily.is_locked && (
-            <SubsectionHelper level={HELPER_LEVEL_WARNING}>
+            <HelperRibbon level={HelperLevel.HELPER_LEVEL_WARNING}>
               {__('measurements.unit.will_be_read_only')}
-            </SubsectionHelper>
+            </HelperRibbon>
           )}
           <FormGroup>
             <TextField
@@ -151,10 +151,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
             />
           </FormGroup>
         </Subsection>
-        <Button
-          onClick={handleAdd}
-          disabled={config.units_max <= measurementFamily.units.length}
-        >
+        <Button onClick={handleAdd} disabled={config.units_max <= measurementFamily.units.length}>
           {__('pim_common.add')}
         </Button>
       </ModalBodyWithIllustration>
