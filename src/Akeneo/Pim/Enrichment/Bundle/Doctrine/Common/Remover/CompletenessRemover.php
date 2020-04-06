@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CompletenessRemover
+final class CompletenessRemover
 {
     /** @var Connection */
     private $connection;
@@ -24,7 +24,7 @@ class CompletenessRemover
     /**
      * see deleteProducts() below
      */
-    public function deleteOneProduct(int $productId): int
+    public function deleteForOneProduct(int $productId): int
     {
         return $this->deleteProducts([$productId]);
     }
@@ -34,7 +34,7 @@ class CompletenessRemover
      * related to products passed as arguments
      * It returns the count of elements deleted.
      */
-    public function deleteProducts(array $productIds): int
+    public function deleteForProducts(array $productIds): int
     {
         $sql = <<<SQL
 DELETE FROM pim_catalog_completeness AS pcc

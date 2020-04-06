@@ -33,8 +33,8 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents() : array
     {
         return [
-            StorageEvents::POST_REMOVE      => 'deleteProduct',
-            StorageEvents::POST_REMOVE_ALL  => 'deleteAllProducts',
+            StorageEvents::POST_REMOVE      => 'deleteForOneProduct',
+            StorageEvents::POST_REMOVE_ALL  => 'deleteForAllProducts',
         ];
     }
 
