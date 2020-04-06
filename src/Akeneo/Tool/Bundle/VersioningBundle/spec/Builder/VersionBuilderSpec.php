@@ -77,4 +77,52 @@ class VersionBuilderSpec extends ObjectBehavior
 
         $this->buildPendingVersion($pending, $previousPending);
     }
+
+    /**
+     * @see https://akeneo.atlassian.net/browse/PIM-9152
+     */
+    function it_builds_versions_and_handle_correctly_the_old_versioning_date_format(
+        $normalizer,
+        $versionFactory,
+        ProductInterface $product,
+        Version $previousVersion,
+        Version $version
+    ) {
+        $normalizer->normalize($product, 'flat', [])->willReturn([
+            'name' => 'bar',
+            'date_with_new_format' => '2020-01-01T00:00:00+00:00',
+            'date_with_old_format' => '2020-01-01T00:00:00+00:00',
+            'date_with_old_format_and_timezone' => '2020-01-01T12:00:00+12:00',
+            'date_with_old_format_has_changed' => '2020-01-02T00:00:00+00:00'
+        ]);
+
+        $versionFactory->create(Argument::any(), 100, 'julia', null)->willReturn($version);
+
+        $product->getId()->willReturn(100);
+
+        $previousVersion->getVersion()->willReturn(1);
+        $previousVersion->getSnapshot()->willReturn([
+            'name' => 'foo',
+            'date_with_new_format' => '2020-01-01T00:00:00+00:00',
+            'date_with_old_format' => '2020-01-01',
+            'date_with_old_format_and_timezone' => '2020-01-01',
+            'date_with_old_format_has_changed' => '2020-01-01'
+        ]);
+
+        $version->setVersion(2)->willReturn($version);
+        $version->setSnapshot([
+            'name' => 'bar',
+            'date_with_new_format' => '2020-01-01T00:00:00+00:00',
+            'date_with_old_format' => '2020-01-01T00:00:00+00:00',
+            'date_with_old_format_and_timezone' => '2020-01-01T12:00:00+12:00',
+            'date_with_old_format_has_changed' => '2020-01-02T00:00:00+00:00'
+        ])->willReturn($version);
+
+        $version->setChangeset([
+            'name' => ['old' => 'foo', 'new' => 'bar'],
+            'date_with_old_format_has_changed' => ['old' => '2020-01-01', 'new' => '2020-01-02T00:00:00+00:00']
+        ])->willReturn($version);
+
+        $this->buildVersion($product, 'julia', $previousVersion, null);
+    }
 }
