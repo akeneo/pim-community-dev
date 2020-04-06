@@ -6,10 +6,9 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Query;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountsQuery;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -19,48 +18,28 @@ use PhpSpec\ObjectBehavior;
  */
 class CountDailyEventsByConnectionHandlerSpec extends ObjectBehavior
 {
-    function let(SelectConnectionsEventCountByDayQuery $selectConnectionsEventCountByDayQuery)
+    public function let(SelectPeriodEventCountsQuery $selectPeriodEventCountsQuery): void
     {
-        $this->beConstructedWith($selectConnectionsEventCountByDayQuery);
+        $this->beConstructedWith($selectPeriodEventCountsQuery);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(CountDailyEventsByConnectionHandler::class);
     }
 
-    function it_handles_the_event_count($selectConnectionsEventCountByDayQuery)
+    public function it_handles_the_event_count($selectPeriodEventCountsQuery): void
     {
-        $connectionsEventCounts = [
-            AllConnectionCode::CODE => [
-                [new \DateTimeImmutable('2020-01-01 12:00:00', new \DateTimeZone('UTC')), 3],
-            ],
-            'sap' => [
-                [new \DateTimeImmutable('2020-01-01 12:00:00', new \DateTimeZone('UTC')), 1],
-            ],
-            'bynder' => [
-                [new \DateTimeImmutable('2020-01-01 12:00:00', new \DateTimeZone('UTC')), 2],
-            ]
-        ];
-        $selectConnectionsEventCountByDayQuery
-            ->execute(
-                EventTypes::PRODUCT_CREATED,
-                new \DateTimeImmutable('2019-12-31 23:00:00', new \DateTimeZone('UTC')),
-                new \DateTimeImmutable('2020-01-02 23:00:00', new \DateTimeZone('UTC')),
-            )->willReturn($connectionsEventCounts);
+        $fromDateTime = new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC'));
+        $upToDateTime = new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC'));
 
-        $expectedResult = [
-            new WeeklyEventCounts(AllConnectionCode::CODE, '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts[AllConnectionCode::CODE]),
-            new WeeklyEventCounts('sap', '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts['sap']),
-            new WeeklyEventCounts('bynder', '2020-01-01', '2020-01-02', 'Europe/Paris', $connectionsEventCounts['bynder']),
+        $periodEventCounts = [
+            new PeriodEventCount('erp', $fromDateTime, $upToDateTime, [])
         ];
+        $selectPeriodEventCountsQuery->execute(EventTypes::PRODUCT_CREATED, $fromDateTime, $upToDateTime)
+            ->willReturn($periodEventCounts);
 
-        $query = new CountDailyEventsByConnectionQuery(
-            EventTypes::PRODUCT_CREATED,
-            '2020-01-01',
-            '2020-01-02',
-            'Europe/Paris'
-        );
-        $this->handle($query)->shouldIterateLike($expectedResult);
+        $query = new CountDailyEventsByConnectionQuery(EventTypes::PRODUCT_CREATED, $fromDateTime, $upToDateTime);
+        $this->handle($query)->shouldReturn($periodEventCounts);
     }
 }

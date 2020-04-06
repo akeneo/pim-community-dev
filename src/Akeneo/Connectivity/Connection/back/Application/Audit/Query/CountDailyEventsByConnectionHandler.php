@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Audit\Query;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountsQuery;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -14,61 +14,23 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnecti
  */
 class CountDailyEventsByConnectionHandler
 {
-    /** @var SelectConnectionsEventCountByDayQuery */
-    private $selectConnectionsEventCountByDayQuery;
+    /** @var SelectPeriodEventCountsQuery */
+    private $selectPeriodEventCountsQuery;
 
-    public function __construct(SelectConnectionsEventCountByDayQuery $selectConnectionsEventCountByDayQuery)
+    public function __construct(SelectPeriodEventCountsQuery $selectPeriodEventCountsQuery)
     {
-        $this->selectConnectionsEventCountByDayQuery = $selectConnectionsEventCountByDayQuery;
+        $this->selectPeriodEventCountsQuery = $selectPeriodEventCountsQuery;
     }
 
+    /**
+     * @return PeriodEventCount[]
+     */
     public function handle(CountDailyEventsByConnectionQuery $query): array
     {
-        [$fromUtcDateTime, $upToUtcDateTime] = $this->createUtcDateTimeInterval(
-            $query->startDate(),
-            $query->endDate(),
-            $query->timezone()
-        );
+        $periodEventCounts = $this
+            ->selectPeriodEventCountsQuery
+            ->execute($query->eventType(), $query->fromDateTime(), $query->upToDateTime());
 
-        $hourlyEventsPerConnection = $this
-            ->selectConnectionsEventCountByDayQuery
-            ->execute($query->eventType(), $fromUtcDateTime, $upToUtcDateTime);
-
-        $weeklyEventCounts = [];
-        foreach ($hourlyEventsPerConnection as $connectionCode => $hourlyEventCounts) {
-            $weeklyEventCounts[] = new WeeklyEventCounts(
-                $connectionCode,
-                $query->startDate(),
-                $query->endDate(),
-                $query->timezone(),
-                $hourlyEventCounts
-            );
-        }
-
-        return $weeklyEventCounts;
-    }
-
-    private function createUtcDateTimeInterval(string $startDate, string $endDate, string $timezone): array
-    {
-        $dateTimeZone = new \DateTimeZone($timezone);
-
-        $fromDateTime = \DateTimeImmutable::createFromFormat('Y-m-d', $startDate, $dateTimeZone);
-        if (false === $fromDateTime) {
-            throw new \RuntimeException();
-        }
-        $fromDateTime = $fromDateTime
-            ->setTime(0, 0)
-            ->setTimezone(new \DateTimeZone('UTC'));
-
-        $upToDateTime = \DateTimeImmutable::createFromFormat('Y-m-d', $endDate, $dateTimeZone);
-        if (false === $upToDateTime) {
-            throw new \RuntimeException();
-        }
-        $upToDateTime = $upToDateTime
-            ->setTime(0, 0)
-            ->add(new \DateInterval('P1D'))
-            ->setTimezone(new \DateTimeZone('UTC'));
-
-        return [$fromDateTime, $upToDateTime];
+        return $periodEventCounts;
     }
 }

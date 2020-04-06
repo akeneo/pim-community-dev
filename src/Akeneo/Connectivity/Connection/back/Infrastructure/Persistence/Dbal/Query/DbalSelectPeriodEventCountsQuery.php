@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectConnectionsEventCountByDayQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\HourlyEventCount;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountsQuery;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
@@ -14,7 +16,7 @@ use Doctrine\DBAL\Types\Types;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DbalSelectConnectionsEventCountByDayQuery implements SelectConnectionsEventCountByDayQuery
+class DbalSelectPeriodEventCountsQuery implements SelectPeriodEventCountsQuery
 {
     /** @var Connection */
     private $dbalConnection;
@@ -26,34 +28,38 @@ class DbalSelectConnectionsEventCountByDayQuery implements SelectConnectionsEven
 
     public function execute(
         string $eventType,
-        \DateTimeInterface $fromDateTime,
-        \DateTimeInterface $upToDateTime
+        \DateTimeImmutable $fromDateTime,
+        \DateTimeImmutable $upToDateTime
     ): array {
-        $hourlyEventCountsPerConnection = $this->getHourlyEventCountsPerConnection(
+        $hourlyEventCountsPerConnectionData = $this->getHourlyEventCountsPerConnection(
             $eventType,
             $fromDateTime,
             $upToDateTime
         );
 
-        $sumOfHourlyEventCountsForAllConnections = $this->getHourlyEventCountsForAllConnections(
+        $hourlyEventCountsForAllConnectionsData = $this->getHourlyEventCountsForAllConnections(
             $eventType,
             $fromDateTime,
             $upToDateTime
         );
 
-        return array_merge($hourlyEventCountsPerConnection, $sumOfHourlyEventCountsForAllConnections);
+        return $this->createPeriodEventCounts(
+            array_merge($hourlyEventCountsPerConnectionData, $hourlyEventCountsForAllConnectionsData),
+            $fromDateTime,
+            $upToDateTime
+        );
     }
 
     private function getHourlyEventCountsPerConnection(
         string $eventType,
-        \DateTimeInterface $fromDateTime,
-        \DateTimeInterface $upToDateTime
+        \DateTimeImmutable $fromDateTime,
+        \DateTimeImmutable $upToDateTime
     ): array {
         $sql = <<<SQL
 SELECT conn.code as connection_code, audit.event_datetime, audit.event_count
 FROM akeneo_connectivity_connection conn
 LEFT JOIN akeneo_connectivity_connection_audit_product audit ON audit.connection_code = conn.code
-AND audit.event_datetime >= :from_datetime AND audit.event_datetime < DATE_ADD(:up_to_datetime, INTERVAL 1 HOUR)
+AND audit.event_datetime >= :from_datetime AND audit.event_datetime < :up_to_datetime
 AND audit.event_type = :event_type
 ORDER BY conn.code, audit.event_datetime
 SQL;
@@ -71,13 +77,13 @@ SQL;
             ]
         )->fetchAll();
 
-        return $this->normalizeHourlyEventCountsData($hourlyEventCountsData);
+        return $hourlyEventCountsData;
     }
 
     private function getHourlyEventCountsForAllConnections(
         string $eventType,
-        \DateTimeInterface $fromDateTime,
-        \DateTimeInterface $upToDateTime
+        \DateTimeImmutable $fromDateTime,
+        \DateTimeImmutable $upToDateTime
     ): array {
         $sql = <<<SQL
 SELECT connection_code, event_datetime, event_count
@@ -109,31 +115,24 @@ SQL;
             ];
         }
 
-        return $this->normalizeHourlyEventCountsData($hourlyEventCountsData);
+        return $hourlyEventCountsData;
     }
 
     /**
-     * Return normalized data.
-     *
-     * Type:
-     * { [connectionCode: string]: Array<[DateTime, int]> }
-     *
-     * Example:
-     * [
-     *   'erp' => [
-     *     [DateTime(2020-01-01 00:00:00), 1],
-     *     [DateTime(2020-01-01 01:00:00), 3],
-     *     ...
-     *     [DateTime(2020-01-09 00:00:00), 7]
-     *   ],
-     *   ...
+     * @param array $hourlyEventCountsData = [
+     *      ['connection_code => $connectionCode, 'event_datetime' => '2020-01-01 00:00:00', 'event_count' => 3],
      * ]
+     *
+     * @return PeriodEventCount[]
      */
-    private function normalizeHourlyEventCountsData(array $hourlyEventCountsData): array
-    {
+    private function createPeriodEventCounts(
+        array $hourlyEventCountsData,
+        \DateTimeImmutable $fromDateTime,
+        \DateTimeImmutable $upToDateTime
+    ): array {
         $format = $this->dbalConnection->getDatabasePlatform()->getDateTimeFormatString();
 
-        return array_reduce(
+        $hourlyEventCountsPerConnection = array_reduce(
             $hourlyEventCountsData,
             function (array $data, array $row) use ($format) {
                 $connectionCode = $row['connection_code'];
@@ -143,19 +142,31 @@ SQL;
                 }
 
                 if (null !== $row['event_datetime'] && null !== $row['event_count']) {
-                    $data[$connectionCode][] = [
+                    $data[$connectionCode][] = new HourlyEventCount(
                         \DateTimeImmutable::createFromFormat(
                             $format,
                             $row['event_datetime'],
                             new \DateTimeZone('UTC')
                         ),
                         (int) $row['event_count']
-                    ];
+                    );
                 }
 
                 return $data;
             },
             []
         );
+
+        $periodEventCounts = [];
+        foreach ($hourlyEventCountsPerConnection as $connectionCode => $hourlyEventCounts) {
+            $periodEventCounts[] = new PeriodEventCount(
+                $connectionCode,
+                $fromDateTime,
+                $upToDateTime,
+                $hourlyEventCounts
+            );
+        }
+
+        return $periodEventCounts;
     }
 }
