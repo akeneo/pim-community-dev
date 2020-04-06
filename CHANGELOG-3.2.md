@@ -1,5 +1,19 @@
 # 3.2.x
 
+# 3.2.46 (2020-03-30)
+
+## Bug fixes:
+
+- PIM-9123: Fix validation of reference entity attribute values
+
+# 3.2.45 (2020-03-20)
+
+# 3.2.44 (2020-03-13)
+
+## Bug fixes
+
+- PIM-9145: Allow reference entity attribute to be used as a default filter in the product grid
+
 # 3.2.43 (2020-03-11)
 
 # 3.2.42 (2020-03-04)
