@@ -27,6 +27,7 @@ class AssociationTypeSpec extends ObjectBehavior
                     'en_US' => 'Cross sell',
                 ],
                 'code'   => 'mycode',
+                'isBidirectional'   => false,
             ]
         );
     }
