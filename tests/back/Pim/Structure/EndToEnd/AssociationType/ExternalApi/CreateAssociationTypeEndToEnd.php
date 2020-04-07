@@ -43,6 +43,7 @@ JSON;
         $associationTypeStandard = [
             'code'       => 'NEW_SELL',
             'labels'     => [],
+            'isBidirectional' => false
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
 
@@ -76,6 +77,7 @@ JSON;
                 'en_US' => 'New sell',
                 'fr_FR' => 'Nouvelle vente',
             ],
+            'isBidirectional' => false
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
 
@@ -106,6 +108,7 @@ JSON;
         $associationTypeStandard = [
             'code'       => 'NEW_SELL',
             'labels'     => [],
+            'isBidirectional' => false
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
 
