@@ -24,14 +24,30 @@ export const clearImageLoadingQueue = () => {
 
 const loadImage = (imagePath: string): Promise<string> => {
   return new Promise<string>((resolve, reject) => {
-    const downloadingImage = new Image();
-    downloadingImage.onload = (image) => {
-      resolve((image.currentTarget as HTMLImageElement).src);
+    var request = new XMLHttpRequest();
+    request.open('GET', imagePath);
+    request.responseType = 'blob';
+
+    request.onload = function () {
+      if (request.status === 200) {
+        var reader = new FileReader();
+        reader.readAsDataURL(request.response);
+        reader.onloadend = function () {
+          if (null === reader.result) {
+            reject();
+          }
+          resolve(reader.result as string);
+        };
+      } else {
+        reject(new Error("Image didn't load successfully; error code:" + request.statusText));
+      }
     };
-    downloadingImage.onerror = (error) => {
-      reject(error);
+
+    request.onerror = function () {
+      reject(new Error('There was a network error.'));
     };
-    downloadingImage.src = imagePath;
+
+    request.send();
   });
 };
 

@@ -80,10 +80,8 @@ export const AssetCardWithLink = ({...props}: AssetCardProps) => {
   );
 };
 
-const MAX_RETRY = 3;
 const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, onClick}: AssetCardProps) => {
   const [url, setUrl] = React.useState<string | null>(null);
-  const [retryCount, setRetryCount] = React.useState(0);
 
   let isDisplayed = true;
   React.useEffect(() => {
@@ -91,21 +89,17 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
     loadImage(imageUrl)
       .then((value: any) => {
         if (isDisplayed) {
-          setUrl(imageUrl);
+          setUrl(value);
         }
       })
       .catch(() => {
-        if (retryCount < MAX_RETRY) {
-          setRetryCount(retryCount + 1);
-        } else {
-          setUrl('');
-        }
+        setUrl('');
       });
 
     return () => {
       isDisplayed = false;
     };
-  }, [asset, context.channel, context.locale, retryCount]);
+  }, [asset, context.channel, context.locale]);
 
   return (
     <Container data-asset={asset.code} data-selected={isSelected} isDisabled={isDisabled}>
