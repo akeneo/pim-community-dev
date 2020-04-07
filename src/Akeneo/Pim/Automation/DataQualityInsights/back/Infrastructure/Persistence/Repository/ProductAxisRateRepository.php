@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductAxisRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
@@ -67,29 +68,31 @@ final class ProductAxisRateRepository implements ProductAxisRateRepositoryInterf
             return;
         }
 
+        $valuesPlaceholders = [];
+        $queryParameters = [];
+        foreach ($productsAxesRates as $index => $productAxisRates) {
+            $axisCode = sprintf('axisCode_%d', $index);
+            $productId = sprintf('productId_%d', $index);
+            $evaluatedAt = sprintf('evaluatedAt_%d', $index);
+            $rates = sprintf('rates_%d', $index);
+
+            $valuesPlaceholders[] = sprintf('(:%s, :%s, :%s, :%s)', $axisCode, $productId, $evaluatedAt, $rates);
+
+            $queryParameters[$axisCode] = $productAxisRates->getAxisCode();
+            $queryParameters[$productId] = $productAxisRates->getProductId()->toInt();
+            $queryParameters[$evaluatedAt] = $productAxisRates->getEvaluatedAt()->format('Y-m-d');
+            $queryParameters[$rates] = $this->formatRates($productAxisRates->getRates());
+        }
+
+        $valuesPlaceholders = implode(', ', $valuesPlaceholders);
         $productAxisRateTable = $this->tableName;
-        $valuesPlaceholders = implode(',', array_fill(0, count($productsAxesRates), '(?, ?, ?, ?)'));
 
         $sql = <<<SQL
 REPLACE INTO $productAxisRateTable (axis_code, product_id, evaluated_at, rates)
 VALUES $valuesPlaceholders;
 SQL;
 
-        $statement = $this->db->prepare($sql);
-        $valuePlaceholderIndex = 1;
-        foreach ($productsAxesRates as $productAxisRates) {
-            $rates = $productAxisRates->getRates()->mapWith(function (Rate $rate) {
-                return [
-                    'rank' => Rank::fromRate($rate)->toInt(),
-                    'value' => $rate->toInt(),
-                ];
-            });
-            $statement->bindValue($valuePlaceholderIndex++, $productAxisRates->getAxisCode());
-            $statement->bindValue($valuePlaceholderIndex++, $productAxisRates->getProductId()->toInt());
-            $statement->bindValue($valuePlaceholderIndex++, $productAxisRates->getEvaluatedAt()->format('Y-m-d'));
-            $statement->bindValue($valuePlaceholderIndex++, json_encode($rates));
-        }
-        $statement->execute();
+        $this->db->executeQuery($sql, $queryParameters);
     }
 
     public function purgeUntil(\DateTimeImmutable $date): void
@@ -110,5 +113,17 @@ SQL;
             $query,
             ['purge_date' => $date->format('Y-m-d')]
         );
+    }
+
+    private function formatRates(ChannelLocaleRateCollection $rates): string
+    {
+        $formattedRates = $rates->mapWith(function (Rate $rate) {
+            return [
+                'rank' => Rank::fromRate($rate)->toInt(),
+                'value' => $rate->toInt(),
+            ];
+        });
+
+        return json_encode($formattedRates);
     }
 }

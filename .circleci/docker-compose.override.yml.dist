@@ -4,6 +4,7 @@ services:
     php:
         environment:
             PUBSUB_EMULATOR_HOST: pubsub-emulator:8085
+            COMPOSER_AUTH: $COMPOSER_AUTH
 
     fpm:
         environment:

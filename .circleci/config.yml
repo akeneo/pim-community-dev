@@ -76,11 +76,8 @@ jobs:
           name: Install back and front dependencies
           command: make dependencies
       - run:
-          name: Install Onboarder bundle
+          name: Activate Onboarder bundle
           command: |
-              docker-compose run -u www-data --rm php php /usr/local/bin/composer config -g github-oauth.github.com ${COMPOSER_TOKEN_FOR_ONBOARDER_BUNDLE}
-              docker-compose run -u www-data --rm php php /usr/local/bin/composer config repositories.onboarder '{"type": "vcs", "url": "https://github.com/akeneo/pim-onboarder.git", "branch": "master"}'
-              docker-compose run -u www-data --rm php php -d memory_limit=5G /usr/local/bin/composer require "akeneo/pim-onboarder" "dev-master" --no-interaction
               docker-compose run -u www-data --rm php sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
               docker-compose run -u www-data --rm php cp vendor/akeneo/pim-onboarder/src/Bundle/Resources/config/onboarder_configuration.yml  config/packages/onboarder.yml
       - run:
@@ -307,7 +304,7 @@ jobs:
                           command: >
                               curl --output /dev/null --silent --head --fail
                               https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
-                              sed -i "s/dev-master/dev-${CIRCLE_BRANCH}/" composer.json ||
+                              sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json ||
                               echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
           - run:
               name: Build PROD PIM docker image
