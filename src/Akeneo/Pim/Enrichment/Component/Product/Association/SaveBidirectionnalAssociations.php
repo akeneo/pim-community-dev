@@ -84,10 +84,11 @@ class SaveBidirectionnalAssociations implements EventSubscriberInterface
             }
         );
 
-        $ownerProductIdsFormatted = "''";
-        if (!empty($ownerProductIds->toArray())) {
-            $ownerProductIdsFormatted = implode(", ", $ownerProductIds->toArray());
-        }
+        $types = [];
+        $params = [
+            'association_type_id' => $association->getAssociationType()->getId(),
+            'product_id' => $product->getId(),
+        ];
 
         $query = <<<SQL
 DELETE FROM pim_catalog_association_product
@@ -95,18 +96,27 @@ WHERE association_id IN (
 	SELECT * FROM (
 		SELECT a.id
 	    FROM pim_catalog_association a INNER JOIN pim_catalog_association_product ap ON ap.association_id = a.id
-	    WHERE association_type_id = :association_type_id AND product_id = :product_id AND owner_id NOT IN ($ownerProductIdsFormatted)
+	    WHERE association_type_id = :association_type_id AND product_id = :product_id
 	) as association_id_to_delete
 );
 SQL;
 
-        $this->connection->executeUpdate(
-            $query,
-            [
-                'association_type_id' => $association->getAssociationType()->getId(),
-                'product_id' => $product->getId(),
-            ]
-        );
+        if (!$ownerProductIds->isEmpty()) {
+            $query = <<<SQL
+DELETE FROM pim_catalog_association_product
+WHERE association_id IN (
+	SELECT * FROM (
+		SELECT a.id
+	    FROM pim_catalog_association a INNER JOIN pim_catalog_association_product ap ON ap.association_id = a.id
+	    WHERE association_type_id = :association_type_id AND product_id = :product_id AND owner_id NOT IN (:ownerProductIdsFormatted)
+	) as association_id_to_delete
+);
+SQL;
+            $params['ownerProductIdsFormatted'] = $ownerProductIds->toArray();
+            $types['ownerProductIdsFormatted'] = Connection::PARAM_INT_ARRAY;
+        }
+
+        $this->connection->executeUpdate($query, $params, $types);
     }
 
     private function saveBidirectionalProductAssociation(
