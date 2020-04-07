@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.15 (2020-04-07)
+
 ## Bug fixes
 
 - PIM-9162: Prevent the asset manager from computing transformations for unsupported file mime types
