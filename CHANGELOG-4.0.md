@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9162: Prevent the asset manager from computing transformations for unsupported file mime types
+
 ## Technical Improvements
 
 - PIM-9174: PHP_IDE_CONFIG is not dependant from the PIM edition

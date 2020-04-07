@@ -99,6 +99,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
         $getTransformations->fromAssetFamilyIdentifier($packshotIdentifier)
                            ->shouldBeCalledOnce()->willReturn($transformations);
 
+        $sourceFileData->normalize()->willReturn(['mimeType' => 'image/png']);
         $getOutdatedVariationSource->forAssetAndTransformation($asset1, $thumbnail)->willReturn($sourceFileData);
         $getOutdatedVariationSource->forAssetAndTransformation($asset2, $thumbnail)->willReturn(null);
         $stepExecution->incrementSummaryInfo('skipped')->shouldBeCalled();
@@ -174,6 +175,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
         $asset2->getAssetFamilyIdentifier()->willReturn($assetFamilyIdentifier);
         $assetRepository->getByIdentifier(AssetIdentifier::fromString('assetIdentifier2'))->willReturn($asset2);
 
+        $sourceFileData->normalize()->willReturn(['mimeType' => 'image/png']);
         $getOutdatedVariationSource->forAssetAndTransformation($asset1, $thumbnail)->willReturn($sourceFileData);
         $getOutdatedVariationSource->forAssetAndTransformation($asset2, $thumbnail)->willReturn(null);
         $stepExecution->incrementSummaryInfo('skipped')->shouldBeCalled();

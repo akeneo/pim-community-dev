@@ -35,6 +35,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLabel;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
@@ -57,13 +58,17 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class ComputeTransformationsTest extends SqlIntegrationTestCase
 {
-    private const FILENAME = __DIR__ . '/../../Common/TestFixtures/lardon.png';
+    private const SUPPORTED_FILE_FILENAME = __DIR__ . '/../../Common/TestFixtures/lardon.png';
+    private const NOT_SUPPORTED_FILE_FILENAME = __DIR__ . '/../../Common/TestFixtures/lagan_utilisation.pdf';
 
     /** @var AttributeIdentifier */
     private $targetAttributeIdentifier;
 
     /** @var string */
     private $workingDir;
+
+    /** @var MediaFileAttribute */
+    private $mainImageAttribute;
 
     /**
      * @test
@@ -205,6 +210,33 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_skips_the_transformation_with_a_warning_if_the_asset_mime_type_is_unsupported()
+    {
+        $this->setFamilyTransformations([ThumbnailOperation::create(['width' => 100])]);
+        $this->setMediaFileValue(
+            'designer',
+            'starck',
+            new File(self::NOT_SUPPORTED_FILE_FILENAME)
+        );
+
+        // Run job
+        $jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
+        Assert::assertTrue($jobLauncher->hasJobInQueue());
+        $jobLauncher->launchConsumerOnce();
+
+        $lastExecution = $this->getLastExecution();
+        Assert::assertsame(BatchStatus::COMPLETED, $lastExecution->getStatus()->getValue());
+
+        $warnings = $this->getWarnings($lastExecution);
+        Assert::assertSame(
+            ['Could not apply transformation "code" on asset "starck" having a media file with mime type "application/pdf". The supported mime types are image/jpeg, image/png, image/tiff, image/gif, image/psd'],
+            $warnings
+        );
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -230,7 +262,12 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
             ->assetFamily('designer')
             ->withAttributes(['main_image', 'target_image'])
             ->load();
-        $mainImageAttribute = $fixtures['attributes']['main_image'];
+
+        /** @var MediaFileAttribute $mainImageAttribute */
+        $this->mainImageAttribute = $fixtures['attributes']['main_image'];
+        $this->mainImageAttribute->setAllowedExtensions(AttributeAllowedExtensions::fromList([]));
+        $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')->update($this->mainImageAttribute);
+
         $this->targetAttributeIdentifier = $fixtures['attributes']['target_image']->getIdentifier();
 
         $this->fixturesLoader
@@ -238,7 +275,11 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
             ->withValues([])
             ->load();
 
-        $this->setMediaFileValue('designer', 'starck', $mainImageAttribute);
+        $this->setMediaFileValue(
+            'designer',
+            'starck',
+            new File(self::SUPPORTED_FILE_FILENAME)
+        );
 
         $this->get('database_connection')->executeUpdate(
             <<<SQL
@@ -339,13 +380,12 @@ SQL
     private function setMediaFileValue(
         string $assetFamilyIdentifier,
         string $assetCode,
-        MediaFileAttribute $attribute
+        File $file
     ): void {
-        $file = new File(self::FILENAME);
         $storedFile = $this->getFileStorer()->store($file, Storage::FILE_STORAGE_ALIAS, false);
 
         $editValueCommand = new EditMediaFileValueCommand(
-            $attribute,
+            $this->mainImageAttribute,
             'ecommerce',
             null,
             $storedFile->getKey(),

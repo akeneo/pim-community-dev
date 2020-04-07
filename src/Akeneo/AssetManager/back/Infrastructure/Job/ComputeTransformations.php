@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetComm
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\AssetFamily\Transformation\Exception\NonApplicableTransformationException;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetIdentifiersByAssetFamilyInterface;
@@ -34,6 +35,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ComputeTransformations implements TaskletInterface
 {
+    private const SUPPORTED_MIME_TYPES = [
+        'image/jpeg',
+        'image/png',
+        'image/tiff',
+        'image/gif',
+        'image/psd',
+    ];
     /** @var StepExecution */
     private $stepExecution;
 
@@ -148,6 +156,21 @@ class ComputeTransformations implements TaskletInterface
                 }
 
                 if (null !== $sourceFile) {
+                    if (!$this->isMimeTypeSupportedForTransformations($sourceFile)) {
+                        $this->stepExecution->addWarning(
+                            sprintf(
+                                'Could not apply transformation "%s" on asset "%s" having a media file with mime type "%s". The supported mime types are %s',
+                                $transformation->getLabel()->toString(),
+                                $asset->getCode(),
+                                $sourceFile->normalize()['mimeType'],
+                                implode(', ', self::SUPPORTED_MIME_TYPES)
+                            ),
+                            [],
+                            new DataInvalidItem($transformation->normalize())
+                        );
+
+                        continue;
+                    }
                     try {
                         $command = $this->transformationExecutor->execute(
                             $sourceFile,
@@ -207,5 +230,10 @@ class ComputeTransformations implements TaskletInterface
         }
 
         return $this->cachedTransformationsPerAssetFamily[(string)$assetFamilyidentifier];
+    }
+
+    private function isMimeTypeSupportedForTransformations(FileData $sourceFile): bool
+    {
+        return in_array($sourceFile->normalize()['mimeType'], self::SUPPORTED_MIME_TYPES);
     }
 }
