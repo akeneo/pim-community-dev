@@ -25,7 +25,7 @@ function (
             'change input': function (event) {
                 this.errors = [];
                 this.updateModel(this.getFieldValue(event.target));
-                this.getRoot().render();
+                this.render();
             }
         },
         template: _.template(template),
