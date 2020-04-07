@@ -62,7 +62,7 @@ yq w -i ${path.module}/pim/Chart.yaml appVersion ${var.pim_version}
 export KUBECONFIG="${local_file.kubeconfig.filename}"
 kubectl delete -n ${local.pfid} cronjob --all
 kubectl scale -n ${local.pfid} deploy/pim-web deploy/pim-daemon-default --replicas=0
-helm upgrade --atomic --cleanup-on-fail --wait --install --force --timeout 1201 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
+helm upgrade --atomic --cleanup-on-fail --wait --install --force --timeout 1202 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
 kubectl scale -n ${local.pfid} deploy/pim-web deploy/pim-daemon-default --replicas=2
 EOF
 
