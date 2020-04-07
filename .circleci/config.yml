@@ -649,9 +649,9 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-#          - deploy_master_environment:
-#                requires:
-#                    - build_prod
+          - deploy_master_environment:
+                requires:
+                    - build_prod
           - deploy_upgrade_oldest_prod_environment:
                 requires:
 #                    - deploy_master_environment
