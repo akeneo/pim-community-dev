@@ -14,7 +14,7 @@ Akeneo\Pim\Structure\Component\Model\AssociationType:
                 max: 100
         translations:
             - Valid: ~
-        isBidirectional:
+        is_bidirectional:
             - Type: bool
             - NotNull: ~
 

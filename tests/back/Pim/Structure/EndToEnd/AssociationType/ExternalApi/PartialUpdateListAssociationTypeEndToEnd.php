@@ -36,12 +36,12 @@ JSON;
                     'en_US' => 'Cross sell',
                     'fr_FR' => 'Vente croisée',
                 ],
-                'isBidirectional' => false,
+                'is_bidirectional' => false,
             ],
             'NEW_SELL' => [
                 'code'   => 'NEW_SELL',
                 'labels' => [],
-                'isBidirectional' => false,
+                'is_bidirectional' => false,
             ],
         ];
 

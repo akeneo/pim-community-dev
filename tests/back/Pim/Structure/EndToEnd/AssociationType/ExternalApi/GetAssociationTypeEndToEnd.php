@@ -20,7 +20,7 @@ class GetAssociationTypeEndToEnd extends ApiTestCase
         "en_US": "Cross sell",
         "fr_FR": "Vente croisée"
     },
-    "isBidirectional": false
+    "is_bidirectional": false
 }
 JSON;
 

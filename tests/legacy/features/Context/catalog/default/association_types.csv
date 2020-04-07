@@ -1,4 +1,4 @@
-code;is-bidirectional;label-en_US;label-fr_FR
+code;is_bidirectional;label-en_US;label-fr_FR
 X_SELL;false;Cross sell;Vente croisée
 UPSELL;false;Upsell;Vente incitative
 SUBSTITUTION;false;Substitution;Remplacement
