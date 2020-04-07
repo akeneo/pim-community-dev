@@ -5,7 +5,7 @@ liip_imagine:
         asset_manager_flysystem_cache:
             flysystem:
                 filesystem_service: oneup_flysystem.asset_storage_filesystem
-                root_url:           "/../var/file_storage/asset/"
+                root_url:           "__root__"
                 cache_prefix:       thumbnail/asset_manager
                 visibility:         public
     filter_sets:
