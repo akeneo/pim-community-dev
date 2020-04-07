@@ -46,6 +46,7 @@ class AssociationType implements AssociationTypeInterface
     public function __construct()
     {
         $this->translations = new ArrayCollection();
+        $this->isBidirectional = false;
     }
 
     /**
