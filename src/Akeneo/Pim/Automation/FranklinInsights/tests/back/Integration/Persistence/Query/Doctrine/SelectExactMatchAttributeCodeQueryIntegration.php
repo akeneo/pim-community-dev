@@ -135,6 +135,22 @@ final class SelectExactMatchAttributeCodeQueryIntegration extends TestCase
         $this->assertContainsOnly('null', $attributeCodes);
     }
 
+    public function test_it_handles_attribute_with_no_labels()
+    {
+        $this->createAttribute('weight_code', ['en_US' => 'weight']);
+        $this->createAttribute('weight', []);
+        $this->createFamily('a_family', ['weight_code', 'weight']);
+
+        $attributeCodes = $this->query->execute(new FamilyCode('a_family'), ['weight label', 'weight']);
+        $this->assertSame(
+            [
+                'weight label' => null,
+                'weight' => 'weight_code',
+            ],
+            $attributeCodes
+        );
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
