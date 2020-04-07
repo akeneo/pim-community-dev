@@ -18,7 +18,7 @@ define([
         template: _.template(template),
         dialog: null,
         events: {
-            'change input': 'updateModel'
+            'keyup input': 'updateModel'
         },
 
         /**
