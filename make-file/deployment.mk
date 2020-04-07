@@ -124,6 +124,16 @@ create-pim-main-tf: $(INSTANCE_DIR)
 	@echo "pim_version                         = \"$(IMAGE_TAG)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "}" >> $(INSTANCE_DIR)/main.tf
 
+ifeq ($(INSTANCE_NAME_PREFIX),pimup)
+        terraform import module.pim.google_logging_metric.login_count $(PFID)-login-count
+	terraform import module.pim.google_logging_metric.login-response-time-distribution $(PFID)-login-response-time-distribution
+	terraform import module.pim.google_logging_metric.logs-count $(PFID)-logs-count
+	terraform state rm module.pim.template_file.metric-template
+	terraform state rm module.pim.local_file.metric-rendered
+	terraform state rm module.pim.null_resource.metric
+endif
+
+
 .PHONY: test-prod
 test-prod:
 	export KUBECONFIG=$(INSTANCE_DIR)/.kubeconfig
