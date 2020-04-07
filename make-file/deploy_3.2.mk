@@ -48,8 +48,14 @@ terraform-init-for-pim3:
 
 .PHONY: terraform-apply-for-pim3
 terraform-apply-for-pim3:
-	cd ~/3.2 && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
-	cd ~/3.2 && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) -target=module.pim.datadog_synthetics_test.test_browser
+	cd ~/3.2
+	terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
+	terraform import module.pim.google_logging_metric.login_count $(PFID)-login-count
+	terraform import module.pim.google_logging_metric.login-response-time-distribution $(PFID)-login-response-time-distribution
+	terraform import module.pim.google_logging_metric.logs-count $(PFID)-logs-count
+	terraform state rm module.pim.template_file.metric-template
+	terraform state rm module.pim.local_file.metric-rendered
+	terraform state rm module.pim.null_resource.metric
 
 .PHONY: terraform-destroy-for-pim3
 terraform-destroy-for-pim3:
