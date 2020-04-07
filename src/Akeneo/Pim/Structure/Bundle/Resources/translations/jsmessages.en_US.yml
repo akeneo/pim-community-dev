@@ -83,6 +83,8 @@ pim_enrich.entity.attribute_option:
 
 pim_enrich.entity.association_type:
     label: association type
+    property:
+        is_bidirectional: Is bidirectionnal
     flash:
         update:
             success: Association type successfully updated.
