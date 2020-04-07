@@ -10,7 +10,7 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version_5_0_20200217155537_add_measurement_table extends AbstractMigration
+final class Version_4_0_20200115155537_add_measurement_table extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
