@@ -98,7 +98,7 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
             if (null !== $data && !is_scalar($data)) {
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
             }
-        } elseif ('isBidirectional') {
+        } elseif ('isBidirectional' === $field) {
             if (null !== $data && !is_bool($data)) {
                 throw InvalidPropertyTypeException::booleanExpected($field, static::class, $data);
             }
