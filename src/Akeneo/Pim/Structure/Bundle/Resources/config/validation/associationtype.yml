@@ -4,6 +4,7 @@ Akeneo\Pim\Structure\Component\Model\AssociationType:
         - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
             properties:
                 - code
+                - isBidirectional
     properties:
         code:
             - NotBlank: ~
