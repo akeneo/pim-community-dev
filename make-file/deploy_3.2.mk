@@ -49,12 +49,9 @@ terraform-init-for-pim3:
 .PHONY: terraform-apply-for-pim3
 terraform-apply-for-pim3:
 	cd ~/3.2 && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
-	cd ~/3.2 && terraform destroy module.pim.google_logging_metric.login_count
-	cd ~/3.2 && terraform destroy module.pim.google_logging_metric.login-response-time-distribution
-	cd ~/3.2 && terraform destroy module.pim.google_logging_metric.logs-count
-	cd ~/3.2 && terraform state rm module.pim.template_file.metric-template
-	cd ~/3.2 && terraform state rm module.pim.local_file.metric-rendered
-	cd ~/3.2 && terraform state rm module.pim.null_resource.metric
+	cd ~/3.2 && terraform destroy module.pim.template_file.metric-template
+	cd ~/3.2 && terraform destroy module.pim.local_file.metric-rendered
+	cd ~/3.2 && terraform destroy module.pim.null_resource.metric
 
 .PHONY: terraform-destroy-for-pim3
 terraform-destroy-for-pim3:
