@@ -978,6 +978,8 @@ class FixturesContext extends BaseFixturesContext
                 $matches = null;
                 if (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
                     Assert::assertEquals($value, $associationType->getTranslation($matches['locale'])->getLabel());
+                } elseif ('is_bidirectional' === $key) {
+                    Assert::assertEquals($value, $associationType->isBidirectionnal());
                 } else {
                     throw new \InvalidArgumentException(
                         sprintf('Cannot check "%s" attribute of the association type', $key)
