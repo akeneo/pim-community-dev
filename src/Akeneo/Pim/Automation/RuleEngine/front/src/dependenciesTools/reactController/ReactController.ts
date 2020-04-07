@@ -7,11 +7,24 @@ import {
 const BaseController = require("pim/controller/base");
 const mediator = require("oro/mediator");
 
-abstract class ReactController extends BaseController {
+export type RouteParams = {
+  name: string;
+  route: {
+    tokens: any;
+    defaults: any;
+    requirements: any;
+    hosttokens: any;
+    methods: any;
+    schemes: any;
+  }
+  params: any;
+}
+
+export default abstract class ReactController extends BaseController {
   /**
    * Base React element to mount (and keep as ref between route changes).
    */
-  abstract reactElementToMount(): JSX.Element;
+  abstract reactElementToMount(routeParams: RouteParams): JSX.Element;
 
   /**
    * RegEx should match the base 'route' of the controller.
@@ -26,8 +39,8 @@ abstract class ReactController extends BaseController {
     return super.initialize();
   }
 
-  renderRoute() {
-    this.$el.append(mountReactElementRef(this.reactElementToMount()));
+  renderRoute(routeParams: RouteParams) {
+    this.$el.append(mountReactElementRef(this.reactElementToMount(routeParams)));
     return Deferred().resolve();
   }
 
@@ -49,5 +62,3 @@ abstract class ReactController extends BaseController {
     unmountReactElementRef();
   }
 }
-
-export = ReactController;

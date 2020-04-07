@@ -1,13 +1,13 @@
 import React from "react";
 import { ApplicationDependenciesProvider } from "../dependenciesTools";
-import ReactController from "../dependenciesTools/reactController/ReactController";
+import ReactController, {RouteParams} from "../dependenciesTools/reactController/ReactController";
 import { EditRules as EditRulesPage } from "../pages/EditRules";
 
 class EditRules extends ReactController {
-  reactElementToMount() {
+  reactElementToMount(routeParams: RouteParams) {
     return (
       <ApplicationDependenciesProvider>
-        <EditRulesPage />
+        <EditRulesPage ruleCode={routeParams.params.code}/>
       </ApplicationDependenciesProvider>
     );
   }
@@ -20,8 +20,8 @@ class EditRules extends ReactController {
     return super.initialize();
   }
 
-  renderRoute() {
-    return super.renderRoute();
+  renderRoute(routeParams: any) {
+    return super.renderRoute(routeParams);
   }
 }
 

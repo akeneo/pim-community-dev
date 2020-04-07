@@ -1,7 +1,6 @@
 import React from "react";
 import { ThemeProvider } from "styled-components";
 import * as akeneoTheme from "../../theme";
-
 import { Content } from "../../template/Content";
 import { InputText } from "../../components/InputText";
 import { SmallHelper } from "../../components/SmallHelper";
@@ -15,8 +14,14 @@ import {
   generateAndRedirect,
 } from "../../dependenciesTools/hooks";
 import { RulesHeader } from "../../components/RulesHeader";
+import Rule from "../../models/Rule";
+import {getByCode} from "../../fetchers/RuleFetcher";
 
-const EditRules: React.FC = () => {
+type Props = {
+  ruleCode: string
+};
+
+const EditRules: React.FC<Props> = ({ ruleCode }) => {
   const translate = useTranslate();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -30,6 +35,14 @@ const EditRules: React.FC = () => {
     router,
     "pimee_catalog_rule_rule_index"
   );
+  const router = useLegacyRouter();
+
+  const [rule, setRule] = React.useState<Rule>();
+
+  React.useEffect(() => {
+    getByCode(ruleCode, router).then((rule) => { setRule(rule); });
+  }, []);
+
   return (
     <ThemeProvider theme={akeneoTheme}>
       <form id="edit-rules-form" onSubmit={handleSubmit}>
@@ -55,6 +68,7 @@ const EditRules: React.FC = () => {
               id="edit-rules-input-code"
               label={translate("pim_common.code")}
               readOnly
+              value={rule ? rule.code : ''}
             />
           </div>
         </Content>
