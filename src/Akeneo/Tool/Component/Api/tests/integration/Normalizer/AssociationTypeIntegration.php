@@ -17,6 +17,7 @@ class AssociationTypeIntegration extends AbstractNormalizerTestCase
                 'en_US' => 'Cross sell',
                 'fr_FR' => 'Vente croisée',
             ],
+            'isBidirectional' => false
         ];
 
         $repository = $this->get('pim_catalog.repository.association_type');
