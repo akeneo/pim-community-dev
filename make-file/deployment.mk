@@ -125,6 +125,7 @@ create-pim-main-tf: $(INSTANCE_DIR)
 	@echo "}" >> $(INSTANCE_DIR)/main.tf
 
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
+	cd $(INSTANCE_DIR)
 	terraform import module.pim.google_logging_metric.login_count $(PFID)-login-count
 	terraform import module.pim.google_logging_metric.login-response-time-distribution $(PFID)-login-response-time-distribution
 	terraform import module.pim.google_logging_metric.logs-count $(PFID)-logs-count
