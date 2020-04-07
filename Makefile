@@ -187,7 +187,11 @@ endif
 	git add src/Akeneo/Platform/EnterpriseVersion.php
 	git commit -m "Prepare SaaS ${IMAGE_TAG}"
 
+ifeq ($(CI),true)
+	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' .
+else
 	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod .
+endif
 
 .PHONY: push-php-image-prod
 push-php-image-prod:
