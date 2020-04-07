@@ -85,6 +85,13 @@
         "phpstan/phpstan": "^0.11.1",
         "phpstan/phpstan-symfony": "^0.11.1"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/akeneo/pim-onboarder.git",
+            "branch": "master"
+        }
+    ],
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
     },
@@ -110,12 +117,5 @@
         "before-commit-re": "Run all the checks on the Reference Entity Bounded Context",
         "before-commit-am": "Run all the checks on the Asset Manager Bounded Context"
     },
-    "minimum-stability": "stable",
-    "repositories": {
-        "onboarder": {
-            "type": "vcs",
-            "url": "https://github.com/akeneo/pim-onboarder.git",
-            "branch": "master"
-        }
-    }
+    "minimum-stability": "stable"
 }
