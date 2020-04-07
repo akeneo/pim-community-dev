@@ -83,7 +83,6 @@ pim_enrich.entity.product:
       save_and_next: 保存して次へ
       save_and_finish: 保存して終了
     associations:
-      title: 関連
       none_exist: 関連タイプがありません。
       show_products: 商品を表示
       show_groups: グループを表示
@@ -91,7 +90,6 @@ pim_enrich.entity.product:
       association_type_selector: 関連タイプ
       target: ターゲット
       manage: 関連性{{ associationType }} を追加
-      manage_description: 現在の商品と関連性を持たせたい商品を選択してください
       add_associations: 関連性を追加
     attribute_filter:
       display: 表示
