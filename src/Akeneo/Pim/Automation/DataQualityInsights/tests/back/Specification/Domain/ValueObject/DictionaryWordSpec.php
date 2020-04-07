@@ -19,6 +19,12 @@ final class DictionaryWordSpec extends ObjectBehavior
         $this->__toString()->shouldReturn('nätvøerkstäckningsæområde');
     }
 
+    public function it_accepts_hyphens()
+    {
+        $this->beConstructedWith('coca-cola');
+        $this->__toString()->shouldReturn('coca-cola');
+    }
+
     public function it_throws_exception_if_not_valid()
     {
         $this->beConstructedWith('');
