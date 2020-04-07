@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.15 (2020-04-07)
+
 ## Technical Improvements
 
 - PIM-9174: PHP_IDE_CONFIG is not dependant from the PIM edition

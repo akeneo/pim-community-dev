@@ -1,5 +1,19 @@
 # 3.2.x
 
+# 3.2.46 (2020-03-30)
+
+# 3.2.45 (2020-03-20)
+
+## Bug fixes
+
+- PIM-9152: Handle old versioning date format
+
+# 3.2.44 (2020-03-13)
+
+## Bug fixes
+
+- PIM-9148: Fix UI attribute group display in association panel
+
 # 3.2.43 (2020-03-11)
 
 # 3.2.42 (2020-03-04)

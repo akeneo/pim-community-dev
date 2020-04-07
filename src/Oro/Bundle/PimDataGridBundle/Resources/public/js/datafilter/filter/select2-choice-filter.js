@@ -232,7 +232,7 @@ define(
                 }, this);
 
                 if (missingResults.length) {
-                    var params = { options: { ids: missingResults } };
+                    var params = { options: { identifiers: missingResults } };
 
                     $.ajax({
                         url: Routing.generate(this.choiceUrl, this.choiceUrlParams) + '&' + $.param(params),
