@@ -7,7 +7,7 @@ Feature: Import association types
     Given the "footwear" catalog configuration
     And the following CSV file to import:
       """
-      code;isBidirectional;label-en_US;label-fr_FR
+      code;is_bidirectional;label-en_US;label-fr_FR
       default;false;;
       X_SELL_footwear;false;Cross Sell footwear;Vente croisée footwear
       UPSELL_footwear;false;Upsell footwear;Vente incitative footwear

@@ -63,7 +63,7 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
             $associationType->setCode($data);
         } elseif ('labels' === $field) {
             $this->translatableUpdater->update($associationType, $data);
-        } elseif ('isBidirectional' === $field) {
+        } elseif ('is_bidirectional' === $field) {
             $associationType->setIsBidirectional($data);
         }
     }
@@ -98,7 +98,7 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
             if (null !== $data && !is_scalar($data)) {
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
             }
-        } elseif ('isBidirectional' === $field) {
+        } elseif ('is_bidirectional' === $field) {
             if (null !== $data && !is_bool($data)) {
                 throw InvalidPropertyTypeException::booleanExpected($field, static::class, $data);
             }

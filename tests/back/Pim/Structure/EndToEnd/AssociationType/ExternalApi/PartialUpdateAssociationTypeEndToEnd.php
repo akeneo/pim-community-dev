@@ -55,7 +55,7 @@ JSON;
         $associationTypeStandard = [
             'code'             => 'YOLO_SELL',
             'labels'           => [],
-            'isBidirectional' => false
+            'is_bidirectional' => false
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -83,7 +83,7 @@ JSON;
                 'en_US' => 'Gift sell',
                 'fr_FR' => 'Vente cadeau',
             ],
-            'isBidirectional' => false,
+            'is_bidirectional' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -103,7 +103,7 @@ JSON;
                 'en_US' => 'Cross sell',
                 'fr_FR' => 'Vente croisée',
             ],
-            'isBidirectional' => false,
+            'is_bidirectional' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -129,7 +129,7 @@ JSON;
             'labels'           => [
                 'fr_FR' => 'Vente croisée',
             ],
-            'isBidirectional' => false,
+            'is_bidirectional' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
