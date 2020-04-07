@@ -3,25 +3,34 @@ import Action from "./Action";
 import Condition from "./Condition";
 import FallbackAction from "./FallbackAction";
 import FallbackCondition from "./FallbackCondition";
+import FamilyCondition from "./FamilyCondition";
+
+function denormalizeAction(jsonAction: any): Action {
+  // For now, it only parse fallbacks.
+  return new FallbackAction(jsonAction);
+}
+
+function denormalizeCondition(jsonCondition: any): Condition {
+  // For now, FamilyCondition never match. It always returns FallbackCondition.
+  const conditionClasses = [FamilyCondition];
+  for (let j = 0; j < conditionClasses.length; j++) {
+    const buildedCondition = conditionClasses[j].match(jsonCondition);
+    if (buildedCondition) {
+      return buildedCondition;
+    }
+  }
+
+  return new FallbackCondition(jsonCondition);
+}
 
 export const denormalize = function(json: any): Rule {
-  function parseAction(jsonAction: any): Action {
-    // For now, it only parse fallbacks.
-    return new FallbackAction(jsonAction);
-  }
-
-  function parseCondition(jsonCondition: any): Condition {
-    // For now, it only parse fallbacks.
-    return new FallbackCondition(jsonCondition);
-  }
-
   const code = json.code || '';
   const labels = json.labels || {};
   const actions = (json.content.actions || []).map((jsonAction: any) => {
-    return parseAction(jsonAction)
+    return denormalizeAction(jsonAction)
   });
   const conditions = (json.content.conditions || []).map((jsonCondition: any) => {
-    return parseCondition(jsonCondition)
+    return denormalizeCondition(jsonCondition)
   });
   const priority = json.priority || 0;
 
@@ -29,7 +38,7 @@ export const denormalize = function(json: any): Rule {
     code,
     labels,
     priority,
-    actions,
-    conditions
+    conditions,
+    actions
   );
 };

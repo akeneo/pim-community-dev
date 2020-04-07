@@ -6,4 +6,12 @@ export default class FallbackCondition implements Condition {
   constructor(json: any) {
     this.json = json;
   }
+
+  static match(json: any): Condition | false {
+    return new FallbackCondition(json);
+  }
+
+  public toJson(): any {
+    return this.json;
+  }
 }
