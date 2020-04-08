@@ -18,16 +18,16 @@ Feature: Display available field options
     Then I should see the <fields> fields
 
     Examples:
-      | type       | fields                                                                                            |
-      | Identifier | Read only, Max characters, Validation rule                                                        |
-      | Date       | Read only, Min date, Max date                                                                     |
-      | File       | Read only, Max file size (MB), Allowed extensions                                                 |
-      | Image      | Read only, Max file size (MB), Allowed extensions                                                 |
-      | Metric     | Read only, Min number, Max number, Decimal values allowed, Negative values allowed, Metric family |
-      | Price      | Read only, Min number, Max number, Decimal values allowed                                         |
-      | Number     | Read only, Min number, Max number, Decimal values allowed, Negative values allowed                |
-      | Text Area  | Read only, Max characters, Rich text editor enabled                                               |
-      | Text       | Read only, Max characters, Validation rule                                                        |
+      | type        | fields                                                                                                 |
+      | Identifier  | Read only, Max characters, Validation rule                                                             |
+      | Date        | Read only, Min date, Max date                                                                          |
+      | File        | Read only, Max file size (MB), Allowed extensions                                                      |
+      | Image       | Read only, Max file size (MB), Allowed extensions                                                      |
+      | Measurement | Read only, Min number, Max number, Decimal values allowed, Negative values allowed, Measurement family |
+      | Price       | Read only, Min number, Max number, Decimal values allowed                                              |
+      | Number      | Read only, Min number, Max number, Decimal values allowed, Negative values allowed                     |
+      | Text Area   | Read only, Max characters, Rich text editor enabled                                                    |
+      | Text        | Read only, Max characters, Validation rule                                                             |
 
   Scenario: Successfully set attribute to read only
     Given I am on the "description" attribute page
