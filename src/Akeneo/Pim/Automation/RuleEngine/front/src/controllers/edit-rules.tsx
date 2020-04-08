@@ -7,7 +7,7 @@ class EditRules extends ReactController {
   reactElementToMount(routeParams: RouteParams) {
     return (
       <ApplicationDependenciesProvider>
-        <EditRulesPage ruleCode={routeParams.params.code}/>
+        <EditRulesPage ruleDefinitionCode={routeParams.params.code}/>
       </ApplicationDependenciesProvider>
     );
   }

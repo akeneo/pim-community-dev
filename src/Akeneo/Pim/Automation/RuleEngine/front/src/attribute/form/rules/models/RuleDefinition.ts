@@ -1,7 +1,7 @@
 import Condition from "./Condition";
 import Action from "./Action";
 
-export default class Rule {
+export default class RuleDefinition {
   public code: string;
   public labels: { [localeCode: string]: string; };
   public priority: number;

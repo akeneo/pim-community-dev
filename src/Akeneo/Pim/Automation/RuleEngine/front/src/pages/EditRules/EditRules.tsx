@@ -14,14 +14,14 @@ import {
   generateAndRedirect,
 } from "../../dependenciesTools/hooks";
 import { RulesHeader } from "../../components/RulesHeader";
-import Rule from "../../models/Rule";
-import {getByCode} from "../../fetchers/RuleFetcher";
+import RuleDefinition from "../../models/RuleDefinition";
+import {getByCode} from "../../fetchers/RuleDefinitionFetcher";
 
 type Props = {
-  ruleCode: string
+  ruleDefinitionCode: string
 };
 
-const EditRules: React.FC<Props> = ({ ruleCode }) => {
+const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
   const translate = useTranslate();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,10 +37,10 @@ const EditRules: React.FC<Props> = ({ ruleCode }) => {
   );
   const router = useLegacyRouter();
 
-  const [rule, setRule] = React.useState<Rule>();
+  const [ruleDefinition, setRuleDefinition] = React.useState<RuleDefinition>();
 
   React.useEffect(() => {
-    getByCode(ruleCode, router).then((rule) => { setRule(rule); });
+    getByCode(ruleDefinitionCode, router).then((ruleDefinition) => { setRuleDefinition(ruleDefinition); });
   }, []);
 
   return (
@@ -68,7 +68,7 @@ const EditRules: React.FC<Props> = ({ ruleCode }) => {
               id="edit-rules-input-code"
               label={translate("pim_common.code")}
               readOnly
-              value={rule ? rule.code : ''}
+              value={ruleDefinition ? ruleDefinition.code : ''}
             />
           </div>
         </Content>

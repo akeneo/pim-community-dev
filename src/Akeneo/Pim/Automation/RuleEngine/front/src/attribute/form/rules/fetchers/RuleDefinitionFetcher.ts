@@ -1,5 +1,5 @@
-import {denormalize} from "../models/rules-denormalizer";
-import Rule from "../models/Rule";
+import {denormalize} from "../models/rule-definition-denormalizer";
+import RuleDefinition from "../models/RuleDefinition";
 import {Router} from "../dependenciesTools/provider/applicationDependenciesProvider.type";
 
 function get(url: string) {
@@ -13,8 +13,8 @@ function get(url: string) {
   });
 }
 
-export const getByCode = async (ruleCode: string, router: Router): Promise<Rule> => {
-  const url = router.generate('pimee_enrich_rule_definition_get', { ruleCode: ruleCode });
+export const getByCode = async (ruleDefinitionCode: string, router: Router): Promise<RuleDefinition> => {
+  const url = router.generate('pimee_enrich_rule_definition_get', { ruleCode: ruleDefinitionCode });
   const response = await get(url);
   const json = await response.json();
 

@@ -1,4 +1,4 @@
-import Rule from "./Rule";
+import RuleDefinition from "./RuleDefinition";
 import Action from "./Action";
 import Condition from "./Condition";
 import FallbackAction from "./FallbackAction";
@@ -23,7 +23,7 @@ function denormalizeCondition(jsonCondition: any): Condition {
   return new FallbackCondition(jsonCondition);
 }
 
-export const denormalize = function(json: any): Rule {
+export const denormalize = function(json: any): RuleDefinition {
   const code = json.code || '';
   const labels = json.labels || {};
   const actions = (json.content.actions || []).map((jsonAction: any) => {
@@ -34,7 +34,7 @@ export const denormalize = function(json: any): Rule {
   });
   const priority = json.priority || 0;
 
-  return new Rule(
+  return new RuleDefinition(
     code,
     labels,
     priority,
