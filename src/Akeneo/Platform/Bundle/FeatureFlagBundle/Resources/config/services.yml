@@ -5,6 +5,12 @@ services:
         arguments:
             - '@akeneo.feature_flag.service.registry'
 
+    akeneo.feature_flag.service.controller:
+        public: true
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Controller'
+        arguments:
+            - '@feature_flags'
+
     akeneo.feature_flag.service.registry:
         public: false
         class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry'
