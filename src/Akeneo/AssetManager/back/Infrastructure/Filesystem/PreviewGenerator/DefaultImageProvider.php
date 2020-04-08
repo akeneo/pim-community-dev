@@ -59,7 +59,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
      */
     public function getImageUrl($fileKey, $filter)
     {
-        $filter = self::SUPPORTED_TYPES[$filter];
+        $filter = isset(self::SUPPORTED_TYPES[$filter]) ? self::SUPPORTED_TYPES[$filter] : $filter;
 
         if (!$this->cacheManager->isStored($fileKey, $filter)) {
             $binary = $this->getImageBinary($fileKey);
