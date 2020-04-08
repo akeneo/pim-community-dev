@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Remover;
+namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product;
 
 use Doctrine\DBAL\Connection;
 
