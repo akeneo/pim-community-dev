@@ -266,7 +266,7 @@ class ChannelValidationIntegration extends TestCase
 
         $this->assertCount(1, $violations);
         $this->assertSame(
-            'The attribute "a_price" is not a metric attribute.',
+            'The attribute "a_price" is not a measurement attribute.',
             $violation->getMessage()
         );
         $this->assertSame('conversionUnits', $violation->getPropertyPath());
@@ -293,7 +293,7 @@ class ChannelValidationIntegration extends TestCase
 
         $this->assertCount(1, $violations);
         $this->assertSame(
-            'The unit "KILOWATT" does not exist or does not belong to the default metric family of the given attribute "a_metric_without_decimal".',
+            'The unit "KILOWATT" does not exist or does not belong to the default measurement family of the given attribute "a_metric_without_decimal".',
             $violation->getMessage()
         );
         $this->assertSame('conversionUnits', $violation->getPropertyPath());
