@@ -17,7 +17,7 @@
             } %}
         {% elseif action.type == "clear" %}
             {% set parameters = {
-                '%field%': action.field|append_locale_and_scope_context(action.options.locale|default, action.options.scope|default)|highlight,
+                '%field%': action.field|append_locale_and_scope_context(action.locale|default, action.scope|default)|highlight,
             } %}
         {% elseif action.type == "calculate" %}
             {% set parameters = {
