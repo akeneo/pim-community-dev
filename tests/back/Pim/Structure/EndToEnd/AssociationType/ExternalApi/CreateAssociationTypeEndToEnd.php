@@ -63,7 +63,8 @@ JSON;
         "labels": {
             "en_US": "New sell",
             "fr_FR": "Nouvelle vente"
-        }
+        },
+        "is_bidirectional": true
     }
 JSON;
 
@@ -77,7 +78,7 @@ JSON;
                 'en_US' => 'New sell',
                 'fr_FR' => 'Nouvelle vente',
             ],
-            'is_bidirectional' => false
+            'is_bidirectional' => true
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
 
