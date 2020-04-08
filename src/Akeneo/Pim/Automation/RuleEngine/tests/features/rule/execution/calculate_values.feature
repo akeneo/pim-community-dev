@@ -41,7 +41,7 @@ Feature: Execute clear rules
     And the unlocalized unscoped item_weight of "75024" should be "10.375"
     But the unlocalized unscoped item_weight of "75025" should be ""
 
-  @acceptance-back @toto
+  @acceptance-back
   Scenario: Successfully execute a calculate rule with price attributes
     Given Rules with following configuration:
     """
