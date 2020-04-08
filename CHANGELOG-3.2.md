@@ -1,5 +1,10 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9177: Handle the display of a large number of attributes within an attribute group
+- PIM-9176: Fix the permission update of attribute groups having a lot of attributes
+
 # 3.2.46 (2020-03-30)
 
 # 3.2.45 (2020-03-20)
