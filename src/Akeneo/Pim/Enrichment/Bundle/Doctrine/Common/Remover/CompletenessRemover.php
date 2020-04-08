@@ -26,7 +26,7 @@ final class CompletenessRemover
      */
     public function deleteForOneProduct(int $productId): int
     {
-        return $this->deleteProducts([$productId]);
+        return $this->deleteForProducts([$productId]);
     }
 
     /**

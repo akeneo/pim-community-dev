@@ -38,7 +38,7 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function deleteProduct(RemoveEvent $event) : void
+    public function deleteForOneProduct(RemoveEvent $event) : void
     {
         $product = $event->getSubject();
         if (!$this->checkProduct($product) || !$this->checkEventUnitary($event)) {
@@ -46,10 +46,10 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
         }
 
         $this->completenessRemover
-            ->deleteOneProduct($event->getSubjectId());
+            ->deleteForOneProduct($event->getSubjectId());
     }
 
-    public function deleteAllProducts(RemoveEvent $event)
+    public function deleteForAllProducts(RemoveEvent $event)
     {
         $products = array_values($event->getSubject());
         $productIds = $event->getSubjectId();
@@ -67,7 +67,7 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
 
         if (!empty($productGoodIds)) {
             $this->completenessRemover
-                ->deleteProducts($productGoodIds);
+                ->deleteForProducts($productGoodIds);
         }
     }
 
