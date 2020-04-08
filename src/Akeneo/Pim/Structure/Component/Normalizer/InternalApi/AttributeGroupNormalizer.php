@@ -13,6 +13,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeGroupNormalizer implements NormalizerInterface
 {
+    private const MAX_ATTRIBUTES_SHOWN = 500;
+
     /** @var array $supportedFormats */
     protected $supportedFormats = ['internal_api'];
 
@@ -38,17 +40,21 @@ class AttributeGroupNormalizer implements NormalizerInterface
     public function normalize($attributeGroup, $format = null, array $context = [])
     {
         $standardAttributeGroup = $this->normalizer->normalize($attributeGroup, 'standard', $context);
+        $totalCount = \count($standardAttributeGroup['attributes']);
+        $standardAttributeGroup = $this->showOnlyMaximumAttributes($standardAttributeGroup);
 
-        $attributes = $this->attributeRepository->findBy(
-            ['code' => $standardAttributeGroup['attributes']]
-        );
+        $attributes = $this->attributeRepository->findBy(['code' => $standardAttributeGroup['attributes']]);
+        $count = \count($attributes);
+
         $sortOrder = [];
         foreach ($attributes as $attribute) {
             $sortOrder[$attribute->getCode()] = $attribute->getSortOrder();
         }
         $standardAttributeGroup['attributes_sort_order'] = $sortOrder;
         $standardAttributeGroup['meta'] = [
-            'id' => $attributeGroup->getId()
+            'id' => $attributeGroup->getId(),
+            'attribute_count' => $count,
+            'total_attribute_count' => $totalCount
         ];
 
         return $standardAttributeGroup;
@@ -60,5 +66,12 @@ class AttributeGroupNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof AttributeGroupInterface && in_array($format, $this->supportedFormats);
+    }
+
+    private function showOnlyMaximumAttributes(array $standardAttributeGroup): array
+    {
+        $standardAttributeGroup['attributes'] = array_splice($standardAttributeGroup['attributes'], 0, self::MAX_ATTRIBUTES_SHOWN);
+
+        return $standardAttributeGroup;
     }
 }

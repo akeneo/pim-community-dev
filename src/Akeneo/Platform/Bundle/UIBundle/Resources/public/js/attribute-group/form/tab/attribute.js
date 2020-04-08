@@ -12,6 +12,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
+        'pim/router',
         'pim/form',
         'pim/i18n',
         'pim/user-context',
@@ -19,19 +20,23 @@ define(
         'pim/security-context',
         'pim/dialog',
         'pim/template/form/attribute-group/tab/attribute',
-        'jquery-ui'
-    ],
+        'jquery-ui',
+        'pim/datagrid/state'
+],
     function (
         $,
         _,
         __,
+        Router,
         BaseForm,
         i18n,
         UserContext,
         FetcherRegistry,
         SecurityContext,
         Dialog,
-        template
+        template,
+        jqueryUi, // TODO: remove if not used
+        DatagridState
     ) {
         return BaseForm.extend({
             className: 'tabbable tabs-left',
@@ -40,7 +45,8 @@ define(
             attributeSortOrderKey: 'attributes_sort_order',
 
             events: {
-                'click .remove-attribute': 'removeAttributeRequest'
+                'click .remove-attribute': 'removeAttributeRequest',
+                'click .redirect-attribute-list': 'redirectAttributeList'
             },
 
             /**
@@ -98,7 +104,9 @@ define(
                             UserContext: UserContext,
                             __: __,
                             hasRightToRemove: this.hasRightToRemove(),
-                            canSortAttributes: SecurityContext.isGranted(this.config.sortAttributesACL)
+                            canSortAttributes: SecurityContext.isGranted(this.config.sortAttributesACL),
+                            attributeCount: this.getFormData().meta.attribute_count,
+                            totalAttributeCount: this.getFormData().meta.total_attribute_count,
                         }));
 
                         this.$('.attribute-list').sortable({
@@ -228,6 +236,14 @@ define(
 
                 return currentAttributeGroupIsNotOther &&
                     SecurityContext.isGranted(this.config.addAttributeACL)
+            },
+
+            redirectAttributeList: function (event) {
+                const groupFilters = `f[group][value][]=${this.getFormData().code}`;
+
+                DatagridState.set('attribute-grid', {filters: groupFilters});
+
+                Router.redirectToRoute('pim_enrich_attribute_index');
             }
         });
     });
