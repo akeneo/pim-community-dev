@@ -2,7 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\FeatureFlagBundle;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Service\Registry;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry;
 
 /**
  * Single entry point to determine if a feature is enabled or not.

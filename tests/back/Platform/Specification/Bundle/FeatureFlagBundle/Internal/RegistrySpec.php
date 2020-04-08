@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Bundle\FeatureFlagBundle\Service;
+namespace Specification\Akeneo\Platform\Bundle\FeatureFlagBundle\Internal;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Service\Registry;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry;
 use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
 

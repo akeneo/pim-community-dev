@@ -7,4 +7,4 @@ services:
 
     akeneo.feature_flag.service.registry:
         public: false
-        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Service\Registry'
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry'

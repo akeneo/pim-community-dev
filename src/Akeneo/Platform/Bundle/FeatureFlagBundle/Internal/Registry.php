@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Platform\Bundle\FeatureFlagBundle\Service;
+namespace Akeneo\Platform\Bundle\FeatureFlagBundle\Internal;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use InvalidArgumentException;

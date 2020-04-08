@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Platform\Bundle\FeatureFlagBundle;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Service\Registry;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry;
 use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
 
