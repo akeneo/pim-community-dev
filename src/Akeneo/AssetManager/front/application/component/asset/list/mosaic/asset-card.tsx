@@ -87,9 +87,9 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
   React.useEffect(() => {
     const imageUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
     loadImage(imageUrl)
-      .then((value: any) => {
+      .then(() => {
         if (isDisplayed) {
-          setUrl(value);
+          setUrl(imageUrl);
         }
       })
       .catch(() => {

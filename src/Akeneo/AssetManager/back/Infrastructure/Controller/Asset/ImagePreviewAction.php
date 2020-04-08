@@ -35,6 +35,17 @@ class ImagePreviewAction
 {
     private const THUMBNAIL_FILENAME = 'thumbnail.jpeg';
 
+    /**
+     * Why do we need to have this?
+     * At first this action was supposed to redirect to the final media. As we now use flysystem to store
+     * our thumbnails and the storage is not public. We cannot directly redirect to a public URL.
+     * Unfortunatly, liipimagine is designed to directly provide a file URL. So we twisted a bit the system
+     * to get the flysystem path instead of a public URL. As liipimagine requires to define a web_root
+     * (cannot be empty), we decided to put a dummy root flag (here: vendor/akeneo/pim-community-dev/config/packages/liip_imagine.yml#L8)
+     * and remove it here to get the flysystem path.
+     */
+    private const ROOT_FLAG = '__root__';
+
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
@@ -73,7 +84,7 @@ class ImagePreviewAction
             $imagePreview = $this->defaultImageProvider->getImageUrl(OtherGenerator::DEFAULT_OTHER, $type);
         }
 
-        $file = $this->imageLoader->find(str_replace('__root__', '', $imagePreview));
+        $file = $this->imageLoader->find(str_replace(self::ROOT_FLAG, '', $imagePreview));
 
         $response = new Response($file->getContent());
 
@@ -84,8 +95,8 @@ class ImagePreviewAction
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', 'image/jpeg');
         $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
-        $response->setMaxAge( 3600 * 24 * 365);
-        $response->setSharedMaxAge( 3600 * 24 * 365);
+        $response->setMaxAge(3600 * 24 * 365); // One year
+        $response->setSharedMaxAge(3600 * 24 * 365); // One year
 
         return $response;
     }
