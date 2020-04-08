@@ -24,7 +24,7 @@ export default abstract class ReactController extends BaseController {
   /**
    * Base React element to mount (and keep as ref between route changes).
    */
-  abstract reactElementToMount(routeParams: RouteParams): JSX.Element;
+  abstract reactElementToMount(routeParams?: RouteParams): JSX.Element;
 
   /**
    * RegEx should match the base 'route' of the controller.
@@ -39,7 +39,7 @@ export default abstract class ReactController extends BaseController {
     return super.initialize();
   }
 
-  renderRoute(routeParams: RouteParams) {
+  renderRoute(routeParams?: RouteParams) {
     this.$el.append(mountReactElementRef(this.reactElementToMount(routeParams)));
     return Deferred().resolve();
   }
