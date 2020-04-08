@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9164: Improve the display of the validation error message
+
 # 4.0.15 (2020-04-07)
 
 ## Technical Improvements
