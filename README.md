@@ -7,7 +7,8 @@ Practically, it means the Akeneo PIM source code is present in the src/ director
 
 **If you want to create a new PIM project based on Akeneo PIM, please use https://www.github.com/akeneo/pim-community-standard**
 
-If you want to contribute to the Akeneo PIM (and we will be pleased if you do!), you can fork this repository and submit a pull request.
+If you want to contribute to the Akeneo PIM (and we will be pleased if you do!), you can fork this repository and submit a pull request...
+
 
 Scrutinizer | Crowdin
 ----------- | -------
