@@ -30,7 +30,6 @@ class AssociationTypeRepository extends EntityRepository implements DatagridRepo
     public function createDatagridQueryBuilder()
     {
         $qb = $this->createQueryBuilder('a')
-            ->select('a')
             ->addSelect('(CASE WHEN translation.label IS NULL THEN a.code ELSE translation.label END) AS label')
             ->addSelect('translation.label')
             ->addSelect('a.isBidirectional')
