@@ -112,6 +112,3 @@ services:
             - '@pimee_catalog_rule.query.cache.channel_exists_and_bound_to_context'
         tags:
             - { name: validator.constraint_validator }
-
-    Akeneo\Pim\Automation\RuleEngine\Component\Validator\ProductAddActionValidator:
-        class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\ProductAddActionValidator

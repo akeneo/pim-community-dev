@@ -1,7 +1,6 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddAction:
     constraints:
         - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\PropertyAction: ~
-        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ProductAddAction: ~
     properties:
         field:
            - Type:

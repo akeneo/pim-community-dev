@@ -22,9 +22,9 @@ use Symfony\Component\Validator\Constraint;
 final class ExistingConcatenateFields extends Constraint
 {
     /** @var string */
-    public $messageErrorSource = 'You cannot concatenate data from the "%field%" field.';
-    public $messageErrorTarget = 'You cannot concatenate data to the "%field%" field.';
-    public $messageAttributeNotFound = 'The "%field%" attribute code does not exist.';
+    public $messageErrorSource = 'You cannot concatenate data from the "%field%" field';
+    public $messageErrorTarget = 'You cannot concatenate data to the "%field%" field';
+    public $messageAttributeNotFound = 'The "%field%" attribute code does not exist';
 
     /**
      * {@inheritdoc}

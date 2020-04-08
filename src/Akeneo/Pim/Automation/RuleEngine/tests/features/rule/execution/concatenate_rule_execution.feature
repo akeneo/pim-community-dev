@@ -4,8 +4,8 @@ Feature: Execute concatenate rules
   I can execute concatenate rules on my products
 
   Background:
-    Given the following locales en_US
-    And the following ecommerce channel with locales en_US
+    Given the following locales en_US,fr_FR
+    And the following ecommerce channel with locales en_US,fr_FR
     And some currencies
     And the following designer reference entity
     And the following records:

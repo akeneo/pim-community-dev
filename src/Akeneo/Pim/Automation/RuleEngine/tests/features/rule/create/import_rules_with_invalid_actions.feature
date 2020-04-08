@@ -1177,3 +1177,38 @@ Feature: Import rules
             include_children: true
       """
     And the rule list does not contain the "canon_beautiful_description" rule
+
+  @integration-back
+  Scenario: Skip rule with invalid locale and scope for concatenate action
+    Given the following attributes:
+      | code       | label-en_US | type             | scopable | localizable | allowed_extensions | metric_family | default_metric_unit | group | decimals_allowed |
+      | rear_view  | Rear view   | pim_catalog_text | 1        | 1           |                    |               |                     | other |                  |
+    When the following yaml file is imported:
+    """
+    rules:
+        bad_locale_and_scope:
+            conditions:
+                - field:    sku
+                  operator: =
+                  value:    test
+            actions:
+                - type: concatenate
+                  from:
+                      - field: sku
+                        locale: en_US
+                      - field: sku
+                        scope: mobile
+                      - field: name
+                        locale: unknown
+                      - field: rear_view
+                  to:
+                      field: description
+                      scope: tablet
+                      locale: en_US
+    """
+    Then an exception with message "actions[0].from[0].field: The \"sku\" attribute code is not localizable and a locale is provided" has been thrown
+    And an exception with message "actions[0].from[1].field: The \"sku\" attribute code is not scopable and a channel is provided" has been thrown
+    And an exception with message "actions[0].from[2].locale: The \"unknown\" locale does not exist or is not activated" has been thrown
+    And an exception with message "actions[0].from[3].field: The \"rear_view\" attribute code is localizable and no locale is provided" has been thrown
+    And an exception with message "actions[0].from[3].field: The \"rear_view\" attribute code is scopable and no channel is provided" has been thrown
+    And the rule list does not contain the "bad_locale_and_scope" rule

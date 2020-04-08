@@ -24,7 +24,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAt
  */
 final class OptionValueStringifier extends AbstractValueStringifier implements ValueStringifierInterface
 {
-    private const LABEL_LOCALE_KEY = 'label_locale';
+    public const LABEL_LOCALE_KEY = 'label_locale';
     private const SEPARATOR = ', ';
 
     /** @var GetExistingAttributeOptionsWithValues */
