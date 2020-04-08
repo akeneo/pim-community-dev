@@ -25,6 +25,7 @@ class AttributeShouldBeNumericValidator extends ConstraintValidator
     private const ALLOWED_ATTRIBUTE_TYPES = [
         AttributeTypes::NUMBER,
         AttributeTypes::PRICE_COLLECTION,
+        AttributeTypes::METRIC,
     ];
 
     /** @var GetAttributes */
@@ -48,7 +49,6 @@ class AttributeShouldBeNumericValidator extends ConstraintValidator
             return;
         }
 
-        // TODO RUL-59: Allow metrics
         if (!in_array($attribute->type(), self::ALLOWED_ATTRIBUTE_TYPES)) {
             $this->context->buildViolation(
                 $constraint->message,

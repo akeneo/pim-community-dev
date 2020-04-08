@@ -94,6 +94,28 @@ class AttributeShouldBeNumericValidatorSpec extends ObjectBehavior
         $this->validate('price', new AttributeShouldBeNumeric());
     }
 
+    function it_does_not_build_a_violation_if_attribute_is_a_measurement(
+        GetAttributes $getAttributes,
+        ExecutionContextInterface $context
+    ) {
+        $getAttributes->forCode('weight')->willReturn(
+            new Attribute(
+                'weight',
+                AttributeTypes::METRIC,
+                [],
+                false,
+                false,
+                'WEIGHT',
+                false,
+                'metric',
+                []
+            )
+        );
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate('weight', new AttributeShouldBeNumeric());
+    }
+
     function it_builds_a_violation_if_attribute_is_not_numeric(
         GetAttributes $getAttributes,
         ExecutionContextInterface $context,

@@ -17,8 +17,7 @@ use Symfony\Component\Validator\Constraint;
 
 class AttributeShouldBeNumeric extends Constraint
 {
-    // TODO RUL-59: Update error message
-    public $message = 'Invalid attribute type for "%attribute_code%", expected a number or price collection attribute';
+    public $message = 'Invalid attribute type for "%attribute_code%", expected a number, measurement or price collection attribute';
 
     public function validatedBy()
     {
