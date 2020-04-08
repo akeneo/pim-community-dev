@@ -238,7 +238,7 @@ define(
                     SecurityContext.isGranted(this.config.addAttributeACL)
             },
 
-            redirectAttributeList: function (event) {
+            redirectAttributeList: function () {
                 const groupFilters = `f[group][value][]=${this.getFormData().code}`;
 
                 DatagridState.set('attribute-grid', {filters: groupFilters});
