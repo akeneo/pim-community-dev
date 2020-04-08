@@ -19,6 +19,11 @@
             {% set parameters = {
                 '%field%': action.field|append_locale_and_scope_context(action.options.locale|default, action.options.scope|default)|highlight,
             } %}
+        {% elseif action.type == "calculate" %}
+            {% set parameters = {
+                '%field%': action.destination.field|append_locale_and_scope_context(action.destination.locale|default, action.destination.scope|default)|highlight,
+                '%operation_details%': include('@AkeneoPimRuleEngine/Rule/action/calculate_operations.html.twig'),
+            } %}
         {% else %}
             {% set parameters = {
                 '%field%': action.field|append_locale_and_scope_context(action.locale|default, action.scope|default)|highlight,

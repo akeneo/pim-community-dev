@@ -1,0 +1,12 @@
+{% for operation in action.operation_list %}{% spaceless %}
+    {% if loop.first %}
+        {{ ('pimee_catalog_rule.actions.type.calculate_first_operation.' ~ operation.operator)|trans({
+            '%operand%': operation.field|default(operation.value|default)|append_locale_and_scope_context(operation.locale|default, operation.scope|default)|highlight,
+            '%source%': action.source.field|append_locale_and_scope_context(action.source.locale|default, action.source.scope|default)|highlight,
+        })|raw }}
+    {% else %}
+        {{ ('pimee_catalog_rule.actions.type.calculate_other_operation.' ~ operation.operator)|trans({
+            '%operand%': operation.field|default(operation.value|default)|append_locale_and_scope_context(operation.locale|default, operation.scope|default)|highlight,
+        })|raw }}
+    {% endif %}
+{% endspaceless %}{% endfor %}
