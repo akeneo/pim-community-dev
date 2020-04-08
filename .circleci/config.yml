@@ -631,14 +631,14 @@ workflows:
                     - checkout
 
   nightly:
-          #      triggers:
-          #          - schedule:
-          #                cron: "0 2 * * *"
-          #                filters:
-          #                    branches:
-          #                        only:
-          #                            - master
-          #
+      triggers:
+          - schedule:
+                cron: "0 2 * * *"
+                filters:
+                    branches:
+                        only:
+                            - master
+
       jobs:
           - checkout
           - build_dev:
