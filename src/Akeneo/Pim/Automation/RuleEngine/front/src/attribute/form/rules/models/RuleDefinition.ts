@@ -21,4 +21,8 @@ export default class RuleDefinition {
     this.conditions = conditions;
     this.actions = actions;
   }
+
+  getLabel(locale: string) {
+    return this.labels[locale] || '[' + this.code + ']';
+  }
 }

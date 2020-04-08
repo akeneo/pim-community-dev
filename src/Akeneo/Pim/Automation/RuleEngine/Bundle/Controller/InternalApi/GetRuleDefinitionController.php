@@ -43,7 +43,6 @@ class GetRuleDefinitionController
 
     public function __invoke(string $ruleCode, Request $request)
     {
-        return new JsonResponse('foo');
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }

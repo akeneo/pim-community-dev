@@ -12,6 +12,7 @@ import {
   useBackboneRouter,
   useTranslate,
   generateAndRedirect,
+  useUserContext,
 } from "../../dependenciesTools/hooks";
 import { RulesHeader } from "../../components/RulesHeader";
 import RuleDefinition from "../../models/RuleDefinition";
@@ -49,11 +50,13 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
     });
   }, []);
 
+  const currentCatalogLocale = useUserContext().get('catalogLocale');
+
   return (
     <ThemeProvider theme={akeneoTheme}>
       {isError ? 'There was an error (TODO: better display)' :
         <form id="edit-rules-form" onSubmit={handleSubmit}>
-          <RulesHeader title="Set entity">
+          <RulesHeader title={ruleDefinition ? ruleDefinition.getLabel(currentCatalogLocale) : ''}>
             <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>
               {translate("pim_menu.tab.settings")}
             </BreadcrumbItem>
