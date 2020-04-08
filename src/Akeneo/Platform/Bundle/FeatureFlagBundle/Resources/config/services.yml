@@ -1,1 +1,10 @@
 services:
+    feature_flags:
+        public: true
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags'
+        arguments:
+            - '@akeneo.feature_flag.service.registry'
+
+    akeneo.feature_flag.service.registry:
+        public: false
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Service\Registry'
