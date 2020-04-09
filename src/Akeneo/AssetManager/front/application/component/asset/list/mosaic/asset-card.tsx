@@ -74,7 +74,7 @@ export const AssetCardWithLink = ({...props}: AssetCardProps) => {
   const assetUrl = getAssetEditUrl(props.asset);
 
   return (
-    <a href={assetUrl} onClick={(e) => e.preventDefault()}>
+    <a href={assetUrl} onClick={e => e.preventDefault()}>
       <AssetCard {...props} />
     </a>
   );
