@@ -1,26 +1,33 @@
-import Action from "./Action";
-import Condition from "./Condition";
-import FallbackAction from "./FallbackAction";
-import FallbackCondition from "./FallbackCondition";
-import FamilyCondition from "./FamilyCondition";
 import {RuleDefinition} from "./RuleDefinition";
+import {Condition} from "./Condition";
+import {createFamilyCondition} from "./FamilyCondition";
+import {createFallbackCondition} from "./FallbackCondition";
+import {createFallbackAction} from "./FallbackAction";
+import {Action} from "./Action";
 
 function denormalizeAction(jsonAction: any): Action {
-  // For now, it only parse fallbacks.
-  return new FallbackAction(jsonAction);
+  const factories: ((json: any) => Action | false)[] = [];
+  for (let j = 0; j < factories.length; j++) {
+    const action = factories[j](jsonAction);
+    if (action) {
+      return action;
+    }
+  }
+
+  return createFallbackAction(jsonAction);
 }
 
 function denormalizeCondition(jsonCondition: any): Condition {
   // For now, FamilyCondition never match. It always returns FallbackCondition.
-  const conditionClasses = [FamilyCondition];
-  for (let j = 0; j < conditionClasses.length; j++) {
-    const buildedCondition = conditionClasses[j].match(jsonCondition);
-    if (buildedCondition) {
-      return buildedCondition;
+  const factories: ((json: any) => Condition | false)[] = [createFamilyCondition];
+  for (let j = 0; j < factories.length; j++) {
+    const condition = factories[j](jsonCondition);
+    if (condition) {
+      return condition;
     }
   }
 
-  return new FallbackCondition(jsonCondition);
+  return createFallbackCondition(jsonCondition);
 }
 
 export const denormalize = function(json: any): RuleDefinition {

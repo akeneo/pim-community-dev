@@ -1,5 +1,5 @@
-import Condition from "./Condition";
-import Action from "./Action";
+import {Condition} from "./Condition";
+import {Action} from "./Action";
 
 export type RuleDefinition = {
   code: string;
