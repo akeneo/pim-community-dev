@@ -33,7 +33,7 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
         return [
             'code'   => $associationType->getCode(),
             'labels' => $this->translationNormalizer->normalize($associationType, 'standard', $context),
-            'is_bidirectional' => $associationType->isBidirectional()
+            'two_way' => $associationType->isTwoWay()
         ];
     }
 

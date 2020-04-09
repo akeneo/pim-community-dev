@@ -20,12 +20,12 @@ extensions:
             identifier: code
             label: pim_common.code
 
-    pim-association-type-properties-bidirectional:
+    pim-association-type-properties-two-way:
         module: pim/form/common/fields/boolean
         parent: pim-association-type-create-modal
         targetZone: fields
         position: 20
         config:
-            fieldName: is_bidirectional
-            label: pim_enrich.entity.association_type.property.is_bidirectional
+            fieldName: two_way
+            label: pim_enrich.entity.association_type.property.two_way
             defaultValue: false

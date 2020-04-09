@@ -55,7 +55,7 @@ JSON;
         $associationTypeStandard = [
             'code'             => 'YOLO_SELL',
             'labels'           => [],
-            'is_bidirectional' => false
+            'two_way' => false
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -73,7 +73,7 @@ JSON;
             "en_US": "Gift sell",
             "fr_FR": "Vente cadeau"
         },
-        "is_bidirectional": true
+        "two_way": true
     }
 JSON;
         $client->request('PATCH', '/api/rest/v1/association-types/GIFT_SELL', [], [], [], $data);
@@ -84,7 +84,7 @@ JSON;
                 'en_US' => 'Gift sell',
                 'fr_FR' => 'Vente cadeau',
             ],
-            'is_bidirectional' => true,
+            'two_way' => true,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -92,14 +92,14 @@ JSON;
         $this->assertSame($associationTypeStandard, $normalizer->normalize($associationType));
     }
 
-    public function testIsBidirectionalIsImmutable()
+    public function testTwoWayIsImmutable()
     {
         $client = $this->createAuthenticatedClient();
         $data =
 <<<JSON
     {
         "code": "X_SELL",
-        "is_bidirectional": true
+        "two_way": true
     }
 JSON;
         $expectedContent =
@@ -109,7 +109,7 @@ JSON;
     "message": "Validation failed.",
     "errors": [
         {
-            "property": "is_bidirectional",
+            "property": "two_way",
             "message": "This property cannot be changed."
         }
     ]
@@ -134,7 +134,7 @@ JSON;
                 'en_US' => 'Cross sell',
                 'fr_FR' => 'Vente croisée',
             ],
-            'is_bidirectional' => false,
+            'two_way' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -160,7 +160,7 @@ JSON;
             'labels'           => [
                 'fr_FR' => 'Vente croisée',
             ],
-            'is_bidirectional' => false,
+            'two_way' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();

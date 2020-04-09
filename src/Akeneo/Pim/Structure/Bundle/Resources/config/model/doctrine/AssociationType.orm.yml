@@ -23,8 +23,9 @@ Akeneo\Pim\Structure\Component\Model\AssociationType:
             gedmo:
                 timestampable:
                     on: update
-        isBidirectional:
+        isTwoWay:
             type: boolean
+            column: is_two_way
             options:
                 default: false
     oneToMany:

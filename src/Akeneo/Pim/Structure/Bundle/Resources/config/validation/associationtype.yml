@@ -4,7 +4,7 @@ Akeneo\Pim\Structure\Component\Model\AssociationType:
         - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
             properties:
                 - code
-                - isBidirectional
+                - isTwoWay
     properties:
         code:
             - NotBlank: ~
@@ -15,7 +15,7 @@ Akeneo\Pim\Structure\Component\Model\AssociationType:
                 max: 100
         translations:
             - Valid: ~
-        isBidirectional:
+        isTwoWay:
             - Type: bool
             - NotNull: ~
 

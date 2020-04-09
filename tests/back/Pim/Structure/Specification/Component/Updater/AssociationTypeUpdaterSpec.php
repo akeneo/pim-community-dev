@@ -51,11 +51,11 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
             'labels' => [
                 'fr_FR' => 'Vente croisée',
             ],
-            'is_bidirectional' => true
+            'two_way' => true
         ];
 
         $associationType->setCode('mycode')->shouldBeCalled();
-        $associationType->setIsBidirectional(true)->shouldBeCalled();
+        $associationType->setIsTwoWay(true)->shouldBeCalled();
         $translatableUpdater->update($associationType, $values['labels'])->shouldBeCalled();
 
         $this->update($associationType, $values, []);
@@ -115,14 +115,14 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
             ->during('update', [$associationType, $data, []]);
     }
 
-    function it_throws_an_exception_when_is_bidirectional_is_not_boolean(AssociationTypeInterface $associationType)
+    function it_throws_an_exception_when_value_two_way_is_not_boolean(AssociationTypeInterface $associationType)
     {
-        $data = ['is_bidirectional' => 'foo'];
+        $data = ['two_way' => 'foo'];
 
         $this
             ->shouldThrow(
                 InvalidPropertyTypeException::booleanExpected(
-                    'is_bidirectional',
+                    'two_way',
                     AssociationTypeUpdater::class,
                     'foo'
                 )

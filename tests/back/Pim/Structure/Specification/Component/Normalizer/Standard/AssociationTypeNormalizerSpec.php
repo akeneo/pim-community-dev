@@ -39,12 +39,12 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
         $translationNormalizer->normalize($associationType, 'standard', [])->willReturn([]);
 
         $associationType->getCode()->willReturn('my_code');
-        $associationType->isBidirectional()->willReturn(true);
+        $associationType->isTwoWay()->willReturn(true);
 
         $this->normalize($associationType)->shouldReturn([
             'code'   => 'my_code',
             'labels' => [],
-            'is_bidirectional' => true
+            'two_way' => true
         ]);
     }
 }

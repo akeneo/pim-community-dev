@@ -71,12 +71,12 @@ interface AssociationTypeInterface extends
     /**
      * @return bool
      */
-    public function isBidirectional(): bool;
+    public function isTwoWay(): bool;
 
     /**
-     * @param bool $isBidirectional
+     * @param bool $isTwoWay
      */
-    public function setIsBidirectional(bool $isBidirectional): void;
+    public function setIsTwoWay(bool $isTwoWay): void;
 
     /**
      * Returns the label of the association type
