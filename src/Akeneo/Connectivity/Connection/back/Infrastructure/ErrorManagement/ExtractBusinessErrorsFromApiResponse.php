@@ -42,17 +42,12 @@ class ExtractBusinessErrorsFromApiResponse
         $content = $response->getContent();
         $decodedContent = json_decode($content, true);
         if (isset($decodedContent['errors'])) {
-            /*
-             * TODO Validations errors API-1068
-             * $businessErrors = [];
-             * foreach ($decodedContent['errors'] as $error) {
-             *     $businessErrors[] = new BusinessError($connectionCode, json_encode($error));
-             * }
-             *
-             * return $businessErrors;
-             */
+            $businessErrors = [];
+            foreach ($decodedContent['errors'] as $error) {
+                $businessErrors[] = new BusinessError($connectionCode, json_encode($error));
+            }
 
-            return [];
+            return $businessErrors;
         }
 
         return [new BusinessError($connectionCode, $content)];

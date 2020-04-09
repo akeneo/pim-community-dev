@@ -39,7 +39,13 @@ JSON;
         Response $response
     ): void {
         $response->getStatusCode()->willReturn(Response::HTTP_UNPROCESSABLE_ENTITY);
-        $content = <<<JSON
+        $identifierError = <<<JSON
+{"property":"identifier","message":"The same identifier is already set on another product"}
+JSON;
+        $metricError = <<<JSON
+{"property":"values","message":"Please specify a valid metric unit","attribute":"length","locale":null,"scope":null}
+JSON;
+        $body = <<<JSON
 {
     "code": 422,
     "_links": {
@@ -47,14 +53,26 @@ JSON;
             "href": "http://api.akeneo.com/api-reference.html#post_products"
         }
     },
-    "errors": [],
-    "message": "Property \"description\" does not exist. Check the expected format on the API documentation."
+    "errors": [
+        %s,
+        %s
+    ],
+    "message": "Validation failed."
 }
 JSON;
+        $content = sprintf($body, $identifierError, $metricError);
 
         $response->getContent()->willReturn($content);
         $businessErrors = $this->extractAll($response, 'erp');
         $businessErrors->shouldBeArray();
-        $businessErrors->shouldHaveCount(0);
+        $businessErrors->shouldHaveCount(2);
+
+        $businessErrors[0]->shouldBeAnInstanceOf(BusinessError::class);
+        $businessErrors[0]->connectionCode()->__toString()->shouldBe('erp');
+        $businessErrors[0]->content()->shouldBe($identifierError);
+
+        $businessErrors[1]->shouldBeAnInstanceOf(BusinessError::class);
+        $businessErrors[1]->connectionCode()->__toString()->shouldBe('erp');
+        $businessErrors[1]->content()->shouldBe($metricError);
     }
 }
