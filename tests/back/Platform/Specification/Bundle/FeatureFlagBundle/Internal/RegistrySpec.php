@@ -16,7 +16,7 @@ class RegistrySpec extends ObjectBehavior
 
     function it_registers_feature_flags()
     {
-        $flag = new CustomFlag();
+        $flag = new CustomFlagEnabled();
         $this->add('foo', $flag);
 
         $this->get('foo')->shouldReturn($flag);
@@ -24,7 +24,7 @@ class RegistrySpec extends ObjectBehavior
 
     function it_fails_when_getting_an_unknow_flag()
     {
-        $flag = new CustomFlag();
+        $flag = new CustomFlagEnabled();
         $this->add('foo', $flag);
 
         $this->shouldThrow(InvalidArgumentException::class)->during('get', ['bar']);
@@ -32,23 +32,30 @@ class RegistrySpec extends ObjectBehavior
 
     function it_returns_all_feature_flags()
     {
-        $foo = new CustomFlag();
+        $foo = new CustomFlagEnabled();
         $this->add('foo', $foo);
 
-        $bar = new CustomFlag();
+        $bar = new CustomFlagDisabled();
         $this->add('bar', $bar);
 
         $this->all()->shouldReturn([
-            'foo' => $foo,
-            'bar' => $bar
+            'foo' => true,
+            'bar' => false
         ]);
     }
 }
 
-class CustomFlag implements FeatureFlag
+class CustomFlagEnabled implements FeatureFlag
 {
     public function isEnabled(): bool
     {
         return true;
+    }
+}
+class CustomFlagDisabled implements FeatureFlag
+{
+    public function isEnabled(): bool
+    {
+        return false;
     }
 }

@@ -14,6 +14,7 @@ use InvalidArgumentException;
  */
 class Registry
 {
+    /** @var FeatureFlag[] */
     private $flags = [];
 
     public function add(string $feature, FeatureFlag $flag)
@@ -32,6 +33,11 @@ class Registry
 
     public function all(): array
     {
-        return $this->flags;
+        $featureFlags = [];
+        foreach ($this->flags as $feature => $flag) {
+            $featureFlags[$feature] = $flag->isEnabled();
+        }
+
+        return $featureFlags;
     }
 }
