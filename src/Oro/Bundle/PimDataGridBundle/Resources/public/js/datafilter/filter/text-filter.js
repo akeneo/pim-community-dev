@@ -130,8 +130,7 @@ define(
          */
         _onReadCriteriaInputKey: function(e) {
             if (e.which == 13) {
-                this._hideCriteria();
-                this.setValue(this._formatRawValue(this._readDOMValue()));
+                this._onClickUpdateCriteria();
             }
         },
 
