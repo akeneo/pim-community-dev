@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operand;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductTarget;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

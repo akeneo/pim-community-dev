@@ -79,13 +79,13 @@ class UpdateNumericValueSpec extends ObjectBehavior
             'ecommerce',
             [
                 'amount' => 0.515,
-                'unit' => 'KILOGRAM',
+                'unit' => 'GRAM',
             ]
         )->shouldBeCalled();
 
         $this->forEntity(
             $product,
-            ProductTarget::fromNormalized(['field' => 'weight', 'scope' => 'ecommerce']),
+            ProductTarget::fromNormalized(['field' => 'weight', 'scope' => 'ecommerce', 'unit' => 'GRAM']),
             0.515
         );
     }

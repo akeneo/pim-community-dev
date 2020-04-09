@@ -56,10 +56,10 @@ class UpdateNumericValue
                 $formattedData = $data;
                 break;
             case AttributeTypes::METRIC:
-                // TODO RUL-62: convert to destination unit
+                $unit = $destination->getUnit() ?? $attribute->getDefaultMetricUnit();
                 $formattedData = [
                     'amount' => $data,
-                    'unit' => $attribute->getDefaultMetricUnit(),
+                    'unit' => $unit,
                 ];
                 break;
             case AttributeTypes::PRICE_COLLECTION:

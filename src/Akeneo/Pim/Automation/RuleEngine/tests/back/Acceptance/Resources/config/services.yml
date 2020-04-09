@@ -25,6 +25,7 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'
             - '@pim_catalog.repository.group'
             - '@pim_catalog.repository.association_type'
+            - '@akeneo_measure.persistence.measurement_family_repository'
 
     Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\UserContext:
         arguments:

@@ -7,6 +7,7 @@ Feature: Execute clear rules
     Given the following locales en_US,fr_FR
     And the following ecommerce channel with locales en_US,fr_FR
     And the USD currency is added to the ecommerce channel
+    And the Frequency measurement family
     And the family "camcorders"
     And the product "75024" of the family "camcorders"
     And the product "75025" of the family "camcorders"
@@ -39,7 +40,7 @@ Feature: Execute clear rules
     When I execute the "calculate_rule" rule on products
     Then no exception has been thrown
     And the unlocalized unscoped item_weight of "75024" should be "10.375"
-    But the unlocalized unscoped item_weight of "75025" should be ""
+    But there should be no unlocalized unscoped item_weight value for the product "75025"
 
   @acceptance-back
   Scenario: Successfully execute a calculate rule with price attributes
@@ -67,11 +68,11 @@ Feature: Execute clear rules
     """
     When I execute the "calculate_rule" rule on products
     Then no exception has been thrown
-    And the unlocalized unscoped price of "75024" should be ""
+    And there should be no unlocalized unscoped price value for the product "75024"
     But the unlocalized unscoped price of "75025" should be "99.00 EUR, 106.92 USD"
 
   @acceptance-back
-  Scenario: Successfully execute a calculate rule with measuremeny attributes
+  Scenario: Successfully execute a calculate rule with measurement attributes
     Given Rules with following configuration:
     """
     rules:
@@ -87,14 +88,15 @@ Feature: Execute clear rules
             destination:
               field: processor
               locale: fr_FR
+              unit: KILOHERTZ
             source:
               field: processor
               locale: en_US
             operation_list:
-              - operator: multiply
-                value: 2.54
+              - operator: divide
+                value: 8
     """
     When I execute the "calculate_rule" rule on products
     Then no exception has been thrown
-    And the fr_FR unscoped processor of "75024" should be ""
-    But the fr_FR unscoped processor of "75025" should be "254.0000 MEGAHERTZ"
+    And there should be no fr_FR unscoped processor value for the product "75024"
+    But the fr_FR unscoped processor of "75025" should be "12.5000 KILOHERTZ"

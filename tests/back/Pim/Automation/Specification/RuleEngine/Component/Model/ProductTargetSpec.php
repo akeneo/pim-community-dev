@@ -29,6 +29,7 @@ class ProductTargetSpec extends ObjectBehavior
             'scope' => 'ecommerce',
             'locale' => 'en_US',
             'currency' => 'USD',
+            'unit' => 'METER',
         ]]);
     }
 
@@ -57,15 +58,20 @@ class ProductTargetSpec extends ObjectBehavior
         $this->getCurrency()->shouldBe('USD');
     }
 
+    function it_returns_the_unit()
+    {
+        $this->getUnit()->shouldBe('METER');
+    }
+
     function it_cannot_be_created_without_field()
     {
         $this->beConstructedThrough('fromNormalized', [['locale' => 'en_US']]);
 
         $this->shouldThrow(new \LogicException('Target configuration requires a "field" key.'))
-            ->duringInstantiation();
+             ->duringInstantiation();
     }
 
-    function it_can_be_created_without_scope_locale_nor_currency()
+    function it_can_be_created_without_scope_locale_currency_nor_unit()
     {
         $this->beConstructedThrough('fromNormalized', [['field' => 'title']]);
 
@@ -73,5 +79,6 @@ class ProductTargetSpec extends ObjectBehavior
         $this->getScope()->shouldBe(null);
         $this->getLocale()->shouldBe(null);
         $this->getCurrency()->shouldBe(null);
+        $this->getUnit()->shouldBe(null);
     }
 }

@@ -33,12 +33,16 @@ final class ProductTarget
     /** @var string|null */
     private $currency;
 
-    private function __construct(string $field, ?string $scope, ?string $locale, ?string $currency)
+    /** @var string|null */
+    private $unit;
+
+    private function __construct(string $field, ?string $scope, ?string $locale, ?string $currency, ?string $unit)
     {
         $this->field = strtolower($field);
         $this->scope = $scope;
         $this->locale = $locale;
         $this->currency = $currency;
+        $this->unit = $unit;
     }
 
     public function getField(): string
@@ -61,6 +65,11 @@ final class ProductTarget
         return $this->currency;
     }
 
+    public function getUnit(): ?string
+    {
+        return $this->unit;
+    }
+
     public static function fromNormalized(array $normalized): self
     {
         Assert::keyExists($normalized, 'field', 'Target configuration requires a "field" key.');
@@ -69,7 +78,8 @@ final class ProductTarget
             $normalized['field'],
             $normalized['scope'] ?? null,
             $normalized['locale'] ?? null,
-            $normalized['currency'] ?? null
+            $normalized['currency'] ?? null,
+            $normalized['unit'] ?? null
         );
     }
 }

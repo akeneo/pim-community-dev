@@ -48,10 +48,17 @@ use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
 use Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository;
 use Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository;
 use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
+use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityBuilder;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -122,6 +129,9 @@ final class DataFixturesContext implements Context
     /** @var InMemoryAssociationTypeRepository */
     private $associationTypeRepository;
 
+    /** @var InMemoryMeasurementFamilyRepository */
+    private $measurementFamilyRepository;
+
     public function __construct(
         InMemoryProductRepository $productRepository,
         ProductBuilderInterface $productBuilder,
@@ -142,7 +152,8 @@ final class DataFixturesContext implements Context
         InMemoryRecordRepository $recordRepository,
         InMemoryFindRecordDetails $findRecordDetails,
         InMemoryGroupRepository $groupRepository,
-        InMemoryAssociationTypeRepository $associationTypeRepository
+        InMemoryAssociationTypeRepository $associationTypeRepository,
+        InMemoryMeasurementFamilyRepository $measurementFamilyRepository
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
@@ -164,6 +175,7 @@ final class DataFixturesContext implements Context
         $this->findRecordDetails = $findRecordDetails;
         $this->groupRepository = $groupRepository;
         $this->associationTypeRepository = $associationTypeRepository;
+        $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
     /**
@@ -242,6 +254,52 @@ final class DataFixturesContext implements Context
 
             $this->familyRepository->save($family);
         }
+    }
+
+    /**
+     * @given the :measurementFamily measurement family
+     */
+    public function theMeasurementFamily(string $measurementFamily)
+    {
+        if ('Frequency' !== $measurementFamily) {
+            throw new NotImplementedException('Not implmented yet');
+        }
+
+        $this->measurementFamilyRepository->save(
+            MeasurementFamily::create(
+                MeasurementFamilyCode::fromString('Frequency'),
+                \Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection::fromArray(
+                    ["en_US" => "Frequency", "fr_FR" => "Fréquence"]
+                ),
+                UnitCode::fromString('HERTZ'),
+                [
+                    Unit::create(
+                        UnitCode::fromString('HERTZ'),
+                        \Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection::fromArray(["en_US" => "Hertz"]),
+                        [
+                            Operation::create("mul", "1"),
+                        ],
+                        "Hz"
+                    ),
+                    Unit::create(
+                        UnitCode::fromString('KILOHERTZ'),
+                        \Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection::fromArray(["en_US" => "Kilohertz"]),
+                        [
+                            Operation::create("mul", "1000"),
+                        ],
+                        "kHz"
+                    ),
+                    Unit::create(
+                        UnitCode::fromString('MEGAHERTZ'),
+                        \Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection::fromArray(["en_US" => "Megahertz"]),
+                        [
+                            Operation::create("mul", "1000000"),
+                        ],
+                        "MHz"
+                    ),
+                ]
+            )
+        );
     }
 
     /**
