@@ -1,12 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write\WrongCredentialsCombination;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQuery;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQuery;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepository;
+use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -14,11 +16,10 @@ use Prophecy\Argument;
 class ApiAuthenticationEventSubscriberSpec extends ObjectBehavior
 {
     public function let(
-        AreCredentialsValidCombinationQuery $areCredentialsValidCombination,
-        SelectConnectionCodeByClientIdQuery $selectConnectionCode,
+        ConnectionContext $connectionContext,
         WrongCredentialsCombinationRepository $repository
     ): void {
-        $this->beConstructedWith($areCredentialsValidCombination, $selectConnectionCode, $repository);
+        $this->beConstructedWith($connectionContext, $repository);
     }
 
     public function it_provides_subscribed_events(): void
@@ -27,13 +28,14 @@ class ApiAuthenticationEventSubscriberSpec extends ObjectBehavior
     }
 
     public function it_saves_a_wrong_credentials_combination_if_it_is_not_valid(
-        $areCredentialsValidCombination,
-        $selectConnectionCode,
+        $connectionContext,
         $repository
     ): void {
         $event = new ApiAuthenticationEvent('magento_0123', '42');
-        $areCredentialsValidCombination->execute($event->clientId(), $event->username())->willReturn(false);
-        $selectConnectionCode->execute($event->clientId())->willReturn('magento');
+        $connectionContext->areCredentialsValidCombination()->willReturn(false);
+
+        $connection = new Connection('magento', 'magento', FlowType::DATA_DESTINATION);
+        $connectionContext->getConnection()->willReturn($connection);
 
         $repository->create(Argument::that(function ($arg) {
             return $arg instanceof WrongCredentialsCombination &&
@@ -45,14 +47,13 @@ class ApiAuthenticationEventSubscriberSpec extends ObjectBehavior
     }
 
     public function it_does_nothing_if_combination_is_valid(
-        $areCredentialsValidCombination,
-        $selectConnectionCode,
+        $connectionContext,
         $repository
     ): void {
         $event = new ApiAuthenticationEvent('magento_0123', '42');
-        $areCredentialsValidCombination->execute($event->clientId(), $event->username())->willReturn(true);
+        $connectionContext->areCredentialsValidCombination()->willReturn(true);
 
-        $selectConnectionCode->execute(Argument::cetera())->shouldNotBeCalled();
+        $connectionContext->getConnection()->shouldNotBeCalled();
         $repository->create(Argument::cetera())->shouldNotBeCalled();
 
         $this->checkCredentialsCombination($event)->shouldReturn(null);

@@ -7,3 +7,10 @@ services:
       - '@akeneo_connectivity.connection.application.audit.handler.update_data_destination_product_event_count'
     tags:
       - { name: kernel.event_subscriber }
+
+  Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ConnectionContextEventSubscriber:
+    arguments:
+      - ''
+      - '@akeneo_connectivity.connection.persistence.query.are_credentials_valid_combination'
+    tags:
+      - { name: kernel.event_subscriber }

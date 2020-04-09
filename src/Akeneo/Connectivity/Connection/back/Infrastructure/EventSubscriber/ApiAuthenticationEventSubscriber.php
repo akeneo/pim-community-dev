@@ -1,13 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write\WrongCredentialsCombination;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQuery;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQuery;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepository;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectConnectionCodeByClientIdQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -18,22 +17,17 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ApiAuthenticationEventSubscriber implements EventSubscriberInterface
 {
-    /** @var AreCredentialsValidCombinationQuery */
-    private $areCredentialsValidCombination;
-
-    /** @var DbalSelectConnectionCodeByClientIdQuery */
-    private $selectConnectionCode;
+    /** @var ConnectionContext */
+    private $connectionContext;
 
     /** @var WrongCredentialsCombinationRepository */
     private $repository;
 
     public function __construct(
-        AreCredentialsValidCombinationQuery $areCredentialsValidCombination,
-        SelectConnectionCodeByClientIdQuery $selectConnectionCode,
+        ConnectionContext $connectionContext,
         WrongCredentialsCombinationRepository $repository
     ) {
-        $this->areCredentialsValidCombination = $areCredentialsValidCombination;
-        $this->selectConnectionCode = $selectConnectionCode;
+        $this->connectionContext = $connectionContext;
         $this->repository = $repository;
     }
 
@@ -44,11 +38,13 @@ class ApiAuthenticationEventSubscriber implements EventSubscriberInterface
 
     public function checkCredentialsCombination(ApiAuthenticationEvent $event): void
     {
-        if ($this->areCredentialsValidCombination->execute($event->clientId(), $event->username())) {
+        if ($this->connectionContext->areCredentialsValidCombination()) {
             return;
         }
 
-        $connectionCode = $this->selectConnectionCode->execute($event->clientId());
-        $this->repository->create(new WrongCredentialsCombination($connectionCode, $event->username()));
+        $this->repository->create(new WrongCredentialsCombination(
+            $this->connectionContext->getConnection()->code(),
+            $event->username()
+        ));
     }
 }

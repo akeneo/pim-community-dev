@@ -8,21 +8,15 @@ use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinati
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQuery;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
-use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
-use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Collect ReadProduct events triggered by the API.
  *
  * Only handle them if
- * - the autenticated username is the one defined for the Connection
- * - the Connection is auditable
+ * - the Connection is collectable
  * - the Connection has a Flow Type Destination
  *
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -31,51 +25,23 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class ReadProductsEventSubscriber implements EventSubscriberInterface
 {
-    /** @var AreCredentialsValidCombinationQuery */
-    private $areCredentialsValidCombinationQuery;
-
-    /** @var SelectConnectionCodeByClientIdQuery */
-    private $selectConnectionCodeQuery;
-
-    /** @var ConnectionRepository */
-    private $connectionRepository;
+    /** @var ConnectionContext */
+    private $connectionContext;
 
     /** @var UpdateDataDestinationProductEventCountHandler */
     private $updateDataDestinationProductEventCountHandler;
 
-    /** @var string */
-    private $clientId;
-
     public function __construct(
-        AreCredentialsValidCombinationQuery $areCredentialsValidCombinationQuery,
-        SelectConnectionCodeByClientIdQuery $selectConnectionCodeQuery,
-        ConnectionRepository $connectionRepository,
+        ConnectionContext $connectionContext,
         UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler
     ) {
-        $this->areCredentialsValidCombinationQuery = $areCredentialsValidCombinationQuery;
-        $this->selectConnectionCodeQuery = $selectConnectionCodeQuery;
-        $this->connectionRepository = $connectionRepository;
+        $this->connectionContext = $connectionContext;
         $this->updateDataDestinationProductEventCountHandler = $updateDataDestinationProductEventCountHandler;
     }
 
     public static function getSubscribedEvents(): array
     {
-        return [
-            ApiAuthenticationEvent::class => 'checkApiCredentialsCombination',
-            ReadProductsEvent::class => 'saveReadProducts',
-        ];
-    }
-
-    /**
-     * Check if the autenticated username is the one defined for the Connection.
-     */
-    public function checkApiCredentialsCombination(ApiAuthenticationEvent $event): void
-    {
-        if (false === $this->areCredentialsValidCombinationQuery->execute($event->clientId(), $event->username())) {
-            return;
-        }
-
-        $this->clientId = $event->clientId();
+        return [ReadProductsEvent::class => 'saveReadProducts'];
     }
 
     /**
@@ -83,14 +49,14 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
      */
     public function saveReadProducts(ReadProductsEvent $event): void
     {
-        if (null === $this->clientId) {
+        if (!$this->connectionContext->areCredentialsValidCombination()) {
             return;
         }
         if (0 === count($event->productIds())) {
             return;
         }
 
-        $connection = $this->findConnectionByClientId($this->clientId);
+        $connection = $this->connectionContext->getConnection();
         if (FlowType::DATA_DESTINATION !== (string) $connection->flowType()) {
             return;
         }
@@ -102,20 +68,5 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
                 count($event->productIds())
             )
         );
-    }
-
-    /**
-     * @throws RuntimeException
-     */
-    private function findConnectionByClientId(string $clientId): Connection
-    {
-        $connectionCode = $this->selectConnectionCodeQuery->execute($clientId);
-
-        $connection = $this->connectionRepository->findOneByCode($connectionCode);
-        if (null === $connection) {
-            throw new RuntimeException(sprintf('Connection with code "%s" not found.', $connectionCode));
-        }
-
-        return $connection;
     }
 }
