@@ -3,8 +3,11 @@ extensions:
         module: pim/form/common/creation/modal
         config:
             labels:
-                title: pim_common.create
+                title: pim_enrich.entity.association_type.module.create.title
                 subTitle: pim_menu.item.association_type
+            hint:
+                title: pim_enrich.entity.association_type.hint
+                link: https://help.akeneo.com/pim/articles/manage-your-association-types.html
             picture: illustrations/Association-types.svg
             successMessage: pim_enrich.entity.association_type.flash.create.success
             editRoute: pim_enrich_associationtype_edit
