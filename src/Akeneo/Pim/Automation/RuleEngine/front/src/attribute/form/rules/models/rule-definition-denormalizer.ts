@@ -6,40 +6,34 @@ import {createFallbackAction} from "./FallbackAction";
 import {Action} from "./Action";
 
 function denormalizeAction(jsonAction: any): Action {
-  const factories: ((json: any) => Action | false)[] = [];
-  for (let j = 0; j < factories.length; j++) {
-    const action = factories[j](jsonAction);
-    if (action) {
-      return action;
-    }
-  }
+  const factories: ((json: any) => Action | null)[] = [];
+  const factory = factories.find((factory) => {
+    return factory(jsonAction) !== null;
+  }) || createFallbackAction;
 
-  return createFallbackAction(jsonAction);
+  return <Action> factory(jsonAction);
 }
 
 function denormalizeCondition(jsonCondition: any): Condition {
   // For now, FamilyCondition never match. It always returns FallbackCondition.
-  const factories: ((json: any) => Condition | false)[] = [createFamilyCondition];
-  for (let j = 0; j < factories.length; j++) {
-    const condition = factories[j](jsonCondition);
-    if (condition) {
-      return condition;
-    }
-  }
+  const factories: ((json: any) => Condition | null)[] = [createFamilyCondition];
+  const factory = factories.find((factory) => {
+    return factory(jsonCondition) !== null;
+  }) || createFallbackCondition;
 
-  return createFallbackCondition(jsonCondition);
+  return <Condition> factory(jsonCondition);
 }
 
 export const denormalize = function(json: any): RuleDefinition {
-  const code = json.code || '';
-  const labels = json.labels || {};
-  const actions = (json.content.actions || []).map((jsonAction: any) => {
+  const code = json.code;
+  const labels = json.labels;
+  const actions = json.content.actions.map((jsonAction: any) => {
     return denormalizeAction(jsonAction)
   });
-  const conditions = (json.content.conditions || []).map((jsonCondition: any) => {
+  const conditions = json.content.conditions.map((jsonCondition: any) => {
     return denormalizeCondition(jsonCondition)
   });
-  const priority = json.priority || 0;
+  const priority = json.priority;
 
   return {
     code: code,

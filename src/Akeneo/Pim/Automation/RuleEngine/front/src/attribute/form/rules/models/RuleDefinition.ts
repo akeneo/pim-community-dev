@@ -10,5 +10,5 @@ export type RuleDefinition = {
 }
 
 export const getRuleDefinitionLabel = (ruleDefinition: RuleDefinition, locale: string) => {
-  return ruleDefinition.labels[locale] || '[' + ruleDefinition.code + ']';
+  return ruleDefinition.labels[locale] || `[${ruleDefinition.code}]`;
 };

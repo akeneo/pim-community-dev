@@ -20,7 +20,7 @@ class EditRules extends ReactController {
     return super.initialize();
   }
 
-  renderRoute(routeParams: any) {
+  renderRoute(routeParams: RouteParams) {
     return super.renderRoute(routeParams);
   }
 }

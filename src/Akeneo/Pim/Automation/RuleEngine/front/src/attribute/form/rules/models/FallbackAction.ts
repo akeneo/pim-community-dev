@@ -3,7 +3,5 @@ export type FallbackAction = {
 }
 
 export const createFallbackAction = (json: any): FallbackAction => {
-  return {
-    json: json
-  }
+  return { json }
 };

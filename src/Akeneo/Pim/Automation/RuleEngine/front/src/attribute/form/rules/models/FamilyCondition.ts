@@ -6,20 +6,20 @@ enum FamilyOperator {
   NOT_IN_LIST = 'NOT IN',
 }
 
-export type FamilyCondition = {
+type FamilyCondition = {
   operator: FamilyOperator;
   familyCodes: string[];
 }
 
-export const createFamilyCondition = (json: any): FamilyCondition | false => {
+const createFamilyCondition = (json: any): FamilyCondition | null => {
   // TODO Remove this line when we implement family condition.
-  return false;
+  return null;
 
   if (json.field !== 'family') {
-    return false;
+    return null;
   }
   if (![FamilyOperator.IS_EMPTY, FamilyOperator.IS_NOT_EMPTY, FamilyOperator.IN_LIST, FamilyOperator.NOT_IN_LIST].includes(json.operator)) {
-    return false;
+    return null;
   }
 
   return {
@@ -27,3 +27,5 @@ export const createFamilyCondition = (json: any): FamilyCondition | false => {
     familyCodes: json.value
   };
 };
+
+export { FamilyCondition, createFamilyCondition }
