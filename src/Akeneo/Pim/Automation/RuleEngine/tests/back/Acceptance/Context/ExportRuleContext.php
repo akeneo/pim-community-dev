@@ -126,6 +126,7 @@ rules:
         field: pim_brand
       - type: clear
         field: processor
+        locale: en_US
       - type: clear
         field: price
       - type: clear

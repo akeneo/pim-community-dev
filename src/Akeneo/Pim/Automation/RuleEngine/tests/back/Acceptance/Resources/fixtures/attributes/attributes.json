@@ -91,7 +91,7 @@
     "metric_family": "Frequency",
     "default_metric_unit": "MEGAHERTZ",
     "group": "other",
-    "localizable": false,
+    "localizable": true,
     "scopable": false,
     "labels": {
       "en_US": "Processor"

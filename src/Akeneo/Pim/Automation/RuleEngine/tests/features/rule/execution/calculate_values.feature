@@ -69,3 +69,32 @@ Feature: Execute clear rules
     Then no exception has been thrown
     And the unlocalized unscoped price of "75024" should be ""
     But the unlocalized unscoped price of "75025" should be "99.00 EUR, 106.92 USD"
+
+  @acceptance-back
+  Scenario: Successfully execute a calculate rule with measuremeny attributes
+    Given Rules with following configuration:
+    """
+    rules:
+      calculate_rule:
+        priority: 90
+        conditions:
+          - field: family
+            operator: IN
+            value:
+              - camcorders
+        actions:
+          - type: calculate
+            destination:
+              field: processor
+              locale: fr_FR
+            source:
+              field: processor
+              locale: en_US
+            operation_list:
+              - operator: multiply
+                value: 2.54
+    """
+    When I execute the "calculate_rule" rule on products
+    Then no exception has been thrown
+    And the fr_FR unscoped processor of "75024" should be ""
+    But the fr_FR unscoped processor of "75025" should be "254.0000 MEGAHERTZ"

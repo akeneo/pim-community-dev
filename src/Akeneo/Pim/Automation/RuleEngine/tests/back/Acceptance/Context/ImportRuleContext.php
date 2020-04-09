@@ -70,6 +70,7 @@ rules:
                     locale: en_US
                   - field: sku
                   - field: processor
+                    locale: en_US
                   - field: price
                     currency: EUR
                   - field: release_date
@@ -269,6 +270,7 @@ rules:
               field: pim_brand
             - type: clear
               field: processor
+              locale: en_US
             - type: clear
               field: price
             - type: clear
