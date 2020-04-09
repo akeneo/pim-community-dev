@@ -133,8 +133,15 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
 
         $hashedFilename = sha1($url);
         $fileExtension = $previewFormat !== null ? sprintf('.%s', $previewFormat) : '';
+        $path = sprintf(
+            '%s/%s/%s/%s/',
+            $hashedFilename[0],
+            $hashedFilename[1],
+            $hashedFilename[2],
+            $hashedFilename[3]
+        );
 
-        return $hashedFilename . $fileExtension;
+        return sprintf('%s%s%s', $path, $hashedFilename, $fileExtension);
     }
 
     /**
