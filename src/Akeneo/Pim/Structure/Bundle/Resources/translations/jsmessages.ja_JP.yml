@@ -137,7 +137,6 @@ pim_enrich.entity.attribute:
     date_min: 最短日時
     decimals_allowed: 少数が使用できます
     default_metric_unit:
-      label: 既定のメトリック単位
       choose: 単位を選択
     group:
       label: 属性グループ
@@ -147,7 +146,6 @@ pim_enrich.entity.attribute:
     max_characters: 最大文字数
     max_file_size: 最大ファイル サイズ (MB)
     metric_family:
-      label: メトリックファミリー
       choose: ファミリーを選択
     minimum_input_length: 予測変換の最小文字数
     name: 名前
@@ -171,7 +169,6 @@ pim_enrich.entity.attribute:
       pim_catalog_image: 画像
       pim_catalog_boolean: "Yes/No"
       pim_catalog_date: 日付
-      pim_catalog_metric: メトリック
       pim_reference_data_simpleselect: 参照データの単一選択
       pim_reference_data_multiselect: 参照データの複数選択
     unique: 固有値

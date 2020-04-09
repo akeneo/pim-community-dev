@@ -137,7 +137,6 @@ pim_enrich.entity.attribute:
     date_min: 최소 날짜
     decimals_allowed: 소수 값 허용됨
     default_metric_unit:
-      label: 기본 메트릭 단위
       choose: 단위 선택
     group:
       label: 특성 그룹
@@ -147,7 +146,6 @@ pim_enrich.entity.attribute:
     max_characters: 최대 문자수
     max_file_size: 최대 파일 크기(MB)
     metric_family:
-      label: 메트릭 패밀리
       choose: 패밀리 선택
     minimum_input_length: 자동 완성의 최소 길이
     name: 이름
@@ -171,7 +169,6 @@ pim_enrich.entity.attribute:
       pim_catalog_image: 이미지
       pim_catalog_boolean: "예/아니요"
       pim_catalog_date: 날짜
-      pim_catalog_metric: 메트릭
       pim_reference_data_simpleselect: 참조 데이터 단일 선택
       pim_reference_data_multiselect: 참조 데이터 다중 선택
     unique: 고유한 값

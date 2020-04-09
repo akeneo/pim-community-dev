@@ -346,8 +346,6 @@ Decimals allowed: 소수 허용
 Negative allowed: 음수 값 허용
 Date min: 최소 날짜
 Date max: 최대 날짜
-Metric family: 메트릭 패밀리
-Default metric unit: 기본 메트릭 단위
 Max file size: 최대 파일 크기(MB)
 Allowed extensions: 허용된 확장
 None: 없음
@@ -372,7 +370,6 @@ pim_catalog_file: 파일
 pim_catalog_image: 이미지
 pim_catalog_boolean: "예/아니요"
 pim_catalog_date: 날짜
-pim_catalog_metric: 메트릭
 pim_reference_data_simpleselect: 참조 데이터 단일 선택
 pim_reference_data_multiselect: 참조 데이터 다중 선택
 #Locales
