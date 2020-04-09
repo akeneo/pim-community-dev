@@ -23,8 +23,7 @@ define(
         'pim/user-context',
         'pim/template/app',
         'pim/template/common/flash',
-        'jquery.select2.placeholder',
-        'pim/feature-flags'
+        'jquery.select2.placeholder'
     ], function (
         $,
         _,
@@ -41,9 +40,7 @@ define(
         SecurityContext,
         UserContext,
         template,
-        flashTemplate,
-        _jquerySelect2Placeholder,
-        FeatureFlags
+        flashTemplate
     ) {
         return BaseForm.extend({
             tagName: 'div',
@@ -69,8 +66,7 @@ define(
                     FetcherRegistry.initialize(),
                     DateContext.initialize(),
                     SecurityContext.initialize(),
-                    UserContext.initialize(),
-                    FeatureFlags.initialize()
+                    UserContext.initialize()
                 )
                     .then(initTranslator.fetch)
                     .then(function () {

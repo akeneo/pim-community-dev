@@ -18,7 +18,8 @@ const EXTENSION_DEFAULTS = {
     zones: [],
     aclResourceId: null,
     config: [],
-    position: 100
+    position: 100,
+    feature: null
 }
 
 /**
