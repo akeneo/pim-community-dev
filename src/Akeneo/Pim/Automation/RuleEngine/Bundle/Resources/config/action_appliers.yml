@@ -61,7 +61,7 @@ services:
         class: '%pimee_catalog_rule.action_applier.calculate.class%'
         arguments:
             - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\GetOperandValue'
-            - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateValue'
+            - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateNumericValue'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 
@@ -132,7 +132,7 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@akeneo_measure.measure_converter'
 
-    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateValue:
+    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateNumericValue:
         arguments:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.builder.entity_with_values'

@@ -22,7 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
-class UpdateValue
+class UpdateNumericValue
 {
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
@@ -43,7 +43,7 @@ class UpdateValue
         $this->normalizer = $normalizer;
     }
 
-    public function forDestination(EntityWithValuesInterface $entity, ProductTarget $destination, float $data): void
+    public function forEntity(EntityWithValuesInterface $entity, ProductTarget $destination, float $data): void
     {
         /** @var AttributeInterface $attribute */
         $attribute = $this->attributeRepository->findOneByIdentifier($destination->getField());

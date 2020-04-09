@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\GetOperandValue;
-use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateValue;
+use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateNumericValue;
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operand;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operation;
@@ -30,10 +30,10 @@ class CalculateActionApplier implements ActionApplierInterface
     /** @var GetOperandValue */
     private $getOperandValue;
 
-    /** @var UpdateValue */
+    /** @var UpdateNumericValue */
     private $updateValue;
 
-    public function __construct(GetOperandValue $getOperandValue, UpdateValue $updateValue)
+    public function __construct(GetOperandValue $getOperandValue, UpdateNumericValue $updateValue)
     {
         $this->getOperandValue = $getOperandValue;
         $this->updateValue = $updateValue;
@@ -51,7 +51,7 @@ class CalculateActionApplier implements ActionApplierInterface
                     continue;
                 }
 
-                $this->updateValue->forDestination($item, $action->getDestination(), $result);
+                $this->updateValue->forEntity($item, $action->getDestination(), $result);
             }
         }
     }

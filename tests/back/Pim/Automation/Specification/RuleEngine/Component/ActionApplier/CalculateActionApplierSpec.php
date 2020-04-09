@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\GetOperandValue;
-use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateValue;
+use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateNumericValue;
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\CalculateActionApplier;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operand;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateAction;
@@ -22,7 +22,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
 {
     function let(
         GetOperandValue $getOperandValue,
-        UpdateValue $updateValue
+        UpdateNumericValue $updateValue
     )
     {
         $this->beConstructedWith($getOperandValue, $updateValue);
@@ -46,26 +46,26 @@ class CalculateActionApplierSpec extends ObjectBehavior
         $this->supports($otherAction)->shouldReturn(false);
     }
 
-    function it_does_nothing_on_products_without_family(UpdateValue $updateValue)
+    function it_does_nothing_on_products_without_family(UpdateNumericValue $updateValue)
     {
         $product = new Product();
-        $updateValue->forDestination($product, Argument::cetera())->shouldNotBeCalled();
+        $updateValue->forEntity($product, Argument::cetera())->shouldNotBeCalled();
 
         $this->applyAction($this->productCalculateAction(), [$product]);
     }
 
-    function it_does_nothing_if_destination_field_does_not_belong_to_family(UpdateValue $updateValue)
+    function it_does_nothing_if_destination_field_does_not_belong_to_family(UpdateNumericValue $updateValue)
     {
         $family = new Family();
         $product = (new Product())->setFamily($family);
 
-        $updateValue->forDestination($product, Argument::cetera())->shouldNotBeCalled();
+        $updateValue->forEntity($product, Argument::cetera())->shouldNotBeCalled();
 
         $this->applyAction($this->productCalculateAction(), [$product]);
     }
 
     function it_does_nothing_if_attribute_is_not_on_same_variation_level_as_entity(
-        UpdateValue $updateValue,
+        UpdateNumericValue $updateValue,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant,
         EntityWithFamilyVariantInterface $product
@@ -76,14 +76,14 @@ class CalculateActionApplierSpec extends ObjectBehavior
         $product->getFamilyVariant()->willReturn($familyVariant);
         $product->getVariationLevel()->willReturn(2);
 
-        $updateValue->forDestination($product, Argument::cetera())->shouldNotBeCalled();
+        $updateValue->forEntity($product, Argument::cetera())->shouldNotBeCalled();
 
         $this->applyAction($this->productCalculateAction(), [$product]);
     }
 
     function it_skips_the_entity_if_one_of_the_operation_values_is_null(
         GetOperandValue $getOperandValue,
-        UpdateValue $updateValue,
+        UpdateNumericValue $updateValue,
         FamilyInterface $family
     ) {
         $family->hasAttributeCode('ratio_fr_en')->willReturn(true);
@@ -93,14 +93,14 @@ class CalculateActionApplierSpec extends ObjectBehavior
         $action = $this->productCalculateAction();
         $getOperandValue->fromEntity($product, $action->getSource())->willReturn(null);
 
-        $updateValue->forDestination($product, Argument::cetera())->shouldNotBeCalled();
+        $updateValue->forEntity($product, Argument::cetera())->shouldNotBeCalled();
 
         $this->applyAction($action, [$product]);
     }
 
     function it_skips_the_entity_if_ther_is_a_division_by_zero_operation(
         GetOperandValue $getOperandValue,
-        UpdateValue $updateValue,
+        UpdateNumericValue $updateValue,
         FamilyInterface $family
     ) {
         $family->hasAttributeCode('ratio_fr_en')->willReturn(true);
@@ -112,14 +112,14 @@ class CalculateActionApplierSpec extends ObjectBehavior
         $divideOperation = $action->getOperationList()->getIterator()->getArrayCopy()[0];
         $getOperandValue->fromEntity($product, $divideOperation->getOperand())->willReturn(0.0);
 
-        $updateValue->forDestination($product, Argument::cetera())->shouldNotBeCalled();
+        $updateValue->forEntity($product, Argument::cetera())->shouldNotBeCalled();
 
         $this->applyAction($action, [$product]);
     }
 
     function it_calculates_a_value(
         GetOperandValue $getOperandValue,
-        UpdateValue $updateValue,
+        UpdateNumericValue $updateValue,
         FamilyInterface $family
     ) {
         $family->hasAttributeCode('ratio_fr_en')->willReturn(true);
@@ -131,7 +131,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
             ->shouldBeCalledTimes(3)
             ->willReturn(5.0, 2.0, 10.0);
 
-        $updateValue->forDestination($product, $action->getDestination(), 260.0)->shouldBeCalled();
+        $updateValue->forEntity($product, $action->getDestination(), 260.0)->shouldBeCalled();
 
         $this->applyAction($action, [$product]);
     }

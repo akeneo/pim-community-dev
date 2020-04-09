@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateValue;
+use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateNumericValue;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductTarget;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
@@ -18,7 +18,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class UpdateValueSpec extends ObjectBehavior
+class UpdateNumericValueSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $attributeRepository,
@@ -39,7 +39,7 @@ class UpdateValueSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(UpdateValue::class);
+        $this->shouldHaveType(UpdateNumericValue::class);
     }
 
     function it_updates_a_number_value(
@@ -59,7 +59,7 @@ class UpdateValueSpec extends ObjectBehavior
             3.14
         )->shouldBeCalled();
 
-        $this->forDestination($product, ProductTarget::fromNormalized(['field' => 'number']), 3.14);
+        $this->forEntity($product, ProductTarget::fromNormalized(['field' => 'number']), 3.14);
     }
 
     function it_updates_a_metric_value(
@@ -83,7 +83,7 @@ class UpdateValueSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->forDestination(
+        $this->forEntity(
             $product,
             ProductTarget::fromNormalized(['field' => 'weight', 'scope' => 'ecommerce']),
             0.515
@@ -107,7 +107,7 @@ class UpdateValueSpec extends ObjectBehavior
             [['amount' => 99.90, 'currency' => 'EUR']]
         )->shouldBeCalled();
 
-        $this->forDestination($product, ProductTarget::fromNormalized(['field' => 'price', 'currency' => 'EUR']), 99.90);
+        $this->forEntity($product, ProductTarget::fromNormalized(['field' => 'price', 'currency' => 'EUR']), 99.90);
     }
 
     function it_adds_a_new_price_to_an_existing_price_collection_value(
@@ -135,7 +135,7 @@ class UpdateValueSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->forDestination(
+        $this->forEntity(
             $product,
             ProductTarget::fromNormalized(['field' => 'price', 'currency' => 'EUR']),
             99.90
@@ -168,7 +168,7 @@ class UpdateValueSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->forDestination(
+        $this->forEntity(
             $product,
             ProductTarget::fromNormalized(['field' => 'price', 'currency' => 'EUR']),
             99.90
