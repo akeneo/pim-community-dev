@@ -38,7 +38,7 @@ class AssociationType implements AssociationTypeInterface
     protected $updated;
 
     /** @var bool */
-    protected $isBidirectional;
+    protected $isTwoWay;
 
     /**
      * Constructor
@@ -46,7 +46,7 @@ class AssociationType implements AssociationTypeInterface
     public function __construct()
     {
         $this->translations = new ArrayCollection();
-        $this->isBidirectional = false;
+        $this->isTwoWay = false;
     }
 
     /**
@@ -232,16 +232,16 @@ class AssociationType implements AssociationTypeInterface
     /**
      * @inheritDoc
      */
-    public function isBidirectional(): bool
+    public function isTwoWay(): bool
     {
-        return $this->isBidirectional;
+        return $this->isTwoWay;
     }
 
     /**
      * @inheritDoc
      */
-    public function setIsBidirectional(bool $isBidirectional): void
+    public function setIsTwoWay(bool $isTwoWay): void
     {
-        $this->isBidirectional = $isBidirectional;
+        $this->isTwoWay = $isTwoWay;
     }
 }
