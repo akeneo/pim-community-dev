@@ -2,7 +2,6 @@
 
 namespace Akeneo\Platform\Bundle\FeatureFlagBundle\Internal;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -14,16 +13,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class Controller
 {
-    /** @var FeatureFlags */
-    private $featureFlags;
+    /** @var Registry */
+    private $registry;
 
-    public function __construct(FeatureFlags $featureFlags)
+    public function __construct(Registry $registry)
     {
-        $this->featureFlags = $featureFlags;
+        $this->registry = $registry;
     }
 
-    public function isEnabledAction(string $feature)
+    public function isEnabledAction()
     {
-        return new JsonResponse([$feature => $this->featureFlags->isEnabled($feature)]);
+        return new JsonResponse($this->registry->all());
     }
 }

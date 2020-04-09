@@ -29,6 +29,20 @@ class RegistrySpec extends ObjectBehavior
 
         $this->shouldThrow(InvalidArgumentException::class)->during('get', ['bar']);
     }
+
+    function it_returns_all_feature_flags()
+    {
+        $foo = new CustomFlag();
+        $this->add('foo', $foo);
+
+        $bar = new CustomFlag();
+        $this->add('bar', $bar);
+
+        $this->all()->shouldReturn([
+            'foo' => $foo,
+            'bar' => $bar
+        ]);
+    }
 }
 
 class CustomFlag implements FeatureFlag

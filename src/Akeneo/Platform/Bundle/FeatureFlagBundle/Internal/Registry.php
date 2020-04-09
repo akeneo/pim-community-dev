@@ -29,4 +29,9 @@ class Registry
 
         return $this->flags[$feature];
     }
+
+    public function all(): array
+    {
+        return $this->flags;
+    }
 }
