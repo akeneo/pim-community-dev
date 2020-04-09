@@ -109,7 +109,7 @@ JSON;
     "message": "Validation failed.",
     "errors": [
         {
-            "property": "two_way",
+            "property": "is_two_way",
             "message": "This property cannot be changed."
         }
     ]
