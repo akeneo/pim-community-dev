@@ -45,6 +45,9 @@ const MediaFileLabel = styled.label<{readOnly: boolean}>`
   font-size: ${props => props.theme.fontSize.big};
   color: ${props => (props.readOnly ? props.theme.color.grey100 : props.theme.color.grey140)};
   cursor: ${props => (props.readOnly ? 'not-allowed' : 'auto')};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const MediaFileLabelPlaceholder = styled(MediaFileLabel)`
