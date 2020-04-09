@@ -58,7 +58,7 @@ class CodeMustBeUniqueValidatorSpec extends ObjectBehavior
                     'Magento connector',
                     FlowType::DATA_DESTINATION,
                     42,
-                    new UserId(50),
+                    50,
                     null,
                     true
                 )

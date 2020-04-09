@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository;
 
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -64,7 +63,7 @@ SQL;
                 $dataRow['label'],
                 $dataRow['flow_type'],
                 (int) $dataRow['client_id'],
-                new UserId((int) $dataRow['user_id']),
+                (int) $dataRow['user_id'],
                 $dataRow['image'],
                 (bool) $dataRow['auditable']
             ) : null;

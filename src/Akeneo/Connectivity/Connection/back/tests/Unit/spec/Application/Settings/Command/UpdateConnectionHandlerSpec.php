@@ -9,7 +9,6 @@ use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnection
 use Akeneo\Connectivity\Connection\Application\Settings\Service\UpdateUserPermissionsInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use PhpSpec\ObjectBehavior;
@@ -55,7 +54,7 @@ class UpdateConnectionHandlerSpec extends ObjectBehavior
             'Magento Connector',
             FlowType::OTHER,
             42,
-            new UserId(50),
+            50,
             null,
             false
         );
