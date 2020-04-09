@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure;
 
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQuery;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQuery;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -13,6 +16,21 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
  */
 class ConnectionContext
 {
+    /** @var AreCredentialsValidCombinationQuery */
+    private $areCredentialsValidCombinationQuery;
+
+    /** @var SelectConnectionCodeByClientIdQuery */
+    private $selectConnectionCodeByClientIdQuery;
+
+    /** @var ConnectionRepository */
+    private $connectionRepository;
+
+    /** @var string */
+    private $clientId;
+
+    /** @var string */
+    private $username;
+
     /** @var Connection */
     private $connection;
 
@@ -22,33 +40,58 @@ class ConnectionContext
     /** @var bool */
     private $areCredentialsValidCombination;
 
-    public function getConnection(): Connection
-    {
-        return $this->connection;
+    public function __construct(
+        AreCredentialsValidCombinationQuery $areCredentialsValidCombinationQuery,
+        SelectConnectionCodeByClientIdQuery $selectConnectionCodeByClientIdQuery,
+        ConnectionRepository $connectionRepository
+    ) {
+        $this->areCredentialsValidCombinationQuery = $areCredentialsValidCombinationQuery;
+        $this->selectConnectionCodeByClientIdQuery = $selectConnectionCodeByClientIdQuery;
+        $this->connectionRepository = $connectionRepository;
     }
 
-    public function setConnection(Connection $connection): void
+    public function setClientId(string $clientId): void
     {
-        $this->connection = $connection;
+        $this->clientId = $clientId;
+    }
+
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
+    public function getConnection(): Connection
+    {
+        if (null !== $this->connection) {
+            return $this->connection;
+        }
+
+        $connectionCode = $this->selectConnectionCodeByClientIdQuery->execute($this->clientId);
+        $this->connection = $this->connectionRepository->findOneByCode($connectionCode);
+
+        return $this->connection;
     }
 
     public function isCollectable(): bool
     {
-        return $this->collectable;
-    }
+        if (null !== $this->collectable) {
+            return $this->collectable;
+        }
 
-    public function setCollectable(bool $collectable): void
-    {
-        $this->collectable = $collectable;
+        $this->collectable = $this->getConnection()->auditable() && $this->areCredentialsValidCombination();
+
+        return $this->collectable;
     }
 
     public function areCredentialsValidCombination(): bool
     {
-        return $this->areCredentialsValidCombination;
-    }
+        if (null !== $this->areCredentialsValidCombination) {
+            return $this->areCredentialsValidCombination;
+        }
 
-    public function setAreCredentialsValidCombination(bool $areCredentialsValidCombination): void
-    {
-        $this->areCredentialsValidCombination = $areCredentialsValidCombination;
+        $this->areCredentialsValidCombination = $this->areCredentialsValidCombinationQuery
+            ->execute($this->clientId, $this->username);
+
+        return $this->areCredentialsValidCombination;
     }
 }

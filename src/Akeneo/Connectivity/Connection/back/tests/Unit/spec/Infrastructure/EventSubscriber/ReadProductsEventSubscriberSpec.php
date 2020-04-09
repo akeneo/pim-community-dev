@@ -8,7 +8,8 @@ use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinati
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ReadProductsEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
@@ -47,9 +48,9 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $connectionContext,
         $updateDataDestinationProductEventCountHandler
     ): void {
-        $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_DESTINATION);
+        $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_DESTINATION, 42, new UserId(10));
         $connectionContext->getConnection()->willReturn($connection);
-        $connectionContext->areCredentialsValidCombination()->willReturn(true);
+        $connectionContext->isCollectable()->willReturn(true);
 
         $this->saveReadProducts(new ReadProductsEvent([4, 2, 6]));
 
@@ -62,11 +63,11 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         )->shouldBeCalled();
     }
 
-    public function it_does_not_save_read_products_events_for_invalid_connection_credentials_combination(
+    public function it_does_not_save_read_products_events_for_not_collectable_connection(
         $connectionContext,
         $updateDataDestinationProductEventCountHandler
     ): void {
-        $connectionContext->areCredentialsValidCombination()->willReturn(false);
+        $connectionContext->isCollectable()->willReturn(false);
 
         $this->saveReadProducts(new ReadProductsEvent([4, 2, 6]));
 
@@ -78,9 +79,9 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $connectionContext,
         $updateDataDestinationProductEventCountHandler
     ): void {
-        $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_SOURCE);
+        $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_SOURCE, 42, new UserId(10));
         $connectionContext->getConnection()->willReturn($connection);
-        $connectionContext->areCredentialsValidCombination()->willReturn(false);
+        $connectionContext->isCollectable()->willReturn(true);
 
         $this->saveReadProducts(new ReadProductsEvent([4, 2, 6]));
 

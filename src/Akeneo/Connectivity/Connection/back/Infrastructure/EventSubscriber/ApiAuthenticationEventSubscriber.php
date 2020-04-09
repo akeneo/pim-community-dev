@@ -43,7 +43,7 @@ class ApiAuthenticationEventSubscriber implements EventSubscriberInterface
         }
 
         $this->repository->create(new WrongCredentialsCombination(
-            $this->connectionContext->getConnection()->code(),
+            (string) $this->connectionContext->getConnection()->code(),
             $event->username()
         ));
     }

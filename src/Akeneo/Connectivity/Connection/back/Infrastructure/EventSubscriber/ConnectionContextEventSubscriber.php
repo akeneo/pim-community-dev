@@ -19,15 +19,9 @@ class ConnectionContextEventSubscriber implements EventSubscriberInterface
     /** @var ConnectionContext */
     private $connectionContext;
 
-    /** @var AreCredentialsValidCombinationQuery */
-    private $areCredentialsValidCombinationQuery;
-
-    public function __construct(
-        ConnectionContext $connectionContext,
-        AreCredentialsValidCombinationQuery $areCredentialsValidCombinationQuery
-    ) {
+    public function __construct(ConnectionContext $connectionContext)
+    {
         $this->connectionContext = $connectionContext;
-        $this->areCredentialsValidCombinationQuery = $areCredentialsValidCombinationQuery;
     }
 
     public static function getSubscribedEvents(): array
@@ -37,25 +31,7 @@ class ConnectionContextEventSubscriber implements EventSubscriberInterface
 
     public function initializeConnectionContext(ApiAuthenticationEvent $event): void
     {
-        $this->initializeConnection($event->clientId());
-        $this->initializeAreCredentialsValidCombination($event->clientId(), $event->username());
-        $this->initializeCollectable();
-    }
-
-    private function initializeConnection(): void
-    {
-        $this->connectionContext->setConnection($connection);
-    }
-
-    private function initializeAreCredentialsValidCombination(string $clientId, string $username): void
-    {
-        $areCredentialsValidCombination = $this->areCredentialsValidCombinationQuery->execute($clientId, $username);
-
-        $this->connectionContext->setAreCredentialsValidCombination($areCredentialsValidCombination);
-    }
-
-    private function initializeCollectable(): void
-    {
-        $this->connectionContext->setCollectable();
+        $this->connectionContext->setClientId($event->clientId());
+        $this->connectionContext->setUsername($event->username());
     }
 }

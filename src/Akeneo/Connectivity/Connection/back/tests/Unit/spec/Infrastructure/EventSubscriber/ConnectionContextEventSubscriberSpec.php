@@ -23,10 +23,6 @@ class ConnectionContextEventSubscriberSpec extends ObjectBehavior
 
     public function it_provides_subscribed_events(): void
     {
-        $this->getSubscribedEvents()->shouldReturn([ApiAuthenticationEvent::class => 'initializeConnectionContext']);
-    }
-
-    public function it_initialize_connection_context($connectionContext): void
-    {
+        $this->getSubscribedEvents()->shouldReturn([ApiAuthenticationEvent::class => ['initializeConnectionContext', 1000]]);
     }
 }

@@ -49,7 +49,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
      */
     public function saveReadProducts(ReadProductsEvent $event): void
     {
-        if (!$this->connectionContext->areCredentialsValidCombination()) {
+        if (!$this->connectionContext->isCollectable()) {
             return;
         }
         if (0 === count($event->productIds())) {

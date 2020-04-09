@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write\WrongCredentialsCombination;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepository;
@@ -34,7 +35,7 @@ class ApiAuthenticationEventSubscriberSpec extends ObjectBehavior
         $event = new ApiAuthenticationEvent('magento_0123', '42');
         $connectionContext->areCredentialsValidCombination()->willReturn(false);
 
-        $connection = new Connection('magento', 'magento', FlowType::DATA_DESTINATION);
+        $connection = new Connection('magento', 'magento', FlowType::DATA_DESTINATION, 42,new UserId(10));
         $connectionContext->getConnection()->willReturn($connection);
 
         $repository->create(Argument::that(function ($arg) {

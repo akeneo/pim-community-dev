@@ -47,3 +47,10 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\FileInfo\Internal\DoesImageExistQuery
         arguments:
             - '@database_connection'
+
+    akeneo_connectivity.connection.service.connection_context:
+        class: Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.query.are_credentials_valid_combination'
+            - '@akeneo_connectivity.connection.persistence.query.select_connection_code_by_client_id'
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
