@@ -56,6 +56,7 @@ class RuleEngineRunner implements CompiledRuleRunnerInterface
         return array_map(
             function (array $action) {
                 $action['value'] = $action['items'];
+                $action['scope'] = $action['channel'];
 
                 return $action;
             },
