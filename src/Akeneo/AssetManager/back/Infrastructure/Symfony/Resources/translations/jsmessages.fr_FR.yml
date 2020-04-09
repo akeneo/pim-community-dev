@@ -24,7 +24,7 @@ pim_asset_manager:
     notification:
       product_rule: 'Cette collection peut être mise à jour par une règle produit :'
       limit: 'Vous avez atteint la limite de {{ limit }} ressources par collection, vous ne pouvez plus ajouter de ressource à votre collection.'
-    edit_asset: Modifier l'asset
+    edit_asset: Modifier la ressource
     remove_asset: Supprimer une ressource
     remove_one_asset: Supprimer la ressource {{ assetName }} de la collection de ressources
     remove_all_assets: Enlever toutes les ressources
@@ -54,7 +54,7 @@ pim_asset_manager:
     next: Prochaine ressource
     empty_main_media: Cette ressource n'a pas de média.
     other_main_media: Nous ne pouvons pas générer l'aperçu de cette ressource.
-    edit_asset: Modifier l'asset
+    edit_asset: Modifier la ressource
     download: Télécharger
     copy_url: Copier l'URL
   close: Fermez la fenêtre
@@ -275,7 +275,7 @@ pim_asset_manager:
       title: Attributs de la ressource
       code: Code
       label: Libellé
-      edit_subsection: Modifier l'asset
+      edit_subsection: Modifier la ressource
       product_subsection: Produits liés
       main_media_preview: Aperçu du média principal
     title: Ressources
