@@ -1,22 +1,7 @@
 import { useApplicationContext } from "./useApplicationContext";
 import { Translate } from "../provider/applicationDependenciesProvider.type";
 
-const useTranslate = (
-  id: string,
-  placeholders: { [name: string]: string } = {},
-  count: number = 1
-): string => {
-  const { translate } = useApplicationContext();
-  if (translate) {
-    return translate(id, placeholders, count);
-  }
-  console.warn(
-    "[ApplicationContext]: Translate has not been properly initiated"
-  );
-  return "";
-};
-
-const useSimpleTranslate = (): Translate => {
+const useTranslate = (): Translate => {
   const { translate } = useApplicationContext();
   if (translate) {
     return translate;
@@ -26,4 +11,4 @@ const useSimpleTranslate = (): Translate => {
   );
 };
 
-export { useTranslate, useSimpleTranslate };
+export { useTranslate };

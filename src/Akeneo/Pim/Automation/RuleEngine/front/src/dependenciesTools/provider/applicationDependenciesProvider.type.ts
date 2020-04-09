@@ -4,13 +4,15 @@ enum NotificationLevel {
   INFO = "info",
   SUCCESS = "success",
   WARNING = "warning",
-  ERROR = "error"
+  ERROR = "error",
 }
 
 type Notify = (level: NotificationLevel, message: string) => void;
 
+type RouteParams = { [param: string]: string };
+
 type Router = {
-  generate: (route: string, parameters?: { [param: string]: string }) => string;
+  generate: (route: string, parameters?: RouteParams) => string;
   redirect: (fragment: string, options?: object) => void;
 };
 
@@ -34,9 +36,10 @@ type ViewBuilder = {
 export {
   NotificationLevel,
   Notify,
+  RouteParams,
   Router,
   Security,
   Translate,
   User,
-  ViewBuilder
+  ViewBuilder,
 };

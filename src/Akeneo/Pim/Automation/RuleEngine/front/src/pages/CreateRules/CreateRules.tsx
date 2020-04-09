@@ -4,11 +4,11 @@ import * as akeneoTheme from "../../theme";
 import {
   generateAndRedirect,
   generateUrl,
-  redirectToUrl,
-  useLegacyRouter,
-  useSimpleTranslate,
-  useNotify,
   NotificationLevel,
+  redirectToUrl,
+  useBackboneRouter,
+  useNotify,
+  useTranslate,
 } from "../../dependenciesTools/hooks";
 import { useDocumentEscapeKey } from "../../hooks";
 import { CrossLink } from "./components/CrossLink";
@@ -19,8 +19,8 @@ import { SmallHelper } from "../../components/SmallHelper";
 
 const CreateRules: React.FC = () => {
   const [pending, setPending] = React.useState(false);
-  const translate = useSimpleTranslate();
-  const router = useLegacyRouter();
+  const translate = useTranslate();
+  const router = useBackboneRouter();
   const [urlRules, handleRulesRoute] = generateAndRedirect(
     router,
     "pimee_catalog_rule_rule_index"
@@ -57,7 +57,7 @@ const CreateRules: React.FC = () => {
       );
       redirectToUrl(
         router,
-        generateUrl(router, "pimee_catalog_rule_edit", formData.code)
+        generateUrl(router, "pimee_catalog_rule_edit", { code: formData.code })
       );
     } else {
       setPending(false);
