@@ -13,43 +13,30 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\GetOperandValue;
+use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateValue;
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operand;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operation;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateActionInterface;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductTarget;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Webmozart\Assert\Assert;
 
 class CalculateActionApplier implements ActionApplierInterface
 {
-    /** @var PropertySetterInterface */
-    private $propertySetter;
+    /** @var GetOperandValue */
+    private $getOperandValue;
 
-    /** @var PropertyAdderInterface */
-    private $propertyAdder;
+    /** @var UpdateValue */
+    private $updateValue;
 
-    /** @var GetAttributes */
-    private $getAttributes;
-
-    public function __construct(
-        PropertySetterInterface $propertySetter,
-        PropertyAdderInterface $propertyAdder,
-        GetAttributes $getAttributes
-    ) {
-        $this->propertySetter = $propertySetter;
-        $this->propertyAdder = $propertyAdder;
-        $this->getAttributes = $getAttributes;
+    public function __construct(GetOperandValue $getOperandValue, UpdateValue $updateValue)
+    {
+        $this->getOperandValue = $getOperandValue;
+        $this->updateValue = $updateValue;
     }
 
     public function applyAction(ActionInterface $action, array $items = [])
@@ -64,7 +51,7 @@ class CalculateActionApplier implements ActionApplierInterface
                     continue;
                 }
 
-                $this->updateEntity($item, $action->getDestination(), $result);
+                $this->updateValue->forDestination($item, $action->getDestination(), $result);
             }
         }
     }
@@ -140,16 +127,9 @@ class CalculateActionApplier implements ActionApplierInterface
             return $operand->getConstantValue();
         }
 
-        $value = $entity->getValue($operand->getAttributeCode(), $operand->getLocaleCode(), $operand->getChannelCode());
-        // TODO RUL-59 : get value from metric values
-        if ($value instanceof ScalarValue && is_numeric($value->getData())) {
-            return (float) $value->getData();
-        } elseif ($value instanceof PriceCollectionValueInterface) {
-            Assert::notNull($operand->getCurrencyCode());
-            $price = $value->getPrice($operand->getCurrencyCode());
-            if (null !== $price) {
-                return $price->getData();
-            }
+        $data = $this->getOperandValue->fromEntity($entity, $operand);
+        if (null !== $data) {
+            return $data;
         }
 
         throw new NonApplicableActionException(
@@ -161,42 +141,5 @@ class CalculateActionApplier implements ActionApplierInterface
                 $operand->getCurrencyCode() ? sprintf(' (%s)', $operand->getCurrencyCode()) : ''
             )
         );
-    }
-
-    private function updateEntity(EntityWithValuesInterface $entity, ProductTarget $destination, float $data): void
-    {
-        $targetAttribute = $this->getAttributes->forCode($destination->getField());
-        Assert::isInstanceOf($targetAttribute, Attribute::class);
-
-        if (AttributeTypes::PRICE_COLLECTION === $targetAttribute->type()) {
-            Assert::string($destination->getCurrency());
-            $this->propertyAdder->addData(
-                $entity,
-                $destination->getField(),
-                [
-                    [
-                        'amount' => $data,
-                        'currency' => $destination->getCurrency(),
-                    ],
-                ],
-                [
-                    'scope' => $destination->getScope(),
-                    'locale' => $destination->getLocale(),
-                ]
-            );
-        } elseif (AttributeTypes::NUMBER === $targetAttribute->type()) {
-            $this->propertySetter->setData(
-                $entity,
-                $destination->getField(),
-                $data,
-                [
-                    'scope' => $destination->getScope(),
-                    'locale' => $destination->getLocale(),
-                ]
-            );
-        } else {
-            // TODO RUL-59: Use metric as destination
-            throw new \InvalidArgumentException('Invalid destination attribute type');
-        }
     }
 }
