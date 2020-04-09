@@ -1,6 +1,6 @@
 import {denormalize} from "../models/rule-definition-denormalizer";
-import RuleDefinition from "../models/RuleDefinition";
 import {Router} from "../dependenciesTools/provider/applicationDependenciesProvider.type";
+import {RuleDefinition} from "../models/RuleDefinition";
 
 function get(url: string) {
   return fetch(url, {

@@ -15,8 +15,8 @@ import {
   useUserContext,
 } from "../../dependenciesTools/hooks";
 import { RulesHeader } from "../../components/RulesHeader";
-import RuleDefinition from "../../models/RuleDefinition";
 import {getByCode} from "../../fetchers/RuleDefinitionFetcher";
+import {getRuleDefinitionLabel, RuleDefinition} from "../../models/RuleDefinition";
 
 type Props = {
   ruleDefinitionCode: string

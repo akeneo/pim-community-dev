@@ -1,9 +1,9 @@
-import RuleDefinition from "./RuleDefinition";
 import Action from "./Action";
 import Condition from "./Condition";
 import FallbackAction from "./FallbackAction";
 import FallbackCondition from "./FallbackCondition";
 import FamilyCondition from "./FamilyCondition";
+import {RuleDefinition} from "./RuleDefinition";
 
 function denormalizeAction(jsonAction: any): Action {
   // For now, it only parse fallbacks.
@@ -34,11 +34,11 @@ export const denormalize = function(json: any): RuleDefinition {
   });
   const priority = json.priority || 0;
 
-  return new RuleDefinition(
-    code,
-    labels,
-    priority,
-    conditions,
-    actions
-  );
+  return {
+    code: code,
+    labels: labels,
+    priority: priority,
+    conditions: conditions,
+    actions: actions
+  };
 };
