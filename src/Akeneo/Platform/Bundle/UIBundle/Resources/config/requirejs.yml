@@ -554,6 +554,9 @@ config:
     # Security
     pim/security-context: pimui/js/security-context
 
+    # Feature Flags
+    pim/feature-flags: pimui/js/feature-flags.ts
+
     # Managers
     pim/group-manager:           pimui/js/manager/group-manager
     pim/attribute-manager:       pimui/js/manager/attribute-manager

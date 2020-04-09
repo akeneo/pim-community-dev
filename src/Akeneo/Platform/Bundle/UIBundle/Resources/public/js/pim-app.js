@@ -23,7 +23,8 @@ define(
         'pim/user-context',
         'pim/template/app',
         'pim/template/common/flash',
-        'jquery.select2.placeholder'
+        'jquery.select2.placeholder',
+        'pim/feature-flags'
     ], function (
         $,
         _,
@@ -40,7 +41,9 @@ define(
         SecurityContext,
         UserContext,
         template,
-        flashTemplate
+        flashTemplate,
+        _jquerySelect2Placeholder,
+        FeatureFlags
     ) {
         return BaseForm.extend({
             tagName: 'div',
@@ -63,11 +66,12 @@ define(
              */
             configure: function () {
                 return $.when(
-                        FetcherRegistry.initialize(),
-                        DateContext.initialize(),
-                        SecurityContext.initialize(),
-                        UserContext.initialize()
-                    )
+                    FetcherRegistry.initialize(),
+                    DateContext.initialize(),
+                    SecurityContext.initialize(),
+                    UserContext.initialize(),
+                    FeatureFlags.initialize()
+                )
                     .then(initTranslator.fetch)
                     .then(function () {
                         messenger.showQueuedMessages();
