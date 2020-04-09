@@ -1,1 +1,0 @@
-export { ApplicationDependenciesProvider } from "./provider/ApplicationDependenciesProvider";

@@ -1,0 +1,9 @@
+{
+  "name": "rule_definition",
+  "version": "1.0.0",
+  "scripts": {
+    "jest": "jest --config jest.config.js",
+    "jest:watch": "jest --config jest.config.js --watch"
+  },
+  "private": true
+}

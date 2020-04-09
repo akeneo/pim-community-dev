@@ -38,7 +38,7 @@ pimee_enrich_rule_definition_get:
     methods: [GET]
 
 pimee_enrich_rule_definition_create:
-    path: /rest/rule_definition/
+    path: /rest/rule_definition
     defaults: { _controller: pimee_enrich.controller.rule_definition.create }
     methods: [POST]
 
@@ -48,3 +48,6 @@ pimee_enrich_rule_definition_update:
     requirements:
         ruleDefinitionCode: '[a-z0-9_]+'
     methods: [PUT]
+    
+pimee_catalog_rule_new:
+    path: /configuration/rules/create

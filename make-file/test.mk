@@ -39,6 +39,7 @@ endif
 .PHONY: unit-front
 unit-front:
 	$(YARN_RUN) unit
+	$(MAKE) rule-engine-unit-front
 
 ### Acceptance tests
 .PHONY: acceptance-back

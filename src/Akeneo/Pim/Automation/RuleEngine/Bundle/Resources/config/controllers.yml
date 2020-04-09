@@ -32,19 +32,21 @@ services:
 
     pimee_enrich.controller.rule_definition.create:
         class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\CreateRuleDefinitionController'
+        public: true
         arguments:
             - '@akeneo_rule_engine.updater.rule_definition'
             - '@akeneo_rule_engine.saver.rule_definition'
             - '@akeneo_rule_engine.normalizer.rule_definition'
-            - '@serializer'
+            - '@pim_internal_api_serializer'
             - '@validator'
 
     pimee_enrich.controller.rule_definition.update:
         class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\UpdateRuleDefinitionController'
+        public: true
         arguments:
             - '@akeneo_rule_engine.repository.rule_definition'
             - '@akeneo_rule_engine.updater.rule_definition'
             - '@akeneo_rule_engine.saver.rule_definition'
             - '@akeneo_rule_engine.normalizer.rule_definition'
-            - '@serializer'
+            - '@pim_internal_api_serializer'
             - '@validator'

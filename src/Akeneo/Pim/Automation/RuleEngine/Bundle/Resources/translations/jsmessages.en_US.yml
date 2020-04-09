@@ -53,6 +53,19 @@ pimee_catalog_rule:
             tab:
                 rules:
                     title: Rules
+        creation:
+            helper: The rules engine can radically boost your productivity in the PIM by automating actions.
+            english_flag: Label for English
+            title: Create a new rule
+            notification:
+                success: Rule created successfully
+                failed: Rule creation failed
+            constraint:
+                code:
+                    required: Rule code is required.
+                    too_short: Rule code is too short. It requires {{ characterLimit }} characters or more.
+                    allowed_characters: Rule code can only be alphanumeric and underscore characters.
+            cross_link: Leave create rule form
 
 pim_enrich:
     entity:

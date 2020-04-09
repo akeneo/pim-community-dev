@@ -4,7 +4,10 @@ config:
             controllers:
                 pimee_catalog_rule_edit:
                     module: pimee/attribute-edit-form/rules/edit-rules
+                pimee_catalog_rule_new:
+                    module: pimee/attribute-edit-form/rules/create-rules
 
     paths:
-        pimee/attribute-edit-form/rules/rules-grid: akeneopimruleengine/attribute/form/rules/contollers/rules-grid
-        pimee/attribute-edit-form/rules/edit-rules: akeneopimruleengine/attribute/form/rules/contollers/edit-rules
+        pimee/attribute-edit-form/rules/rules-grid: akeneopimruleengine/controllers/rules-grid
+        pimee/attribute-edit-form/rules/edit-rules: akeneopimruleengine/controllers/edit-rules
+        pimee/attribute-edit-form/rules/create-rules: akeneopimruleengine/controllers/create-rules
