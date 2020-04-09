@@ -1,6 +1,6 @@
 import jQuery from 'jquery';
 
-const Routing = require('pim/router');
+const routing = require('routing');
 
 class FeatureFlags {
   static features: {[feature: string]: boolean};
@@ -10,7 +10,7 @@ class FeatureFlags {
       throw new Error('FeatureFlags is already initialized.');
     }
 
-    FeatureFlags.features = await jQuery.getJSON(Routing.generate('feature_flag'));
+    FeatureFlags.features = await jQuery.getJSON(routing.generate('feature_flag'));
   }
 
   static isEnabled(feature: string): boolean {

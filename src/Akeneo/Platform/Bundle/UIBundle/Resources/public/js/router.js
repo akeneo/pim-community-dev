@@ -13,7 +13,8 @@ define(
         'oro/mediator',
         'pim/error',
         'pim/security-context',
-        'pim/controller/template'
+        'pim/controller/template',
+        'pim/feature-flags'
     ],
     function (
         $,
@@ -26,7 +27,9 @@ define(
         ControllerRegistry,
         mediator,
         Error,
-        securityContext
+        securityContext,
+        template,
+        FeatureFlags
     ) {
         var Router = Backbone.Router.extend({
             DEFAULT_ROUTE: 'oro_default',
@@ -37,7 +40,7 @@ define(
             indexRoute: null,
             loadingMask: null,
             currentController: null,
-
+            
             /**
              * {@inheritdoc}
              */
@@ -45,9 +48,9 @@ define(
                 this.loadingMask = new LoadingMask();
                 this.loadingMask.render().$el.appendTo($('.hash-loading-mask'));
                 _.bindAll(this, 'showLoadingMask', 'hideLoadingMask');
-
+                
                 this.indexRoute = __moduleConfig.indexRoute;
-
+                
                 this.listenTo(mediator, 'route_complete', this._processLinks);
             },
 
@@ -93,6 +96,12 @@ define(
                     $('#container').empty();
                     var $view = $('<div class="view"/>').appendTo($('#container'));
 
+                    if (controller.feature && !FeatureFlags.isEnabled(controller.feature)) {
+                        this.hideLoadingMask();
+
+                        return this.notFound();
+                    }
+
                     if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
                         this.hideLoadingMask();
 
@@ -125,14 +134,14 @@ define(
                 }
 
                 switch (xhr.status) {
-                    case 401:
-                        window.location = this.generate('pim_user_security_login');
-                        break;
-                    case 200:
-                        break;
-                    default:
-                        this.errorPage(xhr);
-                        break;
+                case 401:
+                    window.location = this.generate('pim_user_security_login');
+                    break;
+                case 200:
+                    break;
+                default:
+                    this.errorPage(xhr);
+                    break;
                 }
             },
 
