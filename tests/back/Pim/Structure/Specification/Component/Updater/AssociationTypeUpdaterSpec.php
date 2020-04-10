@@ -51,7 +51,7 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
             'labels' => [
                 'fr_FR' => 'Vente croisée',
             ],
-            'two_way' => true
+            'is_two_way' => true
         ];
 
         $associationType->setCode('mycode')->shouldBeCalled();
@@ -115,14 +115,14 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
             ->during('update', [$associationType, $data, []]);
     }
 
-    function it_throws_an_exception_when_value_two_way_is_not_boolean(AssociationTypeInterface $associationType)
+    function it_throws_an_exception_when_value_is_two_way_is_not_boolean(AssociationTypeInterface $associationType)
     {
-        $data = ['two_way' => 'foo'];
+        $data = ['is_two_way' => 'foo'];
 
         $this
             ->shouldThrow(
                 InvalidPropertyTypeException::booleanExpected(
-                    'two_way',
+                    'is_two_way',
                     AssociationTypeUpdater::class,
                     'foo'
                 )
