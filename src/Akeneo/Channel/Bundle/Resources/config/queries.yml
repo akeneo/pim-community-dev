@@ -1,0 +1,10 @@
+services:
+    pim_channel.query.sql.get_channel_code_with_locale_codes:
+        class: 'Akeneo\Channel\Bundle\Query\Sql\SqlGetChannelCodeWithLocaleCodes'
+        arguments:
+            - '@database_connection'
+
+    pim_channel.query.cache.channel_exists_and_bound_to_context:
+        class: 'Akeneo\Channel\Component\Query\PublicApi\Cache\CachedChannelExistsAndBoundToLocale'
+        arguments:
+            - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
