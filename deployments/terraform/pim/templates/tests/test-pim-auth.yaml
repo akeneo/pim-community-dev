@@ -23,8 +23,8 @@ spec:
       timeout 500 curl --retry 300 --retry-delay 30 -k ${TARGET} > /dev/null;
       echo -n "_target_path=&_username=$LOGIN&_password=$PASSWORD&_csrf_token=" > $LOGIN_DATA;
       cat $LOGIN_DATA;
-      curl --connect-timeout 5 --cookie-jar $COOKIE_JAR $TARGET/user/login | grep "_csrf_token" | cut -d '"' -f 6 >> $LOGIN_DATA;
-      curl --connect-timeout 5 -XPOST --cookie $COOKIE_JAR --cookie-jar $COOKIE_JAR --data @$LOGIN_DATA $TARGET/user/login-check;
+      curl --connect-timeout 10 --cookie-jar $COOKIE_JAR $TARGET/user/login | grep "_csrf_token" | cut -d '"' -f 6 >> $LOGIN_DATA;
+      curl --connect-timeout 10 -XPOST --cookie $COOKIE_JAR --cookie-jar $COOKIE_JAR --data @$LOGIN_DATA $TARGET/user/login-check;
       curl -L -m 5 --cookie $COOKIE_JAR $TARGET/dashboard;
       curl -L -m 5 -w "%{http_code}" --cookie $COOKIE_JAR $TARGET/dashboard | grep 200;
   restartPolicy: Never

@@ -353,8 +353,8 @@ jobs:
           - run:
               name: Upgrade oldest SaaS prod (PIM v3) to intermediate version from mid-February
               command: |
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200211172331 make create-ci-release-files
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200211172331 make deploy
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200211172331 INSTANCE_NAME=pimup-$CIRCLE_SHA1 make create-ci-release-files
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200211172331 INSTANCE_NAME=pimup-$CIRCLE_SHA1 make deploy
           - run:
               name: Upgrade intermediate version SaaS to master
               command: |
