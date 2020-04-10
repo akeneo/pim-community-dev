@@ -1,7 +1,6 @@
 import React, { ReactNode, Ref } from 'react';
 import styled from 'styled-components';
-
-import { fontSize } from '../../../theme/akeneoTheme';
+import { color, fontSize } from '../../../theme/akeneoTheme';
 
 type sizeMode = 'small' | 'large';
 
@@ -13,11 +12,24 @@ type CoreButtonProps = {
     sizeMode?: sizeMode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const getSizeModeValue = ({ sizeMode }: CoreButtonProps): string => {
+const getHeight = ({ sizeMode }: CoreButtonProps): string => {
     if (sizeMode === 'small') {
         return '20px';
     }
     return '32px';
+};
+const getLineHeight = ({ sizeMode }: CoreButtonProps): string => {
+    if (sizeMode === 'small') {
+        return '18px';
+    }
+    return '30px';
+};
+
+const getPadding = ({ sizeMode }: CoreButtonProps): string => {
+    if (sizeMode === 'small') {
+        return '0 10px';
+    }
+    return '0 15px';
 };
 
 const BasicButton = styled.button<CoreButtonProps>`
@@ -25,12 +37,15 @@ const BasicButton = styled.button<CoreButtonProps>`
     cursor: pointer;
     font-size: ${fontSize.default};
     font-weight: 400;
-    height: ${getSizeModeValue};
-    line-height: ${getSizeModeValue};
-    padding: 0 15px;
+    height: ${getHeight};
+    line-height: ${getLineHeight};
     text-transform: uppercase;
+    padding: ${getPadding};
     &:disabled {
         cursor: not-allowed;
+    }
+    &:focus {
+        border-color: ${color.blue100};
     }
 `;
 const CoreButton = React.forwardRef<HTMLButtonElement, CoreButtonProps>(
@@ -58,15 +73,16 @@ const CoreButton = React.forwardRef<HTMLButtonElement, CoreButtonProps>(
         };
         return (
             <BasicButton
-                aria-disabled={disabled}
                 aria-describedby={ariaDescribedBy}
-                aria-labelledby={ariaLabelledBy}
+                aria-disabled={disabled}
                 aria-label={ariaLabel}
+                aria-labelledby={ariaLabelledBy}
                 disabled={disabled}
                 onKeyDown={handleKeyDown}
                 ref={forwardedRef}
                 role='button'
                 sizeMode={sizeMode}
+                type={type}
                 {...rest}>
                 {children}
             </BasicButton>

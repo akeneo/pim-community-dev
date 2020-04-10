@@ -1,0 +1,57 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import { action } from "@storybook/addon-actions";
+import { TertiaryButton } from "./TertiaryButton.tsx";
+import { CoreButton } from "../CoreButton";
+
+
+<Meta title="TertiaryButton" component={CoreButton} />
+
+# Tertiary button
+
+There is only one custom prop, the other props come from "React.ButtonHTMLAttributes HTMLButtonElement"
+
+<Props of={CoreButton} />
+
+## Default
+
+This is the default button
+
+<Preview>
+  <Story name="Tertiary">
+    <TertiaryButton onClick={action("clicked")}>
+      Click !
+    </TertiaryButton>
+  </Story>
+</Preview>
+
+
+## Small Tertiary button
+
+sizeMode | small
+
+  <Story name="Small Tertiary">
+    <TertiaryButton sizeMode='small' onClick={action("clicked")}>
+      Click !
+    </TertiaryButton>
+  </Story>
+
+## Tertiary button disabled
+
+disabled | true
+
+  <Story name="Tertiary disabled">
+    <TertiaryButton disabled onClick={action("clicked")}>
+      Click !
+    </TertiaryButton>
+  </Story>
+
+## Small Tertiary button disabled
+
+disabled | true
+sizeMode | small
+
+  <Story name="Small Tertiary disabled">
+    <TertiaryButton disabled onClick={action("clicked")} sizeMode='small'>
+      Click !
+    </TertiaryButton>
+  </Story>

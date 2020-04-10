@@ -1,0 +1,57 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import { action } from "@storybook/addon-actions";
+import { GhostButton } from "./GhostButton.tsx";
+import { CoreButton } from "../CoreButton";
+
+
+<Meta title="GhostButton" component={CoreButton} />
+
+# Ghost button
+
+There is only one custom prop, the other props come from "React.ButtonHTMLAttributes HTMLButtonElement"
+
+<Props of={CoreButton} />
+
+## Default
+
+This is the default button
+
+<Preview>
+  <Story name="Ghost">
+    <GhostButton onClick={action("clicked")}>
+      Click !
+    </GhostButton>
+  </Story>
+</Preview>
+
+
+## Small Ghost button
+
+sizeMode | small
+
+  <Story name="Small Ghost">
+    <GhostButton sizeMode='small' onClick={action("clicked")}>
+      Click !
+    </GhostButton>
+  </Story>
+
+## Ghost button disabled
+
+disabled | true
+
+  <Story name="Ghost disabled">
+    <GhostButton disabled onClick={action("clicked")}>
+      Click !
+    </GhostButton>
+  </Story>
+
+## Small Ghost button disabled
+
+disabled | true
+sizeMode | small
+
+  <Story name="Small Ghost disabled">
+    <GhostButton disabled onClick={action("clicked")} sizeMode='small'>
+      Click !
+    </GhostButton>
+  </Story>
