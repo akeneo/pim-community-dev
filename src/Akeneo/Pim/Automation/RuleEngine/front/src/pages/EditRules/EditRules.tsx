@@ -24,10 +24,13 @@ type Props = {
 
 const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
   const translate = useTranslate();
+  const userContext = useUserContext();
+  const router = useBackboneRouter();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
-  const router = useBackboneRouter();
+
   const [urlSettings, handleSettingsRoute] = generateAndRedirect(
     router,
     "pim_enrich_attribute_index"
@@ -36,7 +39,6 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
     router,
     "pimee_catalog_rule_rule_index"
   );
-  const router = useLegacyRouter();
 
   const [ruleDefinition, setRuleDefinition] = React.useState<RuleDefinition>();
   const [isError, setIsError] = React.useState<boolean>(false);
@@ -50,14 +52,14 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
     });
   }, []);
 
-  const currentCatalogLocale = useUserContext().get('catalogLocale');
+  const currentCatalogLocale = userContext.get('catalogLocale');
 
   return (
     <ThemeProvider theme={akeneoTheme}>
       {isError ? 'There was an error (TODO: better display)' :
         !ruleDefinition ? 'Loading (TODO: better display' :
           <form id="edit-rules-form" onSubmit={handleSubmit}>
-            <RulesHeader title={ruleDefinition ? ruleDefinition.getLabel(currentCatalogLocale) : ''}>
+            <RulesHeader title={getRuleDefinitionLabel(ruleDefinition, currentCatalogLocale)}>
               <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>
                 {translate("pim_menu.tab.settings")}
               </BreadcrumbItem>
@@ -79,7 +81,7 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
                   id="edit-rules-input-code"
                   label={translate("pim_common.code")}
                   readOnly
-                  value={ruleDefinition ? ruleDefinition.code : ''}
+                  value={ruleDefinition.code}
                 />
               </div>
             </Content>
