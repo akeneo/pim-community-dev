@@ -16,6 +16,7 @@ const __ = require('oro/translator');
 const ConnectionSaver = require('akeneo/franklin-insights/saver/franklin-connection');
 const Messenger = require('oro/messenger');
 const template = require('akeneo/franklin-insights/template/franklin-connection/edit');
+const LoadingMask = require('oro/loading-mask');
 
 interface Config {
   tokenLabelContent: string;
@@ -45,6 +46,7 @@ class EditView extends BaseView {
 
   private storedToken: string = '';
   private isConnectionValid: boolean = false;
+  private loadingMask = new LoadingMask();
 
   /**
    * {@inheritdoc}
@@ -103,6 +105,11 @@ class EditView extends BaseView {
    * Activates the connection to Franklin
    */
   public activate(): void {
+    this.loadingMask
+      .render()
+      .$el.appendTo($('.hash-loading-mask'))
+      .show();
+
     const data = this.getFormData();
 
     ConnectionSaver.save(null, data)
@@ -123,7 +130,8 @@ class EditView extends BaseView {
         this.storedToken = data.token;
         this.isConnectionValid = true;
         this.renderActivatedConnection(data.token);
-      });
+      })
+      .always(() => this.loadingMask.hide().$el.remove());
   }
 
   /**

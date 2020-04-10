@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Improvements
+
+- DAPI-531: Franklin Insights - Add loading indicator for multiple actions on mapping screens. 
+
 # 4.0.16 (2020-04-08)
 
 # 4.0.15 (2020-04-07)

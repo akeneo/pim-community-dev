@@ -37,6 +37,7 @@ extensions:
                 franklinAttributeOption: akeneo_franklin_insights.entity.attribute_options_mapping.fields.franklin_attribute_option
                 catalogAttributeOption: akeneo_franklin_insights.entity.attribute_options_mapping.fields.catalog_attribute_option
                 attributeOptionStatus: akeneo_franklin_insights.entity.attribute_options_mapping.fields.attribute_option_status
+                loadFailedMessage: akeneo_franklin_insights.entity.attribute_options_mapping.flash.load_failed
 
     akeneo-franklin-insights-settings-attribute-options-mapping-edit-description-header:
         module: pim/common/simple-view

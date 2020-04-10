@@ -6,12 +6,16 @@ import {ATTRIBUTE_CREATED} from '../../../../../../Infrastructure/Symfony/Resour
 import {
   FETCHED_FAMILY_MAPPING_FAIL,
   FETCHED_FAMILY_MAPPING_SUCCESS,
-  SELECT_FAMILY
+  SELECT_FAMILY,
+  setLoadFamilyMapping
 } from '../../../../../../Infrastructure/Symfony/Resources/public/react/application/action/family-mapping/family-mapping';
 import {AttributeMappingStatus} from '../../../../../../Infrastructure/Symfony/Resources/public/react/domain/model/attribute-mapping-status.enum';
 import {AttributesMapping} from '../../../../../../Infrastructure/Symfony/Resources/public/react/domain/model/attributes-mapping';
 import {FranklinAttributeType} from '../../../../../../Infrastructure/Symfony/Resources/public/react/domain/model/franklin-attribute-type.enum';
-import {SAVED_FAMILY_MAPPING_SUCCESS} from '../../../../../../Infrastructure/Symfony/Resources/public/react/application/action/family-mapping/save-family-mapping';
+import {
+  SAVED_FAMILY_MAPPING_SUCCESS,
+  SAVED_FAMILY_MAPPING_FAIL
+} from '../../../../../../Infrastructure/Symfony/Resources/public/react/application/action/family-mapping/save-family-mapping';
 import {FRANKLIN_ATTRIBUTE_MAPPING_DEACTIVATED} from '../../../../../../Infrastructure/Symfony/Resources/public/react/application/action/family-mapping/deactivate-franklin-attribute-mapping';
 import {MAP_FRANKLIN_ATTRIBUTE} from '../../../../../../Infrastructure/Symfony/Resources/public/react/domain/action/map-franklin-attribute';
 import {UNMAP_FRANKLIN_ATTRIBUTE} from '../../../../../../Infrastructure/Symfony/Resources/public/react/domain/action/unmap-franklin-attribute';
@@ -39,7 +43,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
   it('should return the initial state', () => {
     const expectedState: FamilyMappingState = {
       mapping: {},
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
     expect(reducer(undefined, {} as any)).toEqual(expectedState);
   });
@@ -47,7 +52,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
   it('should handle ATTRIBUTE_CREATED', () => {
     const initialState: FamilyMappingState = {
       mapping: defaultMapping,
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
     const expectedState = {
       mapping: {
@@ -64,7 +70,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
           exactMatchAttributeFromOtherFamily: null
         }
       },
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
     expect(
       reducer(initialState, {
@@ -81,7 +88,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
     defaultMapping['connector_type(s)'].canCreateAttribute = false;
     const initialState: FamilyMappingState = {
       mapping: defaultMapping,
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
     const expectedState = {
       mapping: {
@@ -98,7 +106,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
           exactMatchAttributeFromOtherFamily: null
         }
       },
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
     expect(
       reducer(initialState, {
@@ -113,7 +122,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
   it('should handle FETCHED_FAMILY_MAPPING_SUCCESS', () => {
     const initialState: FamilyMappingState = {
       mapping: {},
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
     const expectedState = {
       mapping: {
@@ -127,7 +137,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
           attribute: 'connector_type_s_',
           canCreateAttribute: false,
           status: AttributeMappingStatus.ACTIVE,
-          exactMatchAttributeFromOtherFamily: null
+          exactMatchAttributeFromOtherFamily: null,
+          suggestions: []
         }
       },
       originalMapping: {
@@ -135,7 +146,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
           attribute: 'connector_type_s_',
           status: AttributeMappingStatus.ACTIVE
         }
-      }
+      },
+      loadFamilyMapping: false
     };
 
     const mapping = {
@@ -149,7 +161,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
         attribute: 'connector_type_s_',
         canCreateAttribute: false,
         status: AttributeMappingStatus.ACTIVE,
-        exactMatchAttributeFromOtherFamily: null
+        exactMatchAttributeFromOtherFamily: null,
+        suggestions: []
       }
     } as AttributesMapping;
 
@@ -165,7 +178,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
   it('should handle SAVED_FAMILY_MAPPING_SUCCESS', () => {
     const initialState: FamilyMappingState = {
       mapping: defaultMapping,
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
     const expectedState = {
       mapping: {
@@ -187,7 +201,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
           attribute: null,
           status: AttributeMappingStatus.PENDING
         }
-      }
+      },
+      loadFamilyMapping: false
     };
 
     expect(
@@ -197,15 +212,32 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
     ).toEqual(expectedState);
   });
 
+  it('should handle SAVED_FAMILY_MAPPING_FAIL', () => {
+    const initialState: FamilyMappingState = {
+      mapping: defaultMapping,
+      originalMapping: {},
+      loadFamilyMapping: false
+    };
+    const expectedState = initialState;
+
+    expect(
+      reducer(initialState, {
+        type: SAVED_FAMILY_MAPPING_FAIL
+      })
+    ).toEqual(expectedState);
+  });
+
   it('should handle SELECT_FAMILY', () => {
     const initialState: FamilyMappingState = {
       mapping: defaultMapping,
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
     const expectedState: FamilyMappingState = {
       familyCode: 'headphones',
       mapping: {},
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
 
     expect(
@@ -219,7 +251,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
   it('should handle FRANKLIN_ATTRIBUTE_MAPPING_DEACTIVATED', () => {
     const initialState: FamilyMappingState = {
       mapping: defaultMapping,
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
     const expectedState: FamilyMappingState = {
       mapping: {
@@ -236,7 +269,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
           exactMatchAttributeFromOtherFamily: null
         }
       },
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
 
     expect(
@@ -251,7 +285,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
   it('should handle MAP_FRANKLIN_ATTRIBUTE', () => {
     const initialState: FamilyMappingState = {
       mapping: defaultMapping,
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
     const expectedState: FamilyMappingState = {
       mapping: {
@@ -268,7 +303,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
           exactMatchAttributeFromOtherFamily: null
         }
       },
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
 
     expect(
@@ -284,7 +320,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
   it('should handle APPLY_FRANKLIN_SUGGESTION', () => {
     const initialState: FamilyMappingState = {
       mapping: defaultMapping,
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
     const expectedState: FamilyMappingState = {
       mapping: {
@@ -301,7 +338,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
           exactMatchAttributeFromOtherFamily: null
         }
       },
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
 
     expect(
@@ -330,7 +368,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
           exactMatchAttributeFromOtherFamily: null
         }
       },
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
     const expectedState: FamilyMappingState = {
       mapping: {
@@ -347,7 +386,8 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
           exactMatchAttributeFromOtherFamily: null
         }
       },
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
 
     expect(
@@ -362,11 +402,13 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
   it('should handle FETCHED_FAMILY_MAPPING_FAIL', () => {
     const initialState: FamilyMappingState = {
       mapping: defaultMapping,
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
     const expectedState: FamilyMappingState = {
       mapping: {},
-      originalMapping: {}
+      originalMapping: {},
+      loadFamilyMapping: false
     };
 
     expect(
@@ -374,5 +416,20 @@ describe('Application > Reducer > Family Mapping > Family Mapping', () => {
         type: FETCHED_FAMILY_MAPPING_FAIL
       })
     ).toEqual(expectedState);
+  });
+
+  it('should handle SET_LOAD_FAMILY_MAPPING', () => {
+    const initialState: FamilyMappingState = {
+      mapping: defaultMapping,
+      originalMapping: {},
+      loadFamilyMapping: false
+    };
+    const expectedState: FamilyMappingState = {
+      mapping: defaultMapping,
+      originalMapping: {},
+      loadFamilyMapping: true
+    };
+
+    expect(reducer(initialState, setLoadFamilyMapping(true))).toEqual(expectedState);
   });
 });
