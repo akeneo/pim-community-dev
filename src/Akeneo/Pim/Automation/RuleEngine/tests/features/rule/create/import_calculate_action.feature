@@ -39,10 +39,10 @@ Background:
     @acceptance-back
     Scenario: Import a calculate rule with invalid currencies
         When I import a calculate rule with invalid currencies
-        Then an exception with message "actions[0].destination.currency: Expected a valid currency, but got non" has been thrown
+        Then an exception with message "actions[0].destination.currency: Expected a valid currency, but got none" has been thrown
         And an exception with message "actions[0].source.currency: Expected a valid currency, the \"USD\" currency does not exist or is not activated" has been thrown
 
     @acceptance-back
     Scenario: Import a calculate rule with invalid measurement unit
-        When I import a calculate rule with an invalid measurement unit
+        When I import a calculate rule with an invalid measurement unit in destination
         Then an exception with message "actions[0].destination.unit: The unit \"GIGAHERTZ\" does not exist or does not belong to the default measurement family of the given attribute \"processor\"" has been thrown

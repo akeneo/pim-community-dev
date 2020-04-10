@@ -293,7 +293,7 @@ YAML;
     }
 
     /**
-     * @When I import a calculate rule with an invalid measurement unit
+     * @When I import a calculate rule with an invalid measurement unit in destination
      */
     public function importACalculateRuleWithAnInvalidMeasurementUnit(): void
     {

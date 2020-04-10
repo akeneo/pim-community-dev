@@ -43,7 +43,7 @@ class CalculateActionFieldsValidator extends ConstraintValidator
         $validator = $context->getValidator()->inContext($context);
 
         $destination = $action->getDestination();
-        $this->doValidate(
+        $this->validateAttributeConsistency(
             $validator,
             'destination',
             $destination->getField(),
@@ -59,7 +59,7 @@ class CalculateActionFieldsValidator extends ConstraintValidator
         }
 
         $source = $action->getSource();
-        $this->doValidate(
+        $this->validateAttributeConsistency(
             $validator,
             'source',
             $source->getAttributeCode(),
@@ -70,7 +70,7 @@ class CalculateActionFieldsValidator extends ConstraintValidator
 
         foreach ($action->getOperationList() as $index => $operation) {
             $path = sprintf('operation_list[%d]', $index);
-            $this->doValidate(
+            $this->validateAttributeConsistency(
                 $validator,
                 $path,
                 $operation->getOperand()->getAttributeCode(),
@@ -81,7 +81,7 @@ class CalculateActionFieldsValidator extends ConstraintValidator
         }
     }
 
-    private function doValidate(
+    private function validateAttributeConsistency(
         ContextualValidatorInterface $validator,
         string $path,
         ?string $attributeCode,
