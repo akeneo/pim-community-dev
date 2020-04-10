@@ -68,7 +68,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
         $this->binaryImageGenerator->supports('google-logo.png', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->binaryImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
     }
 
     /**
@@ -79,11 +79,11 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
         $this->binaryImageGenerator->supports('akeneo.png', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->binaryImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
 
         $previewImage = $this->binaryImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
     }
 
     /**
@@ -95,7 +95,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
         $previewImage = $this->binaryImageGenerator->generate('test', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString(
-            sprintf('media/cache/%s/pim_asset_manager.default_image.image', BinaryImageGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]),
+            sprintf('__root__/thumbnail/asset_manager/%s/pim_asset_manager.default_image.image', BinaryImageGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]),
             $previewImage
         );
     }
