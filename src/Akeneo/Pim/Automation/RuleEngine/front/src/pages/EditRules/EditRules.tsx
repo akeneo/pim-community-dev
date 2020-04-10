@@ -83,6 +83,17 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
                   readOnly
                   value={ruleDefinition.code}
                 />
+                <InputNumber
+                  id="edit-rules-input-priority"
+                  label={translate("pim_common.priority")}
+                  value={ruleDefinition.priority}
+                  onChange={(event) => {
+                    if (ruleDefinition) {
+                      let priority = parseInt(event.target.value) || 0;
+                      setRuleDefinition({...ruleDefinition, priority: priority});
+                    }
+                  }}
+                />
               </div>
             </Content>
           </form>
