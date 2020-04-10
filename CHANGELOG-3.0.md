@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-9179: Fix product grid freezing when using ENTER on filter
+
 # 3.0.72 (2020-04-03)
 
 - PIM-9169: Fix error message when deleting user that created a project
