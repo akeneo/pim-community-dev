@@ -4,8 +4,10 @@ Feature: Import calculate action rules
     I need to be able to create rules
 
 Background:
-    Given the family "camcorders"
-    And the product "75024" of the family "camcorders"
+    Given the following locales en_US,fr_FR
+    And the following ecommerce channel with locales en_US,fr_FR
+    And the following mobile channel with locales en_US
+    And the family "camcorders"
     And I have permission to import rules
 
     @acceptance-back

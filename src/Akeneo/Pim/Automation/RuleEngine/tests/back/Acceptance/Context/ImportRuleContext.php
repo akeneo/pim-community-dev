@@ -187,8 +187,11 @@ rules:
             - type: calculate
               destination:
                 field: name
+                locale: en_US
               source:
                 field: description
+                locale: en_US
+                scope: ecommerce
               operation_list:
                 - operator: multiply
                   field: color
