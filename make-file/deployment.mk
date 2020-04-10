@@ -117,7 +117,6 @@ create-pim-main-tf: $(INSTANCE_DIR)
 	@echo "dns_external                        = \"$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS).\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "dns_internal                        = \"$(CLUSTER_DNS_NAME)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "dns_zone                            = \"$(GOOGLE_MANAGED_ZONE_NAME)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "pager_duty_service_key              = \"d55f85282a8e4e16b2c822249ad440bd\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "google_storage_location             = \"eu\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "papo_project_code                   = \"NOT_ON_PAPO_$(PFID)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "force_destroy_storage               = true" >> $(INSTANCE_DIR)/main.tf

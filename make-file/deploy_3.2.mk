@@ -49,14 +49,6 @@ terraform-init-for-pim3:
 .PHONY: terraform-apply-for-pim3
 terraform-apply-for-pim3:
 	cd ~/3.2 && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
-	cd ~/3.2 && terraform destroy $(TF_AUTO_APPROVE) -target=module.pim.google_monitoring_uptime_check_config.https
-	cd ~/3.2 && terraform destroy $(TF_AUTO_APPROVE) -target=module.pim.google_monitoring_notification_channel.pagerduty
-	cd ~/3.2 && terraform destroy $(TF_AUTO_APPROVE) -target=module.pim.google_monitoring_alert_policy.alert_policy
-	cd ~/3.2 && terraform destroy $(TF_AUTO_APPROVE) -target=module.pim.template_file.metric-template
-	cd ~/3.2 && terraform destroy $(TF_AUTO_APPROVE) -target=module.pim.null_resource.metric
-	cd ~/3.2 && terraform state rm module.pim.template_file.metric-template
-	cd ~/3.2 && terraform state rm module.pim.local_file.metric-rendered
-	cd ~/3.2 && terraform state rm module.pim.null_resource.metric
 
 .PHONY: terraform-destroy-for-pim3
 terraform-destroy-for-pim3:

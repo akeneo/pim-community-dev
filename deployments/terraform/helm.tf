@@ -1,3 +1,8 @@
+resource "random_string" "monitoring_authentication_token" {
+  length  = 32
+  special = false
+}
+
 data "template_file" "helm_pim_config" {
   template = file("${path.module}/tf-helm-pim-values.tpl")
 

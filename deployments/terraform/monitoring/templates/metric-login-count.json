@@ -1,0 +1,18 @@
+{
+  "name": "${pfid}-login-count",
+  "description": "Counter of access logs on the /user/login url.",
+  "filter": "resource.type=k8s_container AND jsonPayload.http.path=\"/user/login\" AND resource.labels.namespace_name=${pfid}",
+  "labelExtractors": {
+    "response_code": "EXTRACT(jsonPayload.http.response_code)"
+  },
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "valueType": "INT64",
+    "labels": [
+      {
+        "key": "response_code",
+        "valueType": "INT64"
+      }
+    ]
+  }
+}

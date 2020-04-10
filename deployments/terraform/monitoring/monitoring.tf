@@ -1,66 +1,26 @@
-resource "google_logging_metric" "login_count" {
-  name = "${local.pfid}-login-count"
-  description = "Counter of access logs on the /user/login url."
-  filter = "resource.type=k8s_container AND jsonPayload.http.path=\"/user/login\" AND resource.labels.namespace_name=${local.pfid}"
-  label_extractors = {
-    "response_code" = "EXTRACT(jsonPayload.http.response_code)"
-  }
-  metric_descriptor {
-    metric_kind= "DELTA"
-    value_type = "INT64"
-    labels {
-        key =  "response_code"
-        value_type =  "INT64"
-      }
+locals {
+  metrics = [
+    "login-count",
+    "login-response-time-distribution",
+    "logs-count",
+  ]
+}
+
+data "template_file" "metric-template" {
+  count = length(local.metrics)
+  template = file(
+    "${path.module}/templates/metric-${local.metrics[count.index]}.json",
+  )
+
+  vars = {
+    pfid = local.pfid
   }
 }
 
-resource "google_logging_metric" "login-response-time-distribution" {
-  name = "${local.pfid}-login-response-time-distribution"
-  description = "Distribution of response time on the /user/login url."
-  filter = "resource.type=k8s_container AND jsonPayload.http.path=\"/user/login\" AND resource.labels.namespace_name=${local.pfid}"
-  value_extractor = "EXTRACT(jsonPayload.http.duration_micros)"
-  label_extractors = {
-    "response_code" = "EXTRACT(jsonPayload.http.response_code)"
-  }
-  bucket_options {
-    exponential_buckets {
-      num_finite_buckets = 20
-      growth_factor = 2
-      scale = 5
-    }
-  }
-  metric_descriptor {
-    metric_kind = "DELTA"
-    value_type = "DISTRIBUTION"
-    unit = "us"
-    labels {
-        key = "response_code"
-        value_type = "INT64"
-      }
-  }
-}
-
-resource "google_logging_metric" "logs-count" {
-  name = "${local.pfid}-logs-count"
-  description = "Counter of container logs."
-  filter = "resource.type=k8s_container AND resource.labels.namespace_name=${local.pfid}"
-  label_extractors = {
-    "container_name" = "EXTRACT(resource.labels.container_name)"
-    "pod_name" = "EXTRACT(resource.labels.pod_name)"
-  }
-  metric_descriptor {
-    metric_kind = "DELTA"
-    value_type = "INT64"
-    labels {
-        key = "container_name"
-        value_type = "STRING"
-    }
-    labels {
-        key = "pod_name"
-        value_type = "STRING"
-    }
-  }
+resource "local_file" "metric-rendered" {
+  count    = length(local.metrics)
+  content  = data.template_file.metric-template[count.index].rendered
+  filename = "metrics/metric-${local.metrics[count.index]}.json"
 }
 
 resource "google_monitoring_uptime_check_config" "https" {
@@ -99,12 +59,7 @@ resource "google_monitoring_alert_policy" "alert_policy" {
   display_name = local.pfid
   combiner     = "OR"
   project      = var.google_project_id
-  depends_on   = [
-    "google_logging_metric.login-response-time-distribution",
-    "google_logging_metric.login_count",
-    "google_logging_metric.logs-count",
-    "google_monitoring_uptime_check_config.https"
-    ]
+  depends_on   = [null_resource.metric]
 
   conditions {
     # Basically it should ring if the volume utilization is > 90% during 15min
@@ -191,7 +146,48 @@ resource "google_monitoring_alert_policy" "alert_policy" {
   ]
 }
 
-resource "random_string" "monitoring_authentication_token" {
-  length  = 32
-  special = false
+resource "null_resource" "metric" {
+  count = length(local.metrics)
+
+  triggers = {
+    google_project_id = var.google_project_id
+    pfid              = local.pfid
+    files             = local_file.metric-rendered[count.index].content
+  }
+
+  provisioner "local-exec" {
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+
+    command = <<EOF
+      if [[ -z "$(gcloud beta logging metrics list --project ${var.google_project_id} --quiet --format='value(name)' --filter='name~^${local.pfid}-${local.metrics[count.index]}$')" ]]; then
+        gcloud beta logging metrics create ${local.pfid}-${local.metrics[count.index]} \
+          --config-from-file ${local_file.metric-rendered[count.index].filename} \
+          --project ${var.google_project_id} \
+          --quiet && \
+        for limit in {1..600}; do \
+          [[ ! -z "$(gcloud beta logging metrics list --project ${var.google_project_id} --quiet --format='value(name)' --filter='name~^${local.pfid}-${local.metrics[count.index]}$')" ]] \
+          && break || echo "wait $limit"; sleep 1; \
+        done;
+      else
+        gcloud beta logging metrics update ${local.pfid}-${local.metrics[count.index]} \
+          --config-from-file ${local_file.metric-rendered[count.index].filename} \
+          --project ${var.google_project_id} \
+          --quiet;
+      fi
+EOF
+
+  }
+
+  provisioner "local-exec" {
+    when        = destroy
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+
+    command = <<EOF
+      gcloud logging metrics delete ${local.pfid}-${local.metrics[count.index]} \
+        --project ${var.google_project_id} \
+        --quiet
+EOF
+
+  }
 }
+

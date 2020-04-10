@@ -351,7 +351,12 @@ jobs:
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
           - run:
-              name: Upgrade oldest SaaS prod (PIM v3) to master
+              name: Upgrade oldest SaaS prod (PIM v3) to intermediate version from mid-February
+              command: |
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200211172331 make create-ci-release-files
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200211172331 make deploy
+          - run:
+              name: Upgrade intermediate version SaaS to master
               command: |
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy
@@ -565,6 +570,17 @@ workflows:
           - deploy_pr_environment:
                 requires:
                     - deploy_pr_environment?
+          - deploy_upgrade_oldest_prod_environment?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
+                requires:
+                    - build_prod
+          - deploy_upgrade_oldest_prod_environment:
+                requires:
+                    - deploy_upgrade_oldest_prod_environment?
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev

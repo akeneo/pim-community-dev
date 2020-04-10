@@ -11,11 +11,6 @@ variable "papo_project_code" {
   description = "Code of the project on Akeneo portal"
 }
 
-variable "pager_duty_service_key" {
-  type        = string
-  description = "PagerDuty Service key, get it on the pagerduty page of the service"
-}
-
 variable "instance_name" {
   type = string
 }

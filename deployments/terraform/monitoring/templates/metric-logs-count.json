@@ -1,0 +1,23 @@
+{
+  "name": "${pfid}-logs-count",
+  "description": "Counter of container logs.",
+  "filter": "resource.type=k8s_container AND resource.labels.namespace_name=${pfid}",
+  "labelExtractors": {
+    "container_name": "EXTRACT(resource.labels.container_name)",
+    "pod_name": "EXTRACT(resource.labels.pod_name)"
+  },
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "valueType": "INT64",
+    "labels": [
+      {
+        "key": "container_name",
+        "valueType": "STRING"
+      },
+      {
+        "key": "pod_name",
+        "valueType": "STRING"
+      }
+    ]
+  }
+}
