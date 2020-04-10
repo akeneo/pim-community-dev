@@ -132,6 +132,7 @@ services:
             - '@pim_catalog.factory.attribute_group'
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
+            - '@akeneo.pim.structure.query.find_attribute_codes_for_attribute_groups'
 
     pim_enrich.controller.rest.family:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyController'

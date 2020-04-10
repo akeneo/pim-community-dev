@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents;
+use Akeneo\Pim\Structure\Bundle\Query\InternalAPI\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -79,23 +80,28 @@ class AttributeGroupController
 
     /** @var CollectionFilterInterface */
     protected $inputFilter;
+    /**
+     * @var FindAttributeCodesForAttributeGroup
+     */
+    private $attributeCodesForAttributeGroup;
 
     /**
-     * @param EntityRepository              $attributeGroupRepo
+     * @param EntityRepository $attributeGroupRepo
      * @param SearchableRepositoryInterface $attributeGroupSearchableRepository
-     * @param NormalizerInterface           $normalizer
-     * @param CollectionFilterInterface     $collectionFilter
-     * @param ObjectUpdaterInterface        $updater
-     * @param ValidatorInterface            $validator
-     * @param SaverInterface                $saver
-     * @param RemoverInterface              $remover
-     * @param EntityRepository              $attributeRepository
-     * @param ObjectUpdaterInterface        $attributeUpdater
-     * @param SaverInterface                $attributeSaver
-     * @param SecurityFacade                $securityFacade
-     * @param SimpleFactoryInterface        $attributeGroupFactory
-     * @param EventDispatcherInterface      $eventDispatcher
-     * @param CollectionFilterInterface     $inputFilter
+     * @param NormalizerInterface $normalizer
+     * @param CollectionFilterInterface $collectionFilter
+     * @param ObjectUpdaterInterface $updater
+     * @param ValidatorInterface                  $validator
+     * @param SaverInterface                      $saver
+     * @param RemoverInterface                    $remover
+     * @param EntityRepository                    $attributeRepository
+     * @param ObjectUpdaterInterface              $attributeUpdater
+     * @param SaverInterface                      $attributeSaver
+     * @param SecurityFacade                      $securityFacade
+     * @param SimpleFactoryInterface              $attributeGroupFactory
+     * @param EventDispatcherInterface            $eventDispatcher
+     * @param CollectionFilterInterface           $inputFilter
+     * @param FindAttributeCodesForAttributeGroup $attributeCodesForAttributeGroup
      */
     public function __construct(
         EntityRepository $attributeGroupRepo,
@@ -112,7 +118,8 @@ class AttributeGroupController
         SecurityFacade $securityFacade,
         SimpleFactoryInterface $attributeGroupFactory,
         EventDispatcherInterface $eventDispatcher,
-        CollectionFilterInterface $inputFilter
+        CollectionFilterInterface $inputFilter,
+        FindAttributeCodesForAttributeGroup $attributeCodesForAttributeGroup
     ) {
         $this->attributeGroupRepo                 = $attributeGroupRepo;
         $this->attributeGroupSearchableRepository = $attributeGroupSearchableRepository;
@@ -129,6 +136,7 @@ class AttributeGroupController
         $this->attributeGroupFactory              = $attributeGroupFactory;
         $this->eventDispatcher                    = $eventDispatcher;
         $this->inputFilter                        = $inputFilter;
+        $this->attributeCodesForAttributeGroup = $attributeCodesForAttributeGroup;
     }
 
     /**
@@ -268,12 +276,7 @@ class AttributeGroupController
         $sortOrder = $data['attributes_sort_order'];
         unset($data['attributes_sort_order']);
 
-        $this->ensureAttributeCollectionRights(
-            array_map(function (AttributeInterface $attribute) {
-                return $attribute->getCode();
-            }, $attributeGroup->getAttributes()->toArray()),
-            $data['attributes']
-        );
+        $this->checkAttributeCollectionRights($data);
 
         $filteredData = $this->inputFilter->filterCollection(
             $data,
@@ -298,8 +301,10 @@ class AttributeGroupController
         if ($this->securityFacade->isGranted('pim_enrich_attribute_sort')) {
             $attributes = $this->attributeRepository->findBy(['code' => array_keys($sortOrder)]);
             foreach ($attributes as $attribute) {
-                $this->attributeUpdater->update($attribute, ['sort_order' => $sortOrder[$attribute->getCode()]]);
-                $this->attributeSaver->save($attribute);
+                if ($attribute->getSortOrder() !== $sortOrder[$attribute->getCode()]) {
+                    $this->attributeUpdater->update($attribute, ['sort_order' => $sortOrder[$attribute->getCode()]]);
+                    $this->attributeSaver->save($attribute);
+                }
             }
         }
 
@@ -368,7 +373,7 @@ class AttributeGroupController
         if ('other' === $attributeGroup->getCode()) {
             return new JsonResponse(
                 [
-                    'message' => 'Attribute group "other" cannot be removed.'
+                    'message' => 'Attribute group "other" cannot be removed.',
                 ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
@@ -440,13 +445,14 @@ class AttributeGroupController
     /**
      * Check that the user doesn't change the attribute list without permission
      *
-     * @param array $attributeCodesBefore
      * @param array $attributeCodesAfter
      *
      * @throws AccessDeniedHttpException
      */
-    protected function ensureAttributeCollectionRights(array $attributeCodesBefore, array $attributeCodesAfter)
+    protected function checkAttributeCollectionRights(array $newAttributeGroup): void
     {
+        $attributeCodesAfter = $newAttributeGroup['attributes'];
+        $attributeCodesBefore =$this->attributeCodesForAttributeGroup->execute($newAttributeGroup['code']);
         if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_remove_attribute') &&
             count($attributeCodesBefore) > 0 &&
             count(array_diff($attributeCodesBefore, $attributeCodesAfter)) > 0

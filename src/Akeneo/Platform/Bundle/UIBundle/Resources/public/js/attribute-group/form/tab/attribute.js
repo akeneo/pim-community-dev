@@ -20,9 +20,9 @@ define(
         'pim/security-context',
         'pim/dialog',
         'pim/template/form/attribute-group/tab/attribute',
-        'jquery-ui',
-        'pim/datagrid/state'
-],
+        'pim/datagrid/state',
+        'jquery-ui'
+    ],
     function (
         $,
         _,
@@ -35,7 +35,6 @@ define(
         SecurityContext,
         Dialog,
         template,
-        jqueryUi, // TODO: remove if not used
         DatagridState
     ) {
         return BaseForm.extend({
@@ -54,6 +53,8 @@ define(
              */
             initialize: function (config) {
                 this.config = config.config;
+                this.config.number_of_attributes_displayed = 500;
+
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -82,8 +83,9 @@ define(
              * {@inheritdoc}
              */
             render: function () {
+                const attributeCodesToFetch = this.getFormData().attributes.slice(0, this.config.number_of_attributes_displayed);
                 FetcherRegistry.getFetcher('attribute')
-                    .fetchByIdentifiers(this.getFormData().attributes, {rights: 0})
+                    .fetchByIdentifiers(attributeCodesToFetch, {rights: 0})
                     .then(function (attributes) {
                         attributes = attributes.map((attribute) => {
                             let sortOrder = this.getFormData().attributes_sort_order[attribute.code];
@@ -105,8 +107,8 @@ define(
                             __: __,
                             hasRightToRemove: this.hasRightToRemove(),
                             canSortAttributes: SecurityContext.isGranted(this.config.sortAttributesACL),
-                            attributeCount: this.getFormData().meta.attribute_count,
-                            totalAttributeCount: this.getFormData().meta.total_attribute_count,
+                            attributeCount: attributes.length,
+                            totalAttributeCount: this.getFormData().attributes.length,
                         }));
 
                         this.$('.attribute-list').sortable({
@@ -137,14 +139,26 @@ define(
              * Update the sort order of attributes
              */
             updateAttributeOrders: function () {
-                var sortOrder = _.reduce(this.$('.attribute'), function (previous, current, order) {
+                var updatedSortOrder = _.reduce(this.$('.attribute'), function (previous, current, order) {
                     var next = _.extend({}, previous);
                     next[current.dataset.attributeCode] = order;
 
                     return next;
                 }, {});
+                const notUpdateSortOrder = this.getFormData().attributes
+                    .slice(this.config.number_of_attributes_displayed)
+                    .reduce(
+                        function (previous, current, order) {
+                            var next = _.extend({}, previous);
+                            next[current] = this.getFormData().attributes_sort_order[current];
+
+                            return next;
+                        }.bind(this),
+                        {});
+                const attributeWithSortOrder = _.extend(updatedSortOrder, notUpdateSortOrder);
+
                 var attributeGroup = _.extend({}, this.getFormData());
-                attributeGroup.attributes_sort_order = sortOrder;
+                attributeGroup.attributes_sort_order = attributeWithSortOrder;
 
                 this.setData(attributeGroup);
 
