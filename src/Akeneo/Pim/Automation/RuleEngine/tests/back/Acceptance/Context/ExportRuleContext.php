@@ -162,6 +162,8 @@ rules:
       - type: calculate      
         destination:
           field: item_weight
+          scope: ecommerce
+          locale: en_US
         source:
           field: weight
         operation_list:

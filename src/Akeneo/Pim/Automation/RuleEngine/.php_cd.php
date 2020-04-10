@@ -48,6 +48,10 @@ $rules = [
         'Akeneo\Tool\Component\FileStorage\Exception\FileTransferException',
         'Webmozart\Assert\Assert',
 
+        // used for validation
+        'Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface',
+        'Akeneo\Channel\Component\Validator\Constraint\ConversionUnits',
+
         // TODO RUL-28: check if we can use another component
         'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
 

@@ -124,3 +124,10 @@ services:
         class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\CalculateActionFieldsValidator
         tags:
             - { name: validator.constraint_validator, alias: pimee_calculate_fields_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\ActiveCurrencyValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@pim_catalog.query.find_activated_currencies'
+        tags:
+          - { name: validator.constraint_validator }

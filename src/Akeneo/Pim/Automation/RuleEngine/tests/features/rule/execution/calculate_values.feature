@@ -29,6 +29,8 @@ Feature: Execute clear rules
           - type: calculate
             destination:
               field: item_weight
+              scope: ecommerce
+              locale: en_US
             source:
               field: weight
             operation_list:
@@ -39,8 +41,8 @@ Feature: Execute clear rules
     """
     When I execute the "calculate_rule" rule on products
     Then no exception has been thrown
-    And the unlocalized unscoped item_weight of "75024" should be "10.375"
-    But there should be no unlocalized unscoped item_weight value for the product "75025"
+    And the en_US ecommerce item_weight of "75024" should be "10.375"
+    But there should be no en_US ecommerce item_weight value for the product "75025"
 
   @acceptance-back
   Scenario: Successfully execute a calculate rule with price attributes

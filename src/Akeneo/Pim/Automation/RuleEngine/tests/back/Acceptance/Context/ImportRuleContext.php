@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor;
 use Akeneo\Test\Pim\Automation\RuleEngine\Common\Context\ExceptionContext;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer;
 use AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition\InMemoryRuleDefinitionRepository;
 use Behat\Behat\Context\Context;
@@ -116,6 +117,8 @@ rules:
                 field: weight
               source:
                 field: item_weight
+                scope: ecommerce
+                locale: en_US
               operation_list:
                 - operator: multiply
                   value: 1000
@@ -195,6 +198,124 @@ rules:
               operation_list:
                 - operator: multiply
                   field: color
+YAML;
+        $this->importRules($rulesConfig);
+    }
+
+    /**
+     * @When I import a calculate rule with invalid currencies
+     */
+    public function importACalculateRuleWithInvalidCurrencies(): void
+    {
+        $rulesConfig = <<<YAML
+rules:
+    calculate:
+        priority: 90
+        conditions:
+            - field: family
+              operator: IN
+              value:
+                  - camcorders
+        actions:
+            - type: calculate
+              destination:
+                field: price                
+              source:
+                field: price
+                currency: USD
+              operation_list:
+                - operator: multiply
+                  value: 1.08
+YAML;
+        $this->importRules($rulesConfig);
+    }
+
+    /**
+     * @When I import a calculate rule with invalid channels
+     */
+    public function importACalculateRuleWithInvalidChannels(): void
+    {
+        $rulesConfig = <<<YAML
+rules:
+    calculate:
+        priority: 90
+        conditions:
+            - field: family
+              operator: IN
+              value:
+                  - camcorders
+        actions:
+            - type: calculate
+              destination:
+                field: item_weight
+                locale: en_US
+                scope: print
+              source:
+                field: item_weight
+                locale: fr_FR
+              operation_list:
+                - operator: add
+                  field: in_stock
+                  scope: ecommerce
+YAML;
+        $this->importRules($rulesConfig);
+    }
+
+    /**
+     * @When I import a calculate rule with invalid locales
+     */
+    public function importACalculateRuleWithInvalidLocales(): void
+    {
+        $rulesConfig = <<<YAML
+rules:
+    calculate:
+        priority: 90
+        conditions:
+            - field: family
+              operator: IN
+              value:
+                  - camcorders
+        actions:
+            - type: calculate
+              destination:
+                field: item_weight
+                locale: es_ES
+                scope: ecommerce
+              source:
+                field: item_weight
+                scope: ecommerce
+              operation_list:
+                - operator: add
+                  field: in_stock
+                  locale: en_US
+YAML;
+        $this->importRules($rulesConfig);
+    }
+
+    /**
+     * @When I import a calculate rule with an invalid measurement unit
+     */
+    public function importACalculateRuleWithAnInvalidMeasurementUnit(): void
+    {
+        $rulesConfig = <<<YAML
+rules:
+    calculate:
+        priority: 90
+        conditions:
+            - field: family
+              operator: IN
+              value:
+                  - camcorders
+        actions:
+            - type: calculate
+              destination:
+                field: processor
+                unit: GIGAHERTZ                
+              source:
+                field: item_weight
+              operation_list:
+                - operator: multiply
+                  value: 1000
 YAML;
         $this->importRules($rulesConfig);
     }

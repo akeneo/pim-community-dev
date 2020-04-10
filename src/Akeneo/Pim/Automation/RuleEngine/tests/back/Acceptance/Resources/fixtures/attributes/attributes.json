@@ -158,8 +158,8 @@
     "code": "item_weight",
     "type": "pim_catalog_number",
     "group": "other",
-    "localizable": false,
-    "scopable": false,
+    "localizable": true,
+    "scopable": true,
     "decimals_allowed": true,
     "labels": {
       "en_US": "Item weight"

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
+use Akeneo\Channel\Component\Validator\Constraint\ConversionUnits;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ActiveCurrency;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AttributeShouldBeNumeric;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\CalculateActionFields;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist;
@@ -46,8 +48,15 @@ class CalculateActionFieldsValidator extends ConstraintValidator
             'destination',
             $destination->getField(),
             $destination->getScope(),
-            $destination->getLocale()
+            $destination->getLocale(),
+            $destination->getCurrency()
         );
+        if (null !== $destination->getUnit()) {
+            $validator->atPath('destination.unit')->validate(
+                [$destination->getField() => $destination->getUnit()],
+                new ConversionUnits()
+            );
+        }
 
         $source = $action->getSource();
         $this->doValidate(
@@ -55,7 +64,8 @@ class CalculateActionFieldsValidator extends ConstraintValidator
             'source',
             $source->getAttributeCode(),
             $source->getChannelCode(),
-            $source->getLocaleCode()
+            $source->getLocaleCode(),
+            $source->getCurrencyCode()
         );
 
         foreach ($action->getOperationList() as $index => $operation) {
@@ -65,7 +75,8 @@ class CalculateActionFieldsValidator extends ConstraintValidator
                 $path,
                 $operation->getOperand()->getAttributeCode(),
                 $operation->getOperand()->getChannelCode(),
-                $operation->getOperand()->getLocaleCode()
+                $operation->getOperand()->getLocaleCode(),
+                $operation->getOperand()->getCurrencyCode()
             );
         }
     }
@@ -75,7 +86,8 @@ class CalculateActionFieldsValidator extends ConstraintValidator
         string $path,
         ?string $attributeCode,
         ?string $scope,
-        ?string $locale
+        ?string $locale,
+        ?string $currency
     ): void {
         $validator->atPath(sprintf('%s.field', $path))->validate(
             $attributeCode,
@@ -88,9 +100,13 @@ class CalculateActionFieldsValidator extends ConstraintValidator
             $scope,
             new ChannelShouldExist()
         );
-        $validator->atPath(sprintf('%s.locale', $locale))->validate(
+        $validator->atPath(sprintf('%s.locale', $path))->validate(
             $locale,
             new LocaleShouldBeActive()
+        );
+        $validator->atPath(sprintf('%s.currency', $path))->validate(
+            $currency,
+            new ActiveCurrency(['attributeCode' => $attributeCode])
         );
     }
 }
