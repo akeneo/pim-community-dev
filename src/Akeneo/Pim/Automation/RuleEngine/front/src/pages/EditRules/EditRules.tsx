@@ -77,24 +77,25 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
               </div>
               <SmallHelper>Page under construction</SmallHelper>
               <div className="AknFormContainer">
-                <InputText
-                  disabled
-                  id="edit-rules-input-code"
-                  label={translate("pim_common.code")}
-                  readOnly
-                  value={ruleDefinition.code}
-                />
-                <InputNumber
-                  id="edit-rules-input-priority"
-                  label={translate('pimee_catalog_rule.form.edit.priority.label')}
-                  value={ruleDefinition.priority}
-                  onChange={(event) => {
-                    if (ruleDefinition) {
-                      let priority = parseInt(event.target.value) || 0;
-                      setRuleDefinition({...ruleDefinition, priority: priority});
-                    }
-                  }}
-                />
+                <div className="AknFieldContainer">
+                  <InputText
+                    disabled
+                    id="edit-rules-input-code"
+                    label={translate("pim_common.code")}
+                    readOnly
+                    value={ruleDefinition.code}
+                  />
+                </div>
+                <div className="AknFieldContainer">
+                  <InputNumber
+                    id="edit-rules-input-priority"
+                    label={translate('pimee_catalog_rule.form.edit.priority.label')}
+                    value={ruleDefinition.priority}
+                    onChange={(event) => {
+                      setRuleDefinition({...ruleDefinition, priority: Number(event.target.value)});
+                    }}
+                  />
+                </div>
               </div>
             </Content>
           </form>
