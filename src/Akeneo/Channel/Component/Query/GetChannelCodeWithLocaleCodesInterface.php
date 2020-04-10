@@ -11,5 +11,21 @@ namespace Akeneo\Channel\Component\Query;
  */
 interface GetChannelCodeWithLocaleCodesInterface
 {
+    /**
+     * Returns a list of channel codes with bound locales codes using this format:
+     *
+     *  [
+     *      {
+     *          "channelCode": "ecommerce",
+     *          "localeCodes": ["en_US", "fr_FR"]
+     *      },
+     *      {
+     *          "channelCode": "mobile",
+     *          "localeCodes": ["en_US", "de_DE"]
+     *      }
+     *  ]
+     *
+     * @return array
+     */
     public function findAll(): array;
 }
