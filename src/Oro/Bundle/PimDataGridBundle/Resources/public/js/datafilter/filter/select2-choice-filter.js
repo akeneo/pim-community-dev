@@ -76,19 +76,12 @@ define(
                 e.preventDefault();
             },
 
-            /**
-             * Highlights the current operator
-             *
-             * @param operator
-             */
-
-
             _getSelect2Config: function() {
                 var config = {
                     multiple: true,
                     width: '290px',
                     minimumInputLength: 0,
-                    onpenOnEnter: false,
+                    openOnEnter: false,
                 };
 
                 if (this.choiceUrl) {
