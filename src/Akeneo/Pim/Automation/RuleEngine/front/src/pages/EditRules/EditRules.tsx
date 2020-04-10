@@ -3,6 +3,7 @@ import { ThemeProvider } from "styled-components";
 import * as akeneoTheme from "../../theme";
 import { Content } from "../../template/Content";
 import { InputText } from "../../components/InputText";
+import { InputNumber } from "../../components/InputNumber";
 import { SmallHelper } from "../../components/SmallHelper";
 import {
   BreadcrumbItem,
@@ -85,7 +86,7 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
                 />
                 <InputNumber
                   id="edit-rules-input-priority"
-                  label={translate("pim_common.priority")}
+                  label={translate('pimee_catalog_rule.form.edit.priority.label')}
                   value={ruleDefinition.priority}
                   onChange={(event) => {
                     if (ruleDefinition) {
