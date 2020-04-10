@@ -35,6 +35,7 @@ datagrid:
             actions_new:
                 label: New actions
                 frontend_type: actions-new
+                data_name: content
         properties:
             id: ~
             execute_link:
