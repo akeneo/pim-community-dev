@@ -11,4 +11,15 @@ const httpPost = (url: string, params?: any) => {
   });
 };
 
-export { httpPost };
+const httpGet = (url: string) => {
+  return fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      "X-Requested-With": "XMLHttpRequest",
+    },
+    credentials: "include",
+    method: "GET"
+  });
+};
+
+export { httpPost, httpGet };

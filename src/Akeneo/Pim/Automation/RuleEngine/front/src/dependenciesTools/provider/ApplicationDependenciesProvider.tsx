@@ -5,7 +5,7 @@ import {
   Router,
   Security,
   Translate,
-  User,
+  UserContext,
   ViewBuilder
 } from "./applicationDependenciesProvider.type";
 
@@ -14,7 +14,7 @@ type ApplicationDependenciesContextProps = {
   router?: Router;
   security?: Security;
   translate?: Translate;
-  user?: User;
+  user?: UserContext;
   viewBuilder?: ViewBuilder;
 };
 

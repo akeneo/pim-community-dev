@@ -24,7 +24,7 @@ type Translate = (
   count?: number
 ) => string;
 
-type User = {
+type UserContext = {
   get: (data: string) => string;
   set: (key: string, value: string, options: {}) => void;
 };
@@ -40,6 +40,6 @@ export {
   Router,
   Security,
   Translate,
-  User,
+  UserContext,
   ViewBuilder,
 };
