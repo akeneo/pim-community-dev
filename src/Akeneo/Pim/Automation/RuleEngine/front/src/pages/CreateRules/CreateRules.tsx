@@ -9,6 +9,7 @@ import {
   useBackboneRouter,
   useNotify,
   useTranslate,
+  useUserContext,
 } from "../../dependenciesTools/hooks";
 import { useDocumentEscapeKey } from "../../hooks";
 import { CrossLink } from "./components/CrossLink";
@@ -21,11 +22,13 @@ const CreateRules: React.FC = () => {
   const [pending, setPending] = React.useState(false);
   const translate = useTranslate();
   const router = useBackboneRouter();
+  const userContext = useUserContext();
   const [urlRules, handleRulesRoute] = generateAndRedirect(
     router,
     "pimee_catalog_rule_rule_index"
   );
   useDocumentEscapeKey(handleRulesRoute);
+  const currentCatalogLocale = userContext.get('catalogLocale');
   const notify = useNotify();
   const onSubmit = async (formData: FormDataInput): Promise<any> => {
     const postRule = generateUrl(router, "pimee_enrich_rule_definition_create");
@@ -34,7 +37,7 @@ const CreateRules: React.FC = () => {
     try {
       result = await httpPost(postRule, {
         body: {
-          labels: { en_US: formData.label },
+          labels: { [currentCatalogLocale]: formData.label },
           code: formData.code,
           content: {
             conditions: {},
@@ -93,7 +96,7 @@ const CreateRules: React.FC = () => {
                 </span>
               </SmallHelper>
             </div>
-            <CreateRulesForm onSubmit={onSubmit} translate={translate} />
+            <CreateRulesForm onSubmit={onSubmit} translate={translate} locale={currentCatalogLocale}/>
           </div>
         </div>
       </div>
