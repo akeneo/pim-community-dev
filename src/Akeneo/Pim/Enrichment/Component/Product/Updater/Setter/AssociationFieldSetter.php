@@ -6,8 +6,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -35,11 +33,6 @@ class AssociationFieldSetter extends AbstractFieldSetter
     private $missingAssociationAdder;
 
     /**
-     * @var AssociationFieldAdder
-     */
-    private $associationFieldAdder;
-
-    /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
@@ -51,7 +44,6 @@ class AssociationFieldSetter extends AbstractFieldSetter
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder,
-        AssociationFieldAdder $associationFieldAdder,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
@@ -59,7 +51,6 @@ class AssociationFieldSetter extends AbstractFieldSetter
         $this->groupRepository = $groupRepository;
         $this->supportedFields = $supportedFields;
         $this->missingAssociationAdder = $missingAssociationAdder;
-        $this->associationFieldAdder = $associationFieldAdder;
     }
 
     /**
@@ -218,7 +209,6 @@ class AssociationFieldSetter extends AbstractFieldSetter
     protected function setAssociatedProducts(AssociationInterface $association, $productsIdentifiers)
     {
         foreach ($productsIdentifiers as $productIdentifier) {
-            /** @var Product $associatedProduct */
             $associatedProduct = $this->productRepository->findOneByIdentifier($productIdentifier);
             if (null === $associatedProduct) {
                 throw InvalidPropertyException::validEntityCodeExpected(
@@ -230,23 +220,6 @@ class AssociationFieldSetter extends AbstractFieldSetter
                 );
             }
             $association->addProduct($associatedProduct);
-
-//            if ($association->getAssociationType()->isBidirectional()) {
-////                 Fetch the product association corresponding to the $productToAssociate->productWhichAssociationsAreBeingUpdated
-//                $entityWithAssociations = $association->getOwner()->getIdentifier();
-//                $reverseAssociation = [
-//                    $association->getAssociationType()->getCode() => [
-//                        'products' => [$entityWithAssociations],
-//                        'product_models' => [],
-//                        'groups' => []
-//                    ]
-//                ];
-//                $this->associationFieldAdder->addFieldData(
-//                    $associatedProduct,
-//                    'associations',
-//                    $reverseAssociation
-//                );
-//            }
         }
     }
 
