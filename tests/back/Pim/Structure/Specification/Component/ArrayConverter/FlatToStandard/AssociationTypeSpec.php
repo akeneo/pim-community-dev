@@ -18,7 +18,7 @@ class AssociationTypeSpec extends ObjectBehavior
             'code'        => 'mycode',
             'label-fr_FR' => 'Vente croisée',
             'label-en_US' => 'Cross sell',
-            'two_way'   => true,
+            'is_two_way' => true,
         ];
 
         $this->convert($fields)->shouldReturn(
@@ -28,7 +28,7 @@ class AssociationTypeSpec extends ObjectBehavior
                     'en_US' => 'Cross sell',
                 ],
                 'code'   => 'mycode',
-                'two_way'   => true,
+                'is_two_way' => true,
             ]
         );
     }
@@ -48,7 +48,7 @@ class AssociationTypeSpec extends ObjectBehavior
                     'en_US' => 'Cross sell',
                 ],
                 'code'   => 'mycode',
-                'two_way'   => false,
+                'is_two_way' => false,
             ]
         );
     }

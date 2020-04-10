@@ -12,7 +12,7 @@ class AssociationTypeSpec extends ObjectBehavior
             'code'        => 'long_sword',
             'label-fr_FR' => 'Épée longue',
             'label-en_US' => 'Long sword',
-            'two_way' => 1
+            'is_two_way' => 1
         ];
 
         $item = [
@@ -21,7 +21,7 @@ class AssociationTypeSpec extends ObjectBehavior
                 'fr_FR' => 'Épée longue',
                 'en_US' => 'Long sword'
             ],
-            'two_way' => true
+            'is_two_way' => true
         ];
 
         $this->convert($item)->shouldReturn($expected);

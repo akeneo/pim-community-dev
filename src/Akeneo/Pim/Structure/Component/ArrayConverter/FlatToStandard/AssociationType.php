@@ -35,7 +35,7 @@ class AssociationType implements ArrayConverterInterface
      *      'code'        => 'mycode',
      *      'label-fr_FR' => 'XSELL',
      *      'label-en_US' => 'Vente croisée',
-     *      'two_way' => 1,
+     *      'is_two_way' => 1,
      * ]
      *
      * After:
@@ -45,7 +45,7 @@ class AssociationType implements ArrayConverterInterface
      *          'fr_FR' => 'XSELL',
      *          'en_US' => 'Vente croisée',
      *      ],
-     *      'two_way' => true
+     *      'is_two_way' => true
      * ]
      */
     public function convert(array $item, array $options = [])
@@ -59,7 +59,7 @@ class AssociationType implements ArrayConverterInterface
                 $convertedItem = $this->convertField($convertedItem, $field, $data);
             }
         }
-        $convertedItem['two_way'] = (bool) ($item['two_way'] ?? false);
+        $convertedItem['is_two_way'] = (bool) ($item['is_two_way'] ?? false);
 
         return $convertedItem;
     }

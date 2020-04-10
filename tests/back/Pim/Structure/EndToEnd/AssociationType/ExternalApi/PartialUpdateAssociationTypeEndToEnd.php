@@ -55,7 +55,7 @@ JSON;
         $associationTypeStandard = [
             'code'             => 'YOLO_SELL',
             'labels'           => [],
-            'two_way' => false
+            'is_two_way' => false
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -73,7 +73,7 @@ JSON;
             "en_US": "Gift sell",
             "fr_FR": "Vente cadeau"
         },
-        "two_way": true
+        "is_two_way": true
     }
 JSON;
         $client->request('PATCH', '/api/rest/v1/association-types/GIFT_SELL', [], [], [], $data);
@@ -84,7 +84,7 @@ JSON;
                 'en_US' => 'Gift sell',
                 'fr_FR' => 'Vente cadeau',
             ],
-            'two_way' => true,
+            'is_two_way' => true,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -92,14 +92,14 @@ JSON;
         $this->assertSame($associationTypeStandard, $normalizer->normalize($associationType));
     }
 
-    public function testTwoWayIsImmutable()
+    public function testIsTwoWayFieldIsImmutable()
     {
         $client = $this->createAuthenticatedClient();
         $data =
 <<<JSON
     {
         "code": "X_SELL",
-        "two_way": true
+        "is_two_way": true
     }
 JSON;
         $expectedContent =
@@ -134,7 +134,7 @@ JSON;
                 'en_US' => 'Cross sell',
                 'fr_FR' => 'Vente croisée',
             ],
-            'two_way' => false,
+            'is_two_way' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -160,7 +160,7 @@ JSON;
             'labels'           => [
                 'fr_FR' => 'Vente croisée',
             ],
-            'two_way' => false,
+            'is_two_way' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
