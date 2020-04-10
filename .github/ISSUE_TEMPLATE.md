@@ -6,13 +6,15 @@ For version >= 1.4, please go to "System > system info", download the text repor
 
 Then explain the expected behavior, the encountered behavior and the steps to reproduce.
 
-**I'm asking a Question**
-
-Please submit your question via the Akeneo Slack user group https://akeneopim-ug.herokuapp.com/
+Please note that we do offer support only in a "_best effort_" mode without any engagment on the resolution time.
 
 **I'm submitting a Feature Request**
 
-Please submit your feature request via the forum https://www.akeneo.com/forums/forum/feature-request/
+Explain the use case and the expected behavior. We will consider it and submit to the Core team.
+
+**I'm asking a Question**
+
+Please submit your question via the Akeneo Slack user group https://akeneopim-ug.herokuapp.com/
 
 **I'm using the Enterprise Edition**
 
