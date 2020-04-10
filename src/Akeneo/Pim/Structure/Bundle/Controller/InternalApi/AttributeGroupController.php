@@ -119,7 +119,8 @@ class AttributeGroupController
         SimpleFactoryInterface $attributeGroupFactory,
         EventDispatcherInterface $eventDispatcher,
         CollectionFilterInterface $inputFilter,
-        FindAttributeCodesForAttributeGroup $attributeCodesForAttributeGroup
+        FindAttributeCodesForAttributeGroup $attributeCodesForAttributeGroup = null // TODO @pull-up: remove null
+
     ) {
         $this->attributeGroupRepo                 = $attributeGroupRepo;
         $this->attributeGroupSearchableRepository = $attributeGroupSearchableRepository;
@@ -276,7 +277,7 @@ class AttributeGroupController
         $sortOrder = $data['attributes_sort_order'];
         unset($data['attributes_sort_order']);
 
-        $this->checkAttributeCollectionRights($data);
+        $this->checkAttributeCollectionRights($data, $attributeGroup);
 
         $filteredData = $this->inputFilter->filterCollection(
             $data,
@@ -445,14 +446,25 @@ class AttributeGroupController
     /**
      * Check that the user doesn't change the attribute list without permission
      *
-     * @param array $attributeCodesAfter
-     *
-     * @throws AccessDeniedHttpException
+     * @param array                   $newAttributeGroup
+     * @param AttributeGroupInterface $attributeGroup // TODO @pull-up: Remove this argument
      */
-    protected function checkAttributeCollectionRights(array $newAttributeGroup): void
+    protected function checkAttributeCollectionRights(array $newAttributeGroup, AttributeGroupInterface $attributeGroup): void
     {
         $attributeCodesAfter = $newAttributeGroup['attributes'];
-        $attributeCodesBefore =$this->attributeCodesForAttributeGroup->execute($newAttributeGroup['code']);
+
+        // TODO @pull-up: Remove this conditional, use the attributeCodesForAttributeGroup query function (else part)
+        if (null === $this->attributeCodesForAttributeGroup) {
+            $attributeCodesBefore = array_map(
+                function (AttributeInterface $attribute) {
+                    return $attribute->getCode();
+                },
+                $attributeGroup->getAttributes()->toArray()
+            );
+        } else {
+            $attributeCodesBefore =$this->attributeCodesForAttributeGroup->execute($newAttributeGroup['code']);
+        }
+
         if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_remove_attribute') &&
             count($attributeCodesBefore) > 0 &&
             count(array_diff($attributeCodesBefore, $attributeCodesAfter)) > 0
