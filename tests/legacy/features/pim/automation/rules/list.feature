@@ -124,6 +124,23 @@ Feature: List all rules
             include_children: true
         labels:
           en_US: Unclassify 2014 Collection Tees
+      nineties:
+        priority: 30
+        conditions:
+          - field: release_date
+            operator: BETWEEN
+            scope: mobile
+            value:
+              - "1990-01-15"
+              - "2000-01-15"
+        actions:
+          - type:   remove
+            field:  categories
+            items:
+              - 2014_collection
+            include_children: true
+        labels:
+          en_US: Nineties
       concatenate_rule:
         priority: 90
         conditions:
@@ -149,7 +166,7 @@ Feature: List all rules
 
   Scenario: Successfully show rules
     Then the rows should be sorted ascending by label
-    And the grid should contain 4 elements
+    And the grid should contain 5 elements
     And I should be able to sort the rows by label
 
     And the row "Copy Description" should contain the texts:
@@ -183,6 +200,11 @@ Feature: List all rules
       | Condition | If enabled equals false                                             |
       | Action    | Then 2014_collection and children is removed from categories        |
 
+    And the row "Nineties" should contain the texts:
+      | column    | value                                                        |
+      | Condition | If release_date between 01/15/1990, 01/15/2000 [ mobile ]    |
+      | Action    | Then 2014_collection and children is removed from categories |
+
     And the row "Concatenate Rule" should contain the texts:
       | column    | value                                                                                |
       | Condition | If family in tees                                                                    |
@@ -198,10 +220,10 @@ Feature: List all rules
     And I should see the text "Confirm deletion"
     And I should see the text "Are you sure you want to delete this rule?"
     And I confirm the deletion
-    And the grid should contain 3 elements
+    And the grid should contain 4 elements
 
   Scenario: Successfully delete a set of rules using bulk action
-    When I select rows Copy Description and Update Tees Collection and Unclassify 2014 Collection Tees and Concatenate Rule
+    When I select rows Copy Description and Update Tees Collection and Unclassify 2014 Collection Tees and Nineties and Concatenate Rule
     And I press the "Delete" bottom button
     Then I should see the text "Confirm deletion"
     And I should see the text "Are you sure you want to delete the selected rules?"

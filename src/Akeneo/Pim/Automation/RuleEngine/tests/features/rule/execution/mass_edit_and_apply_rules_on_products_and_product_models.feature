@@ -1,4 +1,3 @@
-@javascript
 Feature: Apply rules after a mass edit execution
   In order to have fully modified products and product models after a mass edit
   As a product manager
@@ -17,12 +16,12 @@ Feature: Apply rules after a mass edit execution
       | name        | Name        | pim_catalog_text         | 1           | 0        | other |                  |
       | size        | Size        | pim_catalog_simpleselect | 0           | 0        | other |                  |
       | style       | Style       | pim_catalog_multiselect  | 0           | 0        | other |                  |
-    And the following "color" attribute options: red, yellow, black and white
+    And the following "color" attribute options: red, yellow, black, white
     And the following "size" attribute options: s, m, l, xl
     And the following "style" attribute options: cheap, urban
     And the following family:
-      | code | requirements-ecommerce | requirements-ecommerce | attributes                            |
-      | bags | sku                    | sku                    | color,description,name,size,sku,style |
+      | code | attribute_requirements | attributes                            |
+      | bags | ecommerce-sku          | color,description,name,size,sku,style |
     And the following family variants:
       | code           | family | variant-axes_1 | variant-attributes_1       | variant-axes_2 | variant-attributes_2 |
       | bag_one_level  | bags   | color,size     | color,description,size,sku |                |                      |
@@ -43,8 +42,8 @@ Feature: Apply rules after a mass edit execution
       | bag_uni_red       | bag_uni     | bags   | default    | red   |      | A red bag                   |             |       |
       | a_bag             |             | bags   | default    | red   |      | A very simple bag           | A bag       | cheap |
       | another_bag       |             | bags   | default    | red   |      | A completely useless bag    | Another bag | cheap |
-    And I am logged in as "Julia"
 
+  @integration-back
   Scenario: Successfully apply rules after a mass edit operation only on edited product models
     Given the following product rule definitions:
       """
@@ -62,29 +61,14 @@ Feature: Apply rules after a mass edit execution
             locale: en_US
             scope:  ecommerce
       """
-    When I am on the products grid
-    And I select rows bag_1, bag_uni and a_bag
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Name attribute
-    And I change the "Name" to "Just a bag"
-    When I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then there should be the following root product model:
-      | code    | name-en_US     |
-      | bag_1   | Just a bag     |
-      | bag_2   | Bag two levels |
-      | bag_uni | Just a bag     |
-    And the product "bag_1_large_black" should have the following values:
-      | description-en_US-ecommerce | A cheap bag |
-    And the product "bag_uni_red" should have the following values:
-      | description-en_US-ecommerce | A cheap bag |
-    And the product "a_bag" should have the following values:
-      | name-en_US                  | Just a bag  |
-      | description-en_US-ecommerce | A cheap bag |
-    But there should be the following product model:
-      | code        | description-en_US-ecommerce |
-      | bag_2_small | A nice red bag              |
-    And the product "another_bag" should have the following values:
-      | name-en_US                  | Another bag              |
-      | description-en_US-ecommerce | A completely useless bag |
+    When I execute an edit attribute values bulk action to set the en_US unscoped name to "Just a bag" for "bag_1,bag_uni,a_bag"
+    Then the en_US unscoped name of "bag_1" should be "Just a bag"
+    And the en_US unscoped name of "bag_2" should be "Bag two levels"
+    And the en_US unscoped name of "bag_uni" should be "Just a bag"
+    And the en_US ecommerce description of "bag_1_large_black" should be "A cheap bag"
+    And the en_US ecommerce description of "bag_uni_red" should be "A cheap bag"
+    And the en_US unscoped name of "a_bag" should be "Just a bag"
+    And the en_US ecommerce description of "a_bag" should be "A cheap bag"
+    But the en_US ecommerce description of "bag_2_small" should be "A nice red bag"
+    And the en_US unscoped name of "another_bag" should be "Another bag"
+    And the en_US ecommerce description of "another_bag" should be "A completely useless bag"

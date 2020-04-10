@@ -46,6 +46,7 @@ integration:
                 - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\ExecuteRuleContext:
                     - '@doctrine.dbal.default_connection'
                     - '@pim_catalog.repository.product_without_permission'
+                    - '@pim_catalog.repository.product_model_without_permission'
                     - '@akeneo_rule_engine.runner.chained'
                     - '@akeneo_rule_engine.repository.rule_definition'
                     - '@pimee_catalog_rule.builder.product'
@@ -67,6 +68,27 @@ integration:
                 - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\VersionContext:
                     - '@pim_catalog.repository.product_without_permission'
                     - '@pim_versioning.repository.version'
+
+                - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\MassActionContext:
+                    - '@akeneo_integration_tests.launcher.job_launcher'
+                    - '@akeneo_batch.launcher.simple_job_launcher'
+                    - '@akeneo_batch.job.job_instance_repository'
+                    - '@pim_user.provider.user'
+                    - '@pim_catalog.repository.product'
+                    - '@pim_catalog.repository.product_model'
+                    - '@pim_connector.doctrine.cache_clearer'
+
+                - Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\ImportProfilesContext:
+                      - '@akeneo_batch.job.job_registry'
+                      - '@akeneo_batch.job_parameters_factory'
+                      - '@akeneo_batch.job.job_parameters_validator'
+                      - '@akeneo_batch.saver.job_instance'
+                      - '@akeneo_integration_tests.launcher.job_launcher'
+                      - '@akeneo_batch.launcher.simple_job_launcher'
+                      - '@akeneo_batch.job.job_instance_repository'
+                      - '@pim_user.provider.user'
+                      - '@pim_connector.doctrine.cache_clearer'
+                      - '%%kernel.root_dir%%'
 
                 - Akeneo\Test\Pim\Automation\RuleEngine\Common\Context\ExceptionContext:
 

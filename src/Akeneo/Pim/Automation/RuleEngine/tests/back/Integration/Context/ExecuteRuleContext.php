@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStand
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
@@ -40,6 +41,9 @@ final class ExecuteRuleContext implements Context
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
+    /** @var ProductModelRepositoryInterface */
+    private $productModelRepository;
+
     /** @var ChainedRunner */
     private $rulesRunner;
 
@@ -58,6 +62,7 @@ final class ExecuteRuleContext implements Context
     public function __construct(
         Connection $connection,
         ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
         ChainedRunner $rulesRunner,
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
         BuilderInterface $builder,
@@ -66,6 +71,7 @@ final class ExecuteRuleContext implements Context
     ) {
         $this->connection = $connection;
         $this->productRepository = $productRepository;
+        $this->productModelRepository = $productModelRepository;
         $this->rulesRunner = $rulesRunner;
         $this->ruleDefinitionRepository = $ruleDefinitionRepository;
         $this->builder = $builder;
@@ -94,15 +100,19 @@ final class ExecuteRuleContext implements Context
         $scope = 'unscoped' === $scope ? null : $scope;
         $value = str_replace('|NL|', "\n", $value);
 
-        $product = $this->productRepository->findOneByIdentifier($identifier);
-        $productValue = $product->getValue($attribute, $locale, $scope);
+        $entityWithValues = $this->productRepository->findOneByIdentifier($identifier);
+        if (null === $entityWithValues) {
+            $entityWithValues = $this->productModelRepository->findOneByIdentifier($identifier);
+        }
+        Assert::notNull($entityWithValues);
+        $entityValue = $entityWithValues->getValue($attribute, $locale, $scope);
 
-        if (null === $productValue && '' === $value) {
+        if (null === $entityValue && '' === $value) {
             return;
         }
 
-        Assert::notNull($productValue, 'The value is empty for this product.');
-        Assert::same($value, $productValue->__toString());
+        Assert::notNull($entityValue, 'The value is empty for this product.');
+        Assert::same($entityValue->__toString(), $value);
     }
 
     /**

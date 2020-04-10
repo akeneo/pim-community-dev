@@ -15,13 +15,16 @@ namespace Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context;
 
 use AcmeEnterprise\Bundle\AppBundle\Entity\Color;
 use AcmeEnterprise\Bundle\AppBundle\Entity\Fabric;
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
@@ -304,6 +307,146 @@ final class DataFixturesContext implements Context
     {
         foreach ($table->getHash() as $row) {
             $this->createReferenceData(trim($row['type']), trim($row['code']), trim($row['label'] ?? ''));
+        }
+    }
+
+    /**
+     * @Given the following family:
+     */
+    public function theFollowingFamily(TableNode $table): void
+    {
+        $familyFactory = $this->getContainer()->get('pim_catalog.factory.family');
+        $attributeRepository = $this->getContainer()->get('pim_catalog.repository.attribute');
+        $familyUpdater = $this->getContainer()->get('pim_catalog.updater.family');
+        $familySaver = $this->getContainer()->get('pim_catalog.saver.family');
+        foreach ($table->getHash() as $familyData) {
+            $family = $familyFactory->create();
+
+            $attributeCodes = explode(',', $familyData['attributes']);
+            foreach ($attributeCodes as $attributeCode) {
+                $attribute = $attributeRepository->findOneByIdentifier($attributeCode);
+                Assert::notNull($attribute, sprintf('Attribute "%s" does not exist', $attributeCode));
+            }
+            $familyData['attributes'] = $attributeCodes;
+
+            if (isset($familyData['label-en_US'])) {
+                $familyData['labels'] = ['en_US' => $familyData['label-en_US']];
+                unset($familyData['label-en_US']);
+            }
+
+            if (isset($familyData['attribute_requirements'])) {
+                $requirements = [];
+                $normalizedRequirements = explode(',', $familyData['attribute_requirements']);
+                foreach ($normalizedRequirements as $normalizedRequirement) {
+                    $chunks = explode('-', $normalizedRequirement);
+                    if (!isset($requirements[$chunks[0]])) {
+                        $requirements[$chunks[0]] = [];
+                    }
+                    $requirements[$chunks[0]][] = $chunks[1];
+                }
+                $familyData['attribute_requirements'] = $requirements;
+            }
+
+            $familyUpdater->update($family, $familyData);
+            $familySaver->save($family);
+        }
+    }
+
+    /**
+     * @Given /^the following categories:$/
+     */
+    public function theFollowingCategories(TableNode $table): void
+    {
+        $categoryRepository = $this->getContainer()->get('pim_catalog.repository.category');
+        $categorySaver = $this->getContainer()->get('pim_catalog.saver.category');
+        foreach ($table->getHash() as $data) {
+            $category = new Category();
+            $category->setCode($data['code']);
+            if (isset($data['parent'])) {
+                $parentCategory = $categoryRepository->findOneByIdentifier($data['parent']);
+                $category->setParent($parentCategory);
+            }
+
+            $categorySaver->save($category);
+        }
+    }
+
+    /**
+     * @Given /^the following root product models?:$/
+     */
+    public function theFollowingRootProductModels(TableNode $table): void
+    {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product_model');
+        $productModelUpdater = $this->getContainer()->get('pim_catalog.updater.product_model');
+
+        foreach ($table->getHash() as $data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->replacePlaceholders($value);
+            }
+
+            $productModel = new ProductModel();
+            $convertedData = $converter->convert($data);
+            $productModelUpdater->update($productModel, $convertedData);
+
+            $errors = $this->getContainer()->get('pim_catalog.validator.product_model')->validate($productModel);
+            if (0 !== $errors->count()) {
+                throw new \LogicException('Product model could not be updated, invalid data provided.');
+            }
+
+            $this->getContainer()->get('pim_catalog.saver.product_model')->save($productModel);
+
+            $uniqueAxesCombinationSet = $this->getContainer()->get('pim_catalog.validator.unique_axes_combination_set');
+            $uniqueAxesCombinationSet->reset();
+
+            $this->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
+            $this->refreshEsIndexes();
+        }
+    }
+
+    /**
+     * @Given /^the following sub product models?:$/
+     */
+    public function theFollowingSubProductModels(TableNode $table): void
+    {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product_model');
+        $productModelUpdater = $this->getContainer()->get('pim_catalog.updater.product_model');
+
+        foreach ($table->getHash() as $data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->replacePlaceholders($value);
+            }
+
+            $productModel = new ProductModel();
+            $convertedData = $converter->convert($data);
+            $productModelUpdater->update($productModel, $convertedData);
+
+            $errors = $this->getContainer()->get('pim_catalog.validator.product_model')->validate($productModel);
+            if (0 !== $errors->count()) {
+                throw new \LogicException('Product model could not be updated, invalid data provided.');
+            }
+
+            $this->getContainer()->get('pim_catalog.saver.product_model')->save($productModel);
+
+            $uniqueAxesCombinationSet = $this->getContainer()->get('pim_catalog.validator.unique_axes_combination_set');
+            $uniqueAxesCombinationSet->reset();
+
+            $this->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
+            $this->refreshEsIndexes();
+        }
+    }
+
+    /**
+     * @Given /^the following jobs?:$/
+     */
+    public function theFollowingJobs(TableNode $table): void
+    {
+        $jobInstanceSaver = $this->getContainer()->get('akeneo_batch.saver.job_instance');
+
+        foreach ($table->getHash() as $data) {
+            $jobInstance = new JobInstance($data['connector'], $data['type'], $data['alias']);
+            $jobInstance->setCode($data['code']);
+            $jobInstance->setLabel($data['label']);
+            $jobInstanceSaver->save($jobInstance);
         }
     }
 

@@ -1,4 +1,3 @@
-@javascript
 Feature: Import product models with rules
   In order ease the enrichment of the catalog
   As a regular user
@@ -12,10 +11,10 @@ Feature: Import product models with rules
       | description | Description | pim_catalog_textarea     | 1           | 1        | other |                  |
       | name        | Name        | pim_catalog_text         | 1           | 0        | other |                  |
       | size        | Size        | pim_catalog_simpleselect | 0           | 0        | other |                  |
-    And the following "color" attribute options: red, black and white
+    And the following "color" attribute options: red, black, white
     And the following family:
-      | code | requirements-ecommerce | requirements-ecommerce | attributes                  |
-      | bags | sku                    | sku                    | color,description,name,size |
+      | code | attribute_requirements | attributes                  |
+      | bags | ecommerce-sku          | color,description,name,size |
     And the following family variants:
       | code           | family | variant-axes_1 | variant-attributes_1 | variant-axes_2 | variant-attributes_2 |
       | bag_color_size | bags   | color          | color,description    | size           | size                 |
@@ -27,7 +26,6 @@ Feature: Import product models with rules
       | code      | categories | parent    | family_variant | color | description-en_US-ecommerce |
       | black_bag | default    | bag_model | bag_color_size | black |                             |
       | red_bag   | default    | bag_model | bag_color_size | red   | The original description    |
-    And I am logged in as "Peter"
     And the following product rule definitions:
       """
       set_bag_name:
@@ -57,6 +55,7 @@ Feature: Import product models with rules
             scope: ecommerce
       """
 
+  @integration-back
   Scenario: Apply rules on product models imported in CSV
     Given the following CSV file to import:
       """
@@ -71,20 +70,15 @@ Feature: Import product models with rules
       | Akeneo CSV Connector | import | csv_product_model_import_with_rules | csv_product_model_import_with_rules | CSV product model import with rules |
     And the following job "csv_product_model_import_with_rules" configuration:
       | filePath | %file to import% |
-    When I am on the "csv_product_model_import_with_rules" import job page
-    And I launch the import job
-    And I wait for the "csv_product_model_import_with_rules" job to finish
-    Then there should be the following root product model:
-      | code          | name-en_US     |
-      | bag_model     | I have no name |
-      | another_model | The other bag  |
-      | new_model     | I have no name |
-    Then there should be the following product model:
-      | code      | description-en_US-ecommerce |
-      | black_bag | A useless description       |
-      | red_bag   | The original description    |
-      | white_bag | A useless description       |
+    When I launch the "csv_product_model_import_with_rules" import job
+    Then the en_US unscoped name of "bag_model" should be "I have no name"
+    And the en_US unscoped name of "another_model" should be "The other bag"
+    And the en_US unscoped name of "new_model" should be "I have no name"
+    And the en_US ecommerce description of "black_bag" should be "A useless description"
+    And the en_US ecommerce description of "red_bag" should be "The original description"
+    And the en_US ecommerce description of "white_bag" should be "A useless description"
 
+  @integration-back
   Scenario: Apply rules on product models imported in XLSX
     Given the following XLSX file to import:
       """
@@ -99,16 +93,10 @@ Feature: Import product models with rules
       | Akeneo XLSX Connector | import | xlsx_product_model_import_with_rules | xlsx_product_model_import_with_rules | XLSX product model import with rules |
     And the following job "xlsx_product_model_import_with_rules" configuration:
       | filePath | %file to import% |
-    When I am on the "xlsx_product_model_import_with_rules" import job page
-    And I launch the import job
-    And I wait for the "xlsx_product_model_import_with_rules" job to finish
-    Then there should be the following root product model:
-      | code          | name-en_US     |
-      | bag_model     | I have no name |
-      | another_model | The other bag  |
-      | new_model     | I have no name |
-    Then there should be the following product model:
-      | code      | description-en_US-ecommerce |
-      | black_bag | A useless description       |
-      | red_bag   | The original description    |
-      | white_bag | A useless description       |
+    When I launch the "xlsx_product_model_import_with_rules" import job
+    Then the en_US unscoped name of "bag_model" should be "I have no name"
+    And the en_US unscoped name of "another_model" should be "The other bag"
+    And the en_US unscoped name of "new_model" should be "I have no name"
+    And the en_US ecommerce description of "black_bag" should be "A useless description"
+    And the en_US ecommerce description of "red_bag" should be "The original description"
+    And the en_US ecommerce description of "white_bag" should be "A useless description"

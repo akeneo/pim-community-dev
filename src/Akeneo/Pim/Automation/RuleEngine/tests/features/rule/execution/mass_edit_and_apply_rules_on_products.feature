@@ -1,4 +1,3 @@
-@javascript
 Feature: Apply rules on products after a mass edit execution
   In order to have fully modified products after a mass edit
   As a product manager
@@ -27,24 +26,13 @@ Feature: Apply rules on products after a mass edit execution
             locale: en_US
             scope:  mobile
       """
-    And I am logged in as "Julia"
 
+  @integration-back
   Scenario: Successfully apply rules after a mass edit operation only on edited products
-    When I am on the products grid
-    And I select rows tshirt-github, tshirt-docker
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Name attribute
-    And I visit the "Product information" group
-    And I change the "Name" to "tshirt"
-    When I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the product "tshirt-github" should have the following values:
-      | name-en_US               | tshirt          |
-      | description-en_US-mobile | Generic t-shirt |
-    And the product "tshirt-docker" should have the following values:
-      | name-en_US               | tshirt          |
-      | description-en_US-mobile | Generic t-shirt |
-    But the product "tshirt-jira" should have the following values:
-      | name-en_US               | tshirt                                               |
-      | description-en_US-mobile | A pretty Jira t-shirt to practice spoon programming. |
+    When I execute an edit attribute values bulk action to set the en_US unscoped name to "tshirt" for "tshirt-github,tshirt-docker"
+    Then the en_US unscoped name of "tshirt-github" should be "tshirt"
+    And the en_US mobile description of "tshirt-github" should be "Generic t-shirt"
+    And the en_US unscoped name of "tshirt-docker" should be "tshirt"
+    And the en_US mobile description of "tshirt-docker" should be "Generic t-shirt"
+    And the en_US unscoped name of "tshirt-jira" should be "tshirt"
+    And the en_US mobile description of "tshirt-jira" should be "A pretty Jira t-shirt to practice spoon programming."
