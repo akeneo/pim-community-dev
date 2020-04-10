@@ -85,8 +85,7 @@ define(
                 var config = {
                     multiple: true,
                     width: '290px',
-                    minimumInputLength: 0,
-                    openOnEnter: false
+                    minimumInputLength: 0
                 };
 
                 if (null !== this.choiceUrl) {

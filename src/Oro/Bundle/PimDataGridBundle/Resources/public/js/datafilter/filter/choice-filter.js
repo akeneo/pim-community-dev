@@ -209,7 +209,6 @@ define(
                 tokenSeparators: [',', ' ', ';'],
                 tags: [],
                 width: '290px',
-                openOnEnter: false,
                 formatNoMatches: function() { return ''; }
             });
             this.$(this.criteriaValueSelectors.value).on('change', () => { this._updateCriteriaSelectorPosition() });

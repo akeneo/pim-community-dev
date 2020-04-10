@@ -143,6 +143,7 @@ define(
         _onClickUpdateCriteria: function(e) {
             this._hideCriteria();
             this.setValue(this._formatRawValue(this._readDOMValue()));
+            $("#select2-drop-mask").hide();
         },
 
         /**
