@@ -9,7 +9,7 @@ enum NotificationLevel {
 
 type Notify = (level: NotificationLevel, message: string) => void;
 
-type RouteParams = { [param: string]: string };
+type RouteParams = { [param: string]: any };
 
 type Router = {
   generate: (route: string, parameters?: RouteParams) => string;
