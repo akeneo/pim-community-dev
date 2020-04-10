@@ -4,27 +4,29 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Automation\Integration\RuleEngine\Controller\InternalApi;
 
-use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTestCase
 {
-    // TODO RUL-117 This is the ref entity one. We need ourself.
-    /** @var WebClientHelper  */
+    /** @var WebClientHelper */
     private $webClientHelper;
 
-    private $ruleDefinitionRepository;
+    /** @var RuleDefinitionSaver */
+    private $ruleDefinitionSaver;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->get('akeneoreference_entity.tests.helper.authenticated_client')->logIn($this->client, 'julia');
-        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
-        $this->ruleDefinitionRepository = $this->get('akeneo_rule_engine.repository.rule_definition');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
+        $this->ruleDefinitionSaver = $this->get('akeneo_rule_engine.saver.rule_definition');
 
         $this->loadFixtures();
     }
@@ -86,26 +88,30 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
             ->setCode('123')
             ->setContent([
                 'conditions' => [],
-                'actions' => ['action1', 'action2'],
+                'actions' => [
+                    ['type' => 'clear', 'field' => 'name'],
+                ],
             ])
             ->setType('add')
         ;
 
-        $this->ruleDefinitionRepository->save($ruleDefinition);
+        $this->ruleDefinitionSaver->save($ruleDefinition);
     }
 
     private function updateRuleDefinition(string $ruleDefinitionCode, array $normalizedRuleDefinition)
     {
-        $this->webClientHelper->callRoute(
+        $this->webClientHelper->callApiRoute(
             $this->client,
             'pimee_enrich_rule_definition_update',
             ['ruleDefinitionCode' => $ruleDefinitionCode],
             'PUT',
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE' => 'application/json',
-            ],
-            $normalizedRuleDefinition
+            [],
+            \json_encode($normalizedRuleDefinition)
         );
+    }
+
+    protected function getConfiguration(): Configuration
+    {
+        return $this->catalog->useMinimalCatalog();
     }
 }

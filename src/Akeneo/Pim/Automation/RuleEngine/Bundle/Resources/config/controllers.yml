@@ -50,3 +50,9 @@ services:
             - '@akeneo_rule_engine.normalizer.rule_definition'
             - '@pim_internal_api_serializer'
             - '@validator'
+
+    pimee_enrich.controller.rule_definition.get_impacted_product_count:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetImpactedProductCountController'
+        arguments:
+            - '@pimee_catalog_rule.builder.product'
+            - '@pimee_catalog_rule.selector.product'

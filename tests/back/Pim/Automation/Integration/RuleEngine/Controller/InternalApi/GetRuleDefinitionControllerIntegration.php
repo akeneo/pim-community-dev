@@ -4,84 +4,80 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Automation\Integration\RuleEngine\Controller\InternalApi;
 
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCase
 {
-    // TODO RUL-117 Decouple
+    /** @var WebClientHelper  */
     private $webClientHelper;
-    private $ruleDefinitionRepository;
+
+    /** @var RuleDefinitionSaver */
+    private $ruleDefinitionSaver;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->get('akeneoreference_entity.tests.helper.authenticated_client')->logIn($this->client, 'julia');
-        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
-        $this->ruleDefinitionRepository = $this->get('akeneo_rule_engine.repository.rule_definition');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
+        $this->ruleDefinitionSaver = $this->get('akeneo_rule_engine.saver.rule_definition');
 
         $this->loadFixtures();
     }
 
     public function test_it_returns_a_rule_definition()
     {
-        $this->webClientHelper->callRoute(
+        $this->webClientHelper->callApiRoute(
             $this->client,
             'pimee_enrich_rule_definition_get',
             ['ruleCode' => '123'],
-            'GET',
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
-            ]
+            'GET'
         );
+
+        $decodedContent = \json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('id', $decodedContent);
 
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_OK,
-            '{"id":123456789,"code":"123","type":"add","priority":0,"content":{"conditions":[],"actions":["action1","action2"]},"labels":{"en_US":"123 english","fr_FR":"123 french"}}'
+            '{"id":' . $decodedContent['id'] . ',"code":"123","type":"add","priority":0,"content":{"conditions":[],"actions":[]},"labels":{"en_US":"123 english","fr_FR":"123 french"}}'
         );
     }
 
-    public function test_it_returns_a_rule_definition_with_conditions()
+    public function test_it_returns_a_rule_definition_with_conditions_and_actions()
     {
-        $this->webClientHelper->callRoute(
+        $this->webClientHelper->callApiRoute(
             $this->client,
             'pimee_enrich_rule_definition_get',
             ['ruleCode' => '234'],
-            'GET',
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
-            ]
+            'GET'
         );
+
+        $decodedContent = \json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('id', $decodedContent);
 
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_OK,
-            '{"id":987654321,"code":"234","type":"add","priority":0,"content":{"conditions":["condition1"],"actions":["action3","action4"]},"labels":[]}'
+            '{"id":' . $decodedContent['id'] . ',"code":"234","type":"add","priority":0,"content":{"conditions":[{"field":"family","operator":"IN","values":["shoes"]}],"actions":[{"type":"clear","field":"category"}]},"labels":[]}'
         );
     }
 
     public function test_it_returns_an_error_if_the_rule_does_not_exist()
     {
-        $this->webClientHelper->callRoute(
+        $this->webClientHelper->callApiRoute(
             $this->client,
             'pimee_enrich_rule_definition_get',
             ['ruleCode' => '1'],
-            'GET',
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
-            ]
+            'GET'
         );
 
-        $this->webClientHelper->assertResponse(
-            $this->client->getResponse(),
-            Response::HTTP_NOT_FOUND
-        );
+        $this->webClientHelper->assertStatusCode($this->client->getResponse(), Response::HTTP_NOT_FOUND);
     }
 
     private function loadFixtures()
@@ -92,7 +88,7 @@ class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCa
             ->setCode('123')
             ->setContent([
                 'conditions' => [],
-                'actions' => ['action1', 'action2'],
+                'actions' => [],
             ])
             ->setType('add')
             ->setId(123456789)
@@ -103,15 +99,24 @@ class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCa
         $ruleDefinitions[] = (new RuleDefinition())
             ->setCode('234')
             ->setContent([
-                'conditions' => ['condition1'],
-                'actions' => ['action3', 'action4'],
+                'conditions' => [
+                    ['field' => 'family', 'operator' => 'IN', 'values' => ['shoes']],
+                ],
+                'actions' => [
+                    ['type' => 'clear', 'field' => 'category'],
+                ],
             ])
             ->setType('add')
             ->setId(987654321)
         ;
 
         foreach ($ruleDefinitions as $ruleDefinition) {
-            $this->ruleDefinitionRepository->save($ruleDefinition);
+            $this->ruleDefinitionSaver->save($ruleDefinition);
         }
+    }
+
+    protected function getConfiguration(): Configuration
+    {
+        return $this->catalog->useMinimalCatalog();
     }
 }
