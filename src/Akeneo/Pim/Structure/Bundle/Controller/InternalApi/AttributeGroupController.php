@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents;
-use Akeneo\Pim\Structure\Bundle\Query\InternalAPI\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup;
+use Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -80,29 +80,10 @@ class AttributeGroupController
 
     /** @var CollectionFilterInterface */
     protected $inputFilter;
-    /**
-     * @var FindAttributeCodesForAttributeGroup
-     */
-    private $attributeCodesForAttributeGroup;
 
-    /**
-     * @param EntityRepository $attributeGroupRepo
-     * @param SearchableRepositoryInterface $attributeGroupSearchableRepository
-     * @param NormalizerInterface $normalizer
-     * @param CollectionFilterInterface $collectionFilter
-     * @param ObjectUpdaterInterface $updater
-     * @param ValidatorInterface                  $validator
-     * @param SaverInterface                      $saver
-     * @param RemoverInterface                    $remover
-     * @param EntityRepository                    $attributeRepository
-     * @param ObjectUpdaterInterface              $attributeUpdater
-     * @param SaverInterface                      $attributeSaver
-     * @param SecurityFacade                      $securityFacade
-     * @param SimpleFactoryInterface              $attributeGroupFactory
-     * @param EventDispatcherInterface            $eventDispatcher
-     * @param CollectionFilterInterface           $inputFilter
-     * @param FindAttributeCodesForAttributeGroup $attributeCodesForAttributeGroup
-     */
+    /** @var FindAttributeCodesForAttributeGroup */
+    private $findAttributeCodesForAttributeGroup;
+
     public function __construct(
         EntityRepository $attributeGroupRepo,
         SearchableRepositoryInterface $attributeGroupSearchableRepository,
@@ -119,8 +100,7 @@ class AttributeGroupController
         SimpleFactoryInterface $attributeGroupFactory,
         EventDispatcherInterface $eventDispatcher,
         CollectionFilterInterface $inputFilter,
-        FindAttributeCodesForAttributeGroup $attributeCodesForAttributeGroup = null // TODO @pull-up: remove null
-
+        FindAttributeCodesForAttributeGroup $findAttributeCodesForAttributeGroup = null // TODO pull-up: remove null
     ) {
         $this->attributeGroupRepo                 = $attributeGroupRepo;
         $this->attributeGroupSearchableRepository = $attributeGroupSearchableRepository;
@@ -137,7 +117,7 @@ class AttributeGroupController
         $this->attributeGroupFactory              = $attributeGroupFactory;
         $this->eventDispatcher                    = $eventDispatcher;
         $this->inputFilter                        = $inputFilter;
-        $this->attributeCodesForAttributeGroup = $attributeCodesForAttributeGroup;
+        $this->findAttributeCodesForAttributeGroup = $findAttributeCodesForAttributeGroup;
     }
 
     /**
@@ -447,14 +427,14 @@ class AttributeGroupController
      * Check that the user doesn't change the attribute list without permission
      *
      * @param array                   $newAttributeGroup
-     * @param AttributeGroupInterface $attributeGroup // TODO @pull-up: Remove this argument
+     * @param AttributeGroupInterface $attributeGroup // TODO pull-up: Remove this argument
      */
     protected function checkAttributeCollectionRights(array $newAttributeGroup, AttributeGroupInterface $attributeGroup): void
     {
         $attributeCodesAfter = $newAttributeGroup['attributes'];
 
-        // TODO @pull-up: Remove this conditional, use the attributeCodesForAttributeGroup query function (else part)
-        if (null === $this->attributeCodesForAttributeGroup) {
+        // TODO pull-up: Remove this conditional, use the attributeCodesForAttributeGroup query function (else part)
+        if (null === $this->findAttributeCodesForAttributeGroup) {
             $attributeCodesBefore = array_map(
                 function (AttributeInterface $attribute) {
                     return $attribute->getCode();
@@ -462,7 +442,7 @@ class AttributeGroupController
                 $attributeGroup->getAttributes()->toArray()
             );
         } else {
-            $attributeCodesBefore =$this->attributeCodesForAttributeGroup->execute($newAttributeGroup['code']);
+            $attributeCodesBefore = $this->findAttributeCodesForAttributeGroup->execute($newAttributeGroup['code']);
         }
 
         if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_remove_attribute') &&

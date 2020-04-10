@@ -83,7 +83,8 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                const attributeCodesToFetch = this.getFormData().attributes.slice(0, this.config.number_of_attributes_displayed);
+                const attributeCodesToFetch = this.getFormData().attributes
+                    .slice(0, this.config.number_of_attributes_displayed);
                 FetcherRegistry.getFetcher('attribute')
                     .fetchByIdentifiers(attributeCodesToFetch, {rights: 0})
                     .then(function (attributes) {
@@ -139,26 +140,16 @@ define(
              * Update the sort order of attributes
              */
             updateAttributeOrders: function () {
-                var updatedSortOrder = _.reduce(this.$('.attribute'), function (previous, current, order) {
-                    var next = _.extend({}, previous);
-                    next[current.dataset.attributeCode] = order;
-
-                    return next;
-                }, {});
-                const notUpdateSortOrder = this.getFormData().attributes
-                    .slice(this.config.number_of_attributes_displayed)
-                    .reduce(
-                        function (previous, current, order) {
-                            var next = _.extend({}, previous);
-                            next[current] = this.getFormData().attributes_sort_order[current];
-
-                            return next;
-                        }.bind(this),
-                        {});
-                const attributeWithSortOrder = _.extend(updatedSortOrder, notUpdateSortOrder);
-
                 var attributeGroup = _.extend({}, this.getFormData());
-                attributeGroup.attributes_sort_order = attributeWithSortOrder;
+                attributeGroup.attributes_sort_order = _.reduce(
+                    this.$('.attribute'),
+                    function (previous, current, order) {
+                        var next = _.extend({}, previous);
+                        next[current.dataset.attributeCode] = order;
+
+                        return next;
+                    },
+                    {});
 
                 this.setData(attributeGroup);
 

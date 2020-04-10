@@ -15,6 +15,6 @@ services:
             $getAttributes: '@akeneo.pim.structure.query.sql_get_attributes'
 
     akeneo.pim.structure.query.find_attribute_codes_for_attribute_groups:
-        class: Akeneo\Pim\Structure\Bundle\Query\InternalAPI\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup
         arguments:
             - '@database_connection'

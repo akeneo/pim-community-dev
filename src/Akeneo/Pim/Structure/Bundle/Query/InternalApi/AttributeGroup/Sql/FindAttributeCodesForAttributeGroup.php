@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Query\InternalAPI\AttributeGroup\Sql;
+namespace Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql;
 
 use Doctrine\DBAL\Driver\Connection;
 
