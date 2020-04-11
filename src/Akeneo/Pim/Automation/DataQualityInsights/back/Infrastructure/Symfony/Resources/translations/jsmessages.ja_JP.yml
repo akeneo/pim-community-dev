@@ -55,7 +55,6 @@ akeneo_data_quality_insights:
     axis:
       enrichment:
         title: 充実
-        attributes_link: 欠損属性を表示
         success: 商品データは完璧です。おめでとうございます！
       consistency:
         title: 一貫性

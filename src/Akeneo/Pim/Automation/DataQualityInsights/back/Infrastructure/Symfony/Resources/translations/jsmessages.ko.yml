@@ -55,7 +55,6 @@ akeneo_data_quality_insights:
     axis:
       enrichment:
         title: 보강
-        attributes_link: 누락된 특성 표시
         success: 제품 데이터가 완전히 보강되었습니다. 축하합니다!
       consistency:
         title: 일관성
