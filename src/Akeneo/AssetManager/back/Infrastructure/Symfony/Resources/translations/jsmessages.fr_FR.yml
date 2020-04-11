@@ -50,7 +50,7 @@ pim_asset_manager:
     previous: Ressource précédente
     next: Prochaine ressource
     empty_main_image: Cette ressource n'a pas d'image.
-    edit_asset: Modifier l'asset
+    edit_asset: Modifier la ressource
     download: Télécharger
     copy_url: Copier l'URL
   close: Fermez la fenêtre
