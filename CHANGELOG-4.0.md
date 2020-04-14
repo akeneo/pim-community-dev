@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9160: Fix the display of the associations list on the product edit form
+
 # 4.0.16 (2020-04-08)
 
 ## Bug fixes
