@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.47 (2020-04-14)
+
 ## Bug fixes
 
 - PIM-9177: Handle the display of a large number of attributes within an attribute group
