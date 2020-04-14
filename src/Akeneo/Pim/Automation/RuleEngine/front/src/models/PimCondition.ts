@@ -1,7 +1,7 @@
 /**
  * A PimCondition is a condition but not coded for now.
  * Its difference with the fallback is that it can be have its renderer.
- * Each condition has the same fields.
+ * Each native condition coming from the PIM has the same fields.
  */
 import {PimConditionLine} from "../pages/EditRules/PimConditionLine";
 import React from "react";

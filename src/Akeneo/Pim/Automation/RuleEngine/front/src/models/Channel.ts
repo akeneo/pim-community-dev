@@ -1,7 +1,9 @@
+import {Locale} from "./Locale";
+
 type Channel = {
   code: string,
   currencies: string[],
-  locales: any[], // TODO Replace by Locale
+  locales: Locale[],
   category_tree: string,
   conversion_units: string[]
   labels: {[locale: string]: string},
