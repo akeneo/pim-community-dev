@@ -2,7 +2,8 @@
 
 ## Bug fixes
 
-- PIM-9110: Mitigates deadlock on product completeness calculation on concurrent API calls
+- PIM-9190: Mitigates deadlock on product completeness calculation on concurrent API calls
+- PIM-9190: Fixes memory leak on product model indexing
 
 # 4.0.17 (2020-04-17)
 
