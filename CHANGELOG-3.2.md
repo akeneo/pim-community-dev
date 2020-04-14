@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.47 (2020-04-14)
+
 ## Bug fixes:
 
 - DAPI-950: fix PHP error on Franklin insights attribute mapping when an attribute does not have any labels
