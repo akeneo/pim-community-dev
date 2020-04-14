@@ -52,7 +52,9 @@ define(
                 this.$el.html(this.template({
                     innerDescription: __(this.config.labels.content),
                     fields: null,
-                    hint: this.config.hint ? __(this.config.hint.title).replace('{{link}}', this.config.hint.link) : null,
+                    hint: this.config.hint
+                        ? __(this.config.hint.title).replace('{{link}}', this.config.hint.link)
+                        : null,
                 }));
 
                 this.renderExtensions();
