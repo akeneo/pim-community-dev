@@ -362,4 +362,102 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, 'datagrid', $context)->shouldReturn($data);
     }
+
+    function it_normalizes_a_product_without_locale_and_channel_context(
+        $normalizer,
+        $filter,
+        $imageNormalizer,
+        $getProductCompletenesses,
+        ProductInterface $product,
+        GroupInterface $promotion,
+        GroupTranslationInterface $promotionEN,
+        FamilyInterface $family,
+        FamilyTranslationInterface $familyEN,
+        WriteValueCollection $productValues,
+        ValueInterface $image
+    ) {
+        $context = [
+            'filter_types' => ['pim.transform.product_value.structured'],
+            'locales' => ['en_US'],
+            'channels' => ['ecommerce'],
+        ];
+
+        $product->isVariant()->willReturn(false);
+        $product->getId()->willReturn(78);
+        $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
+            ->willReturn($productValues);
+
+        $product->getGroups()->willReturn([$promotion]);
+        $promotion->getCode()->willReturn('promotion');
+        $promotion->getTranslation('en_US')->willReturn($promotionEN);
+        $promotionEN->getLabel()->willReturn(null);
+
+        $product->getFamily()->willReturn($family);
+        $family->getCode()->willReturn('tshirt');
+        $family->getTranslation('en_US')->willReturn($familyEN);
+        $familyEN->getLabel()->willReturn(null);
+
+        $product->getIdentifier()->willReturn('purple_tshirt');
+        $product->isEnabled()->willReturn(true);
+        $product->getValues()->willReturn($productValues);
+        $normalizer->normalize($productValues, 'datagrid', $context)->willReturn([
+            'text' => [
+                [
+                    'locale' => null,
+                    'scope'  => null,
+                    'data'   => 'my text',
+                ]
+            ]
+        ]);
+
+        $created = new \DateTime('2017-01-01T01:03:34+01:00');
+        $product->getCreated()->willReturn($created);
+        $normalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01T01:03:34+01:00');
+
+        $updated = new \DateTime('2017-01-01T01:04:34+01:00');
+        $product->getUpdated()->willReturn($updated);
+        $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
+        $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
+
+        $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessCollection(78, [
+            new ProductCompleteness('ecommerce', 'en_US', 10, 1)
+        ]));
+        $product->getImage()->willReturn($image);
+        $imageNormalizer->normalize($image, null, null)->willReturn([
+            'filePath' => '/p/i/m/4/all.png',
+            'originalFileName' => 'all.png'
+        ]);
+
+        $data = [
+            'identifier' => 'purple_tshirt',
+            'family' => '[tshirt]',
+            'groups' => '[promotion]',
+            'enabled' => true,
+            'values' => [
+                'text' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'my text',
+                    ],
+                ],
+            ],
+            'created' => '2017-01-01T01:03:34+01:00',
+            'updated' => '2017-01-01T01:04:34+01:00',
+            'label' => 'Purple tshirt',
+            'image' => [
+                'filePath' => '/p/i/m/4/all.png',
+                'originalFileName' => 'all.png',
+            ],
+            'completeness' => 90,
+            'document_type' => 'product',
+            'technical_id' => 78,
+            'search_id' => 'product_78',
+            'is_checked' => false,
+            'complete_variant_product' => null,
+            'parent' => null,
+        ];
+
+        $this->normalize($product, 'datagrid', $context)->shouldReturn($data);
+    }
 }
