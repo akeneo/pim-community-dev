@@ -16,7 +16,22 @@ use Doctrine\Common\Collections\Collection;
 class QuantifiedProductProductAssociation
 {
   private $id;
-  private $quantity;
-  private $product;
-  private $association;
+  public $quantity;
+  public $product;
+  public $association;
+
+  public function getProduct()
+  {
+      return $this->product;
+  }
+
+  public function getQuantity()
+  {
+      return $this->quantity;
+  }
+
+  public function __toString()
+  {
+      return $this->product->getReference() . '_' . $this->getQuantity();
+  }
 }

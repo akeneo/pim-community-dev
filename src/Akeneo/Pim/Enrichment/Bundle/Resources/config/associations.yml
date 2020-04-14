@@ -19,5 +19,11 @@ services:
             - '@pim_catalog.repository.association_type'
             - '@pim_catalog.association.class_resolver'
 
+    pim_catalog.association.missing_quantified_association_adder:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Association\MissingQuantifiedAssociationAdder'
+        arguments:
+            - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.association.class_resolver'
+
     pim_catalog.association.filter.parent_associations:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter'

@@ -175,6 +175,9 @@ class ProductUpdater implements ObjectUpdaterInterface
             case 'associations':
                 $this->updateProductFields($product, $field, $data);
                 break;
+            case 'quantified_associations':
+                $this->updateProductFields($product, $field, $data);
+                break;
             case 'values':
                 $this->valuesUpdater->update($product, $data, $options);
                 break;

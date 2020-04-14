@@ -53,6 +53,12 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->uniqueDataSynchronizer->synchronize($product);
 
         $this->objectManager->persist($product);
+        foreach ($product->getQuantifiedAssociations() as $quantifiedAssociation) {
+            $this->objectManager->persist($quantifiedAssociation);
+            foreach ($quantifiedAssociation->getQuantifiedProducts() as $quantifiedProduct) {
+                $this->objectManager->persist($quantifiedProduct);
+            }
+        }
         $this->objectManager->flush();
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));

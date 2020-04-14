@@ -16,6 +16,23 @@ use Doctrine\Common\Collections\Collection;
  */
 interface QuantifiedAssociationInterface extends ReferableInterface
 {
+    public function getQuantifiedProducts();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addQuantifiedProduct(QuantifiedProductProductAssociation $quantifiedProduct);
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasQuantifiedProduct(QuantifiedProductProductAssociation $quantifiedProduct);
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeQuantifiedProduct(QuantifiedProductProductAssociation $quantifiedProduct);
+
     /**
      * Get id
      *

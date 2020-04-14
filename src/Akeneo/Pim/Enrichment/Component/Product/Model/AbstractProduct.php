@@ -677,6 +677,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getAllQuantifiedAssociations()
     {
+        return new ArrayCollection($this->quantifiedAssociations->toArray());
         // $associations = new ArrayCollection($this->quantifiedAssociations->toArray());
         // $allAssociations = $this->getAncestryQuantifiedAssociations($this, $associations);
 
