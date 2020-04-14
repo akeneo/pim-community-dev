@@ -24,12 +24,6 @@ class QuantifiedProductAssociation
   /** @var EntityWithAssociationsInterface */
   protected $owner;
 
-  /** @var ProductInterface[] */
-  protected $products;
-
-  /** @var ProductModelInterface[] */
-  protected $productModels;
-
   protected $quantifiedProductProductAssociation;
 
   /**
@@ -37,8 +31,7 @@ class QuantifiedProductAssociation
    */
   public function __construct()
   {
-      $this->products = new ArrayCollection();
-      $this->productModels = new ArrayCollection();
+      $this->quantifiedProductProductAssociation = new ArrayCollection();
   }
 
   /**
@@ -86,88 +79,6 @@ class QuantifiedProductAssociation
   public function getOwner()
   {
       return $this->owner;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setProducts($products)
-  {
-      $this->products = $products;
-
-      return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getProducts()
-  {
-      return $this->products;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function addProduct(ProductInterface $product)
-  {
-      if (!$this->products->contains($product)) {
-          $this->products->add($product);
-      }
-
-      return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function hasProduct(ProductInterface $product)
-  {
-      return $this->products->contains($product);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function removeProduct(ProductInterface $product)
-  {
-      $this->products->removeElement($product);
-
-      return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getProductModels(): Collection
-  {
-      return $this->productModels;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function addProductModel(ProductModelInterface $productModel): void
-  {
-      if (!$this->productModels->contains($productModel)) {
-          $this->productModels->add($productModel);
-      }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function removeProductModel(ProductModelInterface $productModel): void
-  {
-      $this->productModels->removeElement($productModel);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setProductModels($productModels): void
-  {
-      $this->productModels = $productModels;
   }
 
   /**

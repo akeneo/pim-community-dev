@@ -78,6 +78,13 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
                 - persist
                 - refresh
                 - detach
+        quantifiedAssociations:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedProductAssociation
+            mappedBy: owner
+            cascade:
+                - persist
+                - refresh
+                - detach
         uniqueData:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface
             orphanRemoval: true

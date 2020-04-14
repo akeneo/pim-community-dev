@@ -4,7 +4,9 @@ parameters:
     pim_catalog.entity.product_model.class:                Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel
     pim_catalog.entity.product_unique_data.class:          Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueData
     pim_catalog.entity.association.class:                  Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation
+    pim_catalog.entity.quantified_association.class:       Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedProductAssociation
     pim_catalog.entity.product_model_association.class:    Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation
+    pim_catalog.entity.product_model_quantified_association.class: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation
     pim_catalog.entity.category.class:                     Akeneo\Pim\Enrichment\Component\Category\Model\Category
     pim_catalog.entity.category_translation.class:         Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation
     pim_catalog.entity.group.class:                        Akeneo\Pim\Enrichment\Component\Product\Model\Group

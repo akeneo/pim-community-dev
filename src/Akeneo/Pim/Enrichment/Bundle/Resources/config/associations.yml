@@ -6,6 +6,13 @@ services:
                 Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface: '%pim_catalog.entity.association.class%'
                 Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface: '%pim_catalog.entity.product_model_association.class%'
 
+    pim_catalog.quantified_association.class_resolver:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Association\AssociationClassResolver'
+        arguments:
+            -
+                Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface: '%pim_catalog.entity.quantified_association.class%'
+                # Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface: '%pim_catalog.entity.product_model_quantified_association.class%'
+
     pim_catalog.association.missing_association_adder:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder'
         arguments:

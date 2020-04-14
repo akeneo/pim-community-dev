@@ -64,6 +64,9 @@ abstract class AbstractProduct implements ProductInterface
     /** @var Collection $associations */
     protected $associations;
 
+    /** @var Collection $associations */
+    protected $quantifiedAssociations;
+
     /** @var Collection $completenesses */
     protected $completenesses;
 
@@ -89,6 +92,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->completenesses = new ArrayCollection();
         $this->groups = new ArrayCollection();
         $this->associations = new ArrayCollection();
+        $this->quantifiedAssociations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
     }
 
@@ -606,6 +610,193 @@ abstract class AbstractProduct implements ProductInterface
 
         return $this;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addQuantifiedAssociation(QuantifiedAssociationInterface $association): EntityWithAssociationsInterface
+    {
+        if (!$this->quantifiedAssociations->contains($association)) {
+            $associationType = $association->getAssociationType();
+            if (null !== $associationType && null !== $this->getQuantifiedAssociationForType($associationType)) {
+                throw new \LogicException(
+                    sprintf(
+                        'Can not add an association of type %s because the product already has one',
+                        $associationType->getCode()
+                    )
+                );
+            }
+
+            $this->quantifiedAssociations->add($association);
+            $association->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeQuantifiedAssociation(QuantifiedAssociationInterface $association): EntityWithAssociationsInterface
+    {
+        $this->quantifiedAssociations->removeElement($association);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getQuantifiedAssociations()
+    {
+        return $this->quantifiedAssociations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllQuantifiedAssociations()
+    {
+        // $associations = new ArrayCollection($this->quantifiedAssociations->toArray());
+        // $allAssociations = $this->getAncestryQuantifiedAssociations($this, $associations);
+
+        // return $allAssociations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getQuantifiedAssociationForType(AssociationTypeInterface $type): ?QuantifiedAssociationInterface
+    {
+        return $this->getQuantifiedAssociationForTypeCode($type->getCode());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getQuantifiedAssociationForTypeCode($typeCode): ?QuantifiedAssociationInterface
+    {
+        foreach ($this->quantifiedAssociations as $association) {
+            if ($association->getAssociationType()->getCode() === $typeCode) {
+                return $association;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQuantifiedAssociations(Collection $associations): EntityWithAssociationsInterface
+    {
+        $this->quantifiedAssociations = $associations;
+
+        return $this;
+    }
+
+    // /**
+    //  * @param EntityWithFamilyVariantInterface $entity
+    //  * @param Collection                       $quantifiedAssociationsCollection
+    //  *
+    //  * @return Collection
+    //  */
+    // private function getAncestryQuantifiedAssociations(
+    //     EntityWithFamilyVariantInterface $entity,
+    //     Collection $quantifiedAssociationsCollection
+    // ): Collection {
+    //     $parent = $entity->getParent();
+
+    //     if (null === $parent) {
+    //         return $quantifiedAssociationsCollection;
+    //     }
+
+    //     foreach ($parent->getAllAssociations() as $association) {
+    //         $quantifiedAssociationsCollection = $this->mergeQuantifiedAssociation($association, $quantifiedAssociationsCollection);
+    //     }
+
+    //     return $quantifiedAssociationsCollection;
+    // }
+
+    // /**
+    //  * Merges one association in an association collection.
+    //  * It first merge the product existing association
+    //  * And then merges the association into the collection
+    //  *
+    //  * Merging an association means merging all the products, product models and groups
+    //  * into the collection associations or adding it if it doesn't exist
+    //  *
+    //  * @param QuantifiedAssociationInterface $association
+    //  * @param Collection           $associationsCollection
+    //  *
+    //  * @return Collection
+    //  */
+    // private function mergeQuantifiedAssociation(
+    //     QuantifiedAssociationInterface $association,
+    //     Collection $associationsCollection
+    // ): Collection {
+    //     $foundInCollection = null;
+    //     foreach ($associationsCollection as $associationInCollection) {
+    //         if ($associationInCollection->getAssociationType()->getCode() ===
+    //             $association->getAssociationType()->getCode()) {
+    //             $foundInCollection = $associationInCollection;
+    //         }
+    //     }
+
+    //     // if (null !== $foundInCollection) {
+    //     //     foreach ($association->getProducts() as $product) {
+    //     //         $foundInCollection->addProduct($product);
+    //     //     }
+    //     //     foreach ($association->getProductModels() as $productModel) {
+    //     //         $foundInCollection->addProductModel($productModel);
+    //     //     }
+    //     //     foreach ($association->getGroups() as $group) {
+    //     //         $foundInCollection->addGroup($group);
+    //     //     }
+    //     // }
+    //     $associationsCollection->add($association);
+
+    //     return $associationsCollection;
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * {@inheritdoc}
