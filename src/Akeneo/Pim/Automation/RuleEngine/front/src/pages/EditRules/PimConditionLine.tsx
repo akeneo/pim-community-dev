@@ -2,6 +2,7 @@ import React from "react";
 import {PimCondition} from "../../models/PimCondition";
 import {getByIdentifier} from "../../fetch/AttributeFetcher";
 import {useBackboneRouter, useTranslate, useUserContext} from "../../dependenciesTools/hooks";
+import {getAll} from "../../fetch/ChannelFetcher";
 
 type Props = {
   condition: PimCondition
@@ -18,6 +19,7 @@ const PimConditionLine: React.FC<Props> = ({ condition }) => {
   const [fieldLabel, setFieldLabel] = React.useState<string>();
   const [isError, setIsError] = React.useState<boolean>(false);
   const currentCatalogLocale = userContext.get('catalogLocale');
+  const [scopeLabel, setScopeLabel] = React.useState<string>();
 
   const router = useBackboneRouter();
 
@@ -32,6 +34,18 @@ const PimConditionLine: React.FC<Props> = ({ condition }) => {
       setIsError(true);
       console.error(exception);
     });
+
+    if (condition.scope) {
+      getAll(router).then((channels) => {
+        const channel = channels.find((scope) => {
+          return scope.code === condition.scope;
+        });
+        setScopeLabel(channel ? channel.labels[currentCatalogLocale] : condition.scope as string)
+      }).catch((exception) => {
+        setIsError(true);
+        console.error(exception);
+      });
+    }
   }, []);
 
   const displayValue = (value: any): string => {
@@ -51,14 +65,6 @@ const PimConditionLine: React.FC<Props> = ({ condition }) => {
     return value;
   };
 
-  const displayScope = (scope: string | null) : string | null => {
-    if (null === scope) {
-      return null;
-    }
-
-    return scope;
-  };
-
   const displayLocale = (locale: string | null) : string | null => {
     if (null === locale) {
       return null;
@@ -75,9 +81,9 @@ const PimConditionLine: React.FC<Props> = ({ condition }) => {
             <span className="AknRule-attribute">{fieldLabel}</span>
             {translate(`pimee_catalog_rule.form.edit.operators.${condition.operator}`)}
             <span className="AknRule-attribute">{displayValue(condition.value)}</span>
-            {condition.scope || condition.locale ?
+            {scopeLabel || condition.locale ?
               <span className="AknRule-attribute">[
-                {[displayScope(condition.scope), displayLocale(condition.locale)]
+                {[scopeLabel, displayLocale(condition.locale)]
                   .filter((value) => { return null !== value })
                   .join(' | ')}
               ]</span>
