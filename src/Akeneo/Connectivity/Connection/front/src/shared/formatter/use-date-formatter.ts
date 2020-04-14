@@ -8,7 +8,7 @@ export const useDateFormatter = () => {
     const timezone = user.get('timezone');
 
     return useCallback(
-        (date: string, options?: Intl.DateTimeFormatOptions) => {
+        (date: string | number, options?: Intl.DateTimeFormatOptions) => {
             if (undefined === options || undefined === options.timeZone) {
                 options = {...options, timeZone: timezone};
             }

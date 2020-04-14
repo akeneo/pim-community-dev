@@ -1,17 +1,18 @@
-import {ThemedStyledProps} from 'styled-components';
+import styled, {ThemedStyledInterface} from 'styled-components';
 
-export const theme = {
+const theme = {
     color: {
-        yellow10: '#fef7ec',
         blue10: '#f5f9fc',
         blue100: '#5992c7',
-        grey60: '#f9f9fb',
-        grey70: '#e8ebee',
-        grey80: '#d9dde2',
         grey100: '#a1a9b7',
         grey120: '#67768a',
         grey140: '#11324d',
+        grey60: '#f9f9fb',
+        grey70: '#e8ebee',
+        grey80: '#d9dde2',
         purple100: '#9452ba',
+        red100: '#d4604f',
+        yellow10: '#fef7ec',
     },
     fontSize: {
         title: '30px',
@@ -22,4 +23,5 @@ export const theme = {
     },
 };
 
-export type PropsWithTheme<P = {}> = ThemedStyledProps<P, typeof theme>;
+export {theme};
+export default styled as ThemedStyledInterface<typeof theme>;

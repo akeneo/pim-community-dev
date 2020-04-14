@@ -21,6 +21,7 @@ import {Section} from './Section';
 import {Select} from './select/Select';
 import {Select2, Select2Configuration} from './Select2';
 import {SmallHelper} from './SmallHelper';
+import {Table, TableCell, TableHeaderCell, TableHeaderRow, TableRow} from './Table';
 
 export {
     ApplyButton,
@@ -52,4 +53,9 @@ export {
     Select2,
     Select2Configuration,
     SmallHelper,
+    Table,
+    TableCell,
+    TableHeaderCell,
+    TableHeaderRow,
+    TableRow,
 };

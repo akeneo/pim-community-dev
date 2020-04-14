@@ -1,5 +1,5 @@
 import React, {SVGProps} from 'react';
-import {theme} from '../theme';
+import {theme} from '../styled-with-theme';
 
 export const UpdateIcon = (props: SVGProps<SVGSVGElement>) => (
     <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 19 22' {...props}>

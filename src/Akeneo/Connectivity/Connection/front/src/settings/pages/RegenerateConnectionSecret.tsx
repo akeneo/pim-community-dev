@@ -1,8 +1,7 @@
 import React, {useContext} from 'react';
 import {useHistory, useParams} from 'react-router';
-import styled from 'styled-components';
 import {GreyButton, ImportantButton, Modal} from '../../common';
-import {PropsWithTheme} from '../../common/theme';
+import styled from '../../common/styled-with-theme';
 import {fetchResult} from '../../shared/fetch-result';
 import {isErr} from '../../shared/fetch-result/result';
 import {NotificationLevel, useNotify} from '../../shared/notify';
@@ -71,6 +70,6 @@ export const RegenerateConnectionSecret = () => {
 };
 
 const Link = styled.a`
-    color: ${({theme}: PropsWithTheme) => theme.color.blue100};
+    color: ${({theme}) => theme.color.blue100};
     text-decoration: underline;
 `;

@@ -1,8 +1,7 @@
 import React from 'react';
 import {useHistory, useParams} from 'react-router';
-import styled from 'styled-components';
 import {GreyButton, ImportantButton, Modal} from '../../common';
-import {PropsWithTheme} from '../../common/theme';
+import styled from '../../common/styled-with-theme';
 import {isOk} from '../../shared/fetch-result/result';
 import {Translate} from '../../shared/translate';
 import {connectionDeleted} from '../actions/connections-actions';
@@ -59,6 +58,6 @@ export const DeleteConnection = () => {
 };
 
 const Link = styled.a`
-    color: ${({theme}: PropsWithTheme) => theme.color.blue100};
+    color: ${({theme}) => theme.color.blue100};
     text-decoration: underline;
 `;
