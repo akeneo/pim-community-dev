@@ -63,6 +63,7 @@ class AttributeShouldBeNumericValidatorSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             true,
             'decimal',
             []
@@ -83,6 +84,7 @@ class AttributeShouldBeNumericValidatorSpec extends ObjectBehavior
                 [],
                 false,
                 false,
+                null,
                 null,
                 false,
                 'prices',
@@ -106,6 +108,7 @@ class AttributeShouldBeNumericValidatorSpec extends ObjectBehavior
                 false,
                 false,
                 'WEIGHT',
+                'KILOGRAM',
                 false,
                 'metric',
                 []
@@ -129,6 +132,7 @@ class AttributeShouldBeNumericValidatorSpec extends ObjectBehavior
                 [],
                 false,
                 false,
+                null,
                 null,
                 false,
                 'string',

@@ -50,6 +50,7 @@ class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior {
             false,
             false,
             null,
+            null,
             false,
             AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS,
             []
@@ -87,6 +88,7 @@ class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior {
             [],
             false,
             false,
+            null,
             null,
             false,
             AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS,
