@@ -29,6 +29,7 @@ type FormDataInput = {
 };
 
 type Props = {
+  locale: string
   translate: Translate;
   onSubmit: (formData: FormDataInput, event?: Event) => Promise<any>;
 };
@@ -42,7 +43,7 @@ const initialCustomErrors: CustomErrors = {
   [inputLabelName]: [],
 };
 
-const CreateRulesForm: React.FC<Props> = ({ onSubmit, translate }) => {
+const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
   const inputCodeRef = useRef<HTMLInputElement>();
   const [customErrors, setCustomErrors] = React.useState<CustomErrors>(
     initialCustomErrors
@@ -145,9 +146,8 @@ const CreateRulesForm: React.FC<Props> = ({ onSubmit, translate }) => {
             name={inputLabelName}
             ref={register(labelInputRegisterConfig)}
           >
-            {/* Add "TODO https://akeneo.atlassian.net/browse/RUL-165" */}
             <FlagLabel
-              flag="us"
+              locale={locale}
               label={translate("pim_common.label")}
               flagDescription={translate(
                 "pimee_catalog_rule.form.creation.english_flag"

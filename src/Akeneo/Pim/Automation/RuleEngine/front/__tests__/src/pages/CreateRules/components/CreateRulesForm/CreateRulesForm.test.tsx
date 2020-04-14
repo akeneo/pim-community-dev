@@ -9,7 +9,7 @@ describe("CreateRulesForm", () => {
     const translate = jest.fn((key: string) => key);
     const onSubmit = jest.fn();
     // When
-    render(<CreateRulesForm translate={translate} onSubmit={onSubmit} />, {
+    render(<CreateRulesForm translate={translate} onSubmit={onSubmit} locale='en_US' />, {
       theme: true,
     });
     // Then
@@ -29,7 +29,7 @@ describe("CreateRulesForm", () => {
     const onSubmit = jest.fn(() => Promise.resolve({ ok: true }));
 
     // When
-    render(<CreateRulesForm translate={translate} onSubmit={onSubmit} />, {
+    render(<CreateRulesForm translate={translate} onSubmit={onSubmit} locale='en_US' />, {
       theme: true,
     });
     const inputCode = (await screen.findByLabelText(
@@ -59,7 +59,7 @@ describe("CreateRulesForm", () => {
     const translate = jest.fn((key: string) => key);
     const onSubmit = jest.fn();
     // When
-    render(<CreateRulesForm translate={translate} onSubmit={onSubmit} />, {
+    render(<CreateRulesForm translate={translate} onSubmit={onSubmit} locale='en_US' />, {
       theme: true,
     });
     const inputCode = (await screen.findByLabelText(
@@ -84,7 +84,7 @@ describe("CreateRulesForm", () => {
     const translate = jest.fn((key: string) => key);
     const onSubmit = jest.fn();
     // When
-    render(<CreateRulesForm translate={translate} onSubmit={onSubmit} />, {
+    render(<CreateRulesForm translate={translate} onSubmit={onSubmit} locale='en_US' />, {
       theme: true,
     });
     const inputCode = (await screen.findByLabelText(
@@ -109,7 +109,7 @@ describe("CreateRulesForm", () => {
     const translate = jest.fn((key: string) => key);
     const onSubmit = jest.fn();
     // When
-    render(<CreateRulesForm translate={translate} onSubmit={onSubmit} />, {
+    render(<CreateRulesForm translate={translate} onSubmit={onSubmit} locale='en_US' />, {
       theme: true,
     });
     const submitButton = await screen.findByText("pim_common.save");
@@ -140,7 +140,7 @@ describe("CreateRulesForm", () => {
       })
     );
     // When
-    render(<CreateRulesForm translate={translate} onSubmit={onSubmit} />, {
+    render(<CreateRulesForm translate={translate} onSubmit={onSubmit} locale='en_US' />, {
       theme: true,
     });
     const inputCode = (await screen.findByLabelText(

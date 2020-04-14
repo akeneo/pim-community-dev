@@ -20,12 +20,18 @@ const SpanSrOnly = styled.span`
 `;
 
 type Props = {
-  flag: string;
+  locale: string;
   label: string;
   flagDescription: string;
 } & React.HTMLAttributes<HTMLLabelElement>;
 
-const FlagLabel: React.FC<Props> = ({ flag, label, flagDescription }) => {
+const FlagLabel: React.FC<Props> = ({ locale, label, flagDescription }) => {
+  const extractFlagFromLocale = (locale: string): string => {
+    const region = locale.split('_')[locale.split('_').length - 1];
+
+    return region.toLowerCase();
+  };
+
   return (
     <DivLabelWithFLag>
       <StyledLabel
@@ -34,7 +40,7 @@ const FlagLabel: React.FC<Props> = ({ flag, label, flagDescription }) => {
       >
         {label}
       </StyledLabel>
-      <i className={`flag flag-${flag}`}>
+      <i className={`flag flag-${extractFlagFromLocale(locale)}`}>
         <SpanSrOnly>{flagDescription}</SpanSrOnly>
       </i>
     </DivLabelWithFLag>
