@@ -3,7 +3,7 @@ import {Router} from "../dependenciesTools/provider/applicationDependenciesProvi
 import {RuleDefinition} from "../models/RuleDefinition";
 import {httpGet} from "./fetch";
 
-export const getByCode = async (ruleDefinitionCode: string, router: Router): Promise<RuleDefinition> => {
+export const getRuleDefinitionByCode = async (ruleDefinitionCode: string, router: Router): Promise<RuleDefinition> => {
   const url = router.generate('pimee_enrich_rule_definition_get', { ruleCode: ruleDefinitionCode });
   const response = await httpGet(url);
   const json = await response.json();

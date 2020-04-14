@@ -2,7 +2,7 @@ import React from "react";
 import { ThemeProvider } from "styled-components";
 import * as akeneoTheme from "../../theme";
 import { Content } from "../../template/Content";
-import { InputText } from "../../components/InputText";
+import { FlagLabel, InputText } from "../../components/InputText";
 import { InputNumber } from "../../components/InputNumber";
 import { SmallHelper } from "../../components/SmallHelper";
 import {
@@ -17,7 +17,9 @@ import {
 } from "../../dependenciesTools/hooks";
 import { RulesHeader } from "../../components/RulesHeader";
 import {getRuleDefinitionLabel, RuleDefinition} from "../../models/RuleDefinition";
-import {getByCode} from "../../fetch/RuleDefinitionFetcher";
+import {getRuleDefinitionByCode} from "../../fetch/RuleDefinitionFetcher";
+import {getActivatedLocales} from "../../fetch/LocaleFetcher";
+import {Locale} from "../../models/Locale";
 
 type Props = {
   ruleDefinitionCode: string
@@ -43,10 +45,18 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
 
   const [ruleDefinition, setRuleDefinition] = React.useState<RuleDefinition>();
   const [isError, setIsError] = React.useState<boolean>(false);
+  const [locales, setLocales] = React.useState<Locale[]>();
 
   React.useEffect(() => {
-    getByCode(ruleDefinitionCode, router).then((ruleDefinition) => {
+    getRuleDefinitionByCode(ruleDefinitionCode, router).then((ruleDefinition) => {
       setRuleDefinition(ruleDefinition);
+    }).catch((exception) => {
+      setIsError(true);
+      console.error(exception);
+    });
+
+    getActivatedLocales(router).then((locales: Locale[]) => {
+      setLocales(locales)
     }).catch((exception) => {
       setIsError(true);
       console.error(exception);
@@ -58,7 +68,7 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
   return (
     <ThemeProvider theme={akeneoTheme}>
       {isError ? 'There was an error (TODO: better display)' :
-        !ruleDefinition ? 'Loading (TODO: better display' :
+        !(ruleDefinition && locales) ? 'Loading (TODO: better display' :
           <form id="edit-rules-form" onSubmit={handleSubmit}>
             <RulesHeader title={getRuleDefinitionLabel(ruleDefinition, currentCatalogLocale)}>
               <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>
@@ -96,6 +106,26 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
                     }}
                   />
                 </div>
+                {locales.map((locale) => {
+                  return <div className="AknFieldContainer" key={locale.code}>
+                      <InputText
+                        id={`edit-rules-input-label-${locale.code}`}
+                        label={locale.label}
+                        value={ruleDefinition.labels[locale.code]}
+                        onChange={(event) => {
+                          setRuleDefinition({...ruleDefinition, labels:
+                              {...(ruleDefinition.labels), [locale.code]: event.target.value}
+                          })
+                        }}
+                      >
+                      <FlagLabel
+                          locale={locale.code}
+                          label={locale.label}
+                          flagDescription={locale.label}
+                      />
+                    </InputText>
+                  </div>
+                })}
               </div>
             </Content>
           </form>
