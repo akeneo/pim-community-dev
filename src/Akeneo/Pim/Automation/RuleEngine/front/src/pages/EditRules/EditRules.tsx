@@ -107,7 +107,7 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
                   />
                 </div>
                 {locales.map((locale) => {
-                  return <div className="AknFieldContainer">
+                  return <div className="AknFieldContainer" key={locale.code}>
                       <InputText
                         id={`edit-rules-input-label-${locale.code}`}
                         label={locale.label}
