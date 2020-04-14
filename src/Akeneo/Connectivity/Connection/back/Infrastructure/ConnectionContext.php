@@ -60,16 +60,22 @@ class ConnectionContext
         $this->username = $username;
     }
 
-    public function getConnection(): Connection
+    public function getConnection(): ?Connection
     {
         if (null !== $this->connection) {
             return $this->connection;
         }
+        if (null === $this->clientId) {
+            return null;
+        }
 
         $connectionCode = $this->selectConnectionCodeByClientIdQuery->execute($this->clientId);
-        $this->connection = $this->connectionRepository->findOneByCode($connectionCode);
 
-        return $this->connection;
+        if (null === $connectionCode) {
+            return null;
+        }
+
+        return $this->connection = $this->connectionRepository->findOneByCode($connectionCode);
     }
 
     public function isCollectable(): bool
@@ -78,15 +84,21 @@ class ConnectionContext
             return $this->collectable;
         }
 
-        $this->collectable = $this->getConnection()->auditable() && $this->areCredentialsValidCombination();
+        if (null === $this->getConnection()) {
+            throw new \Exception('You must initialize client id and username before using this service.');
+        }
 
-        return $this->collectable;
+        return $this->collectable = $this->getConnection()->auditable() && $this->areCredentialsValidCombination();
     }
 
     public function areCredentialsValidCombination(): bool
     {
         if (null !== $this->areCredentialsValidCombination) {
             return $this->areCredentialsValidCombination;
+        }
+
+        if (null === $this->clientId || null === $this->username) {
+            throw new \Exception('You must initialize client id and username before using this service.');
         }
 
         $this->areCredentialsValidCombination = $this->areCredentialsValidCombinationQuery

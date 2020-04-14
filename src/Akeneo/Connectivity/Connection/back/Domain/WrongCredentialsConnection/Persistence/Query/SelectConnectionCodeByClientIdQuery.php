@@ -10,5 +10,5 @@ namespace Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persi
  */
 interface SelectConnectionCodeByClientIdQuery
 {
-    public function execute(string $clientId): string;
+    public function execute(string $clientId): ?string;
 }

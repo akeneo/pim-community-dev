@@ -17,7 +17,7 @@ class DbalSelectConnectionCodeByClientIdQuery implements SelectConnectionCodeByC
         $this->dbalConnection = $dbalConnection;
     }
 
-    public function execute(string $clientId): string
+    public function execute(string $clientId): ?string
     {
         $sqlQuery = <<<SQL
 SELECT code
@@ -25,6 +25,14 @@ FROM akeneo_connectivity_connection
 WHERE client_id = :client_id
 SQL;
 
-        return (string) $this->dbalConnection->executeQuery($sqlQuery, ['client_id' => $clientId])->fetchColumn();
+        $connectionCode = $this->dbalConnection
+            ->executeQuery($sqlQuery, ['client_id' => $clientId])
+            ->fetchColumn();
+
+        if (null === $connectionCode) {
+            return null;
+        } else {
+            return (string) $connectionCode;
+        }
     }
 }
