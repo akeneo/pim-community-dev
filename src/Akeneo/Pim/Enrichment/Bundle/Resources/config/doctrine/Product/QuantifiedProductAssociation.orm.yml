@@ -1,0 +1,45 @@
+Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedProductAssociation:
+    type: entity
+    table: pim_catalog_quantified_association
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\QuantifiedAssociationRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    uniqueConstraints:
+        locale_foreign_key_idx:
+            columns:
+                - owner_id
+                - association_type_id
+    manyToOne:
+        associationType:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface
+            joinColumns:
+                association_type_id:
+                    referencedColumnName: id
+                    nullable: false
+                    onDelete: CASCADE
+        owner:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
+            inversedBy: associations
+            cascade:
+                - detach
+            joinColumns:
+                owner_id:
+                    referencedColumnName: id
+                    nullable: false
+                    onDelete: CASCADE
+    oneToMany:
+        quantifiedProductProductAssociation:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedProductProductAssociation
+            mappedBy: association
+            cascade:
+                - detach
+            # joinColumns:
+                # quantified_product_product_association_id:
+                    # referencedColumnName: id
+                    # nullable: false
+                    # onDelete: CASCADE

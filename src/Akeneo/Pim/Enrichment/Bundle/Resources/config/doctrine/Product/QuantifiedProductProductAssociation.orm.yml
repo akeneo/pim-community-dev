@@ -1,0 +1,28 @@
+Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedProductProductAssociation:
+    type: entity
+    table: pim_catalog_quantified_product_association
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\AssociationRepository
+    id:
+        product:
+            associationKey: true
+        association:
+            associationKey: true
+    fields:
+        quantity:
+            type: integer
+            default: 1
+    manyToOne:
+        product:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
+            cascade:
+                - persist
+                - refresh
+                - detach
+        association:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedProductAssociation
+            mappedBy: quantified_product_product_association
+            cascade:
+                - persist
+                - refresh
+                - detach
