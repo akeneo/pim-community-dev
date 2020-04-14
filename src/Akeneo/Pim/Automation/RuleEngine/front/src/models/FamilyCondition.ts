@@ -7,6 +7,7 @@ enum FamilyOperator {
 }
 
 type FamilyCondition = {
+  type: 'FamilyCondition',
   operator: FamilyOperator;
   familyCodes: string[];
 }
@@ -23,6 +24,7 @@ const createFamilyCondition = (json: any): FamilyCondition | null => {
   }
 
   return {
+    type: 'FamilyCondition',
     operator: json.operator,
     familyCodes: json.value
   };

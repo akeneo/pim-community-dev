@@ -4,6 +4,7 @@ import {createFamilyCondition} from "./FamilyCondition";
 import {createFallbackCondition} from "./FallbackCondition";
 import {createFallbackAction} from "./FallbackAction";
 import {Action} from "./Action";
+import {createPimCondition} from "./PimCondition";
 
 function denormalizeAction(jsonAction: any): Action {
   const factories: ((json: any) => Action | null)[] = [];
@@ -16,7 +17,10 @@ function denormalizeAction(jsonAction: any): Action {
 
 function denormalizeCondition(jsonCondition: any): Condition {
   // For now, FamilyCondition never match. It always returns FallbackCondition.
-  const factories: ((json: any) => Condition | null)[] = [createFamilyCondition];
+  const factories: ((json: any) => Condition | null)[] = [
+    createFamilyCondition,
+    createPimCondition,
+  ];
   const factory = factories.find((factory) => {
     return factory(jsonCondition) !== null;
   }) || createFallbackCondition;
