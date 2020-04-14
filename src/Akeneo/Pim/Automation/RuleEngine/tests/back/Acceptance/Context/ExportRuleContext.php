@@ -171,7 +171,7 @@ rules:
             operator: multiply
             value: 10
           -
-            operator: substract
+            operator: subtract
             value: 3              
 YAML;
 

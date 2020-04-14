@@ -30,12 +30,12 @@ pimee_catalog_rule:
             calculate: Then %field% is calculated %operation_details%
             calculate_first_operation:
                 add: by adding %operand% to %source%
-                substract: by substracting %operand% to %source%
+                subtract: by subtracting %operand% from %source%
                 multiply: by multiplying %source% by %operand%
                 divide: by dividing %source% by %operand%
             calculate_other_operation:
                 add: , then by adding %operand%
-                substract: , then by substracting %operand%
+                subtract: , then by subtracting %operand%
                 divide: , then by dividing by %operand%
                 multiply: , then by multiplying by %operand%
         options:

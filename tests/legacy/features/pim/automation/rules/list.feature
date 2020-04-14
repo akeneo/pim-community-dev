@@ -203,10 +203,10 @@ Feature: List all rules
                 scope: tablet
               - operator: add
                 value: 1
-              - operator: substract
+              - operator: subtract
                 field: booked_stock
                 locale: en_US
-              - operator: substract
+              - operator: subtract
                 field: booked_stock
                 locale: fr_FR
         labels:
@@ -269,7 +269,7 @@ Feature: List all rules
     And the row "Calculate Rule" should contain the texts:
       | column    | value                                                                                                                                                                                                               |
       | Condition | If family in tees                                                                                                                                                                                                   |
-      | Action    | Then total_weight [ en \| tablet ] is calculated by multiplying weight by 5, then by dividing by in_stock [ tablet ], then by adding 1, then by substracting booked_stock [ en ], then by substracting booked_stock [ fr ] |
+      | Action    | Then total_weight [ en \| tablet ] is calculated by multiplying weight by 5, then by dividing by in_stock [ tablet ], then by adding 1, then by subtracting booked_stock [ en ], then by subtracting booked_stock [ fr ] |
 
   Scenario: Successfully search rules
     Given I am on the rules page

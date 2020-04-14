@@ -114,7 +114,7 @@ class CalculateActionApplier implements ActionApplierInterface
                 return $firstOperand / $secondOperand;
             case Operation::ADD:
                 return $firstOperand + $secondOperand;
-            case Operation::SUBSCTRACT:
+            case Operation::SUBTRACT:
                 return $firstOperand - $secondOperand;
             default:
                 throw new \LogicException('Operator not supported');

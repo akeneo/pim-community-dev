@@ -26,7 +26,7 @@ final class Operation
     public const MULTIPLY = 'multiply';
     public const ADD = 'add';
     public const DIVIDE = 'divide';
-    public const SUBSCTRACT = 'substract';
+    public const SUBTRACT = 'subtract';
 
     /** @var string */
     private $operator;
@@ -46,10 +46,10 @@ final class Operation
         Assert::string($data['operator']);
         Assert::oneOf(
             $data['operator'],
-            [self::MULTIPLY, self::ADD, self::DIVIDE, self::SUBSCTRACT],
+            [self::MULTIPLY, self::ADD, self::DIVIDE, self::SUBTRACT],
             sprintf(
                 'Operation expects one of the following operators: %s',
-                implode(', ', [self::MULTIPLY, self::ADD, self::DIVIDE, self::SUBSCTRACT])
+                implode(', ', [self::MULTIPLY, self::ADD, self::DIVIDE, self::SUBTRACT])
             )
         );
         $operator = $data['operator'];
