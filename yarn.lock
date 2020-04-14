@@ -933,6 +933,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@popperjs/core@^2.1.0":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.3.1.tgz#14cb0327e63cec733404022d6664179f969886c0"
+  integrity sha512-GpJkaYcxn0zViuD8NphJilCRImCXjoM0fgjq+m3NW2nf6Xa0Ig+eWdODb0j0kzYnirKq21zIsf35ihRI+fyY7g==
+
 "@sheerun/mutationobserver-shim@^0.3.2":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@sheerun/mutationobserver-shim/-/mutationobserver-shim-0.3.3.tgz#5405ee8e444ed212db44e79351f0c70a582aae25"
@@ -2189,6 +2194,11 @@ bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
   integrity sha512-ItfYfPLkWHUjckQCk8xC+LwxgK8NYcXywGigJgSwOP8Y2iyWT4f2vsZnoOXTTbo+o5yXmIUJ4gn5538SO5S3gA==
+
+body-scroll-lock@^2.6.4:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/body-scroll-lock/-/body-scroll-lock-2.7.1.tgz#caf3f9c91773af1ffb684cd66ed9137b5b737014"
+  integrity sha512-hS53SQ8RhM0e4DsQ3PKz6Gr2O7Kpdh59TWU98GHjaQznL7y4dFycEPk7pFQAikqBaUSCArkc5E3pe7CWIt2fZA==
 
 body@^5.1.0:
   version "5.1.0"
@@ -7397,6 +7407,36 @@ readdirp@~3.3.0:
   integrity sha512-zz0pAkSPOXXm1viEwygWIPSPkcBYjW1xU5j/JBh5t9bGCJwa6f9+BJa6VaB2g+b55yVrmXzqkyLf4xaWYM0IkQ==
   dependencies:
     picomatch "^2.0.7"
+
+reakit-system@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/reakit-system/-/reakit-system-0.10.0.tgz#f4db0379524d80386dbe63276470a75e23084928"
+  integrity sha512-73ZI50NB2A6WAF3OsPJEEz73fax5cFiMoGMx3KxPT/AcS39rPqlBW6QkawtZC1HUebQXlsLxwZWicoFt8UubmQ==
+  dependencies:
+    reakit-utils "^0.10.0"
+
+reakit-utils@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/reakit-utils/-/reakit-utils-0.10.0.tgz#2985998fefa73a0875b91c27fdb89f00ae81e671"
+  integrity sha512-s1+nqLYrHo54U38iETdY86+VD+CZBTqF9rxMmphuft1Iz1i+L+OqOVJMq5sviBkTiEz8zRMhrNLcjBERFiPnkA==
+
+reakit-warning@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/reakit-warning/-/reakit-warning-0.1.0.tgz#435ba14d14720cc1f985d8ca16018d5f8f78d158"
+  integrity sha512-nfujYGWoZ1lh6eAFTVQc2aNjrAEf30PHffJw8Q8tiJJY4Knoy7eLA4jQGHTl3gOjhA9+Yd8KSmiLoOPlr6A0kA==
+  dependencies:
+    reakit-utils "^0.10.0"
+
+reakit@^1.0.0-rc.0:
+  version "1.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/reakit/-/reakit-1.0.0-rc.0.tgz#f858896b980bfbd9d8db724ae92579468710c6f5"
+  integrity sha512-jG9RfLE9DX3XP6xiUmindu8dJmd4rLs+ohQ2xppF9LVYQ/7Qa9B4kz8mNYbe42u8muE3nMM78T2RfXz+c/ZMsQ==
+  dependencies:
+    "@popperjs/core" "^2.1.0"
+    body-scroll-lock "^2.6.4"
+    reakit-system "^0.10.0"
+    reakit-utils "^0.10.0"
+    reakit-warning "^0.1.0"
 
 realpath-native@^1.1.0:
   version "1.1.0"
