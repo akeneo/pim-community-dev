@@ -63,6 +63,8 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
             $associationType->setCode($data);
         } elseif ('labels' === $field) {
             $this->translatableUpdater->update($associationType, $data);
+        } elseif ('is_two_way' === $field) {
+            $associationType->setIsTwoWay($data);
         }
     }
 
@@ -95,6 +97,10 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
         } elseif ('code' === $field) {
             if (null !== $data && !is_scalar($data)) {
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
+            }
+        } elseif ('is_two_way' === $field) {
+            if (null !== $data && !is_bool($data)) {
+                throw InvalidPropertyTypeException::booleanExpected($field, static::class, $data);
             }
         } else {
             throw UnknownPropertyException::unknownProperty($field);

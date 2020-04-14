@@ -26,12 +26,14 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
 
     /**
      * {@inheritdoc}
+     * @param AssociationTypeInterface $associationType
      */
     public function normalize($associationType, $format = null, array $context = [])
     {
         return [
             'code'   => $associationType->getCode(),
             'labels' => $this->translationNormalizer->normalize($associationType, 'standard', $context),
+            'is_two_way' => $associationType->isTwoWay()
         ];
     }
 

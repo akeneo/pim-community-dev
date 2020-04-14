@@ -37,12 +37,16 @@ class AssociationType implements AssociationTypeInterface
     /** @var \DateTime */
     protected $updated;
 
+    /** @var bool */
+    protected $isTwoWay;
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->translations = new ArrayCollection();
+        $this->isTwoWay = false;
     }
 
     /**
@@ -223,5 +227,21 @@ class AssociationType implements AssociationTypeInterface
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isTwoWay(): bool
+    {
+        return $this->isTwoWay;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setIsTwoWay(bool $isTwoWay): void
+    {
+        $this->isTwoWay = $isTwoWay;
     }
 }

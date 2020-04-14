@@ -11,6 +11,9 @@ datagrid:
             label:
                 label: Label
                 frontend_type: label
+            isTwoWay:
+                label: 2-way association
+                frontend_type: boolean-status
         properties:
             id: ~
             edit_link:
