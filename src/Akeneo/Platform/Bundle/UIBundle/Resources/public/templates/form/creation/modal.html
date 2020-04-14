@@ -1,4 +1,4 @@
-<% if (hint) { %>
+<% if (typeof hint !== 'undefined' && hint) { %>
 <div class="ModalHint">
     <div class="ModalHint-icon AknIconButton AknIconButton--info"></div>
     <div class="ModalHint-title"> <%= hint %></div>
