@@ -1,11 +1,15 @@
+import React from "react";
+import {FallbackConditionLine} from "../pages/EditRules/FallbackConditionLine";
+import {Condition} from "./Condition";
+
 export type FallbackCondition = {
-  type: 'FallbackCondition',
+  module: React.FC<{condition: Condition}>,
   json: any;
 }
 
 export const createFallbackCondition = (json: any) : FallbackCondition => {
   return {
-    type: 'FallbackCondition',
+    module: FallbackConditionLine,
     json: json
   };
 };
