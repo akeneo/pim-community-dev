@@ -46,8 +46,8 @@ final class ChainedNonExistentValuesFilterSpec extends ObjectBehavior
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
         $channelRepository->findOneByIdentifier('tablet')->willReturn(null);
 
-        $description = new Attribute('description', AttributeTypes::TEXTAREA, [], true, true, null, false, 'textarea', []);
-        $color = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false, 'option', []);
+        $description = new Attribute('description', AttributeTypes::TEXTAREA, [], true, true, null, null, false, 'textarea', []);
+        $color = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, null, false, 'option', []);
 
         $getAttributes->forCodes(['attribute_that_does_not_exists'])->willReturn(['unknown_attribute' => null]);
         $getAttributes->forCodes(['color'])->willReturn(['color' => $color]);

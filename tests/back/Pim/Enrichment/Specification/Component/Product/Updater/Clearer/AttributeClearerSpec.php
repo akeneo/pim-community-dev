@@ -109,6 +109,7 @@ class AttributeClearerSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             true,
             '',
             []

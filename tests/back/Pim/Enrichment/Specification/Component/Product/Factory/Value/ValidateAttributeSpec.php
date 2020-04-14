@@ -127,6 +127,6 @@ final class ValidateAttributeSpec extends ObjectBehavior
 
     private function getAttribute(bool $isScopable, bool $isLocalizable): Attribute
     {
-        return new Attribute('an_attribute', AttributeTypes::BOOLEAN, [], $isLocalizable, $isScopable, null, false, 'boolean', []);
+        return new Attribute('an_attribute', AttributeTypes::BOOLEAN, [], $isLocalizable, $isScopable, null, null, false, 'boolean', []);
     }
 }

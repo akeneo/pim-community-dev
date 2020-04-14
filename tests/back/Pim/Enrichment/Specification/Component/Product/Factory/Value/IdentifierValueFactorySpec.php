@@ -82,6 +82,6 @@ final class IdentifierValueFactorySpec extends ObjectBehavior
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
-        return new Attribute('an_attribute', AttributeTypes::IDENTIFIER, [], $isLocalizable, $isScopable, null, false, 'text', []);
+        return new Attribute('an_attribute', AttributeTypes::IDENTIFIER, [], $isLocalizable, $isScopable, null, null, false, 'text', []);
     }
 }

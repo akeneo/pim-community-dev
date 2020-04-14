@@ -124,6 +124,6 @@ final class DateValueFactorySpec extends ObjectBehavior
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
-        return new Attribute('an_attribute', AttributeTypes::DATE, [], $isLocalizable, $isScopable, null, false, 'date', []);
+        return new Attribute('an_attribute', AttributeTypes::DATE, [], $isLocalizable, $isScopable, null, null, false, 'date', []);
     }
 }
