@@ -116,6 +116,7 @@
     "react-dom": "^16.8.0",
     "react-hook-form": "^5.2.0",
     "react-router-dom": "^5.1.0",
+    "reakit": "^1.0.0-rc.0",
     "style-loader": "^1.0.1",
     "styled-components": "^4.3.2",
     "summernote": "0.6.16",
