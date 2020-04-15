@@ -7,7 +7,7 @@ use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class Version_5_0_20200309165300_remove_product_foreign_key_pim_catalog_completeness extends AbstractMigration
+final class Version_4_0_20200415194400_remove_product_foreign_key_pim_catalog_completeness extends AbstractMigration
 {
     private function getForeignKeyIds(): array
     {
