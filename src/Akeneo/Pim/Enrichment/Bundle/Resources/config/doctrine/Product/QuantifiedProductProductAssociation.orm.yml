@@ -2,7 +2,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedProductProductAssociatio
     type: entity
     table: pim_catalog_quantified_product_association
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\AssociationRepository
     id:
         product:
             associationKey: true
@@ -15,14 +14,13 @@ Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedProductProductAssociatio
     manyToOne:
         product:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
-            cascade:
-                - persist
-                - refresh
-                - detach
         association:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedProductAssociation
-            mappedBy: quantified_product_product_association
+            inversedBy: quantifiedProductProductAssociation
             cascade:
                 - persist
                 - refresh
-                - detach
+            joinColumn:
+                name: association_id
+                referencedColumnName: id
+                nullable: false

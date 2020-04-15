@@ -10,7 +10,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedProductAssociation:
             generator:
                 strategy: AUTO
     uniqueConstraints:
-        locale_foreign_key_idx:
+        association_type_unique_foreign_key_idx:
             columns:
                 - owner_id
                 - association_type_id
@@ -24,9 +24,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedProductAssociation:
                     onDelete: CASCADE
         owner:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
-            inversedBy: associations
-            cascade:
-                - detach
+            inversedBy: quantifiedAssociations
             joinColumns:
                 owner_id:
                     referencedColumnName: id
@@ -37,9 +35,4 @@ Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedProductAssociation:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedProductProductAssociation
             mappedBy: association
             cascade:
-                - detach
-            # joinColumns:
-                # quantified_product_product_association_id:
-                    # referencedColumnName: id
-                    # nullable: false
-                    # onDelete: CASCADE
+                - persist
