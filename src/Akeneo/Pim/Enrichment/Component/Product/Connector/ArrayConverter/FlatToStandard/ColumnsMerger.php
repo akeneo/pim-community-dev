@@ -154,7 +154,6 @@ class ColumnsMerger
         if (null !== $attributeInfos['price_currency']) {
             $collectedPrices[$cleanField] = $collectedPrices[$cleanField] ?? [];
             if (trim($fieldValue) === '') {
-
                 return $collectedPrices;
             }
             $collectedPrices[$cleanField][] = sprintf(
