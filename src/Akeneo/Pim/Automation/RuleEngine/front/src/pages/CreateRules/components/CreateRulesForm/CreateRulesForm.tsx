@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useForm, ErrorMessage } from "react-hook-form";
 import { InputErrorMsg } from "../../../../components/InputErrorMsg";
 import { InputText, FlagLabel } from "../../../../components/InputText";
-import { PrimaryButton } from "../../../../components/PrimaryButton";
+import { PrimaryButton } from "../../../../components/Buttons/PrimaryButton";
 import { Translate } from "../../../../dependenciesTools/provider/applicationDependenciesProvider.type";
 
 const inputCodeErrorMsgId = "inputCodeErrMsg";

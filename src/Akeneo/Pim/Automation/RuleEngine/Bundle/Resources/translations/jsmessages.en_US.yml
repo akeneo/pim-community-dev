@@ -49,6 +49,8 @@ pimee_catalog_rule:
                     error: An error occurred during the deletion of the rules.
                     empty_selection: No rules selected.
     form:
+        tab:
+            rule_builder: Rules builder
         attribute:
             tab:
                 rules:
@@ -63,11 +65,23 @@ pimee_catalog_rule:
             constraint:
                 code:
                     required: Rule code is required.
-                    too_short: Rule code is too short. It requires {{ characterLimit }} characters or more.
+                    too_short: "Rule code is too short. It requires {{ characterLimit }} characters or more."
                     allowed_characters: Rule code can only be alphanumeric and underscore characters.
             cross_link: Leave create rule form
         edit:
             priority.label: Priority
+            add_to_category: Add to category
+            remove_action: Remove action
+            add_conditions: Add conditions
+            count_products: "{{ count }} products and product models"
+            product_selection: Product selection
+        helper:
+            add_to_category: To add your product selection to one or more categories, please start by selecting our category trees and then, your categories.
+            product_selection: You must define your product selection in order to create your rule. If you don't know how,
+            product_selection_doc_link: take a look at this article.
+        legend: 
+            add_to_category: Create an action
+            product_selection: Create a condition
 
 pim_enrich:
     entity:

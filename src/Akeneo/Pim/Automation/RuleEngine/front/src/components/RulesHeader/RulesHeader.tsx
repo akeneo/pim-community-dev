@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Header } from "../../template/Header";
-import { PrimaryButton } from "../PrimaryButton";
+import { PrimaryButton } from "../Buttons/PrimaryButton";
 import { PimView } from "../../dependenciesTools/components/PimView";
 import { Breadcrumb } from "../Breadcrumb";
 
@@ -12,10 +12,11 @@ const BreadcrumbAndButtons = styled.div`
 `;
 
 type Props = {
+  formId: string;
   title: string;
 };
 
-const RulesHeader: React.FC<Props> = ({ title, children }) => {
+const RulesHeader: React.FC<Props> = ({ formId, title, children }) => {
   return (
     <Header>
       <BreadcrumbAndButtons>
@@ -26,7 +27,9 @@ const RulesHeader: React.FC<Props> = ({ title, children }) => {
             viewName="pim-rule-index-user-navigation"
           />
           <div className="AknTitleContainer-actionsContainer AknButtonList">
-            <PrimaryButton type="submit">save</PrimaryButton>
+            <PrimaryButton form={formId} type="submit">
+              save
+            </PrimaryButton>
           </div>
         </div>
       </BreadcrumbAndButtons>
