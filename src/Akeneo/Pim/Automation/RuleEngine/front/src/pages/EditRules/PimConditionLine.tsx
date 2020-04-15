@@ -9,8 +9,20 @@ type Props = {
 }
 
 const PimConditionLine: React.FC<Props> = ({ translate, condition }) => {
+  const isMetric = (value: any): boolean => {
+    return (typeof(value) === 'object' &&
+      value.hasOwnProperty('amount') &&
+      value.hasOwnProperty('unit'));
+  };
+
+  const isPrice = (value: any): boolean => {
+    return (typeof(value) === 'object' &&
+      value.hasOwnProperty('amount') &&
+      value.hasOwnProperty('currency'));
+  };
+
   const displayValue = (value: any): string => {
-    if (null === value || undefined === value) {
+    if (null === value || 'undefined' === typeof(value)) {
       return '';
     }
     if (Array.isArray(value)) {
@@ -19,15 +31,13 @@ const PimConditionLine: React.FC<Props> = ({ translate, condition }) => {
     if (typeof(value) === 'boolean') {
       return value ? translate('pim_common.yes') : translate('pim_common.no');
     }
+    if (isMetric(value)) {
+      return `${value.amount} ${value.unit}`;
+    }
+    if (isPrice(value)) {
+      return `${value.amount} ${value.currency}`;
+    }
     if (typeof(value) === 'object') {
-      if (value.hasOwnProperty('amount') && value.hasOwnProperty('unit')) {
-        // Metric
-        return `${value.amount} ${value.unit}`;
-      }
-      if (value.hasOwnProperty('amount') && value.hasOwnProperty('currency')) {
-        // Price
-        return `${value.amount} ${value.currency}`;
-      }
       return JSON.stringify(value);
     }
 
@@ -48,12 +58,12 @@ const PimConditionLine: React.FC<Props> = ({ translate, condition }) => {
   return (
     <div className="AknRule">
       <span className="AknRule-attribute">{condition.field}</span>
-      {' '}{translate(`pimee_catalog_rule.form.edit.conditions.operators.${condition.operator}`)}
-      {' '}<span className="AknRule-attribute">{displayValue(condition.value)}</span>
+      {` ${translate(`pimee_catalog_rule.form.edit.conditions.operators.${condition.operator}`)} `}
+      <span className="AknRule-attribute">{displayValue(condition.value)}</span>
       {(condition.scope || condition.locale) ?
         (condition.scope && condition.locale) ?
-          <span className="AknRule-attribute">{'[ '}{displayLocale(condition.locale)}{' | '}{condition.scope}{' ]'}</span> :
-          <span className="AknRule-attribute">{'[ '}{displayLocale(condition.locale)}{condition.scope}{' ]'}</span>
+          <span className="AknRule-attribute">{' [ '}{displayLocale(condition.locale)}{' | '}{condition.scope}{' ] '}</span> :
+          <span className="AknRule-attribute">{' [ '}{displayLocale(condition.locale)}{condition.scope}{' ] '}</span>
       : ''
       }
     </div>

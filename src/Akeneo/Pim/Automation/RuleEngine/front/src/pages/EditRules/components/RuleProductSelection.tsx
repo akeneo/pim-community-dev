@@ -7,6 +7,7 @@ import { TextBoxBlue } from "./TextBoxBlue";
 import {RuleDefinition} from "../../../models/RuleDefinition";
 import {PimConditionLine} from "../PimConditionLine";
 import {FallbackConditionLine} from "../FallbackConditionLine";
+import {Condition} from "../../../models/Condition";
 
 const Header = styled.header`
   font-weight: normal;
@@ -47,6 +48,27 @@ type Props = {
   translate: Translate;
 };
 
+type ConditionLineProps = {
+  condition: Condition;
+  translate: Translate;
+}
+
+const ConditionLine: React.FC<ConditionLineProps> = ({ translate, condition }) => {
+  const Line = condition.module;
+  const isFallback = condition.module === PimConditionLine || condition.module === FallbackConditionLine;
+
+  return (
+    <div className={`AknGrid-bodyRow${isFallback && ' AknGrid-bodyRow--highlight'}`}>
+      <div className="AknGrid-bodyCell">
+        <Line
+          condition={condition}
+          translate={translate}
+        />
+      </div>
+    </div>
+  )
+};
+
 const RuleProductSelection: React.FC<Props> = ({ ruleDefinition, translate }) => {
   return (
     <fieldset>
@@ -82,22 +104,11 @@ const RuleProductSelection: React.FC<Props> = ({ ruleDefinition, translate }) =>
       </SmallHelper>
       <div className="AknGrid AknGrid--unclickable">
         {ruleDefinition.conditions.map((condition, i) => {
-          const Line = condition.module;
-          const isFallback = condition.module === PimConditionLine || condition.module === FallbackConditionLine;
-
-          return (
-            <div
-              className={`AknGrid-bodyRow${isFallback ? " AknGrid-bodyRow--highlight" : ""}`}
-              key={`condition_${i}`}
-            >
-              <div className="AknGrid-bodyCell">
-                <Line
-                  condition={condition}
-                  translate={translate}
-                />
-              </div>
-            </div>
-          )
+          return <ConditionLine
+            condition={condition}
+            translate={translate}
+            key={`condition_${i}`}
+          />
         })}
       </div>
       <LegendSrOnly>
