@@ -46,11 +46,14 @@ class CalculateProductModelCompleteness implements CalculateProductCompletenessI
 
     public function calculate(ProductId $productModelId): CompletenessCalculationResult
     {
+        $result = new CompletenessCalculationResult();
         $productMask = $this->getProductMask($productModelId);
-
         $requiredAttributesMask = $this->getProductModelAttributesMaskQuery->execute($productModelId);
 
-        $result = new CompletenessCalculationResult();
+        if (null === $productMask || null === $requiredAttributesMask) {
+            return $result;
+        }
+
         foreach ($productMask->completenessCollectionForProduct($requiredAttributesMask) as $completeness) {
             $channelCode = new ChannelCode($completeness->channelCode());
             $localeCode = new LocaleCode($completeness->localeCode());
@@ -61,12 +64,12 @@ class CalculateProductModelCompleteness implements CalculateProductCompletenessI
         return $result;
     }
 
-    private function getProductMask(ProductId $productModelId): CompletenessProductMask
+    private function getProductMask(ProductId $productModelId): ?CompletenessProductMask
     {
         $productModel = $this->productModelRepository->find($productModelId->toInt());
 
         if (null === $productModel) {
-            throw new \RuntimeException(sprintf('Unable to retrieve product model %d to calculate its completeness.', $productModelId->toInt()));
+            return null;
         }
 
         return $this->getCompletenessProductMasks->fromValueCollection(
