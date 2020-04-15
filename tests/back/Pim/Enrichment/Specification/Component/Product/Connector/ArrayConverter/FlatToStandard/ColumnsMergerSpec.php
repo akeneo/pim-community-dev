@@ -90,7 +90,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $this->merge($row)->shouldReturn($mergedRow);
     }
 
-    function it_merges_columns_which_represents_metric_attribute_value_in_severals_columns(
+    function it_merges_price_attribute_value_columns(
         $fieldExtractor,
         AttributeInterface $price
     ) {

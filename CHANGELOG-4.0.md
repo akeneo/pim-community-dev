@@ -1,6 +1,6 @@
 # 4.0.x
 
-## Technical Improvements
+## Bug fixes
 
 - PIM-9175: Fix the import of all price values
 
