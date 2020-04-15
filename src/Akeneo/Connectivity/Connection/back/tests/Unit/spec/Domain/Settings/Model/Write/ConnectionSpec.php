@@ -27,7 +27,7 @@ class ConnectionSpec extends ObjectBehavior
             'Magento Connector',
             FlowType::DATA_DESTINATION,
             42,
-            new UserId(24),
+            24,
             null,
             true
         );
@@ -76,7 +76,7 @@ class ConnectionSpec extends ObjectBehavior
             'Magento Connector',
             FlowType::DATA_DESTINATION,
             42,
-            new UserId(24),
+            24,
             'a/b/c/image_path.jpg',
             false
         );
