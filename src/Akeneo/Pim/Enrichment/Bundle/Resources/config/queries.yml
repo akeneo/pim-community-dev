@@ -114,6 +114,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlSaveProductCompletenesses'
         arguments:
             - '@database_connection'
+            - '@logger'
 
     akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductIdentifiers'
