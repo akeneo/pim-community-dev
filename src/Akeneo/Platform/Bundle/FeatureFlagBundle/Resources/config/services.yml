@@ -11,6 +11,14 @@ services:
         arguments:
             - '@akeneo.feature_flag.service.registry'
 
+    akeneo.feature_flag.filter_routes_subscriber:
+        public: false
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\FilterRoutesSubscriber'
+        arguments:
+            - '@feature_flags'
+        tags:
+            - { name: kernel.event_subscriber }
+
     akeneo.feature_flag.service.registry:
         public: false
         class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry'

@@ -130,9 +130,17 @@ $flags = $container->get('feature_flags');
 if ($flags->isEnabled('myCoolFeature')) { //...
 ```
 
+You can easily disable a route if your feature is disabled by using the `_feature` metadata:
+
+```yaml
+pim_analytics_system_info_index:
+    path: /system_info
+    defaults: { _controller: 'pim_analytics.controller.system_info:indexAction', _format: html, _feature: 'myCoolFeature' }
+```
+
 #### Frontend
 
-A service called `pim/feature-flags` exists to determine if the feature you have configured in `config/packages/akeneo_feature_flag.yml` is enabled or not. This is the one and only backend entry point you have to use.
+A service called `pim/feature-flags` exists to determine if the feature you have configured in `config/packages/akeneo_feature_flag.yml` is enabled or not. This is the one and only frontend entry point you have to use.
 
 ```js
 const FeatureFlags = require("pim/feature-flags");
@@ -191,9 +199,3 @@ Those flags require extra attention. We must avoid crippling business code with 
 - ...
 
 Of course, at some point, you'll need a `if/else` to branch the (de)activation of your feature. But the idea here is to bury it far from your business code. 
-
-## Part about what we can do when flagging?
-
-TODO: for instance:
-- 403 forbidden routes
-- ...
