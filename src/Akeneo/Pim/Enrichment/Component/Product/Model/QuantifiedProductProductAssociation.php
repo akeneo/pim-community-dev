@@ -17,6 +17,8 @@ class QuantifiedProductProductAssociation
 {
   private $id;
   public $quantity;
+
+  /** @var ProductInterface */
   public $product;
   public $association;
 

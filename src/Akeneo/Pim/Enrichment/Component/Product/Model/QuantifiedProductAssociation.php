@@ -124,4 +124,36 @@ class QuantifiedProductAssociation implements QuantifiedAssociationInterface
       return 'no_idea';
       // return $this->owner ? $this->owner->getIdentifier() . '.' . $this->associationType->getCode() : null;
   }
+
+    public function removeProductForIdentifier(string $productIdentifierToDelete): void
+    {
+        $quantifiedProductProductAssociationToRemove = $this->getQuantifiedProductProductAssociation($productIdentifierToDelete);
+        $this->quantifiedProductProductAssociation->removeElement($quantifiedProductProductAssociationToRemove);
+    }
+
+    public function updateProductForIdentifier($productTomodify, $quantity): void
+    {
+        $quantifiedProductProductAssociationToRemove = $this->getQuantifiedProductProductAssociation($productTomodify);
+        $quantifiedProductProductAssociationToRemove->quantity = $quantity;
+    }
+
+    public function addProductForIdentifier(QuantifiedProductProductAssociation $productProductAssociationToAdd): void
+    {
+        $this->quantifiedProductProductAssociation->add($productProductAssociationToAdd);
+    }
+
+    private function getQuantifiedProductProductAssociation(string $productIdentifierToDelete)
+    {
+        $quantifiedProductProductAssociationToRemove = $this->quantifiedProductProductAssociation
+            ->filter(
+                function (QuantifiedProductProductAssociation $quantifiedProductProductAssociation) use (
+                    $productIdentifierToDelete
+                ) {
+                    return $quantifiedProductProductAssociation->product->getReference() === $productIdentifierToDelete;
+                }
+            )
+            ->first();
+
+        return $quantifiedProductProductAssociationToRemove;
+}
 }

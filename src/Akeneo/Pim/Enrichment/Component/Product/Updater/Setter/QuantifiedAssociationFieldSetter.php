@@ -57,14 +57,12 @@ class QuantifiedAssociationFieldSetter extends AbstractFieldSetter
      * Expected data input format :
      * {
      *     "XSELL": {
-     *         "groups": ["group1", "group2"],
-     *         "products": ["AKN_TS1", "AKN_TSH2"],
-     *         "product_models": ["MODEL_AKN_TS1", "MODEL_AKN_TSH2"]
+     *         "products": [{"identifier": "AKN_TS1", "quantity": 12}],
+     *         "products": [{"identifier": "AKN_TS1", "quantity": 12}],
      *     },
      *     "UPSELL": {
-     *         "groups": ["group3", "group4"],
-     *         "products": ["AKN_TS3", "AKN_TSH4"],
-     *         "product_models": ["MODEL_AKN_TS3 "MODEL_AKN_TSH4"]
+     *         "products": [{"identifier": "AKN_TS1", "quantity": 12}],
+     *         "products": [{"identifier": "AKN_TS1", "quantity": 12}],
      *     },
      * }
      */
@@ -74,10 +72,81 @@ class QuantifiedAssociationFieldSetter extends AbstractFieldSetter
             throw InvalidObjectException::objectExpected($entity, EntityWithValuesInterface::class);
         }
 
+        // TODO: Remove unused association types
+        /**
+         * @var string $associationTypeCode
+         * @var array $quantifiedAssociations
+         */
+        foreach ($data as $associationTypeCode => $quantifiedAssociations) {
+            $updatedProductIdentifiers = array_map(function($quantifiedAssociation) {
+                return $quantifiedAssociation['identifier'];
+            }, $quantifiedAssociations['products']);
+
+            /* @var QuantifiedProductAssociation $productAssociation*/
+            $productAssociation = $entity->getQuantifiedAssociations()
+                ->filter(function (QuantifiedProductAssociation $association) use ($associationTypeCode) {
+                    return $association->getAssociationType()->getCode() === $associationTypeCode;
+                })->toArray()[0];
+            $currentProductIdentifiers = $productAssociation->getQuantifiedProducts()->map(
+                function (QuantifiedProductProductAssociation $productProductAssociation) {
+                    return $productProductAssociation->product->getReference();
+                }
+            )->toArray();
+
+//            $currentProductIdentifiers = array_reduce($productAssociation, function ($carry, QuantifiedProductAssociation $item) {
+//                $productIdentifiers = $item->getQuantifiedProducts()->map(function(QuantifiedProductProductAssociation $productProductAssociation) {
+//                    return $productProductAssociation->product->getReference();
+//                })->toArray();
+//
+//                return array_merge($carry, $productIdentifiers);
+//            }, []);
+
+//        var_dump($updatedProductIdentifiers);
+//        var_dump($currentProductIdentifiers);
+            // Chopper les codes de tous les produits target actuellement dans l'entité
+            $modifiedProducts = array_intersect($currentProductIdentifiers, $updatedProductIdentifiers);
+            $delete = array_diff($currentProductIdentifiers, $updatedProductIdentifiers);
+            $add = array_diff($updatedProductIdentifiers, $currentProductIdentifiers);
+
+//            var_dump($modifiedProducts);
+//            var_dump($delete);
+//            var_dump($add);
+
+            foreach ($delete as $productIdentifierToDelete) {
+                $productAssociation->removeProductForIdentifier($productIdentifierToDelete);
+            }
+            foreach ($modifiedProducts as $productTomodify) {
+                $quantifiedAssociationForProduct = array_filter($quantifiedAssociations, function ($quantifiedAssociation) use ($productTomodify) {
+                    var_dump($quantifiedAssociations);
+                    return $quantifiedAssociation['identifier'] === $productTomodify;
+                });
+                $productAssociation->updateProductForIdentifier($productTomodify, $quantifiedAssociationForProduct['quantity']);
+            }
+
+            foreach ($add as $productToAdd) {
+                $quantifiedAssociationForProduct = array_filter($quantifiedAssociations, function ($quantifiedAssociation) use ($productToAdd) {
+                    return $quantifiedAssociation['identifier'] === $productToAdd;
+                });
+                $product = $this->productRepository->findOneByIdentifier($productToAdd);
+
+                $quantifiedProductProduct = new QuantifiedProductProductAssociation();
+                $quantifiedProductProduct->product = $product;
+                $quantifiedProductProduct->quantity = $quantifiedAssociationForProduct['quantity'];
+                $quantifiedProductProduct->association = $productAssociation;
+
+                $productAssociation->addProductForIdentifier($quantifiedProductProduct);
+            }
+        }
+
+        // Regarder tous les codes de produits de ceux qu'ont doit mettre à jour => tableau de ceux à supprimer + tableaux de ceux à updater et ceux à ajouter
+
+        // Mettre à jour les entités avec les 3 boulots
+
+
         $this->checkData($field, $data);
-        $this->clearAssociations($entity, $data);
-        $this->addMissingAssociations($entity);
-        $this->setProductsAndGroupsToAssociations($entity, $data);
+//        $this->clearAssociations($entity, $data);
+//        $this->addMissingAssociations($entity);
+//        $this->setProductsAndGroupsToAssociations($entity, $data);
     }
 
     /**
@@ -297,7 +366,6 @@ class QuantifiedAssociationFieldSetter extends AbstractFieldSetter
     protected function checkAssociationItems($field, $assocTypeCode, array $data, array $items)
     {
         foreach ($items as $item) {
-          var_dump($item);
             if (!is_string($item['identifier']) || !is_integer($item['quantity'])) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
