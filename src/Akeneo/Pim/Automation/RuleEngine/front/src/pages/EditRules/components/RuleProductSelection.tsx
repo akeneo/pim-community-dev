@@ -4,6 +4,7 @@ import { Translate } from "../../../dependenciesTools";
 import { SmallHelper } from "../../../components/SmallHelper";
 import { GreyGhostButton } from "../../../components/Buttons";
 import { TextBoxBlue } from "./TextBoxBlue";
+import {RuleDefinition} from "../../../models/RuleDefinition";
 
 const Header = styled.header`
   font-weight: normal;
@@ -40,10 +41,11 @@ const AddConditionContainer = styled.div`
 `;
 
 type Props = {
+  ruleDefinition: RuleDefinition
   translate: Translate;
 };
 
-const RuleProductSelection: React.FC<Props> = ({ translate }) => {
+const RuleProductSelection: React.FC<Props> = ({ ruleDefinition, translate }) => {
   return (
     <fieldset>
       <Header className="AknSubsection-title">
@@ -76,6 +78,14 @@ const RuleProductSelection: React.FC<Props> = ({ translate }) => {
           )}
         </a>
       </SmallHelper>
+      {ruleDefinition.conditions.map((condition, i) => {
+        const Line = condition.module;
+        return <Line
+          condition={condition}
+          translate={translate}
+          key={`condition_${i}`}
+        />
+      })}
       <LegendSrOnly>
         {translate("pimee_catalog_rule.form.legend.product_selection")}
       </LegendSrOnly>

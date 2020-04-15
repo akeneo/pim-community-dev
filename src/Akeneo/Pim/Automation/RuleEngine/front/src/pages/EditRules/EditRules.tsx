@@ -142,7 +142,10 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
                   </StyledTab>
                 </TabDiv>
                 <StyledTabPanel {...tab}>
-                  <RulesBuilder translate={translate} />
+                  <RulesBuilder
+                    translate={translate}
+                    ruleDefinition={ruleDefinition}
+                  />
                 </StyledTabPanel>
                 <StyledTabPanel {...tab}>
                   <RuleProperties
