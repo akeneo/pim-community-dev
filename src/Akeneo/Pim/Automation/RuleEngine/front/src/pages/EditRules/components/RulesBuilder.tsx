@@ -5,7 +5,6 @@ import {RuleDefinition} from "../../../models/RuleDefinition";
 import {Action} from "../../../models/Action";
 
 type Props = {
-  ruleDefinition: RuleDefinition,
   translate: Translate;
   ruleDefinition: RuleDefinition;
 };
