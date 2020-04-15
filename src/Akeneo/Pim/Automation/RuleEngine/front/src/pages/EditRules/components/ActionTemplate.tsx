@@ -34,9 +34,12 @@ const StyledTitleHeader = styled.span`
 
 type Props = {
   translate: Translate;
+  title: string,
+  helper: string,
+  srOnly: string,
 };
 
-const RuleAddToCategory: React.FC<Props> = ({ translate }) => {
+const ActionTemplate: React.FC<Props> = ({ srOnly, translate, title, helper, children }) => {
   return (
     <fieldset>
       <StyledHeader className="AknSubsection-title">
@@ -45,7 +48,7 @@ const RuleAddToCategory: React.FC<Props> = ({ translate }) => {
             {translate("pimee_catalog_rule.rule.action.then.label")}
           </TextBoxBlue>
           <StyledTitleHeader>
-            {translate("pimee_catalog_rule.form.edit.add_to_category")}
+            {title}
           </StyledTitleHeader>
         </StyledHeaderLeft>
         <RedGhostButton sizeMode="small">
@@ -53,13 +56,14 @@ const RuleAddToCategory: React.FC<Props> = ({ translate }) => {
         </RedGhostButton>
       </StyledHeader>
       <SmallHelper>
-        {translate("pimee_catalog_rule.form.helper.add_to_category")}
+        {helper}
       </SmallHelper>
-      <LegendSrOnly>{translate("pimee_catalog_rule.form.legend.add_to_category")}</LegendSrOnly>
+      <LegendSrOnly>{srOnly}</LegendSrOnly>
+      {children}
     </fieldset>
   );
 };
 
-RuleAddToCategory.displayName = "RuleAddToCategory";
+ActionTemplate.displayName = "ActionTemplate";
 
-export { RuleAddToCategory };
+export { ActionTemplate };
