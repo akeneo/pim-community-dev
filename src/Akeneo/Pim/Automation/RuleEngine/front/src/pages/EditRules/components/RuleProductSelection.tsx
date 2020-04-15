@@ -5,6 +5,8 @@ import { SmallHelper } from "../../../components/SmallHelper";
 import { GreyGhostButton } from "../../../components/Buttons";
 import { TextBoxBlue } from "./TextBoxBlue";
 import {RuleDefinition} from "../../../models/RuleDefinition";
+import {PimConditionLine} from "../PimConditionLine";
+import {FallbackConditionLine} from "../FallbackConditionLine";
 
 const Header = styled.header`
   font-weight: normal;
@@ -78,14 +80,26 @@ const RuleProductSelection: React.FC<Props> = ({ ruleDefinition, translate }) =>
           )}
         </a>
       </SmallHelper>
-      {ruleDefinition.conditions.map((condition, i) => {
-        const Line = condition.module;
-        return <Line
-          condition={condition}
-          translate={translate}
-          key={`condition_${i}`}
-        />
-      })}
+      <div className="AknGrid AknGrid--unclickable">
+        {ruleDefinition.conditions.map((condition, i) => {
+          const Line = condition.module;
+          const isFallback = condition.module === PimConditionLine || condition.module === FallbackConditionLine;
+
+          return (
+            <div
+              className={`AknGrid-bodyRow${isFallback ? " AknGrid-bodyRow--highlight" : ""}`}
+              key={`condition_${i}`}
+            >
+              <div className="AknGrid-bodyCell">
+                <Line
+                  condition={condition}
+                  translate={translate}
+                />
+              </div>
+            </div>
+          )
+        })}
+      </div>
       <LegendSrOnly>
         {translate("pimee_catalog_rule.form.legend.product_selection")}
       </LegendSrOnly>
