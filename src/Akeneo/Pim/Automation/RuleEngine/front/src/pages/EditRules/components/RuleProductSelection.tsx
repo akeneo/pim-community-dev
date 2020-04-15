@@ -4,6 +4,10 @@ import { Translate } from "../../../dependenciesTools";
 import { SmallHelper } from "../../../components/SmallHelper";
 import { GreyGhostButton } from "../../../components/Buttons";
 import { TextBoxBlue } from "./TextBoxBlue";
+import {RuleDefinition} from "../../../models/RuleDefinition";
+import {PimConditionLine} from "../PimConditionLine";
+import {FallbackConditionLine} from "../FallbackConditionLine";
+import {Condition} from "../../../models/Condition";
 
 const Header = styled.header`
   font-weight: normal;
@@ -40,10 +44,32 @@ const AddConditionContainer = styled.div`
 `;
 
 type Props = {
+  ruleDefinition: RuleDefinition
   translate: Translate;
 };
 
-const RuleProductSelection: React.FC<Props> = ({ translate }) => {
+type ConditionLineProps = {
+  condition: Condition;
+  translate: Translate;
+}
+
+const ConditionLine: React.FC<ConditionLineProps> = ({ translate, condition }) => {
+  const Line = condition.module;
+  const isFallback = condition.module === PimConditionLine || condition.module === FallbackConditionLine;
+
+  return (
+    <div className={`AknGrid-bodyRow${isFallback && ' AknGrid-bodyRow--highlight'}`}>
+      <div className="AknGrid-bodyCell">
+        <Line
+          condition={condition}
+          translate={translate}
+        />
+      </div>
+    </div>
+  )
+};
+
+const RuleProductSelection: React.FC<Props> = ({ ruleDefinition, translate }) => {
   return (
     <fieldset>
       <Header className="AknSubsection-title">
@@ -76,6 +102,15 @@ const RuleProductSelection: React.FC<Props> = ({ translate }) => {
           )}
         </a>
       </SmallHelper>
+      <div className="AknGrid AknGrid--unclickable">
+        {ruleDefinition.conditions.map((condition, i) => {
+          return <ConditionLine
+            condition={condition}
+            translate={translate}
+            key={`condition_${i}`}
+          />
+        })}
+      </div>
       <LegendSrOnly>
         {translate("pimee_catalog_rule.form.legend.product_selection")}
       </LegendSrOnly>
