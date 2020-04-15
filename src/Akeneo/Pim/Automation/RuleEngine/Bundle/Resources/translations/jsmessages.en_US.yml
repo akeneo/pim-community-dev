@@ -77,10 +77,6 @@ pimee_catalog_rule:
             count_products: "{{ count }} products and product models"
             product_selection: Product selection
             conditions:
-                system_fields:
-                    completeness: Completeness
-                    identifier: Identifier
-                    enabled: Enabled
                 operators:
                     "STARTS WITH": starts with
                     "ENDS WITH": ends with
