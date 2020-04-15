@@ -29,10 +29,10 @@ SQL;
             ->executeQuery($sqlQuery, ['client_id' => $clientId])
             ->fetchColumn();
 
-        if (null === $connectionCode) {
+        if (false === $connectionCode) {
             return null;
-        } else {
-            return (string) $connectionCode;
         }
+
+        return (string) $connectionCode;
     }
 }

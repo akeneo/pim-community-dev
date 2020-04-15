@@ -54,6 +54,11 @@ class ConnectionContextSpec extends ObjectBehavior
         $this->getConnection()->shouldReturn($connection);
     }
 
+    public function it_returns_null_when_client_id_is_not_defined():void
+    {
+        $this->getConnection()->shouldReturn(null);
+    }
+
     public function it_returns_connection_as_not_collectable_when_connection_is_not_auditable(
         $areCredentialsValidCombinationQuery,
         $selectConnectionCode,
@@ -118,14 +123,14 @@ class ConnectionContextSpec extends ObjectBehavior
     public function it_throws_an_exception_during_is_collectable(): void
     {
         $this
-            ->shouldThrow(\Exception::class)
+            ->shouldThrow(\LogicException::class)
             ->during('isCollectable');
     }
 
     public function it_throws_an_exception_during_are_credantials_valid_combination_(): void
     {
         $this
-            ->shouldThrow(\Exception::class)
+            ->shouldThrow(\LogicException::class)
             ->during('areCredentialsValidCombination');
     }
 }

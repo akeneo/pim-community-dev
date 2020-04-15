@@ -85,7 +85,7 @@ class ConnectionContext
         }
 
         if (null === $this->getConnection()) {
-            throw new \Exception('You must initialize client id and username before using this service.');
+            throw new \LogicException('You must initialize client id and username before using this service.');
         }
 
         return $this->collectable = $this->getConnection()->auditable() && $this->areCredentialsValidCombination();
@@ -98,7 +98,7 @@ class ConnectionContext
         }
 
         if (null === $this->clientId || null === $this->username) {
-            throw new \Exception('You must initialize client id and username before using this service.');
+            throw new \LogicException('You must initialize client id and username before using this service.');
         }
 
         $this->areCredentialsValidCombination = $this->areCredentialsValidCombinationQuery
