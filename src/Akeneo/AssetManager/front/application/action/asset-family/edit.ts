@@ -21,7 +21,7 @@ import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edi
 import {assetFamilyPermissionChanged} from 'akeneoassetmanager/domain/event/user';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
-import TransformationCollection from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
+import {TransformationCollection} from 'akeneoassetmanager/domain/model/asset-family/transformation';
 import NamingConvention from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
 import ProductLinkRuleCollection from 'akeneoassetmanager/domain/model/asset-family/product-link-rule-collection';
 

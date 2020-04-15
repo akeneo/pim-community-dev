@@ -7,7 +7,7 @@ import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
-import TransformationCollection from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
+import {TransformationCollection} from 'akeneoassetmanager/domain/model/asset-family/transformation';
 import {
   assetFamilyTransformationsUpdated,
   saveAssetFamily,
@@ -63,7 +63,7 @@ const AssetFamilyTransformationEditor = ({
   if (!editMode) {
     return (
       <div className="AknJsonEditor">
-        <Editor value={JSON.parse(transformations)} mode="view" />
+        <Editor value={transformations} mode="view" />
       </div>
     );
   }
@@ -71,9 +71,9 @@ const AssetFamilyTransformationEditor = ({
   return (
     <div className="AknJsonEditor">
       <Editor
-        value={JSON.parse(transformations)}
+        value={transformations}
         onChange={(event: object) => {
-          onAssetFamilyTransformationsChange(JSON.stringify(null === event ? [] : event));
+          onAssetFamilyTransformationsChange(null === event ? [] : (event as TransformationCollection));
         }}
         mode="code"
         schema={schema}

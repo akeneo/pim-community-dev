@@ -483,6 +483,7 @@ pim_asset_manager:
     media_file:
       placeholder: Drag and drop to upload or click here
       read_only: This media file is read only
+    used_as_transformation_target: This field is read only as it is used as a target in an asset transformation.
 
   modal:
     delete:
