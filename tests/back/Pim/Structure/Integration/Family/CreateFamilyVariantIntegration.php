@@ -579,7 +579,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $errors = $this->get('validator')->validate($familyVariant);
         $this->assertEquals(2, $errors->count());
         $this->assertEquals(
-            'Variant axes "name" must be a boolean, a simple select, a simple reference data or a metric',
+            'Variant axes "name" must be a boolean, a simple select, a simple reference data or a measurement',
             $errors->get(1)->getMessage()
         );
 
@@ -622,7 +622,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->assertCount(2, $violations);
         $this->assertSame('Variant axes "sku" cannot be unique or an identifier', $violations->get(0)->getMessage());
         $this->assertSame(
-            'Variant axes "sku" must be a boolean, a simple select, a simple reference data or a metric',
+            'Variant axes "sku" must be a boolean, a simple select, a simple reference data or a measurement',
             $violations->get(1)->getMessage()
         );
         $this->assertSame('variant_attribute_sets', $violations->get(0)->getPropertyPath());

@@ -77,7 +77,7 @@ final class ChannelContext implements Context
     }
 
     /**
-     * @Then the locale :localeCode is removed from the :channelCode channel
+     * @when the locale :localeCode is removed from the :channelCode channel
      */
     public function iRemoveTheLocaleFromTheChannel(string $localeCode, string $channelCode)
     {
@@ -108,6 +108,25 @@ final class ChannelContext implements Context
 
         $channel->addLocale($locale);
 
+        $this->channelRepository->save($channel);
+    }
+
+    /**
+     * @When the :currencyCode currency is added to the :channelCode channel
+     */
+    public function theCurrencyIsAddedToChannel(string $currencyCode, string $channelCode)
+    {
+        if (null === $channel = $this->channelRepository->findOneByIdentifier($channelCode)) {
+            throw new \Exception(sprintf('Channel "%s" cannot be found', $channelCode));
+        }
+
+        $currency = $this->currencyRepository->findOneByIdentifier($currencyCode);
+        if (null === $currency) {
+            $currency = $this->currencyBuilder->build(['code' => $currencyCode]);
+            $this->currencyRepository->save($currency);
+        }
+
+        $channel->addCurrency($currency);
         $this->channelRepository->save($channel);
     }
 }

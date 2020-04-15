@@ -46,8 +46,8 @@ class DeleteConnectionHandlerSpec extends ObjectBehavior
             'magento',
             'Magento',
             FlowType::OTHER,
-            1,
-            $magentoUserId,
+            $magentoClientId->id(),
+            $magentoUserId->id(),
             null,
             false
         );

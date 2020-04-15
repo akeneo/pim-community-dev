@@ -44,7 +44,7 @@ class Connection
         string $label,
         string $flowType,
         int $clientId,
-        UserId $userId,
+        int $userId,
         ?string $image = null,
         bool $auditable = false
     ) {
@@ -52,7 +52,7 @@ class Connection
         $this->label = new ConnectionLabel($label);
         $this->flowType = new FlowType($flowType);
         $this->clientId = new ClientId($clientId);
-        $this->userId = $userId;
+        $this->userId = new UserId($userId);
         $this->image = null !== $image ? new ConnectionImage($image) : null;
         $this->auditable = $auditable;
     }

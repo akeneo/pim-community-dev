@@ -363,8 +363,8 @@ Decimals allowed:        Allow decimals
 Negative allowed:        Allow negative values
 Date min:                Min date
 Date max:                Max date
-Metric family:           Metric family
-Default metric unit:     Default metric unit
+Metric family:           Measurement family
+Default metric unit:     Default measurement unit
 Max file size:           Max file size (MB)
 Allowed extensions:      Allowed extensions
 None:                    None
@@ -392,7 +392,7 @@ pim_catalog_file:             File
 pim_catalog_image:            Image
 pim_catalog_boolean:          "Yes/No"
 pim_catalog_date:             Date
-pim_catalog_metric:           Metric
+pim_catalog_metric:           Measurement
 
 pim_reference_data_simpleselect: Reference data simple select
 pim_reference_data_multiselect:  Reference data multi select

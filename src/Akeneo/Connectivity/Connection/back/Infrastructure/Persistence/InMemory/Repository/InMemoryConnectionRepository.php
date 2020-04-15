@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository;
 
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 
@@ -46,7 +45,7 @@ class InMemoryConnectionRepository implements ConnectionRepository
             $dataRow['label'],
             $dataRow['flow_type'],
             $dataRow['client_id'],
-            new UserId($dataRow['user_id']),
+            $dataRow['user_id'],
             $dataRow['image'],
             $dataRow['auditable']
         );
