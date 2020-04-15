@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQuery;
@@ -44,7 +43,7 @@ class ConnectionContextSpec extends ObjectBehavior
             'magento',
             FlowType::DATA_DESTINATION,
             42,
-            new UserId(10),
+            10,
             null,
             false
         );
@@ -68,7 +67,7 @@ class ConnectionContextSpec extends ObjectBehavior
             'magento',
             FlowType::DATA_DESTINATION,
             42,
-            new UserId(10),
+            10,
             null,
             false
         );
@@ -93,7 +92,7 @@ class ConnectionContextSpec extends ObjectBehavior
             'magento',
             FlowType::DATA_DESTINATION,
             42,
-            new UserId(10),
+            10,
             null,
             true
         );

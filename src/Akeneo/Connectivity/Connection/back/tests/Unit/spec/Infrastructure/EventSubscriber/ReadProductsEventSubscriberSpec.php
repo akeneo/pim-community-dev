@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinati
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ReadProductsEventSubscriber;
@@ -48,7 +47,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $connectionContext,
         $updateDataDestinationProductEventCountHandler
     ): void {
-        $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_DESTINATION, 42, new UserId(10));
+        $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_DESTINATION, 42, 10);
         $connectionContext->getConnection()->willReturn($connection);
         $connectionContext->isCollectable()->willReturn(true);
 
@@ -79,7 +78,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $connectionContext,
         $updateDataDestinationProductEventCountHandler
     ): void {
-        $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_SOURCE, 42, new UserId(10));
+        $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_SOURCE, 42, 10);
         $connectionContext->getConnection()->willReturn($connection);
         $connectionContext->isCollectable()->willReturn(true);
 
