@@ -6,9 +6,10 @@
 import {PimConditionLine} from "../pages/EditRules/PimConditionLine";
 import React from "react";
 import {Condition} from "./Condition";
+import {Translate} from "../dependenciesTools/provider/applicationDependenciesProvider.type";
 
 type PimCondition = {
-  module: React.FC<{condition: Condition}>,
+  module: React.FC<{condition: Condition, translate: Translate}>,
   field: string;
   operator: string;
   value: any|null;
