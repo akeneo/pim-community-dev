@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Technical Improvements
+
+- PIM-9175: Fix the import of all price values
+
 # 4.0.15 (2020-04-07)
 
 ## Technical Improvements

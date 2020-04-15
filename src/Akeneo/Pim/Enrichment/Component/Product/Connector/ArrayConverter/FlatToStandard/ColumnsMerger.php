@@ -151,9 +151,11 @@ class ColumnsMerger
     protected function collectPriceData(array $collectedPrices, array $attributeInfos, $fieldValue)
     {
         $cleanField = $this->getCleanFieldName($attributeInfos);
-        if (null !== $attributeInfos['price_currency'] && trim($fieldValue) !== '') {
+        if (null !== $attributeInfos['price_currency']) {
             $collectedPrices[$cleanField] = $collectedPrices[$cleanField] ?? [];
-
+            if (trim($fieldValue) === '') {
+                return $collectedPrices;
+            }
             $collectedPrices[$cleanField][] = sprintf(
                 '%s%s%s',
                 $fieldValue,
@@ -163,7 +165,6 @@ class ColumnsMerger
         } else {
             $collectedPrices[$cleanField] = explode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $fieldValue);
         }
-
         return $collectedPrices;
     }
 
