@@ -1,22 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { StyledLabel } from "./InputText";
+import {Flag} from "../Flag/Flag";
 
 const DivLabelWithFLag = styled.div`
   align-items: center;
   display: flex;
-`;
-
-const SpanSrOnly = styled.span`
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 `;
 
 type Props = {
@@ -26,12 +15,6 @@ type Props = {
 } & React.HTMLAttributes<HTMLLabelElement>;
 
 const FlagLabel: React.FC<Props> = ({ locale, label, flagDescription }) => {
-  const extractFlagFromLocale = (locale: string): string => {
-    const region = locale.split('_')[locale.split('_').length - 1];
-
-    return region.toLowerCase();
-  };
-
   return (
     <DivLabelWithFLag>
       <StyledLabel
@@ -40,9 +23,7 @@ const FlagLabel: React.FC<Props> = ({ locale, label, flagDescription }) => {
       >
         {label}
       </StyledLabel>
-      <i className={`flag flag-${extractFlagFromLocale(locale)}`}>
-        <SpanSrOnly>{flagDescription}</SpanSrOnly>
-      </i>
+      <Flag locale={locale} flagDescription={flagDescription}/>
     </DivLabelWithFLag>
   );
 };

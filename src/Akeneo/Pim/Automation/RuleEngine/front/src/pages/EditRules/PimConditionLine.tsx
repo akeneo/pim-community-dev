@@ -1,16 +1,24 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import {PimCondition} from "../../models/PimCondition";
 import {getByIdentifier} from "../../fetch/AttributeFetcher";
 import {useBackboneRouter, useTranslate, useUserContext} from "../../dependenciesTools/hooks";
 import {getAll} from "../../fetch/ChannelFetcher";
+import {Flag} from "../../components/Flag/Flag";
 
 type Props = {
   condition: PimCondition
 }
 
-const SystemFields = [
-  'family'
-];
+const SystemFieldsTranslationKeys: {[systemField: string]: string} = {
+  'family': 'pim_enrich.entity.family.uppercase_label',
+  'categories': 'pim_enrich.entity.category.uppercase_label',
+  'completeness': 'pimee_catalog_rule.form.edit.conditions.system_fields.completeness',
+  'identifier': 'pimee_catalog_rule.form.edit.conditions.system_fields.identifier',
+  'created': 'pim_common.created',
+  'updated': 'pim_common.updated',
+  'enabled': 'pimee_catalog_rule.form.edit.conditions.system_fields.enabled',
+  'groups': 'pim_enrich.entity.group.label',
+};
 
 const PimConditionLine: React.FC<Props> = ({ condition }) => {
   const userContext = useUserContext();
@@ -24,8 +32,9 @@ const PimConditionLine: React.FC<Props> = ({ condition }) => {
   const router = useBackboneRouter();
 
   React.useEffect(() => {
-    if (SystemFields.includes(condition.field)) {
-      setFieldLabel(translate(`pimee_catalog_rule.form.edit.conditions.system_fields.${condition.field}`));
+    if (SystemFieldsTranslationKeys.hasOwnProperty(condition.field)) {
+      const key = SystemFieldsTranslationKeys[condition.field];
+      setFieldLabel(translate(key));
       return;
     }
     getByIdentifier(condition.field, router).then((attribute) => {
@@ -59,18 +68,29 @@ const PimConditionLine: React.FC<Props> = ({ condition }) => {
       return value ? translate('pim_common.yes') : translate('pim_common.no');
     }
     if (typeof(value) === 'object') {
+      if (value.hasOwnProperty('amount') && value.hasOwnProperty('unit')) {
+        // Metric
+        return `${value.amount} ${value.unit}`;
+      }
+      if (value.hasOwnProperty('amount') && value.hasOwnProperty('currency')) {
+        // Price
+        return `${value.amount} ${value.currency}`;
+      }
       return JSON.stringify(value);
     }
 
     return value;
   };
 
-  const displayLocale = (locale: string | null) : string | null => {
+  const displayLocale = (locale: string | null) : ReactElement | null => {
     if (null === locale) {
       return null;
     }
 
-    return locale;
+    return <>
+      <Flag locale={locale} flagDescription={locale}/>{' '}
+      {locale}
+    </>
   };
 
   return (
@@ -79,15 +99,13 @@ const PimConditionLine: React.FC<Props> = ({ condition }) => {
         !fieldLabel ? 'Loading...' :
           <div className="AknRule">
             <span className="AknRule-attribute">{fieldLabel}</span>
-            {translate(`pimee_catalog_rule.form.edit.operators.${condition.operator}`)}
-            <span className="AknRule-attribute">{displayValue(condition.value)}</span>
-            {scopeLabel || condition.locale ?
-              <span className="AknRule-attribute">[
-                {[scopeLabel, displayLocale(condition.locale)]
-                  .filter((value) => { return null !== value })
-                  .join(' | ')}
-              ]</span>
-              : ''
+            {' '}{translate(`pimee_catalog_rule.form.edit.conditions.operators.${condition.operator}`)}
+            {' '}<span className="AknRule-attribute">{displayValue(condition.value)}</span>
+            {(scopeLabel || condition.locale) ?
+              (scopeLabel && condition.locale) ?
+                <span className="AknRule-attribute">{'[ '}{displayLocale(condition.locale)}{' | '}{scopeLabel}{' ]'}</span> :
+                <span className="AknRule-attribute">{'[ '}{displayLocale(condition.locale)}{scopeLabel}{' ]'}</span>
+            : ''
             }
           </div>
       }

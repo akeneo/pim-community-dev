@@ -69,7 +69,8 @@ pimee_catalog_rule:
                     allowed_characters: Rule code can only be alphanumeric and underscore characters.
             cross_link: Leave create rule form
         edit:
-            priority.label: Priority
+            priority:
+                label: Priority
             add_to_category: Add to category
             remove_action: Remove action
             add_conditions: Add conditions
@@ -77,7 +78,9 @@ pimee_catalog_rule:
             product_selection: Product selection
             conditions:
                 system_fields:
-                    family: Family
+                    completeness: Completeness
+                    identifier: Identifier
+                    enabled: Enabled
                 operators:
                     "STARTS WITH": starts with
                     "ENDS WITH": ends with
