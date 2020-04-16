@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.73 (2020-04-16)
+
 ## Bug fixes
 
 - PIM-9179: Fix product grid freezing when using ENTER on filter
