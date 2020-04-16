@@ -55,6 +55,7 @@ resource "null_resource" "helm_release_pim" {
   depends_on = [
     local_file.helm_pim_config,
     local_file.kubeconfig,
+    google_storage_bucket_iam_member.srnt_bucket_pimstorage,
   ]
 
   provisioner "local-exec" {
