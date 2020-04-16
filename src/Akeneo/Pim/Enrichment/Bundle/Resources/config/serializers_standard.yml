@@ -54,7 +54,8 @@ services:
     pim_catalog.normalizer.standard.product.quantified_associations:
         class: '%pim_catalog.normalizer.standard.product.quantified_associations.class%'
         arguments:
-            - '@database_connection'
+            - '@pim_catalog.query.product.map_product'
+            - '@pim_catalog.query.product.map_product_model'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 40 }
 

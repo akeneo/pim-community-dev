@@ -35,6 +35,9 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
             case 'associations':
                 $convertedItem = $this->convertAssociations($data, $convertedItem);
                 break;
+            case 'quantified_associations':
+                $convertedItem = $this->convertQuantifiedAssociations($data, $convertedItem);
+                break;
             case 'categories':
                 $convertedItem[$property] = implode(',', $data);
                 break;
@@ -128,6 +131,46 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
             foreach ($associations as $assocType => $entities) {
                 $propertyName = sprintf('%s-%s', $assocName, $assocType);
                 $convertedItem[$propertyName] = implode(',', $entities);
+            }
+        }
+
+        return $convertedItem;
+    }
+
+    /**
+     * Convert flat formatted associations to standard ones.
+     *
+     * Given this $data:
+     * [
+     *     'UPSELL' => [
+     *         'groups'   => [],
+     *         'products' => []
+     *     ],
+     *     'X_SELL' => [
+     *         'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
+     *         'products' => ['akn_ts', 'oro_tsh']
+     *     ]
+     * ]
+     *
+     * It will return:
+     * [
+     *     'UPSELL-groups'   => '',
+     *     'UPSELL-products' => '',
+     *     'X_SELL-groups'   => 'akeneo_tshirt,oro_tshirt',
+     *     'X_SELL-products' => 'akn_ts,oro_tsh',
+     * ]
+     *
+     * @param array $data
+     * @param array $convertedItem
+     *
+     * @return array
+     */
+    protected function convertQuantifiedAssociations(array $data, array $convertedItem)
+    {
+        foreach ($data as $assocName => $associations) {
+            foreach ($associations as $assocType => $entities) {
+                $propertyName = sprintf('%s-%s', $assocName, $assocType);
+                $convertedItem[$propertyName] = json_encode($entities);
             }
         }
 

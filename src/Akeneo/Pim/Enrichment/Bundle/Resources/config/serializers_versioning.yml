@@ -22,6 +22,10 @@ services:
 
     pim_versioning.serializer.normalizer.flat.product:
         class: '%pim_serializer.normalizer.flat.product.class%'
+        arguments:
+            - ~
+            - '@pim_catalog.query.product.map_product'
+            - '@pim_catalog.query.product.map_product_model'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 

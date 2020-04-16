@@ -193,6 +193,7 @@ class Product implements ArrayConverterInterface
     protected function prepareOptions(array $options): array
     {
         $options['with_associations'] = isset($options['with_associations']) ? $options['with_associations'] : true;
+        $options['with_quantified_associations'] = isset($options['with_associations']) ? $options['with_associations'] : true;
         $options['default_values'] = isset($options['default_values']) ? $options['default_values'] : [];
 
         return $options;
@@ -358,7 +359,7 @@ class Product implements ArrayConverterInterface
     protected function getOptionalAssociationFields(): array
     {
         if (empty($this->optionalAssocFields)) {
-            $this->optionalAssocFields = $this->assocColumnsResolver->resolveAssociationColumns();
+            $this->optionalAssocFields = array_merge($this->assocColumnsResolver->resolveAssociationColumns(), ['PACK-products', 'PACK-product_models']);
         }
 
         return $this->optionalAssocFields;

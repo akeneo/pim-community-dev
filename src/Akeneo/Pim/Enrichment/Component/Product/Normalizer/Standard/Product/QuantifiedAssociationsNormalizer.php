@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProduct;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
@@ -20,12 +22,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class QuantifiedAssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    //Here we should have a proper queery: getProductIdentifiersForIds and getProductModelCodesForIds
-    private $connection;
+    private $mapProduct;
+    private $mapProductModel;
 
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
+    public function __construct(
+        MapProduct $mapProduct,
+        MapProductModel $mapProductModel
+    ) {
+        $this->mapProduct = $mapProduct;
+        $this->mapProductModel = $mapProductModel;
     }
 
     /**
@@ -77,25 +82,6 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
      */
     private function normalizeAssociations(array $associationAwareEntities)
     {
-        // Iterate over all associations to get all product ids and product model Ids
-        // Generate mapping table
-        // replate ids by codes
-
-        // $associationAwareEntities = [
-        //     [//ProductInterface
-        //         'quantified_association' => [
-        //             'PACK' => [
-        //                 'products' => [
-        //                     [
-        //                         'id' => 1,
-        //                         'quantity' => 25
-        //                     ]
-        //                 ]
-        //             ]
-        //         ]
-        //     ]
-        // ]
-
         $productIdentifiers = $this->getProductIdentifiers($associationAwareEntities);
         $productModelCodes = $this->getProductModelCodes($associationAwareEntities);
 
@@ -110,24 +96,15 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
             return array_merge($carry, $product->getAllLinkedProductIds());
         }, []);
 
-        return array_column($this->connection->executeQuery('SELECT id, identifier from pim_catalog_product WHERE id IN (:product_ids)', [
-            'product_ids' => $productIds
-        ], [
-            'product_ids' => Connection::PARAM_INT_ARRAY
-        ])->fetchAll(), 'identifier', 'id');
+        return $this->mapProduct->forIds($productIds);
     }
 
     private function getProductModelCodes(array $associationAwareEntities)
     {
-
         $productModelIds = array_reduce($associationAwareEntities, function (array $carry, AbstractProduct $product) {
             return array_merge($carry, $product->getAllLinkedProductModelIds());
         }, []);
 
-        return array_column($this->connection->executeQuery('SELECT id, code from pim_catalog_product_model WHERE id IN (:product_model_ids)', [
-            'product_model_ids' => $productModelIds
-        ], [
-            'product_model_ids' => Connection::PARAM_INT_ARRAY
-        ])->fetchAll(), 'code', 'id');
+        return $this->mapProductModel->forIds($productModelIds);
     }
 }

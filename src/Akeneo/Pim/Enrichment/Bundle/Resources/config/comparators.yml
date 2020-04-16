@@ -90,7 +90,7 @@ services:
     pim_catalog.comparator.field.array:
         class: '%pim_catalog.comparator.field.array.class%'
         arguments:
-            - ['categories', 'groups', 'associations']
+            - ['categories', 'groups', 'associations', 'quantified_associations']
         tags:
             - { name: pim_catalog.field.comparator }
 

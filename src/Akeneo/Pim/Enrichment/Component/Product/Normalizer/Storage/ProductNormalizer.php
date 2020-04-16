@@ -40,7 +40,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     {
         $data = $this->propertiesNormalizer->normalize($product, $format, $context);
         $data[self::FIELD_ASSOCIATIONS] = $this->associationsNormalizer->normalize($product, $format, $context);
-
+        //TODO 225: add quantified association
         return $data;
     }
 

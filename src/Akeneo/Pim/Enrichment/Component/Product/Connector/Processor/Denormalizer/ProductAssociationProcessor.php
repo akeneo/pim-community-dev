@@ -40,6 +40,9 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
     /** @var FilterInterface */
     protected $productAssocFilter;
 
+    /** @var FilterInterface */
+    protected $productQuantifiedAssocFilter;
+
     /** @var bool */
     protected $enabledComparison = true;
 
@@ -55,6 +58,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         FilterInterface $productAssocFilter,
+        FilterInterface $productQuantifiedAssocFilter,
         ObjectDetacherInterface $detacher
     ) {
         parent::__construct($repository);
@@ -63,6 +67,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
         $this->updater = $updater;
         $this->validator = $validator;
         $this->productAssocFilter = $productAssocFilter;
+        $this->productQuantifiedAssocFilter = $productQuantifiedAssocFilter;
         $this->detacher = $detacher;
     }
 
@@ -78,7 +83,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
         }
 
         $item = array_merge(
-            ['associations' => []],
+            ['associations' => [], 'quantified_associations' => []],
             $item
         );
 
@@ -128,7 +133,10 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
      */
     protected function filterIdenticalData(ProductInterface $product, array $item)
     {
-        return $this->productAssocFilter->filter($product, $item);
+        $assocItem = $this->productAssocFilter->filter($product, $item);
+        $quantifiedItem = $this->productQuantifiedAssocFilter->filter($product, $item);
+
+        return array_merge($assocItem, $quantifiedItem);
     }
 
     /**
@@ -198,17 +206,26 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
      */
     protected function hasAssociationToImport(array $item)
     {
-        if (!isset($item['associations'])) {
-            return false;
+        if (isset($item['associations'])) {
+            foreach ($item['associations'] as $association) {
+                $hasProductAssoc = isset($association['products']);
+                $hasGroupAssoc = isset($association['groups']);
+                $hasProductModelAssoc = isset($association['product_models']);
+
+                if ($hasProductAssoc || $hasGroupAssoc || $hasProductModelAssoc) {
+                    return true;
+                }
+            }
         }
 
-        foreach ($item['associations'] as $association) {
-            $hasProductAssoc = isset($association['products']);
-            $hasGroupAssoc = isset($association['groups']);
-            $hasProductModelAssoc = isset($association['product_models']);
+        if (isset($item['quantified_associations'])) {
+            foreach ($item['quantified_associations'] as $association) {
+                $hasProductAssoc = isset($association['products']);
+                $hasProductModelAssoc = isset($association['product_models']);
 
-            if ($hasProductAssoc || $hasGroupAssoc || $hasProductModelAssoc) {
-                return true;
+                if ($hasProductAssoc || $hasProductModelAssoc) {
+                    return true;
+                }
             }
         }
 

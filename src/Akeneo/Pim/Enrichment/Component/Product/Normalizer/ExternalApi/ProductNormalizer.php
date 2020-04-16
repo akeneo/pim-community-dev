@@ -71,6 +71,10 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             $productStandard['associations'] = (object) $productStandard['associations'];
         }
 
+        if (empty($productStandard['quantified_associations'])) {
+            $productStandard['quantified_associations'] = (object) $productStandard['quantified_associations'];
+        }
+
         return $productStandard;
     }
 

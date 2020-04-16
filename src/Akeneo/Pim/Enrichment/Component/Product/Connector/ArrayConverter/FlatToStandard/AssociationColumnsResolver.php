@@ -47,6 +47,9 @@ class AssociationColumnsResolver
             $fieldNames = [];
             $assocTypes = $this->assocTypeRepository->findAll();
             foreach ($assocTypes as $assocType) {
+                if ('PACK' === $assocType->getCode()) {
+                    continue;
+                }
                 $fieldNames[] = $assocType->getCode() . self::GROUP_ASSOCIATION_SUFFIX;
                 $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX;
                 $fieldNames[] = $assocType->getCode() . self::PRODUCT_MODEL_ASSOCIATION_SUFFIX;

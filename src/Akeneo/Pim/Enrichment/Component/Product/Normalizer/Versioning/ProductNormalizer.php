@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProduct;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductModel;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -55,9 +58,11 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * @param CollectionFilterInterface $filter The collection filter
      */
-    public function __construct(CollectionFilterInterface $filter = null)
+    public function __construct(CollectionFilterInterface $filter = null, MapProduct $mapProduct, MapProductModel $mapProductModel)
     {
         $this->filter = $filter;
+        $this->mapProduct = $mapProduct;
+        $this->mapProductModel = $mapProductModel;
     }
 
     /**
@@ -75,6 +80,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         $results[self::FIELD_CATEGORY] = $this->normalizeCategories($object->getCategoryCodes());
         $results[self::FIELD_PARENT] = $this->normalizeParent($object->getParent());
         $results = array_merge($results, $this->normalizeAssociations($object->getAssociations()));
+        $results = array_merge($results, $this->normalizeQuantifiedAssociations($object));
         $results = array_replace($results, $this->normalizeValues($object, $format, $context));
         $results[self::FIELD_ENABLED] = (int) $object->isEnabled();
 
@@ -256,6 +262,25 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         }
 
         return $results;
+    }
+
+    protected function normalizeQuantifiedAssociations(AbstractProduct $product): array
+    {
+        $productIdentifiers = $this->mapProduct->forIds($product->getAllLinkedProductIds());
+        $productModelCodes = $this->mapProductModel->forIds($product->getAllLinkedProductModelIds());
+        $quantifiedAssociations = $product->getQuantifiedAssociationsWithIdentifiersAndCodes($productIdentifiers, $productModelCodes);
+
+        $result = [];
+        foreach ($quantifiedAssociations as $associationType => $association) {
+            foreach ($association['products'] as $quantifiedAssociation) {
+                $result[$associationType . '-products-' . $quantifiedAssociation['identifier']] = $quantifiedAssociation['quantity'];
+            }
+            foreach ($association['product_models'] as $quantifiedAssociation) {
+                $result[$associationType . '-product_models-' . $quantifiedAssociation['code']] = $quantifiedAssociation['quantity'];
+            }
+        }
+
+        return $result;
     }
 
     /**

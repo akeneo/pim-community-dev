@@ -15,6 +15,7 @@ parameters:
     pim_catalog.updater.setter.family_field.class:            Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FamilyFieldSetter
     pim_catalog.updater.setter.parent_field.class:            Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\ParentFieldSetter
     pim_catalog.updater.setter.association_field.class:       Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter
+    pim_catalog.updater.setter.quantified_association_field.class:       Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\QuantifiedAssociationFieldSetter
     pim_catalog.updater.setter.enabled_field.class:           Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\EnabledFieldSetter
     pim_catalog.updater.setter.media_value.class:             Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\MediaAttributeSetter
 
@@ -183,6 +184,15 @@ services:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.association.missing_association_adder'
             - ['associations']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.quantified_association_field:
+        class: '%pim_catalog.updater.setter.quantified_association_field.class%'
+        arguments:
+            - '@pim_catalog.query.product.map_product'
+            - '@pim_catalog.query.product.map_product_model'
+            - ['quantified_associations']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 

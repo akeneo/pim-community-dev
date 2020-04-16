@@ -49,6 +49,11 @@ class FieldConverter implements FieldConverterInterface
             list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
 
             return new ConvertedField('associations', [$associationTypeCode => [$associatedWith => $value]]);
+        } elseif (in_array($fieldName, ['PACK-products', 'PACK-product_models'])) {
+            $value = $this->fieldSplitter->splitCollection($value);
+            list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
+
+            return new ConvertedField('quantified_associations', [$associationTypeCode => [$associatedWith => json_decode(implode(',', $value), true)]]);
         } elseif (in_array($fieldName, ['categories'])) {
             $categories = $this->fieldSplitter->splitCollection($value);
 
@@ -73,7 +78,7 @@ class FieldConverter implements FieldConverterInterface
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
 
-        $fields = array_merge(['categories', 'groups', 'enabled', 'family', 'parent'], $associationFields);
+        $fields = array_merge(['categories', 'groups', 'enabled', 'family', 'parent'], $associationFields, ['PACK-products', 'PACK-product_models']);
 
         return in_array($column, $fields);
     }
