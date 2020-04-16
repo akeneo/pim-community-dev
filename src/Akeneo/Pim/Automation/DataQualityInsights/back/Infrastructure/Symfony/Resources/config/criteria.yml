@@ -67,3 +67,4 @@ services:
         tags:
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }
+            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_criterion_applicability' }

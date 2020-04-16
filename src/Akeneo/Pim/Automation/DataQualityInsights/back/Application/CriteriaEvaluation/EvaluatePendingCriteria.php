@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaApplicabilityRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
@@ -30,7 +31,7 @@ class EvaluatePendingCriteria
     private $repository;
 
     /** @var CriteriaEvaluationRegistry */
-    private $registry;
+    private $evaluationRegistry;
 
     /** @var GetPendingCriteriaEvaluationsByProductIdsQueryInterface */
     private $getPendingCriteriaEvaluationsQuery;
@@ -41,18 +42,23 @@ class EvaluatePendingCriteria
     /** @var GetEvaluableProductValuesQueryInterface */
     private $getEvaluableProductValuesQuery;
 
+    /** @var CriteriaApplicabilityRegistry */
+    private $applicabilityRegistry;
+
     public function __construct(
         CriterionEvaluationRepositoryInterface $repository,
-        CriteriaEvaluationRegistry $registry,
+        CriteriaEvaluationRegistry $evaluationRegistry,
+        CriteriaApplicabilityRegistry $applicabilityRegistry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
         GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
         LoggerInterface $logger
     ) {
         $this->repository = $repository;
-        $this->registry = $registry;
+        $this->evaluationRegistry = $evaluationRegistry;
         $this->getPendingCriteriaEvaluationsQuery = $getPendingCriteriaEvaluationsQuery;
         $this->logger = $logger;
         $this->getEvaluableProductValuesQuery = $getEvaluableProductValuesQuery;
+        $this->applicabilityRegistry = $applicabilityRegistry;
     }
 
     public function evaluateAllCriteria(array $productIds): void
@@ -72,20 +78,25 @@ class EvaluatePendingCriteria
         $productsCriteriaEvaluations = $this->getPendingCriteriaEvaluationsQuery->execute($productIds);
         foreach ($productsCriteriaEvaluations as $productId => $productCriteria) {
             $productValues = $this->getEvaluableProductValuesQuery->byProductId(new ProductId($productId));
-            $evaluatedCriteria = new Write\CriterionEvaluationCollection();
+
             $synchronousCriteria = new SynchronousCriterionEvaluationsFilterIterator($productCriteria->getIterator());
             foreach ($synchronousCriteria as $synchronousCriterion) {
                 $this->evaluateCriterion($synchronousCriterion, $productValues);
-                $evaluatedCriteria->add($synchronousCriterion);
             }
-            $this->repository->update($evaluatedCriteria);
+
+            $asynchronousCriteria = new AsynchronousCriterionEvaluationsFilterIterator($productCriteria->getIterator());
+            foreach ($asynchronousCriteria as $asynchronousCriterion) {
+                $this->evaluateCriterionApplicability($asynchronousCriterion, $productValues);
+            }
+
+            $this->repository->update($productCriteria);
         }
     }
 
     private function evaluateCriterion(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): void
     {
         try {
-            $evaluationService = $this->registry->get($criterionEvaluation->getCriterionCode());
+            $evaluationService = $this->evaluationRegistry->get($criterionEvaluation->getCriterionCode());
             $criterionEvaluation->start();
             $result = $evaluationService->evaluate($criterionEvaluation, $productValues);
             $criterionEvaluation->end($result);
@@ -95,6 +106,16 @@ class EvaluatePendingCriteria
                 ['criterion_code' => $criterionEvaluation->getCriterionCode(), 'product_id' => $criterionEvaluation->getProductId(), 'message' => $exception->getMessage()]
             );
             $criterionEvaluation->flagAsError();
+        }
+    }
+
+    private function evaluateCriterionApplicability(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): void
+    {
+        $applicabilityService = $this->applicabilityRegistry->get($criterionEvaluation->getCriterionCode());
+
+        if (null !== $applicabilityService) {
+            $criterionEvaluationApplicability = $applicabilityService->evaluateApplicability($productValues);
+            $criterionEvaluation->applicabilityEvaluated($criterionEvaluationApplicability);
         }
     }
 }

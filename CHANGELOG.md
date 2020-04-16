@@ -4,6 +4,7 @@
 - PIM-9109: Fix SSO not working behind reverse proxy.
 - PIM-9133: Fix product and product model save when the user has no permission on some attribute groups
 - PIM-9149: Fix compare/translate on product 
+- DAPI-947: The evaluation of the title formatting criterion should be apply only on text attributes that are localizable and are defined as main title
 - PIM-9138: Rules import not working with asset manager
 
 ## Improvements
@@ -18,6 +19,7 @@
 - DAPI-798: Allow spelling suggestions after a title formatter check
 - DAPI-895: As Julia, I'd like spell-check to be available for Norwegian
 - DAPI-749: Improve Dashboard rates purge
+- DAPI-863: Evaluate the applicability of the criterion title formatting as soon as possible
 - RUL-20: Rule engine - As Julia, I would like to copy values from/to different attribute types
 - RUL-49: Rule engine - As Peter, I would like to clear attribute values, associations, categories and groups
 - RUL-77: Rule engine - As Peter, I would like to add labels to my rules

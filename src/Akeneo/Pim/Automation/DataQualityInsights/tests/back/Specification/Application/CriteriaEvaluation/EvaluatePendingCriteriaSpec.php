@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaApplicabilityRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionApplicabilityInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleDataCollection;
@@ -44,17 +46,18 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 {
     public function let(
         CriterionEvaluationRepositoryInterface $repository,
-        CriteriaEvaluationRegistry $registry,
+        CriteriaEvaluationRegistry $evaluationRegistry,
+        CriteriaApplicabilityRegistry $applicabilityRegistry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
         GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
         LoggerInterface $logger
     ) {
-        $this->beConstructedWith($repository, $registry, $getPendingCriteriaEvaluationsQuery, $getEvaluableProductValuesQuery, $logger);
+        $this->beConstructedWith($repository, $evaluationRegistry, $applicabilityRegistry, $getPendingCriteriaEvaluationsQuery, $getEvaluableProductValuesQuery, $logger);
     }
 
     public function it_evaluates_criteria_for_a_set_of_products(
         CriterionEvaluationRepositoryInterface $repository,
-        CriteriaEvaluationRegistry $registry,
+        CriteriaEvaluationRegistry $evaluationRegistry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
         GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
         EvaluateCriterionInterface $evaluateSpelling,
@@ -104,8 +107,8 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         $getEvaluableProductValuesQuery->byProductId(new ProductId(42))->willReturn($product42Values);
         $getEvaluableProductValuesQuery->byProductId(new ProductId(123))->willReturn($product123Values);
 
-        $registry->get($criterionSpelling)->willReturn($evaluateSpelling);
-        $registry->get($criterionCompleteness)->willReturn($evaluateCompleteness);
+        $evaluationRegistry->get($criterionSpelling)->willReturn($evaluateSpelling);
+        $evaluationRegistry->get($criterionCompleteness)->willReturn($evaluateCompleteness);
 
         $evaluateSpelling->evaluate($criteria['product_42_spelling'], $product42Values)
             ->willReturn(new Write\CriterionEvaluationResult());
@@ -125,7 +128,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 
     public function it_continues_to_evaluate_if_an_evaluation_failed(
         CriterionEvaluationRepositoryInterface $repository,
-        CriteriaEvaluationRegistry $registry,
+        CriteriaEvaluationRegistry $evaluationRegistry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
         GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
         EvaluateCriterionInterface $evaluateCriterion
@@ -159,7 +162,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         $getEvaluableProductValuesQuery->byProductId(new ProductId(42))->willReturn($product42Values);
         $getEvaluableProductValuesQuery->byProductId(new ProductId(123))->willReturn($product123Values);
 
-        $registry->get($criterionCode)->willReturn($evaluateCriterion);
+        $evaluationRegistry->get($criterionCode)->willReturn($evaluateCriterion);
         $evaluateCriterion->evaluate($criterionA, $product42Values)->willThrow(new \Exception('Evaluation failed'));
         $evaluateCriterion->evaluate($criterionB, $product123Values)->willReturn(new Write\CriterionEvaluationResult());
 
@@ -173,11 +176,13 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 
     public function it_evaluates_synchronous_criteria_for_a_set_of_products(
         CriterionEvaluationRepositoryInterface $repository,
-        CriteriaEvaluationRegistry $registry,
+        CriteriaEvaluationRegistry $evaluationRegistry,
+        CriteriaApplicabilityRegistry $applicabilityRegistry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
         GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
         EvaluateCriterionInterface $evaluateSpelling,
-        EvaluateCriterionInterface $evaluateCompleteness
+        EvaluateCriterionInterface $evaluateCompleteness,
+        EvaluateCriterionApplicabilityInterface $evaluateTitleFormattingApplicability
     ) {
         $criterionSpelling = new CriterionCode(EvaluateSpelling::CRITERION_CODE);
         $criterionTitleFormatting = new CriterionCode(EvaluateTitleFormatting::CRITERION_CODE);
@@ -220,14 +225,20 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         $getEvaluableProductValuesQuery->byProductId(new ProductId(42))->willReturn($product42Values);
         $getEvaluableProductValuesQuery->byProductId(new ProductId(123))->willReturn($product123Values);
 
-        $registry->get($criterionTitleFormatting)->shouldNotBeCalled();
+        $evaluationRegistry->get($criterionTitleFormatting)->shouldNotBeCalled();
         $evaluateCompleteness->evaluate($criteria['product_42_title'])->shouldNotBeCalled();
 
-        $registry->get($criterionSpelling)->willReturn($evaluateSpelling);
+        $evaluationRegistry->get($criterionSpelling)->willReturn($evaluateSpelling);
         $evaluateSpelling->evaluate($criteria['product_42_spelling'], $product42Values)
             ->willReturn(new Write\CriterionEvaluationResult());
         $evaluateSpelling->evaluate($criteria['product_123_spelling'], $product123Values)
             ->willReturn(new Write\CriterionEvaluationResult());
+
+        $applicabilityRegistry->get($criterionTitleFormatting)->willReturn($evaluateTitleFormattingApplicability);
+        $evaluateTitleFormattingApplicability->evaluateApplicability($product42Values)
+            ->willReturn(new Write\CriterionApplicability(new Write\CriterionEvaluationResult(), true));
+        $evaluateTitleFormattingApplicability->evaluateApplicability($product123Values)
+            ->willReturn(new Write\CriterionApplicability(new Write\CriterionEvaluationResult(), true));
 
         $repository->update(Argument::any())->shouldBeCalledTimes(2);
 

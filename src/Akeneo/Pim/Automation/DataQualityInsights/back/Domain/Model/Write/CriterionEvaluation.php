@@ -95,6 +95,20 @@ final class CriterionEvaluation
         return $this;
     }
 
+    public function applicabilityEvaluated(CriterionApplicability $criterionApplicability): self
+    {
+        $this->result = $criterionApplicability->getEvaluationResult();
+        $this->status = CriterionEvaluationStatus::pending();
+
+        if (false === $criterionApplicability->isApplicable()) {
+            $this->startedAt = new \DateTimeImmutable();
+            $this->endedAt = new \DateTimeImmutable();
+            $this->status = CriterionEvaluationStatus::done();
+        }
+
+        return $this;
+    }
+
     public function flagAsError(): self
     {
         $this->status = CriterionEvaluationStatus::error();

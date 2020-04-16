@@ -324,6 +324,62 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
         )->shouldBeLike($expectedResult);
     }
 
+    public function it_evaluates_its_applicability_for_a_collection_of_product_values_that_have_at_least_one_applicable_value(
+        GetLocalesByChannelQueryInterface $localesByChannelQuery
+    ) {
+        $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
+            'ecommerce' => ['en_US', 'fr_FR'],
+            'mobile' => ['en_US'],
+        ]));
+
+        $mainTitleAttribute = $this->givenAMainTitleAttribute('attribute_as_main_title');
+        $mainTitleValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => 'MacBook Pro Retina 13"',
+                'fr_FR' => 'MacBook Pro Retina 13 pouces',
+            ],
+            'mobile' => [
+                'en_US' => null
+            ]
+        ], function ($value) { return $value; });
+
+        $productValues = (new ProductValuesCollection())->add(new ProductValues($mainTitleAttribute, $mainTitleValues));
+
+        $expectedResult = (new Write\CriterionEvaluationResult())
+            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), CriterionEvaluationResultStatus::notApplicable())
+            ->addStatus(new ChannelCode('mobile'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable())
+        ;
+
+        $this->evaluateApplicability($productValues)->shouldBeLike(new Write\CriterionApplicability($expectedResult, true));
+    }
+
+    public function it_evaluates_its_applicability_for_a_collection_of_product_values_that_has_no_applicable_value(
+        GetLocalesByChannelQueryInterface $localesByChannelQuery
+    ) {
+        $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
+            'ecommerce' => ['en_US', 'fr_FR'],
+            'mobile' => ['en_US'],
+        ]));
+
+        $mainTitleAttribute = $this->givenAMainTitleAttribute('attribute_as_main_title');
+        $mainTitleValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '',
+                'fr_FR' => 'MacBook Pro Retina 13 pouces',
+            ],
+        ], function ($value) { return $value; });
+
+        $productValues = (new ProductValuesCollection())->add(new ProductValues($mainTitleAttribute, $mainTitleValues));
+
+        $expectedResult = (new Write\CriterionEvaluationResult())
+            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable())
+            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), CriterionEvaluationResultStatus::notApplicable())
+            ->addStatus(new ChannelCode('mobile'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable())
+        ;
+
+        $this->evaluateApplicability($productValues)->shouldBeLike(new Write\CriterionApplicability($expectedResult, false));
+    }
+
     private function givenAMainTitleAttribute(string $code): Attribute
     {
         return new Attribute(new AttributeCode($code), AttributeType::text(), true, true);

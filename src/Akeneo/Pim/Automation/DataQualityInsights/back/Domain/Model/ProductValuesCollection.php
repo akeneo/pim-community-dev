@@ -70,10 +70,10 @@ final class ProductValuesCollection implements \IteratorAggregate
         }
     }
 
-    public function getMainTitleValues(): ?ProductValues
+    public function getLocalizableMainTitleValues(): ?ProductValues
     {
         foreach ($this->productValuesByAttribute as $productValues) {
-            if ($productValues->getAttribute()->isMainTitle()) {
+            if ($productValues->getAttribute()->isMainTitle() && $productValues->getAttribute()->isLocalizable()) {
                 return $productValues;
             }
         }

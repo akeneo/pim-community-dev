@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionApplicabilityInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\UnableToProvideATitleSuggestion;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
@@ -18,7 +19,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductTitle;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
-final class EvaluateTitleFormatting implements EvaluateCriterionInterface
+final class EvaluateTitleFormatting implements EvaluateCriterionInterface, EvaluateCriterionApplicabilityInterface
 {
     public const CRITERION_CODE = 'consistency_text_title_formatting';
 
@@ -50,7 +51,7 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
-        $productMainTitleValues = $productValues->getMainTitleValues();
+        $productMainTitleValues = $productValues->getLocalizableMainTitleValues();
 
         $evaluationResult = new Write\CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localeCodes) {
@@ -60,6 +61,27 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface
         }
 
         return $evaluationResult;
+    }
+
+    public function evaluateApplicability(ProductValuesCollection $productValues): Write\CriterionApplicability
+    {
+        $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
+        $productMainTitleValues = $productValues->getLocalizableMainTitleValues();
+
+        $evaluationResult = new Write\CriterionEvaluationResult();
+        $isApplicable = false;
+        foreach ($localesByChannel as $channelCode => $localeCodes) {
+            foreach ($localeCodes as $localeCode) {
+                $productValue = null !== $productMainTitleValues ? $productMainTitleValues->getValueByChannelAndLocale($channelCode, $localeCode) : null;
+                if (!$this->isSupportedLocale($localeCode) || null === $productValue || '' === $productValue) {
+                    $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::notApplicable());
+                } else {
+                    $isApplicable = true;
+                }
+            }
+        }
+
+        return new Write\CriterionApplicability($evaluationResult, $isApplicable);
     }
 
     private function evaluateChannelLocaleRate(
