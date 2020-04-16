@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes:
+
+- PIM-9182: Add validation on label when a record is created
+
 # 3.0.72 (2020-04-03)
 
 - PIM-9169: Fix error message when deleting user that created a project

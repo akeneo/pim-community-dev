@@ -166,7 +166,7 @@ Feature: Edit an record
     Given a reference entity with a text attribute with an email validation rule
     And a record belonging to this reference entity with a value of "jean-pierre@dummy.com" for the text attribute
     When the user updates the text attribute of the record to "Hello my name is jean-pierre."
-    Then there should be a validation error on the property text attribute with message "This value is not a valid email address."
+    Then there should be a validation error on the property text attribute with message "Please enter an email address: xxxxx@xx.xx"
 
   @acceptance-back
   Scenario: Updating an email with an valid email value
@@ -182,7 +182,7 @@ Feature: Edit an record
     Given a reference entity with a text attribute with an url validation rule
     And a record belonging to this reference entity with a value of "https://www.akeneo.com/" for the text attribute
     When the user updates the text attribute of the record to "htt://akeneo.com/"
-    Then there should be a validation error on the property text attribute with message "This value is not a valid URL."
+    Then there should be a validation error on the property text attribute with message "Please enter a URL: http(s)://xxxx.XXX"
 
   @acceptance-back
   Scenario: Updating an url with an valid url value
@@ -198,7 +198,7 @@ Feature: Edit an record
     Given a reference entity with a text attribute with a regular expression validation rule like "/\d+\|\d+/"
     And a record belonging to this reference entity with a value of "15|25" for the text attribute
     When the user updates the text attribute of the record to "15-25"
-    Then there should be a validation error on the property text attribute with message "The text is incompatible with the regular expression "/\d+\|\d+/""
+    Then there should be a validation error on the property text attribute with message "Please enter a text that satisfies the regular expression: "/\d+\|\d+/""
 
   @acceptance-back
   Scenario: Updating a text with regular expression with an compatible value
@@ -405,7 +405,7 @@ Feature: Edit an record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with an invalid simple text value
-    Then the user should see the validation error on the edit page : "This value is not a valid URL."
+    Then the user should see the validation error on the edit page : "Please enter a URL: http(s)://xxxx.XXX"
 
   @acceptance-front
   Scenario: User can't update a simple text value without the edit rights
@@ -534,4 +534,4 @@ Feature: Edit an record
 #  Scenario: Updating a record with an invalid image value
 #    Given a valid record
 #    When the user saves the valid record with an invalid image value
-#    Then the user should see the validation error after the update record : "This value is not a valid URL."
+#    Then the user should see the validation error after the update record : "Please enter a URL: http(s)://xxxx.XXX"

@@ -51,6 +51,7 @@ Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\RecordCodeShouldBeUnique: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\ThereShouldBeLessRecordsThanLimit: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\CreateRecordLabel: { groups: [other_constraints] }
 
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand:
     properties:

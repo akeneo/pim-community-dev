@@ -95,6 +95,10 @@ pim_reference_entity:
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
         should_be_unique: 'This code already exists for this entity.'
+      text:
+        incompatible_with_regular_expression: 'Please enter a text that satisfies the regular expression: "{{ %regular_expression% }}"'
+        invalid_email: 'Please enter an email address: xxxxx@xx.xx'
+        invalid_url: 'Please enter a URL: http(s)://xxxx.XXX'
     no_data:
       title: There are no record for {{ entityLabel }}
       subtitle: Click on the button "Add new" to create the first record
