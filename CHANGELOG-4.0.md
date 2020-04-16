@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9160: Fix the display of the associations list on the product edit form
+- PIM-9175: Fix the import of all price values
 
 # 4.0.16 (2020-04-08)
 
