@@ -6,6 +6,12 @@ Feature: List all rules
 
   Background:
     Given a "clothing" catalog configuration
+    And the following attributes:
+      | code         | label-en_US  | type               | localizable | scopable | group | decimals_allowed | negative_allowed |
+      | total_weight | Total weight | pim_catalog_number | 1           | 1        | other | 0                | 0                |
+      | weight       | Weight       | pim_catalog_number | 0           | 0        | other | 0                | 0                |
+      | in_stock     | In stock     | pim_catalog_number | 0           | 1        | other | 0                | 0                |
+      | booked_stock | Booked stock | pim_catalog_number | 1           | 0        | other | 0                | 0                |
     And the following product rule definitions:
       """
       copy_description:
@@ -160,13 +166,58 @@ Feature: List all rules
               locale: en_US
         labels:
           en_US: Concatenate Rule
+      clear_rule:
+        priority: 90
+        conditions:
+          - field: family
+            operator: IN
+            value:
+              - tees
+        actions:
+          - type: clear
+            field: description
+            scope: tablet
+            locale: en_US
+        labels:
+          en_US: Clear Rule
+      calculate_rule:
+        priority: 90
+        conditions:
+          - field: family
+            operator: IN
+            value:
+              - tees
+        actions:
+          - type: calculate
+            destination:
+              field: total_weight
+              scope: tablet
+              locale: en_US
+            source:
+              field: weight
+            operation_list:
+              - operator: multiply
+                value: 5
+              - operator: divide
+                field: in_stock
+                scope: tablet
+              - operator: add
+                value: 1
+              - operator: subtract
+                field: booked_stock
+                locale: en_US
+              - operator: subtract
+                field: booked_stock
+                locale: fr_FR
+        labels:
+          en_US: Calculate Rule
       """
     And I am logged in as "Julia"
-    And I am on the rules page
 
   Scenario: Successfully show rules
+    When I am on the rules page
     Then the rows should be sorted ascending by label
-    And the grid should contain 5 elements
+    And the grid should contain 7 elements
     And I should be able to sort the rows by label
 
     And the row "Copy Description" should contain the texts:
@@ -210,20 +261,33 @@ Feature: List all rules
       | Condition | If family in tees                                                                    |
       | Action    | Then sku, release_date [ mobile ] are concatenated into description [ en \| tablet ] |
 
+    And the row "Clear Rule" should contain the texts:
+      | column    | value                                        |
+      | Condition | If family in tees                            |
+      | Action    | Then description [ en \| tablet ] is cleared |
+
+    And the row "Calculate Rule" should contain the texts:
+      | column    | value                                                                                                                                                                                                               |
+      | Condition | If family in tees                                                                                                                                                                                                   |
+      | Action    | Then total_weight [ en \| tablet ] is calculated by multiplying weight by 5, then by dividing by in_stock [ tablet ], then by adding 1, then by subtracting booked_stock [ en ], then by subtracting booked_stock [ fr ] |
+
   Scenario: Successfully search rules
+    Given I am on the rules page
     When I search "description"
     Then the grid should contain 1 element
     And I should see entity Copy Description
 
   Scenario: Successfully delete a rule
+    Given I am on the rules page
     When I click on the "Delete" action of the row which contains "Copy Description"
     And I should see the text "Confirm deletion"
     And I should see the text "Are you sure you want to delete this rule?"
     And I confirm the deletion
-    And the grid should contain 4 elements
+    And the grid should contain 6 elements
 
   Scenario: Successfully delete a set of rules using bulk action
-    When I select rows Copy Description and Update Tees Collection and Unclassify 2014 Collection Tees and Nineties and Concatenate Rule
+    Given I am on the rules page
+    When I select rows Calculate Rule, Clear Rule, Concatenate Rule, Copy Description, Nineties, Unclassify 2014 Collection Tees and Update Tees Collection
     And I press the "Delete" bottom button
     Then I should see the text "Confirm deletion"
     And I should see the text "Are you sure you want to delete the selected rules?"
@@ -274,7 +338,6 @@ Feature: List all rules
             value:  Lorem
             locale: en_US
       """
-    And I am logged in as "Julia"
     And I am on the rules page
     When I select rows set_name_to_Lorem and copy_en_to_fr
     And I press the "Execute" bottom button

@@ -112,3 +112,22 @@ services:
             - '@pimee_catalog_rule.query.cache.channel_exists_and_bound_to_context'
         tags:
             - { name: validator.constraint_validator }
+
+    pimee_catalog_rule.validator.attribute_should_be_numeric:
+        class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\AttributeShouldBeNumericValidator
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_attribute_should_be_numeric_validator }
+
+    pimee_catalog_rule.validator.calculate_action_fields:
+        class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\CalculateActionFieldsValidator
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_calculate_fields_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\ActiveCurrencyValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@pim_catalog.query.find_activated_currencies'
+        tags:
+          - { name: validator.constraint_validator }

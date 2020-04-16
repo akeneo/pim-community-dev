@@ -4,6 +4,7 @@ parameters:
     pimee_catalog_rule.action_applier.adder.class:   Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\AdderActionApplier
     pimee_catalog_rule.action_applier.remover.class: Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier
     pimee_catalog_rule.action_applier.concatenate.class: Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\ConcatenateActionApplier
+    pimee_catalog_rule.action_applier.calculate.class: Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\CalculateActionApplier
 
 services:
     pimee_catalog_rule.action_applier.setter:
@@ -53,6 +54,14 @@ services:
             - '@pim_catalog.updater.property_setter'
             - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierRegistry'
             - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: akeneo_rule_engine.action_applier, priority: 100 }
+
+    pimee_catalog_rule.action_applier.calculate:
+        class: '%pimee_catalog_rule.action_applier.calculate.class%'
+        arguments:
+            - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\GetOperandValue'
+            - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateNumericValue'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 
@@ -117,3 +126,14 @@ services:
                 - 'akeneo_reference_entity_collection'
         tags:
             - { name: akeneo_rule_engine.concatenate_applier.stringifier }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\GetOperandValue:
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@akeneo_measure.measure_converter'
+
+    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateNumericValue:
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.builder.entity_with_values'
+            - '@pim_standard_format_serializer'

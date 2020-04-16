@@ -25,9 +25,11 @@ class ProductTargetSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'field' => 'model',
+            'field' => 'base_price',
             'scope' => 'ecommerce',
             'locale' => 'en_US',
+            'currency' => 'USD',
+            'unit' => 'METER',
         ]]);
     }
 
@@ -38,7 +40,7 @@ class ProductTargetSpec extends ObjectBehavior
 
     function it_returns_the_field()
     {
-        $this->getField()->shouldBe('model');
+        $this->getField()->shouldBe('base_price');
     }
 
     function it_returns_the_scope()
@@ -51,20 +53,32 @@ class ProductTargetSpec extends ObjectBehavior
         $this->getLocale()->shouldBe('en_US');
     }
 
+    function it_returns_the_currency()
+    {
+        $this->getCurrency()->shouldBe('USD');
+    }
+
+    function it_returns_the_unit()
+    {
+        $this->getUnit()->shouldBe('METER');
+    }
+
     function it_cannot_be_created_without_field()
     {
         $this->beConstructedThrough('fromNormalized', [['locale' => 'en_US']]);
 
         $this->shouldThrow(new \LogicException('Target configuration requires a "field" key.'))
-            ->duringInstantiation();
+             ->duringInstantiation();
     }
 
-    function it_can_be_created_without_scope_and_locale()
+    function it_can_be_created_without_scope_locale_currency_nor_unit()
     {
         $this->beConstructedThrough('fromNormalized', [['field' => 'title']]);
 
         $this->getField()->shouldBe('title');
         $this->getScope()->shouldBe(null);
         $this->getLocale()->shouldBe(null);
+        $this->getCurrency()->shouldBe(null);
+        $this->getUnit()->shouldBe(null);
     }
 }

@@ -18,7 +18,6 @@ services:
             - '@test.category.builder'
             - '@pim_catalog.repository.category'
             - '@pim_catalog.repository.attribute_option'
-            - '@pim_catalog.repository.currency'
             - '@test.attribute_option.builder'
             - '@akeneo.pim.enrichment.factory.write_value_collection'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
@@ -26,6 +25,7 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'
             - '@pim_catalog.repository.group'
             - '@pim_catalog.repository.association_type'
+            - '@akeneo_measure.persistence.measurement_family_repository'
 
     Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\UserContext:
         arguments:
@@ -36,6 +36,7 @@ services:
         arguments:
             - '@pimee_catalog_rule.processor.denormalization.rule_definition'
             - '@akeneo_rule_engine.repository.rule_definition'
+            - '@akeneo_rule_engine.normalizer.rule_definition'
 
     Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ExportRuleContext:
         arguments:

@@ -27,7 +27,7 @@ class OperationSpec extends ObjectBehavior
     function it_cannot_be_instantiated_with_an_invalid_operator()
     {
         $this->beConstructedThrough('fromNormalized', [['operator' => 'my_custom_operator', 'field' => 'length']]);
-        $this->shouldThrow(new \InvalidArgumentException('Operation expects one of the following operators: multiply, add, divide, substract'))
+        $this->shouldThrow(new \InvalidArgumentException('Operation expects one of the following operators: multiply, add, divide, subtract'))
              ->duringInstantiation();
     }
 

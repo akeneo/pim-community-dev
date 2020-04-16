@@ -11,10 +11,12 @@
         "processor",
         "price",
         "weight",
+        "item_weight",
         "color",
         "connectivity",
         "designer",
-        "designers"
+        "designers",
+        "in_stock"
     ],
     "attribute_as_label": "name",
     "attribute_as_image": "picture",

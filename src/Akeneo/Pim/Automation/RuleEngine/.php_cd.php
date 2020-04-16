@@ -48,9 +48,17 @@ $rules = [
         'Akeneo\Tool\Component\FileStorage\Exception\FileTransferException',
         'Webmozart\Assert\Assert',
 
+        // used for validation
+        'Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface',
+        'Akeneo\Channel\Component\Validator\Constraint\ConversionUnits',
+
+        // TODO RUL-28: check if we can use another component
+        'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
+
         // TIP-960: Rule Engine should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\AttributeTypes',
+        'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues',
@@ -79,6 +87,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface', // the engine creates a fake product to allow validation
+        'Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface',
 
         // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext', // used to version products when a rule is applied

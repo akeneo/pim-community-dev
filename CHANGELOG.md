@@ -25,7 +25,8 @@
 ## New features
 
 - DAPI-854: Data quality - Variant products are also evaluated
-- RUL-17: Rules engine - Add the concatenate action type to concatenate some attribute values into a single attribute value
+- RUL-17: Rule engine - Add the concatenate action type to concatenate some attribute values into a single attribute value
+- RUL-28: Rule engine - As Peter, I'd like to calculate attribute values
 
 ## BC Breaks
 

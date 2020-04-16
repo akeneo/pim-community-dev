@@ -27,7 +27,7 @@ use Webmozart\Assert\Assert;
  */
 final class ExportRuleContext implements Context
 {
-    private const YAML_RULES_CONFIG = <<<SQL
+    private const YAML_RULES_CONFIG = <<<YAML
 rules:
   set_name:
     priority: 10
@@ -126,6 +126,7 @@ rules:
         field: pim_brand
       - type: clear
         field: processor
+        locale: en_US
       - type: clear
         field: price
       - type: clear
@@ -149,7 +150,30 @@ rules:
       - type: clear
         field: associations
     labels: []
-SQL;
+  calculate:
+    priority: 20
+    labels: []
+    conditions:
+      - field: family
+        operator: IN
+        value:
+          - camcorders
+    actions:
+      - type: calculate      
+        destination:
+          field: item_weight
+          scope: ecommerce
+          locale: en_US
+        source:
+          field: weight
+        operation_list:
+          -
+            operator: multiply
+            value: 10
+          -
+            operator: subtract
+            value: 3              
+YAML;
 
     private static $normalizedRules = [];
 

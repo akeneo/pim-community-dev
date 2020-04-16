@@ -24,9 +24,6 @@ final class IsValidAttribute extends Constraint
 {
     public $messageAttributeNotFound = 'The "%field%" attribute code does not exist';
 
-    /** @var bool */
-    protected $errorOnAttributeNotFound = false;
-
     /** @var null|string */
     protected $locale = null;
 
@@ -49,10 +46,5 @@ final class IsValidAttribute extends Constraint
     public function getScope(): ?string
     {
         return $this->scope;
-    }
-
-    public function isErrorOnAttributeNotFound(): bool
-    {
-        return $this->errorOnAttributeNotFound;
     }
 }

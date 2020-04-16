@@ -23,7 +23,7 @@
         },
         "processor": {
             "<all_channels>": {
-                "<all_locales>": {"amount": 100, "unit": "MEGAHERTZ"}
+                "en_US": {"amount": 100, "unit": "MEGAHERTZ"}
             }
         },
         "price": {
@@ -69,6 +69,11 @@
         "designers": {
             "<all_channels>": {
                 "<all_locales>": ["starck", "ikea"]
+            }
+        },
+        "in_stock": {
+            "<all_channels>": {
+                "<all_locales>": 0
             }
         }
     }

@@ -6,7 +6,6 @@ Feature: Execute concatenate rules
   Background:
     Given the following locales en_US,fr_FR
     And the following ecommerce channel with locales en_US,fr_FR
-    And some currencies
     And the following designer reference entity
     And the following records:
     | ref entity | code   |

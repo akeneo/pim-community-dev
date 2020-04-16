@@ -135,7 +135,6 @@ final class ExistingConcatenateFieldsValidator extends ConstraintValidator
         $validator->atPath($basePath . '.field')->validate($attributeCode, new IsValidAttribute([
             'locale' => $locale,
             'scope' => $scope,
-            'errorOnAttributeNotFound' => true,
         ]));
         $validator->atPath($basePath . '.locale')->validate($locale, new LocaleShouldBeActive());
         $validator->atPath($basePath . '.scope')->validate($scope, new ChannelShouldExist());

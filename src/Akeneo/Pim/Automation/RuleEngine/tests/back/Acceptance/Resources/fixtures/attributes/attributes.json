@@ -91,7 +91,7 @@
     "metric_family": "Frequency",
     "default_metric_unit": "MEGAHERTZ",
     "group": "other",
-    "localizable": false,
+    "localizable": true,
     "scopable": false,
     "labels": {
       "en_US": "Processor"
@@ -158,10 +158,21 @@
     "code": "item_weight",
     "type": "pim_catalog_number",
     "group": "other",
+    "localizable": true,
+    "scopable": true,
+    "decimals_allowed": true,
+    "labels": {
+      "en_US": "Item weight"
+    }
+  },
+  "in_stock": {
+    "code": "in_stock",
+    "type": "pim_catalog_number",
+    "group": "other",
     "localizable": false,
     "scopable": false,
     "labels": {
-      "en_US": "Item weight"
+      "en_US": "Number in stock"
     }
   },
   "specifications": {

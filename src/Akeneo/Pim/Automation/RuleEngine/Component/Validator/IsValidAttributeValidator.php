@@ -46,18 +46,18 @@ final class IsValidAttributeValidator extends ConstraintValidator
      */
     public function validate($attributeCode, Constraint $constraint)
     {
-        Assert::nullOrString($attributeCode);
+        if (null === $attributeCode || !is_string($attributeCode)) {
+            return;
+        }
         Assert::isInstanceOf($constraint, IsValidAttribute::class, sprintf(
             'Constraint must be an instance of "%s".',
             IsValidAttribute::class
         ));
 
-        $attribute = $attributeCode !== null ? $this->getAttributes->forCode($attributeCode) : null;
+        $attribute = $this->getAttributes->forCode($attributeCode);
         if (null === $attribute) {
-            if ($constraint->isErrorOnAttributeNotFound()) {
-                $this->context->buildViolation($constraint->messageAttributeNotFound, ['%field%' => $attributeCode])
-                    ->addViolation();
-            }
+            $this->context->buildViolation($constraint->messageAttributeNotFound, ['%field%' => $attributeCode])
+                ->addViolation();
 
             return;
         }

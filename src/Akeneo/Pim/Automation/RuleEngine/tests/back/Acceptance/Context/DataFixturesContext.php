@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context;
 
-use Akeneo\Channel\Component\Model\Currency;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
@@ -49,18 +48,24 @@ use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
 use Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository;
 use Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository;
 use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
+use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityBuilder;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
 
 /**
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  */
 final class DataFixturesContext implements Context
 {
@@ -100,9 +105,6 @@ final class DataFixturesContext implements Context
     /** @var InMemoryAttributeOptionRepository */
     private $attributeOptionRepository;
 
-    /** @var InMemoryCurrencyRepository */
-    private $currencyRepository;
-
     /** @var ObjectUpdaterInterface */
     private $productUpdater;
 
@@ -127,6 +129,9 @@ final class DataFixturesContext implements Context
     /** @var InMemoryAssociationTypeRepository */
     private $associationTypeRepository;
 
+    /** @var InMemoryMeasurementFamilyRepository */
+    private $measurementFamilyRepository;
+
     public function __construct(
         InMemoryProductRepository $productRepository,
         ProductBuilderInterface $productBuilder,
@@ -141,14 +146,14 @@ final class DataFixturesContext implements Context
         EntityBuilder $categoryBuilder,
         InMemoryCategoryRepository $categoryRepository,
         InMemoryAttributeOptionRepository $attributeOptionRepository,
-        InMemoryCurrencyRepository $currencyRepository,
         EntityBuilder $optionBuilder,
         WriteValueCollectionFactory $valueCollectionFactory,
         InMemoryReferenceEntityRepository $referenceEntityRepository,
         InMemoryRecordRepository $recordRepository,
         InMemoryFindRecordDetails $findRecordDetails,
         InMemoryGroupRepository $groupRepository,
-        InMemoryAssociationTypeRepository $associationTypeRepository
+        InMemoryAssociationTypeRepository $associationTypeRepository,
+        InMemoryMeasurementFamilyRepository $measurementFamilyRepository
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
@@ -162,7 +167,6 @@ final class DataFixturesContext implements Context
         $this->categoryBuilder = $categoryBuilder;
         $this->categoryRepository = $categoryRepository;
         $this->attributeOptionRepository = $attributeOptionRepository;
-        $this->currencyRepository = $currencyRepository;
         $this->productUpdater = $productUpdater;
         $this->optionBuilder = $optionBuilder;
         $this->valueCollectionFactory = $valueCollectionFactory;
@@ -171,6 +175,7 @@ final class DataFixturesContext implements Context
         $this->findRecordDetails = $findRecordDetails;
         $this->groupRepository = $groupRepository;
         $this->associationTypeRepository = $associationTypeRepository;
+        $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
     /**
@@ -252,6 +257,52 @@ final class DataFixturesContext implements Context
     }
 
     /**
+     * @given the :measurementFamily measurement family
+     */
+    public function theMeasurementFamily(string $measurementFamily)
+    {
+        if ('Frequency' !== $measurementFamily) {
+            throw new NotImplementedException('Not implmented yet');
+        }
+
+        $this->measurementFamilyRepository->save(
+            MeasurementFamily::create(
+                MeasurementFamilyCode::fromString('Frequency'),
+                \Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection::fromArray(
+                    ["en_US" => "Frequency", "fr_FR" => "Fréquence"]
+                ),
+                UnitCode::fromString('HERTZ'),
+                [
+                    Unit::create(
+                        UnitCode::fromString('HERTZ'),
+                        \Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection::fromArray(["en_US" => "Hertz"]),
+                        [
+                            Operation::create("mul", "1"),
+                        ],
+                        "Hz"
+                    ),
+                    Unit::create(
+                        UnitCode::fromString('KILOHERTZ'),
+                        \Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection::fromArray(["en_US" => "Kilohertz"]),
+                        [
+                            Operation::create("mul", "1000"),
+                        ],
+                        "kHz"
+                    ),
+                    Unit::create(
+                        UnitCode::fromString('MEGAHERTZ'),
+                        \Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection::fromArray(["en_US" => "Megahertz"]),
+                        [
+                            Operation::create("mul", "1000000"),
+                        ],
+                        "MHz"
+                    ),
+                ]
+            )
+        );
+    }
+
+    /**
      * @Given /^the following categories:$/
      */
     public function theFollowingCategories(TableNode $table): void
@@ -266,22 +317,6 @@ final class DataFixturesContext implements Context
 
             $this->categoryRepository->save($category);
         }
-    }
-
-    /**
-     * @Given /^some currencies$/
-     */
-    public function someCurrencies(): void
-    {
-        $eurCurrency = new Currency();
-        $eurCurrency->setCode('EUR');
-        $eurCurrency->setActivated(true);
-        $this->currencyRepository->save($eurCurrency);
-
-        $dollarCurrency = new Currency();
-        $dollarCurrency->setCode('USD');
-        $dollarCurrency->setActivated(true);
-        $this->currencyRepository->save($dollarCurrency);
     }
 
     /**

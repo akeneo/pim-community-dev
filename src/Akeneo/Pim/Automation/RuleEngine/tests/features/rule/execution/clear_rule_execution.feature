@@ -6,7 +6,6 @@ Feature: Execute clear rules
   Background:
     Given the following locales en_US,fr_FR
     And the following ecommerce channel with locales en_US,fr_FR
-    And some currencies
     And the family "camcorders"
     And the product "75024" of the family "camcorders"
     And the product "75025" of the family "camcorders"
@@ -56,6 +55,7 @@ Feature: Execute clear rules
                   field: pim_brand
                 - type: clear
                   field: processor
+                  locale: en_US
                 - type: clear
                   field: price
                 - type: clear
