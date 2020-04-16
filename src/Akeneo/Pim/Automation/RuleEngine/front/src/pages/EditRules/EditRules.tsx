@@ -36,21 +36,36 @@ const getTabBorder = ({ id, selectedId, theme }: any) => {
   return 0;
 };
 
+const getTabColor = ({ id, selectedId, theme }: any) => {
+  if (id === selectedId) {
+    return theme.color.purple100;
+  }
+
+  return theme.color.grey120;
+}
+
 const StyledTab = styled(Tab)`
+  background: ${({ theme }) => theme.color.white};
   border-bottom: ${props => getTabBorder(props)};
   border-width: 0 0 3px 0;
   border-width: 0 0 3px 0;
-  color: ${({ theme }) => theme.color.purple100};
+  color: ${props => getTabColor(props)};
   font-size: 15px;
   font-weight: normal;
   height: 18px;
-  padding: 0 0 25px 0;
+  padding: 0 40px 25px 0;
   text-align: left;
-  width: 125px;
+  cursor: pointer;
+  margin: 0 5px -1px 0;
+  transition: color 0.1s ease-in, border-width 0.1s ease-in;
+  &:hover {
+    color: ${({ theme }) => theme.color.purple100};
+    border-bottom: 3px solid ${({ theme }) => theme.color.purple100};
+  }
 `;
 
 const StyledTabPanel = styled(TabPanel)`
-  padding-top: 40px;
+  padding-top: 20px;
 `;
 
 const StyledTabList = styled(TabList)`
