@@ -19,12 +19,12 @@ Feature: Apply "remove" action on variant product and product models
       | size        | Size        | pim_catalog_simpleselect     | 0           | 0        | other |                  |
       | style       | Style       | pim_catalog_multiselect      | 0           | 0        | other |                  |
       | zipper      | Zipper      | pim_catalog_boolean          | 0           | 0        | other |                  |
-    And the following "color" attribute options: red, yellow, black and white
+    And the following "color" attribute options: red, yellow, black, white
     And the following "size" attribute options: s, m, l, xl
     And the following "style" attribute options: cheap, non_urban, without_zipper, classy
     And the following family:
-      | code | requirements-ecommerce | requirements-mobile | attributes                                         |
-      | bags | sku                    | sku                 | color,description,name,price,size,sku,style,zipper |
+      | code | attribute_requirements   | attributes                                         |
+      | bags | ecommerce-sku,mobile-sku | color,description,name,price,size,sku,style,zipper |
     And the following family variants:
       | code           | family | variant-axes_1 | variant-attributes_1             | variant-axes_2 | variant-attributes_2 |
       | bag_one_level  | bags   | color,size     | color,description,price,size,sku |                |                      |
@@ -45,6 +45,7 @@ Feature: Apply "remove" action on variant product and product models
       | bag_2_small_red   | bag_2_small | bags   | default,custom | red   |      | 1 EUR, 15 USD |
       | bag_uni_red       | bag_uni     | bags   | default        | red   |      | 1 EUR, 15 USD |
 
+  @integration-back
   Scenario: Successfully remove value on product models
     Given the following product rule definitions:
       """
@@ -65,16 +66,17 @@ Feature: Apply "remove" action on variant product and product models
       | bag_1       | [cheap], [non_urban]  |
       | bag_2_small | [classy], [non_urban] |
       | bag_uni     | [non_urban]           |
-    But the product model "bag_2" should not have the following values "style"
-    And the variant product "bag_1_large_black" should not have the following value:
+    But the "bag_2" product model should not have the following values "style"
+    And the "bag_1_large_black" variant product should not have the following value:
       | style | [without_zipper] |
-    And the variant product "bag_1_small_white" should not have the following value:
+    And the "bag_1_small_white" variant product should not have the following value:
       | style | [without_zipper] |
-    And the variant product "bag_2_small_red" should not have the following value:
+    And the "bag_2_small_red" variant product should not have the following value:
       | style | [without_zipper] |
-    And the variant product "bag_uni_red" should not have the following value:
+    And the "bag_uni_red" variant product should not have the following value:
       | style | [non_urban,without_zipper] |
 
+  @integration-back
   Scenario: Successfully remove categories on product models
     Given the following product rule definitions:
       """
@@ -94,15 +96,16 @@ Feature: Apply "remove" action on variant product and product models
               - no_chance
       """
     When the product rule "remove_category" is executed
-    Then the categories of the product model "bag_1" should be "default and small"
-    And the categories of the product "bag_1_large_black" should be "default and small"
-    And the categories of the product "bag_1_small_white" should be "default and small"
-    And the categories of the product model "bag_uni" should be "default, small and custom"
-    And the categories of the product "bag_uni_red" should be "default, small and custom"
-    But the categories of the product model "bag_2" should be "default, no_chance and small"
-    And the categories of the product model "bag_2_small" should be "default, no_chance and small"
-    And the categories of the product "bag_2_small_red" should be "default, no_chance, small and custom"
+    Then the categories of the "bag_1" product model should be "default, small"
+    And the categories of the "bag_1_large_black" product should be "default, small"
+    And the categories of the "bag_1_small_white" product should be "default, small"
+    And the categories of the "bag_uni" product model should be "default, small, custom"
+    And the categories of the "bag_uni_red" product should be "default, small, custom"
+    But the categories of the "bag_2" product model should be "default, no_chance, small"
+    And the categories of the "bag_2_small" product model should be "default, no_chance, small"
+    And the categories of the "bag_2_small_red" product should be "default, no_chance, small, custom"
 
+  @integration-back
   Scenario: Successfully remove categories and children on product models
     Given the following product rule definitions:
       """
@@ -127,15 +130,16 @@ Feature: Apply "remove" action on variant product and product models
             include_children: true
       """
     When the product rule "remove_category" is executed
-    Then the categories of the product model "bag_1" should be "default and no_chance"
-    And the categories of the product "bag_1_large_black" should be "default and no_chance"
-    And the categories of the product "bag_1_small_white" should be "default and no_chance"
-    And the categories of the product model "bag_uni" should be "default and no_chance"
-    And the categories of the product "bag_uni_red" should be "default and no_chance"
-    But the categories of the product model "bag_2" should be "default, no_chance and small"
-    And the categories of the product model "bag_2_small" should be "default, no_chance and small"
-    And the categories of the product "bag_2_small_red" should be "default, no_chance, small and custom"
+    Then the categories of the "bag_1" product model should be "default, no_chance"
+    And the categories of the "bag_1_large_black" product should be "default, no_chance"
+    And the categories of the "bag_1_small_white" product should be "default, no_chance"
+    And the categories of the "bag_uni" product model should be "default, no_chance"
+    And the categories of the "bag_uni_red" product should be "default, no_chance"
+    But the categories of the "bag_2" product model should be "default, no_chance, small"
+    And the categories of the "bag_2_small" product model should be "default, no_chance, small"
+    And the categories of the "bag_2_small_red" product should be "default, no_chance, small, custom"
 
+  @integration-back
   Scenario: Successfully remove value on variant product with condition on product model
     Given the following product rule definitions:
       """
@@ -153,19 +157,20 @@ Feature: Apply "remove" action on variant product and product models
                 currency: EUR
       """
     When the product rule "remove_price" is executed
-    Then the product "bag_1_large_black" should have the following value:
+    Then the "bag_1_large_black" product should have the following value:
       | price | 15.00 USD |
-    Then the product "bag_1_small_white" should have the following value:
+    Then the "bag_1_small_white" product should have the following value:
       | price | 15.00 USD |
-    And the product "bag_2_small_red" should have the following value:
+    And the "bag_2_small_red" product should have the following value:
       | price | 1.00 EUR, 15.00 USD |
-    And the product "bag_uni_red" should have the following value:
+    And the "bag_uni_red" product should have the following value:
       | price | 1.00 EUR, 15.00 USD |
-    But the product model "bag_1" should not have the following values "price"
-    And the product model "bag_2" should not have the following values "price"
-    And the product model "bag_2_small" should not have the following values "price"
-    And the product model "bag_uni" should not have the following values "price"
+    But the "bag_1" product model should not have the following values "price"
+    And the "bag_2" product model should not have the following values "price"
+    And the "bag_2_small" product model should not have the following values "price"
+    And the "bag_uni" product model should not have the following values "price"
 
+  @integration-back
   Scenario: Successfully remove values according to conditions on both variant products and product models
     Given the following product rule definitions:
       """
@@ -187,19 +192,20 @@ Feature: Apply "remove" action on variant product and product models
                 currency: EUR
       """
     When the product rule "remove_price" is executed
-    Then the product "bag_1_small_white" should have the following value:
+    Then the "bag_1_small_white" product should have the following value:
       | price | 15.00 USD |
-    And the product "bag_1_large_black" should have the following value:
+    And the "bag_1_large_black" product should have the following value:
       | price | 1.00 EUR, 15.00 USD |
-    And the product "bag_2_small_red" should have the following value:
+    And the "bag_2_small_red" product should have the following value:
       | price | 1.00 EUR, 15.00 USD |
-    And the product "bag_uni_red" should have the following value:
+    And the "bag_uni_red" product should have the following value:
       | price | 1.00 EUR, 15.00 USD |
-    But the product model "bag_1" should not have the following values "price"
-    And the product model "bag_2" should not have the following values "price"
-    And the product model "bag_2_small" should not have the following values "price"
-    And the product model "bag_uni" should not have the following values "price"
+    But the "bag_1" product model should not have the following values "price"
+    And the "bag_2" product model should not have the following values "price"
+    And the "bag_2_small" product model should not have the following values "price"
+    And the "bag_uni" product model should not have the following values "price"
 
+  @integration-back
   Scenario: Successfully remove categories according to conditions on both variant products and product models
     Given the following product rule definitions:
       """
@@ -219,15 +225,16 @@ Feature: Apply "remove" action on variant product and product models
               - default
       """
     When the product rule "remove_category" is executed
-    Then the category of the product model "bag_uni" should be "no_chance, small and custom"
-    And the category of the product "bag_uni_red" should be "no_chance, small and custom"
-    But the category of the product model "bag_1" should be "default, no_chance and small"
-    And the category of the product "bag_1_large_black" should be "default, no_chance and small"
-    And the category of the product "bag_1_small_white" should be "default, no_chance and small"
-    And the category of the product model "bag_2" should be "default, no_chance and small"
-    And the category of the product model "bag_2_small" should be "default, no_chance and small"
-    And the category of the product "bag_2_small_red" should be "default, no_chance, small and custom"
+    Then the category of the "bag_uni" product model should be "no_chance, small, custom"
+    And the category of the "bag_uni_red" product should be "no_chance, small, custom"
+    But the category of the "bag_1" product model should be "default, no_chance, small"
+    And the category of the "bag_1_large_black" product should be "default, no_chance, small"
+    And the category of the "bag_1_small_white" product should be "default, no_chance, small"
+    And the category of the "bag_2" product model should be "default, no_chance, small"
+    And the category of the "bag_2_small" product model should be "default, no_chance, small"
+    And the category of the "bag_2_small_red" product should be "default, no_chance, small, custom"
 
+  @integration-back
   Scenario: Successfully remove categories and children according to conditions on both variant products and product models
     Given the following product rule definitions:
       """
@@ -248,11 +255,11 @@ Feature: Apply "remove" action on variant product and product models
             include_children: true
       """
     When the product rule "remove_category" is executed
-    Then the category of the product model "bag_uni" should be "default and no_chance"
-    And the category of the product "bag_uni_red" should be "default and no_chance"
-    But the category of the product model "bag_1" should be "default, no_chance and small"
-    And the category of the product "bag_1_large_black" should be "default, no_chance and small"
-    And the category of the product "bag_1_small_white" should be "default, no_chance and small"
-    And the category of the product model "bag_2" should be "default, no_chance and small"
-    And the category of the product model "bag_2_small" should be "default, no_chance and small"
-    And the category of the product "bag_2_small_red" should be "default, no_chance and small"
+    Then the category of the "bag_uni" product model should be "default, no_chance"
+    And the category of the "bag_uni_red" product should be "default, no_chance"
+    But the category of the "bag_1" product model should be "default, no_chance, small"
+    And the category of the "bag_1_large_black" product should be "default, no_chance, small"
+    And the category of the "bag_1_small_white" product should be "default, no_chance, small"
+    And the category of the "bag_2" product model should be "default, no_chance, small"
+    And the category of the "bag_2_small" product model should be "default, no_chance, small"
+    And the category of the "bag_2_small_red" product should be "default, no_chance, small"

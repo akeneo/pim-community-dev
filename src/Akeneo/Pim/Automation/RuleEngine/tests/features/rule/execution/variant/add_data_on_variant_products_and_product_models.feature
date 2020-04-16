@@ -18,12 +18,12 @@ Feature: Apply "add" action on variant product and product models
       | size        | Size        | pim_catalog_simpleselect     | 0           | 0        | other |                  |
       | style       | Style       | pim_catalog_multiselect      | 0           | 0        | other |                  |
       | zipper      | Zipper      | pim_catalog_boolean          | 0           | 0        | other |                  |
-    And the following "color" attribute options: red, yellow, black and white
+    And the following "color" attribute options: red, yellow, black, white
     And the following "size" attribute options: s, m, l, xl
     And the following "style" attribute options: cheap, urban, with_zipper
     And the following family:
-      | code | requirements-ecommerce | requirements-mobile | attributes                                         |
-      | bags | sku                    | sku                 | color,description,name,price,size,sku,style,zipper |
+      | code | attribute_requirements   | attributes                                         |
+      | bags | ecommerce-sku,mobile-sku | color,description,name,price,size,sku,style,zipper |
     And the following family variants:
       | code           | family | variant-axes_1 | variant-attributes_1             | variant-axes_2 | variant-attributes_2 |
       | bag_one_level  | bags   | color,size     | color,description,price,size,sku |                |                      |
@@ -44,6 +44,7 @@ Feature: Apply "add" action on variant product and product models
       | bag_2_small_red   | bag_2_small | bags   | default    | red   |      |
       | bag_uni_red       | bag_uni     | bags   | default    | red   |      |
 
+  @integration-back
   Scenario: Successfully add value on product models
     Given the following product rule definitions:
       """
@@ -58,22 +59,23 @@ Feature: Apply "add" action on variant product and product models
             items:
               - with_zipper
       """
-    When the product rule "add_style" is executed
+    When the "add_style" product rule is executed
     Then there should be the following product model:
       | code        | style                           |
       | bag_1       | [cheap], [urban], [with_zipper] |
       | bag_2_small | [cheap], [urban], [with_zipper] |
       | bag_uni     | [urban], [with_zipper]          |
-    But the product model "bag_2" should not have the following values "style"
-    And the variant product "bag_1_large_black" should not have the following value:
+    But the "bag_2" product model should not have the following values "style"
+    And the "bag_1_large_black" variant product should not have the following value:
       | style | [with_zipper] |
-    And the variant product "bag_1_small_white" should not have the following value:
+    And the "bag_1_small_white" variant product should not have the following value:
       | style | [with_zipper] |
-    And the variant product "bag_2_small_red" should not have the following value:
+    And the "bag_2_small_red" variant product should not have the following value:
       | style | [with_zipper] |
-    And the variant product "bag_uni_red" should not have the following value:
+    And the "bag_uni_red" variant product should not have the following value:
       | style | [urban,with_zipper] |
 
+  @integration-back
   Scenario: Successfully add categories on product models
     Given the following product rule definitions:
       """
@@ -93,15 +95,16 @@ Feature: Apply "add" action on variant product and product models
               - no_chance
       """
     When the product rule "add_category" is executed
-    Then the categories of the product model "bag_1" should be "default and no_chance"
-    And the categories of the product "bag_1_large_black" should be "default and no_chance"
-    And the categories of the product "bag_1_small_white" should be "default and no_chance"
-    And the categories of the product model "bag_2_small" should be "default and no_chance"
-    And the categories of the product "bag_2_small_red" should be "default and no_chance"
-    And the categories of the product model "bag_uni" should be "default and no_chance"
-    And the categories of the product "bag_uni_red" should be "default and no_chance"
-    But the categories of the product model "bag_2" should be "default"
+    Then the categories of the "bag_1" product model should be "default, no_chance"
+    And the categories of the "bag_1_large_black" product should be "default, no_chance"
+    And the categories of the "bag_1_small_white" product should be "default, no_chance"
+    And the categories of the "bag_2_small" product model should be "default, no_chance"
+    And the categories of the "bag_2_small_red" product should be "default, no_chance"
+    And the categories of the "bag_uni" product model should be "default, no_chance"
+    And the categories of the "bag_uni_red" product should be "default, no_chance"
+    But the categories of the "bag_2" product model should be "default"
 
+  @integration-back
   Scenario: Successfully add value on variant product with condition on product model
     Given the following product rule definitions:
       """
@@ -119,19 +122,20 @@ Feature: Apply "add" action on variant product and product models
                 currency: EUR
       """
     When the product rule "add_price" is executed
-    Then the product "bag_1_large_black" should have the following value:
+    Then the "bag_1_large_black" product should have the following value:
       | price | 1.00 EUR |
-    Then the product "bag_1_small_white" should have the following value:
+    Then the "bag_1_small_white" product should have the following value:
       | price | 1.00 EUR |
-    And the product "bag_2_small_red" should have the following value:
+    And the "bag_2_small_red" product should have the following value:
       | price | 1.00 EUR |
-    But the product model "bag_1" should not have the following values "price"
-    And the product model "bag_2" should not have the following values "price"
-    And the product model "bag_2_small" should not have the following values "price"
-    And the product model "bag_uni" should not have the following values "price"
-    And the variant product "bag_uni_red" should not have the following values:
+    But the "bag_1" product model should not have the following values "price"
+    And the "bag_2" product model should not have the following values "price"
+    And the "bag_2_small" product model should not have the following values "price"
+    And the "bag_uni" product model should not have the following values "price"
+    And the "bag_uni_red" variant product should not have the following values:
       | style | [with_zipper] |
 
+  @integration-back
   Scenario: Successfully add values according to conditions on both variant products and product models
     Given the following product rule definitions:
       """
@@ -153,19 +157,20 @@ Feature: Apply "add" action on variant product and product models
                 currency: EUR
       """
     When the product rule "add_price" is executed
-    Then the product "bag_1_small_white" should have the following value:
+    Then the "bag_1_small_white" product should have the following value:
       | price | 1.00 EUR |
     And the product "bag_2_small_red" should have the following value:
       | price | 1.00 EUR |
-    But the product model "bag_1" should not have the following values "price"
-    And the product model "bag_2" should not have the following values "price"
-    And the product model "bag_2_small" should not have the following values "price"
-    And the product model "bag_uni" should not have the following values "price"
-    And the variant product "bag_1_large_black" should not have the following values:
+    But the "bag_1" product model should not have the following values "price"
+    And the "bag_2" product model should not have the following values "price"
+    And the "bag_2_small" product model should not have the following values "price"
+    And the "bag_uni" product model should not have the following values "price"
+    And the "bag_1_large_black" variant product should not have the following values:
       | price | 1.00 EUR |
-    And the variant product "bag_uni_red" should not have the following values:
+    And the "bag_uni_red" variant product should not have the following values:
       | price | 1.00 EUR |
 
+  @integration-back
   Scenario: Successfully add categories according to conditions on both variant products and product models
     Given the following product rule definitions:
       """
@@ -185,11 +190,11 @@ Feature: Apply "add" action on variant product and product models
               - small
       """
     When the product rule "add_category" is executed
-    Then the category of the product model "bag_uni" should be "default and small"
-    And the category of the product "bag_uni_red" should be "default and small"
-    And the category of the product "bag_1_small_white" should be "default and small"
-    And the category of the product model "bag_2_small" should be "default and small"
-    And the category of the product "bag_2_small_red" should be "default and small"
-    But the category of the product model "bag_1" should be "default"
-    And the category of the product model "bag_2" should be "default"
-    And the category of the product "bag_1_large_black" should be "default"
+    Then the category of the "bag_uni" product model should be "default, small"
+    And the category of the "bag_uni_red" product should be "default, small"
+    And the category of the "bag_1_small_white" product should be "default, small"
+    And the category of the "bag_2_small" product model should be "default, small"
+    And the category of the "bag_2_small_red" product should be "default, small"
+    But the category of the "bag_1" product model should be "default"
+    And the category of the "bag_2" product model should be "default"
+    And the category of the "bag_1_large_black" product should be "default"

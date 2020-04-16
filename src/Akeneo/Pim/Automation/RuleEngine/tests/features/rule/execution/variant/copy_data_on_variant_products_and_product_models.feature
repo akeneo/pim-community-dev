@@ -14,12 +14,12 @@ Feature: Apply "copy" action on variant product and product models
       | size        | Size        | pim_catalog_simpleselect     | 0           | 0        | other |                  |
       | style       | Style       | pim_catalog_multiselect      | 0           | 0        | other |                  |
       | zipper      | Zipper      | pim_catalog_boolean          | 0           | 0        | other |                  |
-    And the following "color" attribute options: red, yellow, black and white
+    And the following "color" attribute options: red, yellow, black, white
     And the following "size" attribute options: s, m, l, xl
     And the following "style" attribute options: cheap, urban, with_zipper
     And the following family:
-      | code | requirements-ecommerce | requirements-mobile | attributes                                         |
-      | bags | sku                    | sku                 | color,description,name,price,size,sku,style,zipper |
+      | code | attribute_requirements   | attributes                                         |
+      | bags | ecommerce-sku,mobile-sku | color,description,name,price,size,sku,style,zipper |
     And the following family variants:
       | code           | family | variant-axes_1 | variant-attributes_1             | variant-axes_2 | variant-attributes_2 |
       | bag_one_level  | bags   | color,size     | color,description,price,size,sku |                |                      |
@@ -40,6 +40,7 @@ Feature: Apply "copy" action on variant product and product models
       | bag_2_small_red   | bag_2_small | bags   | red   |                               | 1 EUR |      |
       | bag_uni_red       | bag_uni     | bags   | red   |                               | 1 EUR |      |
 
+  @integration-back
   Scenario: Successfully copy value according to condition on product model
     Given the following product rule definitions:
       """
@@ -62,17 +63,18 @@ Feature: Apply "copy" action on variant product and product models
       | code        | description-fr_FR-mobile |
       | bag_2_small | A nice red bag           |
       | bag_uni     | A nice unisize bag       |
-    And the product "bag_1_large_black" should have the following value:
+    And the "bag_1_large_black" product should have the following value:
       | description-fr_FR-mobile | A beautifull, big black bag |
-    And the product "bag_1_small_white" should have the following value:
+    And the "bag_1_small_white" product should have the following value:
       | description-fr_FR-mobile | A beautifull, small white bag |
-    But the product model "bag_1" should not have the following values "description-fr_FR-mobile"
-    But the product model "bag_2" should not have the following values "description-fr_FR-mobile"
-    And the variant product "bag_2_small_red" should not have the following value:
+    But the "bag_1" product model should not have the following values "description-fr_FR-mobile"
+    But the "bag_2" product model should not have the following values "description-fr_FR-mobile"
+    And the "bag_2_small_red" variant product should not have the following value:
       | description-fr_FR-mobile |  |
-    And the variant product "bag_uni_red" should not have the following value:
+    And the "bag_uni_red" variant product should not have the following value:
       | description-fr_FR-mobile |  |
 
+  @integration-back
   Scenario: Successfully copy value according to condition on variant product
     Given the following product rule definitions:
       """
@@ -97,17 +99,18 @@ Feature: Apply "copy" action on variant product and product models
       | code        | description-fr_FR-mobile |
       | bag_uni     |                          |
       | bag_2_small |                          |
-    And the product "bag_1_large_black" should have the following value:
+    And the "bag_1_large_black" product should have the following value:
       | description-fr_FR-mobile | A beautifull, big black bag |
-    But the product model "bag_1" should not have the following values "description-fr_FR-mobile"
-    And the product model "bag_2" should not have the following values "description-fr_FR-mobile"
-    And the variant product "bag_1_small_white" should not have the following value:
+    But the "bag_1" product model should not have the following values "description-fr_FR-mobile"
+    And the "bag_2" product model should not have the following values "description-fr_FR-mobile"
+    And the "bag_1_small_white" variant product should not have the following value:
       | description-fr_FR-mobile |  |
-    And the variant product "bag_2_small_red" should not have the following value:
+    And the "bag_2_small_red" variant product should not have the following value:
       | description-fr_FR-mobile |  |
-    And the variant product "bag_uni_red" should not have the following value:
+    And the "bag_uni_red" variant product should not have the following value:
       | description-fr_FR-mobile |  |
 
+  @integration-back
   Scenario: Successfully copy values according to conditions on both variant products and product models
     Given the following product rule definitions:
       """
@@ -134,14 +137,14 @@ Feature: Apply "copy" action on variant product and product models
     Then there should be the following product model:
       | code        | description-fr_FR-mobile |
       | bag_2_small | A nice red bag           |
-    And the product "bag_1_small_white" should have the following value:
+    And the "bag_1_small_white" product should have the following value:
       | description-fr_FR-mobile | A beautifull, small white bag |
-    But the product model "bag_1" should not have the following values "description-fr_FR-mobile"
-    But the product model "bag_2" should not have the following values "description-fr_FR-mobile"
-    But the product model "bag_uni" should not have the following values "description-fr_FR-mobile"
-    And the variant product "bag_1_large_black" should not have the following value:
+    But the "bag_1" product model should not have the following values "description-fr_FR-mobile"
+    But the "bag_2" product model should not have the following values "description-fr_FR-mobile"
+    But the "bag_uni" product model should not have the following values "description-fr_FR-mobile"
+    And the "bag_1_large_black" variant product should not have the following value:
       | description-fr_FR-mobile |  |
-    And the variant product "bag_2_small_red" should not have the following value:
+    And the "bag_2_small_red" variant product should not have the following value:
       | description-fr_FR-mobile |  |
-    And the variant product "bag_uni_red" should not have the following value:
+    And the "bag_uni_red" variant product should not have the following value:
       | description-fr_FR-mobile |  |
