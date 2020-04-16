@@ -50,11 +50,11 @@ class FileTransformer
     {
         $extension = ('' === $sourceFile->getExtension()) ? '' : '.' . $sourceFile->getExtension();
         $newFilename = sprintf(
-            '%s%s%s%s',
+            '%s%s%s.%s',
             $transformation->getFilenamePrefix() ?? '',
             $sourceFile->getBasename($extension),
             $transformation->getFilenameSuffix() ?? '',
-            $extension
+            $transformation->getOperationCollection()->hasOperation('optimize_jpeg') ? 'jpeg' : 'png'
         );
 
         return $sourceFile->move($sourceFile->getPath(), $newFilename);
