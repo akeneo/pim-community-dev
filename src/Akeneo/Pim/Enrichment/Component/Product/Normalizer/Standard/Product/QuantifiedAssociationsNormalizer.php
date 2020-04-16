@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProdu
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -85,14 +86,22 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
         $productIdentifiers = $this->getProductIdentifiers($associationAwareEntities);
         $productModelCodes = $this->getProductModelCodes($associationAwareEntities);
 
-        return array_reduce($associationAwareEntities, function (array $carry, AbstractProduct $product) use ($productIdentifiers, $productModelCodes) {
+        return array_reduce($associationAwareEntities, function (array $carry, EntityWithAssociationsInterface $product) use ($productIdentifiers, $productModelCodes) {
+            if ($product instanceof ProductModel) {
+                return $carry;
+            }
+
             return array_merge_recursive($carry, $product->getQuantifiedAssociationsWithIdentifiersAndCodes($productIdentifiers, $productModelCodes));
         }, []);
     }
 
     private function getProductIdentifiers(array $associationAwareEntities)
     {
-        $productIds = array_reduce($associationAwareEntities, function (array $carry, AbstractProduct $product) {
+        $productIds = array_reduce($associationAwareEntities, function (array $carry, EntityWithAssociationsInterface $product) {
+            if ($product instanceof ProductModel) {
+                return $carry;
+            }
+
             return array_merge($carry, $product->getAllLinkedProductIds());
         }, []);
 
@@ -101,7 +110,11 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
 
     private function getProductModelCodes(array $associationAwareEntities)
     {
-        $productModelIds = array_reduce($associationAwareEntities, function (array $carry, AbstractProduct $product) {
+        $productModelIds = array_reduce($associationAwareEntities, function (array $carry, EntityWithAssociationsInterface $product) {
+            if ($product instanceof ProductModel) {
+                return $carry;
+            }
+
             return array_merge($carry, $product->getAllLinkedProductModelIds());
         }, []);
 

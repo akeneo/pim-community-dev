@@ -359,7 +359,7 @@ class Product implements ArrayConverterInterface
     protected function getOptionalAssociationFields(): array
     {
         if (empty($this->optionalAssocFields)) {
-            $this->optionalAssocFields = array_merge($this->assocColumnsResolver->resolveAssociationColumns(), ['PACK-products', 'PACK-product_models']);
+            $this->optionalAssocFields = array_merge($this->assocColumnsResolver->resolveAssociationColumns(), ['PACK-products', 'PACK-product_models', 'PACK-groups']);
         }
 
         return $this->optionalAssocFields;

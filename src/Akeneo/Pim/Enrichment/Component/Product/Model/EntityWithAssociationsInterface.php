@@ -75,4 +75,16 @@ interface EntityWithAssociationsInterface
      * @return AssociationInterface|null
      */
     public function getAssociationForTypeCode($typeCode): ?AssociationInterface;
+
+    public function setQuantifiedAssociations(array $quantifiedAssociations);
+
+    public function getQuantifiedAssociations();
+
+    public function getAllLinkedProductIds();
+
+    public function getAllLinkedProductModelIds();
+
+    public function getQuantifiedAssociationsWithIdentifiersAndCodes(array $productIdentifiers, array $productModelCodes): array;
+
+    public function setQuantifiedAssociationsWithIds(array $newQuantifiedAssociations, array $productIds, array $productModelIds);
 }

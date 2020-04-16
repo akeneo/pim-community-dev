@@ -16,6 +16,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class ProductModel implements ProductModelInterface
 {
+    use QuantifiedAssociationTrait;
+
     /** @var int */
     protected $id;
 
