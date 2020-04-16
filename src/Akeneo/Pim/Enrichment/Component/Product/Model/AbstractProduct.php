@@ -27,6 +27,9 @@ abstract class AbstractProduct implements ProductInterface
     /** @var array */
     protected $rawValues;
 
+    /** @var array */
+    protected $quantifiedAssociations = [];
+
     /** @var \DateTime $created */
     protected $created;
 
@@ -90,6 +93,49 @@ abstract class AbstractProduct implements ProductInterface
         $this->groups = new ArrayCollection();
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
+    }
+
+
+
+
+
+    public function setQuantifiedAssociations(array $quantifiedAssociations)
+    {
+        $this->quantifiedAssociations = $quantifiedAssociations;
+    }
+
+    public function getQuantifiedAssociations()
+    {
+        return $this->quantifiedAssociations;
+    }
+
+    public function getAllLinkedProductIds()
+    {
+        return array_reduce($this->quantifiedAssociations, function (array $carry, array $quantifiedAssociation) {
+            return array_merge($carry, array_column($quantifiedAssociation['products'], 'id'));
+        }, []);
+    }
+
+    public function getAllLinkedProductModelIds()
+    {
+        return array_reduce($this->quantifiedAssociations, function (array $carry, array $quantifiedAssociation) {
+            return array_merge($carry, array_column($quantifiedAssociation['product_models'], 'id'));
+        }, []);
+    }
+
+    public function getQuantifiedAssociationsWithIdentifiersAndCodes(array $productIdentifiers, array $productModelCodes): array
+    {
+        $quantifiedAssociationsWithIdentifiersAndCodes = [];
+        foreach ($this->quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
+            $quantifiedAssociationsWithIdentifiersAndCodes[$associationTypeCode]['products'] = array_map(function ($association) use ($productIdentifiers) {
+                return ['identifier' => $productIdentifiers[$association['id']], 'quantity' => $association['quantity']];
+            }, $quantifiedAssociation['products']);
+            $quantifiedAssociationsWithIdentifiersAndCodes[$associationTypeCode]['product_models'] = array_map(function ($association) use ($productModelCodes) {
+                return ['identifier' => $productModelCodes[$association['id']], 'quantity' => $association['quantity']];
+            }, $quantifiedAssociation['product_models']);
+        }
+
+        return $quantifiedAssociationsWithIdentifiersAndCodes;
     }
 
     /**
