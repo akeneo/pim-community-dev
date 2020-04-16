@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9179: Fix product grid freezing when using ENTER on filter
+- PIM-9193: DatePresenter presents null if date can not be formatted
 
 # 3.0.72 (2020-04-03)
 

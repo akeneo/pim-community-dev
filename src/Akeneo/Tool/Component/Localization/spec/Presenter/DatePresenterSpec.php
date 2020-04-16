@@ -44,4 +44,19 @@ class DatePresenterSpec extends ObjectBehavior
 
         $this->present($date, $options)->shouldReturn('31/01/2015');
     }
+
+    function it_does_not_present_a_date_if_the_date_can_not_be_formatted()
+    {
+        $date = '-001-11-30T00:00:00+00:00';
+        $options = [
+            'locale' => 'fr_FR',
+            'date_format' => 'dd/MM/yyyy',
+            'datetype'    => \IntlDateFormatter::SHORT,
+            'timetype'    => \IntlDateFormatter::NONE,
+            'timezone'    => null,
+            'calendar'    => null,
+        ];
+
+        $this->present($date, $options)->shouldReturn(null);
+    }
 }
