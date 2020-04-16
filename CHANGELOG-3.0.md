@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.73 (2020-04-16)
+
 ## Bug fixes:
 
 - PIM-9182: Add validation on label when a record is created
