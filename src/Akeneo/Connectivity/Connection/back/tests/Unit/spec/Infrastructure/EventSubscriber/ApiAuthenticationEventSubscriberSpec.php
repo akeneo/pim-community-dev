@@ -58,4 +58,17 @@ class ApiAuthenticationEventSubscriberSpec extends ObjectBehavior
 
         $this->checkCredentialsCombination($event)->shouldReturn(null);
     }
+
+    public function it_does_nothing_if_connection_is_null(
+        $connectionContext,
+        $repository
+    ): void {
+        $event = new ApiAuthenticationEvent('magento_0123', '42');
+        $connectionContext->areCredentialsValidCombination()->willReturn(true);
+
+        $connectionContext->getConnection()->willReturn(null);
+        $repository->create(Argument::cetera())->shouldNotBeCalled();
+
+        $this->checkCredentialsCombination($event)->shouldReturn(null);
+    }
 }

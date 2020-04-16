@@ -42,6 +42,10 @@ class ApiAuthenticationEventSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if (null === $this->connectionContext->getConnection()) {
+            return;
+        }
+
         $this->repository->create(new WrongCredentialsCombination(
             (string) $this->connectionContext->getConnection()->code(),
             $event->username()
