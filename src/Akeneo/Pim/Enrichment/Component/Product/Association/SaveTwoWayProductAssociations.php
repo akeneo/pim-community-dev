@@ -45,16 +45,35 @@ class SaveTwoWayProductAssociations implements EventSubscriberInterface
             return;
         }
 
-        foreach ($product->getAssociations() as $association) {
-            if ($association->getAssociationType()->isTwoWay()) {
-                $this->connection->transactional(function() use ($product, $association) {
-                    $this->removeInvertedProductAssociationsDeleted($association, $product);
-                    $this->removeInvertedProductModelAssociationsDeleted($association, $product);
+        $twoWayAssociations = array_filter($product->getAssociations()->toArray(), function(AssociationInterface $association) {
+            return $association->getAssociationType()->isTwoWay();
+        });
 
-                    $this->saveTwoWayProductAssociation($association, $product->getId());
-                    $this->saveTwoWayProductModelAssociation($association, $product->getId());
-                });
+        if (empty($twoWayAssociations)) {
+            return;
+        }
+
+        $twoWayAssociationTypeIds = array_map(function(AssociationInterface $association) {
+            return $association->getAssociationType()->getId();
+        }, $twoWayAssociations);
+
+        try {
+            $this->connection->beginTransaction();
+            foreach ($twoWayAssociations as $twoWayAssociation) {
+                $this->removeInvertedProductAssociationsDeleted($twoWayAssociation, $product);
+                $this->removeInvertedProductModelAssociationsDeleted($twoWayAssociation, $product);
             }
+
+            $this->saveNewAssociation($twoWayAssociationTypeIds, $product->getId());
+            $this->saveProductAssociation($twoWayAssociationTypeIds, $product->getId());
+
+            $this->saveNewProductModelAssociation($twoWayAssociationTypeIds, $product->getId());
+            $this->saveProductModelAssociation($twoWayAssociationTypeIds, $product->getId());
+
+            $this->connection->commit();
+        } catch (\Exception $exception) {
+            $this->connection->rollBack();
+            throw $exception;
         }
     }
 
@@ -87,7 +106,7 @@ SQL;
 
         if (!$ownerProductModelIds->isEmpty()) {
             $query = <<<SQL
-            DELETE FROM pim_catalog_association_product_model_to_product
+DELETE FROM pim_catalog_association_product_model_to_product
 WHERE association_id IN (
 	SELECT * FROM (
 		SELECT a.id
@@ -148,129 +167,107 @@ SQL;
         $this->connection->executeUpdate($query, $params, $types);
     }
 
-    private function saveTwoWayProductAssociation(
-        AssociationInterface $productAssociation,
-        int $ownerProductId
-    ): void {
-        foreach ($productAssociation->getProducts() as $product) {
-            $this->saveNewAssociation($productAssociation, $product->getId());
-            $newAssociationId = $this->fetchAssociationId(
-                $productAssociation->getAssociationType()->getId(),
-                $product->getId()
-            );
-            $this->saveProductAssociation($newAssociationId, $ownerProductId);
-        }
-    }
-    private function saveTwoWayProductModelAssociation(
-        AssociationInterface $productAssociation,
-        int $ownerProductId
-    ): void {
-        foreach ($productAssociation->getProductModels() as $productModel) {
-            $this->saveNewProductModelAssociation($productAssociation, $productModel->getId());
-            $newAssociationId = $this->fetchProductModelAssociationId(
-                $productAssociation->getAssociationType()->getId(),
-                $productModel->getId()
-            );
-            $this->saveProductModelAssociation($newAssociationId, $ownerProductId);
-        }
-    }
-
-
-    private function saveNewProductModelAssociation(AssociationInterface $productAssociation, int $productModelId): void
+    private function saveNewProductModelAssociation(array $twoWayAssociationTypeIds, int $ownerProductId): void
     {
         $insertAssociation = <<<SQL
 INSERT INTO pim_catalog_product_model_association (association_type_id, owner_id)
-VALUES
-(:association_type_id, :product_model_id)
-ON DUPLICATE KEY UPDATE
-    association_type_id = :association_type_id,
-    owner_id = :product_model_id
+SELECT pca.association_type_id, pcapm.product_model_id
+FROM pim_catalog_association pca
+JOIN pim_catalog_association_product_model pcapm
+    ON pcapm.association_id = pca.id
+LEFT JOIN pim_catalog_product_model_association existing_association
+    ON existing_association.association_type_id = pca.association_type_id
+    AND existing_association.owner_id = pcapm.product_model_id
+WHERE pca.owner_id = :owner_id
+AND pca.association_type_id IN (:association_type_ids)
+AND existing_association.owner_id IS NULL
+AND existing_association.association_type_id IS NULL;
 SQL;
+
         $this->connection->executeUpdate(
             $insertAssociation,
             [
-                'association_type_id' => $productAssociation->getAssociationType()->getId(),
-                'product_model_id'          => $productModelId
-            ]
+                'association_type_ids' => $twoWayAssociationTypeIds,
+                'owner_id' => $ownerProductId
+            ],
+            ['association_type_ids' => Connection::PARAM_INT_ARRAY]
         );
     }
 
-    private function saveNewAssociation(AssociationInterface $productAssociation, int $productId): void
+    private function saveNewAssociation(array $twoWayAssociationTypeIds, int $ownerProductId): void
     {
         $insertAssociation = <<<SQL
 INSERT INTO pim_catalog_association (association_type_id, owner_id)
-VALUES
-(:association_type_id, :product_id)
-ON DUPLICATE KEY UPDATE
-    association_type_id = :association_type_id,
-    owner_id = :product_id
+SELECT pca.association_type_id, pcap.product_id
+FROM pim_catalog_association pca
+JOIN pim_catalog_association_product pcap
+    ON pcap.association_id = pca.id
+LEFT JOIN pim_catalog_association existing_association
+    ON existing_association.association_type_id = pca.association_type_id
+    AND existing_association.owner_id = pcap.product_id
+WHERE pca.owner_id = :owner_id
+AND pca.association_type_id IN (:association_type_ids)
+AND existing_association.owner_id IS NULL
+AND existing_association.association_type_id IS NULL;
 SQL;
+
         $this->connection->executeUpdate(
             $insertAssociation,
             [
-                'association_type_id' => $productAssociation->getAssociationType()->getId(),
-                'product_id'          => $productId
-            ]
+                'association_type_ids' => $twoWayAssociationTypeIds,
+                'owner_id' => $ownerProductId
+            ],
+            ['association_type_ids' => Connection::PARAM_INT_ARRAY]
         );
     }
 
-    private function fetchProductModelAssociationId(int $associationId, int $productModelId): int
-    {
-        $stmt = $this->connection->executeQuery(
-            'SELECT id FROM pim_catalog_product_model_association WHERE owner_id=:owner_id AND association_type_id=:association_type_id',
-            ['owner_id' => $productModelId, 'association_type_id' => $associationId]
-        );
-        $result = $stmt->fetch(\PDO::FETCH_COLUMN);
-        if (!$result) {
-            throw new \LogicException('Something went wrong');
-        }
-
-        return (int)$result;
-    }
-
-    private function fetchAssociationId(int $associationId, int $productId): int
-    {
-        $stmt = $this->connection->executeQuery(
-            'SELECT id FROM pim_catalog_association WHERE owner_id=:owner_id AND association_type_id=:association_type_id',
-            ['owner_id' => $productId, 'association_type_id' => $associationId]
-        );
-        $result = $stmt->fetch(\PDO::FETCH_COLUMN);
-        if (!$result) {
-            throw new \LogicException('Something went wrong');
-        }
-
-        return (int)$result;
-    }
-
-    private function saveProductAssociation(int $newAssociationId, int $ownerProductId): void
+    private function saveProductAssociation(array $twoWayAssociationTypeIds, int $ownerProductId): void
     {
         $insertProductAssociation = <<<SQL
-INSERT INTO pim_catalog_association_product(association_id, product_id)
-VALUES
-(:association_id, :product_id)
-ON DUPLICATE KEY UPDATE
-    association_id = :association_id,
-    product_id = :product_id
+INSERT INTO pim_catalog_association_product (association_id, product_id)
+SELECT existing_association.id, :owner_id
+FROM pim_catalog_association pca
+JOIN pim_catalog_association_product pcap
+    ON pcap.association_id = pca.id
+JOIN pim_catalog_association existing_association
+    ON existing_association.association_type_id = pca.association_type_id
+    AND existing_association.owner_id = pcap.product_id
+LEFT OUTER JOIN pim_catalog_association_product existing_product_association
+    ON existing_association.id = existing_product_association.association_id
+WHERE pca.owner_id = :owner_id
+AND pca.association_type_id IN (:association_type_ids)
+AND existing_product_association.association_id IS NULL;
 SQL;
+
         $this->connection->executeUpdate(
             $insertProductAssociation,
-            ['association_id' => $newAssociationId, 'product_id' => $ownerProductId]
+            ['association_type_ids' => $twoWayAssociationTypeIds, 'owner_id' => $ownerProductId],
+            ['association_type_ids' => Connection::PARAM_INT_ARRAY]
         );
     }
 
-    private function saveProductModelAssociation(int $newAssociationId, int $ownerProductId): void
+    private function saveProductModelAssociation(array $twoWayAssociationTypeIds, int $ownerProductId): void
     {
         $insertProductAssociation = <<<SQL
-INSERT INTO pim_catalog_association_product_model_to_product(association_id, product_id)
-VALUES
-(:association_id, :product_id)
-ON DUPLICATE KEY UPDATE
-    association_id = :association_id,
-    product_id = :product_id
+INSERT INTO pim_catalog_association_product_model_to_product (association_id, product_id)
+SELECT existing_association.id, :owner_id
+FROM pim_catalog_association pca
+JOIN pim_catalog_association_product_model pcapm
+    ON pcapm.association_id = pca.id
+JOIN pim_catalog_product_model_association existing_association
+    ON existing_association.association_type_id = pca.association_type_id
+    AND existing_association.owner_id = pcapm.product_model_id
+LEFT OUTER JOIN pim_catalog_association_product_model_to_product existing_product_association
+ON existing_association.id = existing_product_association.association_id
+WHERE pca.owner_id = :owner_id
+AND pca.association_type_id IN (:association_type_ids)
+AND existing_product_association.association_id IS NULL;
 SQL;
+
         $this->connection->executeUpdate(
             $insertProductAssociation,
-            ['association_id' => $newAssociationId, 'product_id' => $ownerProductId]
+            ['association_type_ids' => $twoWayAssociationTypeIds, 'owner_id' => $ownerProductId],
+            ['association_type_ids' => Connection::PARAM_INT_ARRAY]
         );
     }
 }
