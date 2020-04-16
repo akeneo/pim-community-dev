@@ -109,7 +109,7 @@ class FooFeatureFlag implements FeatureFlag
 
 To ease developments, the _FeatureFlagBundle_ comes with the the implementation `Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag`. It allows to know if a feature is activated by checking an environment variable. When you want to use this class, all you have to do is to declare a service.
 
-Please, name your environment variable `FLAG_FOO_ENABLED`, where `FOO` is obviously the name of your feature. 
+Please, name your environment variable `FLAG_FOO_ENABLED`, where `FOO` is obviously the name of your feature. Using this convention will allow us to enable all flags on a PR's CI. And thus you'll be able to test your feature even it's disabled on production (aka, if you have put `FLAG_FOO_ENABLED=0` in the `.env` file).
 
 ### About the frontend
 
