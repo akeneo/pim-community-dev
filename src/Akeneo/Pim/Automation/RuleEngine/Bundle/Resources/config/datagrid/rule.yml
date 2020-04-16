@@ -66,6 +66,10 @@ datagrid:
                 acl_resource:  pimee_catalog_rule_rule_delete_permissions
         filters:
             columns:
+                code:
+                    type: string
+                    label: pim_common.code
+                    data_name: r.code
                 label:
                     type: search
                     data_name: label
