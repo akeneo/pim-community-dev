@@ -40,6 +40,12 @@ const BasicButton = styled.button<CoreButtonProps>`
   line-height: ${getLineHeight};
   text-transform: uppercase;
   padding: ${getPadding};
+  border-width: 1px;
+  border-style: solid;
+  transition:
+    background 0.1s ease,
+    color 0.1s ease,
+    border-color 0.1s ease;
   &:disabled {
     cursor: not-allowed;
   }
@@ -47,6 +53,7 @@ const BasicButton = styled.button<CoreButtonProps>`
     border-color: ${({ theme }) => theme.color.blue100};
   }
 `;
+
 const CoreButton = React.forwardRef<HTMLButtonElement, CoreButtonProps>(
   function CoreButton(
     {

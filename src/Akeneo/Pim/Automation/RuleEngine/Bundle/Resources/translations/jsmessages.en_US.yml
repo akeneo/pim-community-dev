@@ -101,7 +101,7 @@ pimee_catalog_rule:
 
         helper:
             add_to_category: To add your product selection to one or more categories, please start by selecting our category trees and then, your categories.
-            product_selection: You must define your product selection in order to create your rule. If you don't know how,
+            product_selection: "You must define your product selection in order to create your rule. If you don't know how, "
             product_selection_doc_link: take a look at this article.
         legend:
             add_to_category: Create an action
