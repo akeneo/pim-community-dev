@@ -68,7 +68,7 @@ datagrid:
             columns:
                 label:
                     type: search
-                    data_name: translation.label
+                    data_name: label
                     label: pimee_catalog_rule.datagrid.rule-grid.column.label
         sorters:
             columns:

@@ -30,7 +30,7 @@ class RuleDefinitionRepository extends EntityRepository implements RuleDefinitio
         $qb = new RuleQueryBuilder($this->_em);
         $qb->from($this->_entityName, 'r');
 
-        $labelExpr = '(CASE WHEN translation.label IS NULL THEN CONCAT(\'[\', r.code, \']\') ELSE translation.label END)';
+        $labelExpr = 'COALESCE(translation.label, CONCAT(\'[\', r.code, \']\'))';
         $qb->leftJoin('r.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
 
         $qb
@@ -38,7 +38,6 @@ class RuleDefinitionRepository extends EntityRepository implements RuleDefinitio
             ->addSelect('r.code')
             ->addSelect('r.content')
             ->addSelect('r.impactedSubjectCount')
-            ->addSelect('translation.label')
             ->addSelect(sprintf('%s AS label', $labelExpr));
 
         return $qb;
