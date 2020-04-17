@@ -1,0 +1,24 @@
+services:
+    feature_flags:
+        public: true
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags'
+        arguments:
+            - '@akeneo.feature_flag.service.registry'
+
+    akeneo.feature_flag.service.controller:
+        public: true
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Controller'
+        arguments:
+            - '@akeneo.feature_flag.service.registry'
+
+    akeneo.feature_flag.filter_routes_subscriber:
+        public: false
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\FilterRoutesSubscriber'
+        arguments:
+            - '@feature_flags'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo.feature_flag.service.registry:
+        public: false
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry'

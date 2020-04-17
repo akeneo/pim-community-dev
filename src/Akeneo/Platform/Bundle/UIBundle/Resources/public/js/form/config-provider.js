@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['jquery', 'pim/security-context'],
-    function ($, SecurityContext) {
+    ['jquery', 'pim/security-context', 'pim/feature-flags'],
+    function ($, SecurityContext, FeatureFlags) {
         var promise = null;
 
         /**
@@ -16,14 +16,23 @@ define(
             })
         }
 
+        /**
+         * Filters form extensions linked to a disabled feature.
+         *
+         * @param {Object} extensions
+         */
+        const filterDisabledFeatures = (extensions) => extensions
+            .filter(extension => null === extension.feature || FeatureFlags.isEnabled(extension.feature));
+
         const loadConfig = function () {
             if (null === promise) {
                 promise = $.when(
                     $.get('/js/extensions.json'),
-                    SecurityContext.initialize()
+                    SecurityContext.initialize(),
+                    FeatureFlags.initialize()
                 )
                 .then(([config]) => {
-                    config.extensions = filterByGranted(config.extensions)
+                    config.extensions = filterDisabledFeatures(filterByGranted(config.extensions));
 
                     return config;
                 })
