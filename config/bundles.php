@@ -55,6 +55,7 @@ return [
     Akeneo\Platform\Bundle\UIBundle\PimUIBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle::class => ['all' => true],
     Akeneo\Connectivity\Connection\Infrastructure\Symfony\AkeneoConnectivityConnectionBundle::class => ['all' => true],
+    Akeneo\Platform\Bundle\FeatureFlagBundle\AkeneoFeatureFlagBundle::class =>  ['all' => true],
 
     // PIM Enterprise bundle
     Akeneo\Tool\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle::class => ['all' => true],

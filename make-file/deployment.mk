@@ -98,6 +98,9 @@ ifeq ($(INSTANCE_NAME),pimci-helpdesk)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
 endif
+ifeq ($(INSTANCE_NAME),pimci-pr)
+	sed 's/^\(FLAG_.*_ENABLED\).*/   \1=1/g' .env | grep "FLAG_.*_ENABLED" >> $(INSTANCE_DIR)/templates/env-configmap.yaml
+endif
 
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
