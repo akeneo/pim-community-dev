@@ -1,0 +1,13 @@
+extensions:
+    akeneo-attribute-assets-collection-filter:
+        module: pimee/filter/attribute/assets-collection
+        config:
+            url: akeneo_asset_manager_asset_index_rest
+            operators:
+                - IN
+                - EMPTY
+                - NOT EMPTY
+
+attribute_fields:
+    pim-asset-collection-field: pim/asset-collection-field
+    akeneo-asset-collection-field: pimee/asset-collection-field

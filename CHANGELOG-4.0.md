@@ -4,6 +4,10 @@
 
 - DAPI-531: Franklin Insights - Add loading indicator for multiple actions on mapping screens. 
 
+## Bug fixes
+
+- PIM-9189: Fix the display of asset collection and reference entity link attributes in export product profile
+
 # 4.0.16 (2020-04-08)
 
 # 4.0.15 (2020-04-07)

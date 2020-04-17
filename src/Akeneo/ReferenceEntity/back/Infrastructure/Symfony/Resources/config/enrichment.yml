@@ -23,3 +23,9 @@ services:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductsNormalizer
         arguments:
             - '@pim_enrich.normalizer.image'
+
+    # FilterProvider providers
+    pimee.reference_entity.enrichment.provider.filter.reference_entity:
+        class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\FilterProvider\ReferenceEntityCollectionFilterProvider'
+        tags:
+            - { name: pim_enrich.provider.filter, priority: 90 }

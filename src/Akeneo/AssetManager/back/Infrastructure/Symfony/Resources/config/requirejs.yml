@@ -96,3 +96,4 @@ config:
         pim/form/common/fields/values/asset: akeneoassetmanager/infrastructure/product/axis/asset.js
 
         pimee/filter/attribute/asset-family-collection: pimenterpriseui/js/filter/attribute/asset-family-collection
+        pimee/filter/attribute/assets-collection: pimenterpriseui/js/filter/attribute/assets-collection
