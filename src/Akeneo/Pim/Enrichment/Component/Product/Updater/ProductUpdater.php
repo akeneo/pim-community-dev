@@ -148,10 +148,17 @@ class ProductUpdater implements ObjectUpdaterInterface
     {
         switch ($field) {
             case 'associations':
-                $this->validateAssociationsDataType($data);
+                $this->validateAssociationsDataType($data, 'associations');
                 if (isset($context['parent_associations'])) {
                     $data = $this->filterParentAssociations($data, $context['parent_associations']);
                 }
+                break;
+            case 'quantified_associations':
+                $this->validateAssociationsDataType($data, 'quantified_associations');
+                // TODO: When doing product models filtering parent associations with permissions
+//                if (isset($context['parent_associations'])) {
+//                    $data = $this->filterParentAssociations($data, $context['parent_quantified_associations']);
+//                }
                 break;
         }
 
@@ -188,29 +195,30 @@ class ProductUpdater implements ObjectUpdaterInterface
         }
     }
 
-    protected function validateAssociationsDataType($data): void
+    protected function validateAssociationsDataType($data, $field): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
-                'associations',
+                $field,
                 static::class,
                 $data
             );
         }
 
         foreach ($data as $associationTypeCode => $associationTypeValues) {
-            $this->validateScalar('associations', $associationTypeCode);
+            $this->validateScalar($field, $associationTypeCode);
             if (!is_array($associationTypeValues)) {
                 throw InvalidPropertyTypeException::arrayExpected(
-                    'associations',
+                    $field,
                     static::class,
                     $associationTypeValues
                 );
             }
 
             foreach ($associationTypeValues as $property => $value) {
-                $this->validateScalar('associations', $property);
-                $this->validateScalarArray('associations', $value);
+                $this->validateScalar($field, $property);
+                // TODO: Need to validate quantified association array structure (identifier + quantity are scallars)
+//                $this->validateScalarArray('associations', $value);
             }
         }
     }

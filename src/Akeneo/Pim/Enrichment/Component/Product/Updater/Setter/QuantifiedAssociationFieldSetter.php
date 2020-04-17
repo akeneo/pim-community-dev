@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProduct;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductModel;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductWithPermissions;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductModelWithPermissions;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
@@ -28,8 +28,8 @@ class QuantifiedAssociationFieldSetter extends AbstractFieldSetter
      * @param array                                 $supportedFields
      */
     public function __construct(
-        MapProduct $mapProduct,
-        MapProductModel $mapProductModel,
+        MapProductWithPermissions $mapProduct,
+        MapProductModelWithPermissions $mapProductModel,
         array $supportedFields
     ) {
         $this->mapProduct = $mapProduct;

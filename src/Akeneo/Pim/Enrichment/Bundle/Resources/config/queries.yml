@@ -277,3 +277,9 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductModel'
         arguments:
             - '@database_connection'
+
+    pim_catalog.query.product.map_quantified_associations:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapQuantifiedAssociation
+        arguments:
+            - '@pim_catalog.query.product.map_product'
+            - '@pim_catalog.query.product.map_product_model'

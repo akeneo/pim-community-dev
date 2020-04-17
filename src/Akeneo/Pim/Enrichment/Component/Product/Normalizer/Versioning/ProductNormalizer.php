@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProduct;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductModel;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductWithPermissions;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductModelWithPermissions;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
@@ -58,7 +58,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * @param CollectionFilterInterface $filter The collection filter
      */
-    public function __construct(CollectionFilterInterface $filter = null, MapProduct $mapProduct, MapProductModel $mapProductModel)
+    public function __construct(CollectionFilterInterface $filter = null, MapProductWithPermissions $mapProduct, MapProductModelWithPermissions $mapProductModel)
     {
         $this->filter = $filter;
         $this->mapProduct = $mapProduct;
