@@ -4,17 +4,25 @@ import {UserContext} from '../user';
 export const useDateFormatter = () => {
     const user = useContext(UserContext);
 
-    const uiLocale = user.get('uiLocale');
-    const timezone = user.get('timezone');
+    const locale = user.get('uiLocale').replace('_', '-');
+    const timeZone = user.get('timezone');
 
     return useCallback(
         (date: string | number, options?: Intl.DateTimeFormatOptions) => {
-            if (undefined === options || undefined === options.timeZone) {
-                options = {...options, timeZone: timezone};
-            }
+            options = {timeZone, ...options};
 
-            return new Intl.DateTimeFormat(uiLocale.replace('_', '-'), options).format(new Date(date));
+            try {
+                return new Intl.DateTimeFormat(locale, options).format(new Date(date));
+            } catch (error) {
+                if (error instanceof RangeError) {
+                    return new Intl.DateTimeFormat(locale, {...options, timeZone: 'UTC', timeZoneName: 'short'}).format(
+                        new Date(date)
+                    );
+                }
+
+                throw error;
+            }
         },
-        [uiLocale]
+        [locale, timeZone]
     );
 };
