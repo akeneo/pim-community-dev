@@ -6,6 +6,7 @@
 - PIM-9149: Fix compare/translate on product 
 - DAPI-947: The evaluation of the title formatting criterion should be apply only on text attributes that are localizable and are defined as main title
 - PIM-9138: Rules import not working with asset manager
+- PIM-9196: Allow the search on label and code on the rules grid
 
 ## Improvements
 

@@ -111,7 +111,7 @@ Feature: List all rules
             field:       enabled
             value:       true
         labels:
-          en_US: Update Tees Collection
+          en_US: Tees Collection Update
       unclassify_2014_collection_tees:
         priority: 30
         conditions:
@@ -230,7 +230,7 @@ Feature: List all rules
       | Action    | Then description [ en \| mobile ] is copied into description [ fr \| mobile ] |
       | Action    | Then description [ en \| mobile ] is copied into description [ fr \| tablet ] |
 
-    And the row "Update Tees Collection" should contain the texts:
+    And the row "Tees Collection Update" should contain the texts:
       | column    | value                                                               |
       | Condition | If categories in tees                                               |
       | Condition | If enabled equals false                                             |
@@ -277,6 +277,12 @@ Feature: List all rules
     Then the grid should contain 1 element
     And I should see entity Copy Description
 
+  Scenario: successfully filter by code
+    Given I am on the rules page
+    When I filter by "code" with operator "contains" and value "copy_description"
+    Then the grid should contain 1 element
+    And I should see entity Copy Description
+
   Scenario: Successfully delete a rule
     Given I am on the rules page
     When I click on the "Delete" action of the row which contains "Copy Description"
@@ -287,7 +293,7 @@ Feature: List all rules
 
   Scenario: Successfully delete a set of rules using bulk action
     Given I am on the rules page
-    When I select rows Calculate Rule, Clear Rule, Concatenate Rule, Copy Description, Nineties, Unclassify 2014 Collection Tees and Update Tees Collection
+    When I select rows Calculate Rule, Clear Rule, Concatenate Rule, Copy Description, Nineties, Tees Collection Update and Unclassify 2014 Collection Tees
     And I press the "Delete" bottom button
     Then I should see the text "Confirm deletion"
     And I should see the text "Are you sure you want to delete the selected rules?"
