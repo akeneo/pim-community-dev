@@ -33,16 +33,12 @@ const SearchInput: FC<Props> = ({value, onSearch, placeholder}) => {
 };
 
 const Input = styled.input`
-    height: 44px;
-    line-height: 44px;
-    color: #67768a;
-    font-size: 13px;
-    border: none;
     background: url(${({theme}) => theme.icon.search}) no-repeat 0 center;
-    padding-left: 30px;
+    border: none;
     flex-grow: 1;
-    margin-top: 20px;
-    width: 100%;
+    line-height: 44px;
+    outline: none;
+    padding: 0 0 0 30px;
 `;
 
 export {SearchInput};

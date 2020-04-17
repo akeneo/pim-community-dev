@@ -32,15 +32,14 @@ const SearchFilter: FC<Props> = ({value, onSearch, resultCount}) => {
 };
 
 const Container = styled.div`
-    flex: 1;
-    border-bottom: 1px solid #ccd1d8;
+    border-bottom: 1px solid ${({theme}) => theme.color.grey100};
     display: flex;
-    align-items: center;
-    margin-bottom: -10px;
+    margin-bottom: 20px;
 `;
 
 const SearchCount = styled.span`
     color: #9452ba;
+    line-height: 44px;
 `;
 
 export {SearchFilter};

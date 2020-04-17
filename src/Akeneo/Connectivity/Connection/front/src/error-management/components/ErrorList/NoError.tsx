@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
-import {PageError} from '../../common';
-import {Translate} from '../../shared/translate';
+import {PageError} from '../../../common';
+import {Translate} from '../../../shared/translate';
 
 const NoError: FC = () => (
     <PageError
