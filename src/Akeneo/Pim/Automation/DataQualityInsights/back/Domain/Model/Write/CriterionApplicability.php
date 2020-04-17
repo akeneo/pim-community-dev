@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
-class CriterionApplicability
+final class CriterionApplicability
 {
     /** @var CriterionEvaluationResult */
     private $evaluationResult;

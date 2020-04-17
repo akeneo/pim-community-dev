@@ -17,15 +17,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 
-final class GetLatestCriteriaEvaluationsByProductIdQuery implements GetLatestCriteriaEvaluationsByProductIdQueryInterface
+final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluationsByProductIdQueryInterface
 {
     /** @var Connection */
     private $db;
@@ -49,21 +48,13 @@ final class GetLatestCriteriaEvaluationsByProductIdQuery implements GetLatestCri
 
         $sql = <<<SQL
 SELECT 
-       latest_evaluation.id,
-       latest_evaluation.product_id,
-       latest_evaluation.criterion_code,
-       latest_evaluation.status,
-       latest_evaluation.created_at,
-       latest_evaluation.started_at,
-       latest_evaluation.ended_at,
-       latest_evaluation.result
-FROM $criterionEvaluationTable AS latest_evaluation
-LEFT JOIN $criterionEvaluationTable AS other_evaluation
-    ON other_evaluation.product_id = :product_id
-    AND latest_evaluation.criterion_code = other_evaluation.criterion_code
-    AND latest_evaluation.created_at < other_evaluation.created_at
-WHERE latest_evaluation.product_id = :product_id
-    AND other_evaluation.id IS NULL;
+       evaluation.product_id,
+       evaluation.criterion_code,
+       evaluation.status,
+       evaluation.evaluated_at,
+       evaluation.result
+FROM $criterionEvaluationTable AS evaluation
+WHERE evaluation.product_id = :product_id
 SQL;
 
         $rows = $this->db->executeQuery(
@@ -75,14 +66,11 @@ SQL;
         $criteriaEvaluations = new Read\CriterionEvaluationCollection();
         foreach ($rows as $rawCriterionEvaluation) {
             $criteriaEvaluations->add(new Read\CriterionEvaluation(
-                new CriterionEvaluationId($rawCriterionEvaluation['id']),
                 new CriterionCode($rawCriterionEvaluation['criterion_code']),
                 new ProductId(intval($rawCriterionEvaluation['product_id'])),
-                $this->clock->fromString($rawCriterionEvaluation['created_at']),
+                null !== $rawCriterionEvaluation['evaluated_at'] ? $this->clock->fromString($rawCriterionEvaluation['evaluated_at']) : null,
                 new CriterionEvaluationStatus($rawCriterionEvaluation['status']),
                 $this->hydrateCriterionEvaluationResult($rawCriterionEvaluation['result']),
-                null !== $rawCriterionEvaluation['started_at'] ? $this->clock->fromString($rawCriterionEvaluation['started_at']) : null,
-                null !== $rawCriterionEvaluation['ended_at'] ? $this->clock->fromString($rawCriterionEvaluation['ended_at']) : null
             ));
         }
 

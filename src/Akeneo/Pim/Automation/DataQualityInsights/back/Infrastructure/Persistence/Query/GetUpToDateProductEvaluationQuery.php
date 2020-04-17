@@ -21,15 +21,15 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisEvaluationCo
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestAxesRatesQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductEvaluationQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetProductEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
-final class GetUpToDateLatestProductEvaluationQuery implements GetLatestProductEvaluationQueryInterface
+final class GetUpToDateProductEvaluationQuery implements GetProductEvaluationQueryInterface
 {
-    /** @var GetLatestCriteriaEvaluationsByProductIdQueryInterface */
-    private $getLatestCriteriaEvaluationsByProductIdQuery;
+    /** @var GetCriteriaEvaluationsByProductIdQueryInterface */
+    private $getCriteriaEvaluationsByProductIdQuery;
 
     /** @var GetLatestAxesRatesQueryInterface */
     private $getLatestProductAxesRatesQuery;
@@ -38,11 +38,11 @@ final class GetUpToDateLatestProductEvaluationQuery implements GetLatestProductE
     private $axisRegistry;
 
     public function __construct(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
         AxisRegistry $axisRegistry
     ) {
-        $this->getLatestCriteriaEvaluationsByProductIdQuery = $getLatestCriteriaEvaluationsByProductIdQuery;
+        $this->getCriteriaEvaluationsByProductIdQuery = $getCriteriaEvaluationsByProductIdQuery;
         $this->getLatestProductAxesRatesQuery = $getLatestProductAxesRatesQuery;
         $this->axisRegistry = $axisRegistry;
     }
@@ -50,7 +50,7 @@ final class GetUpToDateLatestProductEvaluationQuery implements GetLatestProductE
     public function execute(ProductId $productId): ProductEvaluation
     {
         $productAxesRates = $this->getLatestProductAxesRatesQuery->byProductId($productId);
-        $productCriteriaEvaluations = $this->getLatestCriteriaEvaluationsByProductIdQuery->execute($productId);
+        $productCriteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);
 
         $axesEvaluations = new AxisEvaluationCollection();
         foreach ($this->axisRegistry->all() as $axis) {

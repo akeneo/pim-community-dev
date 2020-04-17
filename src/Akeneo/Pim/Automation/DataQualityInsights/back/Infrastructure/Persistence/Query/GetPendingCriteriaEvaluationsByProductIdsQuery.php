@@ -17,7 +17,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetPendingCriteriaEvaluationsByProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
@@ -52,12 +51,7 @@ final class GetPendingCriteriaEvaluationsByProductIdsQuery implements GetPending
         $criterionEvaluationTable = $this->tableName;
 
         $sql = <<<SQL
-SELECT product_id, JSON_ARRAYAGG(JSON_OBJECT(
-    'id', id,
-    'criterion_code', criterion_code,
-    'created_at', created_at,
-    'status', status
-)) as criteria
+SELECT product_id, JSON_ARRAYAGG(criterion_code) as criteria
 FROM $criterionEvaluationTable
 WHERE status = :status 
 AND product_id IN(:product_ids)
@@ -78,24 +72,23 @@ SQL;
         $productsCriteriaEvaluations = [];
         while ($resultRow = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $productId = new ProductId(intval($resultRow['product_id']));
-            $criteriaEvaluations = json_decode($resultRow['criteria'], true);
-            $productsCriteriaEvaluations[$productId->toInt()] = $this->hydrateProductCriteriaEvaluations($productId, $criteriaEvaluations);
+            $criteria = json_decode($resultRow['criteria']);
+            $productsCriteriaEvaluations[$productId->toInt()] = $this->hydrateProductCriteriaEvaluations($productId, $criteria);
         }
 
         return $productsCriteriaEvaluations;
     }
 
-    private function hydrateProductCriteriaEvaluations(ProductId $productId, array $rawCriteriaEvaluations): Write\CriterionEvaluationCollection
+    private function hydrateProductCriteriaEvaluations(ProductId $productId, array $criteria): Write\CriterionEvaluationCollection
     {
         $productCriteriaEvaluations = new Write\CriterionEvaluationCollection();
+        $pendingStatus = CriterionEvaluationStatus::pending();
 
-        foreach ($rawCriteriaEvaluations as $rawCriterionEvaluation) {
+        foreach ($criteria as $criterion) {
             $productCriteriaEvaluations->add(new Write\CriterionEvaluation(
-                new CriterionEvaluationId($rawCriterionEvaluation['id']),
-                new CriterionCode($rawCriterionEvaluation['criterion_code']),
+                new CriterionCode($criterion),
                 $productId,
-                $this->clock->fromString($rawCriterionEvaluation['created_at']),
-                new CriterionEvaluationStatus($rawCriterionEvaluation['status'])
+                $pendingStatus
             ));
         }
 

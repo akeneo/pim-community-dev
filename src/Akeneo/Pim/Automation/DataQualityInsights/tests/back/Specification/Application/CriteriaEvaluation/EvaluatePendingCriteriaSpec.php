@@ -32,7 +32,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -68,24 +67,18 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 
         $criteria = [
             'product_42_spelling' => new Write\CriterionEvaluation(
-                new CriterionEvaluationId('95f124de-45cd-495e-ac58-349086ad6cd4'),
                 $criterionSpelling,
                 new ProductId(42),
-                new \DateTimeImmutable('2019-10-28 10:41:56'),
                 CriterionEvaluationStatus::pending()
             ),
             'product_42_completeness' => new Write\CriterionEvaluation(
-                new CriterionEvaluationId('77cf74c8-9254-45f8-9993-5c5bb4e34782'),
                 $criterionCompleteness,
                 new ProductId(42),
-                new \DateTimeImmutable('2019-10-28 10:41:56'),
                 CriterionEvaluationStatus::pending()
             ),
             'product_123_spelling' => new Write\CriterionEvaluation(
-                new CriterionEvaluationId('d7bcae1e-30c9-4626-9c4f-d06cae03e77e'),
                 $criterionSpelling,
                 new ProductId(42),
-                new \DateTimeImmutable('2019-10-28 10:41:56'),
                 CriterionEvaluationStatus::pending()
             )
         ];
@@ -136,18 +129,14 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         $criterionCode = new CriterionCode(EvaluateSpelling::CRITERION_CODE);
 
         $criterionA = new Write\CriterionEvaluation(
-            new CriterionEvaluationId('95f124de-45cd-495e-ac58-349086ad6cd4'),
             $criterionCode,
             new ProductId(42),
-            new \DateTimeImmutable('2019-10-28 10:41:56'),
             CriterionEvaluationStatus::pending()
         );
 
         $criterionB = new Write\CriterionEvaluation(
-            new CriterionEvaluationId('d7bcae1e-30c9-4626-9c4f-d06cae03e77e'),
             $criterionCode,
             new ProductId(123),
-            new \DateTimeImmutable('2019-10-28 10:41:56'),
             CriterionEvaluationStatus::pending()
         );
 
@@ -189,24 +178,18 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 
         $criteria = [
             'product_42_spelling' => new Write\CriterionEvaluation(
-                new CriterionEvaluationId('95f124de-45cd-495e-ac58-349086ad6cd4'),
                 $criterionSpelling,
                 new ProductId(42),
-                new \DateTimeImmutable('2019-10-28 10:41:56'),
                 CriterionEvaluationStatus::pending()
             ),
             'product_42_title' => new Write\CriterionEvaluation(
-                new CriterionEvaluationId('77cf74c8-9254-45f8-9993-5c5bb4e34782'),
                 $criterionTitleFormatting,
                 new ProductId(42),
-                new \DateTimeImmutable('2019-10-28 10:41:56'),
                 CriterionEvaluationStatus::pending()
             ),
             'product_123_spelling' => new Write\CriterionEvaluation(
-                new CriterionEvaluationId('d7bcae1e-30c9-4626-9c4f-d06cae03e77e'),
                 $criterionSpelling,
                 new ProductId(42),
-                new \DateTimeImmutable('2019-10-28 10:41:56'),
                 CriterionEvaluationStatus::pending()
             )
         ];

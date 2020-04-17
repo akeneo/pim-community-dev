@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
@@ -36,8 +35,8 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
     {
         $this->count()->shouldReturn(0);
 
-        $criterionEvaluation1 = new CriterionEvaluation(new CriterionEvaluationId(), new CriterionCode('completeness'), new ProductId(42), new \DateTimeImmutable(), CriterionEvaluationStatus::pending());
-        $criterionEvaluation2 = new CriterionEvaluation(new CriterionEvaluationId(), new CriterionCode('completion'), new ProductId(42), new \DateTimeImmutable(), CriterionEvaluationStatus::pending());
+        $criterionEvaluation1 = new Write\CriterionEvaluation(new CriterionCode('completeness'), new ProductId(42), CriterionEvaluationStatus::pending());
+        $criterionEvaluation2 = new Write\CriterionEvaluation(new CriterionCode('completion'), new ProductId(42), CriterionEvaluationStatus::pending());
         $this->add($criterionEvaluation1)->add($criterionEvaluation2);
 
         $this->count()->shouldReturn(2);

@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
-interface GetLatestProductEvaluationQueryInterface
+interface GetProductEvaluationQueryInterface
 {
     public function execute(ProductId $productId): ProductEvaluation;
 }

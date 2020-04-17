@@ -14,20 +14,20 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
-final class GetUpToDateLatestCriteriaEvaluationsByProductIdQuery implements GetLatestCriteriaEvaluationsByProductIdQueryInterface
+final class GetUpToDateCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluationsByProductIdQueryInterface
 {
-    /** @var GetLatestCriteriaEvaluationsByProductIdQueryInterface */
+    /** @var GetCriteriaEvaluationsByProductIdQueryInterface */
     private $getLatestCriteriaEvaluationsByProductIdQuery;
 
     /** @var HasUpToDateEvaluationQueryInterface */
     private $hasUpToDateEvaluationQuery;
 
     public function __construct(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
     ) {
         $this->getLatestCriteriaEvaluationsByProductIdQuery = $getLatestCriteriaEvaluationsByProductIdQuery;

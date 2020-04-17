@@ -31,7 +31,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -68,10 +67,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
     ) {
         $productId = new ProductId(1);
         $criterionEvaluation = new Write\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productId,
-            new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending()
         );
 
@@ -176,10 +173,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
     ) {
         $productId = new ProductId(42);
         $criterionEvaluation = new Write\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productId,
-            new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending()
         );
 

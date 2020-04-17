@@ -24,7 +24,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -58,10 +57,8 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
 
         $this->evaluate(
             new Write\CriterionEvaluation(
-                new CriterionEvaluationId(),
                 new CriterionCode('criterion1'),
                 new ProductId(1),
-                new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending()
             ),
             new ProductValuesCollection()
@@ -175,10 +172,8 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
 
         $this->evaluate(
             new Write\CriterionEvaluation(
-                new CriterionEvaluationId(),
                 new CriterionCode('criterion1'),
                 new ProductId(1),
-                new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending()
             ),
             $productValues

@@ -17,14 +17,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Axis;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 class ConsolidateAxesRates
 {
-    /** @var GetLatestCriteriaEvaluationsByProductIdQueryInterface */
-    private $getLatestCriteriaEvaluationsByProductIdQuery;
+    /** @var GetCriteriaEvaluationsByProductIdQueryInterface */
+    private $getCriteriaEvaluationsByProductIdQuery;
 
     /** @var ProductAxisRateRepositoryInterface */
     private $productAxisRateRepository;
@@ -39,12 +39,12 @@ class ConsolidateAxesRates
     private $computeAxisRates;
 
     public function __construct(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         ProductAxisRateRepositoryInterface $productAxisRateRepository,
         ComputeAxisRates $computeAxisRates,
         Clock $clock
     ) {
-        $this->getLatestCriteriaEvaluationsByProductIdQuery = $getLatestCriteriaEvaluationsByProductIdQuery;
+        $this->getCriteriaEvaluationsByProductIdQuery = $getCriteriaEvaluationsByProductIdQuery;
         $this->productAxisRateRepository = $productAxisRateRepository;
         $this->computeAxisRates = $computeAxisRates;
         $this->clock = $clock;
@@ -61,13 +61,13 @@ class ConsolidateAxesRates
 
         foreach ($productIds as $productId) {
             $productId = new ProductId($productId);
-            $latestCriteriaEvaluations = $this->getLatestCriteriaEvaluationsByProductIdQuery->execute($productId);
+            $criteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);
             foreach ($this->axes as $axis) {
                 $productsAxesRates[] = new Write\ProductAxisRates(
                     $axis->getCode(),
                     $productId,
                     $currentDateTime,
-                    $this->computeAxisRates->compute($axis, $latestCriteriaEvaluations)
+                    $this->computeAxisRates->compute($axis, $criteriaEvaluations)
                 );
             }
         }

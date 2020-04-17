@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
@@ -22,17 +22,17 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
 
-final class GetUpToDateLatestCriteriaEvaluationsByProductIdQuerySpec extends ObjectBehavior
+final class GetUpToDateCriteriaEvaluationsByProductIdQuerySpec extends ObjectBehavior
 {
     public function let(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
     ) {
-        $this->beConstructedWith($getLatestCriteriaEvaluationsByProductIdQuery, $hasUpToDateEvaluationQuery);
+        $this->beConstructedWith($getCriteriaEvaluationsByProductIdQuery, $hasUpToDateEvaluationQuery);
     }
 
-    public function it_returns_the_latest_criteria_evaluations_if_the_evaluation_of_the_product_is_up_to_date(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+    public function it_returns_criteria_evaluations_if_the_evaluation_of_the_product_is_up_to_date(
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
     ) {
         $productId = new ProductId(42);
@@ -40,29 +40,26 @@ final class GetUpToDateLatestCriteriaEvaluationsByProductIdQuerySpec extends Obj
 
         $criteriaEvaluations = (new Read\CriterionEvaluationCollection())
             ->add(new Read\CriterionEvaluation(
-                new CriterionEvaluationId(),
                 new CriterionCode('spelling'),
                 new ProductId(42),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending(),
-                null,
-                null,
                 null
         ));
 
-        $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($criteriaEvaluations);
+        $getCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($criteriaEvaluations);
 
         $this->execute($productId)->shouldReturn($criteriaEvaluations);
     }
 
     public function it_returns_empty_criteria_evaluations_if_the_evaluation_of_the_product_is_outdated(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
     ) {
         $productId = new ProductId(42);
         $hasUpToDateEvaluationQuery->forProductId($productId)->willReturn(false);
 
-        $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->shouldNotBeCalled();
+        $getCriteriaEvaluationsByProductIdQuery->execute($productId)->shouldNotBeCalled();
 
         $this->execute($productId)->shouldBeLike(new Read\CriterionEvaluationCollection());
     }

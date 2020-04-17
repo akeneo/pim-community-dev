@@ -124,7 +124,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
     {
         $productId = $this->createProduct();
         $this->updateProductAt($productId, $today);
-        $this->updateProductEvaluationsAt($productId, $today);
+        $this->updateProductEvaluationsAt($productId, $today->modify('+1 SECOND'));
 
         return $productId;
     }
@@ -197,11 +197,11 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
     private function updateProductAt(ProductId $productId, \DateTimeImmutable $updatedAt): void
     {
         $query = <<<SQL
-UPDATE pim_catalog_product SET updated = :updated_at WHERE id = :product_id;
+UPDATE pim_catalog_product SET updated = :updated WHERE id = :product_id;
 SQL;
 
         $this->db->executeQuery($query, [
-            'updated_at' => $updatedAt->format('Y-m-d H:i:s'),
+            'updated' => $updatedAt->format('Y-m-d H:i:s'),
             'product_id' => $productId->toInt(),
         ]);
     }
@@ -209,11 +209,11 @@ SQL;
     private function updateProductModelAt(string $productModelCode, \DateTimeImmutable $updatedAt)
     {
         $query = <<<SQL
-UPDATE pim_catalog_product_model SET updated = :updated_at WHERE code = :code;
+UPDATE pim_catalog_product_model SET updated = :updated WHERE code = :code;
 SQL;
 
         $this->db->executeQuery($query, [
-            'updated_at' => $updatedAt->format('Y-m-d H:i:s'),
+            'updated' => $updatedAt->format('Y-m-d H:i:s'),
             'code' => $productModelCode,
         ]);
     }
@@ -221,11 +221,11 @@ SQL;
     private function updateProductEvaluationsAt(ProductId $productId, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
-UPDATE pimee_data_quality_insights_criteria_evaluation SET created_at = :created_at WHERE product_id = :product_id;
+UPDATE pimee_data_quality_insights_product_criteria_evaluation SET evaluated_at = :evaluated_at WHERE product_id = :product_id;
 SQL;
 
         $this->db->executeQuery($query, [
-            'created_at' => $evaluatedAt->format(Clock::TIME_FORMAT),
+            'evaluated_at' => $evaluatedAt->format(Clock::TIME_FORMAT),
             'product_id' => $productId->toInt(),
         ]);
     }

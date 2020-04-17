@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
@@ -26,12 +25,9 @@ final class CreateCriteriaEvaluationsSpec extends ObjectBehavior
 {
     public function it_creates_criteria(
         CriteriaEvaluationRegistry $criterionEvaluationRegistry,
-        CriterionEvaluationRepositoryInterface $criterionEvaluationRepository,
-        Clock $clock
+        CriterionEvaluationRepositoryInterface $criterionEvaluationRepository
     ) {
-        $currentDateTime = new \DateTimeImmutable();
-        $clock->getCurrentTime()->willReturn($currentDateTime);
-        $this->beConstructedWith($criterionEvaluationRegistry, $criterionEvaluationRepository, $clock);
+        $this->beConstructedWith($criterionEvaluationRegistry, $criterionEvaluationRepository);
 
         $productId = new ProductId(42);
 

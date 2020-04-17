@@ -33,16 +33,16 @@ class GetUpdatedProductModelsWithoutUpToDateEvaluationQuery implements GetUpdate
     SELECT DISTINCT product_model.id
     FROM pim_catalog_product_model AS product_model
     LEFT JOIN pimee_data_quality_insights_product_model_criteria_evaluation AS evaluation
-        ON evaluation.product_id = product_model.id AND evaluation.created_at >= product_model.updated
-    WHERE product_model.updated > :updated_since AND evaluation.id IS NULL
+        ON evaluation.product_id = product_model.id AND evaluation.evaluated_at >= product_model.updated
+    WHERE product_model.updated > :updated_since AND evaluation.product_id IS NULL
 UNION
     SELECT DISTINCT product_model.id
     FROM pim_catalog_product_model AS parent
     INNER JOIN pim_catalog_product_model AS product_model
         ON product_model.parent_id = parent.id AND product_model.updated < parent.updated 
     LEFT JOIN pimee_data_quality_insights_product_model_criteria_evaluation AS evaluation
-        ON evaluation.product_id = product_model.id AND evaluation.created_at >= parent.updated
-    WHERE parent.updated > :updated_since AND evaluation.id IS NULL
+        ON evaluation.product_id = product_model.id AND evaluation.evaluated_at >= parent.updated
+    WHERE parent.updated > :updated_since AND evaluation.product_id IS NULL
 SQL;
 
         $stmt = $this->dbConnection->executeQuery(
