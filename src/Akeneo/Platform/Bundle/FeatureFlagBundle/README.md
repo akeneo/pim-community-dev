@@ -47,7 +47,7 @@ services:
     service_that_defines_if_onboarder_feature_is_enabled:
         class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag'
         arguments:
-            - '%env(FLAG_ONBOARDER_ENABLED)%'
+            - '%env(bool:FLAG_ONBOARDER_ENABLED)%'
 ```
 
 Behind the scenes, the very simple `EnvVarFeatureFlag` class is called:
@@ -184,7 +184,7 @@ For those use cases, we'll go simple. Inject the feature flags service (backend 
 
 **This way of working works only and only if you clean all those hideous conditionals when your feature is ready to use.** Otherwise, the code will quickly become hell of a maze with all flags setup by all different teams. 
 
-**Also, please take extract care on the impact your flag could have on other teams' flags.** If it becomes tedious, please adopt the same strategy than for long living flags instead.
+**Also, please take extra care on the impact your flag could have on other teams' flags.** If it becomes tedious, please adopt the same strategy as for long living flags instead.
 
 ### Long living feature flags
 
