@@ -12,3 +12,4 @@ config:
         pimee/attribute-edit-form/rules/edit-rules: akeneopimruleengine/controllers/edit-rules
         pimee/attribute-edit-form/rules/create-rules: akeneopimruleengine/controllers/create-rules
         oro/datagrid/tags-cell: akeneopimruleengine/datagrid/cell/tags-cell.ts
+        oro/datagrid/tags-cell-template: akeneopimruleengine/datagrid/cell/tags-cell.html

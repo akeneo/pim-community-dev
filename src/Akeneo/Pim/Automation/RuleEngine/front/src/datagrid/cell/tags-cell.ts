@@ -1,28 +1,32 @@
+import * as _ from 'underscore';
+
 const StringCell = require('oro/datagrid/string-cell');
+const CellTemplate = require('oro/datagrid/tags-cell-template');
 
 class TagsCell extends StringCell {
-  render() {
-    const html = this.model.get('tags').actions
-      .map(action => `<span class="AknTag AknTag--${this.getColor(action.type)}">${action.type}</span>`)
-      .join('');
+  readonly template = _.template(CellTemplate);
 
-    this.$el.html(html);
+  render() {
+    this.$el.html(this.template({
+      actions: this.model.get('tags').actions,
+      getColor: this.getColor,
+    }));
 
     return this;
   }
 
   getColor(action: string) {
     const colors = {
-      copy: 'blue',
-      add: 'purple',
-      set: 'red',
-      calculate: 'yellow',
-      concatenate: 'green',
+      add: 'green',
+      calculate: 'darkPurple',
+      clear: 'red',
+      concatenate: 'purple',
+      copy: 'darkBlue',
+      remove: 'yellow',
+      set: 'blue',
     };
 
-    // @TODO [EvrardCaron] Waiting for Stephane's feedback to choose which colors to use for actions
-    // return colors[action] || 'default';
-    return 'default'
+    return colors[action] || 'default';
   }
 }
 
