@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.74 (2020-04-17)
+
 ## Improvements
 
 - PIM-9194: Allow to delete data attribute values via a rule set action
