@@ -49,13 +49,7 @@ const ErrorList: FC<Props> = ({errors}) => {
 
     return (
         <>
-            {false && (
-                <SearchFilter
-                    value={searchValue}
-                    onSearch={setSearchValue}
-                    resultCount={sortedAndfilteredErrors.length}
-                />
-            )}
+            <SearchFilter value={searchValue} onSearch={setSearchValue} resultCount={sortedAndfilteredErrors.length} />
 
             <Table>
                 <thead>

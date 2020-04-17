@@ -1,4 +1,5 @@
 import styled, {ThemedStyledInterface} from 'styled-components';
+import searchIconUrl from './assets/icons/search.svg';
 
 const theme = {
     color: {
@@ -20,6 +21,9 @@ const theme = {
         big: '15px',
         default: '13px',
         small: '11px',
+    },
+    icon: {
+        search: searchIconUrl,
     },
 };
 
