@@ -91,17 +91,17 @@ class SaveTwoWayProductAssociations implements EventSubscriberInterface
 DELETE FROM pim_catalog_association_product_model_to_product
 WHERE association_id IN (
     SELECT * FROM (
-        SELECT a.id
-        FROM pim_catalog_product_model_association a
-        INNER JOIN pim_catalog_association_product_model_to_product ap
-            ON ap.association_id = a.id
+        SELECT product_model_association.id
+        FROM pim_catalog_product_model_association product_model_association
+        INNER JOIN pim_catalog_association_product_model_to_product product_model_association_with_product
+            ON product_model_association_with_product.association_id = product_model_association.id
         WHERE association_type_id IN (:association_type_ids)
         AND product_id = :owner_id
         AND (association_type_id, product_id, owner_id) NOT IN (
-            SELECT existing_association.association_type_id, existing_association.owner_id, existing_product_model_association.product_model_id
-            FROM pim_catalog_association existing_association
-            INNER JOIN pim_catalog_association_product_model existing_product_model_association
-                ON existing_product_model_association.association_id = existing_association.id
+            SELECT existing_product_association.association_type_id, existing_product_association.owner_id, existing_product_association_with_product_model.product_model_id
+            FROM pim_catalog_association existing_product_association
+            INNER JOIN pim_catalog_association_product_model existing_product_association_with_product_model
+                ON existing_product_association_with_product_model.association_id = existing_product_association.id
         )
     ) as association_id_to_delete
 );
@@ -125,17 +125,17 @@ SQL;
 DELETE FROM pim_catalog_association_product
 WHERE association_id IN (
     SELECT * FROM (
-        SELECT a.id
-        FROM pim_catalog_association a
-        INNER JOIN pim_catalog_association_product ap
-            ON ap.association_id = a.id
+        SELECT product_association.id
+        FROM pim_catalog_association product_association
+        INNER JOIN pim_catalog_association_product product_association_with_product
+            ON product_association_with_product.association_id = product_association.id
         WHERE association_type_id IN (:association_type_ids)
         AND product_id = :owner_id
         AND (association_type_id, product_id, owner_id) NOT IN (
-            SELECT existing_association.association_type_id, existing_association.owner_id, existing_product_association.product_id
-            FROM pim_catalog_association existing_association
-            INNER JOIN pim_catalog_association_product existing_product_association
-                ON existing_product_association.association_id = existing_association.id
+            SELECT existing_product_association.association_type_id, existing_product_association.owner_id, existing_product_association_with_product.product_id
+            FROM pim_catalog_association existing_product_association
+            INNER JOIN pim_catalog_association_product existing_product_association_with_product
+                ON existing_product_association_with_product.association_id = existing_product_association.id
         )
     ) as association_id_to_delete
 );
@@ -157,17 +157,17 @@ SQL;
     ): void {
         $insertAssociation = <<<SQL
 INSERT INTO pim_catalog_product_model_association (association_type_id, owner_id)
-SELECT pca.association_type_id, pcapm.product_model_id
-FROM pim_catalog_association pca
-JOIN pim_catalog_association_product_model pcapm
-    ON pcapm.association_id = pca.id
-LEFT JOIN pim_catalog_product_model_association existing_association
-    ON existing_association.association_type_id = pca.association_type_id
-    AND existing_association.owner_id = pcapm.product_model_id
-WHERE pca.owner_id = :owner_id
-AND pca.association_type_id IN (:association_type_ids)
-AND existing_association.owner_id IS NULL
-AND existing_association.association_type_id IS NULL;
+SELECT product_association.association_type_id, product_association_with_product_model.product_model_id
+FROM pim_catalog_association product_association
+JOIN pim_catalog_association_product_model product_association_with_product_model
+    ON product_association_with_product_model.association_id = product_association.id
+LEFT JOIN pim_catalog_product_model_association existing_product_model_association
+    ON existing_product_model_association.association_type_id = product_association.association_type_id
+    AND existing_product_model_association.owner_id = product_association_with_product_model.product_model_id
+WHERE product_association.owner_id = :owner_id
+AND product_association.association_type_id IN (:association_type_ids)
+AND existing_product_model_association.owner_id IS NULL
+AND existing_product_model_association.association_type_id IS NULL;
 SQL;
 
         $this->connection->executeUpdate(
@@ -184,17 +184,17 @@ SQL;
     {
         $insertAssociation = <<<SQL
 INSERT INTO pim_catalog_association (association_type_id, owner_id)
-SELECT pca.association_type_id, pcap.product_id
-FROM pim_catalog_association pca
-JOIN pim_catalog_association_product pcap
-    ON pcap.association_id = pca.id
-LEFT JOIN pim_catalog_association existing_association
-    ON existing_association.association_type_id = pca.association_type_id
-    AND existing_association.owner_id = pcap.product_id
-WHERE pca.owner_id = :owner_id
-AND pca.association_type_id IN (:association_type_ids)
-AND existing_association.owner_id IS NULL
-AND existing_association.association_type_id IS NULL;
+SELECT product_association.association_type_id, product_association_with_product.product_id
+FROM pim_catalog_association product_association
+JOIN pim_catalog_association_product product_association_with_product
+    ON product_association_with_product.association_id = product_association.id
+LEFT JOIN pim_catalog_association existing_product_association
+    ON existing_product_association.association_type_id = product_association.association_type_id
+    AND existing_product_association.owner_id = product_association_with_product.product_id
+WHERE product_association.owner_id = :owner_id
+AND product_association.association_type_id IN (:association_type_ids)
+AND existing_product_association.owner_id IS NULL
+AND existing_product_association.association_type_id IS NULL;
 SQL;
 
         $this->connection->executeUpdate(
@@ -213,18 +213,18 @@ SQL;
     ): void {
         $insertProductAssociation = <<<SQL
 INSERT INTO pim_catalog_association_product (association_id, product_id)
-SELECT existing_association.id, :owner_id
-FROM pim_catalog_association pca
-JOIN pim_catalog_association_product pcap
-    ON pcap.association_id = pca.id
-JOIN pim_catalog_association existing_association
-    ON existing_association.association_type_id = pca.association_type_id
-    AND existing_association.owner_id = pcap.product_id
-LEFT OUTER JOIN pim_catalog_association_product existing_product_association
-    ON existing_association.id = existing_product_association.association_id
-WHERE pca.owner_id = :owner_id
-AND pca.association_type_id IN (:association_type_ids)
-AND existing_product_association.association_id IS NULL;
+SELECT existing_product_association.id, :owner_id
+FROM pim_catalog_association product_association
+JOIN pim_catalog_association_product product_association_with_product
+    ON product_association_with_product.association_id = product_association.id
+JOIN pim_catalog_association existing_product_association
+    ON existing_product_association.association_type_id = product_association.association_type_id
+    AND existing_product_association.owner_id = product_association_with_product.product_id
+LEFT OUTER JOIN pim_catalog_association_product existing_product_association_with_product
+    ON existing_product_association.id = existing_product_association_with_product.association_id
+WHERE product_association.owner_id = :owner_id
+AND product_association.association_type_id IN (:association_type_ids)
+AND existing_product_association_with_product.association_id IS NULL;
 SQL;
 
         $this->connection->executeUpdate(
@@ -240,18 +240,18 @@ SQL;
     ): void {
         $insertProductAssociation = <<<SQL
 INSERT INTO pim_catalog_association_product_model_to_product (association_id, product_id)
-SELECT existing_association.id, :owner_id
-FROM pim_catalog_association pca
-JOIN pim_catalog_association_product_model pcapm
-    ON pcapm.association_id = pca.id
-JOIN pim_catalog_product_model_association existing_association
-    ON existing_association.association_type_id = pca.association_type_id
-    AND existing_association.owner_id = pcapm.product_model_id
-LEFT OUTER JOIN pim_catalog_association_product_model_to_product existing_product_association
-    ON existing_association.id = existing_product_association.association_id
-WHERE pca.owner_id = :owner_id
-AND pca.association_type_id IN (:association_type_ids)
-AND existing_product_association.association_id IS NULL;
+SELECT existing_product_model_association.id, :owner_id
+FROM pim_catalog_association product_association
+JOIN pim_catalog_association_product_model product_association_with_product_model
+    ON product_association_with_product_model.association_id = product_association.id
+JOIN pim_catalog_product_model_association existing_product_model_association
+    ON existing_product_model_association.association_type_id = product_association.association_type_id
+    AND existing_product_model_association.owner_id = product_association_with_product_model.product_model_id
+LEFT OUTER JOIN pim_catalog_association_product_model_to_product existing_product_model_association_with_product
+    ON existing_product_model_association.id = existing_product_model_association_with_product.association_id
+WHERE product_association.owner_id = :owner_id
+AND product_association.association_type_id IN (:association_type_ids)
+AND existing_product_model_association_with_product.association_id IS NULL;
 SQL;
 
         $this->connection->executeUpdate(
