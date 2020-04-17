@@ -25,18 +25,6 @@ pimee_catalog_rule:
       "add": Alors %value% est ajouté à %field%
       "remove": Alors %value% est retiré de %field%
       "concatenate": Alors %fields% sont concaténés dans %to_field%
-      clear: Alors %field% est vidé
-      calculate: Alors %field% est calculé %operation_details%
-      calculate_first_operation:
-        add: en ajoutant %operand% à %source%
-        subtract: en soustrayant %operand% à %source%
-        multiply: en multipliant %source% par %operand%
-        divide: en divisant %source% par %operand%
-      calculate_other_operation:
-        add: , puis en ajoutant %operand%
-        subtract: , puis en soustrayant %operand%
-        divide: , puis en divisant par %operand%
-        multiply: , puis en multipliant par %operand%
     options:
       include_children: et les enfants
   condition:

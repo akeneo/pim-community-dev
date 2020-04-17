@@ -57,6 +57,7 @@ pim_asset_manager:
     edit_asset: Modifier la ressource
     download: Télécharger
     copy_url: Copier l'URL
+    error: Une erreur s'est produite lors du chargement de l'aperçu.
   close: Fermez la fenêtre
   breadcrumb:
     products: Produits
