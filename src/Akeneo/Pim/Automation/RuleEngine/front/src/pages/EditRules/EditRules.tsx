@@ -1,86 +1,55 @@
 import React from "react";
 import { ThemeProvider } from "styled-components";
-import { useTabState, Tab, TabList, TabPanel } from "reakit/Tab";
-import styled from "styled-components";
 import * as akeneoTheme from "../../theme";
+import { AkeneoSpinner } from "../../components/AkeneoSpinner";
 import { Content } from "../../template/Content";
-import { RulesBuilder } from "./components/RulesBuilder";
-import { RuleProperties } from "./components/RuleProperties";
+import { httpPut } from "../../fetch";
 import {
   BreadcrumbItem,
-  LastBreadcrumbItem
+  LastBreadcrumbItem,
 } from "../../components/Breadcrumb";
+import { EditRulesForm, FormData } from "./components/EditRulesForm";
 import {
-  useBackboneRouter,
-  useTranslate,
   generateAndRedirect,
-  useUserContext
+  generateUrl,
+  useBackboneRouter,
+  useNotify,
+  useTranslate,
+  useUserContext,
+  NotificationLevel,
 } from "../../dependenciesTools/hooks";
 import { RulesHeader } from "../../components/RulesHeader";
 import {
   getRuleDefinitionLabel,
-  RuleDefinition
+  RuleDefinition,
 } from "../../models/RuleDefinition";
 import { getRuleDefinitionByCode } from "../../fetch/RuleDefinitionFetcher";
 import { getActivatedLocales } from "../../fetch/LocaleFetcher";
 import { Locale } from "../../models/Locale";
+import { Payload } from "../../rules.types";
 
 type Props = {
   ruleDefinitionCode: string;
 };
 
-const getTabBorder = ({ id, selectedId, theme }: any) => {
-  if (id === selectedId) {
-    return `3px solid ${theme.color.purple100}`;
-  }
-  return 0;
+const transformFormData = (formData: FormData): Payload => {
+  return {
+    ...formData,
+    priority: Number(formData.priority),
+    content: {
+      conditions: {},
+      actions: {},
+    },
+  };
 };
-
-const getTabColor = ({ id, selectedId, theme }: any) => {
-  if (id === selectedId) {
-    return theme.color.purple100;
-  }
-
-  return theme.color.grey120;
-}
-
-const StyledTab = styled(Tab)`
-  background: ${({ theme }) => theme.color.white};
-  border-bottom: ${props => getTabBorder(props)};
-  border-width: 0 0 3px 0;
-  border-width: 0 0 3px 0;
-  color: ${props => getTabColor(props)};
-  font-size: 15px;
-  font-weight: normal;
-  height: 18px;
-  padding: 0 40px 25px 0;
-  text-align: left;
-  cursor: pointer;
-  margin: 0 5px -1px 0;
-  transition: color 0.1s ease-in, border-width 0.1s ease-in;
-  &:hover {
-    color: ${({ theme }) => theme.color.purple100};
-    border-bottom: 3px solid ${({ theme }) => theme.color.purple100};
-  }
-`;
-
-const StyledTabPanel = styled(TabPanel)`
-  padding-top: 20px;
-`;
-
-const StyledTabList = styled(TabList)`
-  padding-top: 10px;
-`;
-
-const TabDiv = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.color.grey80};
-`;
 
 const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const router = useBackboneRouter();
+  const notify = useNotify();
   const [ruleDefinition, setRuleDefinition] = React.useState<RuleDefinition>();
+  const [pending, setPending] = React.useState<boolean>(false);
   const [isError, setIsError] = React.useState<boolean>(false);
   const [locales, setLocales] = React.useState<Locale[]>();
   const [urlSettings, handleSettingsRoute] = generateAndRedirect(
@@ -92,17 +61,12 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
     "pimee_catalog_rule_rule_index"
   );
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("handleSubmit");
-  };
-
   React.useEffect(() => {
     getRuleDefinitionByCode(ruleDefinitionCode, router)
-      .then(ruleDefinition => {
+      .then((ruleDefinition) => {
         setRuleDefinition(ruleDefinition);
       })
-      .catch(exception => {
+      .catch((exception) => {
         setIsError(true);
         console.error(exception);
       });
@@ -111,26 +75,53 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
       .then((locales: Locale[]) => {
         setLocales(locales);
       })
-      .catch(exception => {
+      .catch((exception) => {
         setIsError(true);
         console.error(exception);
       });
   }, []);
 
+  const onSubmit = async (
+    formData: FormData,
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+    const updateRuleUrl = generateUrl(
+      router,
+      "pimee_enrich_rule_definition_update",
+      { ruleDefinitionCode }
+    );
+    setPending(true);
+    const response = await httpPut(updateRuleUrl, {
+      body: transformFormData(formData),
+    });
+    if (response.ok) {
+      notify(
+        NotificationLevel.SUCCESS,
+        translate("pimee_catalog_rule.form.edit.notification.success")
+      );
+    } else {
+      notify(
+        NotificationLevel.ERROR,
+        translate("pimee_catalog_rule.form.edit.notification.failed")
+      );
+    }
+    setPending(false);
+  };
   const currentCatalogLocale = userContext.get("catalogLocale");
-  const tab = useTabState({ selectedId: "rulesBuilderTab" });
-
   return (
     <ThemeProvider theme={akeneoTheme}>
+      {pending && <AkeneoSpinner />}
       {isError ? (
         "There was an error (TODO: better display)"
-      ) : !ruleDefinition ? (
+      ) : !ruleDefinition || !locales ? (
         "Loading (TODO: better display)"
       ) : (
         <>
           <RulesHeader
             title={getRuleDefinitionLabel(ruleDefinition, currentCatalogLocale)}
             formId="edit-rules-form"
+            buttonLabel={translate("pim_common.save")}
           >
             <BreadcrumbItem
               href={`#${urlSettings}`}
@@ -146,32 +137,13 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
             </LastBreadcrumbItem>
           </RulesHeader>
           <Content>
-            <form id="rules-builder-form" onSubmit={handleSubmit}>
-              <StyledTabList {...tab}>
-                <TabDiv>
-                  <StyledTab {...tab} id="rulesBuilderTab">
-                    {translate("pimee_catalog_rule.form.tab.rule_builder")}
-                  </StyledTab>
-                  <StyledTab {...tab} id="propertiesTab">
-                    {translate("pim_common.properties")}
-                  </StyledTab>
-                </TabDiv>
-                <StyledTabPanel {...tab}>
-                  <RulesBuilder
-                    translate={translate}
-                    ruleDefinition={ruleDefinition}
-                  />
-                </StyledTabPanel>
-                <StyledTabPanel {...tab}>
-                  <RuleProperties
-                    locales={locales}
-                    ruleDefinition={ruleDefinition}
-                    setRuleDefinition={setRuleDefinition}
-                    translate={translate}
-                  />
-                </StyledTabPanel>
-              </StyledTabList>
-            </form>
+            <EditRulesForm
+              onSubmit={onSubmit}
+              locales={locales}
+              ruleDefinition={ruleDefinition}
+              setRuleDefinition={setRuleDefinition}
+              translate={translate}
+            />
           </Content>
         </>
       )}

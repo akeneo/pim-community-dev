@@ -25,11 +25,11 @@ const LegendSrOnly = styled.legend`
 
 type FormDataInput = {
   code: string;
-  label?: string;
+  label: string;
 };
 
 type Props = {
-  locale: string
+  locale: string;
   translate: Translate;
   onSubmit: (formData: FormDataInput, event?: Event) => Promise<any>;
 };
@@ -40,7 +40,7 @@ type CustomErrors = {
 
 const initialCustomErrors: CustomErrors = {
   [inputCodeName]: [],
-  [inputLabelName]: [],
+  [inputLabelName]: []
 };
 
 const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
@@ -49,7 +49,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
     initialCustomErrors
   );
   const { errors, formState, handleSubmit, register } = useForm<FormDataInput>({
-    mode: "onChange",
+    mode: "onChange"
   });
 
   const codeInputRegisterConfig = {
@@ -61,17 +61,17 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
       message: translate(
         "pimee_catalog_rule.form.creation.constraint.code.too_short",
         { characterLimit: "3" }
-      ),
+      )
     },
     pattern: {
       value: /^[a-zA-Z0-9_]+$/,
       message: translate(
         "pimee_catalog_rule.form.creation.constraint.code.allowed_characters"
-      ),
-    },
+      )
+    }
   };
   const labelInputRegisterConfig = {
-    maxLength: 255,
+    maxLength: 255
   };
 
   const manageSubmitError = async (formData: FormDataInput) => {
@@ -82,7 +82,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
         data.reduce((acc: any, value: any) => {
           return {
             ...acc,
-            [value.path]: [...acc[value.path], value.message],
+            [value.path]: [...acc[value.path], value.message]
           };
         }, initialCustomErrors)
       );
@@ -129,7 +129,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
           />
           <div id={inputCodeErrorMsgId}>
             {customErrors.code.length > 0 &&
-              customErrors.code.map((message) => (
+              customErrors.code.map(message => (
                 <InputErrorMsg key={`code-${message}`}>{message}</InputErrorMsg>
               ))}
             <ErrorMessage errors={errors} name={inputCodeName}>
@@ -147,6 +147,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
             ref={register(labelInputRegisterConfig)}
           >
             <FlagLabel
+              htmlFor="label-input"
               locale={locale}
               label={translate("pim_common.label")}
               flagDescription={translate(
@@ -156,7 +157,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
           </InputText>
           <div id={inputLabelErrorMsgId}>
             {customErrors.label.length > 0 &&
-              customErrors.label.map((message) => (
+              customErrors.label.map(message => (
                 <InputErrorMsg
                   key={`label-${message}`}
                   id={inputLabelErrorMsgId}

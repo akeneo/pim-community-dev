@@ -12,11 +12,17 @@ const BreadcrumbAndButtons = styled.div`
 `;
 
 type Props = {
+  buttonLabel: string;
   formId: string;
   title: string;
 };
 
-const RulesHeader: React.FC<Props> = ({ formId, title, children }) => {
+const RulesHeader: React.FC<Props> = ({
+  buttonLabel,
+  formId,
+  title,
+  children
+}) => {
   return (
     <Header>
       <BreadcrumbAndButtons>
@@ -28,7 +34,7 @@ const RulesHeader: React.FC<Props> = ({ formId, title, children }) => {
           />
           <div className="AknTitleContainer-actionsContainer AknButtonList">
             <PrimaryButton form={formId} type="submit">
-              save
+              {buttonLabel}
             </PrimaryButton>
           </div>
         </div>

@@ -6,7 +6,18 @@ export const dependencies = {
     redirect: jest.fn((url: string) => url)
   },
   translate: jest.fn((key: string) => key),
-  viewBuilder: { build: jest.fn((viewName: string) => viewName) },
+  viewBuilder: {
+    build: (viewName: string) => {
+      return Promise.resolve({
+        remove: jest.fn(),
+        setElement: () => {
+          return {
+            render: jest.fn(() => viewName)
+          };
+        }
+      });
+    }
+  },
   notify: jest.fn((level: NotificationLevel, message: string): string => {
     return `${level} ${message}`;
   }),

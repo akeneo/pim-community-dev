@@ -45,10 +45,10 @@ const getProviders = (options: Options) => {
 
 export const renderWithProviders = (
   ui: React.ReactElement,
-  options: Options
+  contextOptions?: Options
 ) => {
-  if (options) {
-    return render(ui, { wrapper: getProviders(options) });
+  if (contextOptions) {
+    return render(ui, { wrapper: getProviders(contextOptions) });
   }
   return render(ui);
 };

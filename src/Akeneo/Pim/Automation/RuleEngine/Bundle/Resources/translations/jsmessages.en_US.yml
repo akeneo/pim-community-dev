@@ -50,6 +50,7 @@ pimee_catalog_rule:
                     empty_selection: No rules selected.
     form:
         tab:
+            list: Rule builder and properties tabs
             rule_builder: Rules builder
         attribute:
             tab:
@@ -98,7 +99,9 @@ pimee_catalog_rule:
                     ">=": equals or greater than
                     "<": less than
                     "<=": equals or less than
-
+            notification:
+                success: Rule successfully updated 
+                failed: Rule update failed
         helper:
             add_to_category: To add your product selection to one or more categories, please start by selecting our category trees and then, your categories.
             product_selection: "You must define your product selection in order to create your rule. If you don't know how, "

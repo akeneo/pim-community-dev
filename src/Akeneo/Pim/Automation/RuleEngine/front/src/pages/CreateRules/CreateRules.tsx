@@ -17,6 +17,22 @@ import { CreateRulesForm, FormDataInput } from "./components/CreateRulesForm";
 import { httpPost } from "../../fetch";
 import { AkeneoSpinner } from "../../components/AkeneoSpinner";
 import { SmallHelper } from "../../components/SmallHelper";
+import { Payload } from "../../rules.types";
+
+const transformFormData = (
+  formData: FormDataInput,
+  currentCatalogLocale: string
+): Payload => {
+  return {
+    labels: { [currentCatalogLocale]: formData.label },
+    priority: 0,
+    code: formData.code,
+    content: {
+      conditions: {},
+      actions: {},
+    },
+  };
+};
 
 const CreateRules: React.FC = () => {
   const [pending, setPending] = React.useState(false);
@@ -28,7 +44,7 @@ const CreateRules: React.FC = () => {
     "pimee_catalog_rule_rule_index"
   );
   useDocumentEscapeKey(handleRulesRoute);
-  const currentCatalogLocale = userContext.get('catalogLocale');
+  const currentCatalogLocale = userContext.get("catalogLocale");
   const notify = useNotify();
   const onSubmit = async (formData: FormDataInput): Promise<any> => {
     const postRule = generateUrl(router, "pimee_enrich_rule_definition_create");
@@ -36,14 +52,7 @@ const CreateRules: React.FC = () => {
     let result: any;
     try {
       result = await httpPost(postRule, {
-        body: {
-          labels: { [currentCatalogLocale]: formData.label },
-          code: formData.code,
-          content: {
-            conditions: {},
-            actions: {},
-          },
-        },
+        body: transformFormData(formData, currentCatalogLocale),
       });
     } catch (error) {
       setPending(false);
@@ -96,7 +105,11 @@ const CreateRules: React.FC = () => {
                 </span>
               </SmallHelper>
             </div>
-            <CreateRulesForm onSubmit={onSubmit} translate={translate} locale={currentCatalogLocale}/>
+            <CreateRulesForm
+              onSubmit={onSubmit}
+              translate={translate}
+              locale={currentCatalogLocale}
+            />
           </div>
         </div>
       </div>

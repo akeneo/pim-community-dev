@@ -1,4 +1,5 @@
 import React from "react";
+import "jest-fetch-mock";
 import { CreateRules } from "../../../../src/pages/CreateRules";
 import userEvent from "@testing-library/user-event";
 import { render, screen, act, fireEvent } from "../../../../test-utils";
@@ -38,7 +39,7 @@ describe("CreateRules", () => {
   it("should make a resolve http post on rule endpoint", async () => {
     // Given
     fetchMock.once(async () => {
-      return new Promise((resolve) =>
+      return new Promise(resolve =>
         setTimeout(() => resolve({ body: "ok" }), 100)
       );
     });
