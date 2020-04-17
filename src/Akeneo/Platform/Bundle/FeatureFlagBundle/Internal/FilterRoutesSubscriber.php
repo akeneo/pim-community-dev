@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Akeneo\Platform\Bundle\FeatureFlagBundle\Internal;
-
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

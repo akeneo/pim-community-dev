@@ -40,7 +40,7 @@ define(
             indexRoute: null,
             loadingMask: null,
             currentController: null,
-            
+
             /**
              * {@inheritdoc}
              */
@@ -48,9 +48,9 @@ define(
                 this.loadingMask = new LoadingMask();
                 this.loadingMask.render().$el.appendTo($('.hash-loading-mask'));
                 _.bindAll(this, 'showLoadingMask', 'hideLoadingMask');
-                
+
                 this.indexRoute = __moduleConfig.indexRoute;
-                
+
                 this.listenTo(mediator, 'route_complete', this._processLinks);
             },
 
