@@ -20,8 +20,6 @@ pim_reference_entity:
         pattern: 'Dette felt må kun indeholde bogstaver, tal og underscores.'
         should_be_unique: 'Arkivkoden eksisterer allerede for referenceenhed "%reference_entity_identifier%" og arkivkode "%code%"'
         should_exist: 'Arkivet blev ikke fundet'
-      text:
-        incompatible_with_regular_expression: 'Denne tekst er inkompatibel med det regulære udtryk "%regular_expression%"'
       file:
         extension_not_allowed: '"%file_extension%"-filer er ikke tilladt for denne attribut. Tilladte udvidelser er: %allowed_file_extensions%'
         file_size_exceeded: 'Filen overskrider den maksimale filstørrelse tilladt for denne attribut.'

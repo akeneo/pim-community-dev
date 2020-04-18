@@ -20,8 +20,6 @@ pim_reference_entity:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
         should_be_unique: 'El código de registro ya existe para la entidad de referencia "%reference_entity_identifier%" y el código de registro "%code%"'
         should_exist: 'No se encontró el registro'
-      text:
-        incompatible_with_regular_expression: 'El texto es incompatible con la expresión regular "%regular_expression%"'
       file:
         extension_not_allowed: 'Los archivos "%file_extension%" no están permitidos para este atributo. Las extensiones permitidas son: %allowed_file_extensions%'
         file_size_exceeded: 'El archivo excede el tamaño máximo del archivo establecido para el atributo.'

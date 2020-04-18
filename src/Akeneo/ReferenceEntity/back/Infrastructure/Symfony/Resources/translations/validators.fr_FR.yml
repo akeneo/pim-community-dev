@@ -20,8 +20,6 @@ pim_reference_entity:
         pattern: 'Ce champ ne peut être composé que de lettres, chiffres et underscores.'
         should_be_unique: 'Le code d''enregistrement existe déjà pour l''entité référentielle "%reference_entity_identifier%" et le code d''enregistrement "%code%"'
         should_exist: 'L''enregistrement n’a pas été trouvé'
-      text:
-        incompatible_with_regular_expression: 'Le texte est incompatible avec l''expression régulière "%regular_expression%"'
       file:
         extension_not_allowed: 'Les fichiers "%file_extension%" ne sont pas autorisés pour cet attribut. Les extensions autorisées sont : %allowed_file_extensions%'
         file_size_exceeded: 'Le fichier dépasse la taille maximale définie pour l''attribut.'
