@@ -96,6 +96,7 @@ pim_measure:
     CENTIAMPERE: 센티암페어
     DECIAMPERE: 데시암페어
     AMPERE: 암페어
+    DEKAMPERE: 데카암페어
     HECTOAMPERE: 헥토암페어
     KILOAMPERE: 킬로암페어
     MEGAAMPERE: 메가암페어

@@ -117,6 +117,7 @@ pim_enrich.entity.product:
       header_comment: '{{user}} 님이 제품에 코멘트합니다'
       header_reply: '{{ user }} 님이 코멘트에 답변합니다'
       delete_confirm: 이 코멘트를 삭제하시겠습니까?
+      removed_author: 제거된 사용자
     asset:
       title: 자산
 pim_enrich.entity.product_model:
