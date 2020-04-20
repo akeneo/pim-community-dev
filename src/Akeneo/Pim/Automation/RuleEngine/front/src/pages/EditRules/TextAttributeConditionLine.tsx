@@ -2,6 +2,7 @@ import React from "react";
 import {Translate} from "../../dependenciesTools";
 import {TextAttributeCondition, TextAttributeOperators} from "../../models/TextAttributeCondition";
 import {InputText} from "../../components/InputText";
+import {Operator} from "../../models/Operator";
 
 type Props = {
   register: any,
@@ -11,28 +12,33 @@ type Props = {
 }
 
 const TextAttributeConditionLine: React.FC<Props> = ({ register, condition, lineNumber, translate }) => {
-  console.log(condition);
+  const [operator, setOperator] = React.useState<Operator>(condition.operator);
+
   return (
     <div>
       <span>{condition.attribute.code}</span>
-      <select defaultValue={condition.operator}>
+      <select
+        defaultValue={operator}
+        name={`conditions[${lineNumber}].operator`}
+        ref={register}
+        onChange={(event) => {
+          setOperator(event.target.value as Operator);
+        }}
+      >
         {TextAttributeOperators.map((operator, i) => {
-          return <option
-            key={i}
-          >
-            {operator}
-          </option>
+          return <option key={i}>{operator}</option>
         })}
       </select>
-      <span>{condition.operator}</span>
-      <span>
-        <InputText
-          id="edit-rules-input-toto"
-          name={`conditions[${lineNumber}].value`}
-          label={translate("pim_common.code")}
-          ref={register}
-        />
-      </span>
+      {!([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(operator) && (
+        <span>
+          <InputText
+              id="edit-rules-input-toto"
+              name={`conditions[${lineNumber}].value`}
+              label={translate("pim_common.code")}
+              ref={register}
+          />
+        </span>
+      )}
     </div>
   );
 };
