@@ -7,6 +7,10 @@
 - PIM-9160: Fix the display of the associations list on the product edit form
 - PIM-9175: Fix the import of all price values
 
+## Technical Improvements
+
+- PIM-9195: Add extra ImageMagick library to handle SVG files
+
 # 4.0.16 (2020-04-08)
 
 ## Bug fixes
