@@ -59,4 +59,32 @@ class InMemoryGetAttributesSpec extends ObjectBehavior
             ),
         ]);
     }
+
+    function it_returns_attributes_case_insensitive()
+    {
+        $this->forCodes(['sKu', 'SKU_2', 'foo'])->shouldBeLike([
+            'sKu' => new Attribute(
+                'sku',
+                AttributeTypes::IDENTIFIER,
+                [],
+                false,
+                false,
+                null,
+                false,
+                AttributeTypes::BACKEND_TYPE_TEXT,
+                []
+            ),
+            'SKU_2' => new Attribute(
+                'sku_2',
+                AttributeTypes::IDENTIFIER,
+                [],
+                false,
+                false,
+                null,
+                false,
+                AttributeTypes::BACKEND_TYPE_TEXT,
+                []
+            ),
+        ]);
+    }
 }
