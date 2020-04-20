@@ -4,18 +4,22 @@ import {Condition} from "./Condition";
 import {Router, Translate} from "../dependenciesTools";
 import {getByIdentifier} from "../fetch/AttributeFetcher";
 import {TextAttributeConditionLine} from "../pages/EditRules/TextAttributeConditionLine";
+import {Operator} from "./Operator";
 
-enum TextAttributeOperator {
-  IS_EMPTY = 'EMPTY',
-  IS_NOT_EMPTY = 'NOT EMPTY',
-  IN_LIST = 'IN',
-  NOT_IN_LIST = 'NOT IN',
-}
+const TextAttributeOperators = [
+  Operator.EQUALS,
+  Operator.NOT_EQUAL,
+  Operator.CONTAINS,
+  Operator.START_WITH,
+  Operator.DOES_NOT_CONTAIN,
+  Operator.IS_EMPTY,
+  Operator.IS_NOT_EMPTY,
+];
 
 type TextAttributeCondition = {
   module: React.FC<{register: any, condition: Condition, lineNumber: number, translate: Translate}>,
   attribute: Attribute;
-  operator: TextAttributeOperator;
+  operator: Operator;
   value?: string;
 }
 
@@ -24,7 +28,15 @@ const createTextAttributeCondition = async (json: any, router: Router): Promise 
     return null;
   }
 
+  if (typeof json.operator !== 'string' || !TextAttributeOperators.includes(json.operator)) {
+    return null;
+  }
+
   const attribute = await getByIdentifier(json.field, router);
+  if (null === attribute) {
+    return null;
+  }
+
   if (attribute.type === 'pim_catalog_text') {
     return {
       module: TextAttributeConditionLine,
@@ -37,4 +49,4 @@ const createTextAttributeCondition = async (json: any, router: Router): Promise 
   return null;
 };
 
-export {TextAttributeCondition, createTextAttributeCondition};
+export {TextAttributeOperators, TextAttributeCondition, createTextAttributeCondition};
