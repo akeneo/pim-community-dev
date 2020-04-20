@@ -53,6 +53,7 @@ pim_import_export:
         show_profile.title: Afficher le profil
         download_log.title: Télécharger les logs
         download_file.title: Télécharger le fichier généré
+        download_archive.title: Télécharger l'archive générée
       summary:
         fetching: Collecte de données de l'exécution...
         warning: Attention

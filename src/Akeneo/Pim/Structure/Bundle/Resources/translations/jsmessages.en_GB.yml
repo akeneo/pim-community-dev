@@ -5,7 +5,7 @@ pim_enrich.entity.family:
   flash:
     update:
       success: Family successfully updated.
-      fail: An error occurred during the family update.
+      fail: An error occurred during family update.
       cant_remove_attribute_as_label: Cannot remove attribute used as label
       cant_remove_attribute_as_image: Cannot remove attribute used as the main picture
       cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
@@ -39,6 +39,8 @@ pim_enrich.entity.family_variant:
       fail: The family variant could not be updated.
     create:
       success: Family variant successfully created
+    delete:
+      success: Family variant successfully deleted
   module:
     edit:
       common_attributes: Common attributes
@@ -88,6 +90,8 @@ pim_enrich.entity.association_type:
     delete:
       success: Association type successfully removed
       fail: Cannot delete this association type
+  page_title:
+    index: "]-Inf, 1]{{ count }} association type|]1, Inf[{{ count }} association types"
   module:
     create:
       button: Create association type
@@ -123,14 +127,17 @@ pim_enrich.entity.attribute:
     delete:
       success: Attribute successfully removed
       fail: Cannot delete this attribute
+  page_title:
+    index: "]-Inf, 1]{{ count }} attribute|]1, Inf[{{ count }} attributes"
   property:
     allowed_extensions: Allowed extensions
+    auto_option_sorting: Automatically sort options by alphabetical order
     available_locales: Available locales
     date_max: Max date
     date_min: Min date
     decimals_allowed: Decimal values allowed
     default_metric_unit:
-      label: Default metric unit
+      label: Default measurement unit
       choose: Choose a unit
     group:
       label: Attribute group
@@ -140,8 +147,9 @@ pim_enrich.entity.attribute:
     max_characters: Max characters
     max_file_size: Max file size (MB)
     metric_family:
-      label: Metric family
+      label: Measurement family
       choose: Choose a family
+    minimum_input_length: Minimum length for autocompletion
     name: Name
     negative_allowed: Negative values allowed
     number_max: Max number
@@ -163,11 +171,69 @@ pim_enrich.entity.attribute:
       pim_catalog_image: Image
       pim_catalog_boolean: "Yes/No"
       pim_catalog_date: Date
-      pim_catalog_metric: Metric
+      pim_catalog_metric: Measurement
       pim_reference_data_simpleselect: Reference data simple select
       pim_reference_data_multiselect: Reference data multi-select
+    unique: Unique value
+    useable_as_grid_filter: Usable in grid
+    validation_regexp: Regular expression
+    validation_rule:
+      label: Validation rule
+      email: E-mail
+      regexp: Regular expression
+      url: URL
+    wysiwyg_enabled: Rich text editor enabled
   module:
     add_attribute:
       no_available_attributes: There are no more attributes to add
+      attributes_selected: "{{ itemsCount }} attribute(s) selected"
+    create:
+      button: Create attribute
+    edit:
+      common: General parameters
+      type_specific: Type specific parameters
+      validation: Validation parameters
     delete:
       confirm: Are you sure you want to delete this attribute?
+      confirm_from_family: Are you sure you want to delete this attribute from the family?
+      confirm_from_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
+      confirm_from_product: Are you sure you want to delete this attribute from the product?
+pim_enrich.entity.attribute_group:
+  label: attribute group
+  uppercase_label: Attribute group
+  plural_label: Attribute groups
+  flash:
+    update:
+      success: Attribute group successfully updated
+      fail: Attribute group could not be updated
+      fields_not_ready: "The attribute group cannot be saved right now. The following fields are not ready: {{ fields }}"
+    delete:
+      success: Attribute group successfully removed
+      fail: Cannot delete this attribute group
+  module:
+    add_attribute_group:
+      label: Add by groups
+      no_attribute_groups_available: No attribute group available
+      attributes_groups_selected: '{{ itemsCount }} group(s) selected'
+    delete:
+      confirm: Are you sure you want to delete this attribute group?
+pim_enrich.mass_edit.family:
+  title: Families bulk action
+  confirm: "{1}You are about to update a family with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} families with the following information, please confirm."
+  step:
+    select:
+      label: Choose families
+    choose:
+      title: Families bulk actions
+      label_count: "]0, Inf[Select your action"
+    configure:
+      label: Configure
+    confirm:
+      label: Confirm
+    launched:
+      label: The bulk action "{{ operation }}" has been launched. You will be notified when it is done.
+  operation:
+    set_requirements:
+      label: Set attributes requirements
+      description: The following attributes requirements will be applied to the selected families
+      label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|]1, Inf[Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"

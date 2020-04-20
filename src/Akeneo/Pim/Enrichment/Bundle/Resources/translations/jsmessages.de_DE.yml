@@ -83,7 +83,7 @@ pim_enrich.entity.product:
       save_and_next: Speichern und weiter
       save_and_finish: Speichern und fertigstellen
     associations:
-      title: Verbindungen
+      title: Verknüpfungen ({{ count }})
       none_exist: Es gibt keine Verbindungstypen.
       show_products: Produkte anzeigen
       show_groups: Gruppen anzeigen
@@ -91,7 +91,8 @@ pim_enrich.entity.product:
       association_type_selector: Verbindungstyp
       target: Ziel
       manage: Fügen Sie {{ associationType }} Verbindungen hinzu
-      manage_description: Wählen Sie die Produkte, die Sie dem aktuellen Produkt zuordnen möchten
+      manage_description: Wählen Sie die Produkte, die Sie mit dem Produkt "{{ productLabel }} " verknüpfen möchten
+      mass_edit_description: Wählen Sie die Produkte, die Sie mit {{ productCount }} ausgewählten Produkt(en) verknüpfen möchten
       add_associations: Verbindungen hinzufügen
     attribute_filter:
       display: Anzeige
@@ -263,7 +264,7 @@ pim_enrich.export.product:
     title: Globale Einstellungen
 pim_enrich.mass_edit.product:
   title: Massenbearbeitung Produkte
-  confirm: "{1}Sie sind dabei, ein Produkt mit den folgenden Informationen zu aktualisieren, bitte bestätigen Sie.|]1, Inf[Sie sind dabei, {{ itemsCount }} Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen Sie."
+  confirm: "{0}Sie sind dabei, einige Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen.{1}Sie sind dabei, ein Produkt mit den folgenden Informationen zu aktualisieren, bitte bestätigen. ]1, Inf[Sie sind dabei, {{ itemsCount }} Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen."
   step:
     select:
       label: Produkte auswählen
@@ -283,54 +284,54 @@ pim_enrich.mass_edit.product:
       select_attributes: Attribute auswählen
     change_status:
       label: Status ändern
-      label_count: "{1}Ändern Sie den Status von <span class=\"AknFullPage-Titel--Highlight\">1 Produkt</span>|]1, Inf[Ändern des Status von <span class=\"AknFullPage-Titel--Highlight\">{{ itemsCount }} Produkte</span>"
+      label_count: "{0}Ändert den Status einiger <span class=\"AknFullPage-title--highlight\">Produkte</span>|{1}Ändert den Status von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1, Inf [Status von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten ändern</span>"
       description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
       field: Aktivieren
     edit_common:
       label: Attributwerte bearbeiten
-      label_count: "{1}Bearbeite die Attribute von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Bearbeite die Attribute von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
+      label_count: "{0}Bearbeiten von Attributwerten einiger <span class=\"AknFullPage-title--highlight\">Produkte</span>|{1}Attributwerte von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1 bearbeiten Inf [Attributwerte von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten bearbeiten</span>"
       description: Nur die Attribute, die zu den Produktfamilien der ausgewählten Produkte gehören, werden mit den folgenden Daten für das Gebietsschema {{ locale }} und dem {{ scope }} Ausgabekanal bearbeitet.
       no_update: Bitte wählen Sie mindestens ein Feld aus, das Sie aktualisieren möchten
     add_attribute_value:
       label: Attributwerte hinzufügen
-      label_count: "{1}Attributswerte hinzufügen für <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>\n"
+      label_count: "{0}Fügt Attributwerte für einige <span class=\"AknFullPage-title--highlight\">Produkte</span>|{1}Attributwerte für <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1 hinzu Inf [Attributwerte für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte hinzufügen</span>"
       description: Nur die Mehrfachauswahl-Attribute, die zu den Produktfamilien des Produkts gehören, werden mit den folgenden Daten des {{ locale }} Gebietsschemas und dem {{ scope }} Ausgabekanal bearbeitet. Die Attributwerte werden hinzugefügt, die vorherigen Werte bleiben erhalten.
     change_family:
       label: Familie wechseln
-      label_count: "{1}Ändere die Familie von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Ändere die Familie von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
+      label_count: "{0}Ändert die Produktfamilie von <span class=\"AknFullPage-title--highlight\">Produkten</span>|{1}Ändert die Produktfamilie von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1, Inf[Ändern der Produktfamilie von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
       description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
     add_to_group:
       label: Zu Gruppen hinzufügen
-      label_count: "{1}Hinzufügen <span class=\"AknFullPage-title--highlight\">1 Produkt </span> to groups|] 1, Inf [Hinzufügen<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zu Gruppen"
+      label_count: "{0}Füge <span class=\"AknFullPage-title--highlight\">Produkte</span> zu Gruppen hinzu |{1}Füge <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zu Gruppen hinzu|]1, Inf[Hinzufügen <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zu Gruppen hinzu"
       description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
       field: Gruppen
       no_update: Bitte wählen Sie vorher eine Gruppe aus, um fortzufahren
     add_to_category:
       label: Zu Kategorien hinzufügen
-      label_count: "{1}Hinzufügen von <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zu Kategorien|] 1, Inf [Hinzufügen von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span> zu Kategorien"
+      label_count: "{0}Füge <span class=\"AknFullPage-title--highlight\">Produkte</span> zu Kategorien hinzu |{1}Füge <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zu Kategorien hinzu|]1, Inf[Hinzufügen <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zu Kategorien hinzu"
       description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
     move_to_category:
       label: Zwischen Kategorien verschieben
-      label_count: "{1}Verschiebe <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zwischen Kategorien|] 1, Inf [Verschiebe <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zwischen Kategorien"
+      label_count: "{0}verschiebt <span class=\"AknFullPage-title--highlight\">Produkte</span> zwischen Kategorien|{1}Verschieben <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zwischen Kategorien|]1, Inf[Verschieben <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zwischen Kategorien"
       description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen gehen verloren.
     remove_from_category:
       label: Aus Kategorien entfernen
-      label_count: "{1}Entferne <span class=\"AknFullPage-title--highlight\">1 Produkt</span> aus Kategorien|] 1, Inf [Entferne <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> aus Kategorien"
+      label_count: "{0}Entferne <span class=\"AknFullPage-title--highlight\">Produkte</span> aus Kategorien|{1}Entferne <span class=\"AknFullPage-title--highlight\">1 Produkt</span> aus Kategorien|]1, Inf[Entferne <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> aus Kategorien"
       description: Die Produkte werden aus den folgenden Kategorien entfernt.
       no_update: Es wurde keine Kategorie ausgewählt, um die ausgewählten Produkte zu entfernen.
     add_to_existing_product_model:
       label: Zu bestehendem Produktmodell hinzufügen
-      label_count: "{1}Hinzufügen von <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zu einem existierenden Produktmodell|] 1, Inf [Hinzufügen von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zu einem existierenden Produktmodell"
+      label_count: "{0}Füge <span class=\"AknFullPage-title--highlight\">Produkte</span> zu einem existierenden Produktmodell hinzu|{1}Füge <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zu einem existierenden Produktmodell hinzu|]1, Inf[Füge <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zu einem bestehenden Produktmodell hinzu"
       description: Das ausgewählte Produktmodell wird die Produkte zusammenfassen und ermöglicht so das Anreichern der gemeinsamen Eigenschaften.
       no_update: Bitte wählen Sie ein Produktmodell, bevor Sie fortfahren
     associate_to_product_and_product_model:
       label: Verbinden
-      label_count: "{1}Verbinde <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zu Produkten oder Produktmodells|] 1, Inf [Verbinde <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zu Produkten oder Produktmodells"
+      label_count: "{0}verknüpfen <span class=\"AknFullPage-title--highlight\">Produkte</span> mit Produkten oder Produktmodellen|{1} <span class=\"AknFullPage-title--highlight\">1 Produkt</span> mit Produkten oder Produktmodellen verknüpfen|]1, Inf[Verbinde <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> mit Produkten oder Produktmodellen"
       description: Die im Raster ausgewählten Produkte werden den selektierten Produkten und Produktmodells für den ausgewählten Verbindungstyp zugeordnet
       validate: Fügen Sie eine Verbindung hinzu, bevor Sie mit dem nächsten Schritt fortfahren
     change_parent_product_model:
       label: Eltern Produktmodell ändern
-      label_count: "{1}Ändere Eltern des Produktmodells von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Ändere Eltern des Produktmodells von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
+      label_count: "{0}Ändern Sie das übergeordnete Produktmodell von <span class=\"AknFullPage-title--highlight\">Produkten</span>|{1}Ändern Sie das übergeordnete Produktmodell von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1, Inf[Übergeordneten Produktmodell von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten ändern</span>"
       description: Das übergeordnete Element der Variantenprodukte oder Sub Produktmodelle die im Raster ausgewählt wurden, werden zu dem gewählten Produktmodell geändert.
 pim_datagrid:
   mass_action_group:
