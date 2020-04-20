@@ -1,4 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
+import styled from '../../../common/styled-with-theme';
 
 const DEBOUNCE_TIME = 300;
 
@@ -22,7 +23,7 @@ const SearchInput: FC<Props> = ({value, onSearch, placeholder}) => {
     }, [value, searchValue, onSearch]);
 
     return (
-        <input
+        <Input
             type='text'
             value={searchValue}
             onChange={event => setSearchValue(event.target.value)}
@@ -30,5 +31,14 @@ const SearchInput: FC<Props> = ({value, onSearch, placeholder}) => {
         />
     );
 };
+
+const Input = styled.input`
+    background: url(${({theme}) => theme.icon.search}) no-repeat 0 center;
+    border: none;
+    flex-grow: 1;
+    line-height: 44px;
+    outline: none;
+    padding: 0 0 0 30px;
+`;
 
 export {SearchInput};

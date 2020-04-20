@@ -4,6 +4,7 @@ import styled from '../../../common/styled-with-theme';
 import {useDateFormatter} from '../../../shared/formatter/use-date-formatter';
 import {Translate} from '../../../shared/translate';
 import {ConnectionError} from '../../hooks/api/use-connection-errors';
+import {NoError} from './NoError';
 import {SearchFilter} from './SearchFilter';
 import {Order, SortButton} from './SortButton';
 
@@ -49,36 +50,34 @@ const ErrorList: FC<Props> = ({errors}) => {
 
     return (
         <>
-            {false && (
-                <SearchFilter
-                    value={searchValue}
-                    onSearch={setSearchValue}
-                    resultCount={sortedAndfilteredErrors.length}
-                />
-            )}
+            <SearchFilter value={searchValue} onSearch={setSearchValue} resultCount={sortedAndfilteredErrors.length} />
 
-            <Table>
-                <thead>
-                    <TableHeaderRow>
-                        <TableHeaderCell>
-                            <SortButton order={sortOrder} onSort={setSortOrder}>
-                                <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.date_time_column' />
-                            </SortButton>
-                        </TableHeaderCell>
-                        <TableHeaderCell>
-                            <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.content_column' />
-                        </TableHeaderCell>
-                    </TableHeaderRow>
-                </thead>
-                <tbody>
-                    {sortedAndfilteredErrors.map(error => (
-                        <TableRow key={error.id}>
-                            <DateTimeCell collapsing>{formatTimestamp(error.timestamp)}</DateTimeCell>
-                            <ErrorMessageCell>{error.content.message}</ErrorMessageCell>
-                        </TableRow>
-                    ))}
-                </tbody>
-            </Table>
+            {errors.length > 0 ? (
+                <Table>
+                    <thead>
+                        <TableHeaderRow>
+                            <TableHeaderCell>
+                                <SortButton order={sortOrder} onSort={setSortOrder}>
+                                    <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.date_time_column' />
+                                </SortButton>
+                            </TableHeaderCell>
+                            <TableHeaderCell>
+                                <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.content_column' />
+                            </TableHeaderCell>
+                        </TableHeaderRow>
+                    </thead>
+                    <tbody>
+                        {sortedAndfilteredErrors.map(error => (
+                            <TableRow key={error.id}>
+                                <DateTimeCell collapsing>{formatTimestamp(error.timestamp)}</DateTimeCell>
+                                <ErrorMessageCell>{error.content.message}</ErrorMessageCell>
+                            </TableRow>
+                        ))}
+                    </tbody>
+                </Table>
+            ) : (
+                <NoError />
+            )}
         </>
     );
 };
