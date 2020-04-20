@@ -17,7 +17,8 @@ const ErrorsHelper: FC<Props> = ({errorCount}) => {
                     dangerouslySetInnerHTML={{
                         __html: translate(
                             'akeneo_connectivity.connection.error_management.connection_monitoring.helper.title',
-                            {count: `<span class='AknConnectivityConnection-helper--highlight'>${errorCount}</span>`}
+                            {count: `<span class='AknConnectivityConnection-helper--highlight'>${errorCount}</span>`},
+                            errorCount
                         ),
                     }}
                 />

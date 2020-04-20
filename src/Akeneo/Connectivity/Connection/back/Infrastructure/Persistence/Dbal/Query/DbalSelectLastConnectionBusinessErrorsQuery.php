@@ -26,13 +26,7 @@ class DbalSelectLastConnectionBusinessErrorsQuery implements SelectLastConnectio
 
     public function execute(string $connectionCode, string $endDate = null, int $limit = 100): array
     {
-        $to = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
-        if (null !== $endDate) {
-            $to = \DateTimeImmutable::createFromFormat('Y-m-d', $endDate, new \DateTimeZone('UTC'));
-        }
-
-        $to = $to->setTime(0, 0)->add(new \DateInterval('P1D'));
-        $from = $to->sub(new \DateInterval('P7D'));
+        [$from, $to] = $this->getDateTimeInterval($endDate);
 
         $sql = <<<SQL
 SELECT connection_code, error_datetime, content FROM akeneo_connectivity_connection_audit_business_error
@@ -60,5 +54,24 @@ SQL;
                 $row['content']
             );
         }, $result);
+    }
+
+    /**
+     * @return array{\DateTimeImmutable, \DateTimeImmutable}
+     */
+    private function getDateTimeInterval(string $endDate = null): array
+    {
+        $to = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        if (null !== $endDate) {
+            $to = \DateTimeImmutable::createFromFormat('Y-m-d', $endDate, new \DateTimeZone('UTC'));
+            if (false === $to) {
+                $to = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+            }
+        }
+
+        $to = $to->setTime(0, 0)->add(new \DateInterval('P1D'));
+        $from = $to->sub(new \DateInterval('P7D'));
+
+        return [$from, $to];
     }
 }

@@ -25,6 +25,7 @@ const SearchFilter: FC<Props> = ({value, onSearch, resultCount}) => {
                 <Translate
                     id='akeneo_connectivity.connection.error_management.connection_monitoring.search_filter.result_count'
                     placeholders={{count: resultCount.toString()}}
+                    count={resultCount}
                 />
             </SearchCount>
         </Container>

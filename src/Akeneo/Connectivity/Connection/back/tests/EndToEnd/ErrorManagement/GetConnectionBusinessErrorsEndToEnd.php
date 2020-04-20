@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\ErrorManagement;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Test\Integration\Configuration;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Connection as DbalConnection;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,8 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetConnectionBusinessErrorsEndToEnd extends WebTestCase
 {
-    /** @var Connection */
-    private $connection;
+    /** @var DbalConnection */
+    private $dbalConnection;
 
     public function test_it_gets_a_connection_business_errors(): void
     {
@@ -54,7 +54,7 @@ class GetConnectionBusinessErrorsEndToEnd extends WebTestCase
     {
         parent::setUp();
 
-        $this->connection = $this->get('database_connection');
+        $this->dbalConnection = $this->get('database_connection');
     }
 
     protected function getConfiguration(): Configuration
@@ -65,7 +65,7 @@ class GetConnectionBusinessErrorsEndToEnd extends WebTestCase
     private function insertBusinessErrors(array $errors): void
     {
         foreach ($errors as [$connectionCode, $dateTime, $content]) {
-            $this->connection->insert('akeneo_connectivity_connection_audit_business_error', [
+            $this->dbalConnection->insert('akeneo_connectivity_connection_audit_business_error', [
                 'connection_code' => $connectionCode,
                 'error_datetime' => $dateTime,
                 'content' => $content
