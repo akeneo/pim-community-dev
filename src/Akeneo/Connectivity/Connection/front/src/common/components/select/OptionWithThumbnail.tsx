@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
-import styled from 'styled-components';
-import defaultImageSrc from '../../assets/illustrations/api.svg';
-import {PropsWithTheme} from '../../theme';
+import defaultImageSrc from '../../assets/illustrations/NewAPI.svg';
+import styled from '../../styled-with-theme';
 
 type Props = {
     value: string;
@@ -24,8 +23,7 @@ export const OptionWithThumbnail: FC<Props> = ({value, onClick, selected = false
 
 const Container = styled.li<{selected: boolean}>`
     align-items: center;
-    color: ${({theme, selected}: PropsWithTheme<{selected: boolean}>) =>
-        selected ? theme.color.purple100 : theme.color.grey120};
+    color: ${({theme, selected}) => (selected ? theme.color.purple100 : theme.color.grey120)};
     cursor: pointer;
     display: flex;
     height: 34px;
@@ -35,20 +33,20 @@ const Container = styled.li<{selected: boolean}>`
     outline: none;
 
     :hover {
-        background: ${({theme}: PropsWithTheme) => theme.color.grey60};
-        color: ${({theme}: PropsWithTheme) => theme.color.grey140};
+        background: ${({theme}) => theme.color.grey60};
+        color: ${({theme}) => theme.color.grey140};
     }
 `;
 
 const Thumbnail = styled.img`
-    border: 1px solid ${({theme}: PropsWithTheme) => theme.color.grey80};
+    border: 1px solid ${({theme}) => theme.color.grey80};
     object-fit: cover;
     width: 28px;
     height: 28px;
 `;
 
 const Label = styled.div`
-    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.default};
+    font-size: ${({theme}) => theme.fontSize.default};
     overflow: hidden;
     padding-left: 10px;
     padding-right: 6px;

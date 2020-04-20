@@ -1,18 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
-import {Translate} from '../../shared/translate';
-import {PropsWithTheme} from '../theme';
 import {ApplyButton} from '.';
-import imageUrl from '../assets/illustrations/api.svg';
+import {Translate} from '../../shared/translate';
+import imageUrl from '../assets/illustrations/NewAPI.svg';
+import styled from '../styled-with-theme';
 
 const Title = styled.div`
-    color: ${({theme}: PropsWithTheme) => theme.color.grey140};
+    color: ${({theme}) => theme.color.grey140};
     font-size: 28px;
 `;
 
 const Content = styled.div`
-    color: ${({theme}: PropsWithTheme) => theme.color.grey120};
-    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.big};
+    color: ${({theme}) => theme.color.grey120};
+    font-size: ${({theme}) => theme.fontSize.big};
     margin: 10px auto 20px;
 `;
 

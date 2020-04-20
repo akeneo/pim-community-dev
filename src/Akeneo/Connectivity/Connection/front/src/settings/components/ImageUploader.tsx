@@ -1,8 +1,7 @@
 import React, {useContext, useRef, useState} from 'react';
-import styled from 'styled-components';
 import Trash from '../../common/assets/icons/trash';
-import defaultImageUrl from '../../common/assets/illustrations/api.svg';
-import {PropsWithTheme} from '../../common/theme';
+import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
+import styled from '../../common/styled-with-theme';
 import {isErr} from '../../shared/fetch-result/result';
 import {NotificationLevel, useNotify} from '../../shared/notify';
 import {Translate, TranslateContext} from '../../shared/translate';
@@ -17,7 +16,7 @@ interface Props {
 }
 
 const HelperLink = styled.a`
-    color: ${({theme}: PropsWithTheme) => theme.color.blue100};
+    color: ${({theme}) => theme.color.blue100};
     text-decoration: underline;
     font-weight: 700;
 `;

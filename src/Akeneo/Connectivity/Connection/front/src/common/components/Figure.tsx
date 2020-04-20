@@ -1,14 +1,13 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import {PropsWithTheme} from '../theme';
 import warningIconUrl from '../assets/icons/warning.svg';
+import styled from '../styled-with-theme';
 
 export const Figure = styled.div`
     cursor: pointer;
 `;
 
 const ImageContainer = styled.div`
-    border: 1px solid ${({theme}: PropsWithTheme) => theme.color.grey100};
+    border: 1px solid ${({theme}) => theme.color.grey100};
     height: 140px;
     overflow: hidden;
     display: flex;
@@ -29,7 +28,7 @@ const Mask = styled.div`
         width: 100%;
         height: 100%;
         top: 0;
-        background-color: ${({theme}: PropsWithTheme) => theme.color.grey140};
+        background-color: ${({theme}) => theme.color.grey140};
         opacity: 0;
         box-sizing: border-box;
         transition: opacity 0.2s ease-in-out;

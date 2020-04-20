@@ -1,14 +1,13 @@
 import React, {ReactNode} from 'react';
-import styled from 'styled-components';
 import {HelperLink, Section, SmallHelper} from '../../common';
-import {PropsWithTheme} from '../../common/theme';
+import styled from '../../common/styled-with-theme';
 import {Connection as ConnectionModel} from '../../model/connection';
+import {WrongCredentialsCombinations} from '../../model/wrong-credentials-combinations';
 import {Translate} from '../../shared/translate';
 import {Connection} from './Connection';
-import {WrongCredentialsCombinations} from '../../model/wrong-credentials-combinations';
 
 const Count = styled.div`
-    color: ${({theme}: PropsWithTheme) => theme.color.purple100};
+    color: ${({theme}) => theme.color.purple100};
     line-height: 44px;
 `;
 

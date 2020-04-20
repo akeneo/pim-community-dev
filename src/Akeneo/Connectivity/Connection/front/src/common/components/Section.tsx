@@ -1,6 +1,5 @@
 import React, {PropsWithChildren, ReactNode} from 'react';
-import styled from 'styled-components';
-import {PropsWithTheme} from '../theme';
+import styled from '../styled-with-theme';
 
 export const Section = ({title, children}: PropsWithChildren<{title: ReactNode}>) => (
     <SectionContainer>
@@ -16,9 +15,9 @@ const SectionContainer = styled.header`
 `;
 
 const Title = styled.div`
-    color: ${({theme}: PropsWithTheme) => theme.color.grey140};
+    color: ${({theme}) => theme.color.grey140};
     flex-grow: 1;
-    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.default};
+    font-size: ${({theme}) => theme.fontSize.default};
     line-height: 44px;
     overflow: hidden;
     text-overflow: ellipsis;
