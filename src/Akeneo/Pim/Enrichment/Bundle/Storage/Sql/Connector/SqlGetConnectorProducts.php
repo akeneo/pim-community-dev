@@ -106,6 +106,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             $this->getValuesAndPropertiesFromProductIdentifiers->fetchByProductIdentifiers($productIdentifiers),
             $this->fetchAssociationsIndexedByProductIdentifier($productIdentifiers),
             $this->fetchCategoryCodesIndexedByProductIdentifier($productIdentifiers)
+            // TODO 225: Map quantified product/product model ids to product identifiers
         );
 
         $rawValuesIndexedByProductIdentifier = [];
@@ -149,6 +150,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 $row['group_codes'],
                 $row['product_model_code'],
                 $row['associations'] ?? [],
+                $row['quantified_associations'] ?? [],
                 [],
                 $filteredRawValuesIndexedByProductIdentifier[$identifier]
             );

@@ -37,7 +37,8 @@ SELECT
     p.updated,
     f.code AS family_code,
     JSON_ARRAYAGG(g.code) AS group_codes,
-    JSON_MERGE(COALESCE(pm1.raw_values, '{}'), COALESCE(pm2.raw_values, '{}'), p.raw_values) as raw_values
+    JSON_MERGE(COALESCE(pm1.raw_values, '{}'), COALESCE(pm2.raw_values, '{}'), p.raw_values) as raw_values,
+    p.quantified_associations
 FROM pim_catalog_product p
 LEFT JOIN pim_catalog_family f ON p.family_id = f.id
 LEFT JOIN pim_catalog_group_product pg ON p.id = pg.product_id
@@ -69,7 +70,8 @@ SQL;
                 'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated'], $platform),
                 'family_code' => Type::getType(Type::STRING)->convertToPHPValue($row['family_code'], $platform),
                 'group_codes' => $groupCodes,
-                'raw_values' => json_decode($row['raw_values'], true)
+                'raw_values' => json_decode($row['raw_values'], true),
+                'quantified_associations' => json_decode($row['quantified_associations'] ?? [], true)
             ];
         }
 

@@ -45,6 +45,9 @@ final class ConnectorProduct
     /** @var array */
     private $associations;
 
+    /** @var array */
+    private $quantifiedAssociations;
+
     /** @var array medata are for the status of the product in enterprise edition */
     private $metadata;
 
@@ -62,6 +65,7 @@ final class ConnectorProduct
         array $groups,
         ?string $parentProductModelCode,
         array $associations,
+        array $quantifiedAssociations,
         array $metadata,
         ReadValueCollection $values
     ) {
@@ -77,6 +81,7 @@ final class ConnectorProduct
         $this->values = $values;
         $this->associations = $associations;
         $this->metadata = $metadata;
+        $this->quantifiedAssociations = $quantifiedAssociations;
     }
 
     public function id(): int
@@ -129,6 +134,11 @@ final class ConnectorProduct
         return $this->associations;
     }
 
+    public function quantifiedAssociations(): array
+    {
+        return $this->quantifiedAssociations;
+    }
+
     public function metadata(): array
     {
         return $this->metadata;
@@ -162,6 +172,7 @@ final class ConnectorProduct
             $this->groupCodes,
             $this->parentProductModelCode,
             $this->associations,
+            $this->quantifiedAssociations,
             array_merge($this->metadata, [$key => $value]),
             $this->values
         );
@@ -188,6 +199,7 @@ final class ConnectorProduct
             $this->groupCodes,
             $this->parentProductModelCode,
             $this->associations,
+            $this->quantifiedAssociations,
             $this->metadata,
             $values
         );
@@ -236,6 +248,7 @@ final class ConnectorProduct
             $this->groupCodes,
             $this->parentProductModelCode,
             $filteredAssociations,
+            $this->quantifiedAssociations,
             $this->metadata,
             $this->values
         );
@@ -264,6 +277,7 @@ final class ConnectorProduct
             $this->groupCodes,
             $this->parentProductModelCode,
             $filteredAssociations,
+            $this->quantifiedAssociations,
             $this->metadata,
             $this->values
         );
@@ -284,8 +298,14 @@ final class ConnectorProduct
             $this->groupCodes,
             $this->parentProductModelCode,
             $this->associations,
+            $this->quantifiedAssociations,
             $this->metadata,
             $this->values
         );
+    }
+
+    public function getQuantifiedAssociations()
+    {
+
     }
 }

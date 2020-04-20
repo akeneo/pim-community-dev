@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProduct;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -77,7 +78,7 @@ class QuantifiedAssociationFieldSetter extends AbstractFieldSetter
      *     },
      * }
      */
-    protected function setAssociations(AbstractProduct $entity, array $data = null)
+    protected function setAssociations(EntityWithQuantifiedAssociationsInterface $entity, array $data = null)
     {
         if (null === $data) {
             return;
