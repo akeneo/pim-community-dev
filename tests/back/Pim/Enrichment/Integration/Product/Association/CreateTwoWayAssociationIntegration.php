@@ -7,6 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
 
 class CreateTwoWayAssociationIntegration extends TestCase
@@ -55,6 +57,30 @@ class CreateTwoWayAssociationIntegration extends TestCase
 
         $this->getProductModelAssociationRepository()->clear();
         $productModelAssociations = $this->getProductModelAssociationRepository()->findByOwner($productWithAssociations->getId());
+        $this->assertAssociationsHaveNoProductModel($productModelAssociations);
+    }
+
+    public function testInvertedAssociationsWasDeletedWhenProductAssociationIsDeleted()
+    {
+        $this->getEntityBuilder()->createProduct('a_product', '', []);
+        $this->getEntityBuilder()->createProductModel('a_product_model', 'clothing_color_size', null, []);
+        $product = $this->getEntityBuilder()->createProduct('a_product_with_associations', '', [
+            'associations'  => [
+                "COMPATIBILITY" => [
+                    "products" => ["a_product"],
+                    "product_models" => ["a_product_model"],
+                ],
+            ],
+        ]);
+
+        $product->getAssociationForTypeCode('COMPATIBILITY')->setProducts([]);
+        $product->getAssociationForTypeCode('COMPATIBILITY')->setProductModels([]);
+        $this->getProductSaver()->save($product);
+
+        $productAssociations = $this->getProductAssociationRepository()->findByOwner($product->getId());
+        $this->assertAssociationsHaveNoProduct($productAssociations);
+
+        $productModelAssociations = $this->getProductModelAssociationRepository()->findByOwner($product->getId());
         $this->assertAssociationsHaveNoProductModel($productModelAssociations);
     }
 
@@ -110,13 +136,18 @@ class CreateTwoWayAssociationIntegration extends TestCase
         return $this->get('doctrine')->getManager()->getRepository(ProductModelAssociation::class);
     }
 
-    private function getProductRemover()
+    private function getProductRemover(): RemoverInterface
     {
         return $this->get('pim_catalog.remover.product');
     }
 
-    private function getProductModelRemover()
+    private function getProductModelRemover(): RemoverInterface
     {
         return $this->get('pim_catalog.remover.product_model');
+    }
+
+    private function getProductSaver(): SaverInterface
+    {
+        return $this->get('pim_catalog.saver.product');
     }
 }

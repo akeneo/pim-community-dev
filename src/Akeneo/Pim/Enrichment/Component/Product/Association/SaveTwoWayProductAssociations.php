@@ -95,14 +95,17 @@ WHERE association_id IN (
         FROM pim_catalog_product_model_association product_model_association
         INNER JOIN pim_catalog_association_product_model_to_product product_model_association_with_product
             ON product_model_association_with_product.association_id = product_model_association.id
-        WHERE association_type_id IN (:association_type_ids)
-        AND product_id = :owner_id
-        AND (association_type_id, product_id, owner_id) NOT IN (
-            SELECT existing_product_association.association_type_id, existing_product_association.owner_id, existing_product_association_with_product_model.product_model_id
+        WHERE NOT EXISTS (
+            SELECT *
             FROM pim_catalog_association existing_product_association
             INNER JOIN pim_catalog_association_product_model existing_product_association_with_product_model
                 ON existing_product_association_with_product_model.association_id = existing_product_association.id
+            WHERE existing_product_association.association_type_id = product_model_association.association_type_id
+            AND existing_product_association.owner_id = product_model_association_with_product.product_id
+            AND existing_product_association_with_product_model.product_model_id = product_model_association.owner_id
         )
+        AND association_type_id IN (:association_type_ids)
+        AND product_id = :owner_id
     ) as association_id_to_delete
 );
 SQL;
@@ -129,14 +132,17 @@ WHERE association_id IN (
         FROM pim_catalog_association product_association
         INNER JOIN pim_catalog_association_product product_association_with_product
             ON product_association_with_product.association_id = product_association.id
-        WHERE association_type_id IN (:association_type_ids)
-        AND product_id = :owner_id
-        AND (association_type_id, product_id, owner_id) NOT IN (
-            SELECT existing_product_association.association_type_id, existing_product_association.owner_id, existing_product_association_with_product.product_id
+        WHERE NOT EXISTS (
+            SELECT *
             FROM pim_catalog_association existing_product_association
             INNER JOIN pim_catalog_association_product existing_product_association_with_product
                 ON existing_product_association_with_product.association_id = existing_product_association.id
+            WHERE product_association.association_type_id = product_association.association_type_id
+            AND product_association_with_product.product_id = existing_product_association.owner_id
+            AND product_association.owner_id = existing_product_association_with_product.product_id
         )
+        AND association_type_id IN (:association_type_ids)
+        AND product_id = :owner_id
     ) as association_id_to_delete
 );
 SQL;
