@@ -28,7 +28,7 @@ services:
       BEHAT_SCREENSHOT_PATH: '/srv/pim/var/tests/screenshots'
       PHP_IDE_CONFIG: 'serverName=pim-docker-web'
       XDEBUG_ENABLED: '${XDEBUG_ENABLED:-0}'
-      XDEBUG_CONFIG: 'remote_host=172.17.0.1  '
+      XDEBUG_CONFIG: 'remote_host=172.17.0.1'
       BLACKFIRE_CLIENT_ID: '${BLACKFIRE_CLIENT_ID:-client_id}'
       BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
       ASPELL_BINARY_PATH: '${ASPELL_BINARY_PATH:-aspell}'
