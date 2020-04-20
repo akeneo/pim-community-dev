@@ -7,6 +7,8 @@ pim_title:
     akeneo_connectivity_connection_settings_any: Connections
     akeneo_connectivity_connection_audit_index: Connection dashboard
     akeneo_connectivity_connection_audit_any: Connection dashboard
+    akeneo_connectivity_connection_error_management_dashboard: Connection dashboard
+    akeneo_connectivity_connection_error_management_connection_monitoring: Connection monitoring
 
 akeneo_connectivity.connection:
     connections: Connections
@@ -171,6 +173,23 @@ akeneo_connectivity.connection:
             message_without_permission:
                 message: Ask your administrator to create one.
                 link: Learn more about connections here...
+
+    error_management:
+        connection_monitoring:
+            title: Monitoring
+            helper:
+                title: 'You have {{ count }} business errors'
+                description: Here, you can see the detail of each business error for this connection over the last 7 days. Error
+                    number is limited to 100 errors.
+                link: To understand how to solve this, please visit the API help center.
+            search_filter:
+                placeholder: Search in error messages
+                result_count: '{{ count }} results'
+            error_list:
+                date_time_column: Day and time
+                content_column: Business error message
+            no_error:
+                title: Awesome! No business error found!
 
     runtime_error:
         error_message: Oh snap! An error occurred...

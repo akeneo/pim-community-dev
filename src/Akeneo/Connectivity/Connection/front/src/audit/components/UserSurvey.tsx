@@ -1,17 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
-import {Translate} from '../../shared/translate';
-import {PropsWithTheme} from '../../common/theme';
-import surveyImageUrl from '../../common/assets/illustrations/user-survey.svg';
+import surveyImageUrl from '../../common/assets/illustrations/UserSurvey.svg';
 import {ApplyButton} from '../../common/components';
+import styled from '../../common/styled-with-theme';
+import {Translate} from '../../shared/translate';
 
 const Title = styled.div`
-    color: ${({theme}: PropsWithTheme) => theme.color.grey140};
+    color: ${({theme}) => theme.color.grey140};
     font-size: 28px;
 `;
 const Content = styled.div`
-    color: ${({theme}: PropsWithTheme) => theme.color.grey120};
-    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.big};
+    color: ${({theme}) => theme.color.grey120};
+    font-size: ${({theme}) => theme.fontSize.big};
     margin: 10px auto 20px;
 `;
 const Container = styled.div`

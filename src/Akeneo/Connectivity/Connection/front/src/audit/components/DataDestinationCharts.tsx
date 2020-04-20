@@ -1,22 +1,21 @@
 import React from 'react';
-import {Translate} from '../../shared/translate';
 import {Section} from '../../common';
+import styled from '../../common/styled-with-theme';
+import {AuditEventType} from '../../model/audit-event-type.enum';
+import {FlowType} from '../../model/flow-type.enum';
+import {Translate} from '../../shared/translate';
 import {ConnectionSelect} from '../components/ConnectionSelect';
 import {EventChart} from '../components/EventChart';
-import {AuditEventType} from '../../model/audit-event-type.enum';
 import {greenTheme} from '../event-chart-themes';
-import styled from 'styled-components';
 import useConnectionSelect from '../useConnectionSelect';
-import {FlowType} from '../../model/flow-type.enum';
 import {NoConnection} from './NoConnection';
-import {PropsWithTheme} from '../../common/theme';
 
 const DataDestinationChartsContainer = styled.div`
     padding-bottom: 25px;
     display: block;
 `;
 const NoConnectionContainer = styled.div`
-    border: 1px solid ${({theme}: PropsWithTheme) => theme.color.grey70};
+    border: 1px solid ${({theme}) => theme.color.grey70};
     padding-bottom: 20px;
     margin-top: 20px;
 `;

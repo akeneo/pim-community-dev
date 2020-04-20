@@ -1,5 +1,5 @@
 import React, {SVGProps} from 'react';
-import {theme} from '../theme';
+import {theme} from '../styled-with-theme';
 
 export const ChevronDownIcon = ({
     color = theme.color.grey120,

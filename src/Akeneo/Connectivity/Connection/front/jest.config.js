@@ -1,5 +1,10 @@
 module.exports = {
     preset: 'ts-jest',
+    globals: {
+        'ts-jest': {
+            tsConfig: './tests/tsconfig.json',
+        },
+    },
     moduleNameMapper: {
         '\\.(svg)$': '<rootDir>/tests/mocks/file-mock.ts',
         '^@src/(.*)$': '<rootDir>/src/$1',

@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
-import styled from 'styled-components';
 import {ChevronDownIcon} from '../../icons';
-import {PropsWithTheme} from '../../theme';
+import styled from '../../styled-with-theme';
 
 type Props = {
     children: string;
@@ -18,10 +17,10 @@ export const Selector: FC<Props> = ({children, onClick}: Props) => (
 );
 
 const Container = styled.div`
-    color: ${({theme}: PropsWithTheme) => theme.color.purple100};
+    color: ${({theme}) => theme.color.purple100};
     cursor: pointer;
     display: flex;
-    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.default};
+    font-size: ${({theme}) => theme.fontSize.default};
     height: 44px;
     line-height: 44px;
     outline: none;
