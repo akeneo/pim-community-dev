@@ -100,7 +100,7 @@ pimee_catalog_rule:
                     "<": less than
                     "<=": equals or less than
             notification:
-                success: Rule successfully updated 
+                success: Rule updated successfully
                 failed: Rule update failed
         helper:
             add_to_category: To add your product selection to one or more categories, please start by selecting our category trees and then, your categories.

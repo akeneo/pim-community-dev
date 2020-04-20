@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { Translate } from "../../../dependenciesTools";
-import { SmallHelper } from "../../../components/SmallHelper";
-import { GreyGhostButton } from "../../../components/Buttons";
+import { GreyGhostButton, SmallHelper } from "../../../components";
 import { TextBoxBlue } from "./TextBoxBlue";
-import {RuleDefinition} from "../../../models/RuleDefinition";
-import {PimConditionLine} from "../PimConditionLine";
-import {FallbackConditionLine} from "../FallbackConditionLine";
-import {Condition} from "../../../models/Condition";
+import { RuleDefinition } from "../../../models/RuleDefinition";
+import { PimConditionLine } from "../PimConditionLine";
+import { FallbackConditionLine } from "../FallbackConditionLine";
+import { Condition } from "../../../models/Condition";
 
 const Header = styled.header`
   font-weight: normal;
@@ -44,32 +43,40 @@ const AddConditionContainer = styled.div`
 `;
 
 type Props = {
-  ruleDefinition: RuleDefinition
+  ruleDefinition: RuleDefinition;
   translate: Translate;
 };
 
 type ConditionLineProps = {
   condition: Condition;
   translate: Translate;
-}
-
-const ConditionLine: React.FC<ConditionLineProps> = ({ translate, condition }) => {
-  const Line = condition.module;
-  const isFallback = condition.module === PimConditionLine || condition.module === FallbackConditionLine;
-
-  return (
-    <div className={`AknGrid-bodyRow${isFallback && ' AknGrid-bodyRow--highlight'}`}>
-      <div className="AknGrid-bodyCell">
-        <Line
-          condition={condition}
-          translate={translate}
-        />
-      </div>
-    </div>
-  )
 };
 
-const RuleProductSelection: React.FC<Props> = ({ ruleDefinition, translate }) => {
+const ConditionLine: React.FC<ConditionLineProps> = ({
+  translate,
+  condition,
+}) => {
+  const Line = condition.module;
+  const isFallback =
+    condition.module === PimConditionLine ||
+    condition.module === FallbackConditionLine;
+
+  return (
+    <div
+      className={`AknGrid-bodyRow${isFallback &&
+        " AknGrid-bodyRow--highlight"}`}
+    >
+      <div className="AknGrid-bodyCell">
+        <Line condition={condition} translate={translate} />
+      </div>
+    </div>
+  );
+};
+
+const RuleProductSelection: React.FC<Props> = ({
+  ruleDefinition,
+  translate,
+}) => {
   return (
     <fieldset>
       <Header className="AknSubsection-title">
@@ -84,7 +91,7 @@ const RuleProductSelection: React.FC<Props> = ({ ruleDefinition, translate }) =>
         <HeaderPartContainer>
           <span className="AknSubsection-comment AknSubsection-comment--clickable">
             {translate("pimee_catalog_rule.form.edit.count_products", {
-              count: "0"
+              count: "0",
             })}
           </span>
           <AddConditionContainer>
@@ -104,11 +111,13 @@ const RuleProductSelection: React.FC<Props> = ({ ruleDefinition, translate }) =>
       </SmallHelper>
       <div className="AknGrid AknGrid--unclickable">
         {ruleDefinition.conditions.map((condition, i) => {
-          return <ConditionLine
-            condition={condition}
-            translate={translate}
-            key={`condition_${i}`}
-          />
+          return (
+            <ConditionLine
+              condition={condition}
+              translate={translate}
+              key={`condition_${i}`}
+            />
+          );
         })}
       </div>
       <LegendSrOnly>

@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { Header } from "../../template/Header";
+import { Header } from "../Header";
 import { PrimaryButton } from "../Buttons/PrimaryButton";
 import { PimView } from "../../dependenciesTools/components/PimView";
+import { Translate } from "../../dependenciesTools";
 import { Breadcrumb } from "../Breadcrumb";
+import { UnsavedChangesWarning } from "../UnsavedChangesWarning";
 
 const BreadcrumbAndButtons = styled.div`
   display: inline-flex;
@@ -15,13 +17,17 @@ type Props = {
   buttonLabel: string;
   formId: string;
   title: string;
+  translate: Translate;
+  unsavedChanges?: boolean;
 };
 
 const RulesHeader: React.FC<Props> = ({
   buttonLabel,
+  children,
   formId,
   title,
-  children
+  translate,
+  unsavedChanges = false,
 }) => {
   return (
     <Header>
@@ -34,13 +40,14 @@ const RulesHeader: React.FC<Props> = ({
           />
           <div className="AknTitleContainer-actionsContainer AknButtonList">
             <PrimaryButton form={formId} type="submit">
-              {buttonLabel}
+              {translate(buttonLabel)}
             </PrimaryButton>
           </div>
         </div>
       </BreadcrumbAndButtons>
       <div className="AknTitleContainer-line">
         <div className="AknTitleContainer-title">{title}</div>
+        {unsavedChanges && <UnsavedChangesWarning translate={translate} />}
       </div>
     </Header>
   );

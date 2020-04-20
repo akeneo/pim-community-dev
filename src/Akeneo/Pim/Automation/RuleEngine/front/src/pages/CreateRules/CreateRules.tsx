@@ -15,8 +15,7 @@ import { useDocumentEscapeKey } from "../../hooks";
 import { CrossLink } from "./components/CrossLink";
 import { CreateRulesForm, FormDataInput } from "./components/CreateRulesForm";
 import { httpPost } from "../../fetch";
-import { AkeneoSpinner } from "../../components/AkeneoSpinner";
-import { SmallHelper } from "../../components/SmallHelper";
+import { AkeneoSpinner, SmallHelper } from "../../components";
 import { Payload } from "../../rules.types";
 
 const transformFormData = (

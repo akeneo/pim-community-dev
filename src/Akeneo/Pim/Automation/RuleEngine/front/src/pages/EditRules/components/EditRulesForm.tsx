@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { useTabState, Tab, TabList, TabPanel } from "reakit/Tab";
-import { useForm } from "react-hook-form";
 import { Translate } from "../../../dependenciesTools";
 import { RuleDefinition } from "../../../models/RuleDefinition";
 import { RulesBuilder } from "./RulesBuilder";
@@ -15,20 +14,35 @@ const getTabBorder = ({ id, selectedId, theme }: any) => {
   return 0;
 };
 
+const getTabColor = ({ id, selectedId, theme }: any) => {
+  if (id === selectedId) {
+    return theme.color.purple100;
+  }
+
+  return theme.color.grey120;
+};
+
 const StyledTab = styled(Tab)`
+  background: ${({ theme }) => theme.color.white};
   border-bottom: ${(props) => getTabBorder(props)};
   border-width: 0 0 3px 0;
-  color: ${({ theme }) => theme.color.purple100};
+  color: ${(props) => getTabColor(props)};
+  cursor: pointer;
   font-size: 15px;
   font-weight: normal;
   height: 18px;
-  padding: 0 0 25px 0;
+  margin: 0 5px -1px 0;
+  padding: 0 40px 25px 0;
   text-align: left;
-  width: 125px;
+  transition: color 0.1s ease-in, border-width 0.1s ease-in;
+  &:hover {
+    color: ${({ theme }) => theme.color.purple100};
+    border-bottom: 3px solid ${({ theme }) => theme.color.purple100};
+  }
 `;
 
 const StyledTabPanel = styled(TabPanel)`
-  padding-top: 40px;
+  padding-top: 20px;
 `;
 
 const StyledTabList = styled(TabList)`
@@ -48,53 +62,26 @@ type FormData = {
 };
 
 type Props = {
-  onSubmit: (
-    formData: FormData,
-    event: React.FormEvent<HTMLFormElement>
-  ) => void;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   translate: Translate;
   locales: Locale[];
   ruleDefinition: RuleDefinition;
-  setRuleDefinition: React.Dispatch<React.SetStateAction<RuleDefinition>>;
+  register: any;
 };
-
-const transformLocalesToObject = (
-  locales: Locale[],
-  ruleDefinition: RuleDefinition
-): { [key: string]: string } =>
-  locales.reduce((acc, value) => {
-    return {
-      ...acc,
-      [value.code]: ruleDefinition.labels[value.code],
-    };
-  }, {});
-
-const createFormDefaultValues = (
-  ruleDefinition: RuleDefinition,
-  locales: Locale[]
-) => ({
-  code: ruleDefinition.code,
-  priority: ruleDefinition.priority.toString(),
-  labels: transformLocalesToObject(locales, ruleDefinition),
-});
 
 const EditRulesForm: React.FC<Props> = ({
   onSubmit,
   locales,
   ruleDefinition,
-  setRuleDefinition,
   translate,
+  register,
 }) => {
   const tab = useTabState({ selectedId: "rulesBuilderTab" });
-  const defaultValues = createFormDefaultValues(ruleDefinition, locales);
-  const { handleSubmit, register } = useForm<FormData>({
-    defaultValues,
-  });
   return (
     <form
       id="edit-rules-form"
       data-testid="edit-rules-form"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={onSubmit}
     >
       <StyledTabList
         {...tab}
@@ -115,8 +102,6 @@ const EditRulesForm: React.FC<Props> = ({
           <RuleProperties
             register={register}
             locales={locales}
-            ruleDefinition={ruleDefinition}
-            setRuleDefinition={setRuleDefinition}
             translate={translate}
           />
         </StyledTabPanel>

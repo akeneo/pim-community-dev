@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import infoIcon from "../../assets/icons/info.svg";
+import infoIcon from "../../../assets/icons/info.svg";
 
 interface Level {
   level: "info" | "warning";

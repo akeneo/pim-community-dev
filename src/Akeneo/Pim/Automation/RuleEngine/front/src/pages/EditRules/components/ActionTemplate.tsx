@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Translate } from "../../../dependenciesTools";
-import { SmallHelper } from "../../../components/SmallHelper";
-import { RedGhostButton } from "../../../components/Buttons";
+import { RedGhostButton, SmallHelper } from "../../../components";
 import { TextBoxBlue } from "./TextBoxBlue";
 
 const LegendSrOnly = styled.legend`
@@ -34,12 +33,18 @@ const StyledTitleHeader = styled.span`
 
 type Props = {
   translate: Translate;
-  title: string,
-  helper: string,
-  srOnly: string,
+  title: string;
+  helper: string;
+  srOnly: string;
 };
 
-const ActionTemplate: React.FC<Props> = ({ srOnly, translate, title, helper, children }) => {
+const ActionTemplate: React.FC<Props> = ({
+  srOnly,
+  translate,
+  title,
+  helper,
+  children,
+}) => {
   return (
     <fieldset>
       <StyledHeader className="AknSubsection-title">
@@ -47,17 +52,13 @@ const ActionTemplate: React.FC<Props> = ({ srOnly, translate, title, helper, chi
           <TextBoxBlue>
             {translate("pimee_catalog_rule.rule.action.then.label")}
           </TextBoxBlue>
-          <StyledTitleHeader>
-            {title}
-          </StyledTitleHeader>
+          <StyledTitleHeader>{title}</StyledTitleHeader>
         </StyledHeaderLeft>
         <RedGhostButton sizeMode="small">
           {translate("pimee_catalog_rule.form.edit.remove_action")}
         </RedGhostButton>
       </StyledHeader>
-      <SmallHelper>
-        {helper}
-      </SmallHelper>
+      <SmallHelper>{helper}</SmallHelper>
       <LegendSrOnly>{srOnly}</LegendSrOnly>
       {children}
     </fieldset>

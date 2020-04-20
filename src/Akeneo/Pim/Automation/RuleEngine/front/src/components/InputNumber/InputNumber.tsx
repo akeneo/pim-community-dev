@@ -1,15 +1,11 @@
 import React from "react";
-import styled from "styled-components";
+import { StyledLabel } from '../InputText'
 
 type Props = {
   ariaInvalid?: boolean;
   ariaDescribedBy?: string;
   label?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
-
-const StyledLabel = styled.label`
-  padding-bottom: 10px;
-`;
 
 const InputNumber = React.forwardRef<HTMLInputElement, Props>(
   function InputNumberWithLabel(

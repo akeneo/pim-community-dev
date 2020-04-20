@@ -1,8 +1,8 @@
 import React from "react";
 import "jest-fetch-mock";
-import { EditRules } from "../../../../src/pages/EditRules";
+import { EditRules } from "../../../../src/pages/EditRules/EditRules";
 import userEvent from "@testing-library/user-event";
-import { render, fireEvent } from "../../../../test-utils";
+import { act, render, fireEvent } from "../../../../test-utils";
 
 jest.mock("../../../../src/dependenciesTools/provider/dependencies.ts");
 
@@ -19,34 +19,34 @@ describe("EditRules", () => {
       type: "product",
       priority: 0,
       content: { actions: [], conditions: [] },
-      labels: { en_US: "" }
+      labels: { en_US: "" },
     };
     const localesPayload = [
       {
         code: "de_DE",
         label: "German (Germany)",
         region: "Germany",
-        language: "German"
+        language: "German",
       },
       {
         code: "en_US",
         label: "English (United States)",
         region: "United States",
-        language: "English"
+        language: "English",
       },
       {
         code: "fr_FR",
         label: "French (France)",
         region: "France",
-        language: "French"
-      }
+        language: "French",
+      },
     ];
     fetchMock.mockResponses(
       [JSON.stringify(codePayload), { status: 200 }],
       [JSON.stringify(localesPayload), { status: 200 }]
     );
     fetchMock.mockResponse(() => {
-      return new Promise(resolve =>
+      return new Promise((resolve) =>
         setTimeout(() => resolve({ body: "ok" }), 100)
       );
     });
@@ -54,7 +54,7 @@ describe("EditRules", () => {
     const { getByTestId, findByTestId, findByText, findByLabelText } = render(
       <EditRules ruleDefinitionCode={ruleDefinitionCode} />,
       {
-        legacy: true
+        legacy: true,
       }
     );
     const propertiesTab = (await findByText(
@@ -73,12 +73,14 @@ describe("EditRules", () => {
     const inputLabelGerman = (await findByLabelText(
       "German (Germany)"
     )) as HTMLInputElement;
-    userEvent.type(inputPriority, "1");
-    userEvent.type(inputLabelUS, "Hello");
-    userEvent.type(inputLabelFrench, "Salut");
-    userEvent.type(inputLabelGerman, "Hallo");
+    act(() => {
+      userEvent.type(inputPriority, "1");
+      userEvent.type(inputLabelUS, "Hello");
+      userEvent.type(inputLabelFrench, "Salut");
+      userEvent.type(inputLabelGerman, "Hallo");
+      fireEvent.submit(getByTestId("edit-rules-form"));
+    });
     // Then
-    fireEvent.submit(getByTestId("edit-rules-form"));
     expect(await findByTestId("akeneo-spinner")).toBeInTheDocument();
   });
 });
