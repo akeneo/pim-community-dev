@@ -174,7 +174,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
         $this->logger->warning('Locking the whole completeness table to persist the completeness, as it fails after trying 5 times to insert data due to deadlocks.');
 
         $value = $this->connection->executeQuery('SELECT @@autocommit')->fetch();
-        if (!isset($value['@@autocommit']) && ((int) $value['@@autocommit'] !== 1 || (int) $value['@@autocommit'] !== 0)) {
+        if (!isset($value['@@autocommit'])) {
             throw new \LogicException('Error when getting autocommit parameter from Mysql.');
         }
 
