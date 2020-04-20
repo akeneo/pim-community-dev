@@ -219,20 +219,20 @@ SQL;
     ): void {
         $insertProductAssociation = <<<SQL
 INSERT INTO pim_catalog_association_product (association_id, product_id)
-SELECT DISTINCT existing_product_association.id, :owner_id
+SELECT existing_product_association.id, :owner_id
 FROM pim_catalog_association product_association
 JOIN pim_catalog_association_product product_association_with_product
     ON product_association_with_product.association_id = product_association.id
 JOIN pim_catalog_association existing_product_association
     ON existing_product_association.association_type_id = product_association.association_type_id
-    AND existing_product_association.owner_id = product_association_with_product.product_id
-LEFT OUTER JOIN pim_catalog_association_product existing_product_association_with_product
-    ON existing_product_association.id = existing_product_association_with_product.association_id
+	AND existing_product_association.owner_id = product_association_with_product.product_id
 WHERE product_association.owner_id = :owner_id
 AND product_association.association_type_id IN (:association_type_ids)
-AND (
-    existing_product_association_with_product.association_id IS NULL
-    OR existing_product_association_with_product.product_id != :owner_id
+AND NOT EXISTS (
+	SELECT *
+    FROM pim_catalog_association_product existing_product_association_with_product
+    WHERE existing_product_association_with_product.association_id = existing_product_association.id
+    AND existing_product_association_with_product.product_id = :owner_id
 );
 SQL;
 
@@ -256,13 +256,13 @@ JOIN pim_catalog_association_product_model product_association_with_product_mode
 JOIN pim_catalog_product_model_association existing_product_model_association
     ON existing_product_model_association.association_type_id = product_association.association_type_id
     AND existing_product_model_association.owner_id = product_association_with_product_model.product_model_id
-LEFT OUTER JOIN pim_catalog_association_product_model_to_product existing_product_model_association_with_product
-    ON existing_product_model_association.id = existing_product_model_association_with_product.association_id
 WHERE product_association.owner_id = :owner_id
 AND product_association.association_type_id IN (:association_type_ids)
-AND (
-    existing_product_model_association_with_product.association_id IS NULL
-    OR existing_product_model_association_with_product.product_id != :owner_id
+AND NOT EXISTS (
+    SELECT *
+    FROM pim_catalog_association_product_model_to_product existing_product_model_association_with_product
+    WHERE existing_product_model_association_with_product.association_id = existing_product_model_association.id
+    AND existing_product_model_association_with_product.product_id = :owner_id
 );
 SQL;
 
