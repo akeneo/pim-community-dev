@@ -13,6 +13,7 @@ Feature: Update the product associations
       | patrick   | clothing | tshirts    |
     And I am on the "spongebob" product page
     And I visit the "Associations (0)" column tab
+    And I visit the "Cross sell (0)" association type
 
   @critical
   Scenario: Successfully add an association
