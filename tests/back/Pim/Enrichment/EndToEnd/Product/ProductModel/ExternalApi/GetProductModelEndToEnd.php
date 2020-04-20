@@ -74,6 +74,7 @@ class GetProductModelEndToEnd extends ApiTestCase
             'associations'  => [
                 'X_SELL' => ['groups' => [], 'products' => ['biker-jacket-leather-m'], 'product_models' => ['model-biker-jacket-polyester']],
                 'PACK' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'COMPATIBILITY' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []]
             ]
