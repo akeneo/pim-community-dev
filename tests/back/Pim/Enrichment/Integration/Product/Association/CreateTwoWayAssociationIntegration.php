@@ -116,12 +116,12 @@ class CreateTwoWayAssociationIntegration extends TestCase
     {
         $compatibilityAssociation = $this->extractCompatibilityAssociation($associations);
 
-        $this->assertCount(count($compatibilityAssociation->getProducts()), $products);
+        $this->assertCount(count($products), $compatibilityAssociation->getProducts());
         foreach ($compatibilityAssociation->getProducts() as $associationProduct) {
             $this->assertContains($associationProduct->getIdentifier(), $products);
         }
 
-        $this->assertCount(count($compatibilityAssociation->getProductModels()), $productModels);
+        $this->assertCount(count($productModels), $compatibilityAssociation->getProductModels());
         foreach ($compatibilityAssociation->getProductModels() as $associationProductModel) {
             $this->assertContains($associationProductModel->getCode(), $productModels);
         }
