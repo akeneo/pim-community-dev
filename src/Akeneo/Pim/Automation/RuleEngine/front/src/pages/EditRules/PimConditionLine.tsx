@@ -4,7 +4,9 @@ import {Flag} from "../../components/Flag/Flag";
 import {Translate} from "../../dependenciesTools/provider/applicationDependenciesProvider.type";
 
 type Props = {
+  register: any;
   condition: PimCondition,
+  lineNumber: number,
   translate: Translate,
 }
 

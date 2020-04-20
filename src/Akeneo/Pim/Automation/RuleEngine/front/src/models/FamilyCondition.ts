@@ -12,12 +12,12 @@ enum FamilyOperator {
 }
 
 type FamilyCondition = {
-  module: React.FC<{condition: Condition, translate: Translate}>,
+  module: React.FC<{register: any, condition: Condition, lineNumber: number, translate: Translate}>,
   operator: FamilyOperator;
   familyCodes: string[];
 }
 
-const createFamilyCondition = (json: any): FamilyCondition | null => {
+const createFamilyCondition = async (json: any): Promise <FamilyCondition | null> => {
   // TODO Remove this line when we implement family condition.
   return null;
 

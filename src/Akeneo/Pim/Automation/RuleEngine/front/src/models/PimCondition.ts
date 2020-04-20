@@ -9,7 +9,7 @@ import {Condition} from "./Condition";
 import {Translate} from "../dependenciesTools/provider/applicationDependenciesProvider.type";
 
 type PimCondition = {
-  module: React.FC<{condition: Condition, translate: Translate}>,
+  module: React.FC<{register: any, condition: Condition, lineNumber: number, translate: Translate}>,
   field: string;
   operator: string;
   value: any|null;
@@ -17,7 +17,7 @@ type PimCondition = {
   scope: string|null;
 }
 
-export const createPimCondition = (json: any) : PimCondition | null => {
+export const createPimCondition = async (json: any) : Promise <PimCondition | null> => {
   if (typeof json.field === 'string' &&
     typeof json.operator === 'string' // TODO check operator
   ) {

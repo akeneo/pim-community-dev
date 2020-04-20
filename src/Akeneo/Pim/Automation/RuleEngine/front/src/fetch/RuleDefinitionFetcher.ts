@@ -8,5 +8,5 @@ export const getRuleDefinitionByCode = async (ruleDefinitionCode: string, router
   const response = await httpGet(url);
   const json = await response.json();
 
-  return denormalize(json);
+  return denormalize(json, router);
 };

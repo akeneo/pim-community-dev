@@ -4,11 +4,11 @@ import {Condition} from "./Condition";
 import {Translate} from "../dependenciesTools/provider/applicationDependenciesProvider.type";
 
 export type FallbackCondition = {
-  module: React.FC<{condition: Condition, translate: Translate}>,
+  module: React.FC<{register: any, condition: Condition, lineNumber: number, translate: Translate}>,
   json: any;
 }
 
-export const createFallbackCondition = (json: any) : FallbackCondition => {
+export const createFallbackCondition = async (json: any) : Promise <FallbackCondition> => {
   return {
     module: FallbackConditionLine,
     json: json

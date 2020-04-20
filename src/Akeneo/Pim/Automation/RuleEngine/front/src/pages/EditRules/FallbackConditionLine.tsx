@@ -3,7 +3,9 @@ import {FallbackCondition} from "../../models/FallbackCondition";
 import {Translate} from "../../dependenciesTools/provider/applicationDependenciesProvider.type";
 
 type Props = {
+  register: any;
   condition: FallbackCondition,
+  lineNumber: number,
   translate: Translate,
 }
 

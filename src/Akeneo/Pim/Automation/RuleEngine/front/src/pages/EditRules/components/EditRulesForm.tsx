@@ -96,7 +96,7 @@ const EditRulesForm: React.FC<Props> = ({
           </StyledTab>
         </TabDiv>
         <StyledTabPanel {...tab} tabIndex={-1}>
-          <RulesBuilder ruleDefinition={ruleDefinition} translate={translate} />
+          <RulesBuilder register={register} ruleDefinition={ruleDefinition} translate={translate} />
         </StyledTabPanel>
         <StyledTabPanel {...tab} tabIndex={-1}>
           <RuleProperties

@@ -43,19 +43,19 @@ const AddConditionContainer = styled.div`
 `;
 
 type Props = {
-  ruleDefinition: RuleDefinition;
+  register: any,
+  ruleDefinition: RuleDefinition,
   translate: Translate;
 };
 
 type ConditionLineProps = {
+  register: any;
   condition: Condition;
+  lineNumber: number,
   translate: Translate;
 };
 
-const ConditionLine: React.FC<ConditionLineProps> = ({
-  translate,
-  condition,
-}) => {
+const ConditionLine: React.FC<ConditionLineProps> = ({ register, translate, condition, lineNumber }) => {
   const Line = condition.module;
   const isFallback =
     condition.module === PimConditionLine ||
@@ -67,16 +67,18 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
         " AknGrid-bodyRow--highlight"}`}
     >
       <div className="AknGrid-bodyCell">
-        <Line condition={condition} translate={translate} />
+        <Line
+          register={register}
+          condition={condition}
+          lineNumber={lineNumber}
+          translate={translate}
+        />
       </div>
     </div>
   );
 };
 
-const RuleProductSelection: React.FC<Props> = ({
-  ruleDefinition,
-  translate,
-}) => {
+const RuleProductSelection: React.FC<Props> = ({ register, ruleDefinition, translate }) => {
   return (
     <fieldset>
       <Header className="AknSubsection-title">
@@ -113,7 +115,9 @@ const RuleProductSelection: React.FC<Props> = ({
         {ruleDefinition.conditions.map((condition, i) => {
           return (
             <ConditionLine
+              register={register}
               condition={condition}
+              lineNumber={i}
               translate={translate}
               key={`condition_${i}`}
             />

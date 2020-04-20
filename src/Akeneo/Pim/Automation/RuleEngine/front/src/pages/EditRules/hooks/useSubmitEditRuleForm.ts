@@ -99,6 +99,8 @@ const createFormDefaultValues = (
   code: ruleDefinition.code,
   priority: ruleDefinition.priority.toString(),
   labels: locales.reduce(createLocalesLabels(ruleDefinition), {}),
+  conditions: ruleDefinition.conditions,
+  actions: ruleDefinition.actions
 });
 
 const useSubmitEditRuleForm = (
