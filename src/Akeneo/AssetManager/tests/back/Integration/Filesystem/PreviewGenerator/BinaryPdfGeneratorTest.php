@@ -67,7 +67,7 @@ final class BinaryPdfGeneratorTest extends PreviewGeneratorIntegrationTestCase
     {
         $previewImage = $this->binaryPdfGenerator->generate(self::DOCUMENT_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
     }
 
     /**
@@ -77,11 +77,11 @@ final class BinaryPdfGeneratorTest extends PreviewGeneratorIntegrationTestCase
     {
         $previewImage = $this->binaryPdfGenerator->generate(self::DOCUMENT_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
 
         $previewImage = $this->binaryPdfGenerator->generate(self::DOCUMENT_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
     }
 
     /**
@@ -92,7 +92,7 @@ final class BinaryPdfGeneratorTest extends PreviewGeneratorIntegrationTestCase
         $previewImage = $this->binaryPdfGenerator->generate('test', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString(
-            sprintf('media/cache/%s/pim_asset_manager.default_image.image', BinaryPdfGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]),
+            sprintf('__root__/thumbnail/asset_manager/%s/pim_asset_manager.default_image.image', BinaryPdfGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]),
             $previewImage
         );
     }

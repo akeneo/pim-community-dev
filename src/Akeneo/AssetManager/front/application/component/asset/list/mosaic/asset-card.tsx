@@ -80,23 +80,21 @@ export const AssetCardWithLink = ({...props}: AssetCardProps) => {
   );
 };
 
-const AssetCard = ({
-  asset,
-  context,
-  isSelected,
-  onSelectionChange,
-  isDisabled,
-  onClick,
-}: AssetCardProps) => {
+const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, onClick}: AssetCardProps) => {
   const [url, setUrl] = React.useState<string | null>(null);
+
   let isDisplayed = true;
   React.useEffect(() => {
     const imageUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
-    loadImage(imageUrl).then(() => {
-      if (isDisplayed) {
-        setUrl(imageUrl);
-      }
-    });
+    loadImage(imageUrl)
+      .then(() => {
+        if (isDisplayed) {
+          setUrl(imageUrl);
+        }
+      })
+      .catch(() => {
+        setUrl('');
+      });
 
     return () => {
       isDisplayed = false;

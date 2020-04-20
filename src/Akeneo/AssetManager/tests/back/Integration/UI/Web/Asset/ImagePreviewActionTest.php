@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
@@ -68,13 +67,13 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::URL_VALUE_PREVIEW_ROUTE,
             [
-                'data'                => self::FILENAME,
+                'data' => base64_encode(self::FILENAME),
                 'attributeIdentifier' => $this->attribute->getIdentifier(),
-                'type'                => PreviewGeneratorRegistry::THUMBNAIL_TYPE
+                'type' => PreviewGeneratorRegistry::THUMBNAIL_TYPE
             ]
         );
         $response = $this->client->getResponse();
-        $this->webClientHelper->assertResponse($response, 302, '');
+        $this->webClientHelper->assertResponse($response, 200, '');
     }
 
     /**
@@ -87,13 +86,13 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::URL_VALUE_PREVIEW_ROUTE,
             [
-                'data'                => self::FILENAME,
+                'data' => base64_encode(self::FILENAME),
                 'attributeIdentifier' => 'unknown_attribute',
-                'type'                => PreviewGeneratorRegistry::THUMBNAIL_TYPE
+                'type' => PreviewGeneratorRegistry::THUMBNAIL_TYPE
             ]
         );
         $response = $this->client->getResponse();
-        $this->webClientHelper->assertResponse($response, 302, '');
+        $this->webClientHelper->assertResponse($response, 200, '');
     }
 
     private function loadFixtures(): void

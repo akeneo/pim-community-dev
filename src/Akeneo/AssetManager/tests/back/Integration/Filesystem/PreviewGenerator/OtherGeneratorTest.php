@@ -114,7 +114,7 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
         );
 
         $this->assertStringContainsString(
-            sprintf('media/cache/%s/pim_asset_manager.default_image.other',
+            sprintf('__root__/thumbnail/asset_manager/%s/pim_asset_manager.default_image.other',
                 OtherGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]
             ),
             $previewImage

@@ -5,6 +5,7 @@ import {getByText, fireEvent, act} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import AssetCard from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
+import loadImage from 'akeneoassetmanager/tools/image-loader';
 
 const flushPromises = () => new Promise(setImmediate);
 
@@ -16,14 +17,7 @@ const asset = {
   image: [{attribute: 'nice', locale: null, channel: null, data: {filePath: 'my_image_url', originalFilename: ''}}],
   completeness: {},
 };
-jest.mock('akeneoassetmanager/tools/image-loader', () =>
-  jest.fn().mockImplementation(
-    url =>
-      new Promise(resolve => {
-        act(() => resolve());
-      })
-  )
-);
+jest.mock('akeneoassetmanager/tools/image-loader');
 
 describe('Test Asset create modal component', () => {
   let container: HTMLElement;
@@ -31,6 +25,12 @@ describe('Test Asset create modal component', () => {
   beforeEach(() => {
     container = document.createElement('div');
     document.body.appendChild(container);
+    loadImage.mockImplementation(
+      url =>
+        new Promise(resolve => {
+          act(() => resolve());
+        })
+    );
   });
 
   afterEach(() => {
@@ -172,5 +172,34 @@ describe('Test Asset create modal component', () => {
     expect(selectedCode).toEqual(null);
     expect(onClick).toBeCalled();
     expect(assetCode).toEqual(asset.code);
+  });
+
+  test('It displays nothing if the asset fetch failed', async () => {
+    loadImage.mockImplementation(
+      url =>
+        new Promise((resolve, reject) => {
+          act(() => reject());
+        })
+    );
+    const isSelected = true;
+    await act(async () => {
+      ReactDOM.render(
+        <ThemeProvider theme={akeneoTheme}>
+          <AssetCard
+            asset={asset}
+            context={{locale: 'en_US', channel: 'ecommerce'}}
+            isSelected={isSelected}
+            onSelectionChange={() => {}}
+          />
+        </ThemeProvider>,
+        container
+      );
+    });
+
+    await flushPromises();
+
+    expect(container.querySelector('img')?.src).toEqual('');
+    expect(container.querySelector('[data-checked="true"]')).toBeInTheDocument();
+    expect(getByText(container, asset.labels.en_US)).toBeInTheDocument();
   });
 });
