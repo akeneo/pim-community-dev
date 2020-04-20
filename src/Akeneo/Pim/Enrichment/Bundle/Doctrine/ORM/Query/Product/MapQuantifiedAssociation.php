@@ -12,17 +12,18 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product;
 class MapQuantifiedAssociation
 {
     /**
-     * @var MapProductWithPermissions
+     * @var MapProduct
      */
     private $mapProduct;
+
     /**
-     * @var MapProductModelWithPermissions
+     * @var MapProductModel
      */
     private $mapProductModel;
 
     public function __construct(
-        MapProductWithPermissions $mapProduct,
-        MapProductModelWithPermissions $mapProductModel
+        MapProduct $mapProduct,
+        MapProductModel $mapProductModel
     ) {
         $this->mapProduct = $mapProduct;
         $this->mapProductModel = $mapProductModel;

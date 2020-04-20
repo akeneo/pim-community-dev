@@ -2,16 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductWithPermissions;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductModelWithPermissions;
-use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProduct;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Permission\Bundle\Entity\Query\GetGrantedProductIds;
-use Doctrine\DBAL\Connection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -26,19 +21,13 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
 {
     private $mapProduct;
     private $mapProductModel;
-    /**
-     * @var GetGrantedProductIds
-     */
-    private $getGrantedProductIds;
 
     public function __construct(
-        MapProductWithPermissions $mapProduct,
-        MapProductModelWithPermissions $mapProductModel,
-        GetGrantedProductIds $getGrantedProductIds
+        MapProduct $mapProduct,
+        MapProductModel $mapProductModel
     ) {
         $this->mapProduct = $mapProduct;
         $this->mapProductModel = $mapProductModel;
-        $this->getGrantedProductIds = $getGrantedProductIds;
     }
 
     /**

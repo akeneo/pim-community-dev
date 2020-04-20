@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-
+// TODO 225: Don't know if this trait is really a good idea
 trait QuantifiedAssociationTrait
 {
     public function setQuantifiedAssociations(array $quantifiedAssociations)
@@ -35,6 +35,14 @@ trait QuantifiedAssociationTrait
     {
         $quantifiedAssociationsWithIdentifiersAndCodes = [];
         foreach ($this->quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
+            // Filter ids with no permissions
+            $quantifiedAssociation['products'] = array_filter($quantifiedAssociation['products'], function ($association) use ($productIdentifiers) {
+                return isset($productIdentifiers[$association['id']]);
+            });
+            $quantifiedAssociation['product_models'] = array_filter($quantifiedAssociation['product_models'], function ($association) use ($productModelCodes) {
+                return isset($productModelCodes[$association['id']]);
+            });
+
             $quantifiedAssociationsWithIdentifiersAndCodes[$associationTypeCode]['products'] = array_map(function ($association) use ($productIdentifiers) {
                 return ['identifier' => $productIdentifiers[$association['id']], 'quantity' => $association['quantity']];
             }, $quantifiedAssociation['products'] ?? []);

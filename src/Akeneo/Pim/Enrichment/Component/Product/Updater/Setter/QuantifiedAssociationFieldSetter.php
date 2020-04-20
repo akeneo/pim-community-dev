@@ -2,18 +2,13 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductWithPermissions;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductModelWithPermissions;
-use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProduct;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\Product\MapProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\DBAL\Connection;
 
 /**
  * Sets the association field
@@ -28,8 +23,8 @@ class QuantifiedAssociationFieldSetter extends AbstractFieldSetter
      * @param array                                 $supportedFields
      */
     public function __construct(
-        MapProductWithPermissions $mapProduct,
-        MapProductModelWithPermissions $mapProductModel,
+        MapProduct $mapProduct,
+        MapProductModel $mapProductModel,
         array $supportedFields
     ) {
         $this->mapProduct = $mapProduct;
