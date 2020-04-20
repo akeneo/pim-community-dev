@@ -46,6 +46,13 @@ services:
         tags:
             - { name: doctrine.event_subscriber, priority: 50 }
 
+    pim_catalog.event_subscriber.product.association.save_two_way_product_associations:
+        class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\Association\SaveTwoWayProductAssociations
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
+
     pim_catalog.event_subscriber.product.delete.compute_products_and_ancestors:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete\ComputeProductsAndAncestorsSubscriber'
         arguments:
