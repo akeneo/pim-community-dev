@@ -98,8 +98,8 @@ ifeq ($(INSTANCE_NAME),pimci-helpdesk)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
 endif
-ifeq ($(INSTANCE_NAME),pimci-pr)
-	sed 's/^\(FLAG_.*_ENABLED\).*/   \1=1/g' .env | grep "FLAG_.*_ENABLED" >> $(INSTANCE_DIR)/templates/env-configmap.yaml
+ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
+	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | grep "FLAG_.*_ENABLED" >> $(PIM_SRC_DIR)/deployments/terraform/pim/templates/env-configmap.yaml
 endif
 
 .PHONY: create-pim-main-tf
@@ -155,8 +155,8 @@ slack_helpdesk:
 deploy_pr_environment:
 	PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/} && \
 	echo "\n\nThis environment will be available at https://pimci-pr-$${PR_NUMBER}.$(GOOGLE_MANAGED_ZONE_DNS) once deployed :)\n\n" && \
-	INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
-	INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make deploy
+	INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
+	INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make deploy
 
 .PHONY: delete_pr_environments
 delete_pr_environments:
