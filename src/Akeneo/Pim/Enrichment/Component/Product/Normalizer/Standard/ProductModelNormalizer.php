@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\QuantifiedAssociationsNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -34,6 +35,10 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
 
     /** @var CollectionFilterInterface */
     private $filter;
+    /**
+     * @var QuantifiedAssociationsNormalizer
+     */
+    private $quantifiedAssociationsNormalizer;
 
     /**
      * @param CollectionFilterInterface $filter The collection filter
@@ -43,11 +48,13 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
     public function __construct(
         CollectionFilterInterface $filter,
         NormalizerInterface $associationsNormalizer,
-        NormalizerInterface $standardNormalizer
+        NormalizerInterface $standardNormalizer,
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
         $this->filter = $filter;
         $this->associationsNormalizer = $associationsNormalizer;
         $this->standardNormalizer = $standardNormalizer;
+        $this->quantifiedAssociationsNormalizer = $quantifiedAssociationsNormalizer;
     }
 
     /**
@@ -67,6 +74,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
         $data[self::FIELD_CREATED] = $this->standardNormalizer->normalize($productModel->getCreated(), $format, $context);
         $data[self::FIELD_UPDATED] = $this->standardNormalizer->normalize($productModel->getUpdated(), $format, $context);
         $data[self::FIELD_ASSOCIATIONS] = $this->associationsNormalizer->normalize($productModel, $format, $context);
+        $data['quantified_associations'] = $this->quantifiedAssociationsNormalizer->normalize($productModel, $format, $context);
 
         return $data;
     }

@@ -82,22 +82,90 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
         $productIdentifiers = $this->getProductIdentifiers($associationAwareEntities);
         $productModelCodes = $this->getProductModelCodes($associationAwareEntities);
 
-        return array_reduce($associationAwareEntities, function (array $carry, EntityWithAssociationsInterface $product) use ($productIdentifiers, $productModelCodes) {
-            if ($product instanceof ProductModel) {
-                return $carry;
-            }
+        $mergedQuantifiedAssociations = [];
+        foreach ($associationAwareEntities as $associationAwareEntity) {
+            $quantifiedAssociations = $associationAwareEntity->getQuantifiedAssociationsWithIdentifiersAndCodes(
+                $productIdentifiers,
+                $productModelCodes
+            );
+            foreach ($quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
+                if (!isset($mergedQuantifiedAssociations[$associationTypeCode])) {
+                    $mergedQuantifiedAssociations[$associationTypeCode] = ['products' => [], 'product_models' => []];
+                }
 
-            return array_merge_recursive($carry, $product->getQuantifiedAssociationsWithIdentifiersAndCodes($productIdentifiers, $productModelCodes));
-        }, []);
+                foreach ($quantifiedAssociation['products'] as $quantifiedProduct) {
+                    $mergedQuantifiedAssociations[$associationTypeCode]['products'] = array_merge(
+                        array_filter(
+                            $mergedQuantifiedAssociations[$associationTypeCode]['products'],
+                            function ($mergedQuantifiedAssociation) use ($quantifiedProduct) {
+                                return $quantifiedProduct['identifier'] !== $mergedQuantifiedAssociation['identifier'];
+                            }
+                        ),
+                        [$quantifiedProduct]
+                    );
+                }
+                foreach ($quantifiedAssociation['product_models'] as $quantifiedProductModel) {
+                    $mergedQuantifiedAssociations[$associationTypeCode]['product_models'] = array_merge(
+                        array_filter(
+                            $mergedQuantifiedAssociations[$associationTypeCode]['product_models'],
+                            function ($mergedQuantifiedAssociation) use ($quantifiedProductModel) {
+                                return $quantifiedProductModel['code'] !== $mergedQuantifiedAssociation['code'];
+                            }
+                        ),
+                        [$quantifiedProductModel]
+                    );
+                }
+            }
+        }
+
+        return $mergedQuantifiedAssociations;
+
+
+//        return array_values(
+//            array_reduce(
+//                $associationAwareEntities,
+//                function (array $carry, EntityWithAssociationsInterface $product) use (
+//                    $productIdentifiers,
+//                    $productModelCodes
+//                ) {
+//                    $quantifiedAssociationsWithIdentifiersAndCodes = $product->getQuantifiedAssociationsWithIdentifiersAndCodes(
+//                        $productIdentifiers,
+//                        $productModelCodes
+//                    );
+//
+//                    $res = [
+//                        'products'       => array_merge_recursive(
+//                            $carry['products'],
+//                            array_combine(
+//                                array_column($quantifiedAssociationsWithIdentifiersAndCodes['products'], 'identifier'),
+//                                $quantifiedAssociationsWithIdentifiersAndCodes['products']
+//                            ),
+//                        ),
+//                        'product_models' => array_merge_recursive(
+//                            $carry['product_models'],
+//                            array_combine(
+//                                array_column(
+//                                    $quantifiedAssociationsWithIdentifiersAndCodes['product_models'],
+//                                    'identifier'
+//                                ),
+//                                $quantifiedAssociationsWithIdentifiersAndCodes['product_models']
+//                            )
+//                        )
+//                    ];
+//
+//                    return $res;
+//                },
+//                [
+//                    'products'       => [],
+//                    'product_models' => []
+//                ]
+//            )
+//        );
     }
 
     private function getProductIdentifiers(array $associationAwareEntities)
     {
         $productIds = array_reduce($associationAwareEntities, function (array $carry, EntityWithAssociationsInterface $product) {
-            if ($product instanceof ProductModel) {
-                return $carry;
-            }
-
             return array_merge($carry, $product->getAllLinkedProductIds());
         }, []);
 
@@ -107,10 +175,6 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
     private function getProductModelCodes(array $associationAwareEntities)
     {
         $productModelIds = array_reduce($associationAwareEntities, function (array $carry, EntityWithAssociationsInterface $product) {
-            if ($product instanceof ProductModel) {
-                return $carry;
-            }
-
             return array_merge($carry, $product->getAllLinkedProductModelIds());
         }, []);
 

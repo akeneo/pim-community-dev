@@ -58,6 +58,9 @@ class ProductModel implements ProductModelInterface
     /** @var Collection $associations */
     protected $associations;
 
+    /** @var array */
+    protected $quantifiedAssociations = [];
+
     /**
      * Create an instance of ProductModel.
      */

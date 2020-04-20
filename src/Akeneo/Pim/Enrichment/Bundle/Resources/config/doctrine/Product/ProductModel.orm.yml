@@ -21,6 +21,9 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
             type: datetime
         updated:
             type: datetime
+        quantifiedAssociations:
+            type: json
+            column: quantified_associations
     manyToMany:
         categories:
             targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
