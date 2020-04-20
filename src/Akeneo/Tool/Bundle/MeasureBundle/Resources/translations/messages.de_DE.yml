@@ -1,0 +1,13 @@
+pim_enrich.acl_group.measurements: Messungen
+measurements:
+  acl:
+    manage_settings: Messungen auflisten
+    family:
+      create: Erstelle eine Messfamilie
+      edit:
+        properties: Eigenschaften einer Messfamilie bearbeiten
+      delete: Lösche eine Messfamilie mit ihren Einheiten
+    unit:
+      add: Fügen eine Einheit zu einer Messfamilie hinzu
+      edit: Einheiten einer Messfamilie bearbeiten
+      delete: Lösche eine Einheit in einer Messfamilie

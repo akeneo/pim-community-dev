@@ -39,6 +39,8 @@ pim_enrich.entity.family_variant:
       fail: Die Familienvariante konnte nicht aktualisiert werden.
     create:
       success: Variante der Produktfamilie erfolgreich erstellt
+    delete:
+      success: Familien-Variante erfolgreich gelöscht
   module:
     edit:
       common_attributes: Gemeinsame Attribute
@@ -135,7 +137,7 @@ pim_enrich.entity.attribute:
     date_min: Min. Datum
     decimals_allowed: Dezimalwerte erlaubt
     default_metric_unit:
-      label: Standardmaßeinheit
+      label: Standardmesseinheit
       choose: Wählen Sie eine Einheit
     group:
       label: Attributgruppe
@@ -145,7 +147,7 @@ pim_enrich.entity.attribute:
     max_characters: Max. Zeichen
     max_file_size: Maximale Dateigröße (MB)
     metric_family:
-      label: Metrische Gruppe
+      label: Messfamilie
       choose: Wählen Sie eine Produktfamilie
     minimum_input_length: Mindestlänge für Auto-Vervollständigung
     name: Name
@@ -169,7 +171,7 @@ pim_enrich.entity.attribute:
       pim_catalog_image: Abbildung
       pim_catalog_boolean: "Ja/Nein"
       pim_catalog_date: Datum
-      pim_catalog_metric: Maßeinheit
+      pim_catalog_metric: Messung
       pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
       pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
     unique: Eindeutiger Wert
