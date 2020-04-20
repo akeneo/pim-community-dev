@@ -10,7 +10,6 @@ use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateClientInte
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -66,7 +65,7 @@ final class CreateConnectionHandler
             $command->label(),
             $command->flowType(),
             $client->id(),
-            new UserId($user->id()),
+            $user->id(),
             null,
             $command->auditable()
         );

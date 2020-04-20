@@ -37,7 +37,7 @@ class RegenerateConnectionSecretHandlerSpec extends ObjectBehavior
             'Magento Connector',
             FlowType::DATA_DESTINATION,
             42,
-            $userId,
+            $userId->id(),
             null,
             false
         );

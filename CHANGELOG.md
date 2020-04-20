@@ -10,6 +10,7 @@
 - PIM-9113: Locale Specific attribute breaks product grid
 - PIM-9157: Fix performance issue when loading the data of a product group
 - PIM-9163: total_fields limit of elasticsearch should be configurable
+- PIM-9197: Make queries in InMemoryGetAttributes case insensitive
 
 ## New features
 

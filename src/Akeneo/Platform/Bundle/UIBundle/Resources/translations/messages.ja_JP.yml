@@ -346,8 +346,6 @@ Decimals allowed: 小数点以下の桁数を許可
 Negative allowed: 負の値を許可
 Date min: 最短日時
 Date max: 最長日時
-Metric family: メトリックファミリー
-Default metric unit: 既定のメトリック単位
 Max file size: 最大ファイルサイズ (MB)
 Allowed extensions: 利用できる拡張子
 None: なし
@@ -372,7 +370,6 @@ pim_catalog_file: ファイル
 pim_catalog_image: 画像
 pim_catalog_boolean: "Yes/No"
 pim_catalog_date: 日付
-pim_catalog_metric: メトリック
 pim_reference_data_simpleselect: 単一選択データの参照
 pim_reference_data_multiselect: 複数選択データの参照
 #Locales

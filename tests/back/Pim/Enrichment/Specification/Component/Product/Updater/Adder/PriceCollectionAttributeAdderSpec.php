@@ -2,16 +2,16 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollectionInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\PriceCollectionAttributeAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PriceCollectionAttributeAdderSpec extends ObjectBehavior
@@ -39,7 +39,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
 
     function it_throws_an_error_if_data_is_not_an_array(
         AttributeInterface $attribute,
-        ProductInterface $product
+        EntityWithValuesInterface $product
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -54,51 +54,109 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
-    function it_adds_an_attribute_data_price_collection_value_to_a_product_value(
-        $builder,
-        $normalizer,
-        AttributeInterface $attribute,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ValueInterface $value,
-        PriceCollectionInterface $prices,
-        ProductPriceInterface $price1,
-        ProductPriceInterface $price2,
-        \ArrayIterator $pricesIterator
+    function it_adds_a_price_collection_value_if_it_does_not_exist_yet(
+        EntityWithValuesBuilderInterface $builder,
+        AttributeInterface $priceAttribute,
+        EntityWithValuesInterface $product
     ) {
-        $locale = 'fr_FR';
-        $scope = 'mobile';
-        $data = [['amount' => 123.2, 'currency' => 'EUR']];
+        $priceAttribute->getCode()->willReturn('price');
+        $product->getValue('price', 'en_US', null)->willReturn(null);
 
-        $attribute->getCode()->willReturn('attributeCode');
+        $builder->addOrReplaceValue(
+            $product,
+            $priceAttribute,
+            'en_US',
+            null,
+            [['currency' => 'USD', 'amount' => 15.00]]
+        )->shouldBeCalled();
 
-        $product1->getValue('attributeCode', $locale, $scope)->willReturn($value);
-        $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
+        $this->addAttributeData(
+            $product,
+            $priceAttribute,
+            [['currency' => 'USD', 'amount' => 15.00]],
+            ['locale' => 'en_US', 'scope' => null]
+        );
+    }
 
-        $value->getData()->shouldBeCalledTimes(1)->willReturn($prices);
-        $prices->getIterator()->willReturn($pricesIterator);
-        $pricesIterator->rewind()->shouldBeCalled();
-        $pricesIterator->valid()->willReturn(true, true, false);
-        $pricesIterator->current()->willReturn($price1, $price2);
-        $pricesIterator->next()->shouldBeCalled();
+    function it_adds_a_new_price_to_an_existing_price_collection_value(
+        EntityWithValuesBuilderInterface $builder,
+        NormalizerInterface $normalizer,
+        AttributeInterface $priceAttribute,
+        EntityWithValuesInterface $product
+    ) {
+        $priceAttribute->getCode()->willReturn('price');
 
-        $normalizer
-            ->normalize($price1, 'standard')
-            ->willReturn(['amount' => 42, 'currency' => 'USD']);
+        $previousPrice = new ProductPrice(12, 'EUR');
+        $product->getValue('price', 'en_US', null)->willReturn(PriceCollectionValue::localizableValue(
+            'price',
+            new PriceCollection([$previousPrice]),
+            'en_US'
+        ));
 
-        $normalizer
-            ->normalize($price2, 'standard')
-            ->willReturn(['amount' => 4.2, 'currency' => 'EUR']);
+        $normalizer->normalize($previousPrice, 'standard')->shouldBeCalled()->willReturn([
+            'amount' => 12.00,
+            'currency' => 'EUR',
+        ]);
 
-        $builder->addOrReplaceValue($product1, $attribute, $locale, $scope, [
-            ['amount' => 42, 'currency' => 'USD'],
-            ['amount' => 4.2, 'currency' => 'EUR'],
-            ['amount' => 123.2, 'currency' => 'EUR'],
-        ])->shouldBeCalled();
+        $builder->addOrReplaceValue(
+            $product,
+            $priceAttribute,
+            'en_US',
+            null,
+            [
+                ['currency' => 'EUR', 'amount' => 12.00],
+                ['currency' => 'USD', 'amount' => 15.00],
+            ]
+        )->shouldBeCalled();
 
-        $builder->addOrReplaceValue($product2, $attribute, $locale, $scope, $data)->shouldBeCalled();
+        $this->addAttributeData(
+            $product,
+            $priceAttribute,
+            [['currency' => 'USD', 'amount' => 15.00]],
+            ['locale' => 'en_US', 'scope' => null]
+        );
+    }
 
-        $this->addattributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->addattributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+    function it_replaces_a_price_in_an_existing_price_collection_value(
+        EntityWithValuesBuilderInterface $builder,
+        NormalizerInterface $normalizer,
+        AttributeInterface $priceAttribute,
+        EntityWithValuesInterface $product
+    ) {
+        $priceAttribute->getCode()->willReturn('price');
+
+        $previousPriceUSD = new ProductPrice(17, 'USD');
+        $previousPriceEUR = new ProductPrice(12, 'EUR');
+        $product->getValue('price', 'en_US', null)->willReturn(PriceCollectionValue::localizableValue(
+            'price',
+            new PriceCollection([$previousPriceUSD, $previousPriceEUR]),
+            'en_US'
+        ));
+
+        $normalizer->normalize($previousPriceUSD)->shouldNotBeCalled();
+        $normalizer->normalize($previousPriceEUR, 'standard')->shouldBeCalled()->willReturn(
+            [
+                'amount' => 12.00,
+                'currency' => 'EUR',
+            ]
+        );
+
+        $builder->addOrReplaceValue(
+            $product,
+            $priceAttribute,
+            'en_US',
+            null,
+            [
+                ['currency' => 'EUR', 'amount' => 12.00],
+                ['currency' => 'USD', 'amount' => 15.00],
+            ]
+        )->shouldBeCalled();
+
+        $this->addAttributeData(
+            $product,
+            $priceAttribute,
+            [['currency' => 'USD', 'amount' => 15.00]],
+            ['locale' => 'en_US', 'scope' => null]
+        );
     }
 }

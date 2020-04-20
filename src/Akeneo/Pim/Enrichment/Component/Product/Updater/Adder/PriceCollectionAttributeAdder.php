@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -99,10 +100,6 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
      * Returns the combination of the previous prices and the new prices
      * to add, all of them in PIM standard format.
      *
-     * It is possible to have several prices for the same currency, this will be
-     * handled by the ValueFactory which will keep only the last one
-     * (here, it will be the new one passed to the adder).
-     *
      * Validation will also be performed by the factory (array correctly
      * formatted, locale, scope...).
      *
@@ -113,10 +110,15 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
      */
     protected function addNewPrices(PriceCollectionInterface $previousPrices, array $newPrices)
     {
-        $standardizedPreviousPrices = [];
+        $newCurrencies = array_filter(array_map(function (array $price): ?string {
+            return $price['currency'] ?? null;
+        }, $newPrices));
 
+        $standardizedPreviousPrices = [];
         foreach ($previousPrices as $previousPrice) {
-            $standardizedPreviousPrices[] = $this->normalizer->normalize($previousPrice, 'standard');
+            if (!in_array($previousPrice->getCurrency(), $newCurrencies)) {
+                $standardizedPreviousPrices[] = $this->normalizer->normalize($previousPrice, 'standard');
+            }
         }
 
         return array_merge($standardizedPreviousPrices, $newPrices);

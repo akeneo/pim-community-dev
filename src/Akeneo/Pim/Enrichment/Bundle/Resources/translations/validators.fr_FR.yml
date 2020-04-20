@@ -26,8 +26,6 @@ file.extensions.message: 'L''extension du fichier n''est pas autorisée (les ext
 "This type of value expects the use of the format {{ date_format }} for dates.": Ce type de valeur attend le format {{ date_format }} pour les dates.
 "The category \"%category%\" has to be a root category.": La catégorie « %category% » doit être une catégorie racine.
 "The attribute \"%attributeCode%\" does not exist.": L’attribut %attributeCode% n’existe pas.
-"The attribute \"%attributeCode%\" is not a metric attribute.": L’attribut %attributeCode% n’est pas un attribut métrique.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": L’unité %unitCode% n’existe pas ou n’appartient pas à la famille de métriques par défaut de l’attribut %attributeCode%.
 "The currency \"%currency%\" has to be activated.": La devise %currency% doit être activée.
 product_model.code.not_blank.message: Le code du modèle de produit ne doit pas être vide.
 product_model.code.unique.message: Le même code est déjà défini sur un autre modèle de produit.
@@ -51,7 +49,6 @@ pim_catalog:
     family_variant_axes_unique: Les axes de variantes doivent être uniques, "%attributes%" sont utilisés plusieurs fois dans des ensembles d'attributs de variantes
     family_variant_axes_immutable: 'Les axes de variations ne peuvent pas être modifiés pour le niveau "%level%"'
     family_variant_axes_attribute_type_unique: Les axes de variantes "%axis%" ne doivent pas être unique ou un identifiant
-    family_variant_axes_attribute_type: Les axes de variantes "%axis%" doivent être un booléen, une liste à choix unique, une liste à choix unique de données référentielles ou une métrique
     family_variant_axes_wrong_type: L'axe de variante "%axis%" ne peut pas être traduisible, décliné par canal ou spécifique à une locale
     family_variant_axes_number_of_axes: 'Un ensemble d’attributs de variante ne peut pas avoir plus de %max_axes_number% axes'
     family_variant_no_axis: Au moins un attribut doit être défini comme axe pour le niveau "%level%"

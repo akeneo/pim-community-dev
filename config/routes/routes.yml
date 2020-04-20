@@ -14,6 +14,9 @@ akeneo_connectivity_connection:
 akeneo_measure:
     resource: "@AkeneoMeasureBundle/Resources/config/routing.yml"
 
+akeneo_feature_flag:
+    resource: "@AkeneoFeatureFlagBundle/Resources/config/routing.yml"
+
 # PIM
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"
