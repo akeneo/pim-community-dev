@@ -137,7 +137,7 @@ WHERE association_id IN (
             FROM pim_catalog_association existing_product_association
             INNER JOIN pim_catalog_association_product existing_product_association_with_product
                 ON existing_product_association_with_product.association_id = existing_product_association.id
-            WHERE product_association.association_type_id = product_association.association_type_id
+            WHERE product_association.association_type_id = existing_product_association.association_type_id
             AND product_association_with_product.product_id = existing_product_association.owner_id
             AND product_association.owner_id = existing_product_association_with_product.product_id
         )
