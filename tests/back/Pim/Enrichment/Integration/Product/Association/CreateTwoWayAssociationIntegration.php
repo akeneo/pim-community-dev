@@ -3,7 +3,6 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Association;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface;
 use Akeneo\Test\Integration\TestCase;
@@ -15,10 +14,9 @@ class CreateTwoWayAssociationIntegration extends TestCase
 {
     public function testInvertedAssociationAreAutomaticallyCreatedOnTwoWayAssociation()
     {
-        $product = $this->getEntityBuilder()->createProduct('a_product', '', []);
-        $productModel = $this->getEntityBuilder()->createProductModel('a_product_model', 'clothing_color_size', null, []);
-
-        $productWithAssociations = $this->getEntityBuilder()->createProduct('a_product_with_associations', '', [
+        $aProduct = $this->getEntityBuilder()->createProduct('a_product', '', []);
+        $aProductModel = $this->getEntityBuilder()->createProductModel('a_product_model', 'clothing_color_size', null, []);
+        $anotherProduct = $this->getEntityBuilder()->createProduct('another_product', '', [
             'associations'  => [
                 "COMPATIBILITY" => [
                     "products" => ["a_product"],
@@ -27,11 +25,30 @@ class CreateTwoWayAssociationIntegration extends TestCase
             ],
         ]);
 
-        $productAssociations = $this->getProductAssociationRepository()->findByOwner($product->getId());
-        $this->assertProductIsInCompatibilityAssociation($productAssociations, $productWithAssociations);
+        $productWithAssociation = $this->getEntityBuilder()->createProduct('a_product_with_associations', '', [
+            'associations'  => [
+                "COMPATIBILITY" => [
+                    "products" => ["another_product"],
+                    "product_models" => ["a_product_model"],
+                ],
+            ],
+        ]);
 
-        $productModelAssociations = $this->getProductModelAssociationRepository()->findByOwner($productModel->getId());
-        $this->assertProductIsInCompatibilityAssociation($productModelAssociations, $productWithAssociations);
+        $this->getProductAssociationRepository()->clear();
+        $this->getProductModelAssociationRepository()->clear();
+        $productAssociations = $this->getProductAssociationRepository()->findByOwner($aProduct->getId());
+        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productAssociations, ['another_product'], []);
+
+        $anotherProductAssociation = $this->getProductAssociationRepository()->findByOwner($anotherProduct->getId());
+        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($anotherProductAssociation, ['a_product', 'a_product_with_associations'], ['a_product_model']);
+
+        $productWithAssociationAssociation = $this->getProductAssociationRepository()->findByOwner($productWithAssociation->getId());
+        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productWithAssociationAssociation, ['another_product'], ['a_product_model']);
+
+        $productModelAssociations = $this->getProductModelAssociationRepository()->findByOwner($aProductModel->getId());
+        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productModelAssociations, ['another_product', 'a_product_with_associations'], []);
+
+
     }
 
     public function testAssociationsWasDeletedWhenAssociatedProductIsDeleted()
@@ -53,18 +70,14 @@ class CreateTwoWayAssociationIntegration extends TestCase
 
         $this->getProductAssociationRepository()->clear();
         $productAssociations = $this->getProductAssociationRepository()->findByOwner($productWithAssociations->getId());
-        $this->assertAssociationsHaveNoProduct($productAssociations);
-
-        $this->getProductModelAssociationRepository()->clear();
-        $productModelAssociations = $this->getProductModelAssociationRepository()->findByOwner($productWithAssociations->getId());
-        $this->assertAssociationsHaveNoProductModel($productModelAssociations);
+        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productAssociations, [], []);
     }
 
     public function testInvertedAssociationsWasDeletedWhenProductAssociationIsDeleted()
     {
-        $this->getEntityBuilder()->createProduct('a_product', '', []);
-        $this->getEntityBuilder()->createProductModel('a_product_model', 'clothing_color_size', null, []);
-        $product = $this->getEntityBuilder()->createProduct('a_product_with_associations', '', [
+        $aProduct = $this->getEntityBuilder()->createProduct('a_product', '', []);
+        $aProductModel = $this->getEntityBuilder()->createProductModel('a_product_model', 'clothing_color_size', null, []);
+        $anotherProduct = $this->getEntityBuilder()->createProduct('another_product', '', [
             'associations'  => [
                 "COMPATIBILITY" => [
                     "products" => ["a_product"],
@@ -73,40 +86,56 @@ class CreateTwoWayAssociationIntegration extends TestCase
             ],
         ]);
 
-        $product->getAssociationForTypeCode('COMPATIBILITY')->setProducts([]);
-        $product->getAssociationForTypeCode('COMPATIBILITY')->setProductModels([]);
-        $this->getProductSaver()->save($product);
+        $productWithAssociation = $this->getEntityBuilder()->createProduct('a_product_with_associations', '', [
+            'associations'  => [
+                "COMPATIBILITY" => [
+                    "products" => ["another_product"],
+                    "product_models" => ["a_product_model"],
+                ],
+            ],
+        ]);
 
-        $productAssociations = $this->getProductAssociationRepository()->findByOwner($product->getId());
-        $this->assertAssociationsHaveNoProduct($productAssociations);
+        $productWithAssociation->getAssociationForTypeCode('COMPATIBILITY')->setProducts([]);
+        $productWithAssociation->getAssociationForTypeCode('COMPATIBILITY')->setProductModels([]);
+        $this->getProductSaver()->save($productWithAssociation);
 
-        $productModelAssociations = $this->getProductModelAssociationRepository()->findByOwner($product->getId());
-        $this->assertAssociationsHaveNoProductModel($productModelAssociations);
+        $aProductAssociation = $this->getProductAssociationRepository()->findByOwner($aProduct->getId());
+        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($aProductAssociation, ['another_product'], []);
+
+        $aProductAssociation = $this->getProductAssociationRepository()->findByOwner($anotherProduct->getId());
+        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($aProductAssociation, ['a_product'], ['a_product_model']);
+
+        $productModelAssociations = $this->getProductModelAssociationRepository()->findByOwner($aProductModel->getId());
+        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productModelAssociations, ['another_product'], []);
+
+        $productWithAssociationAssociations = $this->getProductAssociationRepository()->findByOwner($productWithAssociation);
+        $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productWithAssociationAssociations, [], []);
     }
 
-    private function assertAssociationsHaveNoProductModel(array $associations)
+    private function assertContainsCompatibilityAssociationWithProductsAndProductModels(array $associations, $products, $productModels)
     {
-        foreach ($associations as $association) {
-            $this->assertEmpty($association->getProductModels());
+        $compatibilityAssociation = $this->extractCompatibilityAssociation($associations);
+
+        $this->assertCount(count($compatibilityAssociation->getProducts()), $products);
+        foreach ($compatibilityAssociation->getProducts() as $associationProduct) {
+            $this->assertContains($associationProduct->getIdentifier(), $products);
+        }
+
+        $this->assertCount(count($compatibilityAssociation->getProductModels()), $productModels);
+        foreach ($compatibilityAssociation->getProductModels() as $associationProductModel) {
+            $this->assertContains($associationProductModel->getCode(), $productModels);
         }
     }
 
-    private function assertAssociationsHaveNoProduct(array $associations)
+    private function extractCompatibilityAssociation(array $associations): AssociationInterface
     {
         foreach ($associations as $association) {
-            $this->assertEmpty($association->getProducts());
+            if ($association->getAssociationType()->getCode() === "COMPATIBILITY") {
+                return $association;
+            }
         }
-    }
 
-    private function assertProductIsInCompatibilityAssociation(array $associations, ProductInterface $product)
-    {
-        $compatibilityAssociations = array_filter($associations, function (AssociationInterface $association) {
-            return $association->getAssociationType()->getCode() === "COMPATIBILITY";
-        });
-
-        $this->assertArrayHasKey(0, $compatibilityAssociations);
-        $compatibilityAssociation = current($compatibilityAssociations);
-        $this->assertTrue($compatibilityAssociation->hasProduct($product));
+        $this->fail('No compatibility association was found');
     }
 
     /**
