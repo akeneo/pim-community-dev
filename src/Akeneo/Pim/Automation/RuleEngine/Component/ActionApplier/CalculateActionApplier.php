@@ -14,29 +14,46 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\GetOperandValue;
-use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateNumericValue;
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operand;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operation;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductTarget;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
 class CalculateActionApplier implements ActionApplierInterface
 {
+    /** @var GetAttributes */
+    private $getAttributes;
+
     /** @var GetOperandValue */
     private $getOperandValue;
 
-    /** @var UpdateNumericValue */
-    private $updateValue;
+    /** @var NormalizerInterface */
+    private $priceNormalizer;
 
-    public function __construct(GetOperandValue $getOperandValue, UpdateNumericValue $updateValue)
-    {
+    /** @var PropertySetterInterface */
+    private $propertySetter;
+
+    public function __construct(
+        GetAttributes $getAttributes,
+        GetOperandValue $getOperandValue,
+        NormalizerInterface $priceNormalizer,
+        PropertySetterInterface $propertySetter
+    ) {
+        $this->getAttributes = $getAttributes;
         $this->getOperandValue = $getOperandValue;
-        $this->updateValue = $updateValue;
+        $this->priceNormalizer = $priceNormalizer;
+        $this->propertySetter = $propertySetter;
     }
 
     public function applyAction(ActionInterface $action, array $items = [])
@@ -46,12 +63,21 @@ class CalculateActionApplier implements ActionApplierInterface
             if ($this->actionCanBeAppliedToEntity($item, $action)) {
                 try {
                     $result = $this->calculateDataForEntity($item, $action);
+                    $data = $this->getStandardData($item, $action->getDestination(), $result);
                 } catch (NonApplicableActionException $e) {
                     // TODO RUL-90 throw exception when the runner will be executed in a job.
                     continue;
                 }
 
-                $this->updateValue->forEntity($item, $action->getDestination(), $result);
+                $this->propertySetter->setData(
+                    $item,
+                    $action->getDestination()->getField(),
+                    $data,
+                    [
+                        'scope' => $action->getDestination()->getScope(),
+                        'locale' => $action->getDestination()->getLocale(),
+                    ]
+                );
             }
         }
     }
@@ -71,13 +97,16 @@ class CalculateActionApplier implements ActionApplierInterface
         EntityWithFamilyVariantInterface $entity,
         ProductCalculateActionInterface $action
     ): bool {
-        $destination = $this->findAttributeCodeInFamilyCaseInsensitive($entity, $action->getDestination()->getField());
-        if (null === $destination) {
+        $destination = $this->getAttributes->forCode($action->getDestination()->getField());
+        Assert::isInstanceOf($destination, Attribute::class);
+
+        $family = $entity->getFamily();
+        if (null === $family || !$family->hasAttributeCode($destination->code())) {
             return false;
         }
 
         $familyVariant = $entity->getFamilyVariant();
-        if (null !== $familyVariant && $familyVariant->getLevelForAttributeCode($destination) !== $entity->getVariationLevel()) {
+        if (null !== $familyVariant && $familyVariant->getLevelForAttributeCode($destination->code()) !== $entity->getVariationLevel()) {
             return false;
         }
 
@@ -141,24 +170,64 @@ class CalculateActionApplier implements ActionApplierInterface
         );
     }
 
-    /**
-     * We cannot use $entity->getFamily()->hasAttributeCode() because it's case sensitive.
-     * So we check manually the condition and return the correct code.
-     */
-    private function findAttributeCodeInFamilyCaseInsensitive(
-        EntityWithFamilyVariantInterface $entity,
-        string $searchAttributeCode
-    ): ?string {
-        if (null === $entity->getFamily()) {
-            return null;
+    private function getStandardData(EntityWithValuesInterface $entity, ProductTarget $destination, float $data)
+    {
+        $attribute = $this->getAttributes->forCode($destination->getField());
+        $formattedData = null;
+
+        switch ($attribute->type()) {
+            case AttributeTypes::NUMBER:
+                $formattedData = $data;
+                break;
+            case AttributeTypes::METRIC:
+                $unit = $destination->getUnit() ?? $attribute->defaultMetricUnit();
+                $formattedData = [
+                    'amount' => $data,
+                    'unit' => $unit,
+                ];
+                break;
+            case AttributeTypes::PRICE_COLLECTION:
+                $formattedData = $this->getPriceCollectionData($entity, $destination, $data);
+                break;
+            default:
+                throw new \InvalidArgumentException('Unsupported destination type');
         }
 
-        foreach ($entity->getFamily()->getAttributeCodes() as $attributeCode) {
-            if (strtolower($attributeCode) === strtolower($searchAttributeCode)) {
-                return $attributeCode;
+        return $formattedData;
+    }
+
+    /**
+     * Gets the new price collection value in standard format
+     * Replaces prices with same currency from the former value
+     */
+    private function getPriceCollectionData(
+        EntityWithValuesInterface $entity,
+        ProductTarget $destination,
+        float $amount
+    ): array {
+        Assert::string($destination->getCurrency());
+        $standardizedPrices = [
+            [
+                'amount' => $amount,
+                'currency' => $destination->getCurrency(),
+            ]
+        ];
+
+        $previousValue = $entity->getValue(
+            $destination->getField(),
+            $destination->getLocale(),
+            $destination->getScope()
+        );
+        if (null === $previousValue) {
+            return $standardizedPrices;
+        }
+
+        foreach ($previousValue->getData() as $previousPrice) {
+            if ($previousPrice->getCurrency() !== $destination->getCurrency()) {
+                $standardizedPrices[] = $this->priceNormalizer->normalize($previousPrice, 'standard');
             }
         }
 
-        return null;
+        return $standardizedPrices;
     }
 }

@@ -60,8 +60,10 @@ services:
     pimee_catalog_rule.action_applier.calculate:
         class: '%pimee_catalog_rule.action_applier.calculate.class%'
         arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
             - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\GetOperandValue'
-            - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateNumericValue'
+            - '@pim_standard_format_serializer'
+            - '@pim_catalog.updater.property_setter'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 
