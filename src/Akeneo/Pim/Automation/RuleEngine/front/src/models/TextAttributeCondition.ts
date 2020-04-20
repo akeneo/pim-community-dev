@@ -1,10 +1,13 @@
 import React from "react";
 import {Attribute} from "./Attribute";
 import {Condition} from "./Condition";
-import {Router, Translate} from "../dependenciesTools";
+import {Router } from "../dependenciesTools";
 import {getByIdentifier} from "../fetch/AttributeFetcher";
 import {TextAttributeConditionLine} from "../pages/EditRules/TextAttributeConditionLine";
 import {Operator} from "./Operator";
+import {Locale} from "./Locale";
+import {getByCode} from "../fetch/LocaleFetcher";
+import {ConditionLineProps} from "../pages/EditRules/ConditionLineProps";
 
 const TextAttributeOperators = [
   Operator.EQUALS,
@@ -17,10 +20,11 @@ const TextAttributeOperators = [
 ];
 
 type TextAttributeCondition = {
-  module: React.FC<{register: any, condition: Condition, lineNumber: number, translate: Translate}>,
+  module: React.FC<ConditionLineProps & { condition: Condition }>,
   attribute: Attribute;
   operator: Operator;
   value?: string;
+  locale?: Locale;
 }
 
 const createTextAttributeCondition = async (json: any, router: Router): Promise <TextAttributeCondition | null> => {
@@ -38,12 +42,22 @@ const createTextAttributeCondition = async (json: any, router: Router): Promise 
   }
 
   if (attribute.type === 'pim_catalog_text') {
-    return {
+    let result: TextAttributeCondition = {
       module: TextAttributeConditionLine,
       attribute,
       operator: json.operator,
-      value: json.value
+      value: json.value,
+      locale: undefined
     };
+
+    if (json.hasOwnProperty('locale')) {
+      const locale = await getByCode(json.locale, router);
+      if (locale) {
+        result.locale = locale;
+      }
+    }
+
+    return result;
   }
 
   return null;

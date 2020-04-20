@@ -1,13 +1,10 @@
 import React from "react";
 import {FallbackCondition} from "../../models/FallbackCondition";
-import {Translate} from "../../dependenciesTools/provider/applicationDependenciesProvider.type";
+import {ConditionLineProps} from "./ConditionLineProps";
 
 type Props = {
-  register: any;
   condition: FallbackCondition,
-  lineNumber: number,
-  translate: Translate,
-}
+} & ConditionLineProps
 
 const FallbackConditionLine: React.FC<Props> = ({ condition }) => {
   return (

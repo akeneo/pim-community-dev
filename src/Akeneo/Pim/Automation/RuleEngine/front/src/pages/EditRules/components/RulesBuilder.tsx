@@ -3,11 +3,13 @@ import { Translate } from "../../../dependenciesTools";
 import { RuleProductSelection } from "./RuleProductSelection";
 import {RuleDefinition} from "../../../models/RuleDefinition";
 import {Action} from "../../../models/Action";
+import {Locale} from "../../../models/Locale";
 
 type Props = {
   register: any;
   translate: Translate;
   ruleDefinition: RuleDefinition;
+  activatedLocales: Locale[];
 };
 
 const ActionLine: React.FC<{ action: Action, translate: Translate }> = ({ action, translate }) => {
@@ -21,11 +23,10 @@ const ActionLine: React.FC<{ action: Action, translate: Translate }> = ({ action
   );
 };
 
-const RulesBuilder: React.FC<Props> = ({ register, translate, ruleDefinition }) => {
-  console.log('ruleDefinition = ', ruleDefinition);
+const RulesBuilder: React.FC<Props> = ({ register, translate, ruleDefinition, activatedLocales }) => {
   return (
     <>
-      <RuleProductSelection register={register} ruleDefinition={ruleDefinition} translate={translate} />
+      <RuleProductSelection register={register} ruleDefinition={ruleDefinition} translate={translate} activatedLocales={activatedLocales}/>
       {ruleDefinition.actions.map((action, i) => {
         return <ActionLine
           action={action}

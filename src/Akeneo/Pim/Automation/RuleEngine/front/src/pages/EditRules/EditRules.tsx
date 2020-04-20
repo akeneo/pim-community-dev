@@ -26,6 +26,7 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
           ruleDefinitionCode={ruleDefinitionCode}
           ruleDefinition={ruleDefinition}
           locales={locales}
+          activatedLocales={locales}
         />
       )}
     </ThemeProvider>

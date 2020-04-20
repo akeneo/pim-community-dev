@@ -2,7 +2,7 @@
 import {FallbackConditionLine} from "../pages/EditRules/FallbackConditionLine";
 import {Condition} from "./Condition";
 import React from "react";
-import {Translate} from "../dependenciesTools/provider/applicationDependenciesProvider.type";
+import {ConditionLineProps} from "../pages/EditRules/ConditionLineProps";
 
 enum FamilyOperator {
   IS_EMPTY = 'EMPTY',
@@ -12,7 +12,7 @@ enum FamilyOperator {
 }
 
 type FamilyCondition = {
-  module: React.FC<{register: any, condition: Condition, lineNumber: number, translate: Translate}>,
+  module: React.FC<ConditionLineProps & { condition: Condition }>,
   operator: FamilyOperator;
   familyCodes: string[];
 }

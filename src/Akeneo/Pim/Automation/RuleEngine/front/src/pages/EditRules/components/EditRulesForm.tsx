@@ -66,6 +66,8 @@ type Props = {
   translate: Translate;
   locales: Locale[];
   ruleDefinition: RuleDefinition;
+  setRuleDefinition: React.Dispatch<React.SetStateAction<RuleDefinition>>;
+  activatedLocales: Locale[],
   register: any;
 };
 
@@ -74,7 +76,8 @@ const EditRulesForm: React.FC<Props> = ({
   locales,
   ruleDefinition,
   translate,
-  register,
+  activatedLocales,
+  register
 }) => {
   const tab = useTabState({ selectedId: "rulesBuilderTab" });
   return (
@@ -96,7 +99,7 @@ const EditRulesForm: React.FC<Props> = ({
           </StyledTab>
         </TabDiv>
         <StyledTabPanel {...tab} tabIndex={-1}>
-          <RulesBuilder register={register} ruleDefinition={ruleDefinition} translate={translate} />
+          <RulesBuilder register={register} ruleDefinition={ruleDefinition} translate={translate} activatedLocales={activatedLocales} />
         </StyledTabPanel>
         <StyledTabPanel {...tab} tabIndex={-1}>
           <RuleProperties

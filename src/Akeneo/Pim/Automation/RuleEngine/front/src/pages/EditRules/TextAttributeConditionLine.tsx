@@ -1,17 +1,21 @@
 import React from "react";
-import {Translate} from "../../dependenciesTools";
 import {TextAttributeCondition, TextAttributeOperators} from "../../models/TextAttributeCondition";
 import {InputText} from "../../components/InputText";
 import {Operator} from "../../models/Operator";
+import {ConditionLineProps} from "./ConditionLineProps";
+import {Locale} from "../../models/Locale";
 
 type Props = {
-  register: any,
   condition: TextAttributeCondition,
-  lineNumber: number,
-  translate: Translate,
-}
+} & ConditionLineProps;
 
-const TextAttributeConditionLine: React.FC<Props> = ({ register, condition, lineNumber, translate }) => {
+const TextAttributeConditionLine: React.FC<Props> = ({
+    register,
+    condition,
+    lineNumber,
+    translate,
+    activatedLocales
+  }) => {
   const [operator, setOperator] = React.useState<Operator>(condition.operator);
 
   return (
@@ -39,6 +43,17 @@ const TextAttributeConditionLine: React.FC<Props> = ({ register, condition, line
           />
         </span>
       )}
+      {condition.attribute.localizable &&
+        <select
+          defaultValue={condition.locale ? condition.locale.code : undefined}
+          ref={register}
+          name={`conditions[${lineNumber}].locale`}
+        >
+          {activatedLocales.map((locale: Locale, i: number) => {
+            return <option key={i} value={locale.code}>{locale.label}</option>
+          })}
+        </select>
+      }
     </div>
   );
 };

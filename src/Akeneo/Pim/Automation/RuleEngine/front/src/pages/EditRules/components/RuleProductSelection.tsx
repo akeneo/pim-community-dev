@@ -7,6 +7,7 @@ import { RuleDefinition } from "../../../models/RuleDefinition";
 import { PimConditionLine } from "../PimConditionLine";
 import { FallbackConditionLine } from "../FallbackConditionLine";
 import { Condition } from "../../../models/Condition";
+import { Locale } from "../../../models/Locale";
 
 const Header = styled.header`
   font-weight: normal;
@@ -46,6 +47,7 @@ type Props = {
   register: any,
   ruleDefinition: RuleDefinition,
   translate: Translate;
+  activatedLocales: Locale[]
 };
 
 type ConditionLineProps = {
@@ -53,9 +55,16 @@ type ConditionLineProps = {
   condition: Condition;
   lineNumber: number,
   translate: Translate;
+  activatedLocales: Locale[];
 };
 
-const ConditionLine: React.FC<ConditionLineProps> = ({ register, translate, condition, lineNumber }) => {
+const ConditionLine: React.FC<ConditionLineProps> = ({
+    register,
+    translate,
+    condition,
+    lineNumber,
+    activatedLocales
+  }) => {
   const Line = condition.module;
   const isFallback =
     condition.module === PimConditionLine ||
@@ -72,13 +81,14 @@ const ConditionLine: React.FC<ConditionLineProps> = ({ register, translate, cond
           condition={condition}
           lineNumber={lineNumber}
           translate={translate}
+          activatedLocales={activatedLocales}
         />
       </div>
     </div>
   );
 };
 
-const RuleProductSelection: React.FC<Props> = ({ register, ruleDefinition, translate }) => {
+const RuleProductSelection: React.FC<Props> = ({ register, ruleDefinition, translate, activatedLocales }) => {
   return (
     <fieldset>
       <Header className="AknSubsection-title">
@@ -120,6 +130,7 @@ const RuleProductSelection: React.FC<Props> = ({ register, ruleDefinition, trans
               lineNumber={i}
               translate={translate}
               key={`condition_${i}`}
+              activatedLocales={activatedLocales}
             />
           );
         })}
