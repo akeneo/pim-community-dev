@@ -71,10 +71,8 @@ class CalculateActionApplier implements ActionApplierInterface
         EntityWithFamilyVariantInterface $entity,
         ProductCalculateActionInterface $action
     ): bool {
-        $destination = $action->getDestination()->getField();
-
-        $family = $entity->getFamily();
-        if (null === $family || !$family->hasAttributeCode($destination)) {
+        $destination = $this->findAttributeCodeInFamilyCaseInsensitive($entity, $action->getDestination()->getField());
+        if (null === $destination) {
             return false;
         }
 
@@ -141,5 +139,26 @@ class CalculateActionApplier implements ActionApplierInterface
                 $operand->getCurrencyCode() ? sprintf(' (%s)', $operand->getCurrencyCode()) : ''
             )
         );
+    }
+
+    /**
+     * We cannot use $entity->getFamily()->hasAttributeCode() because it's case sensitive.
+     * So we check manually the condition and return the correct code.
+     */
+    private function findAttributeCodeInFamilyCaseInsensitive(
+        EntityWithFamilyVariantInterface $entity,
+        string $searchAttributeCode
+    ): ?string {
+        if (null === $entity->getFamily()) {
+            return null;
+        }
+
+        foreach ($entity->getFamily()->getAttributeCodes() as $attributeCode) {
+            if (strtolower($attributeCode) === strtolower($searchAttributeCode)) {
+                return $attributeCode;
+            }
+        }
+
+        return null;
     }
 }

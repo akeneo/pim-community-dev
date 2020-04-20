@@ -72,6 +72,7 @@ class CopierActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $nameAttribute->getCode()->willReturn('name');
 
         $variantProduct->getFamily()->willReturn($family);
         $family->hasAttributeCode('name')->willReturn(true);
@@ -111,6 +112,7 @@ class CopierActionApplierSpec extends ObjectBehavior
         ]);
 
         $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
+        $descriptionAttribute->getCode()->willReturn('description');
 
         $productModel->getFamily()->willReturn($family);
         $family->hasAttributeCode('description')->willReturn(true);
@@ -150,6 +152,7 @@ class CopierActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $nameAttribute->getCode()->willReturn('name');
 
         $entityWithFamilyVariant->getFamily()->willReturn($family);
         $family->hasAttributeCode('name')->willReturn(true);
@@ -194,6 +197,7 @@ class CopierActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $nameAttribute->getCode()->willReturn('name');
 
         $entityWithFamilyVariant->getFamily()->willReturn($family);
         $family->hasAttributeCode('name')->willReturn(false);

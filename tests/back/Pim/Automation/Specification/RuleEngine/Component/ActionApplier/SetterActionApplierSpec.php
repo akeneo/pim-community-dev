@@ -67,6 +67,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $family->hasAttributeCode('name')->willReturn(true);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+        $name->getCode()->willReturn('name');
         $product->getFamilyVariant()->willReturn(null);
 
         $propertySetter->setData(
@@ -93,6 +94,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+        $name->getCode()->willReturn('name');
 
         $variantProduct->getFamily()->willReturn($family);
         $family->hasAttributeCode('name')->willReturn(true);
@@ -126,6 +128,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+        $name->getCode()->willReturn('name');
 
         $productModel->getFamily()->willReturn($family);
         $family->hasAttributeCode('name')->willReturn(true);
@@ -159,6 +162,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+        $name->getCode()->willReturn('name');
 
         $entityWithFamilyVariant->getFamily()->willReturn($family);
         $family->hasAttributeCode('name')->willReturn(true);
@@ -289,6 +293,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+        $name->getCode()->willReturn('name');
 
         $entityWithFamilyVariant->getFamily()->willReturn($family);
         $family->hasAttributeCode('name')->willReturn(false);

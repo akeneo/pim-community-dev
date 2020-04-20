@@ -48,23 +48,6 @@ class ProductConcatenateActionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ProductConcatenateActionInterface::class);
     }
 
-    function it_handles_uppercases_in_fields()
-    {
-        $this->beConstructedWith([
-            'from' => [
-                ['field' => 'MODel', 'scope' => 'ecommerce', 'locale' => 'en_US'],
-                ['field' => 'COLOR'],
-            ],
-            'to' => ['field' => 'title', 'scope' => 'ecommerce', 'locale' => 'en_US'],
-        ]);
-
-        /** @var ProductSource $source */
-        foreach ($this->getSourceCollection()->getWrappedObject() as $source) {
-            Assert::same($source->getField(), 'model');
-            break;
-        }
-    }
-
     function it_cannot_be_created_with_no_from()
     {
         $this->beConstructedWith([

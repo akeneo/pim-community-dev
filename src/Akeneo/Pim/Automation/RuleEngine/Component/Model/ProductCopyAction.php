@@ -33,8 +33,8 @@ class ProductCopyAction implements ProductCopyActionInterface
 
     public function __construct(array $data)
     {
-        $this->fromField = isset($data['from_field']) ? strtolower($data['from_field']) : null;
-        $this->toField = isset($data['to_field']) ? strtolower($data['to_field']) : null;
+        $this->fromField = isset($data['from_field']) ? $data['from_field'] : null;
+        $this->toField = isset($data['to_field']) ? $data['to_field'] : null;
         $this->options = [
             'from_locale' => isset($data['from_locale']) ? $data['from_locale'] : null,
             'to_locale'   => isset($data['to_locale']) ? $data['to_locale'] : null,

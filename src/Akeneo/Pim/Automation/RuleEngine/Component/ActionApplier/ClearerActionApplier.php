@@ -80,6 +80,8 @@ final class ClearerActionApplier implements ActionApplierInterface
             return;
         }
 
+        // We set again the field to have the correct case of the code.
+        $field = $attribute->code();
         if (null === $entityWithFamilyVariant->getFamily()) {
             $this->clearDataOnEntityWithValues($entityWithFamilyVariant, $action);
 

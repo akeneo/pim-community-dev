@@ -85,6 +85,8 @@ class CopierActionApplier implements ActionApplierInterface
             return;
         }
 
+        // We set again the field to have the correct case of the code.
+        $toField = $toAttribute->getCode();
         if (null === $entityWithFamilyVariant->getFamily()) {
             $this->copyDataOnEntityWithValues($entityWithFamilyVariant, $action);
 

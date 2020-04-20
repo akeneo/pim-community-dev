@@ -56,6 +56,7 @@ class AdderActionApplierSpec extends ObjectBehavior
         $family->hasAttributeCode('color')->willReturn(true);
 
         $attributeRepository->findOneByIdentifier('color')->willReturn($colorAttribute);
+        $colorAttribute->getCode()->willReturn('color');
         $product->getFamilyVariant()->willReturn(null);
 
         $propertyAdder->addData($product, 'color', ['red', 'blue'], [])->shouldBeCalled();
@@ -77,6 +78,7 @@ class AdderActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('color')->willReturn($colorAttribute);
+        $colorAttribute->getCode()->willReturn('color');
 
         $variantProduct->getFamily()->willReturn($family);
         $family->hasAttributeCode('color')->willReturn(true);
@@ -105,6 +107,7 @@ class AdderActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('color')->willReturn($colorAttribute);
+        $colorAttribute->getCode()->willReturn('color');
 
         $productModel->getFamily()->willReturn($family);
         $family->hasAttributeCode('color')->willReturn(true);
@@ -133,6 +136,7 @@ class AdderActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('color')->willReturn($colorAttribute);
+        $colorAttribute->getCode()->willReturn('color');
 
         $entityWithFamilyVariant->getFamily()->willReturn($family);
         $family->hasAttributeCode('color')->willReturn(true);
@@ -177,6 +181,7 @@ class AdderActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('color')->willReturn($colorAttribute);
+        $colorAttribute->getCode()->willReturn('color');
 
         $entityWithFamilyVariant->getFamily()->willReturn($family);
         $family->hasAttributeCode('color')->willReturn(false);

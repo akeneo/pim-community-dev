@@ -38,7 +38,7 @@ final class ProductTarget
 
     private function __construct(string $field, ?string $scope, ?string $locale, ?string $currency, ?string $unit)
     {
-        $this->field = strtolower($field);
+        $this->field = $field;
         $this->scope = $scope;
         $this->locale = $locale;
         $this->currency = $currency;

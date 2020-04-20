@@ -70,7 +70,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         EntityWithFamilyVariantInterface $product
     ) {
-        $family->hasAttributeCode('ratio_fr_en')->willReturn(true);
+        $family->getAttributeCodes()->willReturn(['ratio_fr_en']);
         $product->getFamily()->willReturn($family);
         $familyVariant->getLevelForAttributeCode('ratio_fr_en')->willReturn(1);
         $product->getFamilyVariant()->willReturn($familyVariant);
@@ -86,7 +86,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
         UpdateNumericValue $updateValue,
         FamilyInterface $family
     ) {
-        $family->hasAttributeCode('ratio_fr_en')->willReturn(true);
+        $family->getAttributeCodes()->willReturn(['ratio_fr_en']);
         $family->getId()->willReturn(42);
         $product = (new Product())->setFamily($family->getWrappedObject());
 
@@ -103,7 +103,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
         UpdateNumericValue $updateValue,
         FamilyInterface $family
     ) {
-        $family->hasAttributeCode('ratio_fr_en')->willReturn(true);
+        $family->getAttributeCodes()->willReturn(['ratio_fr_en']);
         $family->getId()->willReturn(42);
         $product = (new Product())->setFamily($family->getWrappedObject());
 
@@ -122,7 +122,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
         UpdateNumericValue $updateValue,
         FamilyInterface $family
     ) {
-        $family->hasAttributeCode('ratio_fr_en')->willReturn(true);
+        $family->getAttributeCodes()->willReturn(['ratio_fr_en']);
         $family->getId()->willReturn(42);
         $product = (new Product())->setFamily($family->getWrappedObject());
 

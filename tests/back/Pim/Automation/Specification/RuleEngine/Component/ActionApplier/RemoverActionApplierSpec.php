@@ -57,6 +57,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $family->hasAttributeCode('multi-select')->willReturn(true);
         $product->getFamilyVariant()->willReturn(null);
         $attributeRepository->findOneByIdentifier('multi-select')->willReturn($attribute);
+        $attribute->getCode()->willReturn('multi-select');
 
         $propertyRemover->removeData(
             $product,
@@ -117,6 +118,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $action->getItems()->willReturn(['multi1', 'multi2']);
 
         $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
+        $multiSelectAttribute->getCode()->willReturn('multi-select');
 
         $variantProduct->getFamily()->willReturn($family);
         $family->hasAttributeCode('multi-select')->willReturn(true);
@@ -153,6 +155,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $action->getItems()->willReturn(['multi1', 'multi2']);
 
         $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
+        $multiSelectAttribute->getCode()->willReturn('multi-select');
 
         $productModel->getFamily()->willReturn($family);
         $family->hasAttributeCode('multi-select')->willReturn(true);
@@ -189,6 +192,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $action->getItems()->willReturn(['multi1', 'multi2']);
 
         $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
+        $multiSelectAttribute->getCode()->willReturn('multi-select');
 
         $entityWithFamilyVariant->getFamily()->willReturn($family);
         $family->hasAttributeCode('multi-select')->willReturn(true);
@@ -302,6 +306,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $action->getItems()->willReturn(['multi1', 'multi2']);
 
         $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
+        $multiSelectAttribute->getCode()->willReturn('multi-select');
 
         $entityWithFamilyVariant->getFamily()->willReturn($family);
         $family->hasAttributeCode('multi-select')->willReturn(false);

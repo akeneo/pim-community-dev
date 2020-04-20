@@ -35,7 +35,7 @@ final class ProductSource
 
     private function __construct(string $field, ?string $scope, ?string $locale, array $options)
     {
-        $this->field = strtolower($field);
+        $this->field = $field;
         $this->scope = $scope;
         $this->locale = $locale;
         $this->options = $options;

@@ -84,12 +84,11 @@ final class ConcatenateActionApplier implements ActionApplierInterface
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         ProductConcatenateActionInterface $action
     ): void {
-        if (null === $entityWithFamilyVariant->getFamily()) {
-            return;
-        }
-
-        $toField = $action->getTarget()->getField();
-        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($toField)) {
+        $toField = $this->findAttributeCodeInFamilyCaseInsensitive(
+            $entityWithFamilyVariant,
+            $action->getTarget()->getField()
+        );
+        if (null === $toField) {
             return;
         }
 
@@ -114,7 +113,8 @@ final class ConcatenateActionApplier implements ActionApplierInterface
 
         /** @var ProductSource $source */
         foreach ($action->getSourceCollection() as $source) {
-            $attributeCode = $source->getField();
+            $field = $source->getField();
+            $attributeCode = $this->findAttributeCodeInFamilyCaseInsensitive($entity, $field) ?? $field;
 
             $value = $entity->getValue($attributeCode, $source->getLocale(), $source->getScope());
             if (null === $value) {
@@ -167,5 +167,26 @@ final class ConcatenateActionApplier implements ActionApplierInterface
         }
 
         return $stringifier;
+    }
+
+    /**
+     * We cannot use $entity->getFamily()->hasAttributeCode() because it's case sensitive.
+     * So we check manually the condition and return the correct code.
+     */
+    private function findAttributeCodeInFamilyCaseInsensitive(
+        EntityWithFamilyVariantInterface $entity,
+        string $searchAttributeCode
+    ): ?string {
+        if (null === $entity->getFamily()) {
+            return null;
+        }
+
+        foreach ($entity->getFamily()->getAttributeCodes() as $attributeCode) {
+            if (strtolower($attributeCode) === strtolower($searchAttributeCode)) {
+                return $attributeCode;
+            }
+        }
+
+        return null;
     }
 }

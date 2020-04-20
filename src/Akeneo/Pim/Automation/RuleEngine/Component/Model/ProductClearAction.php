@@ -37,7 +37,7 @@ final class ProductClearAction implements ProductClearActionInterface
         Assert::nullOrString($data['locale'] ?? null, 'The clear locale configuration must be a string or null.');
         Assert::nullOrString($data['scope'] ?? null, 'The clear scope configuration must be a string or null.');
 
-        $this->field = strtolower($data['field']);
+        $this->field = $data['field'];
         $this->locale = $data['locale'] ?? null;
         $this->scope = $data['scope'] ?? null;
     }

@@ -94,6 +94,8 @@ class RemoverActionApplier implements ActionApplierInterface
             return;
         }
 
+        // We set again the field to have the correct case of the code.
+        $field = $attribute->getCode();
         if (null === $entityWithFamilyVariant->getFamily()) {
             $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
 

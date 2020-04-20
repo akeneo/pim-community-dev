@@ -150,7 +150,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
         ]));
 
         $productModel->getFamily()->willReturn($family);
-        $family->hasAttributeCode('description')->willReturn(true);
+        $family->getAttributeCodes()->willReturn(['description']);
         $productModel->getFamilyVariant()->willReturn(null);
         $productModel->getVariationLevel()->willReturn(1);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
@@ -202,7 +202,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
         ]));
 
         $entity->getFamily()->willReturn($family);
-        $family->hasAttributeCode('description')->willReturn(true);
+        $family->getAttributeCodes()->willReturn(['description']);
         $entity->getFamilyVariant()->willReturn(null);
 
         $productSources = [];
@@ -250,7 +250,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
         ]));
 
         $entity->getFamily()->willReturn($family);
-        $family->hasAttributeCode('description')->willReturn(true);
+        $family->getAttributeCodes()->willReturn(['description']);
         $entity->getFamilyVariant()->willReturn(null);
 
         $productSources = [];
@@ -296,7 +296,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
         ]));
 
         $productModel->getFamily()->willReturn($family);
-        $family->hasAttributeCode('description')->willReturn(true);
+        $family->getAttributeCodes()->willReturn(['description']);
         $productModel->getFamilyVariant()->willReturn(null);
         $productModel->getVariationLevel()->willReturn(1);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
