@@ -43,6 +43,7 @@ services:
     image: 'akeneo/node:10'
     environment:
       YARN_CACHE_FOLDER: '/home/node/.yarn'
+      PUPPETEER_DOWNLOAD_HOST: 'http://storage.googleapis.com'
     volumes:
       - './:/srv/pim'
       - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/node/.yarn'
