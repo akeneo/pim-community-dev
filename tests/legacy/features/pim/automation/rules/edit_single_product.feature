@@ -274,8 +274,8 @@ Feature: Read a single product by applying rules
             value: 1
           - type:  set
             field: release_date
-            value: "2015-08-08"
-            scope: tablet
+            value: ""
+            scope: mobile
           - type:  set
             field: datasheet
             value: %fixtures%/akeneo.txt
@@ -324,7 +324,7 @@ Feature: Read a single product by applying rules
     Then the product "my-jacket" should have the following values:
       | name-fr_FR               | Veste blanche      |
       | handmade                 | 1                  |
-      | release_date-tablet      | 2015-08-08         |
+      | release_date-mobile      |                    |
       | datasheet                | akeneo             |
       | side_view                | akeneo2            |
       | length                   | 50.0000 CENTIMETER |

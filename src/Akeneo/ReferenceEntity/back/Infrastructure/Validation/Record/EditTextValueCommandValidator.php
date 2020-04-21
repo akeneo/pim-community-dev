@@ -30,6 +30,9 @@ use Symfony\Component\Validator\Validation;
  */
 class EditTextValueCommandValidator extends ConstraintValidator
 {
+    private const TEXT_INVALID_EMAIL = 'pim_reference_entity.record.validation.text.invalid_email';
+    private const TEXT_INVALID_URL = 'pim_reference_entity.record.validation.text.invalid_url';
+
     public function validate($command, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);
@@ -129,11 +132,15 @@ class EditTextValueCommandValidator extends ConstraintValidator
         }
 
         if ($command->attribute->isValidationRuleSetToUrl()) {
-            return $validator->validate($command->text, [new Constraints\Url()]);
+            return $validator->validate($command->text, [new Constraints\Url([
+                'message' => static::TEXT_INVALID_URL,
+            ])]);
         }
 
         if ($command->attribute->isValidationRuleSetToEmail()) {
-            return $validator->validate($command->text, [new Constraints\Email()]);
+            return $validator->validate($command->text, [new Constraints\Email([
+                'message' => static::TEXT_INVALID_EMAIL,
+            ])]);
         }
     }
 }
