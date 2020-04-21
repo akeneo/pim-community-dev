@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.75 (2020-04-21)
+
 ## Bug fixes:
 
 - PIM-9199: Entity-record without label cannot be find from product-attribute search
