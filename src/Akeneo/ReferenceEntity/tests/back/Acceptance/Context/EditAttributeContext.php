@@ -761,6 +761,38 @@ class EditAttributeContext implements Context
     }
 
     /**
+     * @When /^the user changes the regular expression of \'([^\']*)\' attribute of \'([^\']*)\' reference entity to \'([^\']*)\'$/
+     */
+    public function theUserChangesTheRegularExpressionOfAttributeOfReferenceEntityTo(
+        string $attributeCode,
+        string $referenceEntityIdentifier,
+        string $newRegularExpression
+    ) {
+        $attributes = $this->attributeRepository->findByReferenceEntity(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier)
+        );
+
+        foreach ($attributes as $attribute) {
+            if ($attribute->getCode()->equals(AttributeCode::fromString($attributeCode))) {
+                $editRegularExpression = [
+                    'identifier' => $attribute->getIdentifier()->normalize(),
+                    'regular_expression' => json_decode($newRegularExpression),
+                    'validation_rule' => AttributeValidationRule::REGULAR_EXPRESSION,
+                ];
+                $this->updateAttribute($editRegularExpression);
+
+                return;
+            }
+        }
+
+        throw new \InvalidArgumentException(sprintf(
+            'The "%s" attribute is not found for "%s" reference entity.',
+            $attributeCode,
+            $referenceEntityIdentifier
+        ));
+    }
+
+    /**
      * @Then /^the regular expression of \'([^\']*)\' should be \'([^\']*)\'$/
      */
     public function theRegularExpressionOfShouldBeW09(string $attributeCode, string $regularExpression)

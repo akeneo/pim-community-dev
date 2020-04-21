@@ -138,7 +138,10 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             $terms = $this->getTerms($codeLabelFilter);
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'query_string' => [
-                    'default_field' => sprintf('record_code_label_search.%s', $recordQuery->getlocale()),
+                    'fields' 		=> [
+                        'code',
+                        sprintf('record_code_label_search.%s', $recordQuery->getlocale()),
+                    ],
                     'query'         => $terms,
                 ],
             ];
