@@ -37,7 +37,7 @@ const TextAttributeConditionLine: React.FC<Props> = ({
   return (
     <div>
       <span>
-        {condition.attribute.code}
+        {condition.attribute.labels[currentCatalogLocale] || '[' + condition.attribute.code + ']'}
         <input type="hidden" name={`content.conditions[${lineNumber}].field`} ref={register}/>
       </span>
       <select
@@ -49,7 +49,9 @@ const TextAttributeConditionLine: React.FC<Props> = ({
         }}
       >
         {TextAttributeOperators.map((operator, i) => {
-          return <option key={i}>{operator}</option>
+          return <option key={i} value={operator}>
+            {translate('pimee_catalog_rule.form.edit.conditions.operators.' + operator)}
+          </option>
         })}
       </select>
       {!([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(operator) && (
