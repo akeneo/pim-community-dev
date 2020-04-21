@@ -1,8 +1,4 @@
 Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
-
-
-
-
     type: entity
     table: pim_catalog_association
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -35,18 +31,18 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
                     nullable: false
                     onDelete: CASCADE
     oneToMany:
-        productProductAssociations:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductProductAssociation
+        toProductAssociations:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductToProductAssociation
             mappedBy: association
             cascade:
                 - persist
-        productModelProductAssociations:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelProductAssociation
+        toProductModelAssociations:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductToProductModelAssociation
             mappedBy: association
             cascade:
                 - persist
-        groupProductAssociations:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupProductAssociation
+        toGroupAssociations:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductToGroupAssociation
             mappedBy: association
             cascade:
                 - persist

@@ -1,6 +1,6 @@
-Akeneo\Pim\Enrichment\Component\Product\Model\ProductProductModelAssociation:
+Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelToProductAssociation:
     type: entity
-    table: pim_catalog_product_product_model_association
+    table: pim_catalog_product_model_to_product_association
     changeTrackingPolicy: DEFERRED_EXPLICIT
     id:
         product:
@@ -18,9 +18,12 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductProductModelAssociation:
                 - persist
                 - refresh
                 - detach
+            joinColumn:
+                name: product_id
+                referencedColumnName: id
         association:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation
-            inversedBy: productProductAssociations
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation
+            inversedBy: productModelToProductAssociations
             cascade:
                 - persist
                 - refresh

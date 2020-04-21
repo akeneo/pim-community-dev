@@ -22,7 +22,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation:
                     nullable: false
                     onDelete: CASCADE
         owner:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
             inversedBy: associations
             joinColumns:
                 owner_id:
@@ -30,18 +30,18 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation:
                     nullable: false
                     onDelete: CASCADE
     oneToMany:
-        productProductAssociations:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductProductAssociation
+        toProductAssociations:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelToProductAssociation
             mappedBy: association
             cascade:
                 - persist
-        productModelProductAssociations:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelProductAssociation
+        toProductModelAssociations:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelToProductModelAssociation
             mappedBy: association
             cascade:
                 - persist
-        groupProductAssociations:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupProductAssociation
+        toGroupAssociations:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelToGroupAssociation
             mappedBy: association
             cascade:
                 - persist

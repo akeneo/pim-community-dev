@@ -13,18 +13,18 @@ use Doctrine\Common\Collections\Collection;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AbstractProductModelProductAssociation
+class AbstractToProductAssociation
 {
   public $quantity;
 
-  /** @var ProductModelInterface */
-  public $productModel;
+  /** @var ProductInterface */
+  public $product;
 
   public $association;
 
-  public function getProductModel()
+  public function getProduct()
   {
-      return $this->productModel;
+      return $this->product;
   }
 
   public function getQuantity()
@@ -34,6 +34,6 @@ class AbstractProductModelProductAssociation
 
   public function __toString()
   {
-      return $this->productModel->getCode() . '_' . $this->getQuantity();
+      return $this->product->getReference() . '_' . $this->getQuantity();
   }
 }
