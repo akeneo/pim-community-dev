@@ -22,6 +22,7 @@ $rules = [
         'Liip\ImagineBundle',
         'Dompdf\Dompdf',
         'Webmozart\Assert\Assert',
+        'Psr\Log\LoggerInterface',
         // TODO the feature use the datagrid
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\PimDataGridBundle',
@@ -119,6 +120,7 @@ $rules = [
         'Doctrine\Common',
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
+        'Psr\Log\LoggerInterface',
 
         // TIP-915: PIM/Enrichment should not be linked to AttributeOption
         // TIP-916: Do not check if entities exist in PQB filters or sorters
