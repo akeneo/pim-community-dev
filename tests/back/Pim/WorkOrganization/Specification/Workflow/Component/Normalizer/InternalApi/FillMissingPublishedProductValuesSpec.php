@@ -173,10 +173,10 @@ class FillMissingPublishedProductValuesSpec extends ObjectBehavior
     function it_merges_correctly_the_null_values_without_replacing_existing_values(GetAttributes $getAttributes)
     {
         $getAttributes->forCodes(['name', 'localizable_name', 'scopable_name', 'localizable_scopable_name'])->willReturn([
-            'name' => new Attribute('name', AttributeTypes::TEXT, [], false, false, null, false, 'text', []),
-            'localizable_name' => new Attribute('localizable_name', AttributeTypes::TEXT, [], true, false, null, false, 'text', []),
-            'scopable_name' => new Attribute('scopable_name', AttributeTypes::TEXT, [], false, true, null, false, 'text', []),
-            'localizable_scopable_name' => new Attribute('localizable_scopable_name', AttributeTypes::TEXT, [], true, true, null, false, 'text', []),
+            'name' => new Attribute('name', AttributeTypes::TEXT, [], false, false, null, null, false, 'text', []),
+            'localizable_name' => new Attribute('localizable_name', AttributeTypes::TEXT, [], true, false, null, null, false, 'text', []),
+            'scopable_name' => new Attribute('scopable_name', AttributeTypes::TEXT, [], false, true, null, null, false, 'text', []),
+            'localizable_scopable_name' => new Attribute('localizable_scopable_name', AttributeTypes::TEXT, [], true, true, null, null, false, 'text', []),
         ]);
 
         $this->fromStandardFormat(
@@ -432,10 +432,10 @@ class FillMissingPublishedProductValuesSpec extends ObjectBehavior
     function it_does_not_replace_existing_price_values(GetAttributes $getAttributes)
     {
         $getAttributes->forCodes(['price', 'scopable_price', 'localizable_price', 'localizable_scopable_price'])->willReturn([
-            'price' => new Attribute('price', AttributeTypes::PRICE_COLLECTION, [], false, false, null, false, 'text', []),
-            'scopable_price' => new Attribute('scopable_price', AttributeTypes::PRICE_COLLECTION, [], false, true, null, false, 'text', []),
-            'localizable_price' => new Attribute('localizable_price', AttributeTypes::PRICE_COLLECTION, [], true, false, null, false, 'text', []),
-            'localizable_scopable_price' => new Attribute('localizable_scopable_price', AttributeTypes::PRICE_COLLECTION, [], true, true, null, false, 'text', []),
+            'price' => new Attribute('price', AttributeTypes::PRICE_COLLECTION, [], false, false, null, null, false, 'text', []),
+            'scopable_price' => new Attribute('scopable_price', AttributeTypes::PRICE_COLLECTION, [], false, true, null, null, false, 'text', []),
+            'localizable_price' => new Attribute('localizable_price', AttributeTypes::PRICE_COLLECTION, [], true, false, null, null, false, 'text', []),
+            'localizable_scopable_price' => new Attribute('localizable_scopable_price', AttributeTypes::PRICE_COLLECTION, [], true, true, null, null, false, 'text', []),
         ]);
 
         $this->fromStandardFormat(

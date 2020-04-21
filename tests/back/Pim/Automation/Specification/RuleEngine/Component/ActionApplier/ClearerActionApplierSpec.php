@@ -217,6 +217,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             true,
             '',
             []

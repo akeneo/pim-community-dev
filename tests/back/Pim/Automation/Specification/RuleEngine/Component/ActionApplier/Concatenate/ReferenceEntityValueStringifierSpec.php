@@ -305,6 +305,7 @@ class ReferenceEntityValueStringifierSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             true,
             '',
             []

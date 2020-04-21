@@ -72,8 +72,8 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $productProposal->getValues()->willReturn($valueCollection);
         $productProposal->getChanges()->willReturn($changes);
 
-        $textAttribute = new Attribute('text', 'pim_catalog_text', [], false, false, null, true, 'pim_catalog_text', []);
-        $descriptionAttribute = new Attribute('description', 'pim_catalog_text', [], false, false, null, true, 'pim_catalog_text', []);
+        $textAttribute = new Attribute('text', 'pim_catalog_text', [], false, false, null, null, false, 'pim_catalog_text', []);
+        $descriptionAttribute = new Attribute('description', 'pim_catalog_text', [], false, false, null, null, false, 'pim_catalog_text', []);
 
         $getAttributes->forCode('text')->willReturn($textAttribute);
         $getAttributes->forCode('description')->willReturn($descriptionAttribute);

@@ -321,6 +321,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             true,
             '',
             []

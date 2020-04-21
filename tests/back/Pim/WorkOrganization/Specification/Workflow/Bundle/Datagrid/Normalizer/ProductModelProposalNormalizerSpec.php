@@ -69,7 +69,7 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
         $productModelProposal->getValues()->willReturn($valueCollection);
 
         $productModelProposal->getChanges()->willReturn($changes);
-        $attribute = new Attribute('text', 'pim_catalog_text', [], false, false, null, true, 'pim_catalog_text', []);
+        $attribute = new Attribute('text', 'pim_catalog_text', [], false, false, null, null, true, 'pim_catalog_text', []);
         $getAttributesQuery->forCode('text')->willReturn($attribute);
         $valueFactory->createByCheckingData($attribute, null, null, 'my text')->willReturn($value);
         $value->getAttributeCode()->willReturn('text');
