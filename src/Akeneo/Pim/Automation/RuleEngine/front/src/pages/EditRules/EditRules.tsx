@@ -11,7 +11,7 @@ type Props = {
 
 const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
   const router = useBackboneRouter();
-  const { error, ruleDefinition, locales } = useInitEditRules(
+  const { error, ruleDefinition, locales, scopes } = useInitEditRules(
     ruleDefinitionCode,
     router
   );
@@ -19,13 +19,14 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
     <ThemeProvider theme={akeneoTheme}>
       {error.status ? (
         "There was an error (TODO: better display)"
-      ) : !ruleDefinition || !locales ? (
+      ) : !ruleDefinition || !locales || !scopes ? (
         "Loading (TODO: better display)"
       ) : (
         <EditRulesContent
           ruleDefinitionCode={ruleDefinitionCode}
           ruleDefinition={ruleDefinition}
           locales={locales}
+          scopes={scopes}
         />
       )}
     </ThemeProvider>

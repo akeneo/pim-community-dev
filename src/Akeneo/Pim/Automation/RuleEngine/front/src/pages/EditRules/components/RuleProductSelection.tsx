@@ -8,6 +8,7 @@ import { PimConditionLine } from "../PimConditionLine";
 import { FallbackConditionLine } from "../FallbackConditionLine";
 import { Condition } from "../../../models/Condition";
 import { Locale } from "../../../models/Locale";
+import {Scope} from "../../../models/Scope";
 
 const Header = styled.header`
   font-weight: normal;
@@ -47,7 +48,9 @@ type Props = {
   register: any,
   ruleDefinition: RuleDefinition,
   translate: Translate;
-  activatedLocales: Locale[]
+  locales: Locale[];
+  scopes: Scope[];
+  currentCatalogLocale: string;
 };
 
 type ConditionLineProps = {
@@ -55,7 +58,9 @@ type ConditionLineProps = {
   condition: Condition;
   lineNumber: number,
   translate: Translate;
-  activatedLocales: Locale[];
+  locales: Locale[];
+  scopes: Scope[];
+  currentCatalogLocale: string;
 };
 
 const ConditionLine: React.FC<ConditionLineProps> = ({
@@ -63,7 +68,9 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
     translate,
     condition,
     lineNumber,
-    activatedLocales
+    locales,
+    scopes,
+    currentCatalogLocale
   }) => {
   const Line = condition.module;
   const isFallback =
@@ -81,14 +88,23 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
           condition={condition}
           lineNumber={lineNumber}
           translate={translate}
-          activatedLocales={activatedLocales}
+          locales={locales}
+          scopes={scopes}
+          currentCatalogLocale={currentCatalogLocale}
         />
       </div>
     </div>
   );
 };
 
-const RuleProductSelection: React.FC<Props> = ({ register, ruleDefinition, translate, activatedLocales }) => {
+const RuleProductSelection: React.FC<Props> = ({
+    register,
+    ruleDefinition,
+    translate,
+    locales,
+    scopes,
+    currentCatalogLocale
+  }) => {
   return (
     <fieldset>
       <Header className="AknSubsection-title">
@@ -130,7 +146,9 @@ const RuleProductSelection: React.FC<Props> = ({ register, ruleDefinition, trans
               lineNumber={i}
               translate={translate}
               key={`condition_${i}`}
-              activatedLocales={activatedLocales}
+              locales={locales}
+              scopes={scopes}
+              currentCatalogLocale={currentCatalogLocale}
             />
           );
         })}

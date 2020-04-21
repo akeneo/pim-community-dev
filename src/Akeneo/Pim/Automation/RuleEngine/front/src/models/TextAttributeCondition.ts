@@ -8,6 +8,7 @@ import {Operator} from "./Operator";
 import {Locale} from "./Locale";
 import {getActivatedLocaleByCode} from "../fetch/LocaleFetcher";
 import {ConditionLineProps} from "../pages/EditRules/ConditionLineProps";
+import {Scope} from "./Scope";
 
 const TextAttributeOperators = [
   Operator.EQUALS,
@@ -20,6 +21,7 @@ const TextAttributeOperators = [
 ];
 
 type TextAttributeCondition = {
+  scope?: Scope;
   module: React.FC<ConditionLineProps & { condition: Condition }>,
   attribute: Attribute;
   operator: Operator;

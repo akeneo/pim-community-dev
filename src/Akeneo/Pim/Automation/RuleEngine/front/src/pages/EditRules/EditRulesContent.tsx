@@ -18,17 +18,21 @@ import {
 } from "../../dependenciesTools/hooks";
 import { Locale, RuleDefinition, getRuleDefinitionLabel } from "../../models";
 import { useSubmitEditRuleForm } from "./hooks";
+import {Scope} from "../../models/Scope";
+
 type Props = {
   ruleDefinitionCode: string;
   ruleDefinition: RuleDefinition;
   locales: Locale[];
+  scopes: Scope[];
 };
 
 const EditRulesContent: React.FC<Props> = ({
-  ruleDefinitionCode,
-  ruleDefinition,
-  locales,
-}) => {
+    ruleDefinitionCode,
+    ruleDefinition,
+    locales,
+    scopes,
+  }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const router = useBackboneRouter();
@@ -53,7 +57,7 @@ const EditRulesContent: React.FC<Props> = ({
     notify,
     router,
     ruleDefinition,
-    locales
+    locales,
   );
 
   return (
@@ -81,6 +85,8 @@ const EditRulesContent: React.FC<Props> = ({
           locales={locales}
           ruleDefinition={ruleDefinition}
           translate={translate}
+          scopes={scopes}
+          currentCatalogLocale={currentCatalogLocale}
         />
       </Content>
     </ThemeProvider>

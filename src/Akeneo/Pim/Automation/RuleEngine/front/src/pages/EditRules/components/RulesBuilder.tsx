@@ -4,12 +4,15 @@ import { RuleProductSelection } from "./RuleProductSelection";
 import {RuleDefinition} from "../../../models/RuleDefinition";
 import {Action} from "../../../models/Action";
 import {Locale} from "../../../models/Locale";
+import {Scope} from "../../../models/Scope";
 
 type Props = {
   register: any;
   translate: Translate;
   ruleDefinition: RuleDefinition;
   locales: Locale[];
+  scopes: Scope[];
+  currentCatalogLocale: string;
 };
 
 const ActionLine: React.FC<{ action: Action, translate: Translate }> = ({ action, translate }) => {
@@ -27,11 +30,20 @@ const RulesBuilder: React.FC<Props> = ({
     register,
     translate,
     ruleDefinition,
-    locales
+    locales,
+    scopes,
+    currentCatalogLocale
   }) => {
   return (
     <>
-      <RuleProductSelection register={register} ruleDefinition={ruleDefinition} translate={translate} activatedLocales={locales}/>
+      <RuleProductSelection
+        register={register}
+        ruleDefinition={ruleDefinition}
+        translate={translate}
+        locales={locales}
+        scopes={scopes}
+        currentCatalogLocale={currentCatalogLocale}
+      />
       {ruleDefinition.actions.map((action, i) => {
         return (
           <ActionLine

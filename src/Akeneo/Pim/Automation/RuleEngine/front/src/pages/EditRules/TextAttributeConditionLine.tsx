@@ -3,7 +3,8 @@ import {TextAttributeCondition, TextAttributeOperators} from "../../models/TextA
 import {InputText} from "../../components/InputText";
 import {Operator} from "../../models/Operator";
 import {ConditionLineProps} from "./ConditionLineProps";
-import {Locale} from "../../models/Locale";
+import {Locale} from "../../models";
+import {Scope} from "../../models";
 
 type Props = {
   condition: TextAttributeCondition,
@@ -14,9 +15,15 @@ const TextAttributeConditionLine: React.FC<Props> = ({
     condition,
     lineNumber,
     translate,
-    activatedLocales
+    locales,
+    scopes,
+    currentCatalogLocale
   }) => {
   const [operator, setOperator] = React.useState<Operator>(condition.operator);
+
+  const getScopeLabel = (scope: Scope): string => {
+    return scope.labels[currentCatalogLocale] || `[${scope.code}]`;
+  }
 
   return (
     <div>
@@ -49,8 +56,19 @@ const TextAttributeConditionLine: React.FC<Props> = ({
           ref={register}
           name={`conditions[${lineNumber}].locale`}
         >
-          {activatedLocales.map((locale: Locale, i: number) => {
+          {locales.map((locale: Locale, i: number) => {
             return <option key={i} value={locale.code}>{locale.label}</option>
+          })}
+        </select>
+      }
+      {condition.attribute.scopable &&
+        <select
+          defaultValue={condition.scope ? condition.scope.code : undefined}
+          ref={register}
+          name={`conditions[${lineNumber}].scope`}
+        >
+          {scopes.map((scope: Scope, i: number) => {
+            return <option key={i} value={scope.code}>{getScopeLabel(scope)}</option>
           })}
         </select>
       }
