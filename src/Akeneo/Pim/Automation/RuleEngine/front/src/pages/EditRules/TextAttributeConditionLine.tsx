@@ -52,9 +52,10 @@ const TextAttributeConditionLine: React.FC<Props> = ({
       )}
       {condition.attribute.localizable &&
         <select
-          defaultValue={condition.locale ? condition.locale.code : undefined}
+          value={condition.locale ? condition.locale.code : undefined}
           ref={register}
           name={`conditions[${lineNumber}].locale`}
+          onChange={() => {}}
         >
           {locales.map((locale: Locale, i: number) => {
             return <option key={i} value={locale.code}>{locale.label}</option>
@@ -63,11 +64,12 @@ const TextAttributeConditionLine: React.FC<Props> = ({
       }
       {condition.attribute.scopable &&
         <select
-          defaultValue={condition.scope ? condition.scope.code : undefined}
+          value={condition.scope ? condition.scope.code : undefined}
           ref={register}
           name={`conditions[${lineNumber}].scope`}
+          onChange={() => {}}
         >
-          {scopes.map((scope: Scope, i: number) => {
+          {Object.values(scopes).map((scope: Scope, i: number) => {
             return <option key={i} value={scope.code}>{getScopeLabel(scope)}</option>
           })}
         </select>

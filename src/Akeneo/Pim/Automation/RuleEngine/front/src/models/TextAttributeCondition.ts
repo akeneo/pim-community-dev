@@ -9,6 +9,7 @@ import {Locale} from "./Locale";
 import {getActivatedLocaleByCode} from "../fetch/LocaleFetcher";
 import {ConditionLineProps} from "../pages/EditRules/ConditionLineProps";
 import {Scope} from "./Scope";
+import {getScopeByCode} from "../fetch/ScopeFetcher";
 
 const TextAttributeOperators = [
   Operator.EQUALS,
@@ -49,13 +50,20 @@ const createTextAttributeCondition = async (json: any, router: Router): Promise 
       attribute,
       operator: json.operator,
       value: json.value,
-      locale: undefined
+      locale: undefined,
+      scope: undefined,
     };
 
     if (json.hasOwnProperty('locale')) {
       const locale = await getActivatedLocaleByCode(json.locale, router);
       if (locale) {
         result.locale = locale;
+      }
+    }
+    if (json.hasOwnProperty('scope')) {
+      const scope = await getScopeByCode(json.scope, router);
+      if (scope) {
+        result.scope = scope;
       }
     }
 

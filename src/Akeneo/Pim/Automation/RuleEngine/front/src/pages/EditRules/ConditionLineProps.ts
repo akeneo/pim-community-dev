@@ -1,13 +1,13 @@
 import {Translate} from "../../dependenciesTools";
 import {Locale} from "../../models";
-import {Scope} from "../../models";
+import {IndexedScopes} from "../../fetch/ScopeFetcher";
 
 type ConditionLineProps = {
   register: any,
   lineNumber: number,
   translate: Translate,
   locales: Locale[],
-  scopes: Scope[],
+  scopes: IndexedScopes,
   currentCatalogLocale: string,
 }
 

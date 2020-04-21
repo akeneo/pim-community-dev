@@ -18,13 +18,13 @@ import {
 } from "../../dependenciesTools/hooks";
 import { Locale, RuleDefinition, getRuleDefinitionLabel } from "../../models";
 import { useSubmitEditRuleForm } from "./hooks";
-import {Scope} from "../../models/Scope";
+import {IndexedScopes} from "../../fetch/ScopeFetcher";
 
 type Props = {
   ruleDefinitionCode: string;
   ruleDefinition: RuleDefinition;
   locales: Locale[];
-  scopes: Scope[];
+  scopes: IndexedScopes;
 };
 
 const EditRulesContent: React.FC<Props> = ({

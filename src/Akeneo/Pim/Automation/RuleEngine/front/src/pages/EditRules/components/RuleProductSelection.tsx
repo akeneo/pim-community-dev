@@ -8,7 +8,7 @@ import { PimConditionLine } from "../PimConditionLine";
 import { FallbackConditionLine } from "../FallbackConditionLine";
 import { Condition } from "../../../models/Condition";
 import { Locale } from "../../../models/Locale";
-import {Scope} from "../../../models/Scope";
+import {IndexedScopes} from "../../../fetch/ScopeFetcher";
 
 const Header = styled.header`
   font-weight: normal;
@@ -49,7 +49,7 @@ type Props = {
   ruleDefinition: RuleDefinition,
   translate: Translate;
   locales: Locale[];
-  scopes: Scope[];
+  scopes: IndexedScopes;
   currentCatalogLocale: string;
 };
 
@@ -59,7 +59,7 @@ type ConditionLineProps = {
   lineNumber: number,
   translate: Translate;
   locales: Locale[];
-  scopes: Scope[];
+  scopes: IndexedScopes;
   currentCatalogLocale: string;
 };
 

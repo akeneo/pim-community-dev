@@ -4,14 +4,14 @@ import { RuleProductSelection } from "./RuleProductSelection";
 import {RuleDefinition} from "../../../models/RuleDefinition";
 import {Action} from "../../../models/Action";
 import {Locale} from "../../../models/Locale";
-import {Scope} from "../../../models/Scope";
+import {IndexedScopes} from "../../../fetch/ScopeFetcher";
 
 type Props = {
   register: any;
   translate: Translate;
   ruleDefinition: RuleDefinition;
   locales: Locale[];
-  scopes: Scope[];
+  scopes: IndexedScopes;
   currentCatalogLocale: string;
 };
 

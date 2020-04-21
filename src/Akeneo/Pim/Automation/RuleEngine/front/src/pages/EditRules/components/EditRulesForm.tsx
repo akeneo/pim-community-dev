@@ -6,7 +6,7 @@ import { RuleDefinition } from "../../../models/RuleDefinition";
 import { RulesBuilder } from "./RulesBuilder";
 import { RuleProperties } from "./RuleProperties";
 import { Locale } from "../../../models/Locale";
-import {Scope} from "../../../models/Scope";
+import {IndexedScopes} from "../../../fetch/ScopeFetcher";
 
 const getTabBorder = ({ id, selectedId, theme }: any) => {
   if (id === selectedId) {
@@ -68,7 +68,7 @@ type Props = {
   locales: Locale[];
   ruleDefinition: RuleDefinition;
   register: any;
-  scopes: Scope[];
+  scopes: IndexedScopes;
   currentCatalogLocale: string;
 };
 
