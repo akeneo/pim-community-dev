@@ -15,7 +15,7 @@ const DataDestinationChartsContainer = styled.div`
     display: block;
 `;
 const NoConnectionContainer = styled.div`
-    border: 1px solid ${({theme}) => theme.color.grey70};
+    border: 1px solid ${({theme}) => theme.color.grey60};
     padding-bottom: 20px;
     margin-top: 20px;
 `;

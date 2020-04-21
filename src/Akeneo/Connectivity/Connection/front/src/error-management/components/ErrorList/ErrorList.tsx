@@ -31,7 +31,7 @@ const sortingByTimestamp = (sortOrder: Order) => {
 };
 
 const filteringBySearchValue = (searchValue: string) => {
-    return (error: ConnectionError) => new RegExp(searchValue, 'i').test(error.content.message);
+    return (error: ConnectionError) => new RegExp(searchValue, 'i').test(JSON.stringify(error.content));
 };
 
 type Props = {
@@ -70,7 +70,23 @@ const ErrorList: FC<Props> = ({errors}) => {
                         {sortedAndfilteredErrors.map(error => (
                             <TableRow key={error.id}>
                                 <DateTimeCell collapsing>{formatTimestamp(error.timestamp)}</DateTimeCell>
-                                <ErrorMessageCell>{error.content.message}</ErrorMessageCell>
+                                <ErrorMessageCell>
+                                    <strong>{error.content.message}</strong>
+                                    <table>
+                                        <tbody>
+                                            {Object.entries(error.content)
+                                                .filter(([key]) => 'message' !== key)
+                                                .map(([key, value], i) => {
+                                                    return (
+                                                        <ErrorContentRow key={i}>
+                                                            <ErrorContentKeyCell>{key}</ErrorContentKeyCell>
+                                                            <td>: {JSON.stringify(value)}</td>
+                                                        </ErrorContentRow>
+                                                    );
+                                                })}
+                                        </tbody>
+                                    </table>
+                                </ErrorMessageCell>
                             </TableRow>
                         ))}
                     </tbody>
@@ -88,6 +104,16 @@ const DateTimeCell = styled(TableCell)`
 
 const ErrorMessageCell = styled(TableCell)`
     color: ${({theme}) => theme.color.red100};
+    white-space: pre-wrap;
+`;
+
+const ErrorContentRow = styled.tr`
+    line-height: ${({theme}) => theme.fontSize.default};
+`;
+
+const ErrorContentKeyCell = styled.th`
+    text-align: left;
+    font-weight: normal;
 `;
 
 export {ErrorList};

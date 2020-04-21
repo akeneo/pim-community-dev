@@ -178,8 +178,8 @@ akeneo_connectivity.connection:
         connection_monitoring:
             title: Monitoring
             helper:
-                title: '{0} You have {{ count }} business error |[1,Inf] You have {{ count }} business errors'
-                description: Here, you can see the detail of each business error for this connection over the last 7 days. Error
+                title: '{0} You have {{ count }} error |[1,Inf] You have {{ count }} errors'
+                description: Here, you can see the detail of each error for this connection over the last 7 days. Error
                     number is limited to 100 errors.
                 link: To understand how to solve this, please visit the API help center.
             search_filter:
@@ -187,9 +187,9 @@ akeneo_connectivity.connection:
                 result_count: '{0} No result |[1,Inf] {{ count }} results'
             error_list:
                 date_time_column: Day and time
-                content_column: Business error message
+                content_column: Error message
             no_error:
-                title: Awesome! No business error found!
+                title: Awesome! No error found!
 
     runtime_error:
         error_message: Oh snap! An error occurred...
