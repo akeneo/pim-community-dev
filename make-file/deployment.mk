@@ -99,7 +99,7 @@ ifeq ($(INSTANCE_NAME),pimci-helpdesk)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
 endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
-	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | grep "FLAG_.*_ENABLED" >> $(PIM_SRC_DIR)/deployments/terraform/pim/templates/env-configmap.yaml
+	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | (grep "FLAG_.*_ENABLED" || true) >> $(PIM_SRC_DIR)/deployments/terraform/pim/templates/env-configmap.yaml
 endif
 
 .PHONY: create-pim-main-tf
