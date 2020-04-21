@@ -20,16 +20,25 @@ const TextAttributeConditionLine: React.FC<Props> = ({
     currentCatalogLocale
   }) => {
   const [operator, setOperator] = React.useState<Operator>(condition.operator);
+  const [scopeCode, setScopeCode] = React.useState<string | undefined>(condition.scope);
 
   const getScopeLabel = (scope: Scope): string => {
     return scope.labels[currentCatalogLocale] || `[${scope.code}]`;
   }
 
+  const getLocales = (): Locale[] => {
+    if (!condition.attribute.scopable) {
+      return locales;
+    }
+
+    return scopeCode ? scopes[scopeCode].locales : [];
+  };
+
   return (
     <div>
       <span>{condition.attribute.code}</span>
       <select
-        defaultValue={operator}
+        style={{'width': 150, 'display': 'inline-block'}} //TODO Style
         name={`conditions[${lineNumber}].operator`}
         ref={register}
         onChange={(event) => {
@@ -52,22 +61,23 @@ const TextAttributeConditionLine: React.FC<Props> = ({
       )}
       {condition.attribute.localizable &&
         <select
-          value={condition.locale ? condition.locale.code : undefined}
+          style={{'width': 150, 'display': 'inline-block'}} //TODO Style
           ref={register}
           name={`conditions[${lineNumber}].locale`}
-          onChange={() => {}}
         >
-          {locales.map((locale: Locale, i: number) => {
+          {getLocales().map((locale: Locale, i: number) => {
             return <option key={i} value={locale.code}>{locale.label}</option>
           })}
         </select>
       }
       {condition.attribute.scopable &&
         <select
-          value={condition.scope ? condition.scope.code : undefined}
+          style={{'width': 150, 'display': 'inline-block'}} //TODO Style
           ref={register}
           name={`conditions[${lineNumber}].scope`}
-          onChange={() => {}}
+          onChange={(event) => {
+            setScopeCode(event.target.value);
+          }}
         >
           {Object.values(scopes).map((scope: Scope, i: number) => {
             return <option key={i} value={scope.code}>{getScopeLabel(scope)}</option>

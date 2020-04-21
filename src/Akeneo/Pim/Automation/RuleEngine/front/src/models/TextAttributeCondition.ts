@@ -5,11 +5,7 @@ import {Router } from "../dependenciesTools";
 import {getAttributeByIdentifier} from "../fetch/AttributeFetcher";
 import {TextAttributeConditionLine} from "../pages/EditRules/TextAttributeConditionLine";
 import {Operator} from "./Operator";
-import {Locale} from "./Locale";
-import {getActivatedLocaleByCode} from "../fetch/LocaleFetcher";
 import {ConditionLineProps} from "../pages/EditRules/ConditionLineProps";
-import {Scope} from "./Scope";
-import {getScopeByCode} from "../fetch/ScopeFetcher";
 
 const TextAttributeOperators = [
   Operator.EQUALS,
@@ -22,12 +18,12 @@ const TextAttributeOperators = [
 ];
 
 type TextAttributeCondition = {
-  scope?: Scope;
+  scope?: string;
   module: React.FC<ConditionLineProps & { condition: Condition }>,
   attribute: Attribute;
   operator: Operator;
   value?: string;
-  locale?: Locale;
+  locale?: string;
 }
 
 const createTextAttributeCondition = async (json: any, router: Router): Promise <TextAttributeCondition | null> => {
@@ -45,29 +41,14 @@ const createTextAttributeCondition = async (json: any, router: Router): Promise 
   }
 
   if (attribute.type === 'pim_catalog_text') {
-    let result: TextAttributeCondition = {
+    return {
       module: TextAttributeConditionLine,
       attribute,
       operator: json.operator,
       value: json.value,
-      locale: undefined,
-      scope: undefined,
+      locale: json.locale,
+      scope: json.scope,
     };
-
-    if (json.hasOwnProperty('locale')) {
-      const locale = await getActivatedLocaleByCode(json.locale, router);
-      if (locale) {
-        result.locale = locale;
-      }
-    }
-    if (json.hasOwnProperty('scope')) {
-      const scope = await getScopeByCode(json.scope, router);
-      if (scope) {
-        result.scope = scope;
-      }
-    }
-
-    return result;
   }
 
   return null;
