@@ -11,7 +11,7 @@ const TextAttributeOperators = [
   Operator.EQUALS,
   Operator.NOT_EQUAL,
   Operator.CONTAINS,
-  Operator.START_WITH,
+  Operator.STARTS_WITH,
   Operator.DOES_NOT_CONTAIN,
   Operator.IS_EMPTY,
   Operator.IS_NOT_EMPTY,
@@ -21,6 +21,7 @@ type TextAttributeCondition = {
   scope?: string;
   module: React.FC<ConditionLineProps & { condition: Condition }>,
   attribute: Attribute;
+  field: string,
   operator: Operator;
   value?: string;
   locale?: string;
@@ -44,6 +45,7 @@ const createTextAttributeCondition = async (json: any, router: Router): Promise 
     return {
       module: TextAttributeConditionLine,
       attribute,
+      field: json.field,
       operator: json.operator,
       value: json.value,
       locale: json.locale,

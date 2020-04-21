@@ -36,10 +36,13 @@ const TextAttributeConditionLine: React.FC<Props> = ({
 
   return (
     <div>
-      <span>{condition.attribute.code}</span>
+      <span>
+        {condition.attribute.code}
+        <input type="hidden" name={`content.conditions[${lineNumber}].field`} ref={register}/>
+      </span>
       <select
         style={{'width': 150, 'display': 'inline-block'}} //TODO Style
-        name={`conditions[${lineNumber}].operator`}
+        name={`content.conditions[${lineNumber}].operator`}
         ref={register}
         onChange={(event) => {
           setOperator(event.target.value as Operator);
@@ -55,7 +58,7 @@ const TextAttributeConditionLine: React.FC<Props> = ({
         >
           <InputText
               id="edit-rules-input-toto"
-              name={`conditions[${lineNumber}].value`}
+              name={`content.conditions[${lineNumber}].value`}
               label={translate("pim_common.code")}
               ref={register}
           >&nbsp;</InputText>
@@ -65,7 +68,7 @@ const TextAttributeConditionLine: React.FC<Props> = ({
         <select
           style={{'width': 150, 'display': 'inline-block'}} //TODO Style
           ref={register}
-          name={`conditions[${lineNumber}].locale`}
+          name={`content.conditions[${lineNumber}].locale`}
         >
           {getLocales().map((locale: Locale, i: number) => {
             return <option key={i} value={locale.code}>{locale.label}</option>
@@ -76,7 +79,7 @@ const TextAttributeConditionLine: React.FC<Props> = ({
         <select
           style={{'width': 150, 'display': 'inline-block'}} //TODO Style
           ref={register}
-          name={`conditions[${lineNumber}].scope`}
+          name={`content.conditions[${lineNumber}].scope`}
           onChange={(event) => {
             setScopeCode(event.target.value);
           }}

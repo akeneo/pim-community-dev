@@ -5,6 +5,7 @@ import {RuleDefinition} from "../../../models/RuleDefinition";
 import {Action} from "../../../models/Action";
 import {Locale} from "../../../models/Locale";
 import {IndexedScopes} from "../../../fetch/ScopeFetcher";
+import {ActionLineProps} from "../ActionLineProps";
 
 type Props = {
   register: any;
@@ -15,13 +16,15 @@ type Props = {
   currentCatalogLocale: string;
 };
 
-const ActionLine: React.FC<{ action: Action, translate: Translate }> = ({ action, translate }) => {
+const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({ action, translate, lineNumber, register }) => {
   const Line = action.module;
 
   return (
     <Line
       action={action}
       translate={translate}
+      lineNumber={lineNumber}
+      register={register}
     />
   );
 };
@@ -50,6 +53,8 @@ const RulesBuilder: React.FC<Props> = ({
             action={action}
             translate={translate}
             key={`action_${i}`}
+            lineNumber={i}
+            register={register}
           />
         );
       })}
