@@ -18,6 +18,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.command.installer.fixtures_installer'
             - '@akeneo_referenceentity.command.installer.assets_installer'
+            - '%load_reference_entities_fixtures%'
         tags:
             - { name: kernel.event_subscriber }
             - { name: 'console.command'}

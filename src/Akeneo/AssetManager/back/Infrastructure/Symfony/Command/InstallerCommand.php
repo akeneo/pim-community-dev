@@ -40,14 +40,19 @@ class InstallerCommand extends Command implements EventSubscriberInterface
     /** @var AssetsInstaller */
     private $assetInstaller;
 
+    /** @var bool */
+    private $loadAssetsFixtures;
+
     public function __construct(
         FixturesInstaller $fixturesInstaller,
-        AssetsInstaller $assetInstaller
+        AssetsInstaller $assetInstaller,
+        bool $loadAssetsFixtures
     ) {
         parent::__construct(self::RESET_FIXTURES_COMMAND_NAME);
 
         $this->fixturesInstaller = $fixturesInstaller;
         $this->assetInstaller = $assetInstaller;
+        $this->loadAssetsFixtures = $loadAssetsFixtures;
     }
 
     /**
@@ -80,7 +85,15 @@ class InstallerCommand extends Command implements EventSubscriberInterface
 
     public function loadFixtures(InstallerEvent $event): void
     {
-        $this->fixturesInstaller->loadCatalog($event->getArgument('catalog'));
+        if (
+            $this->loadAssetsFixtures ||
+            substr(
+                $event->getArgument('catalog'),
+                -strlen('icecat_demo_dev')
+            ) === 'icecat_demo_dev'
+        ) {
+            $this->fixturesInstaller->loadCatalog();
+        }
     }
 
     public function installAssets(GenericEvent $event): void
@@ -95,6 +108,6 @@ class InstallerCommand extends Command implements EventSubscriberInterface
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->fixturesInstaller->createSchema();
-        $this->fixturesInstaller->loadCatalog(FixturesInstaller::ICE_CAT_DEMO_DEV_CATALOG);
+        $this->fixturesInstaller->loadCatalog();
     }
 }

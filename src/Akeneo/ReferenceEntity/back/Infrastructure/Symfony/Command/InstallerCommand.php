@@ -31,6 +31,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class InstallerCommand extends Command implements EventSubscriberInterface
 {
     protected static $defaultName = self::RESET_FIXTURES_COMMAND_NAME;
+    public const ICECAT_DEMO_DEV = 'icecat_demo_dev';
 
     private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:reference-entity:reset-fixtures';
 
@@ -40,14 +41,19 @@ class InstallerCommand extends Command implements EventSubscriberInterface
     /** @var AssetsInstaller */
     private $assetInstaller;
 
+    /** @var bool */
+    private $loadReferenceEntitiesFixtures;
+
     public function __construct(
         FixturesInstaller $fixturesInstaller,
-        AssetsInstaller $assetInstaller
+        AssetsInstaller $assetInstaller,
+        bool $loadReferenceEntitiesFixtures
     ) {
         parent::__construct(self::RESET_FIXTURES_COMMAND_NAME);
 
         $this->fixturesInstaller = $fixturesInstaller;
         $this->assetInstaller = $assetInstaller;
+        $this->loadReferenceEntitiesFixtures = $loadReferenceEntitiesFixtures;
     }
 
     /**
@@ -80,7 +86,15 @@ class InstallerCommand extends Command implements EventSubscriberInterface
 
     public function loadFixtures(InstallerEvent $event): void
     {
-        $this->fixturesInstaller->loadCatalog($event->getArgument('catalog'));
+        if (
+            $this->loadReferenceEntitiesFixtures ||
+            substr(
+                $event->getArgument('catalog'),
+                -strlen(self::ICECAT_DEMO_DEV)
+            ) === self::ICECAT_DEMO_DEV
+        ) {
+            $this->fixturesInstaller->loadCatalog();
+        }
     }
 
     public function installAssets(GenericEvent $event): void
@@ -95,6 +109,6 @@ class InstallerCommand extends Command implements EventSubscriberInterface
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->fixturesInstaller->createSchema();
-        $this->fixturesInstaller->loadCatalog(FixturesInstaller::ICE_CAT_DEMO_DEV_CATALOG);
+        $this->fixturesInstaller->loadCatalog();
     }
 }
