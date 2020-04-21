@@ -4,11 +4,15 @@
 
 - PIM-9195: Add extra ImageMagick library to handle SVG files
 
+## Bug fixes
+
+- PIM-9190: Mitigates deadlock on DQI
+
 # 4.0.17 (2020-04-17)
 
 ## Improvements
 
-- DAPI-531: Franklin Insights - Add loading indicator for multiple actions on mapping screens. 
+- DAPI-531: Franklin Insights - Add loading indicator for multiple actions on mapping screens.
 
 ## Bug fixes
 

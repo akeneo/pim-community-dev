@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\DeadlockException;
 
 final class CriterionEvaluationRepository implements CriterionEvaluationRepositoryInterface
 {
@@ -63,7 +64,50 @@ SQL;
             $statement->bindValue($valuePlaceholderIndex++, $criterionEvaluation->isPending() ? 1 : null, \PDO::PARAM_INT);
         }
 
-        $statement->execute();
+        $success = false;
+        $retry = 0;
+
+        while (!$success) {
+            try {
+                $statement->execute();
+                $success = true;
+            } catch (DeadlockException $e) {
+                $retry++;
+                if ($retry == 5) {
+                    $this->executeWithLock($statement);
+                    $success = true;
+                } else {
+                    usleep(rand(100000, 500000 * 2**$retry));
+                }
+            }
+        }
+    }
+
+    /**
+     * When reaching a certain number of retries we need to ensure the
+     * transaction will succeed. This is done in locking the table and
+     * serializing other transactions meanwhile. This method conflicts with
+     * standard transaction and may also lock accesses to tables tied by
+     * foreign keys. In order to ovoid stacking waiting transaction, we disable
+     * foreign key checks during this process.
+     */
+    private function executeWithLock(\PDOStatement $statement): void
+    {
+        $value = $this->db->executeQuery('SELECT @@autocommit')->fetch();
+        if (!isset($value['@@autocommit'])) {
+            throw new \LogicException('Error when getting autocommit parameter from Mysql.');
+        }
+
+        $formerAutocommitValue = (int) $value['@@autocommit'];
+        try {
+            $this->db->executeQuery('SET autocommit=0');
+            $this->db->executeQuery('LOCK TABLES pimee_data_quality_insights_criteria_evaluation WRITE');
+            $statement->execute();
+            $this->db->executeQuery('COMMIT');
+        } finally {
+            $this->db->executeQuery('UNLOCK TABLES');
+            $this->db->executeQuery(sprintf('SET autocommit=%d', $formerAutocommitValue));
+        }
     }
 
     public function update(Write\CriterionEvaluation $criterionEvaluation): void
