@@ -24,8 +24,11 @@ final class Attribute
     /** @var bool */
     private $isScopable;
 
-    /** @var ?string */
+    /** @var null|string */
     private $metricFamily;
+
+    /** @var null|string */
+    private $defaultMetricUnit;
 
     /** @var null|bool */
     private $decimalsAllowed;
@@ -43,6 +46,7 @@ final class Attribute
         bool $isLocalizable,
         bool $isScopable,
         ?string $metricFamily,
+        ?string $defaultMetricUnit,
         ?bool $decimalsAllowed,
         string $backendType,
         array $availableLocaleCodes
@@ -53,6 +57,7 @@ final class Attribute
         $this->isLocalizable = $isLocalizable;
         $this->isScopable = $isScopable;
         $this->metricFamily = $metricFamily;
+        $this->defaultMetricUnit = $defaultMetricUnit;
         $this->decimalsAllowed = $decimalsAllowed;
         $this->backendType = $backendType;
         $this->availableLocaleCodes = $availableLocaleCodes;
@@ -91,6 +96,11 @@ final class Attribute
     public function metricFamily(): ?string
     {
         return $this->metricFamily;
+    }
+
+    public function defaultMetricUnit(): ?string
+    {
+        return $this->defaultMetricUnit;
     }
 
     public function isDecimalsAllowed(): ?bool

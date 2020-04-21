@@ -70,6 +70,7 @@ class MediaNormalizerSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             true,
             'media',
             []
@@ -116,6 +117,7 @@ class MediaNormalizerSpec extends ObjectBehavior
             [],
             true,
             false,
+            null,
             null,
             true,
             'media',
@@ -164,6 +166,7 @@ class MediaNormalizerSpec extends ObjectBehavior
             false,
             true,
             null,
+            null,
             true,
             'media',
             []
@@ -211,6 +214,7 @@ class MediaNormalizerSpec extends ObjectBehavior
             true,
             true,
             null,
+            null,
             true,
             'media',
             []
@@ -248,6 +252,7 @@ class MediaNormalizerSpec extends ObjectBehavior
             [],
             true,
             true,
+            null,
             null,
             true,
             'media',

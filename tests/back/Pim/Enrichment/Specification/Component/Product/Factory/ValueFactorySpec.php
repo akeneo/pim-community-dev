@@ -28,14 +28,14 @@ final class ValueFactorySpec extends ObjectBehavior
 
     public function it_calls_the_right_factory_without_checking_data(SingleValueFactory $factory2, ValueInterface $value)
     {
-        $attribute = new Attribute('an_attribute', 'an_attribute_type2', [], false, false, null, false, 'backend_type', []);
+        $attribute = new Attribute('an_attribute', 'an_attribute_type2', [], false, false, null, null, false, 'backend_type', []);
         $factory2->createWithoutCheckingData($attribute, null, null, 'data')->willReturn($value);
         $this->createWithoutCheckingData($attribute, null, null, 'data')->shouldReturn($value);
     }
 
     public function it_calls_the_right_factory_by_checking_data(SingleValueFactory $factory2, ValueInterface $value)
     {
-        $attribute = new Attribute('an_attribute', 'an_attribute_type2', [], false, false, null, false, 'backend_type', []);
+        $attribute = new Attribute('an_attribute', 'an_attribute_type2', [], false, false, null, null, false, 'backend_type', []);
         $factory2->createByCheckingData($attribute, null, null, 'data')->willReturn($value);
         $this->createByCheckingData($attribute, null, null, 'data')->shouldReturn($value);
     }
@@ -45,7 +45,7 @@ final class ValueFactorySpec extends ObjectBehavior
         $this->shouldThrow(OutOfBoundsException::class)->during(
             'createWithoutCheckingData',
             [
-                new Attribute('an_attribute', 'non_supported_attribute_type', [], false, false, null, false, 'backend_type', []),
+                new Attribute('an_attribute', 'non_supported_attribute_type', [], false, false, null, null, false, 'backend_type', []),
                 null,
                 null,
                 'data'
@@ -58,7 +58,7 @@ final class ValueFactorySpec extends ObjectBehavior
         $this->shouldThrow(InvalidAttributeException::class)->during(
             'createByCheckingData',
             [
-                new Attribute('an_attribute', 'an_attribute_type1', [], false, false, null, false, 'backend_type', []),
+                new Attribute('an_attribute', 'an_attribute_type1', [], false, false, null, null, false, 'backend_type', []),
                 'ecommerce',
                 null,
                 'data'
