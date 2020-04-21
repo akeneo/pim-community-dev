@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Association\ParentQuantifiedAssociationsFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -55,6 +56,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         ParentAssociationsFilter $parentAssociationsFilter,
+        ParentQuantifiedAssociationsFilter $parentQuantifiedAssociationsFilter,
         array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
@@ -63,6 +65,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         $this->productModelRepository = $productModelRepository;
         $this->ignoredFields = $ignoredFields;
         $this->parentAssociationsFilter = $parentAssociationsFilter;
+        $this->parentQuantifiedAssociationsFilter = $parentQuantifiedAssociationsFilter;
     }
 
     /**
@@ -99,6 +102,12 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                     $data = $this->filterParentAssociations($data, $context['parent_associations']);
                 }
                 break;
+            case 'quantified_associations':
+                $this->validateQuantifiedAssociationsDataType($data);
+                if (isset($context['parent_quantified_associations'])) {
+                    $data = $this->filterParentQuantifiedAssociations($data, $context['parent_quantified_associations']);
+                }
+                break;
         }
 
         return $data;
@@ -127,7 +136,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                 $this->updateProductModelFields($productModel, $field, $data);
                 break;
             case 'quantified_associations':
-                $this->validateAssociationsDataType($data);
+                $this->validateQuantifiedAssociationsDataType($data);
                 $this->updateProductModelFields($productModel, $field, $data);
                 break;
             default:
@@ -144,6 +153,20 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         }
 
         $associations = $this->parentAssociationsFilter->filterParentAssociations(
+            $associations,
+            $parentAssociations
+        );
+
+        return $associations;
+    }
+
+    protected function filterParentQuantifiedAssociations(array $associations, ?array $parentAssociations): array
+    {
+        if (null === $parentAssociations) {
+            return $associations;
+        }
+
+        $associations = $this->parentQuantifiedAssociationsFilter->filterParentAssociations(
             $associations,
             $parentAssociations
         );
@@ -341,6 +364,41 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                 $this->validateScalar('associations', $property);
                 $this->validateScalarArray('associations', $value);
             }
+        }
+    }
+
+    /**
+     * Validate association data
+     *
+     * @param mixed $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateQuantifiedAssociationsDataType($data): void
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                'quantified_associations',
+                static::class,
+                $data
+            );
+        }
+
+        foreach ($data as $associationTypeCode => $associationTypeValues) {
+            $this->validateScalar('quantified_associations', $associationTypeCode);
+            if (!is_array($associationTypeValues)) {
+                throw InvalidPropertyTypeException::arrayExpected(
+                    'quantified_associations',
+                    static::class,
+                    $associationTypeValues
+                );
+            }
+
+            // TODO 225: add proper validation
+            // foreach ($associationTypeValues as $property => $value) {
+            //     $this->validateScalar('quantified_associations', $property);
+            //     $this->validateScalarArray('quantified_associations', $value);
+            // }
         }
     }
 

@@ -111,6 +111,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
         UserContext $userContext,
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
+        NormalizerInterface $quantifiedAssociationsNormalizer,
         CatalogContext $catalogContext,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
@@ -132,6 +133,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
         $this->userContext = $userContext;
         $this->missingAssociationAdder = $missingAssociationAdder;
         $this->parentAssociationsNormalizer = $parentAssociationsNormalizer;
+        $this->quantifiedAssociationsNormalizer = $quantifiedAssociationsNormalizer;
         $this->catalogContext = $catalogContext;
         $this->missingRequiredAttributesCalculator = $missingRequiredAttributesCalculator;
         $this->missingRequiredAttributesNormalizer = $missingRequiredAttributesNormalizer;
@@ -184,6 +186,9 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
 
         $normalizedProductModel['parent_associations'] = $this->parentAssociationsNormalizer
             ->normalize($productModel, $format, $context);
+        $normalizedProductModel['parent_quantified_associations'] = null === $productModel->getParent() ?
+            [] :
+            $this->quantifiedAssociationsNormalizer->normalize($productModel->getParent(), $format, $context);
 
         $normalizedFamilyVariant = $this->normalizer->normalize($productModel->getFamilyVariant(), 'standard');
 

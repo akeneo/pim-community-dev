@@ -111,6 +111,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
+        NormalizerInterface $quantifiedAssociationsNormalizer,
         CatalogContext $catalogContext,
         CompletenessCalculator $completenessCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
@@ -131,6 +132,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         $this->navigationNormalizer             = $navigationNormalizer;
         $this->ascendantCategoriesQuery         = $ascendantCategoriesQuery;
         $this->parentAssociationsNormalizer     = $parentAssociationsNormalizer;
+        $this->quantifiedAssociationsNormalizer     = $quantifiedAssociationsNormalizer;
         $this->missingAssociationAdder          = $missingAssociationAdder;
         $this->catalogContext                   = $catalogContext;
         $this->completenessCalculator           = $completenessCalculator;
@@ -172,6 +174,9 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
 
         $scopeCode = $context['channel'] ?? null;
         $normalizedProduct['parent_associations'] = $this->parentAssociationsNormalizer->normalize($product, $format, $context);
+        $normalizedProduct['parent_quantified_associations'] = null === $product->getParent() ?
+            [] :
+            $this->quantifiedAssociationsNormalizer->normalize($product->getParent(), $format, $context);
         $completenesses = $this->getCompletenesses($product);
 
         $normalizedProduct['meta'] = [

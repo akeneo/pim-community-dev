@@ -49,7 +49,8 @@ services:
             - '@pim_catalog.updater.property_setter'
             - '@pim_catalog.updater.entity_with_values'
             - '@pim_catalog.association.filter.parent_associations'
-            - ['identifier', 'created', 'updated', 'parent_associations', 'metadata']
+            - '@pim_catalog.association.filter.parent_quantified_associations'
+            - ['identifier', 'created', 'updated', 'parent_associations', 'parent_quantified_associations', 'metadata']
 
     pim_catalog.updater.product_model:
         class: '%pim_catalog.updater.product_model.class%'
@@ -59,7 +60,8 @@ services:
             - '@pim_catalog.repository.family_variant'
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.association.filter.parent_associations'
-            - ['identifier', 'created', 'updated', 'parent_associations', 'metadata']
+            - '@pim_catalog.association.filter.parent_quantified_associations'
+            - ['identifier', 'created', 'updated', 'parent_associations', 'parent_quantified_associations', 'metadata']
 
     pim_catalog.updater.entity_with_values:
         class: '%pim_catalog.updater.entity_with_values.class%'

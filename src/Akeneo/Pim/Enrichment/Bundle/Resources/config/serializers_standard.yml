@@ -66,6 +66,14 @@ services:
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 40 }
 
+    pim_catalog.normalizer.standard.product.parent_quantified_associations:
+        class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ParentsQuantifiedAssociationsNormalizer
+        arguments:
+            - '@pim_catalog.query.product.map_product'
+            - '@pim_catalog.query.product.map_product_model'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 40 }
+
     pim_catalog.normalizer.standard.product.product_values:
         class: '%pim_catalog.normalizer.standard.product.product_values.class%'
         arguments:

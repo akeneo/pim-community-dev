@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Association\ParentQuantifiedAssociationsFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -34,22 +35,28 @@ class ProductUpdater implements ObjectUpdaterInterface
     /** @var ParentAssociationsFilter */
     private $parentAssociationsFilter;
 
+    /** @var ParentAssociationsFilter */
+    private $parentQuantifiedAssociationsFilter;
+
     /**
      * @param PropertySetterInterface  $propertySetter
      * @param ObjectUpdaterInterface   $valuesUpdater
      * @param ParentAssociationsFilter $parentAssociationsFilter
+     * @param ParentAssociationsFilter $parentQuantifiedAssociationsFilter
      * @param array                    $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ObjectUpdaterInterface $valuesUpdater,
         ParentAssociationsFilter $parentAssociationsFilter,
+        ParentQuantifiedAssociationsFilter $parentQuantifiedAssociationsFilter,
         array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
         $this->valuesUpdater = $valuesUpdater;
         $this->ignoredFields = $ignoredFields;
         $this->parentAssociationsFilter = $parentAssociationsFilter;
+        $this->parentQuantifiedAssociationsFilter = $parentQuantifiedAssociationsFilter;
     }
 
     /**
@@ -154,11 +161,11 @@ class ProductUpdater implements ObjectUpdaterInterface
                 }
                 break;
             case 'quantified_associations':
-                $this->validateAssociationsDataType($data, 'quantified_associations');
+                $this->validateQuantifiedAssociationsDataType($data, 'quantified_associations');
                 // TODO: When doing product models filtering parent associations with permissions
-//                if (isset($context['parent_associations'])) {
-//                    $data = $this->filterParentAssociations($data, $context['parent_quantified_associations']);
-//                }
+               if (isset($context['parent_quantified_associations'])) {
+                   $data = $this->filterParentQuantifiedAssociations($data, $context['parent_quantified_associations']);
+               }
                 break;
         }
 
@@ -218,6 +225,34 @@ class ProductUpdater implements ObjectUpdaterInterface
             foreach ($associationTypeValues as $property => $value) {
                 $this->validateScalar($field, $property);
                 // TODO: Need to validate quantified association array structure (identifier + quantity are scallars)
+               $this->validateScalarArray('associations', $value);
+            }
+        }
+    }
+
+    protected function validateQuantifiedAssociationsDataType($data, $field): void
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                $field,
+                static::class,
+                $data
+            );
+        }
+
+        foreach ($data as $associationTypeCode => $associationTypeValues) {
+            $this->validateScalar($field, $associationTypeCode);
+            if (!is_array($associationTypeValues)) {
+                throw InvalidPropertyTypeException::arrayExpected(
+                    $field,
+                    static::class,
+                    $associationTypeValues
+                );
+            }
+
+            foreach ($associationTypeValues as $property => $value) {
+                // $this->validateScalar($field, $property);
+                // TODO: Need to validate quantified association array structure (identifier + quantity are scallars)
 //                $this->validateScalarArray('associations', $value);
             }
         }
@@ -230,6 +265,20 @@ class ProductUpdater implements ObjectUpdaterInterface
         }
 
         $associations = $this->parentAssociationsFilter->filterParentAssociations(
+            $associations,
+            $parentAssociations
+        );
+
+        return $associations;
+    }
+
+    protected function filterParentQuantifiedAssociations(array $associations, ?array $parentAssociations): array
+    {
+        if (null === $parentAssociations) {
+            return $associations;
+        }
+
+        $associations = $this->parentQuantifiedAssociationsFilter->filterParentAssociations(
             $associations,
             $parentAssociations
         );

@@ -187,14 +187,15 @@ class QuantifiedAssociationFieldSetter extends AbstractFieldSetter
     protected function checkAssociationItems($field, $assocTypeCode, array $data, array $items)
     {
         foreach ($items as $item) {
-            if (!is_string($item['identifier']) || !is_integer($item['quantity'])) {
-                throw InvalidPropertyTypeException::validArrayStructureExpected(
-                    $field,
-                    sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
-                    static::class,
-                    $data
-                );
-            }
+            // TODO 225: proper validation
+            // if (!((isset($item['identifier']) &&is_string($item['identifier']) || is_string($item['code'])) || !is_integer($item['quantity'])) {
+            //     throw InvalidPropertyTypeException::validArrayStructureExpected(
+            //         $field,
+            //         sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
+            //         static::class,
+            //         $data
+            //     );
+            // }
         }
     }
 }

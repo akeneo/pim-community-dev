@@ -14,3 +14,6 @@ services:
 
     pim_catalog.association.filter.parent_associations:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter'
+
+    pim_catalog.association.filter.parent_quantified_associations:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Association\ParentQuantifiedAssociationsFilter'

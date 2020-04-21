@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class QuantifiedAssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class ParentsQuantifiedAssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     private $mapProduct;
     private $mapProductModel;
@@ -37,7 +37,7 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
      */
     public function normalize($associationAwareEntity, $format = null, array $context = [])
     {
-        $ancestorProducts = $this->getAncestorProducts($associationAwareEntity);
+        $ancestorProducts = $this->getAncestorProducts($associationAwareEntity->getParent());
         $data = $this->normalizeAssociations($ancestorProducts);
 
         return $data;
