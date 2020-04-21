@@ -72,6 +72,7 @@ class InMemoryGetAttributesSpec extends ObjectBehavior
                 false,
                 false,
                 null,
+                null,
                 false,
                 AttributeTypes::BACKEND_TYPE_TEXT,
                 []
@@ -82,6 +83,7 @@ class InMemoryGetAttributesSpec extends ObjectBehavior
                 [],
                 false,
                 false,
+                null,
                 null,
                 false,
                 AttributeTypes::BACKEND_TYPE_TEXT,
