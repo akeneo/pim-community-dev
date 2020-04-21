@@ -52,9 +52,7 @@ class AdderActionApplier implements ActionApplierInterface
     public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
     {
         foreach ($entitiesWithValues as $entityWithValues) {
-            if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
-                $this->addDataOnEntityWithFamilyVariant($entityWithValues, $action);
-            } else {
+            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
                 $this->addDataOnEntityWithValues($entityWithValues, $action);
             }
         }
@@ -69,45 +67,35 @@ class AdderActionApplier implements ActionApplierInterface
     }
 
     /**
-     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
-     * @param ProductAddActionInterface        $action
+     * We do not apply the action if field is an attribute and:
+     *  - attribute does not belong to the family
+     *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
-    private function addDataOnEntityWithFamilyVariant(
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+    private function actionCanBeAppliedToEntity(
+        EntityWithFamilyVariantInterface $entity,
         ProductAddActionInterface $action
-    ): void {
+    ): bool {
         $field = $action->getField();
-
         $attribute = $this->attributeRepository->findOneByIdentifier($field);
         if (null === $attribute) {
-            $this->addDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+            return true;
         }
 
-        // We set again the field to have the correct case of the code.
-        $field = $attribute->getCode();
-        if (null === $entityWithFamilyVariant->getFamily()) {
-            $this->addDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+        $family = $entity->getFamily();
+        if (null === $family) {
+            return true;
+        }
+        if (!$family->hasAttributeCode($attribute->getCode())) {
+            return false;
         }
 
-        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($field)) {
-            return;
+        $familyVariant = $entity->getFamilyVariant();
+        if (null !== $familyVariant &&
+            $familyVariant->getLevelForAttributeCode($attribute->getCode()) !== $entity->getVariationLevel()) {
+            return false;
         }
 
-        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
-            $this->addDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
-        }
-
-        $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
-
-        if ($entityWithFamilyVariant->getVariationLevel() === $level) {
-            $this->addDataOnEntityWithValues($entityWithFamilyVariant, $action);
-        }
+        return true;
     }
 
     /**

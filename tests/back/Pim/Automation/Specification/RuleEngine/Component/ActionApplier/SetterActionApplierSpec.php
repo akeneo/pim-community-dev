@@ -6,10 +6,8 @@ namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\VariantProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -85,7 +83,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $propertySetter,
         $attributeRepository,
         ProductSetActionInterface $action,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         FamilyVariantInterface $familyVariant,
         AttributeInterface $name,
         FamilyInterface $family
@@ -203,7 +201,7 @@ class SetterActionApplierSpec extends ObjectBehavior
     function it_applies_set_action_on_entity_with_family_variant_on_categories_for_a_non_variant_product(
         $propertySetter,
         ProductSetActionInterface $action,
-        ProductInterface $product
+        EntityWithFamilyVariantInterface $product
     ) {
         $action->getField()->willReturn('categories');
         $action->getValue()->willReturn(['socks']);
@@ -309,6 +307,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         PropertySetterInterface $propertySetter,
         AttributeRepositoryInterface $attributeRepository,
         ProductSetActionInterface $action,
+        EntityWithFamilyVariantInterface $product,
         AttributeInterface $releaseDate,
         FamilyInterface $family
     ) {
@@ -322,7 +321,8 @@ class SetterActionApplierSpec extends ObjectBehavior
         $family->getId()->willReturn(42);
         $family->hasAttributeCode('release_date')->willReturn(true);
 
-        $product = (new Product())->setFamily($family->getWrappedObject());
+        $product->getFamily()->willReturn($family);
+        $product->getFamilyVariant()->willReturn(null);
 
         $propertySetter->setData($product, 'release_date', null, [])->shouldBeCalled();
 

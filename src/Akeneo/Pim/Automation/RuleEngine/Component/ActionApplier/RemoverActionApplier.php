@@ -61,9 +61,7 @@ class RemoverActionApplier implements ActionApplierInterface
     public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
     {
         foreach ($entitiesWithValues as $entityWithValues) {
-            if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
-                $this->removeDataOnEntityWithFamilyVariant($entityWithValues, $action);
-            } else {
+            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
                 $this->removeDataOnEntityWithValues($entityWithValues, $action);
             }
         }
@@ -78,45 +76,35 @@ class RemoverActionApplier implements ActionApplierInterface
     }
 
     /**
-     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
-     * @param ProductRemoveActionInterface     $action
+     * We do not apply the action if field is an attribute and:
+     *  - attribute does not belong to the family
+     *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
-    private function removeDataOnEntityWithFamilyVariant(
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+    private function actionCanBeAppliedToEntity(
+        EntityWithFamilyVariantInterface $entity,
         ProductRemoveActionInterface $action
-    ): void {
+    ): bool {
         $field = $action->getField();
-
         $attribute = $this->attributeRepository->findOneByIdentifier($field);
         if (null === $attribute) {
-            $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+            return true;
         }
 
-        // We set again the field to have the correct case of the code.
-        $field = $attribute->getCode();
-        if (null === $entityWithFamilyVariant->getFamily()) {
-            $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+        $family = $entity->getFamily();
+        if (null === $family) {
+            return true;
+        }
+        if (!$family->hasAttributeCode($attribute->getCode())) {
+            return false;
         }
 
-        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($field)) {
-            return;
+        $familyVariant = $entity->getFamilyVariant();
+        if (null !== $familyVariant &&
+            $familyVariant->getLevelForAttributeCode($attribute->getCode()) !== $entity->getVariationLevel()) {
+            return false;
         }
 
-        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
-            $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
-        }
-
-        $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
-
-        if ($entityWithFamilyVariant->getVariationLevel() === $level) {
-            $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
-        }
+        return true;
     }
 
     /**

@@ -2,16 +2,16 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
-use Akeneo\Tool\Component\StorageUtils\Updater\PropertyCopierInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyActionInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyCopierInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class CopierActionApplierSpec extends ObjectBehavior

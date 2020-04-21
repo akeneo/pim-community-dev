@@ -52,9 +52,7 @@ class SetterActionApplier implements ActionApplierInterface
     public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
     {
         foreach ($entitiesWithValues as $entityWithValues) {
-            if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
-                $this->setDataOnEntityWithFamilyVariant($entityWithValues, $action);
-            } else {
+            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
                 $this->setDataOnEntityWithValues($entityWithValues, $action);
             }
         }
@@ -69,56 +67,45 @@ class SetterActionApplier implements ActionApplierInterface
     }
 
     /**
-     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
-     * @param ProductSetActionInterface        $action
+     * We do not apply the action if:
+     * - if field is categories and the new category codes do not include the categories of the entity's parent
+     * - or field is an attribute and:
+     *   - attribute does not belong to the family
+     *   - or entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
-    private function setDataOnEntityWithFamilyVariant(
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+    private function actionCanBeAppliedToEntity(
+        EntityWithFamilyVariantInterface $entity,
         ProductSetActionInterface $action
-    ): void {
+    ): bool {
         $field = $action->getField();
-
-        if ('categories' === $field) {
-            $newCategoryCodes = $action->getValue();
-            $parent = $entityWithFamilyVariant->getParent();
-
-            if (null === $parent || empty(array_diff($parent->getCategoryCodes(), $newCategoryCodes))) {
-                $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
-            }
-
-            return;
-        }
 
         $attribute = $this->attributeRepository->findOneByIdentifier($field);
         if (null === $attribute) {
-            $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
+            if ('categories' === $field) {
+                $newCategoryCodes = $action->getValue();
+                $parent = $entity->getParent();
 
-            return;
+                return (null === $parent || empty(array_diff($parent->getCategoryCodes(), $newCategoryCodes)));
+            }
+
+            return true;
         }
 
-        // We set again the field to have the correct case of the code.
-        $field = $attribute->getCode();
-        if (null === $entityWithFamilyVariant->getFamily()) {
-            $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+        $family = $entity->getFamily();
+        if (null === $family) {
+            return true;
+        }
+        if (!$family->hasAttributeCode($attribute->getCode())) {
+            return false;
         }
 
-        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($field)) {
-            return;
+        $familyVariant = $entity->getFamilyVariant();
+        if (null !== $familyVariant &&
+            $familyVariant->getLevelForAttributeCode($attribute->getCode()) !== $entity->getVariationLevel()) {
+            return false;
         }
 
-        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
-            $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
-        }
-
-        $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
-
-        if ($entityWithFamilyVariant->getVariationLevel() === $level) {
-            $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
-        }
+        return true;
     }
 
     /**

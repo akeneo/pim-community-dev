@@ -50,9 +50,7 @@ class CopierActionApplier implements ActionApplierInterface
     public function applyAction(ActionInterface $action, array $entitiesWithValues = [])
     {
         foreach ($entitiesWithValues as $entityWithValues) {
-            if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
-                $this->copyDataOnEntityWithFamilyVariant($entityWithValues, $action);
-            } else {
+            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
                 $this->copyDataOnEntityWithValues($entityWithValues, $action);
             }
         }
@@ -67,47 +65,36 @@ class CopierActionApplier implements ActionApplierInterface
     }
 
     /**
-     * Currently, there are only copiers for values (meaning data linked to an
-     * attribute). So if the fields passed to the copier are not attributes,
-     * there is nothing to copy.
-     *
-     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
-     * @param ProductCopyActionInterface       $action
+     * We do not apply the action if field is an attribute and:
+     *  - field is not an attribute (currently there are only attribute copiers)
+     *  - attribute does not belong to the family
+     *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
-    private function copyDataOnEntityWithFamilyVariant(
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+    private function actionCanBeAppliedToEntity(
+        EntityWithFamilyVariantInterface $entity,
         ProductCopyActionInterface $action
-    ): void {
+    ): bool {
         $toField = $action->getToField();
-
-        $toAttribute = $this->attributeRepository->findOneByIdentifier($toField);
-        if (null === $toAttribute) {
-            return;
+        $attribute = $this->attributeRepository->findOneByIdentifier($toField);
+        if (null === $attribute) {
+            return false;
         }
 
-        // We set again the field to have the correct case of the code.
-        $toField = $toAttribute->getCode();
-        if (null === $entityWithFamilyVariant->getFamily()) {
-            $this->copyDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+        $family = $entity->getFamily();
+        if (null === $family) {
+            return true;
+        }
+        if (!$family->hasAttributeCode($attribute->getCode())) {
+            return false;
         }
 
-        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($toField)) {
-            return;
+        $familyVariant = $entity->getFamilyVariant();
+        if (null !== $familyVariant &&
+            $familyVariant->getLevelForAttributeCode($attribute->getCode()) !== $entity->getVariationLevel()) {
+            return false;
         }
 
-        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
-            $this->copyDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
-        }
-
-        $toLevel = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($toField);
-
-        if ($entityWithFamilyVariant->getVariationLevel() === $toLevel) {
-            $this->copyDataOnEntityWithValues($entityWithFamilyVariant, $action);
-        }
+        return true;
     }
 
     /**

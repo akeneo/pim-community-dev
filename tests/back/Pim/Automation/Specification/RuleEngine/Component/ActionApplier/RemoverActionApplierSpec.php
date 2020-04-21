@@ -2,22 +2,20 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\VariantProductInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
 use Prophecy\Argument;
 
 class RemoverActionApplierSpec extends ObjectBehavior
@@ -108,7 +106,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $propertyRemover,
         $attributeRepository,
         ProductRemoveActionInterface $action,
-        VariantProductInterface $variantProduct,
+        EntityWithFamilyVariantInterface $variantProduct,
         AttributeInterface $multiSelectAttribute,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family
@@ -228,7 +226,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $propertyRemover,
         $categoryRepository,
         ProductRemoveActionInterface $action,
-        EntityWithValuesInterface $entityWithValues,
+        EntityWithFamilyVariantInterface $entityWithValues,
         CategoryInterface $firstCategory,
         CategoryInterface $secondCategory
     ) {
@@ -279,7 +277,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
 
     function it_throws_exception_if_items_is_not_an_array(
         ProductRemoveActionInterface $action,
-        EntityWithValuesInterface $entityWithValues
+        EntityWithFamilyVariantInterface $entityWithValues
     ) {
         $action->getField()->willReturn('foo');
         $action->getItems()->willReturn('Not an array');
