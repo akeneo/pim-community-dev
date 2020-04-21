@@ -7,8 +7,13 @@ class TagsCell extends StringCell {
   readonly template = _.template(CellTemplate);
 
   render() {
+    const distinctActions = this.model.get('tags').actions
+      .map(action => action.type)
+      .filter((type, index, array) => array.indexOf(type) === index)
+    ;
+
     this.$el.html(this.template({
-      actions: this.model.get('tags').actions,
+      actions: distinctActions,
       getColor: this.getColor,
     }));
 
