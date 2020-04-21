@@ -2,11 +2,11 @@ import React from "react";
 import {Attribute} from "./Attribute";
 import {Condition} from "./Condition";
 import {Router } from "../dependenciesTools";
-import {getByIdentifier} from "../fetch/AttributeFetcher";
+import {getAttributeByIdentifier} from "../fetch/AttributeFetcher";
 import {TextAttributeConditionLine} from "../pages/EditRules/TextAttributeConditionLine";
 import {Operator} from "./Operator";
 import {Locale} from "./Locale";
-import {getByCode} from "../fetch/LocaleFetcher";
+import {getActivatedLocaleByCode} from "../fetch/LocaleFetcher";
 import {ConditionLineProps} from "../pages/EditRules/ConditionLineProps";
 
 const TextAttributeOperators = [
@@ -36,7 +36,7 @@ const createTextAttributeCondition = async (json: any, router: Router): Promise 
     return null;
   }
 
-  const attribute = await getByIdentifier(json.field, router);
+  const attribute = await getAttributeByIdentifier(json.field, router);
   if (null === attribute) {
     return null;
   }
@@ -51,7 +51,7 @@ const createTextAttributeCondition = async (json: any, router: Router): Promise 
     };
 
     if (json.hasOwnProperty('locale')) {
-      const locale = await getByCode(json.locale, router);
+      const locale = await getActivatedLocaleByCode(json.locale, router);
       if (locale) {
         result.locale = locale;
       }

@@ -41,6 +41,9 @@ export const denormalize = async function(json: any, router: Router): Promise <R
     return denormalizeAction(jsonAction)
   });
 
+  // TODO We should call "AttributeFetcher.getAttributesFromIdentifiers()" with every .field property of conditions
+  //      to do less backend calls here.
+
   let conditions = [];
   for (let index in json.content.conditions) {
     conditions.push(await denormalizeCondition(json.content.conditions[index], router));
