@@ -6,6 +6,7 @@ pimee_catalog_rule:
         execute: Exécuter
       title: Règles
       column:
+        label: Libellé
         conditions: Condition
         actions: Action
         impacted_product_count:
@@ -25,6 +26,7 @@ pimee_catalog_rule:
       "add": Alors %value% est ajouté à %field%
       "remove": Alors %value% est retiré de %field%
       "concatenate": Alors %fields% sont concaténés dans %to_field%
+      clear: Alors %field% est effacé
     options:
       include_children: et les enfants
   condition:

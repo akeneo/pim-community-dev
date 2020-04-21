@@ -49,10 +49,66 @@ pimee_catalog_rule:
           error: An error occurred during the deletion of the rules.
           empty_selection: No rules selected.
   form:
+    tab:
+      list: Rule builder and properties tabs
+      rule_builder: Rules builder
     attribute:
       tab:
         rules:
           title: Rules
+    creation:
+      helper: The rules engine can radically boost your productivity in the PIM by automating actions.
+      english_flag: Label for English
+      title: Create a new rule
+      notification:
+        success: Rule created successfully
+        failed: Rule creation failed
+      constraint:
+        code:
+          required: Rule code is required.
+          too_short: "Rule code is too short. It requires {{ characterLimit }} characters or more."
+          allowed_characters: Rule code can only be alphanumeric and underscore characters.
+      cross_link: Leave create rule form
+    edit:
+      priority:
+        label: Priority
+      add_to_category: Add to category
+      remove_action: Remove action
+      add_conditions: Add conditions
+      count_products: "{{ count }} products and product models"
+      product_selection: Product selection
+      conditions:
+        operators:
+          "STARTS WITH": starts with
+          "ENDS WITH": ends with
+          "CONTAINS": contains
+          "DOES NOT CONTAIN": does not contain
+          "EMPTY": is empty
+          "NOT EMPTY": is not empty
+          "IN": in
+          "NOT IN": not in
+          "IN CHILDREN": in children
+          "NOT IN CHILDREN": not in children
+          "UNCLASSIFIED": is unclassified
+          "IN OR UNCLASSIFIED": is unclassified or in
+          "BETWEEN": between
+          "NOT BETWEEN": not between
+          "=": equals
+          "!=": not equal
+          ">": greater than
+          ">=": equals or greater than
+          "<": less than
+          "<=": equals to or less than
+      notification:
+        success: Rule successfully updated
+        failed: Rule update failed
+    helper:
+      add_to_category: To add your product selection to one or more categories, please start by selecting our category trees and then, your categories.
+      product_selection: "You must define your product selection in order to create your rule. If you don't know how, "
+      product_selection_doc_link: take a look at this article.
+    legend:
+      add_to_category: Create an action
+      product_selection: Create a condition
 pim_enrich:
   entity:
     rule:

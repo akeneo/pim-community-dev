@@ -6,7 +6,7 @@ pimee_catalog_rule:
         execute: Execute
       title: Rules
       column:
-        code: Code
+        label: Label
         conditions: Condition
         actions: Action
         impacted_product_count:
@@ -25,6 +25,19 @@ pimee_catalog_rule:
       "set_value": Then %value% is set into %field%
       "add": Then %value% is added to %field%
       "remove": Then %value% is removed from %field%
+      "concatenate": Then %fields% are concatenated into %to_field%
+      clear: Then %field% is cleared
+      calculate: Then %field% is calculated %operation_details%
+      calculate_first_operation:
+        add: by adding %operand% to %source%
+        subtract: by subtracting %operand% from %source%
+        multiply: by multiplying %source% by %operand%
+        divide: by dividing %source% by %operand%
+      calculate_other_operation:
+        add: ', then by adding %operand%'
+        subtract: ', then by subtracting %operand%'
+        divide: ', then by dividing by %operand%'
+        multiply: ', then by multiplying by %operand%'
     options:
       include_children: and children
   condition:

@@ -20,6 +20,7 @@ akeneo_data_quality_insights:
       average: Durchschnittlich
       below_average: Unterdurchschnittlich
       to_improve: Zu verbessern
+    average_grade: Durchschnittsnote
     category_modal_filter:
       subtitle: Nach Kategorie filtern
       message: Wähle die Kategorie, die du auf deinem Dashboard erkunden möchtest
@@ -34,6 +35,7 @@ akeneo_data_quality_insights:
         max_categories_msg: Du kannst nicht mehr als {{ count }} Kategorien auf deinem Dashboard hinzufügen
       add_families: Familien hinzufügen
       add_categories: Kategorien hinzufügen
+      title: Titel
       no_family_helper_msg: Wählen Sie die Familien, für die Sie die Datenqualität messen möchten
       no_category_helper_msg: Wählen Sie die Kategorien, für die Sie die Datenqualität messen möchten
       see_in_grid: Im Raster sehen
@@ -60,6 +62,15 @@ akeneo_data_quality_insights:
         title: Konsistenz
         attributes_link: Alle verbesserbaren Attribute anzeigen
         success: Ihre Produktdaten sind konsistent. Herzlichen Glückwunsch!
+    messages:
+      error:
+        axis_error: Aufgrund eines Fehlers konnte die Bewertung nicht vollständig berechnet werden. Versuchen Sie es später erneut.
+        criterion_error: Bewertung konnte nicht berechnet werden.
+      success:
+        criterion: Alles in Ordnung.
+      grading_in_progress: Bewertung läuft.
+      axis_grading_in_progress: Bewertung wird durchgeführt. Bitte kommen Sie später wieder.
+      too_many_attributes: Sie haben {{ count }} Attribute zu verbessern.
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Alle fehlenden Attribute
