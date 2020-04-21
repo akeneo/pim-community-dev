@@ -9,7 +9,7 @@ type Props = {
   register: any;
   translate: Translate;
   ruleDefinition: RuleDefinition;
-  activatedLocales: Locale[];
+  locales: Locale[];
 };
 
 const ActionLine: React.FC<{ action: Action, translate: Translate }> = ({ action, translate }) => {
@@ -23,15 +23,23 @@ const ActionLine: React.FC<{ action: Action, translate: Translate }> = ({ action
   );
 };
 
-const RulesBuilder: React.FC<Props> = ({ register, translate, ruleDefinition, activatedLocales }) => {
+const RulesBuilder: React.FC<Props> = ({
+    register,
+    translate,
+    ruleDefinition,
+    locales
+  }) => {
   return (
     <>
-      <RuleProductSelection register={register} ruleDefinition={ruleDefinition} translate={translate} activatedLocales={activatedLocales}/>
+      <RuleProductSelection register={register} ruleDefinition={ruleDefinition} translate={translate} activatedLocales={locales}/>
       {ruleDefinition.actions.map((action, i) => {
-        return <ActionLine
-          action={action}
-          translate={translate}
-          key={`action_${i}`}/>
+        return (
+          <ActionLine
+            action={action}
+            translate={translate}
+            key={`action_${i}`}
+          />
+        );
       })}
     </>
   );
