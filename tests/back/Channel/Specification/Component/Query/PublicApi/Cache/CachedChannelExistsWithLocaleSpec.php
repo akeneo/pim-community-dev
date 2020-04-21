@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Channel\Component\Query\PublicApi\Cache;
 
 use Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface;
-use Akeneo\Channel\Component\Query\PublicApi\Cache\CachedChannelExistsAndBoundToLocale;
-use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsAndBoundToLocaleInterface;
+use Akeneo\Channel\Component\Query\PublicApi\Cache\CachedChannelExistsWithLocale;
+use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use PhpSpec\ObjectBehavior;
 
-class CachedChannelExistsAndBoundToLocaleSpec extends ObjectBehavior
+class CachedChannelExistsWithLocaleSpec extends ObjectBehavior
 {
     function let(GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes)
     {
@@ -32,8 +32,8 @@ class CachedChannelExistsAndBoundToLocaleSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CachedChannelExistsAndBoundToLocale::class);
-        $this->shouldImplement(ChannelExistsAndBoundToLocaleInterface::class);
+        $this->shouldHaveType(CachedChannelExistsWithLocale::class);
+        $this->shouldImplement(ChannelExistsWithLocaleInterface::class);
     }
 
     function it_tests_the_channel_exist()
