@@ -1,4 +1,8 @@
 Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
+
+
+
+
     type: entity
     table: pim_catalog_association
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -10,7 +14,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
             generator:
                 strategy: AUTO
     uniqueConstraints:
-        locale_foreign_key_idx:
+        association_type_unique_foreign_key_idx:
             columns:
                 - owner_id
                 - association_type_id
@@ -25,48 +29,24 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
         owner:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             inversedBy: associations
-            cascade:
-                - detach
             joinColumns:
                 owner_id:
                     referencedColumnName: id
                     nullable: false
                     onDelete: CASCADE
-    manyToMany:
-        groups:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
-            joinTable:
-                name: pim_catalog_association_group
-                joinColumns:
-                    association_id:
-                        referencedColumnName: id
-                        onDelete: CASCADE
-                inverseJoinColumns:
-                    group_id:
-                        referencedColumnName: id
-                        onDelete: CASCADE
-        products:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
-            joinTable:
-                name: pim_catalog_association_product
-                joinColumns:
-                    association_id:
-                        onDelete: CASCADE
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    product_id:
-                        referencedColumnName: id
-                        onDelete: CASCADE
-
-        productModels:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
-            joinTable:
-                name: pim_catalog_association_product_model
-                joinColumns:
-                    association_id:
-                        onDelete: CASCADE
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    product_model_id:
-                        referencedColumnName: id
-                        onDelete: CASCADE
+    oneToMany:
+        productProductAssociations:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductProductAssociation
+            mappedBy: association
+            cascade:
+                - persist
+        productModelProductAssociations:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelProductAssociation
+            mappedBy: association
+            cascade:
+                - persist
+        groupProductAssociations:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupProductAssociation
+            mappedBy: association
+            cascade:
+                - persist

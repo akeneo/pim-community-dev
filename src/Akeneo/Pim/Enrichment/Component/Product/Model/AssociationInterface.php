@@ -69,7 +69,7 @@ interface AssociationInterface extends ReferableInterface
     /**
      * Get product models
      */
-    public function getProductModels(): Collection;
+    public function getProductModels();
 
     /**
      * Add a product model

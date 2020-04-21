@@ -1,0 +1,30 @@
+Akeneo\Pim\Enrichment\Component\Product\Model\GroupProductAssociation:
+    type: entity
+    table: pim_catalog_group_product_association
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    id:
+        product:
+            associationKey: true
+        association:
+            associationKey: true
+    fields:
+        quantity:
+            type: integer
+            default: 1
+    manyToOne:
+        group:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
+            cascade:
+                - persist
+                - refresh
+                - detach
+        association:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation
+            inversedBy: groupProductAssociations
+            cascade:
+                - persist
+                - refresh
+            joinColumn:
+                name: association_id
+                referencedColumnName: id
+                nullable: false

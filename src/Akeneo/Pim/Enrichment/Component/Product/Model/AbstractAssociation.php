@@ -24,14 +24,14 @@ abstract class AbstractAssociation implements AssociationInterface
     /** @var EntityWithAssociationsInterface */
     protected $owner;
 
-    /** @var ProductInterface[] */
-    protected $products;
+    /** @var AbstractProductProductAssociation[] */
+    protected $productProductAssociations;
 
-    /** @var ProductModelInterface[] */
-    protected $productModels;
+    /** @var AbstractProductModelProductAssociation[] */
+    protected $productModelProductAssociations;
 
-    /** @var GroupInterface[] */
-    protected $groups;
+    /** @var AbstractGroupProductAssociation[] */
+    protected $groupProductAssociations;
 
     /** @var array */
     protected $groupIds = [];
@@ -41,9 +41,9 @@ abstract class AbstractAssociation implements AssociationInterface
      */
     public function __construct()
     {
-        $this->products = new ArrayCollection();
-        $this->productModels = new ArrayCollection();
-        $this->groups = new ArrayCollection();
+        $this->productProductAssociations = new ArrayCollection();
+        $this->productModelProductAssociations = new ArrayCollection();
+        $this->groupProductAssociations = new ArrayCollection();
     }
 
     /**
@@ -93,12 +93,26 @@ abstract class AbstractAssociation implements AssociationInterface
         return $this->owner;
     }
 
+    private function createProductAssociationFromProduct(ProductInterface $product)
+    {
+        $newProductProductAssociation = $this->owner instanceof ProductInterface ? new ProductProductAssociation() : new ProductProductModelAssociation();
+        $newProductProductAssociation->product = $product;
+        $newProductProductAssociation->quantity = 1;
+
+        return ($newProductProductAssociation);
+    }
+
     /**
      * {@inheritdoc}
      */
     public function setProducts($products)
     {
-        $this->products = $products;
+        $newProductProductAssociations = new ArrayCollection();
+        foreach($products as $product) {
+            $newProductProductAssociations->add($this->createProductAssociationFromProduct($product));
+        }
+
+        $this->productProductAssociations = $newProductProductAssociations;
 
         return $this;
     }
@@ -108,7 +122,9 @@ abstract class AbstractAssociation implements AssociationInterface
      */
     public function getProducts()
     {
-        return $this->products;
+        return $this->productProductAssociations->map(function ($productProductAssociation) {
+            return $productProductAssociation->product;
+        });
     }
 
     /**
@@ -116,8 +132,8 @@ abstract class AbstractAssociation implements AssociationInterface
      */
     public function addProduct(ProductInterface $product)
     {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
+        if (!$this->hasProduct($product)) {
+            $this->productProductAssociations->add($this->createProductAssociationFromProduct($product));
         }
 
         return $this;
@@ -128,7 +144,9 @@ abstract class AbstractAssociation implements AssociationInterface
      */
     public function hasProduct(ProductInterface $product)
     {
-        return $this->products->contains($product);
+        return $this->productProductAssociations->exists(function ($key, $element) use ($product) {
+            $element->product->getId() === $product->getId();
+        });
     }
 
     /**
@@ -136,35 +154,20 @@ abstract class AbstractAssociation implements AssociationInterface
      */
     public function removeProduct(ProductInterface $product)
     {
-        $this->products->removeElement($product);
+        $this->productProductAssociations->filter(function ($productProductAssociation) use ($product) {
+            return $productProductAssociation->product->getId() !== $product->getId();
+        });
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductModels(): Collection
+    private function createProductModelAssociationFromProductModel(ProductModelInterface $productModel)
     {
-        return $this->productModels;
-    }
+        $newProductModelProductAssociation = $this->owner instanceof ProductInterface ? new ProductModelProductAssociation() : new ProductModelProductModelAssociation();
+        $newProductModelProductAssociation->productModel = $productModel;
+        $newProductModelProductAssociation->quantity = 1;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addProductModel(ProductModelInterface $productModel): void
-    {
-        if (!$this->productModels->contains($productModel)) {
-            $this->productModels->add($productModel);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeProductModel(ProductModelInterface $productModel): void
-    {
-        $this->productModels->removeElement($productModel);
+        return ($newProductModelProductAssociation);
     }
 
     /**
@@ -172,7 +175,84 @@ abstract class AbstractAssociation implements AssociationInterface
      */
     public function setProductModels($productModels): void
     {
-        $this->productModels = $productModels;
+        $newProductModelProductAssociations = new ArrayCollection();
+        foreach($productModels as $productModel) {
+            $newProductModelProductAssociations->add($this->createProductModelAssociationFromProductModel($productModel));
+        }
+
+        $this->productModelProductAssociations = $newProductModelProductAssociations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductModels()
+    {
+        return $this->productModelProductAssociations->map(function ($productModelProductAssociation) {
+            return $productModelProductAssociation->productModel;
+        });
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addProductModel(ProductModelInterface $productModel): void
+    {
+        if (!$this->hasProductModel($productModel)) {
+            $this->productModelProductAssociations->add($this->createProductModelAssociationFromProductModel($productModel));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasProductModel(ProductModelInterface $productModel)
+    {
+        return $this->productModelProductAssociations->exists(function ($key, $element) use ($productModel) {
+            $element->productModel->getId() === $productModel->getId();
+        });
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeProductModel(ProductModelInterface $productModel): void
+    {
+        $this->productModelProductAssociations->filter(function ($productModelProductAssociation) use ($productModel) {
+            return $productModelProductAssociation->productModel->getId() !== $productModel->getId();
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private function createGroupAssociationFromGroup(GroupInterface $group)
+    {
+        $newGroupProductAssociation = $this->owner instanceof ProductInterface ? new GroupProductAssociation() : new GroupProductModelAssociation();
+        $newGroupProductAssociation->group = $group;
+        $newGroupProductAssociation->quantity = 1;
+
+        return ($newGroupProductAssociation);
     }
 
     /**
@@ -180,7 +260,12 @@ abstract class AbstractAssociation implements AssociationInterface
      */
     public function setGroups($groups)
     {
-        $this->groups = $groups;
+        $newGroupProductAssociations = new ArrayCollection();
+        foreach($groups as $group) {
+            $newGroupProductAssociations->add($this->createGroupAssociationFromGroup($group));
+        }
+
+        $this->groupProductAssociations = $newGroupProductAssociations;
 
         return $this;
     }
@@ -190,7 +275,9 @@ abstract class AbstractAssociation implements AssociationInterface
      */
     public function getGroups()
     {
-        return $this->groups;
+        return $this->groupProductAssociations->map(function ($groupProductAssociation) {
+            return $groupProductAssociation->group;
+        });
     }
 
     /**
@@ -198,8 +285,8 @@ abstract class AbstractAssociation implements AssociationInterface
      */
     public function addGroup(GroupInterface $group)
     {
-        if (!$this->groups->contains($group)) {
-            $this->groups->add($group);
+        if (!$this->hasGroup($group)) {
+            $this->groupProductAssociations->add($this->createGroupAssociationFromGroup($group));
         }
 
         return $this;
@@ -208,12 +295,35 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
+    public function hasGroup(GroupInterface $group)
+    {
+        return $this->groupProductAssociations->exists(function ($key, $element) use ($group) {
+            $element->group->getId() === $group->getId();
+        });
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function removeGroup(GroupInterface $group)
     {
-        $this->groups->removeElement($group);
+        $this->groupProductAssociations->filter(function ($groupProductAssociation) use ($group) {
+            return $groupProductAssociation->group->getId() !== $group->getId();
+        });
 
         return $this;
     }
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * {@inheritdoc}
