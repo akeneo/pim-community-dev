@@ -49,10 +49,66 @@ pimee_catalog_rule:
           error: Beim Löschen der Regeln ist ein Fehler aufgetreten.
           empty_selection: Keine Regeln ausgewählt.
   form:
+    tab:
+      list: Regelersteller und Eigenschaften-Tabs
+      rule_builder: Rule Builder
     attribute:
       tab:
         rules:
           title: Regeln
+    creation:
+      helper: Die Regel-Engine kann Ihre Produktivität im PIM radikal steigern, indem sie Aktionen automatisiert.
+      english_flag: Bezeichnung für Englisch
+      title: Neue Rolle erstellen
+      notification:
+        success: Die Regel wurde erfolgreich aktualisiert
+        failed: Regelerstellung fehlgeschlagen
+      constraint:
+        code:
+          required: Regelcode ist erforderlich.
+          too_short: "Regelcode ist zu kurz. Er benötigt mindestens {{ characterLimit }} Zeichen."
+          allowed_characters: Regelcode kann nur alphanumerische Zeichen und Unterstriche enthalten.
+      cross_link: Erstellungsregel verlassen
+    edit:
+      priority:
+        label: Priorität
+      add_to_category: Zu Kategorie hinzufügen
+      remove_action: Aktion entfernen
+      add_conditions: Füge Bedingungen hinzu
+      count_products: "{{ count }} Produkte und Produktmodelle"
+      product_selection: Produktauswahl
+      conditions:
+        operators:
+          "STARTS WITH": beginnt mit
+          "ENDS WITH": endet mit
+          "CONTAINS": enthält
+          "DOES NOT CONTAIN": enthält nicht
+          "EMPTY": ist leer
+          "NOT EMPTY": ist nicht leer
+          "IN": in
+          "NOT IN": nicht in
+          "IN CHILDREN": in Kindelementen
+          "NOT IN CHILDREN": nicht in Kindelementen
+          "UNCLASSIFIED": ist unklassifiziert
+          "IN OR UNCLASSIFIED": ist unklassifiziert oder in
+          "BETWEEN": zwischen
+          "NOT BETWEEN": nicht zwischen
+          "=": ist gleich
+          "!=": ungleich
+          ">": größer als
+          ">=": gleich oder größer als
+          "<": kleiner als
+          "<=": gleich oder kleiner als
+      notification:
+        success: Regel erfolgreich aktualisiert
+        failed: Regelerstellung fehlgeschlagen
+    helper:
+      add_to_category: Um Ihre Produktauswahl zu einer oder mehreren Kategorien hinzuzufügen, wählen Sie bitte zuerst unsere Kategoriebäume und dann Ihre Kategorien.
+      product_selection: "Sie müssen Ihre Produktauswahl definieren, um Ihre Regel zu erstellen. Wenn Sie nicht wissen, wie,"
+      product_selection_doc_link: werfen Sie einen Blick auf diesen Artikel.
+    legend:
+      add_to_category: Neue Aktion erstellen
+      product_selection: Bedingung erstellen
 pim_enrich:
   entity:
     rule:

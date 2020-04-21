@@ -53,6 +53,53 @@ pimee_catalog_rule:
       tab:
         rules:
           title: Règles
+    creation:
+      helper: Le moteur de règles peut radicalement augmenter votre productivité dans le PIM en automatisant des actions.
+      english_flag: Libellé pour l'anglais
+      title: Créer une nouvelle règle
+      notification:
+        success: La règle a été créée avec succès
+        failed: La création de la règle a échoué
+      constraint:
+        code:
+          required: Le code de la règle est requis.
+          too_short: "Le code de la règle est trop court. Il doit comporter {{ characterLimit }} caractères ou plus."
+          allowed_characters: Le code de la règle ne peut être composé que de caractères alphanumériques et de tirets bas.
+    edit:
+      priority:
+        label: Priorité
+      add_to_category: Ajouter à une catégorie
+      remove_action: Supprimer l'action
+      add_conditions: Ajouter des conditions
+      count_products: "{{ count }} produits et modèles de produits"
+      product_selection: Sélection de produits
+      conditions:
+        operators:
+          "STARTS WITH": commence par
+          "ENDS WITH": finit par
+          "CONTAINS": contient
+          "DOES NOT CONTAIN": ne contient pas
+          "EMPTY": est vide
+          "NOT EMPTY": n'est pas vide
+          "IN": dans
+          "NOT IN": pas dans
+          "IN CHILDREN": est dans les enfants
+          "NOT IN CHILDREN": pas dans les enfants
+          "UNCLASSIFIED": n'est pas classifié
+          "IN OR UNCLASSIFIED": n'est pas classifié ou est dans
+          "BETWEEN": entre
+          "NOT BETWEEN": n'est pas entre
+          "=": est égal à
+          "!=": est différent de
+          ">": supérieur à
+          ">=": égal ou supérieur à
+          "<": inférieur à
+          "<=": inférieur ou égal à
+    helper:
+      product_selection_doc_link: jetez un coup d'oeil à cet article.
+    legend:
+      add_to_category: Créer une action
+      product_selection: Créer une condition
 pim_enrich:
   entity:
     rule:

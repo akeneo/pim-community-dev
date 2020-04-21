@@ -95,7 +95,9 @@ pim_asset_manager:
         unknown_extra_field: 'Die Eigenschaft {{ {{ field }} }} wurde nicht erwartet.'
       naming_convention:
         property_should_exist: 'Die Eigenschaft "{{ %property% }}" existiert nicht für diese Asset Familie'
+        not_main_media_attribute_code: 'Die Eigenschaft muss mit dem Code des Attributs übereinstimmen, das als Haupt-Medien definiert ist'
       rule_template:
+        limit_reached: 'Sie haben das Limit von {{ %limit% }} Produktlink-Regeln für die Asset-Familie "{{ %asset_family_identifier% }}" erreicht.'
         product_selection_cannot_be_empty: 'Sie müssen mindestens eine Produktauswahl in Ihrer Produktlink-Regel angeben'
         product_assignment_cannot_be_empty: 'Sie müssen mindestens eine Produktauswahl in Ihrer Produktlink-Regel angeben'
         extrapolated_attribute_should_exist: 'Das Attribut "{{ %attribute_code% }}" existiert nicht für diese Asset-Familie'
@@ -262,15 +264,21 @@ pim_asset_manager:
         link: Ein Produkt-Attribut anlegen
       not_enough_items:
         title: Verdammt! Sie können nur {{ productCount }}/{{ totalCount }} Produkte sehen.
+        subtitle:
+          usable_in_grid: Um alle verlinkten Produkte zu entdecken, klicken Sie einfach unten!
+          not_usable_in_grid: Um alle verlinkten Produkte zu entdecken, muss das Produkt-Attribut als "im Raster verwendbar" gesetzt werden.
         button: Alle Produkte anzeigen
       no_product:
         title: Dieses Asset ist mit keinem Produkt über das "{{ entityLabel }}" Produkt-Attribut verknüpft
         subtitle: 'Beginnen Sie die Verknüpfung von Produkten zu diesem Attribut, um sie hier zu sehen'
+    no_linked_products: Dieses Asset ist nicht mit Produkten verknüpft
     enrich:
       title: Asset Attribute
       code: Code
       label: Label
       edit_subsection: Asset bearbeiten
+      product_subsection: Verknüpfte Produkte
+      main_media_preview: Hauptmedien-Vorschau
     title: Assets
     create:
       header:
@@ -313,6 +321,7 @@ pim_asset_manager:
         invalid: Fehler
         created: erstellt
     delete:
+      message: Sind Sie sicher, dass Sie das Asset löschen wollen "{{ assetLabel }}"? Wenn es mit Produkten verknüpft ist, werden die Links entfernt.
       title: Asset
     delete_all:
       confirm: Sind Sie sicher, dass Sie alle "{{ entityIdentifier }}" Assets löschen möchten? Wenn sie mit Produkten verlinkt sind, werden die Verknüpfungen zu den Produkten entfernt.
@@ -465,6 +474,12 @@ pim_asset_manager:
       sub_title: Asset-Familien
       helper:
         title: Feldbezeichner-Übersetzungen
+    media_link:
+      placeholder: Medienlink hier einfügen
+      read_only: Dieser Medienlink kann nur gelesen werden
+    media_file:
+      placeholder: Upload per Drag & Drop oder hier klicken
+      read_only: Diese Mediendatei kann nur gelesen werden
   modal:
     delete:
       subtitle: Löschen bestätigen
@@ -496,3 +511,9 @@ pim_catalog_volume:
     count_asset_family: Asset-Familien
     average_max_assets_per_asset_family: Assets pro Asset-Familie
     average_max_attributes_per_asset_family: Assets pro Asset-Familie
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "Asset-Transformationen berechnen"
+        asset_manager_link_assets_to_products: "Assets mit Produkten verknüpfen"
