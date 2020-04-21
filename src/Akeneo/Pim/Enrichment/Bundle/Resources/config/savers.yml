@@ -20,6 +20,11 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.synchronizer.product_unique_data'
 
+    pim_catalog.saver.two_way_product_associations_saver:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\TwoWayProductAssociationsSaver
+        arguments:
+            - '@database_connection'
+
     pim_catalog.saver.product_model:
         class: '%pim_catalog.saver.base.class%'
         arguments:
