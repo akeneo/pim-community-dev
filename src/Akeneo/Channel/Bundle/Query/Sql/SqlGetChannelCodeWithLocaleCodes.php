@@ -34,10 +34,10 @@ SQL;
 
         $results = $this->connection->executeQuery($sql)->fetchAll();
 
-        return array_map([$this, 'convertJsonColumn'], $results);
+        return array_map([$this, 'hydrateLocaleCodes'], $results);
     }
 
-    private function convertJsonColumn(array $row): array
+    private function hydrateLocaleCodes(array $row): array
     {
         $row['localeCodes'] = array_filter(\json_decode($row['localeCodes'], true));
 
