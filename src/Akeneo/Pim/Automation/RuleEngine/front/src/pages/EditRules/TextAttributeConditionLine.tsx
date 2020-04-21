@@ -50,13 +50,15 @@ const TextAttributeConditionLine: React.FC<Props> = ({
         })}
       </select>
       {!([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(operator) && (
-        <span>
+        <span
+          style={{'width': 200, 'display': 'inline-block'}}
+        >
           <InputText
               id="edit-rules-input-toto"
               name={`conditions[${lineNumber}].value`}
               label={translate("pim_common.code")}
               ref={register}
-          />
+          >&nbsp;</InputText>
         </span>
       )}
       {condition.attribute.localizable &&
