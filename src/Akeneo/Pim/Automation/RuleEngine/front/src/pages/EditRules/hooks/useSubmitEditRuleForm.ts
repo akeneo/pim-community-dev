@@ -30,7 +30,9 @@ const transformFormData = (formData: FormData): Payload => {
     priority: Number(formData.priority),
     content: {
       ...formData.content,
-      actions: formData.content.actions.map(action => JSON.parse(action)),
+      actions: formData.content && formData.content.actions
+        ? formData.content.actions.map(action => JSON.parse(action))
+        : [],
     },
   }
 };
