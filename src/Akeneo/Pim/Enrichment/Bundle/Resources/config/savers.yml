@@ -25,6 +25,11 @@ services:
         arguments:
             - '@database_connection'
 
+    pim_catalog.saver.two_way_product_model_associations_saver:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\TwoWayProductModelAssociationsSaver
+        arguments:
+            - '@database_connection'
+
     pim_catalog.saver.product_model:
         class: '%pim_catalog.saver.base.class%'
         arguments:
