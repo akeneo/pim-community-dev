@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -60,6 +61,9 @@ class ProductPdfRenderer implements RendererInterface
     /** @var IdentifiableObjectRepositoryInterface|null */
     private $attributeOptionRepository;
 
+    /** @var EntityWithFamilyValuesFillerInterface|null */
+    private $productValuesFiller;
+
     // TODO: on master we must remove null for the $attributeOptionRepository and change the order with $customFont
     public function __construct(
         EngineInterface $templating,
@@ -71,7 +75,8 @@ class ProductPdfRenderer implements RendererInterface
         string $template,
         string $uploadDirectory,
         ?string $customFont = null,
-        ?IdentifiableObjectRepositoryInterface $attributeOptionRepository = null
+        ?IdentifiableObjectRepositoryInterface $attributeOptionRepository = null,
+        ?EntityWithFamilyValuesFillerInterface $productValuesFiller = null
     ) {
         $this->templating = $templating;
         $this->pdfBuilder = $pdfBuilder;
@@ -83,6 +88,7 @@ class ProductPdfRenderer implements RendererInterface
         $this->uploadDirectory = $uploadDirectory;
         $this->customFont = $customFont;
         $this->attributeOptionRepository = $attributeOptionRepository;
+        $this->productValuesFiller = $productValuesFiller;
     }
 
     /**
@@ -92,6 +98,10 @@ class ProductPdfRenderer implements RendererInterface
     {
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
+
+        if (null !== $this->productValuesFiller) {
+            $this->productValuesFiller->fillMissingValues($object);
+        }
 
         $imagePaths = $this->getImagePaths($object, $context['locale'], $context['scope']);
         $optionLabels = $this->getOptionLabels($object, $context['locale'], $context['scope']);
@@ -211,10 +221,7 @@ class ProductPdfRenderer implements RendererInterface
                 $optionValue = $product->getValue($attributeCode, $locale, $scope);
                 if ($optionValue instanceof OptionValue) {
                     $optionCode = $optionValue->getData();
-                    $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode . '.' . $optionCode);
-                    $option->setLocale($localeCode);
-                    $translation = $option->getTranslation();
-                    $options[$attributeCode] = null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
+                    $options[$attributeCode] = $this->getOptionLabel($attributeCode, $optionCode, $localeCode);
                 }
             }
             if (null !== $attribute && AttributeTypes::OPTION_MULTI_SELECT === $attribute->getType()) {
@@ -223,10 +230,7 @@ class ProductPdfRenderer implements RendererInterface
                     $optionCodes = $optionValue->getData();
                     $labels = [];
                     foreach ($optionCodes as $optionCode) {
-                        $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode.'.'.$optionCode);
-                        $option->setLocale($localeCode);
-                        $translation = $option->getTranslation();
-                        $labels[] = null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
+                        $labels[] = $this->getOptionLabel($attributeCode, $optionCode, $localeCode);
                     }
                     $options[$attributeCode] = implode(', ', $labels);
                 }
@@ -234,6 +238,20 @@ class ProductPdfRenderer implements RendererInterface
         }
 
         return $options;
+    }
+
+    protected function getOptionLabel($attributeCode, $optionCode, $localeCode)
+    {
+        $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode . '.' . $optionCode);
+
+        if (null === $option) {
+            return sprintf('[%s]', $optionCode);
+        }
+
+        $option->setLocale($localeCode);
+        $translation = $option->getTranslation();
+
+        return null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
     }
 
     /**
