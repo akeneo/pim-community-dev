@@ -48,6 +48,12 @@
                     <% }) %>
                 </tbody>
             </table>
+            <% if (totalAttributeCount !== attributeCount) { %>
+                <div class="AknGridContainer-notEnoughDataTitle"><%- __('pim_enrich.entity.attribute_group.show_more_attribute.title', {attributeCount: attributeCount, totalAttributeCount: totalAttributeCount}) %></div>
+                <div class="AknGridContainer-notEnoughDataSubtitle"><%- __('pim_enrich.entity.attribute_group.show_more_attribute.subtitle') %></div>
+                <button class="AknButton AknButton--big AknButton--apply AknButton--centered redirect-attribute-list"><%- __('pim_enrich.entity.attribute_group.show_more_attribute.button') %></button>
+                <img class="AknImage--centeredWithMargin" src="/bundles/pimui/images/illustration_scroll.svg"/>
+            <% } %>
         </div>
     </div>
 </div>

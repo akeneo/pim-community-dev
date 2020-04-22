@@ -38,3 +38,8 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Storage\Sql\SqlFindAttributeGroupOrdersEqualOrSuperiorTo'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.structure.query.find_attribute_codes_for_attribute_groups:
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup
+        arguments:
+            - '@database_connection'
