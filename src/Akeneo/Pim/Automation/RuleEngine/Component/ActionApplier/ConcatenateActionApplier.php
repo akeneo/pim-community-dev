@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierRegistry;
+use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSource;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
@@ -72,7 +73,7 @@ final class ConcatenateActionApplier implements ActionApplierInterface
             if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
                 try {
                     $this->concatenateDataOnEntityWithValues($entityWithValues, $action);
-                } catch (\LogicException $e) {
+                } catch (NonApplicableActionException $e) {
                     // @TODO RUL-90 throw exception when the runner will be executed in a job.
                     // For now just skip the exception otherwise the process will stop.
 //                throw new InvalidItemException(
@@ -127,7 +128,7 @@ final class ConcatenateActionApplier implements ActionApplierInterface
 
             $value = $entity->getValue($attributeCode, $source->getLocale(), $source->getScope());
             if (null === $value) {
-                throw new \LogicException(
+                throw new NonApplicableActionException(
                     sprintf('The value for the "%s" attribute is empty for the entity.', $attributeCode)
                 );
             }
@@ -138,7 +139,7 @@ final class ConcatenateActionApplier implements ActionApplierInterface
                 ['target_attribute_code' => $action->getTarget()->getField()]
             ));
             if ('' === $stringValue) {
-                throw new \LogicException(
+                throw new NonApplicableActionException(
                     sprintf('The value for the "%s" attribute is empty for the entity.', $attributeCode)
                 );
             }

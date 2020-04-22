@@ -264,7 +264,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
             Argument::any()
         )->shouldNotBeCalled();
 
-        $this->applyAction($concatenateAction, [$entity]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('applyAction', [$concatenateAction, [$entity]]);
     }
 
     function it_does_not_apply_concatenate_action_on_entity_with_family_variant_if_variation_level_is_not_right(

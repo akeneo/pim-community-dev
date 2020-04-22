@@ -59,12 +59,7 @@ final class ClearerActionApplier implements ActionApplierInterface
 
         foreach ($entitiesWithValues as $entityWithValues) {
             if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
-                try {
-                    $this->clearDataOnEntityWithValues($entityWithValues, $action);
-                } catch (\LogicException $e) {
-                    // @TODO RUL-90 throw exception when the runner will be executed in a job.
-                    // For now just skip the exception otherwise the process will stop.
-                }
+                $this->clearDataOnEntityWithValues($entityWithValues, $action);
             }
         }
     }
