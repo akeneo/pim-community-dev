@@ -107,11 +107,11 @@ abstract class AbstractAssociation implements AssociationInterface
      */
     public function setProducts($products)
     {
-        foreach ( $this->toProductAssociations as $association) {
-           $this->toProductAssociations->remove($association);
+        foreach ($this->toProductAssociations as $association) {
+            $this->toProductAssociations->removeElement($association);
         }
 
-        foreach($products as $product) {
+        foreach ($products as $product) {
             $this->toProductAssociations->add($this->createProductAssociationFromProduct($product));
         }
 
@@ -157,7 +157,7 @@ abstract class AbstractAssociation implements AssociationInterface
     {
         foreach ($this->toProductAssociations as $association) {
             if ($association->getProduct()->getId() === $product->getId()) {
-                $this->toProductAssociations->remove($association);
+                $this->toProductAssociations->removeElement($association);
                 break;
             }
         }
@@ -223,9 +223,12 @@ abstract class AbstractAssociation implements AssociationInterface
      */
     public function removeProductModel(ProductModelInterface $productModel): void
     {
-        $this->toProductModelAssociations->filter(function ($toProductModelAssociation) use ($productModel) {
-            return $toProductModelAssociation->productModel->getId() !== $productModel->getId();
-        });
+        foreach ($this->toProductModelAssociations as $association) {
+            if ($association->getProductModel()->getId() === $productModel->getId()) {
+                $this->toProductModelAssociations->removeElement($association);
+                break;
+            }
+        }
     }
 
 

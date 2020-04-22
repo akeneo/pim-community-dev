@@ -23,7 +23,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelToGroupAssociation:
                 referencedColumnName: id
         association:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation
-            inversedBy: productModelToGroupAssociations
+            inversedBy: toGroupAssociations
             cascade:
                 - persist
                 - refresh
