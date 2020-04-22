@@ -81,8 +81,8 @@ SQL;
         foreach ($franklinAttributeLabels as $franklinAttributeLabel) {
             foreach ($searchResults as $searchResult) {
                 if (strcasecmp($franklinAttributeLabel, $searchResult['code']) === 0 ||
-                    strcasecmp($franklinAttributeLabel, $searchResult['label']) === 0 ||
-                    strcasecmp(strval(AttributeCode::fromLabel($franklinAttributeLabel)), $searchResult['code']) === 0
+                    strcasecmp(strval(AttributeCode::fromLabel($franklinAttributeLabel)), $searchResult['code']) === 0 ||
+                    ($searchResult['label'] !== null && strcasecmp($franklinAttributeLabel, $searchResult['label']) === 0)
                 ) {
                     $result[$franklinAttributeLabel] = $searchResult['code'];
                     break;

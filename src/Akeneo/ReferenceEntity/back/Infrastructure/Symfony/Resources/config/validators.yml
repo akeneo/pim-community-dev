@@ -221,3 +221,12 @@ services:
             - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: validator.constraint_validator, alias: 'akeneo_pim_enrichment_records_should_exist' }
+
+    akeneo_referenceentity.infrastructure.validation.record.create_record_label:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\CreateRecordLabelValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+            - '@akeneo_referenceentity.application.registry.record.edit_record_value_command_factory_registry'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.create_record_label' }

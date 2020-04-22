@@ -58,12 +58,12 @@
     "status": 400,
     "body": [
       {
-        "messageTemplate": "This value is not a valid URL.",
+        "messageTemplate": "Please enter a URL: http(s)://xxxx.XXX",
         "parameters": {
           "{{ value }}": "\u0022hello world\u0022"
         },
         "plural": null,
-        "message": "This value is not a valid URL.",
+        "message": "Please enter a URL: http(s)://xxxx.XXX",
         "root": {
           "referenceEntityIdentifier": "designer",
           "code": "starck",
