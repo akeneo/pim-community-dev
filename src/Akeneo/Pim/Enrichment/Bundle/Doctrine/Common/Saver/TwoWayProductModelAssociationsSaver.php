@@ -184,15 +184,15 @@ SQL;
     ): void {
         $insertAssociation = <<<SQL
 INSERT INTO pim_catalog_product_model_association (association_type_id, owner_id)
-SELECT a.association_type_id, apm.product_model_id
-FROM pim_catalog_association a
-JOIN pim_catalog_association_product_model apm
-    ON apm.association_id = a.id
+SELECT pma.association_type_id, apmtpm.product_model_id
+FROM pim_catalog_product_model_association pma
+JOIN pim_catalog_association_product_model_to_product_model apmtpm
+    ON apmtpm.association_id = pma.id
 LEFT JOIN pim_catalog_product_model_association existing_pma
-    ON existing_pma.association_type_id = a.association_type_id
-    AND existing_pma.owner_id = apm.product_model_id
-WHERE a.owner_id = :owner_id
-AND a.association_type_id IN (:association_type_ids)
+    ON existing_pma.association_type_id = pma.association_type_id
+    AND existing_pma.owner_id = apmtpm.product_model_id
+WHERE pma.owner_id = :owner_id
+AND pma.association_type_id IN (:association_type_ids)
 AND existing_pma.owner_id IS NULL
 AND existing_pma.association_type_id IS NULL;
 SQL;
