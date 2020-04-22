@@ -18,6 +18,7 @@ const data = [
   },
 ];
 
+const { register, setValue, getValues } = useForm()
 register({ name: 'select2input' })
 
  <Select2Wrapper
