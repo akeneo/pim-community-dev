@@ -40,6 +40,15 @@ Feature: Create a record
       | {"en_US": "Starck"} |
     Then there should be a validation error with message 'You cannot create the record "Starck" because you have reached the limit of 1000 records for this reference entity'
 
+  @acceptance-back
+  Scenario: Cannot create a record with invalid labels when a validation is set on this attribute
+    Given the user changes the regular expression of 'label' attribute of 'designer' reference entity to '"/[0-9]+/"'
+    And there is no violations errors
+    When the user creates a record "stark" for entity "designer" with:
+      | labels                  |
+      | {"en_US": "Tony Stark"} |
+    Then there should be a validation error with message 'Please enter a text that satisfies the regular expression: "/[0-9]+/"'
+
   @acceptance-front
   Scenario: Creating a record
     When the user asks for the reference entity "designer"

@@ -1,5 +1,23 @@
 # 3.0.x
 
+# 3.0.75 (2020-04-21)
+
+## Bug fixes:
+
+- PIM-9199: Entity-record without label cannot be find from product-attribute search
+
+# 3.0.74 (2020-04-17)
+
+## Improvements
+
+- PIM-9194: Allow to delete data attribute values via a rule set action
+
+# 3.0.73 (2020-04-16)
+
+## Bug fixes:
+
+- PIM-9182: Add validation on label when a record is created
+
 # 3.0.72 (2020-04-03)
 
 - PIM-9169: Fix error message when deleting user that created a project
