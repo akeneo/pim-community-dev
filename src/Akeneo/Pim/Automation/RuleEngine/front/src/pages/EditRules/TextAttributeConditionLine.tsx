@@ -80,6 +80,7 @@ const TextAttributeConditionLine: React.FC<Props> = ({
       <OperatorColumn>
         <select
           name={`content.conditions[${lineNumber}].operator`}
+          data-testid={`edit-rules-input-${lineNumber}-operator`}
           ref={register}
           onChange={(event) => {
             setOperator(event.target.value as Operator);
@@ -95,7 +96,7 @@ const TextAttributeConditionLine: React.FC<Props> = ({
       <ValueColumn>
         {!([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(operator) && (
           <InputText
-            id="edit-rules-input-toto"
+            data-testid={`edit-rules-input-${lineNumber}-value`}
             name={`content.conditions[${lineNumber}].value`}
             label={translate("pim_common.code")}
             ref={register}
@@ -106,6 +107,7 @@ const TextAttributeConditionLine: React.FC<Props> = ({
         {condition.attribute.scopable &&
         <select
           ref={register}
+          data-testid={`edit-rules-input-${lineNumber}-scope`}
           name={`content.conditions[${lineNumber}].scope`}
           onChange={(event) => {
             setScopeCode(event.target.value);
@@ -121,6 +123,7 @@ const TextAttributeConditionLine: React.FC<Props> = ({
         {condition.attribute.localizable &&
         <select
           ref={register}
+          data-testid={`edit-rules-input-${lineNumber}-locale`}
           name={`content.conditions[${lineNumber}].locale`}
         >
           {computeLocales().map((locale: Locale, i: number) => {
