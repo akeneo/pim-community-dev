@@ -8,7 +8,7 @@ const StyledLabel = styled.label`
 
 type Props = {
   label: string;
-  hiddenLabel: boolean;
+  hiddenLabel?: boolean;
 } & React.LabelHTMLAttributes<HTMLLabelElement>;
 
 const Label: React.FC<Props> = ({ htmlFor, label, hiddenLabel }) => {

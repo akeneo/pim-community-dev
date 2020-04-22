@@ -1,36 +1,35 @@
-import React from "react";
-import { StyledLabel } from '../InputText'
+import React, { forwardRef } from "react";
+import { Label } from "../Labels";
 
 type Props = {
   ariaInvalid?: boolean;
   ariaDescribedBy?: string;
   label?: string;
+  hiddenLabel?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-const InputNumber = React.forwardRef<HTMLInputElement, Props>(
-  function InputNumberWithLabel(
-    { ariaInvalid, ariaDescribedBy, children, id, label, ...rest },
+const Input = forwardRef<HTMLInputElement, Props>(
+  (
+    { ariaInvalid, ariaDescribedBy, children, id, label, hiddenLabel, ...rest },
     forwardedRef: React.Ref<HTMLInputElement>
-  ) {
+  ) => {
     return (
       <>
-        {!children ? (
-          <StyledLabel
+        {!children && label ? (
+          <Label
             className="AknFieldContainer-label control-label"
+            hiddenLabel={hiddenLabel}
             htmlFor={id}
-          >
-            {label}
-          </StyledLabel>
+            label={label}
+          />
         ) : (
           children
         )}
         <input
           aria-invalid={ariaInvalid}
           aria-describedby={ariaDescribedBy}
-          className="AknTextField"
           id={id}
           ref={forwardedRef}
-          type="number"
           {...rest}
         />
       </>
@@ -38,4 +37,4 @@ const InputNumber = React.forwardRef<HTMLInputElement, Props>(
   }
 );
 
-export { InputNumber, StyledLabel };
+export { Input, Props as InputProps };

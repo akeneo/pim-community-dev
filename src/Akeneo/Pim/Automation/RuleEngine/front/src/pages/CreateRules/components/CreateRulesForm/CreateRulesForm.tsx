@@ -2,7 +2,8 @@ import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useForm, ErrorMessage } from "react-hook-form";
 import { InputErrorMsg } from "../../../../components/InputErrorMsg";
-import { InputText, FlagLabel } from "../../../../components/InputText";
+import { FlagLabel } from "../../../../components/Labels";
+import { InputText } from "../../../../components/Inputs";
 import { PrimaryButton } from "../../../../components/Buttons/PrimaryButton";
 import { Translate } from "../../../../dependenciesTools/provider/applicationDependenciesProvider.type";
 
