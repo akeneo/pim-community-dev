@@ -9,4 +9,5 @@ export * from "./InputErrorMsg";
 export * from "./InputNumber";
 export * from "./InputText";
 export * from "./RulesHeader";
+export * from "./Select2Wrapper";
 export * from "./UnsavedChangesWarning";
