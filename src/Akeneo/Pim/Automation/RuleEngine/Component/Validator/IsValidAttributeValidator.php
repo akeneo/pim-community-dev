@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Query\ChannelExistsAndBoundToLocaleInterface;
+use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
@@ -30,15 +30,15 @@ final class IsValidAttributeValidator extends ConstraintValidator
     /** @var GetAttributes */
     private $getAttributes;
 
-    /** @var ChannelExistsAndBoundToLocaleInterface */
-    private $channelExistsAndBoundToLocale;
+    /** @var ChannelExistsWithLocaleInterface */
+    private $channelExistsWithLocale;
 
     public function __construct(
         GetAttributes $getAttributes,
-        ChannelExistsAndBoundToLocaleInterface $channelExistsAndBoundToLocale
+        ChannelExistsWithLocaleInterface $channelExistsWithLocale
     ) {
         $this->getAttributes = $getAttributes;
-        $this->channelExistsAndBoundToLocale = $channelExistsAndBoundToLocale;
+        $this->channelExistsWithLocale = $channelExistsWithLocale;
     }
 
     /**
@@ -108,7 +108,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
         if ($attribute->isLocalizableAndScopable()
             && null !== $constraint->getLocale()
             && null !== $constraint->getScope()
-            && !$this->channelExistsAndBoundToLocale->isLocaleBoundToChannel($constraint->getLocale(), $constraint->getScope())
+            && !$this->channelExistsWithLocale->isLocaleBoundToChannel($constraint->getLocale(), $constraint->getScope())
         ) {
             $this->context
                 ->buildViolation(sprintf(

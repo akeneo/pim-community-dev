@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Query\ChannelExistsAndBoundToLocaleInterface;
+use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -25,12 +25,12 @@ use Webmozart\Assert\Assert;
  */
 final class LocaleShouldBeActiveValidator extends ConstraintValidator
 {
-    /** @var ChannelExistsAndBoundToLocaleInterface */
-    private $channelExistsAndBoundToLocale;
+    /** @var ChannelExistsWithLocaleInterface */
+    private $channelExistsWithLocale;
 
-    public function __construct(ChannelExistsAndBoundToLocaleInterface $channelExistsAndBoundToLocale)
+    public function __construct(ChannelExistsWithLocaleInterface $channelExistsWithLocale)
     {
-        $this->channelExistsAndBoundToLocale = $channelExistsAndBoundToLocale;
+        $this->channelExistsWithLocale = $channelExistsWithLocale;
     }
 
     /**
@@ -45,7 +45,7 @@ final class LocaleShouldBeActiveValidator extends ConstraintValidator
         Assert::string($localeCode);
         Assert::isInstanceOf($constraint, LocaleShouldBeActive::class);
 
-        if (!$this->channelExistsAndBoundToLocale->isLocaleActive($localeCode)) {
+        if (!$this->channelExistsWithLocale->isLocaleActive($localeCode)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('%locale_code%', $localeCode)
                 ->addViolation();

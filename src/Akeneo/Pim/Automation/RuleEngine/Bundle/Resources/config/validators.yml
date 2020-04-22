@@ -94,14 +94,14 @@ services:
     Akeneo\Pim\Automation\RuleEngine\Component\Validator\ChannelShouldExistValidator:
         class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\ChannelShouldExistValidator
         arguments:
-            - '@pimee_catalog_rule.query.cache.channel_exists_and_bound_to_context'
+            - '@pim_channel.query.cache.channel_exists_with_locale'
         tags:
             - { name: validator.constraint_validator }
 
     Akeneo\Pim\Automation\RuleEngine\Component\Validator\LocaleShouldBeActiveValidator:
         class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\LocaleShouldBeActiveValidator
         arguments:
-            - '@pimee_catalog_rule.query.cache.channel_exists_and_bound_to_context'
+            - '@pim_channel.query.cache.channel_exists_with_locale'
         tags:
             - { name: validator.constraint_validator }
 
@@ -109,7 +109,7 @@ services:
         class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\IsValidAttributeValidator
         arguments:
             - '@akeneo.pim.structure.query.get_attributes'
-            - '@pimee_catalog_rule.query.cache.channel_exists_and_bound_to_context'
+            - '@pim_channel.query.cache.channel_exists_with_locale'
         tags:
             - { name: validator.constraint_validator }
 

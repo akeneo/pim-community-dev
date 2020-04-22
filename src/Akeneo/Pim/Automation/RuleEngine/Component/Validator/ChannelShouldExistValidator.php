@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Query\ChannelExistsAndBoundToLocaleInterface;
+use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -25,12 +25,12 @@ use Webmozart\Assert\Assert;
  */
 final class ChannelShouldExistValidator extends ConstraintValidator
 {
-    /** @var ChannelExistsAndBoundToLocaleInterface */
-    private $channelExistsAndBoundToLocale;
+    /** @var ChannelExistsWithLocaleInterface */
+    private $channelExistsWithLocale;
 
-    public function __construct(ChannelExistsAndBoundToLocaleInterface $channelExistsAndBoundToLocale)
+    public function __construct(ChannelExistsWithLocaleInterface $channelExistsWithLocale)
     {
-        $this->channelExistsAndBoundToLocale = $channelExistsAndBoundToLocale;
+        $this->channelExistsWithLocale = $channelExistsWithLocale;
     }
 
     /**
@@ -45,7 +45,7 @@ final class ChannelShouldExistValidator extends ConstraintValidator
         Assert::string($channelCode);
         Assert::isInstanceOf($constraint, ChannelShouldExist::class);
 
-        if (!$this->channelExistsAndBoundToLocale->doesChannelExist($channelCode)) {
+        if (!$this->channelExistsWithLocale->doesChannelExist($channelCode)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('%channel_code%', $channelCode)
                 ->addViolation();

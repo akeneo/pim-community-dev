@@ -86,13 +86,3 @@ services:
 
     pimee_catalog.security.updater.setter.granted_category_field:
         alias: pim_catalog.updater.setter.category_field
-
-    pimee_catalog_rule.query.locale_is_active:
-        class: Akeneo\Pim\Automation\RuleEngine\tests\back\Acceptance\InMemory\InMemoryLocaleIsActive
-        arguments:
-            - '@pim_catalog.repository.locale'
-
-    pimee_catalog_rule.query.cache.channel_exists_and_bound_to_context:
-        class: Akeneo\Pim\Automation\RuleEngine\tests\back\Acceptance\InMemory\InMemoryChannelExistsAndBoundToLocale
-        arguments:
-            - '@pim_catalog.repository.channel'
