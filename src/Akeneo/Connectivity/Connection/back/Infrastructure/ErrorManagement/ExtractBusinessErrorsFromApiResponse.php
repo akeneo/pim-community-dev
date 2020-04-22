@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement;
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -15,41 +16,26 @@ class ExtractBusinessErrorsFromApiResponse
 {
     /**
      * @param Response $response
-     * @param string $connectionCode
+     * @param ConnectionCode $connectionCode
      *
      * @return BusinessError[]
      */
-    public function extractAll(Response $response, string $connectionCode): array
+    public static function extractAll(Response $response, ConnectionCode $connectionCode): array
     {
         $businessErrors = [];
-        switch (true) {
-            case Response::HTTP_UNPROCESSABLE_ENTITY === $response->getStatusCode():
-                $businessErrors = $this->extractFrom422($response, $connectionCode);
-                break;
+        if (Response::HTTP_UNPROCESSABLE_ENTITY === $response->getStatusCode()) {
+            $content = $response->getContent();
+            $decodedContent = json_decode($content, true);
+            if (isset($decodedContent['errors'])) {
+                $businessErrors = [];
+                foreach ($decodedContent['errors'] as $error) {
+                    $businessErrors[] = new BusinessError($connectionCode, json_encode($error));
+                }
+            } else {
+                $businessErrors[] = new BusinessError($connectionCode, $content);
+            }
         }
 
         return $businessErrors;
-    }
-
-    /**
-     * @param Response $response
-     * @param string $connectionCode
-     *
-     * @return BusinessError[]
-     */
-    private function extractFrom422(Response $response, string $connectionCode): array
-    {
-        $content = $response->getContent();
-        $decodedContent = json_decode($content, true);
-        if (isset($decodedContent['errors'])) {
-            $businessErrors = [];
-            foreach ($decodedContent['errors'] as $error) {
-                $businessErrors[] = new BusinessError($connectionCode, json_encode($error));
-            }
-
-            return $businessErrors;
-        }
-
-        return [new BusinessError($connectionCode, $content)];
     }
 }

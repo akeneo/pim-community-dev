@@ -18,7 +18,7 @@ class BusinessError
     /** @var string */
     private $content;
 
-    public function __construct(string $connectionCode, string $content)
+    public function __construct(ConnectionCode $connectionCode, string $content)
     {
         try {
             $decoded = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
@@ -35,7 +35,7 @@ class BusinessError
             );
         }
         $this->content = $content;
-        $this->connectionCode = new ConnectionCode($connectionCode);
+        $this->connectionCode = $connectionCode;
     }
 
     public function connectionCode(): ConnectionCode

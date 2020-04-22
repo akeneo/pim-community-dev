@@ -11,13 +11,15 @@ class BusinessErrorSpec extends ObjectBehavior
 {
     public function it_is_a_business_error(): void
     {
-        $this->beConstructedWith('erp', '{"message": ""}');
+        $connectionCode = new ConnectionCode('erp');
+        $this->beConstructedWith($connectionCode, '{"message": ""}');
         $this->shouldHaveType(BusinessError::class);
     }
 
     public function it_provides_a_connection_code_and_a_content()
     {
-        $this->beConstructedWith('erp', $this->getWellStructuredContent());
+        $connectionCode = new ConnectionCode('erp');
+        $this->beConstructedWith($connectionCode, $this->getWellStructuredContent());
 
         $this->connectionCode()->shouldReturnAnInstanceOf(ConnectionCode::class);
         $this->content()->shouldReturn($this->getWellStructuredContent());
@@ -25,7 +27,8 @@ class BusinessErrorSpec extends ObjectBehavior
 
     public function it_must_have_a_json_content()
     {
-        $this->beConstructedWith('erp', '');
+        $connectionCode = new ConnectionCode('erp');
+        $this->beConstructedWith($connectionCode, '');
 
         $this
             ->shouldThrow(
@@ -36,7 +39,8 @@ class BusinessErrorSpec extends ObjectBehavior
 
     public function it_must_have_a_content()
     {
-        $this->beConstructedWith('erp', '{}');
+        $connectionCode = new ConnectionCode('erp');
+        $this->beConstructedWith($connectionCode, '{}');
 
         $this
             ->shouldThrow(
