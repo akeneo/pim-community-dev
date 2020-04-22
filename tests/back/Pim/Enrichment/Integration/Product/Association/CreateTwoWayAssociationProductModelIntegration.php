@@ -120,18 +120,20 @@ class CreateTwoWayAssociationProductModelIntegration extends TestCase
         array $productIdentifiersAssociated,
         array $productModelCodeAssociated
     ): ProductModelInterface {
+        $data = [];
+        if (!empty($productIdentifiersAssociated)) {
+            $data['associations']['COMPATIBILITY']['products'] = $productIdentifiersAssociated;
+        }
+
+        if (!empty($productModelCodeAssociated)) {
+            $data['associations']['COMPATIBILITY']['product_models'] = $productModelCodeAssociated;
+        }
+
         return $this->getEntityBuilder()->createProductModel(
             $identifier,
             $familyVariantCode,
             null,
-            [
-                'associations' => [
-                    'COMPATIBILITY' => [
-                        'products' => $productIdentifiersAssociated,
-                        'product_models' => $productModelCodeAssociated
-                    ],
-                ],
-            ]
+            $data
         );
     }
 
