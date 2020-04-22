@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import {TextAttributeCondition, TextAttributeOperators} from "../../models/TextAttributeCondition";
-import {InputText} from "../../components/InputText";
 import {Operator} from "../../models/Operator";
 import {ConditionLineProps} from "./ConditionLineProps";
 import {Locale} from "../../models";
 import {Scope} from "../../models";
+import {InputText} from "../../components/Inputs";
 
 type Props = {
   condition: TextAttributeCondition,
@@ -100,6 +100,7 @@ const TextAttributeConditionLine: React.FC<Props> = ({
             name={`content.conditions[${lineNumber}].value`}
             label={translate("pim_common.code")}
             ref={register}
+            hiddenLabel={true}
           >&nbsp;</InputText>
         )}
       </ValueColumn>

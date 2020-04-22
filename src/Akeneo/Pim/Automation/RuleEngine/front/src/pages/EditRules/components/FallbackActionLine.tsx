@@ -1,8 +1,8 @@
 import React from "react";
 import {FallbackAction} from "../../../models/FallbackAction";
 import {ActionTemplate} from "./ActionTemplate";
-import {InputText} from "../../../components/InputText";
 import {ActionLineProps} from "../ActionLineProps";
+import {InputText} from "../../../components/Inputs";
 
 type Props = {
   action: FallbackAction
@@ -16,7 +16,7 @@ const FallbackActionLine: React.FC<Props> = ({ translate , lineNumber, register}
       helper="This feature is under development. Please use the import to manage your rules."
       srOnly="This feature is under development. Please use the import to manage your rules."
     >
-      <InputText name={`content.actions[${lineNumber}]`} ref={register} disabled readOnly/>
+      <InputText name={`content.actions[${lineNumber}]`} ref={register} disabled readOnly hiddenLabel={true}/>
     </ActionTemplate>
   );
 };
