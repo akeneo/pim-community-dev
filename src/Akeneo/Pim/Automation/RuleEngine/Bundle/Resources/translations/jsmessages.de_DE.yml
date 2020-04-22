@@ -100,7 +100,6 @@ pimee_catalog_rule:
           "<": kleiner als
           "<=": gleich oder kleiner als
       notification:
-        success: Regel erfolgreich aktualisiert
         failed: Regelerstellung fehlgeschlagen
     helper:
       add_to_category: Um Ihre Produktauswahl zu einer oder mehreren Kategorien hinzuzufügen, wählen Sie bitte zuerst unsere Kategoriebäume und dann Ihre Kategorien.
