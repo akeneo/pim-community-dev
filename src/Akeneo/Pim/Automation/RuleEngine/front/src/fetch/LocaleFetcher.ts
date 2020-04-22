@@ -24,4 +24,18 @@ const getActivatedLocaleByCode = async (localeCode: string, router: Router): Pro
   return result === undefined ? null : result;
 }
 
-export { getActivatedLocales, getActivatedLocaleByCode }
+const checkLocaleExists = async (localeCode: string|null, router: Router): Promise<boolean> => {
+  if (!localeCode) {
+    return true;
+  }
+
+  if (null === await getActivatedLocaleByCode(localeCode, router)) {
+    console.error(`The ${localeCode} locale code does not exist or is not activated`);
+
+    return false;
+  }
+
+  return true;
+}
+
+export { getActivatedLocales, getActivatedLocaleByCode, checkLocaleExists }

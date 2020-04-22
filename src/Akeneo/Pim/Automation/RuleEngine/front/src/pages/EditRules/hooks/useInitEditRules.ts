@@ -4,7 +4,7 @@ import { getActivatedLocales } from "../../../fetch/LocaleFetcher";
 import { RuleDefinition } from "../../../models";
 import { Locale } from "../../../models";
 import { Router } from "../../../dependenciesTools";
-import {getScopes, IndexedScopes} from "../../../fetch/ScopeFetcher";
+import {getAllScopes, IndexedScopes} from "../../../fetch/ScopeFetcher";
 
 type Error = { exception: any; status: boolean };
 
@@ -18,7 +18,7 @@ const useInitEditRules = (ruleDefinitionCode: string, router: Router) => {
     Promise.all([
       getRuleDefinitionByCode(ruleDefinitionCode, router),
       getActivatedLocales(router),
-      getScopes(router),
+      getAllScopes(router),
     ])
       .then((response) => {
         setRuleDefinition(response[0] as RuleDefinition);

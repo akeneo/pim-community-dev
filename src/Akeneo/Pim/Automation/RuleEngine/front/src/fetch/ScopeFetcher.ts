@@ -1,12 +1,12 @@
 import {Router} from "../dependenciesTools";
 import {httpGet} from "./fetch";
-import {Scope} from "../models";
+import {Locale, Scope} from "../models";
 
 type IndexedScopes = {[scopeCode: string]: Scope};
 
 let cachedScopes: IndexedScopes;
 
-const getScopes = async (router: Router): Promise<IndexedScopes> => {
+const getAllScopes = async (router: Router): Promise<IndexedScopes> => {
   if (!cachedScopes) {
     cachedScopes = {};
     const url = router.generate('pim_enrich_channel_rest_index');
@@ -21,9 +21,46 @@ const getScopes = async (router: Router): Promise<IndexedScopes> => {
 };
 
 const getScopeByCode = async (scopeCode: string, router: Router): Promise<Scope | null> => {
-  const scopes = await getScopes(router);
+  const scopes = await getAllScopes(router);
 
   return scopes[scopeCode] || null;
 };
 
-export { getScopes, getScopeByCode, IndexedScopes }
+const checkScopeExists = async (scopeCode: string|null, router: Router): Promise<boolean> => {
+  if (!scopeCode) {
+    return true;
+  }
+
+  if (null === await getScopeByCode(scopeCode, router)) {
+    console.error(`The ${scopeCode} scope code does not exist`);
+
+    return false;
+  }
+
+  return true;
+}
+
+const checkLocaleIsBoundToScope = async (
+  localeCode: string|null,
+  scopeCode: string|null,
+  router: Router
+): Promise<boolean> => {
+  if (!scopeCode || !localeCode) {
+    return true;
+  }
+
+  const scope: Scope|null = await getScopeByCode(scopeCode, router);
+  if (null === scope) {
+    return true;
+  }
+
+  if (!scope.locales.find((locale: Locale) => locale.code === localeCode)) {
+    console.error(`The ${localeCode} locale code is not bound to the ${scopeCode} scope code`);
+
+    return false;
+  }
+
+  return true;
+}
+
+export { getAllScopes, getScopeByCode, IndexedScopes, checkScopeExists, checkLocaleIsBoundToScope }

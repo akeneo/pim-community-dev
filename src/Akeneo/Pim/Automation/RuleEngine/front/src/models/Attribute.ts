@@ -32,6 +32,35 @@ type Attribute = {
   filter_types: {[type: string]: string},
   is_locale_specific: boolean,
   meta: {[key: string]: any},
-}
+};
 
-export { Attribute }
+const validateLocalizableScopableAttribute = (
+  attribute: Attribute,
+  locale: string|null,
+  scope: string|null
+): boolean => {
+  let isValidated = true;
+  if (attribute.localizable && locale === null) {
+    console.error(`The ${attribute.code} attribute code is localizable but no locale is provided.`);
+    isValidated = false;
+  }
+
+  if (!attribute.localizable && locale !== null) {
+    console.error(`The ${attribute.code} attribute code is not localizable but a locale is provided.`);
+    isValidated = false;
+  }
+
+  if (attribute.scopable && scope === null) {
+    console.error(`The ${attribute.code} attribute code is scopable but no scope is provided.`);
+    isValidated = false;
+  }
+
+  if (!attribute.scopable && scope !== null) {
+    console.error(`The ${attribute.code} attribute code is not scopable but a scope is provided.`);
+    isValidated = false;
+  }
+
+  return isValidated;
+};
+
+export { Attribute, validateLocalizableScopableAttribute };

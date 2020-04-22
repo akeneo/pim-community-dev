@@ -1,11 +1,13 @@
 import React from "react";
-import {Attribute} from "./Attribute";
+import {Attribute, validateLocalizableScopableAttribute} from "./Attribute";
 import {Condition} from "./Condition";
 import {Router } from "../dependenciesTools";
 import {getAttributeByIdentifier} from "../fetch/AttributeFetcher";
 import {TextAttributeConditionLine} from "../pages/EditRules/TextAttributeConditionLine";
 import {Operator} from "./Operator";
 import {ConditionLineProps} from "../pages/EditRules/ConditionLineProps";
+import {checkLocaleExists} from "../fetch/LocaleFetcher";
+import {checkLocaleIsBoundToScope, checkScopeExists} from "../fetch/ScopeFetcher";
 
 const TextAttributeOperators = [
   Operator.EQUALS,
@@ -42,14 +44,25 @@ const createTextAttributeCondition = async (json: any, router: Router): Promise 
   }
 
   if (attribute.type === 'pim_catalog_text') {
+    let localeCode = json.locale || null;
+    let scopeCode = json.scope || null;
+
+    if (!await checkLocaleExists(localeCode, router)
+      || !await checkScopeExists(scopeCode, router)
+      || !await checkLocaleIsBoundToScope(localeCode, scopeCode, router)
+      || !validateLocalizableScopableAttribute(attribute, localeCode, scopeCode)
+    ) {
+      return null;
+    }
+
     return {
       module: TextAttributeConditionLine,
       attribute,
       field: json.field,
       operator: json.operator,
       value: json.value,
-      locale: json.locale,
-      scope: json.scope,
+      locale: localeCode,
+      scope: scopeCode,
     };
   }
 
