@@ -15,7 +15,7 @@ create-main-tf-for-pim3:
 	mkdir -p ~/3.2/
 	@echo "terraform {" >> ~/3.2/main.tf
 	@echo "backend \"gcs\" {" >> ~/3.2/main.tf
-	@echo "bucket  = \"akecld-terraform\"" >> ~/3.2/main.tf
+	@echo "bucket  = \"akecld-terraform-dev\"" >> ~/3.2/main.tf
 	@echo "prefix  = \"saas/$(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)/$(PFID)/\"" >> ~/3.2/main.tf
 	@echo "}" >> ~/3.2/main.tf
 	@echo "}" >> ~/3.2/main.tf

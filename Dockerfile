@@ -136,6 +136,7 @@ COPY upgrades upgrades
 COPY composer.json package.json yarn.lock .env tsconfig.json .
 
 ENV APP_ENV=prod
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
 RUN mkdir var && \
     php -d 'memory_limit=3G' /usr/local/bin/composer install \
         --no-scripts \
