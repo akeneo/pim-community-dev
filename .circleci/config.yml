@@ -371,21 +371,6 @@ jobs:
               name: make release
               command: OLD_IMAGE_TAG=$CIRCLE_SHA1 make release
 
-  deploy_helpdesk_environment:
-      environment:
-        <<: *envVarsDeployPreprod
-      <<: *dockerCloudDeployer
-      steps:
-            - attach_workspace:
-                at: ~/
-            - set_gcloud_config_preprod
-            - add_ssh_keys
-            - run:
-                name: Get latest release, generate config files and deploy
-                command: |
-                    ssh-keyscan github.com >> ~/.ssh/known_hosts
-                    ENV_NAME=preprod make deploy_latest_release_for_helpdesk
-
   deploy_pr_environment:
       environment:
           <<: *envVarsDeployDev
@@ -398,19 +383,6 @@ jobs:
                 name: Deploy PR environment
                 command: |
                     ENV_NAME=dev make deploy_pr_environment
-
-  delete_pr_environments:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: delete PR environment
-                command: |
-                    make delete_pr_environments
 
   test_back_missing_structure_migrations:
       machine:
@@ -604,30 +576,6 @@ workflows:
                     - test_back_phpunit
                     - test_onboarder_bundle
 
-  nightly_helpdesk:
-      triggers:
-          - schedule:
-                cron: "30 4 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-
-      jobs:
-          - deploy_helpdesk_environment
-
-  nightly_cleanup:
-      triggers:
-          - schedule:
-                cron: "0 0 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-
-      jobs:
-          - delete_pr_environments
-
   nightly:
       triggers:
           - schedule:
@@ -642,60 +590,6 @@ workflows:
                 is_pull_request: false
           - build_prod:
                 is_pull_request: false
-          - deploy_master_environment:
-                requires:
-                    - build_prod
-          - deploy_upgrade_oldest_prod_environment:
-                requires:
-                    - deploy_master_environment
-          - test_back_static_and_acceptance:
-                requires:
-                    - build_dev
-          - test_front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
-          - test_back_phpunit:
-                requires:
-                    - build_dev
-          - test_onboarder_bundle:
-                requires:
-                    - build_dev
-          - back_behat_legacy:
-                requires:
-                    - build_dev
-          - test_back_data_migrations:
-                requires:
-                    - build_dev
-          - test_back_performance:
-                requires:
-                    - build_dev
-          - release:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_phpunit
-                    - test_onboarder_bundle
-                    - test_back_performance
-                    - back_behat_legacy
-                    - deploy_master_environment
-                    - deploy_upgrade_oldest_prod_environment
-                    - test_back_data_migrations
-
-  on_demand:
-      jobs:
-          - ready_to_build?:
-                type: approval
-                filters:
-                    branches:
-                        only: master
-          - build_dev:
-                is_pull_request: false
-                requires:
-                    - ready_to_build?
-          - build_prod:
-                is_pull_request: false
-                requires:
-                    - ready_to_build?
           - deploy_master_environment:
                 requires:
                     - build_prod
