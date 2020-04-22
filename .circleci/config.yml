@@ -29,8 +29,18 @@ jobs:
     machine:
       image: ubuntu-1604:201903-01
     steps:
-      - attach_workspace:
-            at: ~/
+      - add_ssh_keys:
+          fingerprints:
+              - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+      - run:
+          name: Download EE dev with the SSH key that we added above
+          command: |
+              export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+              git clone git@github.com:akeneo/pim-enterprise-dev.git /home/circleci/project
+      - run:
+          name: Require proper CE dev branch
+          command: |
+            sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
       - run:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
@@ -51,17 +61,6 @@ jobs:
       - run:
           name: Change owner on project dir after restoring cache
           command: sudo chown -R 1000:1000 ../project
-      - when:
-            condition: << parameters.is_pull_request >>
-            steps:
-                - run:
-                      name: Update composer.json if same branch exists in CE
-                      command: >
-                          curl --output /dev/null --silent --head --fail
-                          https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
-                          docker-compose run --rm -u www-data:www-data php php
-                          /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
-                          echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
       - run:
             name: Install back and front dependencies
             command: make dependencies
