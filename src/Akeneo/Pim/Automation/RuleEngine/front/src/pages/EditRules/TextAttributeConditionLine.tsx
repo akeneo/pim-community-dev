@@ -65,6 +65,12 @@ const TextAttributeConditionLine: React.FC<Props> = ({
       ;
   };
 
+  const translateOperator = (operator: string): string => {
+    const label = translate('pimee_catalog_rule.form.edit.conditions.operators.' + operator);
+
+    return label.charAt(0).toUpperCase() + label.slice(1);
+  }
+
   return (
     <div>
       <FieldColumn className={"AknGrid-bodyCell--highlight"}>
@@ -81,7 +87,7 @@ const TextAttributeConditionLine: React.FC<Props> = ({
         >
           {TextAttributeOperators.map((operator, i) => {
             return <option key={i} value={operator}>
-              {translate('pimee_catalog_rule.form.edit.conditions.operators.' + operator)}
+              {translateOperator(operator)}
             </option>
           })}
         </select>
