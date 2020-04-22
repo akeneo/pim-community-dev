@@ -64,7 +64,7 @@ class ProductPdfRenderer implements RendererInterface
     /** @var EntityWithFamilyValuesFillerInterface|null */
     private $productValuesFiller;
 
-    // TODO: on master we must remove null for the $attributeOptionRepository and change the order with $customFont
+    // TODO: on master we must remove null for the $attributeOptionRepository and $productValuesFiller and change the order with $customFont
     public function __construct(
         EngineInterface $templating,
         PdfBuilderInterface $pdfBuilder,
