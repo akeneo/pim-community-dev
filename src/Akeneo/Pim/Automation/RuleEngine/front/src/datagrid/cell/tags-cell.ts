@@ -1,4 +1,6 @@
-import * as _ from 'underscore';
+/* eslint-disable @typescript-eslint/no-var-requires */
+
+import _ from 'underscore';
 
 const StringCell = require('oro/datagrid/string-cell');
 const CellTemplate = require('oro/datagrid/tags-cell-template');
@@ -7,21 +9,26 @@ class TagsCell extends StringCell {
   readonly template = _.template(CellTemplate);
 
   render() {
-    const distinctActions = this.model.get('tags').actions
-      .map(action => action.type)
-      .filter((type, index, array) => array.indexOf(type) === index)
-    ;
+    const distinctActionTypes = this.model
+      .get('tags')
+      .actions.map((action: any) => action.type)
+      .filter(
+        (type: string, index: number, array: string[]) =>
+          array.indexOf(type) === index
+      );
 
-    this.$el.html(this.template({
-      actions: distinctActions,
-      getColor: this.getColor,
-    }));
+    this.$el.html(
+      this.template({
+        getClassName: TagsCell.getClassName,
+        actionTypes: distinctActionTypes,
+      })
+    );
 
     return this;
   }
 
-  getColor(action: string) {
-    const colors = {
+  static getClassName = (actionType: string): string => {
+    const colors: { [key: string]: string } = {
       add: 'green',
       calculate: 'darkPurple',
       clear: 'red',
@@ -31,8 +38,8 @@ class TagsCell extends StringCell {
       set: 'blue',
     };
 
-    return colors[action] || 'default';
-  }
+    return colors[actionType] ? `AknTag--${colors[actionType]}` : '';
+  };
 }
 
 export = TagsCell;

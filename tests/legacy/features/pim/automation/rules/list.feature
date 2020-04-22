@@ -254,7 +254,6 @@ Feature: List all rules
       | Action    | Then 2014_collection and children is removed from categories        |
       | Actions   | remove                                                              |
 
-
     And the row "Nineties" should contain the texts:
       | column    | value                                                        |
       | Condition | If release_date between 01/15/1990, 01/15/2000 [ mobile ]    |
