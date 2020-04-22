@@ -21,16 +21,6 @@ aliases:
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
 jobs:
-  checkout:
-    docker:
-      - image: alpine/git
-    steps:
-      - checkout
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project
-
   build_dev:
     parameters:
         is_pull_request:
@@ -552,15 +542,12 @@ workflows:
                     branches:
                         ignore:
                             - master
-          - checkout:
-                requires:
-                    - ready_to_build?
           - build_dev:
                 requires:
-                    - checkout
+                    - ready_to_build?
           - build_prod:
                 requires:
-                    - checkout
+                    - ready_to_build?
           - deploy_pr_environment?:
                 type: approval
                 filters:
@@ -628,10 +615,7 @@ workflows:
                             - master
 
       jobs:
-          - checkout
-          - deploy_helpdesk_environment:
-                requires:
-                    - checkout
+          - deploy_helpdesk_environment
 
   nightly_cleanup:
       triggers:
@@ -643,10 +627,7 @@ workflows:
                             - master
 
       jobs:
-          - checkout
-          - delete_pr_environments:
-                requires:
-                    - checkout
+          - delete_pr_environments
 
   nightly:
       triggers:
@@ -658,15 +639,10 @@ workflows:
                             - master
 
       jobs:
-          - checkout
           - build_dev:
                 is_pull_request: false
-                requires:
-                    - checkout
           - build_prod:
                 is_pull_request: false
-                requires:
-                    - checkout
           - deploy_master_environment:
                 requires:
                     - build_prod
@@ -713,17 +689,14 @@ workflows:
                 filters:
                     branches:
                         only: master
-          - checkout:
-                requires:
-                    - ready_to_build?
           - build_dev:
                 is_pull_request: false
                 requires:
-                    - checkout
+                    - ready_to_build?
           - build_prod:
                 is_pull_request: false
                 requires:
-                    - checkout
+                    - ready_to_build?
           - deploy_master_environment:
                 requires:
                     - build_prod
