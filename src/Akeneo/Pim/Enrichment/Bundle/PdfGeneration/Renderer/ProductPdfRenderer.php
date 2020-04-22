@@ -240,7 +240,7 @@ class ProductPdfRenderer implements RendererInterface
         return $options;
     }
 
-    protected function getOptionLabel($attributeCode, $optionCode, $localeCode)
+    protected function getOptionLabel($attributeCode, $optionCode, $localeCode): string
     {
         $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode . '.' . $optionCode);
 
