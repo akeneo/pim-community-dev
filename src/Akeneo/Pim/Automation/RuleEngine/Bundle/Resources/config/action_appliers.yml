@@ -11,7 +11,7 @@ services:
         class: '%pimee_catalog_rule.action_applier.setter.class%'
         arguments:
             - '@pim_catalog.updater.property_setter'
-            - '@pim_catalog.repository.attribute'
+            - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 
@@ -19,7 +19,7 @@ services:
         class: '%pimee_catalog_rule.action_applier.copier.class%'
         arguments:
             - '@pim_catalog.updater.property_copier'
-            - '@pim_catalog.repository.attribute'
+            - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 
@@ -27,7 +27,7 @@ services:
         class: '%pimee_catalog_rule.action_applier.adder.class%'
         arguments:
             - '@pim_catalog.updater.property_adder'
-            - '@pim_catalog.repository.attribute'
+            - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 
@@ -35,7 +35,7 @@ services:
         class: '%pimee_catalog_rule.action_applier.remover.class%'
         arguments:
             - '@pim_catalog.updater.property_remover'
-            - '@pim_catalog.repository.attribute'
+            - '@akeneo.pim.structure.query.get_attributes'
             - '@pim_catalog.repository.category'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
@@ -131,11 +131,5 @@ services:
 
     Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\GetOperandValue:
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@akeneo.pim.structure.query.get_attributes'
             - '@akeneo_measure.measure_converter'
-
-    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\UpdateNumericValue:
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'
-            - '@pim_catalog.builder.entity_with_values'
-            - '@pim_standard_format_serializer'

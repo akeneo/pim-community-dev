@@ -14,7 +14,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyCopierInterface;
@@ -29,19 +29,13 @@ class CopierActionApplier implements ActionApplierInterface
     /** @var PropertyCopierInterface */
     protected $propertyCopier;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributes;
 
-    /**
-     * @param PropertyCopierInterface      $propertyCopier
-     * @param AttributeRepositoryInterface $attributeRepository
-     */
-    public function __construct(
-        PropertyCopierInterface $propertyCopier,
-        AttributeRepositoryInterface $attributeRepository
-    ) {
+    public function __construct(PropertyCopierInterface $propertyCopier, GetAttributes $getAttributes)
+    {
         $this->propertyCopier = $propertyCopier;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributes = $getAttributes;
     }
 
     /**
@@ -75,7 +69,8 @@ class CopierActionApplier implements ActionApplierInterface
         ProductCopyActionInterface $action
     ): bool {
         $toField = $action->getToField();
-        $attribute = $this->attributeRepository->findOneByIdentifier($toField);
+        // TODO: RUL-170: remove "?? ''" in the next line
+        $attribute = $this->getAttributes->forCode($toField ?? '');
         if (null === $attribute) {
             return false;
         }
@@ -84,13 +79,13 @@ class CopierActionApplier implements ActionApplierInterface
         if (null === $family) {
             return true;
         }
-        if (!$family->hasAttributeCode($attribute->getCode())) {
+        if (!$family->hasAttributeCode($attribute->code())) {
             return false;
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
-            $familyVariant->getLevelForAttributeCode($attribute->getCode()) !== $entity->getVariationLevel()) {
+            $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
             return false;
         }
 

@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
@@ -34,24 +34,19 @@ class RemoverActionApplier implements ActionApplierInterface
     /** @var PropertyRemoverInterface */
     private $propertyRemover;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributes;
 
     /** @var CategoryRepositoryInterface */
     private $categoryRepository;
 
-    /**
-     * @param PropertyRemoverInterface     $propertyRemover
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param CategoryRepositoryInterface  $categoryRepository
-     */
     public function __construct(
         PropertyRemoverInterface $propertyRemover,
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         CategoryRepositoryInterface $categoryRepository
     ) {
         $this->propertyRemover = $propertyRemover;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributes = $getAttributes;
         $this->categoryRepository = $categoryRepository;
     }
 
@@ -85,7 +80,8 @@ class RemoverActionApplier implements ActionApplierInterface
         ProductRemoveActionInterface $action
     ): bool {
         $field = $action->getField();
-        $attribute = $this->attributeRepository->findOneByIdentifier($field);
+        // TODO: RUL-170: remove "?? ''" in the next line
+        $attribute = $this->getAttributes->forCode($field ?? '');
         if (null === $attribute) {
             return true;
         }
@@ -94,13 +90,13 @@ class RemoverActionApplier implements ActionApplierInterface
         if (null === $family) {
             return true;
         }
-        if (!$family->hasAttributeCode($attribute->getCode())) {
+        if (!$family->hasAttributeCode($attribute->code())) {
             return false;
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
-            $familyVariant->getLevelForAttributeCode($attribute->getCode()) !== $entity->getVariationLevel()) {
+            $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
             return false;
         }
 

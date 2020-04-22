@@ -16,24 +16,22 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operand;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 class GetOperandValue
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributes;
 
     /** @var MeasureConverter */
     private $measureConverter;
 
-    public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        MeasureConverter $measureConverter
-    ) {
-        $this->attributeRepository = $attributeRepository;
+    public function __construct(GetAttributes $getAttributes, MeasureConverter $measureConverter)
+    {
+        $this->getAttributes = $getAttributes;
         $this->measureConverter = $measureConverter;
     }
 
@@ -48,10 +46,10 @@ class GetOperandValue
             return null;
         }
 
-        $attribute = $this->attributeRepository->findOneByIdentifier($operand->getAttributeCode());
-        Assert::isInstanceOf($attribute, AttributeInterface::class);
+        $attribute = $this->getAttributes->forCode($operand->getAttributeCode());
+        Assert::isInstanceOf($attribute, Attribute::class);
 
-        switch ($attribute->getType()) {
+        switch ($attribute->type()) {
             case AttributeTypes::NUMBER:
                 return (float)$value->getData();
             case AttributeTypes::PRICE_COLLECTION:
@@ -61,10 +59,10 @@ class GetOperandValue
                 return null !== $price ? (float) $price->getData() : null;
             case AttributeTypes::METRIC:
                 $metric = $value->getData();
-                $this->measureConverter->setFamily($attribute->getMetricFamily());
+                $this->measureConverter->setFamily($attribute->metricFamily());
                 $converted = $this->measureConverter->convert(
                     $metric->getUnit(),
-                    $attribute->getDefaultMetricUnit(),
+                    $attribute->defaultMetricUnit(),
                     $metric->getData()
                 );
 

@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
@@ -31,19 +31,13 @@ class SetterActionApplier implements ActionApplierInterface
     /** @var PropertySetterInterface */
     protected $propertySetter;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributes;
 
-    /**
-     * @param PropertySetterInterface      $propertySetter
-     * @param AttributeRepositoryInterface $attributeRepository
-     */
-    public function __construct(
-        PropertySetterInterface $propertySetter,
-        AttributeRepositoryInterface $attributeRepository
-    ) {
+    public function __construct(PropertySetterInterface $propertySetter, GetAttributes $getAttributes)
+    {
         $this->propertySetter = $propertySetter;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributes = $getAttributes;
     }
 
     /**
@@ -79,15 +73,16 @@ class SetterActionApplier implements ActionApplierInterface
     ): bool {
         $field = $action->getField();
 
-        $attribute = $this->attributeRepository->findOneByIdentifier($field);
+        if ('categories' === $field) {
+            $newCategoryCodes = $action->getValue();
+            $parent = $entity->getParent();
+
+            return (null === $parent || empty(array_diff($parent->getCategoryCodes(), $newCategoryCodes)));
+        }
+
+        // TODO: RUL-170: remove "?? ''" in the next line
+        $attribute = $this->getAttributes->forCode($field ?? '');
         if (null === $attribute) {
-            if ('categories' === $field) {
-                $newCategoryCodes = $action->getValue();
-                $parent = $entity->getParent();
-
-                return (null === $parent || empty(array_diff($parent->getCategoryCodes(), $newCategoryCodes)));
-            }
-
             return true;
         }
 
@@ -95,13 +90,13 @@ class SetterActionApplier implements ActionApplierInterface
         if (null === $family) {
             return true;
         }
-        if (!$family->hasAttributeCode($attribute->getCode())) {
+        if (!$family->hasAttributeCode($attribute->code())) {
             return false;
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
-            $familyVariant->getLevelForAttributeCode($attribute->getCode()) !== $entity->getVariationLevel()) {
+            $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
             return false;
         }
 

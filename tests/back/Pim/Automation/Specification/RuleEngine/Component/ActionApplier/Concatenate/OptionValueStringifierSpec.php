@@ -18,10 +18,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueSt
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\Model\AttributeOption;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
-use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
