@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-- PIM-9205: PDF doesn't export Poduct Model values
+- PIM-9205: Fix PDF not exporting Product Model values
 
 # 3.2.48 (2020-04-21)
 
