@@ -1,6 +1,6 @@
 import $ from "jquery";
 import React, { useRef, useEffect } from "react";
-import { Label } from "./Label";
+import { Label } from "../Label";
 
 type option = { id: number | string; text: string };
 
