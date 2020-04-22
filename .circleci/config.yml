@@ -542,20 +542,20 @@ workflows:
           - checkout:
                 requires:
                     - ready_to_build?
-          - build_dev:
-                requires:
-                    - checkout
-          - build_prod:
-                requires:
-                    - checkout
+        #   - build_dev:
+        #         requires:
+        #             - checkout
+        #   - build_prod:
+        #         requires:
+        #             - checkout
           - deploy_pr_environment?:
                 type: approval
                 filters:
                     branches:
                         ignore:
                             - master
-                requires:
-                    - build_prod
+                # requires:
+                #     - build_prod
           - deploy_pr_environment:
                 requires:
                     - deploy_pr_environment?
@@ -565,8 +565,8 @@ workflows:
                     branches:
                         ignore:
                             - master
-                requires:
-                    - build_prod
+                # requires:
+                #     - build_prod
           - deploy_upgrade_oldest_prod_environment:
                 requires:
                     - deploy_upgrade_oldest_prod_environment?

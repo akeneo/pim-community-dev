@@ -4,11 +4,15 @@ kind: Job
 metadata:
   name: import-additional-onboarder-fixtures
   labels:
-    app: {{ template "pim.fullName" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
-    component: {{ template "pim.fullName" . }}
+    app: onboarder # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/name: onboarder
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}" # Ex: srnt-invivo
+    heritage: "{{ .Release.Service }}" # Deprecated
+    component: "hook-import-additional-onboarder-fixtures" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/component: "hook-import-additional-onboarder-fixtures"
+    # TODO: why not use {{ include "pim.extraLabels" . | indent 4 }} below?
     {{- range $key, $value := .Values.global.extraLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
@@ -25,14 +29,26 @@ spec:
   template:
     metadata:
       labels:
-        component: {{ template "pim.fullName" . }}
-        role: import-additional-onboarder-fixtures
+        app: onboarder # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/name: onboarder
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: "{{ .Release.Name }}" # Ex: srnt-invivo
+        heritage: "{{ .Release.Service }}" # Deprecated
+        component: "hook-import-additional-onboarder-fixtures" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/component: "hook-import-additional-onboarder-fixtures"
+        role: "import-additional-onboarder-fixtures" # Deprecated
+        # TODO: why not use {{ include "pim.extraLabels" . | indent 4 }} below?
         {{- range $key, $value := .Values.global.extraLabels }}
         {{ $key }}: {{ $value | quote }}
         {{- end }}
         {{- range $key, $value := .Values.common.extraLabels }}
         {{ $key }}: {{ $value | quote }}
         {{- end }}
+      annotations:
+        checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
     spec:
       restartPolicy: Never
       containers:

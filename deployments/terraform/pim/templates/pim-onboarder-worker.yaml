@@ -4,14 +4,16 @@ kind: Deployment
 metadata:
   name: pim-onboarder-worker
   labels:
-    app: {{ template "pim.fullName" . }}
+    app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/name: pim
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    release: "{{ .Release.Name }}"
-    heritage: "{{ .Release.Service }}"
-    component: {{ template "pim.fullName" . }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}" # Ex: srnt-invivo
+    heritage: "{{ .Release.Service }}" # Deprecated
+    component: "pim-onboarder-worker" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/component: "pim-onboarder-worker"
+    role: pim-onboarder-worker # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     {{ include "pim.extraLabels" . | indent 4 }}
-    role: pim-onboarder-worker
-
 spec:
   replicas: 1
   minReadySeconds: 30
@@ -27,9 +29,20 @@ spec:
   template:
     metadata:
       labels:
-        component: {{ template "pim.fullName" . }}
-        role: pim-onboarder-worker
+        app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/name: pim
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: "{{ .Release.Name }}" # Ex: srnt-invivo
+        heritage: "{{ .Release.Service }}" # Deprecated
+        component: "pim-onboarder-worker" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/component: "pim-onboarder-worker"
+        role: pim-onboarder-worker # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
         {{ include "pim.extraLabels" . | indent 8 }}
+      annotations:
+        checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
     spec:
       containers:
         - name: fpm

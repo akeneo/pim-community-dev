@@ -3,13 +3,16 @@ kind: Deployment
 metadata:
   name: pim-web
   labels:
-    app: {{ template "pim.fullName" . }}
+    app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/name: pim
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    release: "{{ .Release.Name }}"
-    heritage: "{{ .Release.Service }}"
-    component: {{ template "pim.fullName" . }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}" # Ex: srnt-invivo
+    heritage: "{{ .Release.Service }}" # Deprecated
+    component: "pim-web" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/component: "pim-web"
+    role: pim-web # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     {{ include "pim.extraLabels" . | indent 4 }}
-    role: pim-web
 spec:
   replicas: {{ .Values.pim.replicas }}
   minReadySeconds: 30
@@ -22,9 +25,20 @@ spec:
   template:
     metadata:
       labels:
-        component: {{ template "pim.fullName" . }}
-        role: pim-web
+        app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/name: pim
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: "{{ .Release.Name }}" # Ex: srnt-invivo
+        heritage: "{{ .Release.Service }}" # Deprecated
+        component: "pim-web" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/component: "pim-web"
+        role: pim-web # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
         {{ include "pim.extraLabels" . | indent 8 }}
+      annotations:
+        checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
     spec:
       affinity:
         podAntiAffinity:
@@ -34,9 +48,8 @@ spec:
               topologyKey: kubernetes.io/hostname
               labelSelector:
                 matchLabels:
-                  app: "{{ template "pim.fullName" . }}"
                   release: "{{ .Release.Name }}"
-                  role: pim-web
+                  component: pim-web
       initContainers:
         - name: init-fpm
           image:  {{ template "pim.imageNameAndTag" . }}

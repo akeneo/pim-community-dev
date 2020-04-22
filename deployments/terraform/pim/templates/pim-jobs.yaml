@@ -6,19 +6,50 @@ kind: CronJob
 metadata:
   name: {{ $jobName }}
   labels:
-    app: {{ template "pim.fullName" $tplCtx }}
+    app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/name: pim
     chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
-    release: "{{ $tplCtx.Release.Name }}"
-    heritage: "{{ $tplCtx.Release.Service }}"
-    component: {{ template "pim.fullName" $tplCtx }}
-    {{- include "pim.extraLabels" $tplCtx | indent 4 }}
-    role: {{ $jobName }}
+    helm.sh/chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
+    release: "{{ $tplCtx.Release.Name }}" # Ex: srnt-invivo
+    heritage: "{{ $tplCtx.Release.Service }}" # Deprecated
+    component: "pim-job-{{ $jobName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/component: "pim-job-{{ $jobName }}"
+    role: {{ $jobName }} # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    {{ include "pim.extraLabels" . | indent 4 }}
 spec:
   schedule: {{ $jobOptions.schedule | quote }}
   concurrencyPolicy: Forbid
   jobTemplate:
+    metadata:
+      labels:
+        app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/name: pim
+        chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
+        helm.sh/chart: "{{ $tplCtxChart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
+        release: "{{ $tplCtx.Release.Name }}" # Ex: srnt-invivo
+        heritage: "{{ $tplCtx.Release.Service }}" # Deprecated
+        component: "pim-job-{{ $jobName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/component: "pim-job-{{ $jobName }}"
+        role: {{ $jobName }} # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        {{ include "pim.extraLabels" . | indent 8 }}
     spec:
       template:
+        metadata:
+          labels:
+            app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+            app.kubernetes.io/name: pim
+            chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
+            helm.sh/chart: "{{ $tplCtxChart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
+            release: "{{ $tplCtx.Release.Name }}" # Ex: srnt-invivo
+            heritage: "{{ $tplCtx.Release.Service }}" # Deprecated
+            component: "pim-job-{{ $jobName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+            app.kubernetes.io/component: "pim-job-{{ $jobName }}"
+            role: {{ $jobName }} # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+            {{ include "pim.extraLabels" . | indent 8 }}
+          annotations:
+            checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
+            checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
+            checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
         spec:
           containers:
           - name: php
@@ -26,7 +57,7 @@ spec:
             imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
             command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console {{ $jobOptions.pimCommand }}"']
             resources:
-{{- if $jobOptions.resources }}            
+{{- if $jobOptions.resources }}
 {{ toYaml $jobOptions.resources | indent 14 }}
 {{- else }}
 {{ toYaml $tplCtx.Values.pim.resources | indent 14 }}

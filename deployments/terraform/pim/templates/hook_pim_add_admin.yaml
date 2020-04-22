@@ -4,11 +4,14 @@ kind: Job
 metadata:
   name: pim-add-admin
   labels:
-    app: {{ template "pim.fullName" . }}
-    chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
-    component: {{ template "pim.fullName" . }}
+    app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/name: pim
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    helm.sh/chart: "{{ .Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}" # Ex: srnt-invivo
+    heritage: "{{ .Release.Service }}" # Deprecated
+    component: "hook-pim-add-admin" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/component: "hook-pim-add-admin"
     {{ include "pim.extraLabels" . | indent 4 }}
   annotations:
     # This is what defines this resource as a hook. Without this line, the
@@ -20,9 +23,20 @@ spec:
   template:
     metadata:
       labels:
-        component: {{ template "pim.fullName" . }}
-        role: pim-add-admin
+        app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/name: pim
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        helm.sh/chart: "{{ .Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: "{{ .Release.Name }}" # Ex: srnt-invivo
+        heritage: "{{ .Release.Service }}" # Deprecated
+        component: "hook-pim-add-admin" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/component: "hook-pim-add-admin"
+        role: pim-add-admin # Deprecated
         {{ include "pim.extraLabels" . | indent 8 }}
+      annotations:
+        checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
     spec:
       restartPolicy: Never
       containers:

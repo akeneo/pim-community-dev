@@ -3,10 +3,10 @@ kind: ConfigMap
 metadata:
   name: {{ template "pim.fullName" . }}-env
   labels:
-    app: {{ template "pim.fullName" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}" # Ex: srnt-invivo
+    heritage: "{{ .Release.Service }}" # Deprecated
 data:
   AKENEO_PIM_URL: {{ printf "https://%s" .Values.common.pimMasterDomain  | quote }}
   PFID: {{ .Values.global.extraLabels.pfid | quote }}

@@ -4,6 +4,41 @@ image:
     pullPolicy: Always
     tag: ${pimVersion}
 
+elasticsearch:
+  master:
+    podAnnotations:
+      tags.akeneo.com/pfid: ${pfid}
+      # app.kubernetes.io/name: # already set by default by ES chart. Cf  https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L5
+      # app.kubernetes.io/component: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/product_version: ${pimVersion}
+      tags.akeneo.com/product_reference: serenity
+      # helm.sh/chart: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/instance_dns_zone: instance_dns_zone
+      tags.akeneo.com/instance_dns_record: instance_dns_record
+      tags.akeneo.com/papo_project_code: papo_project_code
+  client:
+    podAnnotations:
+      tags.akeneo.com/pfid: ${pfid}
+      # app.kubernetes.io/name: # already set by default by ES chart. Cf  https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L5
+      # app.kubernetes.io/component: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/product_version: ${pimVersion}
+      tags.akeneo.com/product_reference: serenity
+      # helm.sh/chart: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/instance_dns_zone: instance_dns_zone
+      tags.akeneo.com/instance_dns_record: instance_dns_record
+      tags.akeneo.com/papo_project_code: papo_project_code
+  data:
+    podAnnotations:
+      tags.akeneo.com/pfid: ${pfid}
+      # app.kubernetes.io/name: # already set by default by ES chart. Cf  https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L5
+      # app.kubernetes.io/component: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/product_version: ${pimVersion}
+      tags.akeneo.com/product_reference: serenity
+      # helm.sh/chart: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/instance_dns_zone: ${dnsZone}
+      tags.akeneo.com/instance_dns_record: ${instanceName}
+      tags.akeneo.com/papo_project_code: ${papoProjectCode}
+
 global:
   extraLabels:
     instanceName: ${instanceName}
