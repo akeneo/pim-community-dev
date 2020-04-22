@@ -66,7 +66,6 @@ final class ClearerActionApplier implements ActionApplierInterface
 
     /**
      * We do not apply the action if field is an attribute and:
-     *  - attribute does not belong to the family
      *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
     private function actionCanBeAppliedToEntity(
@@ -80,11 +79,8 @@ final class ClearerActionApplier implements ActionApplierInterface
         }
 
         $family = $entity->getFamily();
-        if (null === $family) {
+        if (null === $family || !$family->hasAttributeCode($attribute->code())) {
             return true;
-        }
-        if (!$family->hasAttributeCode($attribute->code())) {
-            return false;
         }
 
         $familyVariant = $entity->getFamilyVariant();

@@ -283,7 +283,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         )->during('applyAction', [$action, [$entityWithValues]]);
     }
 
-    function it_does_not_apply_remove_action_if_the_field_is_not_an_attribute_of_the_family(
+    function it_applies_remove_action_even_if_the_field_is_not_an_attribute_of_the_family(
         PropertyRemoverInterface $propertyRemover,
         GetAttributes $getAttributes,
         ProductRemoveActionInterface $action,
@@ -300,7 +300,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $family->hasAttributeCode('multi-select')->willReturn(false);
 
         $entityWithFamilyVariant->getFamilyVariant()->shouldNotBeCalled();
-        $propertyRemover->removeData(Argument::cetera())->shouldNotBeCalled();
+        $propertyRemover->removeData(Argument::cetera())->shouldBeCalled();
 
         $this->applyAction($action, [$entityWithFamilyVariant]);
     }
