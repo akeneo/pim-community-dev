@@ -37,6 +37,7 @@ async function denormalizeCondition(jsonCondition: any, router: Router): Promise
 export const denormalize = async function(json: any, router: Router): Promise <RuleDefinition> {
   const code = json.code;
   const labels = json.labels;
+  const priority = json.priority;
   const actions = json.content.actions.map((jsonAction: any) => {
     return denormalizeAction(jsonAction)
   });
@@ -44,16 +45,9 @@ export const denormalize = async function(json: any, router: Router): Promise <R
   // TODO We should call "AttributeFetcher.getAttributesFromIdentifiers()" with every .field property of conditions
   //      to do less backend calls here.
 
-  let conditions = [];
-  for (let index in json.content.conditions) {
-    conditions.push(await denormalizeCondition(json.content.conditions[index], router));
-  }
-
-  // TODO: try this solution instead:
-  // const conditions = await json.content.conditions.map(async (jsonCondition: any) => {
-  //   return await denormalizeCondition(jsonCondition, router)
-  // });
-  const priority = json.priority;
+  const conditions = await Promise.all(json.content.conditions.map(async (jsonCondition: any) => {
+    return await denormalizeCondition(jsonCondition, router)
+  })) as Condition[];
 
   return {
     code: code,
