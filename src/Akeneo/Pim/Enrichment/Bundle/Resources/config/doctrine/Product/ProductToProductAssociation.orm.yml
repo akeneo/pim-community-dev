@@ -27,6 +27,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductToProductAssociation:
             cascade:
                 - persist
                 - refresh
+                - remove
             joinColumn:
                 name: association_id
                 referencedColumnName: id

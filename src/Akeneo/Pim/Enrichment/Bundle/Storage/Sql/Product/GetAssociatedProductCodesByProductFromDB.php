@@ -24,7 +24,7 @@ final class GetAssociatedProductCodesByProductFromDB implements GetAssociatedPro
     public function getCodes(int $productId, AssociationInterface $association)
     {
         $associationTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_product_model_association' : 'pim_catalog_association';
-        $associationProductTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_association_product_model_to_product' : 'pim_catalog_association_product';
+        $associationProductTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_association_product_model_to_product' : 'pim_catalog_product_to_product_association';
 
         $sql = <<<SQL
 SELECT DISTINCT(p.identifier) as code
