@@ -62,8 +62,8 @@ class TwoWayProductAssociationsSaver
     }
 
     /**
-     * Remove all product two way associations associated with the current product whose current product is not associated.
-     * At this time if Julia remove Product A association with Product B, Doctrine remove A => B association.
+     * Remove all product model two way associations associated with the current product whose current product is not associated.
+     * At this time if Julia remove Product A association with Product model B, Doctrine remove A => B association.
      * In this query we remove B => A association by identifying two way association that doesn't have inverted association with the current product
      * @param ProductInterface $product
      * @param array $twoWayAssociationTypeIds
@@ -107,8 +107,8 @@ SQL;
     }
 
     /**
-     * Remove all product model two way associations associated with the current product whose current product is not associated.
-     * At this time if Julia remove Product A association with Product model B, Doctrine remove A => B association.
+     * Remove all product two way associations associated with the current product whose current product is not associated.
+     * At this time if Julia remove Product A association with Product B, Doctrine remove A => B association.
      * In this query we remove B => A association by identifying two way association that doesn't have inverted association with the current product
      * @param ProductInterface $product
      * @param array $twoWayAssociationTypeIds
