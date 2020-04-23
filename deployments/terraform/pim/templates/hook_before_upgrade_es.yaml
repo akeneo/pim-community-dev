@@ -14,7 +14,7 @@ metadata:
     heritage: "{{ .Release.Service }}" # Deprecated
     component: "hook-before-upgrade-es" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     app.kubernetes.io/component: "hook-before-upgrade-es"
-    {{ include "pim.extraLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
@@ -36,7 +36,7 @@ spec:
         component: "hook-before-upgrade-es" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
         app.kubernetes.io/component: "hook-before-upgrade-es"
         role: before-upgrade-es # Deprecated
-        {{ include "pim.extraLabels" . | indent 8 }}
+        {{- include "pim.extraLabels" . | indent 8 }}
     spec:
       restartPolicy: Never
       containers:
