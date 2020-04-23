@@ -168,7 +168,11 @@ delete_pr_environments:
 		NS_AGE=$$(echo $${NS_INFO}|awk '{print $$3}'); \
 		INSTANCE_NAME=$$(echo $${namespace} | awk -F'srnt-pimci-pr-' '{print $$NF}'); \
 		echo "---[INFO] namespace $${namespace} with status $${NS_STATUS} since $${NS_AGE} (instance_name=$${INSTANCE_NAME})"; \
-		if [[ "$${NS_AGE}" == *d* ]] ; then  echo "Environment will be deleted"; else continue ; fi ; \ 
+		if [[ "$${NS_AGE}" == *24* ]] ; then \
+			echo "Environment will be deleted !"; \
+		else \
+			continue; \
+		fi; \
 		INSTANCE_NAME=pimci-pr-$${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
 		INSTANCE_NAME_PREFIX=pimci-pr IMAGE_TAG=$${INSTANCE_NAME} make delete; \
 		echo "---[DELETED] namespace $${namespace}"; \
