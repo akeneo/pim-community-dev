@@ -1,14 +1,14 @@
 import React from "react";
 import {FallbackAction} from "../../../models/FallbackAction";
-import {Translate} from "../../../dependenciesTools";
 import {ActionTemplate} from "./ActionTemplate";
+import {ActionLineProps} from "../ActionLineProps";
+import {InputText} from "../../../components/Inputs";
 
 type Props = {
-  action: FallbackAction,
-  translate: Translate,
-}
+  action: FallbackAction
+} & ActionLineProps
 
-const FallbackActionLine: React.FC<Props> = ({ action, translate }) => {
+const FallbackActionLine: React.FC<Props> = ({ translate , lineNumber, register}) => {
   return (
     <ActionTemplate
       translate={translate}
@@ -16,7 +16,7 @@ const FallbackActionLine: React.FC<Props> = ({ action, translate }) => {
       helper="This feature is under development. Please use the import to manage your rules."
       srOnly="This feature is under development. Please use the import to manage your rules."
     >
-      {JSON.stringify(action.json)}
+      <InputText name={`content.actions[${lineNumber}]`} ref={register} disabled readOnly hiddenLabel={true}/>
     </ActionTemplate>
   );
 };

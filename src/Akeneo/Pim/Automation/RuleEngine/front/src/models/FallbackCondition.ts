@@ -1,14 +1,14 @@
 import React from "react";
 import {FallbackConditionLine} from "../pages/EditRules/FallbackConditionLine";
 import {Condition} from "./Condition";
-import {Translate} from "../dependenciesTools/provider/applicationDependenciesProvider.type";
+import {ConditionLineProps} from "../pages/EditRules/ConditionLineProps";
 
 export type FallbackCondition = {
-  module: React.FC<{condition: Condition, translate: Translate}>,
+  module: React.FC<ConditionLineProps & { condition: Condition }>,
   json: any;
 }
 
-export const createFallbackCondition = (json: any) : FallbackCondition => {
+export const createFallbackCondition = async (json: any) : Promise <FallbackCondition> => {
   return {
     module: FallbackConditionLine,
     json: json

@@ -1,9 +1,9 @@
 import React from "react";
 import {FallbackActionLine} from "../pages/EditRules/components/FallbackActionLine";
-import {Translate} from "../dependenciesTools";
+import {ActionLineProps} from "../pages/EditRules/ActionLineProps";
 
 export type FallbackAction = {
-  module: React.FC<{ action: FallbackAction, translate: Translate }>,
+  module: React.FC<{ action: FallbackAction } & ActionLineProps>,
   json: any;
 }
 

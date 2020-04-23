@@ -29,10 +29,12 @@ const transformFormData = (formData: FormData): Payload => {
     ...formData,
     priority: Number(formData.priority),
     content: {
-      conditions: {},
-      actions: {},
+      ...formData.content,
+      actions: formData.content && formData.content.actions
+        ? formData.content.actions.map(action => JSON.parse(action))
+        : [],
     },
-  };
+  }
 };
 
 const submitEditRuleForm = (
@@ -95,10 +97,14 @@ const createLocalesLabels = (ruleDefinition: RuleDefinition) => (
 const createFormDefaultValues = (
   ruleDefinition: RuleDefinition,
   locales: Locale[]
-) => ({
+): FormData => ({
   code: ruleDefinition.code,
   priority: ruleDefinition.priority.toString(),
   labels: locales.reduce(createLocalesLabels(ruleDefinition), {}),
+  content: {
+    conditions: ruleDefinition.conditions,
+    actions: ruleDefinition.actions.map(action => JSON.stringify(action.json)),
+  },
 });
 
 const useSubmitEditRuleForm = (

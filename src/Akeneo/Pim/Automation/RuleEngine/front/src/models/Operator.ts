@@ -1,0 +1,11 @@
+export enum Operator {
+  IS_EMPTY = 'EMPTY',
+  IS_NOT_EMPTY = 'NOT EMPTY',
+  IN_LIST = 'IN',
+  NOT_IN_LIST = 'NOT IN',
+  STARTS_WITH = 'STARTS WITH',
+  CONTAINS = 'CONTAINS',
+  DOES_NOT_CONTAIN = 'DOES NOT CONTAIN',
+  EQUALS = '=',
+  NOT_EQUAL = '!='
+}

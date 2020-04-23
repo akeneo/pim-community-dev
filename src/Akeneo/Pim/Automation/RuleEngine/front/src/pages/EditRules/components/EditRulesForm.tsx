@@ -6,6 +6,7 @@ import { RuleDefinition } from "../../../models/RuleDefinition";
 import { RulesBuilder } from "./RulesBuilder";
 import { RuleProperties } from "./RuleProperties";
 import { Locale } from "../../../models/Locale";
+import {IndexedScopes} from "../../../fetch/ScopeFetcher";
 
 const getTabBorder = ({ id, selectedId, theme }: any) => {
   if (id === selectedId) {
@@ -67,6 +68,8 @@ type Props = {
   locales: Locale[];
   ruleDefinition: RuleDefinition;
   register: any;
+  scopes: IndexedScopes;
+  currentCatalogLocale: string;
 };
 
 const EditRulesForm: React.FC<Props> = ({
@@ -75,6 +78,8 @@ const EditRulesForm: React.FC<Props> = ({
   ruleDefinition,
   translate,
   register,
+  scopes,
+  currentCatalogLocale
 }) => {
   const tab = useTabState({ selectedId: "rulesBuilderTab" });
   return (
@@ -96,7 +101,14 @@ const EditRulesForm: React.FC<Props> = ({
           </StyledTab>
         </TabDiv>
         <StyledTabPanel {...tab} tabIndex={-1}>
-          <RulesBuilder ruleDefinition={ruleDefinition} translate={translate} />
+          <RulesBuilder
+            register={register}
+            ruleDefinition={ruleDefinition}
+            translate={translate}
+            locales={locales}
+            scopes={scopes}
+            currentCatalogLocale={currentCatalogLocale}
+          />
         </StyledTabPanel>
         <StyledTabPanel {...tab} tabIndex={-1}>
           <RuleProperties

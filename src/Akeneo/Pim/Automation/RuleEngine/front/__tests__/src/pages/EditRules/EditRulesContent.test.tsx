@@ -2,6 +2,7 @@ import React from "react";
 import { EditRulesContent } from "../../../../src/pages/EditRules/EditRulesContent";
 import userEvent from "@testing-library/user-event";
 import { render, act } from "../../../../test-utils";
+import {IndexedScopes} from "../../../../src/fetch/ScopeFetcher";
 
 jest.mock("../../../../src/dependenciesTools/provider/dependencies.ts");
 
@@ -26,12 +27,26 @@ describe("EditRulesContent", () => {
         language: "English",
       },
     ];
+    const scopes: IndexedScopes = {
+      ecommerce: {
+        code: 'ecommerce',
+        currencies: ['EUR', 'USD'],
+        locales: [
+          locales[0],
+        ],
+        category_tree: 'master',
+        conversion_units: [],
+        labels: {'en_US': 'e-commerce'},
+        meta: {},
+      },
+    };
     // When
     const { findByText, findByLabelText } = render(
       <EditRulesContent
         ruleDefinitionCode={ruleDefinitionCode}
         ruleDefinition={ruleDefinition}
         locales={locales}
+        scopes={scopes}
       />,
       {
         legacy: true,

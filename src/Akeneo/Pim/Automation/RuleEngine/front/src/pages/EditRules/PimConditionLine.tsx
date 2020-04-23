@@ -1,12 +1,11 @@
 import React, {ReactElement} from "react";
 import {PimCondition} from "../../models/PimCondition";
 import {Flag} from "../../components/Flag/Flag";
-import {Translate} from "../../dependenciesTools/provider/applicationDependenciesProvider.type";
+import {ConditionLineProps} from "./ConditionLineProps";
 
 type Props = {
   condition: PimCondition,
-  translate: Translate,
-}
+} & ConditionLineProps;
 
 const PimConditionLine: React.FC<Props> = ({ translate, condition }) => {
   const isMetric = (value: any): boolean => {

@@ -6,10 +6,10 @@
 import {PimConditionLine} from "../pages/EditRules/PimConditionLine";
 import React from "react";
 import {Condition} from "./Condition";
-import {Translate} from "../dependenciesTools/provider/applicationDependenciesProvider.type";
+import {ConditionLineProps} from "../pages/EditRules/ConditionLineProps";
 
 type PimCondition = {
-  module: React.FC<{condition: Condition, translate: Translate}>,
+  module: React.FC<ConditionLineProps & { condition: Condition }>,
   field: string;
   operator: string;
   value: any|null;
@@ -17,7 +17,7 @@ type PimCondition = {
   scope: string|null;
 }
 
-export const createPimCondition = (json: any) : PimCondition | null => {
+export const createPimCondition = async (json: any) : Promise <PimCondition | null> => {
   if (typeof json.field === 'string' &&
     typeof json.operator === 'string' // TODO check operator
   ) {

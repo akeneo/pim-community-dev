@@ -7,6 +7,8 @@ import { RuleDefinition } from "../../../models/RuleDefinition";
 import { PimConditionLine } from "../PimConditionLine";
 import { FallbackConditionLine } from "../FallbackConditionLine";
 import { Condition } from "../../../models/Condition";
+import { Locale } from "../../../models/Locale";
+import {IndexedScopes} from "../../../fetch/ScopeFetcher";
 
 const Header = styled.header`
   font-weight: normal;
@@ -43,19 +45,33 @@ const AddConditionContainer = styled.div`
 `;
 
 type Props = {
-  ruleDefinition: RuleDefinition;
+  register: any,
+  ruleDefinition: RuleDefinition,
   translate: Translate;
+  locales: Locale[];
+  scopes: IndexedScopes;
+  currentCatalogLocale: string;
 };
 
 type ConditionLineProps = {
+  register: any;
   condition: Condition;
+  lineNumber: number,
   translate: Translate;
+  locales: Locale[];
+  scopes: IndexedScopes;
+  currentCatalogLocale: string;
 };
 
 const ConditionLine: React.FC<ConditionLineProps> = ({
-  translate,
-  condition,
-}) => {
+    register,
+    translate,
+    condition,
+    lineNumber,
+    locales,
+    scopes,
+    currentCatalogLocale
+  }) => {
   const Line = condition.module;
   const isFallback =
     condition.module === PimConditionLine ||
@@ -67,16 +83,28 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
         " AknGrid-bodyRow--highlight"}`}
     >
       <div className="AknGrid-bodyCell">
-        <Line condition={condition} translate={translate} />
+        <Line
+          register={register}
+          condition={condition}
+          lineNumber={lineNumber}
+          translate={translate}
+          locales={locales}
+          scopes={scopes}
+          currentCatalogLocale={currentCatalogLocale}
+        />
       </div>
     </div>
   );
 };
 
 const RuleProductSelection: React.FC<Props> = ({
-  ruleDefinition,
-  translate,
-}) => {
+    register,
+    ruleDefinition,
+    translate,
+    locales,
+    scopes,
+    currentCatalogLocale
+  }) => {
   return (
     <fieldset>
       <Header className="AknSubsection-title">
@@ -113,9 +141,14 @@ const RuleProductSelection: React.FC<Props> = ({
         {ruleDefinition.conditions.map((condition, i) => {
           return (
             <ConditionLine
+              register={register}
               condition={condition}
+              lineNumber={i}
               translate={translate}
               key={`condition_${i}`}
+              locales={locales}
+              scopes={scopes}
+              currentCatalogLocale={currentCatalogLocale}
             />
           );
         })}
