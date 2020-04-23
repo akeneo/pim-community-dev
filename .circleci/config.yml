@@ -420,7 +420,7 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
         -   run:
                 name: Test missing database and index structure migrations
-                command: vendor/akeneo/pim-community-dev/.circleci/detect_structure_changes.sh $CIRCLE_BRANCH
+                command: vendor/akeneo/pim-community-dev/.circleci/detect_structure_changes.sh ${CIRCLE_BRANCH}
 
   test_back_data_migrations:
       machine:
