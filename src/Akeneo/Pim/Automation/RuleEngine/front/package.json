@@ -2,11 +2,12 @@
   "name": "rule_definition",
   "version": "1.0.0",
   "scripts": {
+    "types-check": "tsc --noEmit",
+    "jest-watch": "jest --config jest.config.js --watch",
     "jest": "jest --config jest.config.js",
-    "jest:watch": "jest --config jest.config.js --watch",
-    "check-types:watch": "yarn check-types -- --watch",
-    "prettier": "prettier --config .prettierrc --write \"./src/**/*.{ts,tsx}\";",
-    "lint": "eslint 'src/**/*.{ts,tsx}'" 
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "prettier": "prettier --config .prettierrc --write \"./src/**/*.{ts,tsx}\"",
+    "prettier-check": "prettier --check \"./src/**/*.{ts,tsx}\" --config .prettierrc"
   },
   "private": true
 }
