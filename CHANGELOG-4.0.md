@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-- PIM-9192: Fix deadlock error being printed in the response of partial update of products API
+- PIM-9192: Fix error being printed in the response of partial update of products API
 
 # 4.0.18 (2020-04-23)
 

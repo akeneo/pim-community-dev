@@ -432,7 +432,7 @@ class ProductController
         $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
             try {
                 $this->apiAggregatorForProductPostSave->dispatchAllEvents();
-            } catch (\Exception $exception) {
+            } catch (\Throwable $exception) {
                 // TODO @merge master Remove this condition
                 if (null !== $this->logger) {
                     $this->logger->critical('An exception has been thrown in the post-save events', [
