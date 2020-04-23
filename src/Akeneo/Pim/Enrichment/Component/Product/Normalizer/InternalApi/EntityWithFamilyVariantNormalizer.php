@@ -179,7 +179,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
                 $normalizedValue = (string) $value;
 
                 $attributeNormalizer = $this->getAttributeLabelsNormalizer($axisAttribute);
-                if ($attributeNormalizer instanceof AxisValueLabelsNormalizer) {
+                if (null !== $value && $attributeNormalizer instanceof AxisValueLabelsNormalizer) {
                     $normalizedValue = $attributeNormalizer->normalize($value, $localeCode);
                 }
 
@@ -249,6 +249,11 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
 
         foreach ($this->attributesProvider->getAxes($entity) as $axisAttribute) {
             $value = $entity->getValue($axisAttribute->getCode());
+
+            if (null === $value) {
+                $orderArray[] = '';
+                continue;
+            }
 
             if (AttributeTypes::OPTION_SIMPLE_SELECT === $axisAttribute->getType()) {
                 $optionCode = $value->getData();
