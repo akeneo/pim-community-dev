@@ -45,11 +45,10 @@ const submitEditRuleForm = (
   router: Router,
   reset: Reset
 ) => {
-  return async (
-    formData: FormData,
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault();
+  return async (formData: FormData, event?: React.BaseSyntheticEvent) => {
+    if (event) {
+      event.preventDefault();
+    }
     const updateRuleUrl = generateUrl(
       router,
       'pimee_enrich_rule_definition_update',
