@@ -178,10 +178,6 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
 
                 $normalizedValue = (string) $value;
 
-                if (null === $value) {
-                    $normalizedValue = '[PERMISSION ERROR]';
-                }
-
                 $attributeNormalizer = $this->getAttributeLabelsNormalizer($axisAttribute);
                 if (null !== $value && $attributeNormalizer instanceof AxisValueLabelsNormalizer) {
                     $normalizedValue = $attributeNormalizer->normalize($value, $localeCode);
@@ -255,7 +251,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
             $value = $entity->getValue($axisAttribute->getCode());
 
             if (null === $value) {
-                $orderArray[] = '[PERMISSION ERROR]';
+                $orderArray[] = '';
                 continue;
             }
 
