@@ -26,8 +26,10 @@ import {
   Thumbnail,
   Actions,
   ThumbnailPlaceholder,
+  RegenerateThumbnailButton,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
+import ReloadIcon from 'akeneoassetmanager/application/component/app/icon/reload';
 
 const MediaLinkInput = styled.input`
   ::placeholder {
@@ -43,6 +45,20 @@ const MediaLinkInput = styled.input`
     ::placeholder {
       color: ${props => props.theme.color.grey100};
     }
+  }
+`;
+
+const ThumbnailContainer = styled.div`
+  position: relative;
+  display: flex;
+  margin-right: 15px;
+
+  ${Thumbnail} {
+    margin: 0;
+  }
+
+  :hover > ${RegenerateThumbnailButton} {
+    opacity: 0.75;
   }
 `;
 
@@ -83,11 +99,15 @@ const View = ({
       {regenerate ? (
         <ThumbnailPlaceholder className="AknLoadingPlaceHolder" />
       ) : (
-        <Thumbnail
-          onClick={doRegenerate}
-          src={mediaPreviewUrl}
-          alt={__('pim_asset_manager.attribute.media_type_preview')}
-        />
+        <ThumbnailContainer>
+          <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
+          <RegenerateThumbnailButton
+            title={__('pim_asset_manager.attribute.media_link.thumbnail.regenerate')}
+            onClick={doRegenerate}
+          >
+            <ReloadIcon />
+          </RegenerateThumbnailButton>
+        </ThumbnailContainer>
       )}
       <MediaLinkInput
         id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}

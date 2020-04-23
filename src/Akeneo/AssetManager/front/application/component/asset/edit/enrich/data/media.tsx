@@ -28,6 +28,29 @@ export const Container = styled.div`
   padding: 15px;
 `;
 
+export const RegenerateThumbnailButton = styled.div`
+  position: absolute;
+  opacity: 0;
+  right: 0;
+  bottom: 0;
+  width: 40px;
+  height: 40px;
+  background-color: ${({theme}) => theme.color.white};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in-out;
+
+  > * {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  :hover > * {
+    transform: rotate(180deg);
+  }
+`;
+
 export const Thumbnail = styled.img`
   border: 1px solid ${props => props.theme.color.grey70};
   flex-shrink: 0;

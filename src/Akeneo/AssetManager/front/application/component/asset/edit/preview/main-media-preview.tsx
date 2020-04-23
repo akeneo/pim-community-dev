@@ -4,7 +4,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import EditionAsset, {getEditionAssetMediaData} from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {MediaPreview} from './media-preview';
+import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
 import {Fullscreen} from 'akeneoassetmanager/application/component/app/icon/fullscreen';
@@ -15,6 +15,7 @@ import {
   Action,
   DownloadAction,
   CopyUrlAction,
+  RegenerateThumbnailButton,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import {Subsection, SubsectionHeader} from 'akeneoassetmanager/application/component/app/subsection';
@@ -26,6 +27,11 @@ const Container = styled.div`
   margin: 20px 0;
   max-height: calc(100vh - 500px);
   min-height: 250px;
+  position: relative;
+
+  :hover ${RegenerateThumbnailButton} {
+    opacity: 0.75;
+  }
 `;
 
 const Actions = styled.div`

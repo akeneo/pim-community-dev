@@ -22,6 +22,9 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/att
 import {MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {getMediaData, MediaData, isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
+import ReloadIcon from 'akeneoassetmanager/application/component/app/icon/reload';
+import {RegenerateThumbnailButton} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
+import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 
 const Image = styled.img`
   width: auto;
@@ -43,13 +46,19 @@ const EmbedPlayer = styled.iframe`
 
 const ImagePlaceholder = styled.div<{alt: string}>`
   width: 400px;
-  height: 250px;
+  height: 300px;
 `;
 
-const LazyLoadedImage = React.memo(({src, alt, ...props}: {src: string; alt: string}) => {
+type LazyLoadedImageProps = {
+  src: string;
+  alt: string;
+  isLoading?: boolean;
+};
+
+const LazyLoadedImage = React.memo(({src, alt, isLoading = false, ...props}: LazyLoadedImageProps) => {
   const loadedSrc = useImageLoader(src);
 
-  return undefined === loadedSrc ? (
+  return undefined === loadedSrc || isLoading ? (
     <div className="AknLoadingPlaceHolderContainer">
       <ImagePlaceholder alt={alt} {...props} />
     </div>
@@ -73,9 +82,19 @@ const MediaDataPreview = ({
     data: getMediaData(mediaData),
   });
 
+  const [regenerate, doRegenerate] = useRegenerate(url);
+
   return (
     <>
-      <LazyLoadedImage src={url} alt={label} data-role="media-data-preview" />
+      <LazyLoadedImage isLoading={regenerate} src={url} alt={label} data-role="media-data-preview" />
+      {attribute.type === MEDIA_LINK_ATTRIBUTE_TYPE && !regenerate && (
+        <RegenerateThumbnailButton
+          title={__('pim_asset_manager.attribute.media_link.thumbnail.regenerate')}
+          onClick={doRegenerate}
+        >
+          <ReloadIcon />
+        </RegenerateThumbnailButton>
+      )}
       {attribute.media_type === MediaTypes.other && (
         <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
           {__('pim_asset_manager.asset_preview.other_main_media')}
