@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.18 (2020-04-23)
+
 ## Bug fixes
 
 - PIM-9190: Mitigates deadlock on product completeness calculation on concurrent API calls
