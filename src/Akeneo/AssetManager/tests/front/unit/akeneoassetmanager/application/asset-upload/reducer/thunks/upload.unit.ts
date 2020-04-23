@@ -8,7 +8,7 @@ import {
   fileUploadSuccessAction,
   linesAddedAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
-import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
+import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/line-factory';
 import {
   getCurrentQueuedFiles,
   onFileDrop,

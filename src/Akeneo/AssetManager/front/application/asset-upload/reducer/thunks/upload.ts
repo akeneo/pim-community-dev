@@ -1,4 +1,4 @@
-import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
+import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/line-factory';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {File as FileModel} from 'akeneoassetmanager/domain/model/file';
 import {getThumbnailFromFile, uploadFile} from 'akeneoassetmanager/application/asset-upload/utils/file';

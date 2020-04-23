@@ -1,7 +1,7 @@
 'use strict';
 
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
-import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/utils';
+import {createLineFromFilename} from 'akeneoassetmanager/application/asset-upload/utils/line-factory';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {CreationAsset} from 'akeneoassetmanager/application/asset-upload/model/creation-asset';
