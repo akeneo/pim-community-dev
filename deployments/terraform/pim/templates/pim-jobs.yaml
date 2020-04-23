@@ -11,6 +11,8 @@ metadata:
     chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
     helm.sh/chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
     release: "{{ $tplCtx.Release.Name }}" # Ex: srnt-invivo
+    product_reference: serenity
+    product_version: "{{ $tplCtx.Chart.Version | replace "+" "_" }}"
     heritage: "{{ $tplCtx.Release.Service }}" # Deprecated
     component: "pim-job-{{ $jobName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     app.kubernetes.io/component: "pim-job-{{ $jobName }}"
@@ -27,6 +29,8 @@ spec:
         chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
         helm.sh/chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
         release: "{{ $tplCtx.Release.Name }}" # Ex: srnt-invivo
+        product_reference: serenity
+        product_version: "{{ $tplCtx.Chart.Version | replace "+" "_" }}"
         heritage: "{{ $tplCtx.Release.Service }}" # Deprecated
         component: "pim-job-{{ $jobName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
         app.kubernetes.io/component: "pim-job-{{ $jobName }}"
@@ -41,6 +45,8 @@ spec:
             chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
             helm.sh/chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
             release: "{{ $tplCtx.Release.Name }}" # Ex: srnt-invivo
+            product_reference: serenity
+            product_version: "{{ $tplCtx.Chart.Version | replace "+" "_" }}"
             heritage: "{{ $tplCtx.Release.Service }}" # Deprecated
             component: "pim-job-{{ $jobName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
             app.kubernetes.io/component: "pim-job-{{ $jobName }}"
