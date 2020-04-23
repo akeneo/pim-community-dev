@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.18 (2020-04-23)
+
 ## Technical Improvements
 
 - PIM-9195: Add extra ImageMagick library to handle SVG files
