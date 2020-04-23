@@ -39,6 +39,10 @@ const Input = styled.input`
     line-height: 44px;
     outline: none;
     padding: 0 0 0 30px;
+
+    &::placeholder {
+        color: ${({theme}) => theme.color.grey120};
+    }
 `;
 
 export {SearchInput};

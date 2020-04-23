@@ -33,7 +33,7 @@ const Container = styled.li<{selected: boolean}>`
     outline: none;
 
     :hover {
-        background: ${({theme}) => theme.color.grey60};
+        background: ${({theme}) => theme.color.grey20};
         color: ${({theme}) => theme.color.grey140};
     }
 `;

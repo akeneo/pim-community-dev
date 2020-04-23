@@ -1,7 +1,7 @@
 import {useMemo} from 'react';
 import {useQuery} from '../../services/fetch';
 
-type ConnectionError = {id: number; timestamp: number; content: {message: string}};
+type ConnectionError = {id: number; timestamp: number; content: {message: string; property?: string}};
 
 const useConnectionErrors = (connectionCode: string) => {
     const {loading, data} = useQuery<Array<{date_time: string; content: {message: string}}>>(

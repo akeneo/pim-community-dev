@@ -21,9 +21,10 @@ const SortButton: FC<Props> = ({children, order, onSort}) => {
 const Button = styled.button`
     background-color: transparent;
     border: 0;
+    color: ${({theme}) => theme.color.grey140};
     cursor: pointer;
-    padding: 0;
     outline: none;
+    padding: 0;
 `;
 
 export {SortButton, Order};

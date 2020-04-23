@@ -4,6 +4,6 @@ export default styled.tr`
     height: 54px;
 
     &:hover {
-        background-color: ${({theme}) => theme.color.grey60};
+        background-color: ${({theme}) => theme.color.grey20};
     }
 `;
