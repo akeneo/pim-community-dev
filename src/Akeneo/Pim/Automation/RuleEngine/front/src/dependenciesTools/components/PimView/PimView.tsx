@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect } from "react";
-import styled from "styled-components";
-import { View } from "backbone";
-import { useApplicationContext } from "../../hooks";
+import React, { useRef, useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { View } from 'backbone';
+import { useApplicationContext } from '../../hooks';
 
 type Props = {
   className: string;
@@ -9,14 +9,14 @@ type Props = {
 };
 
 const StyledPimView = styled.div<{ rendered: boolean }>`
-  visibility: ${({ rendered }) => (rendered ? "visible" : "hidden")};
-  opacity: ${({ rendered }) => (rendered ? "1" : "0")};
+  visibility: ${({ rendered }) => (rendered ? 'visible' : 'hidden')};
+  opacity: ${({ rendered }) => (rendered ? '1' : '0')};
   transition: opacity 0.5s linear;
 `;
 
 export const PimView: React.FunctionComponent<Props> = ({
   viewName,
-  className
+  className,
 }) => {
   const el = useRef<HTMLDivElement>(null);
   const [view, setView] = useState<View | null>(null);
@@ -25,7 +25,7 @@ export const PimView: React.FunctionComponent<Props> = ({
   useEffect(() => {
     if (!viewBuilder) {
       throw new Error(
-        "[ApplicationContext]: ViewBuilder has not been properly initiated"
+        '[ApplicationContext]: ViewBuilder has not been properly initiated'
       );
     }
     viewBuilder.build(viewName).then((view: View) => {

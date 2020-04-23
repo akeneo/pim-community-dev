@@ -1,8 +1,8 @@
 // src/Akeneo/Pim/Enrichment/Component/Product/Query/Filter/Operators.php
-import {FallbackConditionLine} from "../pages/EditRules/FallbackConditionLine";
-import {Condition} from "./Condition";
-import React from "react";
-import {ConditionLineProps} from "../pages/EditRules/ConditionLineProps";
+import { FallbackConditionLine } from '../pages/EditRules/FallbackConditionLine';
+import { Condition } from './Condition';
+import React from 'react';
+import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
 
 enum FamilyOperator {
   IS_EMPTY = 'EMPTY',
@@ -12,27 +12,36 @@ enum FamilyOperator {
 }
 
 type FamilyCondition = {
-  module: React.FC<ConditionLineProps & { condition: Condition }>,
+  module: React.FC<ConditionLineProps & { condition: Condition }>;
   operator: FamilyOperator;
   familyCodes: string[];
-}
+};
 
-const createFamilyCondition = async (json: any): Promise <FamilyCondition | null> => {
+const createFamilyCondition = async (
+  json: any
+): Promise<FamilyCondition | null> => {
   // TODO Remove this line when we implement family condition.
   return null;
 
   if (json.field !== 'family') {
     return null;
   }
-  if (![FamilyOperator.IS_EMPTY, FamilyOperator.IS_NOT_EMPTY, FamilyOperator.IN_LIST, FamilyOperator.NOT_IN_LIST].includes(json.operator)) {
+  if (
+    ![
+      FamilyOperator.IS_EMPTY,
+      FamilyOperator.IS_NOT_EMPTY,
+      FamilyOperator.IN_LIST,
+      FamilyOperator.NOT_IN_LIST,
+    ].includes(json.operator)
+  ) {
     return null;
   }
 
   return {
     module: FallbackConditionLine,
     operator: json.operator,
-    familyCodes: json.value
+    familyCodes: json.value,
   };
 };
 
-export { FamilyCondition, createFamilyCondition }
+export { FamilyCondition, createFamilyCondition };

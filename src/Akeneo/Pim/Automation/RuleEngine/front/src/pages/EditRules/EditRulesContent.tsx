@@ -1,24 +1,24 @@
-import React from "react";
-import { ThemeProvider } from "styled-components";
-import * as akeneoTheme from "../../theme";
+import React from 'react';
+import { ThemeProvider } from 'styled-components';
+import * as akeneoTheme from '../../theme';
 import {
   AkeneoSpinner,
   BreadcrumbItem,
   LastBreadcrumbItem,
   RulesHeader,
   Content,
-} from "../../components";
-import { EditRulesForm } from "./components/EditRulesForm";
+} from '../../components';
+import { EditRulesForm } from './components/EditRulesForm';
 import {
   generateAndRedirect,
   useBackboneRouter,
   useNotify,
   useTranslate,
   useUserContext,
-} from "../../dependenciesTools/hooks";
-import { Locale, RuleDefinition, getRuleDefinitionLabel } from "../../models";
-import { useSubmitEditRuleForm } from "./hooks";
-import {IndexedScopes} from "../../fetch/ScopeFetcher";
+} from '../../dependenciesTools/hooks';
+import { Locale, RuleDefinition, getRuleDefinitionLabel } from '../../models';
+import { useSubmitEditRuleForm } from './hooks';
+import { IndexedScopes } from '../../fetch/ScopeFetcher';
 
 type Props = {
   ruleDefinitionCode: string;
@@ -28,55 +28,49 @@ type Props = {
 };
 
 const EditRulesContent: React.FC<Props> = ({
-    ruleDefinitionCode,
-    ruleDefinition,
-    locales,
-    scopes,
-  }) => {
+  ruleDefinitionCode,
+  ruleDefinition,
+  locales,
+  scopes,
+}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const router = useBackboneRouter();
   const notify = useNotify();
-  const currentCatalogLocale = userContext.get("catalogLocale");
+  const currentCatalogLocale = userContext.get('catalogLocale');
   const [urlSettings, handleSettingsRoute] = generateAndRedirect(
     router,
-    "pim_enrich_attribute_index"
+    'pim_enrich_attribute_index'
   );
   const [urlRules, handleRulesRoute] = generateAndRedirect(
     router,
-    "pimee_catalog_rule_rule_index"
+    'pimee_catalog_rule_rule_index'
   );
-  const {
-    formState,
-    handleSubmit,
-    register,
-    pending,
-  } = useSubmitEditRuleForm(
+  const { formState, handleSubmit, register, pending } = useSubmitEditRuleForm(
     ruleDefinitionCode,
     translate,
     notify,
     router,
     ruleDefinition,
-    locales,
+    locales
   );
 
   return (
     <ThemeProvider theme={akeneoTheme}>
       {pending && <AkeneoSpinner />}
       <RulesHeader
-        buttonLabel="pim_common.save"
-        formId="edit-rules-form"
+        buttonLabel='pim_common.save'
+        formId='edit-rules-form'
         title={getRuleDefinitionLabel(ruleDefinition, currentCatalogLocale)}
         translate={translate}
-        unsavedChanges={formState.dirty}
-      >
+        unsavedChanges={formState.dirty}>
         <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>
-          {translate("pim_menu.tab.settings")}
+          {translate('pim_menu.tab.settings')}
         </BreadcrumbItem>
         <BreadcrumbItem href={`#${urlRules}`} onClick={handleRulesRoute}>
-          {translate("pim_menu.item.rule")}
+          {translate('pim_menu.item.rule')}
         </BreadcrumbItem>
-        <LastBreadcrumbItem>{translate("pim_common.edit")}</LastBreadcrumbItem>
+        <LastBreadcrumbItem>{translate('pim_common.edit')}</LastBreadcrumbItem>
       </RulesHeader>
       <Content>
         <EditRulesForm
@@ -93,6 +87,6 @@ const EditRulesContent: React.FC<Props> = ({
   );
 };
 
-EditRulesContent.displayName = "EditRulesContent";
+EditRulesContent.displayName = 'EditRulesContent';
 
 export { EditRulesContent };

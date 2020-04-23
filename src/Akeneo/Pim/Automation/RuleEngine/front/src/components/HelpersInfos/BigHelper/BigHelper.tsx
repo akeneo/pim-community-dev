@@ -4,8 +4,8 @@ import React, {
   Children,
   DetailedHTMLProps,
   AnchorHTMLAttributes,
-} from "react";
-import defaultIllustrationUrl from "../../../assets/illustrations/api.svg";
+} from 'react';
+import defaultIllustrationUrl from '../../../assets/illustrations/api.svg';
 
 const HelperTitle = ({ children }: PropsWithChildren<{}>) => <>{children}</>;
 
@@ -18,21 +18,20 @@ const BigHelper = ({
   illustrationUrl = defaultIllustrationUrl,
 }: PropsWithChildren<Props>) => {
   const titleChildren = Children.toArray(children).filter(
-    (child) => isValidElement(child) && child.type === HelperTitle
+    child => isValidElement(child) && child.type === HelperTitle
   );
   const descriptionChildren = Children.toArray(children).filter(
-    (child) => !isValidElement(child) || child.type !== HelperTitle
+    child => !isValidElement(child) || child.type !== HelperTitle
   );
 
   return (
-    <div className="AknDescriptionHeader">
+    <div className='AknDescriptionHeader'>
       <div
-        className="AknDescriptionHeader-icon"
-        style={{ backgroundImage: `url('${illustrationUrl}')` }}
-      ></div>
-      <div className="AknDescriptionHeader-title">
+        className='AknDescriptionHeader-icon'
+        style={{ backgroundImage: `url('${illustrationUrl}')` }}></div>
+      <div className='AknDescriptionHeader-title'>
         {titleChildren}
-        <div className="AknDescriptionHeader-description">
+        <div className='AknDescriptionHeader-description'>
           {descriptionChildren}
         </div>
       </div>
@@ -45,6 +44,6 @@ const HelperLink = (
     AnchorHTMLAttributes<HTMLAnchorElement>,
     HTMLAnchorElement
   >
-) => <a {...props} className="AknDescriptionHeader-link" />;
+) => <a {...props} className='AknDescriptionHeader-link' />;
 
 export { HelperLink, HelperTitle, BigHelper };

@@ -14,8 +14,6 @@
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "outDir": "lib",
-        "rootDir": "src",
         "skipLibCheck": true,
         "sourceMap": true,
         "strictBindCallApply": true,

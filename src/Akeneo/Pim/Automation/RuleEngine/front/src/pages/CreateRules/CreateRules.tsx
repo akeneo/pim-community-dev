@@ -1,6 +1,6 @@
-import React from "react";
-import { ThemeProvider } from "styled-components";
-import * as akeneoTheme from "../../theme";
+import React from 'react';
+import { ThemeProvider } from 'styled-components';
+import * as akeneoTheme from '../../theme';
 import {
   generateAndRedirect,
   generateUrl,
@@ -10,13 +10,13 @@ import {
   useNotify,
   useTranslate,
   useUserContext,
-} from "../../dependenciesTools/hooks";
-import { useDocumentEscapeKey } from "../../hooks";
-import { CrossLink } from "./components/CrossLink";
-import { CreateRulesForm, FormDataInput } from "./components/CreateRulesForm";
-import { httpPost } from "../../fetch";
-import { AkeneoSpinner, SmallHelper } from "../../components";
-import { Payload } from "../../rules.types";
+} from '../../dependenciesTools/hooks';
+import { useDocumentEscapeKey } from '../../hooks';
+import { CrossLink } from './components/CrossLink';
+import { CreateRulesForm, FormDataInput } from './components/CreateRulesForm';
+import { httpPost } from '../../fetch';
+import { AkeneoSpinner, SmallHelper } from '../../components';
+import { Payload } from '../../rules.types';
 
 const transformFormData = (
   formData: FormDataInput,
@@ -40,13 +40,13 @@ const CreateRules: React.FC = () => {
   const userContext = useUserContext();
   const [urlRules, handleRulesRoute] = generateAndRedirect(
     router,
-    "pimee_catalog_rule_rule_index"
+    'pimee_catalog_rule_rule_index'
   );
   useDocumentEscapeKey(handleRulesRoute);
-  const currentCatalogLocale = userContext.get("catalogLocale");
+  const currentCatalogLocale = userContext.get('catalogLocale');
   const notify = useNotify();
   const onSubmit = async (formData: FormDataInput): Promise<any> => {
-    const postRule = generateUrl(router, "pimee_enrich_rule_definition_create");
+    const postRule = generateUrl(router, 'pimee_enrich_rule_definition_create');
     setPending(true);
     let result: any;
     try {
@@ -57,24 +57,24 @@ const CreateRules: React.FC = () => {
       setPending(false);
       notify(
         NotificationLevel.ERROR,
-        translate("pimee_catalog_rule.form.creation.notification.failed")
+        translate('pimee_catalog_rule.form.creation.notification.failed')
       );
       return error;
     }
     if (result.ok) {
       notify(
         NotificationLevel.SUCCESS,
-        translate("pimee_catalog_rule.form.creation.notification.success")
+        translate('pimee_catalog_rule.form.creation.notification.success')
       );
       redirectToUrl(
         router,
-        generateUrl(router, "pimee_catalog_rule_edit", { code: formData.code })
+        generateUrl(router, 'pimee_catalog_rule_edit', { code: formData.code })
       );
     } else {
       setPending(false);
       notify(
         NotificationLevel.ERROR,
-        translate("pimee_catalog_rule.form.creation.notification.failed")
+        translate('pimee_catalog_rule.form.creation.notification.failed')
       );
     }
     return result;
@@ -82,25 +82,25 @@ const CreateRules: React.FC = () => {
 
   return (
     <ThemeProvider theme={akeneoTheme}>
-      <div className="AknFullPage">
+      <div className='AknFullPage'>
         {pending && <AkeneoSpinner />}
-        <div className="AknFullPage-content AknFullPage-content--withIllustration">
+        <div className='AknFullPage-content AknFullPage-content--withIllustration'>
           <div>
-            <div className="AknFullPage-image AknFullPage-illustration AknFullPage-illustration--api" />
+            <div className='AknFullPage-image AknFullPage-illustration AknFullPage-illustration--api' />
           </div>
           <div>
-            <div className="AknFullPage-titleContainer">
-              <div className="AknFullPage-subTitle">
-                {`${translate("pim_menu.item.rule")} /`}
+            <div className='AknFullPage-titleContainer'>
+              <div className='AknFullPage-subTitle'>
+                {`${translate('pim_menu.item.rule')} /`}
               </div>
-              <div className="AknFullPage-title">
-                {translate("pimee_catalog_rule.form.creation.title")}
+              <div className='AknFullPage-title'>
+                {translate('pimee_catalog_rule.form.creation.title')}
               </div>
               <SmallHelper>
                 <span>
-                  {translate("pimee_catalog_rule.form.creation.helper")}
+                  {translate('pimee_catalog_rule.form.creation.helper')}
                   &nbsp;
-                  <a href="#">Link to documentation under construction</a>
+                  <a href='#'>Link to documentation under construction</a>
                 </span>
               </SmallHelper>
             </div>
@@ -113,11 +113,10 @@ const CreateRules: React.FC = () => {
         </div>
       </div>
       <CrossLink
-        data-testid="leave-page-button"
+        data-testid='leave-page-button'
         href={`#${urlRules}`}
-        onClick={handleRulesRoute}
-      >
-        {translate("pimee_catalog_rule.form.creation.cross_link")}
+        onClick={handleRulesRoute}>
+        {translate('pimee_catalog_rule.form.creation.cross_link')}
       </CrossLink>
     </ThemeProvider>
   );

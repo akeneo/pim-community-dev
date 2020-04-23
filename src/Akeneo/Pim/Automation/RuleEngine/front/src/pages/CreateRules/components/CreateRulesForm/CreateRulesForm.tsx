@@ -1,16 +1,16 @@
-import React, { useRef, useEffect } from "react";
-import styled from "styled-components";
-import { useForm, ErrorMessage } from "react-hook-form";
-import { InputErrorMsg } from "../../../../components/InputErrorMsg";
-import { FlagLabel } from "../../../../components/Labels";
-import { InputText } from "../../../../components/Inputs";
-import { PrimaryButton } from "../../../../components/Buttons/PrimaryButton";
-import { Translate } from "../../../../dependenciesTools/provider/applicationDependenciesProvider.type";
+import React, { useRef, useEffect } from 'react';
+import styled from 'styled-components';
+import { useForm, ErrorMessage } from 'react-hook-form';
+import { InputErrorMsg } from '../../../../components/InputErrorMsg';
+import { FlagLabel } from '../../../../components/Labels';
+import { InputText } from '../../../../components/Inputs';
+import { PrimaryButton } from '../../../../components/Buttons/PrimaryButton';
+import { Translate } from '../../../../dependenciesTools/provider/applicationDependenciesProvider.type';
 
-const inputCodeErrorMsgId = "inputCodeErrMsg";
-const inputCodeName = "code";
-const inputLabelErrorMsgId = "inputLabelErrMsg";
-const inputLabelName = "label";
+const inputCodeErrorMsgId = 'inputCodeErrMsg';
+const inputCodeName = 'code';
+const inputLabelErrorMsgId = 'inputLabelErrMsg';
+const inputLabelName = 'label';
 
 const LegendSrOnly = styled.legend`
   position: absolute;
@@ -41,7 +41,7 @@ type CustomErrors = {
 
 const initialCustomErrors: CustomErrors = {
   [inputCodeName]: [],
-  [inputLabelName]: []
+  [inputLabelName]: [],
 };
 
 const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
@@ -50,29 +50,29 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
     initialCustomErrors
   );
   const { errors, formState, handleSubmit, register } = useForm<FormDataInput>({
-    mode: "onChange"
+    mode: 'onChange',
   });
 
   const codeInputRegisterConfig = {
     required: translate(
-      "pimee_catalog_rule.form.creation.constraint.code.required"
+      'pimee_catalog_rule.form.creation.constraint.code.required'
     ),
     minLength: {
       value: 3,
       message: translate(
-        "pimee_catalog_rule.form.creation.constraint.code.too_short",
-        { characterLimit: "3" }
-      )
+        'pimee_catalog_rule.form.creation.constraint.code.too_short',
+        { characterLimit: '3' }
+      ),
     },
     pattern: {
       value: /^[a-zA-Z0-9_]+$/,
       message: translate(
-        "pimee_catalog_rule.form.creation.constraint.code.allowed_characters"
-      )
-    }
+        'pimee_catalog_rule.form.creation.constraint.code.allowed_characters'
+      ),
+    },
   };
   const labelInputRegisterConfig = {
-    maxLength: 255
+    maxLength: 255,
   };
 
   const manageSubmitError = async (formData: FormDataInput) => {
@@ -83,7 +83,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
         data.reduce((acc: any, value: any) => {
           return {
             ...acc,
-            [value.path]: [...acc[value.path], value.message]
+            [value.path]: [...acc[value.path], value.message],
           };
         }, initialCustomErrors)
       );
@@ -104,21 +104,20 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
 
   return (
     <form
-      className="AknFormContainer"
-      data-testid="form-create-rules"
-      onSubmit={handleSubmit(manageSubmitError)}
-    >
+      className='AknFormContainer'
+      data-testid='form-create-rules'
+      onSubmit={handleSubmit(manageSubmitError)}>
       <fieldset>
         <LegendSrOnly>
-          {translate("pimee_catalog_rule.form.creation.title")}
+          {translate('pimee_catalog_rule.form.creation.title')}
         </LegendSrOnly>
-        <div className="AknFieldContainer">
+        <div className='AknFieldContainer'>
           <InputText
-            id="code-input"
+            id='code-input'
             ariaDescribedBy={inputCodeErrorMsgId}
-            autoComplete="off"
-            label={`${translate("pim_common.code")} ${translate(
-              "pim_common.required_label"
+            autoComplete='off'
+            label={`${translate('pim_common.code')} ${translate(
+              'pim_common.required_label'
             )}`}
             minLength={3}
             name={inputCodeName}
@@ -138,21 +137,20 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
             </ErrorMessage>
           </div>
         </div>
-        <div className="AknFieldContainer">
+        <div className='AknFieldContainer'>
           <InputText
-            id="label-input"
+            id='label-input'
             ariaDescribedBy={inputLabelErrorMsgId}
-            autoComplete="off"
+            autoComplete='off'
             maxLength={255}
             name={inputLabelName}
-            ref={register(labelInputRegisterConfig)}
-          >
+            ref={register(labelInputRegisterConfig)}>
             <FlagLabel
-              htmlFor="label-input"
+              htmlFor='label-input'
               locale={locale}
-              label={translate("pim_common.label")}
+              label={translate('pim_common.label')}
               flagDescription={translate(
-                "pimee_catalog_rule.form.creation.english_flag"
+                'pimee_catalog_rule.form.creation.english_flag'
               )}
             />
           </InputText>
@@ -161,8 +159,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
               customErrors.label.map(message => (
                 <InputErrorMsg
                   key={`label-${message}`}
-                  id={inputLabelErrorMsgId}
-                >
+                  id={inputLabelErrorMsgId}>
                   {message}
                 </InputErrorMsg>
               ))}
@@ -176,8 +173,8 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
           </div>
         </div>
       </fieldset>
-      <PrimaryButton disabled={!formState.isValid} type="submit">
-        {translate("pim_common.save")}
+      <PrimaryButton disabled={!formState.isValid} type='submit'>
+        {translate('pim_common.save')}
       </PrimaryButton>
     </form>
   );

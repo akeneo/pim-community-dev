@@ -1,2 +1,2 @@
-export * from "./EditRules";
-export * from "./hooks"
+export * from './EditRules';
+export * from './hooks';

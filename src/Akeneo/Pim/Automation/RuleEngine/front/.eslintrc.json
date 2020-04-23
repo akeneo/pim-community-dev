@@ -1,5 +1,8 @@
 {
     "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": "src/Akeneo/Pim/Automation/RuleEngine/front/tsconfig.json"
+    },
     "plugins": ["@typescript-eslint", "react", "react-hooks"],
     "extends": [
         "eslint:recommended",
@@ -10,6 +13,10 @@
     ],
     "rules": {
         "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "warn"
+        "react-hooks/exhaustive-deps": "warn",
+        "object-curly-spacing": ["error", "always"],
+        "react/prop-types": ["off"],
+        "@typescript-eslint/no-explicit-any": ["off"],
+        "no-prototype-builtins": ["warn"]
     }
 }

@@ -1,1 +1,1 @@
-export * from "./SmallHelper";
+export * from './SmallHelper';

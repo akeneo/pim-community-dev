@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { CoreButton } from "./CoreButton";
+import styled from 'styled-components';
+import { CoreButton } from './CoreButton';
 
 const GreyGhostButton = styled(CoreButton)`
   color: ${({ theme }) => theme.color.grey100};

@@ -1,3 +1,3 @@
-import {FallbackAction} from "./FallbackAction";
+import { FallbackAction } from './FallbackAction';
 
 export type Action = FallbackAction;

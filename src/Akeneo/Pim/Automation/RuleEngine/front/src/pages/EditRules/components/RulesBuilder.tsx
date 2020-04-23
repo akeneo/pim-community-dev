@@ -1,11 +1,11 @@
-import React from "react";
-import { Translate } from "../../../dependenciesTools";
-import { RuleProductSelection } from "./RuleProductSelection";
-import {RuleDefinition} from "../../../models/RuleDefinition";
-import {Action} from "../../../models/Action";
-import {Locale} from "../../../models/Locale";
-import {IndexedScopes} from "../../../fetch/ScopeFetcher";
-import {ActionLineProps} from "../ActionLineProps";
+import React from 'react';
+import { Translate } from '../../../dependenciesTools';
+import { RuleProductSelection } from './RuleProductSelection';
+import { RuleDefinition } from '../../../models/RuleDefinition';
+import { Action } from '../../../models/Action';
+import { Locale } from '../../../models/Locale';
+import { IndexedScopes } from '../../../fetch/ScopeFetcher';
+import { ActionLineProps } from '../ActionLineProps';
 
 type Props = {
   register: any;
@@ -16,7 +16,12 @@ type Props = {
   currentCatalogLocale: string;
 };
 
-const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({ action, translate, lineNumber, register }) => {
+const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
+  action,
+  translate,
+  lineNumber,
+  register,
+}) => {
   const Line = action.module;
 
   return (
@@ -30,13 +35,13 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({ action, tr
 };
 
 const RulesBuilder: React.FC<Props> = ({
-    register,
-    translate,
-    ruleDefinition,
-    locales,
-    scopes,
-    currentCatalogLocale
-  }) => {
+  register,
+  translate,
+  ruleDefinition,
+  locales,
+  scopes,
+  currentCatalogLocale,
+}) => {
   return (
     <>
       <RuleProductSelection
@@ -62,6 +67,6 @@ const RulesBuilder: React.FC<Props> = ({
   );
 };
 
-RulesBuilder.displayName = "RulesBuilder";
+RulesBuilder.displayName = 'RulesBuilder';
 
 export { RulesBuilder };

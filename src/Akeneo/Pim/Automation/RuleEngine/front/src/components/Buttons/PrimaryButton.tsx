@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { CoreButton } from "./CoreButton";
+import { CoreButton } from './CoreButton';
 
 const PrimaryButton = styled(CoreButton)`
   color: ${({ theme }) => theme.color.white};
@@ -21,6 +21,6 @@ const PrimaryButton = styled(CoreButton)`
   }
 `;
 
-PrimaryButton.displayName = "PrimaryButton";
+PrimaryButton.displayName = 'PrimaryButton';
 
 export { PrimaryButton };

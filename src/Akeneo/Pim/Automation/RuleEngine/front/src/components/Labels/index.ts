@@ -1,2 +1,2 @@
-export * from "./Label";
-export * from "./FlagLabel";
+export * from './Label';
+export * from './FlagLabel';

@@ -4,7 +4,7 @@ type FormData = {
   labels: {
     [key: string]: string;
   };
-  content: {conditions: any[], actions: any[]};
+  content: { conditions: any[]; actions: any[] };
 };
 
 export { FormData };

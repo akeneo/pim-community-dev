@@ -1,15 +1,15 @@
-import { Payload } from "../../../rules.types";
-import { httpPut } from "../../../fetch";
-import { generateUrl } from "../../../dependenciesTools/hooks";
-import { FormData } from "../edit-rules.types";
-import { useForm, DeepPartial } from "react-hook-form";
-import { Locale, RuleDefinition } from "../../../models";
+import { Payload } from '../../../rules.types';
+import { httpPut } from '../../../fetch';
+import { generateUrl } from '../../../dependenciesTools/hooks';
+import { FormData } from '../edit-rules.types';
+import { useForm, DeepPartial } from 'react-hook-form';
+import { Locale, RuleDefinition } from '../../../models';
 import {
   Router,
   Translate,
   Notify,
   NotificationLevel,
-} from "../../../dependenciesTools";
+} from '../../../dependenciesTools';
 
 type Reset = (
   values?: DeepPartial<FormData>,
@@ -30,11 +30,12 @@ const transformFormData = (formData: FormData): Payload => {
     priority: Number(formData.priority),
     content: {
       ...formData.content,
-      actions: formData.content && formData.content.actions
-        ? formData.content.actions.map(action => JSON.parse(action))
-        : [],
+      actions:
+        formData.content && formData.content.actions
+          ? formData.content.actions.map(action => JSON.parse(action))
+          : [],
     },
-  }
+  };
 };
 
 const submitEditRuleForm = (
@@ -44,14 +45,14 @@ const submitEditRuleForm = (
   router: Router,
   reset: Reset
 ) => {
-  const onSubmit = async (
+  return async (
     formData: FormData,
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
     const updateRuleUrl = generateUrl(
       router,
-      "pimee_enrich_rule_definition_update",
+      'pimee_enrich_rule_definition_update',
       { ruleDefinitionCode }
     );
     const response = await httpPut(updateRuleUrl, {
@@ -60,7 +61,7 @@ const submitEditRuleForm = (
     if (response.ok) {
       notify(
         NotificationLevel.SUCCESS,
-        translate("pimee_catalog_rule.form.edit.notification.success")
+        translate('pimee_catalog_rule.form.edit.notification.success')
       );
       reset(
         {
@@ -79,11 +80,10 @@ const submitEditRuleForm = (
     } else {
       notify(
         NotificationLevel.ERROR,
-        translate("pimee_catalog_rule.form.edit.notification.failed")
+        translate('pimee_catalog_rule.form.edit.notification.failed')
       );
     }
   };
-  return onSubmit;
 };
 
 const createLocalesLabels = (ruleDefinition: RuleDefinition) => (

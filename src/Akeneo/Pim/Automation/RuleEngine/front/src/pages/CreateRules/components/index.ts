@@ -1,1 +1,1 @@
-export * from "./CreateRulesForm";
+export * from './CreateRulesForm';

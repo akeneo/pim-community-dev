@@ -7,5 +7,5 @@ export enum Operator {
   CONTAINS = 'CONTAINS',
   DOES_NOT_CONTAIN = 'DOES NOT CONTAIN',
   EQUALS = '=',
-  NOT_EQUAL = '!='
+  NOT_EQUAL = '!=',
 }

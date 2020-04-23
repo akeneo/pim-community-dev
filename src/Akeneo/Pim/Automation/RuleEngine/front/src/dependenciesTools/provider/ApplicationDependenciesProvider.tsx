@@ -1,13 +1,13 @@
-import React, { createContext } from "react";
-import { dependencies } from "./dependencies";
+import React, { createContext } from 'react';
+import { dependencies } from './dependencies';
 import {
   Notify,
   Router,
   Security,
   Translate,
   UserContext,
-  ViewBuilder
-} from "./applicationDependenciesProvider.type";
+  ViewBuilder,
+} from './applicationDependenciesProvider.type';
 
 type ApplicationDependenciesContextProps = {
   notify?: Notify;
@@ -29,7 +29,7 @@ const ApplicationDependenciesProvider: React.FC = ({ children }) => {
     security: dependencies.security,
     translate: dependencies.translate,
     user: dependencies.user,
-    viewBuilder: dependencies.viewBuilder
+    viewBuilder: dependencies.viewBuilder,
   };
   return (
     <ApplicationDependenciesContext.Provider value={value}>
@@ -41,5 +41,5 @@ const ApplicationDependenciesProvider: React.FC = ({ children }) => {
 export {
   ApplicationDependenciesProvider,
   ApplicationDependenciesContextProps,
-  ApplicationDependenciesContext
+  ApplicationDependenciesContext,
 };

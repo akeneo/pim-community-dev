@@ -1,10 +1,10 @@
-import { View } from "backbone";
+import { View } from 'backbone';
 
 enum NotificationLevel {
-  INFO = "info",
-  SUCCESS = "success",
-  WARNING = "warning",
-  ERROR = "error",
+  INFO = 'info',
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error',
 }
 
 type Notify = (level: NotificationLevel, message: string) => void;

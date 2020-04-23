@@ -1,1 +1,1 @@
-export * from "./PimView";
+export * from './PimView';

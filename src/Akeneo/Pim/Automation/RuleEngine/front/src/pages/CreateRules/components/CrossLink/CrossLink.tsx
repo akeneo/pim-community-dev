@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const SpanSrOnly = styled.span`
   position: absolute;
@@ -20,7 +20,7 @@ const CrossLink: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement>> = ({
   ...rest
 }) => {
   return (
-    <a className="AknFullPage-cancel" href={href} onClick={onClick} {...rest}>
+    <a className='AknFullPage-cancel' href={href} onClick={onClick} {...rest}>
       <SpanSrOnly>{children}</SpanSrOnly>
     </a>
   );

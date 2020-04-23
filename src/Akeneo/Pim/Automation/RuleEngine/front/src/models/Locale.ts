@@ -3,6 +3,6 @@ type Locale = {
   label: string;
   region: string;
   language: string;
-}
+};
 
-export { Locale }
+export { Locale };

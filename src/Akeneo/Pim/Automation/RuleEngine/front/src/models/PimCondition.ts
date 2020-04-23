@@ -3,22 +3,25 @@
  * Its difference with the fallback is that it can be have its renderer.
  * Each native condition coming from the PIM has the same fields.
  */
-import {PimConditionLine} from "../pages/EditRules/PimConditionLine";
-import React from "react";
-import {Condition} from "./Condition";
-import {ConditionLineProps} from "../pages/EditRules/ConditionLineProps";
+import { PimConditionLine } from '../pages/EditRules/PimConditionLine';
+import React from 'react';
+import { Condition } from './Condition';
+import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
 
 type PimCondition = {
-  module: React.FC<ConditionLineProps & { condition: Condition }>,
+  module: React.FC<ConditionLineProps & { condition: Condition }>;
   field: string;
   operator: string;
-  value: any|null;
-  locale: string|null;
-  scope: string|null;
-}
+  value: any | null;
+  locale: string | null;
+  scope: string | null;
+};
 
-export const createPimCondition = async (json: any) : Promise <PimCondition | null> => {
-  if (typeof json.field === 'string' &&
+export const createPimCondition = async (
+  json: any
+): Promise<PimCondition | null> => {
+  if (
+    typeof json.field === 'string' &&
     typeof json.operator === 'string' // TODO check operator
   ) {
     return {
@@ -27,11 +30,11 @@ export const createPimCondition = async (json: any) : Promise <PimCondition | nu
       operator: json.operator,
       value: json.value,
       locale: json.locale,
-      scope: json.scope
+      scope: json.scope,
     };
   }
 
   return null;
 };
 
-export { PimCondition }
+export { PimCondition };

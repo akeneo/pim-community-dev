@@ -1,5 +1,5 @@
-import { useApplicationContext } from "./useApplicationContext";
-import { Translate } from "../provider/applicationDependenciesProvider.type";
+import { useApplicationContext } from './useApplicationContext';
+import { Translate } from '../provider/applicationDependenciesProvider.type';
 
 const useTranslate = (): Translate => {
   const { translate } = useApplicationContext();
@@ -7,7 +7,7 @@ const useTranslate = (): Translate => {
     return translate;
   }
   throw new Error(
-    "[ApplicationContext]: Translate has not been properly initiated"
+    '[ApplicationContext]: Translate has not been properly initiated'
   );
 };
 

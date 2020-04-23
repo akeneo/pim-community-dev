@@ -1,7 +1,7 @@
-import React from "react";
-import { ApplicationDependenciesProvider } from "../dependenciesTools";
-import ReactController from "../dependenciesTools/reactController/ReactController";
-import { CreateRules as CreateRulesPage } from "../pages/CreateRules";
+import React from 'react';
+import { ApplicationDependenciesProvider } from '../dependenciesTools';
+import ReactController from '../dependenciesTools/reactController/ReactController';
+import { CreateRules as CreateRulesPage } from '../pages/CreateRules';
 
 class CreateRules extends ReactController {
   reactElementToMount() {

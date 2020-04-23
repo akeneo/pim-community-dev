@@ -1,1 +1,1 @@
-export * from "./Select2Wrapper";
+export * from './Select2Wrapper';

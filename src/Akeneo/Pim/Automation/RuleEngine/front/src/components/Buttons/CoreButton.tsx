@@ -1,7 +1,7 @@
-import React, { ReactNode, Ref } from "react";
-import styled from "styled-components";
+import React, { ReactNode, Ref } from 'react';
+import styled from 'styled-components';
 
-type sizeMode = "small" | "large";
+type sizeMode = 'small' | 'large';
 
 type CoreButtonProps = {
   ariaLabel?: string;
@@ -12,23 +12,23 @@ type CoreButtonProps = {
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const getHeight = ({ sizeMode }: CoreButtonProps): string => {
-  if (sizeMode === "small") {
-    return "24px";
+  if (sizeMode === 'small') {
+    return '24px';
   }
-  return "32px";
+  return '32px';
 };
 const getLineHeight = ({ sizeMode }: CoreButtonProps): string => {
-  if (sizeMode === "small") {
-    return "22px";
+  if (sizeMode === 'small') {
+    return '22px';
   }
-  return "30px";
+  return '30px';
 };
 
 const getPadding = ({ sizeMode }: CoreButtonProps): string => {
-  if (sizeMode === "small") {
-    return "0 10px";
+  if (sizeMode === 'small') {
+    return '0 10px';
   }
-  return "0 15px";
+  return '0 15px';
 };
 
 const BasicButton = styled.button<CoreButtonProps>`
@@ -42,10 +42,7 @@ const BasicButton = styled.button<CoreButtonProps>`
   padding: ${getPadding};
   border-width: 1px;
   border-style: solid;
-  transition:
-    background 0.1s ease,
-    color 0.1s ease,
-    border-color 0.1s ease;
+  transition: background 0.1s ease, color 0.1s ease, border-color 0.1s ease;
   &:disabled {
     cursor: not-allowed;
   }
@@ -64,7 +61,7 @@ const CoreButton = React.forwardRef<HTMLButtonElement, CoreButtonProps>(
       disabled,
       onKeyDown,
       sizeMode,
-      type = "button",
+      type = 'button',
       ...rest
     },
     forwardedRef: Ref<HTMLButtonElement>
@@ -84,11 +81,10 @@ const CoreButton = React.forwardRef<HTMLButtonElement, CoreButtonProps>(
         disabled={disabled}
         onKeyDown={handleKeyDown}
         ref={forwardedRef}
-        role="button"
+        role='button'
         sizeMode={sizeMode}
         type={type}
-        {...rest}
-      >
+        {...rest}>
         {children}
       </BasicButton>
     );

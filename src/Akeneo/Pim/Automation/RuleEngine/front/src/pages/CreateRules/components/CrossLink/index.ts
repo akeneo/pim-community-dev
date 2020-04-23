@@ -1,1 +1,1 @@
-export * from "./CrossLink";
+export * from './CrossLink';
