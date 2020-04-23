@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9205: Fix PDF not exporting Product Model values
 - PIM-9204: Fix error when the user does not have the permission to view the axis attribute
 
 # 3.2.48 (2020-04-21)
