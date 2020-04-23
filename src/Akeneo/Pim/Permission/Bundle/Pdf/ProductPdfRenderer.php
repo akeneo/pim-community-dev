@@ -18,6 +18,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductPdfRenderer as PimProductPdfRenderer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -62,8 +63,8 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         string $template,
         string $uploadDirectory,
         ?string $customFont = null,
-        ?IdentifiableObjectRepositoryInterface $attributeOptionRepository = null
-
+        ?IdentifiableObjectRepositoryInterface $attributeOptionRepository = null,
+        ?EntityWithFamilyValuesFillerInterface $productValuesFiller = null
     ) {
         parent::__construct(
             $templating,
@@ -75,7 +76,8 @@ class ProductPdfRenderer extends PimProductPdfRenderer
             $template,
             $uploadDirectory,
             $customFont,
-            $attributeOptionRepository
+            $attributeOptionRepository,
+            $productValuesFiller
         );
 
         $this->filterHelper = $filterHelper;

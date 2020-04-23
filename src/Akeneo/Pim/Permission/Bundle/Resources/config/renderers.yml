@@ -19,5 +19,6 @@ services:
             - '%upload_dir%'
             - '%pim_pdf_generator_font%'
             - '@pim_catalog.repository.cached_attribute_option'
+            - '@pim_catalog.values_filler.product'
         tags:
             - { name: pim_pdf_generator.renderer, priority: 100 }
