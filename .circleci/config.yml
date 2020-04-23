@@ -21,11 +21,7 @@ aliases:
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
 jobs:
-  build_dev:
-    parameters:
-        is_pull_request:
-            type: boolean
-            default: true
+  checkout:
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -41,6 +37,21 @@ jobs:
           name: Require proper CE dev branch
           command: |
             sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
+
+  build_dev:
+    parameters:
+        is_pull_request:
+            type: boolean
+            default: true
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - attach_workspace:
+           at: ~/
       - run:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
@@ -513,12 +524,15 @@ workflows:
                     branches:
                         ignore:
                             - master
+          - checkout:
+                requires:
+                    - ready_to_build?
           - build_dev:
                 requires:
-                    - ready_to_build?
+                    - checkout
           - build_prod:
                 requires:
-                    - ready_to_build?
+                    - checkout
           - deploy_pr_environment?:
                 type: approval
                 filters:
@@ -586,10 +600,15 @@ workflows:
                             - master
 
       jobs:
+          - checkout
           - build_dev:
                 is_pull_request: false
+                requires:
+                    - checkout
           - build_prod:
                 is_pull_request: false
+                requires:
+                    - checkout
           - deploy_master_environment:
                 requires:
                     - build_prod
