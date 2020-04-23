@@ -23,5 +23,5 @@
         "suppressImplicitAnyIndexErrors": true,
         "target": "es5"
     },
-    "include": ["src"]
+    "include": ["./src", "./test-utils.tsx"]
 }
