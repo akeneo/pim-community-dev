@@ -9,7 +9,7 @@ metadata:
     app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     app.kubernetes.io/name: pim
     chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
-    helm.sh/chart: "{{ $tplCtxChart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
+    helm.sh/chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
     release: "{{ $tplCtx.Release.Name }}" # Ex: srnt-invivo
     heritage: "{{ $tplCtx.Release.Service }}" # Deprecated
     component: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
@@ -31,7 +31,7 @@ spec:
         app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
         app.kubernetes.io/name: pim
         chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
-        helm.sh/chart: "{{ $tplCtxChart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
+        helm.sh/chart: "{{ $tplCtx.Chart.Name }}-{{ $tplCtx.Chart.Version | replace "+" "_" }}"
         release: "{{ $tplCtx.Release.Name }}" # Ex: srnt-invivo
         heritage: "{{ $tplCtx.Release.Service }}" # Deprecated
         component: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
