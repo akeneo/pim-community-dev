@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "jest": "jest --config jest.config.js",
-    "jest:watch": "jest --config jest.config.js --watch"
+    "jest:watch": "jest --config jest.config.js --watch",
+    "check-types:watch": "yarn check-types -- --watch",
+    "prettier": "prettier --config .prettierrc --write \"./src/**/*.ts\";"
   },
   "private": true
 }
