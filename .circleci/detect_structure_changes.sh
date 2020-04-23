@@ -30,11 +30,10 @@ else
     PR_BRANCH=$1
 fi
 
-echo "Export env vars from .env..."
-export $(cat .env)
-
-
 ## STEP 1: install 4.0 database and index
+echo "##"
+echo "## STEP 1: install 4.0 database and index"
+echo "##"
 
 echo "Checkout EE 4.0 branch..."
 git branch -D real40 || true
@@ -51,6 +50,7 @@ cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
 
 echo "Enable Onboarder bundle on 4.0 branch..."
 if [ -d "vendor/akeneo/pim-onboarder" ]; then
+    cp vendor/akeneo/pim-onboarder/src/Bundle/Resources/config/onboarder_configuration.yml  config/packages/onboarder.yml
     sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
     # on the branch 4.0, the env var and the emulator are not present
     echo "PUBSUB_EMULATOR_HOST=pubsub-emulator:8085" >> .env
@@ -63,6 +63,9 @@ if [ -d "vendor/akeneo/pim-onboarder" ]; then
 " >> docker-compose.override.yml
 fi
 
+echo "Export env vars from .env..."
+export $(cat .env)
+
 echo "Clean cache..."
 APP_ENV=test make cache
 
@@ -71,8 +74,12 @@ APP_ENV=test make database
 
 
 ## STEP 2: apply PR migrations on 4.0 database and index
+echo "##"
+echo "## STEP 2: apply PR migrations on 4.0 database and index"
+echo "##"
 
-echo "Restore Git repository..."
+echo "Restore Git repository as how it was at the beginning..."
+git clean -f
 git checkout -- .
 
 echo "Checkout EE PR branch..."
@@ -88,8 +95,12 @@ cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
 
 echo "Enable Onboarder bundle on PR branch..."
 if [ -d "vendor/akeneo/pim-onboarder" ]; then
+    cp vendor/akeneo/pim-onboarder/src/Bundle/Resources/config/onboarder_configuration.yml  config/packages/onboarder.yml
     sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
 fi
+
+echo "Export env vars from .env..."
+export $(cat .env)
 
 echo "Clean cache..."
 APP_ENV=test make cache
@@ -105,6 +116,9 @@ docker-compose exec -T elasticsearch curl -XGET "$APP_INDEX_HOSTS/_all/_mapping"
 
 
 ## STEP 3: install fresh branch database and indexes
+echo "##"
+echo "## STEP 3: install fresh branch database and indexes"
+echo "##"
 
 echo "Install fresh branch database and indexes..."
 APP_ENV=test make database
@@ -117,6 +131,9 @@ docker-compose exec -T elasticsearch curl -XGET "$APP_INDEX_HOSTS/_all/_mapping"
 
 
 ## STEP 4: compare the results
+echo "##"
+echo "## STEP 4: compare the results"
+echo "##"
 
 echo "Compare database 40+PR migrations from database PR..."
 diff /tmp/dump_40_database_with_migrations.sql /tmp/dump_branch_database.sql --context=10
