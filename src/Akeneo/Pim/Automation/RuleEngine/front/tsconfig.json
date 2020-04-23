@@ -22,5 +22,6 @@
         "strictPropertyInitialization": true,
         "suppressImplicitAnyIndexErrors": true,
         "target": "es5"
-    }
+    },
+    "include": ["src"]
 }
