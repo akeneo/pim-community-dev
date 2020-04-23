@@ -112,7 +112,7 @@ pim:
       totalFieldsLimit: 10000
   defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
   defaultAdminUser:
-    login : nil # Fill me
+    login: nil # Fill me
     firstName: nil # Fill me
     lastName: nil # Fill me
     email: nil # Fill me

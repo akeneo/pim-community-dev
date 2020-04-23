@@ -17,7 +17,7 @@ metadata:
     component: "pim-job-{{ $jobName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     app.kubernetes.io/component: "pim-job-{{ $jobName }}"
     role: {{ $jobName }} # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-    {{ include "pim.extraLabels" $tplCtx | indent 4 }}
+    {{- include "pim.extraLabels" $tplCtx | indent 4 }}
 spec:
   schedule: {{ $jobOptions.schedule | quote }}
   concurrencyPolicy: Forbid
@@ -35,7 +35,7 @@ spec:
         component: "pim-job-{{ $jobName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
         app.kubernetes.io/component: "pim-job-{{ $jobName }}"
         role: {{ $jobName }} # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-        {{ include "pim.extraLabels" $tplCtx | indent 8 }}
+        {{- include "pim.extraLabels" $tplCtx | indent 8 }}
     spec:
       template:
         metadata:
@@ -51,7 +51,7 @@ spec:
             component: "pim-job-{{ $jobName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
             app.kubernetes.io/component: "pim-job-{{ $jobName }}"
             role: {{ $jobName }} # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-            {{ include "pim.extraLabels" $tplCtx | indent 8 }}
+            {{- include "pim.extraLabels" $tplCtx | indent 12 }}
           annotations:
             checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") $tplCtx | sha256sum }} # force reload of pods upon change of the configmap
             checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") $tplCtx | sha256sum }} # force reload of pods upon change of the configmap
@@ -63,11 +63,11 @@ spec:
             imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
             command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console {{ $jobOptions.pimCommand }}"']
             resources:
-{{- if $jobOptions.resources }}
+{{- if $jobOptions.resources -}}
 {{ toYaml $jobOptions.resources | indent 14 }}
 {{- else }}
 {{ toYaml $tplCtx.Values.pim.resources | indent 14 }}
-{{- end }}
+{{- end -}}
             volumeMounts:
               - name: google-cloud-pim-storage-key
                 mountPath: /var/secrets/google/srnt.json
@@ -81,9 +81,9 @@ spec:
               - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
               - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
               - { name: CONTAINER_NAME, value: php }
-{{- if $tplCtx.Values.common.phpConfCLI }}
+{{- if $tplCtx.Values.common.phpConfCLI -}}
 {{ toYaml $tplCtx.Values.common.phpConfCLI  | indent 14 }}
-{{- end }}
+{{- end -}}
           restartPolicy: OnFailure
           volumes:
             - name: google-cloud-pim-storage-key
