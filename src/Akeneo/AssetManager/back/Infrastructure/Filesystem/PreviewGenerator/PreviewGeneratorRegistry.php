@@ -44,11 +44,11 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface
         return false;
     }
 
-    public function generate(string $data, AbstractAttribute $attribute, string $type): string
+    public function generate(string $data, AbstractAttribute $attribute, string $type, bool $regenerate = false): string
     {
         foreach ($this->previewGenerators as $previewGenerator) {
             if ($previewGenerator->supports($data, $attribute, $type)) {
-                return $previewGenerator->generate($data, $attribute, $type);
+                return $previewGenerator->generate($data, $attribute, $type, $regenerate);
             }
         }
 

@@ -25,7 +25,9 @@ import {
   Container,
   Thumbnail,
   Actions,
+  ThumbnailPlaceholder,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
+import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 
 const MediaLinkInput = styled.input`
   ::placeholder {
@@ -67,6 +69,8 @@ const View = ({
     data: getMediaData(value.data),
   });
 
+  const [regenerate, doRegenerate] = useRegenerate(mediaPreviewUrl);
+
   const label = getLabelInCollection(
     value.attribute.labels,
     localeReferenceStringValue(locale),
@@ -76,7 +80,15 @@ const View = ({
 
   return (
     <Container>
-      <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
+      {regenerate ? (
+        <ThumbnailPlaceholder className="AknLoadingPlaceHolder" />
+      ) : (
+        <Thumbnail
+          onClick={doRegenerate}
+          src={mediaPreviewUrl}
+          alt={__('pim_asset_manager.attribute.media_type_preview')}
+        />
+      )}
       <MediaLinkInput
         id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
         autoComplete="off"

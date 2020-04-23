@@ -30,5 +30,5 @@ interface PreviewGeneratorInterface
      *
      * @return string Return the URL of the preview generated
      */
-    public function generate(string $data, AbstractAttribute $attribute, string $type): string;
+    public function generate(string $data, AbstractAttribute $attribute, string $type, bool $regenerate = false): string;
 }

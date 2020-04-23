@@ -37,6 +37,13 @@ export const Thumbnail = styled.img`
   object-fit: cover;
 `;
 
+export const ThumbnailPlaceholder = styled.div`
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  margin-right: 15px;
+`;
+
 export const Action = styled.a`
   display: flex;
   align-items: center;

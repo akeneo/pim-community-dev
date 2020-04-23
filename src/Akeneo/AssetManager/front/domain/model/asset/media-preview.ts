@@ -3,7 +3,6 @@ import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/ident
 export enum MediaPreviewType {
   Preview = 'preview',
   Thumbnail = 'thumbnail',
-  ThumbnailSmall = 'thumbnail_small',
 }
 
 export type MediaPreview = {
@@ -13,7 +12,7 @@ export type MediaPreview = {
 };
 
 export const emptyMediaPreview = (): MediaPreview => ({
-  type: MediaPreviewType.ThumbnailSmall,
+  type: MediaPreviewType.Thumbnail,
   attributeIdentifier: 'UNKNOWN',
   data: '',
 });

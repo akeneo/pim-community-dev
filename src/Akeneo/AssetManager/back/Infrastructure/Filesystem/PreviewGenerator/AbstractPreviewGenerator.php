@@ -51,7 +51,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
     /**
      * {@inheritDoc}
      */
-    public function generate(string $data, AbstractAttribute $attribute, string $type): string
+    public function generate(string $data, AbstractAttribute $attribute, string $type, bool $regenerate = false): string
     {
         if (empty($data)) {
             return $this->getDefaultImageUrl($type);
@@ -77,7 +77,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
         try {
             $isStored = $this->cacheManager->isStored($filename, $previewType);
 
-            if (!$isStored) {
+            if (!$isStored || $regenerate) {
                 $binary = $this->dataManager->find($previewType, $url);
                 $file = $this->filterManager->applyFilter($binary, $previewType);
 
