@@ -23,7 +23,7 @@ export const dependencies = {
   }),
   user: {
     get: jest.fn((data: string) => data),
-    set: jest.fn((): void => {}),
+    set: jest.fn(),
   },
   security: {
     isGranted: jest.fn((acl: boolean) => acl),

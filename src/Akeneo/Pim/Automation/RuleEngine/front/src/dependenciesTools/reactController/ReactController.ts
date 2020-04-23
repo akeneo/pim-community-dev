@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Deferred } from 'jquery';
 import {
   mountReactElementRef,
@@ -34,6 +35,7 @@ export default abstract class ReactController extends BaseController {
   abstract routeGuardToUnmount(): RegExp;
 
   initialize() {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     mediator.on('route_start', this.handleRouteChange, this);
 
     return super.initialize();
@@ -47,6 +49,7 @@ export default abstract class ReactController extends BaseController {
   }
 
   remove() {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     mediator.off('route_start', this.handleRouteChange, this);
     this.$el.remove();
 

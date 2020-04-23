@@ -35,7 +35,7 @@ const Select2Wrapper: React.FC<Props> = ({
   placeholder,
   value,
 }) => {
-  let select2Ref = useRef<HTMLInputElement>(null);
+  const select2Ref = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (null === select2Ref.current) {
       return;

@@ -21,9 +21,9 @@ const useInitEditRules = (ruleDefinitionCode: string, router: Router) => {
       getAllScopes(router),
     ])
       .then(response => {
-        setRuleDefinition(response[0] as RuleDefinition);
-        setLocales(response[1] as Locale[]);
-        setScopes(response[2] as IndexedScopes);
+        setRuleDefinition(response[0]);
+        setLocales(response[1]);
+        setScopes(response[2]);
       })
       .catch(exception => {
         setError({ exception, status: true });

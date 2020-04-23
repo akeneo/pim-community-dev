@@ -15,7 +15,7 @@ function denormalizeAction(jsonAction: any): Action {
       return factory(jsonAction) !== null;
     }) || createFallbackAction;
 
-  return <Action>factory(jsonAction);
+  return factory(jsonAction) as Action;
 }
 
 async function denormalizeCondition(

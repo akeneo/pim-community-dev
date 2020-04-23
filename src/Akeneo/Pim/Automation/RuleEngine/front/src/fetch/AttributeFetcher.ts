@@ -2,7 +2,7 @@ import { Router } from '../dependenciesTools';
 import { httpGet } from './fetch';
 import { Attribute } from '../models/Attribute';
 
-let cacheAttributes: { [identifier: string]: Attribute | null } = {};
+const cacheAttributes: { [identifier: string]: Attribute | null } = {};
 
 export const getAttributeByIdentifier = async (
   attributeIdentifier: string,
@@ -44,7 +44,7 @@ export const getAttributesByIdentifiers = async (
     });
   }
 
-  let result: { [identifier: string]: Attribute | null } = {};
+  const result: { [identifier: string]: Attribute | null } = {};
   attributeIdentifiers.forEach(attributeIdentifier => {
     result[attributeIdentifier] = cacheAttributes[attributeIdentifier];
   });

@@ -14,4 +14,6 @@ const InputNumber = React.forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
+InputNumber.displayName = 'InputNumber';
+
 export { InputNumber };

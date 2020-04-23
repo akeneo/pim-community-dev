@@ -53,8 +53,8 @@ const createTextAttributeCondition = async (
   }
 
   if (attribute.type === 'pim_catalog_text') {
-    let localeCode = json.locale || null;
-    let scopeCode = json.scope || null;
+    const localeCode = json.locale || null;
+    const scopeCode = json.scope || null;
 
     if (
       !(await checkLocaleExists(localeCode, router)) ||
