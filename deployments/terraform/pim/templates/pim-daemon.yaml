@@ -17,7 +17,7 @@ metadata:
     component: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     app.kubernetes.io/component: "pim-daemon-{{ $daemonName }}"
     role: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-    {{ include "pim.extraLabels" . | indent 4 }}
+    {{ include "pim.extraLabels" $tplCtx | indent 4 }}
 spec:
   replicas: {{ $daemonOptions.replicas }}
   minReadySeconds: 30
@@ -41,11 +41,11 @@ spec:
         component: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
         app.kubernetes.io/component: "pim-daemon-{{ $daemonName }}"
         role: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-        {{ include "pim.extraLabels" . | indent 8 }}
+        {{ include "pim.extraLabels" $tplCtx | indent 8 }}
       annotations:
-        checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
-        checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
-        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") $tplCtx | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") $tplCtx | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") $tplCtx | sha256sum }} # force reload of pods upon change of the configmap
     spec:
       affinity:
         podAntiAffinity:
