@@ -12,6 +12,7 @@ define(
         'jquery',
         'underscore',
         'pim/product-fetcher',
+        'pim/user-context',
         'oro/mediator',
         'routing'
     ],
@@ -19,6 +20,7 @@ define(
         $,
         _,
         ProductFetcher,
+        UserContext,
         mediator,
         Routing
     ) {
@@ -50,7 +52,11 @@ define(
                 }
 
                 return $.getJSON(
-                    Routing.generate(this.options.urls.children), {id: parentId}
+                    Routing.generate(this.options.urls.children), {
+                        id: parentId,
+                        scope: UserContext.get('catalogScope'),
+                        locale: UserContext.get('catalogLocale')
+                    }
                 ).then(_.identity).promise();
             }
         });

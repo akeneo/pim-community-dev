@@ -90,6 +90,42 @@ class ColumnsMergerSpec extends ObjectBehavior
         $this->merge($row)->shouldReturn($mergedRow);
     }
 
+    function it_merges_price_attribute_value_columns(
+        $fieldExtractor,
+        AttributeInterface $price
+    ) {
+        $row = [
+            'price-EUR' => '10',
+            'price-USD' => '',
+            'price-CHF' => '14',
+        ];
+        $attributeInfoEur = [
+            'attribute' => $price,
+            'locale_code' => null,
+            'scope_code' => null,
+            'price_currency' => 'EUR'
+        ];
+        $fieldExtractor->extractColumnInfo('price-EUR')->willReturn($attributeInfoEur);
+        $attributeInfoUsd = [
+            'attribute' => $price,
+            'locale_code' => null,
+            'scope_code' => null,
+            'price_currency' => 'USD'
+        ];
+        $fieldExtractor->extractColumnInfo('price-USD')->willReturn($attributeInfoUsd);
+        $attributeInfoChf = [
+            'attribute' => $price,
+            'locale_code' => null,
+            'scope_code' => null,
+            'price_currency' => 'CHF'
+        ];
+        $fieldExtractor->extractColumnInfo('price-CHF')->willReturn($attributeInfoChf);
+        $price->getCode()->willReturn('price');
+        $price->getBackendType()->willReturn('prices');
+        $mergedRow = ['price' => '10 EUR,14 CHF'];
+        $this->merge($row)->shouldReturn($mergedRow);
+    }
+
     function it_merges_columns_which_represents_metric_attribute_value_in_two_columns(
         $fieldExtractor,
         AttributeInterface $weight

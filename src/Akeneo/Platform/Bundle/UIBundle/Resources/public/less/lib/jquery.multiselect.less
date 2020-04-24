@@ -111,6 +111,9 @@
     text-transform: uppercase;
     padding: 0;
     margin: -12px 0 -4px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .ui-multiselect-checkboxes li.ui-multiselect-optgroup-label {
@@ -315,13 +318,5 @@
         height: 30px;
       }
     }
-  }
-}
-
-.filters-column {
-  .ui-multiselect-optgroup-label a {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
   }
 }

@@ -131,4 +131,3 @@ services:
             - '@pim_user.updater.user'
             - '@validator'
             - '@pim_user.repository.group'
-

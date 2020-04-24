@@ -78,6 +78,17 @@ services:
             - '@pim_catalog.repository.cached_attribute_option'
             - '@pim_catalog.completeness.calculator'
 
+    pim_enrich.normalizer.entity_with_family_variant.light:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\LightEntityWithFamilyVariantNormalizer'
+        arguments:
+            - '@pim_enrich.normalizer.image'
+            - '@pim_catalog.product_models.image_as_label'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_catalog.repository.cached_attribute_option'
+            - '@akeneo.pim.enrichment.product.query.product_completeness_ratio'
+            - '@pim_catalog.doctrine.query.find_variant_product_completeness'
+            - !tagged pim_axis_value_label_normalizer
+
     pim_enrich.normalizer.entity_with_family_variant.simple_select.label.normalizer:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\SimpleSelectOptionNormalizer'
         arguments:
