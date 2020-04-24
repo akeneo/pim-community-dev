@@ -9,7 +9,7 @@ type Props = {
 const defaultClassName = 'AknBreadcrumb-item AknBreadcrumb-item--routable';
 
 const StyledAnchor = styled.a`
-  color: ${({ theme }) => theme.color.grey120};
+  color: ${({ theme }): string => theme.color.grey120};
 `;
 
 const BreadcrumbItem: React.FC<Props> = ({ children, href, onClick }) => {

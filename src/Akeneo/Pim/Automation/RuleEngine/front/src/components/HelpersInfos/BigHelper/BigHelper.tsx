@@ -7,13 +7,13 @@ import React, {
 } from 'react';
 import defaultIllustrationUrl from '../../../assets/illustrations/api.svg';
 
-const HelperTitle = ({ children }: PropsWithChildren<{}>) => <>{children}</>;
+const HelperTitle: React.FC = ({ children }) => <>{children}</>;
 
-interface Props {
+type Props = {
   illustrationUrl?: string;
-}
+};
 
-const BigHelper = ({
+const BigHelper: React.FC<Props> = ({
   children,
   illustrationUrl = defaultIllustrationUrl,
 }: PropsWithChildren<Props>) => {
@@ -39,7 +39,7 @@ const BigHelper = ({
   );
 };
 
-const HelperLink = (
+const HelperLink: React.FC = (
   props: DetailedHTMLProps<
     AnchorHTMLAttributes<HTMLAnchorElement>,
     HTMLAnchorElement

@@ -57,8 +57,8 @@ describe('CreateRulesForm', () => {
     const submitButton = await screen.findByText('pim_common.save');
     expect(submitButton).toBeDisabled();
     await act(async () => {
-      userEvent.type(inputCode, 'my_code');
-      userEvent.type(inputLabel, 'my_label');
+      await userEvent.type(inputCode, 'my_code');
+      await userEvent.type(inputLabel, 'my_label');
       fireEvent.submit(screen.getByTestId('form-create-rules'));
     });
     // Then

@@ -34,7 +34,7 @@ const getPadding = ({ sizeMode }: CoreButtonProps): string => {
 const BasicButton = styled.button<CoreButtonProps>`
   border-radius: 16px;
   cursor: pointer;
-  font-size: ${({ theme }) => theme.fontSize.default};
+  font-size: ${({ theme }): string => theme.fontSize.default};
   font-weight: 400;
   height: ${getHeight};
   line-height: ${getLineHeight};
@@ -47,7 +47,7 @@ const BasicButton = styled.button<CoreButtonProps>`
     cursor: not-allowed;
   }
   &:focus {
-    border-color: ${({ theme }) => theme.color.blue100};
+    border-color: ${({ theme }): string => theme.color.blue100};
   }
 `;
 

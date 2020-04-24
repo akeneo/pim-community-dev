@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AkeneoSpinner = () => (
+const AkeneoSpinner: React.FC = () => (
   <div data-testid='akeneo-spinner' className='AknLoadingMask' />
 );
 
