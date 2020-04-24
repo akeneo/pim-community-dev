@@ -159,19 +159,25 @@ class CopierActionApplierSpec extends ObjectBehavior
         $this->applyAction($action, [$entityWithFamilyVariant]);
     }
 
-    function it_does_not_apply_copy_action_if_the_field_is_not_an_attribute(
+    function it_applies_copy_action_if_the_field_is_not_an_attribute(
         PropertyCopierInterface $propertyCopier,
         GetAttributes $getAttributes,
         ProductCopyActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant
     ) {
         $action->getFromField()->willReturn('sku');
-        $action->getToField()->willReturn('name');
+        $action->getToField()->willReturn('categories');
         $action->getOptions()->willReturn([]);
 
-        $getAttributes->forCode('name')->willReturn(null);
+        $getAttributes->forCode('categories')->willReturn(null);
 
-        $propertyCopier->copyData(Argument::cetera())->shouldNotBeCalled();
+        $propertyCopier->copyData(
+            $entityWithFamilyVariant,
+            $entityWithFamilyVariant,
+            'sku',
+            'categories',
+            []
+        )->shouldBeCalled();
 
         $this->applyAction($action, [$entityWithFamilyVariant]);
     }

@@ -59,8 +59,7 @@ class CopierActionApplier implements ActionApplierInterface
     }
 
     /**
-     * We do not apply the action if field is an attribute and:
-     *  - field is not an attribute (currently there are only attribute copiers)
+     * We do not apply the action if to_field is an attribute and:
      *  - attribute does not belong to the family
      *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
@@ -72,7 +71,7 @@ class CopierActionApplier implements ActionApplierInterface
         // TODO: RUL-170: remove "?? ''" in the next line
         $attribute = $this->getAttributes->forCode($toField ?? '');
         if (null === $attribute) {
-            return false;
+            return true;
         }
 
         $family = $entity->getFamily();
