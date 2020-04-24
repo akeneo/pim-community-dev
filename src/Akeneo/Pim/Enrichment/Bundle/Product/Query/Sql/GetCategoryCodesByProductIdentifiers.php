@@ -74,7 +74,8 @@ SQL;
         foreach ($queryResults as $queryResult) {
             $categoryCodes = json_decode($queryResult['category_codes']);
             sort($categoryCodes);
-            $categoryCodes = array_unique($categoryCodes);
+            // @todo https://akeneo.atlassian.net/browse/PIM-9220
+            $categoryCodes = array_values(array_unique($categoryCodes));
             $results[$queryResult['product_identifier']] = $categoryCodes;
         }
 
