@@ -14,6 +14,6 @@ export const createFallbackCondition = async (
     return {
       module: FallbackConditionLine,
       json: json,
-    }
+    };
   });
 };

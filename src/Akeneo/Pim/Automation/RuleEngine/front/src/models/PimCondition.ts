@@ -6,6 +6,7 @@
 import { PimConditionLine } from '../pages/EditRules/PimConditionLine';
 import React from 'react';
 import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
+import { ConditionFactoryType } from './Condition';
 
 type PimCondition = {
   module: React.FC<ConditionLineProps>;
@@ -16,14 +17,14 @@ type PimCondition = {
   scope: string | null;
 };
 
-export const createPimCondition = async (
+export const createPimCondition: ConditionFactoryType = async (
   json: any
 ): Promise<PimCondition | null> => {
   if (
     typeof json.field === 'string' &&
     typeof json.operator === 'string' // TODO check operator
   ) {
-    return new Promise<PimCondition|null>(() => {
+    return new Promise<PimCondition | null>(() => {
       return {
         module: PimConditionLine,
         field: json.field,
@@ -31,7 +32,7 @@ export const createPimCondition = async (
         value: json.value,
         locale: json.locale,
         scope: json.scope,
-      }
+      };
     });
   }
 

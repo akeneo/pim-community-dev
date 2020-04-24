@@ -2,6 +2,7 @@
 import { FallbackConditionLine } from '../pages/EditRules/FallbackConditionLine';
 import React from 'react';
 import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
+import { ConditionFactoryType } from './Condition';
 
 enum FamilyOperator {
   IS_EMPTY = 'EMPTY',
@@ -16,7 +17,7 @@ type FamilyCondition = {
   familyCodes: string[];
 };
 
-const createFamilyCondition = async (
+const createFamilyCondition: ConditionFactoryType = async (
   json: any
 ): Promise<FamilyCondition | null> => {
   // TODO Remove this line when we implement family condition.

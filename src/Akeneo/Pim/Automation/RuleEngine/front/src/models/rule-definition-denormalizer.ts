@@ -1,5 +1,5 @@
 import { RuleDefinition } from './RuleDefinition';
-import { Condition } from './Condition';
+import { Condition, ConditionFactoryType } from './Condition';
 import { createFamilyCondition } from './FamilyCondition';
 import { createFallbackCondition } from './FallbackCondition';
 import { createFallbackAction } from './FallbackAction';
@@ -23,18 +23,14 @@ async function denormalizeCondition(
   router: Router
 ): Promise<Condition> {
   // For now, FamilyCondition never match. It always returns FallbackCondition.
-  const factories: ((
-    json: any,
-    router: Router
-  ) => Promise<Condition | null>)[] = [
+  const factories: ConditionFactoryType[] = [
     createFamilyCondition,
     createTextAttributeCondition,
     createPimCondition,
   ];
 
-  const keys = Object.keys(factories);
-  for (let index = 0; index < keys.length; index++) {
-    const factory = factories[keys[index]]
+  for (let i = 0; i < factories.length; i++) {
+    const factory = factories[i];
     const condition = await factory(jsonCondition, router);
     if (condition !== null) {
       return condition;

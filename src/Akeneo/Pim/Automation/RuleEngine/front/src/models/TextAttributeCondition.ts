@@ -10,6 +10,7 @@ import {
   checkScopeExists,
 } from '../fetch/ScopeFetcher';
 import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
+import { ConditionFactoryType } from './Condition';
 
 const TextAttributeOperators = [
   Operator.EQUALS,
@@ -31,7 +32,7 @@ type TextAttributeCondition = {
   locale?: string;
 };
 
-const createTextAttributeCondition = async (
+const createTextAttributeCondition: ConditionFactoryType = async (
   json: any,
   router: Router
 ): Promise<TextAttributeCondition | null> => {
