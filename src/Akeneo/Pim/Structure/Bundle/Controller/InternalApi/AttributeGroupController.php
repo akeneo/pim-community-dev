@@ -427,7 +427,8 @@ class AttributeGroupController
      *
      * @param array $newAttributeGroup
      */
-    protected function checkAttributeCollectionRights(array $newAttributeGroup): void {
+    protected function checkAttributeCollectionRights(array $newAttributeGroup): void
+    {
         $attributeCodesAfter = $newAttributeGroup['attributes'];
 
         $attributeCodesBefore = $this->findAttributeCodesForAttributeGroup->execute($newAttributeGroup['code']);
