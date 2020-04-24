@@ -317,6 +317,8 @@ class SetterActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('release_date')->willReturn($releaseDate);
+        $releaseDate->getCode()->willReturn('release_date');
+
         $family->getId()->willReturn(42);
         $family->hasAttributeCode('release_date')->willReturn(true);
 
