@@ -14,5 +14,5 @@ parameters:
     # Maximum number of records to process in a single API request
     reference_entity_connector_maximum_records_to_process_per_request: 100
     # Set to "true" to automatically load reference entities fixtures
-    env(LOAD_REFERENCE_ENTITIES_FIXTURES): 'false'
-    load_reference_entities_fixtures: '%env(bool:LOAD_REFERENCE_ENTITIES_FIXTURES)%'
+    env(SHOULD_LOAD_REFERENCE_ENTITIES_FIXTURES): 'false'
+    should_load_reference_entities_fixtures: '%env(bool:SHOULD_LOAD_REFERENCE_ENTITIES_FIXTURES)%'

@@ -25,5 +25,5 @@ parameters:
     # Maximum transformations per asset families
     asset_manager_transformations_by_asset_family_limit: 10
     # Set to "true" to automatically load asset fixtures
-    env(LOAD_ASSETS_FIXTURES): 'false'
-    load_assets_fixtures: '%env(bool:LOAD_ASSETS_FIXTURES)%'
+    env(SHOULD_LOAD_ASSETS_FIXTURES): 'false'
+    should_load_assets_fixtures: '%env(bool:SHOULD_LOAD_ASSETS_FIXTURES)%'

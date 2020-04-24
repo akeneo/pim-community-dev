@@ -30,6 +30,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class InstallerCommand extends Command implements EventSubscriberInterface
 {
+    public const ICECAT_DEMO_DEV = 'icecat_demo_dev';
     private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:asset-manager:reset-fixtures';
 
     protected static $defaultName = self::RESET_FIXTURES_COMMAND_NAME;
@@ -41,18 +42,18 @@ class InstallerCommand extends Command implements EventSubscriberInterface
     private $assetInstaller;
 
     /** @var bool */
-    private $loadAssetsFixtures;
+    private $shouldLoadAssetsFixtures;
 
     public function __construct(
         FixturesInstaller $fixturesInstaller,
         AssetsInstaller $assetInstaller,
-        bool $loadAssetsFixtures
+        bool $shouldLoadAssetsFixtures
     ) {
         parent::__construct(self::RESET_FIXTURES_COMMAND_NAME);
 
         $this->fixturesInstaller = $fixturesInstaller;
         $this->assetInstaller = $assetInstaller;
-        $this->loadAssetsFixtures = $loadAssetsFixtures;
+        $this->shouldLoadAssetsFixtures = $shouldLoadAssetsFixtures;
     }
 
     /**
@@ -86,11 +87,11 @@ class InstallerCommand extends Command implements EventSubscriberInterface
     public function loadFixtures(InstallerEvent $event): void
     {
         if (
-            $this->loadAssetsFixtures ||
+            $this->shouldLoadAssetsFixtures ||
             substr(
                 $event->getArgument('catalog'),
-                -strlen('icecat_demo_dev')
-            ) === 'icecat_demo_dev'
+                -strlen(self::ICECAT_DEMO_DEV)
+            ) === self::ICECAT_DEMO_DEV
         ) {
             $this->fixturesInstaller->loadCatalog();
         }

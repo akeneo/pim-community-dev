@@ -23,7 +23,7 @@ services:
         arguments:
             - '@akeneo_assetmanager.command.installer.fixtures_installer'
             - '@akeneo_assetmanager.command.installer.assets_installer'
-            - '%load_assets_fixtures%'
+            - '%should_load_assets_fixtures%'
         tags:
             - { name: kernel.event_subscriber }
             - { name: 'console.command'}
