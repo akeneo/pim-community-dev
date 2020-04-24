@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9192: Fix error being printed in the response of partial update of products API
+- AOB-937: Include additional properties when indexing product models
 
 # 4.0.18 (2020-04-23)
 
