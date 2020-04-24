@@ -64,7 +64,7 @@ final class PurgeOutdatedData
         $purgeDates = new DashboardPurgeDateCollection();
         $daily = TimePeriod::daily();
 
-        for ($day = PurgeOutdatedData::RETENTION_DAYS; $day < PurgeOutdatedData::RETENTION_DAYS * 2; $day++) {
+        for ($day = PurgeOutdatedData::CONSOLIDATION_RETENTION_DAYS; $day < PurgeOutdatedData::CONSOLIDATION_RETENTION_DAYS * 2; $day++) {
             $purgeDates->add($daily, $purgeDate->modify(sprintf('-%d DAY', $day)));
         }
 
