@@ -150,7 +150,7 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
         $asset = $this->getAsset('starck');
         $this->launchTransformationJob($asset->getIdentifier());
 
-        $this->assertTransformationSuccess('starck', 960, 800, 'image/jpeg', 'jpg');
+        $this->assertTransformationSuccess('starck', 960, 800, 'image/jpeg', 'jpeg');
     }
 
     /**
@@ -165,7 +165,7 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
         $asset = $this->getAsset('starck');
         $this->launchTransformationJob($asset->getIdentifier());
 
-        $this->assertTransformationSuccess('starck', 480, 400, 'image/jpeg', 'jpg');
+        $this->assertTransformationSuccess('starck', 480, 400, 'image/jpeg', 'jpeg');
     }
 
     /**
