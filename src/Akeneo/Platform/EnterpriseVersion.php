@@ -19,7 +19,7 @@ namespace Akeneo\Platform;
 class EnterpriseVersion
 {
     /** @staticvar string */
-    const VERSION = '3.2.49';
+    const VERSION = '3.2.50';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Edelweiss';
