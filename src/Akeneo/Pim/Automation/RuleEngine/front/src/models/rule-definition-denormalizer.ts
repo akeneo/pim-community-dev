@@ -25,7 +25,7 @@ async function denormalizeCondition(
   // For now, FamilyCondition never match. It always returns FallbackCondition.
   const factories: ((
     json: any,
-    router?: Router
+    router: Router
   ) => Promise<Condition | null>)[] = [
     createFamilyCondition,
     createTextAttributeCondition,

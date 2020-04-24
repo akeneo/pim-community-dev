@@ -1,8 +1,6 @@
 // src/Akeneo/Pim/Enrichment/Component/Product/Query/Filter/Operators.php
-import { FallbackConditionLine } from '../pages/EditRules/FallbackConditionLine';
-import { Condition } from './Condition';
+import { FallbackConditionLine, FallbackConditionLineProps } from '../pages/EditRules/FallbackConditionLine';
 import React from 'react';
-import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
 
 enum FamilyOperator {
   IS_EMPTY = 'EMPTY',
@@ -12,7 +10,7 @@ enum FamilyOperator {
 }
 
 type FamilyCondition = {
-  module: React.FC<ConditionLineProps & { condition: Condition }>;
+  module: React.FC<FallbackConditionLineProps>;
   operator: FamilyOperator;
   familyCodes: string[];
 };

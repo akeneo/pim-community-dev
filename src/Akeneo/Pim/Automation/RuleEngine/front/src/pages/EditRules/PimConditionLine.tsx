@@ -3,11 +3,11 @@ import { PimCondition } from '../../models/PimCondition';
 import { Flag } from '../../components/Flag/Flag';
 import { ConditionLineProps } from './ConditionLineProps';
 
-type Props = {
+type PimConditionLineProps = {
   condition: PimCondition;
 } & ConditionLineProps;
 
-const PimConditionLine: React.FC<Props> = ({ translate, condition }) => {
+const PimConditionLine: React.FC<PimConditionLineProps> = ({ translate, condition }) => {
   const isMetric = (value: any): boolean => {
     return (
       typeof value === 'object' &&
@@ -94,4 +94,4 @@ const PimConditionLine: React.FC<Props> = ({ translate, condition }) => {
   );
 };
 
-export { PimConditionLine };
+export { PimConditionLine, PimConditionLineProps };

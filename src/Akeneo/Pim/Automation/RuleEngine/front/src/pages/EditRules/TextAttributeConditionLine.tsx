@@ -10,7 +10,7 @@ import { Locale } from '../../models';
 import { Scope } from '../../models';
 import { InputText } from '../../components/Inputs';
 
-type Props = {
+type TextAttributeConditionLineProps = {
   condition: TextAttributeCondition;
 } & ConditionLineProps;
 
@@ -45,7 +45,7 @@ const ScopeColumn = styled.span`
   padding: 0 2px;
 `;
 
-const TextAttributeConditionLine: React.FC<Props> = ({
+const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   register,
   condition,
   lineNumber,
@@ -160,4 +160,4 @@ const TextAttributeConditionLine: React.FC<Props> = ({
   );
 };
 
-export { TextAttributeConditionLine };
+export { TextAttributeConditionLine, TextAttributeConditionLineProps };
