@@ -74,6 +74,7 @@ SQL;
         foreach ($queryResults as $queryResult) {
             $categoryCodes = json_decode($queryResult['category_codes']);
             sort($categoryCodes);
+            $categoryCodes = array_unique($categoryCodes);
             $results[$queryResult['product_identifier']] = $categoryCodes;
         }
 
