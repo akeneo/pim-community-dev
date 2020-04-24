@@ -45,6 +45,9 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     /** @var SupportedLocaleValidator */
     private $supportedLocaleValidator;
 
+    /** @var FilterProductValuesForSpelling */
+    private $filterProductValuesForSpelling;
+
     /** @var LoggerInterface */
     private $logger;
 
@@ -52,12 +55,14 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         TextChecker $textChecker,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleValidator $supportedLocaleValidator,
+        FilterProductValuesForSpelling $filterProductValuesForSpelling,
         LoggerInterface $logger
     ) {
         $this->textChecker = $textChecker;
         $this->localesByChannelQuery = $localesByChannelQuery;
         $this->supportedLocaleValidator = $supportedLocaleValidator;
         $this->logger = $logger;
+        $this->filterProductValuesForSpelling = $filterProductValuesForSpelling;
     }
 
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
@@ -86,8 +91,11 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         }
 
         try {
-            $textRates = $this->evaluateAttributesRates($channelCode, $localeCode, $productValues->getLocalizableTextValues(), self::TEXT_FAULT_WEIGHT);
-            $textareaRates = $this->evaluateAttributesRates($channelCode, $localeCode, $productValues->getLocalizableTextareaValues(), self::TEXTAREA_FAULT_WEIGHT);
+            $textValues = $this->filterProductValuesForSpelling->getTextValues($productValues);
+            $textRates = $this->evaluateAttributesRates($channelCode, $localeCode, $textValues, self::TEXT_FAULT_WEIGHT);
+
+            $textareaValues = $this->filterProductValuesForSpelling->getTextareaValues($productValues);
+            $textareaRates = $this->evaluateAttributesRates($channelCode, $localeCode, $textareaValues, self::TEXTAREA_FAULT_WEIGHT);
         } catch (TextCheckFailedException $exception) {
             $this->logger->error('An error occurred during spelling evaluation', ['error_code' => 'error_during_spelling_evaluation', 'error_message' => $exception->getMessage()]);
             $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::error());

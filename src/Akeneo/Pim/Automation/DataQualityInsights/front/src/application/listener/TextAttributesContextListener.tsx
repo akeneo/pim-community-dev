@@ -4,6 +4,7 @@ import {useFetchProductFamilyInformation, usePageContext, useProduct} from "../.
 import {createWidget, EditorElement, WidgetsCollection} from "../helper";
 import {Attribute, Family, Product} from "../../domain";
 import {initializeWidgetsListAction} from "../../infrastructure/reducer";
+import useFetchActiveLocales from '../../infrastructure/hooks/useFetchActiveLocales';
 
 const uuidV5 = require('uuid/v5');
 
@@ -17,10 +18,19 @@ const RICH_EDITOR_ELEMENT_SELECTOR = [
   '.field-input div.note-editable[contenteditable]',
 ].join(', ');
 
-export const getTextAttributes = (family: Family, product: Product) => {
-  const isValidTextarea = (attribute: Attribute) => (attribute.type === "pim_catalog_textarea" && attribute.localizable && !attribute.is_read_only && !attribute.wysiwyg_enabled);
-  const isValidText = (attribute: Attribute) => (attribute.type === "pim_catalog_text" && attribute.localizable && !attribute.is_read_only);
-  const isVariantProduct = (product: Product) => product.meta.level !== null;
+export const getTextAttributes = (family: Family, product: Product, activeLocalesNumber: number) => {
+  const isValidTextarea = (attribute: Attribute) => (
+    attribute.type === "pim_catalog_textarea" &&
+    (attribute.localizable || activeLocalesNumber === 1) &&
+    !attribute.is_read_only &&
+    !attribute.wysiwyg_enabled
+  );
+  const isValidText = (attribute: Attribute) => (
+    attribute.type === "pim_catalog_text" &&
+    (attribute.localizable || activeLocalesNumber === 1)
+    && !attribute.is_read_only
+  );
+  const isVariantProductOrSubProductModel = (product: Product) => product.meta.level !== null;
   const isAttributeEditable = (attribute: Attribute, product: Product) => product.meta.attributes_for_this_level.includes(attribute.code);
   const isValidRichTextarea = (attribute: Attribute) => (attribute.type === "pim_catalog_textarea" && attribute.localizable && !attribute.is_read_only && attribute.wysiwyg_enabled);
 
@@ -29,7 +39,7 @@ export const getTextAttributes = (family: Family, product: Product) => {
       isValidTextarea(attribute) ||
       isValidRichTextarea(attribute) ||
       isValidText(attribute)
-    ) && (!isVariantProduct(product) || (isVariantProduct(product) && isAttributeEditable(attribute, product)));
+    ) && (!isVariantProductOrSubProductModel(product) || (isVariantProductOrSubProductModel(product) && isAttributeEditable(attribute, product)));
   });
 };
 
@@ -48,6 +58,15 @@ const isTextAttributeElement = (element: Element | null, attributes: Attribute[]
     isValidRichTextarea(attribute) ||
     isValidText(attribute)
   );
+};
+
+export const isTitleFormatterActivated = (attributeCode: string, family: Family, attributes: Attribute[]) => {
+  const attribute = attributes.find(attr => attr.code === attributeCode);
+  if (! attribute) {
+    return false;
+  }
+
+  return attributeCode === family.attribute_as_label && attribute.localizable;
 };
 
 const getEditorElement = (element: Element) => {
@@ -75,13 +94,14 @@ const TextAttributesContextListener = () => {
   const {attributesTabIsLoading} = usePageContext();
   const product = useProduct();
   const dispatchAction = useDispatch();
+  const activeLocales = useFetchActiveLocales();
 
   useLayoutEffect(() => {
     const container = document.querySelector(PRODUCT_ATTRIBUTES_CONTAINER_SELECTOR);
     let observer: MutationObserver|null = null;
 
-    if (family && container) {
-      const textAttributes = getTextAttributes(family, product);
+    if (family && container && activeLocales.length > 0) {
+      const textAttributes = getTextAttributes(family, product, activeLocales.length);
       observer = new MutationObserver((mutations) => {
         let widgetList: WidgetsCollection = {};
         mutations.forEach((mutation) => {
@@ -99,8 +119,8 @@ const TextAttributesContextListener = () => {
             editor.setAttribute("spellcheck", 'false');
 
             const widgetId = uuidV5(`${product.meta.id}-${attribute}`, WIDGET_UUID_NAMESPACE);
-            const isMainLabel = (attribute === family.attribute_as_label);
-            widgetList[widgetId] = createWidget(widgetId, editor as EditorElement, editorId, attribute, isMainLabel);
+            const isAttributeUsedAsMainLabel = isTitleFormatterActivated(attribute, family, textAttributes);
+            widgetList[widgetId] = createWidget(widgetId, editor as EditorElement, editorId, attribute, isAttributeUsedAsMainLabel);
           }
         });
 

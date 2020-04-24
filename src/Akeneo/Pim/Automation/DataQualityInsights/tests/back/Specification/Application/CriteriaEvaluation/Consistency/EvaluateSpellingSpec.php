@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\FilterProductValuesForSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
@@ -46,15 +47,17 @@ class EvaluateSpellingSpec extends ObjectBehavior
         TextChecker $textChecker,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleValidator $supportedLocaleValidator,
+        FilterProductValuesForSpelling $filterProductValuesForSpelling,
         LoggerInterface $logger
     ) {
-        $this->beConstructedWith($textChecker, $localesByChannelQuery, $supportedLocaleValidator, $logger);
+        $this->beConstructedWith($textChecker, $localesByChannelQuery, $supportedLocaleValidator, $filterProductValuesForSpelling, $logger);
     }
 
     public function it_evaluates_rates_for_textarea_and_text_values(
         $textChecker,
         $localesByChannelQuery,
         $supportedLocaleValidator,
+        $filterProductValuesForSpelling,
         $logger,
         TextCheckResultCollection $textCheckResultTextareaEcommerceEn,
         TextCheckResultCollection $textCheckResultTextareaPrintEn,
@@ -77,10 +80,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
             'print' => ['en_US', 'fr_FR'],
         ]));
 
-        $attributeText = $this->givenALocalizableAttributeOfTypeText('text_1');
-        $attributeTextNotToEvaluate = $this->givenANotLocalizableAttributeOfTypeText('text_2');
-        $attributeTextarea = $this->givenALocalizableAttributeOfTypeTextarea('textarea_1');
-        $attributeTextareaNotToEvaluate = $this->givenANotLocalizableAttributeOfTypeTextarea('textarea_2');
+        $attributeText = $this->givenALocalizableAttributeOfTypeText('a_text');
+        $attributeTextarea = $this->givenALocalizableAttributeOfTypeTextarea('a_textarea');
 
         $textareaValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
             'ecommerce' => [
@@ -108,24 +109,15 @@ class EvaluateSpellingSpec extends ObjectBehavior
             ],
         ], function ($value) { return $value; });
 
-        $textValuesNotToEvaluate = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
-            'ecommerce' => [
-                'en_US' => 'Whatever',
-            ],
-        ], function ($value) { return $value; });
-
-        $textareaValuesNotToEvaluate = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
-            'ecommerce' => [
-                'en_US' => 'Whatever',
-                'fr_FR' => null,
-            ],
-        ], function ($value) { return $value; });
+        $productTextValues = new ProductValues($attributeText, $textValues);
+        $productTextareaValues = new ProductValues($attributeTextarea, $textareaValues);
 
         $productValues = (new ProductValuesCollection())
-            ->add(new ProductValues($attributeText, $textValues))
-            ->add(new ProductValues($attributeTextNotToEvaluate, $textValuesNotToEvaluate))
-            ->add(new ProductValues($attributeTextarea, $textareaValues))
-            ->add(new ProductValues($attributeTextareaNotToEvaluate, $textareaValuesNotToEvaluate));
+            ->add($productTextValues)
+            ->add($productTextareaValues);
+
+        $filterProductValuesForSpelling->getTextValues($productValues)->willReturn(new \ArrayIterator([$productTextValues]));
+        $filterProductValuesForSpelling->getTextareaValues($productValues)->willReturn(new \ArrayIterator([$productTextareaValues]));
 
         $channelEcommerce = new ChannelCode('ecommerce');
         $channelPrint = new ChannelCode('print');
@@ -156,7 +148,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelEcommerce, $localeEn, new Rate(94))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelEcommerce, $localeEn, ['textarea_1'])
+            ->addImprovableAttributes($channelEcommerce, $localeEn, ['a_textarea'])
 
             ->addRate($channelEcommerce, $localeFr, new Rate(100))
             ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done())
@@ -166,7 +158,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
 
             ->addRate($channelPrint, $localeEn, new Rate(88))
             ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelPrint, $localeEn, ['text_1'])
+            ->addImprovableAttributes($channelPrint, $localeEn, ['a_text'])
 
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::notApplicable())
         ;
@@ -179,6 +171,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleValidator $supportedLocaleValidator,
         TextCheckResultCollection $textCheckResultTextareaPrintEn,
+        FilterProductValuesForSpelling $filterProductValuesForSpelling,
         $logger
     ) {
         $productId = new ProductId(42);
@@ -194,7 +187,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
             'print' => ['en_US', 'fr_FR'],
         ]));
 
-        $attributeTextarea = $this->givenALocalizableAttributeOfTypeTextarea('textarea_1');
+        $attributeTextarea = $this->givenALocalizableAttributeOfTypeTextarea('a_textarea');
         $textareaValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
             'print' => [
                 'en_US' => 'Success',
@@ -202,8 +195,11 @@ class EvaluateSpellingSpec extends ObjectBehavior
             ],
         ], function ($value) { return $value; });
 
-        $productValues = (new ProductValuesCollection())
-            ->add(new ProductValues($attributeTextarea, $textareaValues));
+        $productTextValues = new ProductValues($attributeTextarea, $textareaValues);
+        $productValues = (new ProductValuesCollection())->add($productTextValues);
+
+        $filterProductValuesForSpelling->getTextValues($productValues)->willReturn(new \ArrayIterator([$productTextValues]));
+        $filterProductValuesForSpelling->getTextareaValues($productValues)->willReturn(new \ArrayIterator([]));
 
         $channelPrint = new ChannelCode('print');
         $localeEn = new LocaleCode('en_US');
@@ -236,18 +232,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
         return new Attribute(new AttributeCode($code), AttributeType::text(), true, false);
     }
 
-    private function givenANotLocalizableAttributeOfTypeText(string $code): Attribute
-    {
-        return new Attribute(new AttributeCode($code), AttributeType::text(), false, false);
-    }
-
     private function givenALocalizableAttributeOfTypeTextarea(string $code): Attribute
     {
         return new Attribute(new AttributeCode($code), AttributeType::textarea(), true, false);
-    }
-
-    private function givenANotLocalizableAttributeOfTypeTextarea(string $code): Attribute
-    {
-        return new Attribute(new AttributeCode($code), AttributeType::textarea(), false, false);
     }
 }

@@ -1,5 +1,8 @@
 import {Attribute, Family, Product} from "@akeneo-pim-ee/data-quality-insights/src/domain";
-import {getTextAttributes} from "@akeneo-pim-ee/data-quality-insights/src/application/listener/TextAttributesContextListener";
+import {
+  getTextAttributes,
+  isTitleFormatterActivated
+} from '@akeneo-pim-ee/data-quality-insights/src/application/listener/TextAttributesContextListener';
 
 const localizableTextarea = buildAttribute("textarea_1", "pim_catalog_textarea", true, false, false);
 const localizableTextareaWysiwyg = buildAttribute("textarea_2", "pim_catalog_textarea", true, true, false);
@@ -22,11 +25,11 @@ const attributes = [
   notLocalizableText,
 ];
 
-describe('Get products eligible text attributes to initialize the PEF widgets', () => {
+describe('Get eligible text attributes to initialize the PEF widgets', () => {
   test('Empty family', () => {
     const family = buildFamilyWithAttributes([]);
     const product = buildSimpleProduct();
-    expect(getTextAttributes(family, product)).toMatchObject({});
+    expect(getTextAttributes(family, product, 3)).toMatchObject({});
   });
 
   test('No eligible attribute types', () => {
@@ -36,13 +39,13 @@ describe('Get products eligible text attributes to initialize the PEF widgets', 
     ];
     const family = buildFamilyWithAttributes(attributes);
     const product = buildSimpleProduct();
-    expect(getTextAttributes(family, product)).toMatchObject({});
+    expect(getTextAttributes(family, product, 3)).toMatchObject({});
   });
 
   test('Multiple eligible attributes for a simple product', () => {
     const family = buildFamilyWithAttributes(attributes);
     const product = buildSimpleProduct();
-    expect(getTextAttributes(family, product)).toMatchObject([
+    expect(getTextAttributes(family, product, 3)).toMatchObject([
       localizableTextarea,
       localizableTextareaWysiwyg,
       localizableText
@@ -52,16 +55,64 @@ describe('Get products eligible text attributes to initialize the PEF widgets', 
   test('No eligible attribute for a variant product', () => {
     const family = buildFamilyWithAttributes(attributes);
     const product = buildVariantProduct([]);
-    expect(getTextAttributes(family, product)).toMatchObject([]);
+    expect(getTextAttributes(family, product, 3)).toMatchObject([]);
   });
 
   test('Multiple eligible attributes for a variant product', () => {
     const family = buildFamilyWithAttributes(attributes);
     const product = buildVariantProduct(['textarea_1', 'text_1']);
-    expect(getTextAttributes(family, product)).toMatchObject([
+    expect(getTextAttributes(family, product, 3)).toMatchObject([
       localizableTextarea,
       localizableText
     ]);
+  });
+
+  test('Multiple eligible attributes with only 1 active locale', () => {
+    const family = buildFamilyWithAttributes([
+      localizableTextarea,
+      localizableText,
+      notLocalizableText,
+      notLocalizableTextarea
+    ]);
+    const product = buildSimpleProduct();
+    expect(getTextAttributes(family, product, 1)).toMatchObject([
+      localizableTextarea,
+      localizableText,
+      notLocalizableText,
+      notLocalizableTextarea,
+    ]);
+  });
+});
+
+describe('Check if an attribute is used as main label to initialize the PEF widget', () => {
+  test('Attribute localizable, used as label in the family and in the white list', () => {
+    const localizableText = buildAttribute("title", "pim_catalog_text", true, false, false);
+    const family = buildFamilyWithAttributes([localizableText]);
+    const attributes = [
+      localizableText,
+    ];
+    expect(isTitleFormatterActivated('title', family, attributes)).toBe(true);
+  });
+  test('Attribute localizable and used as label in the family but not in the white list', () => {
+    const localizableText = buildAttribute("title", "pim_catalog_text", true, false, false);
+    const family = buildFamilyWithAttributes([localizableText]);
+    expect(isTitleFormatterActivated('title', family, [])).toBe(false);
+  });
+  test('Attribute not localizable used as label in the family', () => {
+    const notLocalizableText = buildAttribute("title", "pim_catalog_text", false, false, false);
+    const family = buildFamilyWithAttributes([localizableText]);
+    const attributes = [
+      notLocalizableText,
+    ];
+    expect(isTitleFormatterActivated('title', family, attributes)).toBe(false);
+  });
+  test('Attribute localizable but not used as label in the family', () => {
+    const localizableText = buildAttribute("test", "pim_catalog_text", true, false, false);
+    const family = buildFamilyWithAttributes([localizableText]);
+    const attributes = [
+      localizableText,
+    ];
+    expect(isTitleFormatterActivated('test', family, attributes)).toBe(false);
   });
 });
 
@@ -102,6 +153,11 @@ function buildSimpleProduct(): Product {
       attributes_for_this_level: [],
       level: null,
       model_type: "product",
+      parent_attributes: [],
+      family_variant: {
+        variant_attribute_sets: []
+      },
+      variant_navigation: [],
     },
     created: null,
     updated: null,
@@ -120,6 +176,11 @@ function buildVariantProduct(levelAttributes: string[]): Product {
       attributes_for_this_level: levelAttributes,
       level: 1,
       model_type: "product",
+      parent_attributes: [],
+      family_variant: {
+        variant_attribute_sets: []
+      },
+      variant_navigation: [],
     },
     created: null,
     updated: null,

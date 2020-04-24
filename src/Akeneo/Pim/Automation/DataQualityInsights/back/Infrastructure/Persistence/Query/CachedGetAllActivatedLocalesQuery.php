@@ -18,10 +18,13 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetAllActivatedLocale
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Doctrine\DBAL\Connection;
 
-final class GetAllActivatedLocalesQuery implements GetAllActivatedLocalesQueryInterface
+final class CachedGetAllActivatedLocalesQuery implements GetAllActivatedLocalesQueryInterface
 {
     /** @var Connection */
     private $connection;
+
+    /** @var null|LocaleCollection */
+    private $locales;
 
     public function __construct(Connection $connection)
     {
@@ -30,14 +33,20 @@ final class GetAllActivatedLocalesQuery implements GetAllActivatedLocalesQueryIn
 
     public function execute(): LocaleCollection
     {
+        if (null !== $this->locales) {
+            return $this->locales;
+        }
+
         $query = <<<SQL
 SELECT code FROM pim_catalog_locale WHERE is_activated = 1;
 SQL;
 
         $statement = $this->connection->executeQuery($query);
 
-        return new LocaleCollection(array_map(function ($row) {
+        $this->locales = new LocaleCollection(array_map(function ($row) {
             return new LocaleCode($row['code']);
         }, $statement->fetchAll(\PDO::FETCH_ASSOC)));
+
+        return $this->locales;
     }
 }

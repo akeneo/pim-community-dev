@@ -15,7 +15,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\LocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllActivatedLocalesQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetAllActivatedLocalesQuery;
 use Akeneo\Test\Integration\TestCase;
 
 class GetAllActivatedLocalesQueryIntegration extends TestCase
@@ -30,7 +30,7 @@ class GetAllActivatedLocalesQueryIntegration extends TestCase
         ]);
 
         $result = $this
-            ->get(GetAllActivatedLocalesQuery::class)
+            ->get(CachedGetAllActivatedLocalesQuery::class)
             ->execute();
 
         $this->assertEquals($expectedLocales, $result);

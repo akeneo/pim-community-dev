@@ -54,6 +54,7 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetLocalesByChannelQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\FilterProductValuesForSpelling'
             - '@monolog.logger.quality'
         tags:
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
@@ -68,3 +69,7 @@ services:
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_criterion_applicability' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\FilterProductValuesForSpelling:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetAllActivatedLocalesQuery'

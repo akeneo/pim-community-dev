@@ -207,12 +207,12 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedLocale\ChainedSupportedLocaleValidator'
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedLocale\SupportedPrefixLocaleValidator:
         arguments:
-            $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllActivatedLocalesQuery'
+            $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetAllActivatedLocalesQuery'
         tags:
             - { name: pimee_data_quality_insights.inner_supported_locale_validator }
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedLocale\SupportedPortugueseLocaleValidator:
         arguments:
-            $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllActivatedLocalesQuery'
+            $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\CachedGetAllActivatedLocalesQuery'
         tags:
             - { name: pimee_data_quality_insights.inner_supported_locale_validator }
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\SupportedLocale\ChainedSupportedLocaleValidator:
