@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Persistence\Query\IsUserOwnerOfProjectsQuery;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\IsUserLinkedToProjectsQueryInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\IsUserOwnerOfProjectsQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -27,10 +29,18 @@ class EnsureUserCanBeDeletedSubscriber implements EventSubscriberInterface
 {
     /** @var IsUserLinkedToProjectsQueryInterface */
     private $isUserLinkedToProjectQuery;
+    /** @var IsUserOwnerOfProjectsQuery */
+    private $isUserOwnerOfProjectsQuery;
 
-    public function __construct(IsUserLinkedToProjectsQueryInterface $isUserLinkedToProjectQuery)
-    {
+    /**
+     * TODO: remove null default value for IsUserOwnerOfProjectsQueryInterface on master
+     */
+    public function __construct(
+        IsUserLinkedToProjectsQueryInterface $isUserLinkedToProjectQuery,
+        IsUserOwnerOfProjectsQueryInterface $isUserOwnerOfProjectsQuery = null
+    ) {
         $this->isUserLinkedToProjectQuery = $isUserLinkedToProjectQuery;
+        $this->isUserOwnerOfProjectsQuery = $isUserOwnerOfProjectsQuery;
     }
 
     public static function getSubscribedEvents(): array
@@ -43,6 +53,11 @@ class EnsureUserCanBeDeletedSubscriber implements EventSubscriberInterface
         $user = $event->getSubject();
         if (!$user instanceof UserInterface) {
             return;
+        }
+
+        if (null !== $this->isUserOwnerOfProjectsQuery
+            && true === $this->isUserOwnerOfProjectsQuery->execute($user->getId())) {
+            throw new UserCannotBeDeletedException('teamwork_assistant.user.deletion.user_is_project_owner');
         }
 
         if (true === $this->isUserLinkedToProjectQuery->execute($user->getId())) {

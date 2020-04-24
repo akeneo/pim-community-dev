@@ -69,7 +69,7 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
         $this->mediaLinkImageGenerator->supports('2016/04/Ben-site-web.jpg', $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->mediaLinkImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
     }
 
     /**
@@ -80,11 +80,11 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
         $this->mediaLinkImageGenerator->supports('2016/04/Site-web-Nico.jpg', $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->mediaLinkImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
 
         $previewImage = $this->mediaLinkImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
     }
 
     /**
@@ -97,7 +97,7 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
 
         $type = MediaLinkImageGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE];
         $this->assertStringContainsString(
-            sprintf('media/cache/%s/pim_asset_manager.default_image.image', $type),
+            sprintf('__root__/thumbnail/asset_manager/%s/pim_asset_manager.default_image.image', $type),
             $previewImage
         );
     }

@@ -4,7 +4,6 @@ import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/
 import {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {createFileFromNormalized} from 'akeneoassetmanager/domain/model/file';
 import {denormalizeAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import {denormalizeAssetFamilyTransformations} from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
 import {denormalizeAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {denormalizeAssetFamilyNamingConvention} from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
 import {denormalizeAssetFamilyProductLinkRules} from 'akeneoassetmanager/domain/model/asset-family/product-link-rule-collection';
@@ -18,7 +17,7 @@ export const hydrator = () => (backendAssetFamily: BackendAssetFamily): AssetFam
     attributeAsMainMedia: denormalizeAttributeIdentifier(backendAssetFamily.attribute_as_main_media),
     attributeAsLabel: denormalizeAttributeIdentifier(backendAssetFamily.attribute_as_label),
     attributes: Object.values(backendAssetFamily.attributes).map(denormalizeAttribute),
-    transformations: denormalizeAssetFamilyTransformations(backendAssetFamily.transformations),
+    transformations: backendAssetFamily.transformations || [],
     namingConvention: denormalizeAssetFamilyNamingConvention(backendAssetFamily.naming_convention),
     productLinkRules: denormalizeAssetFamilyProductLinkRules(backendAssetFamily.product_link_rules),
     assetCount: backendAssetFamily.asset_count,

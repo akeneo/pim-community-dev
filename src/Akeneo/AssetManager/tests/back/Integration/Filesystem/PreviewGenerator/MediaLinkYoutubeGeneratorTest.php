@@ -56,7 +56,7 @@ final class MediaLinkYoutubeGeneratorTest extends PreviewGeneratorIntegrationTes
     {
         $previewImage = $this->mediaLinkYoutubeGenerator->generate(self::YOUTUBE_VIDEO_ID, $this->youtubeMediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
     }
 
     /**
@@ -66,11 +66,11 @@ final class MediaLinkYoutubeGeneratorTest extends PreviewGeneratorIntegrationTes
     {
         $previewImage = $this->mediaLinkYoutubeGenerator->generate(self::YOUTUBE_VIDEO_ID, $this->youtubeMediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
 
         $previewImage = $this->mediaLinkYoutubeGenerator->generate(self::YOUTUBE_VIDEO_ID, $this->youtubeMediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
     }
 
     /**
@@ -83,7 +83,7 @@ final class MediaLinkYoutubeGeneratorTest extends PreviewGeneratorIntegrationTes
 
         $type = MediaLinkYoutubeGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE];
         $this->assertStringContainsString(
-            sprintf('media/cache/%s/pim_asset_manager.default_image.image', $type),
+            sprintf('__root__/thumbnail/asset_manager/%s/pim_asset_manager.default_image.image', $type),
             $previewImage
         );
     }

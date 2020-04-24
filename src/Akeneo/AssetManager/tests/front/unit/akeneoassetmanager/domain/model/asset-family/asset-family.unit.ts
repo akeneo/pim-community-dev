@@ -139,7 +139,7 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
       attributeAsMainMedia: '',
       attributeAsLabel: '',
       attributes: [],
-      transformations: '[]',
+      transformations: [],
       productLinkRules: '[]',
       namingConvention: '{}',
     });

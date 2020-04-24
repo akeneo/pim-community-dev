@@ -9,7 +9,7 @@ const initialState = {
     code: '',
     labels: {},
     image: null,
-    transformations: '[]',
+    transformations: [],
     productLinkRules: '[]',
     namingConvention: '{}',
   },

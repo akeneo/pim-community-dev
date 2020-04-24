@@ -86,6 +86,7 @@ services:
             - '@pimee_security.api.warmup_query_cache.get_viewable_attribute_codes_for_user'
             - '@event_dispatcher'
             - '@pim_api.checker.duplicate_value'
+            - '@logger'
 
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'

@@ -88,6 +88,15 @@ extensions:
         config:
             axes: [count_reference_entity, average_max_records_per_reference_entity, average_max_attributes_per_reference_entity]
 
+    akeneo-attribute-reference-entity-collection-filter:
+        module: pimee/filter/attribute/reference-entity-collection
+        config:
+            url: akeneo_reference_entities_record_index_rest
+            operators:
+                - IN
+                - EMPTY
+                - NOT EMPTY
+
 attribute_fields:
     akeneo-reference-entity-collection-field: pim/reference-entity-collection-field
     akeneo-reference-entity-field: pim/reference-entity-field

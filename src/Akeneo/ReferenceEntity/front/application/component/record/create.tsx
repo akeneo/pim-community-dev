@@ -123,6 +123,7 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                       />
                     </div>
                     {getErrorsView(this.props.errors, 'labels')}
+                    {getErrorsView(this.props.errors, 'label')}
                   </div>
                   <div className="AknFieldContainer" data-code="code">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">

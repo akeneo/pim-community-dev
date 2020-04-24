@@ -110,7 +110,7 @@ class EditAction
         }
 
         $transformations = $this->isUserAllowedToManageTransformation()
-            ? json_decode($parameters['transformations'], true)
+            ? $parameters['transformations']
             : null
             ;
         $namingConvention = $this->isUserAllowedToManageProductLinkRule()
@@ -199,12 +199,6 @@ class EditAction
     private function validateRequestContent(array $parameters): ConstraintViolationListInterface
     {
         $nestedConstraints = [];
-        if ($this->isUserAllowedToManageTransformation()) {
-            $nestedConstraints['transformations'] = [
-                new Assert\Type(['string']),
-                new Assert\Json(),
-            ];
-        }
 
         if ($this->isUserAllowedToManageProductLinkRule()) {
             $nestedConstraints['namingConvention'] = [

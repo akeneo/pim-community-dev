@@ -55,6 +55,7 @@ describe('akeneoassetmanager/infrastructure/fetcher/asset-family', () => {
         attributeAsLabel: '',
         attributes: [],
         identifier: 'sofa',
+        transformations: [],
         code: 'sofa',
         labels: {
           en_US: 'Sofa',

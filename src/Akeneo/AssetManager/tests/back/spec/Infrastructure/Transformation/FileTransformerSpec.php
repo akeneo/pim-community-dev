@@ -13,7 +13,6 @@ use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplier
 use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplierRegistry;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 
 class FileTransformerSpec extends ObjectBehavior
@@ -57,7 +56,7 @@ class FileTransformerSpec extends ObjectBehavior
         );
     }
 
-    function it_applies_a_transformation_to_a_file(
+    function it_applies_a_transformation_to_a_file_and_uses_png_as_extension(
         OperationApplier $scaleOperationApplier,
         OperationApplier $thumbnailOperationApplier,
         Transformation $transformation,
@@ -69,10 +68,10 @@ class FileTransformerSpec extends ObjectBehavior
         $transformation->getFilenamePrefix()->willReturn('thumb_');
         $transformation->getFilenameSuffix()->willReturn('-42');
 
-        $file->beConstructedWith(['/my/file/jambon.png', false]);
-        $file->getExtension()->willReturn('png');
+        $file->beConstructedWith(['/my/file/jambon.jpg', false]);
+        $file->getExtension()->willReturn('jpg');
         $file->getPath()->willReturn('/my/file');
-        $file->getBasename('.png')->willReturn('jambon');
+        $file->getBasename('.jpg')->willReturn('jambon');
 
         $scaleOperationApplier->apply($file, $scale)->shouldBeCalled()->willReturn($file);
         $thumbnailOperationApplier->apply($file, $thumbnail)->shouldBeCalled()->willReturn($file);

@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
-use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\VariantProductInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class SetterActionApplierSpec extends ObjectBehavior
@@ -302,5 +303,27 @@ class SetterActionApplierSpec extends ObjectBehavior
         $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
 
         $this->applyAction($action, [$entityWithFamilyVariant]);
+    }
+
+    function it_sets_an_attribute_value_to_null_if_the_action_value_is_an_empty_string(
+        PropertySetterInterface $propertySetter,
+        AttributeRepositoryInterface $attributeRepository,
+        ProductSetActionInterface $action,
+        AttributeInterface $releaseDate,
+        FamilyInterface $family
+    ) {
+        $action->getValue()->willReturn('');
+        $action->getField()->willReturn('release_date');
+        $action->getOptions()->willReturn([]);
+
+        $attributeRepository->findOneByIdentifier('release_date')->willReturn($releaseDate);
+        $family->getId()->willReturn(42);
+        $family->hasAttributeCode('release_date')->willReturn(true);
+
+        $product = (new Product())->setFamily($family->getWrappedObject());
+
+        $propertySetter->setData($product, 'release_date', null, [])->shouldBeCalled();
+
+        $this->applyAction($action, [$product]);
     }
 }

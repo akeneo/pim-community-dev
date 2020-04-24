@@ -35,23 +35,21 @@ class GetAssetCollectionTypeAdapter implements GetAssetCollectionTypeAdapterInte
     private function checkAttributeExists(string $productAttributeCode, ?AbstractAttribute $attribute): void
     {
         if (null === $attribute) {
-            throw new \RuntimeException(
-                sprintf('Expected attribute "%s" to exist, none found', $productAttributeCode)
-            );
+            $message = sprintf('Expected attribute "%s" to exist, none found', $productAttributeCode);
+            throw new ProductAttributeDoesNotExistException($message);
         }
     }
 
     private function checkAttributeType(AbstractAttribute $attribute): void
     {
         if ($attribute->getType() !== AssetCollectionType::ASSET_COLLECTION) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Expected attribute "%s" to be of type "%s", "%s" given',
-                    $attribute->getCode(),
-                    AssetCollectionType::ASSET_COLLECTION,
-                    $attribute->getType()
-                )
+            $message = sprintf(
+                'Expected attribute "%s" to be of type "%s", "%s" given',
+                $attribute->getCode(),
+                AssetCollectionType::ASSET_COLLECTION,
+                $attribute->getType()
             );
+            throw new ProductAttributeCannotContainAssetsException($message);
         }
     }
 }

@@ -80,7 +80,7 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
             return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
         }))->shouldBeCalled();
         $productModelAxisRateRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
+            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::CONSOLIDATION_RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
         }))->shouldBeCalled();
 
@@ -98,7 +98,7 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
             return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
         }))->shouldBeCalled();
         $productModelCriterionEvaluationRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
+            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::EVALUATIONS_RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
         }))->shouldBeCalled();
 

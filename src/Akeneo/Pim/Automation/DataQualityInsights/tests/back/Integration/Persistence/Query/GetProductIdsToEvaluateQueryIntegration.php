@@ -136,6 +136,16 @@ class GetProductIdsToEvaluateQueryIntegration extends TestCase
         return new ProductId((int) $product->getId());
     }
 
+    private function createProduct(string $identifier)
+    {
+        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
+            ->withIdentifier($identifier)
+            ->build();
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        return new ProductId((int) $product->getId());
+    }
+
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();

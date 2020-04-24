@@ -64,7 +64,7 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
             PreviewGeneratorRegistry::THUMBNAIL_TYPE
         );
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
     }
 
     /**
@@ -74,11 +74,11 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
     {
         $previewImage = $this->mediaLinkPdfGenerator->generate($this->data(), $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
 
         $previewImage = $this->mediaLinkPdfGenerator->generate($this->data(), $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
-        $this->assertStringContainsString('media/cache/', $previewImage);
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
     }
 
     /**
@@ -91,7 +91,7 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
 
         $type = MediaLinkPdfGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE];
         $this->assertStringContainsString(
-            sprintf('media/cache/%s/pim_asset_manager.default_image.image', $type),
+            sprintf('__root__/thumbnail/asset_manager/%s/pim_asset_manager.default_image.image', $type),
             $previewImage
         );
     }
@@ -106,7 +106,7 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
 
         $type = MediaLinkPdfGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE];
         $this->assertStringContainsString(
-            sprintf('media/cache/%s/pim_asset_manager.default_image.image', $type),
+            sprintf('__root__/thumbnail/asset_manager/%s/pim_asset_manager.default_image.image', $type),
             $previewImage
         );
     }

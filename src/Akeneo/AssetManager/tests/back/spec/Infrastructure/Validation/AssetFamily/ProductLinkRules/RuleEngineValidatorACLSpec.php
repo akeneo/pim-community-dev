@@ -86,7 +86,8 @@ class RuleEngineValidatorACLSpec extends ObjectBehavior
             })
         )->willReturn($oneViolation);
 
-        $this->validateProductAssignment($productAction)->shouldReturn($oneViolation);
+        $actualViolations = $this->validateProductAssignment($productAction);
+        $actualViolations->count()->shouldBe(1);
     }
 
     function it_validates_a_product_add_action_and_returns_violations(
@@ -97,7 +98,7 @@ class RuleEngineValidatorACLSpec extends ObjectBehavior
             'mode'    => 'add',
             'attribute' => 'attribute',
         ];
-        $setProductAction = new ProductAddAction(['field' => 'attribute', 'items' => ['one', 'two']]);
+        $productAddAction = new ProductAddAction(['field' => 'attribute', 'items' => ['one', 'two']]);
         $oneViolation = $this->oneViolation();
 
         $actionDenormalizer->denormalize(
@@ -108,7 +109,7 @@ class RuleEngineValidatorACLSpec extends ObjectBehavior
             }
             ),
             ActionInterface::class
-        )->willReturn($setProductAction);
+        )->willReturn($productAddAction);
 
         $productActionValidator->validate(
             Argument::that(function (ProductAddAction $actualAction) use ($productAction) {
@@ -116,13 +117,58 @@ class RuleEngineValidatorACLSpec extends ObjectBehavior
             })
         )->willReturn($oneViolation);
 
-        $this->validateProductAssignment($productAction)->shouldReturn($oneViolation);
+        $actualViolations = $this->validateProductAssignment($productAction);
+        $actualViolations->count()->shouldBe(1);
+    }
+
+    function it_does_not_return_violations_due_to_the_dummy_asset_code_not_existing_for_replace_mode(
+        DenormalizerInterface $actionDenormalizer,
+        ValidatorInterface $productActionValidator
+    ) {
+        $setProductAction = new ProductAddAction(['field' => 'attribute', 'items' => ['one', 'two']]);
+        $assetDoesNotExistViolation = $this->assetDoesNotExistViolationWithReplaceMode();
+        $actionDenormalizer->denormalize(Argument::any(), ActionInterface::class)->willReturn($setProductAction);
+        $productActionValidator->validate(Argument::any())->willReturn($assetDoesNotExistViolation);
+
+        $actualViolations = $this->validateProductAssignment(['mode' => 'add', 'attribute' => 'attribute']);
+
+        $actualViolations->count()->shouldBe(0);
+    }
+
+    function it_does_not_return_violations_due_to_the_dummy_asset_code_not_existing_for_add_mode(
+        DenormalizerInterface $actionDenormalizer,
+        ValidatorInterface $productActionValidator
+    ) {
+        $productAddAction = new ProductAddAction(['field' => 'attribute', 'items' => ['one', 'two']]);
+        $assetDoesNotExistViolation = $this->assetDoesNotExistViolationWithAddMode();
+        $actionDenormalizer->denormalize(Argument::any(), ActionInterface::class)->willReturn($productAddAction);
+        $productActionValidator->validate(Argument::any())->willReturn($assetDoesNotExistViolation);
+
+        $actualViolations = $this->validateProductAssignment(['mode' => 'add', 'attribute' => 'attribute']);
+
+        $actualViolations->count()->shouldBe(0);
     }
 
     private function oneViolation(): ConstraintViolationList
     {
         return new ConstraintViolationList([
             new ConstraintViolation('', '', [], '', '', '')
+        ]);
+    }
+
+    private function assetDoesNotExistViolationWithReplaceMode(): ConstraintViolationList
+    {
+        $root = new ProductSetAction(['value' => ['VALIDATION_TEST']]);
+        return new ConstraintViolationList([
+            new ConstraintViolation('', '', [], $root, '', '')
+        ]);
+    }
+
+    private function assetDoesNotExistViolationWithAddMode(): ConstraintViolationList
+    {
+        $root = new ProductAddAction(['items' => ['VALIDATION_TEST']]);
+        return new ConstraintViolationList([
+            new ConstraintViolation('', '', [], $root, '', '')
         ]);
     }
 }
