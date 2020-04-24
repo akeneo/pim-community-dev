@@ -2,12 +2,10 @@ import React from 'react';
 import { FallbackCondition } from '../../models/FallbackCondition';
 import { ConditionLineProps } from './ConditionLineProps';
 
-type FallbackConditionLineProps = {
-  condition: FallbackCondition;
-} & ConditionLineProps;
+const FallbackConditionLine: React.FC<ConditionLineProps> = ({ condition }) => {
+  const fallBackCondition = condition as FallbackCondition;
 
-const FallbackConditionLine: React.FC<FallbackConditionLineProps> = ({ condition }) => {
-  return <div>{JSON.stringify(condition.json)}</div>;
+  return <div>{JSON.stringify(fallBackCondition.json)}</div>;
 };
 
-export { FallbackConditionLine, FallbackConditionLineProps };
+export { FallbackConditionLine };

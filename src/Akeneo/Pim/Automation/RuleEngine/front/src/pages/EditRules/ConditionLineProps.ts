@@ -1,9 +1,10 @@
 import { Translate } from '../../dependenciesTools';
-import { Locale } from '../../models';
+import {Condition, Locale} from '../../models';
 import { IndexedScopes } from '../../fetch/ScopeFetcher';
 
 type ConditionLineProps = {
   register: any;
+  condition: Condition;
   lineNumber: number;
   translate: Translate;
   locales: Locale[];

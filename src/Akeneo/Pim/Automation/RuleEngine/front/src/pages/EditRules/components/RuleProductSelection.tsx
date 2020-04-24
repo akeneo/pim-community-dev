@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { Translate } from '../../../dependenciesTools';
 import { GreyGhostButton, SmallHelper } from '../../../components';
 import { TextBoxBlue } from './TextBoxBlue';
-import { RuleDefinition } from '../../../models/RuleDefinition';
+import { RuleDefinition } from '../../../models/';
 import { PimConditionLine } from '../PimConditionLine';
 import { FallbackConditionLine } from '../FallbackConditionLine';
-import { Condition } from '../../../models/Condition';
-import { Locale } from '../../../models/Locale';
+import { Condition } from '../../../models/';
+import { Locale } from '../../../models/';
 import { IndexedScopes } from '../../../fetch/ScopeFetcher';
 
 const Header = styled.header`

@@ -1,13 +1,10 @@
 import React, { ReactElement } from 'react';
 import { PimCondition } from '../../models/PimCondition';
 import { Flag } from '../../components/Flag/Flag';
-import { ConditionLineProps } from './ConditionLineProps';
+import { ConditionLineProps } from "./ConditionLineProps";
 
-type PimConditionLineProps = {
-  condition: PimCondition;
-} & ConditionLineProps;
-
-const PimConditionLine: React.FC<PimConditionLineProps> = ({ translate, condition }) => {
+const PimConditionLine: React.FC<ConditionLineProps> = ({ translate, condition }) => {
+  const pimCondition = condition as PimCondition;
   const isMetric = (value: any): boolean => {
     return (
       typeof value === 'object' &&
@@ -65,25 +62,25 @@ const PimConditionLine: React.FC<PimConditionLineProps> = ({ translate, conditio
 
   return (
     <div className='AknRule'>
-      <span className='AknRule-attribute'>{condition.field}</span>
+      <span className='AknRule-attribute'>{pimCondition.field}</span>
       {` ${translate(
-        `pimee_catalog_rule.form.edit.conditions.operators.${condition.operator}`
+        `pimee_catalog_rule.form.edit.conditions.operators.${pimCondition.operator}`
       )} `}
-      <span className='AknRule-attribute'>{displayValue(condition.value)}</span>
-      {condition.scope || condition.locale ? (
-        condition.scope && condition.locale ? (
+      <span className='AknRule-attribute'>{displayValue(pimCondition.value)}</span>
+      {pimCondition.scope || pimCondition.locale ? (
+        pimCondition.scope && pimCondition.locale ? (
           <span className='AknRule-attribute'>
             {' [ '}
-            {displayLocale(condition.locale)}
+            {displayLocale(pimCondition.locale)}
             {' | '}
-            {condition.scope}
+            {pimCondition.scope}
             {' ] '}
           </span>
         ) : (
           <span className='AknRule-attribute'>
             {' [ '}
-            {displayLocale(condition.locale)}
-            {condition.scope}
+            {displayLocale(pimCondition.locale)}
+            {pimCondition.scope}
             {' ] '}
           </span>
         )
@@ -94,4 +91,4 @@ const PimConditionLine: React.FC<PimConditionLineProps> = ({ translate, conditio
   );
 };
 
-export { PimConditionLine, PimConditionLineProps };
+export { PimConditionLine };
