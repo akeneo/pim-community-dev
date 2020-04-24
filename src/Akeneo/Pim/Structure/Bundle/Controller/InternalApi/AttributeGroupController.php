@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents;
 use Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
@@ -100,7 +99,7 @@ class AttributeGroupController
         SimpleFactoryInterface $attributeGroupFactory,
         EventDispatcherInterface $eventDispatcher,
         CollectionFilterInterface $inputFilter,
-        FindAttributeCodesForAttributeGroup $findAttributeCodesForAttributeGroup = null // TODO pull-up: remove null
+        FindAttributeCodesForAttributeGroup $findAttributeCodesForAttributeGroup
     ) {
         $this->attributeGroupRepo                 = $attributeGroupRepo;
         $this->attributeGroupSearchableRepository = $attributeGroupSearchableRepository;
@@ -305,7 +304,7 @@ class AttributeGroupController
     /**
      * Sort the attribute groups
      *
-     * @param  Request $request
+     * @param Request $request
      *
      * @AclAncestor("pim_enrich_attributegroup_sort")
      *
@@ -426,24 +425,12 @@ class AttributeGroupController
     /**
      * Check that the user doesn't change the attribute list without permission
      *
-     * @param array                   $newAttributeGroup
-     * @param AttributeGroupInterface $attributeGroup // TODO pull-up: Remove this argument
+     * @param array $newAttributeGroup
      */
-    protected function checkAttributeCollectionRights(array $newAttributeGroup, AttributeGroupInterface $attributeGroup): void
-    {
+    protected function checkAttributeCollectionRights(array $newAttributeGroup): void {
         $attributeCodesAfter = $newAttributeGroup['attributes'];
 
-        // TODO pull-up: Remove this conditional, use the attributeCodesForAttributeGroup query function (else part)
-        if (null === $this->findAttributeCodesForAttributeGroup) {
-            $attributeCodesBefore = array_map(
-                function (AttributeInterface $attribute) {
-                    return $attribute->getCode();
-                },
-                $attributeGroup->getAttributes()->toArray()
-            );
-        } else {
-            $attributeCodesBefore = $this->findAttributeCodesForAttributeGroup->execute($newAttributeGroup['code']);
-        }
+        $attributeCodesBefore = $this->findAttributeCodesForAttributeGroup->execute($newAttributeGroup['code']);
 
         if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_remove_attribute') &&
             count($attributeCodesBefore) > 0 &&

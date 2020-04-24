@@ -179,7 +179,7 @@ class ProductController
         ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave,
         WarmupQueryCache $warmupQueryCache,
         EventDispatcherInterface $eventDispatcher,
-        DuplicateValueChecker $duplicateValueChecker = null // TODO @merge master Remove this null parameter and the conditions
+        DuplicateValueChecker $duplicateValueChecker
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -323,16 +323,14 @@ class ProductController
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        if (null !== $this->duplicateValueChecker) {
-            try {
-                $this->duplicateValueChecker->check($data);
-            } catch (InvalidPropertyTypeException $e) {
-                throw new DocumentedHttpException(
-                    Documentation::URL . 'patch_products__code_',
-                    sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
-                    $e
-                );
-            }
+        try {
+            $this->duplicateValueChecker->check($data);
+        } catch (InvalidPropertyTypeException $e) {
+            throw new DocumentedHttpException(
+                Documentation::URL . 'patch_products__code_',
+                sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
+                $e
+            );
         }
 
         $data = $this->populateIdentifierProductValue($data);
@@ -365,16 +363,14 @@ class ProductController
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        if (null !== $this->duplicateValueChecker) {
-            try {
-                $this->duplicateValueChecker->check($data);
-            } catch (InvalidPropertyTypeException $e) {
-                throw new DocumentedHttpException(
-                    Documentation::URL . 'patch_products__code_',
-                    sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
-                    $e
-                );
-            }
+        try {
+            $this->duplicateValueChecker->check($data);
+        } catch (InvalidPropertyTypeException $e) {
+            throw new DocumentedHttpException(
+                Documentation::URL . 'patch_products__code_',
+                sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
+                $e
+            );
         }
 
         $product = $this->productRepository->findOneByIdentifier($code);
