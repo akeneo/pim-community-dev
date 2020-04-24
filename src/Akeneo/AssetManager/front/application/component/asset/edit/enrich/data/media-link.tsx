@@ -30,6 +30,10 @@ import {
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 import ReloadIcon from 'akeneoassetmanager/application/component/app/icon/reload';
+import {connect} from 'react-redux';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
+import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
+import {ViewGenerator} from 'akeneoassetmanager/application/configuration/value';
 
 const MediaLinkInput = styled.input`
   ::placeholder {
@@ -68,12 +72,16 @@ const View = ({
   onChange,
   onSubmit,
   canEditData,
+  reloadPreview,
+  onReloadPreview,
 }: {
   value: EditionValue;
   locale: LocaleReference;
   onChange: (value: EditionValue) => void;
   onSubmit: () => void;
   canEditData: boolean;
+  reloadPreview: boolean;
+  onReloadPreview: () => void;
 }) => {
   if (!isMediaLinkData(value.data) || !isMediaLinkAttribute(value.attribute)) {
     return null;
@@ -85,6 +93,12 @@ const View = ({
     data: getMediaData(value.data),
   });
 
+  React.useEffect(() => {
+    debugger;
+    if (reloadPreview) {
+      doRegenerate();
+    }
+  }, [reloadPreview]);
   const [regenerate, doRegenerate] = useRegenerate(mediaPreviewUrl);
 
   const label = getLabelInCollection(
@@ -103,7 +117,7 @@ const View = ({
           <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
           <RegenerateThumbnailButton
             title={__('pim_asset_manager.attribute.media_link.thumbnail.regenerate')}
-            onClick={doRegenerate}
+            onClick={onReloadPreview}
           >
             <ReloadIcon />
           </RegenerateThumbnailButton>
@@ -139,4 +153,11 @@ const View = ({
   );
 };
 
-export const view = View;
+export const view = connect(
+  (state: EditState) => ({
+    reloadPreview: state.reloadPreview,
+  }),
+  dispatch => ({
+    onReloadPreview: () => dispatch(doReloadAllPreviews() as any),
+  })
+)(View) as ViewGenerator;
