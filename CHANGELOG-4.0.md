@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Technical Improvements
+
+- PIM-9195: Enable preview of SVG files in the assets mass upload
+
 ## Bug fixes
 
 - PIM-9192: Fix error being printed in the response of partial update of products API
