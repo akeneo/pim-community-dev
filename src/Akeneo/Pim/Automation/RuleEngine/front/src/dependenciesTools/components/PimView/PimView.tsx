@@ -9,8 +9,8 @@ type Props = {
 };
 
 const StyledPimView = styled.div<{ rendered: boolean }>`
-  visibility: ${({ rendered }) => (rendered ? 'visible' : 'hidden')};
-  opacity: ${({ rendered }) => (rendered ? '1' : '0')};
+  visibility: ${({ rendered }): string => (rendered ? 'visible' : 'hidden')};
+  opacity: ${({ rendered }): string => (rendered ? '1' : '0')};
   transition: opacity 0.5s linear;
 `;
 
@@ -35,7 +35,7 @@ export const PimView: React.FunctionComponent<Props> = ({
   }, [viewBuilder, viewName]);
 
   useEffect(
-    () => () => {
+    () => (): void => {
       view && view.remove();
     },
     [view]

@@ -4,7 +4,7 @@ import {
   ApplicationDependenciesContext,
 } from '../provider/ApplicationDependenciesProvider';
 
-const useApplicationContext = () => {
+const useApplicationContext = (): ApplicationDependenciesContextProps => {
   const context = useContext<ApplicationDependenciesContextProps>(
     ApplicationDependenciesContext
   );

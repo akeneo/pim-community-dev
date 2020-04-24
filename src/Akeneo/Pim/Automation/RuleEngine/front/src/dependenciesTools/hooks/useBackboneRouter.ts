@@ -4,7 +4,7 @@ import {
   RouteParams,
 } from '../provider/applicationDependenciesProvider.type';
 
-const useBackboneRouter = () => {
+const useBackboneRouter = (): Router => {
   const { router } = useApplicationContext();
   if (router) {
     return router;
@@ -29,7 +29,7 @@ const generateAndRedirect = (
   routeParams?: RouteParams
 ): [string, () => void] => {
   const url = generateUrl(router, route, routeParams);
-  const handleRedirect = () => redirectToUrl(router, url);
+  const handleRedirect = (): void => redirectToUrl(router, url);
   return [url, handleRedirect];
 };
 

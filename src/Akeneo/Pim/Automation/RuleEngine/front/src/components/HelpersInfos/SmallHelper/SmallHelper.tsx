@@ -8,7 +8,7 @@ interface Level {
 
 const SubsectionHint = styled.div<Level>`
   align-items: center;
-  background: ${props =>
+  background: ${(props): string =>
     'info' === props.level
       ? props.theme.color.blue10
       : props.theme.color.yellow10};
@@ -28,7 +28,7 @@ const HintIcon = styled.div<Level>`
 `;
 
 const HintTitle = styled.div`
-  border-left: 1px solid ${({ theme }) => theme.color.grey80};
+  border-left: 1px solid ${({ theme }): string => theme.color.grey80};
   flex-grow: 1;
   font-weight: 400;
   padding: 10px 10px 10px 16px;

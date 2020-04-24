@@ -56,7 +56,17 @@ const Select2Wrapper: React.FC<Props> = ({
       $select.select2('destroy');
       $select.select2('container').remove();
     };
-  }, [select2Ref]);
+  }, [
+    allowClear,
+    containerCssClass,
+    data,
+    dropdownCssClass,
+    formatResult,
+    onChange,
+    placeholder,
+    select2Ref,
+    value,
+  ]);
   return (
     <>
       <Label label={label} hiddenLabel={hiddenLabel} htmlFor={id} />
