@@ -32,12 +32,15 @@ async function denormalizeCondition(
     createPimCondition,
   ];
 
-  for (let index in factories) {
-    let condition = await factories[index](jsonCondition, router);
+  const keys = Object.keys(factories);
+  for (let index = 0; index < keys.length; index++) {
+    const factory = factories[keys[index]]
+    const condition = await factory(jsonCondition, router);
     if (condition !== null) {
       return condition;
     }
   }
+
   return createFallbackCondition(jsonCondition);
 }
 

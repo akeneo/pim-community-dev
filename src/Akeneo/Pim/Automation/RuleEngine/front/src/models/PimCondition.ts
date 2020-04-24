@@ -3,9 +3,9 @@
  * Its difference with the fallback is that it can be have its renderer.
  * Each native condition coming from the PIM has the same fields.
  */
-import {PimConditionLine} from '../pages/EditRules/PimConditionLine';
+import { PimConditionLine } from '../pages/EditRules/PimConditionLine';
 import React from 'react';
-import { ConditionLineProps } from "../pages/EditRules/ConditionLineProps";
+import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
 
 type PimCondition = {
   module: React.FC<ConditionLineProps>;
@@ -23,14 +23,16 @@ export const createPimCondition = async (
     typeof json.field === 'string' &&
     typeof json.operator === 'string' // TODO check operator
   ) {
-    return {
-      module: PimConditionLine,
-      field: json.field,
-      operator: json.operator,
-      value: json.value,
-      locale: json.locale,
-      scope: json.scope,
-    };
+    return new Promise<PimCondition|null>(() => {
+      return {
+        module: PimConditionLine,
+        field: json.field,
+        operator: json.operator,
+        value: json.value,
+        locale: json.locale,
+        scope: json.scope,
+      }
+    });
   }
 
   return null;

@@ -7,7 +7,7 @@ type Scope = {
   category_tree: string;
   conversion_units: string[];
   labels: { [locale: string]: string };
-  meta: Object;
+  meta: any;
 };
 
 export { Scope };

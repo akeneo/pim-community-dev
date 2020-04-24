@@ -67,7 +67,9 @@ const CoreButton = React.forwardRef<HTMLButtonElement, CoreButtonProps>(
     forwardedRef: Ref<HTMLButtonElement>
   ) {
     // https://www.w3.org/TR/wai-aria-practices/#button
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>): void => {
+    const handleKeyDown = (
+      event: React.KeyboardEvent<HTMLButtonElement>
+    ): void => {
       if (onKeyDown && (event.keyCode === 32 || event.keyCode === 13)) {
         onKeyDown(event);
       }

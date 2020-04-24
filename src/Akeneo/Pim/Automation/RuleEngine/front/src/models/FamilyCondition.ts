@@ -1,7 +1,7 @@
 // src/Akeneo/Pim/Enrichment/Component/Product/Query/Filter/Operators.php
 import { FallbackConditionLine } from '../pages/EditRules/FallbackConditionLine';
 import React from 'react';
-import { ConditionLineProps } from "../pages/EditRules/ConditionLineProps";
+import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
 
 enum FamilyOperator {
   IS_EMPTY = 'EMPTY',
@@ -36,11 +36,13 @@ const createFamilyCondition = async (
     return null;
   }
 
-  return {
-    module: FallbackConditionLine,
-    operator: json.operator,
-    familyCodes: json.value,
-  };
+  return new Promise<FamilyCondition>(() => {
+    return {
+      module: FallbackConditionLine,
+      operator: json.operator,
+      familyCodes: json.value,
+    };
+  });
 };
 
 export { FamilyCondition, createFamilyCondition };

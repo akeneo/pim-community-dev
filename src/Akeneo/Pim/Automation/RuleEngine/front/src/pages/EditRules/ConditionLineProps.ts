@@ -1,5 +1,5 @@
 import { Translate } from '../../dependenciesTools';
-import {Condition, Locale} from '../../models';
+import { Condition, Locale } from '../../models';
 import { IndexedScopes } from '../../fetch/ScopeFetcher';
 
 type ConditionLineProps = {

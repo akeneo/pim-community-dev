@@ -51,7 +51,9 @@ const TextAttributeConditionLine: React.FC<ConditionLineProps> = ({
   currentCatalogLocale,
 }) => {
   const textAttributeCondition = condition as TextAttributeCondition;
-  const [operator, setOperator] = React.useState<Operator>(textAttributeCondition.operator);
+  const [operator, setOperator] = React.useState<Operator>(
+    textAttributeCondition.operator
+  );
   const [scopeCode, setScopeCode] = React.useState<string | undefined>(
     textAttributeCondition.scope
   );

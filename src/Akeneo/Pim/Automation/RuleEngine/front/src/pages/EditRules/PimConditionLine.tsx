@@ -1,9 +1,12 @@
 import React, { ReactElement } from 'react';
 import { PimCondition } from '../../models/PimCondition';
 import { Flag } from '../../components/Flag/Flag';
-import { ConditionLineProps } from "./ConditionLineProps";
+import { ConditionLineProps } from './ConditionLineProps';
 
-const PimConditionLine: React.FC<ConditionLineProps> = ({ translate, condition }) => {
+const PimConditionLine: React.FC<ConditionLineProps> = ({
+  translate,
+  condition,
+}) => {
   const pimCondition = condition as PimCondition;
   const isMetric = (value: any): boolean => {
     return (
@@ -66,7 +69,9 @@ const PimConditionLine: React.FC<ConditionLineProps> = ({ translate, condition }
       {` ${translate(
         `pimee_catalog_rule.form.edit.conditions.operators.${pimCondition.operator}`
       )} `}
-      <span className='AknRule-attribute'>{displayValue(pimCondition.value)}</span>
+      <span className='AknRule-attribute'>
+        {displayValue(pimCondition.value)}
+      </span>
       {pimCondition.scope || pimCondition.locale ? (
         pimCondition.scope && pimCondition.locale ? (
           <span className='AknRule-attribute'>
