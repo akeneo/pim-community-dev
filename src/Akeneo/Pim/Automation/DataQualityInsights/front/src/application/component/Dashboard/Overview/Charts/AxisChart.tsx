@@ -17,7 +17,7 @@ interface AxisChartProps {
   dataset: any;
   padding: number;
   barRatio: number;
-  dateFormatCallback: {(date: string): string};
+  dateFormatCallback: {(date: string, index:number): string};
 }
 
 const AxisChart = ({dataset, padding, barRatio, dateFormatCallback}: AxisChartProps) => {
@@ -46,6 +46,7 @@ const AxisChart = ({dataset, padding, barRatio, dateFormatCallback}: AxisChartPr
               fill: "#67768a",
               padding: Math.ceil(27 * (downScalingRatio)),
               fontFamily: "Lato",
+              textTransform: "capitalize"
             }
           }}
         />

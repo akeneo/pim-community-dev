@@ -9,6 +9,7 @@
 ## Bug fixes
 
 - PIM-9192: Fix error being printed in the response of partial update of products API
+- DAPI-961: change the dates display on daily chart axis to display relative dates
 
 # 4.0.18 (2020-04-23)
 
