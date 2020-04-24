@@ -47,6 +47,24 @@ services:
         tags:
         - { name: 'pim_catalog.updater.adder' }
 
+    akeneo_referenceentity.updater.copier.reference_entity_single_link:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Updater\Copier\ReferenceEntityAttributeCopier
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['akeneo_reference_entity']
+            - ['akeneo_reference_entity']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    akeneo_referenceentity.updater.copier.reference_entity_collection:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Updater\Copier\ReferenceEntityAttributeCopier
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['akeneo_reference_entity_collection']
+            - ['akeneo_reference_entity_collection']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
     akeneo_referenceentity.application.attribute.subscribers.set_default_attributes_on_reference_entity_creation_subscriber:
         class: Akeneo\ReferenceEntity\Application\Attribute\Subscribers\SetDefaultAttributesOnReferenceEntityCreationSubscriber
         arguments:
