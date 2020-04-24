@@ -51,7 +51,6 @@ use Doctrine\DBAL\Connection;
  */
 class FixturesInstaller
 {
-    public const ICE_CAT_DEMO_DEV_CATALOG = 'icecat_demo_dev';
     private const ATMOSPHERE_ASSET_FAMILY_IDENTIFIER = 'atmosphere';
     private const PACKSHOT_ASSET_FAMILY_IDENTIFIER = 'packshot';
     private const NOTICE_ASSET_FAMILY_IDENTIFIER = 'notice';
@@ -196,12 +195,8 @@ SQL;
      * ' => \\'
      * ' => \\\'
      */
-    public function loadCatalog(string $catalogName): void
+    public function loadCatalog(): void
     {
-        if (substr($catalogName, -strlen(self::ICE_CAT_DEMO_DEV_CATALOG)) !== self::ICE_CAT_DEMO_DEV_CATALOG) {
-            return;
-        }
-
         $this->loadAtmospheres();
         $this->loadAtmosphereAssets();
 
