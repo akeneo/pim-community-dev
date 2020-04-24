@@ -808,7 +808,7 @@ legacy:
                 - Context\EnterpriseWebUser:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                 - Context\CatalogConfigurationContext:
-                      - 'Context\EnterpriseFeatureContext'
+                      - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                       - '@akeneo_legacy_behat_tests.loader.fixtures_loader'
                       - '@pim_connector.doctrine.cache_clearer'
                       -
