@@ -7,6 +7,7 @@
     "jest": "jest --config jest.config.js",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "prettier": "prettier --config .prettierrc --write \"./src/**/*.{ts,tsx}\"",
+    "prettier-test": "prettier --config .prettierrc --write \"./__tests__/**/*.{ts,tsx}\"",
     "prettier-check": "prettier --check \"./src/**/*.{ts,tsx}\" --config .prettierrc"
   },
   "private": true

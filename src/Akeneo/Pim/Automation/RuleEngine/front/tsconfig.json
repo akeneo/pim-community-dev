@@ -23,5 +23,5 @@
         "suppressImplicitAnyIndexErrors": true,
         "target": "es5"
     },
-    "include": ["./src", "./test-utils.tsx", "./custom.d.ts"]
+    "include": ["./src", "./test-utils.tsx", "./custom.d.ts", "./__tests__"]
 }

@@ -19,5 +19,7 @@ module.exports = {
     'react/prop-types': ['off'],
     '@typescript-eslint/no-explicit-any': ['off'],
     'no-prototype-builtins': ['warn'],
+    "camelcase": "off",
+    "@typescript-eslint/camelcase": ["off"]
   },
 };
