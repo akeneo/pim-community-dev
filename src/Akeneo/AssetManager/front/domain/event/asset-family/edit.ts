@@ -1,7 +1,7 @@
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
-import TransformationCollection from 'akeneoassetmanager/domain/model/asset-family/transformation/transformation-collection';
+import {TransformationCollection} from 'akeneoassetmanager/domain/model/asset-family/transformation';
 import NamingConvention from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
 import ProductLinkRuleCollection from 'akeneoassetmanager/domain/model/asset-family/product-link-rule-collection';
 

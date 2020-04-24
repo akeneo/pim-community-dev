@@ -1,0 +1,237 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Enrichir les ressources
+      create: Créer une ressource
+      remove: Supprimer une ressource
+      categories_view: Consulter les catégories d'une ressource
+      mass_upload: Envoi en masse des ressources
+      remove_from_collection: Supprimer une ressource d'une collection
+    category_asset_picker:
+      list: Liste les catégories de ressources dans le sélecteur d'éléments
+    category:
+      create: Créer une catégorie de ressources
+      edit: Modifier une catégorie de ressources
+      list: Liste des catégories de ressources
+      remove: Supprimer une catégorie de ressources
+      manage: Gérer les autorisations des catégories de ressources
+      history: Afficher l'historique des catégories de ressources
+  acl_group:
+    asset: Ressources du produit
+    category: Catégories de ressources
+  enrich_asset:
+    button:
+      upload: Télécharger
+      delete: Supprimer
+      download: Télécharger
+      generate_from_reference: Générer depuis la référence
+      reset_variations: Réinitialiser les variations
+    confirmation.remove: Êtes-vous sûr de que vouloir supprimer la ressource "%asset%" ?
+    confirmation.subTitle: Ressources
+    grid:
+      edit: Modifier les propriétés de la ressource
+    view:
+      title: Ressources du produit
+      code: Code
+      description: Description
+      end_of_use: Fin de l'utilisation
+      reference: Référence
+      filename: Nom du fichier
+      width: Largeur 
+      height: Hauteur
+      resolution: Résolution 
+      colors: Espace colorimétrique
+      filesize: Taille du fichier
+      filetype: Type de fichier
+      actions: Actions
+      download: Télécharger
+      tag: Mots clés
+      no_reference: Aucun fichier de référence n'a encore été téléchargé.
+      no_variation: Aucun fichier de variation n'a été généré pour le moment.
+    flash:
+      update:
+        success: Ressource a été mise à jour.
+        error: La ressource n'a pas été mise à jour. Une erreur s'est produite.
+      create:
+        success: Ressource a été créée.
+        error: La ressource n'a pas été créée. Une erreur s'est produite.
+      remove:
+        success: Ressource a été supprimée.
+  enrich_reference:
+    flash:
+      delete:
+        success: Le fichier de référence a été supprimé.
+        error: Le fichier de référence n'a pas été supprimé. Une erreur s'est produite.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: Impossible de générer la variation pour le canal %channel%, la configuration est erronée.
+        image_width_error: Impossible de générer la variation pour le canal %channel% car l'image téléchargée a une largeur inférieure à celle requise par la transformation.
+        image_height_error: Impossible de générer la variation pour le canal %channel% car l'image téléchargée a une hauteur inférieure à celle requise par la transformation.
+        not_applicable: Impossible de générer la variation pour le canal %channel%.
+        non_registered: Aucune transformation %transformation% enregistrée pour le mime type %mimeType%. Impossible de générer la variation pour le canal %channel%.
+        missing_asset_transformation_for_channel: Impossible de générer la variation %channel%, veuillez définir une transformation de ressource pour ce canal.
+        error: Impossible de générer la variation pour le canal %channel%.
+        success: Les fichiers de variation ont été générés avec succès.
+      update:
+        success: Le fichier de variation a été mis à jour.
+        error: Le fichier de variation n'a pas été mis à jour. Une erreur s'est produite.
+      delete:
+        success: Le fichier de variation a été supprimé.
+        error: Le fichier de variation n'a pas été supprimé. Une erreur s'est produite.
+  popin.create:
+    title: Créer une nouvelle ressource
+    is_localized: Localisable
+  menu: Ressources
+  page_tab:
+    title:
+      view: Ressource produit %asset.code% | Visualisation
+      edit: Ressource produit %asset.code% | Édition
+      index: Ressources du produit
+  code:
+    label: Code
+  thumbnail:
+    label: Miniature
+  status:
+    label: État
+  description:
+    label: Description
+  endOfUse:
+    label: Fin de l'utilisation
+  createdAt:
+    label: Créé le
+  updatedAt:
+    label: Dernière mise à jour à
+  tags:
+    label: Mots clés
+  tabs:
+    properties.title: Propriétés
+    variations.title: Variations
+    categories.title: Catégories
+  validation:
+    code:
+      not_empty: Code est requis. Le champ ne peut pas être vide.
+      unique: Code doit être unique.
+      new_generation: Nous avons généré un nouveau code pour vous.
+  notAvailable:
+    label: pas disponible
+  asset:
+    title: Ressource
+  mass_upload:
+    menu: Télécharger les ressources
+    new: Une nouvelle ressource sera créée
+    add_files: ajouter des fichiers
+    start: Démarrer le téléchargement
+    cancel: Annuler le téléchargement
+    import: Import
+    executed: Téléchargement massif exécuté
+    error:
+      upload: Une erreur s'est produite lors du chargement
+      code: Format de code non valide pour la ressource
+      localizable: Une ressource existe mais n'est pas traduisible
+      invalid_locale: Les paramètres régionaux sont désactivés ou non valides
+  category:
+    menu: Catégories de ressources
+    permissions:
+      view.label: Permettre de voir les ressources
+      view.help: Permet de voir les ressources classées dans cette catégorie
+      edit.label: Permettre de modifier les ressources
+      edit.help: Permet de modifier les ressources classées dans cette catégorie (implique la permission de voir)
+      no_access_to_products: Vous n'avez accès à aucune ressource dans aucune arborescence, contactez votre administrateur pour résoudre le problème
+      apply_on_children.label: Appliquer les changements aux sous-catégories
+      apply_on_children.help: Appliquer les changements de permissions à toutes les sous-catégories, les permissions existantes sur les sous-catégories sont conservées
+  mass_edit_action:
+    asset:
+      page_title: Ressources
+      page_subtitle: Edition de masse (1 ressource)|Edition de masse (%count% ressources)
+      confirm: Vous êtes sur le point de mettre à jour une ressource avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour %count% ressources avec les renseignements suivants, merci de confirmer.
+      steps:
+        first: Choisir les ressources
+        second: Configurez l'opération à effectuer
+        third: Confirmation
+  not_editable: Vous n'avez pas la permission de modifier la ressource "%code%".
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Déplacer des ressources vers des catégories
+      description: Les ressources seront positionnées dans les catégories suivantes, le placement existant avant l'opération sera perdu
+      success_flash: La (les) ressource(s) ont été déplacées dans les catégories sélectionnées
+      launched_flash: L'action de masse "déplacement dans les catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+    add-tags-to-assets:
+      label: Ajouter des mots clés aux ressources
+      description: Les mots clés seront ajoutés aux ressources. Les mots clés inconnus seront créés.
+      success_flash: Le(s) mot(s) clé(s) ont été ajoutés aux ressources
+      launched_flash: L'action de masse "Ajouter des mots clés aux ressources" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+      message.error: Le mot clé fourni n'existe pas
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Classer
+      add_tags_to_assets: Ajouter des mots-clés
+      delete_assets: Supprimer les ressources
+btn.create.asset: Créer une ressource
+btn.drag_or_upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
+job_execution.summary:
+  variations_not_generated: Variations non générées
+  pimee_product_asset.mass_upload.new: Ressource créée depuis le fichier
+  pimee_product_asset.mass_upload.updated: Ressource mise à jour
+  error: Erreur sur le processus de fichiers actifs
+  skipped_assets: Ressources ignorées
+assets_mass_upload.steps:
+  asset_mass_upload.title: Téléchargement en masse de ressources
+import_asset.steps.channel_configuration_processor.title: Traiter les configurations des canaux
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: Téléchargement en masse de ressources
+pim_analytics:
+  info_type:
+    nb_assets: Nombre de ressources produit
+pim_assets_collection: Collection de ressources
+akeneo_reference_entity: Lien simple vers une entité référentielle
+akeneo_reference_entity_collection: Lien multiple vers une entité référentielle
+pim_api:
+  acl:
+    asset_category:
+      edit: Créer et mettre à jour les catégories de ressources
+      list: Liste des catégories de ressources
+    asset:
+      edit: Modifier les ressources, et télécharger leurs références et fichiers de variation
+      list: Lister les ressources, lister et télécharger leurs références et fichiers de variation
+  acl_group:
+    asset_category: Catégories de ressources
+    asset: Ressources
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Transformations de la ressource
+  asset_transformation:
+    not_found: Aucune transformation trouvée
+    title:
+      transformation: Transformation
+      options: Options
+    colorspace:
+      title: Espace colorimétrique
+      options:
+        colorspace: 'espace colorimétrique %value%'
+    resize:
+      title: Redimensionner
+      options:
+        width: '%value%px de largeur'
+        height: '%value%px de hauteur'
+    resolution:
+      title: Résolution 
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Mise à l'échelle
+      options:
+        width: '%value%px de largeur'
+        height: '%value%px de hauteur'
+        ratio: 'ratio %value%%'
+    thumbnail:
+      title: Miniature
+      options:
+        width: '%value%px de largeur'
+        height: '%value%px de hauteur'

@@ -179,6 +179,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@akeneo_assetmanager.infrastructure.registry.preview_generator'
             - '@pim_asset.provider.default_image'
+            - '@akeneo_assetmanager.infrastructure.loader.flysystem_loader'
 
     akeneo_assetmanager.infrastructure.action.file_upload:
         public: true

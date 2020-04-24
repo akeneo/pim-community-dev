@@ -22,10 +22,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 
 final class PurgeOutdatedData
 {
-    public const RETENTION_DAYS = 7;
-    public const RETENTION_WEEKS = 4;
-    public const RETENTION_MONTHS = 15;
-    public const RETENTION_YEARS = 3;
+    public const EVALUATIONS_RETENTION_DAYS = 1;
+
+    public const CONSOLIDATION_RETENTION_DAYS = 7;
+    public const CONSOLIDATION_RETENTION_WEEKS = 4;
+    public const CONSOLIDATION_RETENTION_MONTHS = 15;
+    public const CONSOLIDATION_RETENTION_YEARS = 3;
 
     /** @var DashboardRatesProjectionRepositoryInterface */
     private $dashboardRatesProjectionRepository;
@@ -62,22 +64,22 @@ final class PurgeOutdatedData
         $purgeDates = new DashboardPurgeDateCollection();
         $daily = TimePeriod::daily();
 
-        for ($day = PurgeOutdatedData::RETENTION_DAYS; $day < PurgeOutdatedData::RETENTION_DAYS * 2; $day++) {
+        for ($day = PurgeOutdatedData::CONSOLIDATION_RETENTION_DAYS; $day < PurgeOutdatedData::CONSOLIDATION_RETENTION_DAYS * 2; $day++) {
             $purgeDates->add($daily, $purgeDate->modify(sprintf('-%d DAY', $day)));
         }
 
         $purgeDates
             ->add(
                 TimePeriod::weekly(),
-                $purgeDate->modify(sprintf('-%d WEEK', self::RETENTION_WEEKS))->modify('Sunday last week')
+                $purgeDate->modify(sprintf('-%d WEEK', self::CONSOLIDATION_RETENTION_WEEKS))->modify('Sunday last week')
             )
             ->add(
                 TimePeriod::monthly(),
-                $purgeDate->modify(sprintf('-%d MONTH', self::RETENTION_MONTHS))->modify('Last day of last month')
+                $purgeDate->modify(sprintf('-%d MONTH', self::CONSOLIDATION_RETENTION_MONTHS))->modify('Last day of last month')
             )
             ->add(
                 TimePeriod::yearly(),
-                $purgeDate->modify(sprintf('-%d YEAR', self::RETENTION_YEARS))->modify('Last day of december last year')
+                $purgeDate->modify(sprintf('-%d YEAR', self::CONSOLIDATION_RETENTION_YEARS))->modify('Last day of december last year')
             );
 
         $this->dashboardRatesProjectionRepository->purgeRates($purgeDates);
@@ -85,14 +87,14 @@ final class PurgeOutdatedData
 
     public function purgeCriterionEvaluationsFrom(\DateTimeImmutable $date): void
     {
-        $purgeDate = $date->modify(sprintf('-%d DAY', self::RETENTION_DAYS));
+        $purgeDate = $date->modify(sprintf('-%d DAY', self::EVALUATIONS_RETENTION_DAYS));
         $this->productCriterionEvaluationRepository->purgeUntil($purgeDate);
         $this->productModelCriterionEvaluationRepository->purgeUntil($purgeDate);
     }
 
     public function purgeProductAxisRatesFrom(\DateTimeImmutable $date): void
     {
-        $purgeDate = $date->modify(sprintf('-%d DAY', self::RETENTION_DAYS));
+        $purgeDate = $date->modify(sprintf('-%d DAY', self::CONSOLIDATION_RETENTION_DAYS));
         $this->productAxisRateRepository->purgeUntil($purgeDate);
         $this->productModelAxisRateRepository->purgeUntil($purgeDate);
     }

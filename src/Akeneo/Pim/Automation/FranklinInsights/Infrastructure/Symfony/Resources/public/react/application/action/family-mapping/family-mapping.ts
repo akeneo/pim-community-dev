@@ -7,6 +7,9 @@ import {fetchFamily} from './family';
 import {AttributeMapping} from '../../../domain/model/attribute-mapping';
 import {AttributeMappingStatus} from '../../../domain/model/attribute-mapping-status.enum';
 import {applyFranklinSuggestion} from '../../action-creator/family-mapping/apply-franklin-suggestion';
+import {notify} from '../notify';
+import {NotificationLevel} from '../../notification-level';
+import {translate} from '../../../infrastructure/translator';
 
 export function selectAndFetchFamily(familyCode: string) {
   return (dispatch: any) => {
@@ -36,7 +39,9 @@ export function selectFamily(familyCode: string): SelectFamilyAction {
 export function fetchFamilyMapping(familyCode: string) {
   return async (dispatch: any) => {
     try {
+      dispatch(setLoadFamilyMapping(true));
       const mapping = await fetchByFamilyCode(familyCode);
+      dispatch(setLoadFamilyMapping(false));
       dispatch(fetchedFamilyMappingSuccess(familyCode, mapping));
 
       Object.values(mapping).forEach((attributeMapping: AttributeMapping) => {
@@ -51,7 +56,14 @@ export function fetchFamilyMapping(familyCode: string) {
         }
       });
     } catch {
+      dispatch(setLoadFamilyMapping(false));
       dispatch(fetchedFamilyMappingFail());
+      dispatch(
+        notify(
+          NotificationLevel.ERROR,
+          translate('akeneo_franklin_insights.entity.attributes_mapping.flash.fail_to_retrieve_franklin_mapping')
+        )
+      );
     }
   };
 }
@@ -84,6 +96,20 @@ export interface FetchedFamilyMappingFailAction {
 export function fetchedFamilyMappingFail(): FetchedFamilyMappingFailAction {
   return {
     type: FETCHED_FAMILY_MAPPING_FAIL
+  };
+}
+
+export const SET_LOAD_FAMILY_MAPPING = 'SET_LOAD_FAMILY_MAPPING';
+
+export interface SetLoadFamilyMappingAction {
+  type: typeof SET_LOAD_FAMILY_MAPPING;
+  status: boolean;
+}
+
+export function setLoadFamilyMapping(status: boolean): SetLoadFamilyMappingAction {
+  return {
+    type: SET_LOAD_FAMILY_MAPPING,
+    status
   };
 }
 

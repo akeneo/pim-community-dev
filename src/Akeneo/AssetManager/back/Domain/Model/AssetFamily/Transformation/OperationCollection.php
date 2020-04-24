@@ -52,4 +52,9 @@ class OperationCollection implements \IteratorAggregate
     {
         return $this->normalize() === $otherOperationCollection->normalize();
     }
+
+    public function hasOperation(string $operationType): bool
+    {
+        return false !== array_search($operationType, array_column($this->normalize(), 'type'), true);
+    }
 }

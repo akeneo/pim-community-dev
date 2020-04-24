@@ -26,7 +26,6 @@ import {
 } from '../../action/family-mapping/franklin-attribute-selection';
 import {SecurityContext} from '../../context/security-context';
 import {FamilyMappingState} from '../../reducer/family-mapping';
-import {FamilyAttributesState} from '../../reducer/family-mapping/attributes';
 import {selectAttribute} from '../../thunk/select-attribute';
 import {GhostButton} from '../app/buttons';
 import {SecondaryActionLink} from '../app/secondary-action-link';
@@ -56,8 +55,7 @@ export const Row = ({franklinAttributeCode, mapping}: Props) => {
   const isAttributeAlreadyMapped = useSelector((state: FamilyMappingState) =>
     isAlreadyMapped(state.familyMapping.mapping, franklinAttributeCode, mapping.attribute)
   );
-
-  const attributes: FamilyAttributesState = useSelector((state: FamilyMappingState) => state.attributes);
+  const attributes: any = useSelector((state: FamilyMappingState) => state.attributes.attributes);
 
   const handleSelectFranklinAttributeRow = (event: ChangeEvent<HTMLInputElement>) => {
     if (true === event.target.checked) {

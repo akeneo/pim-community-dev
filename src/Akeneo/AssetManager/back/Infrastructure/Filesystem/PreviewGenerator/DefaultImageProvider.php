@@ -22,6 +22,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DefaultImageProvider implements DefaultImageProviderInterface
 {
+    public const SUPPORTED_TYPES = [
+        PreviewGeneratorRegistry::THUMBNAIL_TYPE        => 'am_binary_image_thumbnail',
+        PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE  => 'am_binary_image_thumbnail',
+        PreviewGeneratorRegistry::PREVIEW_TYPE          => 'am_binary_image_preview'
+    ];
+
     /** @var FilterManager */
     protected $filterManager;
 
@@ -53,6 +59,8 @@ class DefaultImageProvider implements DefaultImageProviderInterface
      */
     public function getImageUrl($fileKey, $filter)
     {
+        $filter = isset(self::SUPPORTED_TYPES[$filter]) ? self::SUPPORTED_TYPES[$filter] : $filter;
+
         if (!$this->cacheManager->isStored($fileKey, $filter)) {
             $binary = $this->getImageBinary($fileKey);
             $this->cacheManager->store(

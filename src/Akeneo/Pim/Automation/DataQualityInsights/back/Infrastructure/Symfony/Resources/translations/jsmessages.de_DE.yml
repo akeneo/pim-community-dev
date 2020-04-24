@@ -56,7 +56,6 @@ akeneo_data_quality_insights:
     axis:
       enrichment:
         title: Anreicherung
-        attributes_link: Fehlende Attribute anzeigen
         success: Ihre Produktdaten sind vollständig angereichert. Herzlichen Glückwunsch!
       consistency:
         title: Konsistenz

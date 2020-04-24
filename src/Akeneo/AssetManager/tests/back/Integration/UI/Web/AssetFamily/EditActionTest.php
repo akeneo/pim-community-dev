@@ -69,17 +69,17 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $postContent = [
             'identifier' => 'designer',
-            'labels'     => [
+            'labels' => [
                 'en_US' => 'foo',
                 'fr_FR' => 'bar',
             ],
             'attributeAsMainMedia' => $attributeIdentifier->stringValue(),
-            'image'      => [
-                'filePath'         => '/path/image.jpg',
+            'image' => [
+                'filePath' => '/path/image.jpg',
                 'originalFilename' => 'image.jpg'
             ],
             'productLinkRules' => '[]',
-            'transformations' => '[]',
+            'transformations' => [],
             'namingConvention' => '{"source": {"property": "code", "locale": null, "channel": null}, "pattern": "/pattern/", "abort_asset_creation_on_error": true}',
         ];
 
@@ -128,7 +128,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'originalFilename' => 'image.jpg'
             ],
             'productLinkRules' => null,
-            'transformations' => '[invalid_transfo',
+            'transformations' => [],
             'namingConvention' => '[invalid_naming_convention',
         ];
 
@@ -147,13 +147,12 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST);
         $errors = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertIsArray($errors);
-        $this->assertCount(2, $errors);
+        $this->assertCount(1, $errors);
         $this->assertArrayHasKey('messageTemplate', $errors[0]);
         $this->assertArrayHasKey('message', $errors[0]);
         $this->assertArrayHasKey('propertyPath', $errors[0]);
         $this->assertArrayHasKey('parameters', $errors[0]);
         $this->assertSame('This value should be valid JSON.', $errors[0]['message']);
-        $this->assertSame('This value should be valid JSON.', $errors[1]['message']);
     }
 
     /**
@@ -316,14 +315,14 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $postContent = [
             'identifier' => 'designer',
-            'labels'     => ['en_US' => 'foo', 'fr_FR' => 'bar'],
+            'labels' => ['en_US' => 'foo', 'fr_FR' => 'bar'],
             'attributeAsMainMedia' => $attributeIdentifier->stringValue(),
-            'image'      => [
-                'filePath'         => '/path/image.jpg',
+            'image' => [
+                'filePath' => '/path/image.jpg',
                 'originalFilename' => 'image.jpg'
             ],
             'productLinkRules' => 'null',
-            'transformations' => '[]',
+            'transformations' => [],
             'namingConvention' => '{"source": {"property": "code", "locale": null, "channel": null}, "pattern": "/pattern/", "abort_asset_creation_on_error": true}',
         ];
 

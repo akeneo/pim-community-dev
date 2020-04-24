@@ -125,6 +125,22 @@ final class SelectExactMatchAttributeCodeQueryIntegration extends TestCase
         );
     }
 
+    public function test_it_returns_pim_attribute_code_on_attribute_label_with_invalid_codes()
+    {
+        $this->createAttribute('attribute__weight_', ['en_US' => 'weight']);
+        $this->createAttribute('attribute_size', ['en_US' => 'size',]);
+        $this->createFamily('a_family', ['attribute__weight_', 'attribute_size']);
+
+        $attributeCodes = $this->query->execute(new FamilyCode('a_family'), ['attribute (weight)', 'size']);
+        $this->assertSame(
+            [
+                'attribute (weight)' => 'attribute__weight_',
+                'size' => 'attribute_size'
+            ],
+            $attributeCodes
+        );
+    }
+
     public function test_it_returns_no_attribute_code()
     {
         $this->createAttribute('attribute_weight', ['en_US' => 'attribute weight']);
@@ -133,6 +149,22 @@ final class SelectExactMatchAttributeCodeQueryIntegration extends TestCase
 
         $attributeCodes = $this->query->execute(new FamilyCode('a_family'), ['weight', 'size']);
         $this->assertContainsOnly('null', $attributeCodes);
+    }
+
+    public function test_it_handles_attribute_with_no_labels()
+    {
+        $this->createAttribute('weight_code', ['en_US' => 'weight']);
+        $this->createAttribute('weight', []);
+        $this->createFamily('a_family', ['weight_code', 'weight']);
+
+        $attributeCodes = $this->query->execute(new FamilyCode('a_family'), ['weight label', 'weight']);
+        $this->assertSame(
+            [
+                'weight label' => null,
+                'weight' => 'weight_code',
+            ],
+            $attributeCodes
+        );
     }
 
     protected function getConfiguration(): Configuration

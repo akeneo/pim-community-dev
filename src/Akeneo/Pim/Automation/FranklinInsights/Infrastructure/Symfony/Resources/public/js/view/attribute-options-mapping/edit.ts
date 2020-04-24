@@ -7,7 +7,6 @@
  * file that was distributed with this source code.
  */
 
-import * as $ from 'jquery';
 import BaseForm = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import {Filterable} from '../../common/filterable';
@@ -23,6 +22,9 @@ const Property = require('pim/common/property');
 const Routing = require('routing');
 const template = require('akeneo/franklin-insights/template/settings/attribute-options-mapping/edit');
 
+const Messenger = require('oro/messenger');
+const LoadingMask = require('oro/loading-mask');
+
 interface Config {
   labels: {
     pending: string;
@@ -31,6 +33,7 @@ interface Config {
     franklinAttributeOption: string;
     catalogAttributeOption: string;
     attributeOptionStatus: string;
+    loadFailedMessage: string;
   };
 }
 
@@ -48,12 +51,14 @@ class AttributeOptionsMapping extends BaseForm {
       inactive: '',
       franklinAttributeOption: '',
       catalogAttributeOption: '',
-      attributeOptionStatus: ''
+      attributeOptionStatus: '',
+      loadFailedMessage: ''
     }
   };
   private familyCode: string;
   private catalogAttributeCode: string;
   private franklinAttributeCode: string;
+  private loadingMask: any;
 
   /**
    * {@inheritdoc}
@@ -62,6 +67,8 @@ class AttributeOptionsMapping extends BaseForm {
     super(options);
 
     this.config = {...this.config, ...options.config};
+
+    this.loadingMask = new LoadingMask();
   }
 
   /**
@@ -143,11 +150,18 @@ class AttributeOptionsMapping extends BaseForm {
    * @return { JQueryPromise<NormalizedAttributeOptionsMapping> }
    */
   private fetchMapping(): JQueryPromise<NormalizedAttributeOptionsMapping> {
+    this.showLoadingMask();
     return $.when(
       FetcherRegistry.getFetcher('attribute-options-mapping')
         .fetch(this.familyCode, {franklinAttributeCode: this.franklinAttributeCode, cached: false})
         .then((attributeOptionMapping: NormalizedAttributeOptionsMapping) => {
           return attributeOptionMapping;
+        })
+        .fail(() => {
+          Messenger.notify('error', __(this.config.labels.loadFailedMessage));
+        })
+        .always(() => {
+          this.hideLoadingMask();
         })
     );
   }
@@ -174,6 +188,18 @@ class AttributeOptionsMapping extends BaseForm {
       attributeSelector.setParent(this);
       $dom.html(attributeSelector.render().$el);
     });
+  }
+
+  private showLoadingMask() {
+    const loadingContainer = $('.hash-loading-mask');
+    this.loadingMask
+      .render()
+      .$el.appendTo(loadingContainer)
+      .show();
+  }
+
+  private hideLoadingMask() {
+    this.loadingMask.hide().$el.remove();
   }
 }
 

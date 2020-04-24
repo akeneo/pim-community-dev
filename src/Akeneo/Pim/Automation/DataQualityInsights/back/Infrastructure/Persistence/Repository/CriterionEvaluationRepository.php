@@ -31,7 +31,7 @@ class CriterionEvaluationRepository
     public function createCriterionEvaluationsForProducts(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
-INSERT IGNORE INTO pimee_data_quality_insights_criteria_evaluation 
+INSERT IGNORE INTO pimee_data_quality_insights_criteria_evaluation
     (id, criterion_code, product_id, created_at, status, pending) VALUES %s;
 SQL;
 
@@ -41,7 +41,7 @@ SQL;
     public function createCriterionEvaluationsForProductModels(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
-INSERT IGNORE INTO pimee_data_quality_insights_product_model_criteria_evaluation 
+INSERT IGNORE INTO pimee_data_quality_insights_product_model_criteria_evaluation
     (id, criterion_code, product_id, created_at, status, pending) VALUES %s;
 SQL;
 

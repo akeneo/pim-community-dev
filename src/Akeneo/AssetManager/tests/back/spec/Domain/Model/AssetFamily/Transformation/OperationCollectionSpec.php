@@ -69,4 +69,14 @@ class OperationCollectionSpec extends ObjectBehavior
         $otherCollection = OperationCollection::create([$otherThumbnail, $otherResize]);
         $this->equals($otherCollection)->shouldReturn(false);
     }
+
+    function it_can_tell_if_it_contains_the_provided_operation()
+    {
+        $thumbnail = ThumbnailOperation::create(['width' => 100, 'height' => 80]);
+        $resize = ResizeOperation::create(['width' => 100, 'height' => 80]);
+        $this->beConstructedThrough('create', [[$thumbnail, $resize]]);
+
+        $this->hasOperation('thumbnail')->shouldReturn(true);
+        $this->hasOperation('unknown')->shouldReturn(false);
+    }
 }

@@ -35,7 +35,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     apt-get --yes autoremove --purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     apt-get update && \
-    apt-get --yes install imagemagick \
+    apt-get --yes install imagemagick libmagickcore-6.q16-2-extra \
         php7.3-fpm \
         php7.3-cli \
         php7.3-intl \

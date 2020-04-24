@@ -57,6 +57,7 @@ final class HealthCheckCommand extends Command
         $io->title('DQI health check command');
 
         $this->outputCatalogInfo($io);
+        $this->outputMysqlInfo($io);
         $this->outputCriteriaInfo($io);
         $this->outputDictionaryInfo($io);
         $this->outputPeriodicTasksInfo($io);
@@ -188,6 +189,25 @@ SQL
         ];
 
         $io->horizontalTable(array_keys($data[0]), $data);
+    }
+
+    private function outputMysqlInfo(SymfonyStyle $io): void
+    {
+        $io->section('MySQL tables information');
+
+        $query = <<<SQL
+SELECT
+  TABLE_NAME,
+  TABLE_ROWS,
+  AVG_ROW_LENGTH,
+  ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024, 2) AS `Size (MB)`
+FROM information_schema.TABLES
+WHERE TABLE_NAME LIKE 'pimee_data_quality_insights_%';
+SQL;
+
+        $stmt = $this->db->executeQuery($query);
+
+        $this->outputAsTable($io, $stmt->fetchAll());
     }
 
     private function outputCriteriaInfo(SymfonyStyle $io)

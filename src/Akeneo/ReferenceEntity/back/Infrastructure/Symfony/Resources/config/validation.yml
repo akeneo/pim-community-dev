@@ -51,6 +51,7 @@ Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\RecordCodeShouldBeUnique: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\ThereShouldBeLessRecordsThanLimit: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\CreateRecordLabel: { groups: [other_constraints] }
 
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand:
     properties:
@@ -411,3 +412,13 @@ Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOp
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptionShouldExist: { groups: [other_constraints] }
+
+Akeneo\Pim\Enrichment\Component\Product\Model\Product:
+    getters:
+        values:
+            - Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\Constraints\RecordsShouldExist: ~
+
+Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
+    getters:
+        values:
+            - Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\Constraints\RecordsShouldExist: ~

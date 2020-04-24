@@ -26,17 +26,21 @@ import {
   FranklinAttributeMappingDeactivatedAction
 } from '../../action/family-mapping/deactivate-franklin-attribute-mapping';
 import {
+  FamilyMappingActions,
   FETCHED_FAMILY_MAPPING_FAIL,
   FETCHED_FAMILY_MAPPING_SUCCESS,
   SELECT_FAMILY,
-  FamilyMappingActions,
   FetchedFamilyMappingSuccessAction,
-  SelectFamilyAction
+  SelectFamilyAction,
+  SetLoadFamilyMappingAction,
+  SET_LOAD_FAMILY_MAPPING
 } from '../../action/family-mapping/family-mapping';
 import {MAP_FRANKLIN_ATTRIBUTE, MapFranklinAttributeAction} from '../../../domain/action/map-franklin-attribute';
 import {UNMAP_FRANKLIN_ATTRIBUTE, UnmapFranklinAttributeAction} from '../../../domain/action/unmap-franklin-attribute';
 import {
+  SAVED_FAMILY_MAPPING_FAIL,
   SAVED_FAMILY_MAPPING_SUCCESS,
+  SavedFamilyMappingFailAction,
   SavedFamilyMappingSuccessAction
 } from '../../action/family-mapping/save-family-mapping';
 import {
@@ -55,11 +59,17 @@ export interface FamilyMappingState {
   familyCode?: string;
   mapping: AttributesMapping;
   originalMapping: OriginalMappingState;
+  loadFamilyMapping: boolean;
 }
 
 const selectFamily = (_: FamilyMappingState, action: SelectFamilyAction) => ({
   ...initialState,
   familyCode: action.familyCode
+});
+
+const loadFamilyMapping = (state: FamilyMappingState, action: SetLoadFamilyMappingAction) => ({
+  ...state,
+  loadFamilyMapping: action.status
 });
 
 const fetchedFamilyMappingSuccess = (state: FamilyMappingState, action: FetchedFamilyMappingSuccessAction) => ({
@@ -155,6 +165,8 @@ const savedFamilySuccess = (state: FamilyMappingState) => ({
   originalMapping: computeOriginalMapping(state.mapping)
 });
 
+const savedFamilyFail = (state: FamilyMappingState) => state;
+
 const computeOriginalMapping = (mapping: AttributesMapping) => {
   return Object.values(mapping).reduce(
     (originalMapping: OriginalMappingState, {franklinAttribute, attribute, status}) => {
@@ -167,7 +179,8 @@ const computeOriginalMapping = (mapping: AttributesMapping) => {
 
 const initialState: FamilyMappingState = {
   mapping: {},
-  originalMapping: {}
+  originalMapping: {},
+  loadFamilyMapping: false
 };
 
 type Actions =
@@ -178,7 +191,9 @@ type Actions =
   | MapFranklinAttributeAction
   | UnmapFranklinAttributeAction
   | SavedFamilyMappingSuccessAction
-  | ApplyFranklinSuggestionAction;
+  | SavedFamilyMappingFailAction
+  | ApplyFranklinSuggestionAction
+  | SetLoadFamilyMappingAction;
 
 export default createReducer<FamilyMappingState, Actions>(initialState, {
   [SELECT_FAMILY]: selectFamily,
@@ -190,5 +205,7 @@ export default createReducer<FamilyMappingState, Actions>(initialState, {
   [MAP_FRANKLIN_ATTRIBUTE]: mapFranklinAttribute,
   [UNMAP_FRANKLIN_ATTRIBUTE]: unmapFranklinAttribute,
   [SAVED_FAMILY_MAPPING_SUCCESS]: savedFamilySuccess,
-  [APPLY_FRANKLIN_SUGGESTION]: applyFranklinSuggestion
+  [SAVED_FAMILY_MAPPING_FAIL]: savedFamilyFail,
+  [APPLY_FRANKLIN_SUGGESTION]: applyFranklinSuggestion,
+  [SET_LOAD_FAMILY_MAPPING]: loadFamilyMapping
 });

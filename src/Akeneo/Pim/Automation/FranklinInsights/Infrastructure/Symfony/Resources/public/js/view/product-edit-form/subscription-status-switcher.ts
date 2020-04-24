@@ -8,7 +8,6 @@
  */
 
 import {EventsHash} from 'backbone';
-import * as $ from 'jquery';
 import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import {getSubscriptionStatus} from '../../fetcher/subscription-status';
@@ -20,6 +19,7 @@ const Messenger = require('oro/messenger');
 const Routing = require('routing');
 const template = require('akeneo/franklin-insights/template/product-edit-form/subscription-status-switcher');
 const templateReadOnly = require('akeneo/franklin-insights/template/product-edit-form/subscription-status-switcher-read-only');
+const LoadingMask = require('oro/loading-mask');
 
 interface Config {
   createProductSubscriptionFailMessage: string;
@@ -38,6 +38,7 @@ class SubscriptionStatusSwitcher extends BaseView {
   private readonly template: any = _.template(template);
   private readonly templateReadOnly: any = _.template(templateReadOnly);
   private readonly config: Config;
+  private loadingMask = new LoadingMask();
 
   /**
    * {@inheritdoc}
@@ -139,6 +140,11 @@ class SubscriptionStatusSwitcher extends BaseView {
    * @param {Event} event
    */
   public updateStatus(event: {[key: string]: any}): void {
+    this.loadingMask
+      .render()
+      .$el.appendTo($('.hash-loading-mask'))
+      .show();
+
     const newStatus = event.currentTarget.dataset.status === 'enabled';
 
     if (true === newStatus && false === this.currentStatus) {
@@ -174,6 +180,7 @@ class SubscriptionStatusSwitcher extends BaseView {
       })
       .always(() => {
         this.render();
+        this.loadingMask.hide().$el.remove();
       });
   }
 
@@ -200,6 +207,7 @@ class SubscriptionStatusSwitcher extends BaseView {
       })
       .always(() => {
         this.render();
+        this.loadingMask.hide().$el.remove();
       });
   }
 }

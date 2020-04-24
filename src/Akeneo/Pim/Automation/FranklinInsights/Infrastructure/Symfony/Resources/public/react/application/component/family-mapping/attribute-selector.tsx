@@ -37,7 +37,7 @@ export const AttributeSelector = ({
 }: Props) => {
   const user = useContext(UserContext);
 
-  const attributes = useSelector((state: FamilyMappingState) => state.attributes);
+  const attributes = useSelector((state: FamilyMappingState) => state.attributes.attributes);
   const attributeGroups = useSelector((state: FamilyMappingState) => state.attributeGroups);
   const attributesMappingStatus = useSelector((state: FamilyMappingState) => state.attributesMappingStatus);
 

@@ -16,6 +16,7 @@ import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {getValuesForChannelAndLocale, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 import {Lock} from 'akeneoassetmanager/application/component/app/icon/lock';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import {hasFieldAsTarget} from 'akeneoassetmanager/domain/model/asset-family/transformation';
 
 const NoZIndexFieldContainer = styled.div.attrs(() => ({className: 'AknFieldContainer'}))`
   z-index: unset;
@@ -30,6 +31,18 @@ const ValueLabel = styled.label`
   > :first-child {
     margin-right: 5px;
   }
+`;
+
+const Helper = styled.div`
+  background-image: url('/bundles/pimui/images/icon-info.svg');
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: left top;
+  color: ${({theme}) => theme.color.grey120};
+  font-size: ${({theme}) => theme.fontSize.small};
+  line-height: 20px;
+  padding-left: 26px;
+  margin-top: 6px;
 `;
 
 export default (
@@ -62,10 +75,16 @@ export default (
       value.attribute.code
     );
 
+    const isTransformationTarget = hasFieldAsTarget(asset.assetFamily.transformations, {
+      attribute: value.attribute.code,
+      channel,
+      locale,
+    });
+
     const canEditAsset = rights.asset.edit;
     const canEditAttribute = !value.attribute.is_read_only;
     const canEditLocale = value.attribute.value_per_locale ? rights.locale.edit : true;
-    const canEditData = canEditAsset && canEditAttribute && canEditLocale;
+    const canEditData = canEditAsset && canEditAttribute && canEditLocale && !isTransformationTarget;
 
     return (
       <NoZIndexFieldContainer
@@ -113,6 +132,7 @@ export default (
             />
           </ErrorBoundary>
         </div>
+        {isTransformationTarget && <Helper>{__('pim_asset_manager.attribute.used_as_transformation_target')}</Helper>}
         {getErrorsView(errors, value)}
       </NoZIndexFieldContainer>
     );

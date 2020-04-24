@@ -22,6 +22,7 @@ import {SearchFilter} from './search-filter';
 import {StatusFilter} from './status-filter';
 import {TranslateContext} from '../../context/translate-context';
 import {NoResultsGrid} from './no-results-grid';
+import {Loader} from './loader';
 
 interface Props {
   mapping: AttributesMapping;
@@ -52,6 +53,10 @@ export const FilterableGrid = ({mapping}: Props) => {
     setIsOrdered(true);
   }
 
+  const isLoading = useSelector((state: FamilyMappingState) => {
+    return state.familyMapping.loadFamilyMapping || state.attributes.loadAttributes;
+  });
+
   return (
     <>
       <div className='attribute-mapping-search-container'>
@@ -64,12 +69,14 @@ export const FilterableGrid = ({mapping}: Props) => {
           <StatusFilter onSelect={handleOnSelectStatus} selectedStatus={selectedStatus} />
         </div>
       </div>
-
-      {filteredRows.length === 0 ? (
+      {isLoading ? (
+        <Loader />
+      ) : filteredRows.length === 0 ? (
         <NoResultsGrid />
       ) : (
         <Grid mapping={filteredRows} selectedFranklinAttributeCodes={selectedFranklinAttributeCodes} />
       )}
+      }
     </>
   );
 };

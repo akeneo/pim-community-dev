@@ -2,6 +2,51 @@
 
 ## Bug fixes
 
+- PIM-9192: Fix error being printed in the response of partial update of products API
+
+# 4.0.18 (2020-04-23)
+
+## Technical Improvements
+
+- PIM-9195: Add extra ImageMagick library to handle SVG files
+
+## Bug fixes
+
+- PIM-9190: Mitigates deadlock on DQI
+
+# 4.0.17 (2020-04-17)
+
+## Improvements
+
+- DAPI-531: Franklin Insights - Add loading indicator for multiple actions on mapping screens.
+
+## Bug fixes
+
+- PIM-9189: Fix the display of asset collection and reference entity link attributes in export product profile
+
+# 4.0.16 (2020-04-08)
+
+# 4.0.15 (2020-04-07)
+
+## Bug fixes
+
+- PIM-9162: Prevent the asset manager from computing transformations for unsupported file mime types
+
+## Technical Improvements
+
+- PIM-9174: PHP_IDE_CONFIG is not dependant from the PIM edition
+- DAPI-948: Reduce the number of days of retention of the criteria evaluations
+
+# 4.0.14 (2020-04-01)
+
+## Bug fixes
+
+- PIM-9155: Fix the creation of product link rules in the asset manager
+
+# 4.0.13 (2020-03-30)
+
+## Bug fixes
+
 - PIM-9161: Fix performance issue on product normalization
 
 # 4.0.12 (2020-03-24)

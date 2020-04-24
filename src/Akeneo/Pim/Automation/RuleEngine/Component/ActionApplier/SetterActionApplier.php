@@ -132,7 +132,7 @@ class SetterActionApplier implements ActionApplierInterface
         $this->propertySetter->setData(
             $entityWithValues,
             $action->getField(),
-            $action->getValue(),
+            '' === $action->getValue() ? null : $action->getValue(),
             $action->getOptions()
         );
     }

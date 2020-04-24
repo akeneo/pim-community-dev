@@ -96,3 +96,7 @@ config:
         pim/form/common/fields/values/asset: akeneoassetmanager/infrastructure/product/axis/asset.js
 
         pimee/filter/attribute/asset-family-collection: pimenterpriseui/js/filter/attribute/asset-family-collection
+        pimee/filter/attribute/assets-collection: pimenterpriseui/js/filter/attribute/assets-collection
+
+        # Needed by onboarder for hooking into the asset code creation
+        akeneoassetmanager/application/asset-upload/utils/line-factory: akeneoassetmanager/application/asset-upload/utils/line-factory

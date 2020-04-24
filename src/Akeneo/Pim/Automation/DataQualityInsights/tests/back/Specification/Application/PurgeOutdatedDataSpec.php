@@ -74,15 +74,10 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
         ProductAxisRateRepositoryInterface $productModelAxisRateRepository
     ) {
         $purgeDate = new \DateTimeImmutable('2019-12-31');
+        $limitDate = new \DateTimeImmutable('2019-12-24');
 
-        $productAxisRateRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
-            return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
-        }))->shouldBeCalled();
-        $productModelAxisRateRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
-            return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
-        }))->shouldBeCalled();
+        $productAxisRateRepository->purgeUntil($limitDate)->shouldBeCalled();
+        $productModelAxisRateRepository->purgeUntil($limitDate)->shouldBeCalled();
 
         $this->purgeProductAxisRatesFrom($purgeDate);
     }
@@ -92,13 +87,11 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
         CriterionEvaluationRepositoryInterface $productModelCriterionEvaluationRepository
     ) {
         $purgeDate = new \DateTimeImmutable('2019-12-31');
+        $limitDate = new \DateTimeImmutable('2019-12-30');
 
-        $productCriterionEvaluationRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
-            return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
-        }))->shouldBeCalled();
+        $productCriterionEvaluationRepository->purgeUntil($limitDate)->shouldBeCalled();
         $productModelCriterionEvaluationRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::RETENTION_DAYS));
+            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::EVALUATIONS_RETENTION_DAYS));
             return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
         }))->shouldBeCalled();
 
