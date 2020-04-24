@@ -256,7 +256,7 @@ class AttributeGroupController
         $sortOrder = $data['attributes_sort_order'];
         unset($data['attributes_sort_order']);
 
-        $this->checkAttributeCollectionRights($data, $attributeGroup);
+        $this->checkAttributeCollectionRights($data);
 
         $filteredData = $this->inputFilter->filterCollection(
             $data,
