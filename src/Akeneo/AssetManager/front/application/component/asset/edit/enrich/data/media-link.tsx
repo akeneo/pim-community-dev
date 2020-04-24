@@ -94,7 +94,6 @@ const View = ({
   });
 
   React.useEffect(() => {
-    debugger;
     if (reloadPreview) {
       doRegenerate();
     }

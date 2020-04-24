@@ -9,6 +9,10 @@ import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
+import {connect} from 'react-redux';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
+import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 
 type MainMediaThumbnailProps = {
   asset: EditionAsset;
@@ -16,6 +20,7 @@ type MainMediaThumbnailProps = {
     channel: ChannelCode;
     locale: LocaleCode;
   };
+  reloadPreview: boolean;
 };
 
 const Container = styled.div`
@@ -40,11 +45,31 @@ const Img = styled.img`
   object-fit: contain;
 `;
 
-export const MainMediaThumbnail = ({asset, context}: MainMediaThumbnailProps) => (
-  <Container>
-    <Img
-      alt={__('pim_asset_manager.asset.img', {label: getEditionAssetLabel(asset, context.locale)})}
-      src={getMediaPreviewUrl(getEditionAssetMainMediaThumbnail(asset, context.channel, context.locale))}
-    />
-  </Container>
-);
+export const MainMediaThumbnail = connect(
+  (state: EditState) => ({
+    reloadPreview: state.reloadPreview,
+  }),
+  dispatch => ({
+    onReloadPreview: () => dispatch(doReloadAllPreviews() as any),
+  })
+)(({asset, context, reloadPreview}: MainMediaThumbnailProps) => {
+  const url = getMediaPreviewUrl(getEditionAssetMainMediaThumbnail(asset, context.channel, context.locale));
+  const label = getEditionAssetLabel(asset, context.locale);
+  const [regenerate, doRegenerate] = useRegenerate(url);
+
+  React.useEffect(() => {
+    if (reloadPreview) {
+      doRegenerate();
+    }
+  }, [reloadPreview]);
+
+  return regenerate ? (
+    <div className="AknLoadingPlaceHolderContainer" title={label}>
+      <Container />
+    </div>
+  ) : (
+    <Container>
+      <Img alt={__('pim_asset_manager.asset.img', {label})} src={url} />
+    </Container>
+  );
+});
