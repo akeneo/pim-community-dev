@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9192: Fix error being printed in the response of partial update of products API
+
 # 4.0.18 (2020-04-23)
 
 ## Bug fixes

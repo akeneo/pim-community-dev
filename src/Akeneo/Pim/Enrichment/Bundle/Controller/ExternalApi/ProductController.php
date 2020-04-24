@@ -39,6 +39,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -145,6 +146,9 @@ class ProductController
     /** @var DuplicateValueChecker */
     protected $duplicateValueChecker;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -173,7 +177,8 @@ class ProductController
         GetConnectorProducts $getConnectorProducts,
         ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave,
         WarmupQueryCache $warmupQueryCache,
-        DuplicateValueChecker $duplicateValueChecker = null // TODO @merge master Remove this null parameter and the conditions
+        DuplicateValueChecker $duplicateValueChecker = null, // TODO @merge master Remove this null parameter and the conditions
+        ?LoggerInterface $logger = null // TODO @merge master Remove this null parameter and the conditions
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -203,6 +208,7 @@ class ProductController
         $this->apiAggregatorForProductPostSave = $apiAggregatorForProductPostSave;
         $this->warmupQueryCache = $warmupQueryCache;
         $this->duplicateValueChecker = $duplicateValueChecker;
+        $this->logger = $logger;
     }
 
     /**
@@ -424,7 +430,16 @@ class ProductController
         $resource = $request->getContent(true);
         $this->apiAggregatorForProductPostSave->activate();
         $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
-            $this->apiAggregatorForProductPostSave->dispatchAllEvents();
+            try {
+                $this->apiAggregatorForProductPostSave->dispatchAllEvents();
+            } catch (\Throwable $exception) {
+                // TODO @merge master Remove this condition
+                if (null !== $this->logger) {
+                    $this->logger->critical('An exception has been thrown in the post-save events', [
+                        'exception' => $exception,
+                    ]);
+                }
+            }
             $this->apiAggregatorForProductPostSave->deactivate();
         });
 
