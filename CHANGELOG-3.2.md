@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9219: Fix duplicated categories in the product API when present in both Product Model and Variant
+
 # 3.2.49 (2020-04-23)
 
 ## Bug fixes
