@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.19 (2020-04-24)
+
 ## Technical Improvements
 
 - PIM-9195: Enable preview of SVG files in the assets mass upload
