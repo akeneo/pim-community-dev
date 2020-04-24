@@ -9,6 +9,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class CreateTwoWayAssociationIntegration extends TestCase
 {
@@ -95,8 +96,8 @@ class CreateTwoWayAssociationIntegration extends TestCase
             ],
         ]);
 
-        $productWithAssociation->getAssociationForTypeCode('COMPATIBILITY')->setProducts([]);
-        $productWithAssociation->getAssociationForTypeCode('COMPATIBILITY')->setProductModels([]);
+        $productWithAssociation->getAssociationForTypeCode('COMPATIBILITY')->setProducts(new ArrayCollection());
+        $productWithAssociation->getAssociationForTypeCode('COMPATIBILITY')->setProductModels(new ArrayCollection());
         $this->getProductSaver()->save($productWithAssociation);
 
         $aProductAssociation = $this->getProductAssociationRepository()->findByOwner($aProduct->getId());

@@ -13,6 +13,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class CreateTwoWayAssociationProductModelIntegration extends TestCase
 {
@@ -63,8 +64,8 @@ class CreateTwoWayAssociationProductModelIntegration extends TestCase
         $anotherProductModel = $this->createAndSaveProductModel('another_product_model', 'clothing_color_size', ['a_product'], ['a_product_model']);
         $aProductModelWithAssociation = $this->createAndSaveProductModel('a_product_model_with_association', 'clothing_color_size', [], ['a_product_model', 'another_product_model']);
 
-        $anotherProductModel->getAssociationForTypeCode('COMPATIBILITY')->setProducts([]);
-        $anotherProductModel->getAssociationForTypeCode('COMPATIBILITY')->setProductModels([]);
+        $anotherProductModel->getAssociationForTypeCode('COMPATIBILITY')->setProducts(new ArrayCollection([]));
+        $anotherProductModel->getAssociationForTypeCode('COMPATIBILITY')->setProductModels(new ArrayCollection([]));
         $this->getProductModelSaver()->save($anotherProductModel);
 
         $this->getProductModelAssociationRepository()->clear();
