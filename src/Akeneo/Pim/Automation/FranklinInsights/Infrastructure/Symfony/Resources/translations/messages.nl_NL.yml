@@ -1,0 +1,8 @@
+akeneo_franklin_insights:
+  mapping_identifier:
+    success: De koppeling is succesvol opgeslagen
+    error: Er is een fout opgetreden tijdens het opslaan van de koppeling
+  entity:
+    product_subscription:
+      constraint:
+        product_subscription_with_same_identifier_already_exist: 'Een ander product met ten minste één identieke id is al geabonneerd.'

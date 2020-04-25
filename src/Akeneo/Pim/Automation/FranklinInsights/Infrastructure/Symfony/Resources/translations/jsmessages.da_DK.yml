@@ -2,23 +2,186 @@ pim_title:
   akeneo_franklin_insights_connection_edit: 'Franklin Insights forbindelse'
   akeneo_franklin_insights_identifiers_mapping_edit: 'Franklin Insights indstillinger'
   akeneo_franklin_insights_attributes_mapping_edit: 'Franklin Insights indstillinger'
+pim_menu:
+  item:
+    franklin: Franklin Insights
 akeneo_franklin_insights:
   entity:
     data_provider:
+      ask_franklin_down: "Beklager, noget gik galt. Prøv igen senere."
+      authentication_error: "Beklager, ikke godkendt til Franklin Insights, din token er ugyldig. Indtast venligst en gyldig token eller kontakt os for hjælp."
       bad_request_error: "Beklager, der opstod en fejl under kommunikation med Franklin Insights. Kontakt venligst din administrator."
-    attributes_mapping:
+    identifier_mapping:
+      plural_label: Identifikatorer
+      flash:
+        update:
+          first: 'Tak for at kortlægge dine katalogproduktidentifikatorer. Du kan nu abonnere produkter til berigelse med Franklin Insights.'
+          success: 'Identifikationskortlægning er blevet gemt.'
+          fail: 'Identifikationskortlægning blev ikke gemt grundet en fejl.'
       fields:
+        identifier_label:
+          label: Franklin-identifikator
+          values:
+            brand: Brand
+            asin: ASIN
+            mpn: MPN
+            upc: UPC
+        catalog_attribute: Katalog-attribut
+        franklin_insights: Franklin-identifikator status
+        status:
+          active: Aktiv
+          inactive: Inaktiv
+      constraint:
+        duplicate_attribute_code: "Én kortlægning tilladt pr. katalog-attribut"
+        missing_or_invalid_identifiers: "Nogle identificeringsmapper, der er kortlagt, mangler eller er ugyldige. Forventet: \"{{ expected }}\", fik \"{{ given }}\"."
+        mandatory_identifier_mapping: "Brand og MPN-kortlægning påkrævet"
+        attribute_type: "Denne type attribut kan ikke optræde som identofikator"
+        localizable_not_allowed: "Lokaliserbare attributter kan ikke optræde som identifikator"
+        scopable_not_allowed: "Scopable attributter kan ikke optræde som identifikator"
+        locale_specific_not_allowed: "Lokationsspecifikke attributter kan ikke optræde som identifikator"
+    attributes_mapping:
+      label: Kortlægning af attributter
+      fields:
+        franklin_attribute: 'Franklin-attribut'
+        franklin_insights:
+          label: Franklin-attribut status
+          pending: Uafgjort
+          active: Aktiv
+          inactive: Inaktiv
         values_summary: "Værdisummering: {{ label }}"
       module:
+        subscribe:
+          subscribe: 'Abonner familie til Franklin'
+          subscribed: 'Abonneret til Franklin'
         index:
+          error: "Du skal oprette en familie i dit katalog for at få adgang til denne side."
+          family_status:
+            pending: 'Nye Franklin-attributter til gennemgang'
+            full: 'Alle Franklin-attributter er kortlagt'
           types_mismatch_warning: 'Advarsel: attribut-typer er parret forkert.'
-    product_subscription:
       constraint:
+        missing_target_key: 'Manglende target key til kortlægning'
+        missing_attribute_key: 'Manglende {{ expectedKey }} key til kortlægning med target key "{{ targetKey }}"'
+        invalid_attribute_type_mapping: 'Franklin-attributter kan ikke kortlægges til PIM-attributtype "{{ pimType }}"'
+        empty_mapping: 'Franklin-attribut kan ikke kortlægges med en tom kortlægning'
+        localizable_not_allowed: 'Franklin-attributter kan ikke kortlægges til en PIM-lokaliserbar attribut'
+        scopable_not_allowed: 'Franklin-attributter kan ikke kortlægges til en PIM-scopable attribut'
+        locale_specific_not_allowed: 'Franklin-attributter kan ikke kortlægges til en PIM-lokationsspecifik attribut'
+        duplicated_pim_attribute: "Kortlægningen kan ikke gemmes, da du har kortlagt adskillige Franklin-attributter til den samme PIM-attribut"
+        attribute_not_in_family_not_allowed: 'PIM-attribut skal være i den valgte familie.'
+        only_unknown_mapped_attributes: 'Der findes ingen attribut i attribut-kortlægningen'
+    product_subscription:
+      flash:
+        create:
+          success: 'Produkt blev abonneret til Franklin'
+          fail: 'Det er ikke muligt at abonnere produkt til Franklin'
+        delete:
+          success: 'Produkt blev afmeldt Franklin'
+          fail: 'Umuligt at afmelde produkt fra Franklin'
+      constraint:
+        family_required: 'Beklager, en produktfamilie er påkrævet for at kunne abonnere produktet til Franklin Insights.'
+        no_identifiers_mapping: 'Kortlæg venligst dit katalogproduktidentifikatorer i indstillinger > Franklin Insights før du abonnerer produkter.'
+        insufficient_credits: "Beklager, produktet blev ikke abonneret Franklin Insights. Du har ikke nok credit."
+        invalid_mapped_values: 'Beklager, produktet blev ikke abonneret Franklin Insights. Abonner venligst produktet til en gyldig kombination af identifikatorer.'
+        data_provider_error: 'Franklin returnerede en fejl under forsøget på at abonnere produktet' #TODO: check with POs
+        not_subscribed: 'Produktet er ikke abonnent'
+        already_subscribed_product: 'Produktet er allerede abonnent.'
+        variant_product: 'Beklager, variantprodukter kan ikke abonneres på Franklin Insights.'
+        inactive_connection: 'Beklager, det var ikke muligt at abonnere produktet til Franklin Insights. Konfigurér din forbindelse til Franklin Insights.'
         product_subscription_with_same_identifier_already_exist: 'Et andet produkt med mindst én identisk identifikator abonnerer allerede.'
+      module:
+        product_edit_form:
+          family_required: 'Produktfamilie er påkrævet.'
+          no_identifier_filled: 'Produktidentifikatorer er påkrævet.'
+          invalid_mapping: "Identifikationskortlægning er påkrævet."
     attribute_options_mapping:
+      constraint:
+        no_attribute_options_mapped: 'Franklin-attribut options kan ikke kortlægges med en tom kortlægning'
+      fields:
+        franklin_attribute_option: Franklin-attribut option
+        catalog_attribute_option: Katalog-attribut option
+        attribute_option_status: Franklin-option status
       module:
         edit:
+          title: '{{ familyLabel }} - {{ franklinAttributeLabel }} attribut-options'
+          sub_title: 'Mød Franklin, din <span class="AknDescriptionHeader-title--highlight">Produktinformation AI-assistent</span>!'
           description: 'For at hjælpe dig med at berige dit katalog skal Franklin kende dine katalogattributmuligheder, der matcher hans. <a href="#" target="_blank" class="AknDescriptionHeader-link">Læs mere</a>'
+  product:
+    edit:
+      btn.push: Foreslå data
+      subscription_status_title: 'Franklin-abonnement'
   connection:
+    page_title: 'Franklin Insights-forbindelse'
     flash:
+      success: Franklin Insights aktiverings-kode blev gemt.
+      invalid: Beklager, ugyldig aktiveringskode. Prøv igen med en gyldig.
       error: Beklager, der opstod en fejl.
+    module:
+      title:
+        sub_title: 'Velkommen til <span class="AknDescriptionHeader-title--highlight">Produktinformation AI-assistent</span>!'
+        description:
+          first_step: 'Det første trin i forbindelsen med assistenten er at konfigurere API-token.'
+          second_step: 'Det næste skrift i forbindelsesprocessen er at matche dine <a href="#" class="AknDescriptionHeader-link link">katalogproduktidentifikatorer</a> til assistentens identifikatorer.'
+      activation:
+        label: 'Franklin Connector'
+        activation_code: 'Aktiveringskode'
+        paste_activation_code: 'Indsæt aktiveringskode'
+        activated: 'Aktiveret'
+        activate: 'Aktivér'
+  settings:
+    page_title: 'Franklin Insights-indstillinger'
+    module:
+      title:
+        sub_title: 'Mød Franklin, din <span class="AknDescriptionHeader-title--highlight">Produktinformation AI-assistent</span>!'
+        description:
+          first_step: 'For at hjælpe dig med at berige dit katalog skal Franklin have indsigt i dine katalogidentifikatorer.'
+          second_step: 'Når du kortlægger dine identifikatorer, skal du huske på, at brand''et og MPN går hånd i hånd. <a href="https://help.akeneo.com/articles/franklin-insights-mappings.html" class="AknDescriptionHeader-link" target="_blank">Læs mere</a>'
+      inactive_connection:
+        title: 'Beklager, der er intet at se her endnu'
+        sub_title: 'Aktivér venligst din konto i System > Franklin-forbindelse og vend tilbage.'
+      no_active_english_locale:
+        title: 'Franklin Insights er kun tilgængeligt for engelske lokationer.'
+        sub_title: 'Hold øje her, lokationer er på vej.'
+      save:
+        warning: '{1}Ændringer i kortlægningen kan påvirke et abonnement. Er du sikker?|]1,+Inf[Ædringer i kortlægningen kan påvirke {{ count }} abonnementer. Er du sikker?'
+        title: 'Advarsel!'
+  mass_edit:
+    product:
+      operation:
+        franklin_insights:
+          label: 'Franklin Insights abonnementer'
+          label_count: "{1}Administrer Franklin Insights-abonnementer for <span class=\"AknFullPage-title--highlight\">1 produkt</span>|]1, Inf[Abonner til Franklin Insights for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
+          description: Vælg venligst den handling, du vil anvende på de produkter, der er valgt på gitteret
+          subscribe_label: Abonnér
+          unsubscribe_label: Afmeld
+          constraint:
+            franklin_activation: "Aktiver <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">venligst</a> Franklin Insights før du abonnerer produkter."
+            invalid_mapping: "Kortlæg venligst produktidentifikatorerne i indstillinger > Franklin Insights før du abonnerer produkter."
+batch_jobs:
+  default_steps:
+    fetch_products: Hent produktdata
+    create_proposals: Opret forslag
+  franklin_insights_subscribe_products:
+    label: Franklin Insights bulk-abonnement
+    validate_configuration.label: Bekræft Franklin Insights-konfiguration
+    validate_identifiers_mapping.label: Bekræft kortlægning af identifikatorer
+    subscribe_products.label: Abonnér produkter
+  franklin_insights_unsubscribe_products:
+    label: Franklin Insights bull afmelding
+    validate_configuration.label: Bekræft Franklin Insights-konfiguration
+    unsubscribe_products.label: Afmeld produkter
+  franklin_insights_fetch_products:
+    label: Hent produktdata fra Franklin Insights
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        franklin_insights_fetch_products: Franklin Insights
+pim_enrich.entity.attribute:
+  module:
+    save:
+      title: 'Advarsel!'
+      warning: '{1} At slette en attribut kan påvirke et Franklin-abonnement. Er du sikker?|]1,+Inf At slette en attribut kan påvirke {{ count }} Franklin-abonnementer. Er du sikker?'
+pim_notification:
+  types:
+    franklin_insights: Franklin Insights

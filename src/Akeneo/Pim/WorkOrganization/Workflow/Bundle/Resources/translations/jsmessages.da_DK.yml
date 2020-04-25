@@ -2,12 +2,29 @@ View the product: Se produktet
 Unpublish the product: Afpublicer produktetet
 Approve: Godkend
 Refuse: Afvis
+Approve selected: Godkend valgte
 Refuse selected: Afvis valgte
+pim_datagrid:
+  no_entities:
+    proposal: Der er ingen forslag om revision.
+    product_draft: Der er intet produktsudkast, der skal gennemgås.
+  no_results:
+    proposal: Der er ingen forslag om revision. Prøv at ændre dine søgkriterier.
+    product_draft: Der er intet produktsudkast, der skal gennemgås. Prøv at ændre dine søgekriterier.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Åbn
+      collapse_text: Minimer
 pimee_workflow:
   entity:
+    published_product:
+      btn:
+        original_product: Rediger arbejdskopi
     proposal:
       modal.title: Efterlad en kommentar (valgfri - maks. 255 tegn)
   proposal:
+    overview: "]-Inf, 1]{{ count }} forslag|]1, Inf[{{ count }} forslag"
     selected: udvalgte forslag
     mass_action_group:
       review:
@@ -20,28 +37,163 @@ pimee_workflow:
     partial_approve:
       modal:
         title: Delvis godkend ændringer
+        label: Tilføj en kommentar (valgfrit)
         error: Der opstod en fejl, forslaget er ikke blevet delvist godkendt
         success: Ændringerne er blevet godkendt
     partial_reject:
       modal:
         title: Delvist afvist ændringer
+        label: Tilføj en kommentar (valgfrit)
         error: Der opstod en fejl, forslaget er ikke blevet delvist afvist
         success: Ændringerne er blevet afvist
 batch_jobs:
+  csv_published_product_export:
+    label: Offentliggjort produkt eksport i CSV
+    export.label: Offentliggjort produkt eksport
+  csv_product_proposal_import:
+    label: Produkt forslag import som CSV
+    import.label: Produkt forslag import
+  approve_product_draft:
+    label: Godkend forslag
+    perform.label: Godkend forslag
+  refuse_product_draft:
+    label: Afvis forslagerne
+    perform.label: Afvis forslagerne
+  xlsx_published_product_export:
+    label: Publiceret produkt eksport som XLSX
+    export.label: Offentliggjort produkt eksport
+  xlsx_product_proposal_import:
+    label: Produkt forslag import som CSV
+    import.label: Produkt forslag import som CSV
   csv_published_product_quick_export:
     export.label: CSV offentliggjort produkter hurtig eksport
+    perform.label: CSV offentliggjort produkter hurtig eksport
   csv_published_product_grid_context_quick_export:
     export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+    perform.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
   xlsx_published_product_quick_export:
     export.label: CSV offentliggjort produkter hurtig eksport
+    perform.label: CSV offentliggjort produkter hurtig eksport
   xlsx_published_product_grid_context_quick_export:
     export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+    perform.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+  publish_product:
+    perform.label: Udgiv produkter
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Ny forslag
+    pimee_workflow_import_notification_new_proposals: Nye forslag fra import
+    pimee_workflow_product_draft_notification_partial_approve: Forslag delvist godkendt
+    pimee_workflow_product_draft_notification_partial_reject: Forslag delvist afvist
+    pimee_workflow_product_draft_notification_partial_remove: Forslag delvist slettet
+    pimee_workflow_product_draft_notification_approve: Forslag godkendt
+    pimee_workflow_product_draft_notification_refuse: Forslag afvist
+    pimee_workflow_product_draft_notification_remove: Forslag slettet
 pimee_dashboard:
   widget:
     product_drafts:
+      date: Dato
+      author: Forfatter
+      product: Produkt
       review: Gennemgang
       empty: Ingen forslag til gennemgang
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Publiceret
+      revert: Gendan
+    attribute:
+      can_be_updated_by_a_rule: "Denne attribut kan opdateres ved hjælp af en regel: {{ rule }}"
+      value_updated: Denne værdi opdateres af det aktuelle udkast
+    meta:
+      published_version: Publiceret version
+      owner_groups: Ejer grupper
+      draft_status: Kladdestatus
+      draft:
+        in_progress: Igangværende
+        sent_for_approval: Venter på godkendelse
+        working_copy: Arbejds kopi
+    revert:
+      title: Gendan bekræftelse
+      content: Er du sikker på at du vil gendanne produktet til denne version?
+    publish:
+      title: Offentliggøre dette produkt
+      content: Er du sikker på du vil offentliggøre dette produkt?
+    unpublish:
+      title: Afpublicer produktet
+      content: Er du sikker på du vil afpublicere dette produkt ?
+    copy:
+      working_copy: Arbejds kopi
+      draft: Mit udkast
+      draft_of: "{{ author }}'s udkast til"
+    approval:
+      send: Send til godkendelse
+      sent: Sendt til godkendelse
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Produkt blev publiseret
+      fail: Fejl ved publisering af dette produkt
+    unpublish:
+      success: Produkt blev afpubliseret
+      fail: Fejl ved publisering af dette produkt
+    revert:
+      success: Produkt blev gendannet
+  page_title:
+    index: "]-Inf, 1]{{ count }} udgivet produkt|]1, Inf[{{ count }} udgivede produkter"
+  module:
+    publish:
+      label: Udgiv
+      publish_this_version: Offentliggøre denne version
+    unpublish:
+      label: Afpublisér
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Forslaget er blevet anvendt.
+      fail: "Dette forslag kan ikke anvendes på grund af følgende fejl. {{ error }}"
+    reject:
+      success: Forslaget er blevet afvist.
+    remove:
+      success: Forslaget er blevet fjernet.
+    update:
+      success: Produkt udkast er blevet gemt
+      fail: Produkt kladde kunne ikke opdateres
+    create:
+      success: Produkt udkast sendt til godkendelse
+      fail: Du kan ikke sende dette udkast til godkendelse
+  module:
+    proposal:
+      accept: Acceptere forslag
+      accept_selected: Acceptere valgte forslag(ene)
+      reject: Afvis forslag
+      reject_selected: Afvis valgte forslag
+      remove: Fjern forslag
+      comment_title: Kommentere dine forslag (valgfri - maks. 255 tegn)
+      comment_chars: tegn.
+      confirm: Afsend
+    edit:
+      discard_changes: Ikke-gemte ændringer vil gå tabt. Er du sikker på du vil sende din udkast til godkendelse uden at gemme dine ændringer?
+      discard_changes_title: Er du sikker på du vil sende dette udkast?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Udgiv
+      label_count: "{1}Udgiv <span class=\"AknFullPage-title--highlight\">1 produkt</span>|]1, Inf[Udgiv <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
+      description: Produkterne vil blive offentliggjort
+      warning: '{{ itemsCount }} udvalgte produkter vil blive offentliggjort.'
+    unpublish:
+      label: Afpublisér
+      label_count: "{1}Fjern offentliggørelse <span class=\"AknFullPage-title--highlight\">1 produkt</span>|]1, Inf[Fjern offentliggørelse <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
+      description: Produkterne vil blive afpubliseret
+      warning: '{{ itemsCount }} udvalgte produkter vil blive afpubliseret.'
 pim_menu:
+  navigation:
+    published_products: Publicerede produkter
   item:
     proposal: Forslag
     published_product: Publicerede produkter
+pim_title:
+  pimee_workflow_proposal_index: Forslag
+  pimee_workflow_published_product_index: Publicerede produkter
+  pimee_workflow_published_product_view: Offentliggjorte produkter {{ product.label }} | Vis

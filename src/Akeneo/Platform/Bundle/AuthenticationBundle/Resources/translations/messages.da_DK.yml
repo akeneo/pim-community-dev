@@ -1,0 +1,6 @@
+akeneo_authentication:
+  acl:
+    sso:
+      title: Administrér Single Sign-On (SSO)
+  sso:
+    unknown_user_error: Du har ikke adgang til denne applikation. Kontakt din administrator.

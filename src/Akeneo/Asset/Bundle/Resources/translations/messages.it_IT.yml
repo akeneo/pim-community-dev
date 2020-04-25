@@ -236,3 +236,6 @@ pimee_enrich:
       options:
         width: '%value%px di larghezza'
         height: '%value%px di altezza'
+asset_tree:
+  remove:
+    error_linked: Questo albero di categorie non può essere cancellato, è impostato come albero categorie predefinito di un utente.

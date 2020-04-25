@@ -1,13 +1,75 @@
+pim_title:
+  akeneo_reference_entities_reference_entity_index: Opret en ny enhed
+  akeneo_reference_entities_reference_entity_edit: Rediger en referenceenhed
+  akeneo_reference_entities_record_edit: Rediger et arkiv
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        remove: Fjern billedet
+        download: Download billedet
+        upload: Træk og slip for at indlæse eller klik her
+      small:
+        remove: Fjern
+        download: Hent
+        upload: Drag and drop for at uploade
   reference_entity:
+    validation:
+      code:
+        pattern: 'Dette felt må kun indeholde bogstaver, tal og underscores.'
+        should_be_unique: 'Denne kode eksisterer allerede for denne enhed.'
+        limit_reached: 'Du kan ikke oprette denne referenceenhed "{{ %reference_entity_label% }}", da du har nået grænsen for {{ %limit% }} referenceenheder'
+    button:
+      save: Gem
+      save_permission: Gem
+      create: Opret
+    permission:
+      title: Enhedstilladelser
+    title: Enheder
+    breadcrumb: Referenceenheder
+    img: Referenceenhedens primære billede kaldet "{{ label }}"
+    tab:
+      records: Arkiver
+      attribute: Egenskaber
+      properties: Egenskaber
+      permission: Rettigheder
+    properties:
+      title: Enhedsegenskaber
+      identifier: Kode
+      label: Etiket
+      image: Billede
     attribute:
+      title: Arkiv-attributter
       attribute:
         error:
           render_list: 'Der opstod en fejl under gengivelsen af "{{ %attribute_code% }}"-attributten'
           render_edit: 'Der opstod en fejl under gengivelsen af "{{ %attribute_code% }}"-attributten, yderligere egenskabsfelter'
+    module:
+      delete:
+        button: Slet enhed
+        confirm: Er du sikker på, at du vil slette denne enhed?
+    index:
+      grid:
+        count: '{0} Ingen referenceenhed|{1} {{ count }} Referenceenhed|]1,Inf] {{ count }} Referenceenheder'
+        help:
+          title: 'Velkommen til Referenceenheder!'
+          description_part_one: Berig relevant information relateret til produkter (f.eks. mærker, fabrikanter, farver, materialer, ingredienser...).
+          description_part_two: Det giver dig mulighed for at give en bedre produktoplevelse til dine kunder.
+          description_part_three: Klik på "Opret"-knappen for at oprette din første referenceenhed, indstille dens attributter og arkiver.
+          description_part_four: For at linke til produkter skal du derefter oprette en produktattributtype relateret til denne referenceenhed.
+          description_part_five: For flere detaljer inviterer vi dig til at gennemse denne artikel.
     create:
+      header:
+        title: Opret
+      subtitle: Referenceenheder
+      title: Opret en ny enhed
       input:
         label: Etiket
+        code: Kode (påkrævet)
+      confirm: Gem
+    delete:
+      message: Er du sikker på, at du vil slette denne enhed "{{ referenceEntityLabel }}"?
+      title: Attribut
     notification:
       save:
         success: Referenceenhed blev opdateret.
@@ -16,33 +78,221 @@ pim_reference_entity:
         success: Referenceenhed blev oprettet.
         fail: Der opstod en fejl under oprettelsen af referenceenheden
       delete:
+        success: Referenceenhed blev slettet.
         fail: Der opstod en fejl under sletningen af referenceenheden
+  permission:
+    notification:
+      save:
+        success: Referenceenhedstilladelser blev opdateret.
+        fail: Mindst én brugergruppe skal have adgang til at redigere i denne enhed
+    no_data:
+      title: Du har ingen brugergruppe
+      subtitle: Du skal have mindst én brugergruppe for at kunne administrere tilladelse på referenceenheder.
+      link: Klik her for at tilføje din første brugergruppe
   record:
+    validation:
+      limit_reached: 'Du kan ikke oprette arkivet "{{ %record_label% }}", da du har nået grænsen for {{ %limit% }} arkiver for denne referenceenhed'
+      code:
+        pattern: 'Dette felt må kun indeholde bogstaver, tal og underscores.'
+        should_be_unique: 'Denne kode eksisterer allerede for denne enhed.'
+    no_data:
+      title: Der er intet arkiv for {{ entityLabel }}
+      subtitle: Klik på knappen "Tilføj ny" for at oprette det første arkiv
+    no_result:
+      title: Der er intet resultat for din søgning
+      subtitle: Prøv igen med nye søgekriterier.
+    selector:
+      no_value: Klik her for at vælge et arkiv.
+    error:
+      value: Ups, det ser ud til, at gengivelsen af feltet "{{ fieldName }}" slog fejl. Gå til udviklerkonsollen for flere detaljer.
+    button:
+      save: Gem
+      create: Tilføj ny
+      delete: Slet
+      delete_all: Slet alle arkiver
+      back: Tilbage til liste
+    enrich:
+      title: Arkiv-attributter
+      code: Kode
+      label: Etiket
+    title: Arkiver
+    create:
+      header:
+        title: Opret
+      subtitle: Referenceenheder
+      title: Tilføj ny {{ entityLabel }}
+      input:
+        label: Etiket
+        code: Kode (påkrævet)
+        create_another: Opret et nyt arkiv
+      confirm: Gem
+    delete:
+      message: Er du sikker på, at du vil slette arkivet "{{ recordLabel }}"? Hvis det er tilknyttet produkter eller arkivet, vil links blive fjernet.
+      title: Arkiv
+    delete_all:
+      confirm: Er du sikker på, at du vil slette alle "{{ entityIdentifier }}"-arkiver? Hvis de er tilknyttet produkter, vil alle links til produkterne blive fjernet.
     grid:
+      search: Søg på etiket, kode og tekst-attributter
       filter:
         counter: '{{ matchesCount }} resultat|{{ matchesCount }} resultater'
         completeness:
+          label: Fuldført
           all: ALLE
           'yes': 'JA'
           'no': 'NEJ'
+      column:
+        code: Kode
+        image: Billede
+        label: Etiket
+        complete: Fuldført
+        action: Aktioner
+      more_result:
+        title: Det er ikke det!
+        description: Du har lige rullet igennem de første 500 resultater ud af {{ total }} arkiver. For at se flere, prøv med mere specifikke søgekriterier.
+      completeness:
+        title_no_required: Ingen attribut er påkrævet
+        title_non_complete: 0 ud af {{ required }} attributter er færdige
+        title_ongoing: '{{ complete }} ud af {{ required }} attributter er færdige'
+        title_complete: Alle {{ required }} attributter er færdige
     tab:
       enrich: Berige
     notification:
       save:
+        success: Arkiv blev opdateret.
         fail: Der opstod en fejl under gemningen af arkivet
+        validation_error: Arkivet kunne ikke opdateres
       create:
+        success: Arkivet blev oprettet.
         fail: Der opstod en fejl under oprettelsen af arkivet
       delete:
+        success: Arkiv "{{ code }}" blev slettet.
         fail: Der opstod en fejl under sletningen af arkivet
       delete_all:
+        success: Alle "{{ entityIdentifier }}" arkiver blev slettet.
         fail: Der opstod en fejl under sletningen af alle referenceenhedens arkiver
+    completeness:
+      label: Fuldført
   attribute:
+    validation:
+      limit_reached: 'Du kan ikke oprette attributten "{{ %attribute_label% }}", da du har nået grænsen for {{ %limit% }} attributter for denne referenceenhed'
+    default:
+      code: Kode
+      label: Etiket
+      image: Billede
+    type:
+      text: Tekst
+      image: Billede
+      record: Referenceenhed, enkeltlink
+      record_collection: Referenceenhed, flere links
+      option: Enkeltoption
+      option_collection: Flere options
+    is_required: påkrævet for fuldkommenhed
+    no_data:
+      title: Der er ingen brugerdefinerede attributter for {{ entityLabel }}
+      subtitle: Klik på knappen "Tilføj en attribut" for at konfigurere din første brugerdefinerede attribut
+    button:
+      add: Tilføj en attribut
+    create:
+      header:
+        title: Opret
+      subtitle: Referenceenheder
+      title: Tilføj nyt attribut-arkiv
+      description: De følgenede parametre, undtagen etiketten, kan ikke opdateres efter oprettelsen af attributten
+      input:
+        code: Kode (påkrævet)
+        label: Etiket
+        type: Attributtype
+        record_type: Referenceenhed til link (påkrævet)
+        value_per_locale: Værdi pr. landestandard
+        value_per_channel: Værdi pr. kanal
+      placeholder:
+        record_type: Vælg din tilknyttede referenceenhed
+      confirm: Gem
+    edit:
+      delete: Slet attributten
+      title: Redigér attribut {{ code }}
+      save: Gem
+      cancel: Annuller
+      input:
+        code: Kode (påkrævet)
+        label: Etiket
+        type: Attributtype
+        record_type: Relateret referenceenhed (påkrævet)
+        value_per_locale: Værdi pr. landestandard
+        value_per_channel: Værdi pr. kanal
+        is_required: Påkrævet for fuldkommenhed
+        max_length: Maks. tegn
+        textarea: Tekstområde
+        is_rich_text_editor: Rich Text Editor
+        max_file_size: Maks. filstørrelse (MB)
+        allowed_extensions: Tilladte filendelser
+        validation_rule: Valideringsregel
+        regular_expression: Regulære udtryk
+        manage_options:
+          confirmation:
+            discard_changes: Du vil miste ændringer foretaget på listen over options, hvis du forlader siden
+          quick_edit:
+            label: Administrér options
+          option:
+            label:
+              placeholder: Skriv din nye option-etiket her
+        options:
+          validation_rule:
+            none: Ingen
+            email: E-mail
+            regular_expression: Regulære udtryk
+            url: URL
+    delete:
+      message: Er du sikker på, at du vil slette attributten "{{ attributeLabel }}"?
+      title: Attribut
     notification:
       list:
         fail: Der opstod en fejl under opdateringen af attribut-listen
       save:
+        success: Atributten blev opdateret.
         fail: Der opstod en fejl under gemningen af attributten
+        validation_error: Attributten kunne ikke opdateres
       create:
+        success: Atributten blev oprettet.
         fail: Der opstod en fejl under oprettelsen af attributten
+        validation_error: Attributten kunne ikke oprettes
       delete:
+        success: Atributten blev slettet.
         fail: Der opstod en fejl under sletningen af attributten
+    options:
+      no_value: Klik her for at vælge en option.
+      sub_title: Referenceenheder
+      helper:
+        title: Etiket oversættelser
+  modal:
+    delete:
+      subtitle: Bekræft sletning
+      button:
+        cancel: Annuller
+        confirm: Slet
+pim_enrich:
+  confirmation:
+    discard_changes: 'Du vil miste ændringer til "{{ entity }}"-enheden, hvis du forlader siden.'
+  entity:
+    attribute:
+      property:
+        type:
+          akeneo_reference_entity_collection: Referenceenhed, flere links
+          akeneo_reference_entity: Referenceenhed, enkeltlinks
+        section:
+          type_specific: Specifik type parametre
+        reference_entity:
+          identifier: Relateret referenceenhed (påkrævet)
+          default_label: Vælg venligst en referenceenhed
+permission:
+  mass_action: Anvend {{ rightLevel }} rigtigt på alle grupper
+#Analytics
+pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Akser på referenceenheder
+      hint: Hvis du benytter dig af referenceenheder, så er her akser, der kan hjælpe dig med at overvåge din volume.
+  axis:
+    count_reference_entity: Referenceenheder
+    average_max_records_per_reference_entity: Arkiver pr. referenceenhed
+    average_max_attributes_per_reference_entity: Attributter pr. referenceenhed

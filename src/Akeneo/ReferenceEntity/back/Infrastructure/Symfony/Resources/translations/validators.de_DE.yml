@@ -20,6 +20,10 @@ pim_reference_entity:
         pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
         should_be_unique: 'Der Datensatz existiert bereits für Referenz-Entität "%reference_entity_identifier%" und Datensatz "%code%"'
         should_exist: 'Der Datensatz wurde nicht gefunden'
+      text:
+        incompatible_with_regular_expression: 'Bitte geben Sie einen Text ein, der den regulären Ausdruck erfüllt: "%regular_expression%"'
+        invalid_email: 'Bitte geben Sie eine E-Mail-Adresse ein: xxxxx@xx.xx'
+        invalid_url: 'Bitte geben Sie eine URL ein: http(s)://xxxx.XXX'
       file:
         extension_not_allowed: '"%file_extension%" Dateien sind für dieses Attribut nicht erlaubt. Erlaubte Erweiterungen sind: %allowed_file_extensions%'
         file_size_exceeded: 'Die Datei überschreitet die maximale Dateigröße für das Attribut.'

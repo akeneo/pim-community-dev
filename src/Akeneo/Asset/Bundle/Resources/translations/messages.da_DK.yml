@@ -6,9 +6,11 @@ pimee_product_asset:
       remove: Fjern et aktiv
       categories_view: Konsultere kategorierne af et aktiv
       mass_upload: Mass-upload aktiver
+      remove_from_collection: Fjern en produkt-asset fra en asset-samling
     category_asset_picker:
       list: List aktiver kategorier i vælgeren til aktiver
     category:
+      create: Opret en asset-kategori
       edit: Redigere en aktiver-kategori
       list: Oplist aktiver-kategorier
       remove: Fjern en aktiver-kategori
@@ -20,14 +22,21 @@ pimee_product_asset:
   enrich_asset:
     button:
       upload: Upload
+      delete: Slet
+      download: Hent
+      generate_from_reference: Generer fra reference
+      reset_variations: Nulstil variationerne
     confirmation.remove: Er du sikker at du ønsker at fjerne aktivet "%asset%"?
+    confirmation.subTitle: Aktiver
     grid:
       edit: Redigere egenskaberne for aktiverne
     view:
       title: Produkt aktiver
+      code: Kode
       description: Beskrivelse
       end_of_use: Kan ikke benyttes efter
       reference: Reference
+      filename: Fil navn
       width: Bredde
       height: Højde
       resolution: Opløsning
@@ -36,6 +45,7 @@ pimee_product_asset:
       filetype: Filtype
       actions: Aktioner
       download: Hent
+      tag: Etiketter
       no_reference: Ingen reference fil er blevet uploadet endnu.
       no_variation: Ingen variation fil er blevet genereret endnu.
     flash:
@@ -60,6 +70,8 @@ pimee_product_asset:
         image_height_error: Umuligt at generere variationen %channel%, fordi det indlæste billede har en bredde mindre end den, der kræves af transformationen.
         not_applicable: Umuligt at generere variation %channel%.
         non_registered: Ingen %transformation% transformation registreret for MIME-type %mimeType%. Umuligt at generere variation %channel%.
+        missing_asset_transformation_for_channel: Det er umulig at generere variationen %channel%, angiv venligst en asset-transformation for denne kanal.
+        error: Umuligt at generere variation %channel%.
         success: Variations filer er genereret med succes.
       update:
         success: Variation filen blev opdateret.
@@ -69,21 +81,33 @@ pimee_product_asset:
         error: Variationsfilen blev ikke slettet. Der opstod en fejl.
   popin.create:
     title: Opret et nyt aktiv
+    is_localized: Kan oversættes
   menu: Aktiver
   page_tab:
     title:
       view: Produkt aktivet %asset.code% | Se
       edit: Produkt aktivet %asset.code% | Rediger
+      index: Produkt aktiver
+  code:
+    label: Kode
   thumbnail:
     label: Miniature
+  status:
+    label: Status
+  description:
+    label: Beskrivelse
   endOfUse:
     label: Kan ikke benyttes
+  createdAt:
+    label: Oprettet den
   updatedAt:
     label: Sidst opdateret den
   tags:
     label: Etiketter
   tabs:
+    properties.title: Egenskaber
     variations.title: Variationer
+    categories.title: Kategorier
   validation:
     code:
       not_empty: Koden er påkrævet. Det kan ikke være tom.
@@ -95,31 +119,44 @@ pimee_product_asset:
     title: Aktiver
   mass_upload:
     menu: Aktiver
+    new: Der oprettes et nyt aktiv
     add_files: tilføj filer
+    start: Begynd indlæsning
+    cancel: Annuller indlæsning
+    import: Import
     executed: Masse indlæsning udført
     error:
       upload: Der opstod en fejl under upload
       code: Ugyldig kodeformat for aktiv
+      localizable: Et aktiv eksisterer, men kan ikke lokaliseres
       invalid_locale: Landestandarden er deaktiveret eller ugyldig
   category:
+    menu: Aktiver kategorier
     permissions:
       view.label: Rettighed til at se aktiver
       view.help: Rettighed at se aktiverne i denne kategori
       edit.label: Rettighed til at redigere aktiver
       edit.help: Rettighed at redigere produkter i denne kategori (forventer visning tilladelse)
       no_access_to_products: Du har ikke adgang til produkter i nogen af de tilgængelige samlinger. Kontakt venligst administratoren
+      apply_on_children.label: Anvend ændringer på underliggende kategorier
+      apply_on_children.help: Kopier tilladelses ændringer på alle underliggende elementer, eksisterende tilladelser bibeholdes
   mass_edit_action:
     asset:
+      page_title: Aktiver
       page_subtitle: Masse redigere (1 aktiv) | Masse redigere (%count% aktiver)
       confirm: Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere %count% produkter med følgende oplysninger, bekræft venligst.
       steps:
         first: Vælg Aktiver
+        second: Konfigurér
+        third: Bekræft
+  not_editable: Du har ikke tilladelse til at redigere asset'et "%code%".
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
       label: Flytte aktiver til kategorier
       description: Aktiver vil blive placeret i følgende kategorier, den nuværende placering er tabt
       success_flash: Aktiver(ne) er blevet flyttet til udvalgte kategorier
+      launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
     add-tags-to-assets:
       label: Tilføj etiketter til aktiver
       description: Etiketter vil blive tilføjet til aktiverne. Hvis nogle tags ikke findes, vil de blive oprettet.
@@ -132,6 +169,7 @@ pim:
       mass_classify_assets: Klassificere
       add_tags_to_assets: Tilføj etiketter
       delete_assets: Slet aktiver
+btn.create.asset: Opret et aktiv
 btn.drag_or_upload: Træk og slip en fil eller klik her
 job_execution.summary:
   variations_not_generated: Variationer ikke genereret
@@ -141,27 +179,38 @@ job_execution.summary:
   skipped_assets: Aktiver sprunget over
 assets_mass_upload.steps:
   asset_mass_upload.title: Masse indlæs aktiver
+import_asset.steps.channel_configuration_processor.title: Håndter kanel konfigurationer
 pim_datagrid:
   cells:
     type:
+      mass_upload: Masse indlæs aktiver
       compute_completeness_of_products_linked_to_assets: Beregn produkter tilknyttet asset'ers fuldkommenhed
 pim_analytics:
   info_type:
     nb_assets: Antallet af aktiver
 pim_assets_collection: Aktive samling
+akeneo_reference_entity: Referenceenhed, enkeltlink
+akeneo_reference_entity_collection: Referenceenhed, flere links
 pim_api:
   acl:
     asset_category:
       edit: Opret og Opdater kategorier
+      list: Oplist aktiver-kategorier
     asset:
       edit: Redigere aktiver, og uploade deres reference og variation filer
       list: Liste over aktiver, og en liste over og hente deres reference og variation filer
+  acl_group:
+    asset_category: Aktiver kategorier
+    asset: Aktiver
 pimee_enrich:
   channel:
     tab:
       asset_transformation.title: Aktiver transformationer
   asset_transformation:
     not_found: Ingen transformation fundet
+    title:
+      transformation: Transformation
+      options: Valgmuligheder
     colorspace:
       title: Farverum
       options:
@@ -172,9 +221,18 @@ pimee_enrich:
         width: '%value%px bredde'
         height: '%value%px højde'
     resolution:
+      title: Opløsning
       options:
         resolution: '%value%'
+        resolution-unit: '%value%'
     scale:
       title: Skala
       options:
+        width: '%value%px bredde'
+        height: '%value%px højde'
         ratio: '%value%% forhold'
+    thumbnail:
+      title: Miniature
+      options:
+        width: '%value%px bredde'
+        height: '%value%px højde'
