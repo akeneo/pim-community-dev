@@ -10,3 +10,6 @@ services:
         environment:
             BEHAT_SCREENSHOT_PATH: '/srv/pim/var/tests/screenshots'
 
+    node:
+        environment:
+            YARN_REGISTRY: "http://registry.yarnpkg.com"
