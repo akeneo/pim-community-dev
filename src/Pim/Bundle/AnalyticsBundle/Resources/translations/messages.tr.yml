@@ -1,0 +1,48 @@
+pim_analytics:
+  new_patch_available: Yeni güncelleme hazır
+  system_config:
+    group:
+      notification.title: Bildirimler
+      version_update.title: Sürüm Güncellemeleri
+    form:
+      version_update.label: Yeni sürüm bildirimleri
+      version_update.tooltip: Yeni sürüm güncellemelerine ulaşmak için bilgi al
+  system_info:
+    title: Sistem bilgisi
+    download: TXT
+  info_type:
+    pim_edition: Baskı
+    pim_version: Sürüm
+    pim_storage_driver: Bellek
+    pim_environment: Ortam
+    pim_install_time: Kurulum zamanı
+    registered_bundles: Kayıtlı paketler
+    nb_channels: Kanal sayısı
+    nb_products: Ürün sayısı
+    nb_product_models: Ürün modelleri sayısı
+    nb_variant_products: Varyant ürünlerin sayısı
+    nb_family_variants: Tür çeşidi sayısı
+    nb_attributes: Özellik sayısı
+    nb_scopable_attributes: Ölçeklendirilebilir özelliklerin sayısı
+    nb_localizable_attributes: Yerelleştirilebilir özellik sayısı
+    nb_scopable_localizable_attributes: Yerelleştirilebilir ve ölçeklendirilebilir özelliklerin sayısı
+    nb_locales: Yerel ayar sayısı
+    nb_families: Tür sayısı
+    nb_users: Kullanıcı sayısı
+    nb_categories: Kategori sayısı
+    max_category_levels: Kategori seviyesinin maksimum sayısı
+    nb_product_values: Ürün değerlerinin sayısı
+    pim_storage_version: Depolama sürümü
+    os_version: İşletim sistemi sürümü
+    php_version: PHP sürümü
+    mysql_version: MySQL sürümü
+    mariadb_version: MariDB sürümü
+    mongodb_version: MongoDB sürümü
+    server_version: Sunucu sürümü
+    php_extensions: PHP uzantıları
+  acl:
+    system_info:
+      index: Sistem bilgisi
+pim_menu:
+  item:
+    system_info: Sistem bilgisi

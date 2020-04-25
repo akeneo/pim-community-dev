@@ -41,11 +41,19 @@ job_execution.summary:
     skipped: overgeslagen, extensie in whitelist
   product_skipped_no_diff: overgeslagen product (geen verschillen)
   product_skipped_no_associations: product overgeslagen (geen associaties gedetecteerd)
+  product_model_skipped_no_associations: product model overgeslagen (geen associaties gedetecteerd)
+  product_model_skipped_no_diff: overgeslagen product model (geen verschillen)
   item_position: lees de lijnen
+  skipped_in_root_product_model: overgeslagen productmodel met parent
+  skipped_in_sub_product_model: overgeslagen productmodel zonder parent
+#Job labels
 batch_jobs:
   csv_product_export:
     label: Productexport in CSV
     export.label: Productexport
+  csv_product_model_export:
+    label: Productmodel export in CSV
+    export.label: Productmodel export
   csv_category_export:
     label: Categorie-export in CSV
     export.label: Categorie-export
@@ -64,13 +72,20 @@ batch_jobs:
   csv_family_export:
     label: Familie export in CSV
     export.label: Familie export
+  csv_family_variant_export:
+    label: Familie-variant export in CSV
+    export.label: Familie-variant export
   csv_product_import:
     label: Productimport in CSV
     validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
   csv_product_model_import:
+    label: Productmodel import in CSV
     validation.label: Bestandsvalidatie
+    import_root_product_model.label: Root productmodel import
+    import_sub_product_model.label: Sub-productmodel export
+    import_product_model_descendants.label: Bereken productmodel afstammelingen
   csv_category_import:
     label: Categorie-import in CSV
     validation.label: Bestandsvalidatie
@@ -92,7 +107,9 @@ batch_jobs:
     validation.label: Bestandsvalidatie
     import.label: Familie import
   csv_family_variant_import:
+    label: Familie-variant import in CSV
     validation.label: Bestandsvalidatie
+    import.label: Familie-variant import
   csv_group_import:
     label: Groep importeren in CSV
     validation.label: Bestandsvalidatie
@@ -153,17 +170,26 @@ batch_jobs:
     validation.label: Bestandsvalidatie
     import.label: Familie import
   xlsx_family_variant_import:
+    label: Familie-variant import in XLSX
     validation.label: Bestandsvalidatie
+    import.label: Familie-variant import
   xlsx_product_export:
     label: Product export in XLSX
     export.label: Productexport
+  xlsx_product_model_export:
+    label: Productmodel export in XLSX
+    export.label: Productmodel export
   xlsx_product_import:
     label: Product import in XLSX
     validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
   xlsx_product_model_import:
+    label: Productmodel import in XLSX
     validation.label: Bestandsvalidatie
+    import_root_product_model.label: Root productmodel import
+    import_sub_product_model.label: Sub-productmodel import
+    import_product_model_descendants.label: Bereken productmodel afstammelingen
     import_associations.label: Productassociatie import
   xlsx_group_export:
     label: Groep export in XLSX
@@ -175,6 +201,9 @@ batch_jobs:
   xlsx_family_export:
     label: Familie export in XLSX
     export.label: Familie export
+  xlsx_family_variant_export:
+    label: Familie-variant export in XLSX
+    export.label: Familie-variant import
   xlsx_category_export:
     label: Categorie export in XLSX
     export.label: Categorie-export
@@ -189,7 +218,7 @@ batch_jobs:
     export.label: Associatie type export in XLSX
   xlsx_channel_export:
     label: Kanaal export in XLSX
-    export.label: Kanaal export
+    export.label: Kanaalexport
   xlsx_locale_export:
     label: Locale export in XLSX
     export.label: Locale export
@@ -221,4 +250,4 @@ batch_jobs:
   xlsx_group_type_import:
     label: Groepstype import in XLSX
     validation.label: Bestandsvalidatie
-    import.label: Groepstype import
+    import.label: Groep type import

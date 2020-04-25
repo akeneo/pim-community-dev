@@ -53,6 +53,43 @@ KILOWATT: Kilowat
 MEGAWATT: Megawat
 TERAWATT: Terawat
 WATT: Wat
+Resistance: Rezystancja
+MILLIOHM: Miliohm
+CENTIOHM: Centyom
+DECIOHM: Decyom
+OHM: Om
+DEKAOHM: Dekaom
+HECTOHM: Hektoom
+KILOHM: Kiloom
+MEGOHM: Megaom
+Voltage: Napięcie
+MILLIVOLT: Milliwolt
+CENTIVOLT: Centywolt
+DECIVOLT: Deciwolt
+VOLT: Wolt
+DEKAVOLT: Dekawolt
+HECTOVOLT: Hektawolt
+KILOVOLT: Kilowolt
+Intensity: Intensywność
+MILLIAMPERE: Miliamper
+CENTIAMPERE: Centiamper
+DECIAMPERE: Dekaamper
+AMPERE: Amper
+DEKAAMPERE: Dekaamper
+HECTOAMPERE: Hectoamper
+KILOAMPERE: Kiloamper
+MEGAAMPERE: Megaamper
+ElectricCharge: Ładunek elektryczny
+MILLIAMPEREHOUR: Milliampero godzina
+AMPEREHOUR: Amperogodzina
+MILLICOULOMB: Millikulomb
+CENTICOULOMB: Centikulomb
+DECICOULOMB: Decykulomb
+COULOMB: Kulomb
+DEKACOULOMB: Dekakulomb
+HECTOCOULOMB: Hektokulomb
+KILOCOULOMB: Kilokulomb
+Duration: Czas trwania
 MILLISECOND: Milisekunda
 SECOND: Sekunda
 MINUTE: Minuta
@@ -75,6 +112,7 @@ CELSIUS: Celsjusz
 FAHRENHEIT: Fahrenheit
 KELVIN: Kelwin
 RANKINE: Rankine
+REAUMUR: Reamur
 Volume: Objętość
 BARREL: Baryłka
 CENTILITER: Centylitr
@@ -91,13 +129,29 @@ LITER: Litr
 MILLILITER: Mililitr
 OUNCE: Uncja
 PINT: Półkwarta
-Weight: Masa
+Weight: Waga
+DENIER: Denier
 GRAIN: Gran
 GRAM: Gram
 KILOGRAM: Kilogram
+LIVRE: Livre
+MARC: Marc
 MILLIGRAM: Miligram
 ONCE: Raz
 POUND: Funt
 TON: Tona
+Pressure: Ciśnienie
+BAR: Bar
+PASCAL: Paskal
+HECTOPASCAL: hekto paskal
+MILLIBAR: milli Bar
+ATM: Atmosfera
+PSI: Funt na cal kwadratowy
+TORR: Tor
+MMHG: milimetry słupka rtęci
 Energy: Energia
 KILOCALORIE: kilokaloria
+KILOJOULE: kilodżul
+CaseBox: Opakowanie
+PIECE: Element
+DOZEN: Tuzin

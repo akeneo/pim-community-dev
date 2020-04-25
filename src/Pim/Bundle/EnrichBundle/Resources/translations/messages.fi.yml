@@ -680,16 +680,33 @@ pim_enrich.mass_edit_action:
       first: Valitse tuoteperheet
       second: Valitse toiminto
       third: Muuta asetuksia
+      fourth: Vahvista
+  change-status:
+    label: Muuta tuotteen tila
+    description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
+    success_flash: Tuotteiden tila on muutettu
   edit-common-attributes:
     label: Muokkaa attribuutteja
+    description: Valittujen tuotteiden attribuutit muokataan seuraavalla valitun lokaation datalla.
+    empty: Ole hyvä ja valitse attribuutit joita haluat muokata
     success_flash: Tuotteen attribuutit on päivitetty
+    message.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
+    no_attribute.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
   classify:
     label: Lisää ryhmiin
+    description: Tuotteet asetetaan seuraaviin kategorioihin, olemassaolevat asetukset pyyvät.
+    success_flash: Tuote / tuotteet ovat luokiteltu valittuihin kategorioihin
   change-family:
     label: Muuta perhe
     description: Valittujen tuotteiden perhe vaihdetaan valittuun perheeseen
+    success_flash: Valittujen tuotteiden perhe on vaihdettu onnistuneesti
     no_family: Ei perhettä
+  add-to-groups:
+    label: Lisää ryhmiin
+    description: Valitse ryhmät joihin valitut tuotteet lisätään
+    success_flash: Tuotteet lisättiin onnistuneesti valittuihin ryhmiin
   set-attribute-requirements:
+    label: Aseta vaaditut attribuutit
     description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
     success_flash: Attribuuttivaatimukset otetaan käyttöön valituille perheille
 To enable: Ottaa käyttöön
@@ -701,16 +718,25 @@ Current tab: Nykyinen välilehti
 #Product view
 Group: Ryhmä
 View group: Näytä ryhmä
+Products: Tuotteet
+#Tabs
+Properties: Ominaisuudet
 History: Historia
 pane.accordion:
   node_values: Solmun arvot
   general_properties: Yleiset ominaisuudet
   locale_values: Paikalliset arvot
+  backend_parameters: Backend parametrit
+  general_parameters: Yleiset parametrit
   validation_parameters: Validaatioparametrit
+  label_translations: Nimikkeiden käännökset
+  options: Vaihtoehdot
+  group_values: Ryhmän arvot
 #Popin titles
 popin.create:
   association_type.title: Luo uusi määritetyyppi
   group.title: Luo uusi ryhmä
+  product.title: Luo uusi tuote
   option.title: Luo uusi vaihtoehto
 #Datagrid contents
 In group: Ryhmässä

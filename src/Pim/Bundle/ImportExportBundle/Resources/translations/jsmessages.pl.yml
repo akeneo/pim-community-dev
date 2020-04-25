@@ -7,13 +7,24 @@ pim_connector:
     categories:
       selector:
         modal:
+          title: Wybór kategorii
           cancel: Anuluj
           confirm: Potwierdź
+        label: "{0} Wszystkie atrybuty|{1} Wybrany jeden atrybut |] 1,Inf[ {{ count }} wybrane atrybuty"
         edit: Edytuj
+        title: Wybór kategorii
+    locales:
+      validation:
+        not_blank: Jedno z ustawień regionalnych musi zostać wybrane, proszę wybrać ustawienie regionalne do wyeksportowania.
+#Page titles
 page_title:
   pim_importexport_export_profile_index: Zarządzanie profilami eksportu
+  pim_importexport_export_profile_edit: Profile eksportu {{ job.label }} | Edytuj
+  pim_importexport_export_profile_show: Profile eksportu {{ job.label }} | Pokaż
   pim_importexport_export_execution_index: Historia wykonanych eksportów
   pim_importexport_export_execution_show: Wykonane eksporty | Szczegóły
   pim_importexport_import_profile_index: Zarządzanie profilami importu
+  pim_importexport_import_profile_edit: Profile importu {{ job.label }} | Edytuj
+  pim_importexport_import_profile_show: Profile importu {{ job.label }} | Pokaż
   pim_importexport_import_execution_index: Historia wykonanych importów
   pim_importexport_import_execution_show: Wykonane importy | Szczegóły

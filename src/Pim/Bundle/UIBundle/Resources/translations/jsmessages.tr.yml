@@ -1,0 +1,124 @@
+#ORO messages
+Close: Kapat
+Update: Güncelle
+Selected Rows: Seçilmiş satırlar
+"Yes": "Evet"
+"Yes, Delete": "Evet, Sil"
+"Yes, I Agree": "Evet, Kabul ediyorum"
+"Yes, do it": "Evet, yap"
+"No": "Hayır"
+"Ok, got it.": "Tamam, anladım."
+"Cancel": "İptal"
+"Delete Confirmation": "Silme onayı"
+"Edit": "Düzenle"
+"Unexpected error occured. Please contact system administrator.": "Beklenmeyen bir hata meydana geldi. Lütfen sistem yöneticisi ile iletişime geçin."
+"Yes, revoke": "Evet, iptal et"
+"Revoke Confirmation": "Onayı iptal et"
+Now: Şimdi
+Prev: Önceki
+Next: Sonraki
+Today: Bugün
+Wk: Hafta
+Done: Tamam
+AM: Öğleden önce
+A: A
+PM: Öğleden sonra
+P: P
+"Choose Time": "Zamanı seç"
+Time: Zaman
+Hour: Saat
+Minute: Dakika
+Second: İkinci
+Millisecond: Milisaniye
+Microsecond: Mikrosaniye
+"Time Zone": "Saat dilimi"
+#PIM messages
+Localized value: Yerelleştirilmiş değer
+Columns: Sütunlar
+Datagrid Configuration: Verisatırı Yapılandırması
+Apply: Uygula
+#Filters
+Action: İşlem
+Unit: Birim
+Currency: Para birimi
+jstree:
+  all: Tüm ürünler
+  unclassified: Sınıflandırılmamış ürünler
+  product:
+    all: Tüm ürünler
+    unclassified: Sınıflandırılmamış ürünler
+  no_tree: Kullanılabilir ağaç yok
+  include_sub: Alt kategorileri dahil et
+  loading: Yükleniyor ...
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Pazar
+    Monday: Pazartesi
+    Tuesday: Salı
+    Wednesday: Çarşamba
+    Thursday: Perşembe
+    Friday: Cuma
+    Saturday: Cumartesi
+  daysShort:
+    Sun: Paz
+    Mon: Ptesi
+    Tue: Sal
+    Wed: Çar
+    Thu: Prş
+    Fri: Cum
+    Sat: Cmt
+  daysMin:
+    Su: Pzr
+    Mo: Pt
+    Tu: Sa
+    We: Çar
+    Th: Per
+    Fr: Cu
+    Sa: Ct
+  months:
+    January: Ocak
+    February: Şubat
+    March: Mart
+    April: Nisan
+    May: Mayıs
+    June: Haziran
+    July: Temmuz
+    August: Ağustos
+    September: Eylül
+    October: Ekim
+    November: Kasım
+    December: Aralık
+  monthsShort:
+    Jan: Oca
+    Feb: Şub
+    Mar: Mar
+    Apr: Nis
+    May: May
+    Jun: Haz
+    Jul: Tem
+    Aug: Ağu
+    Sep: Eyl
+    Oct: Eki
+    Nov: Kas
+    Dec: Ara
+#ORO
+oro_config:
+  form:
+    config:
+      title: Sistem yapılandırması
+      tab:
+        system:
+          title: Sistem
+      group:
+        localization:
+          title: Yerelleştirme
+          system_locale: Dil
+        notification:
+          title: Bildirimler
+          system_notification: Yeni sürüm bildirimleri
+        loading_message:
+          title: Mesajlar yükleniyor
+          label: Mesajları yüklemeyi etkinleştir
+        loading_messages:
+          label: Kullanılabilir yükleme mesajları

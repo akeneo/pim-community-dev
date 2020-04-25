@@ -1,0 +1,28 @@
+btn:
+  post: Yeni yorum ekle
+  reply: Yanıtla
+  cancel: İptal
+confirmation:
+  remove:
+    comment: Bu yorumu silmek istediğinize emin misiniz?
+flash:
+  comment:
+    create:
+      success: Yorumunuz başarıyla oluşturuldu.
+      error: Yorumunuz oluşturulurken bir hata meydana geldi.
+    delete:
+      success: Yorumunuz başarıyla silindi.
+      error: Yorumunuz silinirken bir hata meydana geldi.
+    reply:
+      success: Yanıtınız başarı ile oluşturuldu.
+      error: Yanıtınız oluşturulurken bir hata meydana geldi.
+comment:
+  index:
+    empty: Şimdilik yorum yok
+    header_comment: '{{ user }} ürüne yorum yaptı'
+    header_reply: '{{ user }} yoruma cevap attı'
+  placeholder:
+    new: Yeni bir yorum yaz...
+    reply: Bu yoruma yanıt ver...
+pim_comment:
+  product.panel.comment.title: Yorumlar

@@ -1,20 +1,23 @@
+#Entities
 Job: Zadanie
 Connector: Wtyczka
 pim_import_export:
   job: Zadanie
   connector: Wtyczka
+  ## Job status
   status:
     0: Gotowe
   batch_status:
-    1: Completed
-    2: Starting
-    3: Started
-    4: Stopping
-    5: Stopped
-    6: Failed
-    7: Abandoned
-    8: Unknown
+    1: Zakończono
+    2: Rozpoczynanie
+    3: Rozpoczęto
+    4: Zatrzymywanie
+    5: Zatrzymano
+    6: Niepowodzenie
+    7: Opuszczony
+    8: Nieznany
   download_archive:
+    archive: pobierz utworzone archiwum|pobierz utworzone archiwa
     output: pobierz utworzony plik|pobierz utworzone pliki
     input: pobierz wczytany plik|pobierz wczytane pliki
     invalid_xlsx: pobierz nieprawidłowe dane
@@ -31,8 +34,10 @@ pim_import_export:
   list: Wybierz zadanie
   job_profile:
     tab:
-      property.title: Ustawienia ogólne
+      property.title: Właściwości ogólne
       history.title: Historia
+      job_content.title: Zawartość
+#Page titles:
 pim_title.export_profile.index: Zarządzanie profilami eksportu
 pim_title.export_profile.edit: Profile eksportu %job.label% | Edytuj
 pim_title.export_profile.show: Profile eksportu %job.label% | Pokaż
@@ -43,12 +48,14 @@ pim_title.import_profile.edit: Profile importu %job.label% | Edytuj
 pim_title.import_profile.show: Profile importu %job.label% | Pokaż
 pim_title.import_execution.index: Historia wykonanych importów
 pim_title.import_execution.show: Wykonane importy | Szczegóły
+#Entity and page header titles
 export profile:
   title: eksportuj profil
   edit: edytuj profil eksportu
 import profile:
   title: profil importu
   edit: edytuj profil importu
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -59,7 +66,10 @@ pim_importexport:
       remove: Usuwanie profilu eksportu
       launch: Uruchamianie profilu eksportu
       property_edit: Edycja właściwości ogólnych eksportowanego profilu
+      property_show: Pokaż właściwości ogólne eksportowanego profilu
       history: Przeglądanie historii profilu eksportu
+      content_edit: Edytuj zawartość eksportowanego profilu
+      content_show: Pokaż zawartość eksportowanego profilu
     import_profile:
       index: Przeglądanie listy profili importu
       create: Tworzenie profilu importu
@@ -81,6 +91,7 @@ pim_importexport:
   acl_group:
     export: Profile eksportu
     import: Profile importu
+#Buttons
 btn:
   create:
     export profile: utwórz profil eksportu
@@ -88,10 +99,12 @@ btn:
 Upload and import now: Załaduj pliki i importuj teraz
 import now: Importuj teraz
 export now: Eksportuj teraz
+#Confirmation messages
 confirmation:
   remove:
     export profile: Czy na pewno chcesz usunąć profil eksportu %name%?
     import profile: Czy na pewno chcesz usunąć profil importu %name%?
+#Flash messages
 flash:
   export:
     created: Eksport został pomyślnie utworzony
@@ -103,14 +116,18 @@ flash:
     removed: Import został usunięty
     updated: Import został pomyślnie zaktualizowany
     running: Import jest uruchomiony
-General properties: Ustawienia ogólne
+#Tabs
+General properties: Właściwości ogólne
 History: Historia
 pane.accordion:
-  properties: Właściwości
+  properties: Ustawienia
   global_settings: Ustawienia ogólne
+  filters: Filtry
+#Popin titles
 popin.create:
   export_profile.title: Utwórz nowy profil eksportu
   import_profile.title: Utwórz nowy profil importu
+#Job execution
 'Display item': Pokaż element
 'Hide item': Ukryj element
 'Collecting data about job execution...': Zbieranie danych o wykonywaniu zadania...
@@ -119,20 +136,31 @@ Download log: Pobierz dziennik
 Show profile: Pokaż profil
 execution details: szczegóły wykonania
 job_execution.summary:
-  read: odczytano
+  read: odczyt
   write: zapisano
-  skip: pominięto
+  skip: pominięte
   create: utworzono
   update: zaktualizowano
-  update_products: zaktualizowano produktów
-  skip_products: pominięte produkty
-  displayed: pierwsze ostrzeżenie wyświetlone
+  update_products: zaktualizowanych produktów
+  skip_products: pominiętych produktów
+  displayed: pierwsze ostrzeżenia wyświetlone
   charset_validator:
-    title: 'Strona kodowa pliku:'
+    title: 'Kodowanie pliku:'
     skipped: pominięte, rozszerzenie na białej liście
 Step: Krok
 Status: Status
+Warnings: Ostrzeżenia
 Summary: Podsumowanie
 Start: Start
 End: Koniec
+#Process tracker
 set_attribute_requirements: Określ wymagania atrybutów
+COMPLETED: Zakończone
+STARTING: Rozpoczynanie
+STARTED: Rozpoczęte
+STOPPING: Zatrzymywanie
+STOPPED: Zatrzymane
+FAILED: Niepowodzenie
+ABANDONED: Porzucony
+UNKNOWN: Nieznany
+warning.label: Uwaga

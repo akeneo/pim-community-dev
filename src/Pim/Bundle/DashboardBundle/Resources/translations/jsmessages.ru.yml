@@ -6,14 +6,14 @@ pim_dashboard:
       date: Дата
       type: Тип
       profile_name: Название профиля
-      details: Подробнее
+      details: Подробности
       warning_count: Предупреждения
       job_type:
         import: Импорт
         export: Экспорт
         mass_edit: Массовое редактирование
         quick_export: Быстрый экспорт
-        compute_product_models_descendants: Расчет дочерних моделей продукта
+        compute_product_models_descendants: Расчет дочерней модели продукта
         compute_family_variant_structure_changes: Расчет структурных изменений разновидностей семейства
         compute_completeness_of_products_family: Подсчитать полноту заполненности продуктов семейства
         mass_delete: Массовое удаление продуктов

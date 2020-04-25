@@ -1,0 +1,164 @@
+pim_user:
+  user:
+    tab:
+      general.title: Genel
+      additional.title: Ek
+      group_and_role.title: Gruplar ve Yetkiler
+      password.title: Parola
+      business_unit.title: Departmanlar
+      email_synchronization.title: E-posta senkronizasyon ayarları
+      interfaces.title: Arayüzler
+  group:
+    tab:
+      general.title: Genel
+      users.title: Kullanıcılar
+#user grids
+oro.user.controller:
+  group.message.saved: "Grup kaydedildi"
+  role.message.saved: "Yetki kaydedildi"
+  user.message.saved: "Kullanıcı kaydedildi"
+  status.message.saved: "Durum kaydedildi"
+oro.user.grid.users:
+  columns:
+    username: "Kullanıcı adı"
+    email: "E-posta"
+    firstName: "İsim"
+    lastName: "Soyisim"
+    createdAt: "Oluşturulma tarihi"
+    updatedAt: "Güncellenme tarihi"
+    enabled: "Durum"
+oro.user.grid.roles:
+  columns:
+    label: "Etiket"
+oro.user.grid.groups:
+  columns:
+    name: "Ad"
+#Page titles
+pim_title:
+  user.index: Kullanıcılar
+  user_role.index: Görevler
+  user_group.index: Gruplar
+  system_configuration.index: Yapılandırma
+#User
+user.title: Kullanıcı
+user.overview: Kullanıcı
+Users Management: Kullanıcı Yönetimi
+Create user: Kullanıcı oluştur
+btn.create.user: Kullanıcı oluştur
+New user: Yeni kullanıcı
+Additional: Ek olarak
+Groups and Roles: Gruplar ve Yetkiler
+Username: Kullanıcı adı
+Password: Parola
+Re-enter password: Parola (tekrar)
+Name prefix: Ad ön eki
+First name: İsim
+Middle name: Göbek Adı
+Last name: Soyisim
+Name suffix: Ad son eki
+Date of birth: Doğum tarihi
+Avatar: Profil resmi
+Additional emails: Ek e-postalar
+Add another email: Başka bir e-posta ekle
+Catalog locale: Yerel ayarlar kataloğu
+Catalog scope: Katalog içeriği
+Default tree: Varsayılan bağlantı
+Business Units: Departmanlar
+Email synchronization settings: E-posta senkronizasyon ayarları
+Host: Sunucu
+Port: Port
+Ssl: SSL
+Last logged in: Son giriş
+Login count: Giriş sayısı
+Additional Information: Ek Bilgi
+Interfaces: Arayüzler
+Basic Information: Temel Bilgiler
+Contact Information: İletişim Bilgileri
+User name: Kullanıcı adı
+Birthday: Doğum Günü
+API key: API key
+Ui locale: Kullanıcı arayüz ayarları
+UI locale: Kullanıcı arayüz ayarları
+User salt: Kullanıcı
+Current password: Güncel şifre
+New password: Yeni Şifre
+Repeat new password: Yeni Şifre ( Tekrar)
+Generate key: Key oluştur
+Primary: birincil
+Removed user: Silinmiş Kullanıcı
+user:
+  product_grid_filters: Ürün tablosu filtreleri
+  default_product_grid_view:
+    label: varsayılan ürün kılavuzu görünümü
+  default_grid_view:
+    none: Hiçbiri
+  timezone: Zaman dilimi
+#Role
+Role: Yetki
+Owner: Sahibi
+General: Genel
+Entity: Varlık
+Capabilities: Özellikler
+Save and close: Kaydet ve kapat
+Has role: Rolü var
+role:
+  title: Görev
+  overview: Görev
+  edit: Görevi düzenle
+  create: Rol yarat
+btn.create.role: Görev oluştur
+rights:
+  action: İzinler
+oro_security:
+  acl_group:
+    user: Kullanıcılar
+    role: Görevler
+    group: Kullanıcı Grupları
+  acl:
+    user:
+      view: Kullanıcıları listele
+      create: Kullanıcı oluştur
+      edit: Kullanıcıları düzenle
+      delete: Bir kullanıcı sil
+    role:
+      view: Rolleri Listele
+      create: Bir rol yarat
+      edit: Rolleri düzenle
+      delete: Görevi kaldır
+    group:
+      view: Kullanıcı gruplarını Listele
+      create: Kullanıcı grubu oluştur
+      edit: Kullanıcı gruplarını düzenle
+      delete: Gruptan bir kullanıcı çıkar
+#Security
+(default): Kuruluşlar için varsayılan izin
+VIEW: Görünüm
+CREATE: Oluştur
+EDIT: Düzenle
+DELETE: Sil
+ASSIGN: Atama
+SHARE: Paylaş
+oro:
+  security:
+    access-level:
+      BASIC: Kullanıcı
+      LOCAL: İş birimi
+      DEEP: Bölüm
+      GLOBAL: Organizasyon
+      SYSTEM: Sistem
+      NONE: Hiçbiri
+#User Group
+Create group: Grup oluştur
+btn.create.user-group: Grup oluştur
+Has group: Grubu var
+Save and Close: Kaydet ve kapat
+user-group.overview: Gruplar
+#Login page
+Log in: Giriş
+Remember me on this computer: Bu bilgisayarı hatırla
+Forgot your password?: Parolanızı mı unuttunuz?
+Username or Email: Kullanıcı adı veya Email
+Forgot Password: Parolamı unuttum
+Request: İstekler
+Check Email: E-Postayı kontrol et
+Go to homepage: Ana sayfaya git

@@ -11,9 +11,9 @@ Your local changes will be lost. Are you sure you want to refresh grid?: Uw loka
 Reset Confirmation: Bevestiging resetten
 Your local changes will be lost. Are you sure you want to reset grid?: Uw lokale wijzigingen zullen verloren gaan. Weet u zeker dat u het raster wilt herstellen?
 Confirmation: Bevestiging
-edit: bewerken
+edit: Bewerken
 copy: kopiëren
-remove: verwijderen
+remove: Verwijderen
 Status: Status
 All: Alle
 Per page: Per pagina
@@ -34,10 +34,14 @@ Yes: true
 No: false
 oro.datagrid.entityHint: Entiteit
 oro.datagrid.noentities: Geen records gevonden
+oro.datagrid.noresults: "Er zijn geen resultaten voor uw zoekopdracht."
+oro.datagrid.noresults_subTitle: "Probeer het opnieuw met een andere zoekterm."
 oro.datagrid.nocolumns: Geen kolommen geconfigureerd voor dit raster
 oro.datagrid.pagination.label: "Pagina"
 oro.datagrid.pagination.totalPages: "van {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} records"
+#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
+oro.datagrid.pagination.limit_warning: "Het raster kan niet meer dan {{ limit }} resultaten weergeven, probeer te filteren op extra zoekcriteria."
 oro.datagrid.action.reset: "Resetten"
 oro.datagrid.action.refresh: "Vernieuwen"
 oro_datagrid.select.all: "Alle"
@@ -56,38 +60,46 @@ pim:
       label_empty: is leeg
       label_not_empty: is niet leeg
       label_in_list: in lijst
+      operator: Operator
     price_filter:
       label: Valuta
     category_filter:
       done: Gedaan
+#Column configuration
 Available Columns: Beschikbare kolommen
 Displayed Columns: Geselecteerde kolommen
 datagrid_view.columns.min_message: U moet ten minste één dataraster kolom selecteren om weer te geven
 pim_datagrid:
   column_configurator:
     label: Kolommen
+    title: Kolommen configureren
     all_groups: Alle groepen
     search: Zoeken
     clear: Opruimen
     displayed_columns: Geselecteerde kolommen
-    apply: Toepassen
-    cancel: Annuleren
-    remove_column: Verwijderen
+    apply: Pas toe
+    cancel: Annuleer
+    remove_column: Verwijder
+    description: Selecteer de gegevens die u wilt weergeven als kolom
     attribute_groups: Attribuutgroepen
   mass_action:
     delete:
       confirm_title: Verwijderen bevestigen
       confirm_ok: OK
       empty_selection: Geen product geselecteerd
-pim.grid.mass_action.quick_export.title: Snelle Export
+#Quick export
+pim.grid.mass_action.quick_export.title: Snelle export
 pim.grid.mass_action.quick_export.launched: Snelle export is gelanceerd
+#Custom actions
 pim.grid.action.launch.title: Starten
 pim.grid.action.show.title: Toon
 Please select view: Selecteer weergave
 Loading...: Laden...
 View: Bekijken
+#Datetimepicker
 from: van
 to: tot
+#View selector
 grid.view_selector:
   default_view: Standaardweergave
   save_changes: Deze weergave opslaan
@@ -99,5 +111,19 @@ grid.view_selector:
   placeholder: Naam van nieuwe weergave
   choose_label: Kies een label voor de weergave
   confirmation:
+    remove: Weet u echt zeker dat u deze weergave wilt verwijderen?
     delete: Verwijderen bevestigen
+#View selector flash messages
 grid.view_selector.flash.updated: Datarasterweergave succesvol bijgewerkt
+#Display selector
+grid.display_selector:
+  label: Weergave
+  gallery: Galerij
+  list: Lijst
+#Credentials cell
+Client ID: Klant ID
+Secret: Geheim
+grid.empty_results:
+  associated_product:
+    hint: Er zijn geen gerelateerde producten
+    subHint: 'Klik op de knop "Voeg koppelingen" om dit product te koppelen'

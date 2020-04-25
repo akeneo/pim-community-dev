@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: Gösterge paneli
+  version: Sürüm
+  link.label:
+    product: Ürünleri Yönet
+    category: Kategorileri Yönet
+    attribute: Özellikleri Yönet
+    family: Aileleri Yönet
+  widget:
+    error:
+      title: Widget yüklenirken hata oluştu
+      message: Widget '%alias%' yok
+    completeness:
+      title: Kanallar ve Lokaller Üzerindeki Bütünlük
+    last_operations:
+      title: Son işlemler
+      empty: İşlem bulunamadı
+      status: Durum
+      date: Tarih
+      type: Tür
+      "profile name": Profil adı
+      details: Ayrıntılar
+      job_type:
+        import: İçe aktar
+        export: Dışa aktar
+        mass_edit: Toplu düzenle
+        quick_export: Hızlı dışa aktar
+        compute_product_models_descendants: Ürün modellerinin kökenlerini hesapla

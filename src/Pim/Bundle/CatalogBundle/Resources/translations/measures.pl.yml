@@ -65,6 +65,7 @@ CELSIUS: Celsjusz
 FAHRENHEIT: Fahrenheit
 KELVIN: Kelwin
 RANKINE: Rankine
+REAUMUR: Reamur
 Volume: Objętość
 BARREL: Baryłka
 CENTILITER: Centylitr
@@ -81,10 +82,13 @@ LITER: Litr
 MILLILITER: Mililitr
 OUNCE: Uncja
 PINT: Półkwarta
-Weight: Masa
+Weight: Waga
+DENIER: Denier
 GRAIN: Gran
 GRAM: Gram
 KILOGRAM: Kilogram
+LIVRE: Livre
+MARC: Marc
 MILLIGRAM: Miligram
 ONCE: Raz
 POUND: Funt

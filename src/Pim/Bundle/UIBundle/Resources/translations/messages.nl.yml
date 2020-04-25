@@ -1,4 +1,6 @@
 User: Gebruiker
+Run demo: Demo uitvoeren
+Product: Product
 Attribute list: Kenmerkenlijst
 Attribute Group list: Kenmerkgroepenlijst
 Users: Gebruikers
@@ -18,7 +20,7 @@ Change file: Bestand wijzigen
 Remove file: Bestand verwijderen
 Delete: Verwijderen
 Save: Opslaan
-Cancel: Annuleren
+Cancel: Annuleer
 Get help: Help-informatie opvragen
 My User: Mijn Account
 oro.form.choose_value: Kies een waarde...
@@ -36,3 +38,12 @@ Most Viewed: Meest bekeken
 "Yes": "Ja"
 "No": "Nee"
 required: (vereist)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Schakel laadberichten in
+    loading_message_enabled.tooltip: Laat ludieke berichten zien tijdens het wachten op het laden van een pagina
+    loading_messages.label: Beschikbare laadberichten
+    loading_messages.tooltip: Alle beschikbare laadberichten gescheiden door regeleindes
+  group:
+    loading_message.title: Laadberichten
+other_actions: Andere acties

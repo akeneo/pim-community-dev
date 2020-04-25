@@ -8,14 +8,15 @@ pim_connector:
       selector:
         modal:
           title: Выбор категориий
-          cancel: Отмена
+          cancel: oтменить
           confirm: Подтверждение
         label: "{0} Все продукты |{1} Одна категория выбрана |] 1, Inf [ {{ count }} выбранные категории"
-        edit: Редактировать
+        edit: Изменить
         title: Выберите категории
     locales:
       validation:
         not_blank: Одна локаль должена быть выбрана, пожалуйста, выберите локаль для экспорта.
+#Page titles
 page_title:
   pim_importexport_export_profile_index: Управление профилями экспорта
   pim_importexport_export_profile_edit: Экспорт профиля {{ job.label }} | Редактировать

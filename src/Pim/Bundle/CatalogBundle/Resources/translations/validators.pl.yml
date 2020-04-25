@@ -12,8 +12,9 @@ This value should not be blank: Wartość nie może być pusta
 Option code may contain only letters, numbers and underscores: Kod opcji może zawierać tylko litery, cyfry i znaki podkreślenia
 Option code may contain only letters (at least one), numbers and underscores: Kod opcji może zawierać tylko litery (co najmniej jedną), liczby i znaki podkreślenia
 This value should not be a decimal.: Wartość ta nie powinna być liczą dziesiętną.
-'The file extension is not allowed (allowed extensions: %extensions%).': 'Rozszerzenie tego pliku nie jest dozwolone (dozwolone rozszerzenia to: %extensions%).'
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Rozszerzenie pliku jest niedozwolone (dozwolone rozszerzenia to: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": Wartość %value% jest już wykorzystana w innym produkcie w unikatowym atrybucie %attribute%
+The same identifier is already set on another product: Taki sam identyfikator jest przypisany innemu produktowi
 regex.comma_or_semicolon.message: To pole nie powinno zawierać żadnych przecinków ani średników.
 file.extensions.message: 'Rozszerzenie tego pliku nie jest dozwolone (dozwolone rozszerzenia to: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Ten typ wartości oczekuje zastosowania {{ decimal_separator }} do oddzielenia miejsc dziesiętnych.
@@ -21,3 +22,63 @@ file.extensions.message: 'Rozszerzenie tego pliku nie jest dozwolone (dozwolone 
 "This type of value expects the use of comma (,) to separate decimals.": Ten typ wartości oczekuje zastosowania przecinka (,) do oddzielania wartości dziesiętnych.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Ten typ wartości oczekuje zastosowania arabskiego separatora dziesiętnego (٫) do oddzielania wartości dziesiętnych.
 "This type of value expects the use of the format {{ date_format }} for dates.": Ten typ wartości oczekuje zastosowania formatu daty w postaci {{ date_format }} .
+"The category \"%category%\" has to be a root category.": Kategoria "%category%" musi być kategorią root.
+"The attribute \"%attributeCode%\" does not exist.": Atrybut "%attributeCode%" nie istnieje.
+"The attribute \"%attributeCode%\" is not a metric attribute.": Atrybut "%attributeCode%" nie jest atrybutem metrycznym.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Jednostka "%unitCode%" nie istnieje lub nie należy do domyślnej rodziny metrycznej danych o danym atrybucie "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": Waluta "%currency%" musi zostać aktywowana.
+product_model.code.not_blank.message: Kod modelu produktu nie może być pusty.
+product_model.code.unique.message: Taki sam kod jest przypisany innemu modelowi produktu.
+product_model.family_variant.not_blank.message: Wariant rodziny modelu produktu nie może być pusty.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Atrybut "%attribute%" nie może być pusty, ponieważ jest zdefiniowany jako oś dla tego obiektu'
+    product_model_with_same_axis_value_already_exists: 'Nie można ustawić wartości "%values%" dla osi atrybutu "%attributes%" na modelu produktu "%validated_entity%", jako że model produktu "%sibling_with_same_value%" już ma tę wartość'
+    variant_product_with_same_axis_value_already_exists: 'Nie można ustawić wartości "%values%" dla osi atrybutu "%attributes%" na wariancie produktu "%validated_entity%", jako że wariant produktu "%sibling_with_same_value%" już ma tę wartość'
+    can_have_family_variant_unexpected_attribute: 'Nie można ustawić właściwości "%attribute%" dla tej jednostki, ponieważ nie znajduje się ona w zestawie atrybutów'
+    cannot_have_product_model_as_parent: 'Model produktu "%product_model%" nie może mieć modelu produktu "%parent_product_model%" jako nadrzędnego'
+    cannot_have_parent: 'Model produktu "%product_model%" nie może mieć elementu nadrzędnego'
+    attribute_does_not_belong_to_family: 'Atrybut "%attribute%" nie należy do rodziny "%family%"'
+    variant_product_invalid_family: 'Rodzina produktów wariantowych musi być taka sama, jak jej element nadrzędny'
+    php_int_max_reached: 'Maksymalna liczba musi być mniejsza niż %php_int_max%.'
+    not_null_family: Rodzina nie może mieć wartości "null", ponieważ produkt z identyfikatorem "%sku%" jest wariantem produktu.
+    variant_product_has_parent: 'Wariant produktu "%variant_product%" musi mieć element nadrzędny'
+    invalid_variant_product_parent: 'Wariant produktu "%variant_product%" nie może mieć modelu produktu "%product_model%" jako elementu nadrzędnego (ten model produktu może mieć tylko inne modele produktów jako elementy podrzędne)'
+    modified_variant_axis_value: 'Wariant osi "%variant_axis%" nie może zostać zmodyfikowany, "%provided_value%" ustalona'
+    family_variant_attributes_unique: Atrybuty muszą być unikatowe, "%attributes%" są używane wielokrotnie w wariancie zestawu atrybutów
+    family_variant_axes_unique: Osie wariantu muszą być unikatowe, "%attributes%" są używane wielokrotnie w wariancie zestawu atrybutów
+    family_variant_axes_immutable: 'Osie wariantu nie mogą być modyfikowane dla poziomu "%level%"'
+    family_variant_axes_attribute_type_unique: Osie wariantu "%axis%" nie mogą być wartością unikatową lub identyfikatorem
+    family_variant_axes_attribute_type: Osie wariantu "%axis%" muszą być wartościami logicznymi, polem wyboru, danymi odniesienia lub metryką
+    family_variant_axes_wrong_type: Osie wariantu "%axis%" nie mogą być tłumaczone, nie mogą być zmienne, ani nie mogą być związane z konkretnymi ustawieniami regionalnymi
+    family_variant_axes_number_of_axes: 'Wariant zestawu atrybutów nie może mieć więcej niż %max_axes_number% osi'
+    family_variant_no_axis: Musi być przynajmniej jeden atrybut zdefiniowany jako oś dla zestawu atrybutów z poziomu "%level%"
+    family_variant_axis_level: Atrybut "%axis%" musi być ustawiony jako atrybut w tym samym wariancie zestawu atrybutów, w którym został ustawiony jako oś
+    family_variant_has_family_attribute: 'Atrybut "%attribute%" nie może być dodany do wariantu rodziny "%family_variant%", ponieważ nie jest atrybutem rodziny "%family%"'
+    family_variant_level_do_not_exist: Nie ma wariantu zestawu atrybutów dla poziomu "%level%"
+    family_variant_no_level: W wariancie rodzinnym powinien być zdefiniowany co najmniej jeden poziom
+    family_variant_maximum_number_of_level: Wariant rodziny nie może mieć poziomu wyższego niż "%level%"
+    family_variant_unique_attributes_in_last_level: Unikalny artybut "%attribute%" musi być ustawiony na poziomie produktu
+    product_identifier: Identyfikatory "%s" nie istnieją.
+    0: Wystąpił nieoczekiwany błąd.
+    100: Nieoczekiwana wartość
+    101: To pole oczekuje wartości boolowskiej.
+    102: Pole oczekuje wartości typu float.
+    103: Pole oczekuje wartości typu integer.
+    104: Pole oczekuje wartości numeryczną.
+    105: Pole oczekuje wartości typu string.
+    106: Pole oczekuje wartości typu array.
+    107: To pole oczekuje na szeregu tablic jako wartość.
+    200: Wystąpił błąd wewnętrzny
+    201: Wystąpił błąd wewnętrzny
+    202: To pole oczekuje wartości numerycznej.
+    203: To pole oczekuje wartości typu string.
+    204: To pole oczekuje wartości typu string.
+    205: Wystąpił błąd wewnętrzny
+    300: Tę pole wyczekuje poprawny kod jednostki.
+    301: Te pole wyczekuje poprawny zakres i ustawienia regionalnego.
+    302: Te pole wyczekuje poprawny zakres.
+    303: Te pole wyczekuje poprawy formatu stowarzyszenia.
+    pim_immutable_product_validator: Taki sam identyfikator jest przypisany innemu produktowi
+    pim_immutable_product_model_validator: Taki sam kod jest przypisany innemu modelowi produktu.
+

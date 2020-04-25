@@ -1,16 +1,19 @@
+#ORO messages
 Close: Zamknij
-Update: Aktualizacja
-Selected Rows: Wybrane Wiersze
+Update: Aktualizuj
+Selected Rows: Zaznaczone Wiersze
 "Yes": "Tak"
 "Yes, Delete": "Tak, usuń"
 "Yes, I Agree": "Tak, zgadzam się"
-"Yes, do it": "Tak, wykonaj to"
+"Yes, do it": "Tak, zrób to"
 "No": "Nie"
 "Ok, got it.": "Ok, zrozumiałem."
 "Cancel": "Anuluj"
 "Delete Confirmation": "Potwierdzenie Usuwania"
 "Edit": "Edytuj"
 "Unexpected error occured. Please contact system administrator.": "Wystąpił nieoczekiwany błąd. Prosimy skontaktować się z administratorem systemu."
+"Yes, revoke": "Tak, odwołaj"
+"Revoke Confirmation": "Usuń potwierdzenie"
 Now: Teraz
 Prev: Poprzednia
 Next: Następny
@@ -29,11 +32,13 @@ Second: Sekunda
 Millisecond: Milisekunda
 Microsecond: Mikrosekunda
 "Time Zone": "Strefa Czasowa"
+#PIM messages
 Localized value: Przetłumaczona wartość
 Columns: Kolumny
 Datagrid Configuration: Konfiguracja Tabeli Wyników
 Apply: Zastosuj
-Action: Akcja
+#Filters
+Action: Działanie
 Unit: Jednostka
 Currency: Waluta
 jstree:
@@ -45,6 +50,7 @@ jstree:
   no_tree: Brak dostępnego drzewa
   include_sub: Wraz z pod-kategoriami
   loading: Wczytywanie ...
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Niedziela
@@ -96,6 +102,7 @@ datetimepicker:
     Oct: Paź
     Nov: Lis
     Dec: Gru
+#ORO
 oro_config:
   form:
     config:
@@ -105,8 +112,13 @@ oro_config:
           title: System
       group:
         localization:
-          title: Ustawienia regionalne
+          title: Tłumaczenie
           system_locale: Język
         notification:
           title: Powiadomienia
           system_notification: Powiadomienia o nowych wersjach
+        loading_message:
+          title: Wczytuję wiadomośći
+          label: Włącz ładowanie wiadomości
+        loading_messages:
+          label: Dostępne ładowanie wiadomości

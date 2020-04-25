@@ -17,11 +17,13 @@ pim_dashboard:
       empty: Geen bewerkingen beschikbaar
       status: Status
       date: Datum
-      type: Type
+      type: Soort
       "profile name": Profielnaam
       details: Details
       job_type:
-        import: Import
-        export: Export
+        import: Importeer
+        export: Exporteer
         mass_edit: Massabewerking
         quick_export: Snelle export
+        compute_product_models_descendants: Bereken productmodel afstammelingen
+        mass_delete: Groepsgewijs producten verwijderen

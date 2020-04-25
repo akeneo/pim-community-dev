@@ -1,7 +1,7 @@
 pim_connector:
   steps:
     dummy_reader.title: Заглушка
-    product_reader.title: Извлечение продуктов
+    product_reader.title: Извелечение продуктов
     entity_reader.title: Извлечение объектов
     csv_reader:
       title: Считыватель из CSV
@@ -16,7 +16,7 @@ pim_connector:
     product_association_processor.title: Создание ассоциаций
     group_processor.title: Создание групп
     attribute_processor.title: Создание атрибутов
-    attribute_option_processor.title: Создание опций атрибутов
+    attribute_option_processor.title: Создание выборов атрибутов
     heterogeneous_processor.title: Сериализатор продукта в CSV
     homogeneous_processor.title: Сериализатор объектов в CSV
     transformer_processor.title: Преобразование
@@ -39,12 +39,13 @@ job_execution.summary:
   charset_validator:
     title: 'Кодировка файла:'
     skipped: пропущено, расширение из белого списка
-  product_skipped_no_diff: пропущен продукт (нет различий)
+  product_skipped_no_diff: пропущен продукт (без разницы)
   product_skipped_no_associations: пропущенный продукт (не обнаружено соответствий)
   product_model_skipped_no_diff: пропущенная модель продукта (нет различий)
   item_position: прочитанных строк
   skipped_in_root_product_model: модель продукта пропущена вместе с родительской
   skipped_in_sub_product_model: модель продукта пропущена без родительской
+#Job labels
 batch_jobs:
   csv_product_export:
     label: Экспорт продуктов в CSV
@@ -59,8 +60,8 @@ batch_jobs:
     label: Экспорт атрибутов в CSV
     export.label: Экспорт атрибутов
   csv_attribute_option_export:
-    label: Экспорт опций атрибутов в CSV
-    export.label: Экспорт опций атрибутов
+    label: Экспорт элементов списочных атрибутов в CSV
+    export.label: Экспорт элементов списочных атрибутов
   csv_association_type_export:
     label: Экспорт типов ассоциаций в CSV
     export.label: Экспорт типов ассоциаций
@@ -71,8 +72,8 @@ batch_jobs:
     label: Экспорт семейств в CSV
     export.label: Экспорт семейств
   csv_family_variant_export:
-    label: Экспорт варианта семейства в CSV
-    export.label: Экспорт вариантов семейства
+    label: Экспорт разновидности семейства в CSV
+    export.label: Экспорт разновидности семейства
   csv_product_import:
     label: Импорт продуктов из CSV
     validation.label: Проверка файла
@@ -90,27 +91,27 @@ batch_jobs:
     import.label: Импорт категории
   csv_attribute_import:
     label: Импорт атрибутов из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт атрибутов
   csv_attribute_option_import:
-    label: Импорт опций атрибутов из CSV
+    label: Импорт элементов списочных атрибутов из CSV
     validation.label: Проверка файла
-    import.label: Импорт опций атрибутов
+    import.label: Импорт элементов списочных атрибутов
   csv_association_type_import:
     label: Импорт типов ассоциаций из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт типов ассоциаций
   csv_family_import:
     label: Импорт семейств из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт семейств
   csv_family_variant_import:
-    label: Импорт семейства в CSV
+    label: Импорт разновидности семейства в CSV
     validation.label: Проверка файла
-    import.label: Импорт семейства
+    import.label: Импорт разновидности семейства
   csv_group_import:
     label: Импорт группы из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт группы
   csv_channel_export:
     label: Экспорт каналов в CSV
@@ -129,48 +130,48 @@ batch_jobs:
     export.label: Экспорт типов групп
   csv_channel_import:
     label: Импорт каналов из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт каналов
   csv_locale_import:
     label: Импорт локалей из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт локалей
   csv_attribute_group_import:
     label: Импорт групп атрибутов из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт групп атрибутов
   csv_currency_import:
     label: Импорт валют из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт валют
   csv_group_type_import:
     label: Импорт типов групп из CSV
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт типов групп
   xlsx_category_import:
     label: Импорт категорий из XLSX
-    validation.label: Проверка файла
-    import.label: Импорт категории
+    validation.label: Подтверждение файла
+    import.label: Импорт категорий
   xlsx_association_type_import:
     label: Импорт типов ассоциаций из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт типов ассоциаций
   xlsx_attribute_import:
     label: Импорт атрибутов из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт атрибутов
   xlsx_attribute_option_import:
-    label: Импорт опций атрибутов из XLSX
-    validation.label: Проверка файла
+    label: Импорт элементов списочных атрибутов из XLSX
+    validation.label: Подтверждение файла
     import.label: Импорт опций атрибутов
   xlsx_family_import:
     label: Импорт семейств из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт семейств
   xlsx_family_variant_import:
-    label: Импорт семейства в XLSX
+    label: Импорт разновидности семейства в XLSX
     validation.label: Проверка файла
-    import.label: Импорт семейства
+    import.label: Импорт разновидности семейства
   xlsx_product_export:
     label: Экспорт продуктов в XLSX
     export.label: Экспорт продуктов
@@ -179,7 +180,7 @@ batch_jobs:
     export.label: Экспорт модели продукта
   xlsx_product_import:
     label: Импорт продуктов из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт продуктов
     import_associations.label: Импорт ассоциаций
   xlsx_product_model_import:
@@ -194,14 +195,14 @@ batch_jobs:
     export.label: Экспорт групп
   xlsx_group_import:
     label: Импорт групп из XLSX
-    validation.label: Проверка файла
-    import.label: Импорт группы
+    validation.label: Подтверждение файла
+    import.label: Импорт групп
   xlsx_family_export:
     label: Экспорт семейств в XLSX
     export.label: Экспорт семейств
   xlsx_family_variant_export:
-    label: Экспорт семейства в XLSX
-    export.label: Экспорт семейства
+    label: Экспорт разновидности семейства в XLSX
+    export.label: Экспорт разновидности семейства
   xlsx_category_export:
     label: Экспорт категорий в XLSX
     export.label: Экспорт категорий
@@ -209,7 +210,7 @@ batch_jobs:
     label: Экспорт атрибутов в XLSX
     export.label: Экспорт атрибутов в XLSX
   xlsx_attribute_option_export:
-    label: Экспорт опций атрибутов в XLSX
+    label: Экспорт элементов списочных атрибутов в XLSX
     export.label: Экспорт опций атрибутов в XLSX
   xlsx_association_type_export:
     label: Экспорт типов ассоциаций в XLSX
@@ -218,7 +219,7 @@ batch_jobs:
     label: Экспорт каналов в XLSX
     export.label: Экспорт каналов
   xlsx_locale_export:
-    label: Экспорт локалей в XLSX
+    label: Экспорт локали в XLSX
     export.label: Экспорт локалей
   xlsx_attribute_group_export:
     label: Экспорт групп атрибутов в XLSX
@@ -231,21 +232,21 @@ batch_jobs:
     export.label: Экспорт типов групп
   xlsx_channel_import:
     label: Импорт каналов из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт каналов
   xlsx_locale_import:
-    label: Импорт локалей в XLSX
-    validation.label: Проверка файла
+    label: Импорт локали в XLSX
+    validation.label: Подтверждение файла
     import.label: Импорт локалей
   xlsx_attribute_group_import:
     label: Импорт групп атрибутов из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт групп атрибутов
   xlsx_currency_import:
     label: Импорт валют из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт валют
   xlsx_group_type_import:
     label: Импорт типов групп из XLSX
-    validation.label: Проверка файла
+    validation.label: Подтверждение файла
     import.label: Импорт типов групп

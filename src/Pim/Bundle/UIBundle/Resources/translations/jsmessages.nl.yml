@@ -1,3 +1,4 @@
+#ORO messages
 Close: Sluiten
 Update: Bijwerken
 Selected Rows: Geselecteerde rijen
@@ -7,10 +8,12 @@ Selected Rows: Geselecteerde rijen
 "Yes, do it": "Ja, doen"
 "No": "Nee"
 "Ok, got it.": "Okee, begrepen."
-"Cancel": "Annuleren"
+"Cancel": "Annuleer"
 "Delete Confirmation": "Verwijderen bevestigen"
-"Edit": "Bewerken"
+"Edit": "Wijzig"
 "Unexpected error occured. Please contact system administrator.": "Onverwachte fout opgetreden. Neem contact op met de systeembeheerder."
+"Yes, revoke": "Ja, intrekken"
+"Revoke Confirmation": "Bevestiging intrekken"
 Now: Nu
 Prev: Vorige
 Next: Volgende
@@ -29,10 +32,12 @@ Second: Seconde
 Millisecond: Milliseconde
 Microsecond: Microseconde
 "Time Zone": "Tijdzone"
+#PIM messages
 Localized value: Gelokaliseerde waarde
 Columns: Kolommen
 Datagrid Configuration: Datagrid configuratie
-Apply: Toepassen
+Apply: Pas toe
+#Filters
 Action: Actie
 Unit: Eenheid
 Currency: Valuta
@@ -45,6 +50,7 @@ jstree:
   no_tree: Geen structuur beschikbaar
   include_sub: Inclusief subcategorieën
   loading: Bezig met laden...
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: zondag
@@ -96,6 +102,7 @@ datetimepicker:
     Oct: okt
     Nov: nov
     Dec: dec
+#ORO
 oro_config:
   form:
     config:
@@ -110,3 +117,8 @@ oro_config:
         notification:
           title: Meldingen
           system_notification: Meldingen nieuwe versies
+        loading_message:
+          title: Laadberichten
+          label: Schakel laadberichten in
+        loading_messages:
+          label: Beschikbare laadberichten
