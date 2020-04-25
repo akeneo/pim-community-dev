@@ -39,6 +39,8 @@ pim_enrich.entity.family_variant:
       fail: La famiglia variante non può essere caricata.
     create:
       success: Famiglia variante creata correttamente
+    delete:
+      success: Famiglia variante rimossa correttamente
   module:
     edit:
       common_attributes: Attributi comuni

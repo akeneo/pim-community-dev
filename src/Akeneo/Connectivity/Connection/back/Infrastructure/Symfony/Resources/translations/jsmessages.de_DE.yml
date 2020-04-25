@@ -110,6 +110,7 @@ akeneo_connectivity.connection:
     flash:
       success: Verbindung erfolgreich gelöscht.
   helper:
+    title: '👋 Willkommen bei der Funktion, die Ihr PIM korrekt verbindet!'
     description: Ein PIM ohne jegliche Integration von Drittanbietern ist unnütz, oder? Dank Verbindungen können Sie alle Datenströme deklarieren, die nach innen geschoben und außerhalb Ihrer PIM gezogen werden.
     link: Sie möchten mehr wissen? Finden Sie heraus, was eine Verbindung ist und wie Sie das Beste daraus machen können!
   flow_type_helper:
@@ -123,6 +124,7 @@ akeneo_connectivity.connection:
       extension_not_allowed: Die Datei, die Sie hochladen möchten, ist leider nicht erlaubt.
   dashboard:
     helper:
+      title: '👋 Willkommen auf deinem Verbindungs-Dashboard!'
       description: Hier können Sie alle Datenströme, die in Ihrem PIM erfasst werden, über Ihre Verbindungen verfolgen, sowie alle Datenströme, die über Ihre Verbindungen an Ihre Kanäle verteilt werden.
       link: Möchten Sie mehr wissen? Hier geht's!
     user_survey:
@@ -139,6 +141,10 @@ akeneo_connectivity.connection:
         during_the_last_seven_days: In den letzten sieben Tagen
         today: Heute
     no_connection:
+      title: Möchten Sie einige schöne Diagramme über Ihre Verbindungen sehen?
+      message_with_permission:
+        message: Erstelle und starte die Verfolgung der ersten Verbindung
+        link: hier.
       message_without_permission:
         message: Bitten Sie Ihren Administrator, einen zu erstellen.
         link: Erfahren Sie hier mehr über Verbindungen...

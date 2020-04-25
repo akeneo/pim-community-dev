@@ -1,0 +1,148 @@
+pim_menu.item:
+  connection_settings: Connessioni
+  connection_audit: Dashboard connessioni
+pim_title:
+  akeneo_connectivity_connection_settings_index: Connessioni
+  akeneo_connectivity_connection_settings_any: Connessioni
+  akeneo_connectivity_connection_audit_index: Dashboard connessioni
+  akeneo_connectivity_connection_audit_any: Dashboard connessioni
+akeneo_connectivity.connection:
+  connections: Connessioni
+  secondary_actions:
+    title: Altre azioni
+  connection:
+    code: Codice
+    label: Etichetta
+    flow_type: Tipo di flusso
+    image: Immagine
+    client_id: ID Client
+    secret: Chiave segreta
+    username: Nome utente
+    password: Password
+    user_role_id: Ruolo
+    user_group_id: Gruppo
+    constraint:
+      code:
+        required: Il codice connessione è obbligatorio.
+        invalid: Il codice connessione può contenere solo lettere, numeri e trattini bassi
+        too_short: Il codice connessione è troppo corto. Dovrebbe essere di 3 o più caratteri.
+        too_long: Il codice connessione è troppo lungo. Dovrebbe essere al massimo di 100 caratteri.
+        must_be_unique: Il codice connessione deve essere univoco.
+      label:
+        required: L'etichetta connessione è obbligatoria.
+        too_short: L'etichetta della connessione è troppo corta. Dovrebbe essere di 3 o più caratteri.
+        too_long: L'etichetta della connessione è troppo lunga. Dovrebbe essere al massimo di 100 caratteri.
+      flow_type:
+        invalid: Il tipo di flusso della connessione può essere solo 'Sorgente dati', 'Destinazione dati' o 'Altro'.
+      image:
+        must_exist: L'immagine non è stata trovata. Si prega di riprovare.
+  flow_type:
+    data_source: Sorgente dati | Sorgente dati
+    data_destination: Destinazione dati | Destinazione dati
+    other: Altro | Altri
+  connection_count: 'Connessione {{ count }} | {{ count }} connessioni'
+  no_connection:
+    title: Nessuna connessione dichiarata finora.
+    message: Aggiungi la prima cliccando sul pulsante "Crea" o
+    message_link: clicca qui.
+  create_connection:
+    title: Crea una nuova connessione
+    description: Puoi creare fino a 50 connessioni.
+    flash:
+      success: Connessione creata correttamente.
+      error: Si è verificato un errore durante la creazione della connessione.
+  edit_connection:
+    subtitle: Impostazioni
+    flash:
+      success: Connessione aggiornata correttamente.
+      error: Si è verificato un errore durante la modifica della connessione.
+    image_uploader:
+      extension_not_allowed: Il file che si sta tentando di caricare ha una estensione non consentita.
+    credentials:
+      title: Credenziali
+      helper:
+        message: 'Ecco le credenziali da usare nel tuo connettore {{ label }}.'
+        link: Maggiori informazioni qui...
+      password_helper:
+        message: Se hai dimenticato la password, puoi generarne una nuova qui.
+        link: Ulteriori informazioni...
+      clear_password_helper:
+        message: Assicurati di salvare questa password da qualche parte perché non sarà più visualizzata.
+        link: Ulteriori informazioni...
+      action:
+        copy: Copia negli appunti
+        regenerate: Rigenera
+      flash:
+        copied: '{{ name }} copiato negli appunti'
+    permissions:
+      title: Permessi
+      helper:
+        message: 'In questa sezione è possibile definire i permessi per la connessione {{ label }}.'
+        link: Maggiori informazioni sui permessi delle connessioni...
+      user_role_helper:
+        message: Il ruolo predefinito `{{ role }}` non è la scelta migliore per la tua connessione. E' vivamente consigliato di scegliere un ruolo su misura per le tue necessità di connessione.
+        link: Maggiori informazioni qui...
+      user_group_helper:
+        message: E' vivamente consigliato scegliere un gruppo su misura per le tue necessità di connessione.
+        link: Maggiori informazioni qui...
+  regenerate_secret:
+    title: Conferma rigenerazione
+    description: Sei sicuro di voler rigenerare la chiave segreta della connessione? Non sei sicuro dei possibili impatti?
+    link: Ecco cosa succederà.
+    action:
+      regenerate: Rigenera
+    flash:
+      success: Chiave segreta connessione rigenerata correttamente.
+      error: Si è verificato un errore durante la rigenerazione della chiave segreta della connessione.
+  regenerate_password:
+    title: Conferma rigenerazione
+    description: Sei sicuro di voler rigenerare la password di connessione? Non sei sicuro dei possibili impatti?
+    link: Ecco cosa succederà.
+    action:
+      regenerate: Rigenera
+    flash:
+      success: Password di connessione rigenerata correttamente.
+      error: Si è verificato un errore durante la rigenerazione della password della connessione.
+  delete_connection:
+    title: Conferma eliminazione
+    description: Sei sicuro di voler eliminare la connessione? Non sei sicuro dei possibili impatti?
+    link: Ecco cosa succederà.
+    flash:
+      success: Connessione eliminata correttamente.
+  helper:
+    description: Un PIM senza integrazioni con altri servizi è abbastanza inutile, vero? Grazie alle connessioni, è possibile dichiarare tutti i flussi dati che saranno inviati ed estratti dal PIM.
+    link: Curioso di saperne di più? Scopri cos'è una connessione e come sfruttarla al massimo cliccando qui!
+  flow_type_helper:
+    message: Ti stai chiedendo cosa sia un tipo di flusso?
+    link: Possiamo aiutarti cliccando qui!
+  edit_image:
+    upload_helper: Modifica la tua immagine, trascina e rilascia o
+    remove_helper: Rimuovi l'immagine
+    click_here: clicca qui
+    flash:
+      extension_not_allowed: Il file che si sta tentando di caricare ha una estensione non consentita.
+  dashboard:
+    helper:
+      description: Da qui sarai in grado di tracciare tutti i flussi dati che sono raccolti nel PIM tramite le tue connessioni, così come tutti i flussi dati che sono distribuiti ai canali tramite le tue connessioni.
+      link: Vuoi saperne di più? Ecco qui!
+    user_survey:
+      title: Vuoi più dati in questa dashboard?
+      content: Il tuo feedback è prezioso per noi. Aiutaci a scegliere il prossimo widget rispondendo a questo sondaggio di una sola domanda!
+      button: Vai!
+    connection_selector:
+      title: Connessioni sorgente
+      all: Tutte
+    charts:
+      number_of_products_created: Numero di prodotti creati
+      number_of_products_updated: Numero di prodotti aggiornati
+      legend:
+        during_the_last_seven_days: Negli ultimi sette giorni
+        today: Oggi
+    no_connection:
+      message_without_permission:
+        message: Chiedi all'amministratore di crearne una.
+        link: Maggiori informazioni sulle connessioni qui...
+  runtime_error:
+    error_message: Uffa! Si è verificato un errore...
+    reload_helper: Prova a ricaricare la pagina e a provare di nuovo.
+    reload_button: Ricarica
