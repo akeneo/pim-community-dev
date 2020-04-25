@@ -1,6 +1,7 @@
 An identifier attribute already exists.: Attributo identificatore già esistente.
 Attribute code may contain only letters, numbers and underscore: Il codice attributo può contenere solo lettere, numeri e underscore
 Attribute code may contain only letters (at least one), numbers and underscores: Il codice attributo può contenere solo lettere (almeno una), numeri e underscore
+Attribute code may not contain line-feed characters: Il codice attributo non può contenere caratteri di ritorno a capo
 This attribute type can't be used as a grid filter: Questo tipo di attributo non può essere utilizzato come filtro griglia
 This code is not available: Questo codice non è disponibile
 This attribute type must be required: Questo tipo di attributo deve essere obbligatorio

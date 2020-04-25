@@ -1,0 +1,39 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parameters
+      value.title: Waarden
+      history.title: Geschiedenis
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Kan dit attribuut niet verwijderen omdat het gebruikt wordt als variant as in een familie variant
+  #Group type
+  group_type:
+    tab:
+      property.title: Eigenschappen
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Families
+      page_subtitle: Massa bewerken (1 familie) | Massa bewerken (%count% families)
+      title: Kies operatie
+      subtitle: Kies de bewerking die u wilt uitvoeren op het geselecteerde product|Kies de bewerking die u wilt uitvoeren op de %count% geselecteerde producten
+      confirm: U staat op het punt een familie bij te werken met de volgende informatie. Gelieve dit te bevestigen. |U staat op het punt %count% families bij te werken met de volgende informatie. Gelieve dit te bevestigen.
+      steps:
+        first: Kies families
+        second: Kies operatie
+        third: Configureren
+        fourth: Bevestigen
+pim_enrich_attribute_form:
+  code: Code
+  type: Attribuuttype
+  reference_data_name: Naam referentiegegevens
+  scopable: Waarde per kanaal
+  localizable: Waarde per taal
+  unique: Unieke waarde
+  availableLocales: Beschikbare lokalisaties
+  locale_specific: Lokalisatiespecifiek
+  group: Attribuutgroep
+  useableAsGridFilter: Bruikbaar in raster
