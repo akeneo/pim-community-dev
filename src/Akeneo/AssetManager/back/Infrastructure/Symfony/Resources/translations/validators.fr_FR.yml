@@ -7,6 +7,8 @@ pim_asset_manager:
         limit_reached: 'Echec de la création de la famille "%asset_family_identifier%". Vous avez atteint le nombre maximum de familles de ressources numériques, fixé à %limit%'
       assets:
         should_have_no_asset: 'Vous ne pouvez pas supprimer cette famille car elle comporte des ressources numériques'
+      asset_family_attributes:
+        should_not_be_linked: 'Vous ne pouvez pas supprimer cette famille parce qu''un attribut produit de type "collection de ressources" est lié à cette famille.'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Au moins un groupe d''utilisateurs doit avoir les droits d''édition sur cette famille'
       product_attributes:
@@ -26,6 +28,8 @@ pim_asset_manager:
         channel_not_supported_for_field: 'Vous ne pouvez pas spécifier de canal pour le champ "%product_field%"'
         locale_not_supported_for_field: 'Vous ne pouvez pas spécifier de locale pour le champ "%product_field%"'
         assignmement_attribute_does_not_support_this_asset_family: 'L''attribut de produit "%product_attribute_code%" ne peut pas contenir de ressources de la famille de ressources "%asset_family_identifier%"'
+        assignmement_attribute_does_not_exist: 'L''attribut produit "{{ %product_attribute_code% }}" n''existe pas.'
+        assignmement_attribute_is_not_an_asset_collection: 'L''attribut produit "{{ %product_attribute_code% }}" n''est pas un attribut de type collection de ressources.'
       attribute_as_main_media:
         not_found: 'L''attribut "%attribute_as_main_media%" défini comme média principal pour la famille de ressources n''existe pas'
         invalid_type: 'L''attribut défini comme média principal pour la famille de ressources doit être de type : %valid_attribute_as_main_media_types%'

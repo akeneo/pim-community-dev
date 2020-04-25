@@ -34,6 +34,7 @@ akeneo_data_quality_insights:
         max_categories_msg: Du kannst nicht mehr als {{ count }} Kategorien auf deinem Dashboard hinzufügen
       add_families: Familien hinzufügen
       add_categories: Kategorien hinzufügen
+      title: Titel
       no_family_helper_msg: Wählen Sie die Familien, für die Sie die Datenqualität messen möchten
       no_category_helper_msg: Wählen Sie die Kategorien, für die Sie die Datenqualität messen möchten
       see_in_grid: Im Raster sehen
@@ -54,11 +55,20 @@ akeneo_data_quality_insights:
     axis:
       enrichment:
         title: Anreicherung
+        attributes_link: Fehlende Attribute anzeigen
         success: Ihre Produktdaten sind vollständig angereichert. Herzlichen Glückwunsch!
       consistency:
         title: Konsistenz
         attributes_link: Alle verbesserbaren Attribute anzeigen
         success: Ihre Produktdaten sind konsistent. Herzlichen Glückwunsch!
+    messages:
+      error:
+        axis_error: Aufgrund eines Fehlers konnte die Bewertung nicht vollständig berechnet werden. Versuchen Sie es später erneut.
+        criterion_error: Bewertung konnte nicht berechnet werden.
+      success:
+        criterion: Alles in Ordnung.
+      grading_in_progress: Bewertung läuft.
+      axis_grading_in_progress: Bewertung wird durchgeführt. Bitte kommen Sie später wieder.
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Alle fehlenden Attribute

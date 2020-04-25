@@ -55,6 +55,7 @@ akeneo_data_quality_insights:
     axis:
       enrichment:
         title: Enrichissement
+        attributes_link: Afficher tous les attributs manquants
         success: Tous les attributs sont renseignés. Félicitations !
       consistency:
         title: Cohérence

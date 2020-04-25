@@ -198,6 +198,10 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: The products will be unpublished
       warning: The {{ itemsCount }} selected products will be unpublished.
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: Cannot delete a category linked to a published product.
 pim_menu:
   navigation:
     published_products: Published products

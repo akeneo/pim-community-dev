@@ -102,6 +102,10 @@ pim_reference_entity:
       code:
         pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
         should_be_unique: 'Dieser Code existiert bereits für diese Entität.'
+      text:
+        incompatible_with_regular_expression: 'Bitte geben Sie einen Text ein, der den regulären Ausdruck erfüllt: "{{ %regular_expression% }}"'
+        invalid_email: 'Bitte geben Sie eine E-Mail-Adresse ein: xxxxx@xx.xx'
+        invalid_url: 'Bitte geben Sie eine URL ein: http(s)://xxxx.XXX'
     no_data:
       title: Es existiert kein Datensatz für {{ entityLabel }}
       subtitle: Klicken Sie auf den Button "Add new", um den ersten Datensatz zu erstellen.

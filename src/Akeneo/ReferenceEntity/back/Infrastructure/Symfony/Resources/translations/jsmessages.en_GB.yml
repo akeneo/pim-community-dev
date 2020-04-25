@@ -13,6 +13,11 @@ pim_reference_entity:
         remove: Remove
         download: Download
         upload: Drag and drop to upload
+  editor:
+    embedded:
+      invalid_link:
+        title: Suspicious embedded link
+        message: Sorry, we do not display this embed item but it will be correctly saved
   grid:
     counter: '{{ count }} result|{{ count }} results'
   reference_entity:
@@ -97,6 +102,10 @@ pim_reference_entity:
       code:
         pattern: 'This field can only contain letters, numbers and underscores.'
         should_be_unique: 'This code already exists for this entity.'
+      text:
+        incompatible_with_regular_expression: 'Please enter a text that satisfies the regular expression: "{{ %regular_expression% }}"'
+        invalid_email: 'Please enter an email address: xxxxx@xx.xx'
+        invalid_url: 'Please enter a URL: http(s)://xxxx.XXX'
     no_data:
       title: There is no record for {{ entityLabel }}
       subtitle: Click on the "Add new" button to create the first record
