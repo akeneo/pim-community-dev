@@ -1,0 +1,69 @@
+batch_jobs:
+  csv_currency_export:
+    label: Para birimlerini CSV olarak dışa aktar
+    export.label: Kurları dışa aktar
+  csv_currency_import:
+    label: CSV'de bulunan para birimini içe aktar
+    import.label: Para birimlerini içe aktar
+  xlsx_currency_export:
+    label: XLSX'de para birimini dışa aktar
+    export.label: Para birimlerini dışa aktar
+  xlsx_currency_import:
+    label: XLSX de para birimlerini içe aktar
+    import.label: Para birimlerini içe aktar
+  csv_locale_export:
+    label: CSV'de yerel ayarları dışa aktar
+    export.label: Yerel ayarları dışa aktar
+  csv_locale_import:
+    label: CSV de yerel ayarı içe aktar
+    import.label: Yerel ayarları içe aktar
+  xlsx_locale_export:
+    label: XLSX yerel ayarı dışa aktar
+    export.label: Yerel ayarları dışa aktar
+  xlsx_locale_import:
+    label: XLSX de yerel ayarı içe aktar
+    import.label: Yerel ayarı içe aktar
+  csv_channel_export:
+    label: CSV'de kanalı dışa aktar
+    export.label: Kanal dışa aktarma
+  csv_channel_import:
+    label: CSV de kanalı içe aktar
+    import.label: Kanalı içe aktar
+  xlsx_channel_export:
+    label: XLSX'de bulunan kanalı dışa aktar
+    export.label: Kanalı dışa aktar
+  xlsx_channel_import:
+    label: XLSX'de kanalı içe aktar
+    import.label: Kanalı içe aktar
+pim_enrich.entity.channel:
+  label: kanal
+  uppercase_label: Kanal
+  flash:
+    update:
+      success: Kanal başarıyla güncellendi.
+      fail: Kanal güncellenemedi.
+    create:
+      success: Kanal başarıyla oluşturuldu.
+      fail: Kanal oluşturulamadı
+    delete:
+      success: Kanal başarılı bir şekilde kaldırıldı
+      fail: Bu kanal silinemiyor
+  page_title:
+    index: "] -Inf, 1] {{ kapsama }} kanal|] 1, Inf [{{ kapsama }} kanallar"
+  property:
+    category_tree: Bağlantı kategorisi
+    do_not_convert: Dönüştürmeyin
+    label_conversion_units: Ürün dışa aktarma sırasında kullanılacak metrik özelliklerin her biri için bir dönüşüm birimi seçin
+  module:
+    create:
+      button: Kanal oluştur
+    delete:
+      confirm: Bu kanalı silmek istediğinizden emin misiniz?
+pim_enrich.entity.locale:
+  label: Yerel Ayar
+  uppercase_label: Yerel Ayar
+  plural_label: Yerel Ayarlar
+  page_title:
+    index: "] -Inf, 1] {{ kapsama }} yerel|] 1, Inf [{{ kapsama }} yereller"
+pim_enrich.entity.currency:
+  plural_label: Para birimleri

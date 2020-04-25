@@ -23,6 +23,9 @@ pim_analytics:
     nb_variant_products: Количество вариантов продуктов
     nb_family_variants: Количество вариантов семейств
     nb_attributes: Количество атрибутов
+    nb_scopable_attributes: Количество видимых атрибутов
+    nb_localizable_attributes: Количество локализуемых атрибутов
+    nb_scopable_localizable_attributes: Количество локализуемых и видимых атрибутов
     nb_useable_as_grid_filter_attributes: Количество атрибутов используемых в табличном представлении
     avg_percentage_scopable_attributes_per_family: Средний процент видимых атрибутов на семейство (%)
     avg_percentage_localizable_attributes_per_family: Средний процент локализуемых атрибутов на семейство (%)

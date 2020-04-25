@@ -1,108 +1,105 @@
 pim_user:
   user:
-    tab:
-      general.title: Ogólne
-      additional.title: Dodatkowe
-      group_and_role.title: Grupy i role
+    title: Użytkownik
+    fields:
+      name_prefix: Przyimek
+      email: E-mail
+      username: Nazwa użytkownika
+      first_name: Imię
+      middle_name: Drugie imię
+      last_name: Nazwisko
+      name_suffix: Przyrostek
+      date_of_birth: Data urodzenia
+      avatar: Awatar
+      timezone: Strefa czasowa
+      roles: Role
+      groups: Grupy
+      password: Hasło
+      password_again: Powtórz hasło
+      product_grid_filters: Filtry listy produktów
+      catalog_locale: Wersja językowa katalogu
+      catalog_scope: Zakres katalogu
+      default_tree: Domyślne drzewo
+      current_password: Aktualne hasło
+      new_password: Nowe hasło
+      new_password_again: Nowe hasło (powtórz)
+      default_grid_view:
+        none: Żaden
+      default_product_grid_view:
+        label: Domyślny widok tabeli produktów
+      ui_locale: Język interfejsu
+      last_logged_in: Ostatnio zalogowany
+      login_count: Liczba logowań
+      user_salt: Sól użytkownika
+      created: Utworzono
+      updated: Zaktualizowano
+      status: Status
+      capabilities: Możliwości
+      has_role: Ma rolę
+      has_group: Ma grupę
+      active: Aktywne
+      inactive: Nieaktywny
+    tabs:
+      general:
+        title: Ogólne
+        contact_information: Informacje kontaktowe
+      additional:
+        title: Dodatkowe
+      interfaces:
+        title: Interfejsy
+      group_and_role.title: Grupy i Role
       password.title: Hasło
-      business_unit.title: Jednostki biznesowe
-      email_synchronization.title: Ustawienia synchronizacji poczty e-mail
-      interfaces.title: Interfejsy
+      business_unit.title: Jednostki Biznesowe
+      email_synchronization.title: Ustawienia synchronizacji poczty email
+    removed_user: Użytkownik usunięty
+    login:
+      username_or_email: Login lub Email
+      remember_me: Zapamiętaj mnie na tym komputerze
+      password_forgotten: Zapomniałeś hasła?
+      log_in: Zaloguj się
+      forgot_password: Zapomniałem hasła
+      request: Żądanie
+      reset: Resetuj
+      password_reset_email_sent: Wiadomość email została wysłana do użytkownika. Zawiera ona link do resetowania hasła.
+      homepage: Przejdź do strony głównej
   group:
     tab:
       general.title: Ogólne
       users.title: Użytkownicy
-oro.user.controller:
-  group.message.saved: "Grupa zapisana"
-  role.message.saved: "Rola zapisana"
-  user.message.saved: "Użytkownik zapisany"
-  status.message.saved: "Status zapisany"
-oro.user.grid.users:
+  roles:
+    title: Rola
+    tab:
+      general: Ogólne
+      action: Uprawnienia
+      users: Użytkownicy
+  controller:
+    group:
+      message:
+        saved: "Grupa zapisana"
+    role:
+      message:
+        saved: "Rola zapisana"
+    user:
+      message:
+        saved: "Użytkownik zapisany"
+pim_datagrid:
   columns:
-    username: "Nazwa użytkownika"
-    email: "Adres e-mail"
-    firstName: "Imię"
-    lastName: "Nazwisko"
-    createdAt: "Data utworzenia"
-    updatedAt: "Data aktualizacji"
-    enabled: "Status"
-oro.user.grid.roles:
-  columns:
-    label: "Etykieta"
-oro.user.grid.groups:
-  columns:
-    name: "Nazwa"
-pim_title:
-  user.index: Użytkownicy
-  user_role.index: Role
-  user_group.index: Grupy
-  system_configuration.index: Konfiguracja
-user.title: Użytkownik
-user.overview: Użytkownik
-Users Management: Zarządzanie użytkownikami
-Create user: Utwórz użytkownika
-btn.create.user: Utwórz użytkownika
-New user: Nowy użytkownik
-Additional: Dodatkowe
-Groups and Roles: Grupy i role
-Username: Nazwa użytkownika
-Password: Hasło
-Re-enter password: Powtórz hasło
-Name prefix: Prefiks nazwy
-First name: Imię
-Middle name: Drugie imię
-Last name: Nazwisko
-Name suffix: Sufiks nazwy
-Date of birth: Data urodzenia
-Avatar: Awatar
-Additional emails: Dodatkowe adresy email
-Add another email: Dodaj kolejny e-mail
-Catalog locale: Język katalogu
-Catalog scope: Zasięg katalogu
-Default tree: Drzewo domyślne
-Business Units: Jednostki biznesowe
-Email synchronization settings: Ustawienia synchronizacji poczty e-mail
-Host: Host
-Port: Port
-Last logged in: Ostatnio zalogowany
-Login count: Liczba logowań
-Additional Information: Dodatkowe informacje
-Interfaces: Interfejsy
-Basic Information: Podstawowe informacje
-Contact Information: Informacje kontaktowe
-User name: Nazwa użytkownika
-Birthday: Data urodzenia
-API key: Klucz API
-Ui locale: Język Interfejsu
-UI locale: Język Interfejsu
-User salt: Sól użytkownika
-Current password: Aktualne hasło
-New password: Nowe Hasło
-Repeat new password: Nowe hasło (powtórz)
-Generate key: Wygeneruj klucz
-Primary: podstawowy
-Removed user: Użytkownik usunięty
-user:
-  product_grid_filters: Filtry listy produktów
-  default_product_grid_view:
-    label: Widok domyślny listy produktów
-  default_grid_view:
-    none: Brak
-Role: Rola
-Owner: Właściciel
-General: Ogólne
-Entity: Encja
-Capabilities: Możliwości
-Save and close: Zapisz i zamknij
-Has role: Ma rolę
-role:
-  title: rola
-  overview: rola
-  edit: Edytowanie roli
-  create: Utwórz rolę
-btn.create.role: Utwórz rolę
-rights:
-  action: Uprawnienia
+    user:
+      createdAt: "Data utworzenia"
+      updatedAt: "Aktualizowano"
+    roles:
+      label: "Etykieta"
+    groups:
+      name: "Nazwa"
+confirmation:
+  remove:
+    role: Czy na pewno chcesz usunąć tę rolę?
+    user: Czy na pewno chcesz usunąć tego użytkownika?
+flash:
+  role:
+    removed: Rola pomyślnie usunięta
+  user:
+    removed: Użytkownik pomyślnie usunięty
 oro_security:
   acl_group:
     user: Użytkownicy
@@ -110,46 +107,25 @@ oro_security:
     group: Grupy użytkowników
   acl:
     user:
-      view: Przeglądanie użytkowników
-      create: Tworzenie użytkownika
-      edit: Edycja użytkowników
-      delete: Usuwanie użytkownika
+      view: Przeglądaj użytkowników
+      create: Utwórz użytkownika
+      edit: Edytuj użytkowników
+      delete: Usuń użytkownika
     role:
-      view: Przeglądanie ról
-      create: Tworzenie roli
-      edit: Edycja ról
-      delete: Usuwanie roli
+      view: Przeglądaj role
+      create: Utwórz rolę
+      edit: Edytuj role
+      delete: Usuń rolę
     group:
-      view: Przeglądanie grup użytkowników
-      create: Tworzenie grup użytkowników
+      view: Przeglądaj grupy użytkowników
+      create: Utwórz grupę użytkowników
       edit: Edycja grup użytkowników
       delete: Usuwanie grup użytkowników
-(default): Domyślne uprawnienia encji
+#Security
+(default): Domyślne uprawnienia obiektu
 VIEW: Zobacz
 CREATE: Utwórz
 EDIT: Edytuj
-DELETE: Usuń
+DELETE: Skasuj
 ASSIGN: Przypisz
 SHARE: Udostępnij
-oro:
-  security:
-    access-level:
-      BASIC: Użytkownik
-      LOCAL: Jednostka biznesowa
-      DEEP: Podział
-      GLOBAL: Organizacja
-      SYSTEM: System
-      NONE: Brak
-Create group: Utwórz grupę
-btn.create.user-group: Utwórz grupę
-Has group: Ma grupę
-Save and Close: Zapisz i zamknij
-user-group.overview: Grupy
-Log in: Zaloguj się
-Remember me on this computer: Zapamiętaj mnie na tym komputerze
-Forgot your password?: Zapomniałeś hasła?
-Username or Email: Login lub E-mail
-Forgot Password: Zapomniałem hasła
-Request: Żądanie
-Check Email: Sprawdź Email
-Go to homepage: Przejdź do strony głównej

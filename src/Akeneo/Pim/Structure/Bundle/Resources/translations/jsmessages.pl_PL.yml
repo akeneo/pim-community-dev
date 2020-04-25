@@ -1,0 +1,209 @@
+pim_enrich.entity.family:
+  label: rodzina
+  uppercase_label: Rodzina
+  plural_label: Rodziny
+  flash:
+    update:
+      success: Rodzina pomyślnie zaktualizowana.
+      cant_remove_attribute_as_label: Nie można usunąć atrybutu użytego jako etykiety
+      cant_remove_attribute_as_image: Nie można usunąć atrybutu użytego jako główne zdjęcie
+      cant_remove_attribute_used_as_axis: Nie można usunąć tego atrybutu używanego jako oś wariantu w wariancie rodziny
+    create:
+      success: Rodzina produktów została pomyślnie utworzona
+    delete:
+      success: Rodzina produktów usunięta pomyślnie
+      fail: Nie można usunąć tej rodziny
+  property:
+    attribute_as_label: Atrybut używany jako etykieta
+    attribute_as_image: Atrybut używany jako główny obraz
+    empty_attribute_as_image: Nie zaznaczone
+  module:
+    attributes:
+      not_required_label: Nie wymagany
+      required_label: Wymagany
+    create:
+      button: Utwórz rodzinę
+    delete:
+      confirm: Czy na pewno chcesz usunąć tę rodzinę?
+pim_enrich.entity.family_variant:
+  short_plural_label: Warianty
+  short_label: Wariant
+  flash:
+    update:
+      success: Wariant rodziny pomyślnie zaktualizowany. Produkty z wariantami zostaną zaktualizowane ze zmianami.
+    create:
+      success: Wariant rodziny pomyślnie utworzony
+  module:
+    edit:
+      common_attributes: Wspólne atrybuty
+      no_common_attributes: Brak wspólnych atrybutów
+      variant_axis_label: Oś wariantu
+      variant_attributes: Atrybuty wariantu
+      level_1: Atrybuty wariantu poziomu pierwszego
+      level_2: Atrybuty wariantu poziomu drugiego
+      description: Przeciągnij i upuść atrybuty na wybrany poziom wariantu, aby te atrybuty były zarządzane na poziomie wariantu.
+      confirm_attribute_removal_title: Potwierdź usunięcie atrybutów
+      confirm_attribute_removal_message: Usuwając te atrybuty, umieścisz je z powrotem we wspólnych atrybutach wariantu rodziny i usuniesz wartości z wariantów produktów
+    create:
+      label: Dodaj wariant
+      title: Utwórz nowy wariant rodziny
+      description: W wariancie rodziny można zdefiniować strukturę dla produktów z wariantami. Wybierz liczbę zarządzanych poziomów wariantów, atrybuty używane jako osie wariantu dla każdego poziomu, a następnie określ jak atrybuty są rozłożone.
+      variant_levels: Poziomy wariantu
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Ustawienia
+  flash:
+    create:
+      success: Opcja atrybutu pomyślnie utworzona
+    update:
+      fail: Nie można zapisać opcji atrybutu
+    delete:
+      fail: Błąd podczas usuwania ustawienia atrybutu
+  module:
+    edit:
+      cancel_title: Anuluj zmiany
+pim_enrich.entity.association_type:
+  label: typ powiązania
+  flash:
+    update:
+      success: Typ powiązania został pomyślnie zaktualizowany.
+      fail: Nie można zaktualizować typu powiązania.
+      fields_not_ready: "Nie można teraz zapisać typu powiązania. Następujące pola nie są gotowe: {{ fields }}"
+    create:
+      success: Typ powiązania pomyślnie utworzony
+    delete:
+      success: Typ powiązania pomyślnie usunięty
+      fail: Nie można usunąć tego typu powiązania
+  module:
+    create:
+      button: Utwórz typ powiązania
+    delete:
+      confirm: Czy na pewno chcesz usunąć ten typ powiązania?
+pim_enrich.entity.group_type:
+  label: typ grupy
+  flash:
+    update:
+      success: Typ grupy pomyślnie zaktualizowany.
+      fail: Nie można zaktualizować typu grupy.
+      fields_not_ready: "Nie można teraz zapisać typu grupy. Następujące pola nie są gotowe: {{ fields }}"
+    create:
+      success: Typ grupy pomyślnie utworzony
+    delete:
+      success: Typ grupy pomyślnie usunięty
+      fail: Nie można usunąć tego typu grupy
+  module:
+    create:
+      button: Utwórz typ grupy
+    delete:
+      confirm: Czy na pewno chcesz usunąć ten typ grupy?
+pim_enrich.entity.attribute:
+  label: atrybut
+  plural_label: Atrybuty
+  flash:
+    update:
+      success: Atrybut pomyślnie zaktualizowany.
+      fail: Nie można zaktualizować atrybutu.
+      fields_not_ready: "Nie można teraz zapisać atrybutu. Następujące pola nie są gotowe: {{ fields }}"
+    delete:
+      success: Atrybut pomyślnie usunięty
+      fail: Nie można usunąć tego atrybutu
+  property:
+    allowed_extensions: Dozwolone rozszerzenia
+    auto_option_sorting: Automatycznie segreguj opcje w kolejności alfabetycznej
+    available_locales: Dostępne wersje językowe
+    date_max: Maksymalna data
+    date_min: Minimalna data
+    decimals_allowed: Dopuszczalne wartości dziesiętne
+    default_metric_unit:
+      label: Domyślna jednostka miary
+      choose: Wybierz jednostkę
+    group:
+      label: Grupa atrybutów
+      choose: Wybierz grupę atrybutów
+    is_locale_specific: Zależne od wersji językowej
+    localizable: Wartość dla wersji językowej
+    max_characters: Maksymalna liczba znaków
+    max_file_size: Maksymalny rozmiar pliku (MB)
+    metric_family:
+      label: Zestaw miar
+      choose: Wybierz rodzinę
+    minimum_input_length: Minimalna długość dla automatycznego uzupełniania
+    name: Nazwa
+    negative_allowed: Dozwolone wartości ujemne
+    number_max: Maksymalna liczba
+    number_min: Minimalna liczba
+    reference_data_name:
+      label: Typ danych referencyjnych
+      choose: Wybierz typ danych referencyjnych
+    scopable: Wartość dla kanału
+    type:
+      choose: Wybierz typ atrybutu
+      pim_catalog_identifier: Identyfikator
+      pim_catalog_text: Tekst
+      pim_catalog_textarea: Pole tekstowe
+      pim_catalog_number: Liczba
+      pim_catalog_price_collection: Cena
+      pim_catalog_multiselect: Wybór wielokrotny
+      pim_catalog_simpleselect: Wybór prosty
+      pim_catalog_file: Plik
+      pim_catalog_image: Zdjęcie
+      pim_catalog_boolean: "Tak/Nie"
+      pim_catalog_date: Data
+      pim_catalog_metric: Miara
+      pim_reference_data_simpleselect: Wybór prosty danych referencyjnych
+      pim_reference_data_multiselect: Wybór wielokrotny danych referencyjnych
+    unique: Unikatowa wartość
+    useable_as_grid_filter: Możliwy do użycia w tabeli
+    validation_regexp: Wyrażenie regularne
+    validation_rule:
+      label: Reguła poprawności
+      email: E-mail
+      regexp: Wyrażenie regularne
+      url: URL
+    wysiwyg_enabled: Włączony edytor tekstu rozszerzonego
+  module:
+    add_attribute:
+      no_available_attributes: Nie ma więcej atrybutów do dodania
+      attributes_selected: "{1} 1 wybrany atrybut|{2,3,4} {{ itemsCount }} wybrane atrybuty |[5, Inf [{{ itemsCount }} wybranych atrybutów"
+    create:
+      button: Utwórz atrybut
+    edit:
+      common: Parametry ogólne
+      type_specific: Określone parametry
+      validation: Parametry poprawności
+    delete:
+      confirm: Czy na pewno chcesz usunąć ten atrybut?
+      confirm_from_group: Czy na pewno chcesz usunąć atrybut {{ attribute }} z tej grupy atrybutów?
+      confirm_from_product: Czy na pewno chcesz usunąć ten atrybut z produktu?
+pim_enrich.entity.attribute_group:
+  label: grupa atrybutów
+  uppercase_label: Grupa atrybutów
+  plural_label: Grupy Atrybutów
+  flash:
+    update:
+      success: Grupa atrybutów pomyślnie zaktualizowana
+      fail: Nie można zaktualizować grupy atrybutów
+    delete:
+      success: Grupa atrybutów pomyślnie usunięta
+  module:
+    add_attribute_group:
+      label: Dodaj przez grupy
+      attributes_groups_selected: '{1} 1 wybrana grupa|{2,3,4} {{ itemsCount }} wybrane grupy |[5, Inf [{{ itemsCount }} wybranych grup'
+    delete:
+      confirm: Czy na pewno chcesz usunąć tę grupę atrybutów?
+pim_enrich.mass_edit.family:
+  title: Działanie zbiorcze rodzin
+  step:
+    select:
+      label: Wybierz rodziny
+    choose:
+      title: Działania zbiorcze rodzin
+    configure:
+      label: Konfiguruj
+    confirm:
+      label: Potwierdź
+    launched:
+      label: Działanie zbiorcze "{{ operation }}" zostało uruchomione. Zostaniesz powiadomiony o jego ukończeniu.
+  operation:
+    set_requirements:
+      label: Określ wymagania atrybutów
+      description: Poniższe wymagania atrybutów zostaną zastosowane do wybranych rodzin
