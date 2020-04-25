@@ -1,25 +1,31 @@
-#akeneo_assetmanager:
-#acl_group:
-#asset_family: Reference entities
-#acl:
-#asset_family:
-#create: Create an entity
-#edit: Edit the entity properties
-#delete: Delete an entity
-#manage_permission: Manage asset family permissions
-#asset:
-#create: Create a asset
-#edit: Edit the assets
-#delete: Delete a asset
-#delete_all: Delete all entity assets
-#list_product: List linked products to asset
-#attribute:
-#create: Add an attribute to an asset family
-#edit: Edit an attribute of an asset family
-#delete: Delete an attribute of an asset family
-#option:
-#edit: Edit options
-#delete: Remove an option
+akeneo_assetmanager:
+  acl_group:
+    asset_manager: Gestore asset
+  acl:
+    asset_family:
+      create: Crea una famiglia di asset
+      edit: Modifica le proprietà di una famiglia di asset
+      delete: Elimina una famiglia di asset
+      manage_permission: Gestisci i permessi di una famiglia di asset
+      manage_transformation: Gestisci le trasformazioni di una famiglia di asset
+    asset:
+      create: Crea un asset
+      edit: Modifica gli asset
+      delete: Elimina un asset
+      delete_all: Elimina tutti gli asset
+      list_product: Elenca i prodotti collegati all'asset
+    attribute:
+      create: Aggiungi un attributo ad una famiglia di asset
+      edit: Modifica un attributo di una famiglia di asset
+      delete: Elimina un attributo di una famiglia di asset
+    option:
+      edit: Modifica opzioni
+      delete: Rimuovi una opzione
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_link_assets_to_products: "Collega gli asset ai prodotti"
 #pim_analytics:
 #info_type:
 #nb_asset_families: Number of asset families
@@ -31,4 +37,4 @@
 #average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
-pim_catalog_asset_collection: Collegamenti multipli attività
+pim_catalog_asset_collection: Raccolta di asset

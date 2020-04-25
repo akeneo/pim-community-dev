@@ -1,0 +1,47 @@
+akeneo_data_quality_insights:
+  title: Approfondimenti sulla qualità dei dati
+  dqi_dashboard:
+    menu: Approfondimenti sulla qualità dei dati
+    title: Panoramica della qualità dei dati
+    no_data_title: Non ci sono ancora abbastanza dati per visualizzare la panoramica della qualità dei dati.
+    no_data_subtitle: Ti preghiamo di tornare più tardi.
+    legend:
+      excellent: Eccellente
+      good: Buona
+      average: Media
+      below_average: Sotto la media
+      to_improve: Da migliorare
+    widgets:
+      title: Titolo
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: Attributi obbligatori con valori mancanti
+      completeness_of_non_required_attributes:
+        recommendation: Attributi non obbligatori con valori mancanti
+      consistency_spelling:
+        recommendation: Attributi con problemi ortografici
+    axis:
+      enrichment:
+        title: Arricchimento
+        success: I tuoi dati di prodotto sono completamente arricchiti. Congratulazioni!
+      consistency:
+        title: Coerenza
+        attributes_link: Visualizza tutti gli attributi migliorabili
+        success: I tuoi dati di prodotto sono completamente coerenti. Congratulazioni!
+    messages:
+      success:
+        criterion: Tutto a posto.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: Tutti gli attributi mancanti
+      all_improvable_attributes: Tutti gli attributi migliorabili
+    spellcheck_popover:
+      title: Correzioni
+      original_text_title: Originale
+      suggestions_title: Proposte
+      ignore_all_suggestions_button_label: Ignora
+    title_suggestion_popover:
+      ignore_all_suggestions_button_label: Ignora
+pim_title:
+  akeneo_data_quality_insights_dashboard: Approfondimenti sulla qualità dei dati

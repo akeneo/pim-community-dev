@@ -110,6 +110,8 @@ pim_asset_manager:
         channel_not_supported_for_field: 'Vous ne pouvez pas spécifier de canal pour le champ "{{ %product_field% }}".'
         locale_not_supported_for_field: 'Vous ne pouvez pas spécifier de locale pour le champ "{{ %product_field% }}".'
         assignmement_attribute_does_not_support_this_asset_family: 'L''attribut produit "%product_attribute_code%" ne peut pas contenir de ressources de la famille de ressources "%asset_family_identifier%"'
+        assignmement_attribute_does_not_exist: 'L''attribut produit "{{ %product_attribute_code% }}" n''existe pas.'
+        assignmement_attribute_is_not_an_asset_collection: 'L''attribut produit "{{ %product_attribute_code% }}" n''est pas un attribut de type collection de ressources.'
     button:
       save: Enregistrer
       save_permission: Enregistrer
@@ -480,6 +482,7 @@ pim_asset_manager:
     media_file:
       placeholder: Glissez et déposez un fichier pour le charger ou cliquez ici
       read_only: Ce fichier est en lecture seule.
+    used_as_transformation_target: Ce champ est en lecture seule car il est utilisé comme cible dans une transformation de ressources.
   modal:
     delete:
       subtitle: Confirmer la suppression

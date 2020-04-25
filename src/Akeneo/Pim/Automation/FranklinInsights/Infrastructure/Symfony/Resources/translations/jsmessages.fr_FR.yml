@@ -52,6 +52,7 @@ akeneo_franklin_insights:
         suggest_attribute_mapping_error: 'L''attribut du catalogue "[{{ catalogAttributeCode }}]" est déjà mappé à l''attribut "{{ franklinAttributeLabel }}" de Franklin.'
         add_attribute_to_family_success: '{1} Attribut attaché avec succès à la famille "{{ family }}". |[2,Inf[ Attributs rattachés avec succès à la famille "{{ family }}".'
         add_attribute_to_family_error: 'Désolé, une erreur s''est produite lors de l''ajout de l''attribut à la famille.'
+        fail_to_retrieve_franklin_mapping: 'Le mapping des attributs n''est pas disponible pour le moment. Veuillez revenir plus tard.'
       fields:
         search_bar.placeholder: 'Rechercher sur l''attribut Franklin'
         franklin_attribute: 'Attribut Franklin'
@@ -157,6 +158,8 @@ akeneo_franklin_insights:
           title: 'Options de l''attribut {{ familyLabel }} - {{ franklinAttributeLabel }}'
           sub_title: 'Rencontrez Franklin, votre <span class="AknDescriptionHeader-title--highlight">assistant IA des informations produit</span> !'
           description: 'Pour aider à enrichir votre catalogue, Franklin devra connaître les options d''attribut de votre catalogue qui lui correspondent. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">Lire la suite</a>'
+      flash:
+        load_failed: 'Échec de la mise à jour'
   product:
     edit:
       btn.push: Suggestion de données
