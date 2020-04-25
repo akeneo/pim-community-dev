@@ -112,6 +112,7 @@ pim_enrich:
       create: Opret en familie
       edit_properties: Rediger egenskaberne for en familie
       edit_attributes: Rediger attributterne for en familie
+      edit_variants: Rediger en familievariant
       remove: Fjern en familie
       history: Se familie historik
     family_variant:

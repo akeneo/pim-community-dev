@@ -69,3 +69,8 @@ pim_enrich.entity.currency:
   plural_label: Valute
   page_title:
     index: "]-Inf, 1]{{ count }} valuta|]1, Inf[{{ count }} valute"
+flash:
+  currency:
+    error:
+      linked_to_channel: Non è possibile disabilitare una valuta collegata ad un canale
+    updated: Valuta aggiornata correttamente
