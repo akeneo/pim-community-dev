@@ -1,9 +1,50 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Skrivebeskyttet
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> i denne kategori
+      revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> i denne kategori
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> i denne landestandard
+      revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> i denne landestandard
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> af denne attribut gruppe
+      revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> af denne attribut gruppe
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: Gruppe {{ group }} vil være tilladt at {{ permission }} attributgruppe
+      view: Rettighed til at se attributter
+      edit: Rettighed til at redigere attributter
+      removed: Gruppe {{ group }} vil ikke blive tilladt at {{ permission }} attributgruppe
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: Gruppe {{ group }} vil være tilladelse til at {{ permission }} jobprofil
+      execute: Tilladt at udføre jobprofil
+      edit: Tilladt at redigere jobprofil
+      removed: Gruppe {{ group }} vil  have tilladelse til at {{ permission }} jobprofil
 batch_jobs:
   add_product_value_with_permission_and_rules:
     label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
+    perform.label: Tilføj produktværdi
   update_product_value_with_permission_and_rules:
     label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
+    perform.label: Opdatere produktets værdi
   remove_product_value_with_permission_and_rules:
     label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
+    perform.label: Fjern produktværdi
   edit_common_attributes_with_permission_and_rules:
     label: Rediger fælles attributter med tilladelse kontrol & regel anvendelse
+    perform.label: Rediger attributter
+    cleaner.label: Ryd midlertidige filer
+pim_title:
+  pimee_enrich_locale_edit: Lokation | Rediger

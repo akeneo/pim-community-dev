@@ -1,0 +1,32 @@
+pim_title:
+  akeneo_franklin_insights_connection_edit: 'Franklin Insights verbinding'
+  akeneo_franklin_insights_identifiers_mapping_edit: 'Franklin Insights instellingen'
+  akeneo_franklin_insights_attributes_mapping_edit: 'Franklin Insights instellingen'
+akeneo_franklin_insights:
+  entity:
+    data_provider:
+      bad_request_error: "Sorry, er is een probleem opgetreden bij het communiceren met Franklin Insights. Neem contact op met uw beheerder."
+    identifier_mapping:
+      fields:
+        status:
+          active: Actief
+          inactive: Inactief
+    attributes_mapping:
+      fields:
+        franklin_insights:
+          active: Actief
+          inactive: Inactief
+        values_summary: "Waarden samenvatting: {{ label }}"
+    product_subscription:
+      constraint:
+        product_subscription_with_same_identifier_already_exist: 'Een ander product met ten minste één identieke id is al geabonneerd.'
+  product:
+    edit:
+      btn.push: Gegevens suggereren
+  connection:
+    flash:
+      invalid: Sorry, ongeldige activeringscode. Probeer het opnieuw met een geldige code.
+      error: Sorry, er is iets fout gegaan.
+    module:
+      activation:
+        activated: 'Geactiveerd'

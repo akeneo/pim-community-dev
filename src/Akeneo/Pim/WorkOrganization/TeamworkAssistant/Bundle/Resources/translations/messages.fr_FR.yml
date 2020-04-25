@@ -28,6 +28,10 @@ teamwork_assistant:
     owner_todo: À faire (ensemble du projet)
     owner_in_progress: En cours (ensemble du projet)
     owner_done: Terminé (ensemble du projet)
+  user:
+    deletion:
+      user_linked_to_project: Cet utilisateur est toujours lié à un ou plusieurs projets. Veuillez supprimer les groupes auxquels il est lié dans son compte utilisateur.
+      user_is_project_owner: Cet utilisateur est toujours propriétaire d'un ou de plusieurs projets. Veuillez supprimer tous les projets de cet utilisateur.
 job_execution:
   summary:
     processed_products: Produits traités

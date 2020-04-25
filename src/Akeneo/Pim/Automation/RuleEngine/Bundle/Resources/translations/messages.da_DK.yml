@@ -2,17 +2,27 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
+        delete: Slet
         execute: Udfør
+      title: Regler
       column:
+        code: Kode
+        conditions: Betingelse
+        actions: Handling
         impacted_product_count:
           label: Berørte produkter
           count: '{0,1}%count% berørte produkt |] 1, Inf [%count% berørte produkter'
+          no_yet_calculated: Endnu ikke beregnet
       mass_edit_action:
         impacted_product_count: Beregn de berørte produkter
+        execute: Udfør
+        delete: Slet
   actions:
     type:
       "copy": Så %from_field% er kopieret ind i %to_field%
+      "copy_value": Så %from_field% er kopieret ind i %to_field%
       "set": Så %value% er indstillet til %field%
+      "set_value": Så %value% er indstillet til %field%
       "add": Så er %value% tilføjet til %field%
       "remove": Så %value% er fjernet fra %field%
     options:
@@ -20,6 +30,11 @@ pimee_catalog_rule:
   condition:
     label: Hvis %field% %operator% %value%
     operators:
+      "STARTS WITH": starter med
+      "ENDS WITH": slutter med
+      "CONTAINS": indeholder
+      "DOES NOT CONTAIN": indeholder ikke
+      "EMPTY": er tom
       "NOT EMPTY": ikke er tom
       "IN": i
       "NOT IN": ikke i
@@ -27,24 +42,33 @@ pimee_catalog_rule:
       "NOT IN CHILDREN": ikke i barn
       "UNCLASSIFIED": er ikke-klassificeret
       "IN OR UNCLASSIFIED": er ikke-klassificeret eller i
+      "BETWEEN": mellem
+      "NOT BETWEEN": ikke mellem
       "=": er lig med
       "!=": ikke lig med
       ">": større end
       ">=": er lig med eller større end
+      "<": mindre end
       "<=": er lig med eller mindre end
+  acl_group:
+    rule: Regler
   acl:
     rule:
+      view_permissions: Se reglerne
       delete_permissions: Slet reglerne
       impacted_product_count_permissions: Beregne de berørte produkter for reglerne, der
       execute_permissions: Udfør regler
   attribute:
     tab:
       rule.title: Regler
+    grid:
+      is_smart.label: Smart
     acl:
       rule.view_permissions: Se reglerne
   product:
     tooltip:
       product_attribute_affected_by_a_rule.content: Værdi af denne attribut kan komme fra regler <strong>%rule%</strong>. Det betyder, at hvis betingelserne for reglen er gyldigt, bliver din ændring overskrevet.
+      loading.title: Indlæser...
     history: Anvendt regel "%rule%"
   product_value:
     tooltip:
@@ -60,5 +84,11 @@ pimee_catalog_rule:
     mass_edit_rule:
       success: Beregningen af de berørte produkter for de færdige bestemmelser
       error: Der opstod en fejl under beregningen af de berørte produkter for reglerne, der
+btn:
+  Execute rules: Udfør regler
 mass_edit_rule: Regler indstillinger
 job_execution.summary.rule_calculated: Antallet af regler
+pim_datagrid:
+  cells:
+    type:
+      mass_edit_rule: Regler-indstillinger

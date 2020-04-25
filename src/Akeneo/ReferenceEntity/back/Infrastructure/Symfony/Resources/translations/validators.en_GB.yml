@@ -20,6 +20,10 @@ pim_reference_entity:
         pattern: 'This field may only contain letters, numbers and underscores.'
         should_be_unique: 'The record code already exists for reference entity "%reference_entity_identifier%" and record code "%code%"'
         should_exist: 'The record was not found'
+      text:
+        incompatible_with_regular_expression: 'Please enter a text that satisfies the regular expression: "%regular_expression%"'
+        invalid_email: 'Please enter an email address: xxxxx@xx.xx'
+        invalid_url: 'Please enter a URL: http(s)://xxxx.XXX'
       file:
         extension_not_allowed: '"%file_extension%" files are not allowed for this attribute. Allowed extensions are: %allowed_file_extensions%'
         file_size_exceeded: 'The file exceeds the max file size set for the attribute.'

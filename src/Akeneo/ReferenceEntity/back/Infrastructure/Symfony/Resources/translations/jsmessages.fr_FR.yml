@@ -95,6 +95,10 @@ pim_reference_entity:
       code:
         pattern: 'Ce champ ne peut être composé que de lettres, chiffres et underscores.'
         should_be_unique: 'Ce code existe déjà pour cette entité.'
+      text:
+        incompatible_with_regular_expression: 'Veuillez saisir un texte qui répond aux conditions de l''expression régulière : "{{ %regular_expression%}}"'
+        invalid_email: 'Veuillez saisir une adresse e-mail : xxxxx@xx.xx'
+        invalid_url: 'Veuillez saisir une URL : http(s)://xxxx.XXX'
     no_data:
       title: Il n'y a aucun enregistrement pour {{ entityLabel }}
       subtitle: Cliquez sur le bouton "Créer" pour ajouter le premier enregistrement

@@ -1,0 +1,150 @@
+pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Klik en sleep een bestand om te uploaden of klik hier
+      small:
+        remove: Verwijder
+        download: Download
+  reference_entity:
+    button:
+      save: Opslaan
+      save_permission: Opslaan
+      create: Aanmaken
+    tab:
+      attribute: Attributen
+      properties: Eigenschappen
+      permission: Machtigingen
+    properties:
+      identifier: Code
+      label: Label
+      image: Afbeelding
+    attribute:
+      attribute:
+        error:
+          render_list: 'Er is een fout opgetreden tijdens het renderen van het "{{ %attribute_code% }" attribuut'
+          render_edit: 'Er is een fout opgetreden tijdens het renderen van de extra eigenschappen velden van het "{{ %attribute_code% }" attribuut'
+    create:
+      header:
+        title: Aanmaken
+      input:
+        label: Label
+      confirm: Opslaan
+    delete:
+      title: Attribuut
+    notification:
+      save:
+        fail: Er deed zich een fout voor tijdens het opslaan van de referentie-entiteit
+      create:
+        fail: Er deed zich een fout voor tijdens het aanmaken van de referentie-entiteit
+      delete:
+        fail: Er deed zich een fout voor tijdens het verwijderen van de referentie-entiteit
+  record:
+    no_result:
+      subtitle: Probeer het opnieuw met een andere zoekterm.
+    button:
+      save: Opslaan
+      create: Nieuwe toevoegen
+      delete: Verwijderen
+    enrich:
+      code: Code
+      label: Label
+    create:
+      header:
+        title: Aanmaken
+      input:
+        label: Label
+      confirm: Opslaan
+    grid:
+      filter:
+        counter: '{{ matchesCount }} resultaat|{{ matchesCount }} resultaten'
+        completeness:
+          label: Voltooien
+          all: ALLE
+          'yes': 'JA'
+          'no': 'NEE'
+      column:
+        code: Code
+        image: Afbeelding
+        label: Label
+        complete: Voltooien
+        action: Acties
+    tab:
+      enrich: Verrijken
+    notification:
+      save:
+        fail: Er deed zich een four voor tijdens het opslaan van het record
+      create:
+        fail: Er deed zich een four voor tijdens het aanmaken van het record
+      delete:
+        fail: Er deed zich een fout voor tijdens het verwijderen van het record
+      delete_all:
+        fail: Er is een fout opgetreden tijdens het verwijderen van alle referentiegegevens van deze entiteit
+    completeness:
+      label: Voltooien
+  attribute:
+    default:
+      code: Code
+      label: Label
+      image: Afbeelding
+    type:
+      text: Tekst
+      image: Afbeelding
+    create:
+      header:
+        title: Aanmaken
+      input:
+        label: Label
+        type: Attribuuttype
+        value_per_locale: Waarde per taal
+        value_per_channel: Waarde per kanaal
+      confirm: Opslaan
+    edit:
+      save: Opslaan
+      cancel: Annuleer
+      input:
+        label: Label
+        type: Attribuuttype
+        value_per_locale: Waarde per taal
+        value_per_channel: Waarde per kanaal
+        max_length: Max tekens
+        textarea: Tekstblok
+        max_file_size: Max bestandsgrootte (MB)
+        allowed_extensions: Toegestane extensies
+        validation_rule: Validatieregel
+        regular_expression: Reguliere expressie
+        options:
+          validation_rule:
+            none: Geen
+            email: E-mail
+            regular_expression: Reguliere expressie
+            url: URL
+    delete:
+      title: Attribuut
+    notification:
+      list:
+        fail: Er deed zich een fout voor tijdens het updaten van de attribuutlijst
+      save:
+        success: Attribuut met succes bijgewerkt.
+        fail: Er deed zich een fout voor tijdens het opslaan van het attribuut
+      create:
+        success: Attribuut met succes aangemaakt.
+        fail: Er deed zich een fout voor tijdens het aanmaken van het attribuut
+      delete:
+        success: Attribuut succesvol verwijderd.
+        fail: Er deed zich een fout voor tijdens het verwijderen van het attribuut
+    options:
+      helper:
+        title: Labelvertalingen
+  modal:
+    delete:
+      subtitle: Verwijderen bevestigen
+      button:
+        cancel: Annuleer
+        confirm: Verwijderen
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Type specifieke parameters
