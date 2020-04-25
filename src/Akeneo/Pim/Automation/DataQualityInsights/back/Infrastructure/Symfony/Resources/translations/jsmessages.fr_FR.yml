@@ -56,6 +56,7 @@ akeneo_data_quality_insights:
     axis:
       enrichment:
         title: Enrichissement
+        attributes_link: Tous les attributs manquants
         success: Tous les attributs sont renseignés. Félicitations !
       consistency:
         title: Cohérence
@@ -66,7 +67,7 @@ akeneo_data_quality_insights:
         axis_error: En raison d'une erreur, la note n'a pas pu être entièrement calculée. Réessayez plus tard.
         criterion_error: La note n'a pas pu être calculée.
       success:
-        criterion: Tout est correct.
+        criterion: tout est correct.
       grading_in_progress: Calcul en cours
       axis_grading_in_progress: Calcul en cours
       too_many_attributes: Vous avez {{ count }} attributs à améliorer.
