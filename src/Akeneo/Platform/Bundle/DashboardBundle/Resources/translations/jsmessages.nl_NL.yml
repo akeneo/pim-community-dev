@@ -1,21 +1,6 @@
 pim_dashboard:
   widget:
-    last_operations:
-      empty: Geen bewerkingen beschikbaar
-      status: Status
-      date: Datum
-      type: Type
-      profile_name: Profielnaam
-      details: Details
-      warning_count: Waarschuwingen
-      job_type:
-        import: Import
-        export: Export
-        mass_edit: Massabewerking
-        quick_export: Snelle export
     completeness:
       load_more: 'Laad meer...'
-    header:
-      view_all: Alles weergeven
-page_title:
+pim_title:
   pim_dashboard_index: Dashboard

@@ -1,0 +1,45 @@
+pim_api:
+  acl:
+    rights: Web API izinleri
+    attribute:
+      edit: Özellikler oluştur ve güncelle
+      list: Özellikleri listele
+    attribute_option:
+      edit: Özellik seçeneklerini oluştur ve güncelle
+      list: Özellik seçeneklerini listele
+    attribute_group:
+      edit: Özellik gruplarını oluşturma ve güncelleme
+      list: Özellik gruplarını listele
+    category:
+      edit: Özellikler oluştur ve güncelle
+      list: Kategorileri listele
+    family:
+      edit: Aileleri oluştur ve güncelle
+      list: Aileleri listele
+    family_variant:
+      edit: Aile çeşitlerini oluşturma ve güncelleme
+      list: Aile çeşitlerini listeleme
+    channel:
+      edit: Kanalları oluşturma ve güncelleme
+      list: Kanalları listele
+    locale.list: Yerel ayarları listele
+    currency.list: Para birimlerini listele
+    association_type:
+      edit: İlişkilendirme türlerini oluşturma ve güncelle
+      list: İlişki türlerini listele
+  acl_group:
+    overall_access: Genel Web API erişimi
+    attribute: Özellikler
+    attribute_option: Özellik seçenekleri
+    attribute_group: Özellik grupları
+    category: Kategoriler
+    family: Aileler
+    family_variant: Aile çeşitleri
+    channel: Kanallar
+    locale: Yerel Ayarlar
+    currency: Para birimleri
+    association_type: İlişki türleri
+pim_user:
+  roles:
+    tab:
+      api: Web API izinleri

@@ -1,27 +1,10 @@
 pim_dashboard:
   title: Dashboard
   version: Versie
-  link.label:
-    product: Producten beheren
-    category: Categorieën beheren
-    attribute: Attributen beheren
-    family: Families beheren
   widget:
-    error:
-      title: Fout tijdens het laden van widget
-      message: Widget '%alias%' bestaat niet
     completeness:
       title: Volledigheid over kanalen en lokalisaties
     last_operations:
       title: Laatste bewerkingen
-      empty: Geen bewerkingen beschikbaar
       status: Status
-      date: Datum
-      type: Type
-      "profile name": Profielnaam
-      details: Details
-      job_type:
-        import: Import
-        export: Export
-        mass_edit: Massabewerking
-        quick_export: Snelle export
+      type: Soort

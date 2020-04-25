@@ -1,0 +1,9 @@
+pim_enrich:
+  #Locale
+  locale:
+    tab:
+      property.title: Özellikler
+  channel:
+    flash:
+      delete:
+        error: Kodu %channelCode% olan kanalı kaldıramazsın çünkü PIM'inizin en bir kanal içermesi gerekiyor.

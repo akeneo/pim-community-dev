@@ -1,0 +1,66 @@
+pim_title:
+  pim_user_index: Użytkownicy
+  pim_user_role_index: Role
+  pim_user_group_index: Grupy użytkowników
+  oro_config_configuration_system: Konfiguracja
+  pim_user_security_login: Zaloguj się
+  pim_user_reset_request: Zapomniałem hasła
+confirmation:
+  remove:
+    user: Czy na pewno chcesz usunąć tego użytkownika?
+    group: Czy na pewno chcesz usunąć tę grupę?
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: Czy na pewno chcesz usunąć tego użytkownika?
+pim_user_management:
+  entity:
+    user:
+      properties:
+        username: Nazwa użytkownika
+        name_prefix: Przyimek
+        first_name: Imię
+        middle_name: Drugie imię
+        last_name: Nazwisko
+        name_suffix: Przyrostek
+        avatar: Awatar
+        email: Adres email
+        catalog_locale: Wersja językowa katalogu
+        catalog_scope: Zakres katalogu
+        default_tree: Domyślne drzewo
+        default_asset_tree: Domyślne drzewo zasobów
+        product_grid_filters: Filtry listy produktów
+        current_password: Aktualne hasło
+        new_password: Nowe hasło
+        new_password_repeat: Nowe hasło (powtórz)
+        password: Hasło
+        ui_locale: Język interfejsu
+        timezone: Strefa czasowa
+        default_product_grid_view: Domyślny widok tabeli produktów
+        default_published_product_grid_view: Domyślny widok opublikowanych produktów #EE Only
+        proposals_to_review_notification: Kiedy nowa propozycja do przeglądu #EE Only
+        proposals_state_notifications: Kiedy propozycja jest akceptowana lub odrzucona #EE Only
+      module:
+        create:
+          button: Utwórz użytkownika
+        delete:
+          confirm: Czy na pewno chcesz usunąć tego użytkownika?
+        update:
+          additional: Dodatkowe
+          password: Hasło
+          interfaces: Interfejsy
+          notifications: Powiadomienia #TODO EE Only
+    role:
+      plural_label: Role
+      module:
+        create:
+          button: Utwórz rolę
+        delete:
+          confirm: Czy na pewno chcesz usunąć tę rolę?
+    group:
+      plural_label: Grupy użytkowników
+      module:
+        create:
+          button: Utwórz grupę

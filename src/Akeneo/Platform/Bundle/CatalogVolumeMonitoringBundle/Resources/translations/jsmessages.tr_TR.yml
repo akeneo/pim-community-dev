@@ -1,0 +1,10 @@
+pim_catalog_volume:
+  product_values: "PIM'inde <span>{{values}}</span> ürün değerleri var! Ürün başına <span>{{average}}</span> ürüne denk geliyor!&nbsp;💪"
+  axis:
+    count_products: Ürünler
+    count_channels: Kanallar
+    count_families: Aileler
+    count_attributes: Özellikler
+    count_categories: Kategoriler
+    count_category_trees: Kategori ağaçları
+    count_product_models: Ürün modelleri

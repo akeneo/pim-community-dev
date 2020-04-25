@@ -1,0 +1,180 @@
+pim_measure:
+  families:
+    Area: Yüzölçümü
+    Binary: İkili
+    Decibel: Desibel
+    Frequency: Frekans
+    Length: Uzunluk
+    Power: Güç
+    Resistance: Direnç
+    Voltage: Voltaj
+    Intensity: Yoğunluk
+    ElectricCharge: Elektrik şarjı
+    Duration: Süreç
+    Speed: Hız
+    Temperature: Sıcaklık
+    Volume: Hacim
+    Weight: Ağırlık
+    Pressure: Basınç
+    Energy: Enerji
+    CaseBox: Paketleme
+  units:
+    #Area
+    ACRE: Akre
+    ARE: Ar
+    ARPENT: Arpa
+    CENTIARE: Hektar
+    HECTARE: Hektar
+    SQUARE_CENTIMETER: Santimetre kare
+    SQUARE_DECIMETER: Desimetre kare
+    SQUARE_DEKAMETER: Dekametre kare
+    SQUARE_FOOT: Metrekare
+    SQUARE_FURLONG: Kare milin sekizde biri
+    SQUARE_HECTOMETER: Hektometre kare
+    SQUARE_INCH: İnç kare
+    SQUARE_KILOMETER: Kilometre kare
+    SQUARE_METER: Metrekare
+    SQUARE_MIL: Mil kare
+    SQUARE_MILE: Milkare
+    SQUARE_MILLIMETER: Milimetre kare
+    SQUARE_YARD: Yarda kare
+    #Binary
+    BIT: Bit
+    BYTE: Bayt
+    KILOBYTE: Kilobayt
+    MEGABYTE: Megabayt
+    GIGABYTE: Gigabayt
+    TERABYTE: Terabayt
+    #Decibel
+    DECIBEL: Desibel
+    #Frequency
+    GIGAHERTZ: Gigahertz
+    KILOHERTZ: Kilohertz
+    MEGAHERTZ: Megahertz
+    TERAHERTZ: Terahertz
+    HERTZ: Hertz
+    #Length
+    CENTIMETER: Santimetre
+    CHAIN: Zincir
+    DECIMETER: Desimetre
+    DEKAMETER: Dekametre
+    FEET: Çoğul olarak ayak
+    FURLONG: Milin sekizde biri
+    INCH: İnç
+    HECTOMETER: Hektometre
+    KILOMETER: Kilometre
+    METER: Metre
+    MIL: Mil
+    MILE: Mil
+    MILLIMETER: Milimetre
+    YARD: Yard
+    #Power
+    GIGAWATT: Gigawatt
+    KILOWATT: Kilowatt
+    MEGAWATT: Megawatt
+    TERAWATT: Terawatt
+    WATT: Watt
+    #Resistance
+    MILLIOHM: Miliohm
+    CENTIOHM: Sentiohm
+    DECIOHM: Desiohm
+    OHM: Ohm
+    DEKAOHM: Dekaohm
+    HECTOHM: Hektohm
+    KILOHM: Kilohm
+    MEGOHM: Megohm
+    #Voltage
+    MILLIVOLT: Milivolt
+    CENTIVOLT: Sentivolt
+    DECIVOLT: Desivolt
+    VOLT: Volt
+    DEKAVOLT: Dekavolt
+    HECTOVOLT: Hektovolt
+    KILOVOLT: Kilovolt
+    #Intensity
+    MILLIAMPERE: Miliamper
+    CENTIAMPERE: Sentiamper
+    DECIAMPERE: Desiamper
+    AMPERE: Amper
+    DEKAMPERE: Dekaamper
+    HECTOAMPERE: Hectoamper
+    KILOAMPERE: Kiloamper
+    MEGAAMPERE: Megaamper
+    #ElectricCharge
+    MILLIAMPEREHOUR: Milliamper saati
+    AMPEREHOUR: Amper saati
+    MILLICOULOMB: Millikülümomb
+    CENTICOULOMB: Sentikülümomb
+    DECICOULOMB: Desikülümomb
+    COULOMB: Külümomb
+    DEKACOULOMB: Dekakülümomb
+    HECTOCOULOMB: Hektokülümomb
+    KILOCOULOMB: Kilokülümomb
+    #Duration
+    MILLISECOND: Milisaniye
+    SECOND: İkinci
+    MINUTE: Dakika
+    HOUR: Hour
+    DAY: Gün
+    WEEK: Hafta
+    MONTH: Ay
+    YEAR: Yıl
+    #Speed
+    FOOT_PER_SECOND: Saniye başı adım
+    FOOT_PER_HOUR: Saat başı adım
+    KILOMETER_PER_HOUR: Kilometre / saat
+    METER_PER_HOUR: Metre / saat
+    METER_PER_MINUTE: Metre / dakika
+    METER_PER_SECOND: Metre / saniye
+    MILE_PER_HOUR: Mil / saat
+    YARD_PER_HOUR: Yard / saat
+    #Temperature
+    CELSIUS: Santigrat
+    FAHRENHEIT: Fahrenhayt
+    KELVIN: Kelvin
+    RANKINE: Rankine
+    REAUMUR: Reaumur
+    #Volume
+    BARREL: Varil
+    CENTILITER: Santilitre
+    CUBIC_CENTIMETER: Santimetre küp
+    CUBIC_DECIMETER: Desimetre küp
+    CUBIC_FOOT: Kübik ayak
+    CUBIC_INCH: İnç küp
+    CUBIC_METER: Metreküp
+    CUBIC_MILLIMETER: Milimetre küp
+    CUBIC_YARD: Yarda küp
+    DECILITER: Desilitre
+    GALLON: Galon
+    LITER: Litre
+    MILLILITER: Mililitre
+    OUNCE: Ons
+    PINT: Pint
+    #Weight
+    DENIER: Denye
+    GRAIN: Tane
+    GRAM: Gram
+    KILOGRAM: Kilogram
+    LIVRE: Livre
+    MARC: Cibre
+    MILLIGRAM: Miligram
+    ONCE: Bir defa
+    POUND: Pound
+    TON: Ton
+    #Pressure
+    BAR: Bar
+    PASCAL: Pascal
+    HECTOPASCAL: Hektopaskal
+    MILLIBAR: milibar
+    ATM: Atmosfer
+    PSI: İnç kare başına pound
+    TORR: Torr
+    MMHG: cıva Milimetresi
+    #Energy
+    CALORIE: Kalori
+    KILOCALORIE: kilokalori
+    JOULE: Jul
+    KILOJOULE: kilojul
+    #CaseBox
+    PIECE: Parça
+    DOZEN: Düzine

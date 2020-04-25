@@ -1,19 +1,21 @@
+#Entities
 Job: Taak
 Connector: Connector
 pim_import_export:
   job: Taak
   connector: Connector
+  ## Job status
   status:
     0: Gereed
   batch_status:
-    1: Completed
-    2: Starting
-    3: Started
-    4: Stopping
-    5: Stopped
-    6: Failed
-    7: Abandoned
-    8: Unknown
+    1: Voltooid
+    2: Opstarten
+    3: Gestart
+    4: Aan het stoppen
+    5: Gestopt
+    6: Mislukt
+    7: Afgebroken
+    8: Onbekend
   download_archive:
     archive: download gegenereerd archief | download gegenereerde archieven
     output: download gegenereerd bestand | download gegenereerde bestanden
@@ -35,18 +37,25 @@ pim_import_export:
       property.title: Algemene eigenschappen
       history.title: Geschiedenis
       job_content.title: Inhoud
+#Page titles:
 pim_title.export_profile.index: Beheer van exportprofielen
+pim_title.export_profile.edit: Exportprofielen %job.label% | Bewerken
+pim_title.export_profile.show: Exportprofielen %job.label% | Tonen
 pim_title.export_execution.index: Exportverwerkingen geschiedenis
 pim_title.export_execution.show: Exportverwerkingen | Details
 pim_title.import_profile.index: Beheer van importprofielen
+pim_title.import_profile.edit: Importprofielen %job.label% | Bewerken
+pim_title.import_profile.show: Importprofielen %job.label% | Tonen
 pim_title.import_execution.index: Importverwerkingen geschiedenis
 pim_title.import_execution.show: Importverwerkingen | Details
+#Entity and page header titles
 export profile:
   title: Profiel exporteren
   edit: exportprofiel bewerken
 import profile:
   title: Profiel importeren
   edit: importprofiel bewerken
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -82,17 +91,20 @@ pim_importexport:
   acl_group:
     export: Exportprofielen
     import: Importprofielen
+#Buttons
 btn:
   create:
-    export profile: exportprofiel toevoegen
-    import profile: importprofiel toevoegen
+    export profile: Exportprofiel aanmaken
+    import profile: Importprofiel aanmaken
 Upload and import now: Uploaden en nu importeren
 import now: Nu importeren
 export now: Nu exporteren
+#Confirmation messages
 confirmation:
   remove:
     export profile: Weet u zeker dat u het exportprofiel %name% wilt verwijderen?
     import profile: Weet u zeker dat u het importprofiel %name% wilt verwijderen?
+#Flash messages
 flash:
   export:
     created: De export is succesvol aangemaakt
@@ -104,15 +116,18 @@ flash:
     removed: De import is verwijderd
     updated: De import is succesvol bijgewerkt
     running: De import is bezig
+#Tabs
 General properties: Algemene eigenschappen
 History: Geschiedenis
 pane.accordion:
   properties: Eigenschappen
   global_settings: Algemene instellingen
   filters: Filters
+#Popin titles
 popin.create:
   export_profile.title: Een nieuw exportprofiel aanmaken
   import_profile.title: Een nieuw importprofiel aanmaken
+#Job execution
 'Display item': Object weergeven
 'Hide item': Object verbergen
 'Collecting data about job execution...': Gegevens verzamelen over taakverwerking...
@@ -121,7 +136,7 @@ Download log: Logbestand downloaden
 Show profile: Profiel weergeven
 execution details: verwerkingsdetails
 job_execution.summary:
-  read: lezen
+  read: lees
   write: geschreven
   skip: overgeslagen
   create: gecreëerd
@@ -138,4 +153,14 @@ Warnings: Waarschuwingen
 Summary: Samenvatting
 Start: Start
 End: Einde
+#Process tracker
+set_attribute_requirements: Instellen Attribuut vereisten
+COMPLETED: Voltooid
+STARTING: Opstarten
+STARTED: Gestart
+STOPPING: Aan het stoppen
+STOPPED: Gestopt
+FAILED: Mislukt
+ABANDONED: Afgebroken
+UNKNOWN: Onbekend
 warning.label: Waarschuwing
