@@ -3,7 +3,7 @@
 "Yes, do it": "Sì, prosegui"
 "Ok, got it.": "Ok, capito."
 "Edit": "Modifica"
-"Unexpected error occurred. Please contact system administrator.": "Si è verificato un errore imprevisto. Contattare l'amministratore di sistema."
+"Unexpected error occurred. Please contact system administrator.": "Si è verificato un errore inaspettato. Sei pregato di contattare l'amministratore di sistema."
 "Yes, revoke": "Si, revoca"
 "Revoke Confirmation": "Revoca conferma"
 Prev: Precedente
@@ -169,6 +169,7 @@ pim_common:
   history: Cronologia
   label: Etichetta
   label_translations: Traduzioni etichetta
+  Label or identifier: etichetta o identificatore
   less_than: Meno di
   loading: Caricamento in corso...
   media_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
@@ -210,11 +211,11 @@ pim_common:
     STARTS WITH: Inizia con
     ENDS WITH: Termina con
 error:
-  exception: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
+  exception: Accidenti! Si è verificato un errore {{ status_code}}...
   forbidden: Vietato. Non è consentito accedere a questa pagina
 alert:
   attribute_option:
-    error_occurred_during_submission: Si è verificato un errore durante l'invio del modulo al server
+    error_occurred_during_submission: Si è verificato un errore durante l'invio del modulo sul server
     save_before_edit_other: Si prega di registrare le modifiche sulle altre righe prima di modificare questa
   session_storage:
     not_available: Il tuo browser non sembra compatibile con il sessionStorage. Contattare l'amministratore
@@ -237,18 +238,6 @@ pim_enrich.entity.fallback:
       leave: Sei sicuro di voler lasciare questa pagina?
       discard_changes: Perderai le modifiche a {{ entity }} se lasci la pagina.
       discard_changes_title: Sei sicuro?
-pim_enrich.entity.api_connection:
-  flash:
-    create:
-      success: Connessione API creata correttamente
-    delete:
-      success: Connessione API revocata correttamente
-      fail: Non è possibile revocare questa connessione API
-  page_title:
-    index: "]-Inf, 1]{{ count }} connessione API|]1, Inf[{{ count }} Connesioni API"
-  module:
-    revoke:
-      confirm: Sei sicuro di voler revocare questa connessione API?
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} operazione|]1, Inf[{{ count }} operazioni"
@@ -295,8 +284,6 @@ pim_title:
   pim_enrich_mass_edit_action_perform: Modifica di massa | Esegui
   pim_enrich_job_tracker_index: Tracker di processo
   pim_enrich_job_tracker_show: Tracker di processo | Visualizza lavoro
-  pim_enrich_api_connection_index: Connessioni API
-  pim_enrich_api_connection_create: Connessione API | Crea
   pim_enrich_mass_edit_action: Modifica di massa
   pim_analytics_system_info_index: Informazioni di sistema
 pim_menu:
@@ -330,7 +317,6 @@ pim_menu:
     user_role: Ruoli
     info: Informazioni di sistema
     job_tracker: Tracker di processo
-    api_connection: Connessioni API
     catalog_volume: Monitoraggio del volume di catalogo
   navigation:
     activity: Navigazione attività

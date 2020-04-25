@@ -148,7 +148,6 @@ pim_measure:
     GALLON: Gallone
     LITER: Litri
     MILLILITER: Millilitro
-    OUNCE: Oncia
     PINT: Pinta
     #Weight
     DENIER: Denier
@@ -159,6 +158,7 @@ pim_measure:
     MARC: Marc
     MILLIGRAM: Milligrammo
     ONCE: Once
+    OUNCE: Oncia
     POUND: Pound
     TON: Tonnellata
     #Pressure
@@ -170,7 +170,10 @@ pim_measure:
     PSI: Libbra per pollice quadrato
     TORR: Torr
     MMHG: Millimetro di mercurio
+    #Energy
+    CALORIE: caloria
     KILOCALORIE: kilocalorie
+    JOULE: joule
     KILOJOULE: kilojoule
     #CaseBox
     PIECE: Pezzo

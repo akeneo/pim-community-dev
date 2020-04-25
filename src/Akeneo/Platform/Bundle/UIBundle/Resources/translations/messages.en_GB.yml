@@ -61,6 +61,7 @@ pim_common:
   properties: Properties
   name: Name
   remove: Remove
+  code: Code
 pim_enrich:
   #ACLs
   acl:
@@ -154,8 +155,6 @@ pim_enrich:
       remove: Remove associations to a product
     job_tracker:
       index: View process tracker
-    api_connection:
-      manage: Manage the API connections
   acl_group:
     association_type: Association types
     attribute: Attributes
