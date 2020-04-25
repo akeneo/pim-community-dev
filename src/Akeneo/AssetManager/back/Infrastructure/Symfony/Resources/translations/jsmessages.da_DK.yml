@@ -1,127 +1,82 @@
+#pim_title:
+#akeneo_asset_manager_asset_family_index: Create a new entity
+#akeneo_asset_manager_asset_family_edit: Edit an asset family
+#akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
-  app:
-    image:
-      wide:
-        upload: Træk og slip for at uploade eller klik her
-      small:
-        remove: Fjern
-        download: Hent
-  asset_family:
-    button:
-      save: Gem
-      save_permission: Gem
-      create: Opret
-    tab:
-      attribute: Egenskaber
-      properties: Egenskaber
-      permission: Rettigheder
-    properties:
-      identifier: Kode
-      label: Etiket
-      image: Billede
-    create:
-      header:
-        title: Opret
-      input:
-        label: Etiket
-      confirm: Gem
-    delete:
-      title: Attribut
+  #breadcrumb: Asset Families
+  #img: The main image of the asset family named "{{ label }}"
+  #tab:
+  #assets: Assets
+  #attribute: Attributes
+  #properties: Properties
+  #permission: Permissions
+  #properties:
+  #title: Entity properties
+  #identifier: Code
+  #label: Label
+  #image: Image
+  #attribute:
+  #title: Asset attributes
+  #attribute:
+  #error:
+  #render_list: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute'
+  #render_edit: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
+  #module:
+  #delete:
+  #button: Delete entity
+  #confirm: Are you sure you want to delete this entity?
+  #index:
+  #grid:
+  #count: '{0} No Asset Family|{1} {{ count }} Asset Family|]1,Inf] {{ count }} Asset Families'
+  #help:
+  #title: 'Welcome to the Asset Families!'
+  #description_part_one: Enrich relevant information related to products (e.g. brands, manufacturers, colors, materials, ingredients...).
+  #description_part_two: It will enable you to provide a better Product Experience to your customers.
+  #description_part_three: Click on the “Create” button to create your 1st asset family, set its attributes and assets.
+  #description_part_four: Then, to link to products, create a product attribute type related to this asset family.
+  #description_part_five: For more details, we invite you to browse this article.
+  #create:
+  #header:
+  #title: Create
+  #subtitle: Asset Families
+  #title: Create a new entity
+  #input:
+  #label: Label
+  #code: Code (required)
+  #confirm: Save
+  #delete:
+  #message: Are you sure you want to delete the entity "{{ assetFamilyLabel }}"?
+  #title: Attribute
+  #notification:
+  #save:
+  #success: Asset family successfully updated.
+  #fail: An error occured during the save of the asset family
+  #create:
+  #success: Asset family successfully created.
+  #fail: An error occured during the creation of the asset family
+  #delete:
+  #success: Asset family successfully deleted.
+  #fail: An error occured during the deletion of the asset family
+  #permission:
+  #notification:
+  #save:
+  #success: Asset family permissions successfully updated.
+  #fail: At least one user group should have edit permission on this entity
+  #no_data:
+  #title: You have no user group
+  #subtitle: To manage permission on asset family you need to have at least one user group.
+  #link: Clic here to add your first user group
   asset:
-    no_result:
-      subtitle: Prøv igen med nye søgekriterier.
-    button:
-      save: Gem
-      create: Tilføj ny
-      delete: Slet
-    enrich:
-      code: Kode
-      label: Etiket
-    create:
-      header:
-        title: Opret
-      input:
-        label: Etiket
-      confirm: Gem
-    grid:
-      filter:
-        completeness:
-          label: Fuldført
-          all: Alle
-          'yes': 'Ja'
-          'no': 'Nej'
-        option:
-          all: Alle
-          operator:
-            in: I listen
-      column:
-        code: Kode
-        image: Billede
-        label: Etiket
-        complete: Fuldført
-        action: Aktioner
-    tab:
-      enrich: Berige
-    completeness:
-      label: Fuldført
-  attribute:
-    default:
-      code: Kode
-      label: Etiket
-      image: Billede
-    type:
-      text: Tekst
-      image: Billede
-    create:
-      header:
-        title: Opret
-      input:
-        label: Etiket
-        type: Attributtype
-        value_per_locale: Værdi pr. landestandard
-        value_per_channel: Værdi pr. kanal
-      confirm: Gem
-    edit:
-      save: Gem
-      cancel: Annuller
-      input:
-        label: Etiket
-        type: Attributtype
-        value_per_locale: Værdi pr. landestandard
-        value_per_channel: Værdi pr. kanal
-        max_length: Maks. tegn
-        textarea: Tekstområde
-        max_file_size: Maks. filstørrelse (MB)
-        allowed_extensions: Tilladte filendelser
-        validation_rule: Valideringsregel
-        regular_expression: Regulære udtryk
-        options:
-          validation_rule:
-            none: Ingen
-            email: E-mail
-            regular_expression: Regulære udtryk
-            url: URL
-    delete:
-      title: Attribut
-    notification:
-      save:
-        success: Atributten blev opdateret.
-      create:
-        success: Atributten blev oprettet.
-      delete:
-        success: Atributten blev slettet.
-    options:
-      helper:
-        title: Etiket oversættelser
-  modal:
-    delete:
-      subtitle: Bekræft sletning
-      button:
-        cancel: Annuller
-        confirm: Slet
-pim_enrich:
-  entity:
-    attribute:
-      property:
-        section:
-          type_specific: Specifik type parametre
+    #validation:
+    #limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
+    #code:
+    #pattern: 'This field may only contain letters, numbers and underscores.'
+    #should_be_unique: 'This code already exists for this entity.'
+    #no_data:
+    #title: There are no asset for {{ entityLabel }}
+    #subtitle: Click on the button "Add new" to create the first asset
+    #no_result:
+    #title: There are no result for your search
+    #subtitle: Try again with new search criteria.
+    selector:
+      no_value: Klik her for at vælge en asset.

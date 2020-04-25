@@ -1,0 +1,44 @@
+pim_menu.item.sso: SAML-baseret Single Sign-On
+pim_title:
+  authentication_sso_configuration_edit: SAML-baseret Single Sign-On konfiguration
+authentication:
+  sso:
+    configuration:
+      download_logs_button: Download logs
+      info:
+        update_successful: Konfigurationen blev gemt
+        update_failed: Konfigurationen kunne ikke gemmes
+        fields_not_ready: "Konfigurationen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
+      section:
+        activation:
+          title: SSO-aktivering
+          info:
+            description: Hvis du vil aktivere SSO-godkendelsen, vil din aktuelle session ugyldiggøres. Du vil blive logget ud og omdirigeret til din identitetsudbyder, når du har gemt konfigurationen.
+        identity_provider:
+          title: Identitetsudbyder (IdP)
+          info:
+            description: Du kan indstille alle de parametre, der kræves for at kommunikere med din IdP her. Disse informationer skal leveres til din SSO-administrator for at konfigurere IdP.
+        service_provider:
+          title: Serviceudbyder (SP)
+          info:
+            description: Nedenfor kan du finde information om tjenesteudbyderen. Disse er auto-genererede værdier. Du kan redigere dem, hvis du har brug for det. Disse informationer skal leveres til din SSO-administrator for at konfigurere IdP.
+      field:
+        activation:
+          label: SSO aktiveret
+        entity_id:
+          label: Enheds-ID
+        sign_on_url:
+          label: Login-on URL
+        logout_url:
+          label: Log ud URL
+        certificate:
+          label: Certifikat
+          expiration_warning: Certifikatet udløber d. {{date}}.
+        private_key:
+          label: Private key
+        metadata_url:
+          label: Metadata URL
+          tooltip_label: Kopier URL
+        acs_url:
+          label: ACS URL
+          tooltip_label: Kopier URL

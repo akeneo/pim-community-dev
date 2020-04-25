@@ -4,10 +4,12 @@ pimee_enrich.acl.attribute_group.edit_permissions: Administrer attribut gruppe t
 pimee_importexport.acl.export_profile.edit_permissions: Administrer eksport profil tilladelser
 pimee_importexport.acl.import_profile.edit_permissions: Administrer import profil tilladelser
 pimee_enrich.groups.label: Ejer grupper
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Rediger attributter
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Tilføj produktværdi med tilladelse
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Opdatere produktets værdi med tilladelse
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Fjerne produktværdi med tilladelse
 edit_common_attributes_with_permission: Redigere attributter med tilladelse
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Redigere attributter med tilladelse
 pim_analytics:
   info_type:
     nb_custom_locale_accesses: Antal adgange med brugerdefinerede landestandarder
@@ -16,6 +18,8 @@ pim_analytics:
 job_profile.permissions:
   execute.label: Tilladt at udføre jobprofil
   edit.label: Tilladt at redigere jobprofil
+pim_title.locale:
+  edit: "Landestandarder %locale.code% | Rediger"
 attribute group.permissions:
   view.label: Rettighed til at se attributter
   view.help: Rettighed til at se produkterne i denne attribut gruppe
@@ -33,21 +37,37 @@ category.permissions:
   apply_on_children.label: Anvend ændringer på underliggende kategorier
   apply_on_children.help: Kopier tilladelses ændringer på alle underliggende elementer, eksisterende tilladelser bibeholdes
 locale.permissions:
+  view.label: Tilladt at se information
+  view.help: Tillad adgang til information på denne lokation
+  edit.label: Tilladt at redigere information
+  edit.help: Tillad adgang til redigering på denne lokation (indebærer visningstilladelse)
   no_access_to_products: Du har ikke adgang til produktdata i nogen af de aktiverede landestandard, kontakt venligst administratoren
 flash.locale.updated: Landestandard og rettighederne er blevet opdateret
 pim_enrich:
   mass_edit_action:
     product:
       not_editable: Du har ikke tilladelse til at redigere produkterne "%identifiers%".
+      page_title: Produkter
+      page_subtitle: Masse redigere (1 produkt) | Masse redigere (%count% produkter)
+      title: Vælg handling
+      subtitle: Vælg den handling, du ønsker at udføre på det valgte produkt|Vælg den handling, du ønsker at udføre på de valgte %count% produkter
+      confirm: Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere %count% produkter med følgende oplysninger, bekræft venligst.
+      steps:
+        first: Vælg produkter
+        second: Vælg handling
+        third: Konfigurér
+        fourth: Bekræft
     publish:
       message:
         error: Du er ikke ejeren af produktet, du kan ikke udgive den.
         warning: Du er ikke ejer af alle de valgte produkter. Du kan ikke udgive disse produkter "%notGranted%".
+      not_editable: Du har ikke tilladelse til at redigere produkterne "%identifiers%".
     unpublish:
       message:
         error: Du er ikke ejeren af produktet, du kan ikke udgive den.
         warning: Du er ikke ejer af alle de valgte produkter. Du kan ikke annullere publiceringen af produkter "%notGranted%".
         info: '%nbProducts% udvalgte produkter vil blive af publiceret.'
+      not_editable: Du har ikke tilladelse til at redigere produkterne "%identifiers%".
     classify:
       message:
         error: Du er ikke ejeren af produktet, du kan ikke klassificere det.
@@ -56,9 +76,25 @@ pim_enrich:
       message:
         error: Du er ikke ejeren af produktet, du kan ikke redigere det.
 pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Rettigheder
   acl.product_ownership.title: Ejerskab
+  attributes:
+    empty: ingen
+  category:
+    tab:
+      permission:
+        title: Rettigheder
   groups:
     label: ejer grupper
     empty: ingen
+add_product_value_with_permission_and_rules:
+  steps.perform: Tilføj produktværdi
+update_product_value_with_permission_and_rules:
+  steps.perform: Opdatere produktets værdi
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Rediger attributter
+  steps.edit_common_attributes_processor.title: Rediger attributter
 pim_enrich_attribute_form:
   isReadOnly: Skrivebeskyttet

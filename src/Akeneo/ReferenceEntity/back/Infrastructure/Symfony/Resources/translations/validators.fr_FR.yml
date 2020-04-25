@@ -21,7 +21,9 @@ pim_reference_entity:
         should_be_unique: 'Le code d''enregistrement existe déjà pour l''entité référentielle "%reference_entity_identifier%" et le code d''enregistrement "%code%"'
         should_exist: 'L''enregistrement n’a pas été trouvé'
       text:
-        incompatible_with_regular_expression: 'Le texte est incompatible avec l''expression régulière "%regular_expression%"'
+        incompatible_with_regular_expression: 'Veuillez saisir un texte qui répond aux conditions de l''expression régulière : "{{ %regular_expression%}}"'
+        invalid_email: 'Veuillez saisir une adresse e-mail : xxxxx@xx.xx'
+        invalid_url: 'Veuillez saisir une URL : http(s)://xxxx.XXX'
       file:
         extension_not_allowed: 'Les fichiers "%file_extension%" ne sont pas autorisés pour cet attribut. Les extensions autorisées sont : %allowed_file_extensions%'
         file_size_exceeded: 'Le fichier dépasse la taille maximale définie pour l''attribut.'
@@ -90,3 +92,7 @@ pim_reference_entity:
         should_not_be_empty: 'Le suffixe ne peut pas être une chaîne vide.'
       media_type:
         not_expected: 'Le type de média donné ne correspond pas aux types attendus (%supported_media_types%).'
+  product_value:
+    validation:
+      record_should_exist: 'La propriété "%attribute_code%" attend un code d''enregistrement valide. L''enregistrement "%invalid_record%" n''existe pas'
+      records_should_exist: 'La propriété "%attribute_code%" attend un code d''enregistrement valide. Les enregistrements "%invalid_record%" n''existent pas'

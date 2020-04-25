@@ -37,6 +37,7 @@ pimee_workflow:
       approve: '%owner% har accepteret dit forslag om produktet %product%'
       refuse: '%owner% har afvist dit forslag til produktet %product%'
       remove: '%owner% har slettet dit forslag til produktet %product%'
+      mass_edit_sent_for_approval: 'Masseredigering <strong>%jobLabel%</strong> færdiggjort: %sentForApprovalCount% forslag genereret ud af %readProductsCount% produkter'
     mass_review_action:
       approve: Godkende alle valgte
       refuse: Afvis alle valgte

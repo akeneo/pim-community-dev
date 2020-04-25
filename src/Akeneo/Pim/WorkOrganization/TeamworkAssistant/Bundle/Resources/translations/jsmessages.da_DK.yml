@@ -25,6 +25,7 @@ teamwork_assistant:
     title: Rediger projekt
   create_project_modal:
     saved: Projektet er blevet gemt, får du besked, når beregningen er færdig.
+    title: Projekt
   widget:
     no_project: Du har ingen aktuelle projekt
     no_project_create: Opret et nyt projekt
@@ -34,6 +35,7 @@ teamwork_assistant:
     in_progress: I GANG
     done: GENNEMFØRT
     all_contributors: Alle bidragydere
+    you: Dig
     display_products: Display-produkter
     placeholder:
       contributor_selector: Søg bidragyder
@@ -63,3 +65,4 @@ pim_notification:
   types:
     project_created: Et nyt projekt til dig
     project_finished: Projekt færdig
+    project_calculation: Projekt beregning

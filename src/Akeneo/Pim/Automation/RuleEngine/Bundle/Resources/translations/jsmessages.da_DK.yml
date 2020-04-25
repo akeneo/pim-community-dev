@@ -1,4 +1,6 @@
 pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} regel|]1, Inf[{{ count }} regler"
+  execution_button: Udfør regler
   selected: 'udvalgte regler'
   popin:
     execute_rules:
@@ -6,9 +8,12 @@ pimee_catalog_rule:
       confirm_content: Er du sikker på du vil udføre alle regler? (dette kan tage lang tid)
   notification:
     fail: Handlingen kunne ikke udføres
+    launched: Regeludførelsen er blevet igangsat. Du får besked, når det er gennemført.
   attribute:
     list:
+      code.label: Kode
       condition.label: Betingelse
+      action.label: Handling
       no_rule_yet.label: Ingen regel for nu
   rule:
     condition:
@@ -17,6 +22,8 @@ pimee_catalog_rule:
       then.label: så
       set_value.label: er sat ind i
       copy_value.label: er blevet kopieret til
+      set.label: er sat ind i
+      copy.label: er blevet kopieret til
       add.label: er blevet tilføjet i
       remove.label: er fjernet fra
   datagrid:
@@ -30,24 +37,69 @@ pimee_catalog_rule:
         confirm_content: Er du sikker på, du vil beregne de berørte produkter for reglerne?
       mass_action:
         execute:
+          confirm_title: Bekræfte udførsel
           confirm_content: Er du sikker på du vil udføre de valgte regler?
           success: Massehandling til at udføre de valgte regler er blevet igangsat. Du vil blive underrettet, når det er gennemført
           error: Der opstod en fejl under udførslen af reglerne.
+          empty_selection: Ingen regler valgt.
         delete:
+          confirm_title: Bekræfte udførsel
           confirm_content: Er du sikker på du vil udføre de valgte regler?
           success: Reglerne er slettet.
           error: Der opstod en fejl under sletningen af reglerne.
           empty_selection: Ingen regler valgt.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Regler
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Er du sikker på at du ønsker at slette denne regel? Det er ikke muligt at fortryde handlingen
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Rollen blev slettet
 flash:
   rule:
     impacted_product_count: Massehandling til at beregne de berørte produkter for reglerne, der er blevet igangsat. Du får besked, når det er gennemført.
     executed: Regeludførelsen er blevet igangsat. Du får besked, når det er gennemført.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regel indstillinger
 batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Regler udførelse
+  default_steps:
+    execute_rules: Regler udførelse
+  yml_rule_import:
+    label: Regel import i YAML
+    import.label: Regel import
+  yml_rule_export:
+    label: Regel eksport i YAML
+    export.label: Regel eksport
   rule_impacted_product_count:
     label: De berørte produkter for reglerne, der
     perform.label: Optæl berørte produkter
+  csv_product_import_with_rules:
+    label: Produkt import i CSV med regler
+    import.label: Produkt import
   csv_product_model_import_with_rules:
     label: Produkt model import i CSV med regler
+  xlsx_product_import_with_rules:
+    label: Produkt import i CSV med regler
+    import.label: Produkt import
   xlsx_product_model_import_with_rules:
     label: Produkt model import i XLSX med regler
+pim_notification:
+  types:
+    rule: Regler indstillinger
+    mass_edit_rule: Masseredigeringsregel
+pim_menu:
+  item:
+    rule: Regler
+pim_title:
+  pimee_catalog_rule_rule_index: Regler

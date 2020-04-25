@@ -85,6 +85,7 @@ pim_title:
   pimee_product_asset_view: Asset {{ asset.label }} | View
   pimee_asset_categorytree_index: Categories
   pimee_asset_categorytree_edit: Category {{ category.label }} | Edit
+  pimee_asset_categorytree_create: Category | Create
 batch_jobs:
   apply_assets_mass_upload:
     label: Assets mass upload

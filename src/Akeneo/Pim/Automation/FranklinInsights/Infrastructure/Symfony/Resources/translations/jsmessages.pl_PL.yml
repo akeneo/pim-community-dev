@@ -1,0 +1,16 @@
+akeneo_franklin_insights:
+  entity:
+    identifier_mapping:
+      fields:
+        status:
+          active: Aktywne
+          inactive: Nieaktywny
+    attributes_mapping:
+      fields:
+        franklin_insights:
+          active: Aktywne
+          inactive: Nieaktywny
+  connection:
+    module:
+      activation:
+        activated: 'Aktywowany'

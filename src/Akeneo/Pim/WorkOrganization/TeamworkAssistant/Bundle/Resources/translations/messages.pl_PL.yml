@@ -1,0 +1,39 @@
+teamwork_assistant:
+  project:
+    required: Ta wartość nie może być pusta.
+    label_maxlength: Ta wartość jest zbyt długa. Powinna mieć {{ max }} znaków lub mniej.
+    project_identifier: Projekt o nazwie {{ project }} nie istnieje.
+    project_due_date: Nie możesz wybrać daty przeszłej.
+  notification:
+    project_calculation:
+      error: Obliczenie projektu dla <strong>%project_label%</strong> nie powiodło się
+      warning: Obliczenie projektu dla <strong>%project_label%</strong> zakończone z kilkoma ostrzeżeniami
+      success: Projekt <strong>%project_label%</strong> jest gotowy, a współautorzy są powiadamiani. Zaczynajmy!
+      start: Start
+    message: Masz nowe produkty do wzbogacenia dla "%project_label%". Terminem płatności jest "%due_date%".
+    project_finished:
+      contributor: Gratulacje! Ukończyłeś produkt w 100% za pomocą %project_label%.
+      owner: '%project_label% dla %due_date% jest gotowy.'
+      show: Pokaż
+    due_date:
+      contributor: Jesteś w %percent%% ukończenia produktu za pomocą %project_label%. Nie zapomnij, aby wypełnić ostatnie produkty dla %due_date%.
+      owner: '%project_label% dla %due_date% nie jest w 100% gotowy.'
+      start: Start
+  datagrid:
+    project_completeness: Postęp projektu
+    contributor_todo: Do zrobienia
+    contributor_in_progress: W Toku
+    contributor_done: Gotowe
+    owner_todo: Do zrobienia (przegląd projektu)
+    owner_in_progress: W trakcie (przegląd projektu)
+    owner_done: Wykonane (przegląd projektu)
+job_execution:
+  summary:
+    processed_products: Przetworzone produkty
+pim_analytics:
+  info_type:
+    nb_projects: Liczba projektów
+pim_datagrid:
+  cells:
+    type:
+      project_calculation: Obliczanie projektu

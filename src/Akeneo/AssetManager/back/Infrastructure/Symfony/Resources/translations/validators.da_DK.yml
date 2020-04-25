@@ -1,0 +1,90 @@
+pim_asset_manager:
+  asset_family:
+    validation:
+      code:
+        pattern: 'Dette felt må kun indeholde bogstaver, tal og underscores.'
+        should_be_unique: 'Der eksisterer allerede en asset-familie med koden "%asset_family_identifier%"'
+      assets:
+        should_have_no_asset: 'Du kan ikke slette denne enhed, da der allerede eksisterer asset''er for den'
+      asset_family_attributes:
+        should_not_be_linked: 'Du kan ikke slette denne enhed, da der allerede er asset-familieattributter relateret til denne enhed'
+      asset_family_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'Mindst én brugergruppe skal have redigeringstilladelse på denne enhed'
+      product_attributes:
+        should_not_be_linked: 'Du kan ikke slette denne enhed, da produktattributter er relateret til den'
+      should_exist: 'Asset-familien "%asset_family_code%" blev ikke fundet.'
+  asset:
+    validation:
+      code:
+        pattern: 'Dette felt må kun indeholde bogstaver, tal og underscores.'
+        should_be_unique: 'Der eksisterer allerede en asset med koden "%code%"'
+        should_exist: 'Denne asset blev ikke fundet'
+      text:
+        incompatible_with_regular_expression: 'Teksten er inkompatibel med det regulære udtryk "%regular_expression%"'
+      file:
+        extension_not_allowed: '"%file_extension%"-filer er ikke tilladt for denne attribut. Tilladte udvidelser er: %allowed_file_extensions%'
+        file_size_exceeded: 'Filen overskrider den maksimale filstørrelse for attributten.'
+        should_exist: 'Filen "%file_path%" blev ikke fundet.'
+      option:
+        code_does_not_exist: 'Optionen med kode %option_code%" eksisterer ikke for denne attribut'
+      option_collection:
+        codes_dont_exist: "De følgende optionskoder eksisterer ikke for denne attribut: \"%option_codes%\""
+      asset:
+        should_exist: 'Asset''et "%asset_code%" blev ikke fundet.'
+      asset_collection:
+        should_exist: 'Asset''erne "%asset_codes%" blev ikke fundet.'
+      limit_reached: 'Du kan ikke oprette asset''et "%asset_label%", da du har nået grænsen for %limit% asset''er i dennne asset-familie'
+      channel:
+        is_expected: 'Der forventes en kanal til attribut "%attribute_code%", fordi den har en værdi pr. kanal.'
+        is_not_expected: 'Der forventes ikke en kanal til attribut "%attribute_code%", da den ikke har en værdi pr. kanal.'
+        should_exist: 'Kanalen "%channel_identifier%" eksisterer ikke.'
+      locale:
+        is_expected: 'En lokation forventes for attribut "%attribute_code%", fordi den har en værdi pr. lokation.'
+        is_not_expected: 'En lokation forventes ikke for attribut "%attribute_code%", fordi den ikke har en værdi pr. lokation.'
+        is_not_activated: 'Lokationen "%locale_identifier%" er ikke aktiveret.'
+        is_not_activated_for_channel: 'Lokationen "%locale_identifier%" er ikke aktiveret i denne kanal "%channel_identifier%".'
+      number:
+        should_be_string: 'Dette felt skal være en string'
+        should_be_integer: 'Dette felt skal være et heltal'
+        integer_too_long: 'Dette heltal er for stort'
+        should_be_numeric: 'Dette felt skal være en numerisk værdi med den passende decimalseparator'
+  attribute:
+    validation:
+      options:
+        should_exist: 'Optionen blev ikke fundet.'
+        duplicated: 'Optionen "%option_code%" eksisterer allerede'
+        too_many: 'Du har nået grænsen for {{ limit }} attribut-optioner pr. attribut.'
+        code:
+          pattern: 'Dette felt må kun indeholde bogstaver, tal og underscores.'
+          should_not_be_blank: 'Optionens kode skal ikke være blank'
+      max_length:
+        should_be_an_integer: 'Denne værdi skal være et heltal.'
+      max_file_size:
+        should_be_a_number: 'Denne værdi skal være et tal.'
+      min_value:
+        should_be_a_number: 'Denne værdi skal være et nummer med den passende decimalseparator.'
+        cannot_be_greater_than_max: 'Minimum kan ikke være større end maksimum'
+      max_value:
+        should_be_a_number: 'Denne værdi skal være et tal med den passende decimalseparator.'
+        cannot_be_lower_than_min: 'Maksimum kan ikke være lavere end minimum'
+      code:
+        reserved_codes: 'Koden kan ikke være en af disse værdier: "{{ comma_separated_reserved_keywords }}"'
+        should_not_exist: 'Attributten eksisterer allerede i asset-familien "{{ asset_family_identifier }}" og attribut-koden "{{ code }}"'
+        should_exist: 'Attributten blev ikke fundet'
+      regular_expression:
+        invalid_regular_expression: 'Dette regulære udtryk er ikke gyldigt. Her er et eksempel på et gyldigt regulært udtryk: "/[a-z]+[0-9]*/"'
+        should_not_be_empty: 'Det regulære udtryk kan ikke være tomt.'
+      should_be_a_textarea_to_update_is_rich_text_editor: 'En simpel tekst-attribut kan ikke have rich text editor'
+      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'En tekstområde-attribut kan ikke have en valideringsregel'
+      cannot_set_a_non_empty_regular_expression: 'Attributten skal ikke have et regulært udtryk'
+      cannot_update_the_regular_expression: 'Kan ikke indstille et regulært udtryk på tekst-attributten'
+      limit_reached: 'Du kan ikke oprette attributten "%attribute_label%", da du har nået grænsen for %limit% attributter for denne asset-familie'
+      asset_type:
+        is_required: 'Du skal specificere asset-familiens type for at oprette en asset-familie link-attribut'
+        asset_family_should_exist: 'Asset-familien "%asset_family_code%" blev ikke fundet.'
+      prefix:
+        should_not_be_empty: 'Dette prefix kan ikke være en tom string.'
+      suffix:
+        should_not_be_empty: 'Dette suffix kan ikke være en tom string.'
+      media_type:
+        not_expected: 'Den givne medietype svarer ikke til de forventede (%supported_media_types%).'

@@ -12,7 +12,7 @@ pimee_catalog_rule:
         impacted_product_count:
           label: Затрагиваемые продукты
           count: '{0,1}%count% затронутый продукт |] 1, Inf [%count% затронутых продуктов'
-          no_yet_calculated: не подсчитана
+          no_yet_calculated: Еще не подсчитана
       mass_edit_action:
         impacted_product_count: Вычислить количество затрагиваемых продуктов
         execute: Выполнить
@@ -34,7 +34,7 @@ pimee_catalog_rule:
       "ENDS WITH": заканчивается на
       "CONTAINS": содержит
       "DOES NOT CONTAIN": не содержит
-      "EMPTY": пусто
+      "EMPTY": Пусто
       "NOT EMPTY": не является пустым
       "IN": в списке
       "NOT IN": не в списке
@@ -48,7 +48,7 @@ pimee_catalog_rule:
       "!=": не равно
       ">": больше
       ">=": равно или больше
-      "<": менее чем
+      "<": меньше, чем
       "<=": равно или меньше
   acl_group:
     rule: Правила
@@ -62,7 +62,7 @@ pimee_catalog_rule:
     tab:
       rule.title: Правила
     grid:
-      is_smart.label: Smart
+      is_smart.label: Умные
     acl:
       rule.view_permissions: Просмотр правил
   product:

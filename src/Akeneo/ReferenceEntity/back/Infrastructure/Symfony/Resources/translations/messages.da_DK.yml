@@ -1,0 +1,33 @@
+akeneo_referenceentity:
+  acl_group:
+    reference_entity: Referenceenheder
+  acl:
+    reference_entity:
+      create: Opret en enhed
+      edit: Rediger enhedsegenskaber
+      delete: Slet en enhed
+      manage_permission: Administrer referenceenhedstilladelser
+    record:
+      create: Opret et arkiv
+      edit: Rediger arkiverne
+      delete: Slet et arkiv
+      delete_all: Slet alle enhedsarkiverne
+      list_product: Listelinkede produkter at arkivere
+    attribute:
+      create: Tilføj en attribut til en referenceenhed
+      edit: Rediger en referenceenheds attribut
+      delete: Slet en referenceenheds attribut
+    option:
+      edit: Rediger optioner
+      delete: Fjern en option
+pim_analytics:
+  info_type:
+    nb_reference_entities: Antal referenceenheder
+    max_number_of_records_per_reference_entity: Maks. antal arkiver pr. referenceenhed
+    average_number_of_values_per_records: Gennemsnitligt antal værdier pr. arkiv på alle referenceenheder
+    average_number_of_records_per_reference_entity: Gennemsnitligt antal arkiver pr. referenceenhed
+    max_number_of_attributes_per_reference_entity: Maks. antal attributter pr. referenceenhed
+    average_number_of_attributes_per_reference_entity: Gennemsnitligt antal attributter pr. referenceenhed
+    average_percentage_localizable_only_attributes: Gennemsnitlig procentdel af lokaliserbare attributter pr. referenceenhed
+    average_percentage_scopable_only_attributes: Gennemsnitlig procentdel af scopable attributter pr. referenceenhed
+    average_percentage_scopable_and_localizable_attributes: Gennemsnitlig procentdel af lokaliserbare og scopable attributter pr. referenceenhed

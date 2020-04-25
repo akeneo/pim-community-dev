@@ -1,0 +1,205 @@
+user:
+  asset_delay_reminder: Varlık gecikme hatırlatıcısı (günlük)
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Varlıkları yönet
+        manage_asset:
+          title: Varlıkları yönet
+          cancel: İptal
+          confirm: Doğrula
+        title: Varlıkları yönet
+        description: Ürününüze eklemek istediğiniz varlıkları seçiniz
+        download: İndir
+        remove: Kaldır
+        upload: Yükle
+    asset:
+      not_empty: Kod gereklidir. Boş olamaz.
+      alpha_numeric_plus_underscore: Kod yalnızca karakter, rakam veya altçizgi içermelidir.
+      unique: Kod benzersiz olmalıdır. Sizin için yeni bir tane oluşturduk.
+  enrich_asset:
+    grid:
+      edit: Varlık özelliklerini düzenle
+  enrich_variation:
+    popin:
+      reset:
+        title: Değişimleri sıfırla
+  mass_upload:
+    menu: Varlıkları yükle
+    btn:
+      remove_all_files: Tüm dosyaları kaldır
+      import: İçe aktar
+      upload: Varlıkları yükle
+    success:
+      new: Yeni bir varlık oluşturulacak
+      imported: Varlık işlemesi için içe aktarılan dosyalar
+      canceled: Yükleme başarılı bir şekilde iptal edildi
+      deleted: Yüklenen dosyalar başarıyla silindi
+    error:
+      list: Yüklenmiş dosyalar okunamıyor
+      delete: Dosya sunucudan silinemiyor
+      filename: Varlık için geçersiz dosya adı
+      code: Öğe için geçersiz kod biçimi
+      locale: Varlık var fakat yerelleştirilemiyor
+      invalid_locale: Yerel ayar devre dışı veya geçersiz
+      exists: Aynı isimde bir dosya zaten içe aktarılmış
+      conflicts: Dosya adları çakışıyor
+    status:
+      added: Eklendi
+      queued: Sıraya alındı
+      uploading: Yükleniyor
+      error: Hata
+      success: Başarılı
+    drag_and_drop: Varlığı sürükleyip bırakın veya buraya tıklayın
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Seçili varlıkları silmek istediğinizden emin misiniz?
+        success: Seçilen varlıklar başarıyla silindi.
+        empty_selection: Hiç bir varlık bulunamadı
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Varlıklar kolesiyonu
+pim_title:
+  pimee_product_asset_mass_upload: Varlıkları yükle
+  pimee_product_asset_index: Varlıklar
+  pimee_product_asset_edit: Varlık {{ asset.label }} | Düzenle
+  pimee_asset_categorytree_index: Kategoriler
+  pimee_asset_categorytree_edit: Kategori {{ category.label }} | Düzenle
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Varlıkları toplu yükle
+    perform.label: Toplu yükleme
+  yml_asset_channel_configuration_import:
+    import.label: Varlık kanalı yapılandırmasını içe aktar
+    label: Varlık kanalı yapılandırmasını Yaml'de içe aktar
+    import_asset.label: Varlık kanalı yapılandırmasını Yaml'de içe aktar
+  yml_asset_channel_configuration_export:
+    label: Varlık kanalı yapılandırmasını Yaml'de dışa aktar
+    export.label: Varlık kanalı yapılandırmasını Yaml'de dışa aktar
+  csv_asset_import:
+    label: Varlığı CSV'de içe aktar
+    import_tags.label: Etiketi CSV biçiminde içe aktar
+    import_asset.label: Varlığı CSV'de içe aktar
+  csv_asset_export:
+    label: Varlığı CSV'de dışa aktar
+    export.label: Varlığı CSV'de dışa aktar
+  csv_asset_variation_export:
+    label: Varlık değişimlerini CSV olarak dışa aktar
+    export.label: Varlık değişimlerini CSV olarak dışa aktar
+  csv_tag_import:
+    label: Etiketi CSV biçiminde içe aktar
+    import.label: Etiketi CSV biçiminde içe aktar
+  csv_asset_category_import:
+    label: Varlık kategorisini CSV olarak içe aktar
+    import_asset_category.label: Varlık kategorisini CSV olarak içe aktar
+  csv_asset_configuration_import:
+    label: Varlık kanal yapılandırmasını CSV olarak içe aktar
+    import_asset.label: Varlık kanal yapılandırmasını CSV olarak içe aktar
+  csv_asset_category_export:
+    label: Varlık kategorisini CSV olarak dışa aktar
+    export.label: Varlık kategorisini CSV olarak dışa aktar
+  xlsx_tag_import:
+    label: Etiketi XLSX olarak içe aktar
+    import.label: Etiketi XLSX olarak içe aktar
+  xlsx_asset_import:
+    label: Varlığı XLSX olarak içe aktar
+    import_tags.label: Etiketi XLSX olarak içe aktar
+    import_asset.label: Varlığı XLSX olarak içe aktar
+  xlsx_asset_category_import:
+    label: Varlık kategorisini XLSX olarak içe aktar
+    import_asset_category.label: Varlık kategorisini XLSX olarak içe aktar
+  xlsx_asset_export:
+    label: Varlığı XLSX olarak dışa aktar
+    export.label: Varlığı XLSX olarak dışa aktar
+  xlsx_asset_category_export:
+    label: Varlık kategorisini XLSX olarak dışa aktar
+    export.label: Varlık kategorisini XLSX olarak dışa aktar
+  xlsx_asset_variation_export:
+    label: Varlık varyasyonunu XLSX olarak dışa aktar
+    export.label: Varlık varyasyonunu XLSX olarak dışa aktar
+  classify_assets:
+    perform.label: Varlıkları kategorilere taşı
+  add_tags_to_assets:
+    perform.label: Varlıklara etiket ekle
+jstree:
+  asset:
+    all: Tüm assetler
+    unclassified: Sınıflandırılmamış assetler
+asset_grid:
+  selected: seçili varlıklar
+  label: Ürün varlıkları
+create_asset:
+  title: Bir varlık oluştur
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Varlıkları toplu düzenle
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Varlık dönüşümleri
+      not_found: Hiç bir dönüşüm bulunamadı
+      transformation: Dönüştürme
+      options: Seçenekler
+      colorspace:
+        title: Renk alanı
+        options:
+          colorspace: '%value% renk uzayı'
+      resize:
+        title: Yeniden Boyutlandır
+        options:
+          width: '%value%px genişlik'
+          height: '%value%px yükseklik'
+      resolution:
+        title: Çözünürlük
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Ölçek
+        options:
+          width: '%value%px genişlik'
+          height: '%value%px yükseklik'
+          ratio: '%value% oranı'
+      thumbnail:
+        title: Küçük resim
+        options:
+          width: '%value%px genişlik'
+          height: '%value%px yükseklik'
+pimee_enrich.mass_edit.asset:
+  step:
+    select:
+      label: Varlıkları seçin
+    choose:
+      title: Toplu varlık eylemleri
+    configure:
+      label: Yapılandırma
+    confirm:
+      label: Doğrula
+  operation:
+    add_tag:
+      label: Varlıklara etiketler ekle
+      description: Etiketler varlıklara eklenecek.
+      field: Etiketler
+      empty_selection: Lütfen etiketleri seçin
+    add_to_category:
+      label: Varlıkları kategorilerde sınıflandır
+      description: Varlıklar aşağıdaki kategorilere yerleştirilecek, mevcut yerleşim kaybedilecek.
+pim_catalog_volume:
+  axis:
+    count_assets: Varlıklar
+    count_asset_categories: Varlık kategorileri
+pim_menu:
+  tab:
+    asset: Varlıklar
+  item:
+    asset_category: Varlık kategorileri
+    upload_asset: Varlıkları yükle
+pim_notification:
+  types:
+    mass_upload: Toplu yükleme

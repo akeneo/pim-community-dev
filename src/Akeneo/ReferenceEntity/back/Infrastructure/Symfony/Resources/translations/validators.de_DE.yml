@@ -21,7 +21,9 @@ pim_reference_entity:
         should_be_unique: 'Der Datensatz existiert bereits für Referenz-Entität "%reference_entity_identifier%" und Datensatz "%code%"'
         should_exist: 'Der Datensatz wurde nicht gefunden'
       text:
-        incompatible_with_regular_expression: 'Der Text ist mit dem regulären Ausdruck "%regular_expression%" nicht kompatibel'
+        incompatible_with_regular_expression: 'Bitte geben Sie einen Text ein, der den regulären Ausdruck erfüllt: "%regular_expression%"'
+        invalid_email: 'Bitte geben Sie eine E-Mail-Adresse ein: xxxxx@xx.xx'
+        invalid_url: 'Bitte geben Sie eine URL ein: http(s)://xxxx.XXX'
       file:
         extension_not_allowed: '"%file_extension%" Dateien sind für dieses Attribut nicht erlaubt. Erlaubte Erweiterungen sind: %allowed_file_extensions%'
         file_size_exceeded: 'Die Datei überschreitet die maximale Dateigröße für das Attribut.'
@@ -90,3 +92,7 @@ pim_reference_entity:
         should_not_be_empty: 'Das Suffix darf keine leere Zeichenfolge sein.'
       media_type:
         not_expected: 'Der angegebene Medientyp entspricht nicht den erwarteten (%supported_media_types%).'
+  product_value:
+    validation:
+      record_should_exist: 'Eigenschaft "%attribute_code%" erwartet einen gültigen Datensatzcode. Der Eintrag "%invalid_record%" existiert nicht'
+      records_should_exist: 'Die Eigenschaft "%attribute_code%" erwartet gültige Datensatzcodes. Die folgenden Datensätze existieren nicht: "%invalid_records%"'

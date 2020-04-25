@@ -4,22 +4,25 @@ pimee_product_asset:
   form:
     product:
       asset:
-        manage: Управление активами
+        manage: Управление медиафайлами
         manage_asset:
-          title: Управление активами
-          cancel: Отмена
+          title: Управление медиафайлами
+          cancel: oтменить
           confirm: Подтверждение
-        title: Управление активами
+        title: Управление медиафайлами
+        description: Выберите медиафайлы, которые вы хотите прикрепить к вашему продукту
         preview_title: Предварительный просмотр коллекции медиафайлов
         download: Скачать
         remove: Удалить
         upload: Загрузить
         assetRemoveConfirmationLabel: Вы уверены, что хотите удалить этот медиафайл?
     asset:
-      not_empty: Код требуется. Он не может быть пустым.
+      not_empty: Требуется ввести код. Он не может быть пустым.
+      alpha_numeric_plus_underscore: Для кода можно использовать только латинские буквы алфавита, числа и нижнее подчеркивание.
+      unique: Код должен быть уникальным. Мы сгенерировали для вас новый код.
   enrich_asset:
     grid:
-      edit: Редактирование свойств актива
+      edit: Редактирование свойств медиафайла
   enrich_variation:
     popin:
       reset:
@@ -32,18 +35,17 @@ pimee_product_asset:
       upload: Загрузить медиафайлы
     success:
       new: Будет создан новый медиафайл
+      imported: Файлы, импортированные для обработки медиафайлов
       canceled: Загрузка успешно отмененa
       deleted: Загруженный файл успешно удален
       need_refresh: <b>Импорт медиафайлов запущен</b><br> Чтобы увидеть заимпортированные медиафайлы в продуктах, пожалуйста, обновите страницу продуктов, когда получите уведомление о завершении импорта.
     error:
       list: Невозможно читать уже загруженные файлы
-      upload: Произошла ошибка при загрузке
       delete: Не удается удалить файл с сервера
-      import: Произошла ошибка во время импорта
-      filename: Недопустимое имя файла для актива
+      filename: Недопустимое имя файла для медиафайла
       code: Недопустимый формат кода для медиафайла
-      locale: Актив существует, но не является локализуемым
-      invalid_locale: Локаль отключена или недопустна
+      locale: Медиафайл существует, но не является локализуемым
+      invalid_locale: Локаль отключена или недоступна
       exists: Файл с таким же именем уже импортирован
       conflicts: Конфликт имен файлов
     status:
@@ -52,12 +54,12 @@ pimee_product_asset:
       uploading: Загрузка
       error: Ошибка
       success: Успешно
-    drag_and_drop: Перетащите активы или нажмите здесь
+    drag_and_drop: Перетащите медиафайлы или нажмите здесь
   datagrid:
     mass_action:
       delete:
-        success: Выбранные активы успешно удалены.
-        error: Произошла ошибка при попытке удаления выбранных активов, пожалуйста, попробуйте еще раз.
+        confirm_content: Вы уверены, что хотите удалить выбранные медиафайлы?
+        success: Выбранные медиафайлы успешно удалены.
         empty_selection: Ничего не выбрано
 pim_enrich:
   entity:
@@ -65,23 +67,21 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Коллекция медиафайлов
-pim_dashboard:
-  widget:
-    last_operations:
-      job_type:
-        mass_upload: Массовая загрузка
 pim_title:
   pimee_product_asset_mass_upload: Загрузить медиафайлы
   pimee_product_asset_index: Медиафайлы
+  pimee_product_asset_edit: Медиафайл {{ asset.label }} | Редактировать
   pimee_asset_categorytree_index: Категории
+  pimee_asset_categorytree_edit: Категория {{ category.label }} | Редактировать
 batch_jobs:
   apply_assets_mass_upload:
-    label: Масс загрузка медиафайлов
+    label: Массовая загрузка медиафайлов
     perform.label: Массовая загрузка
   apply_assets_mass_upload_into_asset_collection:
     label: Массовая загрузка медиафайлов и добавление в продукты
     perform.label: Массовая загрузка медиафайлов и добавление в продукты
   yml_asset_channel_configuration_import:
+    import.label: Импорт медиафайлов конфигурации канала
     label: Импорт конфигурации каналов медиафайлов из Yaml
     import_asset.label: Импорт конфигурации каналов медиафайлов из Yaml
   yml_asset_channel_configuration_export:
@@ -123,8 +123,11 @@ batch_jobs:
     label: Экспорт медиафайлов в XLSX
     export.label: Экспорт медиафайлов в XLSX
   xlsx_asset_category_export:
-    label: Экспорт категорий медиафайлов в XLSX
-    export.label: Экспорт категорий медиафайлов в XLSX
+    label: Экспорт категорий в XLSX
+    export.label: Экспорт категорий в XLSX
+  xlsx_asset_variation_export:
+    label: Экспорт медиафайлов в XLSX
+    export.label: Экспорт медиафайлов в XLSX
   classify_assets:
     perform.label: Переместить медиафайлы в категории
   add_tags_to_assets:
@@ -134,13 +137,18 @@ jstree:
     all: Все медиафайлы
     unclassified: Неклассифицированные медиафайлы
 asset_grid:
-  label: Медиафайлы продуктов
+  selected: выбранные медиафайлы
+  label: Медиафайлы продукта
 create_asset:
   title: Создать медиафайл
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Массовое редактирование медиафайлов
 pimee_enrich.entity.channel:
   module:
     asset_transformation:
-      title: Преобразования активов
+      title: Преобразования медиафайлов
       not_found: Преобразования не найдены
       transformation: Преобразование
       options: Параметры
@@ -151,7 +159,7 @@ pimee_enrich.entity.channel:
       resize:
         title: Изменение размера
         options:
-          width: 'Ширина %value%px '
+          width: 'Ширина %value%px'
           height: 'Высота %value%px'
       resolution:
         title: Разрешение
@@ -159,33 +167,40 @@ pimee_enrich.entity.channel:
           resolution: '%value%'
           resolution-unit: '%value%'
       scale:
-        title: Маштабирование
+        title: Масштабирование
         options:
-          width: 'Ширина %value%px '
+          width: 'Ширина %value%px'
           height: 'Высота %value%px'
           ratio: '%value%% соотношение'
       thumbnail:
         title: Миниатюра изображения
         options:
-          width: 'Ширина %value%px '
+          width: 'Ширина %value%px'
           height: 'Высота %value%px'
 pimee_enrich.mass_edit.asset:
+  title: Массовые действия с медиафайлами
   step:
     select:
       label: Выбор медиафайлов
+    choose:
+      title: Массовые действия с медиафайлами
     configure:
-      label: Настройка
+      label: Настроить
     confirm:
       label: Подтверждение
   operation:
     add_tag:
       label: Добавление тегов к медиафайлам
+      description: Теги будут добавлены к медиафайлам.
       field: Теги
+      empty_selection: Пожалуйста, выберите теги
+    add_to_category:
+      label: Классифицировать медиафайлы по категориям
+      description: Медиафайлы будут добавлены в следующие категории, исходное расположение будет потеряно.
 pim_catalog_volume:
   section:
     assets:
       title: Измерения по медиафайлам
-      hint: Вы можете отслеживать объемы медиафайлов прямо здесь
   axis:
     count_assets: Медиафайлы
     count_asset_categories: Категории медиафайлов
@@ -195,3 +210,7 @@ pim_menu:
     asset: Медиафайлы
   item:
     asset_category: Категории медиафайлов
+    upload_asset: Загрузить медиафайлы
+pim_notification:
+  types:
+    mass_upload: Массовая загрузка

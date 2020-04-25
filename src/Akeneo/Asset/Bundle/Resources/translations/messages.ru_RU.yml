@@ -24,17 +24,18 @@ pimee_product_asset:
       upload: Загрузить
       delete: Удалить
       download: Скачать
-      generate_from_reference: Создание из образца
+      generate_from_reference: Генерация на основе ссылки
       reset_variations: Сбросить вариации
+    confirmation.remove: Вы уверены, что хотите удалить медиафайл «%asset%»?
     confirmation.subTitle: Медиафайлы
     grid:
-      edit: Редактирование свойств актива
+      edit: Редактирование свойств медиафайла
     view:
       title: Медиафайл продуктов
       code: Код
       description: Описание
       end_of_use: Конец использования
-      reference: Образец
+      reference: Ссылка
       filename: Имя файла
       width: Ширина
       height: Высота
@@ -45,22 +46,19 @@ pimee_product_asset:
       actions: Действия
       download: Скачать
       tag: Теги
-      no_reference: Файл образца не был загружен еще.
+      no_reference: Файл по ссылке не был загружен еще.
       no_variation: Не был создан еще ни один файл вариации.
     flash:
       update:
         success: Медиафайл был обновлен.
-        error: Медиафайл не был обновлен. Произошла ошибка.
       create:
         success: Медиафайл был создан.
-        error: Медиафайл не был создан. Произошла ошибка.
       remove:
         success: Медиафайл был удален.
   enrich_reference:
     flash:
       delete:
-        success: Файл образца был удален.
-        error: Файл образца не был удален. Произошла ошибка.
+        success: Файл по ссылке был удален.
   enrich_variation:
     flash:
       transformation:
@@ -73,13 +71,10 @@ pimee_product_asset:
         success: Вариации были успешно созданы.
       update:
         success: Вариация обновлена.
-        error: Вариация не обновлена. Произошла ошибка.
       delete:
         success: Вариация удалена.
-        error: Вариация не удалена. Произошла ошибка.
   popin.create:
     title: Создать новый медиафайл
-    is_localized: Локализуемый
   menu: Медиафайлы
   page_tab:
     title:
@@ -97,7 +92,7 @@ pimee_product_asset:
   endOfUse:
     label: Конец использования
   createdAt:
-    label: Создано
+    label: Дата создания
   updatedAt:
     label: Последнее обновление
   tags:
@@ -124,10 +119,9 @@ pimee_product_asset:
     import: Импорт
     executed: Массовая загрузка выполнена
     error:
-      upload: Произошла ошибка при загрузке
       code: Недопустимый формат кода для медиафайла
-      localizable: Актив существует, но не является локализуемым
-      invalid_locale: Локаль отключена или недопустна
+      localizable: Медиафайл существует, но не является локализуемым
+      invalid_locale: Локаль отключена или недоступна
   category:
     menu: Категории медиафайлов
     permissions:
@@ -137,7 +131,7 @@ pimee_product_asset:
       edit.help: Разрешить редактирование медиафайлов в этой категории (подразумевает права на просмотр)
       no_access_to_products: Вы не имеете прав доступа к медиафайлам в деревьях категорий. Пожалуйста, обратитесь к вашему администратору
       apply_on_children.label: Применить изменения на дочерние элементы
-      apply_on_children.help: Копирование изменений прав доступа на все дочерние элементы, при этом существующие права сохраняются
+      apply_on_children.help: Копирование изменений прав доступа на все дочерние элементы, при этом существующие права на дочерние элементы сохраняются
   mass_edit_action:
     asset:
       page_title: Медиафайлы
@@ -145,7 +139,7 @@ pimee_product_asset:
       confirm: Вы собираетесь обновить медиафайл со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% медиафайлов со следующей информацией, пожалуйста, подтвердите.
       steps:
         first: Выбор медиафайлов
-        second: Настройка
+        second: Настроить
         third: Подтверждение
   not_editable: У вас нет доступа на редактирование медиафайла "%code%".
 pim_enrich:
@@ -166,6 +160,7 @@ pim:
     mass_action:
       mass_classify_assets: Классифицировать
       add_tags_to_assets: Добавить теги
+      delete_assets: Удалить медиафайлы
 btn.create.asset: Создать медиафайл
 btn.drag_or_upload: Перетащите файл или нажмите здесь
 job_execution.summary:
@@ -181,12 +176,15 @@ pim_datagrid:
   cells:
     type:
       mass_upload: Масс загрузка медиафайлов
+pim_analytics:
+  info_type:
+    nb_assets: Количество медиафайлов
 pim_assets_collection: Коллекция медиафайлов
 pim_api:
   acl:
     asset_category:
       edit: Создать и обновить категории медиафайлов
-      list: Перечислить категории медиафайлов
+      list: Список категорий медиафайлов
     asset:
       edit: Редактировать медиафайлы и загрузить ссылки на них в файлы вариантов
       list: Показать список медиафайлов и загрузить ссылки на них и файлы для вариантов
@@ -196,12 +194,12 @@ pim_api:
 pimee_enrich:
   channel:
     tab:
-      asset_transformation.title: Преобразования активов
+      asset_transformation.title: Преобразования медиафайлов
   asset_transformation:
     not_found: Преобразования не найдены
     title:
       transformation: Преобразование
-      options: Параметры
+      options: Опции
     colorspace:
       title: Цветовое пространство
       options:
@@ -209,7 +207,7 @@ pimee_enrich:
     resize:
       title: Изменение размера
       options:
-        width: 'Ширина %value%px '
+        width: 'Ширина %value%px'
         height: 'Высота %value%px'
     resolution:
       title: Разрешение
@@ -217,13 +215,13 @@ pimee_enrich:
         resolution: '%value%'
         resolution-unit: '%value%'
     scale:
-      title: Маштабирование
+      title: Масштабирование
       options:
-        width: 'Ширина %value%px '
+        width: 'Ширина %value%px'
         height: 'Высота %value%px'
         ratio: '%value%% соотношение'
     thumbnail:
       title: Миниатюра изображения
       options:
-        width: 'Ширина %value%px '
+        width: 'Ширина %value%px'
         height: 'Высота %value%px'

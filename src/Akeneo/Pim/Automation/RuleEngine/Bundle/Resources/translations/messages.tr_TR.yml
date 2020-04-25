@@ -1,0 +1,88 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Sil
+        execute: Gerçekleştirmek
+      title: Kurallar
+      column:
+        code: Kod
+        conditions: Durum
+        actions: İşlem
+        impacted_product_count:
+          label: Etkilenmiş ürünler
+          count: '{0,1}%count% etkilenmiş ürün|]1,Inf[%count% etkilenmiş ürün'
+          no_yet_calculated: Henüz hesaplanmadı
+      mass_edit_action:
+        impacted_product_count: Etkilenmiş ürünleri hesapla
+        execute: Çalıştır
+        delete: Sil
+  actions:
+    type:
+      "copy": Ardından %from_field% %to_field%'a kopyalanacak
+      "copy_value": Ardından %from_field% %to_field%'a kopyalanacak
+      "set": Sonra %value% %field%'a ayarlanacak
+      "set_value": Sonra %value% %field%'a ayarlanacak
+      "add": Ardından %value% %field%'a eklenir
+      "remove": Ardından %value% %field%'dan silinir
+  condition:
+    label: Eğer %field% %operator% %value%
+    operators:
+      "STARTS WITH": ile başlar
+      "ENDS WITH": ile biter
+      "CONTAINS": içerir
+      "DOES NOT CONTAIN": içermez
+      "EMPTY": boş ise
+      "NOT EMPTY": boş değilse
+      "IN": İçinde
+      "NOT IN": İçinde değil
+      "IN CHILDREN": çocuklarda
+      "NOT IN CHILDREN": çocuklarda değil
+      "UNCLASSIFIED": sınıflandırılmamış
+      "IN OR UNCLASSIFIED": sınıflandırılmış veya
+      "BETWEEN": arasında
+      "NOT BETWEEN": arasında değil
+      "=": eşittir
+      "!=": eşit değil
+      ">": daha büyük
+      ">=": eşittir veya büyüktür
+      "<": daha az
+      "<=": eşittir veya azdır
+  acl_group:
+    rule: Kurallar
+  acl:
+    rule:
+      view_permissions: Kuralları görüntüle
+      delete_permissions: Kuralları sil
+      impacted_product_count_permissions: Kullar için etkilenen ürünleri hesapla
+      execute_permissions: Uygulama kuralları
+  attribute:
+    tab:
+      rule.title: Kurallar
+    grid:
+      is_smart.label: Akıllı
+    acl:
+      rule.view_permissions: Kuralları görüntüle
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: Bu özelliğin değeri <strong>%rule%</strong> kurallardan gelebilir. Bunun anlamı, kuralın koşulları geçerli ise, değişikliğiniz geçersiz kılınır.
+      loading.title: Yükleniyor...
+    history: Uygulanan kural "%rule%"
+  product_value:
+    tooltip:
+      affected_by.title: 'Kural(lar) dan etkilenenler:'
+  steps:
+    product_rule_definition_reader.title: Ürün kuralını okuyucunun içine aktar
+    rule_definition_processor.title: Ürün kuralını işlemcinin içine aktar
+    product_rule_definition_writer.title: Ürün kuralı içe aktarma yazıcısı
+    rules_execution.title: Kuralların uygulanması
+  notification:
+    rule:
+      executed: Kural(lar)ın uygulanması tamamlandı
+    mass_edit_rule:
+      success: Etkilenen ürünlerin kurallar için hesaplanması bitti
+      error: Kurallar için etkilenen ürünler hesaplanırken bir hata meydana geldi
+btn:
+  Execute rules: Kuralları gerçekleştir
+mass_edit_rule: Kural Ayarları
+job_execution.summary.rule_calculated: Kural sayısı
