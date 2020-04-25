@@ -13,6 +13,7 @@ pim_connector:
     product_processor.title: Produkt oprettelse
     category_processor.title: Kategorien oprettelse
     association_processor.title: Assoationsoprettelse
+    product_association_processor.title: Associationsoprettelse
     group_processor.title: Gruppe oprettelse
     attribute_processor.title: Attribut oprettelse
     attribute_option_processor.title: Attribut indstillings oprettelse
@@ -40,6 +41,7 @@ job_execution.summary:
     skipped: ignoreret, udvidelse i hvidlisten
   product_skipped_no_diff: produkter sprunget over (ingen forskel)
   product_skipped_no_associations: produkter sprunget over (ingen sammekædning)
+  product_model_skipped_no_associations: oversprunget produktmodel (ingen associationer fundet)
   product_model_skipped_no_diff: produkter sprunget over (ingen forskel)
   item_position: læs linjer
   skipped_in_root_product_model: produkter sprunget over med forældre
@@ -86,18 +88,23 @@ batch_jobs:
     import_product_model_descendants.label: Beregne underliggende produkt modeller
   csv_category_import:
     label: Kategori eksport fra CSV
+    validation.label: Filvalidering
     import.label: Kategori import
   csv_attribute_import:
     label: Attributten udførsel fra CSV
+    validation.label: Filvalidering
     import.label: Attribut import
   csv_attribute_option_import:
     label: Attribut indstillinger -  import fra CSV
+    validation.label: Filvalidering
     import.label: Attribut indstilling import
   csv_association_type_import:
     label: Association type import fra CSV
+    validation.label: Filvalidering
     import.label: Association type import
   csv_family_import:
     label: Familie import i CSV
+    validation.label: Filvalidering
     import.label: Familie import
   csv_family_variant_import:
     label: Familie import i CSV
@@ -105,6 +112,7 @@ batch_jobs:
     import.label: Familie variant import
   csv_group_import:
     label: Gruppe import fra CSV
+    validation.label: Filvalidering
     import.label: Gruppe import
   csv_channel_export:
     label: Kanal eksportet til CSV
@@ -123,55 +131,82 @@ batch_jobs:
     export.label: Grupp type eksport
   csv_channel_import:
     label: Kanal import fra CSV
+    validation.label: Filvalidering
     import.label: Kanal import
   csv_locale_import:
     label: Landestandard import fra CSV
+    validation.label: Filvalidering
     import.label: Landestandard import
   csv_attribute_group_import:
     label: Attribut gruppe import fra CSV
+    validation.label: Filvalidering
     import.label: Attribut gruppe import
   csv_currency_import:
     label: Valuta import fra CSV
+    validation.label: Filvalidering
     import.label: Valuta import
   csv_group_type_import:
     label: Gruppe type import fra CSV
+    validation.label: Filvalidering
     import.label: Gruppe type import
   xlsx_category_import:
     label: Kategori import fra XLSX
+    validation.label: Filvalidering
+    import.label: Kategori import
   xlsx_association_type_import:
     label: Sammenkædningstype import fra CSV
+    validation.label: Filvalidering
+    import.label: Association type import
   xlsx_attribute_import:
     label: Attribut import fra XLSX
+    validation.label: Filvalidering
+    import.label: Attribut import
   xlsx_attribute_option_import:
     label: Attribut tilvalg import fra XLSX
+    validation.label: Filvalidering
+    import.label: Attribut indstilling import
   xlsx_family_import:
     label: Familie import i XLSX
+    validation.label: Filvalidering
+    import.label: Familie import
   xlsx_family_variant_import:
     label: Familie variant import i XLSX
     validation.label: Filvalidering
     import.label: Familie variant import
   xlsx_product_export:
     label: Produkt eksport til XLSX
+    export.label: Produkt eksport
   xlsx_product_model_export:
     label: Produkt model eksport i XLSX
     export.label: Produkt model eksport
   xlsx_product_import:
     label: Produkt import fra XLSX
+    validation.label: Filvalidering
+    import.label: Produkt import
+    import_associations.label: Association import
   xlsx_product_model_import:
     label: Produkt model import i XSLX
     validation.label: Filvalidering
+    import_root_product_model.label: Rodprodukt import
+    import_sub_product_model.label: Under produkt import
+    import_product_model_descendants.label: Beregne underliggende produktmodeller
     import_associations.label: Association import
   xlsx_group_export:
     label: Gruppe eksport til XLSX
+    export.label: Gruppeeksport
   xlsx_group_import:
     label: Gruppe import fra XLSX
+    validation.label: Filvalidering
+    import.label: Gruppeimport
   xlsx_family_export:
     label: Familie eksport til XLSX
+    export.label: Familieeksport
   xlsx_family_variant_export:
     label: Familie eksport til XLSX
     export.label: Familie variant eksport
   xlsx_category_export:
     label: Kategori eksport til XLSX
+    export.label: Kategorieksport
   xlsx_attribute_export:
     label: Attribut eksport til XLSX
     export.label: Attribut eksport til XLSX
@@ -183,21 +218,36 @@ batch_jobs:
     export.label: Sammenkædningstype eksport til CSV
   xlsx_channel_export:
     label: Kanal eksport til XLSX
+    export.label: Kanal eksport
   xlsx_locale_export:
     label: Landestandard eksport til XLSX
+    export.label: Landestandard eksport
   xlsx_attribute_group_export:
     label: Attribut gruppe eksport til CSV
+    export.label: Attribut gruppe eksport
   xlsx_currency_export:
     label: Valuta eksport til XLSX
+    export.label: Valuta eksport
   xlsx_group_type_export:
     label: Gruppe type eksport til XLSX
+    export.label: Grupp type eksport
   xlsx_channel_import:
     label: Kanal import fra XLSX
+    validation.label: Filvalidering
+    import.label: Kanal import
   xlsx_locale_import:
     label: Landestandard import fra XLSX
+    validation.label: Filvalidering
+    import.label: Landestandard import
   xlsx_attribute_group_import:
     label: Attribut gruppe import fra CSV
+    validation.label: Filvalidering
+    import.label: Attribut gruppe import
   xlsx_currency_import:
     label: Valuta import fra XLSX
+    validation.label: Filvalidering
+    import.label: Valuta import
   xlsx_group_type_import:
     label: Gruppen type import fra XLSX
+    validation.label: Filvalidering
+    import.label: Gruppe type import

@@ -2,15 +2,17 @@ pim_user:
   user:
     tab:
       general.title: Algemeen
-      additional.title: Extra
+      additional.title: Aanvullend
       group_and_role.title: Groepen en rollen
       password.title: Wachtwoord
       business_unit.title: Bedrijfsdivisies
       email_synchronization.title: Synchronisatie-instellingen voor e-mail
+      interfaces.title: Interfaces
   group:
     tab:
       general.title: Algemeen
       users.title: Gebruikers
+#user grids
 oro.user.controller:
   group.message.saved: "Groep opgeslagen"
   role.message.saved: "Rol opgeslagen"
@@ -31,21 +33,24 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: "Naam"
+#Page titles
 pim_title:
   user.index: Gebruikers
   user_role.index: Rollen
   user_group.index: Groepen
   system_configuration.index: Configuratie
+#User
 user.title: Gebruiker
 user.overview: Gebruiker
 Users Management: Gebruikersbeheer
 Create user: Gebruiker aanmaken
 btn.create.user: Gebruiker aanmaken
 New user: Nieuwe gebruiker
-Additional: Extra
+Additional: Aanvullend
 Groups and Roles: Groepen en rollen
 Username: Gebruikersnaam
 Password: Wachtwoord
+Password (again): Wachtwoord (opnieuw)
 Re-enter password: Voer wachtwoord opnieuw in
 Name prefix: Voorvoegsel
 First name: Voornaam
@@ -63,21 +68,33 @@ Business Units: Bedrijfsdivisies
 Email synchronization settings: Synchronisatie-instellingen voor e-mail
 Host: Host
 Port: Poort
+Ssl: SSL
 Last logged in: Laatst aangemeld
 Login count: Aantal logins
 Additional Information: Extra informatie
+Interfaces: Interfaces
 Basic Information: Algemene gegevens
 Contact Information: Contactinformatie
 User name: Gebruikersnaam
 Birthday: Verjaardag
 API key: API-sleutel
+Ui locale: Landinstelling gebruikersinterface
+UI locale: Landinstelling gebruikersinterface
+User salt: Hash Gebruiker
+Current password: Huidig wachtwoord
+New password: Nieuw wachtwoord
+Repeat new password: Nieuw wachtwoord (herhalen)
 Generate key: Sleutel genereren
 Primary: primaire
 Removed user: Verwijderde gebruiker
 user:
+  product_grid_filters: Filters productraster
+  default_product_grid_view:
+    label: Standaardweergave productraster
   default_grid_view:
     none: Geen
   timezone: Tijdzone
+#Role
 Role: Rol
 Owner: Eigenaar
 General: Algemeen
@@ -114,10 +131,11 @@ oro_security:
       create: Maak een gebruikersgroep
       edit: Bewerken van gebruikersgroepen
       delete: De gebruikersgroep van een verwijderen
+#Security
 (default): Standaardmachtiging op entiteiten
-VIEW: Bekijken
+VIEW: Bekijk
 CREATE: Aanmaken
-EDIT: Bewerken
+EDIT: Wijzig
 DELETE: Verwijderen
 ASSIGN: Toewijzen
 SHARE: Delen
@@ -130,11 +148,13 @@ oro:
       GLOBAL: Organisatie
       SYSTEM: Systeem
       NONE: Geen
+#User Group
 Create group: Groep aanmaken
 btn.create.user-group: Groep aanmaken
 Has group: Heeft groep
 Save and Close: Opslaan en sluiten
 user-group.overview: Groepen
+#Login page
 Log in: Login
 Remember me on this computer: Onthoud mijn gegevens op deze computer
 Forgot your password?: Uw wachtwoord vergeten?
@@ -142,4 +162,5 @@ Username or Email: Gebruikersnaam of E-mail
 Forgot Password: Wachtwoord vergeten
 Request: Aanvragen
 Check Email: E-mail controleren
+password_reset_email_sent: Er is een e-mail verzonden naar de gebruiker. Deze mail bevat een wachtwoord-reset link.
 Go to homepage: Ga naar de homepage

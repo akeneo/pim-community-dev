@@ -1,0 +1,30 @@
+job_execution:
+  summary:
+    display_item: Öğeyi göster
+    hide_item: Öğeyi gizle
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Seçilen kategoriler
+          cancel: İptal
+          confirm: Doğrula
+        label: "{0} Tüm ürünler|{1} Bir kategori seçildi|]1,Inf[{{ count }} kategori seçildi"
+        edit: Düzenle
+        title: Kategorileri seç
+    locales:
+      validation:
+        not_blank: Bir yerel ayar seçilmiş olmalı, lütfen dışa aktarmak için bir yerel ayar seçin.
+#Page titles
+page_title:
+  pim_importexport_export_profile_index: Profil yönetimini dışa aktar
+  pim_importexport_export_profile_edit: Dışa aktarılan profil {{ job.label }} | Düzenle
+  pim_importexport_export_profile_show: Dışa aktarılan profil {{ job.label }} | Göster
+  pim_importexport_export_execution_index: İşlem geçmişini dışa aktar
+  pim_importexport_export_execution_show: İşlemleri dışa aktar | Detaylar
+  pim_importexport_import_profile_index: Profil yönetimini içe aktar
+  pim_importexport_import_profile_edit: İçe aktarılan profil {{ job.label }} | Düzenle
+  pim_importexport_import_profile_show: İçe aktarılan profil {{ job.label }} | Göster
+  pim_importexport_import_execution_index: İşlem geçmişini içe aktar
+  pim_importexport_import_execution_show: İşlemleri içe aktar | Detaylar

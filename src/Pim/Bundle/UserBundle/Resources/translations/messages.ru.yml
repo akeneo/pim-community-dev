@@ -2,7 +2,7 @@ pim_user:
   user:
     tab:
       general.title: Основные
-      additional.title: Дополнительно
+      additional.title: Дополнительные
       group_and_role.title: Группы и роли
       password.title: Пароль
       business_unit.title: Бизнес-единицы
@@ -12,6 +12,7 @@ pim_user:
     tab:
       general.title: Основные
       users.title: Пользователи
+#user grids
 oro.user.controller:
   group.message.saved: "Группа сохранена"
   role.message.saved: "Роль сохранена"
@@ -23,27 +24,29 @@ oro.user.grid.users:
     email: "Email"
     firstName: "Имя"
     lastName: "Фамилия"
-    createdAt: "Создано"
-    updatedAt: "Обновлено"
+    createdAt: "Дата создания"
+    updatedAt: "Дата обновления"
     enabled: "Статус"
 oro.user.grid.roles:
   columns:
-    label: "Метка"
+    label: "Ярлык"
 oro.user.grid.groups:
   columns:
     name: "Имя"
+#Page titles
 pim_title:
   user.index: Пользователи
   user_role.index: Роли
   user_group.index: Группы
   system_configuration.index: Настройки
+#User
 user.title: Пользователь
 user.overview: Пользователь
 Users Management: Управление пользователями
 Create user: Создать пользователя
 btn.create.user: Создать пользователя
 New user: Новый пользователь
-Additional: Дополнительно
+Additional: Дополнительные
 Groups and Roles: Группы и роли
 Username: Имя пользователя
 Password: Пароль
@@ -61,8 +64,8 @@ Add another email: Добавить другой email
 Catalog locale: Локаль каталога
 Catalog scope: Область видимости каталога
 Default tree: Дерево каталога по умолчанию
-Business Units: Бизнес-единицы
-Email synchronization settings: Параметры синхронизации email
+Business Units: Бизнес-подразделения
+Email synchronization settings: Настройки синхронизации email
 Host: Сервер
 Port: Порт
 Ssl: SSL
@@ -89,8 +92,9 @@ user:
   default_product_grid_view:
     label: Представление сетки продуктов по умолчанию
   default_grid_view:
-    none: Нет
+    none: (Пусто)
   timezone: Часовой пояс
+#Role
 Role: Роль
 Owner: Владелец
 General: Основные
@@ -100,7 +104,6 @@ Save and close: Сохранить и закрыть
 Has role: Имеет роль
 role:
   title: роль
-  overview: роль
   edit: Изменить роль
   create: Создать роль
 btn.create.role: Создать роль
@@ -127,10 +130,11 @@ oro_security:
       create: Создание группы пользователя
       edit: Изменение групп пользователя
       delete: Удаление группы пользователя
+#Security
 (default): Разрешения по умолчанию на сущности
-VIEW: Просмотр
+VIEW: Представление
 CREATE: Создать
-EDIT: Редактировать
+EDIT: Изменить
 DELETE: Удалить
 ASSIGN: Назначить
 SHARE: Поделиться
@@ -142,12 +146,14 @@ oro:
       DEEP: Отдел
       GLOBAL: Организация
       SYSTEM: Система
-      NONE: Нет
+      NONE: (Пусто)
+#User Group
 Create group: Создать группу
 btn.create.user-group: Создать группу
 Has group: Имеет группу
 Save and Close: Сохранить и закрыть
 user-group.overview: Группы
+#Login page
 Log in: Войти
 Remember me on this computer: Запомнить меня на этом компьютере
 Forgot your password?: Забыли пароль?

@@ -1,0 +1,32 @@
+"oro_datagrid.no_data_hint %entityHint%": Hiçbir %entityHint% yok.
+oro_datagrid.not_found_hint: Üzgünüz, aramanız için bir sonuç bulunamadı.
+oro_datagrid.label_add_filter: Filtreleri yönet
+oro_datagrid.label_loading_mask: Yükleniyor . . .
+oro.grid.mass_action.selected_rows: Seçilmiş satırlar
+oro.grid.mass_action.confirm_title: Toplu İşlem Onayı
+oro.grid.mass_action.confirm_content: Bunu yapmak istediğinizden emin misiniz?
+oro.grid.mass_action.confirm_ok: Evet, yap
+oro.grid.mass_action.error_title: Toplu Eylem Hatası
+oro.grid.mass_action.error_content: Toplu işlem gerçekleştirilemiyor
+oro.grid.mass_action.delete.label: Sil
+oro.grid.mass_action.delete.confirm_title: Toplu Silme Onayı
+oro.grid.mass_action.delete.confirm_content: Seçili öğeleri silmek istediğinizden emin misiniz?
+oro.grid.mass_action.delete.item_limit: '% Limitinden fazla ürün (% count% seçili) toplu olarak silemezsiniz'
+oro.grid.datagrid.page_size.all: Tümü
+oro.grid.mass_action.delete.success_message: "{0} Hiçbir varlık kaldırılamadı|{1} Bir varlık kaldırıldı|]1,Inf[%count% varlık kaldırıldı"
+#Datagrid views constraints
+datagrid_view:
+  columns:
+    min_message: Görüntülenecek en az bir veri satırı sütunu seçmelisiniz
+  label:
+    unique_message: Etiket benzersiz olmalıdır
+    not_blank_message: Etiket boş bırakılmaz
+#View selector flash messages
+grid.view_selector.flash:
+  created: Veri kılavuzu görünümü başarılı bir şekilde oluşturuldu
+  removed: Veri kılavuzu görünümü başarılı bir şekilde silindi
+  not_removable: Bu görünümü kaldırma hakkına sahip değilsiniz
+quick_export: Dışa hızlı aktarım
+import: İçe aktar
+export: Dışa aktar
+mass_edit: Toplu Düzenle

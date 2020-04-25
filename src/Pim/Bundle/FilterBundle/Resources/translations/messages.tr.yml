@@ -1,0 +1,21 @@
+oro.filter.form.label_type_equal: '='
+oro.filter.form.label_type_greater_equal: '>='
+oro.filter.form.label_type_greater_than: '>'
+oro.filter.form.label_type_less_equal: '<='
+oro.filter.form.label_type_less_than: '<'
+oro.filter.form.label_type_yes: "evet"
+oro.filter.form.label_type_no: "hayır"
+oro.filter.form.label_type_contains: içerir
+oro.filter.form.label_type_not_contains: içermez
+oro.filter.form.label_type_equals: eşittir
+oro.filter.form.label_type_start_with: ile başlar
+oro.filter.form.label_type_end_with: ile biter
+oro.filter.form.label_type_empty: boş ise
+oro.filter.form.label_type_not_empty: boş değilse
+oro.filter.form.label_type_in_list: listede
+oro.filter.form.label_date_type_between: arasında
+oro.filter.form.label_date_type_not_between: arasında değil
+oro.filter.form.label_date_type_more_than: daha fazla
+oro.filter.form.label_date_type_less_than: daha az
+oro.filter.form.label_not_selected: Seçili değil
+oro.filter.form.label_selected: Seçili

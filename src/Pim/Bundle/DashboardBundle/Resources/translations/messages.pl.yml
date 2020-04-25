@@ -1,5 +1,5 @@
 pim_dashboard:
-  title: Kokpit
+  title: Pulpit
   version: Wersja
   link.label:
     product: Zarządzaj Produktami
@@ -23,5 +23,7 @@ pim_dashboard:
       job_type:
         import: Import
         export: Eksport
-        mass_edit: Masowa edycja
+        mass_edit: Edycja zbiorcza
         quick_export: Szybki eksport
+        compute_product_models_descendants: Oblicz potomków modeli produktu
+        mass_delete: Usuń wiele produktów

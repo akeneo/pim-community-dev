@@ -19,6 +19,8 @@ flash:
 comment:
   index:
     empty: Nog geen reacties beschikbaar
+    header_comment: '{{ user }} geeft een reactie op het product'
+    header_reply: '{{ user }} antwoordt op de reactie'
   placeholder:
     new: Schrijf een nieuwe reactie...
     reply: Reageer...

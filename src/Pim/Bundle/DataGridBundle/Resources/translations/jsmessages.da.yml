@@ -40,6 +40,8 @@ oro.datagrid.nocolumns: Ingen kolonner er konfigureret for dette gitter
 oro.datagrid.pagination.label: "Side"
 oro.datagrid.pagination.totalPages: "af {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} poster"
+#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
+oro.datagrid.pagination.limit_warning: "Gitteret kan ikke vise mere end {{ limit }} resultater, prøv at filtrere efter yderligere søgekriterier."
 oro.datagrid.action.reset: "Nulstil"
 oro.datagrid.action.refresh: "Opdatér"
 oro_datagrid.select.all: "Alle"
@@ -51,6 +53,10 @@ pim.grid.ajax_choice_filter.label_not_empty: er ikke tom
 pim:
   grid:
     choice_filter:
+      label_contains: indeholder
+      label_does_not_contain: indeholder ikke
+      label_equal: er lig med
+      label_start_with: starter med
       label_empty: er tom
       label_not_empty: er ikke tom
       label_in_list: i listen

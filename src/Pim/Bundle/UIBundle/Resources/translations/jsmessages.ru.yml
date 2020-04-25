@@ -1,3 +1,4 @@
+#ORO messages
 Close: Закрыть
 Update: Обновить
 Selected Rows: Выбранные строки
@@ -7,9 +8,9 @@ Selected Rows: Выбранные строки
 "Yes, do it": "Да, сделать это"
 "No": "Нет"
 "Ok, got it.": "Ок, я понял."
-"Cancel": "Отмена"
+"Cancel": "oтменить"
 "Delete Confirmation": "Подтверждение удаления"
-"Edit": "Редактировать"
+"Edit": "Изменить"
 "Unexpected error occured. Please contact system administrator.": "Произошла непредвиденная ошибка. Пожалуйста, свяжитесь с системным администратором."
 "Yes, revoke": "Да, отозвать"
 "Revoke Confirmation": "Отозвать подтверждение"
@@ -31,10 +32,12 @@ Second: Секунда
 Millisecond: Миллисекунда
 Microsecond: Микросекунда
 "Time Zone": "Часовой пояс"
+#PIM messages
 Localized value: Локализованное значение
 Columns: Столбцы
 Datagrid Configuration: Настройки таблицы
 Apply: Применить
+#Filters
 Action: Действие
 Unit: Единица
 Currency: Валюта
@@ -47,6 +50,7 @@ jstree:
   no_tree: Дерево категорий недоступно
   include_sub: Включить подкатегории
   loading: Загрузка ...
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Воскресенье
@@ -90,7 +94,7 @@ datetimepicker:
     Feb: Фев
     Mar: Мар
     Apr: Апр
-    May: Май
+    May: Mай
     Jun: Июн
     Jul: Июл
     Aug: Авг
@@ -98,6 +102,7 @@ datetimepicker:
     Oct: Окт
     Nov: Ноя
     Dec: Дек
+#ORO
 oro_config:
   form:
     config:

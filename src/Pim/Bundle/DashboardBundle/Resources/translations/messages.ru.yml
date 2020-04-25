@@ -14,12 +14,12 @@ pim_dashboard:
       title: Законченность по каналам и языкам
     last_operations:
       title: Последние операции
-      empty: Операции не найдены
+      empty: Действие не найдено
       status: Статус
       date: Дата
       type: Тип
       "profile name": Название профиля
-      details: Подробности
+      details: Подробнее
       job_type:
         import: Импорт
         export: Экспорт

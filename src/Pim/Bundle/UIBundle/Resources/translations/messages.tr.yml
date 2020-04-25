@@ -1,0 +1,49 @@
+User: Kullanıcı
+Run demo: Demoyu başlat
+Product: Ürün
+Attribute list: Özellik listesi
+Attribute Group list: Özellik grubu listesi
+Users: Kullanıcılar
+Roles: Görevler
+Groups: Gruplar
+Configuration: Yapılandırma
+Currency list: Para birimi listesi
+Locale list: Yerel ayarlar listesi
+Logged in as: Olarak giriş yapıldı
+Logout: Çıkış yap
+Login: Giriş yap
+Previous: Önceki
+Next: Sonraki
+Channel list: Kanal listesi
+Select file: Dosyayı seç
+Change file: Dosyayı değiştir
+Remove file: Dosyayı sil
+Delete: Sil
+Save: Kaydet
+Cancel: İptal
+Get help: Yardım al
+My User: Hesabım
+oro.form.choose_value: Bir değer seç...
+Read more: Daha fazlasını oku
+oro.form.click_here_to_select: Seçmek için buraya tıklayın...
+Add: Ekle
+"Learn how to use this space": "Bu alanın nasıl kullanıldığını öğrenin"
+"How To Use Pinbar": "Görev çubuğu nasıl kullanılır "
+Pinbar: Çubuk
+Favorites: Favoriler
+Most Viewed: En çok görüntülenenler
+"Add this page to favorites": "Bu sayfayı favorilere gekle"
+"Minimize the window to the pinbar": "Pencereyi, simge durumuna alıp görev çubuğuna alın"
+"Loading ...": "Yükleniyor..."
+"Yes": "Evet"
+"No": "Hayır"
+required: (gerekli)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Yükleme mesajlarını etkinleştir
+    loading_message_enabled.tooltip: Sayfanın yüklenmesini beklerken kullanıcı dostu mesajları görüntüleyin
+    loading_messages.label: Kullanılabilir yükleme mesajları
+    loading_messages.tooltip: Satır sonları ile ayrılmış kullanılabilir yükleme iletileri
+  group:
+    loading_message.title: İletiler yükleniyor
+other_actions: Diğer eylemler

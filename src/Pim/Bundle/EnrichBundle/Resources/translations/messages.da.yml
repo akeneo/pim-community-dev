@@ -3,6 +3,7 @@ pim_enrich:
   product:
     tab:
       attribute.title: Egenskaber
+      category.title: Kategorier
       association.title: Tilknytninger
       completeness.title: Fuldstændighed
       history.title: Historik
@@ -18,24 +19,35 @@ pim_enrich:
   #Attribute group
   attribute_group:
     tab:
+      property.title: Egenskaber
       attribute.title: Egenskaber
       history.title: Historik
   #Family
   family:
+    info:
+      cant_remove_attribute_used_as_axis: Kan ikke fjerne denne attribut, bruges som en variant akse i en familie variant
     tab:
+      property.title: Egenskaber
       attribute.title: Egenskaber
       history.title: Historik
   #Association type
   association_type:
     tab:
+      property.title: Egenskaber
       history.title: Historik
+  #Group type
+  group_type:
+    tab:
+      property.title: Egenskaber
   #Category
   category:
     tab:
+      property.title: Egenskaber
       history.title: Historik
   #Locale
   locale:
     tab:
+      property.title: Egenskaber
       permission.title: Rettigheder
   #Product group
   group:
@@ -47,6 +59,7 @@ pim_enrich:
       RELATED: Relateret
     tab:
       product.title: Produkter
+      property.title: Egenskaber
       history.title: Historik
   #Product completeness
   completeness:
@@ -78,7 +91,10 @@ pim_enrich:
       steps:
         first: Vælg familier
         second: Vælg handling
+        third: Konfigurér
+        fourth: Bekræft
     change-status:
+      label: Skift status
       description: De valgte produkter vil blive aktiveret eller deaktiveret.
       success_flash: Produkt(er) status er blevet ændret
       launched_flash: Bulk-handlingen "Skift status" er blevet startet. Du får besked, når det er gjort.
@@ -93,18 +109,22 @@ pim_enrich:
         invalid_attribute: Attribut med koden "attribute_code" er ikke fælles for de valgte produkter, attributten springes over.
         no_valid_attribute: Ingen af de valgte attributter kan anvendes på dette produkt.
     classify-add:
+      label: Tilføje til kategorier
       description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
       success_flash: Produkt(er), der er blevet klassificeret i udvalgte kategorier
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet startet. Du får besked, når det er afsluttet.
     classify-move:
+      label: Flyt mellem kategorier
       description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
       success_flash: Produkt(er), der er blevet flyttet til udvalgte kategorier
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
     classify-remove:
+      label: Fjern fra kategorier
       description: Produkterne vil blive fjernet fra følgende kategorier.
       success_flash: Produkt(er), der er blevet fjernet fra de valgte kategorier
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
     change-family:
+      label: Ændre familie
       description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
       success_flash: Familien af valgte produkt(er) er blevet ændret
       launched_flash: Bulk-handlingen "Skift status" er blevet ignagsat. Du får besked, når den er afsluttet.
@@ -115,6 +135,7 @@ pim_enrich:
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
       no_group: Ingen gruppe for nu. Start med at oprette en gruppe.
     set-attribute-requirements:
+      label: Indstil attribut krav
       description: Følgende attribut krav vil blive anvendt til de valgte familier
       success_flash: Attribut krav blev anvendt til de valgte familier
       launched_flash: Bulk handling "sæt attribut krav" er igangsat. Du får besked, når den afsluttet.
@@ -144,12 +165,14 @@ pim_enrich:
       associations_view: Se sammenhængstyper for et produkt
       associations_edit: Ret sammenhængstyper for et produkt
       change_family: Ændre produktfamilie
+      change_state: Ændr på produktstatus
       add_to_groups: Tilføj produkt til grupper
       mass_edit: Handlinger for masse redigering af produkter
       comment: Kommenter produkter
       download: Download produktet som PDF
       history: Se produkt historik
     product_model:
+      create: Oprette en produktmodel
       edit_attributes: Rediger attributterne for en produktmodel
       categories_view: Konsultere kategorierne af en produktmodel
       history: Se produkt model historik
@@ -174,6 +197,7 @@ pim_enrich:
       create: Opret en familie
       edit_properties: Rediger egenskaberne for en familie
       edit_attributes: Rediger attributterne for en familie
+      edit_variants: Rediger en familievariant
       remove: Fjern en familie
       history: Se familie historik
     family_variant:
@@ -221,8 +245,11 @@ pim_enrich:
     association_type: Sammenhængstyper
     attribute: Egenskaber
     attribute_group: Attributgrupper
+    category: Kategorier
     channel: Kanaler
     currency: Valutaer
+    family: Familier
+    group: Grupper
     group_type: Gruppetyper
     locale: Landestandarder
     product: Produkter
@@ -251,12 +278,15 @@ attribute group:
   create new: Opret en ny attributgruppe
 category:
   title: kategori
+  overview: Kategorier
   create: opret kategori
   edit: redigere kategori
   suggest selection: Vælg venligst en kategori til venstre
   or: eller
+  create new: Opret et nyt kategoritræ
 tree:
   title: træ
+  create: opret kategoritræ
   edit: redigere træ
 channel:
   title: kanal
@@ -289,12 +319,15 @@ association type:
   title: sammenhængstype
   create: opret sammenhængstype
   edit: redigere sammehængstype
+#Custom titles
+products: produkter
 #Buttons
 btn:
   create:
     attribute: opret attribut
     attribute group: opret attributgruppe
     category: opret kategori
+    tree: opret kategoritræ
     channel: opret kanal
     currency: opret valuta
     family: opret familie
@@ -322,6 +355,7 @@ btn:
 #Confirmation messages
 confirmation:
   confirm: Bekræftelse
+  delete: Bekræft sletning
   leave: Er du sikker på du vil forlade denne side?
   discard changes: Du vil miste ændringer til %entity%, hvis du forlader siden.
   remove:
@@ -453,6 +487,7 @@ Manage groups: Administrér grupper
 Code: Kode
 Name: Navn
 Type: Type
+Scope: Kanal
 Required: Påkrævet
 Unique: Unik
 Not required: Ikke påkrævet
@@ -483,12 +518,15 @@ Useable as grid column: Brugbare som gitterkolonne
 Useable as grid filter: Brugbare i gitter
 Family: Familie
 Image: Billede
+Variant products: Variantprodukter
 Available locales: Tilgængelige landestandarder
 Locale specific: Landestandard specifik
 default: Standard
 Axis: Akse
 Add attributes: Tilføj egenskab
 Translate from: Oversæt fra
+switch_on: "Ja"
+switch_off: "Nej"
 Close: Luk
 Search: Søg
 Choose the attribute type: Vælg attributtype
@@ -512,6 +550,7 @@ Attribute used as label: Attributten anvendes som etiket
 Credentials: Legitimationsoplysninger
 #Scopes
 Global: Global
+Channel: Kanal
 Expand all channels: Udvid alle kanaler
 Collapse all channels: Skjul alle kanaler
 #Variants
@@ -565,6 +604,7 @@ pim_title.product:
   index: "Produkter"
   edit: "Produkter %product.label% | Rediger"
 pim_title.family:
+  index: "Familier"
   edit: "Familier %family.label% | Rediger"
 pim_title.channel:
   index: "Kanaler"
@@ -575,6 +615,7 @@ pim_title.currency:
 pim_title.locale:
   index: "Landestandarder"
 pim_title.group:
+  index: "Grupper"
   edit: "Grupper %group.label% | Rediger"
 pim_title.association_type:
   index: "Sammenhængstyper"
@@ -583,6 +624,9 @@ pim_title.group_type:
   index: "Gruppetyper"
   edit: "Gruppetyper %group type.label% | Rediger"
 pim_title.mass_edit_product_action:
+  choose: "Masse Rediger | Vælg"
+  configure: "Masse Rediger | Konfigurere"
+pim_title.mass_edit_family_action:
   choose: "Masse Rediger | Vælg"
   configure: "Masse Rediger | Konfigurere"
 pim_title.job_tracker:
@@ -623,7 +667,10 @@ pim_enrich.mass_edit_action:
     steps:
       first: Vælg produkter
       second: Vælg handling
+      third: Konfigurér
+      fourth: Bekræft
   family:
+    page_title: Familier
     page_subtitle: Masse redigere (1 familie) |Masse redigere (%count% familier)
     title: Vælg handling
     subtitle: Vælg den handling, du ønsker at udføre på den valgte familie|Vælg den handling, du ønsker at udføre på de valgte %count% familier
@@ -631,7 +678,10 @@ pim_enrich.mass_edit_action:
     steps:
       first: Vælg familier
       second: Vælg handling
+      third: Konfigurér
+      fourth: Bekræft
   change-status:
+    label: Skift status
     description: De valgte produkter vil blive aktiveret eller deaktiveret.
     success_flash: Produkt(er) status er blevet ændret
   edit-common-attributes:
@@ -642,9 +692,11 @@ pim_enrich.mass_edit_action:
     message.warning: Der er ingen fælles egenskaber  de valgte produkter. Venligst ændre dit valg.
     no_attribute.warning: Der er ingen fælles egenskaber de valgte produkter. Venligst ændre dit valg.
   classify:
+    label: Tilføje til kategorier
     description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
     success_flash: Produkt(er), der er blevet klassificeret i udvalgte kategorier
   change-family:
+    label: Ændre familie
     description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
     success_flash: Familien af valgte produkt(er) er blevet ændret
     no_family: Ingen familie
@@ -653,6 +705,7 @@ pim_enrich.mass_edit_action:
     description: Vælg de grupper hvor de udvalgte produkter skal tilføjes til
     success_flash: Produkter blev tilføjet til de valgte grupper
   set-attribute-requirements:
+    label: Indstil attribut krav
     description: Følgende attribut krav vil blive anvendt til de valgte familier
     success_flash: Attribut krav blev anvendt til de valgte familier
 To enable: At aktivere
@@ -665,6 +718,8 @@ Current tab: Aktuelle fane
 Group: Gruppe
 View group: Se gruppe
 Products: Produkter
+#Tabs
+Properties: Egenskaber
 History: Historik
 pane.accordion:
   node_values: Node værdier
@@ -687,6 +742,8 @@ In group: I gruppen
 Attribute as label: Attribut som etiket
 Is associated: Er forbundet
 Complete: Fuldført
+Created At: Oprettet den
+Updated At: Opdateret den
 Enabled: Aktiveret
 Disabled: Deaktiveret
 Status: Status
@@ -766,6 +823,7 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Rediger att
 update_product_value.steps.update_product_value_processor.title: Opdatere produktets værdi
 remove_product_value.steps.update_product_value_processor.title: Fjern produktværdi
 edit_common_attributes: Rediger attributter
+edit_common_attributes_clean: Rens filer til fælles attributter
 perform.steps.duplicated.title: Duplikeret akse
 perform.steps.excluded.title: Udelukkede produkt
 #Background jobs & steps labels
@@ -778,12 +836,20 @@ batch_jobs:
     label: Opdatere produktets værdi
     perform:
       label: Opdatere produktets værdi
+  add_attribute_value:
+    label: Tilføj attributværdi
+    perform:
+      label: Tilføj attributværdi
   edit_common_attributes:
     label: Rediger attributter
     perform:
       label: Rediger attributter
+    clean:
+      label: Rens filer til fælles attributter
     cleaner:
       label: Rens filer til fælles attributter
+  compute_completeness_of_products_family:
+    compute_completeness_of_products_family.label: Beregn fulkommenhed
   add_to_category:
     label: Tilføje til kategorier
     perform:
@@ -796,6 +862,18 @@ batch_jobs:
     label: Fjern fra kategori
     perform:
       label: Fjern fra kategori
+  add_association:
+    label: Associeret
+    perform:
+      label: Associeret
+  add_to_existing_product_model:
+    label: Føj til en eksisterende produktmodel
+    perform:
+      label: Føj til en eksisterende produktmodel
+  set_attribute_requirements:
+    label: Indstil attribut krav
+    perform:
+      label: Indstil attribut krav
   csv_product_quick_export:
     quick_export.label: CSV-produkt hurtig eksport
     perform:
@@ -814,6 +892,9 @@ batch_jobs:
       label: Xlsx-produkt gitter sammenhæng hurtig eksport
   delete_products_and_product_models:
     delete_products_and_product_models.label: Masse slet produkter
+  change_parent_product:
+    perform:
+      label: Ændr overordnet produktmodel
 mass_edit report:
   overview: Masse redigere rapporter
 job_tracker:
@@ -822,6 +903,7 @@ job_tracker:
   filter:
     started_at: Startede på
 pim_enrich_attribute_form:
+  code: Kode
   type: Egenskabstype
   reference_data_name: Referencenavn data
   scopable: Værdi pr. kanal

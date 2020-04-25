@@ -1,0 +1,24 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: İşlem bulunamadı
+      status: Durum
+      date: Tarih
+      type: Tür
+      profile_name: Profil adı
+      details: Ayrıntılar
+      warning_count: Uyarılar
+      job_type:
+        import: İçe aktar
+        export: Dışa aktar
+        mass_edit: Toplu düzenle
+        quick_export: Hızlı dışa aktar
+        compute_product_models_descendants: Ürün modelleri nesillerini hesapla
+        compute_family_variant_structure_changes: Ailenin varyant yapısı değişikliklerini hesapla
+        compute_completeness_of_products_family: Ürün ailesinin bütünlüğünü hesapla
+    completeness:
+      load_more: 'Daha fazla yükle...'
+    header:
+      view_all: Tümünü Gör
+page_title:
+  pim_dashboard_index: Kontrol paneli

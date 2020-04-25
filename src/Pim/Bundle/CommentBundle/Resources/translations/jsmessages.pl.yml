@@ -19,6 +19,8 @@ flash:
 comment:
   index:
     empty: Aktualnie brak komentarzy
+    header_comment: '{{ user }} odpowiedział na komentarz'
+    header_reply: '{{ user }} odpowiedział na komentarz'
   placeholder:
     new: Napisz nowy komentarz...
     reply: Odpowiedz na ten komentarz...

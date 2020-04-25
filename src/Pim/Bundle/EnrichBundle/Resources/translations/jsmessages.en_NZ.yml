@@ -61,6 +61,10 @@ flash:
     removed: Group successfully removed
   group_type:
     removed: Group type successfully removed
+  import_profile:
+    removed: Import profile successfully removed
+  export_profile:
+    removed: Export profile successfully removed
   user:
     removed: User successfully removed
   role:

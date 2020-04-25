@@ -1,0 +1,6 @@
+entity.user.name: Kullanıcı
+entity.user.description: Kullanıcı profili
+entity.role.name: Yetki
+entity.role.description: kullanıcı yetkisi
+entity.group.name: Grup
+entity.group.description: Yetki grubu

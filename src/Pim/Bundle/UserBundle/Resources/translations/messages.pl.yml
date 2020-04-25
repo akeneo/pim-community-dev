@@ -12,6 +12,7 @@ pim_user:
     tab:
       general.title: Ogólne
       users.title: Użytkownicy
+#user grids
 oro.user.controller:
   group.message.saved: "Grupa zapisana"
   role.message.saved: "Rola zapisana"
@@ -24,7 +25,7 @@ oro.user.grid.users:
     firstName: "Imię"
     lastName: "Nazwisko"
     createdAt: "Data utworzenia"
-    updatedAt: "Data aktualizacji"
+    updatedAt: "Aktualizowano"
     enabled: "Status"
 oro.user.grid.roles:
   columns:
@@ -32,11 +33,13 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: "Nazwa"
+#Page titles
 pim_title:
   user.index: Użytkownicy
   user_role.index: Role
   user_group.index: Grupy
   system_configuration.index: Konfiguracja
+#User
 user.title: Użytkownik
 user.overview: Użytkownik
 Users Management: Zarządzanie użytkownikami
@@ -44,9 +47,10 @@ Create user: Utwórz użytkownika
 btn.create.user: Utwórz użytkownika
 New user: Nowy użytkownik
 Additional: Dodatkowe
-Groups and Roles: Grupy i role
+Groups and Roles: Grupy i Role
 Username: Nazwa użytkownika
 Password: Hasło
+Password (again): Hasło (powtórz)
 Re-enter password: Powtórz hasło
 Name prefix: Prefiks nazwy
 First name: Imię
@@ -60,10 +64,11 @@ Add another email: Dodaj kolejny e-mail
 Catalog locale: Język katalogu
 Catalog scope: Zasięg katalogu
 Default tree: Drzewo domyślne
-Business Units: Jednostki biznesowe
-Email synchronization settings: Ustawienia synchronizacji poczty e-mail
+Business Units: Jednostki Biznesowe
+Email synchronization settings: Ustawienia synchronizacji poczty email
 Host: Host
 Port: Port
+Ssl: SSL
 Last logged in: Ostatnio zalogowany
 Login count: Liczba logowań
 Additional Information: Dodatkowe informacje
@@ -74,7 +79,7 @@ User name: Nazwa użytkownika
 Birthday: Data urodzenia
 API key: Klucz API
 Ui locale: Język Interfejsu
-UI locale: Język Interfejsu
+UI locale: Język interfejsu
 User salt: Sól użytkownika
 Current password: Aktualne hasło
 New password: Nowe Hasło
@@ -87,11 +92,13 @@ user:
   default_product_grid_view:
     label: Widok domyślny listy produktów
   default_grid_view:
-    none: Brak
+    none: Żaden
+  timezone: Strefa czasowa
+#Role
 Role: Rola
 Owner: Właściciel
 General: Ogólne
-Entity: Encja
+Entity: Obiekt
 Capabilities: Możliwości
 Save and close: Zapisz i zamknij
 Has role: Ma rolę
@@ -124,11 +131,12 @@ oro_security:
       create: Tworzenie grup użytkowników
       edit: Edycja grup użytkowników
       delete: Usuwanie grup użytkowników
+#Security
 (default): Domyślne uprawnienia encji
 VIEW: Zobacz
 CREATE: Utwórz
 EDIT: Edytuj
-DELETE: Usuń
+DELETE: Skasuj
 ASSIGN: Przypisz
 SHARE: Udostępnij
 oro:
@@ -139,12 +147,14 @@ oro:
       DEEP: Podział
       GLOBAL: Organizacja
       SYSTEM: System
-      NONE: Brak
+      NONE: Żaden
+#User Group
 Create group: Utwórz grupę
 btn.create.user-group: Utwórz grupę
 Has group: Ma grupę
 Save and Close: Zapisz i zamknij
 user-group.overview: Grupy
+#Login page
 Log in: Zaloguj się
 Remember me on this computer: Zapamiętaj mnie na tym komputerze
 Forgot your password?: Zapomniałeś hasła?
@@ -152,4 +162,5 @@ Username or Email: Login lub E-mail
 Forgot Password: Zapomniałem hasła
 Request: Żądanie
 Check Email: Sprawdź Email
+password_reset_email_sent: Wiadomość e-mail została wysłana do użytkownika. Zawiera ona link do resetowania hasła.
 Go to homepage: Przejdź do strony głównej

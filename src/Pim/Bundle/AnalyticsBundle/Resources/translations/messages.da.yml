@@ -26,6 +26,11 @@ pim_analytics:
     nb_scopable_attributes: Antallet af afgrænsbare attributter
     nb_localizable_attributes: Antallet af oversætbare attributter
     nb_scopable_localizable_attributes: Antallet af oversætbare og afgrænsbare attributter
+    nb_useable_as_grid_filter_attributes: Antal attributter der kan bruges gitterfilter
+    avg_percentage_scopable_attributes_per_family: Gennemsnitlig procentdel af scopable attributter pr. familie (%)
+    avg_percentage_localizable_attributes_per_family: Gennemsnitlig procentdel af lokaliserbare attributter pr. familie (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Gennemsnitlig procentdel af lokaliserbare og scopable attributter pr. familie (%)
+    avg_number_attributes_per_family: Gennemsnitligt antal af attributter pr. familie
     nb_locales: Antallet af landestandarder
     nb_families: Antallet af familier
     nb_users: Antallet af brugere
@@ -35,6 +40,8 @@ pim_analytics:
     max_category_levels: Max antal kategori niveauer
     nb_product_values: Antallet af produkt værdier
     avg_product_values_by_product: Gennemsnitligt antal produkt værdier af produkt
+    avg_product_values_by_family: Gennemsnitligt antal potentielle produktværdier ud fra familie
+    max_product_values_by_family: Maks. antal potentielle produktværdier ud fra familie
     pim_storage_version: Lagerplads version
     os_version: OS-version
     php_version: PHP version

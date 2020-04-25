@@ -5,12 +5,12 @@ pim_connector:
     entity_reader.title: Odczyt encji
     csv_reader:
       title: Czytnik CSV
+    file_reader:
+      invalid_item_columns_count: 'Oczekiwano %totalColumnsCount% kolumn, aktualnie mają %itemColumnsCount% w %filePath%:%lineno%'
     csv_product_reader.title: Czytnik produktów z CSV
     csv_category_reader.title: Czytnik kategorii z CSV
-    csv_variant_group .title: Czytnik grup wariantów z CSV
     dummy_processor.title: Pozorny mechanizm przetwarzania
     product_processor.title: Tworzenie produktu
-    variant_group_processor.title: Tworzenie grupy wariantów / aktualizacja
     category_processor.title: Tworzenie kategorii
     association_processor.title: Tworzenie powiązania
     product_association_processor.title: Tworzenie powiązania
@@ -24,7 +24,6 @@ pim_connector:
     file_writer.title: Wyjście
     product_writer.title: Magazyn produktów
     category_writer.title: Magazyn kategorii
-    variant_group_writer.title: Magazyn grup wariantów
     writer.title: Jednostki składowania
     csv_writer.title: Zapis Csv
 job_execution.summary:
@@ -41,11 +40,20 @@ job_execution.summary:
     title: 'Strona kodowa pliku:'
     skipped: pominięte, rozszerzenie na białej liście
   product_skipped_no_diff: produkt pominięty (brak różnic)
+  product_skipped_no_associations: pomijany produkt (nie wykryto żadnych skojarzeń)
+  product_model_skipped_no_associations: pominięty model produktu (nie wykryto żadnych skojarzeń)
+  product_model_skipped_no_diff: pominięty model produktu (brak różnic)
   item_position: odczytane wiersze
+  skipped_in_root_product_model: pominięty produkt z elementem nadrzędnym
+  skipped_in_sub_product_model: pominięty produkt bez elementu nadrzędnego
+#Job labels
 batch_jobs:
   csv_product_export:
     label: Eksport produktów do CSV
     export.label: Eksport produktów
+  csv_product_model_export:
+    label: Eksport modelu produktu do CSV
+    export.label: Eksport modelu produktu
   csv_category_export:
     label: Eksport kategorii do CSV
     export.label: Eksport kategorii
@@ -61,96 +69,185 @@ batch_jobs:
   csv_group_export:
     label: Eksport grup do CSV
     export.label: Eksport grup
-  csv_variant_group_export:
-    label: Eksport grup wariantów do CSV
-    export.label: Eksport grup wariantów
   csv_family_export:
     label: Eksport rodzin do pliku CSV
     export.label: Eksport rodziny
+  csv_family_variant_export:
+    label: Eksport wariantu rodziny do CSV
+    export.label: Eksport wariantu rodziny
   csv_product_import:
     label: Import produktów z CSV
     validation.label: Sprawdzanie pliku
     import.label: Import Produktu
     import_associations.label: Import Powiązań
+  csv_product_model_import:
+    label: Import modelu produktu z CSV
+    validation.label: Sprawdzanie pliku
+    import_root_product_model.label: Importowanie modelu produktu źródłowego
+    import_sub_product_model.label: Importowanie modelu produktu dodatkowego
+    import_product_model_descendants.label: Oblicz dane modeli produktów
   csv_category_import:
     label: Import kategorii z CSV
-    validation.label: Sprawdzanie pliku
+    validation.label: Weryfikacja pliku
     import.label: Import kategorii
   csv_attribute_import:
     label: Import atrybutów z CSV
-    validation.label: Sprawdzanie pliku
+    validation.label: Weryfikacja pliku
     import.label: Import atrybutu
   csv_attribute_option_import:
     label: Import ustawień atrybutów z CSV
-    validation.label: Sprawdzanie pliku
+    validation.label: Weryfikacja pliku
     import.label: Import ustawień atrybutów
   csv_association_type_import:
     label: Import typów powiązań z CSV
-    validation.label: Sprawdzanie pliku
+    validation.label: Weryfikacja pliku
     import.label: Import typów powiązań
   csv_family_import:
     label: Import rodziny z pliku CSV
-    validation.label: Sprawdzanie pliku
+    validation.label: Weryfikacja pliku
     import.label: Import rodziny
+  csv_family_variant_import:
+    label: Import wariantu rodziny z CSV
+    validation.label: Sprawdzanie pliku
+    import.label: Import wariantu rodziny
   csv_group_import:
     label: Import grup z CSV
-    validation.label: Sprawdzanie pliku
+    validation.label: Weryfikacja pliku
     import.label: Import grup
-  csv_variant_group_import:
-    label: Import grup wariantów z CSV
-    validation.label: Sprawdzanie pliku
-    import.label: Import grup wariantów
+  csv_channel_export:
+    label: Eksport kanałów do CSV
+    export.label: Eksport kanałów
+  csv_locale_export:
+    label: Eksport ustawień regionalnych do CSV
+    export.label: Eksport ustawień regionalnych
+  csv_attribute_group_export:
+    label: Eksport grupy atrybutów w CSV
+    export.label: Eksport grup atrybutów
+  csv_currency_export:
+    label: Eksport walut z csv
+    export.label: Eksport walut
+  csv_group_type_export:
+    label: Eksport typów grup w csv
+    export.label: Eksport typów grup
   csv_channel_import:
-    validation.label: Sprawdzanie pliku
+    label: Import kanałów w CSV
+    validation.label: Weryfikacja pliku
+    import.label: Import kanału
   csv_locale_import:
-    validation.label: Sprawdzanie pliku
+    label: Eksport ustawień regionalnych do CSV
+    validation.label: Weryfikacja pliku
+    import.label: Import ustawień regionalnych
   csv_attribute_group_import:
-    validation.label: Sprawdzanie pliku
+    label: Import ustawień atrybutów do CSV
+    validation.label: Weryfikacja pliku
+    import.label: Import grup atrybutów
   csv_currency_import:
-    validation.label: Sprawdzanie pliku
+    label: Eksport walut z csv
+    validation.label: Weryfikacja pliku
+    import.label: Import walut
   csv_group_type_import:
-    validation.label: Sprawdzanie pliku
+    label: Eksport typów grup w csv
+    validation.label: Weryfikacja pliku
+    import.label: Import typu grupy
   xlsx_category_import:
-    validation.label: Sprawdzanie pliku
+    label: Import kategorii z XLSX
+    validation.label: Weryfikacja pliku
     import.label: Import kategorii
   xlsx_association_type_import:
-    validation.label: Sprawdzanie pliku
-    import.label: Import typów powiązań
+    label: Import typów powiązań z XSLX
+    validation.label: Weryfikacja pliku
+    import.label: Import typu powiązania
   xlsx_attribute_import:
-    validation.label: Sprawdzanie pliku
+    label: Import atrybutów z pliku XSLX
+    validation.label: Weryfikacja pliku
     import.label: Import atrybutu
   xlsx_attribute_option_import:
-    validation.label: Sprawdzanie pliku
-    import.label: Import ustawień atrybutów
+    label: Import ustawień atrybutów z pliku XLSX
+    validation.label: Weryfikacja pliku
+    import.label: Import opcji atrybutu
   xlsx_family_import:
-    validation.label: Sprawdzanie pliku
+    label: Import rodziny z pliku XSLX
+    validation.label: Weryfikacja pliku
     import.label: Import rodziny
-  xlsx_product_export:
-    export.label: Eksport produktów
-  xlsx_product_import:
+  xlsx_family_variant_import:
+    label: Import wariantu rodziny z XLSX
     validation.label: Sprawdzanie pliku
-    import.label: Import Produktu
+    import.label: Import wariantu rodziny
+  xlsx_product_export:
+    label: Eksport produktów do XLSX
+    export.label: Eksport produktu
+  xlsx_product_model_export:
+    label: Eksport modelu produktu w XLSX
+    export.label: Eksport modelu produktu
+  xlsx_product_import:
+    label: Import produktów z XSLX
+    validation.label: Sprawdzanie pliku
+    import.label: Import produktu
+    import_associations.label: Import powiązania
+  xlsx_product_model_import:
+    label: Import modelu produktu z XLSX
+    validation.label: Sprawdzanie pliku
+    import_root_product_model.label: Importowanie modelu produktu źródłowego
+    import_sub_product_model.label: Importowanie modelu produktu dodatkowego
+    import_product_model_descendants.label: Oblicz potomków modelu produktu
     import_associations.label: Import Powiązań
   xlsx_group_export:
-    export.label: Eksport grup
-  xlsx_variant_group_export:
-    export.label: Eksport grup wariantów
+    label: Eksport grup do XLSX
+    export.label: Eksport grupy
   xlsx_group_import:
-    validation.label: Sprawdzanie pliku
-    import.label: Import grup
-  xlsx_variant_group_import:
-    validation.label: Sprawdzanie pliku
+    label: Import grup z XLSX
+    validation.label: Weryfikacja pliku
+    import.label: Import grupy
   xlsx_family_export:
+    label: Eksport rodzin do pliku XLSX
     export.label: Eksport rodziny
+  xlsx_family_variant_export:
+    label: Eksport wariantu rodziny do XLSX
+    export.label: Eksport wariantu rodziny
   xlsx_category_export:
+    label: Eksport kategorii do XLSX
     export.label: Eksport kategorii
+  xlsx_attribute_export:
+    label: Eksport atrybutów do XLSX
+    export.label: Eksport atrybutów do XLSX
+  xlsx_attribute_option_export:
+    label: Eksport opcji atrybutów do XLSX
+    export.label: Eksport opcji atrybutów do XLSX
+  xlsx_association_type_export:
+    label: Eksport typów powiązań do XLSX
+    export.label: Eksport typów powiązań do XLSX
+  xlsx_channel_export:
+    label: Eksport kanałów do XLSX
+    export.label: Eksport kanału
+  xlsx_locale_export:
+    label: Eksport ustawień regionalnych do XLSX
+    export.label: Eksport wersji językowej
+  xlsx_attribute_group_export:
+    label: Import ustawień atrybutów do XLSX
+    export.label: Eksport grup atrybutów
+  xlsx_currency_export:
+    label: Import walut z pliku XLSX
+    export.label: Eksport walut
+  xlsx_group_type_export:
+    label: Eksport typów grup w XLSX
+    export.label: Eksport typu grupy
   xlsx_channel_import:
-    validation.label: Sprawdzanie pliku
+    label: Eksport kanałów do XLSX
+    validation.label: Weryfikacja pliku
+    import.label: Import kanałów
   xlsx_locale_import:
-    validation.label: Sprawdzanie pliku
+    label: Eksport ustawień regionalnych do XLSX
+    validation.label: Weryfikacja pliku
+    import.label: Import ustawień regionalnych
   xlsx_attribute_group_import:
-    validation.label: Sprawdzanie pliku
+    label: Import ustawień atrybutów do XLSX
+    validation.label: Weryfikacja pliku
+    import.label: Import grup atrybutów
   xlsx_currency_import:
-    validation.label: Sprawdzanie pliku
+    label: Import walut z pliku XLSX
+    validation.label: Weryfikacja pliku
+    import.label: Importu walut
   xlsx_group_type_import:
-    validation.label: Sprawdzanie pliku
+    label: Eksport typów grup w XLSX
+    validation.label: Weryfikacja pliku
+    import.label: Import typów grupy

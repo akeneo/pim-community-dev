@@ -1,0 +1,252 @@
+pim_connector:
+  steps:
+    dummy_reader.title: Kukla okuyucu
+    product_reader.title: Ürün çıkarma
+    entity_reader.title: Varlık çıkarma
+    csv_reader:
+      title: CSV okuyucu
+    file_reader:
+      invalid_item_columns_count: '%totalColumnsCount% sütun olması beklenirken, %filePath%:%lineno% içinde %itemColumnsCount% sütun var'
+    csv_product_reader.title: CSV ürün okuyucusu
+    csv_category_reader.title: CSV kategori okuyucusu
+    dummy_processor.title: Sahte işlemci
+    product_processor.title: Ürün oluşturma
+    category_processor.title: Kategori oluşturma
+    association_processor.title: İlişkilendirme oluşturma
+    product_association_processor.title: İlişkilendirme oluşturma
+    group_processor.title: Grup oluşturma
+    attribute_processor.title: Özellik oluşturma
+    attribute_option_processor.title: Özellik seçeneğini oluşturma
+    heterogeneous_processor.title: CSV ürün sınırlandırıcısı
+    homogeneous_processor.title: CSV varlık sınırlandırıcısı
+    transformer_processor.title: Dönüştürme
+    dummy_writer.title: Sahte yazar
+    file_writer.title: Çıktı
+    product_writer.title: Ürün deposu
+    category_writer.title: Kategori deposu
+    writer.title: Varlık deposu
+    csv_writer.title: Csv Yazarı
+job_execution.summary:
+  read: oku
+  write: Yazıldı
+  skip: atlandı
+  create: oluşturuldu
+  process: işlenen
+  update_products: güncellenmiş ürünler
+  process_products: işlenmiş ürünler
+  skip_products: atlanan ürünler
+  displayed: görüntülenen ilk uyarılar
+  charset_validator:
+    title: 'Dosya kodlaması:'
+    skipped: Geçildi, uzantı beyaz listede
+  product_skipped_no_diff: atlanan ürün (farkı yoktur)
+  product_skipped_no_associations: ürün atlandı (ilişkilendirme tespit edilemedi)
+  product_model_skipped_no_diff: ürün modeli atlandı (farkı yok)
+  item_position: satırları oku
+  skipped_in_root_product_model: ürün modeli kaynağıyla birlikte atlandı
+  skipped_in_sub_product_model: ürün modeli kaynağı olmadan atlandı
+#Job labels
+batch_jobs:
+  csv_product_export:
+    label: Ürünleri CSV olarak dışa aktar
+    export.label: Ürünleri dışa aktar
+  csv_product_model_export:
+    label: Ürün modelini CSV olarak dışa aktar
+    export.label: Ürün modelini dışa aktar
+  csv_category_export:
+    label: Kategorileri CSV olarak dışa aktar
+    export.label: Kategorileri dışa aktar
+  csv_attribute_export:
+    label: Özellikleri CSV olarak dışa aktar
+    export.label: Özellikleri dışa aktar
+  csv_attribute_option_export:
+    label: Özellik seçeneklerini CSV olarak dışa aktar
+    export.label: Özellik seçeneklerini dışa aktar
+  csv_association_type_export:
+    label: CSV'de ilişki türü dışa aktarıldı
+    export.label: İlişki türünü dışa aktar
+  csv_group_export:
+    label: Grupları CSV olarak dışa aktar
+    export.label: Grupları dışa aktar
+  csv_family_export:
+    label: Aileyi CSV olarak dışa aktar
+    export.label: Aileyi dışa aktar
+  csv_family_variant_export:
+    label: Tür çeşidini CSV olarak dışa aktar
+    export.label: Tür çeşidini dışa aktar
+  csv_product_import:
+    label: Ürünleri CSV olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Ürünleri içe aktar
+    import_associations.label: İlişkiyi içe aktar
+  csv_product_model_import:
+    label: Ürün modelini CSV olarak içe aktar
+    validation.label: Dosya validasyonu
+    import_root_product_model.label: Ana ürün modeli içe aktar
+    import_sub_product_model.label: Alt ürün modeli içe aktar
+    import_product_model_descendants.label: Ürün modeli nesillerini hesapla
+  csv_category_import:
+    label: Kategorileri CSV olarak içe aktar
+    validation.label: Dosya doğrulaması
+    import.label: Kategorileri içe aktar
+  csv_attribute_import:
+    label: Özellikleri CSV olarak içe aktar
+    validation.label: Dosya doğrulaması
+    import.label: Özellikleri içe aktar
+  csv_attribute_option_import:
+    label: Özellik seçeneklerini CSV olarak içe aktar
+    validation.label: Dosya doğrulaması
+    import.label: Özellik seçeneklerini içe aktar
+  csv_association_type_import:
+    label: CSV'de ilişki türünü içe aktar
+    validation.label: Dosya doğrulaması
+    import.label: İlişki türünü içe aktar
+  csv_family_import:
+    label: Aileyi CSV olarak içe aktar
+    validation.label: Dosya doğrulaması
+    import.label: Aileyi içe aktar
+  csv_family_variant_import:
+    label: Tür çeşidini CSV olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Tür çeşidi içe aktar
+  csv_group_import:
+    label: Grupları CSV olarak içe aktar
+    validation.label: Dosya doğrulaması
+    import.label: Grupları içe aktar
+  csv_channel_export:
+    label: CSV'de kanalı dışa aktar
+    export.label: Kanal dışa aktarma
+  csv_locale_export:
+    label: CSV'de yerel ayarları dışa aktar
+    export.label: Yerel ayarları dışa aktar
+  csv_attribute_group_export:
+    label: CSV'de grup özelliklerini dışa aktar
+    export.label: Özellik gruplarını dışa aktar
+  csv_currency_export:
+    label: Para birimlerini CSV olarak dışa aktar
+    export.label: Kurları dışa aktar
+  csv_group_type_export:
+    label: CSV de grup tipini dışa aktar
+    export.label: Grup türlerini dışa aktar
+  csv_channel_import:
+    label: CSV de kanalı içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Kanal içe aktarma
+  csv_locale_import:
+    label: CSV de yerel ayarı içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Yerel ayarları içe aktar
+  csv_attribute_group_import:
+    label: CSv de özellik grubunu içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Grup özelliğini içe aktar
+  csv_currency_import:
+    label: CSV'de bulunan para birimini içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Para birimlerini içe aktar
+  csv_group_type_import:
+    label: CSV'de grup türü içe aktarma
+    validation.label: Dosya validasyonu
+    import.label: Grup türünü içe aktar
+  xlsx_category_import:
+    label: XLSX'de kategoriyi içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Kategorileri içe aktar
+  xlsx_association_type_import:
+    label: XLSX'de ilişkilendirme türünü içe aktar 
+    validation.label: Dosya validasyonu
+    import.label: İlişki türünü içe aktar
+  xlsx_attribute_import:
+    label: XLSX'de özelliği içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Özellikleri içe aktar
+  xlsx_attribute_option_import:
+    label: XLSX'de özellik seçeneğini içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Özellik seçeneklerini içe aktar
+  xlsx_family_import:
+    label: XLSX'de sınıfı içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Aileyi içe aktar
+  xlsx_family_variant_import:
+    label: Tür çeşidini XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Tür çeşidi içe aktar
+  xlsx_product_export:
+    label: Ürünü XLSX olarak dışa aktar
+    export.label: Ürünleri dışa aktar
+  xlsx_product_model_export:
+    label: Ürün modelini XLSX olarak dışa aktar
+    export.label: Ürün modelini dışa aktar
+  xlsx_product_import:
+    label: Ürünü XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Ürünleri içe aktar
+    import_associations.label: İlişkiyi içe aktar
+  xlsx_product_model_import:
+    label: Ürün modelini XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import_root_product_model.label: Ana ürün modeli içe aktar
+    import_sub_product_model.label: Alt ürün modeli içe aktar
+    import_product_model_descendants.label: Ürün modeli nesillerini hesapla
+    import_associations.label: İlişkiyi içe aktar
+  xlsx_group_export:
+    label: Grubu XLSX olarak dışa aktar
+    export.label: Grupları dışa aktar
+  xlsx_group_import:
+    label: Grubu XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Grupları içe aktar
+  xlsx_family_export:
+    label: XLSX'de sınıfı dışa aktar
+    export.label: Aileyi dışa aktar
+  xlsx_family_variant_export:
+    label: Tür çeşidini XLSX olarak dışa aktar
+    export.label: Tür çeşidini dışa aktar
+  xlsx_category_export:
+    label: XLSX'de kategoriyi dışa aktar
+    export.label: Kategorileri dışa aktar
+  xlsx_attribute_export:
+    label: XLSX'de özelliği dışa aktar
+    export.label: XLSX'de özelliği dışa aktar
+  xlsx_attribute_option_export:
+    label: XLSX'de özellik seçeneğini dışa aktar
+    export.label: XLSX'de özellik seçeneğini dışa aktar
+  xlsx_association_type_export:
+    label: XLSX'de ilişkilendirme türünü dışa aktar
+    export.label: XLSX de ilişki türünü dışa aktar
+  xlsx_channel_export:
+    label: XLSX'de bulunan kanalı dışa aktar
+    export.label: Kanalı dışa aktar
+  xlsx_locale_export:
+    label: XLSX yerel ayarı dışa aktar
+    export.label: Yerel ayarları dışa aktar
+  xlsx_attribute_group_export:
+    label: XLSX'de özellik grubunu dışa aktar
+    export.label: Özellik gruplarını dışa aktar
+  xlsx_currency_export:
+    label: XLSX'de para birimini dışa aktar
+    export.label: Para birimlerini dışa aktar
+  xlsx_group_type_export:
+    label: XLSX de grup türünü dışa aktar
+    export.label: Grup türünü dışa aktar
+  xlsx_channel_import:
+    label: XLSX'de kanalı içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Kanalı içe aktar
+  xlsx_locale_import:
+    label: XLSX de yerel ayarı içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Yerel ayarı içe aktar
+  xlsx_attribute_group_import:
+    label: XLSX özellik grubunu içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Özellik grubu içe aktar
+  xlsx_currency_import:
+    label: XLSX de para birimlerini içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Para birimini içe aktar
+  xlsx_group_type_import:
+    label: XLSX de grup türünü içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Grup türü içe aktarma

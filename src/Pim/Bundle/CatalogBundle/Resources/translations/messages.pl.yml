@@ -1,24 +1,3 @@
 No products to remove: Brak produktów do usunięcia
 "dot (.)": kropka (.)
 "comma (,)": przecinek (,)
-pim_catalog:
-  constraint:
-    0: Wystąpił nieoczekiwany błąd.
-    100: Nieoczekiwana wartość
-    101: This field expects a boolean value.
-    102: This field expects a float value.
-    103: This field expects an integer value.
-    104: This field expects a numeric value.
-    105: This field expects a string value.
-    106: This field expects an array value.
-    107: This field expects an array of arrays as value.
-    200: Wystąpił błąd wewnętrzny
-    201: Wystąpił błąd wewnętrzny
-    202: This field expects a numeric value.
-    203: This field expects a string value.
-    204: This field expects a string value.
-    205: Wystąpił błąd wewnętrzny
-    300: This field expects a valid entity code.
-    301: This field expects a valid scope and locale.
-    302: This field expects a valid scope.
-    303: This field expects a valid association format.

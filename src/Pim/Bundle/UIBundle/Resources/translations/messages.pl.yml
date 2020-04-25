@@ -13,12 +13,12 @@ Logged in as: Zalogowany jako
 Logout: Wyloguj się
 Login: Zaloguj się
 Previous: Poprzedni
-Next: Następny
+Next: Następna
 Channel list: Lista kanałów
 Select file: Wybierz plik
 Change file: Zmień plik
 Remove file: Usuń plik
-Delete: Usuń
+Delete: Skasuj
 Save: Zapisz
 Cancel: Anuluj
 Get help: Uzyskaj pomoc
@@ -34,6 +34,16 @@ Favorites: Ulubione
 Most Viewed: Najczęściej oglądane
 "Add this page to favorites": "Dodaj tę stronę do ulubionych"
 "Minimize the window to the pinbar": "Minimalizuj okno do Pinbar"
-"Loading ...": "Wczytywanie ..."
+"Loading ...": "Ładuję..."
 "Yes": "Tak"
 "No": "Nie"
+required: (wymagane)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Włącz wiadomości ładowania
+    loading_message_enabled.tooltip: Wyświetlaj komunikaty przyjazne dla użytkownika podczas oczekiwania na załadowanie strony
+    loading_messages.label: Dostępne wiadomość ładowania
+    loading_messages.tooltip: Wszystkie dostępne ładowane wiadomości oddzielone podziałem wiersza
+  group:
+    loading_message.title: Wiadomości ładowania
+other_actions: Inne działania

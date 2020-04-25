@@ -1,0 +1,1454 @@
+#Grid action messages
+confirmation:
+  title: Doğrula
+  remove:
+    item: Bu öğeyi silmek istediğinizden emin misiniz?
+    association_type: Bu ilişki şeklini silmek istediğinizden emin misiniz?
+    attribute: Bu özelliği silmek istediğinizden emin misiniz?
+    attribute_group: Bu özellik grubunu silmek istediğinizden emin misiniz?
+    family: Bu aileyi silmek istediğinizden emin misiniz?
+    family_variant: Bu aile değişkenlerini silmek istediğinize emin misiniz?
+    product: Bu ürünü silmek istediğinizden emin misiniz?
+    product_model: Bu ürün modelini silmek istediğinize emin misiniz? Tüm çocukların, ürün modelleri ve değişkenleri de silinmiş olacak.
+    channel: Bu kanalı silmek istediğinizden emin misiniz?
+    group: Bu grubu silmek istediğinizden emin misiniz?
+    group_type: Bu grup türünü silmek istediğinizden emin misiniz?
+    import_profile: Bu içeri aktarma profilini silmek istediğinizden emin misiniz?
+    export_profile: Bu dışarı aktarma profilini silmek istediğinizden emin misiniz?
+    user: Bu kullanıcıyı silmek istediğinizden emin misiniz?
+    role: Bu rolü silmek istediğinizden emin misiniz?
+    job_instance: Bu iş durumunu silmek istediğinize emin misiniz?
+    api_connection: Bu API bağlantısını iptal etmek istediğinize emin misiniz? Bu bağlantı üzerinden yapılan tüm API çağrıları artık hata verecek.
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Toplu eylemler
+    quick_export:
+      label: Dışa hızlı aktarım
+  mass_action:
+    delete:
+      label: Sil
+      confirm_content: Seçili ürünü silmek istediğinizden emin misiniz?
+      success: Seçilen ürünler başarıyla silindi.
+      error: Seçili ürünleri silmeye çalışırken hata meydana geldi, lütfen tekrar deneyiniz.
+  view_selector:
+    view: Görünümler
+    create_view_modal:
+      create: Oluştur
+      confirm: Tamam
+      cancel: İptal
+flash:
+  item:
+    removed: Öğe başarıyla kaldırıldı
+  association_type:
+    removed: İlişki türü başarıyla kaldırıldı
+  attribute:
+    removed: Özellik başarı ile silindi
+  attribute_group:
+    removed: Özellik grubu başarıyla kaldırıldı
+  family:
+    removed: Aile başarıyla kaldırıldı
+  family_variant:
+    removed: Aile değişkenleri başarıyla silindi
+  product:
+    removed: Ürün başarıyla kaldırıldı
+  product_model:
+    removed: Ürün modeli başarıyla kaldırıldı
+  channel:
+    removed: Kanal başarılı bir şekilde kaldırıldı
+  group:
+    removed: Grup başarıyla kaldırıldı
+  group_type:
+    removed: Grup türü başarılı bir şekilde kaldırıldı
+  import_profile:
+    removed: İçeri aktarılan profil başarıyla kaldırıldı
+  export_profile:
+    removed: Dışa aktarılan profil başarıyla kaldırıldı
+  user:
+    removed: Kullanıcı başarılı bir şekilde silindi
+  role:
+    removed: Rol başarı ile silindi
+  job_instance:
+    removed: İş örneği başarıyla kaldırıldı
+  api_connection:
+    removed: API bağlantısı başarıyla iptal edildi
+error:
+  common: Bir hata oluştu
+  creating:
+    product: Ürün kimliği olarak hiçbir özellik yapılandırılmamış ya da bunu düzenleme haklarına sahip değilsiniz.
+  removing:
+    item: Bu öğe silinemiyor
+    association_type: Bu ilişki türünü silemezsiniz
+    attribute: Bu özellik silinemiyor
+    family: Bu aileyi silemezsiniz
+    product: Bu ürün silinemiyor
+    channel: Bu kanal silinemiyor
+    group: Bu grup silinemiyor
+    group type: Bu grup türü silinemiyor
+    import profile: İçe aktarılan bu profil silinemiyor
+    export profile: Dışa aktarılan bu profil silinemiyor
+    user: Bu kullanıcı silinemiyor
+    role: Bu rol silinemiyor
+    attribute_option: Özellik seçeneğinin silinmesi sırasında hata oluştu
+  saving:
+    attribute_option: Özellik seçeneği kayıt edilemiyor
+    export_profile: Profil dışa aktarılamıyor. Lütfen tüm filtrelerin iyi doldurulduğunu kontrol ediniz
+alert:
+  attribute_option:
+    error_occured_during_submission: Sunucuda form gönderme sırasında bir hata oluştu
+    save_before_edit_other: Lütfen bunu düzenlemeden önce farklı satırlardaki modifikasyonlarınızı giriniz
+  session_storage:
+    not_available: Web tarayıcınız Anlık Depolama ile uyumlu görünmüyor. Lütfen yöneticiniz ile iletişime geçiniz
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: Dikkat ! Bütün kaydedilmiş verilerinizi kaybedeceksiniz. Bu yeni seçenekteki değişiklikleri iptal etmek istediğinize emin misiniz ?
+    cancel_edition_on_new_option_title: Değişikliği iptal et
+label:
+  attribute_option:
+    add_option: Bir seçenek ekle
+Code: Kod
+Edit: Düzenle
+Delete: Sil
+Edit attributes of the product: Ürünün özelliklerini düzenle
+Classify the product: Ürün sınıflandır
+Delete the product: Ürünü sil
+Change status: Değişim durumu
+Toggle status: Geçiş durumu
+#Quick export labels
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (Tüm özellikler)
+        csv_grid_context: CSV(Kılavuz içerik)
+        xlsx_all: Excel(Tüm özellikler)
+        xlsx_grid_context: Excel (kılavuz içerik)
+      delete: Sil
+      mass_edit: Toplu İşlemler
+      category_edit: Kategorilerdeki ürünleri taşı
+      sequential_edit: Sıralı düzenleme
+#Jstree context menu actions
+jstree.create: Oluştur
+jstree.done: Tamamlandı
+switch_on: "Evet"
+switch_off: "Hayır"
+pim_enrich:
+  item:
+    list:
+      delete.label: Sil
+      delete.error: Öğe silinirken hata oluştu
+    delete:
+      confirm.content: Bu {{ itemName }} öğeyi silmek istediğinizden eminmisiniz ? Bu işlemi geri almak mümkün olmayacaktır
+      confirm.title: Bunu {{ itemName }} sil
+  navigation:
+    link:
+      back_to_grid: Kılavuza dön
+    other_actions: Diğer eylemler
+  entity:
+    save:
+      label: Kaydet
+    info:
+      update_failed: Güncelleme başarısız oldu
+      update_successful: Güncelleme başarılı
+    create_popin:
+      code: Kod
+      label: Etiket
+      labels:
+        save: Kaydet
+        cancel: İptal
+    product:
+      navigation: Ürün gezintisi
+      infos: Ürün bilgileri
+      index_title: "] -Inf, 1]{{ count }} sonuç |] 1, Inf{{ count }} souçlar"
+      title: ürün
+      locale: Yerel Ayar
+      category: Kategori
+      create: Oluştur
+      subTitle: Ürün oluştur
+      modalTitle: Bir eylem seç
+      filters: Filtreler
+      selected: seçilen sonuçlar
+      common: Genel
+      btn:
+        enabled: Etkinleştirildi
+        disabled: Devre dışı
+        download_pdf: PDF
+        compare_translate: Karşılaştır / Çevir
+        delete: Sil
+        save: Kaydet
+      history:
+        version: Sürüm
+        author: Sahibi
+        logged_at: Giriş zamanı
+        from: Kimden
+        modified: Değiştirilme
+        old_value: Eski değer
+        new_value: Yeni değer
+        actions: Eylemler
+      info:
+        deletion_successful: Ürün başarıyla silindi.
+        deletion_failed: Bu ürün silinemez.
+        update_successful: Ürün başarıyla güncelleştirildi.
+        update_failed: Bu ürün güncellenemedi.
+        field_not_ready: "Ürün şuan için kayıt edilemiyor. Bu alanlar hazır değil {{ fields }}"
+        already_in_upload: Bu özellik için "{{ locale }}" yerel ve {{ scope }} kapsamı için zaten bir dosya yüklü
+      error:
+        upload: Dosya yüklenirken bir hata oluştu
+      meta:
+        created: Oluşturuldu
+        created_by: Yapan
+        updated_by: Yapan
+        updated: Son güncelleme
+        family:
+          title: Aile
+          none: Hiçbiri
+        family_variant:
+          title: Çeşit
+          none: Hiçbiri
+        groups:
+          title: Gruplar
+          modal:
+            title: Grup {{ group }}
+            view_group: Grubu görüntüle
+            group_label: Etiket
+            more_products: '{{ count }} Daha fazla ürün...'
+            close: Kapat
+        status: Durum
+        scope: Kanal
+        locale: Yerel Ayar
+      copy:
+        select: Seç
+        all: Tümü
+        all_visible: Tümü görünür
+        none: Hiçbiri
+        copy: Kopyala
+      optional_attribute:
+        remove: Bu özelliği sil
+      locale_specific_attribute:
+        unavailable: Bu yerel özel alan bu yerelde kullanılabilir değil
+      localizable:
+        channel_locale_unavailable: Bu yerelleştirilebilir alan{{ locale }} yereli ve {{ channel }} kanalı için uygun değil
+      media:
+        upload: Yüklemek için Sürükle yada buraya tıkla
+      create_popin:
+        type: Ürün
+        title: Oluştur
+        labels:
+          family: Bir sınıf seçin
+          family_variant: Bir aile biçimi seç
+          save: Kaydet
+          cancel: İptal
+      message:
+        created: Ürün başarıyla oluşturuldu
+      completeness: Tamamla
+      sequential_edit:
+        item_limit: Seçilen {{ count }} bu sıralı düzenlemede sadece ilk 1000 öğe gösterilir
+        empty: Seçiminiz boş, lütfen arama kriterinizi değiştiriniz
+    product_model:
+      create_popin:
+        type: Ürün modeli
+        title: Ürün modeli oluştur
+        content: Bir ürün modeli değişken ürünleri toplar ve ortak özelliklerinin zenginleştirilmesini kolaylaştırır.
+      info:
+        create_successful: Ürün modeli başarıyla oluşturuldu
+        update_successful: Ürün modeli başarıyla güncellendi. Değişik ürünlerin tamamı yeniden hesaplanacak.
+        deletion_successful: Ürün modeli başarıyla silindi.
+        update_failed: Ürün modeli güncellenemiyor.
+        field_not_ready: "Ürün modeli şu an kaydedilemiyor. Aşağıdaki alanlar hazır değil: {{ fields }}"
+      read_only_parent_attribute_from_common: Bu özellik ortak özelliklerde güncellenebilir.
+      read_only_parent_attribute_from_model: "Bu özellik, {{ axes }} tarafından özelliklerde güncellenebilir"
+      variant_axis: Değişken eksen
+      title: ürün modelleri
+      add_child:
+        create: Yeni ekle
+        cancel: İptal
+        confirm: Doğrula
+        create_label: "Yeni bir {{ axes }} ekle"
+        fields:
+          required_label: (değişken eksen)
+          code: Kod
+    association_type:
+      info:
+        deletion_successful: İlişkilendirme türü başarıyla silindi.
+        deletion_failed: İlişkilendirme türü silinemedi.
+        update_successful: İlişkilendirme türü başarılı bir şekilde güncellendi.
+        update_failed: İlişkilendirme türü güncellenemedi.
+        field_not_ready: "İlişki türü şu an kaydedilemiyor. Aşağıdaki alanlar hazır değil: {{ fields }}"
+      meta:
+        created: Oluşturulma
+        created_by: Oluşturan kişi
+        updated: Güncellenme
+        updated_by: Güncelleyen
+      btn:
+        save: Kaydet
+      title: İlişki türü
+      create_popin:
+        title: Oluştur
+      message:
+        created: İlişki türü başarıyla oluşturuldu
+    group_type:
+      info:
+        deletion_successful: Grup türü başarıyla silindi.
+        deletion_failed: Grup türü silinemedi.
+        update_successful: Grup türü başarıyla güncellendi.
+        update_failed: Grup türü güncellenemedi.
+        field_not_ready: "Grup türü şu an kaydedilemiyor. Aşağıdaki alanlar hazır değil: {{ fields }}"
+      meta:
+        created: Oluşturuldu
+        created_by: Oluşturan kişi
+        updated: Güncellendi
+        updated_by: Güncelleyen
+      btn:
+        save: Kaydet
+      title: grup tipi
+      create_popin:
+        title: Oluştur
+      message:
+        created: Grup tipi başarıyla oluşturuldu
+    channel:
+      title: kanal
+      info:
+        deletion_successful: Kanal başarıyla silindi
+        deletion_failed: Kanal silinemedi.
+        update_successful: Kanal başarıyla güncellendi.
+        update_failed: Kanal güncellenemedi.
+        create_successful: Kanal başarıyla oluşturuldu.
+        create_failed: Kanal oluşturulamadı
+        field_not_ready: "Kanal şuan kaydedilemiyor. Aşağıdaki alanlar hazır değil: {{ fields }}"
+      meta:
+        created: Oluşturulma
+        created_by: Oluşturan kişi
+        updated: Güncelleme
+        updated_by: Güncelleyen
+      btn:
+        save: Kaydet
+    family:
+      title: aile
+      selected: seçilen aileler
+      info:
+        update_successful: Aile başarıyla güncellendi.
+        create_successful: Kanal başarıyla oluşturuldu.
+        update_failed: Sınıf güncellemesi sırasında bir hata oluştu.
+        cant_remove_attribute_as_label: Etiket olarak kullanılan özellik kaldırılamıyor
+        cant_remove_attribute_as_image: Ana resim olarak kullanılan özellik kaldırılamıyor
+        attribute_edit_permission_is_not_granted: Ailenin özelliklerini düzenleme hakkınız yok
+        cant_remove_attribute_used_as_axis: Bir aile değişkeninde değişken ekseni olarak kullanılan bu özellik kaldırılamıyor
+      meta:
+        created: Oluşturuldu
+        created_by: Oluşturan kişi
+        updated: Güncellendi
+        updated_by: Güncelleyen
+      btn:
+        save: Kaydet
+      create_popin:
+        title: Oluştur
+      message:
+        created: Aile başarıyla oluşturuldu
+      variant:
+        common:
+          title: Ortak özellikler
+          empty: Ortak özellik yok
+        axis.label: Değişken eksen
+        level_1.label: Birinci seviye değişken özellik
+        level_2.label: İkinci seviye değişken özellik
+        add_variant: Değişken ekle
+        create_label: Yeni bir aile biçimi oluştur
+        create_description: Bir aile değişkenindei değişkenler ile ürünler için bir yapı tanımlayabilirsiniz. Yönetilen değişkenlerinin seviyelerinin sayısını ve her seviye için değişken ekseni olan özellikleri seçiniz, ve sonra özelliklerin nasıl dağıtıldığını tanımlayınız.
+        update_description: Bu özelliklerin değişken seviyesinde yönetilmesi için özellikleri seçilmiş değişkenleri sürükleyip bırakın.
+        create: Oluştur
+        cancel: İptal
+        code: Kod
+        label: Etiket
+        levels: Biçim levelleri
+        axis_level: Biçim eksen seviyesi
+        required: gerekli
+        confirm_attribute_removal:
+          title: Özellikleri kaldırmayı onayla
+          message: Bu özellikleri kaldırarak onları aile değişkenlerinin ortak özelliklerine geri döndürür ve değerleri değişken ürünlerden kaldırırsın
+    family_variant:
+      info:
+        update_successful: Aile değişkeni başarıyla güncellendi. Ürünlerin değişkenleri yapılan değişiklik ile güncellendi.
+    attribute_option:
+      code: Kod
+      label: Etiket
+      actions: Eylemler
+    group:
+      title: Grup
+      info:
+        deletion_successful: Grup başarıyla silindi.
+        deletion_failed: Grup silinemedi.
+        update_successful: Grup başarıyla güncellendi.
+        update_failed: Grup güncellenemedi.
+        field_not_ready: "Grup şu an kaydedilemiyor. Aşağıdaki alanlar hazır değil: {{ fields }}"
+      btn:
+        save: Kaydet
+      meta:
+        product_count: Ürünler
+        created: Oluşturuldu
+        created_by: Oluşturan kişi
+        updated: Güncellendi
+        updated_by: Güncelleyen
+      create_popin:
+        title: Oluştur
+      message:
+        created: Grup başarıyla oluşturuldu
+    job_instance:
+      title: İş profili
+      info:
+        update_failed: İş profili güncellenemedi.
+        update_successful: İş profili başarıyla güncellendi.
+    attribute:
+      info:
+        deletion_successful: Özellik başarıyla silindi.
+        deletion_failed: Özellik silinemedi.
+        update_successful: Özellik başarıyla güncellendi.
+        update_failed: Özellik güncellenemedi.
+        create_successful: Özellik başarıyla oluşturuldu.
+        create_failed: Özellik oluşturulamadı.
+        field_not_ready: "Özellik şu an kaydedilemiyor. Aşağıdaki alanlar hazır değil: {{ fields }}"
+      scopable: Ölçeklendirilebilir
+      type:
+        pim_catalog_identifier: Tanımlayıcı
+        pim_catalog_text: Metin
+        pim_catalog_textarea: Metin Alanı
+        pim_catalog_number: Numara
+        pim_catalog_price_collection: Ücret
+        pim_catalog_multiselect: Çoklu seçim
+        pim_catalog_simpleselect: Basit seçim
+        pim_catalog_file: Dosya
+        pim_catalog_image: Resim
+        pim_catalog_boolean: "Evet/Hayır"
+        pim_catalog_date: Tarih
+        pim_catalog_metric: Metrik
+        pim_reference_data_simpleselect: Referans verisi tekli seçim
+        pim_reference_data_multiselect: Referans verisi çoklu seçim
+      validation_rule:
+        email: E-posta
+        regexp: Düzenli ifade
+        url: URL
+      title: özellik
+    attribute_group:
+      info:
+        update_failed: Özellik grubu güncellenemedi
+        update_successful: Özellik grubu başarıyla güncellendi
+    api_connection:
+      create_popin:
+        title: Oluştur
+      message:
+        created: API bağlantısı başarıyla oluşturuldu
+  confirmation:
+    leave: Bu sayfadan ayrılmak istediğinize eminmisiniz?
+    discard_changes: Eğer sayfadan ayılırsanız {{ entity }} değişikliklerini kaybedeceksiniz.
+    delete_item: Silmeyi Onayla
+    remove_item: Kaldırmayı onayla
+    remove: Kaldır
+    delete:
+      attribute: Üründen bu özelliği silmek istediğinize emin misiniz?
+      attribute_group: Özellik grubundan {{ attribute }} özelliğini kaldırmak istediğinize emin misiniz?
+      product_model: Silmeyi Onayla
+  info:
+    not_applicable: N/A
+    entity:
+      updated: Kaydedilmemiş değişiklikler var.
+  error:
+    upload: Bir dosya yüklerken hata oluştu
+  alert:
+    not_allowed: Yasak. Bu sayfaya erişim izniniz yok
+    error_occured: Sayfanın yüklenme esnasında bir hata meydana geldi
+  form:
+    required: (Gerekli)
+    product_model:
+      choose_product_model: Ürün modeli seçin
+      choose_variant: Bir çeşit seçin
+      complete_variant_product: ürün çeşidi
+      complete_variant_products: ürün çeşitleri
+      family_variant: Çeşit
+      product_model: Ürün modeli
+      flash:
+        product_model_added: Ürün modeli başarıyla ürün modeline eklendi
+        variant_product_added: Ürün çeşidi başarıyla ürün modeline eklendi
+    product:
+      tab:
+        associations:
+          title: İlişkilendirmeler
+          info:
+            none_exist: Hiç bir ilişki türü yok.
+            show_products: Ürünleri görüntüle
+            show_groups: Grupları görüntüle
+            number_of_associations: "{{ productCount }} ürün(ler), {{ productModelCount }} ürün model(ler) i ve {{ groupCount }} grup(lar)"
+          association_type_selector: İlişki türü
+          target: Hedef
+          manage: '{{ associationType }} ilişkilendirmesi ekle'
+          manage_description: Geçerli ürün ile ilişkilendirmek istediğiniz ürünleri seçin
+          add_associations: İlişkilendirmeler ekle
+        attributes:
+          title: Özellikler
+          btn:
+            add: Ekle
+            add_attributes: Özellikleri ekle
+          info:
+            search_attributes: Arama...
+            no_available_attributes: Daha fazla eklenecek başka özellikler yok
+            attributes_selected: "{{ itemsCount }} özellik seçildi"
+            no_match: Eşleşme bulunamadı
+            load_more: Daha fazla sonuç yükleniyor...
+          attribute_group_selector: Özellik grubu
+          attribute_group_all: Tümü
+          attribute_group.to_fill_count: "{1}1 gerekli özellik eksik |]1, Inf[{{ count }} gerekli özellikler eksik"
+          attribute_filter:
+            display: Görüntüle
+            all: Bütün özellikler
+            missing_required: Eksik olan tüm gerekli özellikler
+        categories:
+          title: Kategoriler
+      panel:
+        completeness:
+          title: Bütünlük
+          info:
+            no_family: Aile tanımlanmadı. Lütfen bu ürünün tamlığını hesaplamak için bir aile tanımlayınız.
+            no_completeness: Sadece ürün sınıfını değiştirdiniz. Yeni sınıfın bütünlüğünü hesaplamak için lütfen ilk önce kaydedin.
+          missing_values: "{1}1 eksik değer |] 1, Inf [{{ count }} eksik değerler"
+        history:
+          title: Geçmiş
+      switch:
+        "no": "Hayır"
+        "yes": "Evet"
+      sequential_edit:
+        info:
+          products: ürünler
+          previous: Kaydetmeden {{ product }}'a geri dönün.
+          next: Kaydetmeden {{ product }} geçin.
+        btn:
+          save_and_next: Kaydet ve ileri
+          save_and_finish: Kaydet ve bitir
+      change_family:
+        modal:
+          title: Ürün sınıfını değiştirin
+          merge_attributes: Geçerli özellikler yeni ailedekilere aktarılacak.
+          keep_attributes: Hiç bir özellik silinmeyecek.
+          change_family_to: Aileyi şuna değiştir
+          empty_selection: Bir aile seç
+      flash:
+        attribute_deletion_error: Özelliğin silinmesi esnasında bir hata meydana geldi
+      mass_edit:
+        select_attributes: Özellikleri seç
+        select: Seç
+    association_type:
+      tab:
+        properties:
+          title: Özellikler
+          general: Genel özellikler
+          code: Kod
+          label_translations: Etiket çevirileri
+        history:
+          title: Geçmiş
+    group_type:
+      tab:
+        properties:
+          title: Özellikler
+          general: Genel özellikler
+          code: Kod
+          label_translations: Etiket çevirileri
+        history:
+          title: Geçmiş
+    channel:
+      tab:
+        history:
+          title: Geçmiş
+        properties:
+          title: Özellikler
+          general: Genel
+          code: Kod
+          currencies: Kurlar
+          locales: Yerel Ayarlar
+          category_tree: Kategori ağacı
+          label_translations: Etiket çevirileri
+          label_conversion_units: Ürün dışa aktarma sırasında kullanılacak metrik özelliklerin her biri için bir dönüşüm birimi seçin
+          conversion_unit:
+            do_not_convert: Dönüştürmeyin
+    family:
+      tab:
+        properties:
+          title: Özellikler
+          general: Genel
+          code: Kod
+          attribute_as_label: Etiket olarak kullanılan özellik
+          attribute_as_image: Ana resim olarak kullanılan özellik
+          empty_attribute_as_image: Seçili değil
+          label_translations: Etiket çevirileri
+        attributes:
+          title: Özellikler
+          label_label: Etiket
+          toolbox:
+            select_attributes_by_groups: Gruplara ekle
+            select_attributes: Özellik ekle
+            add: Ekle
+            attributes_groups_selected: '{{ itemsCount }} grup(lar) seçildi'
+          not_required_label: Gerekli değil
+          required_label: Gerekli
+        variant:
+          title: Biçimler
+          flash:
+            family_variant_created: Aile biçimi başarıyla oluşturuldu
+        history:
+          title: Geçmiş
+    family_variant:
+      tab:
+        labels:
+          title: Etiket çevirileri
+    attribute_option:
+      flash:
+        option_created: Özellik seçeneği başarılı bir şekilde yaratıldı
+        error_creating_option: Özellik seçeneği oluşturmaya çalışırken bir hata meydana geldi
+      add_option_modal:
+        title: Özellik seçeneği ekle
+        confirm: Ekle
+        cancel: İptal
+    entity:
+      switch:
+        "no": "Hayır"
+        "yes": "Evet"
+    group:
+      tab:
+        properties:
+          title: Özellikler
+          general: Genel özellikler
+          code: Kod
+          type: Tür
+          label_translations: Etiket çevirileri
+        history:
+          title: Geçmiş
+        products:
+          title: Ürünler
+    attribute_group:
+      tab:
+        properties:
+          title: Özellikler
+          general: Genel özellikler
+          code: Kod
+          label_translations: Etiket çevirileri
+        attribute:
+          title: Özellikler
+          table:
+            name: Ad
+            type: Tür
+            scopable: Ölçeklendirilebilir
+            localizable: Yerelleştirilebilir
+        history.title: Geçmiş
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Ekle
+            add_attributes: Özellik ekle
+          info:
+            search_attributes: Arama...
+            no_available_attributes: Eklenecek başka özellik yok
+    job_execution:
+      loading: Yükleniyor...
+      title.details: Uygulama ayrıntıları
+      refreshBtn.title: Yenile
+      meta:
+        status.title: Durum
+      button:
+        show_profile.title: Profili göster
+        download_log.title: Günlüğü indir
+        download_file.title: Oluşturulan dosyayı indir
+        download_archive.title: Oluşturulan arşivi indir
+      summary:
+        fetching: İş yürütme hakkında veri toplama...
+        warning: Uyarı
+        header.step: Adım
+        header.status: Durum
+        header.warnings: Uyarılar
+        header.summary: Özet
+        header.start: Başla
+        header.end: Bitir
+    job_instance:
+      fail:
+        launch: İş profili başlatılamadı. Geçerli olduğundan veya erişim hakkınızın olduğundan emin olun.
+        save: İş profili kaydedilemedi. Düzenleme yetkisine sahip olduğunuzdan emin olun.
+      title:
+        import: Profili içe aktar
+        export: Profili dışa aktar
+      button:
+        edit.title: Düzenle
+        export.title: Şimdi dışa aktar
+        import.launch: Şimdi içe aktar
+        import.upload: Karşıya yükle ve şimdi içe aktar
+        import.upload_file: Dosya yükle
+      meta:
+        job: İş
+        connector: Bağlayıcı
+      subsection:
+        last_executions: Son işlemler
+      tab:
+        content:
+          title: İçerik
+        properties:
+          title: Özellikler
+          code:
+            title: Kod
+          label:
+            title: Etiket
+          decimal_separator:
+            title: Ondalık ayırıcı
+            help: Ondalık sayı ayırıcısını belirle
+          date_format:
+            title: Tarih biçimi
+            help: Veri alanlarının türünü belirle
+          file_path:
+            title: Dosya yolu
+            help: Dosya sisteminde oluşturulan dosyayı nereye yazmalı ?
+          delimiter:
+            title: Ayraç
+            help: Alan sınırlayıcıyı ayarlamak için bir karakter kullanıldı
+          enclosure:
+            title: Çerçeveleme
+            help: Alanın çerçevelenme ayarı için bir karakter kullanıldı
+          with_header:
+            title: Başlığı ile
+            help: Sütun adını ya yazdır ya da yazdırma
+          with_media:
+            title: Dosyaları ve görüntüleri dışa aktar
+            help: Dosyaları ve görüntüleri ya dışa aktar ya da aktarma
+          lines_per_file:
+            title: Her dosya için geçerli satır sayısı
+            help: Her dosya başına geçerli olan satır sayısının limitini belirle
+          upload_allowed:
+            title: Dosya yüklenmesine izin ver
+            help: Dosyanın doğrudan yüklenmesine izin verilip verilmeyeceği
+          categories_column:
+            title: Kategorilerin sütunu
+            help: Sütn kategorilerinin adı
+          escape:
+            title: Çıkış
+            help: Alan çıkışını ayarlamak için kullanılan bir karakter
+          family_column:
+            title: Aile sütunu
+            help: Aile sütununun adı
+          groups_column:
+            title: Grupların sütunu
+            help: Sütun gruplarının adı
+          enabled:
+            title: Ürünü aktif et
+            help: İçe aktarılan ürünün etkinleştirilip etkinleştirilmemesi
+          enabled_comparison:
+            title: Değerleri karşılaştır
+            help: Orijinal değerler ve içe aktarılan değerler arasındaki karşılaştırmayı etkinleştirin. İçe aktarılan değerler orijinal değerlere çok benziyorsa, içe aktarmayı hızlandırabilir
+          real_time_versioning:
+            title: Gerçek zamanlı tarihi güncelle
+            help: Ürün geçmişinin otomatik olarak güncellendiği anlamına gelir ve ayrıca performansları artırmak için kapatılabilir
+          family_variant_column:
+            title: Aile biçimi sütunu
+        history:
+          title: Geçmiş
+      file_path: Dosya yolu
+    attribute:
+      meta:
+        created: Oluşturuldu
+        created_by: tarafından
+        updated: Son güncelleme
+        updated_by: tarafından
+      tab:
+        properties:
+          title: Özellikler
+          section:
+            common: Genel parametreler
+            type_specific: Belirli parametre türleri
+            validation: Onaylama parametreleri
+          label:
+            allowed_extensions: İzin verilen dosya uzantıları
+            auto_option_sorting: Seçenekleri otomatik olarak alfabeye göre sıralama
+            available_locales: Kullanılabilir yerel ayarlar
+            code: Kod
+            date_max: Maksimum tarih
+            date_min: Minimum tarih
+            decimals_allowed: Ondalık değerler izinli
+            default_metric_unit: Varsayılan ölçü birimi
+            group: Özellik grubu
+            is_locale_specific: Özel yerel ayar
+            localizable: Yerel ayar değeri
+            max_characters: Azami karakter
+            max_file_size: En büyük dosya boyutu (MB)
+            metric_family: Metrik aile
+            minimum_input_length: Otomatik tamamlama için gereken en az uzunluk
+            negative_allowed: Negatif değerler izinli
+            number_max: Maksimum sayı
+            number_min: Minimum sayı
+            reference_data_name: Referans veri türü
+            scopable: Kanal başına değer
+            type: Tür
+            unique: Benzersiz değer
+            useable_as_grid_filter: Kılavuzda kullanılabilir
+            validation_regexp: Düzenli ifade
+            validation_rule: Geçerlilik kuralı
+            wysiwyg_enabled: Zengin metin düzenleyicisi etkin
+          default_label:
+            default_metric_unit: Bir birim seç
+            group: Özellik grubu seç
+            metric_family: Bir sınıf seçin
+            reference_data_name: Referans veri türünü seç
+        labels:
+          title: Etiket çevirileri
+        choices:
+          title: Seçenekler
+        history:
+          title: Geçmiş
+    mass_edit:
+      family:
+        attributes:
+          label_label: Etiket
+          toolbox:
+            select_attributes_by_groups: Gruplara ekle
+            select_attributes: Özellikler ekle
+            add: Ekle
+            attributes_groups_selected: '{{ itemsCount }} grup seçildi'
+    basket:
+      title: Sepet
+      empty_basket: Sepet boş
+  job:
+    upload: '{{ type }} dosyasını buraya bırak veya diske göz atmak için tıkla'
+  export:
+    product:
+      data:
+        title: Ürünleri filtrele
+      structure:
+        title: Verileri filtrele
+        attributes:
+          title: Özellikler
+      filter:
+        channel:
+          title: Kanal
+          help: Kanal, ürün değerlerinin kapsamını, verileri seçmek için kullanılan yerel ayarları ve ürünleri seçmek için kullanılan ağacı tanımlar.
+        locales:
+          title: Yerel Ayarlar
+          help: "Yerel ayarları, dışa çıkartmak için için yerelleştirilmiş ürün değerlerini tanımlar. Örn: Fransızca'daki yalnızca ürün bilgileri."
+        attributes:
+          title: Özellikler
+          edit: Düzenle
+          label: "{0}Tüm özellikler|{1}Bir özellik seçildi|],Inf[{{ count }} özellikler seçildi"
+          help: "Dışa çıkartmak için ürün bilgilerini seçin. Ör: yalnızca teknik özellikler."
+          empty: Bütün özellikler dışarıya aktarıldı
+          modal:
+            apply: Uygula
+            cancel: İptal
+            title: Özellik seçimi
+        attributes_selector:
+          attribute_group: Özellik grupları
+          attributes: "Arama {{ itemsCount }} özellikleri"
+          selected: "Seçilen özellikler"
+          clear: Temizle
+          all_group: Bütün Gruplar
+          empty_selection: Tüm özellikler dışarı aktarıldı
+          title: Özellikler
+          description: Dışa aktarmak için ürün bilgisi seçin
+        family:
+          title: Aile
+          help: "Sınıflarından dışa aktarılacak ürünleri seçin. Ör: Sadece ayakkabıları ve elbiseleri dışarı çıkar."
+          operators:
+            IN: Listede
+            "NOT IN": Listede değil
+            EMPTY: Ürünlerin ailesi yok
+            "NOT EMPTY": Sınıfı olan ürünler
+          empty_selection: Ailelerde bir koşul yok
+        updated:
+          title: Zaman koşulu
+          operators:
+            ALL: Tarih koşulu yok
+            "SINCE LAST N DAYS": Son günlerde güncellenmiş ürünler (ör. 6)
+            ">": Bu tarihten itibaren güncellenen ürünler
+            "SINCE LAST JOB": Bu tarihten itibaren güncellenen ürünler
+        enabled:
+          title: Durum
+          help: "Durumlarına göre dışa aktarılacak ürünleri seçin. Ör: Ürünleri durumları ne olursa olsun dışa aktar."
+          value:
+            all: Tümü
+            enabled: Etkinleştirildi
+            disabled: Devre dışı
+        completeness:
+          title: Bütünlük
+          help: Dışarı aktarılacak ürünleri bütünlüklerine göre seçin.
+          operators:
+            ALL: Bütünlük için bir koşul bulunmuyor
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Seçilen en az bir bölgede tamamla
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Tüm seçilmiş bölgelerde tamamla
+            LOWER THAN ON ALL LOCALES: Bütün seçilmiş bölgeleri tamamlama
+          empty_selection: Bir aile seçin
+        category:
+          title: Kategori
+          help: Bağlantıda ürün kategorilerini kullan (kanal üzerinden tanımlanmış) dışa aktarmak için ürünleri seç
+        identifier:
+          title: Tanımlayıcı
+          help: Dışa aktarmak için ürün tanımlayıcılarını virgül, boşluk veya satır sonlarıyla ayırarak kullanın
+        metric:
+          operators:
+            "=": Eşittir
+            "!=": Eşit değildir
+            ">=": Büyük veya eşit
+            ">": Büyüktür
+            "<=": Daha düşük veya eşit
+            "<": Daha azdır
+            EMPTY: Boş
+            NOT EMPTY: Boş değil
+        string:
+          operators:
+            ALL: Tümü
+            CONTAINS: Bulundurur
+            DOES NOT CONTAIN: İçermez
+            "=": Eşittir
+            STARTS WITH: Ile başlar
+            ENDS WITH: İle biter
+            EMPTY: Boş
+            NOT EMPTY: Boş değil
+        price-collection:
+          operators:
+            "=": Eşittir
+            "!=": Eşit değildir
+            ">=": Daha büyük veya eşit
+            ">": Büyüktür
+            "<=": Daha az veya eşit
+            "<": Küçüktür
+            EMPTY: Boş
+            NOT EMPTY: Boş değil
+        multi_select:
+          operators:
+            IN: Listede
+            EMPTY: Boş
+            NOT EMPTY: Boş Değil
+        media:
+          operators:
+            CONTAINS: İçerir
+            DOES NOT CONTAIN: İçermiyor
+            "=": Eşittir
+            STARTS WITH: İle başlar
+            ENDS WITH: İle biter
+            EMPTY: Boş
+            NOT EMPTY: Boş değil
+        date:
+          operators:
+            ">": Büyüktür
+            "<": Daha azdır
+            "=": Eşittir
+            "!=": Eşit değildir
+            BETWEEN: Arasında
+            NOT BETWEEN: Arasında değil
+            EMPTY: Boş
+            NOT EMPTY: Boş değil
+        number:
+          operators:
+            "=": Eşit
+            "!=": Eşit değil
+            ">=": Daha büyük veya eşit
+            ">": Daha büyük
+            "<=": Daha az veya eşit
+            "<": Daha az
+            EMPTY: Boş
+            NOT EMPTY: Boş değil
+      properties:
+        title: Özellikler
+      global_settings:
+        title: Genel ayarlar
+  mass_edit_action:
+    edit_common_attributes:
+      description: 'Sadece seçilen ürünlerin ailelerine ait kanal, özellikler ve yerel ayarlar aşağıdaki verilere göre düzenlenecektir: <mesafe sınıfı="vurgulamak">{{ yerel }}</mesafe> , <mesafe sınıfı="vurgulamak">{{ kanal }}</mesafe>'
+  index:
+    association_type:
+      title: "] -Inf, 1] {{ count }} ilişki türü |] 1, Inf [{{ count }} ilişki türleri"
+      create_btn: İlişki türü oluştur
+    import_profiles:
+      title: "] -Inf, 1] {{ değer }} profil alma|] 1, Inf [{{ değer }} profil alma"
+      create_btn: İçe aktarma profili oluştur
+      list: Bir iş seçin
+      create_popin:
+        title: Oluştur
+      message:
+        created: İçe aktarma profili başarıyla oluşturuldu
+    import_history:
+      title: İçe aktarma raporları
+    group:
+      title: "] -Inf, 1] {{ değer }} grup|] 1, Inf [{{ değer }} gruplar"
+      create_btn: Grup oluştur
+    export_profiles:
+      title: "] -Inf, 1] {{ değer }} profil verem|] 1, Inf [{{ değer}} profiller verme"
+      create_btn: Dışa aktarım profili oluştur
+      create_popin:
+        title: Oluştur
+      message:
+        created: Dışa aktarım profili başarıyla oluşturuldu
+    export_history:
+      title: Raporları dışa aktar
+    family:
+      title: "] -Inf, 1] {{ kapsama }} aile|] 1, Inf [{{ kapsama }} aileler"
+      create_btn: Aile oluştur
+    grouptype:
+      title: "] -Inf, 1) {{kapsama }} grup türü|] 1, Inf [{kapsama} grup türleri"
+      create_btn: Grup türünü oluştur
+    currency:
+      title: "] -Inf, 1] {{ kapsama }} değer|] 1, Inf [{{ kapsama }} değerler"
+    locale:
+      title: "] -Inf, 1] {{ kapsama }} yerel|] 1, Inf [{{ kapsama }} yereller"
+    user:
+      title: "] -Inf, 1) {{count }} kullanıcı| / 1, Inf [{{ count} kullanıcılar]"
+      create_btn: Kullanıcı oluştur
+    user_role:
+      title: "] -Inf, 1) {{count }} rol| / 1, Inf [{count} rol}"
+      create_btn: Rol oluştur
+    user_group:
+      title: "] -Inf, 1) {{count }} grup| / 1, Inf [{{ count} gruplar]"
+      create_btn: Grup oluştur
+    process_tracker:
+      title: "] -Inf, 1) {{count }} işlem|} 1, Inf [{{ count} işlemleri]"
+    channel:
+      title: "] -Inf, 1] {{ kapsama }} kanal|] 1, Inf [{{ kapsama }} kanallar"
+      create_btn: Kanal oluştur
+    attribute:
+      title: "-Inf, 1] {{kapsama }} öznitelik|] 1, Inf [{{ kapsama }} öznitelikler"
+      create_btn: Özellik oluştur
+      modal_title: Özellik türünü seçin
+    attribute_group:
+      title: Özellik grupları
+      create_btn: Oluştur
+    api_connection:
+      title: "] -Inf, 1] {{ kapsama }} API bağlantısı|] 1, Inf [{{ kapsama }} API bağlantıları"
+      create_btn: Oluştur
+  mass_edit:
+    next: Sonraki
+    previous: Önceki
+    cancel: İptal
+    confirm: Doğrula
+    product:
+      title: Toplu ürün işlemleri
+      confirm: "{1} Aşağıdaki bilgileri içeren bir ürünü güncellemek üzeresiniz, lütfen onaylayın. |] 1, Inf [{{ itemsCount }} ürünlerini aşağıdaki bilgilere göre güncellemek üzeresiniz, lütfen onaylayın."
+      step:
+        select:
+          label: Ürünleri seçin
+        choose:
+          title: Toplu ürün işlemleri
+          label_count: "] 0, Inf [Eylemini seç"
+        configure:
+          label: Yapılandırma
+        confirm:
+          label: Doğrula
+        launch_error:
+          label: Toplu düzenleme işleminin başlatılması sırasında bir hata oluştu
+        launched:
+          label: Toplu eylem"{{operasyonu}} " başlatıldı. Bittiğinde size bildirilecektir.
+      operation:
+        change_status:
+          label: Değişim durumu
+          label_count: "1}-başlık--vurgu\">ürün 1 </span>|<span sınıf=\"AknFullPage durumu 1, Inf [{{itemsCount}} <span sınıf=\"AknFullPage-başlık--vurgu\"> durumunu Değiştirmek ürünleri</span>Değiştir]"
+          description: Seçilen ürünler etkinleştirilecek veya devre dışı bırakılacak.
+          field: Etkinleştirmek için
+        edit_common:
+          description: Yalnızca seçili ürünlerin ailelerine ait öznitelikleri {{ yerel}} yerel ayar ve {{ kapsama }} kanal için aşağıdaki verilerle düzenlenecektir.
+        change_family:
+          label: Aileyi değiştir
+          label_count: "{1}-başlık--vurgu\">ürün 1 </span>|<span sınıf=\"AknFullPage ailesi 1, Inf [{{öğeler sayısı}} <span sınıf=\"AknFullPage-başlık--vurgu\"> ailesi Değiştirin ürünleri</span>Değiştir]"
+          description: Seçilen ürünlerin ailesi istenen aile ile değiştirildi
+          field: Aile
+        add_to_group:
+          label: Gruplara ekle
+          label_count: "{1}Ekle <span sınf=\"AknFullPage-başlık--vurgu\">1 ürün</span> gruplar| 1, Inf [ekle <span sınıf=\"AknFullPage-başlık--vurgu\"> {{öğeler sayısı}} ürünler < / span > gruplarına"
+          description: Seçilen ürünlerin ekleneceği grupları seçin
+          field: Gruplar
+        add_to_category:
+          label: Kategorilere ekle
+          label_count: "{1}ekle <span sınıf=\"AknFullPage-başlık--vurgu\">1 ürün</span> kategoriler|] 1, Inf [ekle <span sınıf=\"AknFullPage-başlık--vurgu\">{{ öğeler sayısı }} ürünler</span> kategoriler"
+          description: Ürünler aşağıdaki kategorilerde sınıflandırılacak, muvcut sınıflandırma korunacaktır.
+        move_to_category:
+          label: Kategoriler arasında ilerle
+          label_count: "{1}taşı <span sınıf=\"AknFullPage-başlık--vurgu\">1 ürün</span> kategoriler arasında| 1, Inf [taşımak <span sınıf=\"AknFullPage-başlık--vurgu\"> {öğelerin sayısı}} ürünler</span> kategoriler arasında"
+          description: Ürünler aşağıdaki kategorilerde sınıflandırılacak, mevcut sınıflandırma kaybolacaktır.
+        remove_from_category:
+          label: Kategorilerden kaldır
+          label_count: "{1}Kaldır <span sınıf=\"AknFullPage-başlık--vurgu\">1 ürün</span> kategorilerden| 1, Inf [kaldır <span sınıf=\"AknFullPage-başlık--vurgu\"> {öğelerin sayısı}} ürünler < / span > kategorilerden"
+          description: Ürünler aşağıdaki kategorilerden kaldırılacaktır.
+        add_to_existing_product_model:
+          label: Varolan bir ürün modeline ekle
+          label_count: "{1}Ekle <span sınıf=\"AknFullPage-başlık--vurgu\">1 ürün</span> varolan bir ürün modeli için 1, Inf [Ekle<span sınıf=\"aknfullpage-başlık--vurgu\"> {öğelerin sayısı}} ürünler<| span> varolan bir ürün modeli için 1, Inf [Ekle< span sınıf= \"aknfullpage-başlık-- vurgu\" > {öğelerin sayısı}} ürünler < /span >"
+          description: Seçilen ürün modeli ürünleri toplar ve ortak özellikleri zenginleştirilmesine olanak sağlar.
+        associate_to_product_and_product_model:
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1 ürünü</span> ürünler veya ürün modelleri ile ilişkilendir|] 1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}ürünleri </span>ürünler veya ürün modelleri ile ilişkilendir"
+          description: Kılavuzdan seçilen ürünler, seçilen ürünler veya ürün modellerinden seçilen ilişkinin türünü oluşturur
+          validate: Lütfen bir sonraki aşamaya geçmeden önce ilişkilendirmeyi ekleyiniz
+    family:
+      title: Toplu aile işlemleri
+      confirm: "{1}aşağıdaki bilgileri içeren bir aile güncellemek üzeresiniz, lütfen onaylayın.|] 1, Inf [{öğelerin sayısı}} aileleri aşağıdaki bilgilerle güncelleştirmek üzere olduğunuz, lütfen onaylayın."
+      step:
+        select:
+          label: Aileleri seçin
+        choose:
+          title: Toplu aile işlemleri
+          label_count: "0, Inf [e-Eyleminizi seçin"
+        configure:
+          label: Yapılandırma
+        confirm:
+          label: Doğrula
+        launched:
+          label: Toplu eylem"{{operasyonu}} " başlatıldı. Bittiğinde size bildirilecektir.
+      operation:
+        set_requirements:
+          label: Özellik gereksinimlerini ayarla
+          description: Aşağıdaki özellik gereksinimleri, seçilen ailelere uygulanacaktır
+          label_count: "{1}Set-başlık--vurgu\">1 Aile </span>|<span sınıf=\"AknFullPage gereksinimleri 1, Inf [Set ihtiyaç öznitelikleri <span sınıf=\"{öğelerin sayısı}} AknFullPage-başlık--vurgu\"> {aileler</span>öznitelikleri]"
+pim_enrich.error:
+  exception.title: Tüh! {{ status_code }} bir hata meydana geldi...
+  http:
+    403: Yasak. Bu sayfaya erişimine izin verilmedi
+#Page titles
+page_title:
+  oro_default: Gösterge paneli
+  pim_enrich_attributegroup_index: Özellik grupları
+  pim_enrich_attributegroup_create: Özellik grupları | Oluştur
+  pim_enrich_attributegroup_edit: Özellik grubu {{ group.label }} | Düzenle
+  pim_enrich_categorytree_index: Kategori ağaçları
+  pim_enrich_categorytree_create: Kategori ağaçları | Oluştur
+  pim_enrich_categorytree_edit: Ağaç kategorisi {{ category.label }} | Düzenle
+  pim_enrich_categorytree_create_tree: Kategori ağaçları | Oluştur
+  pim_enrich_attribute_index: Özellikler
+  pim_enrich_attribute_create: Özellikler | Oluştur
+  pim_enrich_attribute_edit: Öznitelik {{özniteliği.etiket}} / Düzenle
+  pim_enrich_product_index: Ürünler
+  pim_enrich_product_edit: Ürün {{ product.label }} | Düzenle
+  pim_enrich_product_model_edit: Ürün modeli {{ product.label }} | Düzenleme
+  pim_enrich_family_index: Aileler
+  pim_enrich_family_edit: Aile {{ aile.etiket}} / Düzenle
+  pim_enrich_channel_index: Kanallar
+  pim_enrich_channel_create: Kanallar | Oluştur
+  pim_enrich_channel_edit: Kanal {{ kanal.etiketi }} / Düzenle
+  pim_enrich_currency_index: Para birimleri
+  pim_enrich_locale_index: Yerel Ayarlar
+  pim_enrich_group_index: Gruplar
+  pim_enrich_group_edit: Grup {{ grup.etiketi }} | Düzenle
+  pim_enrich_associationtype_index: İlişki türleri
+  pim_enrich_associationtype_edit: İlişki türü {{ association type.label }} | Düzenle
+  pim_enrich_grouptype_index: Grup türleri
+  pim_enrich_grouptype_edit: Grup türü {{ group type.label }} | Düzenle
+  pim_enrich_mass_edit_action_choose: Toplu Düzenle | Seç
+  pim_enrich_mass_edit_action_configure: Toplu Düzenle | Yapılandır
+  pim_enrich_mass_edit_action_perform: Kitle Düzenle / Perform
+  pim_enrich_job_tracker_index: İşlem izleyicisi
+  pim_enrich_job_tracker_show: İşlem izleyici | İşi göster
+  pim_enrich_api_connection_index: API bağlantıları
+  pim_enrich_api_connection_create: API bağlantıları / oluştur
+  pim_enrich_mass_edit_action: Toplu Düzenle
+  pim_analytics_system_info_index: Sistem bilgisi
+#Batch job labels
+batch_jobs:
+  add_product_value:
+    label: Ürün değeri ekle
+    perform:
+      label: Ürün değeri ekleme
+  update_product_value:
+    label: Ürün değerini güncelleme
+    perform:
+      label: Ürün değerini güncelleme
+  edit_common_attributes:
+    label: Özellikleri düzenle
+    perform:
+      label: Özellikleri düzenle
+    cleaner:
+      label: Öznitelikler için dosyaları temizleme
+  add_to_category:
+    label: Kategorilere ekle
+    perform:
+      label: Kategorilere ekle
+  move_to_category:
+    label: Kategorilere taşı
+    perform:
+      label: Kategorilere taşı
+  remove_from_category:
+    label: Kategorilerden kaldır
+    perform:
+      label: Kategorilerden kaldır
+  add_to_existing_product_model:
+    label: Varolan bir ürün modeline ekle
+    perform:
+      label: Varolan bir ürün modeline ekle
+  set_attribute_requirements:
+    label: Özellik gereksinimlerini ayarla
+    perform:
+      label: Özellik gereksinimlerini ayarla
+  csv_product_quick_export:
+    quick_export.label: CSV ürün hızlı ihracatı
+    quick_export_product_model.label: CSV ürün modeli hızlı ihracat
+    perform:
+      label: CSV ürün hızlı ihracat
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV ürün sistem içeriği hızlı ihracat
+    quick_export_product_model.label: CSV ürün modeli sistem içeriği hızlı dışa aktarma
+    perform:
+      label: CSV ürün sistem içeriği hızlı dışa aktarma
+  xlsx_product_quick_export:
+    quick_export.label: XSLX ürününün hızlı dışa aktarımı
+    quick_export_product_model.label: XSLX ürün modelinin hızlı dışa aktarımı
+    perform:
+      label: XLSX ürününü hızlıca dışa aktar
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XSLX ürün sistem içeriği hızlı dışa aktarma
+    quick_export_product_model.label: XSLX ürün modeli sistem içeriği hızlı dışa aktarma
+    perform:
+      label: XSLX ürün sistem içeriği hızlı ihracatı
+  csv_product_export:
+    label: Ürünleri CSV olarak dışa aktar
+    export.label: Ürünleri dışa aktar
+  csv_product_model_export:
+    label: Ürün modelini CSV olarak dışa aktar
+    export.label: Ürünleri dışa aktar
+  csv_category_export:
+    label: Kategorileri CSV olarak dışa aktar
+    export.label: Kategorileri dışa aktar
+  csv_attribute_export:
+    label: Özellikleri CSV olarak dışa aktar
+    export.label: Özellikleri dışa aktar
+  csv_attribute_option_export:
+    label: Özellik seçeneklerini CSV olarak dışa aktar
+    export.label: Özellik seçeneklerini dışa aktar
+  csv_association_type_export:
+    label: İlişki türünü CSV olarak dışa aktar
+    export.label: İlişki türü dışa aktar
+  csv_group_export:
+    label: Grupları CSV olarak dışa aktar
+    export.label: Grupları dışa aktar
+  csv_family_export:
+    label: Aileyi CSV olarak dışa aktar
+    export.label: Aileyi dışa aktar
+  csv_family_variant_export:
+    label: Aile biçimini CSV olarak dışa aktar
+    export.label: Aile biçimi dışa aktar
+  csv_product_import:
+    label: Ürünleri CSV olarak içe aktar
+    validation.label: Dosya doğrulaması
+    import.label: Ürünleri içe aktar
+    import_associations.label: İlişkiyi içe aktar
+  csv_product_model_import:
+    label: Ürün modelini CSV olarak içe aktar
+  csv_category_import:
+    label: Kategorileri CSV olarak içe aktar
+    validation.label: Dosya doğrulaması
+    import.label: Kategorileri içe aktar
+  csv_attribute_import:
+    label: Özellikleri CSV olarak içe aktar
+    validation.label: Dosya doğrulaması
+    import.label: Özellikleri içe aktar
+  csv_attribute_option_import:
+    label: Özellik seçeneklerini CSV olarak içe aktar
+    validation.label: Dosya doğrulaması
+    import.label: Özellik seçeneklerini içe aktar
+  csv_association_type_import:
+    label: Özellik türünü CSV olarak içe aktar
+    validation.label: Dosya doğrulaması
+    import.label: İlişki türünü içe aktar
+  csv_family_import:
+    label: Aileyi CSV olarak içe aktar
+    validation.label: Dosya doğrulaması
+    import.label: Aileyi içe aktar
+    compute_data_related_to_family_variants.label: Ürün verilerini hesaplama
+  csv_family_variant_import:
+    label: Aile biçimini CSV olarak içe aktar
+    validation.label: Dosya onaylama
+    import.label: Aile biçimi içe aktar
+  csv_group_import:
+    label: Grupları CSV olarak içe aktar
+    validation.label: Dosya doğrulaması
+    import.label: Grupları içe aktar
+  csv_channel_export:
+    label: Kanalı CSV olarak dışa aktar
+    export.label: Kanalı dışa aktar
+  csv_locale_export:
+    label: Yerel ayarı CSV olarak dışa aktar
+    export.label: Yerel ayarı dışa aktar
+  csv_attribute_group_export:
+    label: Özellik grubunu CSV olarak dışa aktar
+    export.label: Özellik grubunu dışa aktar
+  csv_currency_export:
+    label: Para birimini CSV olarak dışa aktar
+    export.label: Para birimini dışa aktar
+  csv_group_type_export:
+    label: Grup türünü CSV olarak dışa aktar
+    export.label: Grup türünü dışa aktar
+  csv_channel_import:
+    label: Kanalı CSV olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Kanalı içe aktar
+  csv_locale_import:
+    label: Yerel ayarı CSV olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Yerel ayarı içe aktar
+  csv_attribute_group_import:
+    label: Özellik grubunu CSV olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Özellik grubunu içe aktar
+  csv_currency_import:
+    label: Para birimini CSV olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Para birimini içe aktar
+  csv_group_type_import:
+    label: "Grup türünü CSV olarak içe aktar\n"
+    validation.label: Dosya validasyonu
+    import.label: Grup türünü içe aktar
+  xlsx_category_import:
+    label: Kategoriyi XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Kategorileri içe aktar
+  xlsx_association_type_import:
+    label: İlişki türünü XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: İlişki türünü içe aktar
+  xlsx_attribute_import:
+    label: Özelliği XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Özellikleri içe aktar
+  xlsx_attribute_option_import:
+    label: Özellik seçeneğini XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Özellik seçeneklerini içe aktar
+  xlsx_family_import:
+    label: XLSX'de sınıfı içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Aileyi içe aktar
+    compute_data_related_to_family_variants.label: Ürün verilerini hesaplama
+  xlsx_family_variant_import:
+    label: Aile biçimini XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Aile biçimini içe aktar
+  xlsx_product_export:
+    label: Ürünü XLSX olarak dışa aktar
+    export.label: Ürünleri dışa aktar
+  xlsx_product_model_export:
+    label: Ürün modelini XLSX olarak dışa aktar
+    export.label: Ürün modelini dışa aktarma
+  xlsx_product_import:
+    label: Ürünü XLSX olarak içe aktarma
+    validation.label: Dosya validasyonu
+    import.label: Ürünleri içe aktar
+    import_associations.label: İlişkiyi içe aktarma
+  xlsx_product_model_import:
+    label: Ürün modelini XLSX olarak içe aktar
+  xlsx_group_export:
+    label: Grubu XLSX olarak dışa aktar
+    export.label: Grupları dışa aktar
+  xlsx_group_import:
+    label: Grubu XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Grupları içe aktar
+  xlsx_family_export:
+    label: Aileyi XLSX olarak dışa aktar
+    export.label: Aileyi dışa aktar
+  xlsx_family_variant_export:
+    label: Aile birimini XLSX olarak dışa aktarma
+    export.label: Aile biçimi dışa aktarma
+  xlsx_category_export:
+    label: Kategoriyi XLSX olarak dışa aktar
+    export.label: Kategorileri dışa aktar
+  xlsx_attribute_export:
+    label: Özelliği XLSX olarak dışa aktar
+    export.label: Özelliği XLSX olarak dışa aktar
+  xlsx_attribute_option_export:
+    label: Özellik seçeneğini XLSX olarak dışa aktar
+    export.label: Özellik seçeneğini XLSX olarak dışa aktar
+  xlsx_association_type_export:
+    label: İlişki türünü XLSX olarak dışa aktar
+    export.label: İlişki türünü XLSX olarak dışa aktar
+  xlsx_channel_export:
+    label: Kanalı XLSX olarak dışa aktar
+    export.label: Kanal dışa aktarma
+  xlsx_locale_export:
+    label: Yerel ayarı XLSX olarak dışa aktar
+    export.label: Yerel ayarı dışa aktar
+  xlsx_attribute_group_export:
+    label: Özellik grubunu XLSX olarak dışa aktar
+    export.label: Özellik grubunu dışa aktar
+  xlsx_currency_export:
+    label: Para birimini XLSX olarak dışa aktar
+    export.label: Para birimi dışa aktarma
+  xlsx_group_type_export:
+    label: Grup türünü XLSX olarak dışa aktar
+    export.label: Grup türü dışa aktar
+  xlsx_channel_import:
+    label: Kanalı XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Kanal içe aktarma
+  xlsx_locale_import:
+    label: Yerel ayarı XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Yerel ayar içe aktarma
+  xlsx_attribute_group_import:
+    label: Özellik grubunu XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Özellik grubunu içe aktar
+  xlsx_currency_import:
+    label: Para birimini XLSX olarak içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Para birimi içe aktar
+  xlsx_group_type_import:
+    label: XLSX olarak grup türünü içe aktar
+    validation.label: Dosya validasyonu
+    import.label: Grup türü içe aktarma
+job_tracker:
+  download_archive:
+    archive: Oluşturulan arşiv indirme
+    output: Oluşturulan dosya indirme
+    input: Okuma dosyası indirme
+    invalid_xlsx: Geçersiz veri indirme
+    invalid_csv: Geçersiz veri indirme
+pim_menu:
+  tab:
+    activity: Faaliyet
+    imports: İçe aktarmalar
+    products: Ürünler
+    exports: Dışa aktarmalar
+    settings: Ayarlar
+    system: Sistem
+    help:
+      title: Yardım
+      helper: Akeneo yardım merkezi
+  item:
+    association_type: İlişki türleri
+    attribute: Özellikler
+    attribute_group: Özellik grupları
+    category: Kategoriler
+    channel: Kanallar
+    currency: Para birimleri
+    dashboard: Gösterge paneli
+    family: Aileler
+    group: Gruplar
+    group_type: Grup türleri
+    locale: Yerel Ayarlar
+    product: Ürünler
+    product_model: Ürün modelleri
+    published_product: Yayımlanmış Ürünler
+    export_history: Dışa aktarma geçmişi
+    export_profile: Dışa aktarma profili
+    import_history: İçe aktarma geçmişi
+    import_profile: Profilleri içe aktar
+    configuration: Yapılandırma
+    user_management: Kullanıcı Yönetimi
+    user: Kullanıcılar
+    user_group: Gruplar
+    user_role: Roller
+    info: Sistem bilgisi
+    job_tracker: İşlem izleyicisi
+    api_connection: API bağlantıları
+  navigation:
+    activity: Etkinlik gezisi
+    system: Sistemde gez
+    user: Kullanıcı yönetimi gezinme
+    settings: Ayarlarda gez
+  user:
+    logout: Çıkış
+    user_account: Hesabım
+pim_notification:
+  mark_all_as_read: Tümünü okundu olarak işaretle
+  no_notifications: Bildirim yok
+  loading: Yükleniyor...
+catalog_volume:
+  axis:
+    count_products: Ürünler
+    count_channels: Kanallar
+    count_families: Aileler
+    count_attributes: Özellikler
+    count_categories: Kategoriler
+    count_category_trees: Kategori ağaçları
+    count_product_models: Ürün modelleri

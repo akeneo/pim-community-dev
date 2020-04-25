@@ -14,12 +14,14 @@ oro.grid.mass_action.delete.confirm_content: Вы уверены, что вы х
 oro.grid.mass_action.delete.item_limit: Вы не можете удалить более чем %limit% продуктов (%count% выбрано)
 oro.grid.datagrid.page_size.all: Все
 oro.grid.mass_action.delete.success_message: "{0} Ни одна сущность не была удалена|{1} Одна сущность была удалена|]1,Inf[ %count% сущностей было удалено"
+#Datagrid views constraints
 datagrid_view:
   columns:
     min_message: Вы должны выбрать по крайней мере один столбец для отображения
   label:
     unique_message: Ярлык должен быть уникальным
     not_blank_message: Ярлык не должен быть пустым
+#View selector flash messages
 grid.view_selector.flash:
   created: Представление табличных данных успешно создано
   removed: Представление табличных данных успешно удалено

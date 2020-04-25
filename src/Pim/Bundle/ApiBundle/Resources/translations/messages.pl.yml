@@ -1,25 +1,42 @@
 pim_api:
   acl:
+    rights: Web API - Uprawnienia
     attribute:
+      edit: Tworzenie i aktualizowanie atrybutów
       list: Przeglądanie atrybutów
+    attribute_option:
+      edit: Tworzenie i aktualizowanie wartości atrybutów
+      list: Przeglądanie wartości atrybutów
     attribute_group:
+      edit: Utwórz i zaktualizuj atrybuty grup
       list: Przeglądanie grup atrybutów
     category:
+      edit: Tworzenie i aktualizowanie kategorii
       list: Przeglądanie kategorii
     family:
+      edit: Tworzenie i aktualizowanie rodzin
       list: Przeglądanie rodzin
+    family_variant:
+      edit: Utwórz i zaktualizuj warianty rodzinne
+      list: Lista wariantów rodzinnych
     channel:
+      edit: Tworzenie i aktualizowanie kanałów
       list: Przeglądanie kanałów
     locale.list: Przeglądanie ustawień regionalnych
     currency.list: Przeglądanie walut
     association_type:
+      edit: Tworzenie i aktualizowanie typów powiązań
       list: Przeglądanie typów powiązań
   acl_group:
+    overall_access: Dostęp do Web API
     attribute: Atrybuty
-    attribute_group: Grupy Atrybutów
+    attribute_option: Wartości Atrybutów
+    attribute_group: Grupy atrybutów
     category: Kategorie
     family: Rodziny
+    family_variant: Warianty rodzinne
     channel: Kanały
     locale: Ustawienia regionalne
     currency: Waluty
     association_type: Typy powiązań
+rights.api: Uprawnienia Web API

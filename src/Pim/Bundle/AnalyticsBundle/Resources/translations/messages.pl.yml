@@ -19,10 +19,29 @@ pim_analytics:
     registered_bundles: Zarejestrowane moduły
     nb_channels: Liczba kanałów
     nb_products: Liczba produktów
+    nb_product_models: Liczba modeli produktów
+    nb_variant_products: Liczba różnych produktów
+    nb_family_variants: Liczba wariantów rodzinnych
     nb_attributes: Liczba atrybutów
+    nb_scopable_attributes: Liczba skalowalnych aktrybutów
+    nb_localizable_attributes: Liczba możliwych do zlokalizowania atrybutów
+    nb_scopable_localizable_attributes: Liczba możliwych do zlokalizowania i możliwych do dopasowania atrybutów
+    nb_useable_as_grid_filter_attributes: Liczba atrybutów, które można wykorzystać jako filtr siatki
+    avg_percentage_scopable_attributes_per_family: Średni procent zmiennych atrybutów na rodzinę (%)
+    avg_percentage_localizable_attributes_per_family: Średni procent tłumaczonych atrybutów na rodzinę (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Średni procent tłumaczonych i zmiennych atrybutów na rodzinę (%)
+    avg_number_attributes_per_family: Średnia liczba atrybutów na rodzinę
     nb_locales: Liczba ustawień regionalnych
     nb_families: Liczba rodzin
     nb_users: Liczba użytkowników
+    nb_categories: Liczba kategorii
+    nb_category_trees: Liczba drzew kategorii
+    max_category_in_one_category: Maksymalna liczba kategorii w jednej kategorii
+    max_category_levels: Maksymalna liczba poziomów kategorii
+    nb_product_values: Liczba wartości produktu
+    avg_product_values_by_product: Średnia liczba wartości produktów na produkt
+    avg_product_values_by_family: Średnia liczba potencjalnych wartości produktu na rodzinę
+    max_product_values_by_family: Maksymalna liczba potencjalnych wartości produktu na rodzinę
     pim_storage_version: Przechowywanie wersji
     os_version: Wersja systemu
     php_version: Wersja PHP

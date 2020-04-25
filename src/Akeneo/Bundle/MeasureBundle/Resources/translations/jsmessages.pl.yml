@@ -24,6 +24,8 @@ KILOBYTE: Kilobajt
 MEGABYTE: Megabajt
 GIGABYTE: Gigabajt
 TERABYTE: Terabajt
+Decibel: Decybel
+DECIBEL: Decybel
 Frequency: Częstotliwość
 GIGAHERTZ: Gigaherc
 KILOHERTZ: Kiloherc
@@ -51,10 +53,48 @@ KILOWATT: Kilowat
 MEGAWATT: Megawat
 TERAWATT: Terawat
 WATT: Wat
+Resistance: Opór
+MILLIOHM: Miliom
+CENTIOHM: Centyom
+DECIOHM: Decyom
+OHM: Om
+DEKAOHM: Dekaom
+HECTOHM: Hektoom
+KILOHM: Kiloom
+MEGOHM: Megaom
+Voltage: Napięcie
+MILLIVOLT: Milliwolt
+CENTIVOLT: Centiwolt
+DECIVOLT: Deciwolt
+VOLT: Wolt
+DEKAVOLT: Dekawolt
+HECTOVOLT: Hektowolt
+KILOVOLT: Kilowolt
+Intensity: Intensywność
+MILLIAMPERE: Milliamper
+CENTIAMPERE: Centiamper
+DECIAMPERE: Deciamper
+AMPERE: Amper
+DEKAAMPERE: Dekaamper
+HECTOAMPERE: Hektoamper
+KILOAMPERE: Kiloamper
+MEGAAMPERE: Megaamper
+ElectricCharge: Ładunek elektryczny
+MILLIAMPEREHOUR: Milliamperów godzina
+AMPEREHOUR: Amper godzina
+MILLICOULOMB: Millicoulomb
+CENTICOULOMB: Centicoulomb
+DECICOULOMB: Decicoulomb
+COULOMB: Coulomb
+DEKACOULOMB: Dekacoulomb
+HECTOCOULOMB: Hektocoulomb
+KILOCOULOMB: Kilocoulomb
+Duration: Czas Trwania
 MILLISECOND: Milisekunda
 SECOND: Sekunda
 MINUTE: Minuta
 HOUR: Godzina
+DAY: Dzień
 WEEK: Tydzień
 MONTH: Miesiąc
 YEAR: Rok
@@ -72,6 +112,7 @@ CELSIUS: Celsjusz
 FAHRENHEIT: Fahrenheit
 KELVIN: Kelwin
 RANKINE: Rankine
+REAUMUR: Reamura
 Volume: Objętość
 BARREL: Baryłka
 CENTILITER: Centylitr
@@ -89,12 +130,28 @@ MILLILITER: Mililitr
 OUNCE: Uncja
 PINT: Półkwarta
 Weight: Masa
+DENIER: Denier
 GRAIN: Gran
 GRAM: Gram
 KILOGRAM: Kilogram
+LIVRE: Livre
+MARC: Marc
 MILLIGRAM: Miligram
 ONCE: Raz
 POUND: Funt
 TON: Tona
+Pressure: Nacisk
+BAR: Bar
+PASCAL: Paskal
+HECTOPASCAL: hekto Paskal
+MILLIBAR: milli Bar
+ATM: Atmosfera
+PSI: Funt na cal kwadratowy
+TORR: Torr
+MMHG: milimetry słupka rtęci
 Energy: Energia
 KILOCALORIE: kilokaloria
+KILOJOULE: kilodżul
+CaseBox: Opakowanie
+PIECE: Element
+DOZEN: Tuzin

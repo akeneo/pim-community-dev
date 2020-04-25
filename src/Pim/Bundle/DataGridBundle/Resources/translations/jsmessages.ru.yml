@@ -1,5 +1,5 @@
 Item deleted: Элемент удален
-Are you sure you want to delete this item?: Вы уверены, что хотите удалить этот элемент?
+Are you sure you want to delete this item?: Вы действительно хотите удалить этот элемент?
 Delete Error: Ошибка удаления
 Are you sure you want to do remove selected items?: Вы уверены, что вы хотите удалить выбранные элементы?
 Selected items were removed.: Выбранные элементы были удалены.
@@ -11,9 +11,9 @@ Your local changes will be lost. Are you sure you want to refresh grid?: Ваш�
 Reset Confirmation: Подтверждение сброса
 Your local changes will be lost. Are you sure you want to reset grid?: Ваши локальные изменения будут потеряны. Вы действительно хотите произвести сброс сетки таблицы?
 Confirmation: Подтверждение
-edit: редактировать
+edit: изменить
 copy: копировать
-remove: удалить
+remove: Удалить
 Status: Статус
 All: Все
 Per page: На странице
@@ -27,9 +27,9 @@ Action performed.: Действие выполнено.
 Action is not performed.: Действие не выполнено.
 Please, select item to perform action.: Пожалуйста, выберите элемент для выполнения действия.
 View per page: Записей на странице
-Enabled: Включено
-Disabled: Отключено
-not_available: Н/Д
+Enabled: Активирован
+Disabled: Дезактивирован
+not_available: '-'
 Yes: true
 No: false
 oro.datagrid.entityHint: Объект
@@ -44,8 +44,8 @@ oro.datagrid.action.reset: "Сброс"
 oro.datagrid.action.refresh: "Обновить"
 oro_datagrid.select.all: "Все"
 oro_datagrid.select.visible: "Все видимые"
-oro_datagrid.select.none: "Нет"
-oro_datagrid.select.select: "Выбрать"
+oro_datagrid.select.none: "(Пусто)"
+oro_datagrid.select.select: "Выберите"
 pim.grid.ajax_choice_filter.label_empty: пусто
 pim.grid.ajax_choice_filter.label_not_empty: не является пустым
 pim:
@@ -63,6 +63,7 @@ pim:
       label: Валюта
     category_filter:
       done: Готово
+#Column configuration
 Available Columns: Доступные столбцы
 Displayed Columns: Выбранные столбцы
 datagrid_view.columns.min_message: Вы должны выбрать по крайней мере один столбец для отображения
@@ -75,7 +76,7 @@ pim_datagrid:
     clear: Очистить
     displayed_columns: Выбранные столбцы
     apply: Применить
-    cancel: Отмена
+    cancel: oтменить
     remove_column: Удалить
     description: Выберите информацию, которую вы хотите отобразить в столбце
     attribute_groups: Группы атрибутов
@@ -84,15 +85,19 @@ pim_datagrid:
       confirm_title: Подтвердить удаление
       confirm_ok: Подтвердить
       empty_selection: Не выбрано ни одного продукта
+#Quick export
 pim.grid.mass_action.quick_export.title: Быстрый экспорт
 pim.grid.mass_action.quick_export.launched: Экспорт запущен
+#Custom actions
 pim.grid.action.launch.title: Запуск
 pim.grid.action.show.title: Показать
 Please select view: Пожалуйста выберите представление
 Loading...: Загрузка...
 View: Просмотр
+#Datetimepicker
 from: от
 to: до
+#View selector
 grid.view_selector:
   default_view: Представление по умолчанию
   save_changes: Сохранить представление
@@ -106,11 +111,14 @@ grid.view_selector:
   confirmation:
     remove: Вы действительно хотите удалить это представление?
     delete: Подтвердить удаление
+#View selector flash messages
 grid.view_selector.flash.updated: Представление табличных данных успешно обновлено
+#Display selector
 grid.display_selector:
   label: Показать
   gallery: Галерея
   list: Список
+#Credentials cell
 Client ID: ID клиента
 Secret: Секрет
 grid.empty_results:

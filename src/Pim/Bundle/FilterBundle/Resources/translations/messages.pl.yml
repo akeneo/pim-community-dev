@@ -11,6 +11,7 @@ oro.filter.form.label_type_equals: jest równe z
 oro.filter.form.label_type_start_with: zaczyna się od
 oro.filter.form.label_type_end_with: kończy się na
 oro.filter.form.label_type_empty: jest pusty
+oro.filter.form.label_type_not_empty: nie jest pusty
 oro.filter.form.label_type_in_list: na liście
 oro.filter.form.label_date_type_between: pomiędzy
 oro.filter.form.label_date_type_not_between: nie pomiędzy

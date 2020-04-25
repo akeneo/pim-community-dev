@@ -189,6 +189,7 @@ batch_jobs:
     import_root_product_model.label: Root product model import
     import_sub_product_model.label: Sub product model import
     import_product_model_descendants.label: Compute product model descendants
+    import_associations.label: Association import
   xlsx_group_export:
     label: Group export in XLSX
     export.label: Group export
