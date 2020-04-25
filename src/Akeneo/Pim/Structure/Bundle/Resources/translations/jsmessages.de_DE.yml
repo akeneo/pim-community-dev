@@ -202,6 +202,10 @@ pim_enrich.entity.attribute_group:
   label: Attributgruppe
   uppercase_label: Attributgruppe
   plural_label: Attributgruppen
+  show_more_attribute:
+    title: Es ist ein bisschen überfüllt hier, wir zeigen dir {{ attributeCount }}/{{ totalAttributeCount }} Attribute.
+    subtitle: Um alle Attribute dieser Gruppe zu entdecken, klicken Sie einfach unten!
+    button: Alle Attribute anzeigen
   flash:
     update:
       success: Attributgruppe erfolgreich aktualisiert
