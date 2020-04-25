@@ -3,6 +3,11 @@
 #akeneo_asset_manager_asset_family_edit: Edit an asset family
 #akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Collegamento incorporato sospetto
+        message: Questo elemento incorporato non viene visualizzato ma sarà salvato correttamente
   asset_collection:
     asset_count: '{0} Nessun attività|{1} {{ resultCount }} attività|]1,Inf] {{ resultCount }} attività'
     add_asset: 'Aggiungi attività'

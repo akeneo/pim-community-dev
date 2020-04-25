@@ -1,0 +1,3 @@
+flash.version.revert.product: Başarılı bir şekilde ürün önceki sürümüne geri döndü
+flash.error.revert.product: Bu sürüm geri yüklenebilir değil. Doğrulama sırasında bazı hatalar oluştu.
+pimee_versioning.acl.product_version.revert: Ürünü geri yükle

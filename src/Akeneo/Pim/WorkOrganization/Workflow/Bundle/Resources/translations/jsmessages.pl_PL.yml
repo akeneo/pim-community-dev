@@ -4,15 +4,16 @@ Approve: Zatwierdź
 Refuse: Odrzucić
 Approve selected: Zatwierdź wybrane
 Refuse selected: Odrzuć wybrane
-oro:
-  datagrid:
-    noentities:
-      proposal: Brak propozycji do przeglądu.
+pim_datagrid:
+  no_entities:
+    proposal: Brak propozycji do przeglądu.
+  no_results:
+    proposal: Nie istnieje żaden wniosek w sprawie przeglądu. Spróbuj zmienić kryteria wyszukiwania.
 pimee_datagrid:
-  cell:
+  cells:
     expand:
-      expandText: Rozwiń
-      collapseText: Zwiń
+      expand_text: Rozwiń
+      collapse_text: Zwiń
 pimee_workflow:
   entity:
     published_product:
@@ -21,17 +22,166 @@ pimee_workflow:
     proposal:
       modal.title: Pozostaw komentarz (opcjonalnie - 255 znaków max.)
   proposal:
+    selected: wniosek wybrany
     mass_action_group:
       review:
         label: Masowe działania
     partial_accept:
+      modal.title: Zatwierdź częściowe informacje
       modal.label: Zostaw komentarz (opcjonalnie)
-      modal.error: Wystąpił błąd, propozycja nie została częściowo zatwierdzona
+      modal.success: Wniosek został częściowo zatwierdzony
     partial_approve:
       modal:
         title: Częściowo zaakceptuj zmiany
         label: Zostaw komentarz (opcjonalnie)
-        error: Wystąpił błąd, propozycja nie została częściowo zatwierdzona
+        success: Zmiany zostały zaakceptowane
     partial_reject:
       modal:
+        title: Częściowo zaakceptuj zmiany
         label: Zostaw komentarz (opcjonalnie)
+        success: Zmiany zostały pozytywnie zapisane
+batch_jobs:
+  csv_published_product_export:
+    label: Eksport opublikowanych produktów do CSV
+    export.label: Eksport opublikowanych produktów
+  csv_product_proposal_import:
+    label: Import produktów z csv
+    import.label: Import produktów
+  approve_product_draft:
+    label: Zatwierdzono propozycje
+    perform.label: Zatwierdzono propozycje
+  refuse_product_draft:
+    label: Odrzucenie propozycji
+    perform.label: Odrzucenie propozycji
+  xlsx_published_product_export:
+    label: Eksport opublikowanych produktów do XLSX
+    export.label: Eksport opublikowanych produktów
+  xlsx_product_proposal_import:
+    label: Import produktów z XLSX
+    import.label: Import produktów z XLSX
+  csv_published_product_quick_export:
+    export.label: Csv opublikowane produkty szybkiego eksportu
+    perform.label: Csv opublikowane produkty szybkiego eksportu
+  csv_published_product_grid_context_quick_export:
+    export.label: Csv opublikowane produtky konteksu siatki szybkiego eksportu
+    perform.label: Csv opublikowane produtky konteksu siatki szybkiego eksportu
+  xlsx_published_product_quick_export:
+    export.label: Xlsx opublikowane produkty szybkiego eksportu
+    perform.label: Xlsx opublikowane produkty szybkiego eksportu
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Xlsx opublikowane produtky konteksu siatki szybkiego eksportu
+    perform.label: Xlsx opublikowane produtky konteksu siatki szybkiego eksportu
+  publish_product:
+    perform.label: Opublikuj produkty
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Nowa propozycja
+    pimee_workflow_import_notification_new_proposals: Nowe propozycje do importu
+    pimee_workflow_product_draft_notification_partial_approve: Wniosek częściowo zatwierdzony
+    pimee_workflow_product_draft_notification_partial_reject: Wniosek częściowo odrzuony
+    pimee_workflow_product_draft_notification_partial_remove: Wniosek częściowo usunięty
+    pimee_workflow_product_draft_notification_approve: Wniosek zatwierdzony
+    pimee_workflow_product_draft_notification_refuse: Wniosek odrzucony
+    pimee_workflow_product_draft_notification_remove: Wniosek usunięty
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Data
+      author: Autor
+      product: Produkt
+      review: Opinia
+      empty: Brak propozycji do przeglądu
+    header.view_all: Zobacz wszystko
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Opublikowane
+      revert: Odzyskaj
+    meta:
+      published_version: Opublikowana wersja
+      owner_groups: Właściciel grup
+      draft_status: Status projektu
+      draft:
+        in_progress: W Toku
+        sent_for_approval: Oczekuje na akceptację
+        working_copy: Kopia robocza
+    revert:
+      title: Usuń potwierdzenie
+      content: Jesteś pewien, że chcesz przywrócić produkt do tej wersji?
+    publish:
+      title: Opublikuj ten produkt
+      content: Czy na pewno chcesz opublikować ten produkt?
+    unpublish:
+      title: Cofnij publikację produktu
+      content: Jesteś pewien, że chcesz cofnąć publikacje tego produktu?
+    copy:
+      working_copy: Kopia robocza
+      draft: Moje szkice
+      draft_of: "szkic {{ author }}"
+    approval:
+      send: Wyślij do zatwierdzenia
+      sent: Wyślij do zatwierdzenia
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Produkt pomyślnie opublikowano
+      fail: Nie udało się opublikować tego produktu
+    unpublish:
+      success: Publikacja produktu cofnięta pomyślnie
+      fail: Nie udało się cofnąć publikacji tego produktu
+    revert:
+      success: Produkt pomyślnie przywrócony
+  module:
+    publish:
+      label: Opublikuj
+      publish_this_version: Opublikuj tę wersję
+    unpublish:
+      label: Cofnij publikację
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Propozycja została zastosowana pomyślnie.
+      fail: "Wniosek nie może być zaakceptowany z powodu następującego błędu: {{ error }}"
+    reject:
+      success: Propozycja została odrzucona.
+    remove:
+      success: Propozycja zostałą usunięta.
+    update:
+      success: Szkic produktu został pomyślnie zapisany
+      fail: Nie można zaktualizować szkicu produktu
+    create:
+      success: Szkic produktu został wysłany do zatwierdzenia
+      fail: Nie możesz wysłać tego szkicu do zatwierdzenia
+  module:
+    proposal:
+      accept: Akceptuj propozycję
+      accept_selected: Zaakceptuj wybrane propozycje
+      reject: Odrzucono propozycje
+      reject_selected: Odrzuć wybrane propozycje
+      remove: Usuń propozycję
+      comment_title: Skomentuj swój wniosek (opcjonalne - maksymalnie 255 znaków)
+      comment_chars: znaki.
+      confirm: Wyślij
+    edit:
+      discard_changes: Niezapisane zmiany zostaną utracone. Czy na pewno chcesz wysłać swój projekt do zatwierdzenia bez niezapisanych zmian?
+      discard_changes_title: Jesteś pewien, że chcesz wysłać ten projekt?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Opublikuj
+      description: Produkty zostaną opublikowane
+      warning: '{{ itemsCount }} wybrane produkty zostaną opublikowane.'
+    unpublish:
+      label: Cofnij publikację
+      description: Produkty nie będą publiczne
+      warning: '{{ itemsCount }} wybranym produktom zostanie cofnięta publikacja.'
+pim_menu:
+  navigation:
+    published_products: Opublikowane produkty
+  item:
+    proposal: Propozycje
+    published_product: Opublikowane produkty
+pim_title:
+  pimee_workflow_proposal_index: Propozycje
+  pimee_workflow_published_product_index: Opublikowane produkty
+  pimee_workflow_published_product_view: Opublikowany produkt {{ product.label }} | Widok

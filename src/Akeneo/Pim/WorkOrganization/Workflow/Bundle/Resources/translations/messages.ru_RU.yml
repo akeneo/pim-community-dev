@@ -11,7 +11,7 @@ pimee_workflow:
     status:
       label: Статус
       working_copy: Рабочая копия
-      in_progress: В процессе
+      in_progress: В ходе выполнения
       ready: В ожидании утверждения
       can_be_partially_reviewed: Может быть частично пересмотрен
       can_not_be_approved: Не может быть пересмотрен
@@ -61,15 +61,15 @@ pimee_workflow:
   product:
     permission:
       own: Обзор / публикация
-      edit: Редактировать
-      view: Просмотр
+      edit: Изменить
+      view: Представление
   steps:
     product_draft_processor.title: Процессор предложений
     approve.title: Принять предложение
     refuse.title: Отклонить предложение
   mass_edit_action:
     published:
-      page_title: Опубликованные продукты
+      page_title: Опубликованные товары
       page_subtitle: Массовое редактирование (1 опубликованный продукт)|Массовое редактирование (%count% опубликованных продуктов)
       title: Выберите операцию
       subtitle: Выберите операцию, которую вы хотите выполнить над выбранным опубликованным продуктом|Выберите операцию, которую вы хотите выполнить над %count% выбранными опубликованными продуктами
@@ -77,19 +77,16 @@ pimee_workflow:
       steps:
         first: Выбор опубликованных продуктов
         second: Выберите операцию
-        third: Настройка
+        third: Настроить
         fourth: Подтверждение
 btn:
   publish: Опубликовать
-  unpublish: Снять с публикации
+  unpublish: Отменить публикацию
   save working copy: Сохранить рабочую копию
-  save draft: Сохранить черновик
   save working copy and next: Сохранить рабочую копию и перейти к следующему
-  save draft and next: Сохранить черновик и перейти к следующему
   save working copy and finish: Сохранить рабочую копию и закончить
-  save draft and finish: Сохранить черновик и закончить
   send for approval: Отправить на утверждение
-  sent for approval: Отправлено на утверждение
+  sent for approval: Отправить на утверждение
   editworkingcopy: Редактировать рабочую копию
 flash:
   product:
@@ -107,14 +104,14 @@ flash:
       success: Предложение было удалено.
 pim_menu:
   item:
-    published_product: Опубликованные продукты
+    published_product: Опубликованные товары
     proposal: Предложения
 confirmation:
   product:
     publish: Вы уверены, что хотите опубликовать этот продукт?
     unpublish: Вы уверены, что хотите снять этот продукт с публикации?
 Attributes.title: Атрибуты
-Completeness.title: Завершенность
+Completeness.title: Степень заполненности
 publish_product.steps.publish_product_tasklet.title: Опубликовать продукт
 unpublish_product.steps.unpublish_product_tasklet.title: Снять продукт с публикации
 approve_product_draft.steps.approve.title: Принять предложение
@@ -129,7 +126,7 @@ job_execution.summary:
   proposal_updated: обновленных предложений
   proposal_created: созданных предложений
   proposal_skipped: пропущенных предложений (без изменений)
-published products: Опубликованные продукты
+published products: Опубликованные товары
 pim_analytics:
   info_type:
     nb_published_products: Количество опубликованных продуктов
@@ -137,7 +134,7 @@ pim_analytics:
 pimee_dashboard:
   widget:
     product_drafts:
-      title: Предложения для рассмотрения
+      title: Предложения на рассмотрение
       date: Дата
       author: Автор
       product: Продукт
@@ -153,12 +150,12 @@ pim_enrich:
       message:
         info: '%nbProducts% выбранных продуктов будет опубликовано.'
     unpublish:
-      label: Снять с публикации
+      label: Отменить публикацию
       description: Снять выбранные продукты с публикации, текущий опубликованные данные будут удалены.
       success_flash: Выбранные продукты были успешно сняты с публикации.
       launched_flash: Процесс снятия товара(ов) с публикации выполняется в данный момент.
       message:
-        info: '%nbProducts% выбранных продуктов будет снять с публикации.'
+        info: '%nbProducts% выбранных продуктов будет снят с публикации.'
 pimee_enrich:
   product:
     tab:

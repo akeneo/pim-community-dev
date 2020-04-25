@@ -1,0 +1,130 @@
+pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
+      small:
+        remove: Usuń
+        download: Pobierz
+  reference_entity:
+    button:
+      save: Zapisz
+      save_permission: Zapisz
+      create: Utwórz
+    tab:
+      attribute: Atrybuty
+      properties: Ustawienia
+      permission: Uprawnienia
+    properties:
+      identifier: Pod Produktu
+      label: Etykieta
+      image: Zdjęcie
+    create:
+      header:
+        title: Utwórz
+      input:
+        label: Etykieta
+      confirm: Zapisz
+    delete:
+      title: Atrybut
+  record:
+    no_result:
+      subtitle: Spróbuj ponownie, podając nowe kryteria wyszukiwania.
+    button:
+      save: Zapisz
+      create: Dodaj nowy
+      delete: Skasuj
+    product:
+      title: Produkty
+    enrich:
+      code: Pod Produktu
+      label: Etykieta
+    create:
+      header:
+        title: Utwórz
+      input:
+        label: Etykieta
+      confirm: Zapisz
+    grid:
+      filter:
+        completeness:
+          label: Kompletny
+          all: Wszystkie
+          'yes': 'Tak'
+          'no': 'Nie'
+        option:
+          all: Wszystkie
+          operator:
+            in: Na liście
+      column:
+        code: Pod Produktu
+        image: Zdjęcie
+        label: Etykieta
+        complete: Kompletny
+        action: Działania
+    tab:
+      enrich: Uzupełnianie
+      product: Produkty
+    completeness:
+      label: Kompletny
+  attribute:
+    default:
+      code: Pod Produktu
+      label: Etykieta
+      image: Zdjęcie
+    type:
+      text: Tekst
+      image: Zdjęcie
+    create:
+      header:
+        title: Utwórz
+      input:
+        label: Etykieta
+        type: Typ atrybutu
+        value_per_locale: Wartość dla wersji językowej
+        value_per_channel: Wartość dla kanału
+      confirm: Zapisz
+    edit:
+      save: Zapisz
+      cancel: Anuluj
+      input:
+        label: Etykieta
+        type: Typ atrybutu
+        value_per_locale: Wartość dla wersji językowej
+        value_per_channel: Wartość dla kanału
+        max_length: Maksymalna liczba znaków
+        textarea: Pole tekstowe
+        max_file_size: Maksymalny rozmiar pliku (MB)
+        allowed_extensions: Dozwolone rozszerzenia
+        validation_rule: Reguła poprawności
+        regular_expression: Wyrażenie regularne
+        options:
+          validation_rule:
+            none: Żaden
+            email: E-mail
+            regular_expression: Wyrażenie regularne
+            url: URL
+    delete:
+      title: Atrybut
+    notification:
+      save:
+        success: Atrybut pomyślnie zaktualizowany.
+      create:
+        success: Atrybut pomyślnie utworzony.
+      delete:
+        success: Atrybut pomyślnie usunięty.
+    options:
+      helper:
+        title: Tłumaczenia etykiety
+  modal:
+    delete:
+      subtitle: Potwierdź usunięcie
+      button:
+        cancel: Anuluj
+        confirm: Skasuj
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Określone parametry

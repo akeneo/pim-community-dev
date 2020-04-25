@@ -1,0 +1,66 @@
+teamwork_assistant:
+  common:
+    required: Gerekli
+    warning: Endişelenmeyin, projenin hesaplanması biraz zaman alabilir, bu nedenle projeniz hemen görünmeyebilir.
+  grid:
+    view_selector:
+      create: Projeyi oluştur
+      edit: Projeyi düzenle
+      remove: Projeyi sil
+      create_from_view: Bu proje için bir görünüm oluştur
+      start_new_project: Yeni bir projeye başla
+      confirmation:
+        remove: Bu projeyi silmek istediğinizden emin misiniz?
+      projects: Projeler
+  project:
+    label: Ad
+    locale: Yerel Ayar
+    label_maxlength: Bu değer çok uzun. En fazla {{ max }} karakter içermelidir.
+    description: Açıklama
+    due_date: Son Tarih
+    due_date_past: Geçmiş bir tarihi seçemezsiniz.
+    leaving_scope: Proje kapsamından çıkarılıyorsun.
+  edit_project_modal:
+    saved: Proje kaydedildi.
+    title: Projeyi düzenle
+  create_project_modal:
+    saved: Bu proje kaydedildi, hesaplamalar tamamlandığında size bildirilecek.
+  widget:
+    no_project: Geçerli bir projeniz yok
+    no_project_create: yeni proje oluştur
+    description: Açıklama
+    due_date: Bitiş tarihi
+    todo: YAPILACAKLAR
+    in_progress: DEVAM ETMEKTE
+    done: TAMAM
+    all_contributors: Tüm katkıda bulunanlar
+    display_products: Görüntü ürünleri
+    placeholder:
+      contributor_selector: Katkıda bulunanları aramak
+      project_selector: Projeyi ara
+    completeness:
+      to_start: BAŞLANGIÇ İÇİN ÜRÜN VE ÜRÜNLER
+      in_progress: DEVAM EDEN ÜRÜNLER
+      done: TAMAMLANMIŞ ÜRÜNLER
+pim_datagrid:
+  view_selector:
+    project: Projeler
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Ekip Çalışmasına Yardımcı Olan Kişi
+        project_calculation: Ekip Çalışmasına Yardımcı Olan Kişi
+batch_jobs:
+  project_calculation:
+    project_calculation.label: Proje Hesaplama
+    prepare_project_calculation.label: Projeyi hesaplamaya hazırlayın
+    clean_contributor_group.label: Yerel ayarlarınız için kullanıcı izinlerini gözden geçiriniz
+  refresh_project_completeness_calculation:
+    label: Proje bütünlüğü yenile
+    refresh_project_completeness_calculation.label: Proje bütünlüğü yenile
+pim_notification:
+  types:
+    project_created: Sizin için yeni bir proje
+    project_finished: Proje bitti
+    project_calculation: Proje Hesaplama

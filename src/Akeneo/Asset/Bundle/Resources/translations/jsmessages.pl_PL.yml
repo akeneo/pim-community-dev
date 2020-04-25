@@ -1,7 +1,203 @@
+user:
+  asset_delay_reminder: Przypomnienie o opóźnieniu zasobów (w dniach)
 pimee_product_asset:
   form:
     product:
       asset:
+        manage: Zarządzaj zasobami
         manage_asset:
+          title: Zarządzaj zasobami
           cancel: Anuluj
           confirm: Potwierdź
+        title: Zarządzaj zasobami
+        description: Wybierz zasoby, które chcesz dołączyć do swojego produktu
+        download: Pobierz
+        remove: Usuń
+        upload: Wgraj na serwer
+    asset:
+      not_empty: Kod jest wymagany. Nie może być pusty.
+      alpha_numeric_plus_underscore: Kod powinien być tylko alfanumeryczny lub zawierać podkreślenia.
+      unique: Kod musi być unikalny. Wygenerowaliśmy nowy dla ciebie.
+  enrich_asset:
+    grid:
+      edit: Edycja ustawień zasobów
+  enrich_variation:
+    popin:
+      reset:
+        title: Badanie zmian
+  mass_upload:
+    menu: Wczytaj zasoby
+    btn:
+      remove_all_files: Usuń wszystkie pliki
+      import: Import
+      upload: Wczytaj zasoby
+    success:
+      new: Nowy zasób zostanie utworzony
+      imported: Pliki zaimportowane do przetwarzania zasobów
+      canceled: Wczytywanie pomyślnie anulowane
+      deleted: Wczytywanie pliku pomyślnie anulowane
+    error:
+      list: Nie można odczytać właśnie przesłanych plików
+      delete: Nie można usunąć pliku z serwera
+      filename: Nieprawidłowa nazwa pliku dla zasobu
+      code: Nieprawidłowy format kody dla zasobu
+      locale: Zasób istnieje, ale nie może zostać zlokalizowany
+      invalid_locale: Ustawienia lokalne są wyłączone lub nieprawidłowe
+      exists: Plik z tą samą nazwą są już zimportowane
+      conflicts: Konflikt nazw plików
+    status:
+      added: Dodane
+      queued: W kolejce
+      uploading: Przesyłanie
+      error: Błąd
+      success: Zakończono sukcesem
+    drag_and_drop: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Czy na pewno chcesz usunąc wybrane produkty?
+        success: Wybrane produkty zostały pomyślnie usunięte.
+        empty_selection: Nie zaznaczono
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Kolekcja zasobów
+pim_title:
+  pimee_product_asset_mass_upload: Wczytaj zasoby
+  pimee_product_asset_index: Zasoby
+  pimee_product_asset_edit: Zasób {{ asset.label }} | Edycja
+  pimee_asset_categorytree_index: Kategorie
+  pimee_asset_categorytree_edit: Kategoria {{ category.label }} | Edycja
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Masowe przekazywanie zasobów
+    perform.label: Masowe przekazywanie
+  yml_asset_channel_configuration_import:
+    import.label: Importowanie konfiguracji kanału zasobów
+    label: Importowanie konfiguracji kanału zasobów w Yaml
+    import_asset.label: Importowanie konfiguracji kanału zasobów w Yaml
+  yml_asset_channel_configuration_export:
+    label: Eksportowanie konfiguracji kanału zasobów w Yaml
+    export.label: Eksportowanie konfiguracji kanału zasobów w Yaml
+  csv_asset_import:
+    label: Import zasobów z CSV
+    import_tags.label: Import tagu w CSV
+    import_asset.label: Import zasobów z CSV
+  csv_asset_export:
+    label: Eksport zasobów z CSV
+    export.label: Eksport zasobów z CSV
+  csv_asset_variation_export:
+    label: Eksport kategorii zasobów w CSV
+    export.label: Eksport kategorii zasobów w CSV
+  csv_tag_import:
+    label: Import tag z CSV
+    import.label: Import tag z CSV
+  csv_asset_category_import:
+    label: Import kategorii z CSV
+    import_asset_category.label: Import kategorii z CSV
+  csv_asset_configuration_import:
+    label: Importowanie konfiguracji kanału zasobów w CSV
+    import_asset.label: Importowanie konfiguracji kanału zasobów w CSV
+  csv_asset_category_export:
+    label: Eksport kategorii zasobów w CSV
+    export.label: Eksport kategorii zasobów w CSV
+  xlsx_tag_import:
+    label: Import tag z XLSX
+    import.label: Import tag z XLSX
+  xlsx_asset_import:
+    label: Import zasobów z CSV
+    import_tags.label: Import tag z XLSX
+    import_asset.label: Import zasobów z XLSX
+  xlsx_asset_category_import:
+    label: Import kategorii zasobów w XLSX
+    import_asset_category.label: Import kategorii zasobów w XLSX
+  xlsx_asset_export:
+    label: Eksport zasobów z XLSX
+    export.label: Eksport zasobów z XLSX
+  xlsx_asset_category_export:
+    label: Eksport kategorii zasobów w XLSX
+    export.label: Eksport kategorii zasobów w XLSX
+  classify_assets:
+    perform.label: Przenieś zasoby do kategorii
+  add_tags_to_assets:
+    perform.label: Dodaj tagi do zasobów
+jstree:
+  asset:
+    all: Wszystkie zasoby
+    unclassified: Niesklasyfikowane zasoby
+asset_grid:
+  selected: wybrane zasoby
+  label: Zasoby produktu
+create_asset:
+  title: Utwórz zasób
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Raporty edycji masowej
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Przekształcenia zasobów
+      not_found: Nie znaleziono transformacji
+      transformation: Transformacja
+      options: Ustawienia
+      colorspace:
+        title: Przestrzeń kolorów
+        options:
+          colorspace: '%value% przestrzeń kolorów'
+      resize:
+        title: Zmień rozmiar
+        options:
+          width: '%value%px długości'
+          height: '%value%px szerokości'
+      resolution:
+        title: Rozdzielczość
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Skalowanie
+        options:
+          width: '%value%px długości'
+          height: '%value%px szerokości'
+          ratio: '%value%% stosunek'
+      thumbnail:
+        title: Miniatura
+        options:
+          width: '%value%px długości'
+          height: '%value%px szerokości'
+pimee_enrich.mass_edit.asset:
+  title: Kolekcja zasobów
+  step:
+    select:
+      label: Wybierz zasoby
+    choose:
+      title: Kolekcja zasobów
+    configure:
+      label: Konfiguruj
+    confirm:
+      label: Potwierdź
+  operation:
+    add_tag:
+      label: Dodaj tagi do zasobów
+      description: Tagi zostaną dodane do zasobów.
+      field: Tagi
+      empty_selection: Proszę wybrać etykiety
+    add_to_category:
+      label: Klasyfikuj produkty w kategorie
+      description: Zasoby zostaną umieszczone w następujących kategoriach, istniejące rozmieszczenie zostanie utracone.
+pim_catalog_volume:
+  axis:
+    count_assets: Zasoby
+    count_asset_categories: Kategorie aktywów
+pim_menu:
+  tab:
+    asset: Zasoby
+  item:
+    asset_category: Kategorie aktywów
+    upload_asset: Wczytaj zasoby
+pim_notification:
+  types:
+    mass_upload: Masowe przekazywanie

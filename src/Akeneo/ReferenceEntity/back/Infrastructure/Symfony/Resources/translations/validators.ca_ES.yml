@@ -20,8 +20,6 @@ pim_reference_entity:
         pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
         should_be_unique: 'El codi de registre ja existeix per l''entitat de referencia "%reference_entity_identifier%" i el codi de registre "%code%"'
         should_exist: 'El registre no s''ha trobat'
-      text:
-        incompatible_with_regular_expression: 'Text incompatible amb l''expressió regular "%regular_expression%"'
       file:
         extension_not_allowed: '"%file_extension%" no es permet per a aquest atribut. Les extensions permeses son: %allowed_file_extensions%'
         file_size_exceeded: 'L''arxiu excedeix la mida màxima establerta per l''atribut.'

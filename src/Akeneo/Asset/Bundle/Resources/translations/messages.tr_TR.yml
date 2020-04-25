@@ -1,0 +1,226 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Varlığı zenginleştir
+      create: Bir varlık oluştur
+      remove: Varlığı kaldır
+      categories_view: Bir varlık kategorisine göz atın
+      mass_upload: Toplu varlık yükle
+    category_asset_picker:
+      list: Varlık seçici içindeki varlık kategorilerini listele
+    category:
+      create: Bir varlık kategorisi oluştur
+      edit: Bir varlık kategorisi düzenle
+      list: Varlık kategorilerini listele
+      remove: Bir varlık kategorisi kaldır
+      manage: Varlık kategori izinlerini yönet
+      history: Varlık kategori geçmişini görüntüle
+  acl_group:
+    asset: Ürün varlıkları
+    category: Varlık kategorileri
+  enrich_asset:
+    button:
+      upload: Yükle
+      delete: Sil
+      download: İndir
+      generate_from_reference: Referans oluştur
+      reset_variations: Değişimleri sıfırla
+    confirmation.remove: '"%asset%" varlığını kaldırmak istediğinize emin misiniz?'
+    confirmation.subTitle: Varlıklar
+    grid:
+      edit: Varlık özelliklerini düzenle
+    view:
+      title: Ürün varlığı
+      code: Kod
+      description: Açıklama
+      end_of_use: Son kullanım
+      reference: Referans
+      filename: Dosya adı
+      width: En
+      height: Yükseklik
+      resolution: Çözünürlük
+      colors: Renk alanı
+      filesize: Dosya boyutu
+      filetype: Dosya türü
+      actions: Eylemler
+      download: İndir
+      tag: Etiketler
+      no_reference: Herhangi bir başvuru dosyası henüz yüklenemedi.
+      no_variation: Henüz değişim dosyası oluşturulmadı.
+    flash:
+      update:
+        success: Varlık güncellendi.
+      create:
+        success: Varlık oluşturuldu.
+      remove:
+        success: Varlık kaldırıldı.
+  enrich_reference:
+    flash:
+      delete:
+        success: Referans dosyası silindi.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: Geçersiz seçenekler nedeniyle %channel% varyasyonunu üretmek imkansız.
+        image_width_error: Yüklenen görüntünün genişliği, dönüşümün gerektirdiği boyuttan daha küçük olduğu için %channel% varyasyonunu üretmek imkansız.
+        image_height_error: Yüklenen görüntünün yüksekliği, dönüşümün gerektirdiği boyuttan daha küçük olduğu için %channel% varyasyonunu üretmek imkansız.
+        not_applicable: '%channel% varyasyonunu üretmek imkansız.'
+        non_registered: '%mimeType% taklit türü için hiçbir %transformation% dönüşümü kaydedilmedi. %channel% varyasyonunu üretmek imkansız.'
+        error: '%kanal% varyasyonunu oluşturmak imkansız.'
+        success: Değişim dosyası başarıyla oluşturuldu.
+      update:
+        success: Değişim dosyası güncellendi.
+      delete:
+        success: Değişim dosyası silindi.
+  popin.create:
+    title: Yeni bir varlık oluşturma
+    is_localized: Yerelleştirilebilir
+  menu: Varlıklar
+  page_tab:
+    title:
+      view: Ürün varlığı %asset.code% | Görüntüle
+      edit: Ürün varlığı %asset.code% | Düzenle
+      index: Ürün varlıkları
+  code:
+    label: Kod
+  thumbnail:
+    label: Küçük resim
+  status:
+    label: Durum
+  description:
+    label: Açıklama
+  endOfUse:
+    label: Kullanım sonu
+  createdAt:
+    label: Oluşturma tarihi
+  updatedAt:
+    label: Son güncelleme
+  tags:
+    label: Etiketler
+  tabs:
+    properties.title: Özellikler
+    variations.title: Çeşitlemeler
+    categories.title: Kategoriler
+  validation:
+    code:
+      not_empty: Kod gereklidir. Boş olamaz.
+      unique: Kodun benzersiz olması gerekir.
+      new_generation: Sizin için yeni bir tane oluşturuldu.
+  notAvailable:
+    label: mevcut değil
+  asset:
+    title: Varlık
+  mass_upload:
+    menu: Varlıkları yükle
+    new: Yeni bir varlık oluşturulacak
+    add_files: dosyaları ekle
+    start: Yüklemeye başla
+    cancel: Yüklemeyi iptal et
+    import: İçe aktar
+    executed: Toplu yükleme gerçekleşti
+    error:
+      code: Öğe için geçersiz kod biçimi
+      localizable: Bir varlık mevcut fakat yerelleştirilemiyor
+      invalid_locale: Yerel ayar devre dışı veya geçersiz
+  category:
+    menu: Varlık kategorileri
+    permissions:
+      view.label: Varlıkların görüntülenmesine izin ver
+      view.help: Bu kategorideki varlıkları görüntülemeye izin ver
+      edit.label: Varlıkların düzenlenmesine izin ver
+      edit.help: Bu kategorideki varlıkları düzenlemeye izin ver (görüntüleme izni içerir)
+      no_access_to_products: Herhangi bir ağaçtaki varlıklara erişiminiz yok, lütfen yöneticiniz ile iletişime geçin
+      apply_on_children.label: Çocuklar üzerindeki değişiklikleri uygula
+      apply_on_children.help: Çocuklardaki tüm izin değişikliklerini kopyalayın, çocuklard üzerindeki geçerli izinler korunmakta
+  mass_edit_action:
+    asset:
+      page_title: Varlıklar
+      page_subtitle: Toplu Düzenle (1 varlık)|Toplu Düzenle (%count% varlık)
+      confirm: Bir kaynağı aşağıdaki bilgilerle güncellemek üzeresiniz, lütfen onaylayın. %count% kaynaklarını aşağıdaki bilgilerle güncellemek üzeresiniz, lütfen onaylayın.
+      steps:
+        first: Varlıkları seçin
+        second: Yapılandırma
+        third: Doğrula
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Varlıkları kategorilere taşı
+      description: Varlıklar aşağıdaki kategorilere yerleştirilecek, mevcut yerleşim korunacaktır
+      success_flash: Varlıklar seçilen kategorilere taşındı
+      launched_flash: '"kategorilere taşıma" toplu eylemi başlatıldı. İşlem tamamlandığında size haber verilecektir.'
+    add-tags-to-assets:
+      label: Varlıklara etiketler ekle
+      description: Etiketler varlıklara eklenecek. Eğer bazı etiketler mevcut değilse oluşturulacak.
+      success_flash: Etiketler varlıklara eklendi
+      launched_flash: '"Varlıklara etiketler ekle" toplu işlemi başlatıldı. İşlem tamamlandığında bilgilendirileceksiniz.'
+      message.error: Belirtilen etiket mevcut değil
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Sınıflandırma
+      add_tags_to_assets: Etiketleri ekle
+      delete_assets: Varlıkları sil
+btn.create.asset: Bir varlık oluştur
+btn.drag_or_upload: Dosyayı sürükleyerek bırak yada buraya tıkla
+job_execution.summary:
+  variations_not_generated: Varyasyon üretilemedi
+  pimee_product_asset.mass_upload.new: Varlık dosya üzerinden oluşturuldu
+  pimee_product_asset.mass_upload.updated: Varlık güncellendi
+  error: Varlık dosyası işlemi hatası
+  skipped_assets: Atlanan varlıklar
+assets_mass_upload.steps:
+  asset_mass_upload.title: Varlıkları toplu yükleme
+import_asset.steps.channel_configuration_processor.title: İşlem kanalı yapılandırmaları
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: Toplu veri yükleme
+pim_analytics:
+  info_type:
+    nb_assets: Varlık sayısı
+pim_assets_collection: Varlıklar kolesiyonu
+pim_api:
+  acl:
+    asset_category:
+      edit: Varlık kategorileri oluştur ve düzenle
+      list: Varlık kategorilerini listele
+    asset:
+      edit: Varlıkları düzenleyin ve referans ve varyasyon dosyalarını yükleyin
+      list: Varlıkları listeleyin ve referans ve varyasyon dosyalarını listeleyin ve indirin
+  acl_group:
+    asset_category: Varlık kategorileri
+    asset: Varlıklar
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Varlık dönüşümleri
+  asset_transformation:
+    not_found: Hiç bir dönüşüm bulunamadı
+    title:
+      transformation: Dönüştürme
+      options: Seçenekler
+    colorspace:
+      title: Renk alanı
+      options:
+        colorspace: '%value% renk uzayı'
+    resize:
+      title: Yeniden Boyutlandır
+      options:
+        width: '%value%px genişlik'
+        height: '%value%px yükseklik'
+    resolution:
+      title: Çözünürlük
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Ölçek
+      options:
+        width: '%value%px genişlik'
+        height: '%value%px yükseklik'
+        ratio: '%value% oranı'
+    thumbnail:
+      title: Küçük resim
+      options:
+        width: '%value%px genişlik'
+        height: '%value%px yükseklik'

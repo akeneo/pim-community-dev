@@ -1,0 +1,97 @@
+pimee_catalog_rule:
+  execution_button: Kuralları gerçekleştir
+  selected: 'kurallar seçildi'
+  popin:
+    execute_rules:
+      confirm_title: Yürütmeyi onayla
+      confirm_content: Tüm kuralları gerçekleştirmek istediğinize emin misiniz? (uzun bir zaman alabilir)
+  notification:
+    fail: Eylem gerçekleştirilemedi
+    launched: Kuralların gerçekleştirimi başladı. Tamamlandığında bilgilendirileceksiniz.
+  attribute:
+    list:
+      code.label: Kod
+      condition.label: Durum
+      action.label: İşlem
+      no_rule_yet.label: Şimdilik kural yok
+  rule:
+    condition:
+      if.label: eğer
+    action:
+      then.label: o zaman
+      set_value.label: içine ayarla
+      copy_value.label: içine kopyalanır
+      set.label: içine ayarla
+      copy.label: içine kopyalanır
+      add.label: içine eklenir
+      remove.label: silindi
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Yürütmeyi onayla
+          confirm_content: Bu kuralı uygulamak istediğinizden emin misiniz?
+      mass_edit_action:
+        confirm_title: Hesaplamayı onayla
+        confirm_content: Etkilenen ürünleri kurallar için hesaplamak istediğinizden emin misiniz?
+      mass_action:
+        execute:
+          confirm_title: Yürütmeyi onayla
+          confirm_content: Seçili kuralları uygulamak istediğinizden emin misiniz?
+          success: Seçilen kuralları yürütmek için toplu işlem başlatıldı. İşlem bitince size haber verilecektir
+          empty_selection: Seçili kural yok.
+        delete:
+          confirm_title: Yürütmeyi onayla
+          confirm_content: Seçilen kuralları silmek istediğinize emin misiniz?
+          success: Kurallar başarı ile silindi.
+          empty_selection: Hiç bir kural seçilmedi.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Kurallar
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Bu kuralı silmek istediğinizden emin misiniz? Bu eylemi geri almak mümkün değildir
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Kural başarıyla kaldırıldı
+flash:
+  rule:
+    impacted_product_count: Etkilenen ürünleri, kurallar için hesaplama toplu işlemi başladı. İşlem tamamlandığında size haber verillecektir
+    executed: Kural uygulanması başlatıldı. İşlem tamamlandığında bilgilendirileceksiniz.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Kural ayarları
+batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Kuralların uygulanması
+  default_steps:
+    execute_rules: Kuralların uygulanması
+  yml_rule_import:
+    label: YAML'da içe aktarma kuralı
+    import.label: İçe aktarma kuralı
+  yml_rule_export:
+    label: YAML'da dışa aktarma kuralı
+    export.label: Dışa aktarma kuralı
+  rule_impacted_product_count:
+    label: Kurallar için etkilenen ürünler
+    perform.label: Etkilenen ürünleri say
+  csv_product_import_with_rules:
+    label: Kurallar dahilinde CVS'de ürünü içe aktarma
+    import.label: Ürünleri içe aktar
+  xlsx_product_import_with_rules:
+    label: Kurallar dahilinde XLSX'de ürünü içe aktarma
+    import.label: Ürünleri içe aktar
+pim_notification:
+  types:
+    rule: Kural Ayarları
+pim_menu:
+  item:
+    rule: Kurallar
+pim_title:
+  pimee_catalog_rule_rule_index: Kurallar

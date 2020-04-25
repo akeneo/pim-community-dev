@@ -1,0 +1,16 @@
+akeneo_franklin_insights:
+  entity:
+    identifier_mapping:
+      fields:
+        status:
+          active: Etkin
+          inactive: Aktif Değil
+    attributes_mapping:
+      fields:
+        franklin_insights:
+          active: Etkin
+          inactive: Aktif Değil
+  connection:
+    module:
+      activation:
+        activated: 'Etkinleştirildi'

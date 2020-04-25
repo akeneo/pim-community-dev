@@ -3,6 +3,11 @@
 #akeneo_asset_manager_asset_family_edit: Edit an asset family
 #akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Suspicious embedded link
+        message: Sorry, we do not display this embed item but it will be correctly saved
   asset_collection:
     asset_count: '{0} No asset|{1} {{ resultCount }} asset|]1,Inf] {{ resultCount }} assets'
     add_asset: 'Add asset'

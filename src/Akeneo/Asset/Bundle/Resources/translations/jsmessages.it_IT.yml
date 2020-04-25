@@ -85,6 +85,7 @@ pim_title:
   pimee_product_asset_view: Attività {{ asset.label }} | Mostra
   pimee_asset_categorytree_index: Categorie
   pimee_asset_categorytree_edit: Categoria {{ category.label }} | Modifica
+  pimee_asset_categorytree_create: Categoria | Crea
 batch_jobs:
   apply_assets_mass_upload:
     label: Caricamento di massa di asset

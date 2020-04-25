@@ -1,0 +1,96 @@
+pimee_enrich.acl.locale.edit_permissions: Yerel ayar izinlerini yönet
+pimee_enrich.acl.category.edit_permissions: Kategori izinlerini yönet
+pimee_enrich.acl.attribute_group.edit_permissions: Özellik grubu izinlerini yönet
+pimee_importexport.acl.export_profile.edit_permissions: Dışa aktarılan profil izinlerini yönet
+pimee_importexport.acl.import_profile.edit_permissions: İçe aktarılan profil izinlerini yönet
+pimee_enrich.groups.label: Grupların sahibi
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Özellikleri düzenle
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: İzin ile ürün değeri ekleyin
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: İzin ile ürün değerini güncelleyin
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: İzin ile ürün değerini kaldırın
+edit_common_attributes_with_permission: Özellikleri izinle düzenle
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Özellikleri izinle düzenle
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Özel ayarlara erişimlerin sayısı
+    nb_custom_category_accesses: Özel kategorilere erişimlerin sayısı
+    nb_custom_attribute_group_accesses: Özel özellik gruplarına erişimlerin sayısı
+job_profile.permissions:
+  execute.label: İş profilinin çalıştırmasına izin ver
+  edit.label: İş profili düzenlemek için izin ver
+pim_title.locale:
+  edit: "Yerel ayarlar %locale.code% | Düzenle"
+attribute group.permissions:
+  view.label: Özellikleri görüntülemesine izin ver
+  view.help: Bu özellik grubundaki ürünleri görmeye izin ver
+  edit.label: Özellikleri düzenlemesine izin ver
+  edit.help: Bu özellik grubundaki ürünleri görmek için izin ver
+  no_access_to_attributes: Bu ürünün hiç bir özelliğine erişme izniniz yok. Lütfen yöneticinizle iletişim kurun.
+category.permissions:
+  view.label: Ürünleri görüntülemesine izin ver
+  view.help: Bu kategorideki ürünleri görmeye izin ver
+  edit.label: Ürünleri düzenlemesine izin ver
+  edit.help: Bu kategorideki ürünleri düzenlemeye izin ver ( görüntüleme izini gerektirir)
+  own.label: Ürün sahip olmaya izin verildi
+  own.help: Bu kategorideki ürünleri inceleme, yayınlama, yayınlamama, sınıflandırma ve ilişkilendirme serbesttir (düzenleme izni gerektirir)
+  no_access_to_products: Herhangi bir bağlantıda ürünlere erişiminiz yok, lütfen yöneticinizle iletişime geçin.
+  apply_on_children.label: Çocuklar üzerindeki değişiklikleri uygula
+  apply_on_children.help: Çocuklardaki tüm izin değişikliklerini kopyalayın, çocuklard üzerindeki geçerli izinler korunmakta
+locale.permissions:
+  no_access_to_products: Aktifleştirilen yerel ayarların her hangi birinde ürünün verilerine erişemiyorsunuz, lütfen yöneticinizle iletişime geçin.
+flash.locale.updated: Yerel ayarlar ve izinler güncellendi
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Ürünü düzenlemek için iznin yok "%identifiers%"
+      page_title: Ürünler
+      page_subtitle: Toplu Düzenle ( 1 Ürün | Toplu düzenle (%count% Ürünler)
+      title: İşlemi seçin
+      subtitle: Seçili ürün üzerinde gerçekleştirmek istediğiniz işlemi seçin | Seçilen %sayı% ürünlerde gerçekleştirmek istediğiniz işlemi seçin
+      confirm: Bir ürünü şu bilgilerle güncellemek üzeresiniz, lütfen onaylayın. %count% ürünlerini sıradaki bilgilerle güncellemek üzeresiniz, lütfen onaylayın.
+      steps:
+        first: Ürünleri seçin
+        second: İşlemi seçin
+        third: Yapılandırma
+        fourth: Doğrula
+    publish:
+      message:
+        error: Ürünün sahibi değilsiniz, yayınlıyamazsınız.
+        warning: Tüm seçilen ürünlerin sahibi değilsiniz. Ürünleri "%notGranted%" olarak yayınlayamazsınız.
+      not_editable: Ürünü düzenlemek için iznin yok "%identifiers%"
+    unpublish:
+      message:
+        error: Ürünün sahibi değilsiniz, ürünü yayından kaldıramazsınız.
+        warning: Seçilen tüm ürünlerin sahibi değilsiniz. "%notGranted%" ürünlerini yayından kaldıramazsınız.
+        info: '%nbProducts% seçilen ürünler yayından kaldırılacak.'
+      not_editable: '"%Identifiers%" ürünleri düzenlemek için izniniz yok.'
+    classify:
+      message:
+        error: Ürünün sahibi değilsiniz, onları sınıflandıramazsınız.
+        warning: Seçilen tüm ürünlerin sahibi değilsiniz. Ürünleri sınıflandıramazsınız. "%notGranted%"
+    edit_common_attributes:
+      message:
+        error: Ürünün sahibi değilsiniz, ürünü düzenleyemezsiniz.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: İzinler
+  acl.product_ownership.title: Şirket Türü
+  attributes:
+    empty: hiçbiri
+  category:
+    tab:
+      permission:
+        title: İzinler
+  groups:
+    label: grupların sahibi
+    empty: hiçbiri
+add_product_value_with_permission_and_rules:
+  steps.perform: Ürün değeri ekle
+update_product_value_with_permission_and_rules:
+  steps.perform: Ürün değerini güncelle
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Özellikleri düzenle
+  steps.edit_common_attributes_processor.title: Özellikleri düzenle
+pim_enrich_attribute_form:
+  isReadOnly: Salt okunur

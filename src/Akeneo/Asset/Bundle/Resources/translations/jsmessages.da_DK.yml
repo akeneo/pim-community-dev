@@ -5,8 +5,19 @@ pimee_product_asset:
     product:
       asset:
         manage: Administrer aktiver
+        manage_asset:
+          title: Administrer aktiver
+          cancel: Annuller
+          confirm: Bekræft
+        title: Administrer aktiver
         description: Vælge de aktiver, du vil vedhæfte til dit produkt
+        preview_title: Masseupload
+        download: Hent
+        remove: Fjern
+        upload: Upload
+        assetRemoveConfirmationLabel: Er du sikker på, at du vil fjerne denne asset?
     asset:
+      not_empty: Koden er påkrævet. Det kan ikke være tom.
       alpha_numeric_plus_underscore: Koden skal kun være alfanumeriske eller understreg.
       unique: Koden skal være entydig. Vi har skabt en ny for dig.
   enrich_asset:
@@ -16,15 +27,19 @@ pimee_product_asset:
     popin:
       reset:
         title: Nulstil variationerne
+        message: Er du sikker på, at du vil nulstille alle variationerne?
   mass_upload:
     menu: Aktiver
     btn:
       remove_all_files: Fjerne alle filer
+      import: Import
+      upload: Aktiver
     success:
       new: Der oprettes et nyt aktiv
       imported: Filerne importeres til aktiv behandling
       canceled: Indlæsningen blev annulleret
       deleted: Den uploadede fil blev slettet
+      need_refresh: <b> Asset-import blev lancheret</b><br> For at se de importerede asset'er i produktform, skal du opdatere produktsiden, så snart du modtager en meddelelse om import.
     error:
       list: Kan ikke læse filer, der allerede er uploadet
       upload: Der opstod en fejl under upload
@@ -43,6 +58,7 @@ pimee_product_asset:
       error: Fejl
       success: Fuldført
     drag_and_drop: Træk og slip dine aktiver eller klik her
+    tabsection_title: Asset'er blev uploadet
   datagrid:
     mass_action:
       delete:
@@ -50,15 +66,83 @@ pimee_product_asset:
         success: Valgte aktiver blev slettet.
         error: Der opstod en fejl under sletning af de valgte assets, prøv venligst igen.
         empty_selection: Ingen aktiv valgt
-#TODO merge in 3.1: `pim_dashboard` should be renamed in `pim_import_export`
-pim_dashboard:
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Aktive samling
+pim_import_export:
   widget:
     last_operations:
       job_type:
+        mass_upload: Masseupload
         compute_completeness_of_products_linked_to_assets: Beregn produkter tilknyttet asset'ers fuldkommenhed
+pim_title:
+  pimee_product_asset_mass_upload: Aktiver
+  pimee_product_asset_index: Aktiver
+  pimee_product_asset_edit: Aktiv {{ asset.label }} | Rediger
+  pimee_asset_categorytree_index: Kategorier
+  pimee_asset_categorytree_edit: Kategori {{ category.label }} | Rediger
 batch_jobs:
+  apply_assets_mass_upload:
+    label: Masse indlæs aktiver
+    perform.label: Masse upload
+  apply_assets_mass_upload_into_asset_collection:
+    label: Asset'ers masseupload og tilføj til produkt
+    perform.label: Masseupload asset'er og tilføj til produkt
+  yml_asset_channel_configuration_import:
+    import.label: Aktiv kanal konfiguration import
+    label: Aktiv kanal konfiguration import i Yaml
+    import_asset.label: Aktiv kanal konfiguration import i Yaml
+  yml_asset_channel_configuration_export:
+    label: Aktiver kanal konfiguration import i Yaml
+    export.label: Aktiver kanal konfiguration import i Yaml
+  csv_asset_import:
+    label: Aktiv import i CSV-
+    import_tags.label: Tag import i CSV-
+    import_asset.label: Aktiv import i CSV-
+  csv_asset_export:
+    label: Aktiver eksport i CSV-
+    export.label: Aktiver eksport i CSV-
+  csv_asset_variation_export:
+    label: Aktiv variationer eksportere i CSV
+    export.label: Aktiv variationer eksportere i CSV
+  csv_tag_import:
+    label: Tag import i CSV-
+    import.label: Tag import i CSV-
+  csv_asset_category_import:
+    label: Aktiver kategori import i CSV-
+    import_asset_category.label: Aktiver kategori import i CSV-
+  csv_asset_configuration_import:
+    label: Aktiver kanal konfiguration import i Yaml
+    import_asset.label: Aktiver kanal konfiguration import i Yaml
+  csv_asset_category_export:
+    label: Aktiver kategori import i CSV-
+    export.label: Aktiver kategori import i CSV-
+  xlsx_tag_import:
+    label: Etiket import i XLSX
+    import.label: Etiket import i XLSX
+  xlsx_asset_import:
+    label: Aktiver import i XLSX
+    import_tags.label: Etiket import i XLSX
+    import_asset.label: Aktiver import i XLSX
+  xlsx_asset_category_import:
+    label: Aktiver kategori import i XLSX
+    import_asset_category.label: Aktiver kategori import i XLSX
+  xlsx_asset_export:
+    label: Aktiver import i XLSX
+    export.label: Aktiver import i XLSX
+  xlsx_asset_category_export:
+    label: Aktiver kategori import i XLSX
+    export.label: Aktiver kategori import i XLSX
   xlsx_asset_variation_export:
     label: Aktiver kategori eksport i XLSX
+    export.label: Aktiver kategori eksport i XLSX
+  classify_assets:
+    perform.label: Flytte aktiver til kategorier
+  add_tags_to_assets:
+    perform.label: Tilføj etiketter til aktiver
   compute_completeness_of_products_linked_to_assets:
     compute_completeness_of_products_linked_to_assets.label: Beregn produkter tilknyttet asset'ers fuldkommenhed
 jstree:
@@ -66,7 +150,86 @@ jstree:
     all: Alle aktiver
     unclassified: Ikke klassificerede aktiver
 asset_grid:
+  title: "]-Inf, 1]{{ count }} Produkt.asset|]1, Inf[{{ count }} Produkt-asset'er"
   selected: udvalgte aktiver
+  label: Produkt aktiver
+create_asset:
+  title: Opret et aktiv
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Masse Rediger aktiver
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Aktiver transformationer
+      not_found: Ingen transformation fundet
+      transformation: Transformation
+      options: Valgmuligheder
+      colorspace:
+        title: Farverum
+        options:
+          colorspace: '%value% farverum'
+      resize:
+        title: Skalér
+        options:
+          width: '%value%px bredde'
+          height: '%value%px højde'
+      resolution:
+        title: Opløsning
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Skala
+        options:
+          width: '%value%px bredde'
+          height: '%value%px højde'
+          ratio: '%value%% forhold'
+      thumbnail:
+        title: Miniature
+        options:
+          width: '%value%px bredde'
+          height: '%value%px højde'
+pimee_enrich.mass_edit.asset:
+  title: Aktiver bulk handling
+  confirm: "{1} Du er ved at opdatere en asset med følgende information, bekræft venligst.|]1, Inf[Du er ved at opdatere {{ itemsCount }} asset'er med følgende information, bekræft venligst."
+  step:
+    select:
+      label: Vælg Aktiver
+    choose:
+      title: Aktiver bulk handlinger
+      label_count: "]0, Inf[Vælg din handling"
+    configure:
+      label: Konfigurér
+    confirm:
+      label: Bekræft
+  operation:
+    add_tag:
+      label: Tilføj etiketter til aktiver
+      description: Tags vil blive tilføjet til aktiverne.
+      label_count: "{1} Tilføj tags til <span class=\"AknFullPage-title--highlight\">1 asset</span>|]1, Inf[Tilføj tags til <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} asset'er</span>"
+      field: Etiketter
+      empty_selection: Vælg venligst mærkat
+    add_to_category:
+      label: Klassificere produkter i kategorier
+      description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
+      label_count: "{1}Klassificér <span class=\"AknFullPage-title--highlight\">1 asset</span> til kategorier|]1, Inf[Klassificér <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} asset'er</span> til kategorier"
+pim_catalog_volume:
+  section:
+    assets:
+      title: Akser på asset'er
+      hint: Du kan følge volumen vedrørende asset'erne lige her.
+  axis:
+    count_assets: Aktiver
+    count_asset_categories: Aktiver kategorier
+    count_asset_category_trees: Asset kategoritræer
 pim_menu:
+  tab:
+    asset: Aktiver
   item:
+    asset_category: Aktiver kategorier
     upload_asset: Indlæs aktiver
+pim_notification:
+  types:
+    mass_upload: Masse upload

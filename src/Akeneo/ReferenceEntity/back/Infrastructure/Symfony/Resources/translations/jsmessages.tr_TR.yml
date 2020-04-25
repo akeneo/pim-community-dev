@@ -1,0 +1,130 @@
+pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Yüklemek için sürükle ve bırak veya buraya tıkla
+      small:
+        remove: Kaldır
+        download: İndir
+  reference_entity:
+    button:
+      save: Kaydet
+      save_permission: Kaydet
+      create: Oluştur
+    tab:
+      attribute: Özellikler
+      properties: Özellikler
+      permission: İzinler
+    properties:
+      identifier: Kod
+      label: Etiket
+      image: Resim
+    create:
+      header:
+        title: Oluştur
+      input:
+        label: Etiket
+      confirm: Kaydet
+    delete:
+      title: Özellik
+  record:
+    no_result:
+      subtitle: Yeni arama kriterleri ile yeniden deneyin.
+    button:
+      save: Kaydet
+      create: Yeni ekle
+      delete: Sil
+    product:
+      title: Ürünler
+    enrich:
+      code: Kod
+      label: Etiket
+    create:
+      header:
+        title: Oluştur
+      input:
+        label: Etiket
+      confirm: Kaydet
+    grid:
+      filter:
+        completeness:
+          label: Tamamla
+          all: Tümü
+          'yes': 'Evet'
+          'no': 'Hayır'
+        option:
+          all: Tümü
+          operator:
+            in: Listede
+      column:
+        code: Kod
+        image: Resim
+        label: Etiket
+        complete: Tamamla
+        action: Eylemler
+    tab:
+      enrich: Zenginleştir
+      product: Ürünler
+    completeness:
+      label: Tamamla
+  attribute:
+    default:
+      code: Kod
+      label: Etiket
+      image: Resim
+    type:
+      text: Metin
+      image: Resim
+    create:
+      header:
+        title: Oluştur
+      input:
+        label: Etiket
+        type: Özellik türü
+        value_per_locale: Yerel ayar başına değer
+        value_per_channel: Kanal başına değer
+      confirm: Kaydet
+    edit:
+      save: Kaydet
+      cancel: İptal
+      input:
+        label: Etiket
+        type: Özellik türü
+        value_per_locale: Yerel ayar başına değer
+        value_per_channel: Kanal başına değer
+        max_length: En yüksek karakter sayısı
+        textarea: Metin Alanı
+        max_file_size: En büyük dosya boyutu (MB)
+        allowed_extensions: İzin verilen dosya uzantıları
+        validation_rule: Geçerlilik kuralı
+        regular_expression: Düzenli ifade
+        options:
+          validation_rule:
+            none: Hiçbiri
+            email: E-posta
+            regular_expression: Düzenli ifade
+            url: URL
+    delete:
+      title: Özellik
+    notification:
+      save:
+        success: Özellik başarıyla güncellendi.
+      create:
+        success: Özellik başarıyla oluşturuldu.
+      delete:
+        success: Özellik başarıyla silindi.
+    options:
+      helper:
+        title: Katman çevirileri
+  modal:
+    delete:
+      subtitle: Silmeyi Onayla
+      button:
+        cancel: İptal
+        confirm: Sil
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Belirli parametre türleri
