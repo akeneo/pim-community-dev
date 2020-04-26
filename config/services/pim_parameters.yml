@@ -67,3 +67,5 @@ parameters:
     count_product_model_values_limit: -1
     count_product_and_product_model_values_limit: -1
     count_users_limit: -1
+
+    pim_datagrid.event_listener.add_username_to_grid_listener.not_restricted_roles: []
