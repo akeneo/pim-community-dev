@@ -28,6 +28,8 @@ pim_asset_manager:
         channel_not_supported_for_field: 'Sie können keinen Kanal für das Feld "%product_field%" angeben'
         locale_not_supported_for_field: 'Sie können keine Locale für das Feld "%product_field%" angeben'
         assignmement_attribute_does_not_support_this_asset_family: 'Das Produktattribut "%product_attribute_code%" kann keine Asset der Assetfamilie "%asset_family_identifier% " enthalten'
+        assignmement_attribute_does_not_exist: 'Produkt-Attribut "%product_attribute_code%" existiert nicht'
+        assignmement_attribute_is_not_an_asset_collection: 'Produkt-Attribut "%product_attribute_code%" ist kein Attribut der Art Asset-Sammlung'
       attribute_as_main_media:
         not_found: 'Das Attribut "%attribute_as_main_media%" als Hauptmedium für die Asset-Familie existiert nicht'
         invalid_type: 'Das Attribut als Hauptmedium für die Asset-Familie sollte vom Typ %valid_attribute_as_main_media_types% sein'
