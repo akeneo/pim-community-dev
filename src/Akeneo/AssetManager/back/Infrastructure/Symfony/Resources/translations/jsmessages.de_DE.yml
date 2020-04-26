@@ -110,6 +110,8 @@ pim_asset_manager:
         channel_not_supported_for_field: 'Sie können keinen Kanal für das Feld "{{ %product_field% }}" angeben'
         locale_not_supported_for_field: 'Sie können keine Gebietsschema für das Feld "{{ %product_field% }}" festlegen'
         assignmement_attribute_does_not_support_this_asset_family: 'Das Produkt-Attribut "{{ %product_attribute_code% }}" kann keine Assets der Asset-Familie "{{ %asset_family_identifier% }}" enthalten'
+        assignmement_attribute_does_not_exist: 'Produkt-Attribut "{{ %product_attribute_code% }}" existiert nicht'
+        assignmement_attribute_is_not_an_asset_collection: 'Produkt-Attribut "{{ %product_attribute_code% }}" ist kein Attribut des Arts Asset-Sammlung'
     button:
       save: Speichern
       save_permission: Speichern
@@ -480,6 +482,7 @@ pim_asset_manager:
     media_file:
       placeholder: Upload per Drag & Drop oder hier klicken
       read_only: Diese Mediendatei kann nur gelesen werden
+    used_as_transformation_target: Dieses Feld wird nur gelesen, da es als Ziel in einer Asset-Transformation verwendet wird.
   modal:
     delete:
       subtitle: Löschen bestätigen

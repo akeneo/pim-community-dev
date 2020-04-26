@@ -52,6 +52,7 @@ akeneo_franklin_insights:
         suggest_attribute_mapping_error: 'Katalog-Attribut "[{{ catalogAttributeCode }}]" ist bereits auf dem Franklin-Attribut "{{ franklinAttributeLabel }}" zugeordnet.'
         add_attribute_to_family_success: '{1} Attribut erfolgreich an die Familie "{{ family }}". |[2,Inf[ Attribute erfolgreich mit der Familie "{{ family }}" verbunden.'
         add_attribute_to_family_error: 'Leider ist ein Fehler aufgetreten, während das Attribut der Familie angehängt wurde.'
+        fail_to_retrieve_franklin_mapping: 'Attributzuordnung ist momentan nicht verfügbar. Bitte kommen Sie später wieder.'
       fields:
         search_bar.placeholder: 'Auf Franklin-Attribut suchen'
         franklin_attribute: 'Franklin-Attribut'
@@ -157,6 +158,8 @@ akeneo_franklin_insights:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} Attributoptionen'
           sub_title: 'Das ist Franklin, Ihr <span class="AknDescriptionHeader-title--highlight">Produkt-Informations KI-Assistent</span>!'
           description: 'Um Ihre Kataloge anzureichern, muss Franklin Ihre Katalogattribute-Optionen kennen, die mit seinem übereinstimmen. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">Lesen Sie mehr</a>'
+      flash:
+        load_failed: 'Update fehlgeschlagen'
   product:
     edit:
       btn.push: Daten vorschlagen
