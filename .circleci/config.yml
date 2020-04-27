@@ -59,7 +59,7 @@ jobs:
       - run:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
-      - unless:
+      - when:
             condition: << parameters.is_pull_request >>
             steps:
               - run:
@@ -84,7 +84,7 @@ jobs:
             command: make dependencies
             environment:
                 YARN_REGISTRY: "http://registry.yarnpkg.com"
-      - unless:
+      - when:
           condition: << parameters.is_pull_request >>
           steps:
               - run:
