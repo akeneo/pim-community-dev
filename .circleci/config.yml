@@ -15,7 +15,7 @@ aliases:
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
 jobs:
-  checkout:
+  checkout_ee:
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -36,6 +36,16 @@ jobs:
           paths:
             - project
 
+  checkout_ce:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/
+          paths:
+              - project
+
   build_dev:
     parameters:
         is_pull_request:
@@ -49,11 +59,22 @@ jobs:
       - run:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
-      - run:
-          name: Build the latest Docker images
-          command: |
-              make php-image-dev
-              docker save -o php-pim-image.tar akeneo/pim-dev/php:7.3
+      - when:
+            condition: << parameters.is_pull_request >>
+            steps:
+              - run:
+                  name: Build the latest EE Docker images
+                  command: |
+                      make php-image-dev
+                      docker save -o php-pim-image.tar akeneo/pim-dev/php:7.3
+      - unless:
+            condition: << parameters.is_pull_request >>
+            steps:
+              - run:
+                  name: Save the CE image as a tar
+                  command: |
+                      docker pull akeneo/pim-php-dev:4.0
+                      docker save -o php-pim-image.tar akeneo/pim-php-dev:4.0
       - run:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
@@ -71,16 +92,23 @@ jobs:
             command: make dependencies
             environment:
                 YARN_REGISTRY: "http://registry.yarnpkg.com"
-      - run:
-          name: Activate Onboarder bundle
-          command: |
-              docker-compose run -u www-data --rm php sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
-              docker-compose run -u www-data --rm php cp vendor/akeneo/pim-onboarder/src/Bundle/Resources/config/onboarder_configuration.yml  config/packages/onboarder.yml
+      - when:
+          condition: << parameters.is_pull_request >>
+          steps:
+              - run:
+                  name: Activate Onboarder bundle
+                  command: |
+                      docker-compose run -u www-data --rm php sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
+                      docker-compose run -u www-data --rm php cp vendor/akeneo/pim-onboarder/src/Bundle/Resources/config/onboarder_configuration.yml  config/packages/onboarder.yml
       - run:
           name: Check PIM requirements
           command: |
               C='mysql elasticsearch' make up
-              vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+              if [ -d "vendor/akeneo/pim-community-dev" ]; then
+                vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+              else
+                docker/wait_docker_up.sh
+              fi
               make check-requirements
       - run:
           name: Install asset
@@ -111,33 +139,20 @@ jobs:
                 name: Load archived docker image
                 command: docker load -i php-pim-image.tar
           - run:
-                name: Check Pullup
-                command: make check-pullup
-                when: always
-          - run:
-                name: Check that all defined services are instantiable
-                command: make check-sf-services
+                name: Static tests
+                command: make static-back
           - run:
                 name: Analyzes source code to flag programming errors, bugs, stylistic errors, and suspicious constructs
                 command: make lint-back
           - run:
                 name: Code Coupling Detection
                 command: make coupling-back
-                when: always
-          - run:
-                name: Static tests
-                command: make asset-manager-static-back
           - run:
                 name: Unit tests
                 command: make unit-back
           - run:
                 name: Acceptance tests
                 command: make acceptance-back
-                when: always
-          - run:
-                name: Acceptance back (Connectivity Connection)
-                command: docker-compose run -u www-data --rm php vendor/bin/behat --config vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --no-interaction --format=progress --strict
-                when: always
           - store_test_results:
                 path: var/tests
           - store_artifacts:
@@ -308,28 +323,6 @@ jobs:
           - run:
               name: Push PROD PIM image on docker registry
               command: IMAGE_TAG=$CIRCLE_SHA1 make push-php-image-prod
-
-  deploy_master_environment:
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - prepare_terraform
-          - run:
-              name: Prepare helm deployment on kubernetes
-              command: make helm-prepare
-          - run:
-              name: Deploy PIM on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make deploy
-          - run:
-              name: Test PIM connexion on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make test-prod
-          - run:
-              name: Remove env on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make delete
 
   deploy_upgrade_oldest_prod_environment:
       environment:
@@ -505,15 +498,15 @@ workflows:
                     branches:
                         ignore:
                             - master
-          - checkout:
+          - checkout_ee:
                 requires:
                     - ready_to_build?
           - build_dev:
                 requires:
-                    - checkout
+                    - checkout_ee
           - build_prod:
                 requires:
-                    - checkout
+                    - checkout_ee
           - deploy_pr_environment?:
                 type: approval
                 filters:
@@ -581,21 +574,11 @@ workflows:
                             - master
 
       jobs:
-          - checkout
+          - checkout_ce
           - build_dev:
                 is_pull_request: false
                 requires:
-                    - checkout
-          - build_prod:
-                is_pull_request: false
-                requires:
-                    - checkout
-          - deploy_master_environment:
-                requires:
-                    - build_prod
-          - deploy_upgrade_oldest_prod_environment:
-                requires:
-                    - deploy_master_environment
+                    - checkout_ce
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -605,16 +588,10 @@ workflows:
           - test_back_phpunit:
                 requires:
                     - build_dev
-          - test_onboarder_bundle:
-                requires:
-                    - build_dev
           - back_behat_legacy:
                 requires:
                     - build_dev
           - test_back_data_migrations:
-                requires:
-                    - build_dev
-          - test_back_performance:
                 requires:
                     - build_dev
 
