@@ -1,0 +1,28 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CopyAction:
+    constraints:
+        -
+    properties:
+        fromField:
+            - Type:
+                type: string
+            - NotBlank: ~
+        fromScope:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
+        fromLocale:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
+        toField:
+            - Type:
+                type: string
+            - NotBlank: ~
+        toScope:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
+        toLocale:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~

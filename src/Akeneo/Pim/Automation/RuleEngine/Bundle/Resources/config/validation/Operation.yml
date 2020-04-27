@@ -1,0 +1,23 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operation:
+    properties:
+        operator:
+            - NotNull: ~
+            - Choice: [add, subtract, multiply, divide]
+        field:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AttributeShouldBeNumeric: ~
+        currency:
+            - Type:
+                type: string
+        value:
+            - Type:
+                type: numeric
+        scope:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
+        locale:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~

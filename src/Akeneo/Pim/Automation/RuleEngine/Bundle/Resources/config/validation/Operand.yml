@@ -1,0 +1,21 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operand:
+    properties:
+        field:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AttributeShouldBeNumeric: ~
+        currency:
+            # TODO: validate that currency is active
+            - Type:
+                type: string
+        value:
+            - Type:
+                type: numeric
+        scope:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
+        locale:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~

@@ -1,0 +1,19 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\SetAction:
+    properties:
+        field:
+            - Type:
+                type: string
+            - NotNull: ~
+            - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingSetField: ~
+        value:
+            - NotNull: ~
+            - Type:
+                type: [scalar, array]
+        scope:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
+        locale:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~

@@ -1,0 +1,21 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition:
+    properties:
+        field:
+            - Type:
+                type: string
+            - NotBlank: ~
+        operator:
+            - Type:
+                type: string
+            - NotBlank: ~
+        value:
+            - Type:
+                type: [scalar, array]
+        scope:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
+        locale:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~

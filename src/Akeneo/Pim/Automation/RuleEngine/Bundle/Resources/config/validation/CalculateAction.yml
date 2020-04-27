@@ -1,0 +1,16 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CalculateAction:
+    properties:
+        source:
+            - NotNull: ~
+            - Valid: ~
+        destination:
+            - NotNull: ~
+            - Valid: ~
+        operationList:
+            - Type:
+                type: array
+            - Count:
+                min: 1
+            - All:
+                - NotNull: ~
+            - Valid: ~

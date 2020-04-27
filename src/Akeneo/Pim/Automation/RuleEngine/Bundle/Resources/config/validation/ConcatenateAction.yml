@@ -1,0 +1,14 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ConcatenateAction:
+    properties:
+        from:
+            - NotNull: ~
+            - Type:
+                type: array
+            - Count:
+                min: 2
+            - All:
+                - NotNull: ~
+            - Valid: ~
+        to:
+            - NotNull: ~
+            - Valid: ~

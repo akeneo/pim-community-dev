@@ -1,0 +1,17 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateProductSourceCommand:
+    properties:
+        field:
+            - Type:
+                type: string
+            - NotBlank: ~
+        scope:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
+        locale:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
+        options:
+            - Type:
+                type: array
