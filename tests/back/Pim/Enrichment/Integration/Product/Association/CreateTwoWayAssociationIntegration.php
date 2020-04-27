@@ -48,8 +48,6 @@ class CreateTwoWayAssociationIntegration extends TestCase
 
         $productModelAssociations = $this->getProductModelAssociationRepository()->findByOwner($aProductModel->getId());
         $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productModelAssociations, ['another_product', 'a_product_with_associations'], []);
-
-
     }
 
     public function testAssociationsWasDeletedWhenAssociatedProductIsDeleted()
@@ -161,6 +159,7 @@ class CreateTwoWayAssociationIntegration extends TestCase
     {
         return $this->get('pim_api.repository.product');
     }
+
     private function getProductModelAssociationRepository()
     {
         return $this->get('doctrine')->getManager()->getRepository(ProductModelAssociation::class);
