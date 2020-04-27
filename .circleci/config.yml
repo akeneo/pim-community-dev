@@ -7,12 +7,6 @@ aliases:
       GOOGLE_COMPUTE_ZONE: "europe-west3-a"
       CLUSTER_NAME: "europe-west3-a"
 
-  - &envVarsDeployPreprod
-      ENV_NAME: "preprod"
-      GOOGLE_PROJECT_ID: "akecld-saas-preprod"
-      GOOGLE_COMPUTE_ZONE: "europe-west3-a"
-      CLUSTER_NAME: "europe-west3-a"
-
   - &dockerCloudDeployer
       docker:
         - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2
@@ -369,19 +363,6 @@ jobs:
               name: Remove upgraded env
               command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
 
-  release:
-      environment:
-          <<: *envVarsDeployDev
-      machine:
-          image: ubuntu-1604:201903-01
-      steps:
-          -   attach_workspace:
-                  at: ~/
-          - set_gcloud_config_dev
-          - run:
-              name: make release
-              command: OLD_IMAGE_TAG=$CIRCLE_SHA1 make release
-
   deploy_pr_environment:
       environment:
           <<: *envVarsDeployDev
@@ -636,17 +617,6 @@ workflows:
           - test_back_performance:
                 requires:
                     - build_dev
-          - release:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_phpunit
-                    - test_onboarder_bundle
-                    - test_back_performance
-                    - back_behat_legacy
-                    - deploy_master_environment
-                    - deploy_upgrade_oldest_prod_environment
-                    - test_back_data_migrations
 
 commands:
   set_gcloud_config_dev:
@@ -661,22 +631,6 @@ commands:
             gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
             gcloud container clusters get-credentials ${GOOGLE_COMPUTE_ZONE} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_COMPUTE_ZONE}
             echo ${GCLOUD_SERVICE_KEY_DEV} > ${HOME}/gcloud-service-key.json
-            echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
-            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
-            gcloud auth configure-docker --quiet
-
-  set_gcloud_config_preprod:
-    description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
-    steps:
-      - run:
-          name: "Set Gcloud Config."
-          shell: "/bin/bash -eo pipefail"
-          command: |
-            echo ${GCLOUD_SERVICE_KEY_PREPROD} | gcloud auth activate-service-account --key-file=-
-            gcloud config set project ${GOOGLE_PROJECT_ID}
-            gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-            gcloud container clusters get-credentials ${GOOGLE_COMPUTE_ZONE} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_COMPUTE_ZONE}
-            echo ${GCLOUD_SERVICE_KEY_PREPROD} > ${HOME}/gcloud-service-key.json
             echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
             export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
             gcloud auth configure-docker --quiet
