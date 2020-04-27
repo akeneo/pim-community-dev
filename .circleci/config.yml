@@ -561,14 +561,6 @@ workflows:
                     - test_onboarder_bundle
 
   nightly:
-      triggers:
-          - schedule:
-                cron: "0 2 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-
       jobs:
           - checkout_ce
           - build_dev:
