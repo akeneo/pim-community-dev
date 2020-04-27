@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write;
@@ -46,5 +47,16 @@ class BusinessError
     public function content(): string
     {
         return $this->content;
+    }
+
+    public function normalize(): array
+    {
+        $dateTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+
+        return [
+            'connection_code' => (string) $this->connectionCode,
+            'content' => json_decode($this->content(), true),
+            'error_datetime' => $dateTime->format(\DateTimeInterface::ATOM),
+        ];
     }
 }
