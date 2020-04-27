@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9212: Keep vertical scroll position of the attribute form after editing values
+
 # 3.2.50 (2020-04-24)
 
 ## Bug fixes:
