@@ -15,7 +15,7 @@ aliases:
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
 jobs:
-  checkout:
+  checkout_ee:
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -309,28 +309,6 @@ jobs:
               name: Push PROD PIM image on docker registry
               command: IMAGE_TAG=$CIRCLE_SHA1 make push-php-image-prod
 
-  deploy_master_environment:
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - prepare_terraform
-          - run:
-              name: Prepare helm deployment on kubernetes
-              command: make helm-prepare
-          - run:
-              name: Deploy PIM on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make deploy
-          - run:
-              name: Test PIM connexion on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make test-prod
-          - run:
-              name: Remove env on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make delete
-
   deploy_upgrade_oldest_prod_environment:
       environment:
         <<: *envVarsDeployDev
@@ -505,15 +483,15 @@ workflows:
                     branches:
                         ignore:
                             - master
-          - checkout:
+          - checkout_ee:
                 requires:
                     - ready_to_build?
           - build_dev:
                 requires:
-                    - checkout
+                    - checkout_ee
           - build_prod:
                 requires:
-                    - checkout
+                    - checkout_ee
           - deploy_pr_environment?:
                 type: approval
                 filters:
@@ -586,16 +564,6 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - build_prod:
-                is_pull_request: false
-                requires:
-                    - checkout
-          - deploy_master_environment:
-                requires:
-                    - build_prod
-          - deploy_upgrade_oldest_prod_environment:
-                requires:
-                    - deploy_master_environment
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
