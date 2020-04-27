@@ -27,9 +27,9 @@ import {
   Actions,
   ThumbnailPlaceholder,
   RegenerateThumbnailButton,
+  ReloadAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
-import ReloadIcon from 'akeneoassetmanager/application/component/app/icon/reload';
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
@@ -114,12 +114,6 @@ const View = ({
       ) : (
         <ThumbnailContainer>
           <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
-          <RegenerateThumbnailButton
-            title={__('pim_asset_manager.attribute.media_link.thumbnail.regenerate')}
-            onClick={onReloadPreview}
-          >
-            <ReloadIcon />
-          </RegenerateThumbnailButton>
         </ThumbnailContainer>
       )}
       <MediaLinkInput
@@ -137,6 +131,13 @@ const View = ({
       />
       {!isValueEmpty(value) && (
         <Actions>
+          <ReloadAction
+            color={akeneoTheme.color.grey100}
+            size={20}
+            onReload={onReloadPreview}
+            data={value.data}
+            attribute={value.attribute}
+          />
           <CopyUrlAction color={akeneoTheme.color.grey100} size={20} data={value.data} attribute={value.attribute} />
           <DownloadAction color={akeneoTheme.color.grey100} size={20} data={value.data} attribute={value.attribute} />
           <FullscreenPreview anchor={Action} label={label} data={value.data} attribute={value.attribute}>

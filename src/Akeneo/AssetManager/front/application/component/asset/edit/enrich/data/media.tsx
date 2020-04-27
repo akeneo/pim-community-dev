@@ -16,6 +16,7 @@ import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-l
 import {Copy} from 'akeneoassetmanager/application/component/app/icon/copy';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import ReloadIcon from 'akeneoassetmanager/application/component/app/icon/reload';
 
 export const Container = styled.div`
   align-items: center;
@@ -140,6 +141,18 @@ export const CopyUrlAction = ({data, attribute, label, size, color}: ActionProps
   return (
     <Action title={title} onClick={() => copyToClipboard(url)}>
       <Copy size={size} color={color} title={title} />
+      {label && <ActionLabel>{label}</ActionLabel>}
+    </Action>
+  );
+};
+
+export const ReloadAction = ({data, onReload, attribute, label, size, color}: ActionProps & {onReload: () => void}) => {
+  if (!isMediaLinkAttribute(attribute) || !isMediaLinkData(data)) return null;
+  const title = label || __('pim_asset_manager.attribute.media_link.reload');
+
+  return (
+    <Action title={title} onClick={onReload}>
+      <ReloadIcon size={size} color={color} title={title} />
       {label && <ActionLabel>{label}</ActionLabel>}
     </Action>
   );

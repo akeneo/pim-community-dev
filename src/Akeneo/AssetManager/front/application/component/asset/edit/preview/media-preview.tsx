@@ -22,12 +22,9 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/att
 import {MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {getMediaData, MediaData, isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
-import ReloadIcon from 'akeneoassetmanager/application/component/app/icon/reload';
-import {RegenerateThumbnailButton} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
-import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
 
 const Image = styled.img`
   width: auto;
@@ -70,26 +67,19 @@ const LazyLoadedImage = React.memo(({src, alt, isLoading = false, ...props}: Laz
   );
 });
 
-const MediaDataPreview = connect(
-  (state: EditState) => ({
-    reloadPreview: state.reloadPreview,
-  }),
-  dispatch => ({
-    onReloadPreview: () => dispatch(doReloadAllPreviews() as any),
-  })
-)(
+const MediaDataPreview = connect((state: EditState) => ({
+  reloadPreview: state.reloadPreview,
+}))(
   ({
     label,
     mediaData,
     attribute,
     reloadPreview,
-    onReloadPreview,
   }: {
     label: string;
     mediaData: MediaData;
     attribute: NormalizedMediaFileAttribute | NormalizedMediaLinkAttribute;
     reloadPreview: boolean;
-    onReloadPreview: () => void;
   }) => {
     const url = getMediaPreviewUrl({
       type: MediaPreviewType.Preview,
@@ -108,14 +98,7 @@ const MediaDataPreview = connect(
     return (
       <>
         <LazyLoadedImage isLoading={regenerate} src={url} alt={label} data-role="media-data-preview" />
-        {attribute.type === MEDIA_LINK_ATTRIBUTE_TYPE && !regenerate && (
-          <RegenerateThumbnailButton
-            title={__('pim_asset_manager.attribute.media_link.thumbnail.regenerate')}
-            onClick={onReloadPreview}
-          >
-            <ReloadIcon />
-          </RegenerateThumbnailButton>
-        )}
+
         {attribute.media_type === MediaTypes.other && (
           <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
             {__('pim_asset_manager.asset_preview.other_main_media')}
