@@ -45,7 +45,7 @@ install:
     - curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${TRAVIS_BRANCH} && docker-compose run --rm -u www-data:www-data php php /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${TRAVIS_BRANCH}" --no-update || echo "No CE branch $TRAVIS_BRANCH found. I don't touch the composer.json file."
     - make dependencies
     - C='mysql elasticsearch' make up
-    - vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+    - docker/wait_docker_up.sh
     - make check-requirements
     - make assets
     - make javascript-test
@@ -67,7 +67,7 @@ jobs:
               - make reference-entity-acceptance-back
               # Start docker services
               - APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
-              - vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+              - docker/wait_docker_up.sh
               - APP_ENV=test make database
               # If CI is left to true, a circleci specific binary is loaded
               - CI=false make reference-entity-integration-back
@@ -85,7 +85,7 @@ jobs:
               - make asset-manager-acceptance-back
               # Start docker services
               - APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
-              - vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+              - docker/wait_docker_up.sh
               - APP_ENV=test make database
               # If CI is left to true, a circleci specific binary is loaded
               - CI=false make asset-manager-integration-back

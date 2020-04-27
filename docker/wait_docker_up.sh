@@ -1,0 +1,1 @@
+../vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
