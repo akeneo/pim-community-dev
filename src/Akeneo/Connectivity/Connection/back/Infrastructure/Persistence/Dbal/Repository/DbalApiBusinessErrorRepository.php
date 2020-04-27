@@ -36,7 +36,7 @@ SQL;
 
         $this->dbalConnection->executeQuery(
             $insertQuery,
-            ['connection_code' => $businessError->connectionCode(), 'content' => $businessError->content()]
+            ['connection_code' => (string) $businessError->connectionCode(), 'content' => $businessError->content()]
         );
     }
 }

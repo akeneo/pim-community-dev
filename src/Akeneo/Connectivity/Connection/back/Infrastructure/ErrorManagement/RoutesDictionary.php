@@ -7,10 +7,11 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement;
 final class RoutesDictionary
 {
     const API_PRODUCT = [
-        'pim_api_product_list',
-        'pim_api_product_get',
-        'pim_api_product_create',
-        'pim_api_product_partial_update',
-        'pim_api_product_partial_update_list'
+        'pim_api.controller.product:listAction',
+        'pim_api.controller.product:getAction',
+        'pim_api.controller.product:createAction',
+        'pim_api.controller.product:partialUpdateAction',
+        'pim_api.controller.product:partialUpdateListAction',
+        'pim_api.controller.product:deleteAction'
     ];
 }

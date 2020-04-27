@@ -14,6 +14,7 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\ApiBusinessErrorEventSubscriber:
         arguments:
+            - '@akeneo_connectivity.connection.service.connection_context'
             - '@akeneo_connectivity.connection.persistence.repository.api_business_error'
         tags:
             - { name: kernel.event_subscriber }
