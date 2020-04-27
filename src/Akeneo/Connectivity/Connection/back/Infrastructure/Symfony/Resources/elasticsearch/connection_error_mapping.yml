@@ -1,0 +1,8 @@
+mappings:
+    properties:
+        connection_code:
+            type: 'keyword'
+        content:
+            type: 'object'
+        error_datetime:
+            type: 'date'
