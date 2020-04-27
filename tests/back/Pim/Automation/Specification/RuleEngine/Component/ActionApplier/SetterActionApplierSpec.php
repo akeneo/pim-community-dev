@@ -6,23 +6,21 @@ namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\VariantProductInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class SetterActionApplierSpec extends ObjectBehavior
 {
-    function let(PropertySetterInterface $propertySetter, AttributeRepositoryInterface $attributeRepository)
+    function let(PropertySetterInterface $propertySetter, GetAttributes $getAttributes)
     {
-        $this->beConstructedWith($propertySetter, $attributeRepository);
+        $this->beConstructedWith($propertySetter, $getAttributes);
     }
 
     function it_supports_set_action(ProductSetActionInterface $action)
@@ -31,8 +29,8 @@ class SetterActionApplierSpec extends ObjectBehavior
     }
 
     function it_applies_set_field_action_on_non_variant_product(
-        $propertySetter,
-        $attributeRepository,
+        PropertySetterInterface $propertySetter,
+        GetAttributes $getAttributes,
         ProductSetActionInterface $action,
         ProductInterface $product
     ) {
@@ -40,7 +38,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $action->getValue()->willReturn('sexy socks');
         $action->getOptions()->willReturn([]);
 
-        $attributeRepository->findOneByIdentifier('name')->willReturn(null);
+        $getAttributes->forCode('name')->willReturn(null);
 
         $propertySetter->setData(
             $product,
@@ -53,11 +51,10 @@ class SetterActionApplierSpec extends ObjectBehavior
     }
 
     function it_applies_set_attribute_action_on_non_variant_product(
-        $propertySetter,
-        $attributeRepository,
+        PropertySetterInterface $propertySetter,
+        GetAttributes $getAttributes,
         ProductSetActionInterface $action,
         ProductInterface $product,
-        AttributeInterface $name,
         FamilyInterface $family
     ) {
         $action->getField()->willReturn('name');
@@ -67,8 +64,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
         $family->hasAttributeCode('name')->willReturn(true);
 
-        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
-        $name->getCode()->willReturn('name');
+        $getAttributes->forCode('name')->willReturn($this->buildAttribute('name'));
         $product->getFamilyVariant()->willReturn(null);
 
         $propertySetter->setData(
@@ -82,20 +78,18 @@ class SetterActionApplierSpec extends ObjectBehavior
     }
 
     function it_applies_set_action_on_variant_product(
-        $propertySetter,
-        $attributeRepository,
+        PropertySetterInterface $propertySetter,
+        GetAttributes $getAttributes,
         ProductSetActionInterface $action,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         FamilyVariantInterface $familyVariant,
-        AttributeInterface $name,
         FamilyInterface $family
     ) {
         $action->getField()->willReturn('name');
         $action->getValue()->willReturn('sexy socks');
         $action->getOptions()->willReturn([]);
 
-        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
-        $name->getCode()->willReturn('name');
+        $getAttributes->forCode('name')->willReturn($this->buildAttribute('name'));
 
         $variantProduct->getFamily()->willReturn($family);
         $family->hasAttributeCode('name')->willReturn(true);
@@ -116,20 +110,18 @@ class SetterActionApplierSpec extends ObjectBehavior
     }
 
     function it_applies_set_action_on_product_model(
-        $propertySetter,
-        $attributeRepository,
+        PropertySetterInterface $propertySetter,
+        GetAttributes $getAttributes,
         ProductSetActionInterface $action,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
-        AttributeInterface $name,
         FamilyInterface $family
     ) {
         $action->getField()->willReturn('name');
         $action->getValue()->willReturn('sexy socks');
         $action->getOptions()->willReturn([]);
 
-        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
-        $name->getCode()->willReturn('name');
+        $getAttributes->forCode('name')->willReturn($this->buildAttribute('name'));
 
         $productModel->getFamily()->willReturn($family);
         $family->hasAttributeCode('name')->willReturn(true);
@@ -150,20 +142,18 @@ class SetterActionApplierSpec extends ObjectBehavior
     }
 
     function it_does_not_apply_set_action_on_entity_with_family_variant_if_variation_level_is_not_right(
-        $propertySetter,
-        $attributeRepository,
+        PropertySetterInterface $propertySetter,
+        GetAttributes $getAttributes,
         ProductSetActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         FamilyVariantInterface $familyVariant,
-        AttributeInterface $name,
         FamilyInterface $family
     ) {
         $action->getField()->willReturn('name');
         $action->getValue()->willReturn('sexy socks');
         $action->getOptions()->willReturn([]);
 
-        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
-        $name->getCode()->willReturn('name');
+        $getAttributes->forCode('name')->willReturn($this->buildAttribute('name'));
 
         $entityWithFamilyVariant->getFamily()->willReturn($family);
         $family->hasAttributeCode('name')->willReturn(true);
@@ -179,8 +169,8 @@ class SetterActionApplierSpec extends ObjectBehavior
     }
 
     function it_applies_set_action_on_entity_with_family_variant_if_the_set_action_field_is_not_an_attribute(
-        $propertySetter,
-        $attributeRepository,
+        PropertySetterInterface $propertySetter,
+        GetAttributes $getAttributes,
         ProductSetActionInterface $action,
         EntityWithFamilyVariantInterface $entity
     ) {
@@ -188,7 +178,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $action->getValue()->willReturn('socks');
         $action->getOptions()->willReturn([]);
 
-        $attributeRepository->findOneByIdentifier('family')->willReturn(null);
+        $getAttributes->forCode('family')->willReturn(null);
 
         $propertySetter->setData(
             $entity,
@@ -201,9 +191,9 @@ class SetterActionApplierSpec extends ObjectBehavior
     }
 
     function it_applies_set_action_on_entity_with_family_variant_on_categories_for_a_non_variant_product(
-        $propertySetter,
+        PropertySetterInterface $propertySetter,
         ProductSetActionInterface $action,
-        ProductInterface $product
+        EntityWithFamilyVariantInterface $product
     ) {
         $action->getField()->willReturn('categories');
         $action->getValue()->willReturn(['socks']);
@@ -220,7 +210,7 @@ class SetterActionApplierSpec extends ObjectBehavior
     }
 
     function it_applies_set_action_on_a_parentless_entity_categories(
-        $propertySetter,
+        PropertySetterInterface $propertySetter,
         ProductSetActionInterface $action,
         EntityWithFamilyVariantInterface $entity
     ) {
@@ -241,7 +231,7 @@ class SetterActionApplierSpec extends ObjectBehavior
     }
 
     function it_applies_set_action_on_an_entity_if_it_includes_all_of_its_parent_categories_too(
-        $propertySetter,
+        PropertySetterInterface $propertySetter,
         ProductSetActionInterface $action,
         EntityWithFamilyVariantInterface $entity,
         ProductModelInterface $parent
@@ -264,7 +254,7 @@ class SetterActionApplierSpec extends ObjectBehavior
     }
 
     function it_does_not_apply_set_action_on_an_entity_if_it_does_not_include_all_of_its_parent_categories_too(
-        $propertySetter,
+        PropertySetterInterface $propertySetter,
         ProductSetActionInterface $action,
         EntityWithFamilyVariantInterface $entity,
         ProductModelInterface $parent
@@ -282,19 +272,17 @@ class SetterActionApplierSpec extends ObjectBehavior
     }
 
     function it_does_not_apply_set_action_if_the_field_is_not_an_attribute_of_the_family(
-        $propertySetter,
-        $attributeRepository,
+        PropertySetterInterface $propertySetter,
+        GetAttributes $getAttributes,
         ProductSetActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
-        FamilyInterface $family,
-        AttributeInterface $name
+        FamilyInterface $family
     ) {
         $action->getField()->willReturn('name');
         $action->getValue()->willReturn('sexy socks');
         $action->getOptions()->willReturn([]);
 
-        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
-        $name->getCode()->willReturn('name');
+        $getAttributes->forCode('name')->willReturn($this->buildAttribute('name'));
 
         $entityWithFamilyVariant->getFamily()->willReturn($family);
         $family->hasAttributeCode('name')->willReturn(false);
@@ -307,25 +295,41 @@ class SetterActionApplierSpec extends ObjectBehavior
 
     function it_sets_an_attribute_value_to_null_if_the_action_value_is_an_empty_string(
         PropertySetterInterface $propertySetter,
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         ProductSetActionInterface $action,
-        AttributeInterface $releaseDate,
+        EntityWithFamilyVariantInterface $product,
         FamilyInterface $family
     ) {
         $action->getValue()->willReturn('');
         $action->getField()->willReturn('release_date');
         $action->getOptions()->willReturn([]);
 
-        $attributeRepository->findOneByIdentifier('release_date')->willReturn($releaseDate);
-        $releaseDate->getCode()->willReturn('release_date');
+        $getAttributes->forCode('release_date')->willReturn($this->buildAttribute('release_date'));
 
         $family->getId()->willReturn(42);
         $family->hasAttributeCode('release_date')->willReturn(true);
 
-        $product = (new Product())->setFamily($family->getWrappedObject());
+        $product->getFamily()->willReturn($family);
+        $product->getFamilyVariant()->willReturn(null);
 
         $propertySetter->setData($product, 'release_date', null, [])->shouldBeCalled();
 
         $this->applyAction($action, [$product]);
+    }
+
+    private function buildAttribute(string $code): Attribute
+    {
+        return new Attribute(
+            $code,
+            'type',
+            [],
+            false,
+            false,
+            null,
+            null,
+            false,
+            'backend_type',
+            []
+        );
     }
 }

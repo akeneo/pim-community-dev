@@ -14,7 +14,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyCopierInterface;
@@ -29,19 +29,13 @@ class CopierActionApplier implements ActionApplierInterface
     /** @var PropertyCopierInterface */
     protected $propertyCopier;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributes;
 
-    /**
-     * @param PropertyCopierInterface      $propertyCopier
-     * @param AttributeRepositoryInterface $attributeRepository
-     */
-    public function __construct(
-        PropertyCopierInterface $propertyCopier,
-        AttributeRepositoryInterface $attributeRepository
-    ) {
+    public function __construct(PropertyCopierInterface $propertyCopier, GetAttributes $getAttributes)
+    {
         $this->propertyCopier = $propertyCopier;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributes = $getAttributes;
     }
 
     /**
@@ -50,9 +44,7 @@ class CopierActionApplier implements ActionApplierInterface
     public function applyAction(ActionInterface $action, array $entitiesWithValues = [])
     {
         foreach ($entitiesWithValues as $entityWithValues) {
-            if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
-                $this->copyDataOnEntityWithFamilyVariant($entityWithValues, $action);
-            } else {
+            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
                 $this->copyDataOnEntityWithValues($entityWithValues, $action);
             }
         }
@@ -67,47 +59,36 @@ class CopierActionApplier implements ActionApplierInterface
     }
 
     /**
-     * Currently, there are only copiers for values (meaning data linked to an
-     * attribute). So if the fields passed to the copier are not attributes,
-     * there is nothing to copy.
-     *
-     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
-     * @param ProductCopyActionInterface       $action
+     * We do not apply the action if to_field is an attribute and:
+     *  - attribute does not belong to the family
+     *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
-    private function copyDataOnEntityWithFamilyVariant(
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+    private function actionCanBeAppliedToEntity(
+        EntityWithFamilyVariantInterface $entity,
         ProductCopyActionInterface $action
-    ): void {
+    ): bool {
         $toField = $action->getToField();
-
-        $toAttribute = $this->attributeRepository->findOneByIdentifier($toField);
-        if (null === $toAttribute) {
-            return;
+        // TODO: RUL-170: remove "?? ''" in the next line
+        $attribute = $this->getAttributes->forCode($toField ?? '');
+        if (null === $attribute) {
+            return true;
         }
 
-        // We set again the field to have the correct case of the code.
-        $toField = $toAttribute->getCode();
-        if (null === $entityWithFamilyVariant->getFamily()) {
-            $this->copyDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+        $family = $entity->getFamily();
+        if (null === $family) {
+            return true;
+        }
+        if (!$family->hasAttributeCode($attribute->code())) {
+            return false;
         }
 
-        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($toField)) {
-            return;
+        $familyVariant = $entity->getFamilyVariant();
+        if (null !== $familyVariant &&
+            $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
+            return false;
         }
 
-        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
-            $this->copyDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
-        }
-
-        $toLevel = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($toField);
-
-        if ($entityWithFamilyVariant->getVariationLevel() === $toLevel) {
-            $this->copyDataOnEntityWithValues($entityWithFamilyVariant, $action);
-        }
+        return true;
     }
 
     /**

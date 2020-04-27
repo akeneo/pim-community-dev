@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
@@ -31,19 +31,13 @@ class SetterActionApplier implements ActionApplierInterface
     /** @var PropertySetterInterface */
     protected $propertySetter;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributes;
 
-    /**
-     * @param PropertySetterInterface      $propertySetter
-     * @param AttributeRepositoryInterface $attributeRepository
-     */
-    public function __construct(
-        PropertySetterInterface $propertySetter,
-        AttributeRepositoryInterface $attributeRepository
-    ) {
+    public function __construct(PropertySetterInterface $propertySetter, GetAttributes $getAttributes)
+    {
         $this->propertySetter = $propertySetter;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributes = $getAttributes;
     }
 
     /**
@@ -52,9 +46,7 @@ class SetterActionApplier implements ActionApplierInterface
     public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
     {
         foreach ($entitiesWithValues as $entityWithValues) {
-            if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
-                $this->setDataOnEntityWithFamilyVariant($entityWithValues, $action);
-            } else {
+            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
                 $this->setDataOnEntityWithValues($entityWithValues, $action);
             }
         }
@@ -69,56 +61,46 @@ class SetterActionApplier implements ActionApplierInterface
     }
 
     /**
-     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
-     * @param ProductSetActionInterface        $action
+     * We do not apply the action if:
+     * - if field is categories and the new category codes do not include the categories of the entity's parent
+     * - or field is an attribute and:
+     *   - attribute does not belong to the family
+     *   - or entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
-    private function setDataOnEntityWithFamilyVariant(
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+    private function actionCanBeAppliedToEntity(
+        EntityWithFamilyVariantInterface $entity,
         ProductSetActionInterface $action
-    ): void {
+    ): bool {
         $field = $action->getField();
 
         if ('categories' === $field) {
             $newCategoryCodes = $action->getValue();
-            $parent = $entityWithFamilyVariant->getParent();
+            $parent = $entity->getParent();
 
-            if (null === $parent || empty(array_diff($parent->getCategoryCodes(), $newCategoryCodes))) {
-                $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
-            }
-
-            return;
+            return (null === $parent || empty(array_diff($parent->getCategoryCodes(), $newCategoryCodes)));
         }
 
-        $attribute = $this->attributeRepository->findOneByIdentifier($field);
+        // TODO: RUL-170: remove "?? ''" in the next line
+        $attribute = $this->getAttributes->forCode($field ?? '');
         if (null === $attribute) {
-            $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+            return true;
         }
 
-        // We set again the field to have the correct case of the code.
-        $field = $attribute->getCode();
-        if (null === $entityWithFamilyVariant->getFamily()) {
-            $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+        $family = $entity->getFamily();
+        if (null === $family) {
+            return true;
+        }
+        if (!$family->hasAttributeCode($attribute->code())) {
+            return false;
         }
 
-        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($field)) {
-            return;
+        $familyVariant = $entity->getFamilyVariant();
+        if (null !== $familyVariant &&
+            $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
+            return false;
         }
 
-        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
-            $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
-        }
-
-        $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
-
-        if ($entityWithFamilyVariant->getVariationLevel() === $level) {
-            $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
-        }
+        return true;
     }
 
     /**

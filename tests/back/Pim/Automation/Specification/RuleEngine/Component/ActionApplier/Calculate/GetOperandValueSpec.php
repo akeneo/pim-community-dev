@@ -13,18 +13,18 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 class GetOperandValueSpec extends ObjectBehavior
 {
     function let(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         MeasureConverter $measureConverter
     ) {
-        $this->beConstructedWith($attributeRepository, $measureConverter);
+        $this->beConstructedWith($getAttributes, $measureConverter);
     }
 
     function it_is_initializable()
@@ -38,12 +38,9 @@ class GetOperandValueSpec extends ObjectBehavior
             ->shouldReturn(null);
     }
 
-    function it_returns_a_number_value(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        AttributeInterface $attribute
-    ) {
-        $attribute->getType()->willReturn(AttributeTypes::NUMBER);
-        $attributeRepository->findOneByIdentifier('number')->willReturn($attribute);
+    function it_returns_a_number_value(GetAttributes $getAttributes)
+    {
+        $getAttributes->forCode('number')->willReturn($this->buildAttribute('number', AttributeTypes::NUMBER));
 
         $product = new Product();
         $product->setValues(
@@ -57,14 +54,12 @@ class GetOperandValueSpec extends ObjectBehavior
     }
 
     function it_returns_a_metric_value(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        MeasureConverter $measureConverter,
-        AttributeInterface $attribute
+        GetAttributes $getAttributes,
+        MeasureConverter $measureConverter
     ) {
-        $attribute->getType()->willReturn(AttributeTypes::METRIC);
-        $attribute->getMetricFamily()->willReturn('LENGTH');
-        $attribute->getDefaultMetricUnit()->willReturn('CENTIMETER');
-        $attributeRepository->findOneByIdentifier('length')->willReturn($attribute);
+        $getAttributes->forCode('length')->willReturn(
+            $this->buildAttribute('length', AttributeTypes::METRIC, 'LENGTH', 'CENTIMETER')
+        );
 
         $measureConverter->setFamily('LENGTH')->shouldBeCalled();
         $measureConverter->convert('INCH', 'CENTIMETER', 2.5)->willReturn(6.35);
@@ -82,12 +77,9 @@ class GetOperandValueSpec extends ObjectBehavior
              ->shouldReturn(6.35);
     }
 
-    function it_returns_a_price_value(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        AttributeInterface $attribute
-    ) {
-        $attribute->getType()->willReturn(AttributeTypes::PRICE_COLLECTION);
-        $attributeRepository->findOneByIdentifier('price')->willReturn($attribute);
+    function it_returns_a_price_value(GetAttributes $getAttributes)
+    {
+        $getAttributes->forCode('price')->willReturn($this->buildAttribute('price', AttributeTypes::PRICE_COLLECTION));
 
         $product = new Product();
         $product->setValues(
@@ -105,5 +97,25 @@ class GetOperandValueSpec extends ObjectBehavior
 
         $this->fromEntity($product, Operand::fromNormalized(['field' => 'price', 'currency' => 'USD']))
              ->shouldReturn(25.0);
+    }
+
+    private function buildAttribute(
+        string $code,
+        string $type,
+        string $metricFamily = null,
+        string $defaultMetricUnit = null
+    ): Attribute {
+        return new Attribute(
+            $code,
+            $type,
+            [],
+            false,
+            false,
+            $metricFamily,
+            $defaultMetricUnit,
+            true,
+            'backend',
+            []
+        );
     }
 }

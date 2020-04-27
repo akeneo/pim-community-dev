@@ -15,13 +15,16 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierRegistry;
+use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSource;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -67,42 +70,47 @@ final class ConcatenateActionApplier implements ActionApplierInterface
         }
 
         foreach ($entitiesWithValues as $entityWithValues) {
-            try {
-                $this->concatenateDataOnEntityWithFamilyVariant($entityWithValues, $action);
-            } catch (\LogicException $e) {
-                // @TODO RUL-90 throw exception when the runner will be executed in a job.
-                // For now just skip the exception otherwise the process will stop.
+            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
+                try {
+                    $this->concatenateDataOnEntityWithValues($entityWithValues, $action);
+                } catch (NonApplicableActionException $e) {
+                    // @TODO RUL-90 throw exception when the runner will be executed in a job.
+                    // For now just skip the exception otherwise the process will stop.
 //                throw new InvalidItemException(
 //                    $e->getMessage(),
 //                    new DataInvalidItem(['identifier' => $entityWithValues->getIdentifier()])
 //                );
+                }
             }
         }
     }
 
-    private function concatenateDataOnEntityWithFamilyVariant(
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+    /**
+     * We do not apply the action if:
+     *  - entity has no family
+     *  - target attribute does not belong to the family
+     *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
+     */
+    private function actionCanBeAppliedToEntity(
+        EntityWithFamilyVariantInterface $entity,
         ProductConcatenateActionInterface $action
-    ): void {
-        $toField = $this->findAttributeCodeInFamilyCaseInsensitive(
-            $entityWithFamilyVariant,
-            $action->getTarget()->getField()
-        );
-        if (null === $toField) {
-            return;
+    ): bool {
+        $field = $action->getTarget()->getField();
+        $attribute = $this->getAttributes->forCode($field);
+        Assert::isInstanceOf($attribute, Attribute::class);
+
+        $family = $entity->getFamily();
+        if (null === $family || !$family->hasAttributeCode($attribute->code())) {
+            return false;
         }
 
-        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
-            $this->concatenateDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+        $familyVariant = $entity->getFamilyVariant();
+        if (null !== $familyVariant &&
+            $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
+            return false;
         }
 
-        $toLevel = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($toField);
-
-        if ($entityWithFamilyVariant->getVariationLevel() === $toLevel) {
-            $this->concatenateDataOnEntityWithValues($entityWithFamilyVariant, $action);
-        }
+        return true;
     }
 
     private function concatenateDataOnEntityWithValues(
@@ -114,19 +122,14 @@ final class ConcatenateActionApplier implements ActionApplierInterface
         /** @var ProductSource $source */
         foreach ($action->getSourceCollection() as $source) {
             $field = $source->getField();
-            $attributeCode = $this->findAttributeCodeInFamilyCaseInsensitive($entity, $field) ?? $field;
+            $attribute = $this->getAttributes->forCode($field);
+            Assert::isInstanceOf($attribute, Attribute::class, sprintf('Attribute with code "%s" was not found', $field));
+            $attributeCode = $attribute->code();
 
             $value = $entity->getValue($attributeCode, $source->getLocale(), $source->getScope());
             if (null === $value) {
-                throw new \LogicException(
-                    sprintf('The value for the "%s" attribute code is empty for the entity.', $attributeCode)
-                );
-            }
-
-            $attribute = $this->getAttributes->forCode($attributeCode);
-            if (null === $attribute) {
-                throw new \InvalidArgumentException(
-                    sprintf('Attribute is not found for "%s" attribute.', $attributeCode)
+                throw new NonApplicableActionException(
+                    sprintf('The value for the "%s" attribute is empty for the entity.', $attributeCode)
                 );
             }
 
@@ -136,8 +139,8 @@ final class ConcatenateActionApplier implements ActionApplierInterface
                 ['target_attribute_code' => $action->getTarget()->getField()]
             ));
             if ('' === $stringValue) {
-                throw new \LogicException(
-                    sprintf('The value for the "%s" attribute code is empty for the entity.', $attributeCode)
+                throw new NonApplicableActionException(
+                    sprintf('The value for the "%s" attribute is empty for the entity.', $attributeCode)
                 );
             }
 
@@ -167,26 +170,5 @@ final class ConcatenateActionApplier implements ActionApplierInterface
         }
 
         return $stringifier;
-    }
-
-    /**
-     * We cannot use $entity->getFamily()->hasAttributeCode() because it's case sensitive.
-     * So we check manually the condition and return the correct code.
-     */
-    private function findAttributeCodeInFamilyCaseInsensitive(
-        EntityWithFamilyVariantInterface $entity,
-        string $searchAttributeCode
-    ): ?string {
-        if (null === $entity->getFamily()) {
-            return null;
-        }
-
-        foreach ($entity->getFamily()->getAttributeCodes() as $attributeCode) {
-            if (strtolower($attributeCode) === strtolower($searchAttributeCode)) {
-                return $attributeCode;
-            }
-        }
-
-        return null;
     }
 }

@@ -173,7 +173,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
         $this->applyAction($clearerAction, [$productModel]);
     }
 
-    function it_does_not_apply_action_if_attribute_does_not_belong_to_the_family(
+    function it_clears_an_attribute_value_even_if_attribute_does_not_belong_to_the_family(
         PropertyClearerInterface $propertyClearer,
         GetAttributes $getAttributes,
         Product $product,
@@ -186,10 +186,10 @@ class ClearerActionApplierSpec extends ObjectBehavior
         $family->hasAttributeCode('name')->willReturn(false);
 
         $propertyClearer->clear(
-            Argument::any(),
-            Argument::any(),
-            Argument::any()
-        )->shouldNotBeCalled();
+            $product,
+            'name',
+            ['locale' => null, 'scope' => null]
+        )->shouldBeCalled();
 
         $this->applyAction($clearerAction, [$product]);
     }

@@ -58,51 +58,38 @@ final class ClearerActionApplier implements ActionApplierInterface
         Assert::isInstanceOf($action, ProductClearActionInterface::class);
 
         foreach ($entitiesWithValues as $entityWithValues) {
-            try {
-                $this->clearDataOnEntityWithFamilyVariant($entityWithValues, $action);
-            } catch (\LogicException $e) {
-                // @TODO RUL-90 throw exception when the runner will be executed in a job.
-                // For now just skip the exception otherwise the process will stop.
+            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
+                $this->clearDataOnEntityWithValues($entityWithValues, $action);
             }
         }
     }
 
-    private function clearDataOnEntityWithFamilyVariant(
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+    /**
+     * We do not apply the action if field is an attribute and:
+     *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
+     */
+    private function actionCanBeAppliedToEntity(
+        EntityWithFamilyVariantInterface $entity,
         ProductClearActionInterface $action
-    ): void {
+    ): bool {
         $field = $action->getField();
-
         $attribute = $this->getAttributes->forCode($field);
         if (null === $attribute) {
-            $this->clearDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+            return true;
         }
 
-        // We set again the field to have the correct case of the code.
-        $field = $attribute->code();
-        if (null === $entityWithFamilyVariant->getFamily()) {
-            $this->clearDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+        $family = $entity->getFamily();
+        if (null === $family || !$family->hasAttributeCode($attribute->code())) {
+            return true;
         }
 
-        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($field)) {
-            return;
+        $familyVariant = $entity->getFamilyVariant();
+        if (null !== $familyVariant &&
+            $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
+            return false;
         }
 
-        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
-            $this->clearDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
-        }
-
-        $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
-
-        if ($entityWithFamilyVariant->getVariationLevel() === $level) {
-            $this->clearDataOnEntityWithValues($entityWithFamilyVariant, $action);
-        }
+        return true;
     }
 
     private function clearDataOnEntityWithValues(

@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
@@ -31,19 +31,13 @@ class AdderActionApplier implements ActionApplierInterface
     /** @var PropertyAdderInterface */
     private $propertyAdder;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributes;
 
-    /**
-     * @param PropertyAdderInterface       $propertyAdder
-     * @param AttributeRepositoryInterface $attributeRepository
-     */
-    public function __construct(
-        PropertyAdderInterface $propertyAdder,
-        AttributeRepositoryInterface $attributeRepository
-    ) {
+    public function __construct(PropertyAdderInterface $propertyAdder, GetAttributes $getAttributes)
+    {
         $this->propertyAdder = $propertyAdder;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributes = $getAttributes;
     }
 
     /**
@@ -52,9 +46,7 @@ class AdderActionApplier implements ActionApplierInterface
     public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
     {
         foreach ($entitiesWithValues as $entityWithValues) {
-            if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
-                $this->addDataOnEntityWithFamilyVariant($entityWithValues, $action);
-            } else {
+            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
                 $this->addDataOnEntityWithValues($entityWithValues, $action);
             }
         }
@@ -69,45 +61,36 @@ class AdderActionApplier implements ActionApplierInterface
     }
 
     /**
-     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
-     * @param ProductAddActionInterface        $action
+     * We do not apply the action if field is an attribute and:
+     *  - attribute does not belong to the family
+     *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
-    private function addDataOnEntityWithFamilyVariant(
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+    private function actionCanBeAppliedToEntity(
+        EntityWithFamilyVariantInterface $entity,
         ProductAddActionInterface $action
-    ): void {
+    ): bool {
         $field = $action->getField();
-
-        $attribute = $this->attributeRepository->findOneByIdentifier($field);
+        // TODO: RUL-170: remove "?? ''" in the next line
+        $attribute = $this->getAttributes->forCode($field ?? '');
         if (null === $attribute) {
-            $this->addDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+            return true;
         }
 
-        // We set again the field to have the correct case of the code.
-        $field = $attribute->getCode();
-        if (null === $entityWithFamilyVariant->getFamily()) {
-            $this->addDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+        $family = $entity->getFamily();
+        if (null === $family) {
+            return true;
+        }
+        if (!$family->hasAttributeCode($attribute->code())) {
+            return false;
         }
 
-        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($field)) {
-            return;
+        $familyVariant = $entity->getFamilyVariant();
+        if (null !== $familyVariant &&
+            $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
+            return false;
         }
 
-        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
-            $this->addDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
-        }
-
-        $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
-
-        if ($entityWithFamilyVariant->getVariationLevel() === $level) {
-            $this->addDataOnEntityWithValues($entityWithFamilyVariant, $action);
-        }
+        return true;
     }
 
     /**

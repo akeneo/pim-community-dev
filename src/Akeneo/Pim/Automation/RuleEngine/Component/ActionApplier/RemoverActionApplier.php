@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
@@ -34,24 +34,19 @@ class RemoverActionApplier implements ActionApplierInterface
     /** @var PropertyRemoverInterface */
     private $propertyRemover;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributes;
 
     /** @var CategoryRepositoryInterface */
     private $categoryRepository;
 
-    /**
-     * @param PropertyRemoverInterface     $propertyRemover
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param CategoryRepositoryInterface  $categoryRepository
-     */
     public function __construct(
         PropertyRemoverInterface $propertyRemover,
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         CategoryRepositoryInterface $categoryRepository
     ) {
         $this->propertyRemover = $propertyRemover;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributes = $getAttributes;
         $this->categoryRepository = $categoryRepository;
     }
 
@@ -61,9 +56,7 @@ class RemoverActionApplier implements ActionApplierInterface
     public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
     {
         foreach ($entitiesWithValues as $entityWithValues) {
-            if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
-                $this->removeDataOnEntityWithFamilyVariant($entityWithValues, $action);
-            } else {
+            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
                 $this->removeDataOnEntityWithValues($entityWithValues, $action);
             }
         }
@@ -78,45 +71,32 @@ class RemoverActionApplier implements ActionApplierInterface
     }
 
     /**
-     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
-     * @param ProductRemoveActionInterface     $action
+     * We do not apply the action if field is an attribute and:
+     *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
-    private function removeDataOnEntityWithFamilyVariant(
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+    private function actionCanBeAppliedToEntity(
+        EntityWithFamilyVariantInterface $entity,
         ProductRemoveActionInterface $action
-    ): void {
+    ): bool {
         $field = $action->getField();
-
-        $attribute = $this->attributeRepository->findOneByIdentifier($field);
+        // TODO: RUL-170: remove "?? ''" in the next line
+        $attribute = $this->getAttributes->forCode($field ?? '');
         if (null === $attribute) {
-            $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+            return true;
         }
 
-        // We set again the field to have the correct case of the code.
-        $field = $attribute->getCode();
-        if (null === $entityWithFamilyVariant->getFamily()) {
-            $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
+        $family = $entity->getFamily();
+        if (null === $family || !$family->hasAttributeCode($attribute->code())) {
+            return true;
         }
 
-        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($field)) {
-            return;
+        $familyVariant = $entity->getFamilyVariant();
+        if (null !== $familyVariant &&
+            $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
+            return false;
         }
 
-        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
-            $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
-
-            return;
-        }
-
-        $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
-
-        if ($entityWithFamilyVariant->getVariationLevel() === $level) {
-            $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
-        }
+        return true;
     }
 
     /**

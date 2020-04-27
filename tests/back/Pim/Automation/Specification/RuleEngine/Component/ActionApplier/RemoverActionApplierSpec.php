@@ -2,32 +2,30 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\VariantProductInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
 use Prophecy\Argument;
 
 class RemoverActionApplierSpec extends ObjectBehavior
 {
     function let(
         PropertyRemoverInterface $propertyRemover,
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         CategoryRepositoryInterface $categoryRepository
     ) {
-        $this->beConstructedWith($propertyRemover, $attributeRepository, $categoryRepository);
+        $this->beConstructedWith($propertyRemover, $getAttributes, $categoryRepository);
     }
 
     function it_supports_remove_action(ProductRemoveActionInterface $action)
@@ -36,11 +34,10 @@ class RemoverActionApplierSpec extends ObjectBehavior
     }
 
     function it_applies_remove_attribute_action_on_non_variant_product(
-        $propertyRemover,
-        $attributeRepository,
+        PropertyRemoverInterface $propertyRemover,
+        GetAttributes $getAttributes,
         ProductRemoveActionInterface $action,
         ProductInterface $product,
-        AttributeInterface $attribute,
         FamilyInterface $family
     ) {
         $action->getField()->willReturn('multi-select');
@@ -56,8 +53,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
         $family->hasAttributeCode('multi-select')->willReturn(true);
         $product->getFamilyVariant()->willReturn(null);
-        $attributeRepository->findOneByIdentifier('multi-select')->willReturn($attribute);
-        $attribute->getCode()->willReturn('multi-select');
+        $getAttributes->forCode('multi-select')->willReturn($this->buildAttribute('multi-select'));
 
         $propertyRemover->removeData(
             $product,
@@ -76,8 +72,8 @@ class RemoverActionApplierSpec extends ObjectBehavior
     }
 
     function it_applies_remove_field_action_on_non_variant_product(
-        $propertyRemover,
-        $attributeRepository,
+        PropertyRemoverInterface $propertyRemover,
+        GetAttributes $getAttributes,
         ProductRemoveActionInterface $action,
         ProductInterface $product
     ) {
@@ -88,7 +84,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             'bar',
         ]);
 
-        $attributeRepository->findOneByIdentifier('category')->willReturn(null);
+        $getAttributes->forCode('category')->willReturn(null);
         $product->getFamilyVariant()->willReturn(null);
 
         $propertyRemover->removeData(
@@ -105,11 +101,10 @@ class RemoverActionApplierSpec extends ObjectBehavior
     }
 
     function it_applies_remove_action_on_variant_product(
-        $propertyRemover,
-        $attributeRepository,
+        PropertyRemoverInterface $propertyRemover,
+        GetAttributes $getAttributes,
         ProductRemoveActionInterface $action,
-        VariantProductInterface $variantProduct,
-        AttributeInterface $multiSelectAttribute,
+        EntityWithFamilyVariantInterface $variantProduct,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family
     ) {
@@ -117,8 +112,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
         $action->getItems()->willReturn(['multi1', 'multi2']);
 
-        $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
-        $multiSelectAttribute->getCode()->willReturn('multi-select');
+        $getAttributes->forCode('multi-select')->willReturn($this->buildAttribute('multi-select'));
 
         $variantProduct->getFamily()->willReturn($family);
         $family->hasAttributeCode('multi-select')->willReturn(true);
@@ -142,11 +136,10 @@ class RemoverActionApplierSpec extends ObjectBehavior
     }
 
     function it_applies_remove_action_on_product_model(
-        $propertyRemover,
-        $attributeRepository,
+        PropertyRemoverInterface $propertyRemover,
+        GetAttributes $getAttributes,
         ProductRemoveActionInterface $action,
         ProductModelInterface $productModel,
-        AttributeInterface $multiSelectAttribute,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family
     ) {
@@ -154,8 +147,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
         $action->getItems()->willReturn(['multi1', 'multi2']);
 
-        $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
-        $multiSelectAttribute->getCode()->willReturn('multi-select');
+        $getAttributes->forCode('multi-select')->willReturn($this->buildAttribute('multi-select'));
 
         $productModel->getFamily()->willReturn($family);
         $family->hasAttributeCode('multi-select')->willReturn(true);
@@ -179,11 +171,10 @@ class RemoverActionApplierSpec extends ObjectBehavior
     }
 
     function it_does_not_apply_remove_action_on_entity_with_family_variant_if_variation_level_is_not_right(
-        $propertyRemover,
-        $attributeRepository,
+        PropertyRemoverInterface $propertyRemover,
+        GetAttributes $getAttributes,
         ProductRemoveActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
-        AttributeInterface $multiSelectAttribute,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family
     ) {
@@ -191,8 +182,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $action->getOptions()->willReturn([]);
         $action->getItems()->willReturn(['multi1', 'multi2']);
 
-        $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
-        $multiSelectAttribute->getCode()->willReturn('multi-select');
+        $getAttributes->forCode('multi-select')->willReturn($this->buildAttribute('multi-select'));
 
         $entityWithFamilyVariant->getFamily()->willReturn($family);
         $family->hasAttributeCode('multi-select')->willReturn(true);
@@ -208,8 +198,8 @@ class RemoverActionApplierSpec extends ObjectBehavior
     }
 
     function it_applies_remove_action_if_the_field_is_not_an_attribute(
-        $propertyRemover,
-        $attributeRepository,
+        PropertyRemoverInterface $propertyRemover,
+        GetAttributes $getAttributes,
         ProductRemoveActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant
     ) {
@@ -217,7 +207,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $action->getItems()->willReturn(['socks']);
         $action->getOptions()->willReturn([]);
 
-        $attributeRepository->findOneByIdentifier('categories')->willReturn(null);
+        $getAttributes->forCode('categories')->willReturn(null);
 
         $propertyRemover->removeData($entityWithFamilyVariant, 'categories', ['socks'], [])->shouldBeCalled();
 
@@ -225,10 +215,10 @@ class RemoverActionApplierSpec extends ObjectBehavior
     }
 
     function it_removes_children_categories_with_include_children_option_set_to_true(
-        $propertyRemover,
-        $categoryRepository,
+        PropertyRemoverInterface $propertyRemover,
+        CategoryRepositoryInterface $categoryRepository,
         ProductRemoveActionInterface $action,
-        EntityWithValuesInterface $entityWithValues,
+        EntityWithFamilyVariantInterface $entityWithValues,
         CategoryInterface $firstCategory,
         CategoryInterface $secondCategory
     ) {
@@ -279,7 +269,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
 
     function it_throws_exception_if_items_is_not_an_array(
         ProductRemoveActionInterface $action,
-        EntityWithValuesInterface $entityWithValues
+        EntityWithFamilyVariantInterface $entityWithValues
     ) {
         $action->getField()->willReturn('foo');
         $action->getItems()->willReturn('Not an array');
@@ -293,27 +283,41 @@ class RemoverActionApplierSpec extends ObjectBehavior
         )->during('applyAction', [$action, [$entityWithValues]]);
     }
 
-    function it_does_not_apply_remove_action_if_the_field_is_not_an_attribute_of_the_family(
-        $propertyRemover,
-        $attributeRepository,
+    function it_applies_remove_action_even_if_the_field_is_not_an_attribute_of_the_family(
+        PropertyRemoverInterface $propertyRemover,
+        GetAttributes $getAttributes,
         ProductRemoveActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
-        AttributeInterface $multiSelectAttribute,
         FamilyInterface $family
     ) {
         $action->getField()->willReturn('multi-select');
         $action->getOptions()->willReturn([]);
         $action->getItems()->willReturn(['multi1', 'multi2']);
 
-        $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
-        $multiSelectAttribute->getCode()->willReturn('multi-select');
+        $getAttributes->forCode('multi-select')->willReturn($this->buildAttribute('multi-select'));
 
         $entityWithFamilyVariant->getFamily()->willReturn($family);
         $family->hasAttributeCode('multi-select')->willReturn(false);
 
         $entityWithFamilyVariant->getFamilyVariant()->shouldNotBeCalled();
-        $propertyRemover->removeData(Argument::cetera())->shouldNotBeCalled();
+        $propertyRemover->removeData(Argument::cetera())->shouldBeCalled();
 
         $this->applyAction($action, [$entityWithFamilyVariant]);
+    }
+
+    private function buildAttribute(string $code): Attribute
+    {
+        return new Attribute(
+            $code,
+            'type',
+            [],
+            false,
+            false,
+            null,
+            null,
+            false,
+            'backend_type',
+            []
+        );
     }
 }

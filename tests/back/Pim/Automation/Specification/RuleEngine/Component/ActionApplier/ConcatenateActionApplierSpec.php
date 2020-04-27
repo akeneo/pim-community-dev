@@ -102,10 +102,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
         $product->setvalues(new WriteValueCollection([$value1, $value2]));
         $product->setFamily($family);
 
-        $productSources = [];
-        foreach ($productSourceCollection as $productSource) {
-            $productSources[] = $productSource;
-        }
+        $getAttributes->forCode('description')->willReturn($this->buildAttribute('description', 'type'));
 
         $getAttributes->forCode('model')->willReturn($this->buildAttribute('model', 'type1'));
         $valueStringifierRegistry->getStringifier('type1')->willReturn($valueStringifier1);
@@ -150,16 +147,14 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
         ]));
 
         $productModel->getFamily()->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['description']);
+        $family->hasAttributeCode('description')->willReturn(true);
         $productModel->getFamilyVariant()->willReturn(null);
         $productModel->getVariationLevel()->willReturn(1);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getLevelForAttributeCode('description')->willReturn(1);
 
-        $productSources = [];
-        foreach ($productSourceCollection as $productSource) {
-            $productSources[] = $productSource;
-        }
+        $getAttributes->forCode('description')->willReturn($this->buildAttribute('description', 'type'));
+
         $productModel->getValue('model', null, null)->willReturn($value1);
         $getAttributes->forCode('model')->willReturn($this->buildAttribute('model', 'type1'));
         $valueStringifierRegistry->getStringifier('type1')->willReturn($valueStringifier1);
@@ -202,19 +197,17 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
         ]));
 
         $entity->getFamily()->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['description']);
+        $family->hasAttributeCode('description')->willReturn(true);
         $entity->getFamilyVariant()->willReturn(null);
 
-        $productSources = [];
-        foreach ($productSourceCollection as $productSource) {
-            $productSources[] = $productSource;
-        }
+        $getAttributes->forCode('description')->willReturn($this->buildAttribute('description', 'type'));
 
         $entity->getValue('model', null, null)->willReturn($value);
         $getAttributes->forCode('model')->willReturn($this->buildAttribute('model', 'type1'));
         $valueStringifierRegistry->getStringifier('type1')->willReturn($valueStringifier);
         $valueStringifier->stringify($value, ['target_attribute_code' => 'description'])->willReturn('model_value');
 
+        $getAttributes->forCode('title')->willReturn($this->buildAttribute('title', 'type'));
         $entity->getValue('title', 'en_US', 'ecommerce')->willReturn(null);
 
         $propertySetter->setData(
@@ -249,14 +242,11 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
             'scope' => 'print',
         ]));
 
-        $entity->getFamily()->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['description']);
-        $entity->getFamilyVariant()->willReturn(null);
+        $getAttributes->forCode('description')->willReturn($this->buildAttribute('description', 'type'));
 
-        $productSources = [];
-        foreach ($productSourceCollection as $productSource) {
-            $productSources[] = $productSource;
-        }
+        $entity->getFamily()->willReturn($family);
+        $family->hasAttributeCode('description')->willReturn(true);
+        $entity->getFamilyVariant()->willReturn(null);
 
         $entity->getValue('model', null, null)->willReturn($value1);
         $getAttributes->forCode('model')->willReturn($this->buildAttribute('model', 'type1'));
@@ -274,11 +264,12 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
             Argument::any()
         )->shouldNotBeCalled();
 
-        $this->applyAction($concatenateAction, [$entity]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('applyAction', [$concatenateAction, [$entity]]);
     }
 
     function it_does_not_apply_concatenate_action_on_entity_with_family_variant_if_variation_level_is_not_right(
         PropertySetterInterface $propertySetter,
+        GetAttributes $getAttributes,
         ProductConcatenateActionInterface $concatenateAction,
         ProductModelInterface $productModel,
         FamilyInterface $family,
@@ -295,8 +286,10 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
             'scope' => 'print',
         ]));
 
+        $getAttributes->forCode('description')->willReturn($this->buildAttribute('description', 'type'));
+
         $productModel->getFamily()->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['description']);
+        $family->hasAttributeCode('description')->willReturn(true);
         $productModel->getFamilyVariant()->willReturn(null);
         $productModel->getVariationLevel()->willReturn(1);
         $productModel->getFamilyVariant()->willReturn($familyVariant);

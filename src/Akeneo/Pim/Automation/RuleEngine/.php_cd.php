@@ -58,7 +58,6 @@ $rules = [
         // TIP-960: Rule Engine should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\AttributeTypes',
-        'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues',
