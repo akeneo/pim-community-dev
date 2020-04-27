@@ -3,6 +3,7 @@ import { httpPut } from '../../../fetch';
 import { generateUrl } from '../../../dependenciesTools/hooks';
 import { FormData } from '../edit-rules.types';
 import { useForm, DeepPartial } from 'react-hook-form';
+
 import { Locale, RuleDefinition } from '../../../models';
 import {
   Router,
@@ -115,7 +116,7 @@ const useSubmitEditRuleForm = (
   locales: Locale[]
 ) => {
   const defaultValues = createFormDefaultValues(ruleDefinition, locales);
-  const { handleSubmit, register, formState, reset } = useForm<FormData>({
+  const formMethods = useForm<FormData>({
     defaultValues,
   });
   const onSubmit = submitEditRuleForm(
@@ -123,13 +124,12 @@ const useSubmitEditRuleForm = (
     translate,
     notify,
     router,
-    reset
+    formMethods.reset
   );
   return {
-    handleSubmit: handleSubmit(onSubmit),
-    register,
-    formState,
-    pending: formState.isSubmitting,
+    onSubmit: formMethods.handleSubmit(onSubmit),
+    formMethods,
+    pending: formMethods.formState.isSubmitting,
   };
 };
 

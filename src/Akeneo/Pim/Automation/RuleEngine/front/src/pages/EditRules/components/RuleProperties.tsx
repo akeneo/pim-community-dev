@@ -1,15 +1,16 @@
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import { Translate } from '../../../dependenciesTools';
 import { Locale } from '../../../models';
 import { InputNumber, InputText, SmallHelper } from '../../../components';
 
 type Props = {
   locales?: Locale[];
-  register: any;
   translate: Translate;
 };
 
-const RuleProperties: React.FC<Props> = ({ register, locales, translate }) => {
+const RuleProperties: React.FC<Props> = ({ locales, translate }) => {
+  const { register } = useFormContext();
   return (
     <div className='AknFormContainer'>
       <SmallHelper>Page under construction</SmallHelper>

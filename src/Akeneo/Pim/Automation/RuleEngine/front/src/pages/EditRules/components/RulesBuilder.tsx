@@ -1,4 +1,5 @@
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import { Translate } from '../../../dependenciesTools';
 import { RuleProductSelection } from './RuleProductSelection';
 import { RuleDefinition } from '../../../models/RuleDefinition';
@@ -8,7 +9,6 @@ import { IndexedScopes } from '../../../fetch/ScopeFetcher';
 import { ActionLineProps } from '../ActionLineProps';
 
 type Props = {
-  register: any;
   translate: Translate;
   ruleDefinition: RuleDefinition;
   locales: Locale[];
@@ -35,13 +35,13 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
 };
 
 const RulesBuilder: React.FC<Props> = ({
-  register,
   translate,
   ruleDefinition,
   locales,
   scopes,
   currentCatalogLocale,
 }) => {
+  const { register } = useFormContext();
   return (
     <>
       <RuleProductSelection

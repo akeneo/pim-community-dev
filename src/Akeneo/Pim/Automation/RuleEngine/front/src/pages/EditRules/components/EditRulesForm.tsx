@@ -8,14 +8,14 @@ import { RuleProperties } from './RuleProperties';
 import { Locale } from '../../../models/Locale';
 import { IndexedScopes } from '../../../fetch/ScopeFetcher';
 
-const getTabBorder = ({ id, selectedId, theme }: any) => {
+const getTabBorder = ({ id, selectedId, theme }: any): string | number => {
   if (id === selectedId) {
     return `3px solid ${theme.color.purple100}`;
   }
   return 0;
 };
 
-const getTabColor = ({ id, selectedId, theme }: any) => {
+const getTabColor = ({ id, selectedId, theme }: any): string => {
   if (id === selectedId) {
     return theme.color.purple100;
   }
@@ -24,10 +24,10 @@ const getTabColor = ({ id, selectedId, theme }: any) => {
 };
 
 const StyledTab = styled(Tab)`
-  background: ${({ theme }) => theme.color.white};
-  border-bottom: ${props => getTabBorder(props)};
+  background: ${({ theme }): string => theme.color.white};
+  border-bottom: ${(props): string | number => getTabBorder(props)};
   border-width: 0 0 3px 0;
-  color: ${props => getTabColor(props)};
+  color: ${(props): string => getTabColor(props)};
   cursor: pointer;
   font-size: 15px;
   font-weight: normal;
@@ -37,8 +37,8 @@ const StyledTab = styled(Tab)`
   text-align: left;
   transition: color 0.1s ease-in, border-width 0.1s ease-in;
   &:hover {
-    color: ${({ theme }) => theme.color.purple100};
-    border-bottom: 3px solid ${({ theme }) => theme.color.purple100};
+    color: ${({ theme }): string => theme.color.purple100};
+    border-bottom: 3px solid ${({ theme }): string => theme.color.purple100};
   }
 `;
 
@@ -51,7 +51,7 @@ const StyledTabList = styled(TabList)`
 `;
 
 const TabDiv = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.color.grey80};
+  border-bottom: 1px solid ${({ theme }): string => theme.color.grey80};
 `;
 
 type FormData = {
@@ -67,7 +67,6 @@ type Props = {
   translate: Translate;
   locales: Locale[];
   ruleDefinition: RuleDefinition;
-  register: any;
   scopes: IndexedScopes;
   currentCatalogLocale: string;
 };
@@ -77,7 +76,6 @@ const EditRulesForm: React.FC<Props> = ({
   locales,
   ruleDefinition,
   translate,
-  register,
   scopes,
   currentCatalogLocale,
 }) => {
@@ -100,7 +98,6 @@ const EditRulesForm: React.FC<Props> = ({
         </TabDiv>
         <StyledTabPanel {...tab} tabIndex={-1}>
           <RulesBuilder
-            register={register}
             ruleDefinition={ruleDefinition}
             translate={translate}
             locales={locales}
@@ -109,11 +106,7 @@ const EditRulesForm: React.FC<Props> = ({
           />
         </StyledTabPanel>
         <StyledTabPanel {...tab} tabIndex={-1}>
-          <RuleProperties
-            register={register}
-            locales={locales}
-            translate={translate}
-          />
+          <RuleProperties locales={locales} translate={translate} />
         </StyledTabPanel>
       </StyledTabList>
     </form>

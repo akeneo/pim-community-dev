@@ -1,5 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
+import { FormContext } from 'react-hook-form';
+
 import * as akeneoTheme from '../../theme';
 import {
   AkeneoSpinner,
@@ -46,7 +48,7 @@ const EditRulesContent: React.FC<Props> = ({
     router,
     'pimee_catalog_rule_rule_index'
   );
-  const { formState, handleSubmit, register, pending } = useSubmitEditRuleForm(
+  const { formMethods, onSubmit, pending } = useSubmitEditRuleForm(
     ruleDefinitionCode,
     translate,
     notify,
@@ -63,7 +65,7 @@ const EditRulesContent: React.FC<Props> = ({
         formId='edit-rules-form'
         title={getRuleDefinitionLabel(ruleDefinition, currentCatalogLocale)}
         translate={translate}
-        unsavedChanges={formState.dirty}>
+        unsavedChanges={formMethods.formState.dirty}>
         <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>
           {translate('pim_menu.tab.settings')}
         </BreadcrumbItem>
@@ -73,15 +75,16 @@ const EditRulesContent: React.FC<Props> = ({
         <LastBreadcrumbItem>{translate('pim_common.edit')}</LastBreadcrumbItem>
       </RulesHeader>
       <Content>
-        <EditRulesForm
-          register={register}
-          onSubmit={handleSubmit}
-          locales={locales}
-          ruleDefinition={ruleDefinition}
-          translate={translate}
-          scopes={scopes}
-          currentCatalogLocale={currentCatalogLocale}
-        />
+        <FormContext {...formMethods}>
+          <EditRulesForm
+            onSubmit={onSubmit}
+            locales={locales}
+            ruleDefinition={ruleDefinition}
+            translate={translate}
+            scopes={scopes}
+            currentCatalogLocale={currentCatalogLocale}
+          />
+        </FormContext>
       </Content>
     </ThemeProvider>
   );

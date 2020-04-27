@@ -13,6 +13,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
   rules: {
+    "@typescript-eslint/explicit-function-return-type": "off",
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'object-curly-spacing': ['error', 'always'],
