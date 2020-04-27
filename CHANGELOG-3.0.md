@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.76 (2020-04-27)
+
 ## Bug fixes:
 
 - PIM-9217: Allow copying reference entity single and multiple link attribute values with the rule engine
