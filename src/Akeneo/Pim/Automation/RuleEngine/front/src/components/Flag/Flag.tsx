@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const SpanSrOnly = styled.span`
   position: absolute;
@@ -16,7 +16,7 @@ const SpanSrOnly = styled.span`
 type Props = {
   locale: string;
   flagDescription: string;
-}
+};
 
 const Flag: React.FC<Props> = ({ locale, flagDescription }) => {
   const extractFlagFromLocale = (locale: string): string => {
@@ -29,7 +29,7 @@ const Flag: React.FC<Props> = ({ locale, flagDescription }) => {
     <i className={`flag flag-${extractFlagFromLocale(locale)}`}>
       <SpanSrOnly>{flagDescription}</SpanSrOnly>
     </i>
-  )
+  );
 };
 
-export { Flag }
+export { Flag };

@@ -1,10 +1,10 @@
-import {render} from "../../../../test-utils";
-import React from "react";
-import {TextAttributeConditionLine} from "../../../../src/pages/EditRules/TextAttributeConditionLine";
-import {TextAttributeCondition} from "../../../../src/models/TextAttributeCondition";
-import {Attribute} from "../../../../src/models/Attribute";
-import {Operator} from "../../../../src/models/Operator";
-import {IndexedScopes} from "../../../../src/fetch/ScopeFetcher";
+import { render } from '../../../../test-utils';
+import React from 'react';
+import { TextAttributeConditionLine } from '../../../../src/pages/EditRules/TextAttributeConditionLine';
+import { TextAttributeCondition } from '../../../../src/models/TextAttributeCondition';
+import { Attribute } from '../../../../src/models/Attribute';
+import { Operator } from '../../../../src/models/Operator';
+import { IndexedScopes } from '../../../../src/fetch/ScopeFetcher';
 
 const nameAttribute: Attribute = {
   code: 'name',
@@ -32,7 +32,7 @@ const nameAttribute: Attribute = {
   sort_order: 1,
   localizable: true,
   scopable: true,
-  labels: {'en_US': 'Name', 'fr_FR': 'Nom'},
+  labels: { en_US: 'Name', fr_FR: 'Nom' },
   auto_option_sorting: null,
   is_read_only: false,
   empty_value: null,
@@ -54,22 +54,22 @@ const condition: TextAttributeCondition = {
 
 const locales = [
   {
-    code: "de_DE",
-    label: "German (Germany)",
-    region: "Germany",
-    language: "German",
+    code: 'de_DE',
+    label: 'German (Germany)',
+    region: 'Germany',
+    language: 'German',
   },
   {
-    code: "en_US",
-    label: "English (United States)",
-    region: "United States",
-    language: "English",
+    code: 'en_US',
+    label: 'English (United States)',
+    region: 'United States',
+    language: 'English',
   },
   {
-    code: "fr_FR",
-    label: "French (France)",
-    region: "France",
-    language: "French",
+    code: 'fr_FR',
+    label: 'French (France)',
+    region: 'France',
+    language: 'French',
   },
 ];
 const scopes: IndexedScopes = {
@@ -79,16 +79,16 @@ const scopes: IndexedScopes = {
     locales: locales,
     category_tree: 'master',
     conversion_units: [],
-    labels: {'en_US': 'e-commerce'},
+    labels: { en_US: 'e-commerce' },
     meta: {},
   },
 };
 
 const translate = jest.fn((key: string) => key);
 
-describe("TextAttributeConditionLine", () => {
-  it("should display the text attribute condition", async () => {
-    const {findByText, findByTestId} = render(
+describe('TextAttributeConditionLine', () => {
+  it('should display the text attribute condition', async () => {
+    const { findByText, findByTestId } = render(
       <TextAttributeConditionLine
         register={jest.fn()}
         condition={condition}
@@ -98,15 +98,15 @@ describe("TextAttributeConditionLine", () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
       />,
-      {legacy: true}
+      { legacy: true }
     );
 
-    expect(await findByText("Nom")).toBeInTheDocument();
-    const operatorSelector = await findByTestId("edit-rules-input-1-operator");
+    expect(await findByText('Nom')).toBeInTheDocument();
+    const operatorSelector = await findByTestId('edit-rules-input-1-operator');
     expect(operatorSelector).toBeInTheDocument();
     // expect(operatorSelector).toHaveValue('!='); // TODO once the register form will be mocked
 
-    expect(await findByTestId("edit-rules-input-1-scope")).toBeInTheDocument();
-    expect(await findByTestId("edit-rules-input-1-locale")).toBeInTheDocument();
+    expect(await findByTestId('edit-rules-input-1-scope')).toBeInTheDocument();
+    expect(await findByTestId('edit-rules-input-1-locale')).toBeInTheDocument();
   });
 });

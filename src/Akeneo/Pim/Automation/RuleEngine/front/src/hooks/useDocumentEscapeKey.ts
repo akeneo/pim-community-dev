@@ -1,12 +1,12 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 const useDocumentEscapeKey = (onKeyPress: () => void): void => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) =>
-      "Escape" === event.code && onKeyPress();
+      'Escape' === event.code && onKeyPress();
 
-    document.addEventListener("keydown", handleKeyDown, true);
-    return () => document.removeEventListener("keydown", handleKeyDown, true);
+    document.addEventListener('keydown', handleKeyDown, true);
+    return () => document.removeEventListener('keydown', handleKeyDown, true);
   }, [onKeyPress]);
 };
 

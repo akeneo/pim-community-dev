@@ -1,15 +1,14 @@
-import React from "react";
-import styled from "styled-components";
-import {TextAttributeCondition, TextAttributeOperators} from "../../models/TextAttributeCondition";
-import {Operator} from "../../models/Operator";
-import {ConditionLineProps} from "./ConditionLineProps";
-import {Locale} from "../../models";
-import {Scope} from "../../models";
-import {InputText} from "../../components/Inputs";
-
-type Props = {
-  condition: TextAttributeCondition,
-} & ConditionLineProps;
+import React from 'react';
+import styled from 'styled-components';
+import {
+  TextAttributeCondition,
+  TextAttributeOperators,
+} from '../../models/TextAttributeCondition';
+import { Operator } from '../../models/Operator';
+import { ConditionLineProps } from './ConditionLineProps';
+import { Locale } from '../../models';
+import { Scope } from '../../models';
+import { InputText } from '../../components/Inputs';
 
 const FieldColumn = styled.span`
   width: 100px;
@@ -42,99 +41,122 @@ const ScopeColumn = styled.span`
   padding: 0 2px;
 `;
 
-const TextAttributeConditionLine: React.FC<Props> = ({
-    register,
-    condition,
-    lineNumber,
-    translate,
-    locales,
-    scopes,
-    currentCatalogLocale
-  }) => {
-  const [operator, setOperator] = React.useState<Operator>(condition.operator);
-  const [scopeCode, setScopeCode] = React.useState<string | undefined>(condition.scope);
+const TextAttributeConditionLine: React.FC<ConditionLineProps> = ({
+  register,
+  condition,
+  lineNumber,
+  translate,
+  locales,
+  scopes,
+  currentCatalogLocale,
+}) => {
+  const textAttributeCondition = condition as TextAttributeCondition;
+  const [operator, setOperator] = React.useState<Operator>(
+    textAttributeCondition.operator
+  );
+  const [scopeCode, setScopeCode] = React.useState<string | undefined>(
+    textAttributeCondition.scope
+  );
 
   const getScopeLabel = (scope: Scope): string => {
     return scope.labels[currentCatalogLocale] || `[${scope.code}]`;
-  }
+  };
 
   const computeLocales = (): Locale[] => {
-    return !condition.attribute.scopable
+    return !textAttributeCondition.attribute.scopable
       ? locales
-      : scopeCode ? scopes[scopeCode].locales : []
-      ;
+      : scopeCode
+      ? scopes[scopeCode].locales
+      : [];
   };
 
   const translateOperator = (operator: string): string => {
-    const label = translate('pimee_catalog_rule.form.edit.conditions.operators.' + operator);
+    const label = translate(
+      'pimee_catalog_rule.form.edit.conditions.operators.' + operator
+    );
 
     return label.charAt(0).toUpperCase() + label.slice(1);
-  }
+  };
 
   return (
     <div>
-      <FieldColumn className={"AknGrid-bodyCell--highlight"}>
-        {condition.attribute.labels[currentCatalogLocale] || '[' + condition.attribute.code + ']'}
-        <input type="hidden" name={`content.conditions[${lineNumber}].field`} ref={register}/>
+      <FieldColumn className={'AknGrid-bodyCell--highlight'}>
+        {textAttributeCondition.attribute.labels[currentCatalogLocale] ||
+          '[' + textAttributeCondition.attribute.code + ']'}
+        <input
+          type='hidden'
+          name={`content.conditions[${lineNumber}].field`}
+          ref={register}
+        />
       </FieldColumn>
       <OperatorColumn>
         <select
           name={`content.conditions[${lineNumber}].operator`}
           data-testid={`edit-rules-input-${lineNumber}-operator`}
           ref={register}
-          onChange={(event) => {
+          onChange={event => {
             setOperator(event.target.value as Operator);
-          }}
-        >
+          }}>
           {TextAttributeOperators.map((operator, i) => {
-            return <option key={i} value={operator}>
-              {translateOperator(operator)}
-            </option>
+            return (
+              <option key={i} value={operator}>
+                {translateOperator(operator)}
+              </option>
+            );
           })}
         </select>
       </OperatorColumn>
       <ValueColumn>
-        {!([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(operator) && (
+        {!([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
+          operator
+        ) && (
           <InputText
             data-testid={`edit-rules-input-${lineNumber}-value`}
             name={`content.conditions[${lineNumber}].value`}
-            label={translate("pim_common.code")}
+            label={translate('pim_common.code')}
             ref={register}
-            hiddenLabel={true}
-          >&nbsp;</InputText>
+            hiddenLabel={true}>
+            &nbsp;
+          </InputText>
         )}
       </ValueColumn>
       <ScopeColumn>
-        {condition.attribute.scopable &&
-        <select
-          ref={register}
-          data-testid={`edit-rules-input-${lineNumber}-scope`}
-          name={`content.conditions[${lineNumber}].scope`}
-          onChange={(event) => {
-            setScopeCode(event.target.value);
-          }}
-        >
-          {Object.values(scopes).map((scope: Scope, i: number) => {
-            return <option key={i} value={scope.code}>{getScopeLabel(scope)}</option>
-          })}
-        </select>
-        }
+        {textAttributeCondition.attribute.scopable && (
+          <select
+            ref={register}
+            data-testid={`edit-rules-input-${lineNumber}-scope`}
+            name={`content.conditions[${lineNumber}].scope`}
+            onChange={event => {
+              setScopeCode(event.target.value);
+            }}>
+            {Object.values(scopes).map((scope: Scope, i: number) => {
+              return (
+                <option key={i} value={scope.code}>
+                  {getScopeLabel(scope)}
+                </option>
+              );
+            })}
+          </select>
+        )}
       </ScopeColumn>
       <LocaleColumn>
-        {condition.attribute.localizable &&
-        <select
-          ref={register}
-          data-testid={`edit-rules-input-${lineNumber}-locale`}
-          name={`content.conditions[${lineNumber}].locale`}
-        >
-          {computeLocales().map((locale: Locale, i: number) => {
-            return <option key={i} value={locale.code}>{locale.label}</option>
-          })}
-        </select>
-        }
+        {textAttributeCondition.attribute.localizable && (
+          <select
+            ref={register}
+            data-testid={`edit-rules-input-${lineNumber}-locale`}
+            name={`content.conditions[${lineNumber}].locale`}>
+            {computeLocales().map((locale: Locale, i: number) => {
+              return (
+                <option key={i} value={locale.code}>
+                  {locale.label}
+                </option>
+              );
+            })}
+          </select>
+        )}
       </LocaleColumn>
     </div>
   );
 };
 
-export { TextAttributeConditionLine }
+export { TextAttributeConditionLine };

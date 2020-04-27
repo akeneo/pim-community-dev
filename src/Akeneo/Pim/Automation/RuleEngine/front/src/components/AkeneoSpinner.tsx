@@ -1,5 +1,7 @@
-import React from "react";
+import React from 'react';
 
-const AkeneoSpinner = () => <div data-testid='akeneo-spinner' className="AknLoadingMask" />;
+const AkeneoSpinner: React.FC = () => (
+  <div data-testid='akeneo-spinner' className='AknLoadingMask' />
+);
 
 export { AkeneoSpinner };

@@ -1,14 +1,14 @@
-import React from "react";
-import styled from "styled-components";
-import { Translate } from "../../../dependenciesTools";
-import { GreyGhostButton, SmallHelper } from "../../../components";
-import { TextBoxBlue } from "./TextBoxBlue";
-import { RuleDefinition } from "../../../models/RuleDefinition";
-import { PimConditionLine } from "../PimConditionLine";
-import { FallbackConditionLine } from "../FallbackConditionLine";
-import { Condition } from "../../../models/Condition";
-import { Locale } from "../../../models/Locale";
-import {IndexedScopes} from "../../../fetch/ScopeFetcher";
+import React from 'react';
+import styled from 'styled-components';
+import { Translate } from '../../../dependenciesTools';
+import { GreyGhostButton, SmallHelper } from '../../../components';
+import { TextBoxBlue } from './TextBoxBlue';
+import { RuleDefinition } from '../../../models/';
+import { PimConditionLine } from '../PimConditionLine';
+import { FallbackConditionLine } from '../FallbackConditionLine';
+import { Condition } from '../../../models/';
+import { Locale } from '../../../models/';
+import { IndexedScopes } from '../../../fetch/ScopeFetcher';
 
 const Header = styled.header`
   font-weight: normal;
@@ -45,8 +45,8 @@ const AddConditionContainer = styled.div`
 `;
 
 type Props = {
-  register: any,
-  ruleDefinition: RuleDefinition,
+  register: any;
+  ruleDefinition: RuleDefinition;
   translate: Translate;
   locales: Locale[];
   scopes: IndexedScopes;
@@ -56,7 +56,7 @@ type Props = {
 type ConditionLineProps = {
   register: any;
   condition: Condition;
-  lineNumber: number,
+  lineNumber: number;
   translate: Translate;
   locales: Locale[];
   scopes: IndexedScopes;
@@ -64,14 +64,14 @@ type ConditionLineProps = {
 };
 
 const ConditionLine: React.FC<ConditionLineProps> = ({
-    register,
-    translate,
-    condition,
-    lineNumber,
-    locales,
-    scopes,
-    currentCatalogLocale
-  }) => {
+  register,
+  translate,
+  condition,
+  lineNumber,
+  locales,
+  scopes,
+  currentCatalogLocale,
+}) => {
   const Line = condition.module;
   const isFallback =
     condition.module === PimConditionLine ||
@@ -80,9 +80,8 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
   return (
     <div
       className={`AknGrid-bodyRow${isFallback &&
-        " AknGrid-bodyRow--highlight"}`}
-    >
-      <div className="AknGrid-bodyCell">
+        ' AknGrid-bodyRow--highlight'}`}>
+      <div className='AknGrid-bodyCell'>
         <Line
           register={register}
           condition={condition}
@@ -98,46 +97,46 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
 };
 
 const RuleProductSelection: React.FC<Props> = ({
-    register,
-    ruleDefinition,
-    translate,
-    locales,
-    scopes,
-    currentCatalogLocale
-  }) => {
+  register,
+  ruleDefinition,
+  translate,
+  locales,
+  scopes,
+  currentCatalogLocale,
+}) => {
   return (
     <fieldset>
-      <Header className="AknSubsection-title">
+      <Header className='AknSubsection-title'>
         <HeaderPartContainer>
           <TextBoxBlue>
-            {translate("pimee_catalog_rule.rule.condition.if.label")}
+            {translate('pimee_catalog_rule.rule.condition.if.label')}
           </TextBoxBlue>
           <TitleHeader>
-            {translate("pimee_catalog_rule.form.edit.product_selection")}
+            {translate('pimee_catalog_rule.form.edit.product_selection')}
           </TitleHeader>
         </HeaderPartContainer>
         <HeaderPartContainer>
-          <span className="AknSubsection-comment AknSubsection-comment--clickable">
-            {translate("pimee_catalog_rule.form.edit.count_products", {
-              count: "0",
+          <span className='AknSubsection-comment AknSubsection-comment--clickable'>
+            {translate('pimee_catalog_rule.form.edit.count_products', {
+              count: '0',
             })}
           </span>
           <AddConditionContainer>
-            <GreyGhostButton sizeMode="small">
-              {translate("pimee_catalog_rule.form.edit.add_conditions")}
+            <GreyGhostButton sizeMode='small'>
+              {translate('pimee_catalog_rule.form.edit.add_conditions')}
             </GreyGhostButton>
           </AddConditionContainer>
         </HeaderPartContainer>
       </Header>
       <SmallHelper>
-        {translate("pimee_catalog_rule.form.helper.product_selection")}
-        <a href="#">
+        {translate('pimee_catalog_rule.form.helper.product_selection')}
+        <a href='#'>
           {translate(
-            "pimee_catalog_rule.form.helper.product_selection_doc_link"
+            'pimee_catalog_rule.form.helper.product_selection_doc_link'
           )}
         </a>
       </SmallHelper>
-      <div className="AknGrid AknGrid--unclickable">
+      <div className='AknGrid AknGrid--unclickable'>
         {ruleDefinition.conditions.map((condition, i) => {
           return (
             <ConditionLine
@@ -154,12 +153,12 @@ const RuleProductSelection: React.FC<Props> = ({
         })}
       </div>
       <LegendSrOnly>
-        {translate("pimee_catalog_rule.form.legend.product_selection")}
+        {translate('pimee_catalog_rule.form.legend.product_selection')}
       </LegendSrOnly>
     </fieldset>
   );
 };
 
-RuleProductSelection.displayName = "RuleProductSelection";
+RuleProductSelection.displayName = 'RuleProductSelection';
 
 export { RuleProductSelection };

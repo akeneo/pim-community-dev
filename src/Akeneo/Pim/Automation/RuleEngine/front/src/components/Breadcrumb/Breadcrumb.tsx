@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 const Breadcrumb: React.FC = ({ children }) => {
-  return <nav className="AknBreadcrumb">{children}</nav>;
+  return <nav className='AknBreadcrumb'>{children}</nav>;
 };
 
-Breadcrumb.displayName = "Breadcrumb";
+Breadcrumb.displayName = 'Breadcrumb';
 
 export { Breadcrumb };

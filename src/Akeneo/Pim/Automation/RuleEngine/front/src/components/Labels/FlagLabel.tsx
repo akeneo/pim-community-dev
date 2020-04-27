@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { Flag } from "../Flag/Flag";
-import { Label } from "./Label";
+import React from 'react';
+import styled from 'styled-components';
+import { Flag } from '../Flag/Flag';
+import { Label } from './Label';
 
 const DivLabelWithFLag = styled.div`
   align-items: center;
@@ -23,7 +23,7 @@ const FlagLabel: React.FC<Props> = ({
   return (
     <DivLabelWithFLag>
       <Label
-        className="AknFieldContainer-label control-label"
+        className='AknFieldContainer-label control-label'
         htmlFor={htmlFor}
         label={label}
       />

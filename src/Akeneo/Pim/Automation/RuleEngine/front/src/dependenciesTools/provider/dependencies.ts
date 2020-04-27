@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const router = require('pim/router');
 const translate = require('oro/translator');
 const viewBuilder = require('pim/form-builder');

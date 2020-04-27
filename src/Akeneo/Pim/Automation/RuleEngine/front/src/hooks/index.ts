@@ -1,1 +1,1 @@
-export * from "./useDocumentEscapeKey";
+export * from './useDocumentEscapeKey';

@@ -1,11 +1,12 @@
-import { Deferred } from "jquery";
+/* eslint-disable @typescript-eslint/no-var-requires */
+import { Deferred } from 'jquery';
 import {
   mountReactElementRef,
-  unmountReactElementRef
-} from "./reactElementHelper";
+  unmountReactElementRef,
+} from './reactElementHelper';
 
-const BaseController = require("pim/controller/base");
-const mediator = require("oro/mediator");
+const BaseController = require('pim/controller/base');
+const mediator = require('oro/mediator');
 
 export type RouteParams = {
   name: string;
@@ -16,9 +17,9 @@ export type RouteParams = {
     hosttokens: any;
     methods: any;
     schemes: any;
-  }
+  };
   params: any;
-}
+};
 
 export default abstract class ReactController extends BaseController {
   /**
@@ -34,18 +35,22 @@ export default abstract class ReactController extends BaseController {
   abstract routeGuardToUnmount(): RegExp;
 
   initialize() {
-    mediator.on("route_start", this.handleRouteChange, this);
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    mediator.on('route_start', this.handleRouteChange, this);
 
     return super.initialize();
   }
 
   renderRoute(routeParams?: RouteParams) {
-    this.$el.append(mountReactElementRef(this.reactElementToMount(routeParams)));
+    this.$el.append(
+      mountReactElementRef(this.reactElementToMount(routeParams))
+    );
     return Deferred().resolve();
   }
 
   remove() {
-    mediator.off("route_start", this.handleRouteChange, this);
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    mediator.off('route_start', this.handleRouteChange, this);
     this.$el.remove();
 
     return super.remove();

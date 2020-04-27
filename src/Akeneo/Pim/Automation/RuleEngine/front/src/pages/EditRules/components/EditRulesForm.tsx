@@ -1,12 +1,12 @@
-import React from "react";
-import styled from "styled-components";
-import { useTabState, Tab, TabList, TabPanel } from "reakit/Tab";
-import { Translate } from "../../../dependenciesTools";
-import { RuleDefinition } from "../../../models/RuleDefinition";
-import { RulesBuilder } from "./RulesBuilder";
-import { RuleProperties } from "./RuleProperties";
-import { Locale } from "../../../models/Locale";
-import {IndexedScopes} from "../../../fetch/ScopeFetcher";
+import React from 'react';
+import styled from 'styled-components';
+import { useTabState, Tab, TabList, TabPanel } from 'reakit/Tab';
+import { Translate } from '../../../dependenciesTools';
+import { RuleDefinition } from '../../../models/RuleDefinition';
+import { RulesBuilder } from './RulesBuilder';
+import { RuleProperties } from './RuleProperties';
+import { Locale } from '../../../models/Locale';
+import { IndexedScopes } from '../../../fetch/ScopeFetcher';
 
 const getTabBorder = ({ id, selectedId, theme }: any) => {
   if (id === selectedId) {
@@ -25,9 +25,9 @@ const getTabColor = ({ id, selectedId, theme }: any) => {
 
 const StyledTab = styled(Tab)`
   background: ${({ theme }) => theme.color.white};
-  border-bottom: ${(props) => getTabBorder(props)};
+  border-bottom: ${props => getTabBorder(props)};
   border-width: 0 0 3px 0;
-  color: ${(props) => getTabColor(props)};
+  color: ${props => getTabColor(props)};
   cursor: pointer;
   font-size: 15px;
   font-weight: normal;
@@ -79,25 +79,23 @@ const EditRulesForm: React.FC<Props> = ({
   translate,
   register,
   scopes,
-  currentCatalogLocale
+  currentCatalogLocale,
 }) => {
-  const tab = useTabState({ selectedId: "rulesBuilderTab" });
+  const tab = useTabState({ selectedId: 'rulesBuilderTab' });
   return (
     <form
-      id="edit-rules-form"
-      data-testid="edit-rules-form"
-      onSubmit={onSubmit}
-    >
+      id='edit-rules-form'
+      data-testid='edit-rules-form'
+      onSubmit={onSubmit}>
       <StyledTabList
         {...tab}
-        aria-label={translate("pimee_catalog_rule.form.tab.list")}
-      >
+        aria-label={translate('pimee_catalog_rule.form.tab.list')}>
         <TabDiv>
-          <StyledTab {...tab} id="rulesBuilderTab" type="button">
-            {translate("pimee_catalog_rule.form.tab.rule_builder")}
+          <StyledTab {...tab} id='rulesBuilderTab' type='button'>
+            {translate('pimee_catalog_rule.form.tab.rule_builder')}
           </StyledTab>
-          <StyledTab {...tab} id="propertiesTab" type="button">
-            {translate("pim_common.properties")}
+          <StyledTab {...tab} id='propertiesTab' type='button'>
+            {translate('pim_common.properties')}
           </StyledTab>
         </TabDiv>
         <StyledTabPanel {...tab} tabIndex={-1}>

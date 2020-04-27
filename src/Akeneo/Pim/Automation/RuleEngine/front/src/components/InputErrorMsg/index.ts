@@ -1,1 +1,1 @@
-export * from "./InputErrorMsg";
+export * from './InputErrorMsg';

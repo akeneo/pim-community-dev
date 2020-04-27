@@ -75,3 +75,16 @@ rule-engine-integration-back: var/tests/behat/rule-engine-integration
 .PHONY: rule-engine-unit-front
 rule-engine-unit-front:
 	$(YARN_RUN) run --cwd=src/Akeneo/Pim/Automation/RuleEngine/front jest --ci
+
+.PHONY: rule-engine-lint-front
+rule-engine-lint-front:
+	$(YARN_RUN) run --cwd=src/Akeneo/Pim/Automation/RuleEngine/front lint
+
+.PHONY: rule-engine-types-check-front
+rule-engine-types-check-front:
+	$(YARN_RUN) run --cwd=src/Akeneo/Pim/Automation/RuleEngine/front types-check
+
+.PHONY: rule-engine-prettier-check-front
+rule-engine-prettier-check-front:
+	$(YARN_RUN) run --cwd=src/Akeneo/Pim/Automation/RuleEngine/front prettier-check
+

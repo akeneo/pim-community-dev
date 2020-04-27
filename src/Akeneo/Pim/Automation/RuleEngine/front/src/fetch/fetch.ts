@@ -1,34 +1,34 @@
 const httpPost = (url: string, params?: any) => {
   return fetch(url, {
     headers: {
-      "Content-Type": "application/json",
-      "X-Requested-With": "XMLHttpRequest",
-      ...params.header
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+      ...params.header,
     },
-    method: "POST",
-    body: JSON.stringify(params.body)
+    method: 'POST',
+    body: JSON.stringify(params.body),
   });
 };
 
 const httpGet = (url: string) => {
   return fetch(url, {
     headers: {
-      "Content-Type": "application/json",
-      "X-Requested-With": "XMLHttpRequest"
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
     },
-    method: "GET"
+    method: 'GET',
   });
 };
 
 const httpPut = (url: string, params?: any) => {
   return fetch(url, {
     headers: {
-      "Content-Type": "application/json",
-      "X-Requested-With": "XMLHttpRequest",
-      ...params.header
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+      ...params.header,
     },
-    method: "PUT",
-    body: JSON.stringify(params.body)
+    method: 'PUT',
+    body: JSON.stringify(params.body),
   });
 };
 

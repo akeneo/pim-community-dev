@@ -1,13 +1,16 @@
-import React from "react";
-import {Attribute, validateLocalizableScopableAttribute} from "./Attribute";
-import {Condition} from "./Condition";
-import {Router } from "../dependenciesTools";
-import {getAttributeByIdentifier} from "../fetch/AttributeFetcher";
-import {TextAttributeConditionLine} from "../pages/EditRules/TextAttributeConditionLine";
-import {Operator} from "./Operator";
-import {ConditionLineProps} from "../pages/EditRules/ConditionLineProps";
-import {checkLocaleExists} from "../fetch/LocaleFetcher";
-import {checkLocaleIsBoundToScope, checkScopeExists} from "../fetch/ScopeFetcher";
+import React from 'react';
+import { Attribute, validateLocalizableScopableAttribute } from './Attribute';
+import { Router } from '../dependenciesTools';
+import { getAttributeByIdentifier } from '../fetch/AttributeFetcher';
+import { TextAttributeConditionLine } from '../pages/EditRules/TextAttributeConditionLine';
+import { Operator } from './Operator';
+import { checkLocaleExists } from '../fetch/LocaleFetcher';
+import {
+  checkLocaleIsBoundToScope,
+  checkScopeExists,
+} from '../fetch/ScopeFetcher';
+import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
+import { ConditionFactoryType } from './Condition';
 
 const TextAttributeOperators = [
   Operator.EQUALS,
@@ -21,20 +24,26 @@ const TextAttributeOperators = [
 
 type TextAttributeCondition = {
   scope?: string;
-  module: React.FC<ConditionLineProps & { condition: Condition }>,
+  module: React.FC<ConditionLineProps>;
   attribute: Attribute;
-  field: string,
+  field: string;
   operator: Operator;
   value?: string;
   locale?: string;
-}
+};
 
-const createTextAttributeCondition = async (json: any, router: Router): Promise <TextAttributeCondition | null> => {
+const createTextAttributeCondition: ConditionFactoryType = async (
+  json: any,
+  router: Router
+): Promise<TextAttributeCondition | null> => {
   if (typeof json.field !== 'string') {
     return null;
   }
 
-  if (typeof json.operator !== 'string' || !TextAttributeOperators.includes(json.operator)) {
+  if (
+    typeof json.operator !== 'string' ||
+    !TextAttributeOperators.includes(json.operator)
+  ) {
     return null;
   }
 
@@ -44,13 +53,14 @@ const createTextAttributeCondition = async (json: any, router: Router): Promise 
   }
 
   if (attribute.type === 'pim_catalog_text') {
-    let localeCode = json.locale || null;
-    let scopeCode = json.scope || null;
+    const localeCode = json.locale || null;
+    const scopeCode = json.scope || null;
 
-    if (!await checkLocaleExists(localeCode, router)
-      || !await checkScopeExists(scopeCode, router)
-      || !await checkLocaleIsBoundToScope(localeCode, scopeCode, router)
-      || !validateLocalizableScopableAttribute(attribute, localeCode, scopeCode)
+    if (
+      !(await checkLocaleExists(localeCode, router)) ||
+      !(await checkScopeExists(scopeCode, router)) ||
+      !(await checkLocaleIsBoundToScope(localeCode, scopeCode, router)) ||
+      !validateLocalizableScopableAttribute(attribute, localeCode, scopeCode)
     ) {
       return null;
     }
@@ -69,4 +79,8 @@ const createTextAttributeCondition = async (json: any, router: Router): Promise 
   return null;
 };
 
-export {TextAttributeOperators, TextAttributeCondition, createTextAttributeCondition};
+export {
+  TextAttributeOperators,
+  TextAttributeCondition,
+  createTextAttributeCondition,
+};

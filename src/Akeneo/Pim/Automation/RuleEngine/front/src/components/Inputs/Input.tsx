@@ -1,5 +1,5 @@
-import React, { forwardRef } from "react";
-import { Label } from "../Labels";
+import React, { forwardRef } from 'react';
+import { Label } from '../Labels';
 
 type Props = {
   ariaInvalid?: boolean;
@@ -17,7 +17,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
       <>
         {!children && label ? (
           <Label
-            className="AknFieldContainer-label control-label"
+            className='AknFieldContainer-label control-label'
             hiddenLabel={hiddenLabel}
             htmlFor={id}
             label={label}
@@ -36,5 +36,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
     );
   }
 );
+
+Input.displayName = 'Input';
 
 export { Input, Props as InputProps };

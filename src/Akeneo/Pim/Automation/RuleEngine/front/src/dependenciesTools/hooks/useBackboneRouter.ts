@@ -1,23 +1,23 @@
-import { useApplicationContext } from "./useApplicationContext";
+import { useApplicationContext } from './useApplicationContext';
 import {
   Router,
   RouteParams,
-} from "../provider/applicationDependenciesProvider.type";
+} from '../provider/applicationDependenciesProvider.type';
 
-const useBackboneRouter = () => {
+const useBackboneRouter = (): Router => {
   const { router } = useApplicationContext();
   if (router) {
     return router;
   }
   throw new Error(
-    "[ApplicationContext]: Router has not been properly initiated"
+    '[ApplicationContext]: Router has not been properly initiated'
   );
 };
 
 const generateUrl = (
   router: Router,
   route: string,
-  routeParams?: RouteParams,
+  routeParams?: RouteParams
 ): string => router.generate(route, routeParams);
 
 const redirectToUrl = (router: Router, url: string): void =>
@@ -29,7 +29,7 @@ const generateAndRedirect = (
   routeParams?: RouteParams
 ): [string, () => void] => {
   const url = generateUrl(router, route, routeParams);
-  const handleRedirect = () => redirectToUrl(router, url);
+  const handleRedirect = (): void => redirectToUrl(router, url);
   return [url, handleRedirect];
 };
 

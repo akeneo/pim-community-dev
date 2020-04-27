@@ -1,2 +1,2 @@
-export * from "./useInitEditRules";
-export * from "./useSubmitEditRuleForm";
+export * from './useInitEditRules';
+export * from './useSubmitEditRuleForm';

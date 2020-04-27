@@ -1,9 +1,9 @@
-import {Translate} from "../../dependenciesTools";
+import { Translate } from '../../dependenciesTools';
 
 type ActionLineProps = {
-  register: any,
-  lineNumber: number,
-  translate: Translate,
+  register: any;
+  lineNumber: number;
+  translate: Translate;
 };
 
 export { ActionLineProps };

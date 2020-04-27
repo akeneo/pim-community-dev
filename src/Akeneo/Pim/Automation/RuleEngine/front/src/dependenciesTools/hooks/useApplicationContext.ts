@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { useContext } from 'react';
 import {
   ApplicationDependenciesContextProps,
-  ApplicationDependenciesContext
-} from "../provider/ApplicationDependenciesProvider";
+  ApplicationDependenciesContext,
+} from '../provider/ApplicationDependenciesProvider';
 
-const useApplicationContext = () => {
+const useApplicationContext = (): ApplicationDependenciesContextProps => {
   const context = useContext<ApplicationDependenciesContextProps>(
     ApplicationDependenciesContext
   );

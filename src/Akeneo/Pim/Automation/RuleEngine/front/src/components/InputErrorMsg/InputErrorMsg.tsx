@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const DivErrMsg = styled.div`
   font-size: 11px;
@@ -7,14 +7,13 @@ const DivErrMsg = styled.div`
 
 const InputErrorMsg: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   children,
-  id
+  id,
 }) => {
   return (
     <DivErrMsg
-      className="AknFieldContainer-validationError"
+      className='AknFieldContainer-validationError'
       id={id}
-      role="alert"
-    >
+      role='alert'>
       {children}
     </DivErrMsg>
   );

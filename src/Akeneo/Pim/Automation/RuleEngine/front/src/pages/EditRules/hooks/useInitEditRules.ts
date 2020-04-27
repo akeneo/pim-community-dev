@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import { getRuleDefinitionByCode } from "../../../fetch/RuleDefinitionFetcher";
-import { getActivatedLocales } from "../../../fetch/LocaleFetcher";
-import { RuleDefinition } from "../../../models";
-import { Locale } from "../../../models";
-import { Router } from "../../../dependenciesTools";
-import {getAllScopes, IndexedScopes} from "../../../fetch/ScopeFetcher";
+import { useState, useEffect } from 'react';
+import { getRuleDefinitionByCode } from '../../../fetch/RuleDefinitionFetcher';
+import { getActivatedLocales } from '../../../fetch/LocaleFetcher';
+import { RuleDefinition } from '../../../models';
+import { Locale } from '../../../models';
+import { Router } from '../../../dependenciesTools';
+import { getAllScopes, IndexedScopes } from '../../../fetch/ScopeFetcher';
 
 type Error = { exception: any; status: boolean };
 
@@ -20,12 +20,12 @@ const useInitEditRules = (ruleDefinitionCode: string, router: Router) => {
       getActivatedLocales(router),
       getAllScopes(router),
     ])
-      .then((response) => {
-        setRuleDefinition(response[0] as RuleDefinition);
-        setLocales(response[1] as Locale[]);
-        setScopes(response[2] as IndexedScopes);
+      .then(response => {
+        setRuleDefinition(response[0]);
+        setLocales(response[1]);
+        setScopes(response[2]);
       })
-      .catch((exception) => {
+      .catch(exception => {
         setError({ exception, status: true });
         console.error(exception);
       });

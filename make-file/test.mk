@@ -25,6 +25,9 @@ lint-back:
 .PHONY: lint-front
 lint-front: franklin-insights-lint-front
 	$(YARN_RUN) lint
+	$(MAKE) rule-engine-lint-front
+	$(MAKE) rule-engine-types-check-front
+	$(MAKE) rule-engine-prettier-check-front
 
 ### Unit tests
 .PHONY: unit-back

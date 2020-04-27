@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
-import { Translate } from "../../../dependenciesTools";
-import { RedGhostButton, SmallHelper } from "../../../components";
-import { TextBoxBlue } from "./TextBoxBlue";
+import React from 'react';
+import styled from 'styled-components';
+import { Translate } from '../../../dependenciesTools';
+import { RedGhostButton, SmallHelper } from '../../../components';
+import { TextBoxBlue } from './TextBoxBlue';
 
 const LegendSrOnly = styled.legend`
   position: absolute;
@@ -47,15 +47,15 @@ const ActionTemplate: React.FC<Props> = ({
 }) => {
   return (
     <fieldset>
-      <StyledHeader className="AknSubsection-title">
+      <StyledHeader className='AknSubsection-title'>
         <StyledHeaderLeft>
           <TextBoxBlue>
-            {translate("pimee_catalog_rule.rule.action.then.label")}
+            {translate('pimee_catalog_rule.rule.action.then.label')}
           </TextBoxBlue>
           <StyledTitleHeader>{title}</StyledTitleHeader>
         </StyledHeaderLeft>
-        <RedGhostButton sizeMode="small">
-          {translate("pimee_catalog_rule.form.edit.remove_action")}
+        <RedGhostButton sizeMode='small'>
+          {translate('pimee_catalog_rule.form.edit.remove_action')}
         </RedGhostButton>
       </StyledHeader>
       <SmallHelper>{helper}</SmallHelper>
@@ -65,6 +65,6 @@ const ActionTemplate: React.FC<Props> = ({
   );
 };
 
-ActionTemplate.displayName = "ActionTemplate";
+ActionTemplate.displayName = 'ActionTemplate';
 
 export { ActionTemplate };

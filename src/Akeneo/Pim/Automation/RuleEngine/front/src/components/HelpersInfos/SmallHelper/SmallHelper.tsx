@@ -1,15 +1,15 @@
-import React from "react";
-import styled from "styled-components";
-import infoIcon from "../../../assets/icons/info.svg";
+import React from 'react';
+import styled from 'styled-components';
+import infoIcon from '../../../assets/icons/info.svg';
 
 interface Level {
-  level: "info" | "warning";
+  level: 'info' | 'warning';
 }
 
 const SubsectionHint = styled.div<Level>`
   align-items: center;
-  background: ${props =>
-    "info" === props.level
+  background: ${(props): string =>
+    'info' === props.level
       ? props.theme.color.blue10
       : props.theme.color.yellow10};
   display: flex;
@@ -28,7 +28,7 @@ const HintIcon = styled.div<Level>`
 `;
 
 const HintTitle = styled.div`
-  border-left: 1px solid ${({ theme }) => theme.color.grey80};
+  border-left: 1px solid ${({ theme }): string => theme.color.grey80};
   flex-grow: 1;
   font-weight: 400;
   padding: 10px 10px 10px 16px;
@@ -37,16 +37,16 @@ const HintTitle = styled.div`
 type Props = { warning?: boolean } | { info?: boolean };
 
 const SmallHelper: React.FC<Props> = ({ children, ...props }) => {
-  const level = "warning" in props ? "warning" : "info";
+  const level = 'warning' in props ? 'warning' : 'info';
 
   return (
-    <SubsectionHint className="AknSubsection" level={level}>
+    <SubsectionHint className='AknSubsection' level={level}>
       <HintIcon level={level} />
       <HintTitle>{children}</HintTitle>
     </SubsectionHint>
   );
 };
 
-SmallHelper.displayName = "SmallHelper";
+SmallHelper.displayName = 'SmallHelper';
 
 export { SmallHelper };

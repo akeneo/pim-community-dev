@@ -1,26 +1,26 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { CoreButton } from "./CoreButton";
+import { CoreButton } from './CoreButton';
 
 const PrimaryButton = styled(CoreButton)`
-  color: ${({ theme }) => theme.color.white};
-  background-color: ${({ theme }) => theme.color.green100};
-  border-color: ${({ theme }) => theme.color.green100};
+  color: ${({ theme }): string => theme.color.white};
+  background-color: ${({ theme }): string => theme.color.green100};
+  border-color: ${({ theme }): string => theme.color.green100};
   &:hover {
-    background-color: ${({ theme }) => theme.color.green120};
+    background-color: ${({ theme }): string => theme.color.green120};
   }
   &:active {
-    background-color: ${({ theme }) => theme.color.green140};
+    background-color: ${({ theme }): string => theme.color.green140};
   }
   &:focus {
     border-color: blue;
   }
   &:disabled {
-    border-color: ${({ theme }) => theme.color.green40};
-    background-color: ${({ theme }) => theme.color.green40};
+    border-color: ${({ theme }): string => theme.color.green40};
+    background-color: ${({ theme }): string => theme.color.green40};
   }
 `;
 
-PrimaryButton.displayName = "PrimaryButton";
+PrimaryButton.displayName = 'PrimaryButton';
 
 export { PrimaryButton };

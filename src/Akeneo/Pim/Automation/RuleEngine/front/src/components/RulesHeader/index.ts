@@ -1,1 +1,1 @@
-export * from "./RulesHeader";
+export * from './RulesHeader';

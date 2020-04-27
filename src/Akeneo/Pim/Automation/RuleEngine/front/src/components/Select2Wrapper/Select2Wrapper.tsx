@@ -1,6 +1,6 @@
-import $ from "jquery";
-import React, { useRef, useEffect } from "react";
-import { Label } from "../Labels";
+import $ from 'jquery';
+import React, { useRef, useEffect } from 'react';
+import { Label } from '../Labels';
 
 type option = { id: number | string; text: string };
 
@@ -35,7 +35,7 @@ const Select2Wrapper: React.FC<Props> = ({
   placeholder,
   value,
 }) => {
-  let select2Ref = useRef<HTMLInputElement>(null);
+  const select2Ref = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (null === select2Ref.current) {
       return;
@@ -50,17 +50,27 @@ const Select2Wrapper: React.FC<Props> = ({
       formatResult,
       placeholder,
     });
-    $select.on("change", (event: Select2Event) => onChange(event));
+    $select.on('change', (event: Select2Event) => onChange(event));
     return () => {
-      $select.off("change");
-      $select.select2("destroy");
-      $select.select2("container").remove();
+      $select.off('change');
+      $select.select2('destroy');
+      $select.select2('container').remove();
     };
-  }, [select2Ref]);
+  }, [
+    allowClear,
+    containerCssClass,
+    data,
+    dropdownCssClass,
+    formatResult,
+    onChange,
+    placeholder,
+    select2Ref,
+    value,
+  ]);
   return (
     <>
       <Label label={label} hiddenLabel={hiddenLabel} htmlFor={id} />
-      <input id={id} type="hidden" ref={select2Ref} />
+      <input id={id} type='hidden' ref={select2Ref} />
     </>
   );
 };

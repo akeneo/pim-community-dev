@@ -1,6 +1,6 @@
-import {Router} from "../dependenciesTools/provider/applicationDependenciesProvider.type";
-import {httpGet} from "./fetch";
-import {Channel} from "../models/Channel";
+import { Router } from '../dependenciesTools/provider/applicationDependenciesProvider.type';
+import { httpGet } from './fetch';
+import { Channel } from '../models/Channel';
 
 export const getAll = async (router: Router): Promise<Channel[]> => {
   // TODO Cache the result to avoid multiple calls
