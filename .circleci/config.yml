@@ -104,11 +104,7 @@ jobs:
           name: Check PIM requirements
           command: |
               C='mysql elasticsearch' make up
-              if [ -d "vendor/akeneo/pim-community-dev" ]; then
-                vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
-              else
-                docker/wait_docker_up.sh
-              fi
+              docker/wait_docker_up.sh
               make check-requirements
       - run:
           name: Install asset
@@ -175,7 +171,7 @@ jobs:
                 command: |
                     docker load -i php-pim-image.tar
                     APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
-                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+                    docker/wait_docker_up.sh
           - run:
                 name: Install database
                 command: APP_ENV=test make database
@@ -216,7 +212,7 @@ jobs:
           command: |
             docker load -i php-pim-image.tar
             APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium pubsub-emulator' make up
-            vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+            docker/wait_docker_up.sh
       - run:
           name: Install database
           command: APP_ENV=behat make database
@@ -283,7 +279,7 @@ jobs:
             export ES_JAVA_OPTS='-Xms2g -Xmx2g'
             docker load -i php-pim-image.tar
             APP_ENV=test APP_DEBUG=false C='fpm mysql httpd elasticsearch object-storage blackfire pubsub-emulator' make up
-            vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+            docker/wait_docker_up.sh
       - run:
           name: Run performance tests
           command: APP_ENV=test .circleci/run_performance_tests.sh
@@ -380,7 +376,7 @@ jobs:
                 command: |
                     docker load -i php-pim-image.tar
                     APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
-                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+                    docker/wait_docker_up.sh
         -   run:
                 name: Restore permissions on files
                 command: git checkout -- .
@@ -410,7 +406,7 @@ jobs:
                 command: |
                     docker load -i php-pim-image.tar
                     APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
-                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+                    docker/wait_docker_up.sh
           - run:
                 name: Install database
                 command: APP_ENV=test make database
@@ -443,7 +439,7 @@ jobs:
                 command: |
                     docker load -i php-pim-image.tar
                     APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
-                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+                    docker/wait_docker_up.sh
           - run:
                 name: Load make commands
                 command: cp vendor/akeneo/pim-onboarder/.circleci/config/onboarder.mk make-file/
