@@ -178,10 +178,11 @@ services:
     pim_catalog.updater.setter.association_field:
         class: '%pim_catalog.updater.setter.association_field.class%'
         arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.product_model'
-            - '@pim_catalog.repository.group'
-            - '@pim_catalog.association.missing_association_adder'
+#            - '@pim_catalog.repository.product'
+#            - '@pim_catalog.repository.product_model'
+#            - '@pim_catalog.repository.group'
+#            - '@pim_catalog.association.missing_association_adder'
+            - '@doctrine'
             - ['associations']
         tags:
             - { name: 'pim_catalog.updater.setter' }
