@@ -59,6 +59,7 @@ jobs:
       - run:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+      - run: echo "is_pull_request is << parameters.is_pull_request >>"
       - when:
             condition: << parameters.is_pull_request >>
             steps:
