@@ -33,7 +33,7 @@ class GetLastOperations implements GetLastOperationsInterface
     /**
      * {@inheritdoc}
      */
-    public function execute(UserInterface $user): array
+    public function execute(?UserInterface $user = null): array
     {
         $statement = $this->getQueryBuilder($user)->execute();
 
@@ -43,9 +43,12 @@ class GetLastOperations implements GetLastOperationsInterface
     /**
      * {@inheritdoc}
      */
-    public function getQueryBuilder(UserInterface $user): QueryBuilder
+    public function getQueryBuilder(?UserInterface $user = null): QueryBuilder
     {
         $qb = $this->lastOperations->getQueryBuilder($user);
+        if (null === $user) {
+            return $qb;
+        }
 
         $qb
             ->innerJoin(

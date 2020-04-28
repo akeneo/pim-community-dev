@@ -27,7 +27,7 @@ class GetLastOperationsIntegration extends TestCase
     /** @var JobLauncher */
     protected $jobLauncher;
 
-    public function testGetLastOperationsWithPermissions(): void
+    public function testGetLastOperationsWithPermissionsInTermsOfUser(): void
     {
         $this->jobLauncher->launchExport('csv_product_export', 'julia');
         $this->jobLauncher->launchExport('csv_product_export', 'admin');
@@ -67,7 +67,7 @@ class GetLastOperationsIntegration extends TestCase
 
     private function assertCSVProductExportOperation(array $lastOperation): void
     {
-        $this->assertCount(7, $lastOperation);
+        $this->assertCount(8, $lastOperation);
 
         $expectedKeys = ['id', 'date', 'job_instance_id', 'type', 'label', 'status', 'warningCount'];
         foreach ($expectedKeys as $expectedKey) {
@@ -78,7 +78,7 @@ class GetLastOperationsIntegration extends TestCase
         $this->assertNotEmpty($lastOperation['job_instance_id']);
         $this->assertNotEmpty($lastOperation['date']);
         $this->assertEquals('export', $lastOperation['type']);
-        $this->assertEquals('CSV product export', $lastOperation['label']);
+        $this->assertTrue(in_array($lastOperation['label'], ['CSV product export', 'CSV product model export']));
         $this->assertEquals(1, $lastOperation['status']);
         $this->assertEquals('0', $lastOperation['warningCount']);
     }
