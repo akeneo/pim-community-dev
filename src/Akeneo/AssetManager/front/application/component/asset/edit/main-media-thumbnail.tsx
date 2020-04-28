@@ -45,14 +45,7 @@ const Img = styled.img`
   object-fit: contain;
 `;
 
-export const MainMediaThumbnail = connect(
-  (state: EditState) => ({
-    reloadPreview: state.reloadPreview,
-  }),
-  dispatch => ({
-    onReloadPreview: () => dispatch(doReloadAllPreviews() as any),
-  })
-)(({asset, context, reloadPreview}: MainMediaThumbnailProps) => {
+export const DisconnectedMainMediaThumbnail = ({asset, context, reloadPreview}: MainMediaThumbnailProps) => {
   const url = getMediaPreviewUrl(getEditionAssetMainMediaThumbnail(asset, context.channel, context.locale));
   const label = getEditionAssetLabel(asset, context.locale);
   const [regenerate, doRegenerate] = useRegenerate(url);
@@ -72,4 +65,13 @@ export const MainMediaThumbnail = connect(
       <Img alt={__('pim_asset_manager.asset.img', {label})} src={url} />
     </Container>
   );
-});
+};
+
+export const MainMediaThumbnail = connect(
+  (state: EditState) => ({
+    reloadPreview: state.reloadPreview,
+  }),
+  dispatch => ({
+    onReloadPreview: () => dispatch(doReloadAllPreviews() as any),
+  })
+)(DisconnectedMainMediaThumbnail);

@@ -26,7 +26,6 @@ import {
   Thumbnail,
   Actions,
   ThumbnailPlaceholder,
-  RegenerateThumbnailButton,
   ReloadAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
@@ -59,10 +58,6 @@ const ThumbnailContainer = styled.div`
 
   ${Thumbnail} {
     margin: 0;
-  }
-
-  :hover > ${RegenerateThumbnailButton} {
-    opacity: 0.75;
   }
 `;
 

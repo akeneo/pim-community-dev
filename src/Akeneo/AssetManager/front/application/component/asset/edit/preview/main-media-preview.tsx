@@ -15,7 +15,6 @@ import {
   Action,
   DownloadAction,
   CopyUrlAction,
-  RegenerateThumbnailButton,
   ReloadAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
@@ -31,10 +30,6 @@ const Container = styled.div`
   max-height: calc(100vh - 500px);
   min-height: 250px;
   position: relative;
-
-  :hover ${RegenerateThumbnailButton} {
-    opacity: 0.75;
-  }
 `;
 
 const Actions = styled.div`
