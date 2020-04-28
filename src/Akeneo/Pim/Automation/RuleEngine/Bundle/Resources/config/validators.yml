@@ -131,3 +131,7 @@ services:
             - '@pim_catalog.query.find_activated_currencies'
         tags:
           - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\DivisionByZeroValidator:
+        tags:
+            - { name: validator.constraint_validator }

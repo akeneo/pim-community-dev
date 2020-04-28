@@ -1,4 +1,6 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operation:
+    constraints:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\DivisionByZero: ~
     properties:
         operator:
             - NotNull: ~
@@ -7,9 +9,6 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operation:
             - Type:
                 type: string
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AttributeShouldBeNumeric: ~
-        currency:
-            - Type:
-                type: string
         value:
             - Type:
                 type: numeric
@@ -21,3 +20,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operation:
             - Type:
                 type: string
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
+        currency:
+            # TODO validate that currency is active
+            - Type:
+                type: string
