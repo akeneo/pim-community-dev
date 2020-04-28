@@ -4,6 +4,10 @@ var/tests/%:
 .PHONY: coupling-back
 coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back
 
+### Static tests
+static-back: check-pullup check-sf-services
+	echo "Job done! Nothing more to do here..."
+
 .PHONY: check-pullup
 check-pullup:
 	${PHP_RUN} bin/check-pullup

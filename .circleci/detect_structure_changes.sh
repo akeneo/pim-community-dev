@@ -2,8 +2,9 @@
 
 # Detect if migrations related to a structure change are missing.
 #
-# The same script is used for both CE and EE. That's why you'll see some
-#       if [ -d "vendor/akeneo/xxx" ]; then
+# The same script is used for both CE and EE builds. In both cases, an EE is installed.
+# For a CE build, EE master branch is used with CE $PR_BRANCH.
+# For an EE build, EE $PR_BRANCH is used. If CE $PR_BRANCH exists, then it is used. Otherwise CE master is used.
 #
 # It works in 4 steps:
 #   - step 1: Checkout 4.0 code to be able to install a 4.0 database and index.
@@ -29,29 +30,27 @@ else
     PR_BRANCH=$1
 fi
 
-echo "Export env vars from .env..."
-export $(cat .env)
-
-
 ## STEP 1: install 4.0 database and index
+echo "##"
+echo "## STEP 1: install 4.0 database and index"
+echo "##"
 
-echo "Checkout 4.0 branch..."
+echo "Checkout EE 4.0 branch..."
 git branch -D real40 || true
 git checkout -b real40 --track origin/4.0
-if [ -d "vendor/akeneo/pim-community-dev" ]; then
-    pushd vendor/akeneo/pim-community-dev
-    git branch -D real40 || true
-    git checkout -b real40 --track origin/4.0
-    popd
-fi
+
+echo "Checkout CE 4.0 branch..."
+pushd vendor/akeneo/pim-community-dev
+git branch -D real40 || true
+git checkout -b real40 --track origin/4.0
+popd
 
 echo "Copy CE migrations into EE to install 4.0 branch..."
-if [ -d "vendor/akeneo/pim-community-dev" ]; then
-    cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
-fi
+cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
 
 echo "Enable Onboarder bundle on 4.0 branch..."
 if [ -d "vendor/akeneo/pim-onboarder" ]; then
+    cp vendor/akeneo/pim-onboarder/src/Bundle/Resources/config/onboarder_configuration.yml  config/packages/onboarder.yml
     sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
     # on the branch 4.0, the env var and the emulator are not present
     echo "PUBSUB_EMULATOR_HOST=pubsub-emulator:8085" >> .env
@@ -64,6 +63,9 @@ if [ -d "vendor/akeneo/pim-onboarder" ]; then
 " >> docker-compose.override.yml
 fi
 
+echo "Export env vars from .env..."
+export $(cat .env)
+
 echo "Clean cache..."
 APP_ENV=test make cache
 
@@ -72,29 +74,33 @@ APP_ENV=test make database
 
 
 ## STEP 2: apply PR migrations on 4.0 database and index
+echo "##"
+echo "## STEP 2: apply PR migrations on 4.0 database and index"
+echo "##"
 
-echo "Restore Git repository..."
-if [ -d "vendor/akeneo/pim-community-dev" ]; then
-    git checkout -- .
-fi
+echo "Restore Git repository as how it was at the beginning..."
+git clean -f
+git checkout -- .
 
-echo "Checkout PR branch..."
-git checkout $PR_BRANCH
-if [ -d "vendor/akeneo/pim-community-dev" ]; then
-    pushd vendor/akeneo/pim-community-dev
-    (curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${PR_BRANCH} && git checkout $PR_BRANCH) || git checkout master
-    popd
-fi
+echo "Checkout EE PR branch..."
+(curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-entrerprise-dev/tree/${PR_BRANCH} && git checkout $PR_BRANCH) || git checkout master
+
+echo "Checkout CE PR branch..."
+pushd vendor/akeneo/pim-community-dev
+(curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${PR_BRANCH} && git checkout $PR_BRANCH) || git checkout master
+popd
 
 echo "Copy CE migrations into EE to launch branch migrations..."
-if [ -d "vendor/akeneo/pim-community-dev" ]; then
-    cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
-fi
+cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
 
 echo "Enable Onboarder bundle on PR branch..."
 if [ -d "vendor/akeneo/pim-onboarder" ]; then
+    cp vendor/akeneo/pim-onboarder/src/Bundle/Resources/config/onboarder_configuration.yml  config/packages/onboarder.yml
     sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
 fi
+
+echo "Export env vars from .env..."
+export $(cat .env)
 
 echo "Clean cache..."
 APP_ENV=test make cache
@@ -110,6 +116,9 @@ docker-compose exec -T elasticsearch curl -XGET "$APP_INDEX_HOSTS/_all/_mapping"
 
 
 ## STEP 3: install fresh branch database and indexes
+echo "##"
+echo "## STEP 3: install fresh branch database and indexes"
+echo "##"
 
 echo "Install fresh branch database and indexes..."
 APP_ENV=test make database
@@ -122,6 +131,9 @@ docker-compose exec -T elasticsearch curl -XGET "$APP_INDEX_HOSTS/_all/_mapping"
 
 
 ## STEP 4: compare the results
+echo "##"
+echo "## STEP 4: compare the results"
+echo "##"
 
 echo "Compare database 40+PR migrations from database PR..."
 diff /tmp/dump_40_database_with_migrations.sql /tmp/dump_branch_database.sql --context=10

@@ -115,5 +115,11 @@ services:
     networks:
       - 'pim'
 
+  pubsub-emulator:
+    image: 'google/cloud-sdk:latest'
+    command: 'gcloud --user-output-enabled --log-http beta emulators pubsub start --host-port=0.0.0.0:8085'
+    networks:
+      - 'pim'
+
 networks:
   pim:
