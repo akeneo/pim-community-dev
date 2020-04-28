@@ -24,15 +24,13 @@ export const createPimCondition: ConditionFactoryType = async (
     typeof json.field === 'string' &&
     typeof json.operator === 'string' // TODO check operator
   ) {
-    return new Promise<PimCondition | null>(() => {
-      return {
-        module: PimConditionLine,
-        field: json.field,
-        operator: json.operator,
-        value: json.value,
-        locale: json.locale,
-        scope: json.scope,
-      };
+    return Promise.resolve({
+      module: PimConditionLine,
+      field: json.field,
+      operator: json.operator,
+      value: json.value,
+      locale: json.locale,
+      scope: json.scope,
     });
   }
 

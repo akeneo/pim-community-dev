@@ -31,6 +31,7 @@ const transformFormData = (formData: FormData): Payload => {
     priority: Number(formData.priority),
     content: {
       ...formData.content,
+      conditions: (formData.content && formData.content.conditions) || [],
       actions:
         formData.content && formData.content.actions
           ? formData.content.actions.map(action => JSON.parse(action))
@@ -102,8 +103,9 @@ const createFormDefaultValues = (
   priority: ruleDefinition.priority.toString(),
   labels: locales.reduce(createLocalesLabels(ruleDefinition), {}),
   content: {
-    conditions: ruleDefinition.conditions,
-    actions: ruleDefinition.actions.map(action => JSON.stringify(action.json)),
+    conditions: ruleDefinition.conditions || [],
+    actions:
+      ruleDefinition.actions.map(action => JSON.stringify(action.json)) || [],
   },
 });
 

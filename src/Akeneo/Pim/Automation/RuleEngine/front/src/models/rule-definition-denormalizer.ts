@@ -2,7 +2,7 @@ import { RuleDefinition } from './RuleDefinition';
 import { Condition, ConditionFactoryType } from './Condition';
 import { createFamilyCondition } from './FamilyCondition';
 import { createFallbackCondition } from './FallbackCondition';
-import { createFallbackAction } from './FallbackAction';
+import { createFallbackAction, FallbackAction } from './FallbackAction';
 import { Action } from './Action';
 import { createPimCondition } from './PimCondition';
 import { createTextAttributeCondition } from './TextAttributeCondition';
@@ -47,18 +47,23 @@ export const denormalize = async function(
   const code = json.code;
   const labels = json.labels;
   const priority = json.priority;
-  const actions = json.content.actions.map((jsonAction: any) => {
-    return denormalizeAction(jsonAction);
-  });
+  let actions: FallbackAction[] = [];
+  let conditions: Condition[] = [];
+  if (Array.isArray(json.content.actions)) {
+    actions = json.content.actions.map((jsonAction: any) => {
+      return denormalizeAction(jsonAction);
+    });
+  }
 
   // TODO We should call "AttributeFetcher.getAttributesFromIdentifiers()" with every .field property of conditions
   //      to do less backend calls here.
-
-  const conditions = (await Promise.all(
-    json.content.conditions.map(async (jsonCondition: any) => {
-      return await denormalizeCondition(jsonCondition, router);
-    })
-  )) as Condition[];
+  if (Array.isArray(json.content.conditions)) {
+    conditions = (await Promise.all(
+      json.content.conditions.map(async (jsonCondition: any) => {
+        return await denormalizeCondition(jsonCondition, router);
+      })
+    )) as Condition[];
+  }
 
   return {
     code: code,
