@@ -16,6 +16,7 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
     /** @var ManagerRegistry */
     private $registry;
 
+    /** @var MissingAssociationAdder */
     private $missingAssociationAdder;
 
     public function __construct(ManagerRegistry $registry, MissingAssociationAdder $missingAssociationAdder)

@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
@@ -19,7 +18,7 @@ interface AssociationRepositoryInterface
      * Get the list of associations corresponding to the given owner IDs
      *
      * @param ProductInterface $product
-     * @param array $ownerIds
+     * @param array            $ownerIds
      *
      * @return AssociationInterface[]
      */

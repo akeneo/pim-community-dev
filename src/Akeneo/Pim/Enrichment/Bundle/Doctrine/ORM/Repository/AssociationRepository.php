@@ -2,8 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
