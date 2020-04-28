@@ -118,6 +118,8 @@ class AssociationFieldSetter extends AbstractFieldSetter
 
     private function updateAssociatedProducts(AssociationInterface $association, array $productsIdentifiers): void
     {
+        $productsIdentifiers = array_unique($productsIdentifiers);
+
         foreach ($association->getProducts() as $associatedProduct) {
             $index = array_search($associatedProduct->getIdentifier(), $productsIdentifiers);
 
@@ -167,6 +169,8 @@ class AssociationFieldSetter extends AbstractFieldSetter
         AssociationInterface $association,
         array $productModelsIdentifiers
     ): void {
+        $productModelsIdentifiers = array_unique($productModelsIdentifiers);
+
         foreach ($association->getProductModels() as $associatedProductModel) {
             $index = array_search($associatedProductModel->getCode(), $productModelsIdentifiers);
 
@@ -216,6 +220,8 @@ class AssociationFieldSetter extends AbstractFieldSetter
 
     private function updateAssociatedGroups(AssociationInterface $association, array $groupsCodes): void
     {
+        $groupsCodes = array_unique($groupsCodes);
+
         foreach ($association->getGroups() as $associatedGroup) {
             $index = array_search($associatedGroup->getCode(), $groupsCodes);
 
