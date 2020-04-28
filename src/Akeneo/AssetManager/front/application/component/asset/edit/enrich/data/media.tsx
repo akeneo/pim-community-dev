@@ -29,6 +29,7 @@ export const Container = styled.div`
   padding: 15px;
 `;
 
+/* istanbul ignore next */
 export const RegenerateThumbnailButton = styled.div`
   position: absolute;
   opacity: 0;

@@ -9,6 +9,8 @@ import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-l
 import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {mount} from 'enzyme';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
 
 jest.mock('akeneoassetmanager/tools/security-context', () => ({isGranted: (permission: string) => true}));
 
@@ -260,14 +262,16 @@ test('It can display the previous asset in the collection', async () => {
   await act(async () => {
     ReactDOM.render(
       <ThemeProvider theme={akeneoTheme}>
-        <AssetPreview
-          context={context}
-          assetCollection={simpleAssetCollection}
-          initialAssetCode={initialAssetCode}
-          productAttribute={mediaLinkImageAttribute}
-          dataProvider={dataProvider}
-          onClose={() => {}}
-        />
+        <Provider store={createStore(() => ({reloadPreview: false}))}>
+          <AssetPreview
+            context={context}
+            assetCollection={simpleAssetCollection}
+            initialAssetCode={initialAssetCode}
+            productAttribute={mediaLinkImageAttribute}
+            dataProvider={dataProvider}
+            onClose={() => {}}
+          />
+        </Provider>
       </ThemeProvider>,
       container
     );
@@ -326,14 +330,16 @@ test('It can display the next asset in the collection', async () => {
   await act(async () => {
     ReactDOM.render(
       <ThemeProvider theme={akeneoTheme}>
-        <AssetPreview
-          context={context}
-          assetCollection={simpleAssetCollection}
-          initialAssetCode={initialAssetCode}
-          productAttribute={mediaLinkImageAttribute}
-          dataProvider={dataProvider}
-          onClose={() => {}}
-        />
+        <Provider store={createStore(() => ({reloadPreview: false}))}>
+          <AssetPreview
+            context={context}
+            assetCollection={simpleAssetCollection}
+            initialAssetCode={initialAssetCode}
+            productAttribute={mediaLinkImageAttribute}
+            dataProvider={dataProvider}
+            onClose={() => {}}
+          />
+        </Provider>
       </ThemeProvider>,
       container
     );
@@ -366,14 +372,16 @@ test('It can select an asset from the carousel', async () => {
   await act(async () => {
     ReactDOM.render(
       <ThemeProvider theme={akeneoTheme}>
-        <AssetPreview
-          context={context}
-          assetCollection={simpleAssetCollection}
-          initialAssetCode={initialAssetCode}
-          productAttribute={mediaLinkImageAttribute}
-          dataProvider={dataProvider}
-          onClose={() => {}}
-        />
+        <Provider store={createStore(() => ({reloadPreview: false}))}>
+          <AssetPreview
+            context={context}
+            assetCollection={simpleAssetCollection}
+            initialAssetCode={initialAssetCode}
+            productAttribute={mediaLinkImageAttribute}
+            dataProvider={dataProvider}
+            onClose={() => {}}
+          />
+        </Provider>
       </ThemeProvider>,
       container
     );

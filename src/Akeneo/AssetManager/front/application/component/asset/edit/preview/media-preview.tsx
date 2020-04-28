@@ -67,47 +67,47 @@ const LazyLoadedImage = React.memo(({src, alt, isLoading = false, ...props}: Laz
   );
 });
 
+const DisconnectedMediaDataPreview = ({
+  label,
+  mediaData,
+  attribute,
+  reloadPreview,
+}: {
+  label: string;
+  mediaData: MediaData;
+  attribute: NormalizedMediaFileAttribute | NormalizedMediaLinkAttribute;
+  reloadPreview: boolean;
+}) => {
+  const url = getMediaPreviewUrl({
+    type: MediaPreviewType.Preview,
+    attributeIdentifier: attribute.identifier,
+    data: getMediaData(mediaData),
+  });
+
+  const [regenerate, doRegenerate] = useRegenerate(url);
+
+  React.useEffect(() => {
+    if (reloadPreview) {
+      doRegenerate();
+    }
+  }, [reloadPreview]);
+
+  return (
+    <>
+      <LazyLoadedImage isLoading={regenerate} src={url} alt={label} data-role="media-data-preview" />
+
+      {attribute.media_type === MediaTypes.other && (
+        <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
+          {__('pim_asset_manager.asset_preview.other_main_media')}
+        </Message>
+      )}
+    </>
+  );
+};
+
 const MediaDataPreview = connect((state: EditState) => ({
   reloadPreview: state.reloadPreview,
-}))(
-  ({
-    label,
-    mediaData,
-    attribute,
-    reloadPreview,
-  }: {
-    label: string;
-    mediaData: MediaData;
-    attribute: NormalizedMediaFileAttribute | NormalizedMediaLinkAttribute;
-    reloadPreview: boolean;
-  }) => {
-    const url = getMediaPreviewUrl({
-      type: MediaPreviewType.Preview,
-      attributeIdentifier: attribute.identifier,
-      data: getMediaData(mediaData),
-    });
-
-    const [regenerate, doRegenerate] = useRegenerate(url);
-
-    React.useEffect(() => {
-      if (reloadPreview) {
-        doRegenerate();
-      }
-    }, [reloadPreview]);
-
-    return (
-      <>
-        <LazyLoadedImage isLoading={regenerate} src={url} alt={label} data-role="media-data-preview" />
-
-        {attribute.media_type === MediaTypes.other && (
-          <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
-            {__('pim_asset_manager.asset_preview.other_main_media')}
-          </Message>
-        )}
-      </>
-    );
-  }
-);
+}))(DisconnectedMediaDataPreview);
 
 const MediaLinkPreview = ({
   label,
