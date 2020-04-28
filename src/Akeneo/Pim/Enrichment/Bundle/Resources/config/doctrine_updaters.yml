@@ -1,0 +1,6 @@
+services:
+    pim_enrich.doctrine.updater.association_updater:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater\AssociationUpdater'
+        arguments:
+            - '@doctrine'
+            - '@pim_catalog.association.missing_association_adder'

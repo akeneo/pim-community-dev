@@ -181,7 +181,7 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.group'
-            - '@TODO'
+            - '@pim_enrich.doctrine.updater.association_updater'
             - '@pim_catalog.association.missing_association_adder'
             - ['associations']
         tags:

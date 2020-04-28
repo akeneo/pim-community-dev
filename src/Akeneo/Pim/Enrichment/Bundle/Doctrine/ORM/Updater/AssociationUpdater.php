@@ -2,8 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater;
 
+use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -14,13 +16,12 @@ class AssociationUpdater
     /** @var ManagerRegistry */
     private $registry;
 
-    /**
-     * @param ManagerRegistry $registry
-     */
-    public function __construct(
-        ManagerRegistry $registry
-    ) {
+    private $missingAssociationAdder;
+
+    public function __construct(ManagerRegistry $registry, MissingAssociationAdder $missingAssociationAdder)
+    {
         $this->registry = $registry;
+        $this->missingAssociationAdder = $missingAssociationAdder;
     }
 
     /**
@@ -35,15 +36,14 @@ class AssociationUpdater
         EntityWithAssociationsInterface $associatedEntity
     ): void {
         /** @var ObjectManager $em */
-        $em = $this->registry->getManagerForClass(AssociationInterface::class);
-
+        $em = $this->registry->getManager();
         $associationType = $association->getAssociationType();
         $owner = $association->getOwner();
 
         /** @var AssociationInterface $inversedAssociation */
         $inversedAssociation = $associatedEntity->getAssociationForType($associationType);
         if (null === $inversedAssociation) {
-            $this->addMissingAssociations($associatedEntity);
+            $this->missingAssociationAdder->addMissingAssociations($associatedEntity);
             $inversedAssociation = $associatedEntity->getAssociationForType($associationType);
         }
 
@@ -77,8 +77,7 @@ class AssociationUpdater
         EntityWithAssociationsInterface $associatedEntity
     ): void {
         /** @var ObjectManager $em */
-        $em = $this->registry->getManagerForClass(AssociationInterface::class);
-
+        $em = $this->registry->getManager();
         $owner = $association->getOwner();
         $associationType = $association->getAssociationType();
 
