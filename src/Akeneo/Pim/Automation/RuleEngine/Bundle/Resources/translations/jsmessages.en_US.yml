@@ -80,6 +80,7 @@ pimee_catalog_rule:
             fields:
                 family: Family
             conditions:
+                delete: Delete condition
                 operators:
                     "STARTS WITH": starts with
                     "ENDS WITH": ends with

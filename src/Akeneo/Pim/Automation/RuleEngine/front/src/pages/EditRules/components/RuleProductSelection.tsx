@@ -9,6 +9,7 @@ import { FallbackConditionLine } from '../FallbackConditionLine';
 import { Condition } from '../../../models/';
 import { Locale } from '../../../models/';
 import { IndexedScopes } from '../../../fetch/ScopeFetcher';
+import { useFormContext } from 'react-hook-form';
 
 const Header = styled.header`
   font-weight: normal;
@@ -37,6 +38,12 @@ const TitleHeader = styled.span`
   padding-left: 8px;
 `;
 
+const DeleteButton = styled.button`
+  border: none;
+  background: none;
+  cursor: pointer;
+`
+
 const AddConditionContainer = styled.div`
   border-left: 1px solid ${({ theme }) => theme.color.grey100};
   display: flex;
@@ -61,6 +68,7 @@ type ConditionLineProps = {
   scopes: IndexedScopes;
   currentCatalogLocale: string;
   router: Router;
+  deleteCondition: (lineNumber: number) => void;
 };
 
 const ConditionLine: React.FC<ConditionLineProps> = ({
@@ -71,6 +79,7 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
   scopes,
   currentCatalogLocale,
   router,
+  deleteCondition,
 }) => {
   const Line = condition.module;
   const isFallback =
@@ -78,10 +87,9 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
     condition.module === FallbackConditionLine;
 
   return (
-    <div
-      className={`AknGrid-bodyRow${isFallback &&
-        ' AknGrid-bodyRow--highlight'}`}>
-      <div className='AknGrid-bodyCell'>
+    <tr
+      className={`AknGrid-bodyRow${isFallback ? ' AknGrid-bodyRow--highlight' : ''}`}>
+      <td className='AknGrid-bodyCell'>
         <Line
           condition={condition}
           lineNumber={lineNumber}
@@ -91,12 +99,23 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
           currentCatalogLocale={currentCatalogLocale}
           router={router}
         />
-      </div>
-    </div>
+      </td>
+      <td className='AknGrid-bodyCell AknGrid-bodyCell--tight'>
+        <DeleteButton
+          onClick={(event) => {
+            event.preventDefault();
+            deleteCondition(lineNumber);
+          }}
+        >
+          <img alt={translate('pimee_catalog_rule.form.edit.conditions.delete')} src='/bundles/pimui/images/icon-delete-slategrey.svg'/>
+        </DeleteButton>
+      </td>
+    </tr>
   );
 };
 
 const RuleProductSelection: React.FC<Props> = ({
+  register,
   ruleDefinition,
   translate,
   locales,
@@ -104,6 +123,20 @@ const RuleProductSelection: React.FC<Props> = ({
   currentCatalogLocale,
   router,
 }) => {
+  const [ conditions, setConditions ] = React.useState<(Condition | null)[]>(ruleDefinition.conditions);
+
+  const { getValues, unregister } = useFormContext();
+  const deleteCondition = (lineNumber: number) => {
+    Object.keys(getValues()).forEach((value: string) => {
+      if (value.startsWith(`content.conditions[${lineNumber}]`)) {
+        unregister(value);
+      }
+    });
+    setConditions(conditions.map((condition: (Condition | null), i: number) => {
+      return i === lineNumber ? null : condition;
+    }));
+  }
+
   return (
     <fieldset>
       <Header className='AknSubsection-title'>
@@ -137,20 +170,24 @@ const RuleProductSelection: React.FC<Props> = ({
         </a>
       </SmallHelper>
       <div className='AknGrid AknGrid--unclickable'>
-        {ruleDefinition.conditions.map((condition, i) => {
-          return (
-            <ConditionLine
-              condition={condition}
-              lineNumber={i}
-              translate={translate}
-              key={`condition_${i}`}
-              locales={locales}
-              scopes={scopes}
-              currentCatalogLocale={currentCatalogLocale}
-              router={router}
-            />
-          );
-        })}
+        <div className="AknGrid-body">
+          {conditions.map((condition, i) => {
+            return condition && (
+              <ConditionLine
+                register={register}
+                condition={condition}
+                lineNumber={i}
+                translate={translate}
+                key={`condition_${i}`}
+                locales={locales}
+                scopes={scopes}
+                currentCatalogLocale={currentCatalogLocale}
+                router={router}
+                deleteCondition={deleteCondition}
+              />
+            );
+          })}
+        </div>
       </div>
       <LegendSrOnly>
         {translate('pimee_catalog_rule.form.legend.product_selection')}
