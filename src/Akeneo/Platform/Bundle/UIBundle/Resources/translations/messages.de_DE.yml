@@ -346,8 +346,8 @@ Decimals allowed: Dezimalzahlen zulassen
 Negative allowed: Negative Werte zulassen
 Date min: Min. Datum
 Date max: Max. Datum
-Metric family: Metrische Gruppe
-Default metric unit: Standardmaßeinheit
+Metric family: Messfamilie
+Default metric unit: Standardmesseinheit
 Max file size: Maximale Dateigröße (MB)
 Allowed extensions: Zulässige Dateiendungen
 None: keine
@@ -372,7 +372,7 @@ pim_catalog_file: Datei
 pim_catalog_image: Abbildung
 pim_catalog_boolean: "Ja/Nein"
 pim_catalog_date: Datum
-pim_catalog_metric: Maßeinheit
+pim_catalog_metric: Messung
 pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
 pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
 #Locales

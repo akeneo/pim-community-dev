@@ -15,6 +15,7 @@
 ## New features
 
 - MET-14: Measurements (or metrics) are now stored in database
+- AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
 
 ## Improvements
 
@@ -54,6 +55,8 @@
     - add `Psr\Log\LoggerInterface $logger`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\GroupNormalizer` to
     - add `Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers`
+- Change constructor of `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute` to
+    - add `(string) $defaultMetricUnit`    
 - Change `Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager` to remove method `setMeasureConfig(array $config)`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\DependencyInjection\Configuration`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\AreaFamilyInterface`

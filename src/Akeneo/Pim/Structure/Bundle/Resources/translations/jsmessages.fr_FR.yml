@@ -39,6 +39,8 @@ pim_enrich.entity.family_variant:
       fail: La variante de famille n'a pas pu être mise à jour.
     create:
       success: La variante de famille a été créée
+    delete:
+      success: La variante de famille a bien été supprimée
   module:
     edit:
       common_attributes: Attributs communs
@@ -135,6 +137,7 @@ pim_enrich.entity.attribute:
     date_min: Date mini
     decimals_allowed: Valeurs décimales autorisées
     default_metric_unit:
+      label: Unité de mesure par défaut
       choose: Choisir une unité
     group:
       label: Groupe d'attributs
@@ -144,6 +147,7 @@ pim_enrich.entity.attribute:
     max_characters: Nombre maximum de caractères
     max_file_size: Taille de fichier maximale (MB)
     metric_family:
+      label: Famille de mesure
       choose: Choisir une famille
     minimum_input_length: Longueur minimale pour l’auto-complétion
     name: Nom
@@ -167,6 +171,7 @@ pim_enrich.entity.attribute:
       pim_catalog_image: Image
       pim_catalog_boolean: "Oui / Non"
       pim_catalog_date: Date
+      pim_catalog_metric: Mesure
       pim_reference_data_simpleselect: Liste à choix unique de données référentielles
       pim_reference_data_multiselect: Liste à choix multiples de données référentielles
     unique: Valeur unique
@@ -197,6 +202,10 @@ pim_enrich.entity.attribute_group:
   label: groupe d'attributs
   uppercase_label: Groupe d'attributs
   plural_label: Groupes d'attributs
+  show_more_attribute:
+    title: C'est un peu bondé ici, nous vous montrons les attributs {{ attributeCount }}/{{ totalAttributeCount }}.
+    subtitle: Pour découvrir tous les attributs de ce groupe, cliquez ci-dessous !
+    button: Voir tous les attributs
   flash:
     update:
       success: Groupe d'attributs mis à jour avec succès

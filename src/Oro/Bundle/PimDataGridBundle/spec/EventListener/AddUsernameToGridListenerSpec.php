@@ -6,6 +6,7 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Datasource\RepositoryDatasource;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -15,9 +16,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class AddUsernameToGridListenerSpec extends ObjectBehavior
 {
-    function let(TokenStorageInterface $tokenStorage)
+    function let(TokenStorageInterface $tokenStorage, SecurityFacade $securityFacade)
     {
-        $this->beConstructedWith($tokenStorage);
+        $this->beConstructedWith($tokenStorage, $securityFacade);
     }
 
     function it_set_user_parameter_to_query_builder(
@@ -28,8 +29,10 @@ class AddUsernameToGridListenerSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
         Expr $expr,
-        $tokenStorage
+        $tokenStorage,
+        $securityFacade
     ) {
+        $securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')->willReturn(false);
         $event->getDatagrid()->willReturn($datagrid);
         $datagrid->getDatasource()->willReturn($datasource);
 
@@ -56,10 +59,12 @@ class AddUsernameToGridListenerSpec extends ObjectBehavior
         RepositoryDatasource $datasource,
         QueryBuilder $queryBuilder,
         TokenInterface $token,
-        UserInterface $user,
         Expr $expr,
-        $tokenStorage
+        $tokenStorage,
+        $securityFacade
     ) {
+        $securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')->willReturn(false);
+
         $event->getDatagrid()->willReturn($datagrid);
         $datagrid->getDatasource()->willReturn($datasource);
 
@@ -76,6 +81,16 @@ class AddUsernameToGridListenerSpec extends ObjectBehavior
         $expr->eq(Argument::any(), Argument::any())->willReturn(Argument::any());
 
         $queryBuilder->andWhere(Argument::any())->shouldBeCalled();
+
+        $this->onBuildAfter($event);
+    }
+
+    function it_does_not_add_user_if_permission_to_view_all_is_granted(
+        BuildAfter $event,
+        $securityFacade
+    ) {
+        $securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')->willReturn(true);
+        $event->getDatagrid()->shouldNotBeCalled();
 
         $this->onBuildAfter($event);
     }

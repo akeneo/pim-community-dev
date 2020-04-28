@@ -61,14 +61,15 @@ class ActionMetadataProviderTest extends \PHPUnit_Framework_TestCase
                                 'id'         => 'test',
                                 'type'       => 'action',
                                 'group_name' => 'TestGroup',
-                                'label'      => 'TestLabel'
+                                'label'      => 'TestLabel',
+                                'enabled_at_creation' => false,
                             ]
                         )
                     ]
                 )
             );
 
-        $action = new ActionMetadata('test', 'TestGroup', 'TestLabel');
+        $action = new ActionMetadata('test', 'TestGroup', 'TestLabel', false);
 
         $this->cache->expects($this->at(0))
             ->method('fetch')
