@@ -5,6 +5,7 @@ namespace spec\Akeneo\Tool\Bundle\ElasticsearchBundle;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\IndexConfiguration;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Elasticsearch\Client as NativeClient;
@@ -264,31 +265,6 @@ class ClientSpec extends ObjectBehavior
         $this->bulkIndexes($documents, 'identifier', Refresh::waitFor());
     }
 
-    function it_indexes_with_bulk_several_documents_with_no_id($client)
-    {
-        $client->bulk(
-            [
-                'body' => [
-                    ['index' => [
-                        '_index' => 'an_index_name',
-                    ]],
-                    ['name' => 'a name'],
-                    ['index' => [
-                        '_index' => 'an_index_name',
-                    ]],
-                    ['name' => 'a name'],
-                ]
-            ]
-        )->willReturn(['errors' => false]);
-
-        $documents = [
-            ['name' => 'a name'],
-            ['name' => 'a name'],
-        ];
-
-        $this->bulkIndexes($documents);
-    }
-
     public function it_throws_an_exception_during_the_indexation_of_several_documents($client)
     {
         $client->bulk(Argument::any())->willThrow(\Exception::class);
@@ -311,8 +287,7 @@ class ClientSpec extends ObjectBehavior
                 'errors' => true,
                 'items' => [
                     ['index' => []],
-                    ['index' => ['error' => 'foo']]
-                ],
+                    ['index' => ['error' => 'foo']]],
             ]
         );
 
