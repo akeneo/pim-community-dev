@@ -107,6 +107,7 @@ define(
                             }.bind(this)
                         },
                         initSelection: function (element, callback) {
+                            console.log('foo3');
                             var id = $(element).val();
                             if ('' !== id) {
                                 if (
@@ -131,6 +132,9 @@ define(
                                 }.bind(this));
                             }
                         }.bind(this),
+                        formatSelection: function(data, container) {
+                            container.attr('title', data.text).text(data.text);
+                        },
                         placeholder: ' ',
                         allowClear: true
                     };

@@ -102,6 +102,9 @@ function (
           type: this.choiceVerb,
         },
         initSelection: this.select2InitSelection.bind(this),
+        formatSelection: function(data, container) {
+          container.attr('title', data.text).text(data.text);
+        },
         placeholder: undefined !== this.config.placeholder ? __(this.config.placeholder) : ' ',
         dropdownCssClass: '',
         allowClear: this.allowClear,
@@ -167,6 +170,7 @@ function (
      * @param {Function} callback
      */
     select2InitSelection(element, callback) {
+      console.log('foo1');
       const id = $(element).val();
       if ('' !== id) {
         $.ajax({

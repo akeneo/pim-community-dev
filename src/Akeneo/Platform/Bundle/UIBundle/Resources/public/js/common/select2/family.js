@@ -64,7 +64,11 @@ define(
                             return data;
                         }
                     },
+                    formatSelection: function(data, container) {
+                        container.attr('title', data.text).text(data.text);
+                    },
                     initSelection: function (element, callback) {
+                        console.log('foo2');
                         if (null !== initialValue) {
                             FetcherRegistry.getFetcher('family')
                                 .fetch(initialValue)
