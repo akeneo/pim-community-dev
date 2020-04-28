@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
-import { useFormContext } from 'react-hook-form';
 import { PimCondition } from '../../models/PimCondition';
-import { Flag } from '../../components/Flag/Flag';
+import { Flag } from '../../components/Flag';
 import { ConditionLineProps } from './ConditionLineProps';
+import { useValueInitialization } from "./hooks/useValueInitialization";
 
 const PimConditionLine: React.FC<ConditionLineProps> = ({
   translate,
@@ -10,26 +10,21 @@ const PimConditionLine: React.FC<ConditionLineProps> = ({
   lineNumber,
 }) => {
   const pimCondition = condition as PimCondition;
-  const { register, getValues, setValue } = useFormContext();
 
-  const initializeValue = (field: string, value: any): void => {
-    const key = `content.conditions[${lineNumber}].${field}`;
-    register(key);
-    if (undefined === getValues()[key]) {
-      setValue(key, value);
-    }
-  }
-  initializeValue('field', pimCondition.field);
-  initializeValue('operator', pimCondition.operator);
+  const values: {[key: string]: any} = {
+    field: pimCondition.field,
+    operator: pimCondition.operator,
+  };
   if (pimCondition.locale) {
-    initializeValue('locale', pimCondition.locale);
+    values.locale = pimCondition.locale;
   }
   if (pimCondition.scope) {
-    initializeValue('scope', pimCondition.scope);
+    values.scope = pimCondition.scope;
   }
   if (pimCondition.value) {
-    initializeValue('value', pimCondition.value);
+    values.value = pimCondition.value;
   }
+  useValueInitialization(`content.conditions[${lineNumber}]`, values);
 
   const isMetric = (value: any): boolean => {
     return (
