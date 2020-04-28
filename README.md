@@ -1,17 +1,16 @@
-Akeneo PIM Enterprise Application
-=================================
+# Akeneo PIM Enterprise Application
 
-Installation
-------------
 
-1. Get the latest tag to deploy
+## Installation
+
+### 1. Get the latest tag to deploy
 
 ```bash
 git clone git@github.com:akeneo/pim-enterprise-dev.git && cd pim-enterprise-dev
 tag_to_release=$(git fetch origin &> /dev/null && git tag --list | grep -E '^v?[0-9]+$' | sort -r | head -n 1)
 ```
 
-2. Create `main.tf`
+### 2. Create `main.tf`
 
 ```hcl
 terraform {
@@ -44,7 +43,7 @@ module "pim-monitoring" {
 }
 ```
 
-3. Create `values.yaml`
+### 3. Create `values.yaml`
 
 ```bash
 cat << EOF > values.yaml
@@ -91,7 +90,7 @@ elasticsearch:
 EOF
 ```
 
-4. Apply
+#### 4. Apply
 
 ```bash
 terraform init -upgrade
