@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductModelUpdater;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -64,8 +65,14 @@ class CreateTwoWayAssociationProductModelIntegration extends TestCase
         $anotherProductModel = $this->createAndSaveProductModel('another_product_model', 'clothing_color_size', ['a_product'], ['a_product_model']);
         $aProductModelWithAssociation = $this->createAndSaveProductModel('a_product_model_with_association', 'clothing_color_size', [], ['a_product_model', 'another_product_model']);
 
-        $anotherProductModel->getAssociationForTypeCode('COMPATIBILITY')->setProducts(new ArrayCollection([]));
-        $anotherProductModel->getAssociationForTypeCode('COMPATIBILITY')->setProductModels(new ArrayCollection([]));
+        $this->getProductModelUpdater()->update($anotherProductModel, [
+            'associations'  => [
+                "COMPATIBILITY" => [
+                    "products" => [],
+                    "product_models" => [],
+                ],
+            ],
+        ]);
         $this->getProductModelSaver()->save($anotherProductModel);
 
         $this->getProductModelAssociationRepository()->clear();
@@ -164,6 +171,11 @@ class CreateTwoWayAssociationProductModelIntegration extends TestCase
     private function getProductRemover(): RemoverInterface
     {
         return $this->get('pim_catalog.remover.product');
+    }
+
+    private function getProductModelUpdater(): ProductModelUpdater
+    {
+        return $this->get('pim_catalog.updater.product_model');
     }
 
     private function getProductModelRemover(): RemoverInterface

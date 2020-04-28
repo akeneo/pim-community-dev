@@ -5,6 +5,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product\Association;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -94,8 +95,15 @@ class CreateTwoWayAssociationIntegration extends TestCase
             ],
         ]);
 
-        $productWithAssociation->getAssociationForTypeCode('COMPATIBILITY')->setProducts(new ArrayCollection());
-        $productWithAssociation->getAssociationForTypeCode('COMPATIBILITY')->setProductModels(new ArrayCollection());
+        $this->getProductUpdater()->update($productWithAssociation, [
+            'associations'  => [
+                "COMPATIBILITY" => [
+                    "products" => [],
+                    "product_models" => [],
+                ],
+            ],
+        ]);
+
         $this->getProductSaver()->save($productWithAssociation);
 
         $aProductAssociation = $this->getProductAssociationRepository()->findByOwner($aProduct->getId());
@@ -173,6 +181,11 @@ class CreateTwoWayAssociationIntegration extends TestCase
     private function getProductModelRemover(): RemoverInterface
     {
         return $this->get('pim_catalog.remover.product_model');
+    }
+
+    private function getProductUpdater(): ProductUpdater
+    {
+        return $this->get('pim_catalog.updater.product');
     }
 
     private function getProductSaver(): SaverInterface
