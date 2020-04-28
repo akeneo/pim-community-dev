@@ -10,10 +10,8 @@ export type FallbackCondition = {
 export const createFallbackCondition = async (
   json: any
 ): Promise<FallbackCondition> => {
-  return new Promise<FallbackCondition>(() => {
-    return {
-      module: FallbackConditionLine,
-      json: json,
-    };
-  });
+  return {
+    module: FallbackConditionLine,
+    json: json,
+  };
 };
