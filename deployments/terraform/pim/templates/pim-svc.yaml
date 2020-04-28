@@ -8,7 +8,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    component: {{ template "pim.fullName" . }}
+    component: pim-web
     role: pim-web
   ports:
     - name: pim-http
