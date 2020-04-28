@@ -22,7 +22,12 @@ export const dependencies = {
     return `${level} ${message}`;
   }),
   user: {
-    get: jest.fn((data: string) => data),
+    get: jest.fn((data: string) => {
+      switch(data) {
+        case 'catalogLocale': return 'en_US';
+        default: return data;
+      }
+    }),
     set: jest.fn(),
   },
   security: {
