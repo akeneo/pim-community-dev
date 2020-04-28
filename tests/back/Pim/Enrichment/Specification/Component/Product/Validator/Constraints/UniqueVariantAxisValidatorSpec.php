@@ -2,21 +2,21 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetValuesOfSiblings;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxisValidator;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetValuesOfSiblings;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxis;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxisValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueAxesCombinationSet;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -107,10 +107,11 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         EntityWithFamilyVariantInterface $entity,
         UniqueVariantAxis $constraint
     ) {
+        $axes = [];
         $entity->getParent()->willReturn($parent);
-        $axesProvider->getAxes($entity)->willReturn([]);
+        $axesProvider->getAxes($entity)->willReturn($axes);
         $entity->getFamilyVariant()->willReturn($familyVariant);
-        $getValuesOfSiblings->for($entity)->willReturn([]);
+        $getValuesOfSiblings->for($entity, [])->willReturn([]);
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -162,9 +163,11 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         ValueInterface $yellow,
         UniqueVariantAxis $constraint
     ) {
+        $axes = [$color];
+
         $entity->getParent()->willReturn($parent);
         $entity->getFamilyVariant()->willReturn($familyVariant);
-        $axesProvider->getAxes($entity)->willReturn([$color]);
+        $axesProvider->getAxes($entity)->willReturn($axes);
         $color->getCode()->willReturn('color');
 
         $values->getByCodes('color')->willReturn($blue);
@@ -174,7 +177,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $red->__toString()->willReturn('[red]');
         $yellow->__toString()->willReturn('[yellow]');
 
-        $getValuesOfSiblings->for($entity)->willReturn([
+        $getValuesOfSiblings->for($entity, ['color'])->willReturn([
             'sibling1' => $valuesOfFirstSibling,
             'sibling2' => $valuesOfSecondSibling,
         ]);
@@ -203,18 +206,20 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         ValueInterface $red,
         UniqueVariantAxis $constraint
     ) {
+        $axes = [$color];
+
         $entity->getParent()->willReturn($parent);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $entity->getValuesForVariation()->willReturn($values);
         $values->getByCodes('color')->willReturn($blue);
 
-        $axesProvider->getAxes($entity)->willReturn([$color]);
+        $axesProvider->getAxes($entity)->willReturn($axes);
         $color->getCode()->willReturn('color');
 
         $blue->__toString()->willReturn('[blue]');
         $red->__toString()->willReturn('[red]');
 
-        $getValuesOfSiblings->for($entity)->willReturn(
+        $getValuesOfSiblings->for($entity, ['color'])->willReturn(
             [
                 'sibbling_identifier' => $valuesOfSibling,
             ]
@@ -244,14 +249,17 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         UniqueVariantAxis $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $axes = [$color];
+
         $entity->getCode()->willReturn('entity_code');
         $entity->getParent()->willReturn($parent);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $entity->getValuesForVariation()->willReturn($values);
-        $axesProvider->getAxes($entity)->willReturn([$color]);
+
+        $axesProvider->getAxes($entity)->willReturn($axes);
         $color->getCode()->willReturn('color');
 
-        $getValuesOfSiblings->for($entity)->willReturn(
+        $getValuesOfSiblings->for($entity, ['color'])->willReturn(
             [
                 'sibling1' => $valuesOfFirstSibling,
                 'sibling2' => $valuesOfSecondSibling,
@@ -301,14 +309,16 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         UniqueVariantAxis $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $axes = [$color];
+
         $entity->getIdentifier()->willReturn('my_identifier');
         $entity->getParent()->willReturn($parent);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $entity->getValuesForVariation()->willReturn($values);
-        $axesProvider->getAxes($entity)->willReturn([$color]);
+        $axesProvider->getAxes($entity)->willReturn($axes);
         $color->getCode()->willReturn('color');
 
-        $getValuesOfSiblings->for($entity)->willReturn(
+        $getValuesOfSiblings->for($entity, ['color'])->willReturn(
             [
                 'sibling1' => $valuesOfFirstSibling,
                 'sibling2' => $valuesOfSecondSibling,
@@ -360,12 +370,14 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violation,
         ValueInterface $xl
     ) {
+        $axes = [$color, $size];
+
         $entity->getCode()->willReturn('entity_code');
         $entity->getParent()->willReturn($parent);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $entity->getValuesForVariation()->willReturn($values);
 
-        $axesProvider->getAxes($entity)->willReturn([$color, $size]);
+        $axesProvider->getAxes($entity)->willReturn($axes);
         $color->getCode()->willReturn('color');
         $size->getCode()->willReturn('size');
 
@@ -378,7 +390,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $valuesOfSecondSibling->getByCodes('color')->willReturn($blue);
         $valuesOfSecondSibling->getByCodes('size')->willReturn($xl);
 
-        $getValuesOfSiblings->for($entity)->willReturn(
+        $getValuesOfSiblings->for($entity, ['color', 'size'])->willReturn(
             [
                 'sibling1' => $valuesOfFirstSibling,
                 'sibling2' => $valuesOfSecondSibling,
@@ -427,12 +439,14 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violation,
         ValueInterface $xl
     ) {
+        $axes = [$color, $size];
+
         $entity->getIdentifier()->willReturn('entity_code');
         $entity->getParent()->willReturn($parent);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $entity->getValuesForVariation()->willReturn($values);
 
-        $axesProvider->getAxes($entity)->willReturn([$color, $size]);
+        $axesProvider->getAxes($entity)->willReturn($axes);
         $color->getCode()->willReturn('color');
         $size->getCode()->willReturn('size');
 
@@ -445,7 +459,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $valuesOfSecondSibling->getByCodes('color')->willReturn($blue);
         $valuesOfSecondSibling->getByCodes('size')->willReturn($xl);
 
-        $getValuesOfSiblings->for($entity)->willReturn(
+        $getValuesOfSiblings->for($entity, ['color', 'size'])->willReturn(
             [
                 'sibling1' => $valuesOfFirstSibling,
                 'sibling2' => $valuesOfSecondSibling,
@@ -491,17 +505,18 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         UniqueVariantAxis $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $axes = [$color];
         $entity1->getParent()->willReturn($parent);
         $entity1->getFamilyVariant()->willReturn($familyVariant);
-        $axesProvider->getAxes($entity1)->willReturn([$color]);
+        $axesProvider->getAxes($entity1)->willReturn($axes);
         $color->getCode()->willReturn('color');
-        $getValuesOfSiblings->for($entity1)->willReturn([]);
+        $getValuesOfSiblings->for($entity1, ['color'])->willReturn([]);
 
         $entity2->getCode()->willReturn('entity_2');
         $entity2->getParent()->willReturn($parent);
         $entity2->getFamilyVariant()->willReturn($familyVariant);
-        $getValuesOfSiblings->for($entity2)->willReturn([]);
-        $axesProvider->getAxes($entity2)->willReturn([$color]);
+        $getValuesOfSiblings->for($entity2, ['color'])->willReturn([]);
+        $axesProvider->getAxes($entity2)->willReturn($axes);
 
         $values->getByCodes('color')->willReturn($blue);
         $entity1->getValuesForVariation()->willReturn($values);
@@ -545,17 +560,19 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         UniqueVariantAxis $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $axes = [$color];
+
         $entity1->getParent()->willReturn($parent);
         $entity1->getFamilyVariant()->willReturn($familyVariant);
-        $axesProvider->getAxes($entity1)->willReturn([$color]);
+        $axesProvider->getAxes($entity1)->willReturn($axes);
         $color->getCode()->willReturn('color');
-        $getValuesOfSiblings->for($entity1)->willReturn([]);
+        $getValuesOfSiblings->for($entity1, ['color'])->willReturn([]);
 
         $entity2->getIdentifier()->willReturn('entity_2');
         $entity2->getParent()->willReturn($parent);
         $entity2->getFamilyVariant()->willReturn($familyVariant);
-        $getValuesOfSiblings->for($entity2)->willReturn([]);
-        $axesProvider->getAxes($entity2)->willReturn([$color]);
+        $getValuesOfSiblings->for($entity2, ['color'])->willReturn([]);
+        $axesProvider->getAxes($entity2)->willReturn($axes);
 
         $values->getByCodes('color')->willReturn($blue);
         $entity1->getValuesForVariation()->willReturn($values);
