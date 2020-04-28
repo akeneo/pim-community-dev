@@ -22,6 +22,13 @@ class ActionMetadata implements AclClassInfo, \Serializable
     protected $label;
 
     /**
+     * Defines if the ACL must be enabled/disabled at creation for all roles.
+     *
+     * @var bool
+     */
+    protected $isEnabledAtCreation;
+
+    /**
      * Gets an action name
      *
      * @return string
@@ -51,18 +58,17 @@ class ActionMetadata implements AclClassInfo, \Serializable
         return $this->label;
     }
 
-    /**
-     * Constructor
-     *
-     * @param string $name
-     * @param string $group
-     * @param string $label
-     */
-    public function __construct($name = '', $group = '', $label = '')
+    public function isEnabledAtCreation(): bool
+    {
+        return $this->isEnabledAtCreation;
+    }
+
+    public function __construct($name = '', $group = '', $label = '', bool $isEnabledAtCreation = true)
     {
         $this->name = $name;
         $this->group = $group;
         $this->label = $label;
+        $this->isEnabledAtCreation = $isEnabledAtCreation;
     }
 
     /**
@@ -74,7 +80,8 @@ class ActionMetadata implements AclClassInfo, \Serializable
             [
                 $this->name,
                 $this->group,
-                $this->label
+                $this->label,
+                $this->isEnabledAtCreation,
             ]
         );
     }
@@ -87,7 +94,8 @@ class ActionMetadata implements AclClassInfo, \Serializable
         list(
             $this->name,
             $this->group,
-            $this->label
+            $this->label,
+            $this->isEnabledAtCreation
             ) = unserialize($serialized);
     }
 }

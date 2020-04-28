@@ -3,6 +3,7 @@
 namespace Oro\Bundle\PimDataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -12,18 +13,23 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class AddUsernameToGridListener
 {
-    /**
-     * @var TokenStorageInterface
-     */
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
+    /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(TokenStorageInterface $tokenStorage, SecurityFacade $securityFacade)
     {
         $this->tokenStorage = $tokenStorage;
+        $this->securityFacade = $securityFacade;
     }
 
     public function onBuildAfter(BuildAfter $event)
     {
+        if ($this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')) {
+            return;
+        }
         $dataSource = $event->getDatagrid()->getDatasource();
 
         $token = $this->tokenStorage->getToken();

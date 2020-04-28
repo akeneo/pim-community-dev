@@ -35,7 +35,7 @@ class GetLastOperationsSpec extends ObjectBehavior
         $lastOperations = ['an_operation', 'another_one'];
         $notVisibleJobs->getCodes()->willReturn(['not_visible_job', 'again']);
         $connection->createQueryBuilder()->willReturn($qb);
-        $user->getUsername()->willReturn('julia');
+        $user->getUsername()->shouldBeCalled()->willReturn('julia');
 
         $qb->select(Argument::cetera())->willReturn($qb);
         $qb->from(Argument::cetera())->willReturn($qb);
@@ -51,6 +51,7 @@ class GetLastOperationsSpec extends ObjectBehavior
 
         $expr->eq(Argument::cetera())->willReturn('eq');
         $expr->notIn(Argument::cetera())->willReturn('notIn');
+
 
         $qb->execute()->willReturn($statement);
         $statement->fetchAll()->willReturn($lastOperations);

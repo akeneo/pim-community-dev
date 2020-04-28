@@ -31,6 +31,21 @@ class GetLastOperationsIntegration extends TestCase
         }
     }
 
+    public function testGetLastOperations(): void
+    {
+        $this->jobLauncher->launchExport('csv_product_export', 'julia');
+        $this->jobLauncher->launchExport('csv_product_export', 'admin');
+        $this->jobLauncher->launchExport('csv_product_export', 'mary');
+        $this->jobLauncher->launchExport('csv_product_export', 'julia');
+
+        $lastOperations = $this->getLastOperationsQuery()->execute();
+        $this->assertCount(4, $lastOperations);
+
+        foreach ($lastOperations as $lastOperation) {
+            $this->assertCSVProductExportOperation($lastOperation);
+        }
+    }
+
     public function testOnlyGetNotBlackListedLastOperations(): void
     {
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('familyA2');
@@ -93,7 +108,7 @@ class GetLastOperationsIntegration extends TestCase
 
     private function assertCSVProductExportOperation(array $lastOperation, string $warningCount = '0'): void
     {
-        $this->assertCount(7, $lastOperation);
+        $this->assertCount(8, $lastOperation);
 
         $expectedKeys = ['id', 'date', 'job_instance_id', 'type', 'label', 'status', 'warningCount'];
         foreach ($expectedKeys as $expectedKey) {
