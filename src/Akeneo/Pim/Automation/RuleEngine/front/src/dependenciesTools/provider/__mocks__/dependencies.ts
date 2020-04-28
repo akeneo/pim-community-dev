@@ -23,9 +23,11 @@ export const dependencies = {
   }),
   user: {
     get: jest.fn((data: string) => {
-      switch(data) {
-        case 'catalogLocale': return 'en_US';
-        default: return data;
+      switch (data) {
+        case 'catalogLocale':
+          return 'en_US';
+        default:
+          return data;
       }
     }),
     set: jest.fn(),
