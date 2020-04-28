@@ -131,9 +131,6 @@ jobs:
           - run:
                 name: Acceptance tests
                 command: make acceptance-back
-          - run:
-                name: Acceptance back (Connectivity Connection)
-                command: docker-compose run -u www-data --rm php vendor/bin/behat --config vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --no-interaction --format=progress --strict
           - store_test_results:
                 path: var/tests
           - store_artifacts:

@@ -52,6 +52,7 @@ unit-front:
 .PHONY: acceptance-back
 acceptance-back: var/tests/behat reference-entity-acceptance-back asset-manager-acceptance-back rule-engine-acceptance-back
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
+	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --no-interaction --format=progress --strict
 
 .PHONY: acceptance-front
 acceptance-front: MAX_RANDOM_LATENCY_MS=100 $(YARN_RUN) acceptance run acceptance ./tests/features
