@@ -9,13 +9,17 @@ final class ProductSource
     public $field;
     public $scope;
     public $locale;
-    public $options;
+    public $labelLocale;
+    public $format;
+    public $currency;
 
     public function __construct(array $data)
     {
         $this->field = $data['field'] ?? null;
         $this->scope = $data['scope'] ?? null;
         $this->locale = $data['locale'] ?? null;
-        $this->options = $data['options'] ?? null;
+        $this->labelLocale = $data['label_locale'] ?? null;
+        $this->format = $data['format'] ?? null;
+        $this->currency = $data['currency'] ?? null;
     }
 }

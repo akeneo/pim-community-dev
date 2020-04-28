@@ -1,4 +1,4 @@
-Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateProductSourceCommand:
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductSource:
     constraints:
         - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
               attributeProperty: field
@@ -17,6 +17,14 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateProductSourceCommand:
             - Type:
                 type: string
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
-        options:
+        labelLocale:
             - Type:
-                type: array
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
+        format:
+            - Type:
+                type: string
+        currency:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ActiveCurrency: ~

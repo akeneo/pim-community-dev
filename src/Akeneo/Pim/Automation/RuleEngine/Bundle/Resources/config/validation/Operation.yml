@@ -25,6 +25,6 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operation:
                 type: string
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
         currency:
-            # TODO validate that currency is active
             - Type:
                 type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ActiveCurrency: ~

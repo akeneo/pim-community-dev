@@ -15,46 +15,30 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
 use Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ActiveCurrency;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
 class ActiveCurrencyValidator extends ConstraintValidator
 {
-    /** @var GetAttributes */
-    private $getAttributes;
-
     /** @var FindActivatedCurrenciesInterface */
     private $findActivatedCurrencies;
 
-    public function __construct(GetAttributes $getAttributes, FindActivatedCurrenciesInterface $findActivatedCurrencies)
+    public function __construct(FindActivatedCurrenciesInterface $findActivatedCurrencies)
     {
-        $this->getAttributes = $getAttributes;
         $this->findActivatedCurrencies = $findActivatedCurrencies;
     }
 
     public function validate($value, Constraint $constraint)
     {
         Assert::isInstanceOf($constraint, ActiveCurrency::class);
-        if (null === $constraint->getAttributeCode()) {
-            return;
-        }
-        $attribute = $this->getAttributes->forCode($constraint->getAttributeCode());
-        if (null === $attribute || AttributeTypes::PRICE_COLLECTION !== $attribute->type()) {
-            return;
-        }
-
-        if (null === $value) {
-            $this->context->buildViolation($constraint->currencyExpectedMessage)->addViolation();
-
+        if (null === $value || !is_string($value)) {
             return;
         }
 
         if (!in_array($value, $this->findActivatedCurrencies->forAllChannels())) {
             $this->context->buildViolation(
-                $constraint->invalidCurrencyMessage,
+                $constraint->message,
                 ['%currency%' => $value]
             )->addViolation();
         }
