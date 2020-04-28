@@ -12,6 +12,7 @@ const FallbackActionLine: React.FC<Props> = ({
   translate,
   lineNumber,
   action,
+  handleDelete,
 }) => {
   const { register, getValues, setValue } = useFormContext();
 
@@ -31,7 +32,9 @@ const FallbackActionLine: React.FC<Props> = ({
       translate={translate}
       title='Unknown Action'
       helper='This feature is under development. Please use the import to manage your rules.'
-      srOnly='This feature is under development. Please use the import to manage your rules.'>
+      srOnly='This feature is under development. Please use the import to manage your rules.'
+      handleDelete={handleDelete}
+    >
       {JSON.stringify(action.json)}
     </ActionTemplate>
   );

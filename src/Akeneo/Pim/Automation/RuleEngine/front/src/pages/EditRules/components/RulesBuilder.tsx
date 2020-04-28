@@ -6,6 +6,7 @@ import { Action } from '../../../models/Action';
 import { Locale } from '../../../models';
 import { IndexedScopes } from '../../../fetch/ScopeFetcher';
 import { ActionLineProps } from '../ActionLineProps';
+import { useFormContext } from 'react-hook-form';
 
 type Props = {
   translate: Translate;
@@ -20,6 +21,7 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   action,
   translate,
   lineNumber,
+  handleDelete,
 }) => {
   const Line = action.module;
 
@@ -28,6 +30,7 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
       action={action}
       translate={translate}
       lineNumber={lineNumber}
+      handleDelete={handleDelete}
     />
   );
 };
@@ -40,6 +43,20 @@ const RulesBuilder: React.FC<Props> = ({
   currentCatalogLocale,
   router,
 }) => {
+  const [ actions, setActions ] = React.useState<(Action | null)[]>(ruleDefinition.actions);
+
+  const { getValues, unregister } = useFormContext();
+  const deleteAction = (lineNumber: number) => {
+    Object.keys(getValues()).forEach((value: string) => {
+      if (value.startsWith(`content.actions[${lineNumber}]`)) {
+        unregister(value);
+      }
+    });
+    setActions(actions.map((action: (Action | null), i: number) => {
+      return i === lineNumber ? null : action;
+    }));
+  }
+
   return (
     <>
       <RuleProductSelection
@@ -50,13 +67,14 @@ const RulesBuilder: React.FC<Props> = ({
         currentCatalogLocale={currentCatalogLocale}
         router={router}
       />
-      {ruleDefinition.actions.map((action, i) => {
-        return (
+      {actions.map((action: Action | null, i) => {
+        return action && (
           <ActionLine
             action={action}
             translate={translate}
             key={`action_${i}`}
             lineNumber={i}
+            handleDelete={() => { deleteAction(i) }}
           />
         );
       })}

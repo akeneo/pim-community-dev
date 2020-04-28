@@ -36,6 +36,7 @@ type Props = {
   title: string;
   helper: string;
   srOnly: string;
+  handleDelete: () => void;
 };
 
 const ActionTemplate: React.FC<Props> = ({
@@ -44,6 +45,7 @@ const ActionTemplate: React.FC<Props> = ({
   title,
   helper,
   children,
+  handleDelete,
 }) => {
   return (
     <fieldset>
@@ -54,7 +56,12 @@ const ActionTemplate: React.FC<Props> = ({
           </TextBoxBlue>
           <StyledTitleHeader>{title}</StyledTitleHeader>
         </StyledHeaderLeft>
-        <RedGhostButton sizeMode='small'>
+        <RedGhostButton
+          sizeMode='small'
+          onClick={(event) => {
+            event.preventDefault();
+            handleDelete();
+          }}>
           {translate('pimee_catalog_rule.form.edit.remove_action')}
         </RedGhostButton>
       </StyledHeader>
