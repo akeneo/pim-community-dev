@@ -4,6 +4,10 @@ var/tests/%:
 .PHONY: coupling-back
 coupling-back: twa-coupling-back franklin-insights-coupling-back data-quality-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back
 
+### Static tests
+static-back: asset-manager-static-back check-pullup check-sf-services
+	echo "Job done! Nothing more to do here..."
+
 .PHONY: check-pullup
 check-pullup:
 	${PHP_RUN} vendor/akeneo/pim-community-dev/bin/check-pullup
