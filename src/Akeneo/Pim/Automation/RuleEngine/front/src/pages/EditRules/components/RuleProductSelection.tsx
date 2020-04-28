@@ -87,9 +87,9 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
     condition.module === FallbackConditionLine;
 
   return (
-    <tr
+    <div
       className={`AknGrid-bodyRow${isFallback ? ' AknGrid-bodyRow--highlight' : ''}`}>
-      <td className='AknGrid-bodyCell'>
+      <div className='AknGrid-bodyCell'>
         <Line
           condition={condition}
           lineNumber={lineNumber}
@@ -99,8 +99,8 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
           currentCatalogLocale={currentCatalogLocale}
           router={router}
         />
-      </td>
-      <td className='AknGrid-bodyCell AknGrid-bodyCell--tight'>
+      </div>
+      <div className='AknGrid-bodyCell AknGrid-bodyCell--tight'>
         <DeleteButton
           onClick={(event) => {
             event.preventDefault();
@@ -109,8 +109,8 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
         >
           <img alt={translate('pimee_catalog_rule.form.edit.conditions.delete')} src='/bundles/pimui/images/icon-delete-slategrey.svg'/>
         </DeleteButton>
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 };
 
