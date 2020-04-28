@@ -71,24 +71,19 @@ class StreamResourceResponse
      * @param resource $resource      resource containing the whole data to process
      * @param array    $uriParameters default uri parameters to use when forwarding requests
      * @param null|callable $postResponseCallable inject callable to execute after output response flushing
-     * @param ?callable $httpExceptionCallable Callback when an HttpException is triggered.
      *
      * @throws HttpException
      *
      * @return StreamedResponse
      */
-    public function streamResponse(
-        $resource,
-        array $uriParameters = [],
-        callable $postResponseCallable = null,
-        callable $httpExceptionCallable = null
-    ) {
+    public function streamResponse($resource, array $uriParameters = [], callable $postResponseCallable = null)
+    {
         $response = new StreamedResponse();
         $response->headers->set('Content-Type', static::CONTENT_TYPE);
 
         $this->checkLineNumberInInput($resource);
 
-        $response->setCallback(function () use ($resource, $uriParameters, $postResponseCallable, $httpExceptionCallable) {
+        $response->setCallback(function () use ($resource, $uriParameters, $postResponseCallable) {
             rewind($resource);
             $this->ensureOutputBufferingIsStarted();
 
@@ -128,10 +123,6 @@ class StreamResourceResponse
                         $response['status_code'] = $subResponse->getStatusCode();
                     }
                 } catch (HttpException $e) {
-                    if (is_callable($httpExceptionCallable)) {
-                        call_user_func($httpExceptionCallable, $e);
-                    }
-
                     $response = [
                         'line'        => $lineNumber,
                         'status_code' => $e->getStatusCode(),

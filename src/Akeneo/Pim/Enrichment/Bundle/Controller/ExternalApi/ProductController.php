@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
-use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\CollectApiError;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ApiAggregatorForProductPostSaveEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
@@ -151,9 +150,6 @@ class ProductController
     /** @var DuplicateValueChecker */
     protected $duplicateValueChecker;
 
-    /** @var CollectApiError */
-    private $collectApiError;
-
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -214,7 +210,6 @@ class ProductController
         $this->warmupQueryCache = $warmupQueryCache;
         $this->eventDispatcher = $eventDispatcher;
         $this->duplicateValueChecker = $duplicateValueChecker;
-        $this->collectApiError = $collectApiError;
     }
 
     /**
@@ -262,11 +257,9 @@ class ProductController
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (BadRequest400Exception $e) {
             $message = json_decode($e->getMessage(), true);
-            if (
-                null !== $message && isset($message['error']['root_cause'][0]['type'])
+            if (null !== $message && isset($message['error']['root_cause'][0]['type'])
                 && 'illegal_argument_exception' === $message['error']['root_cause'][0]['type']
-                && 0 === strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')
-            ) {
+                && 0 === strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')) {
                 throw new DocumentedHttpException(
                     Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
                     'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
@@ -433,26 +426,11 @@ class ProductController
     {
         $this->warmupQueryCache->fromRequest($request);
         $resource = $request->getContent(true);
-
         $this->apiAggregatorForProductPostSave->activate();
-
-        $postResponseCallable = function () {
+        $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
             $this->apiAggregatorForProductPostSave->dispatchAllEvents();
             $this->apiAggregatorForProductPostSave->deactivate();
-
-            // $this->collectApiError->save();
-        };
-
-        $httpExceptionCallable = function (HttpException $exception) {
-            // $this->collectApiError->collectFromHttpException($exception);
-        };
-
-        $response = $this->partialUpdateStreamResource->streamResponse(
-            $resource,
-            [],
-            $postResponseCallable,
-            $httpExceptionCallable
-        );
+        });
 
         return $response;
     }
