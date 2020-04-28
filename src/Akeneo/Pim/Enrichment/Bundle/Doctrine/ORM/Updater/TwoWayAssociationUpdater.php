@@ -5,13 +5,13 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class AssociationUpdater
+class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
 {
     /** @var ManagerRegistry */
     private $registry;
@@ -25,11 +25,7 @@ class AssociationUpdater
     }
 
     /**
-     * An association has been created, this method should create the inversed association.
-     * This is used by two-way associations.
-     *
-     * @param AssociationInterface $association
-     * @param EntityWithAssociationsInterface $associatedEntity
+     * @inheritdoc
      */
     public function createInversedAssociation(
         AssociationInterface $association,
@@ -66,11 +62,7 @@ class AssociationUpdater
     }
 
     /**
-     * An association has been removed, this method should remove the inversed association if there is one.
-     * This is used by two-way associations.
-     *
-     * @param AssociationInterface $association
-     * @param EntityWithAssociationsInterface $associatedEntity
+     * @inheritdoc
      */
     public function removeInversedAssociation(
         AssociationInterface $association,

@@ -2,14 +2,13 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater\AssociationUpdater;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -33,8 +32,8 @@ class AssociationFieldSetter extends AbstractFieldSetter
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
-    /** @var AssociationUpdater */
-    private $associationUpdater;
+    /** @var TwoWayAssociationUpdaterInterface */
+    private $twoWayAssociationUpdater;
 
     /** @var MissingAssociationAdder */
     private $missingAssociationAdder;
@@ -43,7 +42,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param AssociationUpdater $associationUpdater
+     * @param TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater
      * @param MissingAssociationAdder $missingAssociationAdder
      * @param array $supportedFields
      */
@@ -51,14 +50,14 @@ class AssociationFieldSetter extends AbstractFieldSetter
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        AssociationUpdater $associationUpdater,
+        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
         MissingAssociationAdder $missingAssociationAdder,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
         $this->groupRepository = $groupRepository;
-        $this->associationUpdater = $associationUpdater;
+        $this->twoWayAssociationUpdater = $twoWayAssociationUpdater;
         $this->missingAssociationAdder = $missingAssociationAdder;
         $this->supportedFields = $supportedFields;
     }
@@ -246,14 +245,14 @@ class AssociationFieldSetter extends AbstractFieldSetter
         AssociationInterface $association,
         EntityWithAssociationsInterface $associatedEntity
     ): void {
-        $this->associationUpdater->createInversedAssociation($association, $associatedEntity);
+        $this->twoWayAssociationUpdater->createInversedAssociation($association, $associatedEntity);
     }
 
     private function removeInversedAssociation(
         AssociationInterface $association,
         EntityWithAssociationsInterface $associatedEntity
     ): void {
-        $this->associationUpdater->removeInversedAssociation($association, $associatedEntity);
+        $this->twoWayAssociationUpdater->removeInversedAssociation($association, $associatedEntity);
     }
 
     /**

@@ -103,7 +103,6 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('datagrid_actions.yml');
         $loader->load('files.yml');
         $loader->load('category_counters.yml');
-        $loader->load('doctrine_updaters.yml');
         $loader->load('structure_version.yml');
         $loader->load('view_elements/category.yml');
         $loader->load('command.yml');
