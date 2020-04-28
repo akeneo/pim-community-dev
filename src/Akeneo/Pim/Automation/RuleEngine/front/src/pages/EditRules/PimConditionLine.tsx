@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { PimCondition } from '../../models/PimCondition';
 import { Flag } from '../../components/Flag/Flag';
 import { ConditionLineProps } from './ConditionLineProps';
@@ -6,8 +7,30 @@ import { ConditionLineProps } from './ConditionLineProps';
 const PimConditionLine: React.FC<ConditionLineProps> = ({
   translate,
   condition,
+  lineNumber,
 }) => {
   const pimCondition = condition as PimCondition;
+  const { register, getValues, setValue } = useFormContext();
+
+  const initializeValue = (field: string, value: any): void => {
+    const key = `content.conditions[${lineNumber}].${field}`;
+    register(key);
+    if (undefined === getValues()[key]) {
+      setValue(key, value);
+    }
+  }
+  initializeValue('field', pimCondition.field);
+  initializeValue('operator', pimCondition.operator);
+  if (pimCondition.locale) {
+    initializeValue('locale', pimCondition.locale);
+  }
+  if (pimCondition.scope) {
+    initializeValue('scope', pimCondition.scope);
+  }
+  if (pimCondition.value) {
+    initializeValue('value', pimCondition.value);
+  }
+
   const isMetric = (value: any): boolean => {
     return (
       typeof value === 'object' &&

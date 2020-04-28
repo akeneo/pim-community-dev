@@ -26,8 +26,8 @@ const useInitEditRules = (ruleDefinitionCode: string, router: Router) => {
         setScopes(response[2]);
       })
       .catch(exception => {
-        setError({ exception, status: true });
         console.error(exception);
+        setError({ exception, status: true });
       });
   }, []);
 
