@@ -59,7 +59,7 @@ describe('EditRules', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
   });
-  
+
   it('should submit the form with the input data from rule properties', async () => {
     // Given
     fetchMock.mockResponses(
