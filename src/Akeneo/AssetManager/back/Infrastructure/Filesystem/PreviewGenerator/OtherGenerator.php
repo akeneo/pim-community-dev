@@ -50,8 +50,13 @@ class OtherGenerator implements PreviewGeneratorInterface
             && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 
-    public function generate(string $data, AbstractAttribute $attribute, string $type, bool $regenerate = false): string
+    public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
         return $this->defaultImageProvider->getImageUrl(self::DEFAULT_OTHER, self::SUPPORTED_TYPES[$type]);
+    }
+
+    public function remove(string $data, AbstractAttribute $attribute, string $type)
+    {
+        return;
     }
 }

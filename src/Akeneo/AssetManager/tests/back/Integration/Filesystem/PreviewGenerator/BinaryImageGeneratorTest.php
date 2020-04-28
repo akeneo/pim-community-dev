@@ -89,6 +89,23 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
+    public function it_get_a_preview_for_a_media_file_attribute_from_the_cache_removed()
+    {
+        $this->binaryImageGenerator->supports('akeneo.png', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->binaryImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
+
+        $this->binaryImageGenerator->remove(self::IMAGE_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+
+        $previewImage = $this->binaryImageGenerator->generate(self::IMAGE_FILENAME, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+
+        $this->assertStringContainsString('__root__/thumbnail/asset_manager/', $previewImage);
+    }
+
+    /**
+     * @test
+     */
     public function it_get_a_default_preview_for_an_unknown_image_media_link()
     {
         $this->binaryImageGenerator->supports('test', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);

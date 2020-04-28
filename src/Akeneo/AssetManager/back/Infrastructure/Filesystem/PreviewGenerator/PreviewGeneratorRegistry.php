@@ -44,17 +44,34 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface
         return false;
     }
 
-    public function generate(string $data, AbstractAttribute $attribute, string $type, bool $regenerate = false): string
+    public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
         foreach ($this->previewGenerators as $previewGenerator) {
             if ($previewGenerator->supports($data, $attribute, $type)) {
-                return $previewGenerator->generate($data, $attribute, $type, $regenerate);
+                return $previewGenerator->generate($data, $attribute, $type);
             }
         }
 
         throw new \RuntimeException(
             sprintf(
                 'There was no generator found to get the preview of attribute "%s" with type "%s"',
+                $attribute->getCode(),
+                $type
+            )
+        );
+    }
+
+    public function remove(string $data, AbstractAttribute $attribute, string $type)
+    {
+        foreach ($this->previewGenerators as $previewGenerator) {
+            if ($previewGenerator->supports($data, $attribute, $type)) {
+                return $previewGenerator->remove($data, $attribute, $type);
+            }
+        }
+
+        throw new \RuntimeException(
+            sprintf(
+                'There was no generator found to remove the preview of attribute "%s" with type "%s"',
                 $attribute->getCode(),
                 $type
             )
