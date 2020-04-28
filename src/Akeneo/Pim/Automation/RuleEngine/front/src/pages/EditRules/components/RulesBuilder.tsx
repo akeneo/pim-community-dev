@@ -1,5 +1,4 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 import { Router, Translate } from '../../../dependenciesTools';
 import { RuleProductSelection } from './RuleProductSelection';
 import { RuleDefinition } from '../../../models';
@@ -21,7 +20,6 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   action,
   translate,
   lineNumber,
-  register,
 }) => {
   const Line = action.module;
 
@@ -30,7 +28,6 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
       action={action}
       translate={translate}
       lineNumber={lineNumber}
-      register={register}
     />
   );
 };
@@ -43,7 +40,6 @@ const RulesBuilder: React.FC<Props> = ({
   currentCatalogLocale,
   router,
 }) => {
-  const { register } = useFormContext();
   return (
     <>
       <RuleProductSelection
@@ -61,7 +57,6 @@ const RulesBuilder: React.FC<Props> = ({
             translate={translate}
             key={`action_${i}`}
             lineNumber={i}
-            register={register}
           />
         );
       })}

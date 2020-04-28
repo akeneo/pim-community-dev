@@ -32,10 +32,7 @@ const transformFormData = (formData: FormData): Payload => {
     content: {
       ...formData.content,
       conditions: (formData.content && formData.content.conditions) || [],
-      actions:
-        formData.content && formData.content.actions
-          ? formData.content.actions.map(action => JSON.parse(action))
-          : [],
+      actions: (formData.content && formData.content.actions) || [],
     },
   };
 };
@@ -56,6 +53,7 @@ const submitEditRuleForm = (
       'pimee_enrich_rule_definition_update',
       { ruleDefinitionCode }
     );
+
     const response = await httpPut(updateRuleUrl, {
       body: transformFormData(formData),
     });

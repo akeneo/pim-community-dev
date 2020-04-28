@@ -2,7 +2,7 @@ import React from 'react';
 import { FallbackAction } from '../../../models/FallbackAction';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from '../ActionLineProps';
-import { InputText } from '../../../components/Inputs';
+import { useFormContext } from 'react-hook-form';
 
 type Props = {
   action: FallbackAction;
@@ -11,21 +11,28 @@ type Props = {
 const FallbackActionLine: React.FC<Props> = ({
   translate,
   lineNumber,
-  register,
+  action,
 }) => {
+  const { register, getValues, setValue } = useFormContext();
+
+  const initializeValue = (field: string, value: any): void => {
+    const key = `content.actions[${lineNumber}].${field}`;
+    register(key);
+    if (undefined === getValues()[key]) {
+      setValue(key, value);
+    }
+  }
+  Object.keys(action.json).forEach((field: string) => {
+    initializeValue(field, action.json[field]);
+  })
+
   return (
     <ActionTemplate
       translate={translate}
       title='Unknown Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       srOnly='This feature is under development. Please use the import to manage your rules.'>
-      <InputText
-        name={`content.actions[${lineNumber}]`}
-        ref={register}
-        disabled
-        readOnly
-        hiddenLabel={true}
-      />
+      {JSON.stringify(action.json)}
     </ActionTemplate>
   );
 };

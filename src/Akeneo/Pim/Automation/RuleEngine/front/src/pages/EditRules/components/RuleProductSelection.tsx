@@ -115,7 +115,6 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
 };
 
 const RuleProductSelection: React.FC<Props> = ({
-  register,
   ruleDefinition,
   translate,
   locales,
@@ -174,7 +173,6 @@ const RuleProductSelection: React.FC<Props> = ({
           {conditions.map((condition, i) => {
             return condition && (
               <ConditionLine
-                register={register}
                 condition={condition}
                 lineNumber={i}
                 translate={translate}
