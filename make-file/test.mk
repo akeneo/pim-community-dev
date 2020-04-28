@@ -4,6 +4,10 @@ var/tests/%:
 .PHONY: coupling-back
 coupling-back: twa-coupling-back franklin-insights-coupling-back data-quality-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back
 
+### Static tests
+static-back: asset-manager-static-back check-pullup check-sf-services
+	echo "Job done! Nothing more to do here..."
+
 .PHONY: check-pullup
 check-pullup:
 	${PHP_RUN} vendor/akeneo/pim-community-dev/bin/check-pullup
@@ -48,6 +52,7 @@ unit-front:
 .PHONY: acceptance-back
 acceptance-back: var/tests/behat reference-entity-acceptance-back asset-manager-acceptance-back rule-engine-acceptance-back
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
+	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --no-interaction --format=progress --strict
 
 .PHONY: acceptance-front
 acceptance-front: MAX_RANDOM_LATENCY_MS=100 $(YARN_RUN) acceptance run acceptance ./tests/features

@@ -117,33 +117,20 @@ jobs:
                 name: Load archived docker image
                 command: docker load -i php-pim-image.tar
           - run:
-                name: Check Pullup
-                command: make check-pullup
-                when: always
-          - run:
-                name: Check that all defined services are instantiable
-                command: make check-sf-services
+                name: Static tests
+                command: make static-back
           - run:
                 name: Analyzes source code to flag programming errors, bugs, stylistic errors, and suspicious constructs
                 command: make lint-back
           - run:
                 name: Code Coupling Detection
                 command: make coupling-back
-                when: always
-          - run:
-                name: Static tests
-                command: make asset-manager-static-back
           - run:
                 name: Unit tests
                 command: make unit-back
           - run:
                 name: Acceptance tests
                 command: make acceptance-back
-                when: always
-          - run:
-                name: Acceptance back (Connectivity Connection)
-                command: docker-compose run -u www-data --rm php vendor/bin/behat --config vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --no-interaction --format=progress --strict
-                when: always
           - store_test_results:
                 path: var/tests
           - store_artifacts:
