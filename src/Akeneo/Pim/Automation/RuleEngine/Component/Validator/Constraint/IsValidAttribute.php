@@ -22,8 +22,6 @@ use Symfony\Component\Validator\Constraint;
  */
 final class IsValidAttribute extends Constraint
 {
-    public $messageAttributeNotFound = 'The "%field%" attribute code does not exist';
-
     public $attributeProperty;
     public $channelProperty;
     public $localeProperty;

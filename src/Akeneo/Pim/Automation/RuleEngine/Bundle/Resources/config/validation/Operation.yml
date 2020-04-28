@@ -1,6 +1,10 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operation:
     constraints:
         - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\DivisionByZero: ~
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
+              attributeProperty: field
+              channelProperty: scope
+              localeProperty: locale
     properties:
         operator:
             - NotNull: ~

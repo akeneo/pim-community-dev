@@ -1,6 +1,13 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CopyAction:
     constraints:
-        -
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
+              attributeProperty: fromField
+              channelProperty: fromScope
+              localeProperty: fromLocale
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
+              attributeProperty: toField
+              channelProperty: toScope
+              localeProperty: toLocale
     properties:
         fromField:
             - Type:

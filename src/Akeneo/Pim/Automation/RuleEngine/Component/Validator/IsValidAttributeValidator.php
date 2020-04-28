@@ -17,6 +17,7 @@ use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -33,88 +34,96 @@ final class IsValidAttributeValidator extends ConstraintValidator
     /** @var ChannelExistsWithLocaleInterface */
     private $channelExistsWithLocale;
 
+    /** @var PropertyAccessorInterface */
+    private $propertyAccessor;
+
     public function __construct(
         GetAttributes $getAttributes,
-        ChannelExistsWithLocaleInterface $channelExistsWithLocale
+        ChannelExistsWithLocaleInterface $channelExistsWithLocale,
+        PropertyAccessorInterface $propertyAccessor
     ) {
         $this->getAttributes = $getAttributes;
         $this->channelExistsWithLocale = $channelExistsWithLocale;
+        $this->propertyAccessor = $propertyAccessor;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function validate($attributeCode, Constraint $constraint)
+    public function validate($object, Constraint $constraint)
     {
-        if (null === $attributeCode || !is_string($attributeCode)) {
+        if (null === $object || !is_object($object)) {
             return;
         }
         Assert::isInstanceOf($constraint, IsValidAttribute::class, sprintf(
             'Constraint must be an instance of "%s".',
             IsValidAttribute::class
         ));
-
-        $attribute = $this->getAttributes->forCode($attributeCode);
-        if (null === $attribute) {
-            $this->context->buildViolation($constraint->messageAttributeNotFound, ['%field%' => $attributeCode])
-                ->addViolation();
-
+        $attributeCode = $this->propertyAccessor->getValue($object, $constraint->attributeProperty);
+        if (null === $attributeCode) {
             return;
         }
 
-        if ($attribute->isLocalizable() && null === $constraint->getLocale()) {
+        $attribute = $this->getAttributes->forCode($attributeCode);
+        if (null === $attribute) {
+            return;
+        }
+
+        $localeCode = $this->propertyAccessor->getValue($object, $constraint->localeProperty);
+        if ($attribute->isLocalizable() && null === $localeCode) {
             $this->context
                 ->buildViolation(sprintf('The "%s" attribute code is localizable and no locale is provided', $attribute->code()))
                 ->addViolation();
-        } elseif (!$attribute->isLocalizable() && null !== $constraint->getLocale()) {
+        } elseif (!$attribute->isLocalizable() && null !== $localeCode) {
             $this->context
                 ->buildViolation(sprintf('The "%s" attribute code is not localizable and a locale is provided', $attribute->code()))
                 ->addViolation();
         }
 
-        if ($attribute->isScopable() && null === $constraint->getScope()) {
+        $channelCode = $this->propertyAccessor->getValue($object, $constraint->channelProperty);
+        if ($attribute->isScopable() && null === $channelCode) {
             $this->context
                 ->buildViolation(sprintf('The "%s" attribute code is scopable and no channel is provided', $attribute->code()))
                 ->addViolation();
-        } elseif (!$attribute->isScopable() && null !== $constraint->getScope()) {
+        } elseif (!$attribute->isScopable() && null !== $channelCode) {
             $this->context
                 ->buildViolation(sprintf('The "%s" attribute code is not scopable and a channel is provided', $attribute->code()))
                 ->addViolation();
         }
 
-        $this->checkLocaleSpecific($attribute, $constraint);
-        $this->checkLocaleIsBoundToChannel($attribute, $constraint);
+        $this->checkLocaleSpecific($attribute, $localeCode);
+        $this->checkLocaleIsBoundToChannel($attribute, $channelCode, $localeCode);
     }
 
-    private function checkLocaleSpecific(Attribute $attribute, IsValidAttribute $constraint): void
+    private function checkLocaleSpecific(Attribute $attribute, ?string $localeCode): void
     {
         if ($attribute->isLocalizable()
             && $attribute->isLocaleSpecific()
-            && null !== $constraint->getLocale()
-            && !in_array($constraint->getLocale(), $attribute->availableLocaleCodes())
+            && null !== $localeCode
+            && !in_array($localeCode, $attribute->availableLocaleCodes())
         ) {
             $this->context
                 ->buildViolation(sprintf(
                     'The "%s" locale code is not available for the "%s" locale specific attribute code',
-                    $constraint->getLocale(),
+                    $localeCode,
                     $attribute->code()
                 ))
                 ->addViolation();
         }
     }
 
-    private function checkLocaleIsBoundToChannel(Attribute $attribute, IsValidAttribute $constraint): void
+    private function checkLocaleIsBoundToChannel(Attribute $attribute, ?string $channelCode, ?string $localeCode): void
     {
         if ($attribute->isLocalizableAndScopable()
-            && null !== $constraint->getLocale()
-            && null !== $constraint->getScope()
-            && !$this->channelExistsWithLocale->isLocaleBoundToChannel($constraint->getLocale(), $constraint->getScope())
+            && null !== $localeCode
+            && null !== $channelCode
+            && !$this->channelExistsWithLocale->isLocaleBoundToChannel($localeCode, $channelCode)
         ) {
             $this->context
                 ->buildViolation(sprintf(
                     'The "%s" locale code is not bound to the "%s" channel code',
-                    $constraint->getLocale(),
-                    $constraint->getScope()
+                    $localeCode,
+                    $channelCode
                 ))
                 ->addViolation();
         }

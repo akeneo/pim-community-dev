@@ -110,6 +110,7 @@ services:
         arguments:
             - '@akeneo.pim.structure.query.get_attributes'
             - '@pim_channel.query.cache.channel_exists_with_locale'
+            - '@property_accessor'
         tags:
             - { name: validator.constraint_validator }
 
