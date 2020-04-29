@@ -50,5 +50,6 @@ class AkeneoPimStructureExtension extends Extension
         $loader->load('commands.yml');
         $loader->load('queries.yml');
         $loader->load('processors.yml');
+        $loader->load('feature_flag.yml');
     }
 }
