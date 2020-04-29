@@ -4,14 +4,11 @@ import { Router, Translate } from '../../../dependenciesTools';
 import { GreyGhostButton, SmallHelper } from '../../../components';
 import { TextBoxBlue } from './TextBoxBlue';
 import { RuleDefinition } from '../../../models/';
-import { PimConditionLine } from '../PimConditionLine';
-import { FallbackConditionLine } from '../FallbackConditionLine';
 import { Condition } from '../../../models/';
 import { Locale } from '../../../models/';
 import { IndexedScopes } from '../../../fetch/ScopeFetcher';
 import { useFormContext } from 'react-hook-form';
-import { useDialogState, DialogDisclosure } from "reakit/Dialog";
-import { AlertDialog } from "../../../components/AlertDialog/AlertDialog";
+import { ConditionLine } from "./ConditionLine";
 
 const Header = styled.header`
   font-weight: normal;
@@ -40,12 +37,6 @@ const TitleHeader = styled.span`
   padding-left: 8px;
 `;
 
-const DeleteButton = styled(DialogDisclosure)`
-  border: none;
-  background: none;
-  cursor: pointer;
-`;
-
 const AddConditionContainer = styled.div`
   border-left: 1px solid ${({ theme }) => theme.color.grey100};
   display: flex;
@@ -60,70 +51,6 @@ type Props = {
   scopes: IndexedScopes;
   currentCatalogLocale: string;
   router: Router;
-};
-
-type ConditionLine2Props = {
-  condition: Condition;
-  lineNumber: number;
-  translate: Translate;
-  locales: Locale[];
-  scopes: IndexedScopes;
-  currentCatalogLocale: string;
-  router: Router;
-  deleteCondition: (lineNumber: number) => void;
-};
-
-const ConditionLine: React.FC<ConditionLine2Props> = ({
-  translate,
-  condition,
-  lineNumber,
-  locales,
-  scopes,
-  currentCatalogLocale,
-  router,
-  deleteCondition,
-}) => {
-  const dialog = useDialogState();
-
-  const Line = condition.module;
-  const isFallback =
-    condition.module === PimConditionLine ||
-    condition.module === FallbackConditionLine;
-
-  return (
-    <div
-      className={`AknGrid-bodyRow${
-        isFallback ? ' AknGrid-bodyRow--highlight' : ''
-      }`}>
-      <div className='AknGrid-bodyCell'>
-        <Line
-          condition={condition}
-          lineNumber={lineNumber}
-          translate={translate}
-          locales={locales}
-          scopes={scopes}
-          currentCatalogLocale={currentCatalogLocale}
-          router={router}
-        />
-      </div>
-      <div className='AknGrid-bodyCell AknGrid-bodyCell--tight'>
-        <DeleteButton { ...dialog }>
-          <img
-            alt={translate('pimee_catalog_rule.form.edit.conditions.delete')}
-            src='/bundles/pimui/images/icon-delete-slategrey.svg'
-          />
-        </DeleteButton>
-        <AlertDialog
-          dialog={dialog}
-          onValidate={() => { deleteCondition(lineNumber); }}
-          cancelLabel='cancel'
-          confirmLabel='confirm'
-          label='Delete condition'
-          description='Are you sure?'
-        />
-      </div>
-    </div>
-  );
 };
 
 const RuleProductSelection: React.FC<Props> = ({
