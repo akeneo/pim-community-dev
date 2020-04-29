@@ -49,10 +49,8 @@ class BusinessError
         return $this->content;
     }
 
-    public function normalize(): array
+    public function normalize(\DateTimeImmutable $dateTime): array
     {
-        $dateTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
-
         return [
             'connection_code' => (string) $this->connectionCode,
             'content' => json_decode($this->content(), true),

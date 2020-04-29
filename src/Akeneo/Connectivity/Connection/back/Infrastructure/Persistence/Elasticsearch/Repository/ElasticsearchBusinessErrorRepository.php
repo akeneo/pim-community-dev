@@ -25,8 +25,14 @@ class ElasticsearchBusinessErrorRepository implements BusinessErrorRepository
 
     public function bulkInsert(array $businessErrors): void
     {
-        $documents = array_map(function (BusinessError $businessError) {
-            return $businessError->normalize();
+        if (0 === count($businessErrors)) {
+            return;
+        }
+
+        $dateTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+
+        $documents = array_map(function (BusinessError $businessError) use ($dateTime) {
+            return $businessError->normalize($dateTime);
         }, $businessErrors);
 
         $this->errorClient->bulkIndexes($documents);

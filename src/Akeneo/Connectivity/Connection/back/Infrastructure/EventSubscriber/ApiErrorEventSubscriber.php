@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
-use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\MonitoredControllers;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\CollectApiError;
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\MonitoredRoutes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -18,11 +20,15 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 final class ApiErrorEventSubscriber implements EventSubscriberInterface
 {
+    /** @var RequestStack */
+    private $requestStack;
+
     /** @var CollectApiError */
     private $collectApiError;
 
-    public function __construct(CollectApiError $collectApiError)
+    public function __construct(RequestStack $requestStack, CollectApiError $collectApiError)
     {
+        $this->requestStack = $requestStack;
         $this->collectApiError = $collectApiError;
     }
 
@@ -30,25 +36,41 @@ final class ApiErrorEventSubscriber implements EventSubscriberInterface
     {
         return [
             KernelEvents::EXCEPTION => 'collectApiError',
-            KernelEvents::FINISH_REQUEST => 'saveApiErrors',
+            KernelEvents::TERMINATE => 'saveApiErrors',
         ];
     }
 
     public function collectApiError(ExceptionEvent $exceptionEvent): void
     {
-        if (false === in_array($exceptionEvent->getRequest()->get('_controller'), MonitoredControllers::CONTROLLERS)) {
+        // The '_route' property can only be found on the MasterRequest.
+        $request = $exceptionEvent->isMasterRequest()
+            ? $exceptionEvent->getRequest()
+            : $this->requestStack->getMasterRequest();
+
+        if (false === $this->isMonitoredRoute($request)) {
             return;
         }
 
         $this->collectApiError->collectFromHttpException($exceptionEvent->getException());
     }
 
-    public function saveApiErrors(FinishRequestEvent $finishRequestEvent): void
+    public function saveApiErrors(TerminateEvent $terminateEvent): void
     {
-        if (false === $finishRequestEvent->isMasterRequest()) {
+        $request = $terminateEvent->getRequest();
+
+        if (false === $this->isMonitoredRoute($request)) {
             return;
         }
 
         $this->collectApiError->save();
+    }
+
+    private function isMonitoredRoute(Request $request): bool
+    {
+        if (null === $route = $request->get('_route')) {
+            return false;
+        }
+
+        return in_array($route, MonitoredRoutes::ROUTES);
     }
 }

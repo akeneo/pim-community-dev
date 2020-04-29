@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
@@ -30,7 +31,10 @@ class ExtractErrorsFromHttpException
      */
     public function extractAll(HttpException $httpException): array
     {
-        if (false === $httpException instanceof UnprocessableEntityHttpException) {
+        if (
+            false === $httpException instanceof UnprocessableEntityHttpException
+            && false === $httpException instanceof NotFoundHttpException
+        ) {
             return [];
         }
 

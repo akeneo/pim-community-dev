@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write;
@@ -12,7 +13,7 @@ class BusinessErrorSpec extends ObjectBehavior
     public function it_is_a_business_error(): void
     {
         $connectionCode = new ConnectionCode('erp');
-        $this->beConstructedWith($connectionCode, '{"message": ""}');
+        $this->beConstructedWith($connectionCode, '{"message":"My error!"}');
         $this->shouldHaveType(BusinessError::class);
     }
 
@@ -49,6 +50,22 @@ class BusinessErrorSpec extends ObjectBehavior
                 )
             )
             ->duringInstantiation();
+    }
+
+    public function it_normalizes(): void
+    {
+        $connectionCode = new ConnectionCode('erp');
+        $content = $this->getWellStructuredContent();
+        $dateTime = new \DateTimeImmutable('2020-01-01T00:00:00', new \DateTimeZone('UTC'));
+
+        $expected = [
+            'connection_code' => 'erp',
+            'content' => json_decode($content, true),
+            'error_datetime' => '2020-01-01T00:00:00+00:00',
+        ];
+
+        $this->beConstructedWith($connectionCode, $content);
+        $this->normalize($dateTime)->shouldReturn($expected);
     }
 
     private function getWellStructuredContent(): string

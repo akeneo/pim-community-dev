@@ -23,8 +23,37 @@ class CollectApiBusinessErrorsEndToEnd extends ApiTestCase
     /** @var Client */
     private $esClient;
 
-    /*
-    public function test_it_collects_an_unprocessable_entity(): void
+    // test_it_collects_errors_from_a_product_delete
+    public function test_it_collects_an_error_from_a_not_found_http_exception(): void
+    {
+        $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
+
+        $client = $this->createAuthenticatedClient(
+            [],
+            [],
+            $connection->clientId(),
+            $connection->secret(),
+            $connection->username(),
+            $connection->password()
+        );
+
+        $client->request('DELETE', '/api/rest/v1/products/unknown_product_identifier');
+        Assert::assertSame(Response::HTTP_NOT_FOUND, $client->getResponse()->getStatusCode());
+
+        $expectedContent = json_decode($client->getResponse()->getContent(), true);
+
+        $this->esClient->refreshIndex();
+        $result = $this->esClient->search([]);
+
+        Assert::assertCount(1, $result['hits']['hits']);
+
+        $doc = $result['hits']['hits'][0]['_source'];
+        Assert::assertSame('erp', $doc['connection_code']);
+        Assert::assertSame($expectedContent['message'], $doc['content']['message']);
+    }
+
+    // test_it_collects_errors_from_a_product_create
+    public function test_it_collects_an_error_from_a_unprocessable_entity_http_exception(): void
     {
         $this->createAttribute([
             'code' => 'name',
@@ -33,12 +62,6 @@ class CollectApiBusinessErrorsEndToEnd extends ApiTestCase
         $this->createFamily([
             'code' => 'planeswalker',
             'attributes' => ['sku', 'name']
-        ]);
-        $this->createProduct('teferi_time_raveler', [
-            'family' => 'planeswalker',
-            'values' => [
-                'name' => [['data' => 'Teferi, time raveler', 'locale' => null, 'scope' => null]]
-            ]
         ]);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
@@ -67,10 +90,11 @@ JSON;
 
         $client->request('POST', '/api/rest/v1/products', [], [], [], $content);
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
+
         $expectedContent = json_decode($client->getResponse()->getContent(), true);
 
         $this->esClient->refreshIndex();
-        $result = $this->esClient->search(["query" => ["term" => ["connection_code" => "erp"]]]);
+        $result = $this->esClient->search([]);
 
         Assert::assertCount(1, $result['hits']['hits']);
 
@@ -79,8 +103,14 @@ JSON;
         Assert::assertEquals($expectedContent, $doc['content']);
     }
 
-    public function test_it_collects_an_unprocessable_entity_with_deeper_errors()
+    // test_it_collects_errors_from_a_product_partial_update
+    public function test_it_collects_each_violation_error_from_a_violation_http_exception()
     {
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+            'max_characters' => 5
+        ]);
         $this->createAttribute([
             'code' => 'length',
             'type' => 'pim_catalog_metric',
@@ -91,13 +121,7 @@ JSON;
         ]);
         $this->createFamily([
             'code' => 'screen',
-            'attributes' => ['sku', 'length']
-        ]);
-        $this->createProduct('big_screen', [
-            'family' => 'screen',
-            'values' => [
-                'length' => [['data' => ['amount' => 5, 'unit' => 'meter'], 'locale' => null, 'scope' => null]]
-            ]
+            'attributes' => ['sku', 'length', 'name']
         ]);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
@@ -114,24 +138,30 @@ JSON;
 {
     "identifier": "big_screen",
     "values": {
+        "name": [{
+            "locale": null,
+            "scope": null,
+            "data": "This name is too long."
+        }],
         "length": [{
             "locale": null,
             "scope": null,
             "data": {
                 "amount": 2,
-                "unit": "atchoum"
+                "unit": "invalid_unit"
             }
         }]
     }
 }
 JSON;
 
-        $client->request('POST', '/api/rest/v1/products', [], [], [], $content);
+        $client->request('PATCH', '/api/rest/v1/products/big_screen', [], [], [], $content);
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
+
         $expectedContent = json_decode($client->getResponse()->getContent(), true);
 
         $this->esClient->refreshIndex();
-        $result = $this->esClient->search(["query" => ["term" => ["connection_code" => "erp"]]]);
+        $result = $this->esClient->search([]);
 
         Assert::assertCount(2, $result['hits']['hits']);
 
@@ -143,9 +173,8 @@ JSON;
         Assert::assertEquals('erp', $doc2['connection_code']);
         Assert::assertEquals($expectedContent['errors'][1], $doc2['content']);
     }
-    */
 
-    public function test_it_collects_errors_from_a_partial_update_list(): void
+    public function test_it_collects_errors_from_a_product_partial_update_list(): void
     {
         $this->createAttribute([
             'code' => 'name',
@@ -212,21 +241,21 @@ JSON;
         );
         ob_end_flush();
 
-        dump($streamedContent);
+        Assert::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        // Assert::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        // $expectedContent = json_decode($streamedContent, true);
+        $expectedContent = array_map(function (string $result) {
+            return json_decode($result, true);
+        }, explode(PHP_EOL, $streamedContent));
 
         $this->esClient->refreshIndex();
-        $result = $this->esClient->search(["query" => ["term" => ["connection_code" => "erp"]]]);
+        $result = $this->esClient->search([]);
 
-        dd($result);
+        Assert::assertCount(1, $result['hits']['hits']);
 
-        //        Assert::assertEquals(1, $result['hits']['total']['value']);
-        //
-        //        $doc = $result['hits']['hits'][0]['_source'];
-        //        Assert::assertEquals('erp', $doc['connection_code']);
-        //        Assert::assertEquals($expectedContent, $doc['content']);
+        $doc = $result['hits']['hits'][0]['_source'];
+        Assert::assertEquals('erp', $doc['connection_code']);
+        Assert::assertArrayHasKey('message', $doc['content']);
+        Assert::assertSame($expectedContent[0]['message'], $doc['content']['message']);
     }
 
     protected function setUp(): void

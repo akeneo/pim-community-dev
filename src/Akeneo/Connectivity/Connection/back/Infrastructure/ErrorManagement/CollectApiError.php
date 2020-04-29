@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class CollectApiError
+class CollectApiError
 {
     /** @var BusinessErrorRepository */
     private $repository;
