@@ -19,8 +19,10 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
     /** @var MissingAssociationAdder */
     private $missingAssociationAdder;
 
-    public function __construct(ManagerRegistry $registry, MissingAssociationAdder $missingAssociationAdder)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        MissingAssociationAdder $missingAssociationAdder
+    ) {
         $this->registry = $registry;
         $this->missingAssociationAdder = $missingAssociationAdder;
     }
@@ -32,8 +34,6 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
         AssociationInterface $association,
         EntityWithAssociationsInterface $associatedEntity
     ): void {
-        /** @var ObjectManager $em */
-        $em = $this->registry->getManager();
         $associationType = $association->getAssociationType();
         $owner = $association->getOwner();
 
@@ -45,9 +45,9 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
         }
 
         if ($owner instanceof ProductInterface) {
-            $inversedAssociation->addProduct($owner);
+            $this->addInversedAssociatedProduct($inversedAssociation, $owner);
         } elseif ($owner instanceof ProductModelInterface) {
-            $inversedAssociation->addProductModel($owner);
+            $this->addInversedAssociatedProductModel($inversedAssociation, $owner);
         } else {
             throw new \LogicException(
                 sprintf(
@@ -58,8 +58,48 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
                 )
             );
         }
+    }
 
-        $em->persist($inversedAssociation);
+    /**
+     * In EE, products & associations are cloned for the Permission feature.
+     * Because of that, sometimes, we will have in the association 2 differents instances of the same product
+     * and Doctrine will throw an error saying it found a detached entity.
+     * To fix this, we look for cloned objects by comparing the identifier.
+     */
+    private function addInversedAssociatedProduct(
+        AssociationInterface $association,
+        ProductInterface $associatedProduct
+    ): void {
+        /** @var ProductInterface $product */
+        foreach ($association->getProducts() as $product) {
+            if ($product->getIdentifier() === $associatedProduct->getIdentifier()
+                && $product !== $associatedProduct) {
+                $association->removeProduct($product);
+            }
+        }
+
+        $association->addProduct($associatedProduct);
+    }
+
+    /**
+     * In EE, products & associations are cloned for the Permission feature.
+     * Because of that, sometimes, we will have in the association 2 differents instances of the same product model
+     * and Doctrine will throw an error saying it found a detached entity.
+     * To fix this, we look for cloned objects by comparing the identifier.
+     */
+    private function addInversedAssociatedProductModel(
+        AssociationInterface $association,
+        ProductModelInterface $associatedProductModel
+    ): void {
+        /** @var ProductModelInterface $productModel */
+        foreach ($association->getProductModels() as $productModel) {
+            if ($productModel->getCode() === $associatedProductModel->getCode()
+                && $productModel !== $associatedProductModel) {
+                $association->removeProductModel($productModel);
+            }
+        }
+
+        $association->addProductModel($associatedProductModel);
     }
 
     /**
@@ -69,10 +109,8 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
         AssociationInterface $association,
         EntityWithAssociationsInterface $associatedEntity
     ): void {
-        /** @var ObjectManager $em */
-        $em = $this->registry->getManager();
-        $owner = $association->getOwner();
         $associationType = $association->getAssociationType();
+        $owner = $association->getOwner();
 
         /** @var AssociationInterface $inversedAssociation */
         $inversedAssociation = $associatedEntity->getAssociationForType($associationType);
@@ -95,6 +133,8 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
             );
         }
 
+        /** @var ObjectManager $em */
+        $em = $this->registry->getManager();
         $em->persist($inversedAssociation);
     }
 }
