@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -183,7 +184,7 @@ class CreateTwoWayAssociationIntegration extends TestCase
         return $this->get('pim_catalog.remover.product_model');
     }
 
-    private function getProductUpdater(): ProductUpdater
+    private function getProductUpdater(): ObjectUpdaterInterface
     {
         return $this->get('pim_catalog.updater.product');
     }
