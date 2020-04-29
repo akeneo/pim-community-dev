@@ -433,21 +433,17 @@ class ProductController
         $this->warmupQueryCache->fromRequest($request);
         $resource = $request->getContent(true);
         $this->apiAggregatorForProductPostSave->activate();
-        $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
+
+        return $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
             try {
                 $this->apiAggregatorForProductPostSave->dispatchAllEvents();
             } catch (\Throwable $exception) {
-                // TODO @merge master Remove this condition
-                if (null !== $this->logger) {
-                    $this->logger->critical('An exception has been thrown in the post-save events', [
-                        'exception' => $exception,
-                    ]);
-                }
+                $this->logger->critical('An exception has been thrown in the post-save events', [
+                    'exception' => $exception,
+                ]);
             }
             $this->apiAggregatorForProductPostSave->deactivate();
         });
-
-        return $response;
     }
 
     /**
