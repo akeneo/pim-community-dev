@@ -64,6 +64,9 @@
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
+        "symfony/debug-bundle": "4.4.7",
+        "symfony/web-profiler-bundle": "4.4.7",
+        "symfony/web-server-bundle": "4.4.7",
         "behat/behat": "3.5.0",
         "behat/gherkin": "4.5.1",
         "behat/mink": "1.7.1",

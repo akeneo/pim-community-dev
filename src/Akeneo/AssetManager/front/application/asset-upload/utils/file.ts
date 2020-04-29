@@ -8,7 +8,7 @@ type ThumbnailForLine = {
   line: Line;
 };
 
-const ALLOWED_THUMBNAIL_MIME_TYPES = ['image/png', 'image/jpeg'];
+const ALLOWED_THUMBNAIL_MIME_TYPES = ['image/png', 'image/jpeg', 'image/svg+xml'];
 export const shouldCreateThumbnailFromFile = (file: File): boolean => {
   return ALLOWED_THUMBNAIL_MIME_TYPES.includes(file.type);
 };

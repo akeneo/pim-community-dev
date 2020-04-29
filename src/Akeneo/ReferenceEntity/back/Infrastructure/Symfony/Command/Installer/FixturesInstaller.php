@@ -18,7 +18,6 @@ use Ramsey\Uuid\Uuid;
  */
 class FixturesInstaller
 {
-    public const ICE_CAT_DEMO_DEV_CATALOG = 'PimEnterpriseInstallerBundle:icecat_demo_dev';
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
     private const NUMBER_OF_FAKE_RECORD_TO_CREATE = 10000;
 
@@ -130,12 +129,8 @@ SQL;
      * ' => \\'
      * " => \\\"
      */
-    public function loadCatalog(string $catalogName): void
+    public function loadCatalog(): void
     {
-        if (self::ICE_CAT_DEMO_DEV_CATALOG !== $catalogName) {
-            return;
-        }
-
         $this->loadCities();
         $this->loadFakeCities();
         $this->loadMainColors();

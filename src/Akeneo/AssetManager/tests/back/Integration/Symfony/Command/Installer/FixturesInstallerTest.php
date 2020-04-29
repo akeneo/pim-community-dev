@@ -49,22 +49,12 @@ class FixturesInstallerTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_loads_and_index_the_catalog_if_it_supports_it(): void
+    public function it_loads_and_index_the_catalog(): void
     {
         $this->fixturesInstaller->createSchema();
-        $this->fixturesInstaller->loadCatalog(FixturesInstaller::ICE_CAT_DEMO_DEV_CATALOG);
+        $this->fixturesInstaller->loadCatalog();
         $this->assertFixturesPersisted();
         $this->assertFixturesIndexed();
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_load_the_catalog_if_it_does_not_support_it(): void
-    {
-        $this->fixturesInstaller->createSchema();
-        $this->fixturesInstaller->loadCatalog('unsupported_catalog');
-        $this->assertFixturesNotLoaded();
     }
 
     private function resetPersistence(): void
@@ -99,14 +89,6 @@ SQL;
         Assert::assertEquals(6, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family;')->rowCount());
         Assert::assertEquals(20, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_attribute')->rowCount());
         Assert::assertEquals(self::TOTAL_ASSETS, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset')->rowCount());
-        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family_permissions')->rowCount());
-    }
-
-    private function assertFixturesNotLoaded(): void
-    {
-        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family;')->rowCount());
-        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_attribute')->rowCount());
-        Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset')->rowCount());
         Assert::assertEquals(0, $this->sqlConnection->executeQuery('SELECT * FROM akeneo_asset_manager_asset_family_permissions')->rowCount());
     }
 
