@@ -57,9 +57,6 @@ define([
                         return data;
                     }
                 },
-                formatSelection: function(data, container) {
-                    container.attr('title', data.text).text(data.text);
-                },
                 initSelection: function (element, callback) {
                     var families = this.getValue();
                     if (null !== families) {

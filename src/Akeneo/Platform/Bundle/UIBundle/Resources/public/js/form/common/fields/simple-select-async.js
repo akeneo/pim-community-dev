@@ -102,8 +102,15 @@ function (
           type: this.choiceVerb,
         },
         initSelection: this.select2InitSelection.bind(this),
-        formatSelection: function(data, container) {
-          container.attr('title', data.text).text(data.text);
+        formatResult: function(result, container, query, escapeMarkup) {
+          container.attr('title', result.text);
+
+          return $.fn.select2.defaults.formatResult(result, container, query, escapeMarkup);
+        },
+        formatSelection: function(data, container, escapeMarkup) {
+          container.attr('title', data.text);
+
+          return $.fn.select2.defaults.formatSelection(data, container, escapeMarkup);
         },
         placeholder: undefined !== this.config.placeholder ? __(this.config.placeholder) : ' ',
         dropdownCssClass: '',
@@ -170,7 +177,6 @@ function (
      * @param {Function} callback
      */
     select2InitSelection(element, callback) {
-      console.log('foo1');
       const id = $(element).val();
       if ('' !== id) {
         $.ajax({
