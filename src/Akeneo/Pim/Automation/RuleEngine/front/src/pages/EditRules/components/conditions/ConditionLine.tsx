@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDialogState, DialogDisclosure } from 'reakit/Dialog';
-import { AlertDialog } from '../../../components/AlertDialog/AlertDialog';
-import { PimConditionLine } from '../PimConditionLine';
-import { FallbackConditionLine } from '../FallbackConditionLine';
+import { AlertDialog } from '../../../../components/AlertDialog/AlertDialog';
+import { PimConditionLine } from './PimConditionLine';
+import { FallbackConditionLine } from './FallbackConditionLine';
 import styled from 'styled-components';
-import { ConditionLineProps } from "../ConditionLineProps";
+import { ConditionLineProps } from "../../ConditionLineProps";
 
 const DeleteButton = styled(DialogDisclosure)`
   border: none;

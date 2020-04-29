@@ -1,7 +1,7 @@
 import React from 'react';
-import { FallbackAction } from '../../../models/FallbackAction';
+import { FallbackAction } from '../../../../models/FallbackAction';
 import { ActionTemplate } from './ActionTemplate';
-import { ActionLineProps } from '../ActionLineProps';
+import { ActionLineProps } from "../../ActionLineProps";
 
 type Props = {
   action: FallbackAction;

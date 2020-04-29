@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
-import { PimCondition } from '../../models/PimCondition';
-import { Flag } from '../../components/Flag';
-import { ConditionLineProps } from './ConditionLineProps';
-import { useValueInitialization } from './hooks/useValueInitialization';
+import { PimCondition } from '../../../../models/PimCondition';
+import { Flag } from '../../../../components/Flag';
+import { ConditionLineProps } from '../../ConditionLineProps';
+import { useValueInitialization } from "../../hooks/useValueInitialization";
 
 const PimConditionLine: React.FC<ConditionLineProps> = ({
   translate,

@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Router, Translate } from '../../../dependenciesTools';
-import { GreyGhostButton, SmallHelper } from '../../../components';
-import { TextBoxBlue } from './TextBoxBlue';
+import { Router, Translate } from '../../../../dependenciesTools';
+import { GreyGhostButton, SmallHelper } from '../../../../components';
+import { TextBoxBlue } from '../TextBoxBlue';
 import { RuleDefinition } from '../../../models/';
 import { Condition } from '../../../models/';
 import { Locale } from '../../../models/';
-import { IndexedScopes } from '../../../fetch/ScopeFetcher';
+import { IndexedScopes } from '../../../../fetch/ScopeFetcher';
 import { useFormContext } from 'react-hook-form';
 import { ConditionLine } from "./ConditionLine";
 

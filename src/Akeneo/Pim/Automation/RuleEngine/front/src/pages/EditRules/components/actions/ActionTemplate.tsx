@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Translate } from '../../../dependenciesTools';
-import { RedGhostButton, SmallHelper } from '../../../components';
-import { TextBoxBlue } from './TextBoxBlue';
-import { VisuallyHidden } from 'reakit/VisuallyHidden';
+import { Translate } from '../../../../dependenciesTools';
+import { RedGhostButton, SmallHelper } from '../../../../components';
+import { TextBoxBlue } from '../TextBoxBlue';
+import { VisuallyHidden } from "reakit/VisuallyHidden";
 
 const StyledHeader = styled.header`
   font-weight: normal;

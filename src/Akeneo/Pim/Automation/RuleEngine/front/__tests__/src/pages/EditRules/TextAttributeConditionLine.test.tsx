@@ -1,6 +1,6 @@
 import { render } from '../../../../test-utils';
 import React from 'react';
-import { TextAttributeConditionLine } from '../../../../src/pages/EditRules/TextAttributeConditionLine';
+import { TextAttributeConditionLine } from '../../../../src/pages/EditRules/components/conditions/TextAttributeConditionLine';
 import { TextAttributeCondition } from '../../../../src/models/TextAttributeCondition';
 import { Attribute } from '../../../../src/models/Attribute';
 import { Operator } from '../../../../src/models/Operator';

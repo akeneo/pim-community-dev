@@ -1,7 +1,7 @@
 import React from 'react';
-import { FallbackCondition } from '../../models/FallbackCondition';
-import { ConditionLineProps } from './ConditionLineProps';
-import { useValueInitialization } from './hooks/useValueInitialization';
+import { FallbackCondition } from '../../../../models/FallbackCondition';
+import { ConditionLineProps } from '../../ConditionLineProps';
+import { useValueInitialization } from "../../hooks/useValueInitialization";
 
 const FallbackConditionLine: React.FC<ConditionLineProps> = ({
   condition,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Attribute, validateLocalizableScopableAttribute } from './Attribute';
 import { Router } from '../dependenciesTools';
 import { getAttributeByIdentifier } from '../fetch/AttributeFetcher';
-import { TextAttributeConditionLine } from '../pages/EditRules/TextAttributeConditionLine';
+import { TextAttributeConditionLine } from '../pages/EditRules/components/conditions/TextAttributeConditionLine';
 import { Operator } from './Operator';
 import { checkLocaleExists } from '../fetch/LocaleFetcher';
 import {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Router, Translate } from '../../../dependenciesTools';
-import { RuleProductSelection } from './RuleProductSelection';
+import { RuleProductSelection } from './conditions/RuleProductSelection';
 import { RuleDefinition, Locale } from '../../../models';
 import { Action } from '../../../models/Action';
 import { IndexedScopes } from '../../../fetch/ScopeFetcher';
 import { useFormContext } from 'react-hook-form';
-import { ActionLine } from "./ActionLine";
+import { ActionLine } from "./actions/ActionLine";
 
 type Props = {
   translate: Translate;

@@ -1,6 +1,6 @@
 import React from "react";
-import { Action } from "../../../models/Action";
-import { ActionLineProps } from "../ActionLineProps";
+import { Action } from "../../../../models/Action";
+import { ActionLineProps } from "../../ActionLineProps";
 
 const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   action,

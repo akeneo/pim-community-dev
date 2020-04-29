@@ -1,5 +1,5 @@
 import React from 'react';
-import { FallbackActionLine } from '../pages/EditRules/components/FallbackActionLine';
+import { FallbackActionLine } from '../pages/EditRules/components/actions/FallbackActionLine';
 import { ActionLineProps } from '../pages/EditRules/ActionLineProps';
 
 export type FallbackAction = {
