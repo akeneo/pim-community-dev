@@ -68,6 +68,7 @@ services:
             - '@pim_api.warmup_query_cache.dummy'
             - '@event_dispatcher'
             - '@pim_api.checker.duplicate_value'
+            - '@logger'
 
     pim_api.controller.product_model:
         public: true
