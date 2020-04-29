@@ -18,6 +18,7 @@
 ## Technical Improvements
 
 - PIM-9195: Add extra ImageMagick library to handle SVG files
+- Limit Symfony version on 4.4.7 because of validation issues with 4.4.8
 
 ## Bug fixes
 
