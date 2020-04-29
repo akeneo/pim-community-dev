@@ -23,8 +23,7 @@ define(
         'oro/messenger',
         'pim/template/mass-edit/product/associate/pick',
         'pim/template/mass-edit/product/associate/confirm',
-        'pim/template/common/modal-centered',
-        'pim/i18n'
+        'pim/template/common/modal-centered'
     ],
     function (
         $,
@@ -42,8 +41,7 @@ define(
         messenger,
         pickTemplate,
         confirmTemplate,
-        modalTemplate,
-        {getLabel}
+        modalTemplate
     ) {
         return BaseOperation.extend({
             className: 'AknGridToolbar',
@@ -264,7 +262,7 @@ define(
                                 ),
                                 okCloses: false,
                                 title: __('pim_enrich.entity.product.module.associations.manage', {
-                                    associationType: getLabel(associationType.labels, UserContext.get('catalogLocale'), associationType.code),
+                                    associationType: associationType.labels[UserContext.get('catalogLocale')]
                                 }),
                                 content: '',
                                 cancelText: ' ',
