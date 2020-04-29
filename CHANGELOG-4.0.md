@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9178: Fix Asset Family deletion error message
+
 # 4.0.20 (2020-04-27)
 
 # 4.0.19 (2020-04-24)
