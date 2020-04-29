@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.21 (2020-04-29)
+
 ## Technical Improvements
 
 - Limit Symfony version on 4.4.7 because of validation issues with 4.4.8
