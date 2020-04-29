@@ -4,6 +4,9 @@ import { Translate } from '../../../../dependenciesTools';
 import { RedGhostButton, SmallHelper } from '../../../../components';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { VisuallyHidden } from "reakit/VisuallyHidden";
+import { AlertDialog } from "../../../../components/AlertDialog/AlertDialog";
+import { createComponent } from 'reakit-system';
+import { useDialogDisclosure, useDialogState } from 'reakit';
 
 const StyledHeader = styled.header`
   font-weight: normal;
@@ -19,6 +22,12 @@ const StyledHeaderLeft = styled.span`
 const StyledTitleHeader = styled.span`
   padding-left: 8px;
 `;
+
+const DeleteButton = createComponent({
+  as: RedGhostButton,
+  useHook: useDialogDisclosure
+});
+
 
 type Props = {
   translate: Translate;
@@ -36,6 +45,8 @@ const ActionTemplate: React.FC<Props> = ({
   children,
   handleDelete,
 }) => {
+  const dialog = useDialogState();
+
   return (
     <fieldset>
       <StyledHeader className='AknSubsection-title'>
@@ -45,14 +56,17 @@ const ActionTemplate: React.FC<Props> = ({
           </TextBoxBlue>
           <StyledTitleHeader>{title}</StyledTitleHeader>
         </StyledHeaderLeft>
-        <RedGhostButton
-          sizeMode='small'
-          onClick={event => {
-            event.preventDefault();
-            handleDelete();
-          }}>
+        <DeleteButton { ...dialog } sizeMode='small'>
           {translate('pimee_catalog_rule.form.edit.remove_action')}
-        </RedGhostButton>
+        </DeleteButton>
+        <AlertDialog
+          dialog={ dialog }
+          onValidate={() => { handleDelete(); }}
+          cancelLabel='cancel'
+          confirmLabel='confirm'
+          label='Delete condition'
+          description='Are you sure?'
+        />
       </StyledHeader>
       <SmallHelper>{helper}</SmallHelper>
       <VisuallyHidden>
