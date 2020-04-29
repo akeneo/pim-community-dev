@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
@@ -38,6 +39,7 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
 
         $product->getAssociationForType($associationType)->willReturn(null, $inversedAssociation);
         $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $inversedAssociation->getProducts()->willReturn(new ArrayCollection([]));
 
         $inversedAssociation->addProduct($associationOwner)->shouldBeCalled();
         $entityManager->persist($inversedAssociation);
@@ -58,8 +60,59 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $association->getOwner()->willReturn($associationOwner);
 
         $product->getAssociationForType($associationType)->willReturn($inversedAssociation);
+        $inversedAssociation->getProductModels()->willReturn(new ArrayCollection([]));
 
         $inversedAssociation->addProductModel($associationOwner)->shouldBeCalled();
+        $entityManager->persist($inversedAssociation);
+
+        $this->createInversedAssociation($association, $product);
+    }
+
+    function it_replace_product_from_association_when_association_already_contain_another_instance_of_the_product(
+        ProductInterface $product,
+        AssociationInterface $association,
+        AssociationInterface $inversedAssociation,
+        AssociationTypeInterface $associationType,
+        ProductInterface $associationOwner,
+        ProductInterface $associationOwnerClone,
+        EntityManager $entityManager
+    ) {
+        $associationOwner->getIdentifier()->willreturn('58');
+        $associationOwnerClone->getIdentifier()->willreturn('58');
+
+        $association->getAssociationType()->willReturn($associationType);
+        $association->getOwner()->willReturn($associationOwnerClone);
+
+        $product->getAssociationForType($associationType)->willReturn($inversedAssociation);
+        $inversedAssociation->getProducts()->willReturn(new ArrayCollection([$associationOwner->getWrappedObject()]));
+
+        $inversedAssociation->removeProduct($associationOwner)->shouldBeCalled();
+        $inversedAssociation->addProduct($associationOwnerClone)->shouldBeCalled();
+        $entityManager->persist($inversedAssociation);
+
+        $this->createInversedAssociation($association, $product);
+    }
+
+    function it_replace_product_model_from_association_when_association_already_contain_another_instance_of_the_product_model(
+        ProductInterface $product,
+        AssociationInterface $association,
+        AssociationInterface $inversedAssociation,
+        AssociationTypeInterface $associationType,
+        ProductModelInterface $associationOwner,
+        ProductModelInterface $associationOwnerClone,
+        EntityManager $entityManager
+    ) {
+        $associationOwner->getCode()->willreturn('58');
+        $associationOwnerClone->getCode()->willreturn('58');
+
+        $association->getAssociationType()->willReturn($associationType);
+        $association->getOwner()->willReturn($associationOwnerClone);
+
+        $product->getAssociationForType($associationType)->willReturn($inversedAssociation);
+        $inversedAssociation->getProductModels()->willReturn(new ArrayCollection([$associationOwner->getWrappedObject()]));
+
+        $inversedAssociation->removeProductModel($associationOwner)->shouldBeCalled();
+        $inversedAssociation->addProductModel($associationOwnerClone)->shouldBeCalled();
         $entityManager->persist($inversedAssociation);
 
         $this->createInversedAssociation($association, $product);
