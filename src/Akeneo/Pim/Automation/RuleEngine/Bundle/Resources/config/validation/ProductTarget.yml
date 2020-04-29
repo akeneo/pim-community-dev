@@ -12,11 +12,3 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductTarget:
             - Type:
                 type: string
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
-        currency:
-            - Type:
-                type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ActiveCurrency: ~
-        unit:
-            # TODO: validate unit consistency
-            - Type:
-                type: string

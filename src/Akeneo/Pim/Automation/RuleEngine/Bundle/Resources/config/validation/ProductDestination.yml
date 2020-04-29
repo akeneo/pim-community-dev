@@ -1,0 +1,23 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductDestination:
+    properties:
+        field:
+            - Type:
+                type: string
+            - NotBlank: ~
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AttributeShouldBeNumeric: ~
+        scope:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
+        locale:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
+        currency:
+            - Type:
+                type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ActiveCurrency: ~
+        unit:
+            # TODO: validate unit consistency
+            - Type:
+                type: string

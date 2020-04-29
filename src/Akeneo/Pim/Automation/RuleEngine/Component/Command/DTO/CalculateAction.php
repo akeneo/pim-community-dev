@@ -14,7 +14,7 @@ final class CalculateAction
     {
         $destination = $data['destination'] ?? null;
         if (is_array($destination)) {
-            $destination = new ProductTarget($destination);
+            $destination = new ProductDestination($destination);
         }
         $this->destination = $destination;
 
