@@ -56,16 +56,16 @@ const ActionTemplate: React.FC<Props> = ({
           </TextBoxBlue>
           <StyledTitleHeader>{title}</StyledTitleHeader>
         </StyledHeaderLeft>
-        <DeleteButton { ...dialog } sizeMode='small'>
-          {translate('pimee_catalog_rule.form.edit.remove_action')}
+        <DeleteButton{ ...dialog } sizeMode='small'>
+          {translate('pimee_catalog_rule.form.edit.action.delete.label')}
         </DeleteButton>
         <AlertDialog
           dialog={ dialog }
           onValidate={() => { handleDelete(); }}
-          cancelLabel='cancel'
-          confirmLabel='confirm'
-          label='Delete condition'
-          description='Are you sure?'
+          cancelLabel={translate('pim_common.cancel')}
+          confirmLabel={translate('pim_common.confirm')}
+          label={translate('pimee_catalog_rule.form.edit.actions.delete.label')}
+          description={translate('pimee_catalog_rule.form.edit.actions.delete.description')}
         />
       </StyledHeader>
       <SmallHelper>{helper}</SmallHelper>

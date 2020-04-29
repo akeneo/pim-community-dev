@@ -73,14 +73,19 @@ pimee_catalog_rule:
             priority:
                 label: Priority
             add_to_category: Add to category
-            remove_action: Remove action
             add_conditions: Add conditions
             count_products: "{{ count }} products and product models"
             product_selection: Product selection
             fields:
                 family: Family
+            actions:
+                delete:
+                    label: Remove action
+                    description: Are you sure you want to remove this action?
             conditions:
-                delete: Delete condition
+                delete:
+                    label: Remove condition
+                    description: Are you sure you want to remove this condition?
                 operators:
                     "STARTS WITH": starts with
                     "ENDS WITH": ends with

@@ -50,10 +50,10 @@ const ConditionLine: React.FC<ConditionLineProps & { deleteCondition: (lineNumbe
         <AlertDialog
           dialog={ dialog }
           onValidate={() => { deleteCondition(lineNumber); }}
-          cancelLabel='cancel'
-          confirmLabel='confirm'
-          label='Delete condition'
-          description='Are you sure?'
+          cancelLabel={translate('pim_common.cancel')}
+          confirmLabel={translate('pim_common.confirm')}
+          label={translate('pimee_catalog_rule.form.edit.conditions.delete.label')}
+          description={translate('pimee_catalog_rule.form.edit.conditions.delete.description')}
         />
       </div>
     </div>
