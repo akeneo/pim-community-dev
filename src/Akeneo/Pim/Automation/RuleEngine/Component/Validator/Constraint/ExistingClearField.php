@@ -19,18 +19,10 @@ use Symfony\Component\Validator\Constraint;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  */
-final class ExistingClearFields extends Constraint
+final class ExistingClearField extends Constraint
 {
     /** @var string */
-    public $messageError = 'You cannot clear the data from the "%field%" field.';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTargets()
-    {
-        return self::CLASS_CONSTRAINT;
-    }
+    public $message = 'You cannot clear the data from the "%field%" field.';
 
     /**
      * {@inheritdoc}

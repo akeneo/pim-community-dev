@@ -34,10 +34,9 @@ services:
             - { name: validator.constraint_validator, alias: pimee_concatenate_fields_validator }
 
     pimee_catalog_rule.validator.existing_clear_fields:
-        class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingClearFieldsValidator
+        class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingClearFieldValidator
         arguments:
             - '@pim_catalog.updater.clearer.registry'
-            - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: validator.constraint_validator, alias: pimee_clear_fields_validator }
 

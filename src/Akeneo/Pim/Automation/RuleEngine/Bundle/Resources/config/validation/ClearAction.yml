@@ -9,6 +9,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ClearAction:
             - Type:
                 type: string
             - NotBlank: ~
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingClearField: ~
         scope:
             - Type:
                 type: string

@@ -8,6 +8,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CopyAction:
               attributeProperty: toField
               channelProperty: toScope
               localeProperty: toLocale
+        - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingCopyFields: ~
     properties:
         fromField:
             - Type:
