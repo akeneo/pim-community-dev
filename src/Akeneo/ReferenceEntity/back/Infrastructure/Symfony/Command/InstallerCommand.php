@@ -30,6 +30,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class InstallerCommand extends Command implements EventSubscriberInterface
 {
+    public const ICECAT_DEMO_DEV = 'icecat_demo_dev';
     protected static $defaultName = self::RESET_FIXTURES_COMMAND_NAME;
 
     private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:reference-entity:reset-fixtures';
@@ -40,14 +41,19 @@ class InstallerCommand extends Command implements EventSubscriberInterface
     /** @var AssetsInstaller */
     private $assetInstaller;
 
+    /** @var bool */
+    private $shouldLoadReferenceEntitiesFixtures;
+
     public function __construct(
         FixturesInstaller $fixturesInstaller,
-        AssetsInstaller $assetInstaller
+        AssetsInstaller $assetInstaller,
+        bool $shouldLoadReferenceEntitiesFixtures
     ) {
         parent::__construct(self::RESET_FIXTURES_COMMAND_NAME);
 
         $this->fixturesInstaller = $fixturesInstaller;
         $this->assetInstaller = $assetInstaller;
+        $this->shouldLoadReferenceEntitiesFixtures = $shouldLoadReferenceEntitiesFixtures;
     }
 
     /**
@@ -80,7 +86,15 @@ class InstallerCommand extends Command implements EventSubscriberInterface
 
     public function loadFixtures(InstallerEvent $event): void
     {
-        $this->fixturesInstaller->loadCatalog($event->getArgument('catalog'));
+        if (
+            $this->shouldLoadReferenceEntitiesFixtures ||
+            substr(
+                $event->getArgument('catalog'),
+                -strlen(self::ICECAT_DEMO_DEV)
+            ) === self::ICECAT_DEMO_DEV
+        ) {
+            $this->fixturesInstaller->loadCatalog();
+        }
     }
 
     public function installAssets(GenericEvent $event): void
@@ -95,6 +109,6 @@ class InstallerCommand extends Command implements EventSubscriberInterface
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->fixturesInstaller->createSchema();
-        $this->fixturesInstaller->loadCatalog(FixturesInstaller::ICE_CAT_DEMO_DEV_CATALOG);
+        $this->fixturesInstaller->loadCatalog();
     }
 }

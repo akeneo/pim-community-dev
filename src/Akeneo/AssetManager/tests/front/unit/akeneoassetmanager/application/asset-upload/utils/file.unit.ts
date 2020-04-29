@@ -86,8 +86,8 @@ describe('akeneoassetmanager/application/asset-upload/utils/file.ts -> shouldCre
     expect(shouldCreateThumbnailFromFile(new File(['foo'], 'foo.jpg', {type: 'image/jpeg'}))).toEqual(true);
   });
 
-  test('I disallow creation of thumbnail for svg', () => {
-    expect(shouldCreateThumbnailFromFile(new File(['foo'], 'foo.svg', {type: 'image/svg+xml'}))).toEqual(false);
+  test('I allow creation of thumbnail for svg', () => {
+    expect(shouldCreateThumbnailFromFile(new File(['foo'], 'foo.svg', {type: 'image/svg+xml'}))).toEqual(true);
   });
 
   test('I disallow creation of thumbnail for other mimetypes', () => {

@@ -25,3 +25,6 @@ parameters:
         - 'Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation'
     # Maximum transformations per asset families
     asset_manager_transformations_by_asset_family_limit: 10
+    # Set to "true" to automatically load asset fixtures
+    env(SHOULD_LOAD_ASSETS_FIXTURES): 'false'
+    should_load_assets_fixtures: '%env(bool:SHOULD_LOAD_ASSETS_FIXTURES)%'

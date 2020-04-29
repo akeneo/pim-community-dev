@@ -5,13 +5,17 @@ import {
 const UserContext = require('pim/user-context');
 UserContext.get.mockImplementation(() => 'en_US');
 
+const __ = require('oro/translator');
+__.mockImplementation(() => 'day');
+
 beforeEach(() =>  {
   jest.resetModules();
 });
 
 describe('Convert dashboard dates depending on the user locale and time period', () => {
   test('convert a date for daily time period', () => {
-    expect(dailyCallback('2020-02-06')).toBe('Thursday, February 6');
+    expect(dailyCallback('whatever', 0)).toBe('d - 7');
+    expect(dailyCallback('whatever', 6)).toBe('d - 1');
   });
   test('convert last day of week to a date range for weekly time period', () => {
     expect(weeklyCallback('2020-02-02')).toBe('1/27/2020 - 2/2/2020');

@@ -15,9 +15,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class InstallerCommandSpec extends ObjectBehavior
 {
-    function let(FixturesInstaller $fixturesInstaller, AssetsInstaller $assetsInstaller)
+    function let(FixturesInstaller $fixturesInstaller, AssetsInstaller $referenceEntitiesInstaller)
     {
-        $this->beConstructedWith($fixturesInstaller, $assetsInstaller);
+        $this->beConstructedWith($fixturesInstaller, $referenceEntitiesInstaller, false);
     }
 
     function it_is_initializable()
@@ -41,19 +41,46 @@ class InstallerCommandSpec extends ObjectBehavior
         $this->createSchema();
     }
 
-    function it_loads_the_fixtures(FixturesInstaller $fixturesInstaller, InstallerEvent $installerEvent)
+    function it_loads_the_fixtures_if_the_catalog_is_icecat_demo_dev(FixturesInstaller $fixturesInstaller, InstallerEvent $installerEvent)
     {
-        $installerEvent->getArgument('catalog')->willReturn('catalog_name');
+        $installerEvent->getArgument('catalog')->willReturn('icecat_demo_dev');
 
-        $fixturesInstaller->loadCatalog('catalog_name')->shouldBeCalled();
+        $fixturesInstaller->loadCatalog()->shouldBeCalled();
         $this->loadFixtures($installerEvent);
     }
 
-    function it_installs_the_assets(AssetsInstaller $assetsInstaller)
+
+    function it_does_not_load_the_fixtures_if_the_catalog_is_not_icecat_demo_dev(FixturesInstaller $fixturesInstaller, InstallerEvent $installerEvent)
+    {
+        $installerEvent->getArgument('catalog')->willReturn('unsupported_catalog_name');
+
+        $fixturesInstaller->loadCatalog()->shouldNotBeCalled();
+        $this->loadFixtures($installerEvent);
+    }
+
+    function it_loads_the_fixtures_if_forced($fixturesInstaller, $referenceEntitiesInstaller, InstallerEvent $installerEvent)
+    {
+        $this->beConstructedWith($fixturesInstaller, $referenceEntitiesInstaller, true);
+        $installerEvent->getArgument('catalog')->willReturn('unsupported_catalog_name');
+
+        $fixturesInstaller->loadCatalog()->shouldBeCalled();
+        $this->loadFixtures($installerEvent);
+    }
+
+    function it_does_not_load_the_fixtures_if_not_forced($fixturesInstaller, $referenceEntitiesInstaller, InstallerEvent $installerEvent)
+    {
+        $this->beConstructedWith($fixturesInstaller, $referenceEntitiesInstaller, false);
+        $installerEvent->getArgument('catalog')->willReturn('unsupported_catalog_name');
+
+        $fixturesInstaller->loadCatalog()->shouldNotBeCalled();
+        $this->loadFixtures($installerEvent);
+    }
+
+    function it_installs_the_reference_entities(AssetsInstaller $referenceEntitiesInstaller)
     {
         $event = new GenericEvent();
         $event->setArgument('symlink', true);
-        $assetsInstaller->installAssets(true)->shouldBeCalled();
+        $referenceEntitiesInstaller->installAssets(true)->shouldBeCalled();
 
         $this->installAssets($event);
     }
@@ -64,7 +91,7 @@ class InstallerCommandSpec extends ObjectBehavior
         FixturesInstaller $fixturesInstaller
     ) {
         $fixturesInstaller->createSchema()->shouldBeCalled();
-        $fixturesInstaller->loadCatalog(FixturesInstaller::ICE_CAT_DEMO_DEV_CATALOG)->shouldBeCalled();
+        $fixturesInstaller->loadCatalog()->shouldBeCalled();
 
         $this->execute($input, $output);
     }
