@@ -1,8 +1,8 @@
 # 4.0.x
 
-## Technical Improvements
+## Bug fixes
 
-- PIM-9181: Backport PIM-9133 to 4.0
+- PIM-9181: Backport PIM-9133 to 4.0 (Fix product/product model save when the user has no permission on some attribute groups)
 
 # 4.0.21 (2020-04-29)
 
