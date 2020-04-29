@@ -118,6 +118,19 @@ Flags are of course also available for frontend. Behind the scenes, a backend ro
 
 ## Using feature flags in your code
 
+### Switching DIC services based on a feature flag
+
+You can replace a specific DIC service by an alternative one based on a feature flag:
+
+```yaml
+services:
+    My\Service:
+        tags:
+            - { name: feature_flags.is_enabled, feature: onboarder, otherwise: 'My\NullService' }
+
+    My\NullService: ~
+```
+
 ### Knowing if a feature is enabled
 
 #### Backend
