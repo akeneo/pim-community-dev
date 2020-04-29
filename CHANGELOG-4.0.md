@@ -4,7 +4,7 @@
 
 ## Technical Improvements
 
-- Limit Symfony version on 4.4.7 because of validation issues with 4.4.8
+- Lock Symfony version on 4.4.7 because of validation issues with 4.4.8
 
 # 4.0.20 (2020-04-27)
 

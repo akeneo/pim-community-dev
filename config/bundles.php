@@ -59,5 +59,4 @@ return [
     // Dev related bundles
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
-    Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
 ];
