@@ -10,6 +10,8 @@ import { Condition } from '../../../models/';
 import { Locale } from '../../../models/';
 import { IndexedScopes } from '../../../fetch/ScopeFetcher';
 import { useFormContext } from 'react-hook-form';
+import { useDialogState, DialogDisclosure } from "reakit/Dialog";
+import { AlertDialog } from "../../../components/AlertDialog/AlertDialog";
 
 const Header = styled.header`
   font-weight: normal;
@@ -38,7 +40,7 @@ const TitleHeader = styled.span`
   padding-left: 8px;
 `;
 
-const DeleteButton = styled.button`
+const DeleteButton = styled(DialogDisclosure)`
   border: none;
   background: none;
   cursor: pointer;
@@ -60,7 +62,7 @@ type Props = {
   router: Router;
 };
 
-type ConditionLineProps = {
+type ConditionLine2Props = {
   condition: Condition;
   lineNumber: number;
   translate: Translate;
@@ -71,7 +73,7 @@ type ConditionLineProps = {
   deleteCondition: (lineNumber: number) => void;
 };
 
-const ConditionLine: React.FC<ConditionLineProps> = ({
+const ConditionLine: React.FC<ConditionLine2Props> = ({
   translate,
   condition,
   lineNumber,
@@ -81,6 +83,8 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
   router,
   deleteCondition,
 }) => {
+  const dialog = useDialogState();
+
   const Line = condition.module;
   const isFallback =
     condition.module === PimConditionLine ||
@@ -103,16 +107,20 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
         />
       </div>
       <div className='AknGrid-bodyCell AknGrid-bodyCell--tight'>
-        <DeleteButton
-          onClick={event => {
-            event.preventDefault();
-            deleteCondition(lineNumber);
-          }}>
+        <DeleteButton { ...dialog }>
           <img
             alt={translate('pimee_catalog_rule.form.edit.conditions.delete')}
             src='/bundles/pimui/images/icon-delete-slategrey.svg'
           />
         </DeleteButton>
+        <AlertDialog
+          dialog={dialog}
+          onValidate={() => { deleteCondition(lineNumber); }}
+          cancelLabel='cancel'
+          confirmLabel='confirm'
+          label='Delete condition'
+          description='Are you sure?'
+        />
       </div>
     </div>
   );

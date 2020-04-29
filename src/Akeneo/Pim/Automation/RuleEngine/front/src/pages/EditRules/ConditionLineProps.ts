@@ -12,4 +12,4 @@ type ConditionLineProps = {
   router: Router;
 };
 
-export { ConditionLineProps };
+export type { ConditionLineProps }
