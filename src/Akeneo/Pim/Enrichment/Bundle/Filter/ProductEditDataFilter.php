@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Filter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 /**
@@ -79,13 +79,8 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update the given modification $type
      * on the given $product
-     *
-     * @param ProductInterface $product
-     * @param string           $type
-     *
-     * @return bool
      */
-    protected function isAllowed(ProductInterface $product, $type)
+    protected function isAllowed(EntityWithValuesInterface $product, string $type): bool
     {
         $isAllowed = true;
 
@@ -116,70 +111,46 @@ class ProductEditDataFilter implements CollectionFilterInterface
 
     /**
      * Return whether the current user is allowed to update family of the product
-     *
-     * @param ProductInterface $product
-     *
-     * @return bool
      */
-    protected function isAllowedToUpdateFamily(ProductInterface $product)
+    protected function isAllowedToUpdateFamily(EntityWithValuesInterface $product): bool
     {
         return $this->checkAclForType('family');
     }
 
     /**
      * Return whether the current user is allowed to update categories of the product
-     *
-     * @param ProductInterface $product
-     *
-     * @return bool
      */
-    protected function isAllowedToClassify(ProductInterface $product)
+    protected function isAllowedToClassify(EntityWithValuesInterface $product): bool
     {
         return $this->checkAclForType('categories');
     }
 
     /**
      * Return whether the current user is allowed to update status of the product
-     *
-     * @param ProductInterface $product
-     *
-     * @return bool
      */
-    protected function isAllowedToUpdateStatus(ProductInterface $product)
+    protected function isAllowedToUpdateStatus(EntityWithValuesInterface $product): bool
     {
         return $this->checkAclForType('enabled');
     }
 
     /**
      * Return whether the current user is allowed to update associations of the product
-     *
-     * @param ProductInterface $product
-     *
-     * @return bool
      */
-    protected function isAllowedToUpdateAssociations(ProductInterface $product)
+    protected function isAllowedToUpdateAssociations(EntityWithValuesInterface $product): bool
     {
         return $this->checkAclForType('associations');
     }
 
     /**
      * Return whether the current user is allowed to update product values of the product
-     *
-     * @param ProductInterface $product
-     *
-     * @return bool
      */
-    protected function isAllowedToUpdateValues(ProductInterface $product)
+    protected function isAllowedToUpdateValues(EntityWithValuesInterface $product): bool
     {
         return $this->checkAclForType('values');
     }
 
     /**
      * Return whether the current user has ACL to do the given modification $type on the product
-     *
-     * @param string $type
-     *
-     * @return bool
      */
     protected function checkAclForType(string $type): bool
     {
@@ -190,10 +161,6 @@ class ProductEditDataFilter implements CollectionFilterInterface
 
     /**
      * Return which ACL should be used to filter data of specified type.
-     *
-     * @param string $type
-     *
-     * @return string|null
      */
     protected function getAclForType(string $type): ?string
     {

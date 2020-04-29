@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Technical Improvements
+
+- PIM-9181: Backport PIM-9133 to 4.0
+
 # 4.0.21 (2020-04-29)
 
 ## Technical Improvements
