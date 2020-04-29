@@ -20,8 +20,8 @@ Feature flags are defined by a _key_, representing the feature, and a _service_ 
 
 akeneo_feature_flag:
     feature_flags:
-        - { feature: 'onboarder', service: '@service_that_defines_if_onboarder_feature_is_enabled' }
-        - { feature: 'foo', service: '@service_that_defines_if_foo_feature_is_enabled' }
+        - { feature: 'onboarder', service: 'service_that_defines_if_onboarder_feature_is_enabled' }
+        - { feature: 'foo', service: 'service_that_defines_if_foo_feature_is_enabled' }
         - ...
 ```
 
