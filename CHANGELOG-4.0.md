@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9178: Fix Asset Family deletion error message
+- PIM-9211: Add indicator when uploading a media file in Asset Manager
 
 # 4.0.20 (2020-04-27)
 
