@@ -2,7 +2,7 @@ import React from 'react';
 import { FallbackAction } from '../../../models/FallbackAction';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from '../ActionLineProps';
-import { useFormContext } from 'react-hook-form';
+import { useValueInitialization } from "../hooks/useValueInitialization";
 
 type Props = {
   action: FallbackAction;
@@ -14,25 +14,14 @@ const FallbackActionLine: React.FC<Props> = ({
   action,
   handleDelete,
 }) => {
-  const { register, getValues, setValue } = useFormContext();
-
-  const initializeValue = (field: string, value: any): void => {
-    const key = `content.actions[${lineNumber}].${field}`;
-    register(key);
-    if (undefined === getValues()[key]) {
-      setValue(key, value);
-    }
-  }
-  Object.keys(action.json).forEach((field: string) => {
-    initializeValue(field, action.json[field]);
-  })
+  useValueInitialization(`content.actions[${lineNumber}]`, action.json);
 
   return (
     <ActionTemplate
       translate={translate}
       title='Unknown Action'
       helper='This feature is under development. Please use the import to manage your rules.'
-      srOnly='This feature is under development. Please use the import to manage your rules.'
+      legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}
     >
       {JSON.stringify(action.json)}

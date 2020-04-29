@@ -17,7 +17,7 @@ const AddToCategoryActionLine: React.FC<Props> = ({
       translate={translate}
       title={translate('pimee_catalog_rule.form.edit.add_to_category')}
       helper={translate('pimee_catalog_rule.form.helper.add_to_category')}
-      srOnly={translate('pimee_catalog_rule.form.legend.add_to_category')}
+      legend={translate('pimee_catalog_rule.form.legend.add_to_category')}
       handleDelete={handleDelete}
     >
       {/* Not coded yet */}

@@ -3,18 +3,7 @@ import styled from 'styled-components';
 import { Translate } from '../../../dependenciesTools';
 import { RedGhostButton, SmallHelper } from '../../../components';
 import { TextBoxBlue } from './TextBoxBlue';
-
-const LegendSrOnly = styled.legend`
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-`;
+import { VisuallyHidden } from "reakit/VisuallyHidden";
 
 const StyledHeader = styled.header`
   font-weight: normal;
@@ -35,12 +24,12 @@ type Props = {
   translate: Translate;
   title: string;
   helper: string;
-  srOnly: string;
+  legend: string;
   handleDelete: () => void;
 };
 
 const ActionTemplate: React.FC<Props> = ({
-  srOnly,
+  legend,
   translate,
   title,
   helper,
@@ -66,7 +55,7 @@ const ActionTemplate: React.FC<Props> = ({
         </RedGhostButton>
       </StyledHeader>
       <SmallHelper>{helper}</SmallHelper>
-      <LegendSrOnly>{srOnly}</LegendSrOnly>
+      <VisuallyHidden><legend>{legend}</legend></VisuallyHidden>
       {children}
     </fieldset>
   );
