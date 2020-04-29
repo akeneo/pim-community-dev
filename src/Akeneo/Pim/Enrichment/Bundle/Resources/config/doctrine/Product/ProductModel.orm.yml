@@ -17,6 +17,9 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
         rawValues:
             type: json
             column: raw_values
+        rawQuantifiedAssociations:
+            type: json
+            column: quantified_associations
         created:
             type: datetime
         updated:

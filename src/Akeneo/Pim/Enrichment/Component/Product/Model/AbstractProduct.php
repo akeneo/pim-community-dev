@@ -27,6 +27,9 @@ abstract class AbstractProduct implements ProductInterface
     /** @var array */
     protected $rawValues;
 
+    /** @var array */
+    protected $rawQuantifiedAssociations = [];
+
     /** @var \DateTime $created */
     protected $created;
 
