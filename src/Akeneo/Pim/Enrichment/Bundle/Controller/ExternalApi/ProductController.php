@@ -40,6 +40,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -150,6 +151,9 @@ class ProductController
     /** @var DuplicateValueChecker */
     protected $duplicateValueChecker;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -179,7 +183,8 @@ class ProductController
         ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave,
         WarmupQueryCache $warmupQueryCache,
         EventDispatcherInterface $eventDispatcher,
-        DuplicateValueChecker $duplicateValueChecker
+        DuplicateValueChecker $duplicateValueChecker,
+        ?LoggerInterface $logger
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -210,6 +215,7 @@ class ProductController
         $this->warmupQueryCache = $warmupQueryCache;
         $this->eventDispatcher = $eventDispatcher;
         $this->duplicateValueChecker = $duplicateValueChecker;
+        $this->logger = $logger;
     }
 
     /**
@@ -428,7 +434,13 @@ class ProductController
         $resource = $request->getContent(true);
         $this->apiAggregatorForProductPostSave->activate();
         $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
-            $this->apiAggregatorForProductPostSave->dispatchAllEvents();
+            try {
+                $this->apiAggregatorForProductPostSave->dispatchAllEvents();
+            } catch (\Throwable $exception) {
+                $this->logger->critical('An exception has been thrown in the post-save events', [
+                    'exception' => $exception,
+                ]);
+            }
             $this->apiAggregatorForProductPostSave->deactivate();
         });
 

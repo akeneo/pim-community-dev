@@ -1,5 +1,20 @@
 # 4.0.x
 
+# 4.0.21 (2020-04-29)
+
+## Technical Improvements
+
+- Lock Symfony version on 4.4.7 because of validation issues with 4.4.8
+
+# 4.0.20 (2020-04-27)
+
+# 4.0.19 (2020-04-24)
+
+## Bug fixes
+
+- PIM-9192: Fix error being printed in the response of partial update of products API
+- AOB-937: Include additional properties when indexing product models
+
 # 4.0.18 (2020-04-23)
 
 ## Bug fixes
