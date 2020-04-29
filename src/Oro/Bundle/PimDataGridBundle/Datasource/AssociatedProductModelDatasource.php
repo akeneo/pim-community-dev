@@ -89,7 +89,7 @@ class AssociatedProductModelDatasource extends ProductDatasource
         );
 
         $productModelLimit = $limit - $associatedProducts->count();
-        $associatedProductModels = [];
+        $normalizedAssociatedProductModels = [];
         if ($productModelLimit > 0) {
             $productModelFrom = $from - count($associatedProductsIdentifiers) + $associatedProducts->count();
             $associatedProductModels = $this->getAssociatedProductModels(
@@ -99,18 +99,18 @@ class AssociatedProductModelDatasource extends ProductDatasource
                 $locale,
                 $scope
             );
+
+            $normalizedAssociatedProductModels = $this->normalizeProductsAndProductModels(
+                $associatedProductModels,
+                $associatedProductModelsIdentifiersFromParent,
+                $locale,
+                $scope
+            );
         }
 
         $normalizedAssociatedProducts = $this->normalizeProductsAndProductModels(
             $associatedProducts,
             $associatedProductsIdentifiersFromParent,
-            $locale,
-            $scope
-        );
-
-        $normalizedAssociatedProductModels = $this->normalizeProductsAndProductModels(
-            $associatedProductModels,
-            $associatedProductModelsIdentifiersFromParent,
             $locale,
             $scope
         );
