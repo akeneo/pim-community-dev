@@ -1,12 +1,11 @@
 import React from 'react';
 import { Router, Translate } from '../../../dependenciesTools';
 import { RuleProductSelection } from './RuleProductSelection';
-import { RuleDefinition } from '../../../models';
+import { RuleDefinition, Locale } from '../../../models';
 import { Action } from '../../../models/Action';
-import { Locale } from '../../../models';
 import { IndexedScopes } from '../../../fetch/ScopeFetcher';
-import { ActionLineProps } from '../ActionLineProps';
 import { useFormContext } from 'react-hook-form';
+import { ActionLine } from "./ActionLine";
 
 type Props = {
   translate: Translate;
@@ -15,24 +14,6 @@ type Props = {
   scopes: IndexedScopes;
   currentCatalogLocale: string;
   router: Router;
-};
-
-const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
-  action,
-  translate,
-  lineNumber,
-  handleDelete,
-}) => {
-  const Line = action.module;
-
-  return (
-    <Line
-      action={action}
-      translate={translate}
-      lineNumber={lineNumber}
-      handleDelete={handleDelete}
-    />
-  );
 };
 
 const RulesBuilder: React.FC<Props> = ({
