@@ -20,7 +20,7 @@ Feature flags are defined by a _key_, representing the feature, and a _service_ 
 
 akeneo_feature_flag:
     feature_flags:
-        - { feature: 'onboarder', service: '@service_that_defines_if_onboarder_feature_is_enabled' }
+        - { feature: 'myCoolFeature', service: '@service_that_defines_if_myCoolFeature_feature_is_enabled' }
         - { feature: 'foo', service: '@service_that_defines_if_foo_feature_is_enabled' }
         - ...
 ```
@@ -44,10 +44,10 @@ Let's take a very simple example: we want to (de)activate the _Onboarder_ featur
 
 ```yaml
 services:
-    service_that_defines_if_onboarder_feature_is_enabled:
+    service_that_defines_if_myCoolFeature_feature_is_enabled:
         class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag'
         arguments:
-            - '%env(bool:FLAG_ONBOARDER_ENABLED)%'
+            - '%env(bool:FLAG_MYCOOLFEATURE_ENABLED)%'
 ```
 
 Behind the scenes, the very simple `EnvVarFeatureFlag` class is called:
@@ -118,19 +118,6 @@ Flags are of course also available for frontend. Behind the scenes, a backend ro
 
 ## Using feature flags in your code
 
-### Switching DIC services based on a feature flag
-
-You can replace a specific DIC service by an alternative one based on a feature flag:
-
-```yaml
-services:
-    My\Service:
-        tags:
-            - { name: feature_flags.is_enabled, feature: onboarder, otherwise: 'My\NullService' }
-
-    My\NullService: ~
-```
-
 ### Knowing if a feature is enabled
 
 #### Backend
@@ -149,6 +136,19 @@ You can easily disable a route if your feature is disabled by using the `_featur
 pim_analytics_system_info_index:
     path: /system_info
     defaults: { _controller: 'pim_analytics.controller.system_info:indexAction', _format: html, _feature: 'myCoolFeature' }
+```
+
+### Switching DIC services based on a feature flag
+
+You can replace a specific DIC service by an alternative one based on a feature flag:
+
+```yaml
+services:
+    My\Service:
+        tags:
+            - { name: feature_flags.is_enabled, feature: myCoolFeature, otherwise: 'My\NullService' }
+
+    My\NullService: ~
 ```
 
 #### Frontend
