@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Common\EntityWithValue\Builder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Test\Common\EntityBuilder;
 use Akeneo\Test\Common\EntityWithValue\Code;
