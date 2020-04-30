@@ -28,7 +28,7 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQueryIntegration extends Te
     public function test_it_returns_the_last_business_errors_of_a_connection(): void
     {
         $this->esClient->bulkIndexes([
-            // Ignored: error is too older (more than 7 days)
+            // Ignored: error is too old (more than 7 days)
             [
                 'connection_code' => 'erp',
                 'error_datetime' => '2019-12-31T00:00:00+00:00',
