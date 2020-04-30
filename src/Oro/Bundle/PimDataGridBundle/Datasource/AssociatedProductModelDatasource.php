@@ -88,10 +88,17 @@ class AssociatedProductModelDatasource extends ProductDatasource
             $scope
         );
 
-        $productModelLimit = $limit - $associatedProducts->count();
+        $normalizedAssociatedProducts = $this->normalizeProductsAndProductModels(
+            $associatedProducts,
+            $associatedProductsIdentifiersFromParent,
+            $locale,
+            $scope
+        );
+
+        $productModelLimit = $limit - $associatedProducts->count() + $from;
         $normalizedAssociatedProductModels = [];
         if ($productModelLimit > 0) {
-            $productModelFrom = $from - count($associatedProductsIdentifiers) + $associatedProducts->count();
+            $productModelFrom = $from - count($associatedProductsIdentifiers) + count($normalizedAssociatedProducts);
             $associatedProductModels = $this->getAssociatedProductModels(
                 $associatedProductModelsIdentifiers,
                 $productModelLimit,
@@ -107,13 +114,6 @@ class AssociatedProductModelDatasource extends ProductDatasource
                 $scope
             );
         }
-
-        $normalizedAssociatedProducts = $this->normalizeProductsAndProductModels(
-            $associatedProducts,
-            $associatedProductsIdentifiersFromParent,
-            $locale,
-            $scope
-        );
 
         $rows = ['totalRecords' => count($associatedProductsIdentifiers) + count($associatedProductModelsIdentifiers)];
         $rows['data'] = array_merge($normalizedAssociatedProducts, $normalizedAssociatedProductModels);
