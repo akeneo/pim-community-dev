@@ -70,16 +70,6 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQuery implements SelectLast
         }
 
         return $businessErrors;
-
-//        return array_map(function (array $row) {
-//            $data = $row['_source'];
-//
-//            return new BusinessError(
-//                $data['connection_code'],
-//                \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $data['error_datetime'], new \DateTimeZone('UTC')),
-//                json_encode($data['content'])
-//            );
-//        }, $result['hits']['hits']);
     }
 
     /**
