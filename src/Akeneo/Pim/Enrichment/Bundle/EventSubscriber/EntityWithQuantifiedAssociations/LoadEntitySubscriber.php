@@ -23,10 +23,10 @@ use Doctrine\ORM\Events;
  */
 final class LoadEntitySubscriber implements EventSubscriber
 {
-  /** @var GetProductIdentifiersFromProductIdsQueryInterface */
+  /** @var GetIdMappingFromProductIdsQueryInterface */
   private $getIdMappingFromProductIds;
 
-  /** @var GetProductModelCodesFromProductModelIdsQueryInterface */
+  /** @var GetIdMappingFromProductModelIdsQueryInterface */
   private $getIdMappingFromProductModelIds;
 
     public function __construct(
