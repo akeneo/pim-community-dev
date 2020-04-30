@@ -13,14 +13,17 @@ use Webmozart\Assert\Assert;
  */
 class IdMapping
 {
+    /** @var array  */
     private $idsToIdentifiers;
+
+    /** @var array  */
     private $identifiersToIds;
 
     private function __construct(array $mapping)
     {
         foreach ($mapping as $id => $identifier) {
             Assert::integer($id);
-            Assert::isString($identifier);
+            Assert::string($identifier);
         }
 
         $this->idsToIdentifiers = $mapping;
@@ -43,6 +46,6 @@ class IdMapping
     {
         Assert::keyExists($this->idsToIdentifiers, $id);
 
-        return $this->identifiersToIds[$id];
+        return $this->idsToIdentifiers[$id];
     }
 }

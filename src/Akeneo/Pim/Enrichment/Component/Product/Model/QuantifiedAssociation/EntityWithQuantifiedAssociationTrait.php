@@ -11,15 +11,13 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation;
  */
 trait EntityWithQuantifiedAssociationTrait
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $rawQuantifiedAssociations = [];
 
     /**
-     * Not persisted. Loaded on the fly via the $rawValues.
+     * Not persisted.
      *
-     * @var array
+     * @var QuantifiedAssociations
      */
     protected $quantifiedAssociations = [];
 
@@ -28,7 +26,18 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function getQuantifiedAssociationsProductIds(): array
     {
-        return [];
+        if (null === $this->rawQuantifiedAssociations) {
+            return [];
+        }
+
+        $result = [];
+        foreach ($this->rawQuantifiedAssociations as $associationType => $associations) {
+            foreach ($associations['products'] as $productAssociation) {
+                $result[] = $productAssociation['id'];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -36,7 +45,18 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function getQuantifiedAssociationsProductModelIds(): array
     {
-        return [];
+        if (null === $this->rawQuantifiedAssociations) {
+            return [];
+        }
+
+        $result = [];
+        foreach ($this->rawQuantifiedAssociations as $associationType => $associations) {
+            foreach ($associations['product_models'] as $productModelAssociation) {
+                $result[] = $productModelAssociation['id'];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -44,7 +64,7 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function hydrateQuantifiedAssociations(IdMapping $mappedProductIds, IdMapping $mappedProductModelIds): void
     {
-        $this->quantifiedAssociations = QuantifiedAssociations::createWithAssociationsAndMapping($this->rawQuantifiedAssociations, $mappedProductIds, $mappedProductModelIds);
+        $this->quantifiedAssociations = QuantifiedAssociations::createWithAssociationsAndMapping($this->rawQuantifiedAssociations ?? [], $mappedProductIds, $mappedProductModelIds);
     }
 
     /**
@@ -52,7 +72,7 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function getQuantifiedAssociationsProductIdentifiers(): array
     {
-        return [];
+        return $this->quantifiedAssociations->getQuantifiedAssociationsProductIdentifiers();
     }
 
     /**
@@ -60,7 +80,7 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function getQuantifiedAssociationsProductModelCodes(): array
     {
-        return [];
+        return $this->quantifiedAssociations->getQuantifiedAssociationsProductModelCodes();
     }
 
     /**
@@ -70,6 +90,9 @@ trait EntityWithQuantifiedAssociationTrait
         IdMapping $mappedProductIdentifiers,
         IdMapping $mappedProductModelIdentifiers
     ): void {
-        $this->rawQuantifiedAssociations = $this->quantifiedAssociations;
+        $this->rawQuantifiedAssociations = $this->quantifiedAssociations->normalizeWithMapping(
+            $mappedProductIdentifiers,
+            $mappedProductModelIdentifiers
+        );
     }
 }
