@@ -34,7 +34,7 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQueryIntegration extends Te
                 'error_datetime' => '2019-12-31T00:00:00+00:00',
                 'content' => ['message' => 'Error 1'],
             ],
-            // Ignored: 3rd result (oldest) on a $limit if 2
+            // Ignored: 3rd result (oldest) on a $limit of 2
             [
                 'connection_code' => 'erp',
                 'error_datetime' => '2020-01-01T00:00:00+00:00',
