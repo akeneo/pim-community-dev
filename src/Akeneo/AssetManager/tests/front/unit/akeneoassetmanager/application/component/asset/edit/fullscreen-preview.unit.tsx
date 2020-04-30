@@ -5,6 +5,8 @@ import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
 
 const mediaFileAttribute = {
   identifier: 'image_attribute_identifier',
@@ -31,7 +33,9 @@ describe('Tests fullscreen preview component', () => {
   test('It opens the modal when clicking on the anchor', async () => {
     const {container} = render(
       <ThemeProvider theme={akeneoTheme}>
-        <FullscreenPreview anchor={Anchor} data={mediaFileData} label="" attribute={mediaFileAttribute} />
+        <Provider store={createStore(() => ({reloadPreview: false}))}>
+          <FullscreenPreview anchor={Anchor} data={mediaFileData} label="" attribute={mediaFileAttribute} />
+        </Provider>
       </ThemeProvider>
     );
 
@@ -43,7 +47,9 @@ describe('Tests fullscreen preview component', () => {
   test('It closes the modal when clicking on the close button', async () => {
     const {container} = render(
       <ThemeProvider theme={akeneoTheme}>
-        <FullscreenPreview anchor={Anchor} data={mediaFileData} label="" attribute={mediaFileAttribute} />
+        <Provider store={createStore(() => ({reloadPreview: false}))}>
+          <FullscreenPreview anchor={Anchor} data={mediaFileData} label="" attribute={mediaFileAttribute} />
+        </Provider>
       </ThemeProvider>
     );
 

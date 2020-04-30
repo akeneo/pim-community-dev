@@ -480,6 +480,7 @@ pim_asset_manager:
     media_link:
       placeholder: Put your media link here
       read_only: This media link is read only
+      reload: Reload the media link thumbnail
     media_file:
       placeholder: Drag and drop to upload or click here
       read_only: This media file is read only

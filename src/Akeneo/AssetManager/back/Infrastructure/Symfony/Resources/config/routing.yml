@@ -110,7 +110,7 @@ akeneo_asset_manager_product_get_linked_product:
 akeneo_asset_manager_image_preview:
     path: '/rest/asset_manager/image_preview/{attributeIdentifier}/{type}'
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.image_preview }
-    methods: [GET]
+    methods: [GET, POST]
 
 akeneo_asset_manager_file_upload:
     path: '/rest/asset_manager/file/upload'
