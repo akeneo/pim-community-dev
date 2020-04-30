@@ -114,7 +114,7 @@ class ProductModelController
         FamilyVariantRepositoryInterface $familyVariantRepository,
         AttributeFilterInterface $productModelAttributeFilter,
         Client $productAndProductModelClient,
-        CollectionFilterInterface $productEditDataFilter
+        CollectionFilterInterface $productEditDataFilter = null
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->normalizer = $normalizer;
