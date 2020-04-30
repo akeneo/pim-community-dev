@@ -56,7 +56,7 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQueryIntegration extends Te
                 'error_datetime' => '2020-01-07T00:00:00+00:00',
                 'content' => ['message' => 'Error 5'],
             ],
-            // Ignored: error is younger than the $endDate param
+            // Ignored: error is newer than the $endDate param
             [
                 'connection_code' => 'erp',
                 'error_datetime' => '2020-01-09T00:00:00+00:00',
