@@ -271,3 +271,23 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetProductCompletenessRatio'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_identifiers_query:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductIdentifiersQuery'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_codes_query:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductModelCodesQuery'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_ids_query:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductIdsQuery'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_ids_query:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductModelIdsQuery'
+        arguments:
+            - '@database_connection'
