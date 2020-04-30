@@ -10,6 +10,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductSource:
                 type: string
             - NotBlank: ~
             - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsAttribute: ~
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidSource: ~
         scope:
             - Type:
                 type: string

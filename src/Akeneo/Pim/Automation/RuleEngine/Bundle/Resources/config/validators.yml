@@ -24,15 +24,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pimee_set_field_validator }
 
-    pimee_catalog_rule.validator.existing_concatenate_fields:
-        class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingConcatenateFieldsValidator
-        arguments:
-            - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierRegistry'
-            - '@pim_catalog.updater.setter.registry'
-            - '@akeneo.pim.structure.query.get_attributes'
-        tags:
-            - { name: validator.constraint_validator, alias: pimee_concatenate_fields_validator }
-
     pimee_catalog_rule.validator.existing_clear_fields:
         class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingClearFieldValidator
         arguments:
@@ -126,5 +117,12 @@ services:
     Akeneo\Pim\Automation\RuleEngine\Component\Validator\IsAttributeValidator:
         arguments:
             - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\IsValidSourceValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierRegistry'
         tags:
             - { name: validator.constraint_validator }
