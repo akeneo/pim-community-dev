@@ -37,7 +37,7 @@ class ApiErrorEventSubscriberSpec extends ObjectBehavior
     {
         $this->getSubscribedEvents()->shouldReturn([
             KernelEvents::EXCEPTION => 'collectApiError',
-            KernelEvents::TERMINATE => 'saveApiErrors',
+            KernelEvents::TERMINATE => 'flushApiErrors',
         ]);
     }
 
@@ -75,21 +75,21 @@ class ApiErrorEventSubscriberSpec extends ObjectBehavior
         $this->collectApiError($exceptionEvent);
     }
 
-    public function it_saves_collected_errors($collectApiError, $request, $terminateEvent): void
+    public function it_flushes_collected_errors($collectApiError, $request, $terminateEvent): void
     {
         $request->get('_route')->willReturn(MonitoredRoutes::ROUTES[0]);
 
-        $collectApiError->save()->shouldBeCalled();
+        $collectApiError->flush()->shouldBeCalled();
 
-        $this->saveApiErrors($terminateEvent);
+        $this->flushApiErrors($terminateEvent);
     }
 
-    public function it_doesnt_save_when_the_route_is_not_monitored($collectApiError, $request, $terminateEvent): void
+    public function it_doesnt_flush_when_the_route_is_not_monitored($collectApiError, $request, $terminateEvent): void
     {
         $request->get('_route')->willReturn('not_monitored_route');
 
-        $collectApiError->save()->shouldNotBeCalled();
+        $collectApiError->flush()->shouldNotBeCalled();
 
-        $this->saveApiErrors($terminateEvent);
+        $this->flushApiErrors($terminateEvent);
     }
 }

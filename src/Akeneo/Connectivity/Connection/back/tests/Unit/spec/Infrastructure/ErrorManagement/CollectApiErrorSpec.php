@@ -41,7 +41,7 @@ class CollectApiErrorSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->collectFromHttpException($exception);
-        $this->save();
+        $this->flush();
     }
 
     public function it_doesnt_collect_errors_when_the_api_connection_is_not_found(
@@ -56,7 +56,7 @@ class CollectApiErrorSpec extends ObjectBehavior
         $repository->bulkInsert()->shouldNotBeCalled();
 
         $this->collectFromHttpException($exception);
-        $this->save();
+        $this->flush();
     }
 
     public function it_doesnt_collect_errors_when_the_api_connection_is_not_collectable(
@@ -73,7 +73,7 @@ class CollectApiErrorSpec extends ObjectBehavior
         $repository->bulkInsert()->shouldNotBeCalled();
 
         $this->collectFromHttpException($exception);
-        $this->save();
+        $this->flush();
     }
 
     public function it_doesnt_collect_errors_when_the_api_connection_has_not_the_data_source_flow_type(
@@ -91,6 +91,6 @@ class CollectApiErrorSpec extends ObjectBehavior
         $repository->bulkInsert()->shouldNotBeCalled();
 
         $this->collectFromHttpException($exception);
-        $this->save();
+        $this->flush();
     }
 }

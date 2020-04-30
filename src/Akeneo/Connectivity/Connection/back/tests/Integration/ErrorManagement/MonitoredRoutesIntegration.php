@@ -10,7 +10,7 @@ use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Routing\RouterInterface;
 
-class ElasticsearchBusinessErrorRepositoryIntegration extends TestCase
+class MonitoredRoutesIntegration extends TestCase
 {
     public function test_that_monitored_routes_exists(): void
     {

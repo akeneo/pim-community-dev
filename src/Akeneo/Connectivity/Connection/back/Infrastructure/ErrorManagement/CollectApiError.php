@@ -43,7 +43,7 @@ class CollectApiError
         $this->collect($errors);
     }
 
-    public function save(): void
+    public function flush(): void
     {
         if (0 === count($this->errors)) {
             return;
@@ -66,11 +66,11 @@ class CollectApiError
             return;
         }
 
-        $this->errors = array_merge(
-            $this->errors,
-            array_map(function (string $error) use ($connection) {
-                return new BusinessError($connection->code(), $error);
-            }, $errors)
-        );
+        $newErrors = [];
+        foreach ($errors as $error) {
+            $newErrors[] = new BusinessError($connection->code(), $error);
+        }
+
+        $this->errors = array_merge($this->errors, $newErrors);
     }
 }

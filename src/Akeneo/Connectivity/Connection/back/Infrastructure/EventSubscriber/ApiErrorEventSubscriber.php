@@ -36,7 +36,7 @@ final class ApiErrorEventSubscriber implements EventSubscriberInterface
     {
         return [
             KernelEvents::EXCEPTION => 'collectApiError',
-            KernelEvents::TERMINATE => 'saveApiErrors',
+            KernelEvents::TERMINATE => 'flushApiErrors',
         ];
     }
 
@@ -47,25 +47,25 @@ final class ApiErrorEventSubscriber implements EventSubscriberInterface
             ? $exceptionEvent->getRequest()
             : $this->requestStack->getMasterRequest();
 
-        if (false === $this->isMonitoredRoute($request)) {
+        if (false === $this->isRouteMonitored($request)) {
             return;
         }
 
         $this->collectApiError->collectFromHttpException($exceptionEvent->getException());
     }
 
-    public function saveApiErrors(TerminateEvent $terminateEvent): void
+    public function flushApiErrors(TerminateEvent $terminateEvent): void
     {
         $request = $terminateEvent->getRequest();
 
-        if (false === $this->isMonitoredRoute($request)) {
+        if (false === $this->isRouteMonitored($request)) {
             return;
         }
 
-        $this->collectApiError->save();
+        $this->collectApiError->flush();
     }
 
-    private function isMonitoredRoute(Request $request): bool
+    private function isRouteMonitored(Request $request): bool
     {
         if (null === $route = $request->get('_route')) {
             return false;
