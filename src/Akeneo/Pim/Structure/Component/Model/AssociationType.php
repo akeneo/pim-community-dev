@@ -38,7 +38,7 @@ class AssociationType implements AssociationTypeInterface
     protected $updated;
 
     /** @var bool */
-    protected $isTwoWay;
+    protected $isTwoWay = false;
 
     /**
      * Constructor
@@ -46,7 +46,6 @@ class AssociationType implements AssociationTypeInterface
     public function __construct()
     {
         $this->translations = new ArrayCollection();
-        $this->isTwoWay = false;
     }
 
     /**

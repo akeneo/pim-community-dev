@@ -5,9 +5,11 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product\Association;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -48,8 +50,6 @@ class CreateTwoWayAssociationIntegration extends TestCase
 
         $productModelAssociations = $this->getProductModelAssociationRepository()->findByOwner($aProductModel->getId());
         $this->assertContainsCompatibilityAssociationWithProductsAndProductModels($productModelAssociations, ['another_product', 'a_product_with_associations'], []);
-
-
     }
 
     public function testAssociationsWasDeletedWhenAssociatedProductIsDeleted()
@@ -96,8 +96,15 @@ class CreateTwoWayAssociationIntegration extends TestCase
             ],
         ]);
 
-        $productWithAssociation->getAssociationForTypeCode('COMPATIBILITY')->setProducts(new ArrayCollection());
-        $productWithAssociation->getAssociationForTypeCode('COMPATIBILITY')->setProductModels(new ArrayCollection());
+        $this->getProductUpdater()->update($productWithAssociation, [
+            'associations'  => [
+                "COMPATIBILITY" => [
+                    "products" => [],
+                    "product_models" => [],
+                ],
+            ],
+        ]);
+
         $this->getProductSaver()->save($productWithAssociation);
 
         $aProductAssociation = $this->getProductAssociationRepository()->findByOwner($aProduct->getId());
@@ -161,6 +168,7 @@ class CreateTwoWayAssociationIntegration extends TestCase
     {
         return $this->get('pim_api.repository.product');
     }
+
     private function getProductModelAssociationRepository()
     {
         return $this->get('doctrine')->getManager()->getRepository(ProductModelAssociation::class);
@@ -174,6 +182,11 @@ class CreateTwoWayAssociationIntegration extends TestCase
     private function getProductModelRemover(): RemoverInterface
     {
         return $this->get('pim_catalog.remover.product_model');
+    }
+
+    private function getProductUpdater(): ObjectUpdaterInterface
+    {
+        return $this->get('pim_catalog.updater.product');
     }
 
     private function getProductSaver(): SaverInterface
