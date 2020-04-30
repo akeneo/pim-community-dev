@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useRef, useEffect} from 'react';
 import $ from 'jquery';
-import {Family} from '../../domain';
+import {Family} from '../../../../domain';
 const Routing = require('routing');
 const UserContext = require('pim/user-context');
 const i18n = require('pim/i18n');
@@ -10,7 +10,7 @@ export interface Props {
   onChange: (value?: any) => void;
 }
 
-export const Select2 = ({onChange}: Props) => {
+export const FamiliesSelect2 = ({onChange}: Props) => {
   const ref = useRef<HTMLInputElement>(null);
 
   useEffect(() => {

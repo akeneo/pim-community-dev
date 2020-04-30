@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "../../Modal";
-import {Select2} from "../../select2";
+import {FamiliesSelect2} from "./FamiliesSelect2";
 
 const __ = require('oro/translator');
 
@@ -27,7 +27,7 @@ const FamilyModal = ({onConfirm, onDismissModal, onSelectFamily, isVisible, canA
         </div>
       )}
       <div>{__('pim_enrich.entity.family.plural_label')} :</div>
-      <Select2 onChange={onSelectFamily}/>
+      <FamiliesSelect2 onChange={onSelectFamily}/>
     </div>;
 
   return (
