@@ -102,6 +102,16 @@ function (
           type: this.choiceVerb,
         },
         initSelection: this.select2InitSelection.bind(this),
+        formatResult: function(result, container, query, escapeMarkup) {
+          container.attr('title', result.text);
+
+          return $.fn.select2.defaults.formatResult(result, container, query, escapeMarkup);
+        },
+        formatSelection: function(data, container, escapeMarkup) {
+          container.attr('title', data.text);
+
+          return $.fn.select2.defaults.formatSelection(data, container, escapeMarkup);
+        },
         placeholder: undefined !== this.config.placeholder ? __(this.config.placeholder) : ' ',
         dropdownCssClass: '',
         allowClear: this.allowClear,
