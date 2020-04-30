@@ -20,8 +20,8 @@ class ElasticsearchBusinessErrorRepositoryIntegration extends TestCase
         $repository = $this->get('akeneo_connectivity.connection.persistence.repository.business_error');
 
         $repository->bulkInsert([
-            new BusinessError(new ConnectionCode('erp'), '{"message":"First error!"}'),
-            new BusinessError(new ConnectionCode('erp'), '{"message":"Second error!","property":"name"}'),
+            new BusinessError(new ConnectionCode('erp'), '{"message":"First error!"}', new \DateTimeImmutable('2019-12-31T00:00:00+00:00')),
+            new BusinessError(new ConnectionCode('erp'), '{"message":"Second error!","property":"name"}', new \DateTimeImmutable('2020-01-01T00:00:00+00:00')),
         ]);
 
         /** @var ElasticsearchClient */
@@ -35,13 +35,17 @@ class ElasticsearchBusinessErrorRepositoryIntegration extends TestCase
 
         Assert::assertCount(2, $result['hits']['hits']);
 
-        Assert::assertArrayHasKey('error_datetime', $doc1);
-        Assert::assertSame('erp', $doc1['connection_code']);
-        Assert::assertSame(['message' => 'First error!'], $doc1['content']);
+        Assert::assertEquals([
+            'connection_code' => 'erp',
+            'content' => ['message' => 'First error!'],
+            'error_datetime' => '2019-12-31T00:00:00+00:00'
+        ], $doc1);
 
-        Assert::assertArrayHasKey('error_datetime', $doc2);
-        Assert::assertSame('erp', $doc2['connection_code']);
-        Assert::assertSame(['message' => 'Second error!', 'property' => 'name'], $doc2['content']);
+        Assert::assertEquals([
+            'connection_code' => 'erp',
+            'content' => ['message' => 'Second error!', 'property' => 'name'],
+            'error_datetime' => '2020-01-01T00:00:00+00:00'
+        ], $doc2);
     }
 
     protected function getConfiguration(): Configuration

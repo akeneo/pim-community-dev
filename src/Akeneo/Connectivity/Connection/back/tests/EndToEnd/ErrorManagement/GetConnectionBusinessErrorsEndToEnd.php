@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\ErrorManagement;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Test\Integration\Configuration;
-use Doctrine\DBAL\Connection as DbalConnection;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,14 +19,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetConnectionBusinessErrorsEndToEnd extends WebTestCase
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
-
     public function test_it_gets_a_connection_business_errors(): void
     {
         $errors = [
-            ['erp', '2020-01-01 00:00:00', '{"message": "Error 1"}'],
-            ['erp', '2020-01-07 00:00:00', '{"message": "Error 2"}'],
+            new BusinessError(new ConnectionCode('erp'), '{"message":"Error 1"}', new \DateTimeImmutable('2020-01-01T00:00:00+00:00')),
+            new BusinessError(new ConnectionCode('erp'), '{"message":"Error 2"}', new \DateTimeImmutable('2020-01-07T00:00:00+00:00'))
         ];
         $this->insertBusinessErrors($errors);
 
@@ -50,26 +50,22 @@ class GetConnectionBusinessErrorsEndToEnd extends WebTestCase
         Assert::assertEquals($expectedResult, $result);
     }
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->dbalConnection = $this->get('database_connection');
-    }
-
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }
 
+    /**
+     * @param BusinessError[] $errors
+     */
     private function insertBusinessErrors(array $errors): void
     {
-        foreach ($errors as [$connectionCode, $dateTime, $content]) {
-            $this->dbalConnection->insert('akeneo_connectivity_connection_audit_business_error', [
-                'connection_code' => $connectionCode,
-                'error_datetime' => $dateTime,
-                'content' => $content
-            ]);
-        }
+        /** @var BusinessErrorRepository */
+        $repository = $this->get('akeneo_connectivity.connection.persistence.repository.business_error');
+        $repository->bulkInsert($errors);
+
+        /** @var Client */
+        $elasticsearchClient = $this->get('akeneo_connectivity.client.connection_error');
+        $elasticsearchClient->refreshIndex();
     }
 }

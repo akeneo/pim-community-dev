@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\ExtractErrorsFromHttpException;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CollectApiErrorSpec extends ObjectBehavior
@@ -37,7 +38,7 @@ class CollectApiErrorSpec extends ObjectBehavior
         $connection->flowType()->willReturn(new FlowType(FlowType::DATA_SOURCE));
         $connection->code()->willReturn(new ConnectionCode('erp'));
 
-        $repository->bulkInsert([new BusinessError(new ConnectionCode('erp'), '{"message":"My error!"}')])
+        $repository->bulkInsert(Argument::containing(Argument::type(BusinessError::class)))
             ->shouldBeCalled();
 
         $this->collectFromHttpException($exception);

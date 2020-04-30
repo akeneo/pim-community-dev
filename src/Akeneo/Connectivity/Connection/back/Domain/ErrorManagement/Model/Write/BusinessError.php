@@ -19,7 +19,10 @@ class BusinessError
     /** @var string */
     private $content;
 
-    public function __construct(ConnectionCode $connectionCode, string $content)
+    /** @var \DateTimeImmutable */
+    private $dateTime;
+
+    public function __construct(ConnectionCode $connectionCode, string $content, \DateTimeImmutable $dateTime = null)
     {
         try {
             $decoded = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
@@ -35,8 +38,14 @@ class BusinessError
                 'The business error must have a content, but you provided en empty json.'
             );
         }
+
+        if (null === $dateTime) {
+            $dateTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        }
+
         $this->content = $content;
         $this->connectionCode = $connectionCode;
+        $this->dateTime = $dateTime;
     }
 
     public function connectionCode(): ConnectionCode
@@ -49,12 +58,12 @@ class BusinessError
         return $this->content;
     }
 
-    public function normalize(\DateTimeImmutable $dateTime): array
+    public function normalize(): array
     {
         return [
             'connection_code' => (string) $this->connectionCode,
             'content' => json_decode($this->content(), true),
-            'error_datetime' => $dateTime->format(\DateTimeInterface::ATOM),
+            'error_datetime' => $this->dateTime->format(\DateTimeInterface::ATOM),
         ];
     }
 }

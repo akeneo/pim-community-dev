@@ -29,10 +29,8 @@ class ElasticsearchBusinessErrorRepository implements BusinessErrorRepository
             return;
         }
 
-        $dateTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
-
-        $documents = array_map(function (BusinessError $businessError) use ($dateTime) {
-            return $businessError->normalize($dateTime);
+        $documents = array_map(function (BusinessError $businessError) {
+            return $businessError->normalize();
         }, $businessErrors);
 
         $this->errorClient->bulkIndexes($documents);

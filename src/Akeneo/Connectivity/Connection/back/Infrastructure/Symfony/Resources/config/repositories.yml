@@ -9,11 +9,6 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity.connection.persistence.repository.api_business_error:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository\DbalApiBusinessErrorRepository
-        arguments:
-            - '@database_connection'
-
     akeneo_connectivity.connection.persistence.repository.business_error:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Repository\ElasticsearchBusinessErrorRepository
         arguments:

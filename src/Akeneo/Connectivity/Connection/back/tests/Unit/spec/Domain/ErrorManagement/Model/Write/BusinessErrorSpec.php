@@ -13,7 +13,10 @@ class BusinessErrorSpec extends ObjectBehavior
     public function it_is_a_business_error(): void
     {
         $connectionCode = new ConnectionCode('erp');
-        $this->beConstructedWith($connectionCode, '{"message":"My error!"}');
+        $content = '{"message":"My error!"}';
+        $dateTime = new \DateTimeImmutable('2020-01-01T00:00:00', new \DateTimeZone('UTC'));
+
+        $this->beConstructedWith($connectionCode, $content, $dateTime);
         $this->shouldHaveType(BusinessError::class);
     }
 
@@ -64,8 +67,8 @@ class BusinessErrorSpec extends ObjectBehavior
             'error_datetime' => '2020-01-01T00:00:00+00:00',
         ];
 
-        $this->beConstructedWith($connectionCode, $content);
-        $this->normalize($dateTime)->shouldReturn($expected);
+        $this->beConstructedWith($connectionCode, $content, $dateTime);
+        $this->normalize()->shouldReturn($expected);
     }
 
     private function getWellStructuredContent(): string
