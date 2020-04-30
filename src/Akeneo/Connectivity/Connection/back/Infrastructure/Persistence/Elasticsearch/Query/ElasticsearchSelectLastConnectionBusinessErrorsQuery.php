@@ -29,20 +29,24 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQuery implements SelectLast
 
         $result = $this->esClient->search([
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'term' => [
-                                'connection_code' => $connectionCode,
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'term' => [
+                                        'connection_code' => $connectionCode,
+                                    ],
+                                ],
+                                [
+                                    'range' => [
+                                        'error_datetime' => [
+                                            'gte' => $from->format(\DateTimeInterface::ATOM),
+                                            'lte' => $to->format(\DateTimeInterface::ATOM),
+                                        ],
+                                    ]
+                                ],
                             ],
-                        ],
-                        [
-                            'range' => [
-                                'error_datetime' => [
-                                    'gte' => $from->format(\DateTimeInterface::ATOM),
-                                    'lte' => $to->format(\DateTimeInterface::ATOM),
-                                ]
-                            ]
                         ],
                     ],
                 ],
@@ -53,15 +57,29 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQuery implements SelectLast
             'size' => $limit,
         ]);
 
-        return array_map(function (array $row) {
+        $businessErrors = [];
+
+        foreach($result['hits']['hits'] as $row) {
             $data = $row['_source'];
 
-            return new BusinessError(
+            $businessErrors[] = new BusinessError(
                 $data['connection_code'],
                 \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $data['error_datetime'], new \DateTimeZone('UTC')),
                 json_encode($data['content'])
             );
-        }, $result['hits']['hits']);
+        }
+
+        return $businessErrors;
+
+//        return array_map(function (array $row) {
+//            $data = $row['_source'];
+//
+//            return new BusinessError(
+//                $data['connection_code'],
+//                \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $data['error_datetime'], new \DateTimeZone('UTC')),
+//                json_encode($data['content'])
+//            );
+//        }, $result['hits']['hits']);
     }
 
     /**
@@ -69,11 +87,12 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQuery implements SelectLast
      */
     private function getDateTimeInterval(string $endDate = null): array
     {
-        $to = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $utc = new \DateTimeZone('UTC');
+        $to = new \DateTimeImmutable('now', $utc);
         if (null !== $endDate) {
-            $to = \DateTimeImmutable::createFromFormat('Y-m-d', $endDate, new \DateTimeZone('UTC'));
+            $to = \DateTimeImmutable::createFromFormat('Y-m-d', $endDate, $utc);
             if (false === $to) {
-                $to = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+                $to = new \DateTimeImmutable('now', $utc);
             }
         }
 
