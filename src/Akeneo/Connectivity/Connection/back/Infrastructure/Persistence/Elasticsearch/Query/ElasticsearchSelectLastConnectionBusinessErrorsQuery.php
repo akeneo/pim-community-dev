@@ -36,28 +36,29 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQuery implements SelectLast
                                 'connection_code' => $connectionCode,
                             ],
                         ],
-//                        [
-//                            'range' => [
-//                                'date_time' => [
-//                                    'gte' => $from->format('Y-m-d H:i:s'),
-//                                    'lte' => $to->format('Y-m-d H:i:s'),
-//                                ]
-//                            ]
-//                        ],
+                        [
+                            'range' => [
+                                'error_datetime' => [
+                                    'gte' => $from->format(\DateTimeInterface::ATOM),
+                                    'lte' => $to->format(\DateTimeInterface::ATOM),
+                                ]
+                            ]
+                        ],
                     ],
                 ],
             ],
+            'sort' => [
+                'error_datetime' => 'desc',
+            ],
             'size' => $limit,
         ]);
-
-        dd($result);
 
         return array_map(function (array $row) {
             $data = $row['_source'];
 
             return new BusinessError(
                 $data['connection_code'],
-                \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $data['date_time'], new \DateTimeZone('UTC')),
+                \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $data['error_datetime'], new \DateTimeZone('UTC')),
                 json_encode($data['content'])
             );
         }, $result['hits']['hits']);

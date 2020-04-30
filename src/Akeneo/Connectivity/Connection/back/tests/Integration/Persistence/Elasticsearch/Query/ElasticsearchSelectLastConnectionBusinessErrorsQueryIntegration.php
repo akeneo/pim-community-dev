@@ -19,12 +19,11 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQueryIntegration extends Te
     /** @var SelectLastConnectionBusinessErrorsQuery */
     private $selectLastConnectionBusinessErrorsQuery;
 
-//    public function test_it_returns_an_empty_array_when_nothing_is_indexed(): void
-//    {
-//        $result = $this->selectLastConnectionBusinessErrorsQuery->execute('erp', '2020-01-07', 100);
-//
-//        Assert::assertEquals([], $result);
-//    }
+    public function test_it_returns_an_empty_array_when_nothing_is_indexed(): void
+    {
+        $result = $this->selectLastConnectionBusinessErrorsQuery->execute('erp', '2020-01-07', 10);
+        Assert::assertEquals([], $result);
+    }
 
     public function test_it_returns_the_last_business_errors_of_a_connection(): void
     {
@@ -32,47 +31,46 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQueryIntegration extends Te
             // Ignored: error is too older (more than 7 days)
             [
                 'connection_code' => 'erp',
-                'date_time' => '2019-12-31 00:00:00',
-                'content' => json_decode('{"message": "Error 1"}', true),
+                'error_datetime' => '2019-12-31T00:00:00+00:00',
+                'content' => ['message' => 'Error 1'],
             ],
             // Ignored: 3rd result (oldest) on a $limit if 2
             [
                 'connection_code' => 'erp',
-                'date_time' => '2020-01-01 00:00:00',
-                'content' => json_decode('{"message": "Error 2"}', true),
+                'error_datetime' => '2020-01-01T00:00:00+00:00',
+                'content' => ['message' => 'Error 2'],
             ],
             // Ignored: wrong connection code
             [
                 'connection_code' => 'ecommerce',
-                'date_time' => '2020-01-05 00:00:00',
-                'content' => json_decode('{"message": "Error 3"}', true),
+                'error_datetime' => '2020-01-05T00:00:00+00:00',
+                'content' => ['message' => 'Error 3'],
             ],
             [
                 'connection_code' => 'erp',
-                'date_time' => '2020-01-06 00:00:00',
-                'content' => json_decode('{"message": "Error 4"}', true),
+                'error_datetime' => '2020-01-06T00:00:00+00:00',
+                'content' => ['message' => 'Error 4'],
             ],
             [
                 'connection_code' => 'erp',
-                'date_time' => '2020-01-07 00:00:00',
-                'content' => json_decode('{"message": "Error 5"}', true),
+                'error_datetime' => '2020-01-07T00:00:00+00:00',
+                'content' => ['message' => 'Error 5'],
             ],
             // Ignored: error is younger than the $endDate param
             [
                 'connection_code' => 'erp',
-                'date_time' => '2020-01-08 00:00:00',
-                'content' => json_decode('{"message": "Error 6"}', true),
+                'error_datetime' => '2020-01-09T00:00:00+00:00',
+                'content' => ['message' => 'Error 6'],
             ],
         ]);
         $this->esClient->refreshIndex();
 
         $expectedResult = [
-            new BusinessError('erp', new \DateTimeImmutable('2020-01-07T00:00:00+00'), '{"message": "Error 5"}'),
-            new BusinessError('erp', new \DateTimeImmutable('2020-01-06T00:00:00+00'), '{"message": "Error 4"}'),
+            new BusinessError('erp', new \DateTimeImmutable('2020-01-07T00:00:00+00'), '{"message":"Error 5"}'),
+            new BusinessError('erp', new \DateTimeImmutable('2020-01-06T00:00:00+00'), '{"message":"Error 4"}'),
         ];
 
         $result = $this->selectLastConnectionBusinessErrorsQuery->execute('erp', '2020-01-07', 2);
-
         Assert::assertEquals($expectedResult, $result);
     }
 
