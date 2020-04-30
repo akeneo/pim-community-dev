@@ -11,8 +11,8 @@ final class Version_5_0_20200429094251_add_quantified_associations extends Abstr
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE pim_catalog_product_model ADD quantified_associations JSON');
-        $this->addSql('ALTER TABLE pim_catalog_product ADD quantified_associations JSON');
+        $this->addSql('ALTER TABLE pim_catalog_product_model ADD quantified_associations JSON DEFAULT NULL;');
+        $this->addSql('ALTER TABLE pim_catalog_product ADD quantified_associations JSON DEFAULT NULL;');
     }
 
     public function down(Schema $schema) : void

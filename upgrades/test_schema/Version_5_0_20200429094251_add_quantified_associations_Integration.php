@@ -26,6 +26,10 @@ final class Version_5_0_20200429094251_add_quantified_associations_Integration e
 
     public function test_it_updates_the_product_and_product_model_table()
     {
+        $connection = $this->get('database_connection');
+        $connection->executeQuery('ALTER TABLE pim_catalog_product DROP quantified_associations;');
+        $connection->executeQuery('ALTER TABLE pim_catalog_product_model DROP quantified_associations;');
+
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
         $this->assertProductTableHasColumns(['quantified_associations' => 'string']);
