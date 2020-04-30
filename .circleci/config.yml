@@ -28,7 +28,12 @@ jobs:
               export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
               git clone git@github.com:akeneo/pim-enterprise-dev.git /home/circleci/project
       - run:
-          name: Require proper CE dev branch
+          name: Checkout EE branch if it exists, or master otherwise
+          command: |
+            cd /home/circleci/project
+            git checkout ${CIRCLE_BRANCH} || git checkout master
+      - run:
+          name: Require proper dev CE branch
           command: |
             sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
       - persist_to_workspace:
