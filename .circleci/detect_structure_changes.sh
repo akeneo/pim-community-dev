@@ -82,12 +82,12 @@ echo "Restore Git repository as how it was at the beginning..."
 git clean -f
 git checkout -- .
 
-echo "Checkout EE PR branch..."
-(curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-entrerprise-dev/tree/${PR_BRANCH} && git checkout $PR_BRANCH) || git checkout master
+echo "Checkout EE PR branch (or master if it does not exist)..."
+git checkout $PR_BRANCH || git checkout master
 
-echo "Checkout CE PR branch..."
+echo "Checkout CE PR branch (or master if it does not exist)..."
 pushd vendor/akeneo/pim-community-dev
-(curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${PR_BRANCH} && git checkout $PR_BRANCH) || git checkout master
+git checkout $PR_BRANCH || git checkout master
 popd
 
 echo "Copy CE migrations into EE to launch branch migrations..."
