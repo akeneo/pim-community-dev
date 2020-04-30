@@ -11,9 +11,12 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
+use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ValueCondition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Webmozart\Assert\Assert;
 
 /**
  * Validates if the field supports the given data
@@ -25,9 +28,6 @@ class ValueConditionValidator extends ConstraintValidator
     /** @var ProductQueryBuilderFactoryInterface */
     protected $factory;
 
-    /**
-     * @param ProductQueryBuilderFactoryInterface $factory
-     */
     public function __construct(
         ProductQueryBuilderFactoryInterface $factory
     ) {
@@ -37,16 +37,19 @@ class ValueConditionValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($productCondition, Constraint $constraint)
+    public function validate($condition, Constraint $constraint)
     {
+        Assert::isInstanceOf($constraint, ValueCondition::class);
+        Assert::isInstanceOf($condition, Condition::class);
+
         try {
             $this->factory->create()->addFilter(
-                $productCondition->getField(),
-                $productCondition->getOperator(),
-                $productCondition->getValue(),
+                $condition->field,
+                $condition->operator,
+                $condition->value,
                 [
-                    'locale' => $productCondition->getLocale(),
-                    'scope'  => $productCondition->getScope()
+                    'locale' => $condition->locale,
+                    'scope' => $condition->locale,
                 ]
             );
         } catch (\Exception $e) {

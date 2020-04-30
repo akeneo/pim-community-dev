@@ -4,6 +4,9 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition:
               attributeProperty: field
               channelProperty: scope
               localeProperty: locale
+        - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\NonEmptyValueCondition: ~
+        - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ValueCondition: ~
+        - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingFilterField: ~
     properties:
         field:
             - Type:

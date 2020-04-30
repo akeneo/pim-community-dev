@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingFilterFieldValidator;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
@@ -33,12 +34,14 @@ class ExistingFilterFieldValidatorSpec extends ObjectBehavior
     function it_adds_a_violation_if_no_filter_exists(
         $registry,
         $context,
-        ProductConditionInterface $productCondition,
         ExistingFilterField $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $productCondition->getField()->willReturn('groups.code');
-        $productCondition->getOperator()->willReturn('IN');
+        $condition = new Condition([
+            'field' => 'groups.code',
+            'operator' => 'IN',
+            'value' => ['tshirts'],
+        ]);
         $registry->getFilter('groups.code', 'IN')->willReturn(null);
 
         $context->buildViolation(
@@ -48,6 +51,6 @@ class ExistingFilterFieldValidatorSpec extends ObjectBehavior
         ->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
-        $this->validate($productCondition, $constraint);
+        $this->validate($condition, $constraint);
     }
 }
