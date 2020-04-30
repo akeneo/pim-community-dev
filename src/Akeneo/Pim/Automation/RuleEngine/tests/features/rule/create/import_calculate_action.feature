@@ -25,22 +25,22 @@ Background:
     Scenario: Import a calculate rule with invalid channels
         When I import a calculate rule with invalid channels
         Then an exception with message "actions[0].destination.scope: The \"print\" channel does not exist" has been thrown
-        And an exception with message "actions[0].source.field: The \"item_weight\" attribute code is scopable and no channel is provided" has been thrown
-        And an exception with message "actions[0].operation_list[0].field: The \"in_stock\" attribute code is not scopable and a channel is provided" has been thrown
+        And an exception with message "actions[0].source: The \"item_weight\" attribute code is scopable and no channel is provided" has been thrown
+        And an exception with message "actions[0].operationList[0]: The \"in_stock\" attribute code is not scopable and a channel is provided" has been thrown
 
     @acceptance-back
     Scenario: Import a calculate rule with invalid locales
         When I import a calculate rule with invalid locales
         Then an exception with message "actions[0].destination.locale: The \"es_ES\" locale does not exist or is not activate" has been thrown
-        And an exception with message "actions[0].source.field: The \"item_weight\" attribute code is localizable and no locale is provided" has been thrown
-        And an exception with message "actions[0].operation_list[0].field: The \"in_stock\" attribute code is not localizable and a locale is provided" has been thrown
+        And an exception with message "actions[0].source: The \"item_weight\" attribute code is localizable and no locale is provided" has been thrown
+        And an exception with message "actions[0].operationList[0]: The \"in_stock\" attribute code is not localizable and a locale is provided" has been thrown
 
     @acceptance-back
     Scenario: Import a calculate rule with non numeric attribute types
         When I import a calculate rule with invalid attribute types
-        Then an exception with message "actions[0].destination.field: Invalid attribute type for \"name\", expected a number, measurement or price collection attribute" has been thrown
-        And an exception with message "actions[0].source.field: Invalid attribute type for \"description\", expected a number, measurement or price collection attribute" has been thrown
-        And an exception with message "actions[0].operation_list[0].field: Invalid attribute type for \"color\", expected a number, measurement or price collection attribute" has been thrown
+        Then an exception with message "actions[0].destination.field: Invalid \"pim_catalog_text\" attribute type. Expected a pim_catalog_number|pim_catalog_price_collection|pim_catalog_metric attribute" has been thrown
+        And an exception with message "actions[0].source.field: Invalid \"pim_catalog_textarea\" attribute type. Expected a pim_catalog_number|pim_catalog_price_collection|pim_catalog_metric attribute" has been thrown
+        And an exception with message "actions[0].operationList[0].field: Invalid \"pim_catalog_simpleselect\" attribute type. Expected a pim_catalog_number|pim_catalog_price_collection|pim_catalog_metric attribute" has been thrown
 
     @acceptance-back
     Scenario: Import a calculate rule with invalid currencies

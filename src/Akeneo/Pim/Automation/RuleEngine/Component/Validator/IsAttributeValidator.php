@@ -13,21 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AttributeShouldBeNumeric;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsAttribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-class AttributeShouldBeNumericValidator extends ConstraintValidator
+class IsAttributeValidator extends ConstraintValidator
 {
-    private const ALLOWED_ATTRIBUTE_TYPES = [
-        AttributeTypes::NUMBER,
-        AttributeTypes::PRICE_COLLECTION,
-        AttributeTypes::METRIC,
-    ];
-
     /** @var GetAttributes */
     private $getAttributes;
 
@@ -38,22 +31,29 @@ class AttributeShouldBeNumericValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        Assert::isInstanceOf($constraint, AttributeShouldBeNumeric::class);
-        if (null === $value) {
+        Assert::isInstanceOf($constraint, IsAttribute::class);
+        if (null === $value || !is_string($value)) {
             return;
         }
 
         $attribute = $this->getAttributes->forCode($value);
         if (null === $attribute) {
-            // not the responsibility of this validator
+            $this->context->buildViolation($constraint->unknownAttributeMessage)
+                          ->setParameter('{{ code }}', $value)
+                          ->addViolation();
+
             return;
         }
 
-        if (!in_array($attribute->type(), self::ALLOWED_ATTRIBUTE_TYPES)) {
-            $this->context->buildViolation(
-                $constraint->message,
-                ['%attribute_code%' => $attribute->code()]
-            )->addViolation();
+        if ($constraint->types) {
+            $authorizedTypes = (array)$constraint->types;
+
+            if (!in_array($attribute->type(), $authorizedTypes)) {
+                $this->context->buildViolation($constraint->invalidTypeMessage)
+                              ->setParameter('{{ invalid_type }}', $attribute->type())
+                              ->setParameter('{{ expected_types }}', implode('|', $authorizedTypes))
+                              ->addViolation();
+            }
         }
     }
 }

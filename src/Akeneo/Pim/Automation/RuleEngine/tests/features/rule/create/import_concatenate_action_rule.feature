@@ -24,9 +24,9 @@ Feature: Import concatenate action rules
   @acceptance-back
   Scenario: Import a concatenate rule with unknown target attribute
     When I import a concatenate rule with unknown target attribute
-    Then an exception with message "You cannot concatenate data to the \"unknown\" field" has been thrown
+    Then an exception with message "actions[0].to.field: The \"unknown\" attribute code does not exist" has been thrown
 
   @acceptance-back
   Scenario: Import a concatenate rule with invalid target attribute
     When I import a concatenate rule with non text target attribute
-    Then an exception with message "actions[0]: You cannot concatenate data to the \"sku\" field: Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateAction" has been thrown
+    Then an exception with message "actions[0].to.field: Invalid \"pim_catalog_identifier\" attribute type. Expected a pim_catalog_text|pim_catalog_textarea" has been thrown

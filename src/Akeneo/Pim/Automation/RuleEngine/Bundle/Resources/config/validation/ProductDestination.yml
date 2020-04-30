@@ -4,7 +4,10 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductDestination:
             - Type:
                 type: string
             - NotBlank: ~
-            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AttributeShouldBeNumeric: ~
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsAttribute:
+                  - pim_catalog_number
+                  - pim_catalog_price_collection
+                  - pim_catalog_metric
         scope:
             - Type:
                 type: string
