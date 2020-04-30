@@ -47,6 +47,5 @@ class InstallSubscriber implements EventSubscriberInterface
         $this->dbalConnection->exec(CreateConnectionTableQuery::QUERY);
         $this->dbalConnection->exec(CreateConnectionAuditTableQuery::QUERY);
         $this->dbalConnection->exec(CreateWrongCredentialsCombinationQuery::QUERY);
-        $this->dbalConnection->exec(CreateBusinessErrorTableQuery::QUERY);
     }
 }
