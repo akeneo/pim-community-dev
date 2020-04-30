@@ -12,9 +12,9 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\ApiBusinessErrorEventSubscriber:
+    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ApiErrorEventSubscriber:
         arguments:
-            - '@akeneo_connectivity.connection.service.connection_context'
-            - '@akeneo_connectivity.connection.persistence.repository.api_business_error'
+            - '@request_stack'
+            - '@akeneo_connectivity.connection.error_management.service.collect_api_error'
         tags:
             - { name: kernel.event_subscriber }

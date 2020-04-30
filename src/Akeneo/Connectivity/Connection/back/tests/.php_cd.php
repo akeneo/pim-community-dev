@@ -105,6 +105,9 @@ $rules = [
 
             // Dependency on Doctrine DBAL for persistence layer
             'Doctrine\DBAL',
+
+            // Dependency on Elasticsearch
+            'Akeneo\Tool\Bundle\ElasticsearchBundle\Client'
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Persistence'),
 
