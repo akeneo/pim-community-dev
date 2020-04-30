@@ -1,11 +1,8 @@
 import React from "react";
 import Modal from "../../Modal";
-import useFetchFamilies from "../../../../infrastructure/hooks/useFetchFamilies";
-import Family from "../../../../domain/Family.interface";
 import {Select2} from "../../select2";
 
 const __ = require('oro/translator');
-const UserContext = require('pim/user-context');
 
 interface FamilyModalProps {
   onConfirm: () => void;
@@ -18,23 +15,9 @@ interface FamilyModalProps {
 
 const FamilyModal = ({onConfirm, onDismissModal, onSelectFamily, isVisible, canAddMoreFamilies, errorMessage}: FamilyModalProps) => {
 
-  const uiLocale = UserContext.get('uiLocale');
-  const families: Family[] = useFetchFamilies(isVisible, uiLocale);
-
   if (!isVisible) {
     return (<></>);
   }
-
-  const select2Configuration = {
-    placeholder: ' ',
-    allowClear: true,
-    dropdownCssClass: 'select2--annotedLabels',
-    multiple: true,
-    data: Object.values(families).map((family) => ({
-      id: family.code,
-      text: family.labels[uiLocale] ? family.labels[uiLocale] : "[" + family.code + "]"
-    }))
-  };
 
   let modalContent =
     <div>
@@ -44,7 +27,7 @@ const FamilyModal = ({onConfirm, onDismissModal, onSelectFamily, isVisible, canA
         </div>
       )}
       <div>{__('pim_enrich.entity.family.plural_label')} :</div>
-      <Select2 configuration={select2Configuration} onChange={onSelectFamily}/>
+      <Select2 onChange={onSelectFamily}/>
     </div>;
 
   return (
