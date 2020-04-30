@@ -30,7 +30,7 @@ trait ExecuteMigrationTrait
         $resultDown = $this->getCommandLauncher()->executeForeground(
             sprintf('doctrine:migrations:execute %s --down -n', $migrationLabel)
         );
-        Assert::assertEquals(1, $resultDown->getCommandStatus(),'Migration should be irreversible.');
+        Assert::assertEquals(1, $resultDown->getCommandStatus(), 'Migration should be irreversible.');
 
         $resultUp = $this->getCommandLauncher()->executeForeground(
             sprintf('doctrine:migrations:execute %s --up -n', $migrationLabel)

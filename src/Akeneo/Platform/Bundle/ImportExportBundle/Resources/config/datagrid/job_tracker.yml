@@ -17,6 +17,10 @@ datagrid:
                 type:          datetime_with_user_timezone
                 data_name:     startTime
                 frontend_type: datetime
+            username:
+                label: pim_datagrid.column.username
+                data_name: user
+                frontendType: label
             status:
                 label:         Status
                 type:          twig

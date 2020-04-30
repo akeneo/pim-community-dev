@@ -145,6 +145,7 @@ pim_import_export:
             profile_name: Profile name
             details: Details
             warning_count: Warnings
+            username: Username
             job_type:
                 import: Import
                 export: Export

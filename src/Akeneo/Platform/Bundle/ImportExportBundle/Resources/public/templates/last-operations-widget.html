@@ -11,6 +11,9 @@
                 <%- __('pim_import_export.widget.last_operations.profile_name') %>
             </th>
             <th class="AknGrid-headerCell">
+                <%- __('pim_import_export.widget.last_operations.username') %>
+            </th>
+            <th class="AknGrid-headerCell">
                 <%- __('pim_common.status') %>
             </th>
             <th class="AknGrid-headerCell">
@@ -30,6 +33,7 @@
             <td class="AknGrid-bodyCell"> <%- operation.date %></td>
             <td class="AknGrid-bodyCell"> <%- __('pim_import_export.widget.last_operations.job_type.'+operation.type) %></td>
             <td class="AknGrid-bodyCell"><%- operation.label %></td>
+            <td class="AknGrid-bodyCell"><%- operation.username %></td>
             <td class="AknGrid-bodyCell">
                 <span class="AknBadge AknBadge--<%- status %>">
                     <%- operation.statusLabel %>

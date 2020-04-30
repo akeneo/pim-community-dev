@@ -159,6 +159,7 @@ pim_enrich:
             remove: Remove associations to a product
         job_tracker:
             index: View process tracker
+            view_all_jobs: View all jobs in process tracker
 
     acl_group:
         association_type: Association types

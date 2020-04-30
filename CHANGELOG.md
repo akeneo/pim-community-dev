@@ -11,10 +11,12 @@
 - PIM-9157: Fix performance issue when loading the data of a product group
 - PIM-9163: total_fields limit of elasticsearch should be configurable
 - PIM-9197: Make queries in InMemoryGetAttributes case insensitive
+- PIM-9213: Fix tooltip hover on Ellipsis for Family Name on creating product
 
 ## New features
 
 - MET-14: Measurements (or metrics) are now stored in database
+- AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
 
 ## Improvements
 
