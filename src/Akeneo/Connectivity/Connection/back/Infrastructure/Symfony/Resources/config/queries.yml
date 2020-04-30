@@ -31,6 +31,6 @@ services:
             - '@database_connection'
 
     akeneo_connectivity_connection.persistence.query.select_last_connection_business_errors:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectLastConnectionBusinessErrorsQuery
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\ElasticsearchSelectLastConnectionBusinessErrorsQuery
         arguments:
-            - '@database_connection'
+            - '@akeneo_connectivity.client.connection_error'
