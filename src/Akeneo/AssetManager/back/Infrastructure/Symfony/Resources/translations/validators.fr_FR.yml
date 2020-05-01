@@ -11,8 +11,6 @@ pim_asset_manager:
         should_not_be_linked: 'Vous ne pouvez pas supprimer cette famille car elle contient des attributs.'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Au moins un groupe d''utilisateurs doit avoir les droits d''édition sur cette famille'
-      product_attributes:
-        should_not_be_linked: 'Vous ne pouvez pas supprimer cette famille car des attributs de produit sont liés à celle-ci'
       should_exist: 'La famille de ressources numériques "%asset_family_code%" n''existe pas.'
       rule_template:
         limit_reached: 'Vous avez atteint la limite de %limit% règles de rattachement automatique aux produits pour la famille de ressources "%asset_family_identifier%".'
