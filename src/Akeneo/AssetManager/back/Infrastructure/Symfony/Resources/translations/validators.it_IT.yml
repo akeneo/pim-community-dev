@@ -11,8 +11,6 @@ pim_asset_manager:
         should_not_be_linked: 'Non puoi eliminare questa famiglia perché ci sono degli attributi di famiglia di asset collegati a questa famiglia'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Almeno un gruppo di utenti dovrebbe avere i permessi di modifica per questa famiglia'
-      product_attributes:
-        should_not_be_linked: 'Non puoi eliminare questa famiglia perché ci sono degli attributi di prodotto collegati a questa famiglia'
       should_exist: 'La famiglia dell''attività "%asset_family_code%" non è stata trovata.'
       rule_template:
         product_selection_cannot_be_empty: 'Devi specificare almeno una selezione di prodotto nella tua regola del collegamento del prodotto'

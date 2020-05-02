@@ -11,8 +11,6 @@ pim_asset_manager:
         should_not_be_linked: 'You can not delete this family because asset family attributes are related to this family'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'At least one user group should have edit permission on this family'
-      product_attributes:
-        should_not_be_linked: 'You can not delete this family because an asset collection is linked to this family.'
       should_exist: 'The asset family "%asset_family_code%" was not found.'
       rule_template:
         limit_reached: 'You have reached the limit of %limit% product link rules for the "%asset_family_identifier%" asset family.'
