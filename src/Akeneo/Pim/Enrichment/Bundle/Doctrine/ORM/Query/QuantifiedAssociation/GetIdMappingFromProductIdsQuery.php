@@ -24,6 +24,10 @@ class GetIdMappingFromProductIdsQuery implements GetIdMappingFromProductIdsQuery
 
     public function execute(array $productIds): IdMapping
     {
+        if(empty($productIds)) {
+            return IdMapping::createFromMapping([]);
+        }
+
         $query = <<<SQL
         SELECT id, identifier from pim_catalog_product WHERE id IN (:product_ids)
 SQL;

@@ -17,9 +17,9 @@ trait EntityWithQuantifiedAssociationTrait
     /**
      * Not persisted.
      *
-     * @var QuantifiedAssociations
+     * @var QuantifiedAssociations|null
      */
-    public $quantifiedAssociations = [];
+    public $quantifiedAssociations;
 
     /**
      * @inheritDoc
@@ -72,6 +72,10 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function getQuantifiedAssociationsProductIdentifiers(): array
     {
+        if (empty($this->quantifiedAssociations)) {
+            return [];
+        }
+
         return $this->quantifiedAssociations->getQuantifiedAssociationsProductIdentifiers();
     }
 
@@ -80,6 +84,10 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function getQuantifiedAssociationsProductModelCodes(): array
     {
+        if (empty($this->quantifiedAssociations)) {
+            return [];
+        }
+
         return $this->quantifiedAssociations->getQuantifiedAssociationsProductModelCodes();
     }
 
@@ -90,6 +98,12 @@ trait EntityWithQuantifiedAssociationTrait
         IdMapping $mappedProductIdentifiers,
         IdMapping $mappedProductModelIdentifiers
     ): void {
+        if (empty($this->quantifiedAssociations)) {
+            $this->rawQuantifiedAssociations = [];
+
+            return;
+        }
+
         $this->rawQuantifiedAssociations = $this->quantifiedAssociations->normalizeWithMapping(
             $mappedProductIdentifiers,
             $mappedProductModelIdentifiers
