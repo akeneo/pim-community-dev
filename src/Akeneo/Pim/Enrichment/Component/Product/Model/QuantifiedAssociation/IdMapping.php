@@ -23,7 +23,7 @@ class IdMapping
     {
         foreach ($mapping as $id => $identifier) {
             Assert::integer($id);
-            Assert::string($identifier);
+            Assert::stringNotEmpty($identifier);
         }
 
         $this->idsToIdentifiers = $mapping;
