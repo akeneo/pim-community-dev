@@ -11,6 +11,10 @@ export const getRuleDefinitionByCode = async (
     ruleCode: ruleDefinitionCode,
   });
   const response = await httpGet(url);
+  if (response.status !== 200) {
+    throw new Error(`An error occured during Rule Definition fetch.`);
+  }
+
   const json = await response.json();
 
   return denormalize(json, router);

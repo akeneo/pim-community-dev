@@ -1,14 +1,31 @@
 # 4.0.x
 
+# 4.0.21 (2020-04-29)
+
+## Bug fixes
+
+- PIM-9178: Fix Asset Family deletion error message
+- PIM-9211: Add indicator when uploading a media file in Asset Manager
+
+# 4.0.20 (2020-04-27)
+
+# 4.0.19 (2020-04-24)
+
+## Technical Improvements
+
+- PIM-9195: Enable preview of SVG files in the assets mass upload
+
 ## Bug fixes
 
 - PIM-9192: Fix error being printed in the response of partial update of products API
+- DAPI-961: change the dates display on daily chart axis to display relative dates
 
 # 4.0.18 (2020-04-23)
 
 ## Technical Improvements
 
 - PIM-9195: Add extra ImageMagick library to handle SVG files
+- Limit Symfony version on 4.4.7 because of validation issues with 4.4.8
 
 ## Bug fixes
 

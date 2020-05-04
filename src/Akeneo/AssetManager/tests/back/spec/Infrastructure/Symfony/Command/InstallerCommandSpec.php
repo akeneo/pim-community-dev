@@ -18,7 +18,7 @@ class InstallerCommandSpec extends ObjectBehavior
 {
     function let(FixturesInstaller $fixturesInstaller, AssetsInstaller $assetsInstaller)
     {
-        $this->beConstructedWith($fixturesInstaller, $assetsInstaller);
+        $this->beConstructedWith($fixturesInstaller, $assetsInstaller, false);
     }
 
     function it_is_initializable()
@@ -42,11 +42,37 @@ class InstallerCommandSpec extends ObjectBehavior
         $this->createSchema();
     }
 
-    function it_loads_the_fixtures(FixturesInstaller $fixturesInstaller, InstallerEvent $installerEvent)
+    function it_loads_the_fixtures_if_the_catalog_is_icecat_demo_dev(FixturesInstaller $fixturesInstaller, InstallerEvent $installerEvent)
     {
-        $installerEvent->getArgument('catalog')->willReturn('catalog_name');
+        $installerEvent->getArgument('catalog')->willReturn('icecat_demo_dev');
 
-        $fixturesInstaller->loadCatalog('catalog_name')->shouldBeCalled();
+        $fixturesInstaller->loadCatalog()->shouldBeCalled();
+        $this->loadFixtures($installerEvent);
+    }
+
+    function it_does_not_load_the_fixtures_if_the_catalog_is_not_icecat_demo_dev(FixturesInstaller $fixturesInstaller, InstallerEvent $installerEvent)
+    {
+        $installerEvent->getArgument('catalog')->willReturn('unsupported_catalog_name');
+
+        $fixturesInstaller->loadCatalog()->shouldNotBeCalled();
+        $this->loadFixtures($installerEvent);
+    }
+
+    function it_loads_the_fixtures_if_forced($fixturesInstaller, $assetsInstaller, InstallerEvent $installerEvent)
+    {
+        $this->beConstructedWith($fixturesInstaller, $assetsInstaller, true);
+        $installerEvent->getArgument('catalog')->willReturn('unsupported_catalog_name');
+
+        $fixturesInstaller->loadCatalog()->shouldBeCalled();
+        $this->loadFixtures($installerEvent);
+    }
+
+    function it_does_not_load_the_fixtures_if_not_forced($fixturesInstaller, $assetsInstaller, InstallerEvent $installerEvent)
+    {
+        $this->beConstructedWith($fixturesInstaller, $assetsInstaller, false);
+        $installerEvent->getArgument('catalog')->willReturn('unsupported_catalog_name');
+
+        $fixturesInstaller->loadCatalog()->shouldNotBeCalled();
         $this->loadFixtures($installerEvent);
     }
 
@@ -65,7 +91,7 @@ class InstallerCommandSpec extends ObjectBehavior
         FixturesInstaller $fixturesInstaller
     ) {
         $fixturesInstaller->createSchema()->shouldBeCalled();
-        $fixturesInstaller->loadCatalog(FixturesInstaller::ICE_CAT_DEMO_DEV_CATALOG)->shouldBeCalled();
+        $fixturesInstaller->loadCatalog()->shouldBeCalled();
 
         $this->execute($input, $output);
     }

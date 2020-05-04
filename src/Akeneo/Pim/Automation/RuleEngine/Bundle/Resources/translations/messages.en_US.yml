@@ -13,6 +13,8 @@ pimee_catalog_rule:
                     label: Affected products
                     count: '{0,1}%count% affected product|]1,Inf[%count% affected products'
                     no_yet_calculated: Not yet calculated
+                tags:
+                    label: Actions
             mass_edit_action:
                 impacted_product_count: Calculate the affected products
                 execute: Execute

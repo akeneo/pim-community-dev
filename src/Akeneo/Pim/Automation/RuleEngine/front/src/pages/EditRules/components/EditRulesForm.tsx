@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTabState, Tab, TabList, TabPanel } from 'reakit/Tab';
-import { Translate } from '../../../dependenciesTools';
-import { RuleDefinition } from '../../../models/RuleDefinition';
+import { Router, Translate } from '../../../dependenciesTools';
+import { RuleDefinition } from '../../../models';
 import { RulesBuilder } from './RulesBuilder';
 import { RuleProperties } from './RuleProperties';
-import { Locale } from '../../../models/Locale';
+import { Locale } from '../../../models';
 import { IndexedScopes } from '../../../fetch/ScopeFetcher';
 
 const getTabBorder = ({ id, selectedId, theme }: any): string | number => {
@@ -69,6 +69,7 @@ type Props = {
   ruleDefinition: RuleDefinition;
   scopes: IndexedScopes;
   currentCatalogLocale: string;
+  router: Router;
 };
 
 const EditRulesForm: React.FC<Props> = ({
@@ -78,6 +79,7 @@ const EditRulesForm: React.FC<Props> = ({
   translate,
   scopes,
   currentCatalogLocale,
+  router,
 }) => {
   const tab = useTabState({ selectedId: 'rulesBuilderTab' });
   return (
@@ -103,6 +105,7 @@ const EditRulesForm: React.FC<Props> = ({
             locales={locales}
             scopes={scopes}
             currentCatalogLocale={currentCatalogLocale}
+            router={router}
           />
         </StyledTabPanel>
         <StyledTabPanel {...tab} tabIndex={-1}>

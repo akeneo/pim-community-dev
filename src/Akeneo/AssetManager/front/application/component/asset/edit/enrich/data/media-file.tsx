@@ -20,6 +20,7 @@ import Close from 'akeneoassetmanager/application/component/app/icon/close';
 import Import from 'akeneoassetmanager/application/component/app/illustration/import';
 import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
+import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-closing';
 
 const FileUploadContainer = styled(Container).attrs(() => ({className: 'AknImage-uploader'}))`
   position: relative;
@@ -73,12 +74,15 @@ const FileUploader = ({
   readOnly: boolean;
   onChange: (value: EditionValue) => void;
 }) => {
+  const [isUploading, setUploading] = React.useState<boolean>(false);
+
   const upload = React.useCallback(
     async (file: File): Promise<void> => {
       if (undefined === file) {
         return;
       }
 
+      setUploading(true);
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
 
@@ -95,6 +99,7 @@ const FileUploader = ({
       } catch (error) {
         console.error(error);
       }
+      setUploading(false);
     },
     [value, onChange]
   );
@@ -102,7 +107,18 @@ const FileUploader = ({
   const handleDrop = (e: React.DragEvent<HTMLInputElement>) => upload(e.dataTransfer.files[0]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => e.target.files && upload(e.target.files[0]);
 
-  return (
+  usePreventClosing(() => isUploading, __('pim_enrich.confirmation.discard_changes', {entity: 'asset'}));
+
+  return isUploading ? (
+    <FileUploadContainer>
+      <div className="AknLoadingPlaceHolderContainer">
+        <ThumbnailPlaceholder />
+      </div>
+      <MediaFileLabelPlaceholder readOnly={readOnly}>
+        {__(`pim_asset_manager.attribute.media_file.uploading`)}
+      </MediaFileLabelPlaceholder>
+    </FileUploadContainer>
+  ) : (
     <FileUploadContainer>
       <FileInput
         id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}

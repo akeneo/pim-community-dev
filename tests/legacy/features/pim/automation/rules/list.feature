@@ -229,6 +229,7 @@ Feature: List all rules
       | Action    | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
       | Action    | Then description [ en \| mobile ] is copied into description [ fr \| mobile ] |
       | Action    | Then description [ en \| mobile ] is copied into description [ fr \| tablet ] |
+      | Actions   | set copy                                                                      |
 
     And the row "Tees Collection Update" should contain the texts:
       | column    | value                                                               |
@@ -244,12 +245,14 @@ Feature: List all rules
       | Action    | Then name [ en ] is copied into name [ fr ]                         |
       | Action    | Then name [ en ] is copied into name [ de ]                         |
       | Action    | Then true is set into enabled                                       |
+      | Actions   | set copy                                                            |
 
     And the row "Unclassify 2014 Collection Tees" should contain the texts:
       | column    | value                                                               |
       | Condition | If family in tees                                                   |
       | Condition | If enabled equals false                                             |
       | Action    | Then 2014_collection and children is removed from categories        |
+      | Actions   | remove                                                              |
 
     And the row "Nineties" should contain the texts:
       | column    | value                                                        |
@@ -260,6 +263,7 @@ Feature: List all rules
       | column    | value                                                                                |
       | Condition | If family in tees                                                                    |
       | Action    | Then sku, release_date [ mobile ] are concatenated into description [ en \| tablet ] |
+      | Actions   | concatenate                                                                          |
 
     And the row "Clear Rule" should contain the texts:
       | column    | value                                        |
