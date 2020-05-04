@@ -12,14 +12,14 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation;
 trait EntityWithQuantifiedAssociationTrait
 {
     /** @var array */
-    protected $rawQuantifiedAssociations = [];
+    public $rawQuantifiedAssociations = [];
 
     /**
      * Not persisted.
      *
      * @var QuantifiedAssociations
      */
-    protected $quantifiedAssociations = [];
+    public $quantifiedAssociations = [];
 
     /**
      * @inheritDoc

@@ -10,16 +10,12 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 
 /**
- * Load real entity values object from the $rawValues field (ie: values in JSON)
- * when an entity with values is loaded by Doctrine.
+ * Load quantified associations into a QuantifiedAssociation Value Object.
  *
- * @author    Julien Janvier <j.janvier@gmail.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * TODO: we could use an Entity Listener instead (need to upgrade bundle to 1.3)
- * TODO: cf. http://symfony.com/doc/current/bundles/DoctrineBundle/entity-listeners.html
- * TODO: cf. http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#entity-listeners
  */
 final class LoadEntitySubscriber implements EventSubscriber
 {
@@ -43,7 +39,7 @@ final class LoadEntitySubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            Events::postLoad
+            Events::postLoad => 'loadQuantifiedAssociations'
         ];
     }
 
@@ -55,7 +51,7 @@ final class LoadEntitySubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $event
      */
-    public function postLoad(LifecycleEventArgs $event)
+    public function loadQuantifiedAssociations(LifecycleEventArgs $event)
     {
         $entity = $event->getObject();
         if (!$entity instanceof EntityWithQuantifiedAssociationsInterface) {

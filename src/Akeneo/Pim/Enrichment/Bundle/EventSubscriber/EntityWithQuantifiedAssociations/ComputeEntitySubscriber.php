@@ -10,7 +10,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * Hydrates the raw quantified association into proper quantified association value object
+ * Computes the raw quantified association from the QuantifiedAssociation VO,
+ * so that doctrine is able to persist the changes in DB.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)

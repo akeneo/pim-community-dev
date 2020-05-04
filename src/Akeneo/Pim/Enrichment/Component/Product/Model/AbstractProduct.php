@@ -22,7 +22,7 @@ use Doctrine\Common\Collections\Collection;
  */
 abstract class AbstractProduct implements ProductInterface
 {
-    use  EntityWithQuantifiedAssociationTrait;
+    use EntityWithQuantifiedAssociationTrait;
 
     /** @var int|string */
     protected $id;

@@ -1,0 +1,67 @@
+<?php
+
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssociations;
+
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssociations\LoadEntitySubscriber;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
+use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductIdsQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductModelIdsQueryInterface;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
+class LoadEntitySubscriberSpec extends ObjectBehavior
+{
+    function let(
+        GetIdMappingFromProductIdsQueryInterface $getIdMappingFromProductIds,
+        GetIdMappingFromProductModelIdsQueryInterface $getIdMappingFromProductModelIds
+    ) {
+        $this->beConstructedWith($getIdMappingFromProductIds, $getIdMappingFromProductModelIds);
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(LoadEntitySubscriber::class);
+    }
+
+    function it_subscribes_to_the_postLoad_event()
+    {
+        $this->getSubscribedEvents()->shouldReturn(['postLoad' => 'loadQuantifiedAssociations']);
+    }
+
+    function it_loads_values_of_a_product(
+        $getIdMappingFromProductIds,
+        $getIdMappingFromProductModelIds,
+        LifecycleEventArgs $event,
+        EntityWithQuantifiedAssociationsInterface $entityWithQuantifiedAssociations
+    ) {
+        $event->getObject()->willReturn($entityWithQuantifiedAssociations);
+        $productModelIds = [1, 2];
+        $productIds = [1,2];
+        $productIdMapping = $this->anIdMapping();
+        $productModelIdMapping = $this->anIdMapping();
+
+        $entityWithQuantifiedAssociations->getQuantifiedAssociationsProductIds()->willReturn($productIds);
+        $entityWithQuantifiedAssociations->getQuantifiedAssociationsProductModelIds()->willReturn($productModelIds);
+        $entityWithQuantifiedAssociations->hydrateQuantifiedAssociations($productIdMapping, $productModelIdMapping);
+
+        $getIdMappingFromProductIds->execute($productIds)->willReturn($productIdMapping);
+        $getIdMappingFromProductModelIds->execute($productModelIds)->willReturn($productModelIdMapping);
+
+        $this->loadQuantifiedAssociations($event);
+    }
+
+    function it_ignores_non_entities_with_quantified_associations($getIdMappingFromProductIds, LifecycleEventArgs $event, \stdClass $randomEntity)
+    {
+        $event->getObject()->willReturn($randomEntity);
+        $getIdMappingFromProductIds->execute(Argument::cetera())->shouldNotBeCalled();
+
+        $this->loadQuantifiedAssociations($event);
+    }
+
+    private function anIdMapping(): IdMapping
+    {
+        return IdMapping::createFromMapping([1 => 'entity_1', 2 => 'entity_2']);
+    }
+}
