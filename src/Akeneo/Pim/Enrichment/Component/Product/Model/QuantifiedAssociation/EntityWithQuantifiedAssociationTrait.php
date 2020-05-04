@@ -72,7 +72,7 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function getQuantifiedAssociationsProductIdentifiers(): array
     {
-        if (empty($this->quantifiedAssociations)) {
+        if (null === $this->quantifiedAssociations) {
             return [];
         }
 
@@ -84,7 +84,7 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function getQuantifiedAssociationsProductModelCodes(): array
     {
-        if (empty($this->quantifiedAssociations)) {
+        if (null === $this->quantifiedAssociations) {
             return [];
         }
 
@@ -98,7 +98,7 @@ trait EntityWithQuantifiedAssociationTrait
         IdMapping $mappedProductIdentifiers,
         IdMapping $mappedProductModelIdentifiers
     ): void {
-        if (empty($this->quantifiedAssociations)) {
+        if (null === $this->quantifiedAssociations) {
             $this->rawQuantifiedAssociations = [];
 
             return;
