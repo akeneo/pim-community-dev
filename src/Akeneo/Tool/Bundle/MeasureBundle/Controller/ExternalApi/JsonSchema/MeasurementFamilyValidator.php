@@ -27,7 +27,7 @@ class MeasurementFamilyValidator
             'type'                 => 'object',
             'properties'           => [
                 '_links'             => ['type' => 'object'],
-                'code'               => ['type' => ['string'],],
+                'code'               => ['type' => 'string'],
                 'labels'             => [
                     'type'              => ['object', 'array'],
                     'patternProperties' => [
@@ -36,35 +36,38 @@ class MeasurementFamilyValidator
                 ],
                 'standard_unit_code' => ['type' => 'string'],
                 'units'              => [
-                    'type'  => 'array',
-                    'items' => [
-                        'type'       => 'object',
-                        'required'   => ['code', 'labels', 'convert_from_standard', 'symbol'],
-                        'properties' => [
-                            'code'                  => ['type' => 'string'],
-                            'labels'                => [
-                                'type'              => ['object', 'array'],
-                                'patternProperties' => [
-                                    '.+' => ['type' => 'string'],
-                                ],
-                            ],
-                            'convert_from_standard' => [
-                                'type'  => 'array',
-                                'items' => [
-                                    'type'       => 'object',
-                                    'properties' => [
-                                        'operator' => ['type' => 'string'],
-                                        'value'    => ['type' => 'string']
+                    'type'  => 'object',
+                    'patternProperties' => [
+                        '.+' => [
+                            'type'       => 'object',
+                            'properties' => [
+                                'code'                  => ['type' => 'string'],
+                                'labels'                => [
+                                    'type'              => ['object', 'array'],
+                                    'patternProperties' => [
+                                        '.+' => ['type' => 'string'],
                                     ],
-                                    'required'   => ['operator', 'value'],
-                                ]
+                                ],
+                                'convert_from_standard' => [
+                                    'type'  => 'array',
+                                    'items' => [
+                                        'type'       => 'object',
+                                        'properties' => [
+                                            'operator' => ['type' => 'string'],
+                                            'value'    => ['type' => 'string']
+                                        ],
+                                        'required'   => ['operator', 'value'],
+                                    ]
+                                ],
+                                'symbol'                => ['type' => 'string']
                             ],
-                            'symbol'                => ['type' => 'string']
-                        ]
+                            'required' => ['code', 'convert_from_standard'],
+                            'additionalProperties' => false,
+                        ],
                     ]
                 ]
             ],
-            'required'             => ['code', 'labels', 'units', 'standard_unit_code'],
+            'required'             => ['code', 'units', 'standard_unit_code'],
             'additionalProperties' => false,
         ];
     }

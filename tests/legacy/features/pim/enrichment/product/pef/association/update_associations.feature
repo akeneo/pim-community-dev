@@ -12,7 +12,7 @@ Feature: Update the product associations
       | spongebob | clothing | tshirts    |
       | patrick   | clothing | tshirts    |
     And I am on the "spongebob" product page
-    And I visit the "Associations" column tab
+    And I visit the "Associations (0)" column tab
 
   @critical
   Scenario: Successfully add an association

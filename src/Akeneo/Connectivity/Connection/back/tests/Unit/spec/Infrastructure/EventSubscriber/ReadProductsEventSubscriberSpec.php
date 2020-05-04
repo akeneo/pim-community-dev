@@ -7,19 +7,13 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQuery;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ReadProductsEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
-use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -29,15 +23,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class ReadProductsEventSubscriberSpec extends ObjectBehavior
 {
     public function let(
-        AreCredentialsValidCombinationQuery $areCredentialsValidCombinationQuery,
-        SelectConnectionCodeByClientIdQuery $selectConnectionCodeQuery,
-        ConnectionRepository $connectionRepository,
+        ConnectionContext $connectionContext,
         UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler
     ): void {
         $this->beConstructedWith(
-            $areCredentialsValidCombinationQuery,
-            $selectConnectionCodeQuery,
-            $connectionRepository,
+            $connectionContext,
             $updateDataDestinationProductEventCountHandler
         );
     }
@@ -50,33 +40,17 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
 
     public function it_provides_subscribed_events(): void
     {
-        $this->getSubscribedEvents()
-            ->shouldReturn([
-                ApiAuthenticationEvent::class => 'checkApiCredentialsCombination',
-                ReadProductsEvent::class => 'saveReadProducts',
-            ]);
+        $this->getSubscribedEvents()->shouldReturn([ReadProductsEvent::class => 'saveReadProducts',]);
     }
 
     public function it_saves_read_products_events(
-        $areCredentialsValidCombinationQuery,
-        $selectConnectionCodeQuery,
-        $connectionRepository,
-        $updateDataDestinationProductEventCountHandler,
-        Connection $connection
+        $connectionContext,
+        $updateDataDestinationProductEventCountHandler
     ): void {
-        $connection->code()
-            ->willReturn(new ConnectionCode('ecommerce'));
-        $connection->flowType()
-            ->willReturn(new FlowType(FlowType::DATA_DESTINATION));
+        $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_DESTINATION, 42, 10);
+        $connectionContext->getConnection()->willReturn($connection);
+        $connectionContext->isCollectable()->willReturn(true);
 
-        $areCredentialsValidCombinationQuery->execute('3', 'ecommerce_0123')
-            ->willReturn(true);
-        $selectConnectionCodeQuery->execute('3')
-            ->willReturn('ecommerce');
-        $connectionRepository->findOneByCode('ecommerce')
-            ->willReturn($connection);
-
-        $this->checkApiCredentialsCombination(new ApiAuthenticationEvent('ecommerce_0123', '3'));
         $this->saveReadProducts(new ReadProductsEvent([4, 2, 6]));
 
         $updateDataDestinationProductEventCountHandler->handle(
@@ -88,40 +62,26 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         )->shouldBeCalled();
     }
 
-    public function it_does_not_save_read_products_events_for_invalid_connection_credentials_combination(
-        $areCredentialsValidCombinationQuery,
+    public function it_does_not_save_read_products_events_for_not_collectable_connection(
+        $connectionContext,
         $updateDataDestinationProductEventCountHandler
     ): void {
-        $areCredentialsValidCombinationQuery->execute('2', 'ecommerce_0123')
-            ->willReturn(false);
+        $connectionContext->isCollectable()->willReturn(false);
 
-        $this->checkApiCredentialsCombination(new ApiAuthenticationEvent('ecommerce_0123', '2'));
         $this->saveReadProducts(new ReadProductsEvent([4, 2, 6]));
 
         $updateDataDestinationProductEventCountHandler->handle()
             ->shouldNotBeCalled();
     }
 
-    public function it_does_not_save_read_products_events_when_the_connection_flow_type_is_different_from_destination(
-        $areCredentialsValidCombinationQuery,
-        $selectConnectionCodeQuery,
-        $connectionRepository,
-        $updateDataDestinationProductEventCountHandler,
-        Connection $connection
+    public function it_does_not_save_read_products_events_when_the_connection_flow_type_is_different_than_destination(
+        $connectionContext,
+        $updateDataDestinationProductEventCountHandler
     ): void {
-        $connection->code()
-            ->willReturn(new ConnectionCode('ecommerce'));
-        $connection->flowType()
-            ->willReturn(new FlowType(FlowType::DATA_SOURCE));
+        $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_SOURCE, 42, 10);
+        $connectionContext->getConnection()->willReturn($connection);
+        $connectionContext->isCollectable()->willReturn(true);
 
-        $areCredentialsValidCombinationQuery->execute('3', 'ecommerce_0123')
-            ->willReturn(true);
-        $selectConnectionCodeQuery->execute('3')
-            ->willReturn('ecommerce');
-        $connectionRepository->findOneByCode('ecommerce')
-            ->willReturn($connection);
-
-        $this->checkApiCredentialsCombination(new ApiAuthenticationEvent('ecommerce_0123', '3'));
         $this->saveReadProducts(new ReadProductsEvent([4, 2, 6]));
 
         $updateDataDestinationProductEventCountHandler->handle()

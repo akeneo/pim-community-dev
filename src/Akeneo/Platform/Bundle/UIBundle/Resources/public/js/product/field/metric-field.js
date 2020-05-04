@@ -38,7 +38,6 @@ define([
                     family.code === templateContext.attribute.metric_family);
                 templateContext.i18n = i18n;
                 templateContext.units = measurementFamily.units;
-                templateContext.locale = templateContext.locale || templateContext.context.locale;
                 templateContext.uiLocale = UserContext.get('uiLocale');
 
                 return templateContext;

@@ -111,9 +111,14 @@ class PermissionDecorator extends ElementDecorator
     {
         $iconElement = $this->findGroupIcon($group);
 
-        if ($iconElement->hasClass('granted')) {
+        $this->spin(function () use ($iconElement) {
+            if ($iconElement->hasClass('non-granted')) {
+                return true;
+            }
             $iconElement->click();
-        }
+
+            return false;
+        }, sprintf('Cannot revoke group \'%s\'.', $group));
     }
 
     /**

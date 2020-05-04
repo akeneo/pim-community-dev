@@ -53,7 +53,6 @@ pim_import_export:
         show_profile.title: 프로필 표시
         download_log.title: 로그 다운로드
         download_file.title: 생성된 파일 다운로드
-        download_archive.title: 생성된 아카이브 다운로드
       summary:
         fetching: 작업 실행에 대한 데이터 수집 중...
         warning: 경고

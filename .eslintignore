@@ -4,3 +4,4 @@ src/Oro/**/**/*.js
 src/Akeneo/ReferenceEntity/tests/front
 src/Akeneo/Pim/Enrichment/AssetManager/tests/front
 src/Akeneo/Connectivity/Connection
+src/Akeneo/Pim/Automation/RuleEngine/front

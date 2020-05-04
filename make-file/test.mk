@@ -4,6 +4,10 @@ var/tests/%:
 .PHONY: coupling-back
 coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back
 
+### Static tests
+static-back: check-pullup check-sf-services
+	echo "Job done! Nothing more to do here..."
+
 .PHONY: check-pullup
 check-pullup:
 	${PHP_RUN} bin/check-pullup
@@ -82,7 +86,7 @@ endif
 # make end-to-end-legacy O=my/feature/file.feature:23
 #
 # Don't forget to pass *O*ption to avoid to run the whole suite.
-# Please add dependencies to this tagert and let it die
+# Please add dependencies to this target and let it die
 
 .PHONY: end-to-end-legacy
 end-to-end-legacy: var/tests/behat
@@ -90,5 +94,5 @@ ifeq ($(CI),true)
 	.circleci/run_behat.sh $(SUITE)
 	.circleci/run_behat.sh critical
 else
-	${PHP_RUN} vendor/bin/behat -p legacy -s all ${0}
+	${PHP_RUN} vendor/bin/behat -p legacy -s all ${O}
 endif

@@ -28,7 +28,7 @@ class AttributeConverterSpec extends ObjectBehavior
         $attributeRepository->getAttributeTypeByCodes(['number'])->willReturn(['number' => 'pim_number']);
         $localizerRegistry->getLocalizer('pim_number')->willReturn($localizer);
         $localizer->supports('pim_number')->willReturn(true);
-        $localizer->validate('10,45', 'values[number]', $options)->willReturn(null);
+        $localizer->validate('10,45', 'values[number-<all_channels>-<all_locales>]', $options)->willReturn(null);
         $localizer->delocalize('10,45', $options)->willReturn('10.45');
 
         $this->convertToDefaultFormats(['number' => [['data' => '10,45']]], $options)
@@ -58,10 +58,10 @@ class AttributeConverterSpec extends ObjectBehavior
         $attributeRepository->getAttributeTypeByCodes(['number'])->willReturn(['number' => 'pim_number']);
         $localizerRegistry->getLocalizer('pim_number')->willReturn($localizer);
 
-        $constraint = new ConstraintViolation('Error with attribute', '', [], '', 'values[number]', '10,45');
+        $constraint = new ConstraintViolation('Error with attribute', '', [], '', 'values[number-<all_channels>-<all_locales>]', '10,45');
         $constraints = new ConstraintViolationList([$constraint]);
         $localizer->supports('pim_number')->willReturn(true);
-        $localizer->validate('10,45', 'values[number]', $options)->willReturn($constraints);
+        $localizer->validate('10,45', 'values[number-<all_channels>-<all_locales>]', $options)->willReturn($constraints);
         $localizer->delocalize('10,45', $options)->willReturn('10.45');
 
         $this->convertToDefaultFormats(['number' => [['data' => '10,45']]], $options)

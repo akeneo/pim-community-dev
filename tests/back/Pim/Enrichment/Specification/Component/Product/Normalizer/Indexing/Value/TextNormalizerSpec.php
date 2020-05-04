@@ -42,6 +42,7 @@ class TextNormalizerSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             true,
             'text',
             []
@@ -52,6 +53,7 @@ class TextNormalizerSpec extends ObjectBehavior
             [],
             false,
             false,
+            null,
             null,
             true,
             'decimal',
@@ -86,6 +88,7 @@ class TextNormalizerSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             true,
             'text',
             []
@@ -115,6 +118,7 @@ class TextNormalizerSpec extends ObjectBehavior
             [],
             false,
             false,
+            null,
             null,
             true,
             'text',
@@ -146,6 +150,7 @@ class TextNormalizerSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             true,
             'text',
             []
@@ -175,6 +180,7 @@ class TextNormalizerSpec extends ObjectBehavior
             [],
             true,
             false,
+            null,
             null,
             true,
             'text',
@@ -206,6 +212,7 @@ class TextNormalizerSpec extends ObjectBehavior
             false,
             true,
             null,
+            null,
             true,
             'text',
             []
@@ -235,6 +242,7 @@ class TextNormalizerSpec extends ObjectBehavior
             [],
             true,
             true,
+            null,
             null,
             true,
             'text',

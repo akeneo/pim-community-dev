@@ -62,6 +62,20 @@ class MeasurementFamily
         ];
     }
 
+    public function normalizeWithIndexedUnits(): array
+    {
+        return [
+            'code' => $this->code->normalize(),
+            'labels' => $this->labels->normalize(),
+            'standard_unit_code' => $this->standardUnitCode->normalize(),
+            'units' => array_reduce($this->units, function (array $units, Unit $unit) {
+                $normalizedUnit = $unit->normalize();
+                $units[$normalizedUnit['code']] = $normalizedUnit;
+                return $units;
+            }, []),
+        ];
+    }
+
     private function assertStandardUnitExists(UnitCode $standardUnitCode, array $units): void
     {
         $isStandardUnitCodePresentInUnits = !empty($this->getUnit($standardUnitCode, $units));

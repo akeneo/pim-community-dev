@@ -8,6 +8,7 @@ use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 /**
  * Updates a role
@@ -98,6 +99,13 @@ class RoleUpdater implements ObjectUpdaterInterface
                     ? $maskBuilder->getConst('GROUP_SYSTEM')
                     : $maskBuilder->getConst('GROUP_ALL');
                 $this->aclManager->setPermission($sid, $rootOid, $fullAccessMask, true);
+            }
+
+            foreach ($extension->getClasses() as $class) {
+                if (!$class->isEnabledAtCreation()) {
+                    $oid = new ObjectIdentity($extension->getExtensionKey(), $class->getClassName());
+                    $this->aclManager->setPermission($sid, $oid, 0, true);
+                }
             }
         }
     }

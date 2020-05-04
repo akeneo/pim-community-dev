@@ -58,6 +58,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             false,
             'text',
             []
@@ -94,6 +95,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             [],
             true,
             false,
+            null,
             null,
             false,
             'text',
@@ -132,6 +134,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             true,
             true,
             null,
+            null,
             false,
             'text',
             []
@@ -167,6 +170,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             [],
             true,
             true,
+            null,
             null,
             true,
             'integer',
@@ -204,6 +208,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             true,
             true,
             null,
+            null,
             true,
             'decimal',
             []
@@ -240,6 +245,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             true,
             true,
             null,
+            null,
             false,
             'integer',
             []
@@ -275,6 +281,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             [],
             true,
             true,
+            null,
             null,
             true,
             'decimal',
@@ -313,6 +320,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             false,
             'option',
             []
@@ -349,6 +357,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             [],
             false,
             false,
+            null,
             null,
             false,
             'options',

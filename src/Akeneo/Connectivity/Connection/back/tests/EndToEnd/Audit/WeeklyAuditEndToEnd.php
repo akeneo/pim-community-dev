@@ -7,9 +7,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Audit;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditLoader;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Test\Integration\Configuration;
@@ -28,20 +26,59 @@ class WeeklyAuditEndToEnd extends WebTestCase
         $this->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE, true);
         $this->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
 
-        $hourlyEventCountsPerConnection = $this->createHourlyEventCountsPerConnection(
-            ['bynder', 'sap'],
-            (new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('Asia/Tokyo')))
-                ->setTimezone(new \DateTimeZone('UTC')),
-            (new \DateTimeImmutable('2020-01-09 00:00:00', new \DateTimeZone('Asia/Tokyo')))
-                ->setTimezone(new \DateTimeZone('UTC')),
-            EventTypes::PRODUCT_CREATED
-        );
-        $weeklyEventCountsPerConnection = $this->hourlyToWeeklyEventCounts(
-            '2020-01-01',
-            '2020-01-08',
-            'Asia/Tokyo',
-            $hourlyEventCountsPerConnection
-        );
+        $this->createHourlyEventCounts([
+            ['bynder', 'product_created', '2019-12-31 23:00:00', 1], // ignored
+            ['bynder', 'product_created', '2020-01-01 00:00:00', 3],
+            ['bynder', 'product_created', '2020-01-04 15:00:00', 5],
+            ['bynder', 'product_created', '2020-01-04 16:00:00', 7],
+            ['bynder', 'product_created', '2020-01-09 00:00:00', 9], // ignored
+            ['sap', 'product_created', '2020-01-04 14:00:00', 10],
+            ['sap', 'product_created', '2020-01-04 15:00:00', 30],
+            ['sap', 'product_created', '2020-01-08 23:00:00', 50],
+            [AllConnectionCode::CODE, 'product_created', '2020-01-01 00:00:00', 100],
+        ], 'Asia/Tokyo');
+
+        $expectedResult = [
+            'bynder' => [
+                'daily' => [
+                    '2020-01-01' => 3,
+                    '2020-01-02' => 0,
+                    '2020-01-03' => 0,
+                    '2020-01-04' => 12,
+                    '2020-01-05' => 0,
+                    '2020-01-06' => 0,
+                    '2020-01-07' => 0,
+                    '2020-01-08' => 0,
+                ],
+                'weekly_total' => 15
+            ],
+            'sap' => [
+                'daily' => [
+                    '2020-01-01' => 0,
+                    '2020-01-02' => 0,
+                    '2020-01-03' => 0,
+                    '2020-01-04' => 40,
+                    '2020-01-05' => 0,
+                    '2020-01-06' => 0,
+                    '2020-01-07' => 0,
+                    '2020-01-08' => 50,
+                ],
+                'weekly_total' => 90
+            ],
+            '<all>' => [
+                'daily' => [
+                    '2020-01-01' => 100,
+                    '2020-01-02' => 0,
+                    '2020-01-03' => 0,
+                    '2020-01-04' => 0,
+                    '2020-01-05' => 0,
+                    '2020-01-06' => 0,
+                    '2020-01-07' => 0,
+                    '2020-01-08' => 0,
+                ],
+                'weekly_total' => 100
+            ]
+        ];
 
         $user = $this->authenticateAsAdmin();
         $user->setTimezone('Asia/Tokyo');
@@ -56,13 +93,6 @@ class WeeklyAuditEndToEnd extends WebTestCase
             ],
         );
         $result = json_decode($this->client->getResponse()->getContent(), true);
-        $expectedResult = array_reduce(
-            $weeklyEventCountsPerConnection,
-            function (array $data, WeeklyEventCounts $weeklyEventCounts) {
-                return array_merge($data, $weeklyEventCounts->normalize());
-            },
-            []
-        );
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals($expectedResult, $result);
@@ -72,20 +102,42 @@ class WeeklyAuditEndToEnd extends WebTestCase
     {
         $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION, true);
 
-        $hourlyEventCountsPerConnection = $this->createHourlyEventCountsPerConnection(
-            ['magento'],
-            (new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('Asia/Tokyo')))
-                ->setTimezone(new \DateTimeZone('UTC')),
-            (new \DateTimeImmutable('2020-01-09 00:00:00', new \DateTimeZone('Asia/Tokyo')))
-                ->setTimezone(new \DateTimeZone('UTC')),
-            EventTypes::PRODUCT_READ
-        );
-        $weeklyEventCountsPerConnection = $this->hourlyToWeeklyEventCounts(
-            '2020-01-01',
-            '2020-01-08',
-            'Asia/Tokyo',
-            $hourlyEventCountsPerConnection
-        );
+        $this->createHourlyEventCounts([
+            ['magento', 'product_read', '2019-12-31 23:00:00', 1], // ignored
+            ['magento', 'product_read', '2020-01-01 00:00:00', 3],
+            ['magento', 'product_read', '2020-01-04 15:00:00', 5],
+            ['magento', 'product_read', '2020-01-04 16:00:00', 7],
+            ['magento', 'product_read', '2020-01-09 00:00:00', 9], // ignored
+        ], 'Asia/Tokyo');
+
+        $expectedResult = [
+            'magento' => [
+                'daily' => [
+                    '2020-01-01' => 3,
+                    '2020-01-02' => 0,
+                    '2020-01-03' => 0,
+                    '2020-01-04' => 12,
+                    '2020-01-05' => 0,
+                    '2020-01-06' => 0,
+                    '2020-01-07' => 0,
+                    '2020-01-08' => 0,
+                ],
+                'weekly_total' => 15
+            ],
+            '<all>' => [
+                'daily' => [
+                    '2020-01-01' => 0,
+                    '2020-01-02' => 0,
+                    '2020-01-03' => 0,
+                    '2020-01-04' => 0,
+                    '2020-01-05' => 0,
+                    '2020-01-06' => 0,
+                    '2020-01-07' => 0,
+                    '2020-01-08' => 0,
+                ],
+                'weekly_total' => 0
+            ]
+        ];
 
         $user = $this->authenticateAsAdmin();
         $user->setTimezone('Asia/Tokyo');
@@ -100,83 +152,9 @@ class WeeklyAuditEndToEnd extends WebTestCase
             ],
         );
         $result = json_decode($this->client->getResponse()->getContent(), true);
-        $expectedResult = array_reduce(
-            $weeklyEventCountsPerConnection,
-            function (array $data, WeeklyEventCounts $weeklyEventCounts) {
-                return array_merge($data, $weeklyEventCounts->normalize());
-            },
-            []
-        );
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals($expectedResult, $result);
-    }
-
-    private function createHourlyEventCountsPerConnection(
-        array $connectionCodes,
-        \DateTimeImmutable $startDateTime,
-        \DateTimeImmutable $endDateTime,
-        string $eventType
-    ): array {
-        $period = new \DatePeriod($startDateTime, new \DateInterval('PT1H'), $endDateTime);
-        $hourlyEventCountsPerConnection = [];
-
-        foreach ($period as $dateTime) {
-            $allCount = 0;
-
-            foreach ($connectionCodes as $connectionCode) {
-                $count = rand(0, 5);
-                $allCount += $count;
-
-                $hourlyEventCountsPerConnection[$connectionCode][] = new HourlyEventCount(
-                    $connectionCode,
-                    HourlyInterval::createFromDateTime($dateTime),
-                    $count,
-                    $eventType
-                );
-            }
-
-            $hourlyEventCountsPerConnection[AllConnectionCode::CODE][] = new HourlyEventCount(
-                AllConnectionCode::CODE,
-                HourlyInterval::createFromDateTime($dateTime),
-                $allCount,
-                $eventType
-            );
-        }
-
-        foreach (array_merge($connectionCodes, [AllConnectionCode::CODE]) as $connectionCode) {
-            foreach ($hourlyEventCountsPerConnection[$connectionCode] as $hourlyEventCounts) {
-                $this->getAuditLoader()->insert($hourlyEventCounts);
-            }
-        }
-
-        return $hourlyEventCountsPerConnection;
-    }
-
-    private function hourlyToWeeklyEventCounts(
-        string $startDate,
-        string $endDate,
-        string $timezone,
-        array $hourlyEventCountsPerConnection
-    ): array {
-        $weeklyEventCountsPerConnection = [];
-
-        foreach ($hourlyEventCountsPerConnection as $connectionCode => $hourlyEventCounts) {
-            $weeklyEventCountsPerConnection[] = new WeeklyEventCounts(
-                $connectionCode,
-                $startDate,
-                $endDate,
-                $timezone,
-                array_map(
-                    function (HourlyEventCount $hourlyEventCount) {
-                        return [$hourlyEventCount->hourlyInterval()->fromDateTime(), $hourlyEventCount->eventCount()];
-                    },
-                    $hourlyEventCounts
-                )
-            );
-        }
-
-        return $weeklyEventCountsPerConnection;
     }
 
     protected function getConfiguration(): Configuration
@@ -187,5 +165,22 @@ class WeeklyAuditEndToEnd extends WebTestCase
     private function getAuditLoader(): AuditLoader
     {
         return $this->get('akeneo_connectivity.connection.fixtures.audit_loader');
+    }
+
+    private function createHourlyEventCounts(array $hourlyEventCountData, string $userDateTimeZoneStr): void
+    {
+        foreach ($hourlyEventCountData as [$connectionCode, $eventType, $userDateTimeStr, $eventCount]) {
+            $utcDateTime = (new \DateTimeImmutable($userDateTimeStr, new \DateTimeZone($userDateTimeZoneStr)))
+                ->setTimezone(new \DateTimeZone('UTC'));
+
+            $hourlyEventCount = new HourlyEventCount(
+                $connectionCode,
+                HourlyInterval::createFromDateTime($utcDateTime),
+                $eventCount,
+                $eventType
+            );
+
+            $this->getAuditLoader()->insert($hourlyEventCount);
+        }
     }
 }

@@ -42,6 +42,7 @@ class NumberNormalizerSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             true,
             'decimal',
             []
@@ -52,6 +53,7 @@ class NumberNormalizerSpec extends ObjectBehavior
             [],
             false,
             false,
+            null,
             null,
             true,
             'text',
@@ -87,6 +89,7 @@ class NumberNormalizerSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             false,
             'decimal',
             []
@@ -116,6 +119,7 @@ class NumberNormalizerSpec extends ObjectBehavior
             [],
             false,
             false,
+            null,
             null,
             false,
             'decimal',
@@ -147,6 +151,7 @@ class NumberNormalizerSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             true,
             'decimal',
             []
@@ -176,6 +181,7 @@ class NumberNormalizerSpec extends ObjectBehavior
             [],
             false,
             false,
+            null,
             null,
             true,
             'decimal',
@@ -207,6 +213,7 @@ class NumberNormalizerSpec extends ObjectBehavior
             false,
             false,
             null,
+            null,
             false,
             'decimal',
             []
@@ -236,6 +243,7 @@ class NumberNormalizerSpec extends ObjectBehavior
             [],
             false,
             false,
+            null,
             null,
             false,
             'decimal',

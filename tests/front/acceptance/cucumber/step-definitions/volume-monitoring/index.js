@@ -29,6 +29,12 @@ module.exports = async function(cucumber) {
           body: `${JSON.stringify({})}`
         })
       }
+      if (request.url().includes('/configuration/feature-flags')) {
+        request.respond({
+          contentType: 'application/json',
+          body: `${JSON.stringify({})}`,
+        });
+      }
     })
 
     await renderView(this.page, 'pim-catalog-volume-index', data);

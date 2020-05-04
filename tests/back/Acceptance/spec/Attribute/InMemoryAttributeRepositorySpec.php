@@ -154,6 +154,28 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->findMediaAttributeCodes()->shouldReturn(['attribute_2', 'attribute_4']);
     }
 
+    function it_finds_all_attributes()
+    {
+        $attribute1 = $this->createAttribute('attribute_1', null, AttributeTypes::BACKEND_TYPE_BOOLEAN);
+        $attribute2 = $this->createAttribute('attribute_2', null, AttributeTypes::BACKEND_TYPE_MEDIA);
+        $attribute3 = $this->createAttribute('attribute_3', null, AttributeTypes::BACKEND_TYPE_INTEGER);
+        $attribute4 = $this->createAttribute('attribute_4', null, AttributeTypes::BACKEND_TYPE_MEDIA);
+
+        $this->beConstructedWith([
+            $attribute1->getCode() => $attribute1,
+            $attribute2->getCode() => $attribute2,
+            $attribute3->getCode() => $attribute3,
+            $attribute4->getCode() => $attribute4,
+        ]);
+
+        $this->findAll()->shouldReturn([
+            'attribute_1' => $attribute1,
+            'attribute_2' => $attribute2,
+            'attribute_3' => $attribute3,
+            'attribute_4' => $attribute4,
+        ]);
+    }
+
     private function createAttribute(string $code, string $type = null, string $backendType = null): AttributeInterface
     {
         $attribute = new Attribute();

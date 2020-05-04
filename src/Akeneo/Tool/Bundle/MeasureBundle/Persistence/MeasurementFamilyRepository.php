@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Bundle\MeasureBundle\Persistence;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
@@ -99,6 +101,12 @@ SQL;
         ]);
 
         return (int) $statement->fetch(\PDO::FETCH_COLUMN);
+    }
+
+    public function clear(): void
+    {
+        $this->allMeasurementFamiliesCache = [];
+        $this->measurementFamilyCache = [];
     }
 
     public function deleteByCode(MeasurementFamilyCode $measurementFamilyCode)

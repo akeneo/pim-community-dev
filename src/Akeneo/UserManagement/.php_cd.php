@@ -29,6 +29,8 @@ $rules = [
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
 
+        'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
+
         // TIP-947: UI Locale Provider should be part of UserManagement
         'Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider'
     ])->in('Akeneo\UserManagement\Component'),
@@ -58,6 +60,8 @@ $rules = [
 
         // TIP-1005: Clean UI form types
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType',
+
+        'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
 

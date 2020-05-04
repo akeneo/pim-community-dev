@@ -26,8 +26,6 @@ file.extensions.message: 'このファイル拡張子は許可されていませ
 "This type of value expects the use of the format {{ date_format }} for dates.": この型の値は日付表示のためにフォーマット{{ date_format }} の使用を求めています
 "The category \"%category%\" has to be a root category.": カテゴリ「%category%」は、ルートカテゴリでなければなりません。
 "The attribute \"%attributeCode%\" does not exist.": 属性「%attributeCode%」は存在しません。
-"The attribute \"%attributeCode%\" is not a metric attribute.": 属性「%attributeCode%」はメートル法の属性ではありません。
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": 単位「%unitCode%」が存在しない、または指定の属性「%attributeCode%」の既定メトリックファミリーに属していません。
 "The currency \"%currency%\" has to be activated.": 通貨「%currency%」を、アクティブにしてください。
 product_model.code.not_blank.message: 商品モデルコードは空白にできません
 product_model.code.unique.message: 同じコードが、既に別の商品モデルに設定してあります。
@@ -51,7 +49,6 @@ pim_catalog:
     family_variant_axes_unique: 軸のバリエーションは固有でなければなりません。「%attributes%」は属性セットのバリエーションで複数回使用されます
     family_variant_axes_immutable: '軸のバリエーションはレベル「%level%」に変更できません'
     family_variant_axes_attribute_type_unique: 軸のバリエーション「%axis%」は固有であったり識別子になることはできません
-    family_variant_axes_attribute_type: 軸のバリエーション「%axis%」は、ブール値、シンプルセレクト、シンプル参照データもしくはメトリックである必要があります
     family_variant_axes_wrong_type: 軸のバリエーション「%axis%」はローカライズ不可、参照不可であり、ロケールで分類ことができません
     family_variant_axes_number_of_axes: '属性セットのバリエーションは %max_axes_number% 軸以上を持つことはできません'
     family_variant_no_axis: レベル「%level%」の属性セットを目的とするため、軸として定義された1以上の項目が必要です

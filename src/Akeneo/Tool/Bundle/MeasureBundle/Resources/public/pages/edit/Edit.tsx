@@ -24,7 +24,7 @@ import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
-import {SubsectionHelper, HELPER_LEVEL_WARNING} from 'akeneomeasure/shared/components/SubsectionHelper';
+import {HelperRibbon, HelperLevel} from 'akeneomeasure/shared/components/HelperRibbon';
 import {useUnsavedChanges} from 'akeneomeasure/shared/hooks/use-unsaved-changes';
 import {UnsavedChanges} from 'akeneomeasure/shared/components/UnsavedChanges';
 import {UnsavedChangesContext} from 'akeneomeasure/context/unsaved-changes-context';
@@ -36,7 +36,6 @@ import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteM
 import {SecurityContext} from 'akeneomeasure/context/security-context';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {ErrorBlock} from 'akeneomeasure/shared/components/ErrorBlock';
-import {ErrorFlashMessage} from 'akeneomeasure/shared/components/ErrorFlashMessage';
 
 enum Tab {
   Units = 'units',
@@ -83,7 +82,9 @@ const Errors = ({errors}: {errors: ValidationError[]}) => {
   return (
     <>
       {errors.map((error: ValidationError, index: number) => (
-        <ErrorFlashMessage key={index}>{error.message}</ErrorFlashMessage>
+        <HelperRibbon level={HelperLevel.HELPER_LEVEL_ERROR} key={index}>
+          {error.message}
+        </HelperRibbon>
       ))}
     </>
   );
@@ -274,19 +275,19 @@ const Edit = () => {
       </PageHeader>
 
       <PageContent>
-        <Errors errors={otherErrors}/>
         <TabsContainer>
           <Tabs>
             {Object.values(Tab).map((tab: Tab) => (
               <TabSelector key={tab} onClick={() => setCurrentTab(tab)} isActive={currentTab === tab}>
                 {__(`measurements.family.tab.${tab}`)}
-                {tab === Tab.Units && 0 < unitsErrors.length && <ErrorBadge/>}
-                {tab === Tab.Properties && 0 < propertiesErrors.length && <ErrorBadge/>}
+                {tab === Tab.Units && 0 < unitsErrors.length && <ErrorBadge />}
+                {tab === Tab.Properties && 0 < propertiesErrors.length && <ErrorBadge />}
               </TabSelector>
             ))}
           </Tabs>
+          <Errors errors={[...unitsErrors.filter(error => error.propertyPath === 'units'), ...otherErrors]} />
           {measurementFamily.is_locked && (
-            <SubsectionHelper level={HELPER_LEVEL_WARNING}>{__('measurements.family.is_locked')}</SubsectionHelper>
+            <HelperRibbon level={HelperLevel.HELPER_LEVEL_WARNING}>{__('measurements.family.is_locked')}</HelperRibbon>
           )}
         </TabsContainer>
         <Container>

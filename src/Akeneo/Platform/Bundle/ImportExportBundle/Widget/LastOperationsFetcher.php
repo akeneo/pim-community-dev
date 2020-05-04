@@ -45,8 +45,8 @@ class LastOperationsFetcher
     public function fetch(): array
     {
         $user = $this->tokenStorage->getToken()->getUser();
-
-        $operations = $this->lastOperations->execute($user);
+        $canViewAllJobs = $this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs');
+        $operations = $this->lastOperations->execute($canViewAllJobs ? null : $user);
 
         $timezone = $user->getTimeZone();
         $locale = $user->getUiLocale()->getCode();

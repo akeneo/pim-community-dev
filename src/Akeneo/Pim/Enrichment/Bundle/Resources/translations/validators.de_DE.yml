@@ -26,8 +26,8 @@ file.extensions.message: 'Die Dateierweiterung ist nicht zulässig (Erlaubte Dat
 "This type of value expects the use of the format {{ date_format }} for dates.": Dieser Wertetyp erwartet die Benutzung von {{ date_format }} als Datumsformat.
 "The category \"%category%\" has to be a root category.": Die Kategorie "%category%" muss eine Hauptkategorie sein.
 "The attribute \"%attributeCode%\" does not exist.": Das Attribute "%attributeCode%" existiert nicht.
-"The attribute \"%attributeCode%\" is not a metric attribute.": Das Attribut "%attributeCode%" ist kein metrisches Attribut.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Die Einheit "%unitCode%" ist nicht vorhanden oder gehört nicht zu der metrischen Standardfamilie des angegebenen Attributs "%attributeCode%".
+"The attribute \"%attributeCode%\" is not a metric attribute.": Das Attribut "%attributeCode%" ist kein Messattribut.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Die Einheit "%unitCode%" existiert nicht oder gehört nicht zur Standard-Messfamilie des angegebenen Attributs "%attributeCode%".
 "The currency \"%currency%\" has to be activated.": Die Währung "%currency%" muss erst aktiviert werden.
 product_model.code.not_blank.message: Der Codes des Produktmodells darf nicht leer sein.
 product_model.code.unique.message: Diese Kennung ist bereits für ein anderes Produktmodell in Verwendung.
@@ -51,7 +51,7 @@ pim_catalog:
     family_variant_axes_unique: Variantenachsen müssen eindeutig sein, "%attributes%" werden mehrfach in Variantenattribut-Sets verwendet
     family_variant_axes_immutable: 'Variantenachsen können für die Ebene "%level%" nicht verändert werden'
     family_variant_axes_attribute_type_unique: Variantenachsen "%axis%" können nicht eindeutig sein oder ein Identifikator sein
-    family_variant_axes_attribute_type: Variantenachsen "%axis%" müssen boolesche, einfache Auswahl, einfache Referenzdaten oder metrische Werte sein
+    family_variant_axes_attribute_type: Variantenachsen "%axis%" muss ein Boolean, eine einfache Auswahl, einfache Referenzdaten oder eine Messung sein
     family_variant_axes_wrong_type: Variantenachsen "%axis%" können nicht lokalisierbar, nicht skalierbar und nicht ortsspezifisch sein
     family_variant_axes_number_of_axes: 'Ein Variantenattribut-Set darf nicht mehr als %max_axes_number% Achsen haben'
     family_variant_no_axis: Es sollte mindestens ein Attribut als Achse für das Attribut-Set der Ebene "%level%" definiert sein

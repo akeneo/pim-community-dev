@@ -21,13 +21,13 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         GetAttributes $getAttributesQuery
     ) {
         $getAttributesQuery->forCode('size')->willReturn(
-            new Attribute('size', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false, 'option', [])
+            new Attribute('size', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, null, false, 'option', [])
         );
         $getAttributesQuery->forCode('color')->willReturn(
-            new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], true, true, null, false, 'option', [])
+            new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], true, true, null, null, false, 'option', [])
         );
         $getAttributesQuery->forCode('label')->willReturn(
-            new Attribute('label', AttributeTypes::TEXT, [], true, true, null, false, 'option', [])
+            new Attribute('label', AttributeTypes::TEXT, [], true, true, null, null, false, 'option', [])
         );
 
 
@@ -51,8 +51,8 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         $product->removeValue($sizeValue)->willReturn($product);
         $product->removeValue($colorValue)->willReturn($product);
 
-        $sizeAttribute = new Attribute('size', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false, 'option', []);
-        $colorAttribute = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], true, true, null, false, 'option', []);
+        $sizeAttribute = new Attribute('size', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, null, false, 'option', []);
+        $colorAttribute = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], true, true, null, null, false, 'option', []);
         $productValueFactory->createByCheckingData($sizeAttribute, null, null, null)->willReturn($sizeValue);
         $productValueFactory->createByCheckingData($colorAttribute, 'ecommerce', 'en_US', null)->willReturn($colorValue);
 
@@ -79,8 +79,8 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         $product->removeValue($sizeValue)->willReturn($product);
         $product->removeValue($colorValue)->willReturn($product);
 
-        $sizeAttribute = new Attribute('size', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false, 'option', []);
-        $colorAttribute = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], true, true, null, false, 'option', []);
+        $sizeAttribute = new Attribute('size', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, null, false, 'option', []);
+        $colorAttribute = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], true, true, null, null, false, 'option', []);
 
         $productValueFactory->createByCheckingData($sizeAttribute, null, null, null)->willReturn($sizeValue);
         $productValueFactory->createByCheckingData($colorAttribute, 'ecommerce', 'en_US', 'red')->willReturn($colorValue);
@@ -104,7 +104,7 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
 
         $product->removeValue(Argument::any())->shouldNotBeCalled();
 
-        $labelAttribute = new Attribute('label', AttributeTypes::TEXT, [], true, true, null, false, 'option', []);
+        $labelAttribute = new Attribute('label', AttributeTypes::TEXT, [], true, true, null, null, false, 'option', []);
         $productValueFactory->createByCheckingData($labelAttribute, null, null, 'foobar')->willReturn($value);
 
         $product->addValue($value)->willReturn($product);

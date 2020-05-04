@@ -90,7 +90,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
         );
 
         $getAttributes->forCodes(['localizable_text'])->willReturn([
-            'localizable_text' => new Attribute('localizable_text', AttributeTypes::TEXT, [], true, false, null, null, 'text', []),
+            'localizable_text' => new Attribute('localizable_text', AttributeTypes::TEXT, [], true, false, null, null, false, 'text', []),
         ]);
 
         $context->buildViolation($constraint->nonActiveLocaleMessage, [
@@ -124,7 +124,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
         );
 
         $getAttributes->forCodes(['localizable_text'])->willReturn([
-            'localizable_text' => new Attribute('localizable_text', AttributeTypes::TEXT, [], true, false, null, null, 'text', []),
+            'localizable_text' => new Attribute('localizable_text', AttributeTypes::TEXT, [], true, false, null, null, false, 'text', []),
         ]);
 
         $constraint = new LocalizableValues();
@@ -163,7 +163,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
         );
 
         $getAttributes->forCodes(['scopable_localizable_text'])->willReturn([
-            'scopable_localizable_text' => new Attribute('scopable_localizable_text', AttributeTypes::TEXT, [], true, true, null, null, 'text', []),
+            'scopable_localizable_text' => new Attribute('scopable_localizable_text', AttributeTypes::TEXT, [], true, true, null, null, false, 'text', []),
         ]);
 
         $constraint = new LocalizableValues();
@@ -198,7 +198,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
         $localeRepository->findOneByIdentifier('en_US')->willReturn($enUS);
 
         $getAttributes->forCodes(['name'])->willReturn([
-            'name' => new Attribute('name', AttributeTypes::TEXT, [], true, false, null, null, 'text', ['en_US']),
+            'name' => new Attribute('name', AttributeTypes::TEXT, [], true, false, null, null, false, 'text', ['en_US']),
         ]);
 
         $values = new WriteValueCollection(

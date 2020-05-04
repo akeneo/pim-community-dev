@@ -12,6 +12,10 @@ datagrid:
                 data_name:     createTime
                 type:          datetime_with_user_timezone
                 frontend_type: datetime
+            username:
+                label: pim_datagrid.column.username
+                data_name: user
+                frontendType: label
             status:
                 label:         Status
                 template:      PimImportExportBundle:Property:status.html.twig

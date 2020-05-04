@@ -68,6 +68,7 @@ services:
             - '@pim_api.warmup_query_cache.dummy'
             - '@event_dispatcher'
             - '@pim_api.checker.duplicate_value'
+            - '@logger'
 
     pim_api.controller.product_model:
         public: true
@@ -195,7 +196,7 @@ services:
             - '@pim_catalog.validator.product'
             - '@pim_catalog.saver.product_model'
             - '@pim_enrich.normalizer.product_violation'
-            - '@pim_enrich.normalizer.entity_with_family_variant'
+            - '@pim_enrich.normalizer.entity_with_family_variant.light'
             - '@pim_catalog.factory.product_model'
             - '@pim_enrich.normalizer.violation'
             - '@pim_catalog.repository.family_variant'
