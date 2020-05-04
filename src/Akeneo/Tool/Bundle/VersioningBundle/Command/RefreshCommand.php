@@ -100,8 +100,6 @@ class RefreshCommand extends Command
 
         $batchSize = $input->getOption('batch-size');
 
-        $om = $this->getObjectManager();
-
         $pendingVersions = $this->versionManager
             ->getVersionRepository()
             ->getPendingVersions($batchSize);
@@ -122,7 +120,7 @@ class RefreshCommand extends Command
 
                 $progress->advance();
             }
-            $om->flush();
+            $this->entityManager->flush();
             $this->bulkObjectDetacher->detachAll($pendingVersions);
 
             $pendingVersions = $this->versionManager
@@ -153,13 +151,5 @@ class RefreshCommand extends Command
             $this->entityManager->remove($version);
             $this->entityManager->flush($version);
         }
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return $this->getContainer()->get('doctrine.orm.default_entity_manager');
     }
 }
