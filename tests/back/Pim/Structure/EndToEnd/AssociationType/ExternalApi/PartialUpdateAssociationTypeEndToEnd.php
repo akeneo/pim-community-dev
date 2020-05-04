@@ -172,6 +172,21 @@ JSON;
         $this->assertSame($associationTypeStandard, $normalizer->normalize($associationType));
     }
 
+    public function testIsQuantifiedCannotBeChanged()
+    {
+        $client = $this->createAuthenticatedClient();
+        $data = <<<JSON
+{
+    "is_quantified": true
+}
+JSON;
+
+        $client->request('PATCH', '/api/rest/v1/association-types/X_SELL', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame('{"code":422,"message":"Validation failed.","errors":[{"property":"is_quantified","message":"This property cannot be changed."}]}', $response->getContent());
+    }
+
     public function testResponseWhenContentIsEmpty()
     {
         $client = $this->createAuthenticatedClient();
