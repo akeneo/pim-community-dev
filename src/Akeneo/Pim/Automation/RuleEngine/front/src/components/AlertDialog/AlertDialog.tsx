@@ -9,7 +9,7 @@ type Props = {
   description: string;
   cancelLabel: string;
   confirmLabel: string;
-}
+};
 
 const AlertDialog: React.FC<Props> = ({
   dialog,
@@ -25,14 +25,14 @@ const AlertDialog: React.FC<Props> = ({
     if (onValidate) {
       onValidate();
     }
-  }
+  };
 
   const handleCancel = () => {
     dialog.hide();
     if (onCancel) {
       onCancel();
     }
-  }
+  };
 
   return (
     <Dialog
@@ -40,35 +40,36 @@ const AlertDialog: React.FC<Props> = ({
       role='alertdialog'
       aria-label={label}
       aria-describedby='dialog_desc'
-      className='AknFullPage'
-    >
+      className='AknFullPage'>
       <div className='AknFullPage-content AknFullPage-content--withIllustration'>
         <div>
-          <div className='AknFullPage-image AknFullPage-illustration AknFullPage-illustration--delete'/>
+          <div className='AknFullPage-image AknFullPage-illustration AknFullPage-illustration--delete' />
         </div>
         <div>
           <div className='AknFullPage-titleContainer'>
-            <div className='AknFullPage-title'>{ label }</div>
-            <div id='dialog_desc' className='AknFullPage-description'>{ description }</div>
+            <div className='AknFullPage-title'>{label}</div>
+            <div id='dialog_desc' className='AknFullPage-description'>
+              {description}
+            </div>
           </div>
           <div className='AknButtonList'>
             <button
               title={cancelLabel}
               className='AknButton AknButton--grey AknButtonList-item'
               onClick={handleCancel}>
-              { cancelLabel }
+              {cancelLabel}
             </button>
             <button
               title={confirmLabel}
               className='AknButton AknButtonList-item AknButton--apply AknButton--important ok'
-              onClick={ handleConfirm }>
-              { confirmLabel }
+              onClick={handleConfirm}>
+              {confirmLabel}
             </button>
           </div>
         </div>
       </div>
     </Dialog>
-  )
+  );
 };
 
-export { AlertDialog }
+export { AlertDialog };

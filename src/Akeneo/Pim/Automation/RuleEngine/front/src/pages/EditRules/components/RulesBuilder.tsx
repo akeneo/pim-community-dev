@@ -5,7 +5,7 @@ import { RuleDefinition, Locale } from '../../../models';
 import { Action } from '../../../models/Action';
 import { IndexedScopes } from '../../../fetch/ScopeFetcher';
 import { useFormContext } from 'react-hook-form';
-import { ActionLine } from "./actions/ActionLine";
+import { ActionLine } from './actions/ActionLine';
 
 type Props = {
   translate: Translate;

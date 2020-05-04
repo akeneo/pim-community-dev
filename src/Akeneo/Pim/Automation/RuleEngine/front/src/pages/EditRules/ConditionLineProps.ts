@@ -2,7 +2,7 @@ import { Router, Translate } from '../../dependenciesTools';
 import { Condition, Locale } from '../../models';
 import { IndexedScopes } from '../../fetch/ScopeFetcher';
 
-type ConditionLineProps = {
+export type ConditionLineProps = {
   condition: Condition;
   lineNumber: number;
   translate: Translate;
@@ -11,5 +11,3 @@ type ConditionLineProps = {
   currentCatalogLocale: string;
   router: Router;
 };
-
-export type { ConditionLineProps }

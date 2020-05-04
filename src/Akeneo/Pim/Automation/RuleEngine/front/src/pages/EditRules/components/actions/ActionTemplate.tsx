@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { Translate } from '../../../../dependenciesTools';
 import { RedGhostButton, SmallHelper } from '../../../../components';
 import { TextBoxBlue } from '../TextBoxBlue';
-import { VisuallyHidden } from "reakit/VisuallyHidden";
-import { AlertDialog } from "../../../../components/AlertDialog/AlertDialog";
+import { VisuallyHidden } from 'reakit/VisuallyHidden';
+import { AlertDialog } from '../../../../components/AlertDialog/AlertDialog';
 import { createComponent } from 'reakit-system';
 import { useDialogDisclosure, useDialogState } from 'reakit';
 
@@ -25,9 +25,8 @@ const StyledTitleHeader = styled.span`
 
 const DeleteButton = createComponent({
   as: RedGhostButton,
-  useHook: useDialogDisclosure
+  useHook: useDialogDisclosure,
 });
-
 
 type Props = {
   translate: Translate;
@@ -56,16 +55,20 @@ const ActionTemplate: React.FC<Props> = ({
           </TextBoxBlue>
           <StyledTitleHeader>{title}</StyledTitleHeader>
         </StyledHeaderLeft>
-        <DeleteButton{ ...dialog } sizeMode='small'>
+        <DeleteButton {...dialog} sizeMode='small'>
           {translate('pimee_catalog_rule.form.edit.action.delete.label')}
         </DeleteButton>
         <AlertDialog
-          dialog={ dialog }
-          onValidate={() => { handleDelete(); }}
+          dialog={dialog}
+          onValidate={() => {
+            handleDelete();
+          }}
           cancelLabel={translate('pim_common.cancel')}
           confirmLabel={translate('pim_common.confirm')}
           label={translate('pimee_catalog_rule.form.edit.actions.delete.label')}
-          description={translate('pimee_catalog_rule.form.edit.actions.delete.description')}
+          description={translate(
+            'pimee_catalog_rule.form.edit.actions.delete.description'
+          )}
         />
       </StyledHeader>
       <SmallHelper>{helper}</SmallHelper>

@@ -4,15 +4,17 @@ import { AlertDialog } from '../../../../components/AlertDialog/AlertDialog';
 import { PimConditionLine } from './PimConditionLine';
 import { FallbackConditionLine } from './FallbackConditionLine';
 import styled from 'styled-components';
-import { ConditionLineProps } from "../../ConditionLineProps";
+import { ConditionLineProps } from '../../ConditionLineProps';
 
 const DeleteButton = styled(DialogDisclosure)`
   border: none;
   background: none;
   cursor: pointer;
-`
+`;
 
-const ConditionLine: React.FC<ConditionLineProps & { deleteCondition: (lineNumber: number) => void }> = ({
+const ConditionLine: React.FC<ConditionLineProps & {
+  deleteCondition: (lineNumber: number) => void;
+}> = ({
   translate,
   condition,
   lineNumber,
@@ -31,7 +33,9 @@ const ConditionLine: React.FC<ConditionLineProps & { deleteCondition: (lineNumbe
 
   return (
     <div
-      className={`AknGrid-bodyRow${isFallback ? ' AknGrid-bodyRow--highlight' : ''}`}>
+      className={`AknGrid-bodyRow${
+        isFallback ? ' AknGrid-bodyRow--highlight' : ''
+      }`}>
       <div className='AknGrid-bodyCell'>
         <Line
           condition={condition}
@@ -44,20 +48,29 @@ const ConditionLine: React.FC<ConditionLineProps & { deleteCondition: (lineNumbe
         />
       </div>
       <div className='AknGrid-bodyCell AknGrid-bodyCell--tight'>
-        <DeleteButton{ ...dialog }>
-          <img alt={translate('pimee_catalog_rule.form.edit.conditions.delete')} src='/bundles/pimui/images/icon-delete-slategrey.svg'/>
+        <DeleteButton {...dialog}>
+          <img
+            alt={translate('pimee_catalog_rule.form.edit.conditions.delete')}
+            src='/bundles/pimui/images/icon-delete-slategrey.svg'
+          />
         </DeleteButton>
         <AlertDialog
-          dialog={ dialog }
-          onValidate={() => { deleteCondition(lineNumber); }}
+          dialog={dialog}
+          onValidate={() => {
+            deleteCondition(lineNumber);
+          }}
           cancelLabel={translate('pim_common.cancel')}
           confirmLabel={translate('pim_common.confirm')}
-          label={translate('pimee_catalog_rule.form.edit.conditions.delete.label')}
-          description={translate('pimee_catalog_rule.form.edit.conditions.delete.description')}
+          label={translate(
+            'pimee_catalog_rule.form.edit.conditions.delete.label'
+          )}
+          description={translate(
+            'pimee_catalog_rule.form.edit.conditions.delete.description'
+          )}
         />
       </div>
     </div>
   );
 };
 
-export { ConditionLine }
+export { ConditionLine };

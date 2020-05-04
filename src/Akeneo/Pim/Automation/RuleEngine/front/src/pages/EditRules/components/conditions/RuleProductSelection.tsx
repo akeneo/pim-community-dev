@@ -8,7 +8,7 @@ import { Condition } from '../../../models/';
 import { Locale } from '../../../models/';
 import { IndexedScopes } from '../../../../fetch/ScopeFetcher';
 import { useFormContext } from 'react-hook-form';
-import { ConditionLine } from "./ConditionLine";
+import { ConditionLine } from './ConditionLine';
 
 const Header = styled.header`
   font-weight: normal;
