@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useFormContext } from 'react-hook-form';
 import {
   TextAttributeCondition,
   TextAttributeOperators,
@@ -42,7 +43,6 @@ const ScopeColumn = styled.span`
 `;
 
 const TextAttributeConditionLine: React.FC<ConditionLineProps> = ({
-  register,
   condition,
   lineNumber,
   translate,
@@ -50,6 +50,7 @@ const TextAttributeConditionLine: React.FC<ConditionLineProps> = ({
   scopes,
   currentCatalogLocale,
 }) => {
+  const { register } = useFormContext();
   const textAttributeCondition = condition as TextAttributeCondition;
   const [operator, setOperator] = React.useState<Operator>(
     textAttributeCondition.operator
