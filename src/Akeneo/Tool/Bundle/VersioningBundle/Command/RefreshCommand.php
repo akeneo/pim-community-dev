@@ -154,4 +154,12 @@ class RefreshCommand extends Command
             $this->entityManager->flush($version);
         }
     }
+
+    /**
+     * @return ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return $this->getContainer()->get('doctrine.orm.default_entity_manager');
+    }
 }
