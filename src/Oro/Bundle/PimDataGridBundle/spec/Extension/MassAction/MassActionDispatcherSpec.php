@@ -269,4 +269,62 @@ class MassActionDispatcherSpec extends ObjectBehavior
             ],
         ]);
     }
+
+    function it_does_not_convert_empty_parent_filter_when_all_rows_are_selected(
+        DatagridInterface $grid,
+        Acceptor $acceptor,
+        MassActionExtension $massActionExtension,
+        MassActionInterface $massActionInterface,
+        QueryBuilder $queryBuilder,
+        ProductDatasource $datasource,
+        ProductMassActionRepositoryInterface $massActionRepository,
+        MassActionParametersParser $parametersParser,
+        ProductQueryBuilderInterface $productQueryBuilder
+    ) {
+        $massActionName = 'mass_edit_action';
+        $request = new Request([
+            'inset'      => 'inset',
+            'values'     => [1],
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => 'mass_edit_action',
+        ]);
+
+        $parametersParser->parse($request)->willReturn([
+            'inset' => 'inset',
+            'values' => [1],
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => 'mass_edit_action',
+        ]);
+        $datasource->getMassActionRepository()->willReturn($massActionRepository);
+        $massActionRepository->applyMassActionParameters($queryBuilder, '', [1])->willReturn(null);
+        $massActionExtension->getMassAction('mass_edit_action', $grid)->willReturn($massActionInterface);
+        $acceptor->getExtensions()->willReturn([$massActionExtension]);
+
+        $datasource->getProductQueryBuilder()->willReturn($productQueryBuilder);
+        $productQueryBuilder->getRawFilters()->willReturn([
+            [
+                'field' => 'parent',
+                'operator' => 'EMPTY',
+                'values' => "",
+            ],
+        ]);
+        $datasource->getParameters()->willReturn(null);
+
+        $this->getRawFilters([
+            'inset'      => '',
+            'values'     => [1],
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => $massActionName
+        ])->shouldReturn([
+            [
+                'field' => 'parent',
+                'operator' => 'EMPTY',
+                'values' => "",
+                'context' => [],
+            ],
+        ]);
+    }
 }

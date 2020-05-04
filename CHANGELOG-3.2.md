@@ -1,8 +1,13 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9222: Fix errors on mass action when the parent filter is set to empty
+
 # 3.2.52 (2020-04-30)
 
 ## Bug fixes
+
 - GITHUB-11995: Fixes invalid Jquery generic type (#11995)
 
 # 3.2.51 (2020-04-28)
