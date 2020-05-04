@@ -70,18 +70,6 @@ class QuantifiedAssociations
         return $result;
     }
 
-    private function getQuantifiedLinkedIdentifiers(array $quantifiedLinks): array
-    {
-        $array_map = array_map(
-            function ($quantifiedLink) {
-                return $quantifiedLink['identifier'];
-            },
-            $quantifiedLinks
-        );
-
-        return $array_map;
-    }
-
     public function getQuantifiedAssociationsProductModelCodes(): array
     {
         $result = [];
