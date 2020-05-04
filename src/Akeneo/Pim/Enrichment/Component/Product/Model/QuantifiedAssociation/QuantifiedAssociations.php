@@ -16,7 +16,7 @@ class QuantifiedAssociations
     private const PRODUCT_MODELS_QUANTIFIED_LINKS_KEY = 'product_models';
     private const PRODUCTS_QUANTIFIED_LINKS_KEY = 'products';
 
-    /** * @var array */
+    /** @var array */
     private $quantifiedAssociations;
 
     private function __construct(
