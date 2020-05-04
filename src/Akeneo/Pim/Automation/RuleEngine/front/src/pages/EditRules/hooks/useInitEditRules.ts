@@ -8,11 +8,20 @@ import {
   IndexedScopes,
 } from '../../../repositories/ScopeRepository';
 import { getActivatedLocales } from '../../../repositories/LocaleRepository';
+import { ServerException } from '../../../exceptions';
 
-type Error = { exception: any; status: boolean };
+type Error = {
+  exception: any;
+  status: boolean;
+  statusCode: number;
+};
 
 const useInitEditRules = (ruleDefinitionCode: string, router: Router) => {
-  const [error, setError] = useState<Error>({ exception: null, status: false });
+  const [error, setError] = useState<Error>({
+    exception: null,
+    status: false,
+    statusCode: 500,
+  });
   const [ruleDefinition, setRuleDefinition] = useState<RuleDefinition>();
   const [locales, setLocales] = useState<Locale[]>();
   const [scopes, setScopes] = useState<IndexedScopes>();
@@ -29,8 +38,16 @@ const useInitEditRules = (ruleDefinitionCode: string, router: Router) => {
         setScopes(response[2]);
       })
       .catch(exception => {
-        console.error(exception);
-        setError({ exception, status: true });
+        if (exception instanceof ServerException) {
+          setError({
+            exception,
+            status: true,
+            statusCode: exception.statusCode,
+          });
+        } else {
+          console.error(exception);
+          setError({ exception, status: true, statusCode: 500 });
+        }
       });
   }, []);
 

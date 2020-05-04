@@ -118,6 +118,8 @@ pimee_catalog_rule:
         legend:
             add_to_category: Create an action
             product_selection: Create a condition
+    exceptions:
+        loading: An error occurred during rule definition loading.
 
 pim_enrich:
     entity:

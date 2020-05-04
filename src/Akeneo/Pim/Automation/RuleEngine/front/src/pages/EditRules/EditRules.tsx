@@ -1,9 +1,10 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import * as akeneoTheme from '../../theme';
-import { useBackboneRouter } from '../../dependenciesTools/hooks';
+import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
 import { useInitEditRules } from '../EditRules';
 import { EditRulesContent } from './EditRulesContent';
+import { FullScreenError } from '../../components/FullScreenError';
 
 type Props = {
   ruleDefinitionCode: string;
@@ -12,6 +13,7 @@ type Props = {
 
 const EditRules: React.FC<Props> = ({ ruleDefinitionCode, setIsDirty }) => {
   const router = useBackboneRouter();
+  const translate = useTranslate();
   const { error, ruleDefinition, locales, scopes } = useInitEditRules(
     ruleDefinitionCode,
     router
@@ -19,7 +21,11 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode, setIsDirty }) => {
   return (
     <ThemeProvider theme={akeneoTheme}>
       {error.status ? (
-        'There was an error (TODO: better display)'
+        <FullScreenError
+          statusCode={error.statusCode}
+          message={error.exception.message}
+          translate={translate}
+        />
       ) : !ruleDefinition || !locales || !scopes ? (
         'Loading (TODO: better display)'
       ) : (
