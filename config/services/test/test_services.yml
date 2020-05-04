@@ -16,6 +16,13 @@ services:
     _defaults:
         public: true
 
+    akeneo_integration_tests.migration_command_launcher:
+        class: 'Akeneo\Tool\Component\Console\CommandLauncher'
+        arguments:
+            - '%kernel.root_dir%'
+            - 'prod'
+            - '%kernel.logs_dir%'
+
     akeneo_integration_tests.loader.reference_data_loader:
         class: '%akeneo_integration_tests.loader.reference_data_loader.class%'
         arguments:
