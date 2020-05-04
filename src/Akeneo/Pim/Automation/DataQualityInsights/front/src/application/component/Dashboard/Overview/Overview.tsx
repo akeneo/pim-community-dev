@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, ReactElement} from 'react';
 import {isEmpty} from "lodash";
 import {useFetchDqiDashboardData} from "../../../../infrastructure/hooks";
 import {Dataset, formatBackendRanksToVictoryFormat} from "../../../helper/Dashboard/FormatBackendRanksToVictoryFormat";
@@ -32,8 +32,8 @@ const showOverviewPlaceholder = (dataset: Dataset|null) => {
 const Overview = ({catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode}: DataQualityOverviewChartProps) => {
 
   const [isLoading, setIsLoading] = useState(true);
-  const [enrichmentChart, setEnrichmentChart] = useState();
-  const [consistencyChart, setConsistencyChart] = useState();
+  const [enrichmentChart, setEnrichmentChart] = useState<ReactElement>();
+  const [consistencyChart, setConsistencyChart] = useState<ReactElement>();
 
   const dataset = useFetchDqiDashboardData(catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode);
 
@@ -41,10 +41,10 @@ const Overview = ({catalogChannel, catalogLocale, timePeriod, familyCode, catego
     if (dataset === null) {
       return;
     }
-    // @ts-ignore
+    
     const enrichmentChartDataset = formatBackendRanksToVictoryFormat(dataset, 'enrichment');
     setEnrichmentChart(<TimePeriodAxisChart dataset={enrichmentChartDataset} timePeriod={timePeriod}/>);
-    // @ts-ignore
+
     const consistencyChartDataset = formatBackendRanksToVictoryFormat(dataset, 'consistency');
     setConsistencyChart(<TimePeriodAxisChart dataset={consistencyChartDataset} timePeriod={timePeriod}/>);
 

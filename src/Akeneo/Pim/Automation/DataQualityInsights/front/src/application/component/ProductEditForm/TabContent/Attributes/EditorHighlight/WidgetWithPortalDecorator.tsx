@@ -9,7 +9,7 @@ interface WidgetWithPortalDecoratorProps {
 const WidgetWithPortalDecorator = <P extends WidgetProps>(WidgetComponent:  ComponentType<P>): FunctionComponent<WidgetWithPortalDecoratorProps & P> => {
   return (props) => {
     const {containerId} = props;
-    const [widgetRootElement, setWidgetRootElement] = useState();
+    const [widgetRootElement, setWidgetRootElement] = useState<HTMLDivElement>();
 
     useEffect(() => {
       const element = document.createElement("div");
