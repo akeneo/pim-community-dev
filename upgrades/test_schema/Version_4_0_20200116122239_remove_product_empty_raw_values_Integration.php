@@ -21,7 +21,7 @@ class Version_4_0_20200116122239_remove_product_empty_raw_values_Integration ext
     {
         $this->getConnection()->executeQuery('DELETE FROM pim_catalog_product');
         $sql = <<<SQL
-INSERT INTO pim_catalog_product VALUES
+INSERT INTO pim_catalog_product (id, family_id, product_model_id, family_variant_id, is_enabled, identifier, raw_values, created, updated) VALUES
     (NULL, NULL, NULL, NULL, 1, 'product1', '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW()),
     (NULL, NULL, NULL, NULL, 1, 'product2', '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW()),
     (NULL, NULL, NULL, NULL, 1, 'product3', '{"name": {"<all_channels>": {"<all_locales>": [""]}}}', NOW(), NOW()),
