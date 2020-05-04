@@ -43,7 +43,9 @@ const RulesBuilder: React.FC<Props> = ({
   currentCatalogLocale,
   router,
 }) => {
-  const [ actions, setActions ] = React.useState<(Action | null)[]>(ruleDefinition.actions);
+  const [actions, setActions] = React.useState<(Action | null)[]>(
+    ruleDefinition.actions
+  );
 
   const { getValues, unregister } = useFormContext();
   const deleteAction = (lineNumber: number) => {
@@ -52,10 +54,12 @@ const RulesBuilder: React.FC<Props> = ({
         unregister(value);
       }
     });
-    setActions(actions.map((action: (Action | null), i: number) => {
-      return i === lineNumber ? null : action;
-    }));
-  }
+    setActions(
+      actions.map((action: Action | null, i: number) => {
+        return i === lineNumber ? null : action;
+      })
+    );
+  };
 
   return (
     <>
@@ -68,14 +72,18 @@ const RulesBuilder: React.FC<Props> = ({
         router={router}
       />
       {actions.map((action: Action | null, i) => {
-        return action && (
-          <ActionLine
-            action={action}
-            translate={translate}
-            key={`action_${i}`}
-            lineNumber={i}
-            handleDelete={() => { deleteAction(i) }}
-          />
+        return (
+          action && (
+            <ActionLine
+              action={action}
+              translate={translate}
+              key={`action_${i}`}
+              lineNumber={i}
+              handleDelete={() => {
+                deleteAction(i);
+              }}
+            />
+          )
         );
       })}
     </>

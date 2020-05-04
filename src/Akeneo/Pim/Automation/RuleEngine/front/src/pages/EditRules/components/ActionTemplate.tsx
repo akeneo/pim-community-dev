@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Translate } from '../../../dependenciesTools';
 import { RedGhostButton, SmallHelper } from '../../../components';
 import { TextBoxBlue } from './TextBoxBlue';
-import { VisuallyHidden } from "reakit/VisuallyHidden";
+import { VisuallyHidden } from 'reakit/VisuallyHidden';
 
 const StyledHeader = styled.header`
   font-weight: normal;
@@ -47,7 +47,7 @@ const ActionTemplate: React.FC<Props> = ({
         </StyledHeaderLeft>
         <RedGhostButton
           sizeMode='small'
-          onClick={(event) => {
+          onClick={event => {
             event.preventDefault();
             handleDelete();
           }}>
@@ -55,7 +55,9 @@ const ActionTemplate: React.FC<Props> = ({
         </RedGhostButton>
       </StyledHeader>
       <SmallHelper>{helper}</SmallHelper>
-      <VisuallyHidden><legend>{legend}</legend></VisuallyHidden>
+      <VisuallyHidden>
+        <legend>{legend}</legend>
+      </VisuallyHidden>
       {children}
     </fieldset>
   );

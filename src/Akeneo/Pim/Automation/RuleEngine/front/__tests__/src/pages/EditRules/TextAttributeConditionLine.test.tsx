@@ -101,6 +101,16 @@ jest.mock('react-hook-form', () => {
   };
 });
 
+jest.mock('react-hook-form', () => {
+  return {
+    useFormContext: () => {
+      return {
+        register: jest.fn(),
+      };
+    },
+  };
+});
+
 describe('TextAttributeConditionLine', () => {
   it('should display the text attribute condition', async () => {
     const { findByText, findByTestId } = render(

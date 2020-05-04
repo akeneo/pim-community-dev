@@ -1,7 +1,7 @@
 import React from 'react';
 import { FallbackAction } from '../../../models/FallbackAction';
 import { ActionTemplate } from './ActionTemplate';
-import { ActionLineProps } from "../ActionLineProps";
+import { ActionLineProps } from '../ActionLineProps';
 
 type Props = {
   action: FallbackAction;
@@ -18,8 +18,7 @@ const AddToCategoryActionLine: React.FC<Props> = ({
       title={translate('pimee_catalog_rule.form.edit.add_to_category')}
       helper={translate('pimee_catalog_rule.form.helper.add_to_category')}
       legend={translate('pimee_catalog_rule.form.legend.add_to_category')}
-      handleDelete={handleDelete}
-    >
+      handleDelete={handleDelete}>
       {/* Not coded yet */}
       {JSON.stringify(action.json)}
     </ActionTemplate>

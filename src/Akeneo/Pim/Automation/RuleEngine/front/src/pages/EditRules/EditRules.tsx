@@ -7,9 +7,10 @@ import { EditRulesContent } from './EditRulesContent';
 
 type Props = {
   ruleDefinitionCode: string;
+  setIsDirty: (isDirty: boolean) => void;
 };
 
-const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
+const EditRules: React.FC<Props> = ({ ruleDefinitionCode, setIsDirty }) => {
   const router = useBackboneRouter();
   const { error, ruleDefinition, locales, scopes } = useInitEditRules(
     ruleDefinitionCode,
@@ -27,6 +28,7 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode }) => {
           ruleDefinition={ruleDefinition}
           locales={locales}
           scopes={scopes}
+          setIsDirty={setIsDirty}
         />
       )}
     </ThemeProvider>

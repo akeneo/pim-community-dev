@@ -42,7 +42,7 @@ const DeleteButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
-`
+`;
 
 const AddConditionContainer = styled.div`
   border-left: 1px solid ${({ theme }) => theme.color.grey100};
@@ -88,7 +88,9 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
 
   return (
     <div
-      className={`AknGrid-bodyRow${isFallback ? ' AknGrid-bodyRow--highlight' : ''}`}>
+      className={`AknGrid-bodyRow${
+        isFallback ? ' AknGrid-bodyRow--highlight' : ''
+      }`}>
       <div className='AknGrid-bodyCell'>
         <Line
           condition={condition}
@@ -102,12 +104,14 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
       </div>
       <div className='AknGrid-bodyCell AknGrid-bodyCell--tight'>
         <DeleteButton
-          onClick={(event) => {
+          onClick={event => {
             event.preventDefault();
             deleteCondition(lineNumber);
-          }}
-        >
-          <img alt={translate('pimee_catalog_rule.form.edit.conditions.delete')} src='/bundles/pimui/images/icon-delete-slategrey.svg'/>
+          }}>
+          <img
+            alt={translate('pimee_catalog_rule.form.edit.conditions.delete')}
+            src='/bundles/pimui/images/icon-delete-slategrey.svg'
+          />
         </DeleteButton>
       </div>
     </div>
@@ -122,7 +126,9 @@ const RuleProductSelection: React.FC<Props> = ({
   currentCatalogLocale,
   router,
 }) => {
-  const [ conditions, setConditions ] = React.useState<(Condition | null)[]>(ruleDefinition.conditions);
+  const [conditions, setConditions] = React.useState<(Condition | null)[]>(
+    ruleDefinition.conditions
+  );
 
   const { getValues, unregister } = useFormContext();
   const deleteCondition = (lineNumber: number) => {
@@ -131,10 +137,12 @@ const RuleProductSelection: React.FC<Props> = ({
         unregister(value);
       }
     });
-    setConditions(conditions.map((condition: (Condition | null), i: number) => {
-      return i === lineNumber ? null : condition;
-    }));
-  }
+    setConditions(
+      conditions.map((condition: Condition | null, i: number) => {
+        return i === lineNumber ? null : condition;
+      })
+    );
+  };
 
   return (
     <fieldset>
@@ -169,20 +177,22 @@ const RuleProductSelection: React.FC<Props> = ({
         </a>
       </SmallHelper>
       <div className='AknGrid AknGrid--unclickable'>
-        <div className="AknGrid-body">
+        <div className='AknGrid-body'>
           {conditions.map((condition, i) => {
-            return condition && (
-              <ConditionLine
-                condition={condition}
-                lineNumber={i}
-                translate={translate}
-                key={`condition_${i}`}
-                locales={locales}
-                scopes={scopes}
-                currentCatalogLocale={currentCatalogLocale}
-                router={router}
-                deleteCondition={deleteCondition}
-              />
+            return (
+              condition && (
+                <ConditionLine
+                  condition={condition}
+                  lineNumber={i}
+                  translate={translate}
+                  key={`condition_${i}`}
+                  locales={locales}
+                  scopes={scopes}
+                  currentCatalogLocale={currentCatalogLocale}
+                  router={router}
+                  deleteCondition={deleteCondition}
+                />
+              )
             );
           })}
         </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { FallbackAction } from '../../../models/FallbackAction';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from '../ActionLineProps';
-import { useValueInitialization } from "../hooks/useValueInitialization";
+import { useValueInitialization } from '../hooks/useValueInitialization';
 
 type Props = {
   action: FallbackAction;
@@ -22,8 +22,7 @@ const FallbackActionLine: React.FC<Props> = ({
       title='Unknown Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
-      handleDelete={handleDelete}
-    >
+      handleDelete={handleDelete}>
       {JSON.stringify(action.json)}
     </ActionTemplate>
   );

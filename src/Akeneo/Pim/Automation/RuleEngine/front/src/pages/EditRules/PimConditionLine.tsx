@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { PimCondition } from '../../models/PimCondition';
 import { Flag } from '../../components/Flag';
 import { ConditionLineProps } from './ConditionLineProps';
-import { useValueInitialization } from "./hooks/useValueInitialization";
+import { useValueInitialization } from './hooks/useValueInitialization';
 
 const PimConditionLine: React.FC<ConditionLineProps> = ({
   translate,
@@ -11,7 +11,7 @@ const PimConditionLine: React.FC<ConditionLineProps> = ({
 }) => {
   const pimCondition = condition as PimCondition;
 
-  const values: {[key: string]: any} = {
+  const values: { [key: string]: any } = {
     field: pimCondition.field,
     operator: pimCondition.operator,
   };

@@ -55,6 +55,8 @@ const scopesPayload: Scope[] = [
   },
 ];
 
+const setIsDirty = (_isDirty: boolean) => {};
+
 describe('EditRules', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
@@ -74,7 +76,7 @@ describe('EditRules', () => {
     });
     // When
     const { getByTestId, findByTestId, findByText, findByLabelText } = render(
-      <EditRules ruleDefinitionCode={ruleDefinitionCode} />,
+      <EditRules ruleDefinitionCode={ruleDefinitionCode} setIsDirty={setIsDirty}/>,
       {
         legacy: true,
       }
@@ -115,7 +117,7 @@ describe('EditRules', () => {
     );
     // When
     const { findByText, findByLabelText } = render(
-      <EditRules ruleDefinitionCode={ruleDefinitionCode} />,
+      <EditRules ruleDefinitionCode={ruleDefinitionCode} setIsDirty={setIsDirty}/>,
       {
         legacy: true,
       }
@@ -134,7 +136,7 @@ describe('EditRules', () => {
     )
     // When
     const { findByText } = render(
-      <EditRules ruleDefinitionCode="inexisting_rule"/>,
+      <EditRules ruleDefinitionCode="inexisting_rule" setIsDirty={setIsDirty}/>,
       {
         legacy: true
       }
