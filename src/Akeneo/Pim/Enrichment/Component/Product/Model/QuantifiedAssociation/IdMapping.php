@@ -30,9 +30,9 @@ class IdMapping
         $this->identifiersToIds = array_flip($mapping);
     }
 
-    public static function createFromMapping(array $mapping)
+    public static function createFromMapping(array $mapping): self
     {
-        return new IdMapping($mapping);
+        return new self($mapping);
     }
 
     public function getId(string $identifier): int

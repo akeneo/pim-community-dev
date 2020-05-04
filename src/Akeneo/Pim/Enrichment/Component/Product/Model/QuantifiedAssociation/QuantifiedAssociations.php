@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation;
 
+use Webmozart\Assert\Assert;
+
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -24,14 +26,24 @@ class QuantifiedAssociations
     ) {
         $mappedQuantifiedAssociations = [];
         foreach ($rawQuantifiedAssociations as $associationType => $associations) {
+            Assert::keyExists($associations, self::PRODUCTS_QUANTIFIED_LINKS_KEY);
+            Assert::keyExists($associations, self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY);
+
             foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] as $productAssociation) {
+                Assert::keyExists($productAssociation, 'id');
+                Assert::keyExists($productAssociation, 'quantity');
+
                 $quantifiedLink = new QuantifiedLink(
                     $mappedProductIds->getIdentifier($productAssociation['id']),
                     $productAssociation['quantity']
                 );
                 $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
             }
+
             foreach ($associations[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] as $productModelAssociation) {
+                Assert::keyExists($productModelAssociation, 'id');
+                Assert::keyExists($productModelAssociation, 'quantity');
+
                 $quantifiedLink = new QuantifiedLink(
                     $mappedProductModelIds->getIdentifier($productModelAssociation['id']),
                     $productModelAssociation['quantity']
@@ -48,11 +60,7 @@ class QuantifiedAssociations
         IdMapping $mappedProductIds,
         IdMapping $mappedProductModelIds
     ): self {
-        return new self(
-            $rawQuantifiedAssociations,
-            $mappedProductIds,
-            $mappedProductModelIds
-        );
+        return new self($rawQuantifiedAssociations, $mappedProductIds, $mappedProductModelIds);
     }
 
     public function getQuantifiedAssociationsProductIdentifiers(): array
