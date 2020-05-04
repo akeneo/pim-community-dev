@@ -980,6 +980,8 @@ class FixturesContext extends BaseFixturesContext
                     Assert::assertEquals($value, $associationType->getTranslation($matches['locale'])->getLabel());
                 } elseif ('is_two_way' === $key) {
                     Assert::assertEquals($value === 'false' ? false : true, $associationType->isTwoWay());
+                } elseif ('is_quantified' === $key) {
+                    Assert::assertEquals($value === 'false' ? false : true, $associationType->isQuantified());
                 } else {
                     throw new \InvalidArgumentException(
                         sprintf('Cannot check "%s" attribute of the association type', $key)

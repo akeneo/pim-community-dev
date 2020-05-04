@@ -55,7 +55,8 @@ JSON;
         $associationTypeStandard = [
             'code'             => 'YOLO_SELL',
             'labels'           => [],
-            'is_two_way' => false
+            'is_two_way' => false,
+            'is_quantified' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -85,6 +86,7 @@ JSON;
                 'fr_FR' => 'Vente cadeau',
             ],
             'is_two_way' => true,
+            'is_quantified' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -135,6 +137,7 @@ JSON;
                 'fr_FR' => 'Vente croisée',
             ],
             'is_two_way' => false,
+            'is_quantified' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -161,6 +164,7 @@ JSON;
                 'fr_FR' => 'Vente croisée',
             ],
             'is_two_way' => false,
+            'is_quantified' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();

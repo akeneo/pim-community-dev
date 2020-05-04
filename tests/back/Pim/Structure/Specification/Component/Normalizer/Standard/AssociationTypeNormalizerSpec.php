@@ -40,11 +40,13 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
 
         $associationType->getCode()->willReturn('my_code');
         $associationType->isTwoWay()->willReturn(true);
+        $associationType->isQuantified()->willReturn(false);
 
         $this->normalize($associationType)->shouldReturn([
             'code'   => 'my_code',
             'labels' => [],
-            'is_two_way' => true
+            'is_quantified' => false,
+            'is_two_way' => true,
         ]);
     }
 }

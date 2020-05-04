@@ -21,6 +21,7 @@ class GetAssociationTypeEndToEnd extends ApiTestCase
         "fr_FR": "Vente croisée"
     },
     "is_two_way": false
+    "is_quantified": false
 }
 JSON;
 
