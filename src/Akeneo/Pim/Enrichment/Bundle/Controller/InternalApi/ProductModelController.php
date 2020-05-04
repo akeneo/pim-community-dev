@@ -249,7 +249,9 @@ class ProductModelController
 
         $productModel = $this->findProductModelOr404($id);
         $data = json_decode($request->getContent(), true);
-        $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $productModel]);
+        if (null !== $this->productEditDataFilter) {
+            $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $productModel]);
+        }
 
         $this->updateProductModel($productModel, $data);
 
