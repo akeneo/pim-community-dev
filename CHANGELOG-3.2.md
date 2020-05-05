@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.53 (2020-05-05)
+
 ## Bug fixes
 
 - PIM-9222: Fix errors on mass action when the parent filter is set to empty
