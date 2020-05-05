@@ -1,10 +1,10 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Translate } from '../../../dependenciesTools';
+import { Router, Translate } from '../../../dependenciesTools';
 import { RuleProductSelection } from './RuleProductSelection';
-import { RuleDefinition } from '../../../models/RuleDefinition';
+import { RuleDefinition } from '../../../models';
 import { Action } from '../../../models/Action';
-import { Locale } from '../../../models/Locale';
+import { Locale } from '../../../models';
 import { IndexedScopes } from '../../../fetch/ScopeFetcher';
 import { ActionLineProps } from '../ActionLineProps';
 
@@ -14,6 +14,7 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: string;
+  router: Router;
 };
 
 const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
@@ -40,17 +41,18 @@ const RulesBuilder: React.FC<Props> = ({
   locales,
   scopes,
   currentCatalogLocale,
+  router,
 }) => {
   const { register } = useFormContext();
   return (
     <>
       <RuleProductSelection
-        register={register}
         ruleDefinition={ruleDefinition}
         translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={currentCatalogLocale}
+        router={router}
       />
       {ruleDefinition.actions.map((action, i) => {
         return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Translate } from '../../../dependenciesTools';
+import { Router, Translate } from '../../../dependenciesTools';
 import { GreyGhostButton, SmallHelper } from '../../../components';
 import { TextBoxBlue } from './TextBoxBlue';
 import { RuleDefinition } from '../../../models/';
@@ -45,32 +45,32 @@ const AddConditionContainer = styled.div`
 `;
 
 type Props = {
-  register: any;
   ruleDefinition: RuleDefinition;
   translate: Translate;
   locales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: string;
+  router: Router;
 };
 
 type ConditionLineProps = {
-  register: any;
   condition: Condition;
   lineNumber: number;
   translate: Translate;
   locales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: string;
+  router: Router;
 };
 
 const ConditionLine: React.FC<ConditionLineProps> = ({
-  register,
   translate,
   condition,
   lineNumber,
   locales,
   scopes,
   currentCatalogLocale,
+  router,
 }) => {
   const Line = condition.module;
   const isFallback =
@@ -83,13 +83,13 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
         ' AknGrid-bodyRow--highlight'}`}>
       <div className='AknGrid-bodyCell'>
         <Line
-          register={register}
           condition={condition}
           lineNumber={lineNumber}
           translate={translate}
           locales={locales}
           scopes={scopes}
           currentCatalogLocale={currentCatalogLocale}
+          router={router}
         />
       </div>
     </div>
@@ -97,12 +97,12 @@ const ConditionLine: React.FC<ConditionLineProps> = ({
 };
 
 const RuleProductSelection: React.FC<Props> = ({
-  register,
   ruleDefinition,
   translate,
   locales,
   scopes,
   currentCatalogLocale,
+  router,
 }) => {
   return (
     <fieldset>
@@ -140,7 +140,6 @@ const RuleProductSelection: React.FC<Props> = ({
         {ruleDefinition.conditions.map((condition, i) => {
           return (
             <ConditionLine
-              register={register}
               condition={condition}
               lineNumber={i}
               translate={translate}
@@ -148,6 +147,7 @@ const RuleProductSelection: React.FC<Props> = ({
               locales={locales}
               scopes={scopes}
               currentCatalogLocale={currentCatalogLocale}
+              router={router}
             />
           );
         })}

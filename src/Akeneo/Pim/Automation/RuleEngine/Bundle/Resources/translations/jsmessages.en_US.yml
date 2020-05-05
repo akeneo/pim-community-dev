@@ -77,6 +77,8 @@ pimee_catalog_rule:
             add_conditions: Add conditions
             count_products: "{{ count }} products and product models"
             product_selection: Product selection
+            fields:
+                family: Family
             conditions:
                 operators:
                     "STARTS WITH": starts with
