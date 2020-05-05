@@ -216,6 +216,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait',
         'Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface',
         'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
         'Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface',
