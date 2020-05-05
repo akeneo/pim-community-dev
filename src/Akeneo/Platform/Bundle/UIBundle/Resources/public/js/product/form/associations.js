@@ -326,7 +326,9 @@ define([
               associationTypes,
               currentAssociationType: this.getCurrentAssociationType(),
               currentAssociationTarget: this.getCurrentAssociationTarget(),
-              numberAssociationLabelKey: 'pim_enrich.entity.product.module.associations.number_of_associations',
+              numberAssociationLabelKey: isQuantifiedAssociation ?
+                'pim_enrich.entity.product.module.associations.number_of_quantified_associations' :
+                'pim_enrich.entity.product.module.associations.number_of_associations',
               targetLabel: __('pim_enrich.entity.product.module.associations.target'),
               showProductsLabel: __('pim_enrich.entity.product.module.associations.show_products'),
               showGroupsLabel: __('pim_enrich.entity.product.module.associations.show_groups'),
@@ -341,7 +343,7 @@ define([
      * Refresh the associations panel after model change
      */
     postUpdate: function() {
-      if (this.isVisible()) {
+      if (this.isVisible() && !this.$el.is(':empty')) {
         this.$('.selection-inputs input').val('');
         state.selectedAssociations = {};
         this.render();
