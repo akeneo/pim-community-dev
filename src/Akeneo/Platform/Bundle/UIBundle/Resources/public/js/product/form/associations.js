@@ -253,48 +253,9 @@ define([
                 const associationType = this.getCurrentAssociationType();
                 const product = this.getFormData();
 
-                const previousQuantifiedLinkedProducts = undefined !== product.quantified_associations && undefined !== product.quantified_associations[associationType] ?
-                  product.quantified_associations[associationType].products :
-                  [];
-                const previousQuantifiedLinkedProductModels = undefined !== product.quantified_associations && undefined !== product.quantified_associations[associationType] ?
-                  product.quantified_associations[associationType].product_models :
-                  [];
+                const updatedAssociations = this.getUpdatedAssociations(product, associationType, productAndProductModelIdentifiers);
 
-                const linkedProducts = productAndProductModelIdentifiers.reduce((linkedProducts, identifier) => {
-                  const matchProduct = identifier.match(/^product_(.*)$/);
-                  if (!matchProduct) {
-                    return linkedProducts;
-                  }
-
-                  const productIdentifierToAdd = matchProduct[1];
-                  linkedProducts.filter((linkedProduct) =>  linkedProduct.identifier !== productIdentifierToAdd);
-
-                  return [...linkedProducts, {identifier: productIdentifierToAdd, quantity: 1}];
-                }, previousQuantifiedLinkedProducts);
-
-                const linkedProductModels = productAndProductModelIdentifiers.reduce((linkedProductModels, identifier) => {
-                  const matchProductModel = identifier.match(/^product_model_(.*)$/);
-                  if (!matchProductModel) {
-                    return linkedProductModels;
-                  }
-
-                  const productModelIdentifierToAdd = matchProductModel[1];
-                  linkedProductModels.filter((linkedProduct) =>  linkedProduct.identifier !== productModelIdentifierToAdd);
-
-                  return [...linkedProductModels, {identifier: productModelIdentifierToAdd, quantity: 1}];
-                }, previousQuantifiedLinkedProductModels);
-
-
-
-                const updatedAssociation = {
-                  ...product.quantified_associations,
-                  [associationType]: {
-                    products: linkedProducts,
-                    product_models: linkedProductModels
-                  }
-                };
-
-                this.setData({quantified_associations: updatedAssociation});
+                this.setData({quantified_associations: updatedAssociations});
               });
             }
           });
@@ -848,6 +809,47 @@ define([
       return Object.values(this.getFormData().associations).reduce((typeCount, typeItem) => {
         return typeCount + Object.values(typeItem).reduce((count, item) => count + item.length, 0);
       }, 0);
+    },
+
+    getUpdatedAssociations: function(product, associationType, productAndProductModelIdentifiers) {
+      const previousQuantifiedLinkedProducts = undefined !== product.quantified_associations && undefined !== product.quantified_associations[associationType] ?
+        product.quantified_associations[associationType].products :
+        [];
+      const previousQuantifiedLinkedProductModels = undefined !== product.quantified_associations && undefined !== product.quantified_associations[associationType] ?
+        product.quantified_associations[associationType].product_models :
+        [];
+
+      const linkedProducts = productAndProductModelIdentifiers.reduce((linkedProducts, identifier) => {
+        const matchProduct = identifier.match(/^product_(.*)$/);
+        if (!matchProduct) {
+          return linkedProducts;
+        }
+
+        const productIdentifierToAdd = matchProduct[1];
+        linkedProducts.filter((linkedProduct) =>  linkedProduct.identifier !== productIdentifierToAdd);
+
+        return [...linkedProducts, {identifier: productIdentifierToAdd, quantity: 1}];
+      }, previousQuantifiedLinkedProducts);
+
+      const linkedProductModels = productAndProductModelIdentifiers.reduce((linkedProductModels, identifier) => {
+        const matchProductModel = identifier.match(/^product_model_(.*)$/);
+        if (!matchProductModel) {
+          return linkedProductModels;
+        }
+
+        const productModelIdentifierToAdd = matchProductModel[1];
+        linkedProductModels.filter((linkedProduct) =>  linkedProduct.identifier !== productModelIdentifierToAdd);
+
+        return [...linkedProductModels, {identifier: productModelIdentifierToAdd, quantity: 1}];
+      }, previousQuantifiedLinkedProductModels);
+
+      return {
+        ...product.quantified_associations,
+        [associationType]: {
+          products: linkedProducts,
+          product_models: linkedProductModels
+        }
+      };
     }
   });
 });
