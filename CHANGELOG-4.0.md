@@ -2,13 +2,15 @@
 
 ## Bug fixes
 
+- PIM-9224: Fix versioning refresh command
+- PIM-9227: Fix performance issue on product grid for product model images
 - PIM-9181: Backport PIM-9133 to 4.0 (Fix product/product model save when the user has no permission on some attribute groups)
 
 # 4.0.21 (2020-04-29)
 
 ## Technical Improvements
 
-- Limit Symfony version on 4.4.7 because of validation issues with 4.4.8
+- Lock Symfony version on 4.4.7 because of validation issues with 4.4.8
 
 # 4.0.20 (2020-04-27)
 
