@@ -12,9 +12,11 @@
 - PIM-9163: total_fields limit of elasticsearch should be configurable
 - PIM-9197: Make queries in InMemoryGetAttributes case insensitive
 - PIM-9213: Fix tooltip hover on Ellipsis for Family Name on creating product
+- PIM-9184: API - Fix dbal query group by part for saas instance
 
 ## New features
 
+- MET-197: Add possibility to define that an association type is two way & automatically create inversed association when association type is two way
 - MET-14: Measurements (or metrics) are now stored in database
 - AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
 

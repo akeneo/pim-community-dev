@@ -53,6 +53,8 @@ $rules = [
         // TIP-918: PIM/Enrichment should not be linked to GroupType
         'Akeneo\Pim\Structure\Component\Model\GroupTypeInterface',
 
+        'Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface',
+
         // TIP-920: PIM/Enrichment should not be linked to Locale
         'Akeneo\Channel\Component\Model\LocaleInterface',
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
