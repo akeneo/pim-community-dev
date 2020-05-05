@@ -411,7 +411,7 @@ class ProductModelSpec extends ObjectBehavior
             ]
         ];
         $this->hydrateQuantifiedAssociations($idMapping, $idMapping);
-        $this->normalize()->shouldReturn([
+        $this->normalizeQuantifiedAssociations()->shouldReturn([
             'PACK' => [
                 'products'       => [
                     ['identifier' => 'entity_1', 'quantity' => 1],
@@ -441,7 +441,7 @@ class ProductModelSpec extends ObjectBehavior
             ]
         ];
         $this->hydrateQuantifiedAssociations($idMapping, $idMapping);
-        $this->normalize()->shouldReturn([
+        $this->normalizeQuantifiedAssociations()->shouldReturn([
             'PACK' => [
                 'products'       => [
                     ['identifier' => 'entity_1', 'quantity' => 1],

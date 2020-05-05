@@ -108,7 +108,7 @@ trait EntityWithQuantifiedAssociationTrait
         );
     }
 
-    public function normalize(): array
+    public function normalizeQuantifiedAssociations(): array
     {
         return $this->quantifiedAssociations->normalize();
     }

@@ -57,4 +57,11 @@ interface EntityWithQuantifiedAssociationsInterface
      * @param IdMapping $mappedProductModelIdentifiers
      */
     public function updateRawQuantifiedAssociations(IdMapping $mappedProductIdentifiers, IdMapping $mappedProductModelIdentifiers): void;
+
+    /**
+     * Normalize the quantified associations
+     *
+     * @return array
+     */
+    public function normalizeQuantifiedAssociations(): array;
 }
