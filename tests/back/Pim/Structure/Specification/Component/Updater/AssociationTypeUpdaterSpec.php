@@ -51,9 +51,11 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
             'labels' => [
                 'fr_FR' => 'Vente croisée',
             ],
+            'is_two_way' => true
         ];
 
         $associationType->setCode('mycode')->shouldBeCalled();
+        $associationType->setIsTwoWay(true)->shouldBeCalled();
         $translatableUpdater->update($associationType, $values['labels'])->shouldBeCalled();
 
         $this->update($associationType, $values, []);
@@ -108,6 +110,21 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
                     'one of the "labels" values is not a scalar',
                     AssociationTypeUpdater::class,
                     ['fr_FR' => []]
+                )
+            )
+            ->during('update', [$associationType, $data, []]);
+    }
+
+    function it_throws_an_exception_when_value_is_two_way_is_not_boolean(AssociationTypeInterface $associationType)
+    {
+        $data = ['is_two_way' => 'foo'];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::booleanExpected(
+                    'is_two_way',
+                    AssociationTypeUpdater::class,
+                    'foo'
                 )
             )
             ->during('update', [$associationType, $data, []]);

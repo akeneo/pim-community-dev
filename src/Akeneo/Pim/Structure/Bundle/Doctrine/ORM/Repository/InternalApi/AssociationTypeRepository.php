@@ -29,21 +29,11 @@ class AssociationTypeRepository extends EntityRepository implements DatagridRepo
      */
     public function createDatagridQueryBuilder()
     {
-        $qb = $this->createQueryBuilder('a');
-        $rootAlias = $qb->getRootAlias();
-
-        $labelExpr = sprintf(
-            "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
-            $rootAlias
-        );
-
-        $qb
-            ->select($rootAlias)
-            ->addSelect(sprintf("%s AS label", $labelExpr))
-            ->addSelect('translation.label');
-
-        $qb
-            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('(CASE WHEN translation.label IS NULL THEN a.code ELSE translation.label END) AS label')
+            ->addSelect('translation.label')
+            ->addSelect('a.isTwoWay')
+            ->leftJoin('a.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
 
         return $qb;
     }
