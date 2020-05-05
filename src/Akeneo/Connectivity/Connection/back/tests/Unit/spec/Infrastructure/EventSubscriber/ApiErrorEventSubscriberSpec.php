@@ -56,9 +56,24 @@ class ApiErrorEventSubscriberSpec extends ObjectBehavior
         $request->get('_route')->willReturn(MonitoredRoutes::ROUTES[0]);
 
         $exception = new HttpException(400);
-        $exceptionEvent->getException()->willReturn($exception);
+        $exceptionEvent->getThrowable()->willReturn($exception);
 
         $collectApiError->collectFromHttpException($exception)->shouldBeCalled();
+
+        $this->collectApiError($exceptionEvent);
+    }
+
+    public function it_doesnt_collect_errors_from_an_exception_that_is_not_an_http_exception(
+        $collectApiError,
+        $request,
+        $exceptionEvent
+    ): void {
+        $request->get('_route')->willReturn('not_monitored_route');
+
+        $exception = new \Exception();
+        $exceptionEvent->getThrowable()->willReturn($exception);
+
+        $collectApiError->collectFromHttpException()->shouldNotBeCalled();
 
         $this->collectApiError($exceptionEvent);
     }
@@ -69,6 +84,9 @@ class ApiErrorEventSubscriberSpec extends ObjectBehavior
         $exceptionEvent
     ): void {
         $request->get('_route')->willReturn('not_monitored_route');
+
+        $exception = new HttpException(400);
+        $exceptionEvent->getThrowable()->willReturn($exception);
 
         $collectApiError->collectFromHttpException()->shouldNotBeCalled();
 
