@@ -1,12 +1,11 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 import { Router, Translate } from '../../../dependenciesTools';
-import { RuleProductSelection } from './RuleProductSelection';
-import { RuleDefinition } from '../../../models';
+import { RuleProductSelection } from './conditions/RuleProductSelection';
+import { RuleDefinition, Locale } from '../../../models';
 import { Action } from '../../../models/Action';
-import { Locale } from '../../../models';
 import { IndexedScopes } from '../../../fetch/ScopeFetcher';
-import { ActionLineProps } from '../ActionLineProps';
+import { useFormContext } from 'react-hook-form';
+import { ActionLine } from './actions/ActionLine';
 
 type Props = {
   translate: Translate;
@@ -17,24 +16,6 @@ type Props = {
   router: Router;
 };
 
-const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
-  action,
-  translate,
-  lineNumber,
-  register,
-}) => {
-  const Line = action.module;
-
-  return (
-    <Line
-      action={action}
-      translate={translate}
-      lineNumber={lineNumber}
-      register={register}
-    />
-  );
-};
-
 const RulesBuilder: React.FC<Props> = ({
   translate,
   ruleDefinition,
@@ -43,7 +24,24 @@ const RulesBuilder: React.FC<Props> = ({
   currentCatalogLocale,
   router,
 }) => {
-  const { register } = useFormContext();
+  const [actions, setActions] = React.useState<(Action | null)[]>(
+    ruleDefinition.actions
+  );
+
+  const { getValues, unregister } = useFormContext();
+  const deleteAction = (lineNumber: number) => {
+    Object.keys(getValues()).forEach((value: string) => {
+      if (value.startsWith(`content.actions[${lineNumber}]`)) {
+        unregister(value);
+      }
+    });
+    setActions(
+      actions.map((action: Action | null, i: number) => {
+        return i === lineNumber ? null : action;
+      })
+    );
+  };
+
   return (
     <>
       <RuleProductSelection
@@ -54,15 +52,19 @@ const RulesBuilder: React.FC<Props> = ({
         currentCatalogLocale={currentCatalogLocale}
         router={router}
       />
-      {ruleDefinition.actions.map((action, i) => {
+      {actions.map((action: Action | null, i) => {
         return (
-          <ActionLine
-            action={action}
-            translate={translate}
-            key={`action_${i}`}
-            lineNumber={i}
-            register={register}
-          />
+          action && (
+            <ActionLine
+              action={action}
+              translate={translate}
+              key={`action_${i}`}
+              lineNumber={i}
+              handleDelete={() => {
+                deleteAction(i);
+              }}
+            />
+          )
         );
       })}
     </>

@@ -73,13 +73,19 @@ pimee_catalog_rule:
             priority:
                 label: Priority
             add_to_category: Add to category
-            remove_action: Remove action
             add_conditions: Add conditions
             count_products: "{{ count }} products and product models"
             product_selection: Product selection
             fields:
                 family: Family
+            actions:
+                delete:
+                    label: Remove action
+                    description: Are you sure you want to remove this action?
             conditions:
+                delete:
+                    label: Remove condition
+                    description: Are you sure you want to remove this condition?
                 operators:
                     "STARTS WITH": starts with
                     "ENDS WITH": ends with
@@ -104,6 +110,7 @@ pimee_catalog_rule:
             notification:
                 success: Rule updated successfully
                 failed: Rule update failed
+            discard_changes: You will lose changes to the rule if you leave the page.
         helper:
             add_to_category: To add your product selection to one or more categories, please start by selecting our category trees and then, your categories.
             product_selection: "You must define your product selection in order to create your rule. If you don't know how, "

@@ -6,6 +6,8 @@ import { IndexedScopes } from '../../../../src/fetch/ScopeFetcher';
 
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 
+const setIsDirty = (_isDirty: boolean) => {};
+
 describe('EditRulesContent', () => {
   it('should display an unsaved changes alert after user have changed an input', async () => {
     // Given
@@ -45,6 +47,7 @@ describe('EditRulesContent', () => {
         ruleDefinition={ruleDefinition}
         locales={locales}
         scopes={scopes}
+        setIsDirty={setIsDirty}
       />,
       {
         legacy: true,

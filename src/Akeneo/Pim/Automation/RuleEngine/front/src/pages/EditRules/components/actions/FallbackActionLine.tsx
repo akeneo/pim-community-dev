@@ -1,8 +1,8 @@
 import React from 'react';
-import { FallbackAction } from '../../../models/FallbackAction';
+import { FallbackAction } from '../../../../models/FallbackAction';
 import { ActionTemplate } from './ActionTemplate';
-import { ActionLineProps } from '../ActionLineProps';
-import { InputText } from '../../../components/Inputs';
+import { ActionLineProps } from '../../ActionLineProps';
+import { useValueInitialization } from '../../hooks/useValueInitialization';
 
 type Props = {
   action: FallbackAction;
@@ -11,21 +11,19 @@ type Props = {
 const FallbackActionLine: React.FC<Props> = ({
   translate,
   lineNumber,
-  register,
+  action,
+  handleDelete,
 }) => {
+  useValueInitialization(`content.actions[${lineNumber}]`, action.json);
+
   return (
     <ActionTemplate
       translate={translate}
       title='Unknown Action'
       helper='This feature is under development. Please use the import to manage your rules.'
-      srOnly='This feature is under development. Please use the import to manage your rules.'>
-      <InputText
-        name={`content.actions[${lineNumber}]`}
-        ref={register}
-        disabled
-        readOnly
-        hiddenLabel={true}
-      />
+      legend='This feature is under development. Please use the import to manage your rules.'
+      handleDelete={handleDelete}>
+      {JSON.stringify(action.json)}
     </ActionTemplate>
   );
 };

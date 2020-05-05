@@ -4,12 +4,12 @@ import { useFormContext } from 'react-hook-form';
 import {
   TextAttributeCondition,
   TextAttributeOperators,
-} from '../../models/TextAttributeCondition';
-import { Operator } from '../../models/Operator';
-import { ConditionLineProps } from './ConditionLineProps';
-import { Locale } from '../../models';
-import { Scope } from '../../models';
-import { InputText } from '../../components/Inputs';
+} from '../../../../models/TextAttributeCondition';
+import { Operator } from '../../../../models/Operator';
+import { ConditionLineProps } from '../../ConditionLineProps';
+import { Locale } from '../../../../models';
+import { Scope } from '../../../../models';
+import { InputText } from '../../../../components/Inputs';
 
 const FieldColumn = styled.span`
   width: 100px;

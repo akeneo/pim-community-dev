@@ -1,13 +1,31 @@
 import React, { ReactElement } from 'react';
-import { PimCondition } from '../../models/PimCondition';
-import { Flag } from '../../components/Flag/Flag';
-import { ConditionLineProps } from './ConditionLineProps';
+import { PimCondition } from '../../../../models/PimCondition';
+import { Flag } from '../../../../components/Flag';
+import { ConditionLineProps } from '../../ConditionLineProps';
+import { useValueInitialization } from '../../hooks/useValueInitialization';
 
 const PimConditionLine: React.FC<ConditionLineProps> = ({
   translate,
   condition,
+  lineNumber,
 }) => {
   const pimCondition = condition as PimCondition;
+
+  const values: { [key: string]: any } = {
+    field: pimCondition.field,
+    operator: pimCondition.operator,
+  };
+  if (pimCondition.locale) {
+    values.locale = pimCondition.locale;
+  }
+  if (pimCondition.scope) {
+    values.scope = pimCondition.scope;
+  }
+  if (pimCondition.value) {
+    values.value = pimCondition.value;
+  }
+  useValueInitialization(`content.conditions[${lineNumber}]`, values);
+
   const isMetric = (value: any): boolean => {
     return (
       typeof value === 'object' &&

@@ -1,6 +1,6 @@
 import { render } from '../../../../test-utils';
 import React from 'react';
-import { TextAttributeConditionLine } from '../../../../src/pages/EditRules/TextAttributeConditionLine';
+import { TextAttributeConditionLine } from '../../../../src/pages/EditRules/components/conditions/TextAttributeConditionLine';
 import { TextAttributeCondition } from '../../../../src/models/TextAttributeCondition';
 import { Attribute } from '../../../../src/models/Attribute';
 import { Operator } from '../../../../src/models/Operator';
@@ -90,6 +90,16 @@ const router: Router = {
   'generate': jest.fn(),
   'redirect': jest.fn(),
 };
+
+jest.mock('react-hook-form', () => {
+  return {
+    useFormContext: () => {
+      return {
+        register: jest.fn(),
+      };
+    },
+  };
+});
 
 jest.mock('react-hook-form', () => {
   return {

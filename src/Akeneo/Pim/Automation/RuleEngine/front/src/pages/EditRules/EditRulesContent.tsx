@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { FormContext } from 'react-hook-form';
 
@@ -27,6 +27,7 @@ type Props = {
   ruleDefinition: RuleDefinition;
   locales: Locale[];
   scopes: IndexedScopes;
+  setIsDirty: (isDirty: boolean) => void;
 };
 
 const EditRulesContent: React.FC<Props> = ({
@@ -34,6 +35,7 @@ const EditRulesContent: React.FC<Props> = ({
   ruleDefinition,
   locales,
   scopes,
+  setIsDirty,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -56,6 +58,10 @@ const EditRulesContent: React.FC<Props> = ({
     ruleDefinition,
     locales
   );
+
+  useEffect(() => {
+    setIsDirty(formMethods.formState.dirty);
+  }, [formMethods.formState.dirty]);
 
   return (
     <ThemeProvider theme={akeneoTheme}>

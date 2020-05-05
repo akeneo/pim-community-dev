@@ -1,5 +1,5 @@
 import React from 'react';
-import { FallbackConditionLine } from '../pages/EditRules/FallbackConditionLine';
+import { FallbackConditionLine } from '../pages/EditRules/components/conditions/FallbackConditionLine';
 import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
 
 export type FallbackCondition = {
@@ -10,10 +10,8 @@ export type FallbackCondition = {
 export const createFallbackCondition = async (
   json: any
 ): Promise<FallbackCondition> => {
-  return new Promise<FallbackCondition>(() => {
-    return {
-      module: FallbackConditionLine,
-      json: json,
-    };
+  return Promise.resolve({
+    module: FallbackConditionLine,
+    json: json,
   });
 };

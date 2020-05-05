@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Router, Translate } from '../../../dependenciesTools';
-import { GreyGhostButton, SmallHelper } from '../../../components';
-import { TextBoxBlue } from './TextBoxBlue';
-import { RuleDefinition } from '../../../models/';
-import { PimConditionLine } from '../PimConditionLine';
-import { FallbackConditionLine } from '../FallbackConditionLine';
-import { Condition } from '../../../models/';
-import { Locale } from '../../../models/';
-import { IndexedScopes } from '../../../fetch/ScopeFetcher';
+import { Router, Translate } from '../../../../dependenciesTools';
+import { GreyGhostButton, SmallHelper } from '../../../../components';
+import { TextBoxBlue } from '../TextBoxBlue';
+import { RuleDefinition } from '../../../../models/';
+import { Condition } from '../../../../models/';
+import { Locale } from '../../../../models/';
+import { IndexedScopes } from '../../../../fetch/ScopeFetcher';
+import { useFormContext } from 'react-hook-form';
+import { ConditionLine } from './ConditionLine';
 
 const Header = styled.header`
   font-weight: normal;
@@ -53,49 +53,6 @@ type Props = {
   router: Router;
 };
 
-type ConditionLineProps = {
-  condition: Condition;
-  lineNumber: number;
-  translate: Translate;
-  locales: Locale[];
-  scopes: IndexedScopes;
-  currentCatalogLocale: string;
-  router: Router;
-};
-
-const ConditionLine: React.FC<ConditionLineProps> = ({
-  translate,
-  condition,
-  lineNumber,
-  locales,
-  scopes,
-  currentCatalogLocale,
-  router,
-}) => {
-  const Line = condition.module;
-  const isFallback =
-    condition.module === PimConditionLine ||
-    condition.module === FallbackConditionLine;
-
-  return (
-    <div
-      className={`AknGrid-bodyRow${isFallback &&
-        ' AknGrid-bodyRow--highlight'}`}>
-      <div className='AknGrid-bodyCell'>
-        <Line
-          condition={condition}
-          lineNumber={lineNumber}
-          translate={translate}
-          locales={locales}
-          scopes={scopes}
-          currentCatalogLocale={currentCatalogLocale}
-          router={router}
-        />
-      </div>
-    </div>
-  );
-};
-
 const RuleProductSelection: React.FC<Props> = ({
   ruleDefinition,
   translate,
@@ -104,6 +61,24 @@ const RuleProductSelection: React.FC<Props> = ({
   currentCatalogLocale,
   router,
 }) => {
+  const [conditions, setConditions] = React.useState<(Condition | null)[]>(
+    ruleDefinition.conditions
+  );
+
+  const { getValues, unregister } = useFormContext();
+  const deleteCondition = (lineNumber: number) => {
+    Object.keys(getValues()).forEach((value: string) => {
+      if (value.startsWith(`content.conditions[${lineNumber}]`)) {
+        unregister(value);
+      }
+    });
+    setConditions(
+      conditions.map((condition: Condition | null, i: number) => {
+        return i === lineNumber ? null : condition;
+      })
+    );
+  };
+
   return (
     <fieldset>
       <Header className='AknSubsection-title'>
@@ -137,20 +112,25 @@ const RuleProductSelection: React.FC<Props> = ({
         </a>
       </SmallHelper>
       <div className='AknGrid AknGrid--unclickable'>
-        {ruleDefinition.conditions.map((condition, i) => {
-          return (
-            <ConditionLine
-              condition={condition}
-              lineNumber={i}
-              translate={translate}
-              key={`condition_${i}`}
-              locales={locales}
-              scopes={scopes}
-              currentCatalogLocale={currentCatalogLocale}
-              router={router}
-            />
-          );
-        })}
+        <div className='AknGrid-body'>
+          {conditions.map((condition, i) => {
+            return (
+              condition && (
+                <ConditionLine
+                  condition={condition}
+                  lineNumber={i}
+                  translate={translate}
+                  key={`condition_${i}`}
+                  locales={locales}
+                  scopes={scopes}
+                  currentCatalogLocale={currentCatalogLocale}
+                  router={router}
+                  deleteCondition={deleteCondition}
+                />
+              )
+            );
+          })}
+        </div>
       </div>
       <LegendSrOnly>
         {translate('pimee_catalog_rule.form.legend.product_selection')}
