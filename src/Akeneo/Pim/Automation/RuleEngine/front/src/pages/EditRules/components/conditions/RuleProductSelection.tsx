@@ -3,12 +3,17 @@ import styled from 'styled-components';
 import { Router, Translate } from '../../../../dependenciesTools';
 import { GreyGhostButton, SmallHelper } from '../../../../components';
 import { TextBoxBlue } from '../TextBoxBlue';
-import { RuleDefinition } from '../../../../models/';
+import { ConditionFactory, RuleDefinition } from '../../../../models/';
 import { Condition } from '../../../../models/';
 import { Locale } from '../../../../models/';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { useFormContext } from 'react-hook-form';
 import { ConditionLine } from './ConditionLine';
+import { AddConditionButton } from "./AddConditionButton";
+import { createFamilyCondition } from "../../../../models/FamilyCondition";
+import {
+  createTextAttributeCondition,
+} from "../../../../models/TextAttributeCondition";
 
 const Header = styled.header`
   font-weight: normal;
@@ -79,6 +84,36 @@ const RuleProductSelection: React.FC<Props> = ({
     );
   };
 
+  async function createCondition(
+    fieldCode: string,
+  ): Promise<Condition> {
+    const factories: ConditionFactory[] = [
+      createFamilyCondition,
+      createTextAttributeCondition,
+    ];
+
+    for (let i = 0; i < factories.length; i++) {
+      const factory = factories[i];
+      const condition = await factory(fieldCode, router);
+      if (condition !== null) {
+        return condition;
+      }
+    }
+
+    throw new Error(`Unknown factory for field ${fieldCode}`);
+  }
+
+  const handleAddCondition = (fieldCode: string) => {
+    createCondition(fieldCode).then((condition) => {
+      const newConditions = [];
+      conditions.forEach((condition) => {
+        newConditions.push(condition);
+      });
+      newConditions.push(condition);
+      setConditions(newConditions);
+    });
+  }
+
   return (
     <fieldset>
       <Header className='AknSubsection-title'>
@@ -97,6 +132,10 @@ const RuleProductSelection: React.FC<Props> = ({
             })}
           </span>
           <AddConditionContainer>
+            <AddConditionButton
+              router={router}
+              handleAddCondition={handleAddCondition}
+            />
             <GreyGhostButton sizeMode='small'>
               {translate('pimee_catalog_rule.form.edit.add_conditions')}
             </GreyGhostButton>

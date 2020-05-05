@@ -34,7 +34,7 @@ type TextAttributeCondition = {
   locale?: string;
 };
 
-const createTextAttributeCondition: ConditionFactoryType = async (
+const denormalizeTextAttributeCondition: ConditionDenormalizer = async (
   json: any,
   router: Router
 ): Promise<TextAttributeCondition | null> => {
@@ -81,8 +81,25 @@ const createTextAttributeCondition: ConditionFactoryType = async (
   return null;
 };
 
+const createTextAttributeCondition: ConditionFactory = async (
+  fieldCode: string,
+  router: Router,
+): Promise<TextAttributeCondition | null> => {
+  const attribute = await getAttributeByIdentifier(fieldCode, router);
+  if (null === attribute) {
+    return null;
+  }
+
+  return {
+    module: TextAttributeConditionLine,
+    attribute,
+    field: fieldCode,
+    operator: Operator.IS_EMPTY,
+  }
+}
+
 export {
   TextAttributeOperators,
   TextAttributeCondition,
-  createTextAttributeCondition,
+  denormalizeTextAttributeCondition,
 };

@@ -43,7 +43,7 @@ const familyConditionPredicate = (json: any): boolean => {
   );
 };
 
-const createFamilyCondition: ConditionFactoryType = async (
+const denormalizeFamilyCondition: ConditionDenormalizer = async (
   json: any,
   router: Router
 ): Promise<FamilyCondition | null> => {
@@ -67,4 +67,25 @@ const createFamilyCondition: ConditionFactoryType = async (
   };
 };
 
-export { FamilyCondition, createFamilyCondition, FamilyOperators };
+const createFamilyCondition: ConditionFactory = async (
+  fieldCode: any,
+): Promise<FamilyCondition | null> => {
+  if (fieldCode !== 'family') {
+    return Promise.resolve(null);
+  }
+
+  return Promise.resolve({
+    module: FamilyConditionLine,
+    field: 'family',
+    operator: Operator.IN_LIST,
+    value: [],
+    families: {},
+  });
+}
+
+export {
+  FamilyCondition,
+  denormalizeFamilyCondition,
+  createFamilyCondition,
+  FamilyOperators
+};

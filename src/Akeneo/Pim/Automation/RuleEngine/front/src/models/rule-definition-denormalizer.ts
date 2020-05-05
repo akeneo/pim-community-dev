@@ -1,11 +1,11 @@
 import { RuleDefinition } from './RuleDefinition';
-import { Condition, ConditionFactoryType } from './Condition';
-import { createFamilyCondition } from './FamilyCondition';
-import { createFallbackCondition } from './FallbackCondition';
+import { Condition, ConditionDenormalizer } from './Condition';
+import { denormalizeFamilyCondition } from './FamilyCondition';
+import { denormalizeFallbackCondition } from './FallbackCondition';
 import { createFallbackAction, FallbackAction } from './FallbackAction';
 import { Action } from './Action';
-import { createPimCondition } from './PimCondition';
-import { createTextAttributeCondition } from './TextAttributeCondition';
+import { denormalizePimCondition } from './PimCondition';
+import { denormalizeTextAttributeCondition } from './TextAttributeCondition';
 import { Router } from '../dependenciesTools';
 import { getAttributesByIdentifiers } from '../repositories/AttributeRepository';
 
@@ -23,22 +23,21 @@ async function denormalizeCondition(
   jsonCondition: any,
   router: Router
 ): Promise<Condition> {
-  // For now, FamilyCondition never match. It always returns FallbackCondition.
-  const factories: ConditionFactoryType[] = [
-    createFamilyCondition,
-    createTextAttributeCondition,
-    createPimCondition,
+  const denormalizers: ConditionDenormalizer[] = [
+    denormalizeFamilyCondition,
+    denormalizeTextAttributeCondition,
+    denormalizePimCondition,
   ];
 
-  for (let i = 0; i < factories.length; i++) {
-    const factory = factories[i];
-    const condition = await factory(jsonCondition, router);
+  for (let i = 0; i < denormalizers.length; i++) {
+    const denormalize = denormalizers[i];
+    const condition = await denormalize(jsonCondition, router);
     if (condition !== null) {
       return condition;
     }
   }
 
-  return createFallbackCondition(jsonCondition);
+  return denormalizeFallbackCondition(jsonCondition);
 }
 
 const extractFieldIdentifiers = (json: any): string[] => {

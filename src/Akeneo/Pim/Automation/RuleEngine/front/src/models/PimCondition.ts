@@ -19,7 +19,7 @@ type PimCondition = {
   scope: string | null;
 };
 
-export const createPimCondition: ConditionFactoryType = async (
+export const denormalizePimCondition: ConditionDenormalizer = async (
   json: any
 ): Promise<PimCondition | null> => {
   if (
