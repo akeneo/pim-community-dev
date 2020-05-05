@@ -15,6 +15,7 @@
 
 ## New features
 
+- MET-197: Add possibility to define that an association type is two way & automatically create inversed association when association type is two way
 - MET-14: Measurements (or metrics) are now stored in database
 - AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
 
