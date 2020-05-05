@@ -463,31 +463,24 @@ class ProductModelSpec extends ObjectBehavior
             [
                 'PACK' => [
                     'products'       => [
-                        ['identifier' => 'entity_1', 'quantity' => 1],
-                        ['identifier' => 'entity_2', 'quantity' => 2]
+                        ['id' => 1, 'quantity' => 1],
+                        ['id' => 2, 'quantity' => 2]
                     ],
                     'product_models' => [
-                        ['identifier' => 'entity_1', 'quantity' => 1],
-                        ['identifier' => 'entity_2', 'quantity' => 2]
+                        ['id' => 1, 'quantity' => 1],
+                        ['id' => 2, 'quantity' => 2]
                     ],
                 ]
             ],
             $idMapping,
             $idMapping
         );
-        $this->hydrateQuantifiedAssociations($idMapping, $idMapping);
-        $this->normalize()->shouldReturn([
-            'PACK' => [
-                'products'       => [
-                    ['identifier' => 'entity_1', 'quantity' => 1],
-                    ['identifier' => 'entity_2', 'quantity' => 2]
-                ],
-                'product_models' => [
-                    ['identifier' => 'entity_1', 'quantity' => 1],
-                    ['identifier' => 'entity_2', 'quantity' => 2]
-                ],
-            ]
-        ]);
+        $this->getQuantifiedAssociationsProductIds()->shouldReturn([]);
+        $this->getQuantifiedAssociationsProductModelIds()->shouldReturn([]);
+
+        $this->updateRawQuantifiedAssociations($idMapping, $idMapping);
+        $this->getQuantifiedAssociationsProductIds()->shouldReturn([1, 2]);
+        $this->getQuantifiedAssociationsProductModelIds()->shouldReturn([1, 2]);
     }
 
     // Product quantified associations
