@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes:
+
+- PIM-9227: Fix performance issue on product grid for product model images
+
 # 4.0.21 (2020-04-29)
 
 ## Technical Improvements
