@@ -232,16 +232,6 @@ extensions:
             aclAddAssociations: pim_enrich_associations_edit
             datagridName: 'association-product-grid'
 
-    pim-product-edit-form-associations-react:
-        module: pim/product-edit-form/associations-react
-        parent: pim-product-edit-form-column-tabs
-        targetZone: container
-        aclResourceId: pim_enrich_associations_view
-        position: 130
-        config:
-            aclAddAssociations: pim_enrich_associations_edit
-            datagridName: 'association-product-grid'
-
     pim-product-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pim-product-edit-form-attributes
