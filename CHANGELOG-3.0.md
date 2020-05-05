@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes:
+
+- PIM-9238: Fix type defintions (backport of PIM-8358)
+
 # 3.0.76 (2020-04-27)
 
 ## Bug fixes:
