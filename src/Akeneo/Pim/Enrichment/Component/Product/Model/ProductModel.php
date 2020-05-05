@@ -25,6 +25,9 @@ class ProductModel implements ProductModelInterface
     /** @var array|object */
     protected $rawValues;
 
+    /** @var array|null */
+    protected $rawQuantifiedAssociations = [];
+
     /**
      * Not persisted. Loaded on the fly via the $rawValues.
      *

@@ -96,7 +96,7 @@ VALUES
     (3000, 'pm1', $familyVariantId, '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW()),
     (3001, 'pm2', $familyVariantId, '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW())
 SQL;
-        $this->getConnection()->exec($sql);
+        $this->getConnection()->executeQuery($sql);
 
         $sql = <<<SQL
 INSERT INTO pim_catalog_product (id, product_model_id, is_enabled, identifier, raw_values, created, updated)
@@ -105,7 +105,7 @@ VALUES
     (5001, 3000, 1, 'product2', '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW()),
     (5002, 3001, 1, 'product3', '{"name": {"<all_channels>": {"<all_locales>": [""]}}}', NOW(), NOW())
 SQL;
-        $this->getConnection()->exec($sql);
+        $this->getConnection()->executeQuery($sql);
     }
 
     protected function getComputeProductModelDescendantJobId(): ?int
