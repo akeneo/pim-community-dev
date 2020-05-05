@@ -72,6 +72,7 @@ class AssociationTypeSpec extends ObjectBehavior
                     'en_US' => 'Cross sell',
                 ],
                 'code' => 'mycode',
+                'is_two_way' => false,
                 'is_quantified' => true,
             ]
         );

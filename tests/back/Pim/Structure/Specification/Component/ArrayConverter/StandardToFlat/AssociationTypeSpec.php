@@ -13,7 +13,7 @@ class AssociationTypeSpec extends ObjectBehavior
             'label-fr_FR' => 'Épée longue',
             'label-en_US' => 'Long sword',
             'is_two_way' => 1,
-            'is_quantified' => '0',
+            'is_quantified' => 0,
         ];
 
         $item = [
@@ -34,8 +34,8 @@ class AssociationTypeSpec extends ObjectBehavior
             'code'        => 'long_sword',
             'label-fr_FR' => 'Épée longue',
             'label-en_US' => 'Long sword',
-            'is_quantified' => '1',
-            'is_two_way' => 0
+            'is_two_way' => 0,
+            'is_quantified' => 1,
         ];
 
         $item = [
