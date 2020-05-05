@@ -5,7 +5,7 @@
  */
 import { PimConditionLine } from '../pages/EditRules/components/conditions/PimConditionLine';
 import React from 'react';
-import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
+import { ConditionLineProps } from '../pages/EditRules/components/conditions/ConditionLineProps';
 import { ConditionFactoryType } from './Condition';
 
 type PimCondition = {

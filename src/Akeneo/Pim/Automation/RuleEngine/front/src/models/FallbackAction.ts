@@ -1,6 +1,6 @@
 import React from 'react';
 import { FallbackActionLine } from '../pages/EditRules/components/actions/FallbackActionLine';
-import { ActionLineProps } from '../pages/EditRules/ActionLineProps';
+import { ActionLineProps } from '../pages/EditRules/components/actions/ActionLineProps';
 
 export type FallbackAction = {
   module: React.FC<{ action: FallbackAction } & ActionLineProps>;

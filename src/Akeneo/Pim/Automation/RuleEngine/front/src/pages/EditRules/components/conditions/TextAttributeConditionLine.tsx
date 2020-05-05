@@ -6,7 +6,7 @@ import {
   TextAttributeOperators,
 } from '../../../../models/TextAttributeCondition';
 import { Operator } from '../../../../models/Operator';
-import { ConditionLineProps } from '../../ConditionLineProps';
+import { ConditionLineProps } from './ConditionLineProps';
 import { Locale } from '../../../../models';
 import { Scope } from '../../../../models';
 import { InputText } from '../../../../components/Inputs';

@@ -1,4 +1,4 @@
-import { Translate } from '../../dependenciesTools';
+import { Translate } from '../../../../dependenciesTools';
 
 type ActionLineProps = {
   lineNumber: number;

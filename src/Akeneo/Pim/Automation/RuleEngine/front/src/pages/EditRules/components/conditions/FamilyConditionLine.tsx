@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useFormContext } from 'react-hook-form';
-import { ConditionLineProps } from '../../ConditionLineProps';
+import { ConditionLineProps } from './ConditionLineProps';
 import {
   FamilyCondition,
   FamilyOperators,

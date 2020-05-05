@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { PimCondition } from '../../../../models/PimCondition';
 import { Flag } from '../../../../components/Flag';
-import { ConditionLineProps } from '../../ConditionLineProps';
+import { ConditionLineProps } from './ConditionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 
 type Props = ConditionLineProps & {

@@ -9,7 +9,7 @@ import {
   checkLocaleIsBoundToScope,
   checkScopeExists,
 } from '../fetch/ScopeFetcher';
-import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
+import { ConditionLineProps } from '../pages/EditRules/components/conditions/ConditionLineProps';
 import { ConditionFactoryType } from './Condition';
 
 const TextAttributeOperators = [

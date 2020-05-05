@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { Condition, Locale } from '../../../../models';
 import { Router, Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../fetch/ScopeFetcher';
-import { ConditionLineProps } from '../../ConditionLineProps';
+import { ConditionLineProps } from './ConditionLineProps';
 
 const DeleteButton = styled(DialogDisclosure)`
   border: none;

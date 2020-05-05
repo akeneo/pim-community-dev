@@ -1,5 +1,5 @@
 import React from 'react';
-import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
+import { ConditionLineProps } from '../pages/EditRules/components/conditions/ConditionLineProps';
 import { Operator } from './Operator';
 import { FamilyConditionLine } from '../pages/EditRules/components/conditions/FamilyConditionLine';
 import { ConditionFactoryType } from './Condition';
