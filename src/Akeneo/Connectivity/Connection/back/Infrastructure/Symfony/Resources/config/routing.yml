@@ -39,7 +39,12 @@ akeneo_connectivity_connection_audit_any:
 
 ## Settings
 akeneo_connectivity_connection_settings_index:
-   path: '/connections'
+    path: '/connections'
+
+akeneo_connectivity_connection_settings_edit:
+    path: '/connections/{code}/edit'
+    requirements:
+        code: '[a-zA-Z0-9_]+'
 
 akeneo_connectivity_connection_settings_any:
     path: '/connections/{any}'

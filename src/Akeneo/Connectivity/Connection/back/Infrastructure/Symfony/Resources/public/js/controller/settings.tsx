@@ -1,9 +1,8 @@
 import {Settings} from '@akeneo-pim-community/connectivity-connection';
 import React from 'react';
 import {dependencies} from '../dependencies';
+import highlightMenu from '../menu/highlight-menu';
 import ReactController from '../react/react-controller';
-
-const mediator = require('oro/mediator');
 
 class SettingsController extends ReactController {
   reactElementToMount() {
@@ -20,11 +19,10 @@ class SettingsController extends ReactController {
     return super.initialize();
   }
 
-  renderRoute() {
-    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-system'});
-    mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-system-connection-settings'});
+  renderRoute(route: {name: string}) {
+    highlightMenu(route.name);
 
-    return super.renderRoute();
+    return super.renderRoute(route);
   }
 }
 
