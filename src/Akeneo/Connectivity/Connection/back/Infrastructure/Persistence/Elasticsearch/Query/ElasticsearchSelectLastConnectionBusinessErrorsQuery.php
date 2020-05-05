@@ -59,7 +59,7 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQuery implements SelectLast
 
         $businessErrors = [];
 
-        foreach($result['hits']['hits'] as $row) {
+        foreach ($result['hits']['hits'] as $row) {
             $data = $row['_source'];
 
             $businessErrors[] = new BusinessError(
