@@ -99,7 +99,11 @@ class UniqueVariantAxisValidator extends ConstraintValidator
 
         // TODO merge master/4.0: remove the test, and the whole 'else' statement
         if (null !== $this->getValuesOfSiblings) {
-            $siblingValues = $this->getValuesOfSiblings->for($entity);
+            $axesAttributesCodesToFilter = array_map(function (AttributeInterface $axisAttribute) {
+                return $axisAttribute->getCode();
+            }, $axes);
+
+            $siblingValues = $this->getValuesOfSiblings->for($entity, $axesAttributesCodesToFilter);
         } else {
             $siblingValues = $this->getSiblingValues($entity);
         }

@@ -70,6 +70,20 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
         Assert::assertArrayHasKey('apollon_optiona_false', $valuesOfSiblings);
     }
 
+    public function test_that_it_can_filter_values_by_attribute_codes()
+    {
+        $subSweatA = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('sub_sweat_option_a');
+
+        $valuesOfSiblings = $this->getValuesOfSiblings($subSweatA, ['a_simple_select']);
+        Assert::assertCount(1, $valuesOfSiblings);
+        Assert::assertArrayHasKey('sub_sweat_option_b', $valuesOfSiblings);
+        Assert::assertNull($valuesOfSiblings['sub_sweat_option_b']->getByCodes('a_text'));
+        Assert::assertInstanceOf(
+            ValueInterface::class,
+            $valuesOfSiblings['sub_sweat_option_b']->getByCodes('a_simple_select')
+        );
+    }
+
     // - sweat
     //     - sub_sweat_option_a
     //         - apollon_optiona_true
@@ -216,8 +230,9 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
         return $productModel;
     }
 
-    private function getValuesOfSiblings(EntityWithFamilyVariantInterface $entity): array
+    private function getValuesOfSiblings(EntityWithFamilyVariantInterface $entity, array $attributeCodes = []): array
     {
-        return $this->get('akeneo.pim.enrichment.product_model.query.get_values_of_siblings')->for($entity);
+        return $this->get('akeneo.pim.enrichment.product_model.query.get_values_of_siblings')
+                    ->for($entity, $attributeCodes);
     }
 }
