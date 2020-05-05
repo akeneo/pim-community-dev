@@ -3,6 +3,7 @@ parameters:
     pim_catalog.normalizer.standard.product_model.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductModelNormalizer
     pim_catalog.normalizer.standard.product.properties.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer
     pim_catalog.normalizer.standard.product.associations.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\AssociationsNormalizer
+    pim_catalog.normalizer.standard.product.quantified_associations.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\QuantifiedAssociationsNormalizer
     pim_catalog.normalizer.standard.product.product_values.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValuesNormalizer
     pim_catalog.normalizer.standard.product.product_value.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer
     pim_catalog.normalizer.standard.product.price.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PriceNormalizer
@@ -20,6 +21,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product.properties'
             - '@pim_catalog.normalizer.standard.product.associations'
+            - '@pim_catalog.normalizer.standard.product.quantified_associations'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 90 }
 
@@ -29,6 +31,7 @@ services:
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.normalizer.standard.product.associations'
             - '@pim_standard_format_serializer'
+            - '@pim_catalog.normalizer.standard.product.quantified_associations'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 90 }
         lazy: true
@@ -46,6 +49,11 @@ services:
         class: '%pim_catalog.normalizer.standard.product.associations.class%'
         arguments:
             - '@pim_catalog.query.get_associated_product_codes_by_product'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 40 }
+
+    pim_catalog.normalizer.standard.product.quantified_associations:
+        class: '%pim_catalog.normalizer.standard.product.quantified_associations.class%'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 40 }
 

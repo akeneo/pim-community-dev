@@ -15,9 +15,10 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function let(
         CollectionFilterInterface $filter,
         NormalizerInterface $associationsNormalizer,
-        NormalizerInterface $standardNormalizer
+        NormalizerInterface $standardNormalizer,
+        NormalizerInterface $quantifiedAssociationsNormalizer
     ) {
-        $this->beConstructedWith($filter, $associationsNormalizer, $standardNormalizer);
+        $this->beConstructedWith($filter, $associationsNormalizer, $standardNormalizer, $quantifiedAssociationsNormalizer);
     }
 
     function it_is_initializable()
@@ -77,6 +78,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'created' => '2010-06-23T00:00:00+01:00',
             'updated' => '2010-06-23T23:00:00+01:00',
             'associations' => null,
+            'quantified_associations' => [],
         ]);
     }
 
@@ -129,6 +131,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'created' => '2010-06-23T00:00:00+01:00',
             'updated' => '2010-06-23T23:00:00+01:00',
             'associations' => null,
+            'quantified_associations' => [],
         ]);
     }
 

@@ -25,6 +25,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
     private const FIELD_UPDATED = 'updated';
     private const FIELD_PARENT = 'parent';
     private const FIELD_ASSOCIATIONS = 'associations';
+    private const FIELD_QUANTIFIED_ASSOCIATIONS = 'quantified_associations';
 
     /** @var NormalizerInterface */
     private $associationsNormalizer;
@@ -35,19 +36,25 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
     /** @var CollectionFilterInterface */
     private $filter;
 
+    /** @var NormalizerInterface */
+    private $quantifiedAssociationsNormalizer;
+
     /**
      * @param CollectionFilterInterface $filter The collection filter
      * @param NormalizerInterface       $associationsNormalizer
      * @param NormalizerInterface       $standardNormalizer
+     * @param NormalizerInterface       $quantifiedAssociationsNormalizer
      */
     public function __construct(
         CollectionFilterInterface $filter,
         NormalizerInterface $associationsNormalizer,
-        NormalizerInterface $standardNormalizer
+        NormalizerInterface $standardNormalizer,
+        NormalizerInterface $quantifiedAssociationsNormalizer
     ) {
         $this->filter = $filter;
         $this->associationsNormalizer = $associationsNormalizer;
         $this->standardNormalizer = $standardNormalizer;
+        $this->quantifiedAssociationsNormalizer = $quantifiedAssociationsNormalizer;
     }
 
     /**
@@ -67,6 +74,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
         $data[self::FIELD_CREATED] = $this->standardNormalizer->normalize($productModel->getCreated(), $format, $context);
         $data[self::FIELD_UPDATED] = $this->standardNormalizer->normalize($productModel->getUpdated(), $format, $context);
         $data[self::FIELD_ASSOCIATIONS] = $this->associationsNormalizer->normalize($productModel, $format, $context);
+        $data[self::FIELD_QUANTIFIED_ASSOCIATIONS] = $this->quantifiedAssociationsNormalizer->normalize($productModel, $format, $context);
 
         return $data;
     }

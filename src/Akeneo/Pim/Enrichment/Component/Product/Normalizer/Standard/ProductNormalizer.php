@@ -16,6 +16,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     const FIELD_ASSOCIATIONS = 'associations';
+    const FIELD_QUANTIFIED_ASSOCIATIONS = 'quantified_associations';
 
     /** @var NormalizerInterface */
     private $propertiesNormalizer;
@@ -23,18 +24,24 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /** @var NormalizerInterface */
     private $associationsNormalizer;
 
+    /** @var NormalizerInterface */
+    private $quantifiedAssociationsNormalizer;
+
     /**
      * ProductNormalizer constructor.
      *
      * @param NormalizerInterface $propertiesNormalizer
      * @param NormalizerInterface $associationsNormalizer
+     * @param NormalizerInterface $quantifiedAssociationsNormalizer
      */
     public function __construct(
         NormalizerInterface $propertiesNormalizer,
-        NormalizerInterface $associationsNormalizer
+        NormalizerInterface $associationsNormalizer,
+        NormalizerInterface $quantifiedAssociationsNormalizer
     ) {
         $this->propertiesNormalizer = $propertiesNormalizer;
         $this->associationsNormalizer = $associationsNormalizer;
+        $this->quantifiedAssociationsNormalizer = $quantifiedAssociationsNormalizer;
     }
 
     /**
@@ -44,6 +51,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     {
         $data = $this->propertiesNormalizer->normalize($product, $format, $context);
         $data[self::FIELD_ASSOCIATIONS] = $this->associationsNormalizer->normalize($product, $format, $context);
+        $data[self::FIELD_QUANTIFIED_ASSOCIATIONS] = $this->quantifiedAssociationsNormalizer->normalize($product, $format, $context);
 
         return $data;
     }
