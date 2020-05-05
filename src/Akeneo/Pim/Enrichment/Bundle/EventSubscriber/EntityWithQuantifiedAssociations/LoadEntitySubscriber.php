@@ -39,7 +39,7 @@ final class LoadEntitySubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            Events::postLoad => 'loadQuantifiedAssociations'
+            Events::postLoad,
         ];
     }
 
@@ -51,7 +51,7 @@ final class LoadEntitySubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $event
      */
-    public function loadQuantifiedAssociations(LifecycleEventArgs $event)
+    public function postLoad(LifecycleEventArgs $event)
     {
         $entity = $event->getObject();
         if (!$entity instanceof EntityWithQuantifiedAssociationsInterface) {
