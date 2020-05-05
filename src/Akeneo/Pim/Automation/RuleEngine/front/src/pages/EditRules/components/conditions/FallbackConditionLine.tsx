@@ -3,18 +3,14 @@ import { FallbackCondition } from '../../../../models/FallbackCondition';
 import { ConditionLineProps } from '../../ConditionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 
-const FallbackConditionLine: React.FC<ConditionLineProps> = ({
-  condition,
-  lineNumber,
-}) => {
-  const fallBackCondition = condition as FallbackCondition;
+type Props = ConditionLineProps & {
+  condition: FallbackCondition;
+};
 
-  useValueInitialization(
-    `content.conditions[${lineNumber}]`,
-    fallBackCondition.json
-  );
+const FallbackConditionLine: React.FC<Props> = ({ condition, lineNumber }) => {
+  useValueInitialization(`content.conditions[${lineNumber}]`, condition.json);
 
-  return <div>{JSON.stringify(fallBackCondition.json)}</div>;
+  return <div>{JSON.stringify(condition.json)}</div>;
 };
 
 export { FallbackConditionLine };

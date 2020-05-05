@@ -42,7 +42,11 @@ const ScopeColumn = styled.span`
   padding: 0 2px;
 `;
 
-const TextAttributeConditionLine: React.FC<ConditionLineProps> = ({
+type Props = ConditionLineProps & {
+  condition: TextAttributeCondition;
+};
+
+const TextAttributeConditionLine: React.FC<Props> = ({
   condition,
   lineNumber,
   translate,
@@ -51,12 +55,9 @@ const TextAttributeConditionLine: React.FC<ConditionLineProps> = ({
   currentCatalogLocale,
 }) => {
   const { register } = useFormContext();
-  const textAttributeCondition = condition as TextAttributeCondition;
-  const [operator, setOperator] = React.useState<Operator>(
-    textAttributeCondition.operator
-  );
+  const [operator, setOperator] = React.useState<Operator>(condition.operator);
   const [scopeCode, setScopeCode] = React.useState<string | undefined>(
-    textAttributeCondition.scope
+    condition.scope
   );
 
   const getScopeLabel = (scope: Scope): string => {
@@ -64,7 +65,7 @@ const TextAttributeConditionLine: React.FC<ConditionLineProps> = ({
   };
 
   const computeLocales = (): Locale[] => {
-    return !textAttributeCondition.attribute.scopable
+    return !condition.attribute.scopable
       ? locales
       : scopeCode
       ? scopes[scopeCode].locales
@@ -82,8 +83,8 @@ const TextAttributeConditionLine: React.FC<ConditionLineProps> = ({
   return (
     <div>
       <FieldColumn className={'AknGrid-bodyCell--highlight'}>
-        {textAttributeCondition.attribute.labels[currentCatalogLocale] ||
-          '[' + textAttributeCondition.attribute.code + ']'}
+        {condition.attribute.labels[currentCatalogLocale] ||
+          '[' + condition.attribute.code + ']'}
         <input
           type='hidden'
           name={`content.conditions[${lineNumber}].field`}
@@ -122,7 +123,7 @@ const TextAttributeConditionLine: React.FC<ConditionLineProps> = ({
         )}
       </ValueColumn>
       <ScopeColumn>
-        {textAttributeCondition.attribute.scopable && (
+        {condition.attribute.scopable && (
           <select
             ref={register}
             data-testid={`edit-rules-input-${lineNumber}-scope`}
@@ -141,7 +142,7 @@ const TextAttributeConditionLine: React.FC<ConditionLineProps> = ({
         )}
       </ScopeColumn>
       <LocaleColumn>
-        {textAttributeCondition.attribute.localizable && (
+        {condition.attribute.localizable && (
           <select
             ref={register}
             data-testid={`edit-rules-input-${lineNumber}-locale`}

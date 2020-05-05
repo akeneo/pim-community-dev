@@ -3,7 +3,7 @@ import { render } from '../../../../test-utils';
 import { Operator } from '../../../../src/models/Operator';
 import { Router } from '../../../../src/dependenciesTools';
 import { FamilyCondition } from '../../../../src/models/FamilyCondition';
-import { FamilyConditionLine } from '../../../../src/pages/EditRules/FamilyConditionLine';
+import { FamilyConditionLine } from '../../../../src/pages/EditRules/components/conditions/FamilyConditionLine';
 import userEvent from '@testing-library/user-event';
 
 const condition: FamilyCondition = {
