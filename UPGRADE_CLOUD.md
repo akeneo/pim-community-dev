@@ -4,9 +4,7 @@ MySQL chart selector were changed, from `namespace-mysql-server-id` to `mysql-id
 Before applying the upgrade, set the *existing* PersistentDisk in MySQL configuration.
 
 ```bash
-PVC=$(kubectl get pvc pvc-data-`echo ${PWD##*/}`-mysql-server-0 -n `echo ${PWD##*/}` -o yaml | yq read - 'spec.volumeName')
-PD=$(kubectl get pv ${PVC} -n `echo ${PWD##*/}` -o yaml | yq read - 'spec.gcePersistentDisk.pdName')
-yq write -i values.yaml "mysql.common.persistentDisks[+]" "${PD}"
+tag_to_release=$(git ls-remote --tags --sort="version:refname" git@github.com:akeneo/pim-enterprise-dev | grep -oE 'v?[0-9]{14}$' | sort -r | head -n 1)
 
 terraform apply
 ```
