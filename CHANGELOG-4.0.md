@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.22 (2020-05-05)
+
 ## Bug fixes
 
 - PIM-9224: Fix versioning refresh command
