@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- Fix typescript compilation error inside the DataQualityInsights context
+
 # 4.0.21 (2020-04-29)
 
 ## Bug fixes
