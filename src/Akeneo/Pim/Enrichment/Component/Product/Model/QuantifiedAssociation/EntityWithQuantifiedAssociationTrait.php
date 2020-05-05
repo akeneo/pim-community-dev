@@ -99,8 +99,6 @@ trait EntityWithQuantifiedAssociationTrait
         IdMapping $mappedProductModelIdentifiers
     ): void {
         if (null === $this->quantifiedAssociations) {
-            $this->rawQuantifiedAssociations = [];
-
             return;
         }
 
