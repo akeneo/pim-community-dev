@@ -8,18 +8,40 @@ type Select2Event = {
   val: any;
 } & JQuery.Event;
 
+type ajaxResults = {
+  more: boolean;
+  results: option[];
+};
+
+type InitSelectionCallback = (arg: option[]) => void;
+
 type Props = {
   allowClear?: boolean;
   containerCssClass?: string;
-  data: option[];
+  data?: option[];
   dropdownCssClass?: string;
   formatResult?: (item: { id: string }) => string;
   hiddenLabel?: boolean;
   id: string;
   label: string;
-  onChange: (event: Select2Event) => void;
+  onChange: (value: string | string[]) => void;
   placeholder?: string;
-  value: string;
+  value: string | string[];
+  multiple?: boolean;
+  ajax?: {
+    url: string;
+    quietMillis?: number;
+    cache?: boolean;
+    data: (
+      term: string,
+      page: number
+    ) => {
+      search: string;
+      options?: any;
+    };
+    results: (values: any) => ajaxResults;
+  };
+  initSelection?: (element: any, callback: InitSelectionCallback) => void;
 };
 
 const Select2Wrapper: React.FC<Props> = ({
@@ -34,6 +56,9 @@ const Select2Wrapper: React.FC<Props> = ({
   onChange,
   placeholder,
   value,
+  multiple = false,
+  ajax,
+  initSelection,
 }) => {
   const select2Ref = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -49,24 +74,17 @@ const Select2Wrapper: React.FC<Props> = ({
       dropdownCssClass,
       formatResult,
       placeholder,
+      multiple,
+      ajax,
+      initSelection,
     });
-    $select.on('change', (event: Select2Event) => onChange(event));
+    $select.on('change', (event: Select2Event) => onChange(event.val));
     return () => {
       $select.off('change');
       $select.select2('destroy');
       $select.select2('container').remove();
     };
-  }, [
-    allowClear,
-    containerCssClass,
-    data,
-    dropdownCssClass,
-    formatResult,
-    onChange,
-    placeholder,
-    select2Ref,
-    value,
-  ]);
+  }, [select2Ref]);
   return (
     <>
       <Label label={label} hiddenLabel={hiddenLabel} htmlFor={id} />
@@ -75,4 +93,11 @@ const Select2Wrapper: React.FC<Props> = ({
   );
 };
 
-export { Select2Wrapper };
+export {
+  Select2Wrapper,
+  Select2Event,
+  Props as Select2Props,
+  option,
+  InitSelectionCallback,
+  ajaxResults,
+};

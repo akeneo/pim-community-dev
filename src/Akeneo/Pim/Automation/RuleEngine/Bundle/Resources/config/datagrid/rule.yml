@@ -32,6 +32,10 @@ datagrid:
                 type: twig
                 template: AkeneoPimRuleEngineBundle:Rule:_impacted_product_count.html.twig
                 frontend_type: html
+            tags:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.tags.label
+                frontend_type: tags
+                data_name: content
         properties:
             id: ~
             execute_link:

@@ -83,6 +83,7 @@ const EditRulesContent: React.FC<Props> = ({
             translate={translate}
             scopes={scopes}
             currentCatalogLocale={currentCatalogLocale}
+            router={router}
           />
         </FormContext>
       </Content>

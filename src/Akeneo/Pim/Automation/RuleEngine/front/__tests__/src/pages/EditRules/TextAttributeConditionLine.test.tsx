@@ -5,6 +5,7 @@ import { TextAttributeCondition } from '../../../../src/models/TextAttributeCond
 import { Attribute } from '../../../../src/models/Attribute';
 import { Operator } from '../../../../src/models/Operator';
 import { IndexedScopes } from '../../../../src/fetch/ScopeFetcher';
+import { Router } from '../../../../src/dependenciesTools';
 
 const nameAttribute: Attribute = {
   code: 'name',
@@ -85,18 +86,32 @@ const scopes: IndexedScopes = {
 };
 
 const translate = jest.fn((key: string) => key);
+const router: Router = {
+  'generate': jest.fn(),
+  'redirect': jest.fn(),
+};
+
+jest.mock('react-hook-form', () => {
+  return {
+    useFormContext: () => {
+      return {
+        register: jest.fn(),
+      };
+    },
+  };
+});
 
 describe('TextAttributeConditionLine', () => {
   it('should display the text attribute condition', async () => {
     const { findByText, findByTestId } = render(
       <TextAttributeConditionLine
-        register={jest.fn()}
         condition={condition}
         lineNumber={1}
         translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
+        router={router}
       />,
       { legacy: true }
     );

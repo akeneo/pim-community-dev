@@ -1,49 +1,70 @@
-// src/Akeneo/Pim/Enrichment/Component/Product/Query/Filter/Operators.php
-import { FallbackConditionLine } from '../pages/EditRules/FallbackConditionLine';
 import React from 'react';
 import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
+import { Operator } from './Operator';
+import { FamilyConditionLine } from '../pages/EditRules/FamilyConditionLine';
 import { ConditionFactoryType } from './Condition';
+import {
+  getFamiliesByIdentifiers,
+  IndexedFamilies,
+} from '../fetch/FamilyFetcher';
+import { Router } from '../dependenciesTools';
 
-enum FamilyOperator {
-  IS_EMPTY = 'EMPTY',
-  IS_NOT_EMPTY = 'NOT EMPTY',
-  IN_LIST = 'IN',
-  NOT_IN_LIST = 'NOT IN',
-}
+const FamilyOperators = [
+  Operator.IS_EMPTY,
+  Operator.IS_NOT_EMPTY,
+  Operator.IN_LIST,
+  Operator.NOT_IN_LIST,
+];
 
 type FamilyCondition = {
   module: React.FC<ConditionLineProps>;
-  operator: FamilyOperator;
-  familyCodes: string[];
+  field: string;
+  operator: Operator;
+  value: string[];
+  families: IndexedFamilies;
+};
+
+const operatorIsValid = (operator: any): boolean => {
+  return (
+    typeof operator === 'string' &&
+    FamilyOperators.includes(operator as Operator)
+  );
+};
+
+const jsonValueIsValid = (value: any): boolean => {
+  return typeof value === 'undefined' || value === null || Array.isArray(value);
+};
+
+const familyConditionPredicate = (json: any): boolean => {
+  return (
+    json.field === 'family' &&
+    operatorIsValid(json.operator) &&
+    jsonValueIsValid(json.value)
+  );
 };
 
 const createFamilyCondition: ConditionFactoryType = async (
-  json: any
+  json: any,
+  router: Router
 ): Promise<FamilyCondition | null> => {
-  // TODO Remove this line when we implement family condition.
-  return null;
-
-  if (json.field !== 'family') {
-    return null;
-  }
-  if (
-    ![
-      FamilyOperator.IS_EMPTY,
-      FamilyOperator.IS_NOT_EMPTY,
-      FamilyOperator.IN_LIST,
-      FamilyOperator.NOT_IN_LIST,
-    ].includes(json.operator)
-  ) {
+  if (!familyConditionPredicate(json)) {
     return null;
   }
 
-  return new Promise<FamilyCondition>(() => {
-    return {
-      module: FallbackConditionLine,
-      operator: json.operator,
-      familyCodes: json.value,
-    };
-  });
+  const families = json.value
+    ? await getFamiliesByIdentifiers(json.value, router)
+    : {};
+  if (Object.values(families).length !== (json.value || []).length) {
+    return null;
+  }
+
+  return {
+    module: FamilyConditionLine,
+    field: 'family',
+    operator: json.operator,
+    value: json.value,
+    families,
+  };
 };
 
-export { FamilyCondition, createFamilyCondition };
+export { FamilyCondition, createFamilyCondition, FamilyOperators };
