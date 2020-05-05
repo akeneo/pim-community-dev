@@ -109,4 +109,9 @@ trait EntityWithQuantifiedAssociationTrait
             $mappedProductModelIdentifiers
         );
     }
+
+    public function normalize(): array
+    {
+        return $this->quantifiedAssociations->normalize();
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use PhpSpec\ObjectBehavior;
@@ -15,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Webmozart\Assert\Assert;
 
 class ProductModelSpec extends ObjectBehavior
 {
@@ -389,5 +392,146 @@ class ProductModelSpec extends ObjectBehavior
     {
         $this->setRawValues([]);
         $this->getRawValues()->shouldReturn([]);
+    }
+
+    // Quantified associations
+    function it_hydrates_quantified_associations()
+    {
+        $idMapping = $this->idMapping();
+        $this->rawQuantifiedAssociations = [
+            'PACK' => [
+                'products'       => [
+                    ['id' => 1, 'quantity' => 1],
+                    ['id' => 2, 'quantity' => 2]
+                ],
+                'product_models' => [
+                    ['id' => 1, 'quantity' => 1],
+                    ['id' => 2, 'quantity' => 2]
+                ],
+            ]
+        ];
+        $this->hydrateQuantifiedAssociations($idMapping, $idMapping);
+        $this->normalize()->shouldReturn([
+            'PACK' => [
+                'products'       => [
+                    ['identifier' => 'entity_1', 'quantity' => 1],
+                    ['identifier' => 'entity_2', 'quantity' => 2]
+                ],
+                'product_models' => [
+                    ['identifier' => 'entity_1', 'quantity' => 1],
+                    ['identifier' => 'entity_2', 'quantity' => 2]
+                ],
+            ]
+        ]);
+    }
+
+    function it_saves_a_quantified_associations()
+    {
+        $idMapping = $this->idMapping();
+        $this->rawQuantifiedAssociations = [
+            'PACK' => [
+                'products'       => [
+                    ['id' => 1, 'quantity' => 1],
+                    ['id' => 2, 'quantity' => 2]
+                ],
+                'product_models' => [
+                    ['id' => 1, 'quantity' => 1],
+                    ['id' => 2, 'quantity' => 2]
+                ],
+            ]
+        ];
+        $this->hydrateQuantifiedAssociations($idMapping, $idMapping);
+        $this->normalize()->shouldReturn([
+            'PACK' => [
+                'products'       => [
+                    ['identifier' => 'entity_1', 'quantity' => 1],
+                    ['identifier' => 'entity_2', 'quantity' => 2]
+                ],
+                'product_models' => [
+                    ['identifier' => 'entity_1', 'quantity' => 1],
+                    ['identifier' => 'entity_2', 'quantity' => 2]
+                ],
+            ]
+        ]);
+    }
+
+    function it_updates_the_raw_quantified_associations()
+    {
+        $idMapping = $this->idMapping();
+        $this->rawQuantifiedAssociations = [];
+        $this->quantifiedAssociations = QuantifiedAssociations::createWithAssociationsAndMapping(
+            [
+                'PACK' => [
+                    'products'       => [
+                        ['identifier' => 'entity_1', 'quantity' => 1],
+                        ['identifier' => 'entity_2', 'quantity' => 2]
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'entity_1', 'quantity' => 1],
+                        ['identifier' => 'entity_2', 'quantity' => 2]
+                    ],
+                ]
+            ],
+            $idMapping,
+            $idMapping
+        );
+        $this->hydrateQuantifiedAssociations($idMapping, $idMapping);
+        $this->normalize()->shouldReturn([
+            'PACK' => [
+                'products'       => [
+                    ['identifier' => 'entity_1', 'quantity' => 1],
+                    ['identifier' => 'entity_2', 'quantity' => 2]
+                ],
+                'product_models' => [
+                    ['identifier' => 'entity_1', 'quantity' => 1],
+                    ['identifier' => 'entity_2', 'quantity' => 2]
+                ],
+            ]
+        ]);
+    }
+
+    // Product quantified associations
+    function it_returns_an_empty_list_of_quantified_association_product_ids_if_the_raw_quantified_associations_have_not_been_hydrated()
+    {
+        $this->getQuantifiedAssociationsProductIds()->shouldReturn([]);
+    }
+
+    function it_returns_an_empty_list_of_quantified_association_product_identifiers_if_the_raw_quantified_associations_have_not_been_hydrated()
+    {
+        $this->rawQuantifiedAssociations = $this->someRawQuantifiedAssociations();
+        $this->getQuantifiedAssociationsProductIdentifiers()->shouldReturn([]);
+    }
+
+    // Product model quantified associations
+    function it_returns_an_empty_list_of_quantified_association_product_model_ids_if_the_raw_quantified_associations_have_not_been_hydrated()
+    {
+        $this->getQuantifiedAssociationsProductModelIds()->shouldReturn([]);
+    }
+
+    function it_returns_an_empty_list_of_quantified_association_product_model_codes_if_the_raw_quantified_associations_have_not_been_hydrated()
+    {
+        $this->rawQuantifiedAssociations = $this->someRawQuantifiedAssociations();
+        $this->getQuantifiedAssociationsProductModelCodes()->shouldReturn([]);
+    }
+
+    private function someRawQuantifiedAssociations(): array
+    {
+        return [
+            'PACK' => [
+                'products'       => [
+                    ['id' => 1, 'quantity' => 1],
+                    ['id' => 2, 'quantity' => 2]
+                ],
+                'product_models' => [
+                    ['id' => 1, 'quantity' => 1],
+                    ['id' => 2, 'quantity' => 2]
+                ],
+            ]
+        ];
+    }
+
+    private function idMapping(): IdMapping
+    {
+        return IdMapping::createFromMapping([1 => 'entity_1', 2 => 'entity_2']);
     }
 }

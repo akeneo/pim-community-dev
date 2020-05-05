@@ -115,4 +115,23 @@ class QuantifiedAssociations
 
         return $result;
     }
+
+    public function normalize(): array
+    {
+        $result = [];
+        foreach ($this->quantifiedAssociations as $associationType => $associations) {
+
+            /** @var QuantifiedLink $quantifiedLink */
+            foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
+                $result[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink->normalize();
+            }
+
+            /** @var QuantifiedLink $quantifiedLink */
+            foreach ($associations[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
+                $result[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink->normalize();
+            }
+        }
+
+        return $result;
+    }
 }
