@@ -6,8 +6,7 @@
 ### 1. Get the latest tag to deploy
 
 ```bash
-git clone git@github.com:akeneo/pim-enterprise-dev.git && cd pim-enterprise-dev
-tag_to_release=$(git fetch origin &> /dev/null && git tag --list | grep -E '^v?[0-9]+$' | sort -r | head -n 1)
+tag_to_release=$(git ls-remote --tags --sort="version:refname" git@github.com:akeneo/pim-enterprise-dev | grep -oE 'v?[0-9]{14}$' | sort -r | head -n 1)
 ```
 
 ### 2. Create `main.tf`
@@ -15,31 +14,33 @@ tag_to_release=$(git fetch origin &> /dev/null && git tag --list | grep -E '^v?[
 ```hcl
 terraform {
   backend "gcs" {
-    bucket  = "akecld-terraform"
-    prefix  = "saas/akecld-saas-dev/europe-west3-a/srnt-${INSTANCE_NAME}/"
+    bucket = "akecld-terraform"
+    prefix = "saas/akecld-saas-dev/europe-west3-a/srnt-${INSTANCE_NAME}/"
   }
 }
 
 module "pim" {
-    source = "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform?ref=${tag_to_release}"
-    google_project_id                 = "akecld-saas-dev"
-    google_project_zone                 = "europe-west3-a"
-    instance_name                       = "${INSTANCE_NAME}"
-    dns_external                        = "${INSTANCE_NAME}.dev.cloud.akeneo.com."
-    dns_internal                        = "europe-west3-a-akecld-saas-dev.dev.cloud.akeneo.com."
-    dns_zone                            = "dev-cloud-akeneo-com"
-    google_storage_location             = "eu"
-    papo_project_code                   = "NOT_ON_PAPO_srnt-${INSTANCE_NAME}"
-    force_destroy_storage               = true
-    pim_version                         = "master"
+  source = "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform?ref=${tag_to_release}"
+
+  pim_version             = "${tag_to_release}"
+  google_project_id       = "akecld-saas-dev"
+  google_project_zone     = "europe-west3-a"
+  instance_name           = "${INSTANCE_NAME}"
+  dns_external            = "${INSTANCE_NAME}.dev.cloud.akeneo.com."
+  dns_internal            = "europe-west3-a-akecld-saas-dev.dev.cloud.akeneo.com."
+  dns_zone                = "dev-cloud-akeneo-com"
+  google_storage_location = "EU"
+  papo_project_code       = "NOT_ON_PAPO_srnt-${INSTANCE_NAME}"
+  force_destroy_storage   = true
 }
 
 module "pim-monitoring" {
-    source = "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform/monitoring?ref=${tag_to_release}"
-    google_project_id                 = "akecld-saas-dev"
-    instance_name                       = "${INSTANCE_NAME}"
-    dns_external                        = "${INSTANCE_NAME}.dev.cloud.akeneo.com."
-    pager_duty_service_key              = "d55f85282a8e4e16b2c822249ad440bd"
+  source = "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform/monitoring?ref=${tag_to_release}"
+
+  google_project_id      = "akecld-saas-dev"
+  instance_name          = "${INSTANCE_NAME}"
+  dns_external           = "${INSTANCE_NAME}.dev.cloud.akeneo.com."
+  pager_duty_service_key = "d55f85282a8e4e16b2c822249ad440bd"
 }
 ```
 
@@ -56,9 +57,6 @@ cat << EOF > values.yaml
 #       weeklyBackups: 0
 #       monthlyBackups: 0
 #       yearlyBackups: 0
-#     export:
-#       enabled: false # No export
-
 pim:
   secret: $(uuidgen)
   defaultAdminUser:
@@ -66,12 +64,11 @@ pim:
     firstName: nil # Fill me
     lastName: nil # Fill me
     email: nil # Fill me
-    password: $(pwgen -sB 22)
+    password: $(pwgen -sB 24)
     uiLocale: en_US # Change me if needs be
-   featureflags:
-	- FLAH_1
-	- FLAG_2
-
+  featureflags:
+  - FLAG_1
+  - FLAG_2
 
 mysql:
   mysql:
@@ -86,7 +83,6 @@ elasticsearch:
   data:
     persistence:
       size: 10Gi
-
 EOF
 ```
 
