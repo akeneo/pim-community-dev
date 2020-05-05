@@ -24,6 +24,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
         rawQuantifiedAssociations:
             type: json
             column: quantified_associations
+            nullable: true
     manyToMany:
         categories:
             targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface

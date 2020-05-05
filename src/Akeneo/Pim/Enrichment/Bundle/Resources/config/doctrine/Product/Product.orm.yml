@@ -27,6 +27,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
         rawQuantifiedAssociations:
             type: json
             column: quantified_associations
+            nullable: true
     manyToOne:
         family:
             targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
