@@ -262,7 +262,11 @@ define(
                                 ),
                                 okCloses: false,
                                 title: __('pim_enrich.entity.product.module.associations.manage', {
-                                    associationType: associationType.labels[UserContext.get('catalogLocale')]
+                                    associationType: i18n.getLabel(
+                                      associationType.labels,
+                                      UserContext.get('catalogLocale'),
+                                      associationType.code
+                                    ),
                                 }),
                                 content: '',
                                 cancelText: ' ',

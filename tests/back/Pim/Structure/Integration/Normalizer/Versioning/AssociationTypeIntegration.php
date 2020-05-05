@@ -18,6 +18,7 @@ class AssociationTypeIntegration extends TestCase
 
         $this->assertSame($flatAssociationType, [
             'code'        => 'X_SELL',
+            'is_two_way' => false,
             'label-en_US' => 'Cross sell',
             'label-fr_FR' => 'Vente croisée',
         ]);
