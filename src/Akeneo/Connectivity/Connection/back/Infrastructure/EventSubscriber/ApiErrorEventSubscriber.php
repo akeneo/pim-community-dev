@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -42,6 +43,11 @@ final class ApiErrorEventSubscriber implements EventSubscriberInterface
 
     public function collectApiError(ExceptionEvent $exceptionEvent): void
     {
+        $exception = $exceptionEvent->getThrowable();
+        if (false === $exception instanceof HttpExceptionInterface) {
+            return;
+        }
+
         // The '_route' property can only be found on the MasterRequest.
         $request = $exceptionEvent->isMasterRequest()
             ? $exceptionEvent->getRequest()
@@ -51,7 +57,7 @@ final class ApiErrorEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->collectApiError->collectFromHttpException($exceptionEvent->getException());
+        $this->collectApiError->collectFromHttpException($exception);
     }
 
     public function flushApiErrors(TerminateEvent $terminateEvent): void
