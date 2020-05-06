@@ -21,7 +21,7 @@ class AssociationTypeIntegration extends TestCase
             'is_two_way' => false,
             'is_quantified' => false,
             'label-en_US' => 'Cross sell',
-            'label-fr_FR' => 'Vente croisée'
+            'label-fr_FR' => 'Vente croisée',
         ]);
     }
 
