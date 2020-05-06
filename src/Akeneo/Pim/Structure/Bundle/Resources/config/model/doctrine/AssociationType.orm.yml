@@ -23,14 +23,14 @@ Akeneo\Pim\Structure\Component\Model\AssociationType:
             gedmo:
                 timestampable:
                     on: update
-        isQuantified:
-            type: boolean
-            column: is_quantified
-            options:
-                default: false
         isTwoWay:
             type: boolean
             column: is_two_way
+            options:
+                default: false
+        isQuantified:
+            type: boolean
+            column: is_quantified
             options:
                 default: false
     oneToMany:
