@@ -43,16 +43,18 @@ const AddConditionButton: React.FC<Props> = ({
 
   let lastDisplayedGroupLabel: string;
   const handleResults = (result: AddConditionResults): ajaxResults => {
-    const firstCurrentGroupLabel = result[0].text;
-    if (firstCurrentGroupLabel === lastDisplayedGroupLabel) {
-      // Prevents to display 2 times the group label. Having an empty text removes the line.
-      result[0].text = '';
-    }
-    lastDisplayedGroupLabel = result[result.length - 1].text;
-
     const fieldCount = result.reduce((previousCount, group) => {
       return previousCount + group.children.length;
     }, 0);
+
+    if (result.length) {
+      const firstCurrentGroupLabel = result[0].text;
+      if (firstCurrentGroupLabel === lastDisplayedGroupLabel) {
+        // Prevents to display 2 times the group label. Having an empty text removes the line.
+        result[0].text = '';
+      }
+      lastDisplayedGroupLabel = result[result.length - 1].text;
+    }
 
     return {
       more: fieldCount >= 20,
