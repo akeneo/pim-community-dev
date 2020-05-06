@@ -8,7 +8,7 @@ import {
   PimConditionLineProps,
 } from '../pages/EditRules/components/conditions/PimConditionLine';
 import React from 'react';
-import { ConditionFactoryType } from './Condition';
+import { ConditionDenormalizer } from "./Condition";
 
 type PimCondition = {
   module: React.FC<PimConditionLineProps>;

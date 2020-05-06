@@ -11,8 +11,8 @@ import {
   checkLocaleIsBoundToScope,
   checkScopeExists,
 } from '../repositories/ScopeRepository';
-import { ConditionFactoryType } from './Condition';
 import { checkLocaleExists } from '../repositories/LocaleRepository';
+import { ConditionDenormalizer, ConditionFactory } from "./Condition";
 
 const TYPE = 'pim_catalog_text';
 

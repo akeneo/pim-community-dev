@@ -4,10 +4,10 @@ import {
   FamilyConditionLine,
   FamilyConditionLineProps,
 } from '../pages/EditRules/components/conditions/FamilyConditionLine';
-import { ConditionFactoryType } from './Condition';
 import { IndexedFamilies } from '../fetch/FamilyFetcher';
 import { Router } from '../dependenciesTools';
 import { getFamiliesByIdentifiers } from '../repositories/FamilyRepository';
+import { ConditionDenormalizer, ConditionFactory } from "./Condition";
 
 const FIELD = 'family';
 
