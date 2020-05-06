@@ -71,10 +71,11 @@ kubectl scale -n ${local.pfid} deploy/pim-web deploy/pim-daemon-default --replic
 helm upgrade --atomic --cleanup-on-fail --wait --install --force --timeout 1202 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
 HELM_STATUS_CODE=$?
 kubectl scale -n ${local.pfid} deploy/pim-web deploy/pim-daemon-default --replicas=2
-if [ $? -eq 0 ]; then
+KUBECTL_SCALE_CODE=$?
+if [ ${KUBECTL_SCALE_CODE} -eq 0 ]; then
  exit ${HELM_STATUS_CODE}
 else
- exit $?
+ exit ${KUBECTL_SCALE_CODE}
 fi
 EOF
   }
