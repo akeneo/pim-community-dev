@@ -8,7 +8,9 @@
 </div>
 <div class="AknFieldContainer-footer">
     <% if (typeof messageOnReadOnly !== 'undefined' && messageOnReadOnly && readOnly) { %>
-        <div> <%- messageOnReadOnly %> </div>
+        <span class="AknFieldContainer-validationWarning">
+            <span class="AknFieldContainer-validationWarningMessage"><%- messageOnReadOnly %></span>
+        </span>
     <% } %>
 
     <% errors.forEach(function(error) { %>
