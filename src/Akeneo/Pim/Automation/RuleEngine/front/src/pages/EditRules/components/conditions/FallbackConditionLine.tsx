@@ -1,20 +1,19 @@
 import React from 'react';
 import { FallbackCondition } from '../../../../models/FallbackCondition';
-import { ConditionLineProps } from '../../ConditionLineProps';
+import { ConditionLineProps } from './ConditionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 
-const FallbackConditionLine: React.FC<ConditionLineProps> = ({
+type FallbackConditionLineProps = ConditionLineProps & {
+  condition: FallbackCondition;
+};
+
+const FallbackConditionLine: React.FC<FallbackConditionLineProps> = ({
   condition,
   lineNumber,
 }) => {
-  const fallBackCondition = condition as FallbackCondition;
+  useValueInitialization(`content.conditions[${lineNumber}]`, condition.json);
 
-  useValueInitialization(
-    `content.conditions[${lineNumber}]`,
-    fallBackCondition.json
-  );
-
-  return <div>{JSON.stringify(fallBackCondition.json)}</div>;
+  return <div>{JSON.stringify(condition.json)}</div>;
 };
 
-export { FallbackConditionLine };
+export { FallbackConditionLine, FallbackConditionLineProps };

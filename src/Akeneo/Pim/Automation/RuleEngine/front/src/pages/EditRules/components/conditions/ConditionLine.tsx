@@ -4,7 +4,10 @@ import { AlertDialog } from '../../../../components/AlertDialog/AlertDialog';
 import { PimConditionLine } from './PimConditionLine';
 import { FallbackConditionLine } from './FallbackConditionLine';
 import styled from 'styled-components';
-import { ConditionLineProps } from '../../ConditionLineProps';
+import { Condition, Locale } from '../../../../models';
+import { Router, Translate } from '../../../../dependenciesTools';
+import { IndexedScopes } from '../../../../fetch/ScopeFetcher';
+import { ConditionLineProps } from './ConditionLineProps';
 
 const DeleteButton = styled(DialogDisclosure)`
   border: none;
@@ -12,9 +15,18 @@ const DeleteButton = styled(DialogDisclosure)`
   cursor: pointer;
 `;
 
-const ConditionLine: React.FC<ConditionLineProps & {
+type Props = {
+  lineNumber: number;
+  translate: Translate;
+  locales: Locale[];
+  scopes: IndexedScopes;
+  currentCatalogLocale: string;
+  router: Router;
   deleteCondition: (lineNumber: number) => void;
-}> = ({
+  condition: Condition;
+};
+
+const ConditionLine: React.FC<Props> = ({
   translate,
   condition,
   lineNumber,
@@ -26,7 +38,9 @@ const ConditionLine: React.FC<ConditionLineProps & {
 }) => {
   const dialog = useDialogState();
 
-  const Line = condition.module;
+  const Line = condition.module as React.FC<
+    ConditionLineProps & { condition: Condition }
+  >;
   const isFallback =
     condition.module === PimConditionLine ||
     condition.module === FallbackConditionLine;

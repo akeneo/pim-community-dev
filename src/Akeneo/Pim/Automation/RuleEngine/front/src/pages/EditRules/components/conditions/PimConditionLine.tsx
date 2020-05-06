@@ -1,28 +1,30 @@
 import React, { ReactElement } from 'react';
 import { PimCondition } from '../../../../models/PimCondition';
 import { Flag } from '../../../../components/Flag';
-import { ConditionLineProps } from '../../ConditionLineProps';
+import { ConditionLineProps } from './ConditionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 
-const PimConditionLine: React.FC<ConditionLineProps> = ({
+type PimConditionLineProps = ConditionLineProps & {
+  condition: PimCondition;
+};
+
+const PimConditionLine: React.FC<PimConditionLineProps> = ({
   translate,
   condition,
   lineNumber,
 }) => {
-  const pimCondition = condition as PimCondition;
-
   const values: { [key: string]: any } = {
-    field: pimCondition.field,
-    operator: pimCondition.operator,
+    field: condition.field,
+    operator: condition.operator,
   };
-  if (pimCondition.locale) {
-    values.locale = pimCondition.locale;
+  if (condition.locale) {
+    values.locale = condition.locale;
   }
-  if (pimCondition.scope) {
-    values.scope = pimCondition.scope;
+  if (condition.scope) {
+    values.scope = condition.scope;
   }
-  if (pimCondition.value) {
-    values.value = pimCondition.value;
+  if (condition.value) {
+    values.value = condition.value;
   }
   useValueInitialization(`content.conditions[${lineNumber}]`, values);
 
@@ -83,27 +85,25 @@ const PimConditionLine: React.FC<ConditionLineProps> = ({
 
   return (
     <div className='AknRule'>
-      <span className='AknRule-attribute'>{pimCondition.field}</span>
+      <span className='AknRule-attribute'>{condition.field}</span>
       {` ${translate(
-        `pimee_catalog_rule.form.edit.conditions.operators.${pimCondition.operator}`
+        `pimee_catalog_rule.form.edit.conditions.operators.${condition.operator}`
       )} `}
-      <span className='AknRule-attribute'>
-        {displayValue(pimCondition.value)}
-      </span>
-      {pimCondition.scope || pimCondition.locale ? (
-        pimCondition.scope && pimCondition.locale ? (
+      <span className='AknRule-attribute'>{displayValue(condition.value)}</span>
+      {condition.scope || condition.locale ? (
+        condition.scope && condition.locale ? (
           <span className='AknRule-attribute'>
             {' [ '}
-            {displayLocale(pimCondition.locale)}
+            {displayLocale(condition.locale)}
             {' | '}
-            {pimCondition.scope}
+            {condition.scope}
             {' ] '}
           </span>
         ) : (
           <span className='AknRule-attribute'>
             {' [ '}
-            {displayLocale(pimCondition.locale)}
-            {pimCondition.scope}
+            {displayLocale(condition.locale)}
+            {condition.scope}
             {' ] '}
           </span>
         )
@@ -114,4 +114,4 @@ const PimConditionLine: React.FC<ConditionLineProps> = ({
   );
 };
 
-export { PimConditionLine };
+export { PimConditionLine, PimConditionLineProps };

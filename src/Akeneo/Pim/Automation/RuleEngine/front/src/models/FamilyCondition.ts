@@ -1,7 +1,9 @@
 import React from 'react';
-import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
 import { Operator } from './Operator';
-import { FamilyConditionLine } from '../pages/EditRules/FamilyConditionLine';
+import {
+  FamilyConditionLine,
+  FamilyConditionLineProps,
+} from '../pages/EditRules/components/conditions/FamilyConditionLine';
 import { ConditionFactoryType } from './Condition';
 import {
   getFamiliesByIdentifiers,
@@ -17,7 +19,7 @@ const FamilyOperators = [
 ];
 
 type FamilyCondition = {
-  module: React.FC<ConditionLineProps>;
+  module: React.FC<FamilyConditionLineProps>;
   field: string;
   operator: Operator;
   value: string[];
