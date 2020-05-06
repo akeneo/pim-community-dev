@@ -2,14 +2,16 @@ import React from 'react';
 import { Attribute, validateLocalizableScopableAttribute } from './Attribute';
 import { Router } from '../dependenciesTools';
 import { getAttributeByIdentifier } from '../fetch/AttributeFetcher';
-import { TextAttributeConditionLine } from '../pages/EditRules/components/conditions/TextAttributeConditionLine';
+import {
+  TextAttributeConditionLine,
+  TextAttributeConditionLineProps
+} from '../pages/EditRules/components/conditions/TextAttributeConditionLine';
 import { Operator } from './Operator';
 import { checkLocaleExists } from '../fetch/LocaleFetcher';
 import {
   checkLocaleIsBoundToScope,
   checkScopeExists,
 } from '../fetch/ScopeFetcher';
-import { ConditionLineProps } from '../pages/EditRules/components/conditions/ConditionLineProps';
 import { ConditionFactoryType } from './Condition';
 
 const TextAttributeOperators = [
@@ -24,7 +26,7 @@ const TextAttributeOperators = [
 
 type TextAttributeCondition = {
   scope?: string;
-  module: React.FC<ConditionLineProps>;
+  module: React.FC<TextAttributeConditionLineProps>;
   attribute: Attribute;
   field: string;
   operator: Operator;

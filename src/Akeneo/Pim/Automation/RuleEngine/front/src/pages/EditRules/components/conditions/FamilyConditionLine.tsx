@@ -29,11 +29,11 @@ const ValueColumn = styled.span`
   padding: 0 2px;
 `;
 
-type Props = ConditionLineProps & {
+type FamilyConditionLineProps = ConditionLineProps & {
   condition: FamilyCondition;
 };
 
-const FamilyConditionLine: React.FC<Props> = ({
+const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
   router,
   lineNumber,
   translate,
@@ -111,4 +111,4 @@ const FamilyConditionLine: React.FC<Props> = ({
   );
 };
 
-export { FamilyConditionLine };
+export { FamilyConditionLine, FamilyConditionLineProps };

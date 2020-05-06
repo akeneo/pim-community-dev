@@ -42,11 +42,11 @@ const ScopeColumn = styled.span`
   padding: 0 2px;
 `;
 
-type Props = ConditionLineProps & {
+type TextAttributeConditionLineProps = ConditionLineProps & {
   condition: TextAttributeCondition;
 };
 
-const TextAttributeConditionLine: React.FC<Props> = ({
+const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   condition,
   lineNumber,
   translate,
@@ -161,4 +161,4 @@ const TextAttributeConditionLine: React.FC<Props> = ({
   );
 };
 
-export { TextAttributeConditionLine };
+export { TextAttributeConditionLine, TextAttributeConditionLineProps };

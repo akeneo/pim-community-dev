@@ -4,11 +4,11 @@ import { Flag } from '../../../../components/Flag';
 import { ConditionLineProps } from './ConditionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 
-type Props = ConditionLineProps & {
+type PimConditionLineProps = ConditionLineProps & {
   condition: PimCondition;
 };
 
-const PimConditionLine: React.FC<Props> = ({
+const PimConditionLine: React.FC<PimConditionLineProps> = ({
   translate,
   condition,
   lineNumber,
@@ -114,4 +114,4 @@ const PimConditionLine: React.FC<Props> = ({
   );
 };
 
-export { PimConditionLine };
+export { PimConditionLine, PimConditionLineProps };
