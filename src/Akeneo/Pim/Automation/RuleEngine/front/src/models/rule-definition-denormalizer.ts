@@ -7,6 +7,7 @@ import { Action } from './Action';
 import { createPimCondition } from './PimCondition';
 import { createTextAttributeCondition } from './TextAttributeCondition';
 import { Router } from '../dependenciesTools';
+import { getAttributesByIdentifiers } from '../fetch/AttributeFetcher';
 
 function denormalizeAction(jsonAction: any): Action {
   const factories: ((json: any) => Action | null)[] = [];
@@ -40,6 +41,33 @@ async function denormalizeCondition(
   return createFallbackCondition(jsonCondition);
 }
 
+const extractFieldIdentifiers = (json: any): string[] => {
+  if (
+    'undefined' === typeof json.content ||
+    'undefined' === typeof json.content.conditions ||
+    !Array.isArray(json.content.conditions)
+  ) {
+    return [];
+  }
+
+  const indexedFieldIdentifiers: { [identifier: string]: boolean } = {};
+  json.content.conditions.forEach((condition: any) => {
+    if ('string' === typeof condition.field) {
+      indexedFieldIdentifiers[condition.field] = true;
+    }
+  });
+
+  return Object.keys(indexedFieldIdentifiers);
+};
+
+const prepareCacheAttributes = async (
+  json: any,
+  router: Router
+): Promise<void> => {
+  const fieldIdentifiers = extractFieldIdentifiers(json);
+  await getAttributesByIdentifiers(fieldIdentifiers, router);
+};
+
 export const denormalize = async function(
   json: any,
   router: Router
@@ -49,14 +77,15 @@ export const denormalize = async function(
   const priority = json.priority;
   let actions: FallbackAction[] = [];
   let conditions: Condition[] = [];
+
+  await prepareCacheAttributes(json, router);
+
   if (Array.isArray(json.content.actions)) {
     actions = json.content.actions.map((jsonAction: any) => {
       return denormalizeAction(jsonAction);
     });
   }
 
-  // TODO We should call "AttributeFetcher.getAttributesFromIdentifiers()" with every .field property of conditions
-  //      to do less backend calls here.
   if (Array.isArray(json.content.conditions)) {
     conditions = (await Promise.all(
       json.content.conditions.map(async (jsonCondition: any) => {
