@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement;
 
+use Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\ExtractErrorsFromHttpExceptionInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
@@ -16,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExtractErrorsFromHttpException
+class ExtractErrorsFromHttpException implements ExtractErrorsFromHttpExceptionInterface
 {
     /** @var Serializer */
     private $serializer;

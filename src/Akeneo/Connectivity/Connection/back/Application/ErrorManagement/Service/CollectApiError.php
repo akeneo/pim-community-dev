@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement;
+namespace Akeneo\Connectivity\Connection\Application\ErrorManagement\Service;
 
+use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepository;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
@@ -19,18 +19,18 @@ class CollectApiError
     /** @var BusinessErrorRepository */
     private $repository;
 
-    /** @var ConnectionContext */
+    /** @var ConnectionContextInterface */
     private $connectionContext;
 
-    /** @var ExtractErrorsFromHttpException */
+    /** @var ExtractErrorsFromHttpExceptionInterface */
     private $extractErrorsFromHttpException;
 
     private $errors = [];
 
     public function __construct(
-        ConnectionContext $connectionContext,
+        ConnectionContextInterface $connectionContext,
         BusinessErrorRepository $repository,
-        ExtractErrorsFromHttpException $extractErrorsFromHttpException
+        ExtractErrorsFromHttpExceptionInterface $extractErrorsFromHttpException
     ) {
         $this->repository = $repository;
         $this->connectionContext = $connectionContext;
