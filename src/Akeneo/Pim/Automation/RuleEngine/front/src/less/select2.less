@@ -37,7 +37,28 @@
 }
 
 .select2-drop.select2-with-searchbox {
-  min-width: 300px;
+  min-width: 450px;
   margin-top: -43px;
   border-top: 1px solid #ccd1d8;
+
+  .select2-results {
+    min-height: 50vh;
+
+    li.select2-result-with-children > .select2-result-label {
+      line-height: 36px;
+      padding-left: 0;
+      font-weight: normal;
+      text-transform: uppercase;
+      color: @AknGrey;
+      cursor: default;
+    }
+
+    .select2-result-sub {
+      line-height: 36px;
+
+      & > li > .select2-result-label {
+        padding-left: 0;
+      }
+    }
+  }
 }

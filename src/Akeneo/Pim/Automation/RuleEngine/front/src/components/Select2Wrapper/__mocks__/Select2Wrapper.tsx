@@ -17,7 +17,7 @@ const Select2Wrapper: typeof BaseWrapper = ({
     if (onChange) {
       onChange(event.target.value);
     }
-  }
+  };
 
   let computedData: option[] = [];
   if (data) {

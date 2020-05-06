@@ -29,7 +29,7 @@ const AddConditionButton: React.FC<Props> = ({
   handleAddCondition,
   translate,
 }) => {
-  const [ closeTick, setCloseTick ] = React.useState<boolean>(true);
+  const [closeTick, setCloseTick] = React.useState<boolean>(true);
 
   const dataProvider = (term: string, page: number) => {
     return {
@@ -41,14 +41,14 @@ const AddConditionButton: React.FC<Props> = ({
     };
   };
 
-  let lastDisplayedGroupId: string;
+  let lastDisplayedGroupLabel: string;
   const handleResults = (result: AddConditionResults): ajaxResults => {
-    const firstCurrentGroupId = result[0].id;
-    if (firstCurrentGroupId === lastDisplayedGroupId) {
+    const firstCurrentGroupLabel = result[0].text;
+    if (firstCurrentGroupLabel === lastDisplayedGroupLabel) {
       // Prevents to display 2 times the group label. Having an empty text removes the line.
       result[0].text = '';
     }
-    lastDisplayedGroupId = result[result.length - 1].id;
+    lastDisplayedGroupLabel = result[result.length - 1].text;
 
     const fieldCount = result.reduce((previousCount, group) => {
       return previousCount + group.children.length;
@@ -56,7 +56,9 @@ const AddConditionButton: React.FC<Props> = ({
 
     return {
       more: fieldCount >= 20,
-      results: result,
+      results: result.map(group => {
+        return { ...group, id: null };
+      }),
     };
   };
 
@@ -69,8 +71,11 @@ const AddConditionButton: React.FC<Props> = ({
       dropdownCssClass={'add-conditions-dropdown'}
       onSelecting={(event: any) => {
         event.preventDefault();
-        handleAddCondition(event.val);
-        setCloseTick(!closeTick);
+        if (event.val !== null) {
+          // Use has not clicked on a group
+          handleAddCondition(event.val);
+          setCloseTick(!closeTick);
+        }
       }}
       ajax={{
         url: router.generate(
