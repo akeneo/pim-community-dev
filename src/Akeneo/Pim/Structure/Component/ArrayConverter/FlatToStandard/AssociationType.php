@@ -36,7 +36,7 @@ class AssociationType implements ArrayConverterInterface
      *      'label-fr_FR' => 'XSELL',
      *      'label-en_US' => 'Vente croisée',
      *      'is_two_way' => 1,
-     *      'is_quantified' => 0
+     *      'is_quantified' => 0,
      * ]
      *
      * After:
@@ -46,8 +46,8 @@ class AssociationType implements ArrayConverterInterface
      *          'fr_FR' => 'XSELL',
      *          'en_US' => 'Vente croisée',
      *      ],
-     *      'is_two_way' => true
-     *      'is_quantified' => false
+     *      'is_two_way' => true,
+     *      'is_quantified' => false,
      * ]
      */
     public function convert(array $item, array $options = [])
