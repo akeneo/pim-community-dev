@@ -35,7 +35,8 @@ type Props = {
   hiddenLabel?: boolean;
   id: string;
   label: string;
-  onChange: (value: string | string[]) => void;
+  onChange?: (value: string | string[]) => void;
+  onSelecting?: any;
   placeholder?: string;
   value?: number | string | string[];
   multiple?: boolean;
@@ -65,6 +66,7 @@ const Select2Wrapper: React.FC<Props> = ({
   id,
   label,
   onChange,
+  onSelecting,
   placeholder,
   value,
   multiple = false,
@@ -91,7 +93,13 @@ const Select2Wrapper: React.FC<Props> = ({
       initSelection,
     });
 
-    $select.on('change', (event: Select2Event) => onChange(event.val));
+    if (onChange) {
+      $select.on('change', (event: Select2Event) => onChange(event.val));
+    }
+    if (onSelecting) {
+      $select.on('select2-selecting', onSelecting);
+    }
+
     return () => {
       $select.off('change');
       $select.select2('destroy');
@@ -104,8 +112,20 @@ const Select2Wrapper: React.FC<Props> = ({
       return;
     }
     const $select = $(select2Ref.current) as any;
-    $select.on('change', (event: Select2Event) => onChange(event.val));
+    if (onChange) {
+      $select.on('change', (event: Select2Event) => onChange(event.val));
+    }
   }, [onChange]);
+
+  useEffect(() => {
+    if (null === select2Ref.current) {
+      return;
+    }
+    const $select = $(select2Ref.current) as any;
+    if (onSelecting) {
+      $select.on('select2-selecting', onSelecting);
+    }
+  }, [onSelecting]);
 
   return (
     <>

@@ -13,8 +13,11 @@ const Select2Wrapper: typeof BaseWrapper = ({
   value,
   multiple = false,
 }: Select2Props) => {
-  const handleChange = (event: ChangeEvent<HTMLSelectElement>) =>
-    onChange(event.target.value);
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    if (onChange) {
+      onChange(event.target.value);
+    }
+  }
 
   let computedData: option[] = [];
   if (data) {

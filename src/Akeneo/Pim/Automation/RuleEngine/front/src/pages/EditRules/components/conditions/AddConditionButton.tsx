@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import React from 'react';
 import {
   ajaxResults,
@@ -65,7 +66,12 @@ const AddConditionButton: React.FC<Props> = ({
       hiddenLabel={true}
       containerCssClass={'add-conditions-button'}
       dropdownCssClass={'add-conditions-dropdown'}
-      onChange={handleAddCondition}
+      onSelecting={(event: any) => {
+        event.preventDefault();
+        handleAddCondition(event.val);
+        const target = $(event.target) as any;
+        target.select2('close');
+      }}
       ajax={{
         url: router.generate(
           'pimee_enrich_rule_definition_get_available_condition_fields'
