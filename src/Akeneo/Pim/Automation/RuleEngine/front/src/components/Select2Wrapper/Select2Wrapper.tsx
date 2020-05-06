@@ -54,6 +54,7 @@ type Props = {
     results: (values: any) => ajaxResults;
   };
   initSelection?: (element: any, callback: InitSelectionCallback) => void;
+  closeTick?: boolean;
 };
 
 const Select2Wrapper: React.FC<Props> = ({
@@ -72,6 +73,7 @@ const Select2Wrapper: React.FC<Props> = ({
   multiple = false,
   ajax,
   initSelection,
+  closeTick = false,
 }) => {
   const select2Ref = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -126,6 +128,14 @@ const Select2Wrapper: React.FC<Props> = ({
       $select.on('select2-selecting', onSelecting);
     }
   }, [onSelecting]);
+
+  useEffect(() => {
+    if (null === select2Ref.current) {
+      return;
+    }
+    const $select = $(select2Ref.current) as any;
+    $select.select2('close');
+  }, [closeTick]);
 
   return (
     <>

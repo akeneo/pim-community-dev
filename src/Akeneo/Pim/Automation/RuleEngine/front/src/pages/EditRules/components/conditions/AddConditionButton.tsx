@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import React from 'react';
 import {
   ajaxResults,
@@ -30,6 +29,8 @@ const AddConditionButton: React.FC<Props> = ({
   handleAddCondition,
   translate,
 }) => {
+  const [ closeTick, setCloseTick ] = React.useState<boolean>(true);
+
   const dataProvider = (term: string, page: number) => {
     return {
       search: term,
@@ -69,8 +70,7 @@ const AddConditionButton: React.FC<Props> = ({
       onSelecting={(event: any) => {
         event.preventDefault();
         handleAddCondition(event.val);
-        const target = $(event.target) as any;
-        target.select2('close');
+        setCloseTick(!closeTick);
       }}
       ajax={{
         url: router.generate(
@@ -84,6 +84,7 @@ const AddConditionButton: React.FC<Props> = ({
         },
       }}
       placeholder={translate('pimee_catalog_rule.form.edit.add_conditions')}
+      closeTick={closeTick}
     />
   );
 };
