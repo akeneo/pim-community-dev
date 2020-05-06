@@ -85,7 +85,7 @@ const denormalizeTextAttributeCondition: ConditionDenormalizer = async (
 
 const createTextAttributeCondition: ConditionFactory = async (
   fieldCode: string,
-  router: Router,
+  router: Router
 ): Promise<TextAttributeCondition | null> => {
   const attribute = await getAttributeByIdentifier(fieldCode, router);
   if (null === attribute || attribute.type !== TYPE) {
@@ -97,8 +97,8 @@ const createTextAttributeCondition: ConditionFactory = async (
     attribute,
     field: fieldCode,
     operator: Operator.IS_EMPTY,
-  }
-}
+  };
+};
 
 export {
   TextAttributeOperators,

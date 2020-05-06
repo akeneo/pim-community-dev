@@ -9,6 +9,8 @@ import { IndexedFamilies } from '../fetch/FamilyFetcher';
 import { Router } from '../dependenciesTools';
 import { getFamiliesByIdentifiers } from '../repositories/FamilyRepository';
 
+const FIELD = 'family';
+
 const FamilyOperators = [
   Operator.IS_EMPTY,
   Operator.IS_NOT_EMPTY,
@@ -37,7 +39,7 @@ const jsonValueIsValid = (value: any): boolean => {
 
 const familyConditionPredicate = (json: any): boolean => {
   return (
-    json.field === 'family' &&
+    json.field === FIELD &&
     operatorIsValid(json.operator) &&
     jsonValueIsValid(json.value)
   );
@@ -60,7 +62,7 @@ const denormalizeFamilyCondition: ConditionDenormalizer = async (
 
   return {
     module: FamilyConditionLine,
-    field: 'family',
+    field: FIELD,
     operator: json.operator,
     value: json.value,
     families,
@@ -68,24 +70,24 @@ const denormalizeFamilyCondition: ConditionDenormalizer = async (
 };
 
 const createFamilyCondition: ConditionFactory = async (
-  fieldCode: any,
+  fieldCode: any
 ): Promise<FamilyCondition | null> => {
-  if (fieldCode !== 'family') {
-    return Promise.resolve(null);
+  if (fieldCode !== FIELD) {
+    return Promise.resolve<null>(null);
   }
 
-  return Promise.resolve({
+  return Promise.resolve<FamilyCondition>({
     module: FamilyConditionLine,
-    field: 'family',
+    field: FIELD,
     operator: Operator.IN_LIST,
     value: [],
     families: {},
   });
-}
+};
 
 export {
   FamilyCondition,
   denormalizeFamilyCondition,
   createFamilyCondition,
-  FamilyOperators
+  FamilyOperators,
 };

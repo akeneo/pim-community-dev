@@ -1,25 +1,28 @@
 import React from 'react';
-import { ajaxResults, Select2Wrapper } from "../../../../components/Select2Wrapper";
-import { Router, Translate } from "../../../../dependenciesTools";
+import {
+  ajaxResults,
+  Select2Wrapper,
+} from '../../../../components/Select2Wrapper';
+import { Router, Translate } from '../../../../dependenciesTools';
 
 type AddConditionAttribute = {
   id: string;
   text: string;
-}
+};
 
 type AddConditionGroup = {
   id: string;
   text: string;
   children: AddConditionAttribute[];
-}
+};
 
-type AddConditionResult = AddConditionGroup[];
+type AddConditionResults = AddConditionGroup[];
 
 type Props = {
   router: Router;
   handleAddCondition: (fieldCode: string) => void;
   translate: Translate;
-}
+};
 
 const AddConditionButton: React.FC<Props> = ({
   router,
@@ -36,22 +39,22 @@ const AddConditionButton: React.FC<Props> = ({
     };
   };
 
-  let lastGroupId: string;
-  const handleResults = (result: AddConditionResult): ajaxResults => {
-    const firstGroupId = result[0].id;
-    if (firstGroupId === lastGroupId) {
-      // Prevents to display 2 times the group label.
+  let lastDisplayedGroupId: string;
+  const handleResults = (result: AddConditionResults): ajaxResults => {
+    const firstCurrentGroupId = result[0].id;
+    if (firstCurrentGroupId === lastDisplayedGroupId) {
+      // Prevents to display 2 times the group label. Having an empty text removes the line.
       result[0].text = '';
     }
-    lastGroupId = result[result.length - 1].id;
+    lastDisplayedGroupId = result[result.length - 1].id;
 
-    const count = result.reduce((previousCount, group) => {
+    const fieldCount = result.reduce((previousCount, group) => {
       return previousCount + group.children.length;
     }, 0);
 
     return {
-      more: count >= 20,
-      results: result
+      more: fieldCount >= 20,
+      results: result,
     };
   };
 
@@ -64,20 +67,19 @@ const AddConditionButton: React.FC<Props> = ({
       dropdownCssClass={'add-conditions-dropdown'}
       onChange={handleAddCondition}
       ajax={{
-        url: router.generate('pimee_enrich_rule_definition_get_available_condition_fields'),
+        url: router.generate(
+          'pimee_enrich_rule_definition_get_available_condition_fields'
+        ),
         quietMillis: 250,
         cache: true,
         data: dataProvider,
-        results: (result: AddConditionResult) => {
+        results: (result: AddConditionResults) => {
           return handleResults(result);
         },
       }}
-      initSelection={(_element, callback) => {
-        callback({ id: 1234, text: translate('pimee_catalog_rule.form.edit.add_conditions') });
-      }}
-      value={1234}
+      placeholder={translate('pimee_catalog_rule.form.edit.add_conditions')}
     />
-  )
-}
+  );
+};
 
 export { AddConditionButton };

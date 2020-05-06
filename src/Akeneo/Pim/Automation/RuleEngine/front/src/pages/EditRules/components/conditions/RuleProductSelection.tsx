@@ -9,9 +9,9 @@ import { Locale } from '../../../../models/';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { useFormContext } from 'react-hook-form';
 import { ConditionLine } from './ConditionLine';
-import { AddConditionButton } from "./AddConditionButton";
-import { createFamilyCondition } from "../../../../models/FamilyCondition";
-import { createTextAttributeCondition } from "../../../../models/TextAttributeCondition";
+import { AddConditionButton } from './AddConditionButton';
+import { createFamilyCondition } from '../../../../models/FamilyCondition';
+import { createTextAttributeCondition } from '../../../../models/TextAttributeCondition';
 
 const Header = styled.header`
   font-weight: normal;
@@ -82,9 +82,7 @@ const RuleProductSelection: React.FC<Props> = ({
     );
   };
 
-  async function createCondition(
-    fieldCode: string,
-  ): Promise<Condition> {
+  async function createCondition(fieldCode: string): Promise<Condition> {
     const factories: ConditionFactory[] = [
       createFamilyCondition,
       createTextAttributeCondition,
@@ -102,11 +100,11 @@ const RuleProductSelection: React.FC<Props> = ({
   }
 
   const handleAddCondition = (fieldCode: string) => {
-    createCondition(fieldCode).then((condition) => {
+    createCondition(fieldCode).then(condition => {
       const newConditions = [...conditions, condition];
       setConditions(newConditions);
     });
-  }
+  };
 
   return (
     <fieldset>

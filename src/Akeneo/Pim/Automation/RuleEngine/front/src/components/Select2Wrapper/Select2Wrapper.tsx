@@ -2,7 +2,18 @@ import $ from 'jquery';
 import React, { useRef, useEffect } from 'react';
 import { Label } from '../Labels';
 
-type option = { id: number | string; text: string };
+type option = {
+  id: number | string;
+  text: string;
+  disabled?: boolean;
+};
+
+type optionsGroup = {
+  id: number | string | null;
+  text: string;
+  children: option[];
+  disabled?: boolean;
+};
 
 type Select2Event = {
   val: any;
@@ -10,10 +21,10 @@ type Select2Event = {
 
 type ajaxResults = {
   more: boolean;
-  results: option[];
+  results: option[] | optionsGroup[];
 };
 
-type InitSelectionCallback = (arg: option[]) => void;
+type InitSelectionCallback = (arg: option[] | option) => void;
 
 type Props = {
   allowClear?: boolean;
@@ -26,7 +37,7 @@ type Props = {
   label: string;
   onChange: (value: string | string[]) => void;
   placeholder?: string;
-  value: string | string[];
+  value?: number | string | string[];
   multiple?: boolean;
   ajax?: {
     url: string;
@@ -67,6 +78,7 @@ const Select2Wrapper: React.FC<Props> = ({
     }
     const $select = $(select2Ref.current) as any;
     $select.val(value);
+
     $select.select2({
       allowClear,
       containerCssClass,
@@ -78,6 +90,7 @@ const Select2Wrapper: React.FC<Props> = ({
       ajax,
       initSelection,
     });
+
     $select.on('change', (event: Select2Event) => onChange(event.val));
     return () => {
       $select.off('change');
@@ -97,7 +110,7 @@ const Select2Wrapper: React.FC<Props> = ({
   return (
     <>
       <Label label={label} hiddenLabel={hiddenLabel} htmlFor={id} />
-      <input id={id} type='hidden' ref={select2Ref}/>
+      <input id={id} type='hidden' ref={select2Ref} />
     </>
   );
 };
