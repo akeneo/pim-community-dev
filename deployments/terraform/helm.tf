@@ -72,11 +72,10 @@ helm upgrade --atomic --cleanup-on-fail --wait --install --force --timeout 1202 
 HELM_STATUS_CODE=$?
 kubectl scale -n ${local.pfid} deploy/pim-web deploy/pim-daemon-default --replicas=2
 if [ $? -eq 0 ]; then
- exit ${STATUS_CODE}
+ exit ${HELM_STATUS_CODE}
 else
  exit $?
 fi
 EOF
   }
 }
-
