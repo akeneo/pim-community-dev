@@ -109,15 +109,19 @@ class EvaluateSpelling implements EvaluateCriterionInterface
             return;
         }
 
+        $attributesRates = $this->getRateByAttributes($attributesRates);
         $rate = $this->calculateChannelLocaleRate($attributesRates);
-        $improvableAttributes = $this->computeImprovableAttributes($attributesRates);
 
         $evaluationResult
             ->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::done())
             ->addRate($channelCode, $localeCode, $rate)
-            ->addImprovableAttributes($channelCode, $localeCode, $improvableAttributes);
+            ->addRateByAttributes($channelCode, $localeCode, $attributesRates)
+        ;
     }
 
+    /**
+     * @throws TextCheckFailedException
+     */
     private function evaluateAttributesRates(ChannelCode $channelCode, LocaleCode $localeCode, \Iterator $productValues, int $faultWeight): array
     {
         $attributesRates = [];
@@ -158,17 +162,13 @@ class EvaluateSpelling implements EvaluateCriterionInterface
 
     private function calculateChannelLocaleRate(array $channelLocaleRates): Rate
     {
-        $channelLocaleRates = array_map(function (Rate $rate) {
-            return $rate->toInt();
-        }, $channelLocaleRates);
-
         return new Rate((int) round(array_sum($channelLocaleRates) / count($channelLocaleRates), 0, PHP_ROUND_HALF_DOWN));
     }
 
-    private function computeImprovableAttributes(array $attributesRates): array
+    private function getRateByAttributes(array $attributesRates): array
     {
-        return array_keys(array_filter($attributesRates, function (Rate $attributeRate) {
-            return !$attributeRate->isPerfect();
-        }));
+        return array_map(function (Rate $attributeRate) {
+            return $attributeRate->toInt();
+        }, $attributesRates);
     }
 }

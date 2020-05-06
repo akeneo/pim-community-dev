@@ -77,8 +77,8 @@ final class EvaluateLowerCaseWords implements EvaluateCriterionInterface
             return;
         }
 
-        $rate = $this->calculateChannelLocaleRate($attributesRates);
         $rateByAttributes = $this->getRateByAttributes($attributesRates);
+        $rate = $this->calculateChannelLocaleRate($rateByAttributes);
 
         $evaluationResult
             ->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::done())
@@ -103,10 +103,6 @@ final class EvaluateLowerCaseWords implements EvaluateCriterionInterface
 
     private function calculateChannelLocaleRate(array $channelLocaleRates): Rate
     {
-        $channelLocaleRates = array_map(function (Rate $rate) {
-            return $rate->toInt();
-        }, $channelLocaleRates);
-
         return new Rate((int) round(array_sum($channelLocaleRates) / count($channelLocaleRates), 0, PHP_ROUND_HALF_DOWN));
     }
 

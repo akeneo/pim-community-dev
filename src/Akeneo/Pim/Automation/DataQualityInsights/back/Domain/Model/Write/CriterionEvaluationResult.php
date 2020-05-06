@@ -74,16 +74,6 @@ final class CriterionEvaluationResult
         return $this;
     }
 
-    /**
-     * @deprecated
-     */
-    public function addImprovableAttributes(ChannelCode $channelCode, LocaleCode $localeCode, array $improvableAttributes): self
-    {
-        $this->addData('attributes', $channelCode, $localeCode, $improvableAttributes);
-
-        return $this;
-    }
-
     public function addRateByAttributes(ChannelCode $channelCode, LocaleCode $localeCode, array $rateByAttributes): self
     {
         $this->addData('attributes_with_rates', $channelCode, $localeCode, $rateByAttributes);

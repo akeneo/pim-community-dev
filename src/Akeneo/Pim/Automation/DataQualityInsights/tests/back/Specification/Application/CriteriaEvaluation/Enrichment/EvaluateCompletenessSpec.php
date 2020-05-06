@@ -66,15 +66,15 @@ final class EvaluateCompletenessSpec extends ObjectBehavior
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelMobile, $localeEn, new Rate(100))
             ->addStatus($channelMobile, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelMobile, $localeEn, [])
+            ->addRateByAttributes($channelMobile, $localeEn, [])
 
             ->addRate($channelMobile, $localeFr, new Rate(85))
             ->addStatus($channelMobile, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelMobile, $localeFr, ['name', 'weight'])
+            ->addRateByAttributes($channelMobile, $localeFr, ['name' => 0, 'weight' => 0])
 
             ->addRate($channelPrint, $localeEn, new Rate(92))
             ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelPrint, $localeEn, ['description'])
+            ->addRateByAttributes($channelPrint, $localeEn, ['description' => 0])
 
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::notApplicable())
         ;

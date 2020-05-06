@@ -124,12 +124,15 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 100])
 
             ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(100))
             ->addStatus(new ChannelCode('mobile'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes(new ChannelCode('mobile'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 100])
 
             ->addRate(new ChannelCode('print'), new LocaleCode('en_US'), new Rate(100))
             ->addStatus(new ChannelCode('print'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes(new ChannelCode('print'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 100])
 
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), CriterionEvaluationResultStatus::notApplicable())
             ->addStatus(new ChannelCode('mobile'), new LocaleCode('fr_FR'), CriterionEvaluationResultStatus::notApplicable())
@@ -186,7 +189,7 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(76))
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable'])
+            ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 76])
             ->addData('suggestions', new ChannelCode('ecommerce'), new LocaleCode('en_US'), 'MacBook Pro Retina 13" AZERTY')
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), CriterionEvaluationResultStatus::notApplicable())
         ;
@@ -231,12 +234,12 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(76))
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable'])
+            ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 76])
             ->addData('suggestions', new ChannelCode('ecommerce'), new LocaleCode('en_US'), 'MacBook Pro Retina 13" AZERTY')
 
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_GB'), new Rate(88))
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_GB'), CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_GB'), ['attribute_as_main_title_localizable_scopable'])
+            ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_GB'), ['attribute_as_main_title_localizable_scopable' => 88])
             ->addData('suggestions', new ChannelCode('ecommerce'), new LocaleCode('en_GB'), 'MacBook Pro Retina 13" AZERTY')
         ;
 
@@ -281,7 +284,9 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
 
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
-            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done());
+            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 100])
+        ;
 
         $this->evaluate(
             new Write\CriterionEvaluation(
@@ -322,6 +327,7 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
             ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(100))
             ->addStatus(new ChannelCode('mobile'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
             ->addStatus(new ChannelCode('mobile'), new LocaleCode('en_CA'), CriterionEvaluationResultStatus::error())
+            ->addRateByAttributes(new ChannelCode('mobile'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 100])
         ;
 
         $this->evaluate(

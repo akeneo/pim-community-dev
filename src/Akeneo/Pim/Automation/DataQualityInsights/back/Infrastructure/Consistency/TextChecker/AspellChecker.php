@@ -58,6 +58,9 @@ class AspellChecker implements TextChecker
         $this->lineNumberCalculator = $lineNumberCalculator;
     }
 
+    /**
+     * @throws TextCheckFailedException
+     */
     public function check(string $text, LocaleCode $localeCode): TextCheckResultCollection
     {
         $source = new TextSource($text);

@@ -147,27 +147,27 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelEcommerce, $localeEn, new Rate(100))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelEcommerce, $localeEn, [])
+            ->addRateByAttributes($channelEcommerce, $localeEn, ['textarea_2' => 100, 'textarea_3' => 100])
 
             ->addRate($channelEcommerce, $localeFr, new Rate(67))
             ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelEcommerce, $localeFr, ['textarea_2'])
+            ->addRateByAttributes($channelEcommerce, $localeFr, ['textarea_1' => 100, 'textarea_2' => 0, 'textarea_3' => 100])
 
             ->addRate($channelMobile, $localeEn, new Rate(33))
             ->addStatus($channelMobile, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelMobile, $localeEn, ['textarea_1', 'textarea_2'])
+            ->addRateByAttributes($channelMobile, $localeEn, ['textarea_1' => 0, 'textarea_2' => 0, 'textarea_3' => 100])
 
             ->addRate($channelMobile, $localeFr, new Rate(67))
             ->addStatus($channelMobile, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelMobile, $localeFr, ['textarea_1'])
+            ->addRateByAttributes($channelMobile, $localeFr, ['textarea_1' => 0, 'textarea_2' => 100, 'textarea_3' => 100])
 
             ->addRate($channelPrint, $localeEn, new Rate(100))
             ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelPrint, $localeEn, [])
+            ->addRateByAttributes($channelPrint, $localeEn, ['textarea_3' => 100])
 
             ->addRate($channelPrint, $localeFr, new Rate(100))
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelPrint, $localeFr, [])
+            ->addRateByAttributes($channelPrint, $localeFr, [ 'textarea_2' => 100, 'textarea_3' => 100])
         ;
 
         $this->evaluate(

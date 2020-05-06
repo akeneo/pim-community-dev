@@ -117,17 +117,15 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface, Evalu
         }
 
         $rate = $productValueResult['rate'];
-        $evaluationResult->addRate($channelCode, $localeCode, $rate);
 
         if (isset($productValueResult['titleSuggestion'])) {
             $evaluationResult->addData('suggestions', $channelCode, $localeCode, $productValueResult['titleSuggestion']);
         }
 
-        if (!$rate->isPerfect()) {
-            $evaluationResult->addImprovableAttributes($channelCode, $localeCode, [strval($attributeCodeAsMainTitle)]);
-        }
-
-        $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::done());
+        $evaluationResult
+            ->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::done())
+            ->addRate($channelCode, $localeCode, $rate)
+            ->addRateByAttributes($channelCode, $localeCode, [strval($attributeCodeAsMainTitle) => $rate->toInt()]);
     }
 
     private function isSupportedLocale(LocaleCode $localeCode): bool
@@ -135,6 +133,9 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface, Evalu
         return preg_match('~^en_[A-Z]{2}$~', strval($localeCode)) === 1;
     }
 
+    /**
+     * @throws UnableToProvideATitleSuggestion
+     */
     private function evaluateProductValue(ProductId $productId, ?string $originalTitle, ChannelCode $channel, LocaleCode $locale): array
     {
         $titleSuggestion = $this->titleFormattingService->format(new ProductTitle($originalTitle));

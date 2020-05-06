@@ -29,6 +29,9 @@ final class TitleFormattingService implements TitleFormattingServiceInterface
         $this->titleFormattingToken = $titleFormattingToken;
     }
 
+    /**
+     * @throws UnableToProvideATitleSuggestion
+     */
     public function format(ProductTitle $title): ProductTitle
     {
         try {

@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 
@@ -21,7 +22,8 @@ interface TextChecker
 {
     /**
      * @param string $text
-     * @param string $locale
+     * @param LocaleCode $locale
+     * @throws TextCheckFailedException
      * @return TextCheckResultCollection
      */
     public function check(string $text, LocaleCode $locale): TextCheckResultCollection;
