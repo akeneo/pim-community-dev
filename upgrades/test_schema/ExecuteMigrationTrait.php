@@ -22,7 +22,7 @@ trait ExecuteMigrationTrait
 
     private function getCommandLauncher(): CommandLauncher
     {
-        return $this->get('pim_catalog.command_launcher');
+        return $this->get('akeneo_integration_tests.migration_command_launcher');
     }
 
     private function reExecuteMigration(string $migrationLabel): void
