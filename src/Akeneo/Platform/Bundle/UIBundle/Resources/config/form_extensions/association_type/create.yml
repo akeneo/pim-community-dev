@@ -34,7 +34,7 @@ extensions:
         parent: pim-association-type-properties
         targetZone: fields
         position: 20
-        feature: quantitied_associations
+        feature: quantified_associations
         config:
             fieldName: is_quantified
             label: pim_enrich.entity.association_type.property.is_quantified
