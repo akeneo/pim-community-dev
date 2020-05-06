@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -16,12 +17,13 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
     /** @var NormalizerInterface */
     protected $translationNormalizer;
 
-    /**
-     * @param NormalizerInterface $translationNormalizer
-     */
-    public function __construct(NormalizerInterface $translationNormalizer)
+    /** @var FeatureFlag */
+    private $quantifiedAssociationFlag;
+
+    public function __construct(NormalizerInterface $translationNormalizer, FeatureFlag $quantifiedAssociationFlag)
     {
         $this->translationNormalizer = $translationNormalizer;
+        $this->quantifiedAssociationFlag = $quantifiedAssociationFlag;
     }
 
     /**
@@ -30,12 +32,17 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
      */
     public function normalize($associationType, $format = null, array $context = [])
     {
-        return [
+        $associationTypeNormalized = [
             'code'   => $associationType->getCode(),
             'labels' => $this->translationNormalizer->normalize($associationType, 'standard', $context),
             'is_two_way' => $associationType->isTwoWay(),
-            'is_quantified' => $associationType->isQuantified(),
         ];
+
+        if ($this->quantifiedAssociationFlag->isEnabled()) {
+            $associationTypeNormalized['is_quantified'] = $associationType->isQuantified();
+        }
+
+        return $associationTypeNormalized;
     }
 
     /**

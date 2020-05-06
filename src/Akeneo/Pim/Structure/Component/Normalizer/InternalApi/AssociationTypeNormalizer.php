@@ -42,6 +42,7 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
     }
 
     /**
+     * @var AssociationTypeInterface $object
      * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = [])
@@ -59,6 +60,7 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
             $this->versionNormalizer->normalize($lastVersion, 'internal_api') :
             null;
 
+        $result['is_quantified'] = $object->isQuantified();
         $result['meta'] = [
             'id'                => $object->getId(),
             'form'              => 'pim-association-type-edit-form',
