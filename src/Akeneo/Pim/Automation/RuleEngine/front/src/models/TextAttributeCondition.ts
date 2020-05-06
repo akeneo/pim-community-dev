@@ -4,7 +4,7 @@ import { Router } from '../dependenciesTools';
 import { getAttributeByIdentifier } from '../fetch/AttributeFetcher';
 import {
   TextAttributeConditionLine,
-  TextAttributeConditionLineProps
+  TextAttributeConditionLineProps,
 } from '../pages/EditRules/components/conditions/TextAttributeConditionLine';
 import { Operator } from './Operator';
 import { checkLocaleExists } from '../fetch/LocaleFetcher';

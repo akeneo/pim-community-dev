@@ -38,7 +38,9 @@ const ConditionLine: React.FC<Props> = ({
 }) => {
   const dialog = useDialogState();
 
-  const Line = condition.module as React.FC<ConditionLineProps & { condition: Condition }>;
+  const Line = condition.module as React.FC<
+    ConditionLineProps & { condition: Condition }
+  >;
   const isFallback =
     condition.module === PimConditionLine ||
     condition.module === FallbackConditionLine;

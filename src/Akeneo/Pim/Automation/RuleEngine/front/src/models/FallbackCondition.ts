@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   FallbackConditionLine,
-  FallbackConditionLineProps
+  FallbackConditionLineProps,
 } from '../pages/EditRules/components/conditions/FallbackConditionLine';
 
 export type FallbackCondition = {

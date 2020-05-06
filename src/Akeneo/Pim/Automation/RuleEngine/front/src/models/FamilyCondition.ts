@@ -2,7 +2,7 @@ import React from 'react';
 import { Operator } from './Operator';
 import {
   FamilyConditionLine,
-  FamilyConditionLineProps
+  FamilyConditionLineProps,
 } from '../pages/EditRules/components/conditions/FamilyConditionLine';
 import { ConditionFactoryType } from './Condition';
 import {
