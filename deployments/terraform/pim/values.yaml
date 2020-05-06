@@ -303,4 +303,6 @@ elasticsearch:
         memory: "1024Mi"
     updateStrategy:
       type: RollingUpdate
-
+    hooks:
+      drain:
+        enabled: false
