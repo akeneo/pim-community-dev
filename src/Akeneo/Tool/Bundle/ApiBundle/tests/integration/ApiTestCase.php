@@ -135,8 +135,24 @@ abstract class ApiTestCase extends WebTestCase
     ): ConnectionWithCredentials {
         $createConnectionCommand = new CreateConnectionCommand($code, $label, $flowType, $auditable);
 
-        return $this->get('akeneo_connectivity.connection.application.handler.create_connection')
+        $connection = $this->get('akeneo_connectivity.connection.application.handler.create_connection')
             ->handle($createConnectionCommand);
+
+        $user = $this->get('pim_user.manager')->loadUserByUsername($connection->username());
+
+        $adminRole = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        $user->addRole($adminRole);
+
+        $userRole = $this->get('pim_user.repository.role')->findOneByIdentifier(User::ROLE_DEFAULT);
+        $user->removeRole($userRole);
+
+        $group = $this->get('pim_user.repository.group')->findOneByIdentifier('IT support');
+        $user->addGroup($group);
+
+        $this->get('validator')->validate($user);
+        $this->get('pim_user.saver.user')->save($user);
+
+        return $connection;
     }
 
     /**
