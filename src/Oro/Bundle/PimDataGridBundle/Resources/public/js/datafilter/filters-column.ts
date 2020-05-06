@@ -22,7 +22,7 @@ interface GridFilter {
 
 class FiltersColumn extends BaseView {
   public defaultFilters: GridFilter[] = [];
-  public filterList: JQuery<HTMLElement>;
+  public filterList: JQuery<Element>;
   public gridCollection: any;
   public ignoredFilters: string[];
   public loadedFilters: GridFilter[] = [];

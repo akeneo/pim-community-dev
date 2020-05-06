@@ -1,5 +1,42 @@
 # 3.2.x
 
+# 3.2.54 (2020-05-06)
+
+## Bug fixes
+
+- PIM-9221: Fix performance issue when saving a variant product/product model with a lot of siblings
+
+# 3.2.53 (2020-05-05)
+
+## Bug fixes
+
+- PIM-9222: Fix errors on mass action when the parent filter is set to empty
+
+# 3.2.52 (2020-04-30)
+
+## Bug fixes
+
+- GITHUB-11995: Fixes invalid Jquery generic type (#11995)
+
+# 3.2.51 (2020-04-28)
+
+## Bug fixes
+
+- PIM-9212: Keep vertical scroll position of the attribute form after editing values
+
+# 3.2.50 (2020-04-24)
+
+## Bug fixes:
+
+- PIM-9219: Fix duplicated categories in the product API when present in both Product Model and Variant
+
+# 3.2.49 (2020-04-23)
+
+## Bug fixes
+
+- PIM-9205: Fix PDF not exporting Product Model values
+- PIM-9204: Fix error when the user does not have the permission to view the axis attribute
+
 # 3.2.48 (2020-04-21)
 
 # 3.2.47 (2020-04-14)

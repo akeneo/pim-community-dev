@@ -30,7 +30,7 @@ final class SqlGetValuesOfSiblings implements GetValuesOfSiblings
         $this->valueCollectionFactory = $valueCollectionFactory;
     }
 
-    public function for(EntityWithFamilyVariantInterface $entity): array
+    public function for(EntityWithFamilyVariantInterface $entity, array $attributeCodesToFilter = []): array
     {
         if (null === $entity->getParent()) {
             return [];
@@ -64,9 +64,18 @@ SQL;
                 'identifier' => $identifier,
             ]
         );
+
         foreach ($rows as $row) {
+            $rawValues = json_decode($row['raw_values'], true) ?? [];
+
+            if (!empty($attributeCodesToFilter)) {
+                $rawValues = array_filter($rawValues, function (string $attributeCode) use ($attributeCodesToFilter) {
+                    return in_array($attributeCode, $attributeCodesToFilter);
+                }, ARRAY_FILTER_USE_KEY);
+            }
+
             $valuesOfSiblings[$row['identifier']] = $this->valueCollectionFactory->createFromStorageFormat(
-                json_decode($row['raw_values'], true)
+                $rawValues
             );
         }
 
