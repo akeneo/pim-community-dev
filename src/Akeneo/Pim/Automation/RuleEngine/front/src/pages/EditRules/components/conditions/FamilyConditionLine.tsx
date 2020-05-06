@@ -42,6 +42,10 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
 }) => {
   const { register, setValue, getValues } = useFormContext();
 
+  register({ name: `content.conditions[${lineNumber}].field` });
+  register({ name: `content.conditions[${lineNumber}].operator` });
+  register({ name: `content.conditions[${lineNumber}].value` });
+
   const getFormOperator = (): Operator =>
     getValues()[`content.conditions[${lineNumber}].operator`];
   const getFormValue = (): string[] | null =>
@@ -67,10 +71,6 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
   const [displayFamilySelector, setDisplayFamilySelector] = React.useState<
     boolean
   >(valueMustBeSet() ? true : false);
-
-  register({ name: `content.conditions[${lineNumber}].field` });
-  register({ name: `content.conditions[${lineNumber}].operator` });
-  register({ name: `content.conditions[${lineNumber}].value` });
 
   return (
     <div>
