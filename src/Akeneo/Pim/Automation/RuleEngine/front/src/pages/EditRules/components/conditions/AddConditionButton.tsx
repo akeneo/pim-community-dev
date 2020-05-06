@@ -1,53 +1,67 @@
 import React from 'react';
 import { ajaxResults, Select2Wrapper } from "../../../../components/Select2Wrapper";
-import { Router } from "../../../../dependenciesTools";
+import { Router, Translate } from "../../../../dependenciesTools";
 
 type AddConditionAttribute = {
-  id: number;
+  id: string;
   text: string;
 }
 
 type AddConditionGroup = {
-  id: number | null;
+  id: string;
   text: string;
   children: AddConditionAttribute[];
 }
 
 type AddConditionResult = AddConditionGroup[];
 
-const dataProvider = (term: string, page: number) => {
-  return {
-    search: term,
-    options: {
-      limit: 20,
-      page: page,
-      locale: 'en_US',
-    },
-  };
-};
-
-const handleResults = (result: AddConditionResult): ajaxResults => {
-  return {
-    more: true,
-    results: result
-  };
-};
-
 type Props = {
   router: Router;
   handleAddCondition: (fieldCode: string) => void;
+  translate: Translate;
 }
 
 const AddConditionButton: React.FC<Props> = ({
   router,
-  handleAddCondition
+  handleAddCondition,
+  translate,
 }) => {
+  const dataProvider = (term: string, page: number) => {
+    return {
+      search: term,
+      options: {
+        limit: 20,
+        page: page,
+      },
+    };
+  };
+
+  let lastGroupId: string;
+  const handleResults = (result: AddConditionResult): ajaxResults => {
+    const firstGroupId = result[0].id;
+    if (firstGroupId === lastGroupId) {
+      // Prevents to display 2 times the group label.
+      result[0].text = '';
+    }
+    lastGroupId = result[result.length - 1].id;
+
+    const count = result.reduce((previousCount, group) => {
+      return previousCount + group.children.length;
+    }, 0);
+
+    return {
+      more: count >= 20,
+      results: result
+    };
+  };
+
   return (
     <Select2Wrapper
       id={'add_conditions'}
-      label={'Add conditions'}
+      label={translate('pimee_catalog_rule.form.edit.add_conditions')}
       hiddenLabel={true}
-      containerCssClass={'foo'}
+      containerCssClass={'add-conditions-button'}
+      dropdownCssClass={'add-conditions-dropdown'}
       onChange={handleAddCondition}
       ajax={{
         url: router.generate('pimee_enrich_rule_definition_get_available_condition_fields'),
@@ -59,7 +73,7 @@ const AddConditionButton: React.FC<Props> = ({
         },
       }}
       initSelection={(_element, callback) => {
-        callback({ id: 1234, text: 'Add conditions' });
+        callback({ id: 1234, text: translate('pimee_catalog_rule.form.edit.add_conditions') });
       }}
       value={1234}
     />

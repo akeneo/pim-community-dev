@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Router, Translate } from '../../../../dependenciesTools';
-import { GreyGhostButton, SmallHelper } from '../../../../components';
+import { SmallHelper } from '../../../../components';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { ConditionFactory, RuleDefinition } from '../../../../models/';
 import { Condition } from '../../../../models/';
@@ -11,9 +11,7 @@ import { useFormContext } from 'react-hook-form';
 import { ConditionLine } from './ConditionLine';
 import { AddConditionButton } from "./AddConditionButton";
 import { createFamilyCondition } from "../../../../models/FamilyCondition";
-import {
-  createTextAttributeCondition,
-} from "../../../../models/TextAttributeCondition";
+import { createTextAttributeCondition } from "../../../../models/TextAttributeCondition";
 
 const Header = styled.header`
   font-weight: normal;
@@ -105,11 +103,7 @@ const RuleProductSelection: React.FC<Props> = ({
 
   const handleAddCondition = (fieldCode: string) => {
     createCondition(fieldCode).then((condition) => {
-      const newConditions = [];
-      conditions.forEach((condition) => {
-        newConditions.push(condition);
-      });
-      newConditions.push(condition);
+      const newConditions = [...conditions, condition];
       setConditions(newConditions);
     });
   }
@@ -135,10 +129,8 @@ const RuleProductSelection: React.FC<Props> = ({
             <AddConditionButton
               router={router}
               handleAddCondition={handleAddCondition}
+              translate={translate}
             />
-            <GreyGhostButton sizeMode='small'>
-              {translate('pimee_catalog_rule.form.edit.add_conditions')}
-            </GreyGhostButton>
           </AddConditionContainer>
         </HeaderPartContainer>
       </Header>

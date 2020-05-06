@@ -85,10 +85,19 @@ const Select2Wrapper: React.FC<Props> = ({
       $select.select2('container').remove();
     };
   }, [select2Ref]);
+
+  useEffect(() => {
+    if (null === select2Ref.current) {
+      return;
+    }
+    const $select = $(select2Ref.current) as any;
+    $select.on('change', (event: Select2Event) => onChange(event.val));
+  }, [onChange]);
+
   return (
     <>
       <Label label={label} hiddenLabel={hiddenLabel} htmlFor={id} />
-      <input id={id} type='hidden' ref={select2Ref} />
+      <input id={id} type='hidden' ref={select2Ref}/>
     </>
   );
 };

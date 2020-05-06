@@ -1,0 +1,43 @@
+@import './public/bundles/pimui/less/base/variables';
+
+.select2-container.add-conditions-button {
+  width: auto;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 400;
+  height: 24px;
+  line-height: 22px;
+  text-transform: uppercase;
+  padding: 0 10px;
+  border-width: 1px;
+  border-style: solid;
+  color: @AknGrey;
+  border-color: @AknMediumGrey;
+  background-color: @AknWhite;
+
+  & > .select2-choice {
+    height: auto;
+    line-height: 22px;
+    border: none;
+    color: @AknGrey;
+    padding-left: 0;
+
+    &.select2-dropdown-open {
+      background: @AknWhite;
+    }
+
+    & > .select2-chosen {
+      margin-right: 0;
+    }
+    & > .select2-arrow {
+      display: none;
+    }
+  }
+}
+
+.select2-drop.select2-with-searchbox {
+  min-width: 300px;
+  margin-top: -43px;
+  border-top: 1px solid #ccd1d8;
+}
