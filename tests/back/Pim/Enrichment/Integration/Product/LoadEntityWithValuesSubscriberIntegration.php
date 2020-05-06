@@ -61,8 +61,9 @@ SQL;
         $expectedValues = $this->getValuesFromStandardValues(
             $amputatedStandardValues
         );
-
         $this->updateFooProduct();
+
+        self::$kernel->reboot(null);
         $product = $this->findProductByIdentifier('foo');
         $this->assertProductHasValues($expectedValues, $product);
     }
@@ -77,6 +78,8 @@ SQL;
         );
 
         $this->updateFooProduct();
+
+        self::$kernel->reboot(null);
         $product = $this->findProductByIdentifier('foo');
         $this->assertProductHasValues($expectedValues, $product);
     }
