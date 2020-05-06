@@ -20,6 +20,7 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
 {
     /** @var GetProductCompletenesses */
     public $getProductCompletenesses;
+
     /** @var GetProductCompletenessRatio */
     private $getProductCompletenessRatio;
 
