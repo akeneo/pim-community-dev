@@ -61,8 +61,9 @@ SQL;
         $expectedValues = $this->getValuesFromStandardValues(
             $amputatedStandardValues
         );
-
         $this->updateFooProduct();
+
+        $this->clearAttributeOptionsCache();
         $product = $this->findProductByIdentifier('foo');
         $this->assertProductHasValues($expectedValues, $product);
     }
@@ -75,8 +76,9 @@ SQL;
         $expectedValues = $this->getValuesFromStandardValues(
             $amputatedStandardValues
         );
-
         $this->updateFooProduct();
+
+        $this->clearAttributeOptionsCache();
         $product = $this->findProductByIdentifier('foo');
         $this->assertProductHasValues($expectedValues, $product);
     }
@@ -440,9 +442,6 @@ SQL;
     }
 
     /**
-     * @param string $attributeCode
-     * @param string $attributeOptionValueCode
-     *
      * @throws \InvalidArgumentException
      * @throws \LogicException
      */
@@ -461,5 +460,14 @@ SQL;
             );
         }
         $this->get('pim_catalog.remover.attribute_option')->remove($attributeOptionValue);
+    }
+
+    /**
+     * We need to clear the LRU cache because it's not meant to be used twice in the same request
+     */
+    private function clearAttributeOptionsCache(): void
+    {
+        $this->get('akeneo.pim.structure.query.cache.get_existing_attribute_option_codes_from_option_codes')
+            ->clear();
     }
 }
