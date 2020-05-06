@@ -6,6 +6,8 @@ Akeneo\Pim\Structure\Component\Model\AssociationType:
                 - code
                 - isTwoWay
                 - isQuantified
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\AssociationType\ShouldNotBeTwoWayAndQuantified: ~
+
     properties:
         code:
             - NotBlank: ~

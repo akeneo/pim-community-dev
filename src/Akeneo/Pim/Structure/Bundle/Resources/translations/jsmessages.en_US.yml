@@ -102,6 +102,10 @@ pim_enrich.entity.association_type:
         create:
             title: Create a new association type
             button: Create association type
+            is_two_way:
+                message_on_read_only: This property is not compatible with quantity
+            is_quantified:
+                message_on_read_only: This property is not compatible with 2-way
         delete:
             confirm: Are you sure you want to delete this association type?
     hint: <a href="{{link}}" target="_blank">In this article</a>, you'll find everything you need to create your own association type.
