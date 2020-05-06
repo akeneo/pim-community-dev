@@ -111,6 +111,16 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
                 $this->searchQueryBuilder->addFilter($clause);
                 break;
 
+            case Operators::DOES_NOT_START_WITH:
+                $clause = [
+                    'query_string' => [
+                        'default_field' => $attributePath,
+                        'query'         => QueryString::escapeValue($value) . '*',
+                    ],
+                ];
+                $this->searchQueryBuilder->addMustNot($clause);
+                break;
+
             case Operators::CONTAINS:
                 $clause = [
                     'query_string' => [

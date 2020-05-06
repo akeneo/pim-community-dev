@@ -95,14 +95,15 @@ class StringFilter extends AbstractFilter
     protected function getOperator($type)
     {
         $operatorTypes = [
-            TextFilterType::TYPE_CONTAINS     => Operators::IS_LIKE,
-            TextFilterType::TYPE_NOT_CONTAINS => Operators::IS_NOT_LIKE,
-            TextFilterType::TYPE_EQUAL        => Operators::EQUALS,
-            TextFilterType::TYPE_STARTS_WITH  => Operators::IS_LIKE,
-            TextFilterType::TYPE_ENDS_WITH    => Operators::IS_LIKE,
-            FilterType::TYPE_EMPTY            => Operators::IS_EMPTY,
-            FilterType::TYPE_NOT_EMPTY        => Operators::IS_NOT_EMPTY,
-            FilterType::TYPE_IN_LIST          => Operators::IN_LIST,
+            TextFilterType::TYPE_CONTAINS            => Operators::IS_LIKE,
+            TextFilterType::TYPE_NOT_CONTAINS        => Operators::IS_NOT_LIKE,
+            TextFilterType::TYPE_EQUAL               => Operators::EQUALS,
+            TextFilterType::TYPE_STARTS_WITH         => Operators::IS_LIKE,
+            TextFilterType::TYPE_DOES_NOT_START_WITH => Operators::IS_NOT_LIKE,
+            TextFilterType::TYPE_ENDS_WITH           => Operators::IS_LIKE,
+            FilterType::TYPE_EMPTY                   => Operators::IS_EMPTY,
+            FilterType::TYPE_NOT_EMPTY               => Operators::IS_NOT_EMPTY,
+            FilterType::TYPE_IN_LIST                 => Operators::IN_LIST,
         ];
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'LIKE';
@@ -120,7 +121,8 @@ class StringFilter extends AbstractFilter
         // for other than listed comparison types - use default format
         switch ($comparisonType) {
             case TextFilterType::TYPE_STARTS_WITH:
-                $format = '%s%%';
+            case TextFilterType::TYPE_DOES_NOT_START_WITH:
+            $format = '%s%%';
                 break;
             case TextFilterType::TYPE_ENDS_WITH:
                 $format = '%%%s';

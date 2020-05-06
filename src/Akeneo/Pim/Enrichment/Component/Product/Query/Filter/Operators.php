@@ -12,6 +12,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Query\Filter;
 class Operators
 {
     public const STARTS_WITH = 'STARTS WITH';
+    public const DOES_NOT_START_WITH = 'DOES NOT START WITH';
     public const ENDS_WITH = 'ENDS WITH';
     public const CONTAINS = 'CONTAINS';
     public const DOES_NOT_CONTAIN = 'DOES NOT CONTAIN';

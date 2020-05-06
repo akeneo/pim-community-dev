@@ -20,14 +20,15 @@ class StringFilter extends OroStringFilter
 {
     /** @var array */
     protected $operatorTypes = [
-        TextFilterType::TYPE_CONTAINS     => Operators::CONTAINS,
-        TextFilterType::TYPE_NOT_CONTAINS => Operators::DOES_NOT_CONTAIN,
-        TextFilterType::TYPE_EQUAL        => Operators::EQUALS,
-        TextFilterType::TYPE_STARTS_WITH  => Operators::STARTS_WITH,
-        TextFilterType::TYPE_ENDS_WITH    => Operators::ENDS_WITH,
-        FilterType::TYPE_EMPTY            => Operators::IS_EMPTY,
-        FilterType::TYPE_NOT_EMPTY        => Operators::IS_NOT_EMPTY,
-        FilterType::TYPE_IN_LIST          => Operators::IN_LIST,
+        TextFilterType::TYPE_CONTAINS            => Operators::CONTAINS,
+        TextFilterType::TYPE_NOT_CONTAINS        => Operators::DOES_NOT_CONTAIN,
+        TextFilterType::TYPE_EQUAL               => Operators::EQUALS,
+        TextFilterType::TYPE_STARTS_WITH         => Operators::STARTS_WITH,
+        TextFilterType::TYPE_DOES_NOT_START_WITH => Operators::DOES_NOT_START_WITH,
+        TextFilterType::TYPE_ENDS_WITH           => Operators::ENDS_WITH,
+        FilterType::TYPE_EMPTY                   => Operators::IS_EMPTY,
+        FilterType::TYPE_NOT_EMPTY               => Operators::IS_NOT_EMPTY,
+        FilterType::TYPE_IN_LIST                 => Operators::IN_LIST,
     ];
 
     /**
