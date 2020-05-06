@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.54 (2020-05-06)
+
 ## Bug fixes
 
 - PIM-9221: Fix performance issue when saving a variant product/product model with a lot of siblings
