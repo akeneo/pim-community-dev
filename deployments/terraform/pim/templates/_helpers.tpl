@@ -52,9 +52,6 @@ release: "{{ .Release.Name }}" # Ex: srnt-invivo
 product_reference: serenity
 product_version: "{{ .Chart.Version | replace "+" "_" }}"
 heritage: "{{ .Release.Service }}" # Deprecated
-{{- range $key, $value := .Values.global.extraLabels }}
-{{ $key }}: {{ $value | quote }}
-{{- end }}
 {{- end -}}
 
 {{- define "onboarder.standardLabels" -}}
@@ -66,7 +63,4 @@ release: "{{ .Release.Name }}" # Ex: srnt-invivo
 product_reference: serenity
 product_version: "{{ .Chart.Version | replace "+" "_" }}"
 heritage: "{{ .Release.Service }}" # Deprecated
-{{- range $key, $value := .Values.global.extraLabels }}
-{{ $key }}: {{ $value | quote }}
-{{- end }}
 {{- end -}}
