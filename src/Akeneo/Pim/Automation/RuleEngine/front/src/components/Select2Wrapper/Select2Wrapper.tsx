@@ -29,7 +29,7 @@ type InitSelectionCallback = (arg: option[] | option) => void;
 type Props = {
   allowClear?: boolean;
   containerCssClass?: string;
-  data?: option[];
+  data?: (option | optionsGroup)[];
   dropdownCssClass?: string;
   formatResult?: (item: { id: string }) => string;
   hiddenLabel?: boolean;
@@ -152,6 +152,7 @@ export {
   Select2Event,
   Props as Select2Props,
   option,
+  optionsGroup,
   InitSelectionCallback,
   ajaxResults,
 };

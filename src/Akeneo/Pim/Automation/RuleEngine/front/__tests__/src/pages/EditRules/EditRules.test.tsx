@@ -6,6 +6,7 @@ import { act, render, fireEvent } from '../../../../test-utils';
 import { Scope } from '../../../../src/models';
 
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
+jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
 
 const ruleDefinitionCode = 'my_code';
 
@@ -55,6 +56,24 @@ const scopesPayload: Scope[] = [
   },
 ];
 
+const addConditionFieldsPayload = [
+  {
+    id: 'system',
+    text: 'System',
+    children: [{
+      id: 'family',
+      text: 'Family',
+    }],
+  }, {
+    id: 'marketing',
+    text: 'Marketing',
+    children: [{
+      id: 'name',
+      text: 'Name',
+    }]
+  }
+];
+
 const setIsDirty = (_isDirty: boolean) => {};
 
 describe('EditRules', () => {
@@ -67,7 +86,7 @@ describe('EditRules', () => {
     fetchMock.mockResponses(
       [JSON.stringify(ruleDefinitionPayload), { status: 200 }],
       [JSON.stringify(localesPayload), { status: 200 }],
-      [JSON.stringify(scopesPayload), { status: 200 }]
+      [JSON.stringify(scopesPayload), { status: 200 }],
     );
     fetchMock.mockResponse(() => {
       return new Promise(resolve =>
@@ -113,7 +132,7 @@ describe('EditRules', () => {
     fetchMock.mockResponses(
       [JSON.stringify(ruleDefinitionPayload), { status: 200 }],
       [JSON.stringify(localesPayload), { status: 200 }],
-      [JSON.stringify(scopesPayload), { status: 200 }]
+      [JSON.stringify(scopesPayload), { status: 200 }],
     );
     // When
     const { findByText, findByLabelText } = render(
@@ -127,12 +146,42 @@ describe('EditRules', () => {
     expect(await findByLabelText('French (France)')).toBeInTheDocument();
     expect(await findByLabelText('English (United States)')).toBeInTheDocument();
   });
+
+  it('should add a Family Line', async () => {
+    const familiesPayload = [{
+      id: 'camcorders',
+      text: 'Camcorders'
+    }];
+    fetchMock.mockResponses(
+      [JSON.stringify(ruleDefinitionPayload), { status: 200 }],
+      //[JSON.stringify(localesPayload), { status: 200 }],
+      //[JSON.stringify(scopesPayload), { status: 200 }],
+      [JSON.stringify(addConditionFieldsPayload), { status: 200 }],
+      [JSON.stringify(familiesPayload), { status: 200 }]
+    );
+    // When
+    const { findByLabelText, findByText, findByTestId } = render(
+      <EditRules ruleDefinitionCode={ruleDefinitionCode} setIsDirty={setIsDirty}/>,
+      {
+        legacy: true,
+      }
+    );
+    // Then
+    userEvent.click(await findByLabelText('pimee_catalog_rule.form.edit.add_conditions'));
+    expect((await findByLabelText('pimee_catalog_rule.form.edit.add_conditions')).children.length).toBeGreaterThan(1);
+    fireEvent.change(await findByLabelText('pimee_catalog_rule.form.edit.add_conditions'), {
+      target: { value: 'family' },
+    });
+    expect(await findByText('Family')).toBeInTheDocument();
+    expect((await findByTestId('condition-list')).children.length).toEqual(1);
+  });
+
   it('should render an error', async () => {
     // Given
     fetchMock.mockResponses(
       [JSON.stringify({}), { status: 404 }],
       [JSON.stringify(localesPayload), { status: 200 }],
-      [JSON.stringify(scopesPayload), { status: 200 }]
+      [JSON.stringify(scopesPayload), { status: 200 }],
     )
     // When
     const { findByText } = render(

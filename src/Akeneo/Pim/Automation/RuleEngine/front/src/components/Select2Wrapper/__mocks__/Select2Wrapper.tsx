@@ -1,30 +1,49 @@
 import React, { ChangeEvent } from 'react';
-import { Select2Props, Select2Wrapper as BaseWrapper } from '../Select2Wrapper';
+import { option, optionsGroup, Select2Props, Select2Wrapper as BaseWrapper } from '../Select2Wrapper';
 import { Label } from '../../Labels';
-
-type option = { id: number | string; text: string };
+import { httpGet } from "../../../fetch";
 
 const Select2Wrapper: typeof BaseWrapper = ({
-  data,
+  data = [],
   hiddenLabel = false,
   id,
   label,
   onChange,
   value,
   multiple = false,
+  placeholder,
+  ajax,
+  onSelecting,
 }: Select2Props) => {
+  const [ options, setOptions ] = React.useState<(option | optionsGroup)[]>(data as (option|optionsGroup)[]);
+
+  const handleClick = () => {
+    if (options.length === 0 && ajax) {
+      const url = ajax.url;
+      const result = httpGet(url);
+      if (undefined === result) {
+        throw new Error(`You did not mock the result of ${url}!`)
+      }
+      result.then((response) => {
+        response.json().then((fetchedOptions: (option | optionsGroup)[]) => {
+          setOptions(fetchedOptions);
+        });
+      });
+    }
+  }
+
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    if (onChange) {
+    if (onSelecting) {
+      onSelecting({
+        preventDefault: event.preventDefault.bind(event),
+        val: event.target.value,
+      });
+    } else if (onChange) {
       onChange(event.target.value);
     }
   };
 
-  let computedData: option[] = [];
-  if (data) {
-    computedData = data;
-  }
-
-  const defaultValue = value || computedData[0].id;
+  const defaultValue = value || (options[0] ? options[0].id : '');
 
   return (
     <>
@@ -32,14 +51,28 @@ const Select2Wrapper: typeof BaseWrapper = ({
       <select
         id={id}
         data-testid={id}
-        defaultValue={defaultValue}
+        defaultValue={defaultValue || ''}
         onChange={handleChange}
+        onClick={handleClick}
         multiple={multiple}>
-        {computedData.map(({ id, text }) => (
-          <option key={id} value={id}>
-            {text}
-          </option>
-        ))}
+        {placeholder ? (
+          <option disabled value={''}>{placeholder}</option>
+        ) : ''}
+        {options.map((option: (option|optionsGroup), i) => {
+          return option.hasOwnProperty('children') ? (
+            <optgroup key={option.id || i} label={option.text}>
+              {(option as optionsGroup).children.map((subOption, j) => (
+                <option key={subOption.id || j} value={subOption.id || j}>
+                  {subOption.text}
+                </option>
+              ))}
+            </optgroup>
+          ) : (
+            <option key={option.id || i} value={option.id || i}>
+              {option.text}
+            </option>
+          )
+        })}
       </select>
     </>
   );

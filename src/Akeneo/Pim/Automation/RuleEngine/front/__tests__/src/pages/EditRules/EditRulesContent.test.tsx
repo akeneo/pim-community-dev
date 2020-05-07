@@ -5,6 +5,7 @@ import { render, act } from '../../../../test-utils';
 import { IndexedScopes } from '../../../../src/repositories/ScopeRepository';
 
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
+jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
 
 const setIsDirty = (_isDirty: boolean) => {};
 

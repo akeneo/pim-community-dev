@@ -141,7 +141,7 @@ const RuleProductSelection: React.FC<Props> = ({
         </a>
       </SmallHelper>
       <div className='AknGrid AknGrid--unclickable'>
-        <div className='AknGrid-body'>
+        <div className='AknGrid-body' data-testid={'condition-list'}>
           {conditions.map((condition, i) => {
             return (
               condition && (
