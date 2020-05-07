@@ -99,6 +99,7 @@ const Select2Wrapper: React.FC<Props> = ({
       $select.on('change', (event: Select2Event) => onChange(event.val));
     }
     if (onSelecting) {
+      $select.off('select2-selecting');
       $select.on('select2-selecting', onSelecting);
     }
 
@@ -125,6 +126,7 @@ const Select2Wrapper: React.FC<Props> = ({
     }
     const $select = $(select2Ref.current) as any;
     if (onSelecting) {
+      $select.off('select2-selecting');
       $select.on('select2-selecting', onSelecting);
     }
   }, [onSelecting]);
