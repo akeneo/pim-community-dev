@@ -7,7 +7,9 @@ const unitConfig = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   coveragePathIgnorePatterns: [
-    'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/context/',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/public/react/legacy-bridge',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/public/react/shared/components',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/public/react/shared/icons',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/components/',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/icons/',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/illustrations/',

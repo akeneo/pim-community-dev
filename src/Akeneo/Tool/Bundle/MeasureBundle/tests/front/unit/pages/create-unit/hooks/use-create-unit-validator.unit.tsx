@@ -1,8 +1,12 @@
 'use strict';
 
+import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {renderHook} from '@testing-library/react-hooks';
 import {useCreateUnitValidator} from 'akeneomeasure/pages/create-unit/hooks/use-create-unit-validator';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+
+jest.mock('@akeneo-pim-community/legacy-bridge/provider/dependencies.ts');
 
 declare global {
   namespace NodeJS {
@@ -11,6 +15,8 @@ declare global {
     }
   }
 }
+
+const wrapper = ({children}) => <DependenciesProvider>{children}</DependenciesProvider>;
 
 afterEach(() => {
   global.fetch && global.fetch.mockClear();
@@ -43,7 +49,7 @@ test('It returns a success response if submitted data is valid', async () => {
     ok: true,
   }));
 
-  const {result} = renderHook(() => useCreateUnitValidator());
+  const {result} = renderHook(() => useCreateUnitValidator(), {wrapper});
   const validate = result.current;
 
   expect(await validate(measurementFamilyCode, unit)).toEqual({
@@ -58,7 +64,7 @@ test('It returns a list of errors when there is a validation problem', async () 
     json: () => Promise.resolve(errors),
   }));
 
-  const {result} = renderHook(() => useCreateUnitValidator());
+  const {result} = renderHook(() => useCreateUnitValidator(), {wrapper});
   const validate = result.current;
 
   expect(await validate(measurementFamilyCode, unit)).toEqual({
@@ -72,7 +78,7 @@ test('An error is thrown if the server does not respond correctly', async () => 
     ok: false,
   }));
 
-  const {result} = renderHook(() => useCreateUnitValidator());
+  const {result} = renderHook(() => useCreateUnitValidator(), {wrapper});
   const validate = result.current;
 
   expect(validate(measurementFamilyCode, unit)).rejects.toThrow();

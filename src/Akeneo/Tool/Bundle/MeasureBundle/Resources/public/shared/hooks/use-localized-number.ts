@@ -1,9 +1,8 @@
-import {UserContext} from 'akeneomeasure/context/user-context';
-import {useContext} from 'react';
 import {unformatNumber, formatNumber} from 'akeneomeasure/shared/tools/number';
+import {useUserContext} from '@akeneo-pim-community/legacy-bridge';
 
 const useLocalizedNumber = (): [(number: string) => string, (number: string) => string] => {
-  const decimalSeparator = useContext(UserContext)('ui_locale_decimal_separator');
+  const decimalSeparator = useUserContext().get('ui_locale_decimal_separator');
 
   return [formatNumber(decimalSeparator), unformatNumber(decimalSeparator)];
 };

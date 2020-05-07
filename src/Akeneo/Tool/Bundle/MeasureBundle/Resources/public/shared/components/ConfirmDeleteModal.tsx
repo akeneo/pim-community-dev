@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {
   Modal,
@@ -7,11 +7,11 @@ import {
   ModalTitle,
   ModalDescription,
 } from 'akeneomeasure/shared/components/Modal';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
-import {Button} from 'akeneomeasure/shared/components/Button';
 import {TrashIllustration} from 'akeneomeasure/shared/illustrations/TrashIllustration';
 import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {Button} from '@akeneo-pim-community/shared';
 
 const StyledTitle = styled(ModalTitle)`
   margin-bottom: 0;
@@ -32,7 +32,7 @@ type ConfirmModalProps = {
 };
 
 const ConfirmDeleteModal = ({description, onConfirm, onCancel}: ConfirmModalProps) => {
-  const __ = useContext(TranslateContext);
+  const __ = useTranslate();
 
   useShortcut(Key.Escape, onCancel);
 

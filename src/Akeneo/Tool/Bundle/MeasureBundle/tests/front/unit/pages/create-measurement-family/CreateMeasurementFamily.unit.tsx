@@ -4,8 +4,11 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
 import {act, fireEvent, getByLabelText, getByText} from '@testing-library/react';
-import {AkeneoThemeProvider} from 'akeneomeasure/AkeneoThemeProvider';
+import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+
+jest.mock('@akeneo-pim-community/legacy-bridge/provider/dependencies.ts');
 
 declare global {
   namespace NodeJS {
@@ -41,9 +44,11 @@ afterEach(() => {
 test('It renders without errors', async () => {
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <CreateMeasurementFamily onClose={() => {}} />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <CreateMeasurementFamily onClose={() => {}} />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -59,9 +64,11 @@ test('I can fill the fields and save', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <CreateMeasurementFamily onClose={mockOnClose} />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <CreateMeasurementFamily onClose={mockOnClose} />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });

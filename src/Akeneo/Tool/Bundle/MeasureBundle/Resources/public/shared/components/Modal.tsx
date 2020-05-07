@@ -1,7 +1,7 @@
 import React, {PropsWithChildren, ReactElement} from 'react';
 import styled from 'styled-components';
-import {akeneoTheme} from 'akeneomeasure/shared/theme';
 import {CloseIcon} from 'akeneomeasure/shared/icons/CloseIcon';
+import {useAkeneoTheme} from '@akeneo-pim-community/shared';
 
 const Modal = styled.div.attrs(() => ({className: 'AknFullPage'}))``;
 
@@ -21,11 +21,15 @@ const ModalCloseButtonContainer = styled.button`
   }
 `;
 
-const ModalCloseButton = ({title, ...props}: {title: string} & any) => (
-  <ModalCloseButtonContainer title={title} tabIndex={0} aria-label={title} {...props}>
-    <CloseIcon color={akeneoTheme.color.grey100} title={title} size={24} />
-  </ModalCloseButtonContainer>
-);
+const ModalCloseButton = ({title, ...props}: {title: string} & any) => {
+  const akeneoTheme = useAkeneoTheme();
+
+  return (
+    <ModalCloseButtonContainer title={title} tabIndex={0} aria-label={title} {...props}>
+      <CloseIcon color={akeneoTheme.color.grey100} title={title} size={24} />
+    </ModalCloseButtonContainer>
+  );
+};
 
 type ModalWithIllustationProps = {
   illustration: ReactElement;

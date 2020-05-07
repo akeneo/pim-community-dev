@@ -2,8 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {act, getByRole, getByText, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import {AkeneoThemeProvider} from 'akeneomeasure/AkeneoThemeProvider';
+import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {UnitRow} from 'akeneomeasure/pages/edit/unit-tab/UnitRow';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+
+jest.mock('@akeneo-pim-community/legacy-bridge/provider/dependencies.ts');
 
 const unit = {
   code: 'SQUARE_METER',
@@ -33,13 +36,15 @@ afterEach(() => {
 test('It displays a unit row', async () => {
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <table>
-          <tbody>
-            <UnitRow unit={unit} isStandardUnit={true} isSelected={true} onRowSelected={() => {}} />
-          </tbody>
-        </table>
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <table>
+            <tbody>
+              <UnitRow unit={unit} isStandardUnit={true} isSelected={true} onRowSelected={() => {}} />
+            </tbody>
+          </table>
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -56,13 +61,15 @@ test('It selects the row when clicking on it', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <table>
-          <tbody>
-            <UnitRow unit={unit} isStandardUnit={true} isSelected={isSelected} onRowSelected={onRowSelected} />
-          </tbody>
-        </table>
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <table>
+            <tbody>
+              <UnitRow unit={unit} isStandardUnit={true} isSelected={isSelected} onRowSelected={onRowSelected} />
+            </tbody>
+          </table>
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -79,13 +86,15 @@ test('It selects the row when clicking on it', async () => {
 test('It displays an error badge if it is invalid', async () => {
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <table>
-          <tbody>
-            <UnitRow unit={unit} isStandardUnit={true} isInvalid={true} onRowSelected={() => {}} />
-          </tbody>
-        </table>
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <table>
+            <tbody>
+              <UnitRow unit={unit} isStandardUnit={true} isInvalid={true} onRowSelected={() => {}} />
+            </tbody>
+          </table>
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
