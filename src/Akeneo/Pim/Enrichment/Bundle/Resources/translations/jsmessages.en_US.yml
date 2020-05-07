@@ -89,12 +89,18 @@ pim_enrich.entity.product:
             show_products: Display products
             show_groups: Display groups
             number_of_associations: "{{ productCount }} product(s), {{ productModelCount }} product model(s) and {{ groupCount }} group(s)"
+            number_of_quantified_associations: "{{ productCount }} product(s) and {{ productModelCount }} product model(s)"
             association_type_selector: Association type
             target: Target
             manage: Add {{ associationType }} associations
             manage_description: Select the products you want to associate with product "{{ productLabel }}"
             mass_edit_description: Select the products you want to associate to the {{ productCount }} selected product(s)
             add_associations: Add associations
+            variant_products: Variant products
+            quantified:
+                quantity: Quantity
+            search:
+                placeholder: Search on label or identifier
         attribute_filter:
             display: Display
             all: All attributes

@@ -7,7 +7,9 @@
 <% } else { %>
 <div class="tabbable">
   <div class="tab-content">
-    <div class="<%- datagridName %><% if ('products' !== currentAssociationTarget) { %> hide<% } %>">
+    <div
+      class="association-grid-container <%- datagridName %><% if ('products' !== currentAssociationTarget || isQuantifiedAssociation) { %> hide<% } %>"
+    >
       <div class="AknGrid AknGrid--gallery AknGrid--inner">
         <div id="grid-<%- datagridName %>" data-type="datagrid">
           <% if (addAssociationVisible) { %>
@@ -24,9 +26,13 @@
       </div>
     </div>
 
-    <div class="association-group-grid<% if ('groups' !== currentAssociationTarget) { %> hide<% } %>">
+    <div
+      class="association-grid-container  association-group-grid<% if ('groups' !== currentAssociationTarget || isQuantifiedAssociation) { %> hide<% } %>"
+    >
       <div id="grid-association-group-grid" data-type="datagrid"></div>
     </div>
+
+    <div id="product-quantified-associations" class="<%- !isQuantifiedAssociation && 'hide' %>"></div>
 
     <div class="selection-inputs">
       <% _.each(associationTypes, function (associationType) { %>
