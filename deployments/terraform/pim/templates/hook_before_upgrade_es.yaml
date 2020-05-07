@@ -1,4 +1,4 @@
-{{- if .Values.pim.hook.upgradeES.enabled }}
+{{ if .Values.pim.hook.upgradeES.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:

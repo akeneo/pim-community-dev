@@ -1,4 +1,4 @@
-{{- if .Values.pim.hook.upgradePim.enabled }}
+{{ if .Values.pim.hook.upgradePim.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -40,9 +40,9 @@ spec:
             - { name: APP_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
             - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
             - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
-{{- if .Values.common.phpConfCLI }}
-{{ toYaml .Values.common.phpConfCLI  | indent 12 }}
-{{- end }}
+{{- if .Values.common.phpConfCLI -}}
+{{ toYaml .Values.common.phpConfCLI  | nindent 12 }}
+{{- end -}}
           volumeMounts:
             - name: google-cloud-pim-storage-key
               mountPath: /var/secrets/google/srnt.json

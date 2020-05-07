@@ -1,6 +1,6 @@
-{{ $tplCtx := . }}
-{{- range $jobName, $jobOptions := .Values.pim.jobs }}
-{{- if $jobOptions.enabled }}
+{{- $tplCtx := . -}}
+{{- range $jobName, $jobOptions := .Values.pim.jobs -}}
+{{- if $jobOptions.enabled -}}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -42,11 +42,11 @@ spec:
             imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
             command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console {{ $jobOptions.pimCommand }}"']
             resources:
-              {{- if $jobOptions.resources }}
-              {{- toYaml $jobOptions.resources | nindent 14 }}
-              {{- else }}
-              {{- toYaml $tplCtx.Values.pim.resources | nindent 14 }}
-              {{- end }}
+              {{- if $jobOptions.resources -}}
+              {{ toYaml $jobOptions.resources | nindent 14 }}
+              {{- else -}}
+              {{ toYaml $tplCtx.Values.pim.resources | nindent 14 }}
+              {{- end -}}
             volumeMounts:
               - name: google-cloud-pim-storage-key
                 mountPath: /var/secrets/google/srnt.json
@@ -60,9 +60,9 @@ spec:
               - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
               - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
               - { name: CONTAINER_NAME, value: php }
-              {{- if $tplCtx.Values.common.phpConfCLI }}
-              {{- toYaml $tplCtx.Values.common.phpConfCLI  | nindent 14 }}
-              {{- end }}
+              {{- if $tplCtx.Values.common.phpConfCLI -}}
+              {{ toYaml $tplCtx.Values.common.phpConfCLI  | nindent 14 }}
+              {{- end -}}
           restartPolicy: OnFailure
           volumes:
             - name: google-cloud-pim-storage-key
@@ -72,5 +72,5 @@ spec:
                 - key: srntPimStorageKey
                   path: srnt.json
 ---
-{{- end }}
-{{- end }}
+{{ end -}}
+{{ end -}}

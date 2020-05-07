@@ -1,4 +1,4 @@
-{{- if .Values.pim.hook.addAdmin.enabled }}
+{{ if .Values.pim.hook.addAdmin.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -47,10 +47,9 @@ spec:
             - { name: PIM_ADMIN_EMAIL, value: {{ .Values.pim.defaultAdminUser.email | quote }} }
             - { name: PIM_ADMIN_PASSWORD, value: {{ .Values.pim.defaultAdminUser.password | quote }} }
             - { name: PIM_ADMIN_UI_LOCALE, value: {{ .Values.pim.defaultAdminUser.uiLocale | quote }} }
-
-{{- if .Values.common.phpConfCLI }}
-{{ toYaml .Values.common.phpConfCLI  | indent 12 }}
-{{- end }}
+{{- if .Values.common.phpConfCLI -}}
+{{ toYaml .Values.common.phpConfCLI  | nindent 12 }}
+{{- end -}}
           volumeMounts:
             - name: google-cloud-pim-storage-key
               mountPath: /var/secrets/google/srnt.json
