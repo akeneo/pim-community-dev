@@ -8,6 +8,7 @@
 - PIM-9138: Rules import not working with asset manager
 - PIM-9196: Allow the search on label and code on the rules grid
 - PIM-9197: Fix the rule execution when attribute code is not in lower case
+- PIM-9239: Fix proposal datagrid when there is a product model proposal with an empty value suggestion
 
 ## Improvements
 
