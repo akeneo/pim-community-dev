@@ -102,10 +102,15 @@ trait EntityWithQuantifiedAssociationTrait
             return;
         }
 
-        $this->rawQuantifiedAssociations = $this->quantifiedAssociations->normalizeWithMapping(
+        $normalized = $this->quantifiedAssociations->normalizeWithMapping(
             $mappedProductIdentifiers,
             $mappedProductModelIdentifiers
         );
+
+        // In the database, `rawQuantifiedAssociations` is `null` by default.
+        // Replacing `null` by `[]` will trigger doctrine events and the versionning.
+        // Instead, we store `null` if there is no quantified associations.
+        $this->rawQuantifiedAssociations = empty($normalized) ? null : $normalized;
     }
 
     /**
