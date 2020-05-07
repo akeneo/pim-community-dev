@@ -1,6 +1,3 @@
-import React, {ReactNode} from 'react';
-import {ThemeProvider} from 'styled-components';
-
 type AkeneoTheme = {
   color: {
     grey60: string;
@@ -115,8 +112,4 @@ const akeneoTheme: AkeneoTheme = {
   },
 };
 
-const AkeneoThemeProvider = ({children}: {children?: ReactNode}) => (
-  <ThemeProvider theme={akeneoTheme}>{children}</ThemeProvider>
-);
-
-export {AkeneoThemeProvider, akeneoTheme, AkeneoTheme};
+export {akeneoTheme, AkeneoTheme};

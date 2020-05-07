@@ -9,5 +9,5 @@
       "@src/*": ["src/*"]
     }
   },
-  "include": ["src", "tests", "types.d.ts", "hooks", "index.ts", "provider", "components"]
+  "include": ["tests", "types.d.ts", "index.ts"]
 }
