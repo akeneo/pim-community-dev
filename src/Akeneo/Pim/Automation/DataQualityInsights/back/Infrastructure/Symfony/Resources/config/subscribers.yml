@@ -47,8 +47,3 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\RemoveEvaluationJobsAfterFreshInstallSubscriber:
-        arguments:
-            $db: '@database_connection'
-        tags:
-            - { name: kernel.event_subscriber }

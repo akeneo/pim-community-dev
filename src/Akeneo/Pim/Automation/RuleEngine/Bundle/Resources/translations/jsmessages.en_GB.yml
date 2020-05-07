@@ -73,7 +73,6 @@ pimee_catalog_rule:
       priority:
         label: Priority
       add_to_category: Add to category
-      remove_action: Remove action
       add_conditions: Add conditions
       count_products: "{{ count }} products and product models"
       product_selection: Product selection

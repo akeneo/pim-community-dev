@@ -114,6 +114,6 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
 
     private function cleanCriteriaOfDeletedProducts()
     {
-        $this->productCriterionEvaluationRepository->deleteUnknownProductsPendingEvaluations();
+        $this->productCriterionEvaluationRepository->deleteUnknownProductsEvaluations();
     }
 }

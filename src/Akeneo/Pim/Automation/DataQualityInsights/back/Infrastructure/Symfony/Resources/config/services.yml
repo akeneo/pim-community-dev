@@ -26,7 +26,6 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.product_criteria_evaluation_registry'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
     akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateCriteriaEvaluations
@@ -34,7 +33,6 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.product_model_criteria_evaluation_registry'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
     akeneo.pim.automation.data_quality_insights.create_missing_products_criteria_evaluations:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\CreateMissingCriteriaEvaluations
@@ -129,7 +127,7 @@ services:
     akeneo.pim.automation.data_quality_insights.consolidate_product_axes_rates:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateAxesRates
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.query.get_latest_product_criteria_evaluations'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_axis_rate'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeAxisRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
@@ -137,7 +135,7 @@ services:
     akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateAxesRates
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.query.get_latest_product_model_criteria_evaluations'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_criteria_evaluations'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_model_axis_rate'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeAxisRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
@@ -152,8 +150,6 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Application\PurgeOutdatedData:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository'
-            - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
-            - '@akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_axis_rate'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_model_axis_rate'
 
@@ -246,13 +242,13 @@ services:
     akeneo.pim.automation.data_quality_insights.get_product_title_suggestion:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductTitleSuggestion
         arguments:
-            $getLatestCriteriaEvaluationsByProductIdQuery: '@akeneo.pim.automation.data_quality_insights.query.get_latest_product_criteria_evaluations'
-            $getIgnoredProductTitleSuggestionQuery: '@akeneo.pim.automation.data_quality_insights.query.get_product_ignored_title_suggestion'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_ignored_title_suggestion'
 
     akeneo.pim.automation.data_quality_insights.get_product_model_title_suggestion:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductTitleSuggestion
         arguments:
-            $getLatestCriteriaEvaluationsByProductIdQuery: '@akeneo.pim.automation.data_quality_insights.query.get_latest_product_model_criteria_evaluations'
-            $getIgnoredProductTitleSuggestionQuery: '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ignored_title_suggestion'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_criteria_evaluations'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ignored_title_suggestion'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Structure\MapAttributeType: ~

@@ -16,10 +16,13 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Persi
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -46,11 +49,13 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Te
 
     public function test_it_finds_product_pending_criteria_evaluations()
     {
-        $criteriaEvaluations = $this->getCriteriaEvaluationsSample();
+        $criteriaEvaluations = $this->getPendingCriteriaEvaluationsSample();
         $this->persistProductCriteriaEvaluations($criteriaEvaluations);
 
+        $this->givenAProductWithOnlyEvaluationsDone(new ProductId(777));
+
         $evaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_pending_criteria_evaluations')
-            ->execute([42, 123]);
+            ->execute([42, 777, 123]);
 
         $expectedCriteriaEvaluationsProduct42 = (new Write\CriterionEvaluationCollection())
             ->add($criteriaEvaluations['product_42_pending_completeness'])
@@ -69,7 +74,7 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Te
 
     public function test_it_finds_product_models_pending_criteria_evaluations()
     {
-        $criteriaEvaluations = $this->getCriteriaEvaluationsSample();
+        $criteriaEvaluations = $this->getPendingCriteriaEvaluationsSample();
         $this->persistProductModelCriteriaEvaluations($criteriaEvaluations);
 
         $evaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_model_pending_criteria_evaluations')
@@ -121,7 +126,7 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Te
         $this->assertCount(count($expectedCriteriaEvaluations), $criteriaEvaluations);
 
         foreach ($criteriaEvaluations as $criterionEvaluation) {
-            $expectedCriterionEvaluation = $this->findCriterionEvaluationById($expectedCriteriaEvaluations, $criterionEvaluation->getId());
+            $expectedCriterionEvaluation = $this->findCriterionEvaluation($expectedCriteriaEvaluations, $criterionEvaluation->getProductId(), $criterionEvaluation->getCriterionCode());
             $this->assertNotNull($expectedCriterionEvaluation);
             $this->assertEqualsCriterionEvaluation($expectedCriterionEvaluation, $criterionEvaluation);
         }
@@ -129,59 +134,69 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Te
 
     private function assertEqualsCriterionEvaluation(Write\CriterionEvaluation $expectedCriterionEvaluation, Write\CriterionEvaluation $criterionEvaluation): void
     {
-        $this->assertEquals($expectedCriterionEvaluation->getId(), $criterionEvaluation->getId());
         $this->assertEquals($expectedCriterionEvaluation->getCriterionCode(), $criterionEvaluation->getCriterionCode());
         $this->assertEquals($expectedCriterionEvaluation->getStatus(), $criterionEvaluation->getStatus());
-        $this->assertEquals($expectedCriterionEvaluation->getCreatedAt()->format(Clock::TIME_FORMAT), $criterionEvaluation->getCreatedAt()->format(Clock::TIME_FORMAT));
+        $this->assertEvaluatedAtEquals($expectedCriterionEvaluation->getEvaluatedAt(), $criterionEvaluation->getEvaluatedAt());
     }
 
-    private function findCriterionEvaluationById(Write\CriterionEvaluationCollection $criteriaEvaluations, CriterionEvaluationId $id): ?Write\CriterionEvaluation
+    private function findCriterionEvaluation(Write\CriterionEvaluationCollection $criteriaEvaluations, ProductId $productId, CriterionCode $criterionCode): ?Write\CriterionEvaluation
     {
         foreach ($criteriaEvaluations as $criterionEvaluation) {
-            if ($criterionEvaluation->getId() == $id) {
+            if ($criterionEvaluation->getProductId() == $productId && $criterionEvaluation->getCriterionCode() == $criterionCode) {
                 return $criterionEvaluation;
             }
         }
+
+        return null;
     }
 
-    private function getCriteriaEvaluationsSample(): array
+    private function getPendingCriteriaEvaluationsSample(): array
     {
         return [
             'product_42_pending_completeness' => new Write\CriterionEvaluation(
-                new CriterionEvaluationId('95f124de-45cd-495e-ac58-349086ad6cd4'),
                 new CriterionCode('completeness'),
                 new ProductId(42),
-                new \DateTimeImmutable('2019-10-28 10:41:56.123'),
                 CriterionEvaluationStatus::pending()
             ),
-            'product_42_done_completeness' => new Write\CriterionEvaluation(
-                new CriterionEvaluationId('9a05eb2c-1d35-4465-acdd-c1f6fdd1dd35'),
-                new CriterionCode('completeness'),
-                new ProductId(42),
-                new \DateTimeImmutable('2019-10-26 11:41:56.123'),
-                CriterionEvaluationStatus::done()
-            ),
             'product_42_pending_spelling' => new Write\CriterionEvaluation(
-                new CriterionEvaluationId('bbd6cfd4-e2a8-47c0-8d7d-7d1a1a43bb39'),
                 new CriterionCode('spelling'),
                 new ProductId(42),
-                new \DateTimeImmutable('2019-10-28 10:40:56.653'),
                 CriterionEvaluationStatus::pending()
             ),
             'product_123_pending_spelling' => new Write\CriterionEvaluation(
-                new CriterionEvaluationId('d7bcae1e-30c9-4626-9c4f-d06cae03e77e'),
                 new CriterionCode('spelling'),
                 new ProductId(123),
-                new \DateTimeImmutable('2019-10-28 10:41:57.987'),
                 CriterionEvaluationStatus::pending()
             ),
             'product_456_pending_spelling' => new Write\CriterionEvaluation(
-                new CriterionEvaluationId('1774d7aa-6fc7-4519-a8a9-7d2887092aff'),
                 new CriterionCode('spelling'),
                 new ProductId(456),
-                new \DateTimeImmutable('2019-10-28 10:41:47.234'),
                 CriterionEvaluationStatus::pending()
             )
         ];
+    }
+
+    private function givenAProductWithOnlyEvaluationsDone(ProductId $productId)
+    {
+        $evaluation = new Write\CriterionEvaluation(
+            new CriterionCode('spelling'),
+            $productId,
+            CriterionEvaluationStatus::pending()
+        );
+
+        $evaluations = (new Write\CriterionEvaluationCollection())->add($evaluation);
+        $this->productCriterionEvaluationRepository->create($evaluations);
+
+        $evaluation->end(new Write\CriterionEvaluationResult());
+        $this->productCriterionEvaluationRepository->update($evaluations);
+    }
+
+    private function assertEvaluatedAtEquals(?\DateTimeImmutable $expectedDate, ?\DateTimeImmutable $date): void
+    {
+        if (null === $expectedDate) {
+            $this->assertNull($date);
+        } else {
+           $this->assertEquals($expectedDate->format(Clock::TIME_FORMAT), $date->format(Clock::TIME_FORMAT));
+        }
     }
 }

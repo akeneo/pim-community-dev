@@ -14,73 +14,38 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 final class CriterionEvaluation
 {
-    /**
-     * @var CriterionEvaluationId
-     */
-    private $id;
-
-    /**
-     * @var CriterionCode
-     */
+    /** @var CriterionCode */
     private $criterionCode;
 
-    /**
-     * @var ProductId
-     */
+    /** @var ProductId */
     private $productId;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $createdAt;
+    /** @var \DateTimeImmutable */
+    private $evaluatedAt;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $startedAt;
-
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $endedAt;
-
-    /**
-     * @var CriterionEvaluationStatus
-     */
+    /** @var CriterionEvaluationStatus */
     private $status;
 
-    /**
-     * @var CriterionEvaluationResult
-     */
+    /** @var CriterionEvaluationResult */
     private $result;
 
     public function __construct(
-        CriterionEvaluationId $id,
         CriterionCode $criterionCode,
         ProductId $productId,
-        \DateTimeImmutable $createdAt,
         CriterionEvaluationStatus $status
     ) {
         $this->criterionCode = $criterionCode;
         $this->productId = $productId;
-        $this->createdAt = $createdAt;
         $this->status = $status;
-
-        $this->startedAt = null;
-        $this->endedAt = null;
-        $this->result = null;
-        $this->id = $id;
     }
 
     public function start(): self
     {
-        $this->startedAt = new \DateTimeImmutable();
         $this->status = CriterionEvaluationStatus::inProgress();
 
         return $this;
@@ -88,8 +53,8 @@ final class CriterionEvaluation
 
     public function end(CriterionEvaluationResult $result): self
     {
-        $this->endedAt = new \DateTimeImmutable();
         $this->status = CriterionEvaluationStatus::done();
+        $this->evaluatedAt = new \DateTimeImmutable();
         $this->result = $result;
 
         return $this;
@@ -101,8 +66,7 @@ final class CriterionEvaluation
         $this->status = CriterionEvaluationStatus::pending();
 
         if (false === $criterionApplicability->isApplicable()) {
-            $this->startedAt = new \DateTimeImmutable();
-            $this->endedAt = new \DateTimeImmutable();
+            $this->evaluatedAt = new \DateTimeImmutable();
             $this->status = CriterionEvaluationStatus::done();
         }
 
@@ -133,9 +97,9 @@ final class CriterionEvaluation
         return $this->productId;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getEvaluatedAt(): ?\DateTimeImmutable
     {
-        return $this->createdAt;
+        return $this->evaluatedAt;
     }
 
     public function getStatus(): CriterionEvaluationStatus
@@ -148,23 +112,8 @@ final class CriterionEvaluation
         return $this->status->isPending();
     }
 
-    public function getStartedAt(): ?\DateTimeImmutable
-    {
-        return $this->startedAt;
-    }
-
-    public function getEndedAt(): ?\DateTimeImmutable
-    {
-        return $this->endedAt;
-    }
-
     public function getResult(): ?CriterionEvaluationResult
     {
         return $this->result;
-    }
-
-    public function getId(): CriterionEvaluationId
-    {
-        return $this->id;
     }
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\FilterProductValuesForTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\TitleFormattingServiceInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
@@ -19,7 +20,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -33,12 +33,14 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
     public function let(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         TitleFormattingServiceInterface $titleFormattingService,
-        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
+        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery,
+        FilterProductValuesForTitleFormatting $filterProductValuesForTitleFormatting
     ) {
         $this->beConstructedWith(
             $localesByChannelQuery,
             $titleFormattingService,
-            $getIgnoredProductTitleSuggestionQuery
+            $getIgnoredProductTitleSuggestionQuery,
+            $filterProductValuesForTitleFormatting
         );
     }
 
@@ -64,10 +66,8 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
 
         $this->evaluate(
             new Write\CriterionEvaluation(
-                new CriterionEvaluationId(),
                 new CriterionCode('criterion1'),
                 new ProductId(1),
-                new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending()
             ),
             new ProductValuesCollection()
@@ -76,7 +76,8 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
 
     public function it_evaluates_title_without_suggestions(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        TitleFormattingServiceInterface $titleFormattingService
+        TitleFormattingServiceInterface $titleFormattingService,
+        FilterProductValuesForTitleFormatting $filterProductValuesForTitleFormatting
     ) {
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
             [
@@ -110,9 +111,12 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
             ],
         ], function ($value) { return $value; });
 
+        $mainTitleProductValues = new ProductValues($mainTitleAttribute, $mainTitleValues);
         $productValues = (new ProductValuesCollection())
-            ->add(new ProductValues($mainTitleAttribute, $mainTitleValues))
+            ->add($mainTitleProductValues)
             ->add(new ProductValues($attributeTextNotToEvaluate, $textValuesNotToEvaluate));
+
+        $filterProductValuesForTitleFormatting->getMainTitleValues($productValues)->willReturn($mainTitleProductValues);
 
         $titleFormattingService->format(new ProductTitle('MacBook Pro Retina 13"'))->shouldBeCalledTimes(3)->willReturn(new ProductTitle('MacBook Pro Retina 13"'));
         $titleFormattingService->format(new ProductTitle('Titre non evalué'))->shouldNotBeCalled();
@@ -120,12 +124,15 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 100])
 
             ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(100))
             ->addStatus(new ChannelCode('mobile'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes(new ChannelCode('mobile'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 100])
 
             ->addRate(new ChannelCode('print'), new LocaleCode('en_US'), new Rate(100))
             ->addStatus(new ChannelCode('print'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes(new ChannelCode('print'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 100])
 
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), CriterionEvaluationResultStatus::notApplicable())
             ->addStatus(new ChannelCode('mobile'), new LocaleCode('fr_FR'), CriterionEvaluationResultStatus::notApplicable())
@@ -134,10 +141,8 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
 
         $this->evaluate(
             new Write\CriterionEvaluation(
-                new CriterionEvaluationId(),
                 new CriterionCode('criterion1'),
                 new ProductId(1),
-                new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending()
             ),
             $productValues
@@ -146,7 +151,8 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
 
     public function it_evaluates_title_with_suggestions(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        TitleFormattingServiceInterface $titleFormattingService
+        TitleFormattingServiceInterface $titleFormattingService,
+        FilterProductValuesForTitleFormatting $filterProductValuesForTitleFormatting
     ) {
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
             [
@@ -170,9 +176,12 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
             ],
         ], function ($value) { return $value; });
 
+        $mainTitleProductValues = new ProductValues($mainTitleAttribute, $mainTitleValues);
         $productValues = (new ProductValuesCollection())
-            ->add(new ProductValues($mainTitleAttribute, $mainTitleValues))
+            ->add($mainTitleProductValues)
             ->add(new ProductValues($attributeTextNotToEvaluate, $textValuesNotToEvaluate));
+
+        $filterProductValuesForTitleFormatting->getMainTitleValues($productValues)->willReturn($mainTitleProductValues);
 
         $titleFormattingService->format(new ProductTitle('Macbook Pro Retina 13" Azerty'))->shouldBeCalled()->willReturn(new ProductTitle('MacBook Pro Retina 13" AZERTY'));
         $titleFormattingService->format(new ProductTitle('Titre non evalué'))->shouldNotBeCalled();
@@ -180,17 +189,15 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(76))
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable'])
+            ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 76])
             ->addData('suggestions', new ChannelCode('ecommerce'), new LocaleCode('en_US'), 'MacBook Pro Retina 13" AZERTY')
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), CriterionEvaluationResultStatus::notApplicable())
         ;
 
         $this->evaluate(
             new Write\CriterionEvaluation(
-                new CriterionEvaluationId(),
                 new CriterionCode('criterion1'),
                 new ProductId(1),
-                new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending()
             ),
             $productValues
@@ -199,7 +206,8 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
 
     public function it_evaluates_title_with_suggestions_with_two_en_locales(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        TitleFormattingServiceInterface $titleFormattingService
+        TitleFormattingServiceInterface $titleFormattingService,
+        FilterProductValuesForTitleFormatting $filterProductValuesForTitleFormatting
     ) {
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
             [
@@ -215,7 +223,10 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
             ],
         ], function ($value) { return $value; });
 
-        $productValues = (new ProductValuesCollection())->add(new ProductValues($mainTitleAttribute, $mainTitleValues));
+        $mainTitleProductValues = new ProductValues($mainTitleAttribute, $mainTitleValues);
+        $productValues = (new ProductValuesCollection())->add($mainTitleProductValues);
+
+        $filterProductValuesForTitleFormatting->getMainTitleValues($productValues)->willReturn($mainTitleProductValues);
 
         $titleFormattingService->format(new ProductTitle('Macbook Pro Retina 13" Azerty'))->shouldBeCalled()->willReturn(new ProductTitle('MacBook Pro Retina 13" AZERTY'));
         $titleFormattingService->format(new ProductTitle('MacBook Pro Retina 13" Azerty'))->shouldBeCalled()->willReturn(new ProductTitle('MacBook Pro Retina 13" AZERTY'));
@@ -223,21 +234,19 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(76))
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable'])
+            ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 76])
             ->addData('suggestions', new ChannelCode('ecommerce'), new LocaleCode('en_US'), 'MacBook Pro Retina 13" AZERTY')
 
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_GB'), new Rate(88))
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_GB'), CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_GB'), ['attribute_as_main_title_localizable_scopable'])
+            ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_GB'), ['attribute_as_main_title_localizable_scopable' => 88])
             ->addData('suggestions', new ChannelCode('ecommerce'), new LocaleCode('en_GB'), 'MacBook Pro Retina 13" AZERTY')
         ;
 
         $this->evaluate(
             new Write\CriterionEvaluation(
-                new CriterionEvaluationId(),
                 new CriterionCode('criterion1'),
                 new ProductId(1),
-                new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending()
             ),
             $productValues
@@ -246,7 +255,8 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
     public function it_evaluates_title_with_ignored_suggestions(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         TitleFormattingServiceInterface $titleFormattingService,
-        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
+        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery,
+        FilterProductValuesForTitleFormatting $filterProductValuesForTitleFormatting
     ) {
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
             [
@@ -263,7 +273,10 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
             ],
         ], function ($value) { return $value; });
 
-        $productValues = (new ProductValuesCollection())->add(new ProductValues($mainTitleAttribute, $mainTitleValues));
+        $mainTitleProductValues = new ProductValues($mainTitleAttribute, $mainTitleValues);
+        $productValues = (new ProductValuesCollection())->add($mainTitleProductValues);
+
+        $filterProductValuesForTitleFormatting->getMainTitleValues($productValues)->willReturn($mainTitleProductValues);
 
         $titleFormattingService->format(new ProductTitle('Macbook Pro Retina 13" Azerty'))->shouldBeCalled()->willReturn(new ProductTitle('MacBook Pro Retina 13" AZERTY'));
 
@@ -271,14 +284,14 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
 
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
-            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done());
+            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 100])
+        ;
 
         $this->evaluate(
             new Write\CriterionEvaluation(
-                new CriterionEvaluationId(),
                 new CriterionCode('criterion1'),
                 $productId,
-                new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending()
             ),
             $productValues
@@ -287,7 +300,8 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
 
     public function it_sets_status_in_error_when_a_title_formatting_fails(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        TitleFormattingServiceInterface $titleFormattingService
+        TitleFormattingServiceInterface $titleFormattingService,
+        FilterProductValuesForTitleFormatting $filterProductValuesForTitleFormatting
     ) {
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
             'mobile' => ['en_US', 'en_CA'],
@@ -301,7 +315,10 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
             ],
         ], function ($value) { return $value; });
 
-        $productValues = (new ProductValuesCollection())->add(new ProductValues($mainTitleAttribute, $mainTitleValues));
+        $mainTitleProductValues = new ProductValues($mainTitleAttribute, $mainTitleValues);
+        $productValues = (new ProductValuesCollection())->add($mainTitleProductValues);
+
+        $filterProductValuesForTitleFormatting->getMainTitleValues($productValues)->willReturn($mainTitleProductValues);
 
         $titleFormattingService->format(new ProductTitle('MacBook Pro Retina 13"'))->willReturn(new ProductTitle('MacBook Pro Retina 13"'));
         $titleFormattingService->format(new ProductTitle('Fail'))->willThrow(new UnableToProvideATitleSuggestion());
@@ -310,14 +327,13 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
             ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(100))
             ->addStatus(new ChannelCode('mobile'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
             ->addStatus(new ChannelCode('mobile'), new LocaleCode('en_CA'), CriterionEvaluationResultStatus::error())
+            ->addRateByAttributes(new ChannelCode('mobile'), new LocaleCode('en_US'), ['attribute_as_main_title_localizable_scopable' => 100])
         ;
 
         $this->evaluate(
             new Write\CriterionEvaluation(
-                new CriterionEvaluationId(),
                 new CriterionCode('criterion1'),
                 new ProductId(1),
-                new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending()
             ),
             $productValues
@@ -325,7 +341,8 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
     }
 
     public function it_evaluates_its_applicability_for_a_collection_of_product_values_that_have_at_least_one_applicable_value(
-        GetLocalesByChannelQueryInterface $localesByChannelQuery
+        GetLocalesByChannelQueryInterface $localesByChannelQuery,
+        FilterProductValuesForTitleFormatting $filterProductValuesForTitleFormatting
     ) {
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
             'ecommerce' => ['en_US', 'fr_FR'],
@@ -343,8 +360,11 @@ class EvaluateTitleFormattingSpec extends ObjectBehavior
             ]
         ], function ($value) { return $value; });
 
-        $productValues = (new ProductValuesCollection())->add(new ProductValues($mainTitleAttribute, $mainTitleValues));
+        $mainTitleProductValues = new ProductValues($mainTitleAttribute, $mainTitleValues);
+        $productValues = (new ProductValuesCollection())->add($mainTitleProductValues);
 
+        $filterProductValuesForTitleFormatting->getMainTitleValues($productValues)->willReturn($mainTitleProductValues);
+        
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), CriterionEvaluationResultStatus::notApplicable())
             ->addStatus(new ChannelCode('mobile'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable())

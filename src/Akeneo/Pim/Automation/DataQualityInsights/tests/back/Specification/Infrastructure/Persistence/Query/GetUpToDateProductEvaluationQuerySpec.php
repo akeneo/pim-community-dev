@@ -27,12 +27,11 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestAxesRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -40,17 +39,17 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 
-final class GetUpToDateLatestProductEvaluationQuerySpec extends ObjectBehavior
+final class GetUpToDateProductEvaluationQuerySpec extends ObjectBehavior
 {
     public function let(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery
     ) {
-        $this->beConstructedWith($getLatestCriteriaEvaluationsByProductIdQuery, $getLatestProductAxesRatesQuery, new AxisRegistry());
+        $this->beConstructedWith($getCriteriaEvaluationsByProductIdQuery, $getLatestProductAxesRatesQuery, new AxisRegistry());
     }
 
     public function it_returns_the_latest_product_evaluation_for_a_product_id(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery
     ) {
         $productId = new ProductId(42);
@@ -63,7 +62,7 @@ final class GetUpToDateLatestProductEvaluationQuerySpec extends ObjectBehavior
             ->add($spellingEvaluation)
             ->add($completenessEvaluation)
         ;
-        $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($criteriaEvaluations);
+        $getCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($criteriaEvaluations);
 
         $axesRates = $this->givenAxesRates();
         $getLatestProductAxesRatesQuery->byProductId($productId)->willReturn($axesRates);
@@ -86,14 +85,14 @@ final class GetUpToDateLatestProductEvaluationQuerySpec extends ObjectBehavior
     }
 
     public function it_returns_an_empty_product_evaluation_if_there_is_no_criterion_evaluation(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery
     ) {
         $productId = new ProductId(42);
         $enrichment = new Enrichment();
         $consistency = new Consistency();
 
-        $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn(new CriterionEvaluationCollection());
+        $getCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn(new CriterionEvaluationCollection());
         $getLatestProductAxesRatesQuery->byProductId($productId)->willReturn(new AxisRateCollection());
 
         $expectedAxesEvaluations = (new AxisEvaluationCollection())
@@ -128,14 +127,11 @@ final class GetUpToDateLatestProductEvaluationQuerySpec extends ObjectBehavior
         ];
 
         return new CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productId,
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::done(),
-            new CriterionEvaluationResult($evaluateSpellingRates, $evaluateSpellingStatus, $evaluateSpellingData),
-            new \DateTimeImmutable(),
-            new \DateTimeImmutable()
+            new CriterionEvaluationResult($evaluateSpellingRates, $evaluateSpellingStatus, $evaluateSpellingData)
         );
     }
 
@@ -154,14 +150,11 @@ final class GetUpToDateLatestProductEvaluationQuerySpec extends ObjectBehavior
         ];
 
         return new CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE),
             $productId,
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::done(),
-            new CriterionEvaluationResult($completenessOfRequiredAttributesRates, $completenessOfRequiredAttributesStatus, $completenessOfRequiredAttributesData),
-            new \DateTimeImmutable(),
-            new \DateTimeImmutable()
+            new CriterionEvaluationResult($completenessOfRequiredAttributesRates, $completenessOfRequiredAttributesStatus, $completenessOfRequiredAttributesData)
         );
     }
 

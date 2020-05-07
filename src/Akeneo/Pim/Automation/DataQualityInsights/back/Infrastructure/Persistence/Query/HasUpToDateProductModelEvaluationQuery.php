@@ -52,7 +52,7 @@ WHERE product_model.id IN (:product_ids)
   AND EXISTS(
         SELECT 1 FROM pimee_data_quality_insights_product_model_criteria_evaluation AS evaluation
         WHERE evaluation.product_id = product_model.id
-          AND evaluation.created_at >=
+          AND evaluation.evaluated_at >=
               IF(parent.updated > product_model.updated, parent.updated, product_model.updated)
     )
 SQL;

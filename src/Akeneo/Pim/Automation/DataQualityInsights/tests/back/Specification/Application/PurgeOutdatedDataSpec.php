@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\PurgeOutdatedData;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
@@ -28,15 +26,11 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
 {
     public function let(
         DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository,
-        CriterionEvaluationRepositoryInterface $productCriterionEvaluationRepository,
-        CriterionEvaluationRepositoryInterface $productModelCriterionEvaluationRepository,
         ProductAxisRateRepositoryInterface $productAxisRateRepository,
         ProductAxisRateRepositoryInterface $productModelAxisRateRepository
     ) {
         $this->beConstructedWith(
             $dashboardRatesProjectionRepository,
-            $productCriterionEvaluationRepository,
-            $productModelCriterionEvaluationRepository,
             $productAxisRateRepository,
             $productModelAxisRateRepository
         );
@@ -80,22 +74,6 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
         $productModelAxisRateRepository->purgeUntil($limitDate)->shouldBeCalled();
 
         $this->purgeProductAxisRatesFrom($purgeDate);
-    }
-
-    public function it_purges_outdated_criterion_evaluations(
-        CriterionEvaluationRepositoryInterface $productCriterionEvaluationRepository,
-        CriterionEvaluationRepositoryInterface $productModelCriterionEvaluationRepository
-    ) {
-        $purgeDate = new \DateTimeImmutable('2019-12-31');
-        $limitDate = new \DateTimeImmutable('2019-12-30');
-
-        $productCriterionEvaluationRepository->purgeUntil($limitDate)->shouldBeCalled();
-        $productModelCriterionEvaluationRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::EVALUATIONS_RETENTION_DAYS));
-            return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
-        }))->shouldBeCalled();
-
-        $this->purgeCriterionEvaluationsFrom($purgeDate);
     }
 
     private function formatPurgeDatesForComparison(DashboardPurgeDateCollection $purgeDates): array

@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 interface Clock
 {
-    const TIME_FORMAT = 'Y-m-d H:i:s.v';
+    const TIME_FORMAT = 'Y-m-d H:i:s';
 
     public function getCurrentTime(): \DateTimeImmutable;
 

@@ -31,8 +31,9 @@ class CriterionEvaluationRepository
     public function createCriterionEvaluationsForProducts(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
-INSERT IGNORE INTO pimee_data_quality_insights_criteria_evaluation
-    (id, criterion_code, product_id, created_at, status, pending) VALUES %s;
+INSERT INTO pimee_data_quality_insights_product_criteria_evaluation
+    (product_id, criterion_code, status) VALUES (:%s, :%s, :%s)
+ON DUPLICATE KEY UPDATE status = :%s;
 SQL;
 
         $this->createFromSqlQueryFormat($queryFormat, $criteriaEvaluations);
@@ -41,8 +42,9 @@ SQL;
     public function createCriterionEvaluationsForProductModels(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
-INSERT IGNORE INTO pimee_data_quality_insights_product_model_criteria_evaluation
-    (id, criterion_code, product_id, created_at, status, pending) VALUES %s;
+INSERT INTO pimee_data_quality_insights_product_model_criteria_evaluation
+    (product_id, criterion_code, status) VALUES (:%s, :%s, :%s)
+ON DUPLICATE KEY UPDATE status = :%s;
 SQL;
 
         $this->createFromSqlQueryFormat($queryFormat, $criteriaEvaluations);
@@ -51,9 +53,9 @@ SQL;
     public function updateCriterionEvaluationsForProducts(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
-UPDATE pimee_data_quality_insights_criteria_evaluation
-SET criterion_code = :%s, product_id = :%s, started_at = :%s, ended_at = :%s, status = :%s, pending = :%s, result = :%s
-WHERE id = :%s;
+UPDATE pimee_data_quality_insights_product_criteria_evaluation
+SET evaluated_at = :%s, status = :%s, result = :%s
+WHERE product_id = :%s AND criterion_code = :%s;
 SQL;
         $this->updateFromSqlQueryFormat($queryFormat, $criteriaEvaluations);
     }
@@ -62,8 +64,8 @@ SQL;
     {
         $queryFormat = <<<SQL
 UPDATE pimee_data_quality_insights_product_model_criteria_evaluation
-SET criterion_code = :%s, product_id = :%s, started_at = :%s, ended_at = :%s, status = :%s, pending = :%s, result = :%s
-WHERE id = :%s;
+SET evaluated_at = :%s, status = :%s, result = :%s
+WHERE product_id = :%s AND criterion_code = :%s;
 SQL;
         $this->updateFromSqlQueryFormat($queryFormat, $criteriaEvaluations);
     }
@@ -74,33 +76,24 @@ SQL;
             return;
         }
 
-        $valuesPlaceholders = [];
+        $queries = [];
         $queryParametersValues = [];
         $queryParametersTypes = [];
         foreach ($criteriaEvaluations as $index => $criterionEvaluation) {
-            $id = sprintf('id_%d', $index);
             $productId = sprintf('productId_%d', $index);
             $criterionCode = sprintf('criterionCode_%d', $index);
-            $createdAt = sprintf('createdAt_%d', $index);
             $status = sprintf('status_%d', $index);
-            $pending = sprintf('pending_%d', $index);
 
-            $valuesPlaceholders[] = sprintf('(:%s, :%s, :%s, :%s, :%s, :%s)', $id, $criterionCode, $productId, $createdAt, $status, $pending);
+            $queries[] = sprintf($queryFormat, $productId, $criterionCode, $status, $status);
 
-            $queryParametersValues[$id] = strval($criterionEvaluation->getId());
             $queryParametersValues[$criterionCode] = strval($criterionEvaluation->getCriterionCode());
             $queryParametersValues[$productId] = $criterionEvaluation->getProductId()->toInt();
-            $queryParametersValues[$createdAt] = $criterionEvaluation->getCreatedAt()->format(Clock::TIME_FORMAT);
             $queryParametersValues[$status] = $criterionEvaluation->getStatus();
-            $queryParametersValues[$pending] = $criterionEvaluation->isPending() ? 1 : null;
 
             $queryParametersTypes[$productId] = \PDO::PARAM_INT;
-            $queryParametersTypes[$pending] = \PDO::PARAM_INT;
         }
 
-        $valuesPlaceholders = implode(', ', $valuesPlaceholders);
-        $query = sprintf($queryFormat, $valuesPlaceholders);
-
+        $query = implode("\n", $queries);
         $success = false;
         $retry = 0;
 
@@ -139,7 +132,7 @@ SQL;
         try {
             $this->dbConnection->executeQuery('SET autocommit=0');
             $this->dbConnection->executeQuery('SET foreign_key_checks=0');
-            $this->dbConnection->executeQuery('LOCK TABLES pimee_data_quality_insights_criteria_evaluation WRITE');
+            $this->dbConnection->executeQuery('LOCK TABLES pimee_data_quality_insights_product_criteria_evaluation WRITE');
             $this->dbConnection->executeQuery($query, $queryParametersValues, $queryParametersTypes);
             $this->dbConnection->executeQuery('COMMIT');
         } finally {
@@ -161,28 +154,21 @@ SQL;
 
         /** @var Write\CriterionEvaluation $criterionEvaluation */
         foreach ($criteriaEvaluations as $index => $criterionEvaluation) {
-            $id = sprintf('id_%d', $index);
             $productId = sprintf('productId_%d', $index);
             $criterionCode = sprintf('criterionCode_%d', $index);
-            $startedAt = sprintf('startedAt_%d', $index);
-            $endedAt = sprintf('endedAt_%d', $index);
+            $evaluatedAt = sprintf('evaluatedAt_%d', $index);
             $status = sprintf('status_%d', $index);
-            $pending = sprintf('pending_%d', $index);
             $result = sprintf('result_%d', $index);
 
-            $queries[] = sprintf($sqlQueryFormat, $criterionCode, $productId, $startedAt, $endedAt, $status, $pending, $result, $id);
+            $queries[] = sprintf($sqlQueryFormat, $evaluatedAt, $status, $result, $productId, $criterionCode);
 
-            $queryParametersValues[$id] = strval($criterionEvaluation->getId());
             $queryParametersValues[$criterionCode] = strval($criterionEvaluation->getCriterionCode());
             $queryParametersValues[$productId] = $criterionEvaluation->getProductId()->toInt();
-            $queryParametersValues[$startedAt] = $this->formatDate($criterionEvaluation->getStartedAt());
-            $queryParametersValues[$endedAt] = $this->formatDate($criterionEvaluation->getEndedAt());
+            $queryParametersValues[$evaluatedAt] = $this->formatDate($criterionEvaluation->getEvaluatedAt());
             $queryParametersValues[$status] = $criterionEvaluation->getStatus();
-            $queryParametersValues[$pending] = $criterionEvaluation->isPending() ? 1 : null;
             $queryParametersValues[$result] = $this->formatCriterionEvaluationResult($criterionEvaluation->getResult());
 
             $queryParametersTypes[$productId] = \PDO::PARAM_INT;
-            $queryParametersTypes[$pending] = \PDO::PARAM_INT;
         }
 
         $this->dbConnection->executeQuery(implode("\n", $queries), $queryParametersValues, $queryParametersTypes);

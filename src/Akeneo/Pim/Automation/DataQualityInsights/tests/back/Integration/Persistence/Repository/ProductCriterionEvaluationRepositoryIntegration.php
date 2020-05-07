@@ -18,7 +18,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -27,7 +26,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 use Ramsey\Uuid\Uuid;
 
 final class ProductCriterionEvaluationRepositoryIntegration extends TestCase
@@ -38,93 +36,87 @@ final class ProductCriterionEvaluationRepositoryIntegration extends TestCase
     /** @var CriterionEvaluationRepositoryInterface */
     private $productCriterionEvaluationRepository;
 
-    private $productId1;
-
-    private $productId2;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->db = $this->get('database_connection');
         $this->productCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
-
-        $this->productId1 = $this->createProduct();
-        $this->productId2 = $this->createProduct();
-        $this->clearAllEvaluations();
     }
 
     public function test_it_creates_a_collection_of_product_criteria_evaluations()
     {
-        $this->assertItCreatesACollectionOfCriteriaEvaluations(
-            $this->productCriterionEvaluationRepository,
-            function () { return $this->findAllProductEvaluations(); }
-        );
-    }
+        $this->assertCountProductCriterionEvaluations(0);
+        $productId = new ProductId(42);
 
-    private function assertItCreatesACollectionOfCriteriaEvaluations(
-        CriterionEvaluationRepositoryInterface $criterionEvaluationRepository,
-        callable $findAllEvaluations
-    ) {
-        $evaluations = $findAllEvaluations();
-        $this->assertCount(0, $evaluations);
+        $criteria = (new Write\CriterionEvaluationCollection)
+            ->add(new Write\CriterionEvaluation(
+                new CriterionCode('completeness'),
+                $productId,
+                CriterionEvaluationStatus::pending()
+            ))
+            ->add(new Write\CriterionEvaluation(
+                new CriterionCode('completion'),
+                $productId,
+                CriterionEvaluationStatus::pending()
+        ));
 
-        $criteria = $this->buildCollection();
-        $criterionEvaluationRepository->create($criteria);
+        $this->productCriterionEvaluationRepository->create($criteria);
 
-        $evaluations = $findAllEvaluations();
+        $evaluations = $this->findAllProductEvaluations();
         $this->assertCount(2, $evaluations);
 
-        $this->assertEquals('95f124de-45cd-495e-ac58-349086ad6cd4', $evaluations[0]['id']);
         $this->assertEquals('completeness', $evaluations[0]['criterion_code']);
-        $this->assertEquals($this->productId1, $evaluations[0]['product_id']);
-        $this->assertEquals('2019-10-28 10:41:56.123', $evaluations[0]['created_at']);
+        $this->assertEquals($productId, $evaluations[0]['product_id']);
         $this->assertEquals(CriterionEvaluationStatus::PENDING, $evaluations[0]['status']);
+        $this->assertNull($evaluations[0]['evaluated_at']);
+        $this->assertNull($evaluations[0]['result']);
 
-        $this->assertEquals('d7bcae1e-30c9-4626-9c4f-d06cae03e77e', $evaluations[1]['id']);
         $this->assertEquals('completion', $evaluations[1]['criterion_code']);
-        $this->assertEquals($this->productId2, $evaluations[1]['product_id']);
-        $this->assertEquals('2019-10-28 10:41:57.987', $evaluations[1]['created_at']);
+        $this->assertEquals($productId, $evaluations[1]['product_id']);
         $this->assertEquals(CriterionEvaluationStatus::PENDING, $evaluations[1]['status']);
+        $this->assertNull($evaluations[1]['result']);
     }
 
-    public function test_it_creates_only_one_product_pending_evaluation_per_criteria()
+    public function test_it_updates_the_status_of_a_criterion_evaluation_instead_of_creating_it_when_it_already_exists()
     {
-        $this->assertItCreatesOnlyOnePendingEvaluationPerCriteria(
-            $this->productCriterionEvaluationRepository,
-            function () { return $this->findAllProductEvaluations(); }
-        );
-    }
+        $productIdWithExistingEvaluation = new ProductId(42);
+        $productIdWithoutEvaluation = new ProductId(123);
+        $criterionCode = new CriterionCode('completeness');
 
-    private function assertItCreatesOnlyOnePendingEvaluationPerCriteria(
-        CriterionEvaluationRepositoryInterface $criterionEvaluationRepository,
-        callable $findAllEvaluations
-    ) {
-        $criteria = $this->buildCollection();
+        $existingEvaluation = $this->givenAnExistingCriterionEvaluation($criterionCode, $productIdWithExistingEvaluation);
 
-        $criterionEvaluationRepository->create($criteria);
-        $evaluations = $findAllEvaluations();
-        $this->assertCount(2, $evaluations);
+        $this->productCriterionEvaluationRepository->create((new Write\CriterionEvaluationCollection)
+            ->add(new Write\CriterionEvaluation(
+                $criterionCode,
+                $productIdWithExistingEvaluation,
+                CriterionEvaluationStatus::pending()
+            ))
+            ->add(new Write\CriterionEvaluation(
+                $criterionCode,
+                $productIdWithoutEvaluation,
+                CriterionEvaluationStatus::pending()
+            )));
 
-        $criterionEvaluationRepository->create($criteria);
-        $evaluations = $findAllEvaluations();
-        $this->assertCount(2, $evaluations);
+        $this->assertCountProductCriterionEvaluations(2);
+
+        $updatedEvaluation = $this->findEvaluation($productIdWithExistingEvaluation, $criterionCode);
+        $this->assertSame($existingEvaluation->getEvaluatedAt()->format(Clock::TIME_FORMAT), $updatedEvaluation['evaluated_at']);
+        $this->assertSame(CriterionEvaluationStatus::PENDING, $updatedEvaluation['status']);
+        $this->assertNotNull($updatedEvaluation['result']);
+        $this->assertNotEmpty(json_decode($updatedEvaluation['result'], true));
     }
 
     public function test_it_updates_product_criteria_evaluations()
     {
         $criterionEvaluationA = new Write\CriterionEvaluation(
-            new CriterionEvaluationId('aeb3218d-e923-42cf-a0f9-a2fc3beaf628'),
             new CriterionCode('completeness'),
             new ProductId(567),
-            new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending()
         );
         $criterionEvaluationB = new Write\CriterionEvaluation(
-            new CriterionEvaluationId('1d886541-0355-46b4-94dd-e5dbeb61b38b'),
             new CriterionCode('spelling'),
             new ProductId(567),
-            new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending()
         );
         $criteriaEvaluationCollection = $this->buildCollection();
@@ -151,139 +143,80 @@ final class ProductCriterionEvaluationRepositoryIntegration extends TestCase
                 ->add($criterionEvaluationB)
         );
 
-        $rawCriterionEvaluationA = $this->findOneProductCriterionEvaluationById($criterionEvaluationA->getId());
-        $rawCriterionEvaluationB = $this->findOneProductCriterionEvaluationById($criterionEvaluationB->getId());
+        $rawCriterionEvaluationA = $this->findEvaluation($criterionEvaluationA->getProductId(), $criterionEvaluationA->getCriterionCode());
+        $rawCriterionEvaluationB = $this->findEvaluation($criterionEvaluationB->getProductId(), $criterionEvaluationB->getCriterionCode());
 
         $this->assertCriterionEvaluationEquals($criterionEvaluationA, $rawCriterionEvaluationA);
         $this->assertCriterionEvaluationEquals($criterionEvaluationB, $rawCriterionEvaluationB);
     }
 
-    public function test_it_purges_product_evaluations_older_than_a_given_date()
+    public function test_it_deletes_all_the_evaluations_of_unknown_products()
     {
-        $this->assertItPurgesEvaluationsOlderThanAGivenDate(
-            $this->productCriterionEvaluationRepository,
-            function($expectedCount) { $this->assertCountProductCriterionEvaluations($expectedCount); },
-            function($criterionEvaluationId) { $this->assertProductCriterionEvaluationExists($criterionEvaluationId); }
-        );
-    }
+        $existingProductId = $this->createProduct();
+        $unknownProductId = new ProductId(666666);
 
-    private function assertItPurgesEvaluationsOlderThanAGivenDate(
-        CriterionEvaluationRepositoryInterface $criterionEvaluationRepository,
-        callable $assertCountCriterionEvaluations,
-        callable $assertCriterionEvaluationExists
-    ) {
-        $this->createEndedCriterionEvaluation($criterionEvaluationRepository, new Write\CriterionEvaluation(
-            new CriterionEvaluationId('42_completeness_last_evaluation'),
-            new CriterionCode('completeness'),
-            new ProductId(42),
-            new \DateTimeImmutable('2019-10-28 10:41:56.123'),
-            CriterionEvaluationStatus::pending()
-        ));
-        $this->createEndedCriterionEvaluation($criterionEvaluationRepository, new Write\CriterionEvaluation(
-            new CriterionEvaluationId('42_completeness_young_evaluation'),
-            new CriterionCode('completeness'),
-            new ProductId(42),
-            new \DateTimeImmutable('2019-10-28 10:41:57.123'),
-            CriterionEvaluationStatus::pending()
-        ));
-        $this->createEndedCriterionEvaluation($criterionEvaluationRepository, new Write\CriterionEvaluation(
-            new CriterionEvaluationId('42_completeness_old_evaluation'),
-            new CriterionCode('completeness'),
-            new ProductId(42),
-            new \DateTimeImmutable('2019-10-27 10:41:56.123'),
-            CriterionEvaluationStatus::pending()
-        ));
-        $this->createEndedCriterionEvaluation($criterionEvaluationRepository, new Write\CriterionEvaluation(
-            new CriterionEvaluationId('42_spelling_last_evaluation'),
-            new CriterionCode('spelling'),
-            new ProductId(42),
-            new \DateTimeImmutable('2019-10-28 11:41:56.123'),
-            CriterionEvaluationStatus::pending()
-        ));
-        $this->createEndedCriterionEvaluation($criterionEvaluationRepository, new Write\CriterionEvaluation(
-            new CriterionEvaluationId('42_spelling_old_evaluation'),
-            new CriterionCode('spelling'),
-            new ProductId(42),
-            new \DateTimeImmutable('2019-10-27 23:59:59.999'),
-            CriterionEvaluationStatus::pending()
-        ));
-        $this->createEndedCriterionEvaluation($criterionEvaluationRepository, new Write\CriterionEvaluation(
-            new CriterionEvaluationId('123_spelling_last_but_old_evaluation'),
-            new CriterionCode('spelling'),
-            new ProductId(123),
-            new \DateTimeImmutable('2019-09-03 10:41:57.987'),
-            CriterionEvaluationStatus::pending()
-        ));
-        $criterionEvaluationRepository->purgeUntil(new \DateTimeImmutable('2019-10-28 23:41:56'));
-
-        $assertCountCriterionEvaluations(4);
-        $assertCriterionEvaluationExists('42_completeness_last_evaluation');
-        $assertCriterionEvaluationExists('42_completeness_young_evaluation');
-        $assertCriterionEvaluationExists('42_spelling_last_evaluation');
-        $assertCriterionEvaluationExists('123_spelling_last_but_old_evaluation');
-    }
-
-    public function test_it_deletes_all_deleted_products_pending_evaluations()
-    {
-        $criteria = $this->buildCollection();
-        $criteria->add(
-            new Write\CriterionEvaluation(
-                new CriterionEvaluationId('56327717-7831-42d0-9ccf-28558eb3073c'),
+        $criteria = (new Write\CriterionEvaluationCollection)
+            ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completeness'),
-                new ProductId(666666),
-                new \DateTimeImmutable('2019-10-28 10:41:56.000'),
+                $existingProductId,
                 CriterionEvaluationStatus::pending()
-            )
-        );
+            ))
+            ->add(new Write\CriterionEvaluation(
+                new CriterionCode('completeness'),
+                $unknownProductId,
+                CriterionEvaluationStatus::pending()
+            ))
+            ->add(new Write\CriterionEvaluation(
+                new CriterionCode('spelling'),
+                $unknownProductId,
+                CriterionEvaluationStatus::error()
+            ));
+
         $this->productCriterionEvaluationRepository->create($criteria);
+        $this->assertCountProductCriterionEvaluations(3);
+
+        $this->productCriterionEvaluationRepository->deleteUnknownProductsEvaluations();
 
         $evaluations = $this->findAllProductEvaluations();
-        $this->assertCount(3, $evaluations);
-
-        $this->productCriterionEvaluationRepository->deleteUnknownProductsPendingEvaluations();
-
-        $evaluations = $this->findAllProductEvaluations();
-        $this->assertCount(2, $evaluations);
-        $this->assertEquals($this->productId1, $evaluations[0]['product_id']);
-        $this->assertEquals($this->productId2, $evaluations[1]['product_id']);
+        $this->assertCount(1, $evaluations);
+        $this->assertSame(strval($existingProductId), $evaluations[0]['product_id']);
     }
 
     private function buildCollection(): Write\CriterionEvaluationCollection
     {
         return (new Write\CriterionEvaluationCollection)
             ->add(new Write\CriterionEvaluation(
-                new CriterionEvaluationId('95f124de-45cd-495e-ac58-349086ad6cd4'),
                 new CriterionCode('completeness'),
-                $this->productId1,
-                new \DateTimeImmutable('2019-10-28 10:41:56.123'),
+                new ProductId(1),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new Write\CriterionEvaluation(
-                new CriterionEvaluationId('d7bcae1e-30c9-4626-9c4f-d06cae03e77e'),
                 new CriterionCode('completion'),
-                $this->productId2,
-                new \DateTimeImmutable('2019-10-28 10:41:57.987'),
+                new ProductId(2),
                 CriterionEvaluationStatus::pending()
             ));
     }
 
     private function findAllProductEvaluations(): array
     {
-        $stmt = $this->db->query('SELECT * FROM pimee_data_quality_insights_criteria_evaluation');
+        $stmt = $this->db->query('SELECT * FROM pimee_data_quality_insights_product_criteria_evaluation');
 
         return $stmt->fetchAll();
     }
 
-    private function findOneProductCriterionEvaluationById(CriterionEvaluationId $criterionEvaluationId): ?array
+    private function findEvaluation(ProductId $productId, CriterionCode $criterionCode): array
     {
-        $stmt = $this->db->executeQuery(
-            'SELECT * FROM pimee_data_quality_insights_criteria_evaluation WHERE id = :id',
-            ['id' => strval($criterionEvaluationId)]
-        );
+        $query = <<<SQL
+SELECT * FROM pimee_data_quality_insights_product_criteria_evaluation
+WHERE product_id = :productId AND criterion_code = :criterionCode
+SQL;
 
-        $result = $stmt->fetch(FetchMode::ASSOCIATIVE);
+        $evaluation = $this->get('database_connection')->executeQuery($query, [
+            'productId' => $productId->toInt(),
+            'criterionCode' => $criterionCode,
+        ])->fetch(\PDO::FETCH_ASSOC);
 
-        return false === $result ? null : $result;
+        return false !== $evaluation ? $evaluation : [];
     }
 
     protected function getConfiguration(): Configuration
@@ -291,35 +224,14 @@ final class ProductCriterionEvaluationRepositoryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function createEndedCriterionEvaluation(
-        CriterionEvaluationRepositoryInterface $criterionEvaluationRepository,
-        Write\CriterionEvaluation $criterionEvaluation
-    ): void {
-        $criteria = (new Write\CriterionEvaluationCollection)->add($criterionEvaluation);
-        $criterionEvaluationRepository->create($criteria);
-
-        $criterionEvaluation->end(new Write\CriterionEvaluationResult());
-        $criterionEvaluationRepository->update((new Write\CriterionEvaluationCollection())->add($criterionEvaluation));
-    }
-
     private function assertCountProductCriterionEvaluations(int $expectedCount): void
     {
         $stmt = $this->db->executeQuery(
-            'SELECT COUNT(*) FROM pimee_data_quality_insights_criteria_evaluation'
+            'SELECT COUNT(*) FROM pimee_data_quality_insights_product_criteria_evaluation'
         );
         $count = intval($stmt->fetchColumn());
 
         $this->assertSame($expectedCount, $count);
-    }
-
-    private function assertProductCriterionEvaluationExists(string $criterionEvaluationId): void
-    {
-        $stmt = $this->db->executeQuery(
-            'SELECT 1 FROM pimee_data_quality_insights_criteria_evaluation WHERE id = :id',
-            ['id' => $criterionEvaluationId]
-        );
-
-        $this->assertTrue((bool) $stmt->fetchColumn());
     }
 
     private function createProduct()
@@ -329,28 +241,61 @@ final class ProductCriterionEvaluationRepositoryIntegration extends TestCase
             ->build();
         $this->get('pim_catalog.saver.product')->save($product);
 
+        $this->clearAllEvaluations();
+
         return new ProductId((int) $product->getId());
     }
 
     private function clearAllEvaluations(): void
     {
-        $this->db->executeQuery('DELETE FROM pimee_data_quality_insights_criteria_evaluation');
+        $this->db->executeQuery('DELETE FROM pimee_data_quality_insights_product_criteria_evaluation');
     }
 
     private function assertCriterionEvaluationEquals(Write\CriterionEvaluation $criterionEvaluation, array $rawCriterionEvaluation): void
     {
-        $this->assertEquals(strval($criterionEvaluation->getId()), $rawCriterionEvaluation['id']);
         $this->assertEquals(strval($criterionEvaluation->getCriterionCode()), $rawCriterionEvaluation['criterion_code']);
         $this->assertEquals($criterionEvaluation->getProductId()->toInt(), $rawCriterionEvaluation['product_id']);
-        $this->assertEquals($criterionEvaluation->getCreatedAt()->format(Clock::TIME_FORMAT), $rawCriterionEvaluation['created_at']);
+        $this->assertEvaluatedAtEquals($criterionEvaluation->getEvaluatedAt(), $rawCriterionEvaluation['evaluated_at']);
         $this->assertEquals(strval($criterionEvaluation->getStatus()), $rawCriterionEvaluation['status']);
-        $this->assertEquals($criterionEvaluation->getStartedAt()->format(Clock::TIME_FORMAT), $rawCriterionEvaluation['started_at']);
-        $this->assertEquals($criterionEvaluation->getEndedAt()->format(Clock::TIME_FORMAT), $rawCriterionEvaluation['ended_at']);
         $this->assertJson($rawCriterionEvaluation['result']);
         $this->assertEquals([
             'rates' => $criterionEvaluation->getResult()->getRates()->toArrayInt(),
             'status' => $criterionEvaluation->getResult()->getStatus()->toArrayString(),
             'data' => $criterionEvaluation->getResult()->getDataToArray(),
         ], json_decode($rawCriterionEvaluation['result'], true));
+    }
+
+    private function givenAnExistingCriterionEvaluation(CriterionCode $criterionCode, ProductId $productId): Write\CriterionEvaluation
+    {
+        $evaluation = new Write\CriterionEvaluation(
+            $criterionCode,
+            $productId,
+            CriterionEvaluationStatus::pending()
+        );
+        $evaluations = (new Write\CriterionEvaluationCollection())->add($evaluation);
+        $this->productCriterionEvaluationRepository->create($evaluations);
+
+        $channelEcommerce = new ChannelCode('ecommerce');
+        $localeEn = new LocaleCode('en_US');
+
+        $evaluationResult = (new Write\CriterionEvaluationResult())
+            ->addRate($channelEcommerce, $localeEn, new Rate(rand(0, 100)))
+            ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes($channelEcommerce, $localeEn, ['description' => rand(0, 100)])
+        ;
+
+        $evaluation->end($evaluationResult);
+        $this->productCriterionEvaluationRepository->update($evaluations);
+
+        return $evaluation;
+    }
+
+    private function assertEvaluatedAtEquals(?\DateTimeImmutable $expectedDate, ?string $date): void
+    {
+        if (null === $expectedDate) {
+            $this->assertNull($date);
+        } else {
+           $this->assertEquals($expectedDate->format(Clock::TIME_FORMAT), $date);
+        }
     }
 }

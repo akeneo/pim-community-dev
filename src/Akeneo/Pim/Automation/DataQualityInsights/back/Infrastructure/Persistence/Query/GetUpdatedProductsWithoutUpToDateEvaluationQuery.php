@@ -32,26 +32,26 @@ final class GetUpdatedProductsWithoutUpToDateEvaluationQuery implements GetUpdat
         $sql = <<<SQL
     SELECT DISTINCT product.id
     FROM pim_catalog_product AS product
-    LEFT JOIN pimee_data_quality_insights_criteria_evaluation AS evaluation
-        ON evaluation.product_id = product.id AND evaluation.created_at >= product.updated
-    WHERE product.updated > :updated_since AND evaluation.id IS NULL
+    LEFT JOIN pimee_data_quality_insights_product_criteria_evaluation AS evaluation
+        ON evaluation.product_id = product.id AND evaluation.evaluated_at >= product.updated
+    WHERE product.updated > :updated_since AND evaluation.product_id IS NULL
 UNION
     SELECT DISTINCT product.id
     FROM pim_catalog_product_model AS parent
     INNER JOIN pim_catalog_product AS product
         ON product.product_model_id = parent.id AND product.updated < parent.updated 
-    LEFT JOIN pimee_data_quality_insights_criteria_evaluation AS evaluation
-        ON evaluation.product_id = product.id AND evaluation.created_at >= parent.updated
-    WHERE parent.updated > :updated_since AND evaluation.id IS NULL
+    LEFT JOIN pimee_data_quality_insights_product_criteria_evaluation AS evaluation
+        ON evaluation.product_id = product.id AND evaluation.evaluated_at >= parent.updated
+    WHERE parent.updated > :updated_since AND evaluation.product_id IS NULL
 UNION
     SELECT DISTINCT product.id
     FROM pim_catalog_product_model AS grand_parent
     INNER JOIN pim_catalog_product_model AS parent ON parent.parent_id = grand_parent.id
     INNER JOIN pim_catalog_product AS product 
         ON product.product_model_id = parent.id AND product.updated < grand_parent.updated 
-    LEFT JOIN pimee_data_quality_insights_criteria_evaluation AS evaluation
-        ON evaluation.product_id = product.id AND evaluation.created_at >= grand_parent.updated
-    WHERE grand_parent.updated > :updated_since  AND evaluation.id IS NULL
+    LEFT JOIN pimee_data_quality_insights_product_criteria_evaluation AS evaluation
+        ON evaluation.product_id = product.id AND evaluation.evaluated_at >= grand_parent.updated
+    WHERE grand_parent.updated > :updated_since  AND evaluation.product_id IS NULL
 SQL;
 
         $stmt = $this->dbConnection->executeQuery(

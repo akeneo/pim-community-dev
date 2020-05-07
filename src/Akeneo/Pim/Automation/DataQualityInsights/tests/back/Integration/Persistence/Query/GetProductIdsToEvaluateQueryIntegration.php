@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdsToEvaluateQuery;
@@ -34,6 +32,7 @@ class GetProductIdsToEvaluateQueryIntegration extends TestCase
 
     /** @var CriterionEvaluationRepositoryInterface */
     private $productCriterionEvaluationRepository;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -45,83 +44,53 @@ class GetProductIdsToEvaluateQueryIntegration extends TestCase
 
     public function test_it_returns_all_product_id_with_pending_criteria_and_ignores_unknown_products()
     {
+        $this->givenAProductWithEvaluationDone();
+
         $this->assertEquals([], iterator_to_array($this->productQuery->execute(4, 2)));
 
         $product1Id = $this->createProduct('p1');
         $product2Id = $this->createProduct('p2');
         $product3Id = $this->createProduct('p3');
         $product4Id = $this->createProduct('p4');
-        $criteria = $this->getCriteriaEvaluationsSample($product1Id, $product2Id, $product3Id, $product4Id);
+        $criteria = $this->getPendingCriteriaEvaluationsSample($product1Id, $product2Id, $product3Id, $product4Id);
 
         $this->productCriterionEvaluationRepository->create($criteria);
 
-        $expectedProductIds = [
-            [$product1Id->toInt(), $product2Id->toInt()],
-            [$product3Id->toInt(), $product4Id->toInt()],
-        ];
+        $expectedProductIds = [$product1Id->toInt(), $product2Id->toInt(), $product3Id->toInt(), $product4Id->toInt()];
 
         $productIds = iterator_to_array($this->productQuery->execute(4, 2));
 
-        $this->assertEqualsCanonicalizing($expectedProductIds, $productIds);
+        $this->assertCount(2, $productIds);
+        $this->assertCount(2, $productIds[0]);
+        $this->assertEqualsCanonicalizing($expectedProductIds, array_merge($productIds[0], $productIds[1]));
     }
 
-    private function getCriteriaEvaluationsSample(ProductId $product1Id, ProductId $product2Id, ProductId $product3Id, ProductId $product4Id): CriterionEvaluationCollection
+    private function getPendingCriteriaEvaluationsSample(ProductId $product1Id, ProductId $product2Id, ProductId $product3Id, ProductId $product4Id): Write\CriterionEvaluationCollection
     {
-        return (new CriterionEvaluationCollection)
-            ->add(new CriterionEvaluation(
-                new CriterionEvaluationId('9a7e76b6-220d-498d-aa97-3db425f2fa25'),
+        return (new Write\CriterionEvaluationCollection)
+            ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completeness'),
                 new ProductId(9999),
-                new \DateTimeImmutable('2019-10-28 10:41:56.001'),
                 CriterionEvaluationStatus::pending()
             ))
-            ->add(new CriterionEvaluation(
-                new CriterionEvaluationId('95f124de-45cd-495e-ac58-349086ad6cd4'),
+            ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completeness'),
                 $product1Id,
-                new \DateTimeImmutable('2019-10-28 10:41:56.123'),
                 CriterionEvaluationStatus::pending()
             ))
-            ->add(new CriterionEvaluation(
-                new CriterionEvaluationId('d7bcae1e-30c9-4626-9c4f-d06cae03e77e'),
+            ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completion'),
                 $product2Id,
-                new \DateTimeImmutable('2019-10-28 10:41:57.987'),
                 CriterionEvaluationStatus::pending()
             ))
-            ->add(new CriterionEvaluation(
-                new CriterionEvaluationId('dd292dbf-4c15-4b17-87ac-98997859d8af'),
-                new CriterionCode('completion'),
-                $product2Id,
-                new \DateTimeImmutable('2019-10-28 10:41:56.987'),
-                CriterionEvaluationStatus::done()
-            ))
-            ->add(new CriterionEvaluation(
-                new CriterionEvaluationId('8c94ed27-1394-4bce-8167-a81fe363b061'),
+            ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completion'),
                 $product3Id,
-                new \DateTimeImmutable('2019-10-28 10:41:58.987'),
                 CriterionEvaluationStatus::pending()
             ))
-            ->add(new CriterionEvaluation(
-                new CriterionEvaluationId('3e16311f-6cfc-47ec-a340-9628818dd3aa'),
-                new CriterionCode('completion'),
-                new ProductId(789),
-                new \DateTimeImmutable('2019-10-28 10:41:59.123'),
-                CriterionEvaluationStatus::done()
-            ))
-            ->add(new CriterionEvaluation(
-                new CriterionEvaluationId('46f6cfd0-ea65-4521-b572-629ca8057d2f'),
+            ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completion'),
                 $product4Id,
-                new \DateTimeImmutable('2019-10-28 10:41:59.234'),
-                CriterionEvaluationStatus::pending()
-            ))
-            ->add(new CriterionEvaluation(
-                new CriterionEvaluationId('cde4714b-9826-4208-a4e9-434eff68c31e'),
-                new CriterionCode('completion'),
-                new ProductId(666),
-                new \DateTimeImmutable('2019-10-28 10:41:59.456'),
                 CriterionEvaluationStatus::pending()
             ));
     }
@@ -139,5 +108,21 @@ class GetProductIdsToEvaluateQueryIntegration extends TestCase
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function givenAProductWithEvaluationDone(): void
+    {
+        $productId = $this->createProduct('product_with_evaluations_done');
+        $evaluationDone = new Write\CriterionEvaluation(
+            new CriterionCode('completeness'),
+            $productId,
+            CriterionEvaluationStatus::pending()
+        );
+
+        $evaluations = (new Write\CriterionEvaluationCollection)->add($evaluationDone);
+        $this->productCriterionEvaluationRepository->create($evaluations);
+
+        $evaluationDone->end(new Write\CriterionEvaluationResult());
+        $this->productCriterionEvaluationRepository->update($evaluations);
     }
 }

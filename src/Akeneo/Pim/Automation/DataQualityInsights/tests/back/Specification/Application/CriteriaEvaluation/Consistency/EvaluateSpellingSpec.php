@@ -31,7 +31,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -68,10 +67,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
     ) {
         $productId = new ProductId(1);
         $criterionEvaluation = new Write\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productId,
-            new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending()
         );
 
@@ -148,17 +145,17 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelEcommerce, $localeEn, new Rate(94))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelEcommerce, $localeEn, ['a_textarea'])
+            ->addRateByAttributes($channelEcommerce, $localeEn, ['a_text' => 100, 'a_textarea' => 88])
 
             ->addRate($channelEcommerce, $localeFr, new Rate(100))
             ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelEcommerce, $localeFr, [])
+            ->addRateByAttributes($channelEcommerce, $localeFr, ['a_text' => 100, 'a_textarea' => 100])
 
             ->addStatus($channelEcommerce, $localeIt, CriterionEvaluationResultStatus::notApplicable())
 
             ->addRate($channelPrint, $localeEn, new Rate(88))
             ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelPrint, $localeEn, ['a_text'])
+            ->addRateByAttributes($channelPrint, $localeEn, ['a_text' => 76, 'a_textarea' => 100])
 
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::notApplicable())
         ;
@@ -176,10 +173,8 @@ class EvaluateSpellingSpec extends ObjectBehavior
     ) {
         $productId = new ProductId(42);
         $criterionEvaluation = new Write\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productId,
-            new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending()
         );
 
@@ -219,7 +214,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelPrint, $localeEn, new Rate(100))
             ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelPrint, $localeEn, [])
+            ->addRateByAttributes($channelPrint, $localeEn, ['a_textarea' => 100])
 
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::error())
         ;

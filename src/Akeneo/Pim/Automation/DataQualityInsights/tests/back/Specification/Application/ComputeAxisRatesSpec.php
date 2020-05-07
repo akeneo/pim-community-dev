@@ -28,7 +28,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQu
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -97,43 +96,31 @@ final class ComputeAxisRatesSpec extends ObjectBehavior
 
         $criteriaEvaluations = (new CriterionEvaluationCollection())
             ->add(new CriterionEvaluation(
-                new CriterionEvaluationId(),
                 new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE),
                 new ProductId(42),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::done(),
-                $completenessResult,
-                null,
-                null
+                $completenessResult
             ))
             ->add(new CriterionEvaluation(
-                new CriterionEvaluationId(),
                 new CriterionCode(EvaluateSpelling::CRITERION_CODE),
                 new ProductId(42),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::done(),
-                $spellingResult,
-                null,
-                null
+                $spellingResult
             ))
             ->add(new CriterionEvaluation(
-                new CriterionEvaluationId(),
                 new CriterionCode(EvaluateUppercaseWords::CRITERION_CODE),
                 new ProductId(42),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::done(),
-                $upperCaseResult,
-                null,
-                null
+                $upperCaseResult
             ))
             ->add(new CriterionEvaluation(
-                new CriterionEvaluationId(),
                 new CriterionCode(EvaluateTitleFormatting::CRITERION_CODE),
                 new ProductId(42),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending(),
-                null,
-                null,
                 null
             ))
         ;

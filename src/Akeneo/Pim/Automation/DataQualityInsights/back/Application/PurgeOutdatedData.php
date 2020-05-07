@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
@@ -32,28 +31,18 @@ final class PurgeOutdatedData
     /** @var DashboardRatesProjectionRepositoryInterface */
     private $dashboardRatesProjectionRepository;
 
-    /** @var CriterionEvaluationRepositoryInterface */
-    private $productCriterionEvaluationRepository;
-
     /** @var ProductAxisRateRepositoryInterface */
     private $productAxisRateRepository;
-
-    /** @var CriterionEvaluationRepositoryInterface */
-    private $productModelCriterionEvaluationRepository;
 
     /** @var ProductAxisRateRepositoryInterface */
     private $productModelAxisRateRepository;
 
     public function __construct(
         DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository,
-        CriterionEvaluationRepositoryInterface $productCriterionEvaluationRepository,
-        CriterionEvaluationRepositoryInterface $productModelCriterionEvaluationRepository,
         ProductAxisRateRepositoryInterface $productAxisRateRepository,
         ProductAxisRateRepositoryInterface $productModelAxisRateRepository
     ) {
         $this->dashboardRatesProjectionRepository = $dashboardRatesProjectionRepository;
-        $this->productCriterionEvaluationRepository = $productCriterionEvaluationRepository;
-        $this->productModelCriterionEvaluationRepository = $productModelCriterionEvaluationRepository;
         $this->productAxisRateRepository = $productAxisRateRepository;
         $this->productModelAxisRateRepository = $productModelAxisRateRepository;
     }
@@ -83,13 +72,6 @@ final class PurgeOutdatedData
             );
 
         $this->dashboardRatesProjectionRepository->purgeRates($purgeDates);
-    }
-
-    public function purgeCriterionEvaluationsFrom(\DateTimeImmutable $date): void
-    {
-        $purgeDate = $date->modify(sprintf('-%d DAY', self::EVALUATIONS_RETENTION_DAYS));
-        $this->productCriterionEvaluationRepository->purgeUntil($purgeDate);
-        $this->productModelCriterionEvaluationRepository->purgeUntil($purgeDate);
     }
 
     public function purgeProductAxisRatesFrom(\DateTimeImmutable $date): void

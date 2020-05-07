@@ -14,15 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 final class CriterionEvaluation
 {
-    /** @var CriterionEvaluationId */
-    private $id;
-
     /** @var CriterionCode */
     private $criterionCode;
 
@@ -30,7 +26,7 @@ final class CriterionEvaluation
     private $productId;
 
     /** @var \DateTimeImmutable */
-    private $createdAt;
+    private $evaluatedAt;
 
     /** @var CriterionEvaluationStatus */
     private $status;
@@ -45,28 +41,17 @@ final class CriterionEvaluation
     private $endedAt;
 
     public function __construct(
-        CriterionEvaluationId $id,
         CriterionCode $criterionCode,
         ProductId $productId,
-        \DateTimeImmutable $createdAt,
+        ?\DateTimeImmutable $evaluatedAt,
         CriterionEvaluationStatus $status,
-        ?CriterionEvaluationResult $result,
-        ?\DateTimeImmutable $startedAt,
-        ?\DateTimeImmutable $endedAt
+        ?CriterionEvaluationResult $result
     ) {
-        $this->id = $id;
         $this->criterionCode = $criterionCode;
         $this->productId = $productId;
-        $this->createdAt = $createdAt;
+        $this->evaluatedAt = $evaluatedAt;
         $this->status = $status;
         $this->result = $result;
-        $this->startedAt = $startedAt;
-        $this->endedAt = $endedAt;
-    }
-
-    public function getId(): CriterionEvaluationId
-    {
-        return $this->id;
     }
 
     public function getCriterionCode(): CriterionCode
@@ -79,24 +64,14 @@ final class CriterionEvaluation
         return $this->productId;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getEvaluatedAt(): ?\DateTimeImmutable
     {
-        return $this->createdAt;
+        return $this->evaluatedAt;
     }
 
     public function getStatus(): CriterionEvaluationStatus
     {
         return $this->status;
-    }
-
-    public function getStartedAt(): ?\DateTimeImmutable
-    {
-        return $this->startedAt;
-    }
-
-    public function getEndedAt(): ?\DateTimeImmutable
-    {
-        return $this->endedAt;
     }
 
     public function getResult(): ?CriterionEvaluationResult

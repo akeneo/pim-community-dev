@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetIgnoredProductTitleSuggestionQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
@@ -34,17 +34,17 @@ use PhpSpec\ObjectBehavior;
 class GetProductTitleSuggestionSpec extends ObjectBehavior
 {
     public function let(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
     ) {
         $this->beConstructedWith(
-            $getLatestCriteriaEvaluationsByProductIdQuery,
+            $getCriteriaEvaluationsByProductIdQuery,
             $getIgnoredProductTitleSuggestionQuery
         );
     }
 
     public function it_does_not_get_product_title_suggestion_when_product_is_not_evaluated(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
     ) {
         $productId = new ProductId(1000);
@@ -52,13 +52,13 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
         $locale = new LocaleCode('en_US');
         $rawEvaluation = new Read\CriterionEvaluationCollection();
 
-        $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
+        $getCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
 
         $this->get($productId, $channel, $locale, 'product')->shouldBeLike(null);
     }
 
     public function it_does_not_get_product_title_suggestion_when_locale_is_not_supported(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
     ) {
         $productId = new ProductId(1000);
@@ -66,13 +66,13 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
         $locale = new LocaleCode('it_IT');
         $rawEvaluation = $this->generateEvaluation($productId);
 
-        $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
+        $getCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
 
         $this->get($productId, $channel, $locale, 'product')->shouldBeLike(null);
     }
 
     public function it_does_not_get_product_title_suggestion_when_is_ignored(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
     ) {
         $productId = new ProductId(1000);
@@ -80,14 +80,14 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
         $locale = new LocaleCode('en_US');
         $rawEvaluation = $this->generateEvaluation($productId);
 
-        $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
+        $getCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
         $getIgnoredProductTitleSuggestionQuery->execute($productId, $channel, $locale)->willReturn("My suggested title");
 
         $this->get($productId, $channel, $locale, 'product')->shouldBeLike(null);
     }
 
     public function it_gets_product_title_suggestion(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
     ) {
         $productId = new ProductId(1000);
@@ -95,7 +95,7 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
         $locale = new LocaleCode('en_US');
         $rawEvaluation = $this->generateEvaluation($productId);
 
-        $getLatestCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
+        $getCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($rawEvaluation);
 
         $this->get($productId, $channel, $locale, 'product')->shouldBeLike("My suggested title");
     }
@@ -103,14 +103,11 @@ class GetProductTitleSuggestionSpec extends ObjectBehavior
     private function generateCriterionEvaluation(ProductId $productId, string $code, string $status, ChannelLocaleRateCollection $resultRates, array $resultData)
     {
         return new Read\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode($code),
             $productId,
             new \DateTimeImmutable(),
             new CriterionEvaluationStatus($status),
-            new Read\CriterionEvaluationResult($resultRates, new CriterionEvaluationResultStatusCollection(), $resultData),
-            new \DateTimeImmutable(),
-            new \DateTimeImmutable()
+            new Read\CriterionEvaluationResult($resultRates, new CriterionEvaluationResultStatusCollection(), $resultData)
         );
     }
 

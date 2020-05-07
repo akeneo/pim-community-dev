@@ -20,7 +20,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -46,10 +45,8 @@ final class EvaluateCompletenessSpec extends ObjectBehavior
 
         $productId = new ProductId(1);
         $criterionEvaluation = new Write\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             $productId,
-            new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending()
         );
 
@@ -69,15 +66,15 @@ final class EvaluateCompletenessSpec extends ObjectBehavior
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelMobile, $localeEn, new Rate(100))
             ->addStatus($channelMobile, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelMobile, $localeEn, [])
+            ->addRateByAttributes($channelMobile, $localeEn, [])
 
             ->addRate($channelMobile, $localeFr, new Rate(85))
             ->addStatus($channelMobile, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelMobile, $localeFr, ['name', 'weight'])
+            ->addRateByAttributes($channelMobile, $localeFr, ['name' => 0, 'weight' => 0])
 
             ->addRate($channelPrint, $localeEn, new Rate(92))
             ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addImprovableAttributes($channelPrint, $localeEn, ['description'])
+            ->addRateByAttributes($channelPrint, $localeEn, ['description' => 0])
 
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::notApplicable())
         ;

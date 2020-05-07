@@ -213,7 +213,6 @@ SQL;
     private function outputCriteriaInfo(SymfonyStyle $io)
     {
         $this->outputEvaluationInfo($io);
-        $this->outputAverageTimePerCriterion($io);
     }
 
     private function outputEvaluationInfo(SymfonyStyle $io)
@@ -223,7 +222,7 @@ SQL;
         $io->comment('Number of products with criteria evaluated');
         $stmt = $this->db->executeQuery(<<<SQL
 SELECT COUNT(DISTINCT product_id)
-FROM pimee_data_quality_insights_criteria_evaluation
+FROM pimee_data_quality_insights_product_criteria_evaluation
 SQL
         );
         $this->outputAsTable($io, $stmt->fetchAll());
@@ -238,8 +237,8 @@ SQL
 
         $io->comment('Status of product criteria evaluations - total');
         $stmt = $this->db->executeQuery(<<<SQL
-SELECT status, COUNT(status), MAX(ended_at)
-FROM pimee_data_quality_insights_criteria_evaluation
+SELECT status, COUNT(status), MAX(evaluated_at)
+FROM pimee_data_quality_insights_product_criteria_evaluation
 GROUP BY status
 ORDER BY status
 SQL
@@ -248,7 +247,7 @@ SQL
 
         $io->comment('Status of product model criteria evaluations - total');
         $stmt = $this->db->executeQuery(<<<SQL
-SELECT status, COUNT(status), MAX(ended_at)
+SELECT status, COUNT(status), MAX(evaluated_at)
 FROM pimee_data_quality_insights_product_model_criteria_evaluation
 GROUP BY status
 ORDER BY status
@@ -258,8 +257,8 @@ SQL
 
         $io->comment('Product criteria on error with last error date');
         $stmt = $this->db->executeQuery(<<<SQL
-SELECT status, criterion_code, COUNT(status), MAX(started_at)
-FROM pimee_data_quality_insights_criteria_evaluation
+SELECT status, criterion_code, COUNT(status), MAX(evaluated_at)
+FROM pimee_data_quality_insights_product_criteria_evaluation
 WHERE status='error'
 GROUP BY status, criterion_code
 ORDER BY status
@@ -269,30 +268,13 @@ SQL
 
         $io->comment('Product models criteria on error with last error date');
         $stmt = $this->db->executeQuery(<<<SQL
-SELECT status, criterion_code, COUNT(status), MAX(started_at)
+SELECT status, criterion_code, COUNT(status), MAX(evaluated_at)
 FROM pimee_data_quality_insights_product_model_criteria_evaluation
 WHERE status='error'
 GROUP BY status, criterion_code
 ORDER BY status
 SQL
         );
-        $this->outputAsTable($io, $stmt->fetchAll());
-    }
-
-    private function outputAverageTimePerCriterion(SymfonyStyle $io)
-    {
-        $io->section('Average time per criterion');
-        $stmt = $this->db->executeQuery(<<<SQL
-SELECT
-    criterion_code,
-    AVG(TIMESTAMPDIFF(MICROSECOND , started_at, ended_at)) AS evaluation_time_in_microsecond,
-    AVG(TIMESTAMPDIFF(SECOND , created_at, started_at)) AS handle_time_in_second
-FROM pimee_data_quality_insights_criteria_evaluation
-GROUP BY criterion_code
-ORDER BY criterion_code
-SQL
-);
-
         $this->outputAsTable($io, $stmt->fetchAll());
     }
 
@@ -346,30 +328,8 @@ SQL
 
     private function outputTargetedProductsInfo(SymfonyStyle $io, array $productIds)
     {
-        $this->outputAverageTimePerCriterionPerProducts($io, $productIds);
         $this->outputProductAxisRatesPerProducts($io, $productIds);
         $this->outputLastEvaluationResultPerProducts($io, $productIds);
-    }
-
-    private function outputAverageTimePerCriterionPerProducts(SymfonyStyle $io, array $productIds)
-    {
-        $io->section('Average time per criterion per products');
-
-        $query = <<<SQL
-SELECT
-    product_id,
-    criterion_code,
-    AVG(TIMESTAMPDIFF(MICROSECOND , started_at, ended_at)) AS evaluation_time_in_microsecond,
-    AVG(TIMESTAMPDIFF(SECOND , created_at, started_at)) AS handle_time_in_second
-FROM pimee_data_quality_insights_criteria_evaluation
-WHERE product_id IN (:product_ids)
-GROUP BY product_id, criterion_code
-ORDER BY product_id, criterion_code
-SQL;
-
-        $stmt = $this->prepareStatementWithProductIds($query, $productIds);
-
-        $this->outputAsTable($io, $stmt->fetchAll());
     }
 
     private function outputLastEvaluationResultPerProducts(SymfonyStyle $io, array $productIds)
@@ -384,18 +344,9 @@ SQL;
 
         foreach ($productIds as $productId) {
             $query = <<<SQL
-SELECT
-       latest_evaluation.product_id,
-       latest_evaluation.criterion_code,
-       latest_evaluation.status,
-       latest_evaluation.result
-FROM pimee_data_quality_insights_criteria_evaluation AS latest_evaluation
-LEFT JOIN pimee_data_quality_insights_criteria_evaluation AS other_evaluation
-    ON other_evaluation.product_id = :product_id
-    AND latest_evaluation.criterion_code = other_evaluation.criterion_code
-    AND latest_evaluation.created_at < other_evaluation.created_at
-WHERE latest_evaluation.product_id = :product_id
-    AND other_evaluation.id IS NULL;
+SELECT product_id, criterion_code, status, evaluated_at, result
+FROM pimee_data_quality_insights_product_criteria_evaluation
+WHERE product_id = :product_id;
 SQL;
             $stmt = $this->db->executeQuery(
                 $query,
@@ -438,30 +389,8 @@ SQL;
 
     private function outputTargetedProductModelsInfo(SymfonyStyle $io, array $productModelsIds)
     {
-        $this->outputAverageTimePerCriterionPerProductModels($io, $productModelsIds);
         $this->outputProductAxisRatesPerProductModels($io, $productModelsIds);
         $this->outputLastEvaluationResultPerProductModels($io, $productModelsIds);
-    }
-
-    private function outputAverageTimePerCriterionPerProductModels(SymfonyStyle $io, array $productModelsIds)
-    {
-        $io->section('Average time per criterion per product models');
-
-        $query = <<<SQL
-SELECT
-    product_id,
-    criterion_code,
-    AVG(TIMESTAMPDIFF(MICROSECOND , started_at, ended_at)) AS evaluation_time_in_microsecond,
-    AVG(TIMESTAMPDIFF(SECOND , created_at, started_at)) AS handle_time_in_second
-FROM pimee_data_quality_insights_product_model_criteria_evaluation
-WHERE product_id IN (:product_ids)
-GROUP BY product_id, criterion_code
-ORDER BY product_id, criterion_code
-SQL;
-
-        $stmt = $this->prepareStatementWithProductIds($query, $productModelsIds);
-
-        $this->outputAsTable($io, $stmt->fetchAll());
     }
 
     private function outputProductAxisRatesPerProductModels(SymfonyStyle $io, array $productModelIds)
@@ -492,18 +421,9 @@ SQL;
 
         foreach ($productIds as $productId) {
             $query = <<<SQL
-SELECT
-       latest_evaluation.product_id,
-       latest_evaluation.criterion_code,
-       latest_evaluation.status,
-       latest_evaluation.result
-FROM pimee_data_quality_insights_product_model_criteria_evaluation AS latest_evaluation
-LEFT JOIN pimee_data_quality_insights_product_model_criteria_evaluation AS other_evaluation
-    ON other_evaluation.product_id = :product_id
-    AND latest_evaluation.criterion_code = other_evaluation.criterion_code
-    AND latest_evaluation.created_at < other_evaluation.created_at
-WHERE latest_evaluation.product_id = :product_id
-    AND other_evaluation.id IS NULL;
+SELECT product_id, criterion_code, status, evaluated_at, result
+FROM pimee_data_quality_insights_product_model_criteria_evaluation
+WHERE product_id = :product_id;
 SQL;
             $stmt = $this->db->executeQuery($query, ['product_id' => $productId], ['product_id' => \PDO::PARAM_INT]);
 
@@ -592,7 +512,7 @@ SQL;
 
         $stmt = $this->db->executeQuery(<<<SQL
 SELECT COUNT(DISTINCT product_id) as number_of_product_to_evaluate
-FROM pimee_data_quality_insights_criteria_evaluation
+FROM pimee_data_quality_insights_product_criteria_evaluation
 WHERE status = 'pending'
 SQL
         );
