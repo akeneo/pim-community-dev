@@ -43,9 +43,9 @@ spec:
             command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console {{ $jobOptions.pimCommand }}"']
             resources:
               {{- if $jobOptions.resources }}
-              {{- toYaml $jobOptions.resources | indent 14 }}
+              {{- toYaml $jobOptions.resources | nindent 14 }}
               {{- else }}
-              {{- toYaml $tplCtx.Values.pim.resources | indent 14 }}
+              {{- toYaml $tplCtx.Values.pim.resources | nindent 14 }}
               {{- end }}
             volumeMounts:
               - name: google-cloud-pim-storage-key
@@ -61,7 +61,7 @@ spec:
               - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
               - { name: CONTAINER_NAME, value: php }
               {{- if $tplCtx.Values.common.phpConfCLI }}
-              {{- toYaml $tplCtx.Values.common.phpConfCLI  | indent 14 }}
+              {{- toYaml $tplCtx.Values.common.phpConfCLI  | nindent 14 }}
               {{- end }}
           restartPolicy: OnFailure
           volumes:
