@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\FilterProductValuesForTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionApplicabilityInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\UnableToProvideATitleSuggestion;
@@ -28,19 +29,23 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface, Evalu
 
     /** @var TitleFormattingServiceInterface */
     private $titleFormattingService;
-    /**
-     * @var GetIgnoredProductTitleSuggestionQueryInterface
-     */
+
+    /** @var GetIgnoredProductTitleSuggestionQueryInterface */
     private $getIgnoredProductTitleSuggestionQuery;
+
+    /** @var FilterProductValuesForTitleFormatting */
+    private $filterProductValuesForTitleFormatting;
 
     public function __construct(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         TitleFormattingServiceInterface $titleFormattingService,
-        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
+        GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery,
+        FilterProductValuesForTitleFormatting $filterProductValuesForTitleFormatting
     ) {
         $this->localesByChannelQuery = $localesByChannelQuery;
         $this->titleFormattingService = $titleFormattingService;
         $this->getIgnoredProductTitleSuggestionQuery = $getIgnoredProductTitleSuggestionQuery;
+        $this->filterProductValuesForTitleFormatting = $filterProductValuesForTitleFormatting;
     }
 
     public function getCode(): CriterionCode
@@ -51,7 +56,7 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface, Evalu
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
-        $productMainTitleValues = $productValues->getLocalizableMainTitleValues();
+        $productMainTitleValues = $this->filterProductValuesForTitleFormatting->getMainTitleValues($productValues);
 
         $evaluationResult = new Write\CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localeCodes) {
@@ -66,7 +71,7 @@ final class EvaluateTitleFormatting implements EvaluateCriterionInterface, Evalu
     public function evaluateApplicability(ProductValuesCollection $productValues): Write\CriterionApplicability
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
-        $productMainTitleValues = $productValues->getLocalizableMainTitleValues();
+        $productMainTitleValues = $this->filterProductValuesForTitleFormatting->getMainTitleValues($productValues);
 
         $evaluationResult = new Write\CriterionEvaluationResult();
         $isApplicable = false;
