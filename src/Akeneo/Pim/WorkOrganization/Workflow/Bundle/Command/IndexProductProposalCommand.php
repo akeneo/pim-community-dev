@@ -130,7 +130,7 @@ class IndexProductProposalCommand extends Command
      */
     private function indexProductModelProposals(int $batchSize, OutputInterface $output): void
     {
-        $proposalsCount = $this->countProductProposals->fetch();
+        $proposalsCount = $this->countProductModelProposals->fetch();
 
         $output->writeln(sprintf('<info>%s product model proposals to index</info>', $proposalsCount));
 
@@ -140,11 +140,11 @@ class IndexProductProposalCommand extends Command
         $proposalCriteria = ['status' => EntityWithValuesDraftInterface::READY];
         $offset = 0;
 
-        while (!empty($productProposals = $this->productModelDraftRepository->findBy($proposalCriteria, null, $batchSize, $offset))) {
-            $this->productModelDraftIndexer->indexAll($productProposals, ['index_refresh' => Refresh::disable()]);
+        while (!empty($productModelProposals = $this->productModelDraftRepository->findBy($proposalCriteria, null, $batchSize, $offset))) {
+            $this->productModelDraftIndexer->indexAll($productModelProposals, ['index_refresh' => Refresh::disable()]);
 
             $offset += $batchSize;
-            $progressBar->advance(count($productProposals));
+            $progressBar->advance(count($productModelProposals));
         }
 
         $output->writeln('');
