@@ -43,31 +43,13 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
 
         $associationType->getCode()->willReturn('my_code');
         $associationType->isTwoWay()->willReturn(true);
+        $associationType->isQuantified()->willReturn(false);
 
         $this->normalize($associationType)->shouldReturn([
             'code'   => 'my_code',
             'labels' => [],
             'is_two_way' => true,
-        ]);
-    }
-
-    function it_normalize_is_quantified_only_when_feature_flag_is_enabled(
-        $translationNormalizer,
-        AssociationTypeInterface $associationType,
-        FeatureFlag $quantifiedAssociationFeatureFlag
-    ) {
-        $quantifiedAssociationFeatureFlag->isEnabled()->willReturn(true);
-        $translationNormalizer->normalize($associationType, 'standard', [])->willReturn([]);
-
-        $associationType->getCode()->willReturn('my_code');
-        $associationType->isTwoWay()->willReturn(false);
-        $associationType->isQuantified()->willReturn(true);
-
-        $this->normalize($associationType)->shouldReturn([
-            'code'   => 'my_code',
-            'labels' => [],
-            'is_two_way' => false,
-            'is_quantified' => true,
+            'is_quantified' => false,
         ]);
     }
 }

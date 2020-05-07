@@ -24,7 +24,6 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
     public function it_adds_the_attribute_id_to_the_normalized_association_type(
         $normalizer, AssociationTypeInterface $associationType
     ) {
-        $associationType->isQuantified()->willReturn(true);
         $normalizer->normalize($associationType, 'standard', [])->willReturn(['code' => 'variant']);
         $associationType->getId()->willReturn(12);
 
@@ -39,7 +38,6 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
                         'created' => null,
                         'updated' => null,
                     ],
-                    'is_quantified' => true,
                 ]
             );
     }
