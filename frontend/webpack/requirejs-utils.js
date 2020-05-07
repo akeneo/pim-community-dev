@@ -89,8 +89,8 @@ const utils = {
             baseDir,
             'public/bundles/akeneoconnectivityconnection-react/index.ts'
           ),
-          '@akeneo-pim-community/legacy-bridge': path.resolve(baseDir, 'public/bundles/pimui/react/legacy-bridge/index.ts'),
-          '@akeneo-pim-community/shared': path.resolve(baseDir, 'public/bundles/pimui/react/shared/index.ts'),
+          '@akeneo-pim-community/legacy-bridge': path.resolve(baseDir, 'public/bundles/pimui/workspaces/legacy-bridge/index.ts'),
+          '@akeneo-pim-community/shared': path.resolve(baseDir, 'public/bundles/pimui/workspaces/shared/index.ts'),
         });
 
         return { config, aliases };
