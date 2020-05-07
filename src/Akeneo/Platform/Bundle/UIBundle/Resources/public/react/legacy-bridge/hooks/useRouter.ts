@@ -4,11 +4,11 @@ import {Router} from '../provider';
 const useRouter = (): Router => {
   const {router} = useDependenciesContext();
 
-  if (router) {
-    return router;
+  if (!router) {
+    throw new Error('[DependenciesContext]: Router has not been properly initiated');
   }
 
-  throw new Error('[DependenciesContext]: Router has not been properly initiated');
+  return router;
 };
 
 export {useRouter};

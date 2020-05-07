@@ -4,11 +4,11 @@ import {Notify} from '../provider';
 const useNotify = (): Notify => {
   const {notify} = useDependenciesContext();
 
-  if (notify) {
-    return notify;
+  if (!notify) {
+    throw new Error('[DependenciesContext]: Notify has not been properly initiated');
   }
 
-  throw new Error('[ApplicationContext]: Notify has not been properly initiated');
+  return notify;
 };
 
 export {useNotify};

@@ -4,11 +4,11 @@ import {Security} from '../provider';
 const useSecurity = (): Security => {
   const {security} = useDependenciesContext();
 
-  if (security) {
-    return security;
+  if (!security) {
+    throw new Error('[DependenciesContext]: Security has not been properly initiated');
   }
 
-  throw new Error('[DependenciesContext]: Security has not been properly initiated');
+  return security;
 };
 
 export {useSecurity};
