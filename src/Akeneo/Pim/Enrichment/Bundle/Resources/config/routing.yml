@@ -36,6 +36,10 @@ sequential_edit_internal_api:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/sequential_edit.yml'
     prefix: /rest/sequential_edit
 
+product_and_product_model:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/product_and_product_model.yml'
+    prefix: /rest/product-and-product-model
+
 value_internal_api:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/value.yml'
     prefix: /rest/value

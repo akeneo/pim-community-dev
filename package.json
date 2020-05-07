@@ -129,7 +129,7 @@
   "private": true,
   "workspaces": [
     "src/Akeneo/Connectivity/Connection/front",
-    "src/Akeneo/Platform/Bundle/UIBundle/Resources/public/react/legacy-bridge",
-    "src/Akeneo/Platform/Bundle/UIBundle/Resources/public/react/shared"
+    "src/Akeneo/Platform/Bundle/UIBundle/Resources/public/workspaces/legacy-bridge",
+    "src/Akeneo/Platform/Bundle/UIBundle/Resources/public/workspaces/shared"
   ]
 }

@@ -260,6 +260,16 @@ services:
             - '@akeneo_file_storage.file_storage.path_generator'
             - '@akeneo_file_storage.file_storage.file.file_storer'
 
+    pim_enrich.controller.rest.product_and_product_model.get_from_identifier:
+        public: true
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductAndProductModel\GetFromIdentifiersAction'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@pim_enrich.normalizer.linked_product_normalizer'
+            - '@akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows'
+            - '@validator'
+
     pim_enrich.controller.rest.versioning:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\VersioningController'

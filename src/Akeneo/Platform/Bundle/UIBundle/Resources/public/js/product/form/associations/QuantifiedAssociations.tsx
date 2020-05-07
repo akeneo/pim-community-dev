@@ -1,7 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {Button, SearchBar, AkeneoThemeProvider} from '@akeneo-pim-community/shared';
-import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {
+  DependenciesProvider,
+  useTranslate,
+  useUserContext,
+  useRouter,
+  Router,
+} from '@akeneo-pim-community/legacy-bridge';
+import {LocaleCode} from 'pimui/common/model/locale';
+// import {useRouter, useUserContext, Router} from 'pimui/react/legacy-bridge/src';
+import {ChannelCode} from 'pimui/common/model/channel';
 
 type Identifier = string;
 
@@ -52,47 +61,38 @@ type Product = {
   variant_product_completenesses: any;
 };
 
-const productFetcher = async (identifiers: Identifier[]): Promise<Product[]> => {
-  const response = await Promise.resolve({
-    items: [
-      {
-        id: 46,
-        identifier: 'model-braided-hat',
-        label: 'Braided hat ',
-        document_type: 'product_model',
-        image: {
-          filePath: 'e/3/c/9/e3c9304b2ca79802a7dd05c0d3345cdfdda397dc_braided_hat.jpg',
-          originalFilename: 'braided-hat.jpg',
-        },
-        completeness: null,
-        variant_product_completenesses: {completeChildren: 0, totalChildren: 2},
-      },
-      {
-        id: 1078,
-        identifier: '8009612',
-        label: 'Kodak i2400',
-        document_type: 'product',
-        image: null,
-        completeness: 60,
-        variant_product_completenesses: null,
-      },
-    ],
-    total_count: 2,
+const productFetcher = async (
+  router: Router,
+  productIdentifiers: Identifier[],
+  productModelIdentifiers: Identifier[],
+  channel: ChannelCode,
+  locale: LocaleCode
+): Promise<Product[]> => {
+  const url = router.generate('pim_enrich_product_and_product_model_by_identifiers_rest_list', {channel, locale});
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({products: productIdentifiers, product_models: productModelIdentifiers}),
   });
 
-  console.log(identifiers);
-
-  return response.items;
+  return (await response.json()).items;
 };
 
 const useProducts = (identifiers: Identifier[]) => {
   const [products, setProducts] = useState<Product[]>([]);
+  const userContext = useUserContext();
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
-      setProducts(await productFetcher(identifiers));
+      setProducts(
+        await productFetcher(router, identifiers, [], userContext.get('catalogScope'), userContext.get('catalogLocale'))
+      );
     })();
-  }, [JSON.stringify(identifiers)]);
+  }, [JSON.stringify(identifiers), userContext, router]);
 
   return products;
 };
