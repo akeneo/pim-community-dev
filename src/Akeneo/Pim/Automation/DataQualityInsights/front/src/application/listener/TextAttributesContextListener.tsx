@@ -60,13 +60,13 @@ const isTextAttributeElement = (element: Element | null, attributes: Attribute[]
   );
 };
 
-export const isTitleFormatterActivated = (attributeCode: string, family: Family, attributes: Attribute[]) => {
+export const isTitleFormatterActivated = (attributeCode: string, family: Family, attributes: Attribute[], activeLocalesNumber: number) => {
   const attribute = attributes.find(attr => attr.code === attributeCode);
   if (! attribute) {
     return false;
   }
 
-  return attributeCode === family.attribute_as_label && attribute.localizable;
+  return attributeCode === family.attribute_as_label && (attribute.localizable || activeLocalesNumber === 1);
 };
 
 const getEditorElement = (element: Element) => {
@@ -119,7 +119,7 @@ const TextAttributesContextListener = () => {
             editor.setAttribute("spellcheck", 'false');
 
             const widgetId = uuidV5(`${product.meta.id}-${attribute}`, WIDGET_UUID_NAMESPACE);
-            const isAttributeUsedAsMainLabel = isTitleFormatterActivated(attribute, family, textAttributes);
+            const isAttributeUsedAsMainLabel = isTitleFormatterActivated(attribute, family, textAttributes, activeLocales.length);
             widgetList[widgetId] = createWidget(widgetId, editor as EditorElement, editorId, attribute, isAttributeUsedAsMainLabel);
           }
         });
@@ -141,7 +141,7 @@ const TextAttributesContextListener = () => {
       }
     }
   },
-  [product, family, attributesTabIsLoading]);
+  [product, family, attributesTabIsLoading, activeLocales]);
 
   return (
     <></>
