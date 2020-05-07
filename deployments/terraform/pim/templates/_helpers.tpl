@@ -40,8 +40,7 @@ Can be with or without the Onboarder bundle activated
 {{- end -}}
 
 {{/*
-    Define common labels for Kubernetes objects
-    See K8s common labels here : https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+    Define standard labels for PIM objects
 */}}
 {{- define "pim.standardLabels" -}}
 app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
@@ -54,6 +53,9 @@ product_version: "{{ .Chart.Version | replace "+" "_" }}"
 heritage: "{{ .Release.Service }}" # Deprecated
 {{- end -}}
 
+{{/*
+    Define standard labels for Onboarder objects
+*/}}
 {{- define "onboarder.standardLabels" -}}
 app: onboarder # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
 app.kubernetes.io/name: onboarder
