@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Domain\Audit\Model;
+namespace spec\Akeneo\Connectivity\Connection\Domain\Common;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\Common\HourlyInterval;
 use PhpSpec\ObjectBehavior;
 
 /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Audit\Model\Write;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\Common\HourlyInterval;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

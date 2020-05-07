@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\Common\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;

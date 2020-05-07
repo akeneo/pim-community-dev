@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Connection;
 
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\FetchMode;
+use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,6 +26,9 @@ class CollectApiBusinessErrorsEndToEnd extends ApiTestCase
 {
     /** @var Client */
     private $esClient;
+
+    /** @var Connection */
+    private $dbalConnection;
 
     // test_it_collects_errors_from_a_product_delete
     public function test_it_collects_an_error_from_a_not_found_http_exception(): void
@@ -50,6 +57,7 @@ class CollectApiBusinessErrorsEndToEnd extends ApiTestCase
         $doc = $result['hits']['hits'][0]['_source'];
         Assert::assertSame('erp', $doc['connection_code']);
         Assert::assertSame($expectedContent['message'], $doc['content']['message']);
+        $this->errorCountMustBe('erp', 1, ErrorTypes::BUSINESS);
     }
 
     // test_it_collects_errors_from_a_product_create
@@ -101,6 +109,7 @@ JSON;
         $doc = $result['hits']['hits'][0]['_source'];
         Assert::assertEquals('erp', $doc['connection_code']);
         Assert::assertEquals($expectedContent, $doc['content']);
+        $this->errorCountMustBe('erp', 1, ErrorTypes::BUSINESS);
     }
 
     // test_it_collects_errors_from_a_product_partial_update
@@ -172,6 +181,8 @@ JSON;
         $doc2 = $result['hits']['hits'][1]['_source'];
         Assert::assertEquals('erp', $doc2['connection_code']);
         Assert::assertEquals($expectedContent['errors'][1], $doc2['content']);
+
+        $this->errorCountMustBe('erp', 2, ErrorTypes::BUSINESS);
     }
 
     public function test_it_collects_errors_from_a_product_partial_update_list(): void
@@ -256,6 +267,8 @@ JSON;
         Assert::assertEquals('erp', $doc['connection_code']);
         Assert::assertArrayHasKey('message', $doc['content']);
         Assert::assertSame($expectedContent[0]['message'], $doc['content']['message']);
+
+        $this->errorCountMustBe('erp', 1, ErrorTypes::BUSINESS);
     }
 
     protected function setUp(): void
@@ -263,11 +276,38 @@ JSON;
         parent::setUp();
 
         $this->esClient = $this->get('akeneo_connectivity.client.connection_error');
+        $this->dbalConnection = $this->get('database_connection');
     }
 
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function errorCountMustBe(string $connectionCode, int $count, string $errorType): void
+    {
+        $selectQuery = <<<SQL
+SELECT count(connection_code) AS count
+FROM akeneo_connectivity_connection_audit_error
+WHERE connection_code = :code AND error_count = :count AND error_type = :type
+SQL;
+
+        $result = $this->dbalConnection->executeQuery(
+            $selectQuery,
+            [
+                'code' => $connectionCode,
+                'count' => $count,
+                'type' => $errorType,
+            ],
+            [
+                'code' => Types::STRING,
+                'count' => Types::INTEGER,
+                'type' => Types::STRING,
+            ]
+        )->fetchAll(FetchMode::COLUMN);
+
+        Assert::assertCount(1, $result);
+        Assert::assertEquals('1', $result[0]);
     }
 
     private function createAttribute(array $data): void

@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\ErrorManagement\Service;
 
 use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
+use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountCommand;
+use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler;
+use Akeneo\Connectivity\Connection\Domain\Common\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepository;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
@@ -25,16 +29,21 @@ class CollectApiError
     /** @var ExtractErrorsFromHttpExceptionInterface */
     private $extractErrorsFromHttpException;
 
+    /** @var UpdateConnectionErrorCountHandler */
+    private $updateErrorCountHandler;
+
     private $errors = [];
 
     public function __construct(
         ConnectionContextInterface $connectionContext,
         BusinessErrorRepository $repository,
-        ExtractErrorsFromHttpExceptionInterface $extractErrorsFromHttpException
+        ExtractErrorsFromHttpExceptionInterface $extractErrorsFromHttpException,
+        UpdateConnectionErrorCountHandler $updateErrorCountHandler
     ) {
         $this->repository = $repository;
         $this->connectionContext = $connectionContext;
         $this->extractErrorsFromHttpException = $extractErrorsFromHttpException;
+        $this->updateErrorCountHandler = $updateErrorCountHandler;
     }
 
     public function collectFromHttpException(HttpException $httpException): void
@@ -49,7 +58,16 @@ class CollectApiError
             return;
         }
 
+        $connection = $connection = $this->connectionContext->getConnection();
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $command = new UpdateConnectionErrorCountCommand(
+            (string) $connection->code(),
+            HourlyInterval::createFromDateTime($now),
+            count($this->errors),
+            ErrorTypes::BUSINESS
+        );
         $this->repository->bulkInsert($this->errors);
+        $this->updateErrorCountHandler->handle($command);
     }
 
     /**

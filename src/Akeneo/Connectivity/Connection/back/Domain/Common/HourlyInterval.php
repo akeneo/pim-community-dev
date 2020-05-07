@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Domain\Audit\Model;
+namespace Akeneo\Connectivity\Connection\Domain\Common;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)

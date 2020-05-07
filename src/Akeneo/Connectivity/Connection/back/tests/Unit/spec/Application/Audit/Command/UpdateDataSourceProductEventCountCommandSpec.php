@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Command;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountCommand;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\Common\HourlyInterval;
 use PhpSpec\ObjectBehavior;
 
 /**
