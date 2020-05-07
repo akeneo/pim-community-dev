@@ -106,6 +106,16 @@ const RuleProductSelection: React.FC<Props> = ({
     });
   };
 
+  const isActiveConditionField: ((fieldCode: string) => boolean) = (fieldCode: string) => {
+    return conditions.reduce<boolean>((found, condition) => {
+      return found || (
+        condition !== null &&
+        condition.hasOwnProperty('field') &&
+        (condition as { field: string }).field === fieldCode
+      );
+    }, false);
+  }
+
   return (
     <fieldset>
       <Header className='AknSubsection-title'>
@@ -128,6 +138,7 @@ const RuleProductSelection: React.FC<Props> = ({
               router={router}
               handleAddCondition={handleAddCondition}
               translate={translate}
+              isActiveConditionField={isActiveConditionField}
             />
           </AddConditionContainer>
         </HeaderPartContainer>

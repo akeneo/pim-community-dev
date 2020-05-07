@@ -22,15 +22,15 @@ type Props = {
   router: Router;
   handleAddCondition: (fieldCode: string) => void;
   translate: Translate;
+  isActiveConditionField: (fieldCode: string) => boolean;
 };
 
 const AddConditionButton: React.FC<Props> = ({
   router,
   handleAddCondition,
   translate,
+  isActiveConditionField,
 }) => {
-  const [closeTick, setCloseTick] = React.useState<boolean>(true);
-
   const dataProvider = (term: string, page: number) => {
     return {
       search: term,
@@ -72,11 +72,9 @@ const AddConditionButton: React.FC<Props> = ({
       containerCssClass={'add-conditions-button'}
       dropdownCssClass={'add-conditions-dropdown'}
       onSelecting={(event: any) => {
-        event.preventDefault();
         if (event.val !== null) {
           // Use has not clicked on a group
           handleAddCondition(event.val);
-          setCloseTick(!closeTick);
         }
       }}
       ajax={{
@@ -91,7 +89,9 @@ const AddConditionButton: React.FC<Props> = ({
         },
       }}
       placeholder={translate('pimee_catalog_rule.form.edit.add_conditions')}
-      closeTick={closeTick}
+      formatResult={(option) => {
+        return `<span class="${isActiveConditionField(option.id as string) ? 'active-condition' : ''}">${option.text}</span>`;
+      }}
     />
   );
 };

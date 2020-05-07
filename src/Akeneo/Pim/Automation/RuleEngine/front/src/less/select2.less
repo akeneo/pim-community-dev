@@ -43,6 +43,12 @@
 
   .select2-results {
     min-height: 50vh;
+    font-size: 15px;
+
+    .select2-highlighted,
+    .select2-highlighted ul {
+      color: @AknSlateGrey;
+    }
 
     li.select2-result-with-children > .select2-result-label {
       line-height: 36px;
@@ -59,6 +65,12 @@
       & > li > .select2-result-label {
         padding-left: 0;
       }
+    }
+
+    .active-condition {
+      color: @AknLightPurple;
+      font-weight: bold;
+      font-style: italic;
     }
   }
 }

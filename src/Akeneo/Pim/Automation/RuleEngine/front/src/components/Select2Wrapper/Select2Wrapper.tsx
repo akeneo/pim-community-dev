@@ -31,7 +31,7 @@ type Props = {
   containerCssClass?: string;
   data?: (option | optionsGroup)[];
   dropdownCssClass?: string;
-  formatResult?: (item: { id: string }) => string;
+  formatResult?: (item: option|optionsGroup) => string;
   hiddenLabel?: boolean;
   id: string;
   label: string;
@@ -54,7 +54,6 @@ type Props = {
     results: (values: any) => ajaxResults;
   };
   initSelection?: (element: any, callback: InitSelectionCallback) => void;
-  closeTick?: boolean;
 };
 
 const Select2Wrapper: React.FC<Props> = ({
@@ -73,7 +72,6 @@ const Select2Wrapper: React.FC<Props> = ({
   multiple = false,
   ajax,
   initSelection,
-  closeTick = false,
 }) => {
   const select2Ref = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -83,6 +81,7 @@ const Select2Wrapper: React.FC<Props> = ({
     const $select = $(select2Ref.current) as any;
     $select.val(value);
 
+    $select.select2('destroy');
     $select.select2({
       allowClear,
       containerCssClass,
@@ -102,6 +101,13 @@ const Select2Wrapper: React.FC<Props> = ({
       $select.off('select2-selecting');
       $select.on('select2-selecting', onSelecting);
     }
+  }, [select2Ref, onSelecting, onChange, formatResult]);
+
+  useEffect(() => {
+    if (null === select2Ref.current) {
+      return;
+    }
+    const $select = $(select2Ref.current) as any;
 
     return () => {
       $select.off('change');
@@ -109,35 +115,6 @@ const Select2Wrapper: React.FC<Props> = ({
       $select.select2('container').remove();
     };
   }, [select2Ref]);
-
-  useEffect(() => {
-    if (null === select2Ref.current) {
-      return;
-    }
-    const $select = $(select2Ref.current) as any;
-    if (onChange) {
-      $select.on('change', (event: Select2Event) => onChange(event.val));
-    }
-  }, [onChange]);
-
-  useEffect(() => {
-    if (null === select2Ref.current) {
-      return;
-    }
-    const $select = $(select2Ref.current) as any;
-    if (onSelecting) {
-      $select.off('select2-selecting');
-      $select.on('select2-selecting', onSelecting);
-    }
-  }, [onSelecting]);
-
-  useEffect(() => {
-    if (null === select2Ref.current) {
-      return;
-    }
-    const $select = $(select2Ref.current) as any;
-    $select.select2('close');
-  }, [closeTick]);
 
   return (
     <>
