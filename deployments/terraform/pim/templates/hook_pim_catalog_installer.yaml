@@ -6,7 +6,7 @@ metadata:
   labels:
     component: "hook-pim-catalog-installer" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     app.kubernetes.io/component: "hook-pim-catalog-installer"
-    {{- include "pim.standardLabels" . | nindent 4 }}
+    {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
     # This is what defines this resource as a hook. Without this line, the
@@ -21,7 +21,7 @@ spec:
         component: "hook-pim-catalog-installer" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
         app.kubernetes.io/component: "hook-pim-catalog-installer"
         role: pim-install # Deprecated
-        {{- include "pim.standardLabels" . | nindent 8 }}
+        {{- include "pim.standardLabels" . | indent 8 }}
         {{- include "pim.extraLabels" . | indent 8 }}
       annotations:
         checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap

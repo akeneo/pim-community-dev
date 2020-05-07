@@ -6,7 +6,7 @@ metadata:
   labels:
     component: "hook-after-upgrade-es" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     app.kubernetes.io/component: "hook-after-upgrade-es"
-    {{- include "pim.standardLabels" . | nindent 4 }}
+    {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
     # This is what defines this resource as a hook. Without this line, the
@@ -21,7 +21,7 @@ spec:
         component: "hook-before-upgrade-es" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
         app.kubernetes.io/component: "hook-before-upgrade-es"
         role: after-upgrade-es # Deprecated
-        {{- include "pim.standardLabels" . | nindent 8 }}
+        {{- include "pim.standardLabels" . | indent 8 }}
         {{- include "pim.extraLabels" . | indent 8 }}
     spec:
       restartPolicy: Never
