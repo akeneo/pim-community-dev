@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.24 (2020-05-07)
+
 ## Bug fixes
 
 - PIM-9237: Add missing scrollbar in asset navigation panel
