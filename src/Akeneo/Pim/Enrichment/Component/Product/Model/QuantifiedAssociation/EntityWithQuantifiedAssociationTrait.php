@@ -118,6 +118,10 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function normalizeQuantifiedAssociations(): array
     {
+        if (null === $this->quantifiedAssociations) {
+            return [];
+        }
+
         return $this->quantifiedAssociations->normalize();
     }
 }
