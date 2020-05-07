@@ -75,7 +75,7 @@ class ProductStandardSortedCollectionIntegration extends TestCase
                     'product_models' => [],
                 ],
             ],
-            // @todo https://akeneo.atlassian.net/browse/RAC-198
+            // @todo https://akeneo.atlassian.net/browse/MET-198
             'quantified_associations' => [],
         ];
 
@@ -133,7 +133,7 @@ class ProductStandardSortedCollectionIntegration extends TestCase
                     'product_models' => [],
                 ],
             ],
-            // @todo https://akeneo.atlassian.net/browse/RAC-198
+            // @todo https://akeneo.atlassian.net/browse/MET-198
             'quantified_associations' => [],
         ];
 
@@ -191,7 +191,7 @@ class ProductStandardSortedCollectionIntegration extends TestCase
                     'product_models' => [],
                 ],
             ],
-            // @todo https://akeneo.atlassian.net/browse/RAC-198
+            // @todo https://akeneo.atlassian.net/browse/MET-198
             'quantified_associations' => [],
         ];
 
