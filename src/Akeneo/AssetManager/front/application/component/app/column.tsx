@@ -15,6 +15,18 @@ export const ColumnTitle = styled.div`
   }
 `;
 
+const InnerColumn = styled.div`
+  width: 280px;
+  height: calc(100% - 70px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: absolute;
+  right: 0;
+  overflow-x: auto;
+  transition: right 0.3s ease-in-out;
+`;
+
 const CollapseButton = styled.div`
   height: 70px;
   width: 280px;
@@ -80,10 +92,12 @@ export const Column = ({title, children}: ColumnProps) => {
 
   return (
     <ColumnContainer isCollapsed={isCollapsed}>
-      <ColumnContent>
-        <ColumnTitle>{title}</ColumnTitle>
-        {children}
-      </ColumnContent>
+      <InnerColumn>
+        <ColumnContent>
+          <ColumnTitle>{title}</ColumnTitle>
+          {children}
+        </ColumnContent>
+      </InnerColumn>
       <CollapseButton onClick={() => setCollapsed(!isCollapsed)} />
     </ColumnContainer>
   );
