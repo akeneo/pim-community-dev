@@ -4,8 +4,11 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
 import {act, fireEvent, getAllByRole, getByText, getAllByTitle} from '@testing-library/react';
-import {AkeneoThemeProvider} from 'akeneomeasure/AkeneoThemeProvider';
+import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+
+jest.mock('@akeneo-pim-community/legacy-bridge/provider/dependencies.ts');
 
 let container: HTMLElement;
 
@@ -23,9 +26,11 @@ afterEach(() => {
 test('It renders without errors', async () => {
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <OperationCollection operations={[]} onOperationsChange={() => {}} />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <OperationCollection operations={[]} onOperationsChange={() => {}} />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -49,9 +54,11 @@ test('It renders the given operations', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <OperationCollection operations={operations} onOperationsChange={() => {}} />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <OperationCollection operations={operations} onOperationsChange={() => {}} />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -81,14 +88,16 @@ test('I can add an operation', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <OperationCollection
-          operations={operations}
-          onOperationsChange={updatedOperations => {
-            newOperations = updatedOperations;
-          }}
-        />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <OperationCollection
+            operations={operations}
+            onOperationsChange={updatedOperations => {
+              newOperations = updatedOperations;
+            }}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -128,14 +137,16 @@ test('I can remove an operation', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <OperationCollection
-          operations={operations}
-          onOperationsChange={updatedOperations => {
-            newOperations = updatedOperations;
-          }}
-        />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <OperationCollection
+            operations={operations}
+            onOperationsChange={updatedOperations => {
+              newOperations = updatedOperations;
+            }}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -170,14 +181,16 @@ test('I can edit the value of an operation', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <OperationCollection
-          operations={operations}
-          onOperationsChange={updatedOperations => {
-            newOperations = updatedOperations;
-          }}
-        />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <OperationCollection
+            operations={operations}
+            onOperationsChange={updatedOperations => {
+              newOperations = updatedOperations;
+            }}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -216,14 +229,16 @@ test('I can edit the operator of an operation', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <OperationCollection
-          operations={operations}
-          onOperationsChange={updatedOperations => {
-            newOperations = updatedOperations;
-          }}
-        />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <OperationCollection
+            operations={operations}
+            onOperationsChange={updatedOperations => {
+              newOperations = updatedOperations;
+            }}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -270,13 +285,15 @@ test('It renders the given operations errors', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <OperationCollection
-          operations={operations}
-          onOperationsChange={() => {}}
-          errors={[{propertyPath: '', message: 'message'}]}
-        />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <OperationCollection
+            operations={operations}
+            onOperationsChange={() => {}}
+            errors={[{propertyPath: '', message: 'message'}]}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });

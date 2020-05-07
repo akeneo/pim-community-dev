@@ -1,5 +1,4 @@
-import {useContext} from 'react';
-import {RouterContext} from 'akeneomeasure/context/router-context';
+import {useRouter} from '@akeneo-pim-community/legacy-bridge';
 
 enum MeasurementFamilyRemoverResult {
   Success = 'Success',
@@ -10,7 +9,7 @@ enum MeasurementFamilyRemoverResult {
 type Remover = (measurementFamilyCode: string) => Promise<MeasurementFamilyRemoverResult>;
 
 const useMeasurementFamilyRemover = (): Remover => {
-  const router = useContext(RouterContext);
+  const router = useRouter();
 
   return async (measurementFamilyCode: string) => {
     const response = await fetch(

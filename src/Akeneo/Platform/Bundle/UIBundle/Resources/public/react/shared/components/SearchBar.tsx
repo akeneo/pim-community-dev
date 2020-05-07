@@ -1,9 +1,9 @@
-import React, {useContext, ChangeEvent, useRef} from 'react';
+import React, {ChangeEvent, useRef} from 'react';
 import styled from 'styled-components';
-import {SearchIcon} from 'akeneomeasure/shared/icons/SearchIcon';
-import {ResultCount} from 'akeneomeasure/shared/components/ResultCount';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
-import {useAutoFocus} from 'akeneomeasure/shared/hooks/use-auto-focus';
+import {ResultCount} from './ResultCount';
+import {SearchIcon} from '../icons';
+import {useAutoFocus} from '../hooks';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
   display: flex;
@@ -36,13 +36,14 @@ const SearchInput = styled.input`
 
 type SearchBarProps = {
   className?: string;
+  placeholder?: string;
   count: number;
   searchValue: string;
   onSearchChange: (searchValue: string) => void;
 };
 
-const SearchBar = ({className, count, searchValue, onSearchChange}: SearchBarProps) => {
-  const __ = useContext(TranslateContext);
+const SearchBar = ({className, placeholder, count, searchValue, onSearchChange}: SearchBarProps) => {
+  const __ = useTranslate();
   const searchFieldRef = useRef<HTMLInputElement | null>(null);
   useAutoFocus(searchFieldRef);
 
@@ -52,7 +53,7 @@ const SearchBar = ({className, count, searchValue, onSearchChange}: SearchBarPro
         <SearchIcon />
         <SearchInput
           ref={searchFieldRef}
-          placeholder={__('measurements.search.placeholder')}
+          placeholder={placeholder || __('pim_common.search')}
           value={searchValue}
           onChange={(event: ChangeEvent<HTMLInputElement>) => onSearchChange(event.target.value)}
         />

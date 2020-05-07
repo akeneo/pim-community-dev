@@ -1,4 +1,5 @@
-import {ThemedStyledProps} from 'styled-components';
+import React, {ReactNode} from 'react';
+import {ThemeProvider} from 'styled-components';
 
 type AkeneoTheme = {
   color: {
@@ -57,8 +58,6 @@ type AkeneoTheme = {
   };
 };
 
-type ThemedProps<P> = ThemedStyledProps<P, AkeneoTheme>;
-
 const akeneoTheme: AkeneoTheme = {
   color: {
     grey60: '#f9f9fb',
@@ -116,4 +115,8 @@ const akeneoTheme: AkeneoTheme = {
   },
 };
 
-export {akeneoTheme, ThemedProps, AkeneoTheme};
+const AkeneoThemeProvider = ({children}: {children?: ReactNode}) => (
+  <ThemeProvider theme={akeneoTheme}>{children}</ThemeProvider>
+);
+
+export {AkeneoThemeProvider, akeneoTheme, AkeneoTheme};

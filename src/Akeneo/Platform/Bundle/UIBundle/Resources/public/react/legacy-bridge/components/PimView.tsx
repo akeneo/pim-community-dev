@@ -1,7 +1,7 @@
-import React, {useRef, useContext, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {LegacyContext} from 'akeneomeasure/context/legacy-context';
 import {View} from 'backbone';
+import {useViewBuilder} from '../hooks';
 
 type Props = {
   viewName: string;
@@ -18,7 +18,7 @@ const PimView = ({viewName, className}: Props) => {
   const el = useRef<HTMLDivElement>(null);
   const [view, setView] = useState<View | null>(null);
 
-  const {viewBuilder} = useContext(LegacyContext);
+  const viewBuilder = useViewBuilder();
   useEffect(() => {
     if (!viewBuilder) {
       return;

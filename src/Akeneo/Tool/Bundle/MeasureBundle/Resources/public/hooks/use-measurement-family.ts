@@ -1,13 +1,13 @@
-import {useCallback, useContext, useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {MeasurementFamily, MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
-import {RouterContext} from 'akeneomeasure/context/router-context';
 import {baseFetcher} from 'akeneomeasure/shared/fetcher/base-fetcher';
+import {useRouter} from '@akeneo-pim-community/legacy-bridge';
 
 const useMeasurementFamily = (
   measurementFamilyCode: MeasurementFamilyCode
 ): [MeasurementFamily | null, (measurementFamily: MeasurementFamily) => void] => {
   const [measurementFamily, setMeasurementFamily] = useState<MeasurementFamily | null>(null);
-  const route = useContext(RouterContext).generate('pim_enrich_measures_rest_index');
+  const route = useRouter().generate('pim_enrich_measures_rest_index');
 
   const fetchMeasurementFamily = useCallback(
     async (measurementFamilyCode: MeasurementFamilyCode) => {
