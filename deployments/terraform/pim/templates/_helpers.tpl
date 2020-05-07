@@ -38,3 +38,35 @@ Can be with or without the Onboarder bundle activated
 {{- printf "%s:%s" .Values.image.pim.repository .Values.image.pim.tag -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+    Define common labels for Kubernetes objects
+    See K8s common labels here : https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+*/}}
+{{- define "pim.standardLabels" -}}
+app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+app.kubernetes.io/name: pim
+chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+release: "{{ .Release.Name }}" # Ex: srnt-invivo
+product_reference: serenity
+product_version: "{{ .Chart.Version | replace "+" "_" }}"
+heritage: "{{ .Release.Service }}" # Deprecated
+{{- range $key, $value := .Values.global.extraLabels }}
+{{ $key }}: {{ $value | quote }}
+{{- end }}
+{{- end -}}
+
+{{- define "onboarder.standardLabels" -}}
+app: onboarder # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+app.kubernetes.io/name: onboarder
+chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+release: "{{ .Release.Name }}" # Ex: srnt-invivo
+product_reference: serenity
+product_version: "{{ .Chart.Version | replace "+" "_" }}"
+heritage: "{{ .Release.Service }}" # Deprecated
+{{- range $key, $value := .Values.global.extraLabels }}
+{{ $key }}: {{ $value | quote }}
+{{- end }}
+{{- end -}}

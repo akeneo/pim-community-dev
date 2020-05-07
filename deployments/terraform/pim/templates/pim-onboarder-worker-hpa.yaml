@@ -4,17 +4,10 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: pim-onboarder-worker-hpa
   labels:
-    app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-    app.kubernetes.io/name: pim
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    release: "{{ .Release.Name }}" # Ex: srnt-invivo
-    product_reference: serenity
-    product_version: "{{ .Chart.Version | replace "+" "_" }}"
-    heritage: "{{ .Release.Service }}" # Deprecated
     component: "pim-onboarder-worker-hpa" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     app.kubernetes.io/component: "pim-onboarder-worker-hpa"
     role: pim-onboarder-worker-hpa # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
 spec:
   minReplicas: 1

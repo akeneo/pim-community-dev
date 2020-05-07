@@ -4,23 +4,10 @@ kind: Job
 metadata:
   name: setup-onboarder-database
   labels:
-    app: onboarder # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-    app.kubernetes.io/name: onboarder
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    release: "{{ .Release.Name }}" # Ex: srnt-invivo
-    product_reference: serenity
-    product_version: "{{ .Chart.Version | replace "+" "_" }}"
-    heritage: "{{ .Release.Service }}" # Deprecated
     component: "hook-setup-onboarder-database" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     app.kubernetes.io/component: "hook-setup-onboarder-database"
-    # TODO: why not use {{ include "pim.extraLabels" . | indent 4 }} below?
-    {{- range $key, $value := .Values.global.extraLabels }}
-    {{ $key }}: {{ $value | quote }}
-    {{- end }}
-    {{- range $key, $value := .Values.common.extraLabels }}
-    {{ $key }}: {{ $value | quote }}
-    {{- end }}
+    {{- include "onboarder.standardLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
@@ -31,24 +18,11 @@ spec:
   template:
     metadata:
       labels:
-        app: onboarder # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-        app.kubernetes.io/name: onboarder
-        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-        release: "{{ .Release.Name }}" # Ex: srnt-invivo
-        product_reference: serenity
-        product_version: "{{ .Chart.Version | replace "+" "_" }}"
-        heritage: "{{ .Release.Service }}" # Deprecated
         component: "hook-setup-onboarder-database" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
         app.kubernetes.io/component: "hook-setup-onboarder-database"
         role: "setup-onboarder-database" # Deprecated
-        # TODO: why not use {{ include "pim.extraLabels" . | indent 4 }} below?
-        {{- range $key, $value := .Values.global.extraLabels }}
-        {{ $key }}: {{ $value | quote }}
-        {{- end }}
-        {{- range $key, $value := .Values.common.extraLabels }}
-        {{ $key }}: {{ $value | quote }}
-        {{- end }}
+        {{- include "onboarder.standardLabels" . | indent 8 }}
+        {{- include "pim.extraLabels" . | indent 8 }}
       annotations:
         checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
         checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
