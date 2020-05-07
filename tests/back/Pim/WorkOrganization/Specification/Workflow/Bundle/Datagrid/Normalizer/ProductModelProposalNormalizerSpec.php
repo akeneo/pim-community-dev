@@ -3,13 +3,17 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductModelProposalNormalizerSpec extends ObjectBehavior
@@ -33,7 +37,7 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($productModelProposal, 'datagrid')->shouldReturn(true);
     }
 
-    function it_normalizes(
+    function it_normalizes_a_product_model_draft(
         $standardNormalizer,
         $datagridNormalizer,
         ValueFactory $valueFactory,
@@ -119,5 +123,71 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
                 'proposal_id' => 1,
             ]
         );
+    }
+
+    function it_handles_empty_values_correctly(
+        NormalizerInterface $standardNormalizer,
+        NormalizerInterface $datagridNormalizer,
+        ValueFactory $valueFactory,
+        GetAttributes $getAttributesQuery,
+        ProductModelDraft $productModelDraft
+    ) {
+        $originalPM = new ProductModel();
+        $originalPM->setCode('original');
+
+        $createdAt = \DateTime::createFromFormat('Y-m-d', '2020-05-07');
+        $datagridNormalizer->normalize($createdAt, 'datagrid', [])->willReturn('2020-05-07');
+        $productModelDraft->getCreatedAt()->willReturn($createdAt);
+        $productModelDraft->getEntityWithValue()->willReturn($originalPM);
+        $productModelDraft->getAuthor()->willReturn('john_doe');
+        $productModelDraft->getAuthorLabel()->willReturn('John Doe');
+        $productModelDraft->getSource()->willReturn('source');
+        $productModelDraft->getSourceLabel()->willReturn('Source label');
+        $productModelDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
+        $productModelDraft->getId()->willReturn(42);
+
+        $productModelDraft->getChanges()->willReturn([
+            'values' => [
+                'name' => [
+                    ['scope' => null, 'locale' => 'en_US', 'data' => null],
+                    ['scope' => null, 'locale' => 'fr_FR', 'data' => 'changed'],
+                ],
+            ],
+        ]);
+
+        $nameAttribute = new Attribute('name', 'pim_catalog_text', [], true, false, null, null, null, 'string', []);
+        $getAttributesQuery->forCode('name')->willReturn($nameAttribute);
+
+        $valueFactory->createByCheckingData($nameAttribute, null, 'en_US', null)->shouldNotBeCalled();
+        $valueFactory->createByCheckingData($nameAttribute, null, 'fr_FR', 'changed')
+                     ->shouldBeCalled()->willReturn(ScalarValue::localizableValue('name', 'changed', 'fr_FR'));
+
+        $standardNormalizer->normalize(Argument::type(WriteValueCollection::class), 'standard', [])
+            ->shouldBeCalled()->willReturn([
+                'name' => [
+                    ['scope' => null, 'locale' => 'fr_FR', 'data' => 'changed'],
+                ],
+            ]);
+
+        $this->normalize($productModelDraft, 'datagrid', [])->shouldReturn([
+            'changes' => [
+                'name' => [
+                    ['scope' => null, 'locale' => 'fr_FR', 'data' => 'changed'],
+                    ['data' => null, 'locale' => 'en_US', 'scope' => null],
+                ],
+            ],
+            'createdAt' => '2020-05-07',
+            'product' => $originalPM,
+            'author' => 'john_doe',
+            'author_label' => 'John Doe',
+            'source' => 'source',
+            'source_label' => 'Source label',
+            'status' => EntityWithValuesDraftInterface::READY,
+            'proposal' => $productModelDraft,
+            'search_id' => 'original',
+            'id' => 'product_model_draft_42',
+            'document_type' => 'product_model_draft',
+            'proposal_id' => 42,
+        ]);
     }
 }
