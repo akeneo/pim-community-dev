@@ -6,7 +6,7 @@ metadata:
     component: "pim-web-ingress" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     app.kubernetes.io/component: "pim-web-ingress"
     role: "pim-web-ingress" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-    {{- include "pim.standardLabels" . | indent 4 }}
+    {{- include "pim.standardLabels" . | nindent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
     kubernetes.io/ingress.class: traefik
