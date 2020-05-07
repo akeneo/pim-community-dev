@@ -45,7 +45,7 @@ class ShouldNotBeTwoWayAndQuantifiedValidatorSpec extends ObjectBehavior
         $associationType->isQuantified()->shouldReturn(true);
 
         $context
-            ->addViolation('Association type cannot be quantified and two way')
+            ->addViolation('Association type can be either quantified or two-way')
             ->shouldBeCalled();
 
         $this->validate($associationType, $constraint);
