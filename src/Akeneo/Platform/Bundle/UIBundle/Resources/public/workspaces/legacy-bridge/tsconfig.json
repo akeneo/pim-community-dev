@@ -5,9 +5,6 @@
     "noEmit": true,
     "esModuleInterop": true,
     "baseUrl": ".",
-    "paths": {
-      "@src/*": ["src/*"]
-    }
   },
   "include": ["src", "tests", "types.d.ts", "hooks", "index.ts", "provider", "components"]
 }
