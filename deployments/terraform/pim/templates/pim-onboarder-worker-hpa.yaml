@@ -1,4 +1,4 @@
-{{- if .Values.onboarder.enabled }}
+{{ if .Values.onboarder.enabled -}}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:

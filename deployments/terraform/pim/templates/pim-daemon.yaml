@@ -50,22 +50,22 @@ spec:
           imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
           command: ['sh', '-c', 'export HOME=/srv/pim && cd /srv/pim && su www-data -s /bin/bash -c "php bin/console {{ $daemonOptions.pimCommand }}"']
           resources:
-{{- if $daemonOptions.resources -}}
-{{ toYaml $daemonOptions.resources | nindent 12 }}
-{{- else -}}
-{{ toYaml $tplCtx.Values.pim.resources | nindent 12 }}
-{{- end -}}
+{{- if $daemonOptions.resources }}
+{{ toYaml $daemonOptions.resources | indent 12 }}
+{{- else }}
+{{ toYaml $tplCtx.Values.pim.resources | indent 12 }}
+{{- end }}
           volumeMounts:
             - name: google-cloud-pim-storage-key
               mountPath: /var/secrets/google/srnt.json
               subPath: srnt.json
               readOnly: true
-            {{- if $tplCtx.Values.onboarder.enabled -}}
+            {{- if $tplCtx.Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key
               mountPath: /var/secrets/google/key.json
               subPath: key.json
               readonly: true
-            {{- end -}}
+            {{- end }}
           envFrom: [ configMapRef: { name: {{ template "pim.fullName"  $tplCtx }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
@@ -74,9 +74,9 @@ spec:
             - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
             - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
             - { name: CONTAINER_NAME, value: php }
-{{- if $tplCtx.Values.common.phpConfCLI -}}
-{{ toYaml $tplCtx.Values.common.phpConfCLI | nindent 12 }}
-{{- end -}}
+{{- if $tplCtx.Values.common.phpConfCLI }}
+{{ toYaml $tplCtx.Values.common.phpConfCLI | indent 12 }}
+{{- end }}
       volumes:
         - name: google-cloud-pim-storage-key
           secret:
@@ -93,5 +93,5 @@ spec:
               path: key.json
         {{- end }}
 ---
-{{ end -}}
-{{ end -}}
+{{- end }}
+{{- end }}

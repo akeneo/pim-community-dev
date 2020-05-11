@@ -94,9 +94,9 @@ spec:
             - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
             - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
             - { name: CONTAINER_NAME, value: fpm }
-{{- if .Values.common.phpConfFPM -}}
-{{ toYaml .Values.common.phpConfFPM  | nindent 12 }}
-{{- end -}}
+{{- if .Values.common.phpConfFPM }}
+{{ toYaml .Values.common.phpConfFPM  | indent 12 }}
+{{- end }}
           readinessProbe:
             tcpSocket:
               port: fpm
