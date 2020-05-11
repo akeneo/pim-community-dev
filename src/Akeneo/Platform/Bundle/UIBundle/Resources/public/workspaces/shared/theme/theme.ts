@@ -1,3 +1,5 @@
+import {ThemedStyledProps} from 'styled-components';
+
 type AkeneoTheme = {
   color: {
     grey60: string;
@@ -112,4 +114,5 @@ const akeneoTheme: AkeneoTheme = {
   },
 };
 
+export type AkeneoThemedProps<P = {}> = ThemedStyledProps<P, AkeneoTheme>;
 export {akeneoTheme, AkeneoTheme};

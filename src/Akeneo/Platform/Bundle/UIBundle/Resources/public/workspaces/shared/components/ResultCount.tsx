@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {AkeneoThemedProps} from '../theme';
 
 const Container = styled.div`
   white-space: nowrap;
-  color: ${props => props.theme.color.purple100};
+  color: ${({theme}: AkeneoThemedProps) => theme.color.purple100};
   margin-left: 10px;
   line-height: 16px;
   text-transform: none;

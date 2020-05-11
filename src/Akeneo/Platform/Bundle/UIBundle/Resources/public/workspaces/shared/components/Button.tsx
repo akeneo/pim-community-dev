@@ -1,5 +1,6 @@
 import React, {forwardRef, ButtonHTMLAttributes} from 'react';
 import styled, {css} from 'styled-components';
+import {AkeneoThemedProps} from '../theme';
 
 type ButtonProps = {
   size?: 'micro' | 'default';
@@ -15,7 +16,7 @@ const StyledButton = styled.button<ButtonProps>`
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
 
-  ${props => {
+  ${(props: ButtonProps & AkeneoThemedProps) => {
     switch (props.size) {
       case 'micro':
         return css`

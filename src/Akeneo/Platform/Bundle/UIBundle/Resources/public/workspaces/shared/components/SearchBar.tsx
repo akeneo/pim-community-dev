@@ -3,14 +3,15 @@ import styled from 'styled-components';
 import {ResultCount} from './ResultCount';
 import {SearchIcon} from '../icons';
 import {useAutoFocus} from '../hooks';
+import {AkeneoThemedProps} from '../theme';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid ${props => props.theme.color.grey100};
-  background: ${props => props.theme.color.white};
+  border-bottom: 1px solid ${({theme}: AkeneoThemedProps) => theme.color.grey100};
+  background: ${({theme}: AkeneoThemedProps) => theme.color.white};
   position: sticky;
   top: 0;
   height: 44px;
@@ -26,11 +27,11 @@ const SearchInput = styled.input`
   border: none;
   flex: 1;
   margin-left: 5px;
-  color: ${props => props.theme.color.grey120};
+  color: ${({theme}: AkeneoThemedProps) => theme.color.grey120};
   outline: none;
 
   ::placeholder {
-    color: ${props => props.theme.color.grey120};
+    color: ${({theme}: AkeneoThemedProps) => theme.color.grey120};
   }
 `;
 
