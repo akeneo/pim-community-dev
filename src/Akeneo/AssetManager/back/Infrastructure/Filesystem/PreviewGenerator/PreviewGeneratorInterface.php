@@ -31,4 +31,11 @@ interface PreviewGeneratorInterface
      * @return string Return the URL of the preview generated
      */
     public function generate(string $data, AbstractAttribute $attribute, string $type): string;
+
+    /**
+     * @param string $data The filename of the external image we want to generate (ex : akeneo.jpg)
+     * @param AbstractAttribute $attribute The attribute which need to have a preview
+     * @param string $type The format type used to generate the image (ex : dam_thumbnail, dam_preview)
+     */
+    public function remove(string $data, AbstractAttribute $attribute, string $type);
 }

@@ -59,7 +59,7 @@ describe('akeneo > asset family > domain > model > asset --- edition-asset', () 
 
   test('I can get the EditionAsset MainMediaThumbnail', () => {
     const expectedMediaPreview = {
-      type: 'thumbnail_small',
+      type: 'thumbnail',
       attributeIdentifier: mediaFileAttribute.identifier,
       data: mediaFileData.filePath,
     };
@@ -69,7 +69,7 @@ describe('akeneo > asset family > domain > model > asset --- edition-asset', () 
   test('I get an empty preview if the EditionAsset values are empty', () => {
     const emptyEditionAsset = {...editionAsset, values: []};
     const expectedMediaPreview = {
-      type: 'thumbnail_small',
+      type: 'thumbnail',
       attributeIdentifier: 'UNKNOWN',
       data: '',
     };

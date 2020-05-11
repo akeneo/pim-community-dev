@@ -25,7 +25,14 @@ import {
   Container,
   Thumbnail,
   Actions,
+  ThumbnailPlaceholder,
+  ReloadAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
+import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
+import {connect} from 'react-redux';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
+import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
+import {ViewGenerator} from 'akeneoassetmanager/application/configuration/value';
 
 const MediaLinkInput = styled.input`
   ::placeholder {
@@ -44,18 +51,32 @@ const MediaLinkInput = styled.input`
   }
 `;
 
+const ThumbnailContainer = styled.div`
+  position: relative;
+  display: flex;
+  margin-right: 15px;
+
+  ${Thumbnail} {
+    margin: 0;
+  }
+`;
+
 const View = ({
   value,
   locale,
   onChange,
   onSubmit,
   canEditData,
+  reloadPreview,
+  onReloadPreview,
 }: {
   value: EditionValue;
   locale: LocaleReference;
   onChange: (value: EditionValue) => void;
   onSubmit: () => void;
   canEditData: boolean;
+  reloadPreview: boolean;
+  onReloadPreview: () => void;
 }) => {
   if (!isMediaLinkData(value.data) || !isMediaLinkAttribute(value.attribute)) {
     return null;
@@ -67,6 +88,13 @@ const View = ({
     data: getMediaData(value.data),
   });
 
+  React.useEffect(() => {
+    if (reloadPreview) {
+      doRegenerate();
+    }
+  }, [reloadPreview]);
+  const [regenerate, doRegenerate] = useRegenerate(mediaPreviewUrl);
+
   const label = getLabelInCollection(
     value.attribute.labels,
     localeReferenceStringValue(locale),
@@ -76,7 +104,13 @@ const View = ({
 
   return (
     <Container>
-      <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
+      {regenerate ? (
+        <ThumbnailPlaceholder className="AknLoadingPlaceHolder" />
+      ) : (
+        <ThumbnailContainer>
+          <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
+        </ThumbnailContainer>
+      )}
       <MediaLinkInput
         id={`pim_asset_manager.asset.enrich.${value.attribute.code}`}
         autoComplete="off"
@@ -92,6 +126,13 @@ const View = ({
       />
       {!isValueEmpty(value) && (
         <Actions>
+          <ReloadAction
+            color={akeneoTheme.color.grey100}
+            size={20}
+            onReload={onReloadPreview}
+            data={value.data}
+            attribute={value.attribute}
+          />
           <CopyUrlAction color={akeneoTheme.color.grey100} size={20} data={value.data} attribute={value.attribute} />
           <DownloadAction color={akeneoTheme.color.grey100} size={20} data={value.data} attribute={value.attribute} />
           <FullscreenPreview anchor={Action} label={label} data={value.data} attribute={value.attribute}>
@@ -107,4 +148,11 @@ const View = ({
   );
 };
 
-export const view = View;
+export const view = connect(
+  (state: EditState) => ({
+    reloadPreview: state.reloadPreview,
+  }),
+  dispatch => ({
+    onReloadPreview: () => dispatch(doReloadAllPreviews() as any),
+  })
+)(View) as ViewGenerator;

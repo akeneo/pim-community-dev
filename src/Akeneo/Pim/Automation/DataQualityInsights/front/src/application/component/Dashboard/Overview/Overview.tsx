@@ -1,4 +1,4 @@
-import React, {ReactElement, useEffect, useState} from 'react';
+import React, {ReactElement, useEffect, useState, ReactElement} from 'react';
 import {isEmpty} from "lodash";
 import {useFetchDqiDashboardData} from "../../../../infrastructure/hooks";
 import {Dataset, formatBackendRanksToVictoryFormat} from "../../../helper/Dashboard/FormatBackendRanksToVictoryFormat";
@@ -41,10 +41,10 @@ const Overview = ({catalogChannel, catalogLocale, timePeriod, familyCode, catego
     if (dataset === null) {
       return;
     }
-    // @ts-ignore
+
     const enrichmentChartDataset = formatBackendRanksToVictoryFormat(dataset, 'enrichment');
     setEnrichmentChart(<TimePeriodAxisChart dataset={enrichmentChartDataset} timePeriod={timePeriod}/>);
-    // @ts-ignore
+
     const consistencyChartDataset = formatBackendRanksToVictoryFormat(dataset, 'consistency');
     setConsistencyChart(<TimePeriodAxisChart dataset={consistencyChartDataset} timePeriod={timePeriod}/>);
 

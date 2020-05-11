@@ -22,6 +22,9 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/att
 import {MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {getMediaData, MediaData, isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
+import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
+import {connect} from 'react-redux';
+import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 
 const Image = styled.img`
   width: auto;
@@ -43,13 +46,19 @@ const EmbedPlayer = styled.iframe`
 
 const ImagePlaceholder = styled.div<{alt: string}>`
   width: 400px;
-  height: 250px;
+  height: 300px;
 `;
 
-const LazyLoadedImage = React.memo(({src, alt, ...props}: {src: string; alt: string}) => {
+type LazyLoadedImageProps = {
+  src: string;
+  alt: string;
+  isLoading?: boolean;
+};
+
+const LazyLoadedImage = React.memo(({src, alt, isLoading = false, ...props}: LazyLoadedImageProps) => {
   const loadedSrc = useImageLoader(src);
 
-  return undefined === loadedSrc ? (
+  return undefined === loadedSrc || isLoading ? (
     <div className="AknLoadingPlaceHolderContainer">
       <ImagePlaceholder alt={alt} {...props} />
     </div>
@@ -58,14 +67,16 @@ const LazyLoadedImage = React.memo(({src, alt, ...props}: {src: string; alt: str
   );
 });
 
-const MediaDataPreview = ({
+const DisconnectedMediaDataPreview = ({
   label,
   mediaData,
   attribute,
+  reloadPreview,
 }: {
   label: string;
   mediaData: MediaData;
   attribute: NormalizedMediaFileAttribute | NormalizedMediaLinkAttribute;
+  reloadPreview: boolean;
 }) => {
   const url = getMediaPreviewUrl({
     type: MediaPreviewType.Preview,
@@ -73,9 +84,18 @@ const MediaDataPreview = ({
     data: getMediaData(mediaData),
   });
 
+  const [regenerate, doRegenerate] = useRegenerate(url);
+
+  React.useEffect(() => {
+    if (reloadPreview) {
+      doRegenerate();
+    }
+  }, [reloadPreview]);
+
   return (
     <>
-      <LazyLoadedImage src={url} alt={label} data-role="media-data-preview" />
+      <LazyLoadedImage isLoading={regenerate} src={url} alt={label} data-role="media-data-preview" />
+
       {attribute.media_type === MediaTypes.other && (
         <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
           {__('pim_asset_manager.asset_preview.other_main_media')}
@@ -84,6 +104,10 @@ const MediaDataPreview = ({
     </>
   );
 };
+
+const MediaDataPreview = connect((state: EditState) => ({
+  reloadPreview: state.reloadPreview,
+}))(DisconnectedMediaDataPreview);
 
 const MediaLinkPreview = ({
   label,

@@ -106,6 +106,32 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
         return $this->cacheManager->resolve($filename, $previewType);
     }
 
+    public function remove(string $data, AbstractAttribute $attribute, string $type)
+    {
+        if (empty($data)) {
+            return;
+        }
+
+        if (!$this->isBase64Encoded($data)) {
+            $this->logger->error(
+                'The preview generator for type requires a base64 encoded input.',
+                [
+                    'data'      => $data,
+                    'attribute' => $attribute->normalize(),
+                ]
+            );
+
+            return;
+        }
+
+        $data = base64_decode($data, true);
+        $url = $this->generateUrl($data, $attribute);
+        $filename = $this->createCacheFilename($url, $type);
+        $previewType = $this->getPreviewType($type);
+
+        $this->cacheManager->remove($filename, $previewType);
+    }
+
     /**
      * Check whether the given string is correctly encoded in base64
      */
