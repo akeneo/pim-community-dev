@@ -1,4 +1,4 @@
-import React, {ReactElement, useEffect, useState, ReactElement} from 'react';
+import React, {ReactElement, useEffect, useState} from 'react';
 import {isEmpty} from "lodash";
 import {useFetchDqiDashboardData} from "../../../../infrastructure/hooks";
 import {Dataset, formatBackendRanksToVictoryFormat} from "../../../helper/Dashboard/FormatBackendRanksToVictoryFormat";
