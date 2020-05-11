@@ -200,3 +200,10 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@pim_serializer'
+
+    akeneo.pim.structure.query.cache.get_existing_attribute_option_codes_from_option_codes:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Query\PublicApi\AttributeOption\Cache\LRUClearableCachedGetExistingAttributeOptions'
+        decorates: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes
+        decoration_inner_name: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql'
