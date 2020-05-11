@@ -13,7 +13,8 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CopyAction:
         fromField:
             - Type:
                 type: string
-            - NotBlank: ~
+            - NotBlank:
+                  message: The "from_field" key is missing or empty
         fromScope:
             - Type:
                 type: string
@@ -25,7 +26,8 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CopyAction:
         toField:
             - Type:
                 type: string
-            - NotBlank: ~
+            - NotBlank:
+                  message: The "to_field" key is missing or empty
         toScope:
             - Type:
                 type: string

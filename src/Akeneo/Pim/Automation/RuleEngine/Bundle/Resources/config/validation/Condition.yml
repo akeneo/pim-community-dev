@@ -1,9 +1,5 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition:
     constraints:
-        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
-              attributeProperty: field
-              channelProperty: scope
-              localeProperty: locale
         - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\NonEmptyValueCondition: ~
         - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ValueCondition: ~
         - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingFilterField: ~
@@ -22,8 +18,6 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition:
         scope:
             - Type:
                 type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
         locale:
             - Type:
                 type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~

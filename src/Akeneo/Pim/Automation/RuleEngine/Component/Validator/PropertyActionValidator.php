@@ -22,7 +22,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Validates if the set action field supports the given data
+ * Validates if the action field supports the given data
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */

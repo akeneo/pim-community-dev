@@ -2,12 +2,12 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
-use Akeneo\Pim\Automation\RuleEngine\Component\Validator\NonEmptyValueConditionValidator;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\NonEmptyValueCondition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\NonEmptyValueConditionValidator;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

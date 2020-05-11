@@ -11,7 +11,8 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\SetAction:
             - NotNull: ~
             - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingSetField: ~
         value:
-            - NotNull: ~
+            - NotNull:
+                  message: The "value" key is missing or empty
             - Type:
                 type: [scalar, array]
         scope:

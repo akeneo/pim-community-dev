@@ -55,10 +55,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
         if (null === $object || !is_object($object)) {
             return;
         }
-        Assert::isInstanceOf($constraint, IsValidAttribute::class, sprintf(
-            'Constraint must be an instance of "%s".',
-            IsValidAttribute::class
-        ));
+        Assert::isInstanceOf($constraint, IsValidAttribute::class);
         $attributeCode = $this->propertyAccessor->getValue($object, $constraint->attributeProperty);
         if (null === $attributeCode) {
             return;
@@ -70,62 +67,95 @@ final class IsValidAttributeValidator extends ConstraintValidator
         }
 
         $localeCode = $this->propertyAccessor->getValue($object, $constraint->localeProperty);
-        if ($attribute->isLocalizable() && null === $localeCode) {
-            $this->context
-                ->buildViolation(sprintf('The "%s" attribute code is localizable and no locale is provided', $attribute->code()))
-                ->addViolation();
-        } elseif (!$attribute->isLocalizable() && null !== $localeCode) {
-            $this->context
-                ->buildViolation(sprintf('The "%s" attribute code is not localizable and a locale is provided', $attribute->code()))
-                ->addViolation();
-        }
-
         $channelCode = $this->propertyAccessor->getValue($object, $constraint->channelProperty);
-        if ($attribute->isScopable() && null === $channelCode) {
-            $this->context
-                ->buildViolation(sprintf('The "%s" attribute code is scopable and no channel is provided', $attribute->code()))
-                ->addViolation();
-        } elseif (!$attribute->isScopable() && null !== $channelCode) {
-            $this->context
-                ->buildViolation(sprintf('The "%s" attribute code is not scopable and a channel is provided', $attribute->code()))
-                ->addViolation();
-        }
 
-        $this->checkLocaleSpecific($attribute, $localeCode);
-        $this->checkLocaleIsBoundToChannel($attribute, $channelCode, $localeCode);
+        $this->validateScope($attribute, $channelCode);
+        $this->validateLocale($attribute, $localeCode, $channelCode);
     }
 
-    private function checkLocaleSpecific(Attribute $attribute, ?string $localeCode): void
+    /**
+     * Check if locale data is consistent with the attribute localizable property
+     */
+    private function validateLocale(Attribute $attribute, $locale): void
     {
-        if ($attribute->isLocalizable()
-            && $attribute->isLocaleSpecific()
-            && null !== $localeCode
-            && !in_array($localeCode, $attribute->availableLocaleCodes())
-        ) {
-            $this->context
-                ->buildViolation(sprintf(
-                    'The "%s" locale code is not available for the "%s" locale specific attribute code',
-                    $localeCode,
-                    $attribute->code()
-                ))
-                ->addViolation();
+        if (!$attribute->isLocalizable() && null === $locale) {
+            return;
+        }
+
+        if ($attribute->isLocalizable() && null === $locale) {
+            $this->addViolation(sprintf(
+                'Attribute "%s" expects a locale, none given.',
+                $attribute->code()
+            ));
+
+            return;
+        }
+
+        if (!is_string($locale)) {
+            return;
+        }
+
+        if (!$attribute->isLocalizable() && null !== $locale) {
+            $this->addViolation(sprintf(
+                'Attribute "%s" does not expect a locale, "%s" given.',
+                $attribute->code(),
+                $locale
+            ));
+        }
+
+        if (is_string($locale) && $attribute->isLocaleSpecific() && !in_array($locale, $attribute->availableLocaleCodes())) {
+            $this->addViolation(sprintf(
+                'Attribute "%s" is locale specific and expects one of these locales: %s, "%s" given.',
+                $attribute->code(),
+                implode($attribute->availableLocaleCodes(), ', '),
+                $locale
+            ));
         }
     }
 
-    private function checkLocaleIsBoundToChannel(Attribute $attribute, ?string $channelCode, ?string $localeCode): void
+    /**
+     * Check if scope data is consistent with the attribute scopable property
+     */
+    private function validateScope(Attribute $attribute, $scope): void
     {
-        if ($attribute->isLocalizableAndScopable()
-            && null !== $localeCode
-            && null !== $channelCode
-            && !$this->channelExistsWithLocale->isLocaleBoundToChannel($localeCode, $channelCode)
-        ) {
-            $this->context
-                ->buildViolation(sprintf(
-                    'The "%s" locale code is not bound to the "%s" channel code',
-                    $localeCode,
-                    $channelCode
-                ))
-                ->addViolation();
+        if (!$attribute->isScopable() && null === $scope) {
+            return;
         }
+
+        if ($attribute->isScopable() && null === $scope) {
+            $this->addViolation(sprintf(
+                'Attribute "%s" expects a scope, none given.',
+                $attribute->code()
+            ));
+
+            return;
+        }
+
+        if (!is_string($scope)) {
+            return;
+        }
+
+        if (!$attribute->isScopable() && null !== $scope) {
+            $this->addViolation(sprintf(
+                'Attribute "%s" does not expect a scope, "%s" given.',
+                $attribute->code(),
+                $scope
+            ));
+
+            return;
+        }
+
+        if (!$this->channelExistsWithLocale->doesChannelExist($scope)) {
+            $this->addViolation(sprintf(
+                'Attribute "%s" expects an existing scope, "%s" given.',
+                $attribute->code(),
+                $scope
+            ));
+        }
+    }
+
+    private function addViolation(string $message): void
+    {
+        $this->context->buildViolation($message)->addViolation();
     }
 }

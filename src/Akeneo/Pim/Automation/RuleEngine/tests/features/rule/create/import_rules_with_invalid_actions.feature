@@ -48,8 +48,7 @@ Feature: Import rules
                   value: The new Sony description
 
     """
-    Then an exception with message "Rule content \"canon_beautiful_description\" should have a \"actions\" key." has been thrown
-    And an exception with message "Rule content \"sony_beautiful_description\" should have a \"actions\" key." has been thrown
+    Then an exception with message "The \"actions\" key is missing or empty" has been thrown
     And the rule list contains the rules:
     """
     sony_beautiful_description:
@@ -111,7 +110,7 @@ Feature: Import rules
                   to_field: name
 
     """
-    Then an exception with message "actions[0].fromField: The key \"from_field\" is missing or empty." has been thrown
+    Then an exception with message "actions[0].fromField: The \"from_field\" key is missing or empty" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -175,7 +174,7 @@ Feature: Import rules
                   from_field: camera_model_name
 
     """
-    Then an exception with message "actions[0].toField: The key \"to_field\" is missing or empty." has been thrown
+    Then an exception with message "actions[0].toField: The \"to_field\" key is missing or empty" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -243,7 +242,7 @@ Feature: Import rules
                   scope:  mobile
 
     """
-    Then an exception with message "actions[0].value: The key \"value\" is missing or empty." has been thrown
+    Then an exception with message "actions[0].value: The \"value\" key is missing or empty" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -305,7 +304,7 @@ Feature: Import rules
                   scope:  tablet
     """
     Then an exception with message "conditions[0]: Attribute \"name\" expects a locale, none given." has been thrown
-    And an exception with message "actions[0]: Attribute \"description\" expects a channel code and a locale code, \"tablet\" channel code and \"\" locale code given." has been thrown
+    And an exception with message "actions[0]: The \"description\" attribute code is localizable and no locale is provided" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -324,7 +323,7 @@ Feature: Import rules
       """
     And the rule list does not contain the "canon_beautiful_description" rule
 
-  @integration-back
+  @integration-back @toto
   Scenario: Skip rules with nonexistent locale key for condition and set action
     Given the following product rule definitions:
       """

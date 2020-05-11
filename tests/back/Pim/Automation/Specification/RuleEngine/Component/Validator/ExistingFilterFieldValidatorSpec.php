@@ -2,12 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
+use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingFilterField;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingFilterFieldValidator;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
-use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingFilterField;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

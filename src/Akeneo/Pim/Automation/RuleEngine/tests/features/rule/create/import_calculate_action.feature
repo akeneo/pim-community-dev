@@ -25,15 +25,15 @@ Background:
     Scenario: Import a calculate rule with invalid channels
         When I import a calculate rule with invalid channels
         Then an exception with message "actions[0].destination.scope: The \"print\" channel does not exist" has been thrown
-        And an exception with message "actions[0].source: The \"item_weight\" attribute code is scopable and no channel is provided" has been thrown
-        And an exception with message "actions[0].operationList[0]: The \"in_stock\" attribute code is not scopable and a channel is provided" has been thrown
+        And an exception with message "actions[0].source: Attribute \"item_weight\" expects a scope, none given." has been thrown
+        And an exception with message "actions[0].operationList[0]: Attribute \"in_stock\" does not expect a scope, \"ecommerce\" given" has been thrown
 
     @acceptance-back
     Scenario: Import a calculate rule with invalid locales
         When I import a calculate rule with invalid locales
-        Then an exception with message "actions[0].destination.locale: The \"es_ES\" locale does not exist or is not activate" has been thrown
-        And an exception with message "actions[0].source: The \"item_weight\" attribute code is localizable and no locale is provided" has been thrown
-        And an exception with message "actions[0].operationList[0]: The \"in_stock\" attribute code is not localizable and a locale is provided" has been thrown
+        Then an exception with message "actions[0].destination.locale: The \"es_ES\" locale does not exist or is not activated" has been thrown
+        And an exception with message "actions[0].source: Attribute \"item_weight\" expects a locale, none given." has been thrown
+        And an exception with message "actions[0].operationList[0]: Attribute \"in_stock\" does not expect a locale, \"en_US\" given" has been thrown
 
     @acceptance-back
     Scenario: Import a calculate rule with non numeric attribute types

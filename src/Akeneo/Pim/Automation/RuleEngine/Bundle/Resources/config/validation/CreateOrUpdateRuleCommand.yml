@@ -1,0 +1,26 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand:
+    properties:
+        code:
+            - Type:
+                type: string
+            - NotBlank: ~
+            - Length:
+                max: 100
+        priority:
+            - Type:
+                type: int
+        conditions:
+            - Type:
+                type: array
+            - Valid: ~
+        actions:
+            - NotBlank:
+                  message: The "actions" key is missing or empty
+            - Type:
+                type: array
+            - Count:
+                min: 1
+            - Valid: ~
+        labels:
+            - Type:
+                type: array

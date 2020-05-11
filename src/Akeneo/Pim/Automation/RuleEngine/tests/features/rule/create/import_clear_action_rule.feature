@@ -23,4 +23,4 @@ Feature: Import clear action rules
   @acceptance-back
   Scenario: Import a clear rule with bad locale
     When I import a clear rule with localized attribute and without locale
-    And an exception with message "actions[0]: The \"name\" attribute code is localizable and no locale is provided" has been thrown
+    And an exception with message "actions[0]: Attribute \"name\" expects a locale, none given" has been thrown

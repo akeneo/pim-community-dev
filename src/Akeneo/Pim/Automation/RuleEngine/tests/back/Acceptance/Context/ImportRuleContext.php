@@ -343,6 +343,7 @@ rules:
                 unit: GIGAHERTZ                
               source:
                 field: item_weight
+                locale: en_US
               operation_list:
                 - operator: multiply
                   value: 1000
