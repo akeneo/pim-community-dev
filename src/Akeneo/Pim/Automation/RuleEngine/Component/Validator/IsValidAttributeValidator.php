@@ -76,17 +76,19 @@ final class IsValidAttributeValidator extends ConstraintValidator
     /**
      * Check if locale data is consistent with the attribute localizable property
      */
-    private function validateLocale(Attribute $attribute, $locale): void
+    private function validateLocale(Attribute $attribute, $locale, $scope): void
     {
         if (!$attribute->isLocalizable() && null === $locale) {
             return;
         }
 
         if ($attribute->isLocalizable() && null === $locale) {
-            $this->addViolation(sprintf(
-                'Attribute "%s" expects a locale, none given.',
-                $attribute->code()
-            ));
+            $this->addViolation(
+                'Attribute "{{ attributeCode }}" expects a locale, none given.',
+                [
+                    '{{ attributeCode }}' => $attribute->code(),
+                ]
+            );
 
             return;
         }
@@ -96,20 +98,40 @@ final class IsValidAttributeValidator extends ConstraintValidator
         }
 
         if (!$attribute->isLocalizable() && null !== $locale) {
-            $this->addViolation(sprintf(
-                'Attribute "%s" does not expect a locale, "%s" given.',
-                $attribute->code(),
-                $locale
-            ));
+            $this->addViolation(
+                'Attribute "{{ attributeCode }}" does not expect a locale, "{{ locale }}" given.',
+                [
+                    '{{ attributeCode }}' => $attribute->code(),
+                    '{{ locale }}' => $locale,
+                ]
+            );
+
+            return;
         }
 
-        if (is_string($locale) && $attribute->isLocaleSpecific() && !in_array($locale, $attribute->availableLocaleCodes())) {
-            $this->addViolation(sprintf(
-                'Attribute "%s" is locale specific and expects one of these locales: %s, "%s" given.',
-                $attribute->code(),
-                implode($attribute->availableLocaleCodes(), ', '),
-                $locale
-            ));
+        if ($attribute->isLocaleSpecific() && !in_array($locale, $attribute->availableLocaleCodes())) {
+            $this->addViolation(
+                'Attribute "{{ attributeCode }}" is locale specific and expects one of these locales: {{ expectedLocales }}, "{{ invalidLocale }}" given.',
+                [
+                    '{{ attributeCode }}' => $attribute->code(),
+                    '{{expectedLocales }}' => implode($attribute->availableLocaleCodes(), ', '),
+                    '{{ invalidLocale }}' => $locale,
+                ]
+            );
+
+            return;
+        }
+
+        if ($attribute->isScopable() && $attribute->isLocalizable() && is_string($scope)
+            && $this->channelExistsWithLocale->doesChannelExist($scope)
+            && !$this->channelExistsWithLocale->isLocaleBoundToChannel($locale, $scope)) {
+            $this->addViolation(
+                'The "{{ invalidLocale }} is not bound to the "{{ channelCode }} channel',
+                [
+                    '{{ invalidLocale }}' => $locale,
+                    '{{ channelCode }}' => $scope,
+                ]
+            );
         }
     }
 
@@ -123,10 +145,12 @@ final class IsValidAttributeValidator extends ConstraintValidator
         }
 
         if ($attribute->isScopable() && null === $scope) {
-            $this->addViolation(sprintf(
-                'Attribute "%s" expects a scope, none given.',
-                $attribute->code()
-            ));
+            $this->addViolation(
+                'Attribute "{{ attributeCode }}" expects a scope, none given.',
+                [
+                    '{{ attributeCode }}' => $attribute->code(),
+                ]
+            );
 
             return;
         }
@@ -136,26 +160,33 @@ final class IsValidAttributeValidator extends ConstraintValidator
         }
 
         if (!$attribute->isScopable() && null !== $scope) {
-            $this->addViolation(sprintf(
-                'Attribute "%s" does not expect a scope, "%s" given.',
-                $attribute->code(),
-                $scope
-            ));
+            $this->addViolation(
+                'Attribute "{{ attributeCode }}" does not expect a scope, "{{ channelCode }}" given.',
+                [
+                    '{{ attributeCode }}' => $attribute->code(),
+                    '{{ channelCode }}' => $scope,
+                ]
+            );
 
             return;
         }
 
         if (!$this->channelExistsWithLocale->doesChannelExist($scope)) {
-            $this->addViolation(sprintf(
-                'Attribute "%s" expects an existing scope, "%s" given.',
-                $attribute->code(),
-                $scope
-            ));
+            $this->addViolation(
+                'Attribute "{{ attributeCode }}" expects an existing scope, "{{ channelCode }}" given.',
+                [
+                    '{{ attributeCode }}' => $attribute->code(),
+                    '{{ channelCode }}' => $scope,
+                ]
+            );
         }
     }
 
-    private function addViolation(string $message): void
+    private function addViolation(string $message, array $parameters): void
     {
-        $this->context->buildViolation($message)->addViolation();
+        $this->context->buildViolation(
+            $message,
+            $parameters
+        )->addViolation();
     }
 }

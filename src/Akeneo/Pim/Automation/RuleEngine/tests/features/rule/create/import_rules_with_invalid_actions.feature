@@ -304,7 +304,7 @@ Feature: Import rules
                   scope:  tablet
     """
     Then an exception with message "conditions[0]: Attribute \"name\" expects a locale, none given." has been thrown
-    And an exception with message "actions[0]: The \"description\" attribute code is localizable and no locale is provided" has been thrown
+    And an exception with message "actions[0]: Attribute \"description\" expects a locale, non given." has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -371,8 +371,8 @@ Feature: Import rules
                   locale: kj_KL
                   scope:  tablet
     """
-    Then an exception with message "conditions[0]: Attribute \"name\" expects an existing and activated locale, \"kj_KL\" given." has been thrown
-    And an exception with message "actions[0]: Attribute \"description\" expects an existing and activated locale, \"kj_KL\" given." has been thrown
+    Then an exception with message "conditions[0]: Attribute \"name\" expects a locale, none given" has been thrown
+    And an exception with message "actions[0].locale: The \"kj_KL\" locale does not exist or is not activated" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -436,7 +436,7 @@ Feature: Import rules
                   locale: en_US
     """
     Then an exception with message "conditions[0]: Attribute \"description\" expects a scope, none given." has been thrown
-    And an exception with message "actions[0]: Attribute \"description\" expects a channel code and a locale code, \"\" channel code and \"en_US\" locale code given." has been thrown
+    And an exception with message "actions[0]: Attribute \"description\" expects a scope, none given" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:

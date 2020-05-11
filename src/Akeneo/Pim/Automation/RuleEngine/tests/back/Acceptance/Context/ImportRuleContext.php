@@ -249,7 +249,7 @@ rules:
         actions:
             - type: calculate
               destination:
-                field: price                
+                field: price
               source:
                 field: price
                 currency: USD

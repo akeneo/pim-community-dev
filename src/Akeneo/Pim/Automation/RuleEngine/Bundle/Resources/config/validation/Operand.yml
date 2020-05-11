@@ -4,6 +4,9 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operand:
               attributeProperty: field
               channelProperty: scope
               localeProperty: locale
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\NotBlankCurrency:
+              attributeProperty: field
+              currencyProperty: currency
     properties:
         field:
             - Type:

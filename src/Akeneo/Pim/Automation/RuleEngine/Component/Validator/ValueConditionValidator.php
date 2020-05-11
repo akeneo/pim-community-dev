@@ -28,9 +28,8 @@ class ValueConditionValidator extends ConstraintValidator
     /** @var ProductQueryBuilderFactoryInterface */
     protected $factory;
 
-    public function __construct(
-        ProductQueryBuilderFactoryInterface $factory
-    ) {
+    public function __construct(ProductQueryBuilderFactoryInterface $factory)
+    {
         $this->factory = $factory;
     }
 

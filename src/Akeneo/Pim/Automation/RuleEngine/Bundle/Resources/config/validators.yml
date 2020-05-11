@@ -126,3 +126,18 @@ services:
             - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierRegistry'
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\NotBlankCurrencyValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@property_accessor'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\MeasurementUnitValidator:
+        arguments:
+            - '@property_accessor'
+            - '@akeneo_measure.manager'
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: validator.constraint_validator }

@@ -1,4 +1,11 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductDestination:
+    constraints:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\NotBlankCurrency:
+              attributeProperty: field
+              currencyProperty: currency
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\MeasurementUnit:
+              attributeProperty: field
+              unitProperty: unit
     properties:
         field:
             - Type:
@@ -21,6 +28,5 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductDestination:
                 type: string
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ActiveCurrency: ~
         unit:
-            # TODO: validate unit consistency
             - Type:
                 type: string
