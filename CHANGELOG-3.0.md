@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-9242: Fix API product model list when filtering with SINCE LAST N DAYS operator 
+
 # 3.0.76 (2020-04-27)
 
 # 3.0.75 (2020-04-21)
