@@ -80,7 +80,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     public function testUpdateAProductDraftWithAttributeGroupNotViewable()
     {
         $this->expectException(UnknownPropertyException::class);
-        $this->expectExceptionMessage('Property "a_multi_select" does not exist.');
+        $this->expectExceptionMessage('Attribute "a_multi_select" does not exist.');
 
         $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'values' => ['a_multi_select' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
         $this->generateToken('mary');

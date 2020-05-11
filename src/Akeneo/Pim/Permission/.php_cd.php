@@ -186,6 +186,7 @@ $rules = [
         'Akeneo\UserManagement\Component\Model\GroupInterface',
         'Akeneo\UserManagement\Component\Model\UserInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
