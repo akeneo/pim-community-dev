@@ -6,7 +6,7 @@ import { RuleDefinition } from '../../../models';
 import { RulesBuilder } from './RulesBuilder';
 import { RuleProperties } from './RuleProperties';
 import { Locale } from '../../../models';
-import { IndexedScopes } from '../../../fetch/ScopeFetcher';
+import { IndexedScopes } from '../../../repositories/ScopeRepository';
 import { useFormContext } from 'react-hook-form';
 
 const getTabBorder = ({ id, selectedId, theme }: any): string | number => {

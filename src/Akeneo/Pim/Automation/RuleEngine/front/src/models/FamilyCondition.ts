@@ -5,11 +5,9 @@ import {
   FamilyConditionLineProps,
 } from '../pages/EditRules/components/conditions/FamilyConditionLine';
 import { ConditionFactoryType } from './Condition';
-import {
-  getFamiliesByIdentifiers,
-  IndexedFamilies,
-} from '../fetch/FamilyFetcher';
+import { IndexedFamilies } from '../fetch/FamilyFetcher';
 import { Router } from '../dependenciesTools';
+import { getFamiliesByIdentifiers } from '../repositories/FamilyRepository';
 
 const FamilyOperators = [
   Operator.IS_EMPTY,

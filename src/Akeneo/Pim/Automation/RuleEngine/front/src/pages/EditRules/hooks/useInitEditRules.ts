@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { getRuleDefinitionByCode } from '../../../fetch/RuleDefinitionFetcher';
-import { getActivatedLocales } from '../../../fetch/LocaleFetcher';
 import { RuleDefinition } from '../../../models';
 import { Locale } from '../../../models';
 import { Router } from '../../../dependenciesTools';
-import { getAllScopes, IndexedScopes } from '../../../fetch/ScopeFetcher';
+import {
+  getAllScopes,
+  IndexedScopes,
+} from '../../../repositories/ScopeRepository';
+import { getActivatedLocales } from '../../../repositories/LocaleRepository';
 
 type Error = { exception: any; status: boolean };
 

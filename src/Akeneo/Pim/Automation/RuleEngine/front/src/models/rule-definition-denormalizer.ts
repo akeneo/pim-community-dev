@@ -7,7 +7,7 @@ import { Action } from './Action';
 import { createPimCondition } from './PimCondition';
 import { createTextAttributeCondition } from './TextAttributeCondition';
 import { Router } from '../dependenciesTools';
-import { getAttributesByIdentifiers } from '../fetch/AttributeFetcher';
+import { getAttributesByIdentifiers } from '../repositories/AttributeRepository';
 
 function denormalizeAction(jsonAction: any): Action {
   const factories: ((json: any) => Action | null)[] = [];

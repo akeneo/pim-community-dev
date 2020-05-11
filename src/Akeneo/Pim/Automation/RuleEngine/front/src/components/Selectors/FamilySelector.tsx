@@ -6,11 +6,9 @@ import {
   option,
 } from '../Select2Wrapper';
 import { Router } from '../../dependenciesTools';
-import {
-  getFamiliesByIdentifiers,
-  IndexedFamilies,
-} from '../../fetch/FamilyFetcher';
+import { IndexedFamilies } from '../../fetch/FamilyFetcher';
 import { Family } from '../../models';
+import { getFamiliesByIdentifiers } from '../../repositories/FamilyRepository';
 
 type Props = {
   router: Router;

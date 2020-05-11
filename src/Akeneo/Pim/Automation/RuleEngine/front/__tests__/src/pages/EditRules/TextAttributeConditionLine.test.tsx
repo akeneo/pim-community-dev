@@ -4,7 +4,7 @@ import { TextAttributeConditionLine } from '../../../../src/pages/EditRules/comp
 import { TextAttributeCondition } from '../../../../src/models/TextAttributeCondition';
 import { Attribute } from '../../../../src/models/Attribute';
 import { Operator } from '../../../../src/models/Operator';
-import { IndexedScopes } from '../../../../src/fetch/ScopeFetcher';
+import { IndexedScopes } from '../../../../src/repositories/ScopeRepository';
 import { Router } from '../../../../src/dependenciesTools';
 
 const nameAttribute: Attribute = {

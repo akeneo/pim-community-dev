@@ -2,52 +2,26 @@ import { Router } from '../dependenciesTools';
 import { httpGet } from './fetch';
 import { Attribute } from '../models/Attribute';
 
-const cacheAttributes: { [identifier: string]: Attribute | null } = {};
-
-export const getAttributeByIdentifier = async (
+export const fetchAttributeByIdentifier = async (
   attributeIdentifier: string,
   router: Router
 ): Promise<Attribute | null> => {
-  if (!cacheAttributes[attributeIdentifier]) {
-    const url = router.generate('pim_enrich_attribute_rest_get', {
-      identifier: attributeIdentifier,
-    });
-    const response = await httpGet(url);
-    cacheAttributes[attributeIdentifier] =
-      response.status === 404 ? null : await response.json();
-  }
+  const url = router.generate('pim_enrich_attribute_rest_get', {
+    identifier: attributeIdentifier,
+  });
+  const response = await httpGet(url);
 
-  return cacheAttributes[attributeIdentifier];
+  return response.status === 404 ? null : await response.json();
 };
 
-export const getAttributesByIdentifiers = async (
+export const fetchAttributesByIdentifiers = async (
   attributeIdentifiers: string[],
   router: Router
-): Promise<{ [identifier: string]: Attribute | null }> => {
-  const attributeIdentifiersToGet = attributeIdentifiers.filter(
-    attributeIndentifier => {
-      return !Object.keys(cacheAttributes).includes(attributeIndentifier);
-    }
-  );
-
-  if (attributeIdentifiersToGet.length) {
-    const url = router.generate('pim_enrich_attribute_rest_index', {
-      identifiers: attributeIdentifiersToGet.join(','),
-    });
-    const response = await httpGet(url);
-    const json = await response.json();
-    attributeIdentifiersToGet.forEach(attributeIdentifier => {
-      const matchingAttribute = json.find((attribute: Attribute) => {
-        return attribute.code === attributeIdentifier;
-      });
-      cacheAttributes[attributeIdentifier] = matchingAttribute || null;
-    });
-  }
-
-  const result: { [identifier: string]: Attribute | null } = {};
-  attributeIdentifiers.forEach(attributeIdentifier => {
-    result[attributeIdentifier] = cacheAttributes[attributeIdentifier];
+): Promise<Attribute[]> => {
+  const url = router.generate('pim_enrich_attribute_rest_index', {
+    identifiers: attributeIdentifiers.join(','),
   });
+  const response = await httpGet(url);
 
-  return result;
+  return await response.json();
 };
