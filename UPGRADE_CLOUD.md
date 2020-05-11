@@ -1,3 +1,15 @@
+# Upgrade from < v20200513XXXXXX  to >= v20200513XXXXXX
+
+```
+terraform import module.pim.google_logging_metric.login_count ${pfid}-login-count
+terraform import module.pim.google_logging_metric.login-response-time-distribution ${pfid}-login-response-time-distribution
+terraform import module.pim.google_logging_metric.logs-count ${pfid}-logs-count
+
+terraform state rm module.pim.template_file.metric-template
+terraform state rm module.pim.local_file.metric-rendered
+terraform state rm module.pim.null_resource.metric
+```
+
 # Upgrade fresh serenity instances
 
 In case of upgrade only :
