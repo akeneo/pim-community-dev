@@ -7,7 +7,7 @@ metadata:
     component: "hook-push-channel-to-onboarder" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     app.kubernetes.io/component: "hook-push-channel-to-onboarder"
     role: "push-channel-to-onboarder" # Deprecated
-    {{- include "onboarder.standardLabels" . | nindent 4 }}
+    {{- include "onboarder.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
     # This is what defines this resource as a hook. Without this line, the
@@ -22,7 +22,7 @@ spec:
         component: "hook-push-channel-to-onboarder" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
         app.kubernetes.io/component: "hook-push-channel-to-onboarder"
         role: "push-channel-to-onboarder" # Deprecated
-        {{- include "onboarder.standardLabels" . | nindent 8 }}
+        {{- include "onboarder.standardLabels" . | indent 8 }}
         {{- include "pim.extraLabels" . | indent 8 }}
       annotations:
         checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
