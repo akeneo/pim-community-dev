@@ -627,7 +627,7 @@ class ProductModelController
                             $values[] = \DateTime::createFromFormat('Y-m-d H:i:s', $date);
                         }
                         $value = $values;
-                    } else {
+                    } elseif (Operators::SINCE_LAST_N_DAYS !== $filter['operator']) {
                         //PIM-7541 Create the date with the server timezone configuration. Do not force it to UTC timezone.
                         $value = \DateTime::createFromFormat('Y-m-d H:i:s', $value);
                     }
