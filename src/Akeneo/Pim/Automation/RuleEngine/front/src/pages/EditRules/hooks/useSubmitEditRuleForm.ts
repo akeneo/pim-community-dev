@@ -102,8 +102,7 @@ const createFormDefaultValues = (
   labels: locales.reduce(createLocalesLabels(ruleDefinition), {}),
   content: {
     conditions: ruleDefinition.conditions || [],
-    actions:
-      ruleDefinition.actions.map(action => JSON.stringify(action.json)) || [],
+    actions: ruleDefinition.actions || [],
   },
 });
 
