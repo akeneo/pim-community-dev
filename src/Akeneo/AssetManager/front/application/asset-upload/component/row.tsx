@@ -239,7 +239,7 @@ const Row = React.memo(
           <Cell width={ColumnWidths.filename}>
             <StyledFilename>{line.filename}</StyledFilename>
           </Cell>
-          <Cell width={ColumnWidths.code}>
+          <Cell className={'edit-asset-code-input'} width={ColumnWidths.code}>
             <Input
               type="text"
               value={line.code}
