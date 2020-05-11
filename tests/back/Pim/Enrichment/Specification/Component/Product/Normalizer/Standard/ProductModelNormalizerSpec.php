@@ -78,7 +78,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'created' => '2010-06-23T00:00:00+01:00',
             'updated' => '2010-06-23T23:00:00+01:00',
             'associations' => null,
-            'quantified_associations' => [],
+            'quantified_associations' => null,
         ]);
     }
 
@@ -131,7 +131,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'created' => '2010-06-23T00:00:00+01:00',
             'updated' => '2010-06-23T23:00:00+01:00',
             'associations' => null,
-            'quantified_associations' => [],
+            'quantified_associations' => null,
         ]);
     }
 
