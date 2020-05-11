@@ -126,6 +126,9 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                 $this->validateAssociationsDataType($data);
                 $this->updateProductModelFields($productModel, $field, $data);
                 break;
+            case 'quantified_associations':
+                // @todo RAC-19
+                break;
             default:
                 if (!in_array($field, $this->ignoredFields)) {
                     throw UnknownPropertyException::unknownProperty($field);
