@@ -7,6 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -225,6 +226,36 @@ class EntityWithValuesFilterSpec extends ObjectBehavior
                 'filter',
                 [$product, $newValues]
             );
+    }
+
+    function it_throws_an_unknown_attribute_exception_if_an_attribute_code_is_not_found(
+        $normalizer,
+        $attributeRepository,
+        ProductInterface $product
+    ) {
+        $originalValues = [];
+
+        $newValues = [
+            'values' => [
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'ecommerce',
+                        'value'  => 'My description'
+                    ],
+                ],
+            ]
+        ];
+
+        $normalizer->normalize($product, 'standard')
+            ->willReturn($originalValues);
+
+        $attributeRepository->getAttributeTypeByCodes(['description'])
+            ->willReturn([]);
+
+        $this
+            ->shouldThrow(UnknownAttributeException::class)
+            ->during('filter', [$product, $newValues]);
     }
 
     function it_throws_an_exception_if_new_values_are_bad_formatted(
