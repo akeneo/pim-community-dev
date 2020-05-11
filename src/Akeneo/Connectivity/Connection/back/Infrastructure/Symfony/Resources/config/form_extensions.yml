@@ -1,4 +1,12 @@
 extensions:
+    pim-connectivity-connection-user-navigation:
+        module: pim/menu/user-navigation
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    # System
+
     pim-menu-system-connection-settings:
         module: pim/menu/item
         parent: pim-menu-system-navigation-block
@@ -8,6 +16,59 @@ extensions:
             title: pim_menu.item.connection_settings
             to: akeneo_connectivity_connection_settings_index
 
+    # System / Connection
+
+    pim-menu-connection-column:
+        module: pim/menu/column
+        parent: pim-menu
+        targetZone: column
+        config:
+            stateCode: pim-menu-connection
+            navigationTitle: pim_menu.navigation_block.connection
+
+    pim-menu-connection-params-provider:
+        module: pim/menu/connectivity/connection/connection-params-provider
+        parent: pim-menu-connection-column
+
+    pim-menu-connection-navigation-back:
+        module: pim/menu/navigation-back
+        parent: pim-menu-connection-column
+        targetZone: navigation
+        position: 0
+        config:
+            linkText: pim_menu.navigation_back.connection
+            redirectRoute: akeneo_connectivity_connection_settings_index
+
+    pim-menu-connection-navigation-block:
+        module: pim/menu/navigation-block
+        parent: pim-menu-connection-column
+        targetZone: navigation
+        position: 1
+        config:
+            title: pim_menu.navigation_block.connection
+
+    pim-menu-connection-settings-edit:
+        module: pim/menu/item
+        parent: pim-menu-connection-navigation-block
+        position: 0
+        config:
+            title: pim_menu.item.connection_settings_edit
+            to: akeneo_connectivity_connection_settings_edit
+            routeParams:
+                code: '_'
+
+    pim-menu-connection-monitoring:
+        module: pim/menu/item
+        parent: pim-menu-connection-navigation-block
+        position: 1
+        config:
+            title: pim_menu.item.connection_monitoring
+            to: akeneo_connectivity_connection_error_management_connection_monitoring
+            routeParams:
+                code: '_'
+
+    # Activity
+
     pim-menu-activity-connection-audit:
         module: pim/menu/item
         parent: pim-menu-activity-navigation-block
@@ -15,9 +76,3 @@ extensions:
         config:
             title: pim_menu.item.connection_audit
             to: akeneo_connectivity_connection_audit_index
-
-    pim-connectivity-connection-user-navigation:
-        module: pim/menu/user-navigation
-        config:
-            userAccount: pim_menu.user.user_account
-            logout: pim_menu.user.logout

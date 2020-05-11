@@ -1,0 +1,6 @@
+get_connection_business_errors:
+    path: '/{connection_code}/business-errors'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.error_management:getConnectionBusinessErrors }
+    methods: [GET]
+    requirements:
+        connection_code: '[a-zA-Z0-9_]+'

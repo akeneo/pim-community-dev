@@ -51,6 +51,7 @@ define(
              */
             configure: function () {
                 this.onExtensions('pim_menu:column:register_navigation_item', this.registerNavigationItem);
+                this.getRoot().on('pim_menu:item:update_route_params', this.updateNavigationItemRouteParams, this);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -139,6 +140,33 @@ define(
              */
             registerNavigationItem: function (navigationItem) {
                 this.navigationItems.push(navigationItem);
+            },
+
+            /**
+             * Update a navigation item route params.
+             *
+             * @param {string} payload
+             * @param {string} payload.route
+             * @param {string} payload.routeParams
+             */
+            updateNavigationItemRouteParams: function (payload) {
+                const item = this.findNavigationItemByRoute(payload.route);
+                if (undefined === item) {
+                    return;
+                }
+
+                item.routeParams = payload.routeParams;
+            },
+
+            /**
+             * Find a navigation item by route.
+             *
+             * @param {string} route
+             *
+             * @return {(object|undefined)}
+             */
+            findNavigationItemByRoute: function (route) {
+                return this.navigationItems.find((item) => item.route === route);
             },
 
             /**

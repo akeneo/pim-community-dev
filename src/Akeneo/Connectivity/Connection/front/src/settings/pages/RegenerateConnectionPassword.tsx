@@ -1,15 +1,14 @@
 import React, {useContext} from 'react';
 import {useHistory, useParams} from 'react-router';
-import styled from 'styled-components';
 import {GreyButton, ImportantButton, Modal} from '../../common';
-import {PropsWithTheme} from '../../common/theme';
+import styled from '../../common/styled-with-theme';
 import {fetchResult} from '../../shared/fetch-result';
 import {isErr} from '../../shared/fetch-result/result';
 import {NotificationLevel, useNotify} from '../../shared/notify';
 import {useRoute} from '../../shared/router';
 import {Translate, TranslateContext} from '../../shared/translate';
-import {useConnectionsDispatch} from '../connections-context';
 import {connectionPasswordRegenerated} from '../actions/connections-actions';
+import {useConnectionsDispatch} from '../connections-context';
 
 type ResultData = {
     password: string;
@@ -83,6 +82,6 @@ export const RegenerateConnectionPassword = () => {
 };
 
 const Link = styled.a`
-    color: ${({theme}: PropsWithTheme) => theme.color.blue100};
+    color: ${({theme}) => theme.color.blue100};
     text-decoration: underline;
 `;

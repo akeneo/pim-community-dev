@@ -11,7 +11,7 @@ import {
     PageHeader,
     SecondaryActionsDropdownButton,
 } from '../../common';
-import defaultImageUrl from '../../common/assets/illustrations/api.svg';
+import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
 import {PimView} from '../../infrastructure/pim-view/PimView';
 import {Connection} from '../../model/connection';
 import {FlowType} from '../../model/flow-type.enum';

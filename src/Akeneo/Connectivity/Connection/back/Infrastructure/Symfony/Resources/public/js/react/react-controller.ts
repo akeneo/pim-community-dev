@@ -23,7 +23,7 @@ abstract class ReactController extends BaseController {
     return super.initialize();
   }
 
-  renderRoute() {
+  renderRoute(_route: any) {
     this.$el.append(mountReactElementRef(this.reactElementToMount()));
 
     return Deferred().resolve();

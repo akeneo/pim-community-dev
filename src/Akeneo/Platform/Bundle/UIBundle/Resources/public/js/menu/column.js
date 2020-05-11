@@ -49,9 +49,14 @@ define(
              *
              * @param {Event} event
              * @param {string} event.extension The extension code to highlight
+             * @param {string} event.columnExtension The extension code of the column to activate
              */
             highlight: function (event) {
-                this.active = (event.extension === this.getTab());
+                if (event.columnExtension) {
+                    this.active = event.columnExtension === this.code;
+                } else {
+                    this.active = event.extension === this.getTab();
+                }
 
                 this.render();
             },
@@ -71,7 +76,11 @@ define(
              * {@inheritdoc}
              */
             redirect: function (event) {
-                router.redirectToRoute(event.currentTarget.dataset.tab);
+                const item = this.findNavigationItemByRoute(event.currentTarget.dataset.tab);
+                if (undefined === item) {
+                    throw new Error(`Navigation Item for route "${event.currentTarget.dataset.tab}" not found.`);
+                }
+                router.redirectToRoute(item.route, item.routeParams);
             },
 
             /**

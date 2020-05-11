@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
+use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateBusinessErrorTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateWrongCredentialsCombinationQuery;

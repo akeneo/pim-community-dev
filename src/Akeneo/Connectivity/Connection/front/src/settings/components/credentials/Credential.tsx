@@ -1,6 +1,5 @@
 import React, {ReactNode} from 'react';
-import styled, {StyledComponent} from 'styled-components';
-import {PropsWithTheme} from '../../../common/theme';
+import styled from 'styled-components';
 
 export const CredentialList = styled.div`
     display: grid;
@@ -26,22 +25,21 @@ export const Credential = ({
     </>
 );
 
-const Column: StyledComponent<'div', any, {withHelper?: boolean}> = styled.div`
-    border-bottom: ${({withHelper = false, theme}: PropsWithTheme<{withHelper?: boolean}>) =>
-        withHelper ? 'none' : `1px solid ${theme.color.grey80}`};
+const Column = styled.div<{withHelper: boolean}>`
+    border-bottom: ${({withHelper = false, theme}) => (withHelper ? 'none' : `1px solid ${theme.color.grey80}`)};
     height: 54px;
     line-height: 54px;
     padding: 0 10px;
 `;
 
 const Label = styled(Column)`
-    color: ${({theme}: PropsWithTheme) => theme.color.purple100};
+    color: ${({theme}) => theme.color.purple100};
     font-weight: bold;
     padding-left: 20px;
 `;
 
 const Value = styled(Column)`
-    color: ${({theme}: PropsWithTheme) => theme.color.grey140};
+    color: ${({theme}) => theme.color.grey140};
     overflow: hidden;
     text-overflow: ellipsis;
 `;
@@ -65,7 +63,7 @@ const Actions = styled(Column)`
 `;
 
 const Helper = styled.div`
-    border-bottom: 1px solid ${({theme}: PropsWithTheme) => theme.color.grey80};
+    border-bottom: 1px solid ${({theme}) => theme.color.grey80};
     grid-column: 1 / 4;
     padding: 0 20px 20px 20px;
 `;
