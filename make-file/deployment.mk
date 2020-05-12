@@ -81,7 +81,7 @@ terraform-delete: terraform-init
 	cd $(INSTANCE_DIR) && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 
 .PHONY: create-ci-release-files
-create-ci-release-files: create-ci-values create-pim-main-tf
+create-ci-release-files: create-ci-values create-pim-main-tf create-serenity-commons-tf
 
 .PHONY: create-ci-values
 create-ci-values: $(INSTANCE_DIR)
@@ -125,6 +125,12 @@ create-pim-main-tf: $(INSTANCE_DIR)
 	@echo "force_destroy_storage               = true" >> $(INSTANCE_DIR)/main.tf
 	@echo "pim_version                         = \"$(IMAGE_TAG)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "}" >> $(INSTANCE_DIR)/main.tf
+
+.PHONY: create-serenity-commons-tf
+create-serenity-commons-tf: $(INSTANCE_DIR)
+	@echo "provider \"google\" {" > $(INSTANCE_DIR)/commons_serenity.tf
+	@echo "  version = \"~> 3.17.0\"" >> $(INSTANCE_DIR)/commons_serenity.tf
+	@echo "}" >> $(INSTANCE_DIR)/commons_serenity.tf
 
 .PHONY: test-prod
 test-prod:
@@ -177,3 +183,11 @@ delete_pr_environments:
 		INSTANCE_NAME_PREFIX=pimci-pr IMAGE_TAG=$${INSTANCE_NAME} make delete; \
 		echo "---[DELETED] namespace $${namespace}"; \
 	done
+
+terraform-prerequisites-monitoring:
+	terraform import module.pim.google_logging_metric.login_count $(PFID)-login-count
+	terraform import module.pim.google_logging_metric.login-response-time-distribution $(PFID)-login-response-time-distribution
+	terraform import module.pim.google_logging_metric.logs-count $(PFID)-logs-count
+	terraform state rm module.pim.template_file.metric-template
+	terraform state rm module.pim.local_file.metric-rendered
+	terraform state rm module.pim.null_resource.metric

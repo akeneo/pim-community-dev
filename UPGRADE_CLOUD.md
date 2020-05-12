@@ -1,15 +1,25 @@
-# vXXXXXX (next release)
+# Upgrade from < v20200513XXXXXX  to >= v20200513XXXXXX
 
-MySQL chart selector were changed, from `namespace-mysql-server-id` to `mysql-id`.
-Before applying the upgrade, set the *existing* PersistentDisk in MySQL configuration.
+- MySQL chart selector were changed, from `namespace-mysql-server-id` to `mysql-id`.  
+  Before applying the upgrade, set the *existing* PersistentDisk in MySQL configuration.
+  ```bash
+  tag_to_release=$(git ls-remote --tags --sort="version:refname" git@github.com:akeneo/pim-enterprise-dev | grep -oE 'v?[0-9]{14}$' | sort -r | head -n 1)
 
-```bash
-tag_to_release=$(git ls-remote --tags --sort="version:refname" git@github.com:akeneo/pim-enterprise-dev | grep -oE 'v?[0-9]{14}$' | sort -r | head -n 1)
+  terraform apply
+  ```
+  **All the pods will be recreated and MySQL will take longer to re-create as it will wait for existing disk to be releases from former pod.**
 
-terraform apply
-```
+- Metrics are now managed by Terraform resources.  
+  In order to reimport them inside Terraform state, run:
+  ```bash
+  terraform import module.pim.google_logging_metric.login_count ${pfid}-login-count
+  terraform import module.pim.google_logging_metric.login-response-time-distribution ${pfid}-login-response-time-distribution
+  terraform import module.pim.google_logging_metric.logs-count ${pfid}-logs-count
 
-All the pods will be recreated and MySQL will take longer to re-create as it will wait for existing disk to be releases from former pod.
+  terraform state rm module.pim.template_file.metric-template
+  terraform state rm module.pim.local_file.metric-rendered
+  terraform state rm module.pim.null_resource.metric
+  ```
 
 # Upgrade fresh serenity instances
 
