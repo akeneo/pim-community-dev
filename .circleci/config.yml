@@ -348,6 +348,7 @@ jobs:
               name: Upgrade intermediate version SaaS to master
               command: |
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make terraform-prerequisites-monitoring
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy
           - run:
               name: Production tests on upgraded env

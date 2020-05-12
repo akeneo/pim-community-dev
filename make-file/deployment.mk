@@ -183,3 +183,11 @@ delete_pr_environments:
 		INSTANCE_NAME_PREFIX=pimci-pr IMAGE_TAG=$${INSTANCE_NAME} make delete; \
 		echo "---[DELETED] namespace $${namespace}"; \
 	done
+
+terraform-prerequisites-monitoring:
+	terraform import module.pim.google_logging_metric.login_count $(PFID)-login-count
+	terraform import module.pim.google_logging_metric.login-response-time-distribution $(PFID)-login-response-time-distribution
+	terraform import module.pim.google_logging_metric.logs-count $(PFID)-logs-count
+	terraform state rm module.pim.template_file.metric-template
+	terraform state rm module.pim.local_file.metric-rendered
+	terraform state rm module.pim.null_resource.metric
