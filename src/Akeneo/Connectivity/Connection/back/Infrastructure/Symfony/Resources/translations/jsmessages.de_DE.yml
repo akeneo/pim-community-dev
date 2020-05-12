@@ -1,11 +1,12 @@
-pim_menu.item:
-  connection_settings: Verbindungen
-  connection_audit: Verbindungs-Dashboard
+pim_menu:
+  item:
+    connection_audit: Verbindungs-Dashboard
+    connection_settings: Verbindungen
 pim_title:
   akeneo_connectivity_connection_settings_index: Verbindungen
-  akeneo_connectivity_connection_settings_any: Verbindungen
   akeneo_connectivity_connection_audit_index: Verbindungs-Dashboard
   akeneo_connectivity_connection_audit_any: Verbindungs-Dashboard
+  akeneo_connectivity_connection_error_management_dashboard: Verbindungs-Dashboard
 akeneo_connectivity.connection:
   connections: Verbindungen
   secondary_actions:
