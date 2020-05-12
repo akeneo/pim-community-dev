@@ -729,8 +729,8 @@ Feature: Import rules
                   field: side_view
                   value: invalid/path/to/image
     """
-    Then an exception with message "conditions[0]: Property \"side_view\" expects a string as data, \"array\" given.: Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition" has been thrown
-    And an exception with message "actions[0]: Property \"side_view\" expects a valid pathname as data, \"invalid/path/to/image\" given.: Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetAction" has been thrown
+    Then an exception with message "conditions[0]: Property \"side_view\" expects a string as data, \"array\" given." has been thrown
+    And an exception with message "actions[0]: Property \"side_view\" expects a valid pathname as data, \"invalid/path/to/image\" given." has been thrown
     And the rule list does not contain the "canon_beautiful_description" rule
 
   @integration-back
@@ -771,7 +771,7 @@ Feature: Import rules
                   value:
                       originalFilename: image_name
     """
-    Then an exception with message "conditions[0]: The key \"value\" is missing or empty." has been thrown
+    Then an exception with message "conditions[0]: The \"value\" key is missing or empty" has been thrown
     And an exception with message "actions[0]: Property \"side_view\" expects a string as data, \"array\" given" has been thrown
     And the rule list does not contain the "canon_beautiful_description" rule
 
@@ -884,7 +884,7 @@ Feature: Import rules
                   value: The new Sony description
 
     """
-    Then an exception with message "conditions[0].operator: The key \"operator\" is missing or empty." has been thrown
+    Then an exception with message "conditions[0].operator: The \"operator\" key is missing or empty" has been thrown
     And the rule list contains the rules:
       """
       sony_beautiful_description:
@@ -946,7 +946,7 @@ Feature: Import rules
                   value: The new Sony description
 
     """
-    Then an exception with message "conditions[0].field: The key \"field\" is missing or empty." has been thrown
+    Then an exception with message "conditions[0].field: The \"field\" key is missing or empty" has been thrown
     And the rule list contains the rules:
       """
       sony_beautiful_description:
@@ -1006,7 +1006,7 @@ Feature: Import rules
                   value: The new Sony description
 
     """
-    Then an exception with message "conditions[0]: The key \"value\" is missing or empty." has been thrown
+    Then an exception with message "conditions[0]: The \"value\" key is missing or empty" has been thrown
     And the rule list contains the rules:
       """
       sony_beautiful_description:

@@ -2,10 +2,10 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\RemoveAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IncludeChildrenOption;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\IncludeChildrenOptionValidator;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -40,66 +40,42 @@ class IncludeChildrenOptionValidatorSpec extends ObjectBehavior
     function it_throws_exception_if_it_is_not_a_remove_action(
         IncludeChildrenOption $constraint
     ) {
-        $this->shouldThrow(
-            new \LogicException('Action of type "object" can not be validated.')
-        )->during('validate', [new \stdClass(), $constraint]);
+        $this->shouldThrow(new \InvalidArgumentException(
+            'Expected an instance of Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\RemoveAction. Got: stdClass'
+        ))->during('validate', [new \stdClass(), $constraint]);
     }
 
     function it_skips_validation_if_include_children_is_not_set(
-        $context,
-        IncludeChildrenOption $constraint,
-        ProductRemoveActionInterface $action
+        ExecutionContextInterface $context,
+        IncludeChildrenOption $constraint
     ) {
-        $action->getOptions()->willReturn([]);
-        $action->getField()->shouldNotBeCalled();
+        $action = new RemoveAction([
+            'field' => 'categories',
+            'items' => ['dry'],
+        ]);
+
         $context->buildViolation(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $this->validate($action, $constraint);
     }
 
     function it_adds_violation_if_it_is_not_the_right_field(
-        $context,
-        ProductRemoveActionInterface $action,
+        ExecutionContextInterface $context,
         IncludeChildrenOption $constraint,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $constraint->invalidFieldMessage = 'foo';
 
-        $action->getOptions()->willReturn([
+        $action = new RemoveAction([
+            'field' => 'attribute_field',
+            'items' => ['some_option'],
             'include_children' => true,
         ]);
-        $action->getField()->willReturn('attribute_field');
 
         $context->buildViolation(
             'foo',
             [
                 '%field%' => 'attribute_field'
-            ]
-        )->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalled();
-
-        $this->validate($action, $constraint);
-    }
-
-    function it_adds_violation_if_include_children_is_not_a_boolean(
-        $context,
-        ProductRemoveActionInterface $action,
-        IncludeChildrenOption $constraint,
-        ConstraintViolationBuilderInterface $violationBuilder
-    ) {
-        $constraint->invalidTypeMessage = 'foo';
-
-        $action->getOptions()->willReturn(
-            [
-                'include_children' => 'bar',
-            ]
-        );
-        $action->getField()->willReturn('categories');
-
-        $context->buildViolation(
-            'foo',
-            [
-                '%type%' => 'string'
             ]
         )->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();

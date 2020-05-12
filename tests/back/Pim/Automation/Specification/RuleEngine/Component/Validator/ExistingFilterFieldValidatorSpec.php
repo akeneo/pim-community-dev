@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingFilterField;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingFilterField;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingFilterFieldValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use PhpSpec\ObjectBehavior;

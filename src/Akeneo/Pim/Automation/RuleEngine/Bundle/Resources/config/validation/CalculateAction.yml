@@ -7,8 +7,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CalculateAction:
             - NotNull: ~
             - Valid: ~
         operationList:
-            - Type:
-                type: array
+            - Type: array
             - Count:
                 min: 1
             - All:

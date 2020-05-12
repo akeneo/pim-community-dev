@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ClearAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ConcatenateAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CopyAction;
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CustomAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Label;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\RemoveAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\SetAction;
@@ -38,25 +39,35 @@ final class CreateOrUpdateRuleCommand
 
         $conditions = $data['conditions'] ?? null;
         if (is_array($conditions)) {
-            $conditions = array_map(function($condition) {
-                return is_array($condition) ? new Condition($condition) : null;
-            }, $conditions);
+            $conditions = array_map(
+                function ($condition) {
+                    return is_array($condition) ? new Condition($condition) : null;
+                },
+                $conditions
+            );
         }
         $this->conditions = $conditions;
 
         $actions = $data['actions'] ?? null;
         if (is_array($actions)) {
-            $actions = array_map(function($action) {
-                return $this->createActionCommand($action);
-            }, $actions);
+            $actions = array_map(
+                function ($action) {
+                    return $this->createActionCommand($action);
+                },
+                $actions
+            );
         }
         $this->actions = $actions;
 
         $labels = $data['labels'] ?? null;
         if (is_array($labels)) {
-            $labels = array_map(function ($key, $value) {
-                return new Label($key, $value);
-            }, array_keys($labels), $labels);
+            $labels = array_map(
+                function ($key, $value) {
+                    return new Label($key, $value);
+                },
+                array_keys($labels),
+                $labels
+            );
         }
         $this->labels = $labels;
     }
@@ -69,7 +80,7 @@ final class CreateOrUpdateRuleCommand
 
         $type = $action['type'] ?? null;
 
-        switch($type) {
+        switch ($type) {
             case 'add':
                 return new AddAction($action);
             case 'calculate':
@@ -84,7 +95,8 @@ final class CreateOrUpdateRuleCommand
                 return new RemoveAction($action);
             case 'set':
                 return new SetAction($action);
-//            default: return new CreateCustomActionCommand($action);
+            default:
+                return new CustomAction($action);
         }
     }
 }

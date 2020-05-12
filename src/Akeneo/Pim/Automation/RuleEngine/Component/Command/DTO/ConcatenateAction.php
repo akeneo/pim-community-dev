@@ -13,9 +13,12 @@ final class ConcatenateAction
     {
         $from = $data['from'] ?? null;
         if (is_array($from)) {
-            $from = array_map(function($source) {
-                return is_array($source) ? new ProductSource($source) : $source;
-            }, $from);
+            $from = array_map(
+                function ($source) {
+                    return is_array($source) ? new ProductSource($source) : $source;
+                },
+                $from
+            );
         }
         $this->from = $from;
 

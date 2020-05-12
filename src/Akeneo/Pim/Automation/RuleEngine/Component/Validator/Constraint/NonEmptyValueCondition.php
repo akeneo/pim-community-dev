@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint;
+namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
 class NonEmptyValueCondition extends Constraint
 {
     /** @var string */
-    public $message = 'The key "value" is missing or empty.';
+    public $message = 'The "value" key is missing or empty';
 
     /**
      * {@inheritdoc}

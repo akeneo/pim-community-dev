@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingFilterField;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingFilterField;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -43,6 +43,10 @@ class ExistingFilterFieldValidator extends ConstraintValidator
     {
         Assert::isInstanceOf($constraint, ExistingFilterField::class);
         Assert::isInstanceOf($condition, Condition::class);
+
+        if (null === $condition->field || '' === $condition->field || null == $condition->operator || '' === $condition->operator) {
+            return;
+        }
 
         $filter = $this->registry->getFilter($condition->field, $condition->operator);
 

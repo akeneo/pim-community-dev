@@ -2,11 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand;
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslation;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -20,7 +20,6 @@ use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RuleDefinitionProcessorSpec extends ObjectBehavior
@@ -58,11 +57,10 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
     }
 
     function it_processes_a_new_valid_item(
-        $repository,
-        $denormalizer,
-        $validator,
-        RuleInterface $rule,
-        ConstraintViolationListInterface $violations
+        IdentifiableObjectRepositoryInterface $repository,
+        DenormalizerInterface $denormalizer,
+        ValidatorInterface $validator,
+        RuleInterface $rule
     ) {
         $item = [
             'code'       => 'discharge_fr_description',
@@ -92,14 +90,16 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             ],
         ];
 
-        $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn(null);
+        $repository->findOneByIdentifier('discharge_fr_description')->shouldBeCalledOnce()->willReturn(null);
         $denormalizer->denormalize(
             $item,
-           Rule::class,
+            Rule::class,
             null,
             ['definitionObject' => null]
         )->shouldBeCalled()->willReturn($rule);
-        $validator->validate($rule)->shouldBeCalled()->willReturn($violations);
+        $validator->validate(Argument::type(CreateOrUpdateRuleCommand::class))
+            ->shouldBeCalled()
+            ->willReturn(new ConstraintViolationList([]));
 
         $rule->getCode()->willReturn('discharge_fr_description');
         $rule->getPriority()->willReturn(100);
@@ -169,11 +169,10 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
     }
 
     function it_processes_an_existing_valid_item(
-        $repository,
-        $denormalizer,
-        $validator,
-        RuleInterface $rule,
-        ConstraintViolationListInterface $violations
+        IdentifiableObjectRepositoryInterface $repository,
+        DenormalizerInterface $denormalizer,
+        ValidatorInterface $validator,
+        RuleInterface $rule
     ) {
         $item = [
             'code'       => 'discharge_fr_description',
@@ -270,11 +269,13 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn($definition);
         $denormalizer->denormalize(
             $item,
-           Rule::class,
+            Rule::class,
             null,
             ['definitionObject' => $definition]
         )->shouldBeCalled()->willReturn($rule);
-        $validator->validate($rule)->shouldBeCalled()->willReturn($violations);
+        $validator->validate(Argument::type(CreateOrUpdateRuleCommand::class))
+            ->shouldBeCalled()
+            ->willReturn(new ConstraintViolationList([]));
 
         $this->process($item)->shouldBeValidRuleDefinition($definition);
     }
@@ -316,14 +317,12 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $violation  = new ConstraintViolation('error', 'error', [], '', '', ['invalid value 1', 'invalid value 2']);
         $violations = new ConstraintViolationList([$violation]);
 
-        $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn(null);
-        $denormalizer->denormalize(
-            $item,
-           Rule::class,
-            null,
-            ['definitionObject' => null]
-        )->shouldBeCalled()->willReturn($rule);
-        $validator->validate($rule)->shouldBeCalled()->willReturn($violations);
+        $validator->validate(Argument::type(CreateOrUpdateRuleCommand::class))
+            ->shouldBeCalled()
+            ->willReturn($violations);
+
+        $repository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
+        $denormalizer->denormalize(Argument::cetera())->shouldNotBeCalled();
 
         $this->setStepExecution($stepExecution);
         $stepExecution->getSummaryInfo('item_position')->willReturn(1);

@@ -1,25 +1,20 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\SetAction:
     constraints:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\PropertyAction: ~
         - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
               attributeProperty: field
               channelProperty: scope
               localeProperty: locale
     properties:
         field:
-            - Type:
-                type: string
+            - Type: string
             - NotNull: ~
-            - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingSetField: ~
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingSetField: ~
         value:
             - NotNull:
                   message: The "value" key is missing or empty
-            - Type:
-                type: [scalar, array]
+            - Type: [scalar, array]
         scope:
-            - Type:
-                type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
+            - Type: string
         locale:
-            - Type:
-                type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
+            - Type: string

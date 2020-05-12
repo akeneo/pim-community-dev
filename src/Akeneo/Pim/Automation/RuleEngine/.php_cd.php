@@ -53,10 +53,10 @@ $rules = [
 
         // used for validation
         'Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface',
-        'Akeneo\Channel\Component\Validator\Constraint\ConversionUnits',
 
         // TODO RUL-28: check if we can use another component
         'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
+        'Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager',
 
         // TIP-960: Rule Engine should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
@@ -75,17 +75,13 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Value\DateValueInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Value',
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface', // the engine creates a fake product to allow validation

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint;
+namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 

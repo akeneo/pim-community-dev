@@ -6,15 +6,10 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ClearAction:
               localeProperty: locale
     properties:
         field:
-            - Type:
-                type: string
+            - Type: string
             - NotBlank: ~
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingClearField: ~
         scope:
-            - Type:
-                type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
+            - Type: string
         locale:
-            - Type:
-                type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
+            - Type: string

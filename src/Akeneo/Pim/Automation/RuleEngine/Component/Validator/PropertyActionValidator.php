@@ -11,11 +11,13 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface as ProductAction;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -40,22 +42,21 @@ class PropertyActionValidator extends ConstraintValidator
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /**
-     * @param ActionApplierRegistryInterface $applierRegistry
-     * @param ProductBuilderInterface        $productBuilder
-     * @param ValidatorInterface             $validator
-     * @param AttributeRepositoryInterface   $attributeRepository
-     */
+    /** @var DenormalizerInterface */
+    protected $chainedDenormalizer;
+
     public function __construct(
         ActionApplierRegistryInterface $applierRegistry,
         ProductBuilderInterface $productBuilder,
         ValidatorInterface $validator,
-        AttributeRepositoryInterface $attributeRepository = null
+        AttributeRepositoryInterface $attributeRepository,
+        DenormalizerInterface $chainedDenormalizer
     ) {
         $this->applierRegistry = $applierRegistry;
         $this->productBuilder = $productBuilder;
         $this->productValidator = $validator;
         $this->attributeRepository = $attributeRepository;
+        $this->chainedDenormalizer = $chainedDenormalizer;
     }
 
     /**
@@ -67,9 +68,15 @@ class PropertyActionValidator extends ConstraintValidator
             throw new \LogicException(sprintf('Action of type "%s" can not be validated.', gettype($action)));
         }
 
+        try {
+            $productAction = $this->chainedDenormalizer->denormalize($action->toArray(), ProductAction::class);
+        } catch (\LogicException $e) {
+            return;
+        }
+
         $fakeProduct = $this->createProduct();
         try {
-            $this->applierRegistry->getActionApplier($action)->applyAction($action, [$fakeProduct]);
+            $this->applierRegistry->getActionApplier($productAction)->applyAction($productAction, [$fakeProduct]);
         } catch (\Exception $e) {
             $this->context->buildViolation(
                 $constraint->message,

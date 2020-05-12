@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint;
+namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
 class ExistingCopyFields extends Constraint
 {
     /** @var string */
-    public $message = 'You cannot copy data from "%fromField%" field to the "%toField%" field.';
+    public $message = 'You cannot copy data from the "%fromField%" field to the "%toField%" field.';
 
     /**
      * {@inheritdoc}

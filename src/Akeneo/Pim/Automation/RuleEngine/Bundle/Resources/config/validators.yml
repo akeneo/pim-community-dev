@@ -66,6 +66,7 @@ services:
             - '@pim_catalog.builder.product'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.repository.attribute'
+            - '@pimee_catalog_rule.denormalizer.product_rule.chained'
         tags:
             - { name: validator.constraint_validator, alias: pimee_property_action_validator }
 
@@ -80,13 +81,6 @@ services:
         class: '%pimee_catalog_rule.validator.include_children_option.class%'
         tags:
             - { name: validator.constraint_validator, alias: pimee_include_children_option_validator }
-
-    Akeneo\Pim\Automation\RuleEngine\Component\Validator\ChannelShouldExistValidator:
-        class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\ChannelShouldExistValidator
-        arguments:
-            - '@pim_channel.query.cache.channel_exists_with_locale'
-        tags:
-            - { name: validator.constraint_validator }
 
     Akeneo\Pim\Automation\RuleEngine\Component\Validator\LocaleShouldBeActiveValidator:
         class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\LocaleShouldBeActiveValidator
@@ -139,5 +133,11 @@ services:
             - '@property_accessor'
             - '@akeneo_measure.manager'
             - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\CustomActionValidator:
+        arguments:
+            - '@pimee_catalog_rule.denormalizer.product_rule.chained'
         tags:
             - { name: validator.constraint_validator }

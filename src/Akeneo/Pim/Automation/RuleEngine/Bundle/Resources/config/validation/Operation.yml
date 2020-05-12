@@ -13,24 +13,17 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operation:
             - NotNull: ~
             - Choice: [add, subtract, multiply, divide]
         field:
-            - Type:
-                type: string
+            - Type: string
             - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsAttribute:
                   - pim_catalog_number
                   - pim_catalog_price_collection
                   - pim_catalog_metric
         value:
-            - Type:
-                type: numeric
+            - Type: numeric
         scope:
-            - Type:
-                type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
+            - Type: string
         locale:
-            - Type:
-                type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
+            - Type: string
         currency:
-            - Type:
-                type: string
+            - Type: string
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ActiveCurrency: ~

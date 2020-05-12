@@ -9,25 +9,33 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint;
+namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Validation constraint on a field on which you want to add a collection of items.
+ * Validation constraint on a value.
  *
- * @author Julien Sanchez <julien@akeneo.com>
+ * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ExistingAddField extends Constraint
+class PropertyAction extends Constraint
 {
     /** @var string */
-    public $message = 'You cannot add items to the "%field%" field.';
+    public $message = '%message%';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function validatedBy()
     {
-        return 'pimee_add_field_validator';
+        return 'pimee_property_action_validator';
     }
 }

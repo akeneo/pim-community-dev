@@ -1,26 +1,24 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand:
     properties:
         code:
-            - Type:
-                type: string
+            - Type: string
             - NotBlank: ~
             - Length:
                 max: 100
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Rule code may contain only letters, numbers and underscores
         priority:
-            - Type:
-                type: int
+            - Type: int
         conditions:
-            - Type:
-                type: array
+            - Type: array
             - Valid: ~
         actions:
             - NotBlank:
-                  message: The "actions" key is missing or empty
-            - Type:
-                type: array
+                message: 'The "actions" key is missing or empty'
+            - Type: array
             - Count:
                 min: 1
             - Valid: ~
         labels:
-            - Type:
-                type: array
+            - Type: array

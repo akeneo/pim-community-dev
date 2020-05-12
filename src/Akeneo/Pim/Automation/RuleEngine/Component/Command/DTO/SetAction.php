@@ -13,18 +13,29 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO;
 
-class SetAction
+class SetAction implements ActionInterface
 {
     public $field;
     public $value;
-    public $locale;
     public $scope;
+    public $locale;
 
     public function __construct(array $data)
     {
         $this->field = $data['field'] ?? null;
         $this->value = $data['value'] ?? null;
-        $this->locale = $data['locale'] ?? null;
         $this->scope = $data['scope'] ?? null;
+        $this->locale = $data['locale'] ?? null;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'type' => 'set',
+            'field' => $this->field,
+            'value' => $this->value,
+            'scope' => $this->scope,
+            'locale' => $this->locale,
+        ];
     }
 }

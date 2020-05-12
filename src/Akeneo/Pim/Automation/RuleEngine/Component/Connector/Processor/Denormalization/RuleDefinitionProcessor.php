@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
@@ -82,14 +83,14 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
      */
     public function process($item)
     {
-        $definition = $this->findObject($this->repository, $item);
-
-        $rule = $this->buildRuleFromItemAndDefinition($item, $definition);
-
-        $violations = $this->validator->validate($rule);
+        $item = $this->storeMedias($item);
+        $command = new CreateOrUpdateRuleCommand($item);
+        $violations = $this->validator->validate($command);
         if ($violations->count()) {
             $this->skipItemWithConstraintViolations($item, $violations);
         }
+        $definition = $this->findObject($this->repository, $item);
+        $rule = $this->buildRuleFromItemAndDefinition($item, $definition);
 
         return $this->updateDefinitionFromRule($rule, $definition);
     }
@@ -107,7 +108,6 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
         $rule = null;
 
         try {
-            $item = $this->storeMedias($item);
             $rule = $this->denormalizer
                 ->denormalize($item, $this->ruleClass, null, ['definitionObject' => $definition]);
         } catch (\Exception $e) {

@@ -48,5 +48,4 @@ class IsValidSourceValidator extends ConstraintValidator
                           ->addViolation();
         }
     }
-
 }

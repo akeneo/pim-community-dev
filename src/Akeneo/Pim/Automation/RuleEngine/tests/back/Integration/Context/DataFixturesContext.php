@@ -560,7 +560,7 @@ final class DataFixturesContext implements Context
 
         return strtr($string, [
             '%tmp%' => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
-            '%fixtures%' => $kernelRootDir . '/../tests/legacy/features/Context/fixtures/',
+            '%fixtures%' => $kernelRootDir . '/../tests/legacy/features/Context/fixtures',
             '%web%' => $kernelRootDir . '/../public/',
         ]);
     }

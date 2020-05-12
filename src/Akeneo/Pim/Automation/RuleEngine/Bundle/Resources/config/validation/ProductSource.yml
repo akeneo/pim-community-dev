@@ -4,32 +4,21 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductSource:
               attributeProperty: field
               channelProperty: scope
               localeProperty: locale
-        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\NotBlankCurrency:
-              attributeProperty: field
-              currencyProperty: currency
     properties:
         field:
-            - Type:
-                type: string
+            - Type: string
             - NotBlank: ~
             - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsAttribute: ~
             - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidSource: ~
         scope:
-            - Type:
-                type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
+            - Type: string
         locale:
-            - Type:
-                type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
+            - Type: string
         labelLocale:
-            - Type:
-                type: string
+            - Type: string
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
         format:
-            - Type:
-                type: string
+            - Type: string
         currency:
-            - Type:
-                type: string
+            - Type: string
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ActiveCurrency: ~

@@ -56,6 +56,6 @@ final class NotBlankCurrencyValidator extends ConstraintValidator
         $this->context->buildViolation(
             $constraint->message,
             ['{{ currencyProperty }}' => $constraint->currencyProperty]
-        )->addViolation();
+        )->atPath($constraint->currencyProperty)->setInvalidValue($currencyCode)->addViolation();
     }
 }

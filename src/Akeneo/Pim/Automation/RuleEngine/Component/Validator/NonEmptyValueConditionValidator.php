@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\NonEmptyValueCondition;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\NonEmptyValueCondition;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -40,6 +40,7 @@ class NonEmptyValueConditionValidator extends ConstraintValidator
             null === $value
         ) {
             $this->context->buildViolation($constraint->message)
+                ->setInvalidValue(null)
                 ->addViolation();
         }
     }

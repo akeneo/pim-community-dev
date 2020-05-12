@@ -1,27 +1,22 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\AddAction:
     constraints:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\PropertyAction: ~
         - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
               attributeProperty: field
               channelProperty: scope
               localeProperty: locale
     properties:
         field:
-            - Type:
-                type: string
+            - Type: string
             - NotBlank: ~
-            - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingAddField: ~
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingAddField: ~
         items:
-            - Type:
-                type: array
+            - Type: array
             - Count:
                 min: 1
             - All:
                 - NotBlank: ~
         scope:
-            - Type:
-                type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ChannelShouldExist: ~
+            - Type: string
         locale:
-            - Type:
-                type: string
-            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
+            - Type: string

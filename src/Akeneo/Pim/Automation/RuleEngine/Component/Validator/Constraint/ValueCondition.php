@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint;
+namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class PropertyAction extends Constraint
+class ValueCondition extends Constraint
 {
     /** @var string */
     public $message = '%message%';
@@ -36,6 +36,6 @@ class PropertyAction extends Constraint
      */
     public function validatedBy()
     {
-        return 'pimee_property_action_validator';
+        return 'pimee_value_condition_validator';
     }
 }

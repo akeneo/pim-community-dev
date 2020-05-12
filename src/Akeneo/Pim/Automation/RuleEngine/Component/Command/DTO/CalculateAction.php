@@ -26,9 +26,12 @@ final class CalculateAction
 
         $operationList = $data['operation_list'] ?? null;
         if (is_array($operationList)) {
-            $operationList = array_map(function($operation) {
-                return is_array($operation) ? new Operation($operation) : $operation;
-            }, $operationList);
+            $operationList = array_map(
+                function ($operation) {
+                    return is_array($operation) ? new Operation($operation) : $operation;
+                },
+                $operationList
+            );
         }
         $this->operationList = $operationList;
     }

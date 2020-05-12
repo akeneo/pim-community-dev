@@ -87,7 +87,8 @@ final class IsValidAttributeValidator extends ConstraintValidator
                 'Attribute "{{ attributeCode }}" expects a locale, none given.',
                 [
                     '{{ attributeCode }}' => $attribute->code(),
-                ]
+                ],
+                $locale
             );
 
             return;
@@ -97,17 +98,32 @@ final class IsValidAttributeValidator extends ConstraintValidator
             return;
         }
 
-        if (!$attribute->isLocalizable() && null !== $locale) {
+        if (!$attribute->isLocalizable()) {
             $this->addViolation(
                 'Attribute "{{ attributeCode }}" does not expect a locale, "{{ locale }}" given.',
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                     '{{ locale }}' => $locale,
-                ]
+                ],
+                $locale
             );
 
             return;
         }
+
+        if (!$this->channelExistsWithLocale->isLocaleActive($locale)) {
+            $this->addViolation(
+                'Attribute "{{ attributeCode }}" expects an existing and activated locale, "{{ locale }}" given',
+                [
+                    '{{ attributeCode }}' => $attribute->code(),
+                    '{{ locale }}' => $locale,
+                ],
+                $locale
+            );
+
+            return;
+        }
+
 
         if ($attribute->isLocaleSpecific() && !in_array($locale, $attribute->availableLocaleCodes())) {
             $this->addViolation(
@@ -116,21 +132,22 @@ final class IsValidAttributeValidator extends ConstraintValidator
                     '{{ attributeCode }}' => $attribute->code(),
                     '{{expectedLocales }}' => implode($attribute->availableLocaleCodes(), ', '),
                     '{{ invalidLocale }}' => $locale,
-                ]
+                ],
+                $locale
             );
 
             return;
         }
 
-        if ($attribute->isScopable() && $attribute->isLocalizable() && is_string($scope)
-            && $this->channelExistsWithLocale->doesChannelExist($scope)
+        if ($attribute->isScopable() && is_string($scope) && $this->channelExistsWithLocale->doesChannelExist($scope)
             && !$this->channelExistsWithLocale->isLocaleBoundToChannel($locale, $scope)) {
             $this->addViolation(
                 'The "{{ invalidLocale }} is not bound to the "{{ channelCode }} channel',
                 [
                     '{{ invalidLocale }}' => $locale,
                     '{{ channelCode }}' => $scope,
-                ]
+                ],
+                $locale
             );
         }
     }
@@ -149,7 +166,8 @@ final class IsValidAttributeValidator extends ConstraintValidator
                 'Attribute "{{ attributeCode }}" expects a scope, none given.',
                 [
                     '{{ attributeCode }}' => $attribute->code(),
-                ]
+                ],
+                $scope
             );
 
             return;
@@ -159,13 +177,14 @@ final class IsValidAttributeValidator extends ConstraintValidator
             return;
         }
 
-        if (!$attribute->isScopable() && null !== $scope) {
+        if (!$attribute->isScopable()) {
             $this->addViolation(
                 'Attribute "{{ attributeCode }}" does not expect a scope, "{{ channelCode }}" given.',
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                     '{{ channelCode }}' => $scope,
-                ]
+                ],
+                $scope
             );
 
             return;
@@ -177,16 +196,17 @@ final class IsValidAttributeValidator extends ConstraintValidator
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                     '{{ channelCode }}' => $scope,
-                ]
+                ],
+                $scope
             );
         }
     }
 
-    private function addViolation(string $message, array $parameters): void
+    private function addViolation(string $message, array $parameters, $invalidValue): void
     {
         $this->context->buildViolation(
             $message,
             $parameters
-        )->addViolation();
+        )->setInvalidValue($invalidValue)->addViolation();
     }
 }
