@@ -22,7 +22,9 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
      */
     public function normalize($entity, $format = null, array $context = [])
     {
-        if ($entity instanceof EntityWithFamilyVariantInterface) {
+        $mergeAncestors = (bool)($context['merge_ancestors'] ?? true);
+
+        if ($mergeAncestors && $entity instanceof EntityWithFamilyVariantInterface) {
             return $this->normalizeAndMergeAncestorsAssociations($entity);
         }
 
