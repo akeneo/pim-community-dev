@@ -1,4 +1,4 @@
-{{ if .Values.backup.enabled }}
+{{ if .Values.backup.enabled -}}
 apiVersion: backup.akeneo.com/v2
 kind: Backup
 metadata:
@@ -9,7 +9,7 @@ metadata:
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
     component: {{ template "pim.fullName" . }}
-    {{ include "pim.extraLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
     role: pim-backup
 spec:
   jobLabel: {{ template "pim.fullName" . }}
@@ -20,5 +20,5 @@ spec:
     pvcNames:
       - pvc-data-{{ .Release.Name }}-mysql-server-0
     retentionPolicy:
-{{toYaml .Values.backup.snapshot.retentionPolicy | indent 6 }}
-{{ end }}
+{{ toYaml .Values.backup.snapshot.retentionPolicy | indent 6 }}
+{{- end }}

@@ -4,7 +4,7 @@ pim:
     askFranklinUrl: "https://ask-franklin-test.dev.cloud.akeneo.com"
   secret: 5f559ffb-5b36-4922-9481-022057992057
   defaultAdminUser:
-    login : pim-ci
+    login: pim-ci
     firstName: test1
     lastName: test2
     email: pim-ci@akeneo.fr
