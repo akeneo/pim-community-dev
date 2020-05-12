@@ -229,8 +229,8 @@ class EntityWithValuesFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_unknown_attribute_exception_if_an_attribute_code_is_not_found(
-        $normalizer,
-        $attributeRepository,
+        NormalizerInterface $normalizer,
+        AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product
     ) {
         $originalValues = [];
