@@ -28,7 +28,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
 
     }
 
-    public function test_it_duplicates_a_product()
+    public function test_it_duplicates_a_product_without_unique_values()
     {
         $associatedProduct = $this->createProduct('associated_product', [
             'family' => 'familyA1'
@@ -83,6 +83,22 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
             'family' => 'familyA',
             'groups' => ['groupA', 'groupB'],
             'categories' => ['categoryA', 'categoryB'],
+            'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'product_to_duplicate'
+                    ]
+                ],
+                'a_text' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'An amazing product'
+                    ]
+                ]
+            ],
             'associations' => [
                 'PACK' => [
                     'groups' => [],
@@ -108,16 +124,24 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         ];
     }
 
-    private function assertSameData(ProductInterface $duplicatedProduct, array $normalizeProductToDuplicate): void
+    private function assertSameData(ProductInterface $duplicatedProduct, array $normalizedProductToDuplicate): void
     {
-        $normalizeDuplicatedProduct = $this->get('pim_catalog.normalizer.standard.product')->normalize(
+        $normalizedDuplicatedProduct = $this->get('pim_catalog.normalizer.standard.product')->normalize(
             $duplicatedProduct,
             'standard'
         );
 
-        Assert::assertEquals($normalizeProductToDuplicate['family'], $normalizeDuplicatedProduct['family']);
-        Assert::assertEquals($normalizeProductToDuplicate['groups'], $normalizeDuplicatedProduct['groups']);
-        Assert::assertEquals($normalizeProductToDuplicate['categories'], $normalizeDuplicatedProduct['categories']);
-        Assert::assertEquals($normalizeProductToDuplicate['associations'], $normalizeDuplicatedProduct['associations']);
+        $uniqueAttributeCodes = ['sku'];
+        foreach($uniqueAttributeCodes as $attributeCode) {
+            unset($normalizedProductToDuplicate['values'][$attributeCode]);
+        }
+        // Need to unset the 'sku' as its value is required and it coudn't be equal
+        unset($normalizedDuplicatedProduct['values']['sku']);
+
+        Assert::assertEquals($normalizedProductToDuplicate['family'], $normalizedDuplicatedProduct['family']);
+        Assert::assertEquals($normalizedProductToDuplicate['groups'], $normalizedDuplicatedProduct['groups']);
+        Assert::assertEquals($normalizedProductToDuplicate['values'], $normalizedDuplicatedProduct['values']);
+        Assert::assertEquals($normalizedProductToDuplicate['categories'], $normalizedDuplicatedProduct['categories']);
+        Assert::assertEquals($normalizedProductToDuplicate['associations'], $normalizedDuplicatedProduct['associations']);
     }
 }

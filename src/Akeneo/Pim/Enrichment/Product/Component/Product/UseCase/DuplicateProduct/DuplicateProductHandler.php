@@ -53,22 +53,27 @@ class DuplicateProductHandler
         /** @var ProductInterface */
         $productToDuplicate = $this->productRepository->findOneByIdentifier($query->productToDuplicateIdentifier());
 
-        $duplicatedProduct = $this->productBuilder->createProduct(
-            $query->duplicatedProductIdentifier(),
-            $productToDuplicate->getFamily()->getCode()
+        //@TODO: To Remove  by the query function
+        $uniqueAttributeCodes = ['sku'];
+        RemoveUniqueAttributeValues::fromCollection(
+            $productToDuplicate->getValues(),
+            $uniqueAttributeCodes
         );
 
         $normalizedProduct = $this->normalizer->normalize(
             $productToDuplicate,
             'standard'
         );
-        // @TODO: To remove this line when we will remove the unique values from the duplicated product (https://akeneo.atlassian.net/browse/CHRIS-8)
-        unset($normalizedProduct['values']['sku']);
+
+        $duplicatedProduct = $this->productBuilder->createProduct(
+            $query->duplicatedProductIdentifier(),
+            $productToDuplicate->getFamilyId()
+        );
 
         $this->productUpdater->update($duplicatedProduct, $normalizedProduct);
 
         $this->productSaver->save($duplicatedProduct);
 
-        return new DuplicateProductResponse([]);
+        return new DuplicateProductResponse([$uniqueAttributeCodes]);
     }
 }
