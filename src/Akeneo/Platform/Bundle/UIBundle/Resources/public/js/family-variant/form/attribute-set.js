@@ -111,14 +111,7 @@ define(
                             .map(set => set.axes)
                             .reduce((allAxes, axes) => allAxes.concat(axes));
 
-                        const lockedAttributes = family.attributes
-                            .filter(attribute => {
-                                const isUnique = attribute.unique;
-                                const isAxis = axesAttributes.includes(attribute.code);
-
-                                return isAxis || isUnique;
-                            })
-                            .map(attribute => attribute.code);
+                        const lockedAttributes = this.getLockedAttributes(family, axesAttributes);
 
                         this.$el.empty().append(this.template({
                             lockedAttributes,
@@ -313,6 +306,17 @@ define(
                     null,
                     null,
                     'families');
+            },
+
+            getLockedAttributes(family, axesAttributes) {
+                return family.attributes
+                    .filter(attribute => {
+                        const isUnique = attribute.unique;
+                        const isAxis = axesAttributes.includes(attribute.code);
+
+                        return isAxis || isUnique;
+                    })
+                    .map(attribute => attribute.code);
             }
         });
     }
