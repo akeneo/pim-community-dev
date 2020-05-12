@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\Enrichment\Product\Bundle\Controller\InternalApi;
 
-use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProductWithoutUniqueValues;
-use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProductWithoutUniqueValuesHandler;
+use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductWithoutUniqueValues;
+use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductWithoutUniqueValuesHandler;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

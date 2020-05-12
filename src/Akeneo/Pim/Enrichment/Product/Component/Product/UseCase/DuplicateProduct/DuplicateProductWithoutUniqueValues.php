@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase;
+namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct;
 
 /**
  * @author    Christophe Chausseray
