@@ -17,11 +17,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-/**
- * @author    Christophe Chausseray
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class DuplicateProductWithoutUniqueValuesHandler
 {
     /** @var ProductRepositoryInterface */

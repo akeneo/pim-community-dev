@@ -19,26 +19,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-/**
- * Duplicate Product Controller
- *
- * @author    Christophe Chausseray
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class DuplicateProductController
 {
     /** @var DuplicateProductWithoutUniqueValuesHandler */
-    private $duplicateProductWithoutUniqueValues;
+    private $duplicateProductWithoutUniqueValuesHandler;
 
     /** @var SaverInterface */
     private $productSaver;
 
     public function __construct(
-        DuplicateProductWithoutUniqueValuesHandler $duplicateProductWithoutUniqueValues,
+        DuplicateProductWithoutUniqueValuesHandler $duplicateProductWithoutUniqueValuesHandler,
         SaverInterface $productSaver
     ) {
-        $this->duplicateProductWithoutUniqueValues = $duplicateProductWithoutUniqueValues;
+        $this->duplicateProductWithoutUniqueValuesHandler = $duplicateProductWithoutUniqueValuesHandler;
         $this->productSaver = $productSaver;
     }
 
@@ -50,7 +43,7 @@ class DuplicateProductController
 
         $query = new DuplicateProductWithoutUniqueValues($id, $request->request->get('identifier'));
 
-        list($duplicatedProduct) = $this->duplicateProductWithoutUniqueValues->handle($query);
+        list($duplicatedProduct) = $this->duplicateProductWithoutUniqueValuesHandler->handle($query);
 
         $this->productSaver->save($duplicatedProduct);
 
