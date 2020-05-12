@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Permission\Component\Updater\Setter;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
@@ -128,7 +129,7 @@ class EntityWithGrantedValuesPropertySetterSpec extends ObjectBehavior
         ];
 
         $this
-            ->shouldThrow(UnknownAttributeException::class)
+            ->shouldThrow(InvalidAttributeException::class)
             ->during('setData', [$entityWithValues, 'a_name', $data, $options]);
     }
 }

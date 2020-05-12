@@ -2,6 +2,7 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Security\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use AkeneoTestEnterprise\Pim\Permission\Integration\Security\AbstractSecurityTestCase;
@@ -200,7 +201,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
 
     public function testCreateAProductWithLocaleNotViewable()
     {
-        $this->expectException(UnknownAttributeException::class);
+        $this->expectException(InvalidAttributeException::class);
         $this->expectExceptionMessage('Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "de_DE" given');
 
         $this->generateToken('mary');
@@ -226,7 +227,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
 
     public function testUpdateAProductWithLocaleNotViewable()
     {
-        $this->expectException(UnknownAttributeException::class);
+        $this->expectException(InvalidAttributeException::class);
         $this->expectExceptionMessage('Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "de_DE" given');
 
         $product = $this->saveProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'de_DE', 'scope' => 'ecommerce']]]]);

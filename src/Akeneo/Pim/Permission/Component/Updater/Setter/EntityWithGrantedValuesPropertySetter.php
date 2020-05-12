@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Component\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -125,11 +126,16 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
         string $localeCode
     ): void {
         if (!$permissions['view_locale'] && !$permissions['edit_locale']) {
-            throw new UnknownAttributeException($localeCode, sprintf(
-                'Attribute "%s" expects an existing and activated locale, "%s" given.',
-                $attribute->getCode(),
-                $localeCode
-            ));
+            throw new InvalidAttributeException(
+                'attribute',
+                null,
+                self::class,
+                sprintf(
+                    'Attribute "%s" expects an existing and activated locale, "%s" given.',
+                    $attribute->getCode(),
+                    $localeCode
+                ),
+            );
         }
     }
 
