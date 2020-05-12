@@ -2,7 +2,7 @@ import React from 'react';
 import { EditRulesContent } from '../../../../src/pages/EditRules/EditRulesContent';
 import userEvent from '@testing-library/user-event';
 import { render, act } from '../../../../test-utils';
-import { IndexedScopes } from '../../../../src/fetch/ScopeFetcher';
+import { IndexedScopes } from '../../../../src/repositories/ScopeRepository';
 
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 

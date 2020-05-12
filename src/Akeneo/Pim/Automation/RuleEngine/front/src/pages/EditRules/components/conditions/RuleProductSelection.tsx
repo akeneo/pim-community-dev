@@ -6,7 +6,7 @@ import { TextBoxBlue } from '../TextBoxBlue';
 import { RuleDefinition } from '../../../../models/';
 import { Condition } from '../../../../models/';
 import { Locale } from '../../../../models/';
-import { IndexedScopes } from '../../../../fetch/ScopeFetcher';
+import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { useFormContext } from 'react-hook-form';
 import { ConditionLine } from './ConditionLine';
 

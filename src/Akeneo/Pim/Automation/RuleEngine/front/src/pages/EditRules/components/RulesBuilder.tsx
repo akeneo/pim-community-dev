@@ -3,7 +3,7 @@ import { Router, Translate } from '../../../dependenciesTools';
 import { RuleProductSelection } from './conditions/RuleProductSelection';
 import { RuleDefinition, Locale } from '../../../models';
 import { Action } from '../../../models/Action';
-import { IndexedScopes } from '../../../fetch/ScopeFetcher';
+import { IndexedScopes } from '../../../repositories/ScopeRepository';
 import { useFormContext } from 'react-hook-form';
 import { ActionLine } from './actions/ActionLine';
 

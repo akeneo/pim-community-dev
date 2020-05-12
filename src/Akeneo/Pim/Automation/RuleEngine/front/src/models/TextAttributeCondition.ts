@@ -1,18 +1,18 @@
 import React from 'react';
 import { Attribute, validateLocalizableScopableAttribute } from './Attribute';
 import { Router } from '../dependenciesTools';
-import { getAttributeByIdentifier } from '../fetch/AttributeFetcher';
+import { getAttributeByIdentifier } from '../repositories/AttributeRepository';
 import {
   TextAttributeConditionLine,
   TextAttributeConditionLineProps,
 } from '../pages/EditRules/components/conditions/TextAttributeConditionLine';
 import { Operator } from './Operator';
-import { checkLocaleExists } from '../fetch/LocaleFetcher';
 import {
   checkLocaleIsBoundToScope,
   checkScopeExists,
-} from '../fetch/ScopeFetcher';
+} from '../repositories/ScopeRepository';
 import { ConditionFactoryType } from './Condition';
+import { checkLocaleExists } from '../repositories/LocaleRepository';
 
 const TextAttributeOperators = [
   Operator.EQUALS,

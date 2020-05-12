@@ -20,7 +20,7 @@ import {
 } from '../../dependenciesTools/hooks';
 import { Locale, RuleDefinition, getRuleDefinitionLabel } from '../../models';
 import { useSubmitEditRuleForm } from './hooks';
-import { IndexedScopes } from '../../fetch/ScopeFetcher';
+import { IndexedScopes } from '../../repositories/ScopeRepository';
 
 type Props = {
   ruleDefinitionCode: string;

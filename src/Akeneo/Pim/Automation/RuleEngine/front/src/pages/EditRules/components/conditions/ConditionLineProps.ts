@@ -1,6 +1,6 @@
 import { Router, Translate } from '../../../../dependenciesTools';
 import { Locale } from '../../../../models';
-import { IndexedScopes } from '../../../../fetch/ScopeFetcher';
+import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 
 export type ConditionLineProps = {
   lineNumber: number;

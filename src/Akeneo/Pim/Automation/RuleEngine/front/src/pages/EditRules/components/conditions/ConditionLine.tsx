@@ -6,7 +6,7 @@ import { FallbackConditionLine } from './FallbackConditionLine';
 import styled from 'styled-components';
 import { Condition, Locale } from '../../../../models';
 import { Router, Translate } from '../../../../dependenciesTools';
-import { IndexedScopes } from '../../../../fetch/ScopeFetcher';
+import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { ConditionLineProps } from './ConditionLineProps';
 
 const DeleteButton = styled(DialogDisclosure)`
