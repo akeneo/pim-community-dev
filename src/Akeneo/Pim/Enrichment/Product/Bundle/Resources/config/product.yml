@@ -4,3 +4,5 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.builder.product'
+            - '@pim_catalog.normalizer.standard.product'
+            - '@pim_catalog.updater.product'

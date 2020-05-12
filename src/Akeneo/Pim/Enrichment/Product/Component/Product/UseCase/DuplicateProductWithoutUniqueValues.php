@@ -29,9 +29,7 @@ class DuplicateProductWithoutUniqueValues
         $this->productId = $productId;
         $this->identifier = $identifier;
     }
-    /**
-     * @return string
-     */
+
     public function productId(): string
     {
         return $this->productId;

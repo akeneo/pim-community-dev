@@ -14,6 +14,8 @@ namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Christophe Chausseray
@@ -28,12 +30,22 @@ class DuplicateProductWithoutUniqueValuesHandler
     /** @var ProductBuilderInterface */
     private $productBuilder;
 
+    /** @var NormalizerInterface */
+    private $normalizer;
+
+    /** @var ObjectUpdaterInterface */
+    private $productUpdater;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        ProductBuilderInterface $productBuilder
+        ProductBuilderInterface $productBuilder,
+        NormalizerInterface $normalizer,
+        ObjectUpdaterInterface $productUpdater
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
+        $this->normalizer = $normalizer;
+        $this->productUpdater = $productUpdater;
     }
 
     public function handle(DuplicateProductWithoutUniqueValues $query): array
@@ -45,6 +57,15 @@ class DuplicateProductWithoutUniqueValuesHandler
             $query->identifier(),
             $product->getFamilyId()
         );
+
+        $normalizedProduct = $this->normalizer->normalize(
+            $product,
+            'standard'
+        );
+        // @TODO: To remove this line when we will remove the unique values from the duplicated product (https://akeneo.atlassian.net/browse/CHRIS-8)
+        unset($normalizedProduct['values']['sku']);
+
+        $this->productUpdater->update($duplicatedProduct, $normalizedProduct);
 
         return [$duplicatedProduct];
     }

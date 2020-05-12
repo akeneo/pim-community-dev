@@ -24,10 +24,10 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         $associatedProduct = $this->createProduct('associated_product', [
             'family' => 'familyA1'
         ]);
-        $normalizeProductToDuplicate = $this->getNormalizeProductToDuplicate($associatedProduct->getIdentifier());
+        $normalizedProductToDuplicate = $this->getNormalizedProductToDuplicate($associatedProduct->getIdentifier());
         $productToDuplicate = $this->createProduct(
             'product_to_duplicate',
-            $normalizeProductToDuplicate
+            $normalizedProductToDuplicate
         );
 
         $url = $this->getRouter()->generate('pimee_enrich_product_rest_duplicate', [
@@ -39,6 +39,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         $duplicatedProduct = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier('duplicated_product');
 
         Assert::assertNotNull($duplicatedProduct);
+        $this->assertSameData($duplicatedProduct, $normalizedProductToDuplicate);
         Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
     }
 
@@ -77,28 +78,12 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         return $product;
     }
 
-    private function getNormalizeProductToDuplicate(string $associatedProductIdentifier): array
+    private function getNormalizedProductToDuplicate(string $associatedProductIdentifier): array
     {
         return [
             'family' => 'familyA',
             'groups' => ['groupA', 'groupB'],
             'categories' => ['categoryA', 'categoryB'],
-            'values' => [
-                'sku' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'product_to_duplicate'
-                    ]
-                ],
-                'a_text' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'An amazing product'
-                    ]
-                ]
-            ],
             'associations' => [
                 'PACK' => [
                     'groups' => [],
@@ -114,8 +99,26 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
                     'groups' => ['groupB'],
                     'product_models' => [],
                     'products' => [$associatedProductIdentifier]
+                ],
+                'SUBSTITUTION' => [
+                    'groups' => [],
+                    'product_models' => [],
+                    'products' => []
                 ]
             ]
         ];
+    }
+
+    private function assertSameData(ProductInterface $duplicatedProduct, array $normalizeProductToDuplicate): void
+    {
+        $normalizeDuplicatedProduct = $this->get('pim_catalog.normalizer.standard.product')->normalize(
+            $duplicatedProduct,
+            'standard'
+        );
+
+        Assert::assertEquals($normalizeProductToDuplicate['family'], $normalizeDuplicatedProduct['family']);
+        Assert::assertEquals($normalizeProductToDuplicate['groups'], $normalizeDuplicatedProduct['groups']);
+        Assert::assertEquals($normalizeProductToDuplicate['categories'], $normalizeDuplicatedProduct['categories']);
+        Assert::assertEquals($normalizeProductToDuplicate['associations'], $normalizeDuplicatedProduct['associations']);
     }
 }
