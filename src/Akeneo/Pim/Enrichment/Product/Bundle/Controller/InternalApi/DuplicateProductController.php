@@ -11,9 +11,12 @@
 
 namespace Akeneo\Pim\Enrichment\Product\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProductWithoutUniqueValues;
+use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProductWithoutUniqueValuesHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * Duplicate Product Controller
@@ -24,8 +27,23 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DuplicateProductController
 {
+    private $duplicateProductWithoutUniqueValues;
+
+    public function __construct(DuplicateProductWithoutUniqueValuesHandler $duplicateProductWithoutUniqueValues)
+    {
+        $this->duplicateProductWithoutUniqueValues = $duplicateProductWithoutUniqueValues;
+    }
+
     public function duplicateProductAction(Request $request, $id)
     {
+        if (!$request->request->has('identifier')) {
+            throw new UnprocessableEntityHttpException('You should give either an "identifier" key.');
+        }
+
+        $query = new DuplicateProductWithoutUniqueValues($id, $request->request->get('identifier'));
+
+        $this->duplicateProductWithoutUniqueValues->handle($query);
+
         return new JsonResponse(
             null,
             Response::HTTP_NO_CONTENT

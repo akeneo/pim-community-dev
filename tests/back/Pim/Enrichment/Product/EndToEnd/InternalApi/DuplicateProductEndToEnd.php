@@ -21,10 +21,10 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
     public function test_it_duplicates_a_product()
     {
         $url = $this->getRouter()->generate('pimee_enrich_product_rest_duplicate', [
-            'id' => 'duplicate_product'
+            'id' => 'product_to_duplicate'
         ]);
 
-        $this->client->request('POST', $url);
+        $this->client->request('POST', $url, ['identifier' => 'duplicated_product']);
 
         Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
     }
