@@ -24,3 +24,4 @@ Feature: Validate scopable values of a product
       | attribute   | data    | scope   |
       | description | my desc | unknown |
     Then the error 'Attribute "description" expects an existing scope, "unknown" given.' is raised
+    And the error 'THIS TEST IS NOT EXECUTED.' is raised
