@@ -1,0 +1,5 @@
+services:
+    pimee_enrich.controller.duplicate_product:
+        public: true
+        class: 'Akeneo\Pim\Enrichment\Product\Bundle\Controller\InternalApi\DuplicateProductController'
+
