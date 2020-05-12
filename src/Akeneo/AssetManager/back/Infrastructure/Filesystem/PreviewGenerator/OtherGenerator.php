@@ -54,4 +54,9 @@ class OtherGenerator implements PreviewGeneratorInterface
     {
         return $this->defaultImageProvider->getImageUrl(self::DEFAULT_OTHER, self::SUPPORTED_TYPES[$type]);
     }
+
+    public function remove(string $data, AbstractAttribute $attribute, string $type)
+    {
+        return;
+    }
 }

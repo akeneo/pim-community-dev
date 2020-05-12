@@ -55,7 +55,7 @@ export const getListAssetMainMediaThumbnail = (
   asset: ListAsset,
   channel: ChannelCode,
   locale: LocaleCode,
-  previewType: MediaPreviewType = MediaPreviewType.ThumbnailSmall
+  previewType: MediaPreviewType = MediaPreviewType.Thumbnail
 ): MediaPreview => {
   const listValue = getListValue(asset.image, channel, locale);
   if (undefined === listValue || isValueEmpty(listValue)) {

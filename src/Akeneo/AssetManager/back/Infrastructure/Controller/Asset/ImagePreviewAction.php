@@ -76,9 +76,13 @@ class ImagePreviewAction
         string $type
     ): Response {
         $data = $request->get('data');
+        $regenerate = $request->isMethod('POST');
 
         try {
             $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::fromString($attributeIdentifier));
+            if ($regenerate) {
+                $this->previewGenerator->remove($data, $attribute, $type);
+            }
             $imagePreview = $this->previewGenerator->generate($data, $attribute, $type);
         } catch (AttributeNotFoundException $e) {
             $imagePreview = $this->defaultImageProvider->getImageUrl(OtherGenerator::DEFAULT_OTHER, $type);
