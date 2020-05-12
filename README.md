@@ -1,6 +1,6 @@
 Akeneo PIM Development Repository
 =================================
-Welcome to Akeneo PIM Product.
+Welcome to Akeneo PIM Product by Anais.
 
 This repository is used to develop the Akeneo PIM product.
 
