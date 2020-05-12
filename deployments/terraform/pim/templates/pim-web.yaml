@@ -68,7 +68,7 @@ spec:
           image: {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['/usr/local/sbin/php-fpm', '-F']
-          resources: {{ toYaml .Values.pim.resources | nindent 12 -}}
+          resources: {{ toYaml .Values.pim.resources | nindent 12 }}
           ports:
             - name: fpm
               containerPort: 9000
