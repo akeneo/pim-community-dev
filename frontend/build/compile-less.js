@@ -52,7 +52,7 @@ function collectBundleImports(bundlePaths) {
     */
     const indexFiles = bundlePaths.map(bundlePath => {
         return `${bundlePath}/${BUNDLE_LESS_INDEX_PATH}`
-                .replace(/^(.+)(?=vendor).*?(?=src)\//gm, '');
+                .replace(/^.+(?=vendor).*?(?=src)\//gm, '');
     })
 
     const bundleImports = []
