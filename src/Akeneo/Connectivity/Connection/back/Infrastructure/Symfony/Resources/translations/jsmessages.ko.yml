@@ -1,11 +1,12 @@
-pim_menu.item:
-  connection_settings: 연결
-  connection_audit: 연결 대시보드
+pim_menu:
+  item:
+    connection_audit: 연결 대시보드
+    connection_settings: 연결
 pim_title:
   akeneo_connectivity_connection_settings_index: 연결
-  akeneo_connectivity_connection_settings_any: 연결
   akeneo_connectivity_connection_audit_index: 연결 대시보드
   akeneo_connectivity_connection_audit_any: 연결 대시보드
+  akeneo_connectivity_connection_error_management_dashboard: 연결 대시보드
 akeneo_connectivity.connection:
   connections: 연결
   secondary_actions:
