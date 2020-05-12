@@ -41,7 +41,7 @@ services:
             - '@logger'
             - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
             - '@akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetDescendantVariantProductIds'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetDescendantVariantProductIds'
             - '@pim_catalog.query.descendant_product_model_ids'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
         tags:

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\TitleFormattingServiceInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\TitleFormattingServiceInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\UnableToProvideATitleSuggestion;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductTitle;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingService;
