@@ -171,6 +171,11 @@ akeneo_connectivity.connection:
             legend:
                 during_the_last_seven_days: 'Total over the last 7 days:'
                 today: Today
+        error_management:
+            widget:
+                title: Business errors per source connection
+                over_the_last_seven_days : Over the last 7 days
+                business_errors : business errors
         no_connection:
             title:
                 default: Want to see some fancy charts about your connections?
