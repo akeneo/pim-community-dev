@@ -100,8 +100,6 @@ class RefreshCommand extends Command
 
         $batchSize = $input->getOption('batch-size');
 
-        $om = $this->getObjectManager();
-
         $pendingVersions = $this->versionManager
             ->getVersionRepository()
             ->getPendingVersions($batchSize);
@@ -122,7 +120,7 @@ class RefreshCommand extends Command
 
                 $progress->advance();
             }
-            $om->flush();
+            $this->entityManager->flush();
             $this->bulkObjectDetacher->detachAll($pendingVersions);
 
             $pendingVersions = $this->versionManager
