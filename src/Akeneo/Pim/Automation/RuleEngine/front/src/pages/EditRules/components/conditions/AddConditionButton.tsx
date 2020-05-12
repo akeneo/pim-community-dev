@@ -72,6 +72,7 @@ const AddConditionButton: React.FC<Props> = ({
       containerCssClass={'add-conditions-button'}
       dropdownCssClass={'add-conditions-dropdown'}
       onSelecting={(event: any) => {
+        event.preventDefault();
         if (event.val !== null) {
           // Use has not clicked on a group
           handleAddCondition(event.val);

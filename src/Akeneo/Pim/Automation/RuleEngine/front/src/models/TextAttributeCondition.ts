@@ -104,4 +104,5 @@ export {
   TextAttributeOperators,
   TextAttributeCondition,
   denormalizeTextAttributeCondition,
+  createTextAttributeCondition,
 };
