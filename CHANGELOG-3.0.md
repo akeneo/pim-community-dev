@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9242: Fix API product model list when filtering with SINCE LAST N DAYS operator 
+- PIM-9216: Allow search on variant and product models when using the label or identifier search field
 
 # 3.0.76 (2020-04-27)
 

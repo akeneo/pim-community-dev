@@ -130,6 +130,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         $hasEntityTypeFilter = $this->hasRawFilter('field', 'entity_type');
         $hasAncestorsIdsFilter = $this->hasRawFilter('field', 'ancestor.id');
         $hasSelfAndAncestorsIdsFilter = $this->hasRawFilter('field', 'self_and_ancestor.id');
+        $hasLabelOrIdentifierFilter = $this->hasRawFilter('field', 'label_or_identifier');
         $hasSelfAndAncestorsLabelOrIdentifierFilter = $this->hasRawFilter(
             'field',
             'self_and_ancestor.label_or_identifier'
@@ -144,6 +145,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             !$hasEntityTypeFilter &&
             !$hasAncestorsIdsFilter &&
             !$hasSelfAndAncestorsIdsFilter &&
+            !$hasLabelOrIdentifierFilter &&
             !$hasSelfAndAncestorsLabelOrIdentifierFilter &&
             !$hasGroupsFilter &&
             !$hasCategoryFilter;
