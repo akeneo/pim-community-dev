@@ -36,7 +36,7 @@ type Props = {
   id: string;
   label: string;
   onChange?: (value: string | string[]) => void;
-  onSelecting?: any;
+  onSelecting?: (event: any) => void;
   placeholder?: string;
   value?: number | string | string[];
   multiple?: boolean;

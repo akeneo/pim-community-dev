@@ -7,7 +7,7 @@ import {
 import { IndexedFamilies } from '../fetch/FamilyFetcher';
 import { Router } from '../dependenciesTools';
 import { getFamiliesByIdentifiers } from '../repositories/FamilyRepository';
-import { ConditionDenormalizer, ConditionFactory } from "./Condition";
+import { ConditionDenormalizer, ConditionFactory } from './Condition';
 
 const FIELD = 'family';
 

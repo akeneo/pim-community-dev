@@ -12,7 +12,7 @@ import {
   checkScopeExists,
 } from '../repositories/ScopeRepository';
 import { checkLocaleExists } from '../repositories/LocaleRepository';
-import { ConditionDenormalizer, ConditionFactory } from "./Condition";
+import { ConditionDenormalizer, ConditionFactory } from './Condition';
 
 const TYPE = 'pim_catalog_text';
 
