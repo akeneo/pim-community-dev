@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Enrichment\Product\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProductWithoutUniqueValues;
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProductWithoutUniqueValuesHandler;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,11 +28,18 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class DuplicateProductController
 {
+    /** @var DuplicateProductWithoutUniqueValuesHandler */
     private $duplicateProductWithoutUniqueValues;
 
-    public function __construct(DuplicateProductWithoutUniqueValuesHandler $duplicateProductWithoutUniqueValues)
-    {
+    /** @var SaverInterface */
+    private $productSaver;
+
+    public function __construct(
+        DuplicateProductWithoutUniqueValuesHandler $duplicateProductWithoutUniqueValues,
+        SaverInterface $productSaver
+    ) {
         $this->duplicateProductWithoutUniqueValues = $duplicateProductWithoutUniqueValues;
+        $this->productSaver = $productSaver;
     }
 
     public function duplicateProductAction(Request $request, $id)
@@ -42,7 +50,9 @@ class DuplicateProductController
 
         $query = new DuplicateProductWithoutUniqueValues($id, $request->request->get('identifier'));
 
-        $this->duplicateProductWithoutUniqueValues->handle($query);
+        list($duplicatedProduct) = $this->duplicateProductWithoutUniqueValues->handle($query);
+
+        $this->productSaver->save($duplicatedProduct);
 
         return new JsonResponse(
             null,

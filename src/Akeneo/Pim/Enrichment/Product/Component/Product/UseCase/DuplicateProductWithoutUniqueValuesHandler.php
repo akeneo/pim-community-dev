@@ -22,8 +22,30 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
  */
 class DuplicateProductWithoutUniqueValuesHandler
 {
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
+
+    /** @var ProductBuilderInterface */
+    private $productBuilder;
+
+    public function __construct(
+        ProductRepositoryInterface $productRepository,
+        ProductBuilderInterface $productBuilder
+    ) {
+        $this->productRepository = $productRepository;
+        $this->productBuilder = $productBuilder;
+    }
+
     public function handle(DuplicateProductWithoutUniqueValues $query): array
     {
-        return [];
+        /** @var Product */
+        $product = $this->productRepository->find($query->productId());
+
+        $duplicatedProduct = $this->productBuilder->createProduct(
+            $query->identifier(),
+            $product->getFamilyId()
+        );
+
+        return [$duplicatedProduct];
     }
 }

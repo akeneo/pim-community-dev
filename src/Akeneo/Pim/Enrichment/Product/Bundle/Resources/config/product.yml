@@ -1,3 +1,6 @@
 services:
     pimee_enrich.product.duplicate_product_without_unique_values_handler:
         class: 'Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProductWithoutUniqueValuesHandler'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.builder.product'
