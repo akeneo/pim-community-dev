@@ -31,7 +31,7 @@ type Props = {
   containerCssClass?: string;
   data?: (option | optionsGroup)[];
   dropdownCssClass?: string;
-  formatResult?: (item: option|optionsGroup) => string;
+  formatResult?: (item: option | optionsGroup) => string;
   hiddenLabel?: boolean;
   id: string;
   label: string;

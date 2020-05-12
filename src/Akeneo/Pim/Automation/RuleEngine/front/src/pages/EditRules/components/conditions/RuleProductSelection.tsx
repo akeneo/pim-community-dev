@@ -106,15 +106,18 @@ const RuleProductSelection: React.FC<Props> = ({
     });
   };
 
-  const isActiveConditionField: ((fieldCode: string) => boolean) = (fieldCode: string) => {
+  const isActiveConditionField: (fieldCode: string) => boolean = (
+    fieldCode: string
+  ) => {
     return conditions.reduce<boolean>((found, condition) => {
-      return found || (
-        condition !== null &&
-        condition.hasOwnProperty('field') &&
-        (condition as { field: string }).field === fieldCode
+      return (
+        found ||
+        (condition !== null &&
+          condition.hasOwnProperty('field') &&
+          (condition as { field: string }).field === fieldCode)
       );
     }, false);
-  }
+  };
 
   return (
     <fieldset>
