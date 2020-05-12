@@ -38,6 +38,9 @@ $rules = [
 
         // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
+
+        // TIP-1024: Drop UserContext
+        'Akeneo\Pim\Permission\Bundle\User\UserContext',
     ])->in('Akeneo\Pim\Automation\RuleEngine\Bundle'),
     $builder->only([
         'Symfony\Component',

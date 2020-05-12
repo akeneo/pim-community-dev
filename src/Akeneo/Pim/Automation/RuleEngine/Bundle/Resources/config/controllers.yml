@@ -56,3 +56,10 @@ services:
         arguments:
             - '@pimee_catalog_rule.builder.product'
             - '@pimee_catalog_rule.selector.product'
+
+    pimee_enrich.controller.rule_definition.get_available_condition_fields:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetAvailableConditionFieldsController'
+        arguments:
+            - '@pimee_catalog_rule.query.sql.get_grouped_attributes'
+            - '@pim_user.context.user'
+            - '@translator'
