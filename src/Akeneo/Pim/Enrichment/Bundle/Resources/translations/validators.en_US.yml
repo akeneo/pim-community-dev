@@ -84,6 +84,8 @@ pim_catalog:
         303: This field expects a valid association format.
         pim_immutable_product_validator: The same identifier is already set on another product
         pim_immutable_product_model_validator: The same code is already set on another product model.
+        quantified_associations:
+            unexpected_target_type:
 
 mass_edit:
     edit_common_attributes:
