@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProdu
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetUniqueAttributeCodes;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -34,27 +35,32 @@ class DuplicateProductHandler
     /** @var SaverInterface */
     private $productSaver;
 
+    /** @var GetUniqueAttributeCodes */
+    private $getUniqueAttributeCodes;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
         NormalizerInterface $normalizer,
         ObjectUpdaterInterface $productUpdater,
-        SaverInterface $productSaver
+        SaverInterface $productSaver,
+        GetUniqueAttributeCodes $getUniqueAttributeCodes
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
         $this->normalizer = $normalizer;
         $this->productUpdater = $productUpdater;
         $this->productSaver = $productSaver;
+        $this->getUniqueAttributeCodes = $getUniqueAttributeCodes;
     }
 
     public function handle(DuplicateProduct $query): DuplicateProductResponse
     {
         /** @var ProductInterface */
         $productToDuplicate = $this->productRepository->findOneByIdentifier($query->productToDuplicateIdentifier());
+        $familyCode = $productToDuplicate->getFamily()->getCode();
 
-        //@TODO: To Remove  by the query function
-        $uniqueAttributeCodes = ['sku'];
+        $uniqueAttributeCodes = $this->getUniqueAttributeCodes->fromFamilyCode($familyCode);
         RemoveUniqueAttributeValues::fromCollection(
             $productToDuplicate->getValues(),
             $uniqueAttributeCodes
@@ -67,7 +73,7 @@ class DuplicateProductHandler
 
         $duplicatedProduct = $this->productBuilder->createProduct(
             $query->duplicatedProductIdentifier(),
-            $productToDuplicate->getFamilyId()
+            $familyCode
         );
 
         $this->productUpdater->update($duplicatedProduct, $normalizedProduct);
