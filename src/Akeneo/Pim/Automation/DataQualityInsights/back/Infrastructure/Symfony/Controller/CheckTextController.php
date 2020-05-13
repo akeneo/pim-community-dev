@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Contr
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\TextChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +54,11 @@ class CheckTextController
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
-        $analysis = $this->textChecker->check($text, $localeCode);
+        try {
+            $analysis = $this->textChecker->check($text, $localeCode);
+        } catch (TextCheckFailedException $e) {
+            return new Response(null, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return new JsonResponse($analysis->normalize());
     }
