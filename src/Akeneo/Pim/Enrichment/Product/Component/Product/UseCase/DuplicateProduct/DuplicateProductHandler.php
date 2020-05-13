@@ -55,7 +55,7 @@ class DuplicateProductHandler
 
         $duplicatedProduct = $this->productBuilder->createProduct(
             $query->duplicatedProductIdentifier(),
-            $productToDuplicate->getFamilyId()
+            $productToDuplicate->getFamily()->getCode()
         );
 
         $normalizedProduct = $this->normalizer->normalize(
