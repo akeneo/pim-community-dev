@@ -1,6 +1,5 @@
 import React, {ChangeEvent, useRef} from 'react';
 import styled from 'styled-components';
-import {ResultCount} from './ResultCount';
 import {SearchIcon} from '../icons';
 import {useAutoFocus} from '../hooks';
 import {AkeneoThemedProps} from '../theme';
@@ -35,6 +34,14 @@ const SearchInput = styled.input`
   }
 `;
 
+const ResultCount = styled.div`
+  white-space: nowrap;
+  color: ${({theme}: AkeneoThemedProps) => theme.color.purple100};
+  margin-left: 10px;
+  line-height: 16px;
+  text-transform: none;
+`;
+
 type SearchBarProps = {
   className?: string;
   placeholder?: string;
@@ -44,7 +51,7 @@ type SearchBarProps = {
 };
 
 const SearchBar = ({className, placeholder, count, searchValue, onSearchChange}: SearchBarProps) => {
-  const __ = useTranslate();
+  const translate = useTranslate();
   const searchFieldRef = useRef<HTMLInputElement | null>(null);
   useAutoFocus(searchFieldRef);
 
@@ -54,12 +61,12 @@ const SearchBar = ({className, placeholder, count, searchValue, onSearchChange}:
         <SearchIcon />
         <SearchInput
           ref={searchFieldRef}
-          placeholder={placeholder || __('pim_common.search')}
+          placeholder={placeholder || translate('pim_common.search')}
           value={searchValue}
           onChange={(event: ChangeEvent<HTMLInputElement>) => onSearchChange(event.target.value)}
         />
       </SearchContainer>
-      <ResultCount count={count} />
+      <ResultCount>{translate('pim_common.result_count', {itemsCount: count.toString()}, count)}</ResultCount>
     </Container>
   );
 };
