@@ -51,7 +51,7 @@ class DuplicateProductHandler
     public function handle(DuplicateProduct $query): DuplicateProductResponse
     {
         /** @var ProductInterface */
-        $productToDuplicate = $this->productRepository->find($query->productId());
+        $productToDuplicate = $this->productRepository->findOneByIdentifier($query->productToDuplicateIdentifier());
 
         $duplicatedProduct = $this->productBuilder->createProduct(
             $query->duplicatedProductIdentifier(),

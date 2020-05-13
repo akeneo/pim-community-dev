@@ -3,12 +3,13 @@ services:
         public: true
         class: 'Akeneo\Pim\Enrichment\Product\Bundle\Controller\InternalApi\DuplicateProductController'
         arguments:
+            - '@pim_catalog.repository.product_without_permission'
             - '@pimee_enrich.product.duplicate_product_handler'
 
     pimee_enrich.product.duplicate_product_handler:
         class: 'Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductHandler'
         arguments:
-            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_without_permission'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.normalizer.standard.product'
             - '@pim_catalog.updater.product'

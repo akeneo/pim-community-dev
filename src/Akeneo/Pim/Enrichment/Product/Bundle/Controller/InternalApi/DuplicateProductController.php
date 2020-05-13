@@ -11,6 +11,8 @@
 
 namespace Akeneo\Pim\Enrichment\Product\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProduct;
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,8 +25,14 @@ class DuplicateProductController
     /** @var DuplicateProductWithoutUniqueValuesHandler */
     private $duplicateProductHandler;
 
-    public function __construct(DuplicateProductHandler $duplicateProductHandler)
-    {
+    /** @var ProductRepository */
+    private $productRepository;
+
+    public function __construct(
+        ProductRepositoryInterface $productRepository,
+        DuplicateProductHandler $duplicateProductHandler
+    ) {
+        $this->productRepository = $productRepository;
         $this->duplicateProductHandler = $duplicateProductHandler;
     }
 
@@ -34,7 +42,13 @@ class DuplicateProductController
             throw new UnprocessableEntityHttpException('You should give either an "identifier" key.');
         }
 
-        $query = new DuplicateProduct($id, $request->request->get('duplicated_product_identifier'));
+        /** @var ProductInterface */
+        $product = $this->productRepository->find($id);
+
+        $query = new DuplicateProduct(
+            $product->getIdentifier(),
+            $request->request->get('duplicated_product_identifier')
+        );
 
         $duplicateProductResponse = $this->duplicateProductHandler->handle($query);
 
