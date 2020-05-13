@@ -145,7 +145,7 @@ JSON;
         $expected = <<<JSON
 {
     "code": 422,
-    "message": "Property \"a_multi_select\" does not exist."
+    "message": "Attribute \"a_multi_select\" does not exist."
 }
 JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());

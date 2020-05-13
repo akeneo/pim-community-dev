@@ -27,7 +27,7 @@ class UpdateNotExistingProductEndToEnd extends AbstractProductTestCase
     }
 }
 JSON;
-        $expectedMessage = 'Property \"a_metric_without_decimal_negative\" does not exist';
+        $expectedMessage = 'Attribute \"a_metric_without_decimal_negative\" does not exist';
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
         $client->request('PATCH', 'api/rest/v1/products/not_a_product', [], [], [], $data);

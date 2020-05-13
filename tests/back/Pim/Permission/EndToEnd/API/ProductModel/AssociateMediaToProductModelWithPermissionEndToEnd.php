@@ -52,7 +52,7 @@ class AssociateMediaToProductModelWithPermissionEndToEnd extends ApiTestCase
         $expected = <<<JSON
 {
     "code": 422,
-    "message": "Property \"root_product_model_no_view_attribute_media\" does not exist."
+    "message": "Attribute \"root_product_model_no_view_attribute_media\" does not exist."
 }
 JSON;
         $this->get('doctrine')->getManager()->clear();
