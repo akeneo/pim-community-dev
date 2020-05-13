@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -158,6 +159,9 @@ class ProductUpdater implements ObjectUpdaterInterface
         return $data;
     }
 
+    /**
+     * @throws UnknownAttributeException
+     */
     protected function setData(ProductInterface $product, string $field, $data, array $options = []): void
     {
         switch ($field) {
@@ -176,7 +180,11 @@ class ProductUpdater implements ObjectUpdaterInterface
                 $this->updateProductFields($product, $field, $data);
                 break;
             case 'values':
-                $this->valuesUpdater->update($product, $data, $options);
+                try {
+                    $this->valuesUpdater->update($product, $data, $options);
+                } catch (UnknownPropertyException $exception) {
+                    throw UnknownAttributeException::unknownAttribute($exception->getPropertyName(), $exception);
+                }
                 break;
             default:
                 if (!in_array($field, $this->ignoredFields)) {
