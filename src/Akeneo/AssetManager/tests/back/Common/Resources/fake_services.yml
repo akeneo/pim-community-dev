@@ -264,6 +264,9 @@ services:
     akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_adapter:
         class: Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeAdapter
 
+    Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryGetTransformations
+
     # Indexers
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer:
         class: Akeneo\AssetManager\Common\Fake\AssetIndexerSpy

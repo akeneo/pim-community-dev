@@ -104,6 +104,9 @@ services:
 
     akeneo_assetmanager.application.edit_asset.asset_value_updater.empty_updater:
         class: Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\EmptyUpdater
+        arguments:
+            - '@Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformationsSource'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
         tags:
             - { name: akeneo_assetmanager.asset_value_updater }
 
