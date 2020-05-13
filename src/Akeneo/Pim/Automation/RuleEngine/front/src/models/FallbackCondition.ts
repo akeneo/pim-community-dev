@@ -9,7 +9,7 @@ export type FallbackCondition = {
   json: any;
 };
 
-export const createFallbackCondition = async (
+export const denormalizeFallbackCondition = async (
   json: any
 ): Promise<FallbackCondition> => {
   return Promise.resolve({

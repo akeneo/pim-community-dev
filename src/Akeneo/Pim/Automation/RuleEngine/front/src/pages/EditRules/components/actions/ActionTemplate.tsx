@@ -56,7 +56,7 @@ const ActionTemplate: React.FC<Props> = ({
           <StyledTitleHeader>{title}</StyledTitleHeader>
         </StyledHeaderLeft>
         <DeleteButton {...dialog} sizeMode='small'>
-          {translate('pimee_catalog_rule.form.edit.action.delete.label')}
+          {translate('pimee_catalog_rule.form.edit.actions.delete.label')}
         </DeleteButton>
         <AlertDialog
           dialog={dialog}

@@ -8,7 +8,7 @@ import {
   PimConditionLineProps,
 } from '../pages/EditRules/components/conditions/PimConditionLine';
 import React from 'react';
-import { ConditionFactoryType } from './Condition';
+import { ConditionDenormalizer } from './Condition';
 
 type PimCondition = {
   module: React.FC<PimConditionLineProps>;
@@ -19,7 +19,7 @@ type PimCondition = {
   scope: string | null;
 };
 
-export const createPimCondition: ConditionFactoryType = async (
+export const denormalizePimCondition: ConditionDenormalizer = async (
   json: any
 ): Promise<PimCondition | null> => {
   if (

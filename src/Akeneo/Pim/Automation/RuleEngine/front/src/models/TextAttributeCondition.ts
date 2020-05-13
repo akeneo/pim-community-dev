@@ -11,8 +11,10 @@ import {
   checkLocaleIsBoundToScope,
   checkScopeExists,
 } from '../repositories/ScopeRepository';
-import { ConditionFactoryType } from './Condition';
 import { checkLocaleExists } from '../repositories/LocaleRepository';
+import { ConditionDenormalizer, ConditionFactory } from './Condition';
+
+const TYPE = 'pim_catalog_text';
 
 const TextAttributeOperators = [
   Operator.EQUALS,
@@ -34,7 +36,7 @@ type TextAttributeCondition = {
   locale?: string;
 };
 
-const createTextAttributeCondition: ConditionFactoryType = async (
+const denormalizeTextAttributeCondition: ConditionDenormalizer = async (
   json: any,
   router: Router
 ): Promise<TextAttributeCondition | null> => {
@@ -54,7 +56,7 @@ const createTextAttributeCondition: ConditionFactoryType = async (
     return null;
   }
 
-  if (attribute.type === 'pim_catalog_text') {
+  if (attribute.type === TYPE) {
     const localeCode = json.locale || null;
     const scopeCode = json.scope || null;
 
@@ -81,8 +83,26 @@ const createTextAttributeCondition: ConditionFactoryType = async (
   return null;
 };
 
+const createTextAttributeCondition: ConditionFactory = async (
+  fieldCode: string,
+  router: Router
+): Promise<TextAttributeCondition | null> => {
+  const attribute = await getAttributeByIdentifier(fieldCode, router);
+  if (null === attribute || attribute.type !== TYPE) {
+    return null;
+  }
+
+  return {
+    module: TextAttributeConditionLine,
+    attribute,
+    field: fieldCode,
+    operator: Operator.IS_EMPTY,
+  };
+};
+
 export {
   TextAttributeOperators,
   TextAttributeCondition,
+  denormalizeTextAttributeCondition,
   createTextAttributeCondition,
 };
