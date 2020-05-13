@@ -1,7 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import {PageError} from '../../common';
-import {PropsWithTheme} from '../../common/theme';
+import styled from '../../common/styled-with-theme';
 import {Translate} from '../../shared/translate';
 
 export const NoConnection = ({onCreate}: {onCreate: () => void}) => (
@@ -17,5 +16,5 @@ export const NoConnection = ({onCreate}: {onCreate: () => void}) => (
 const Link = styled.a`
     color: #9452ba;
     cursor: pointer;
-    text-decoration: underline ${({theme}: PropsWithTheme) => theme.color.purple100};
+    text-decoration: underline ${({theme}) => theme.color.purple100};
 `;

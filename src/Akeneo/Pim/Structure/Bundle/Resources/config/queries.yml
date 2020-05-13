@@ -14,6 +14,13 @@ services:
         arguments:
             - '@akeneo.pim.structure.query.get_existing_attribute_options_with_values'
 
+    akeneo.pim.structure.query.cache.get_existing_attribute_option_codes_from_option_codes:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Cache\LRUCachedGetExistingAttributeOptions'
+        decorates: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes
+        decoration_inner_name: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql'
+
     akeneo.pim.structure.query.sql_get_attributes:
         class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetAttributes'
         arguments:

@@ -14,9 +14,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 interface GetValuesOfSiblings
 {
     /**
-     * Returns the values of the siblings of an EntityWithVariantInterface, indexed by identifier
+     * Returns the values of the siblings of an EntityWithFamilyVariantInterface, indexed by identifier,
+     * optionally filtered by attribute code
      *
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param string[] $attributeCodesToFilter
      * @return WriteValueCollectionFactory[]
      */
-    public function for(EntityWithFamilyVariantInterface $entity): array;
+    public function for(EntityWithFamilyVariantInterface $entity, array $attributeCodesToFilter = []): array;
 }

@@ -174,6 +174,8 @@ define(
                         Dialog.confirm(message, title, doAction, subTitle, '', buttonLabel);
                     } else if ($el.data('dialog') === 'delete') {
                         Dialog.confirmDelete(message, title, doAction, subTitle);
+                    } else if ($el.data('dialog') === true) {
+                        // This is a Reakit property, do nothing.
                     } else {
                         Dialog.alert(message, title, subTitle);
                     }

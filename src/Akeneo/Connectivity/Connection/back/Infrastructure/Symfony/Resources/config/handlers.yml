@@ -60,3 +60,8 @@ services:
         class: Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.event_count'
+
+    akeneo_connectivity.connection.application.error_management.handler.get_connection_business_errors:
+        class: Akeneo\Connectivity\Connection\Application\ErrorManagement\Query\GetConnectionBusinessErrorsHandler
+        arguments:
+            - '@akeneo_connectivity_connection.persistence.query.select_last_connection_business_errors'

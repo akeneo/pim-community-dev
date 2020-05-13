@@ -1,7 +1,6 @@
 import React, {ReactNode} from 'react';
-import styled from 'styled-components';
 import {Select} from '../../common';
-import {PropsWithTheme} from '../../common/theme';
+import styled from '../../common/styled-with-theme';
 import {Connection} from '../../model/connection';
 import {useMediaUrlGenerator} from '../../settings/use-media-url-generator';
 
@@ -31,8 +30,8 @@ export const ConnectionSelect = ({connections, onChange, label}: Props) => {
 };
 
 const Label = styled.span`
-    color: ${({theme}: PropsWithTheme) => theme.color.grey140};
-    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.default};
+    color: ${({theme}) => theme.color.grey140};
+    font-size: ${({theme}) => theme.fontSize.default};
     height: 44px;
     line-height: 44px;
     overflow: hidden;

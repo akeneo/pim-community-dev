@@ -89,12 +89,14 @@ define(
                     return this;
                 }
                 this.getRoot().trigger('pim_enrich:form:render:before');
+                this.getRoot().trigger('pim_enrich:form:extension:render:before');
 
                 this.$el.html(this.template());
 
                 this.renderExtensions();
 
                 this.getRoot().trigger('pim_enrich:form:render:after');
+                this.getRoot().trigger('pim_enrich:form:extension:render:after');
             },
 
             /**

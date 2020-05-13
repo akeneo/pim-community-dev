@@ -1,16 +1,14 @@
 import React, {PropsWithChildren} from 'react';
-import styled from 'styled-components';
 import infoIcon from '../assets/icons/info.svg';
 import warningIcon from '../assets/icons/warning.svg';
-import {PropsWithTheme} from '../theme';
+import styled from '../styled-with-theme';
 
 interface Level {
     level: 'info' | 'warning';
 }
 const SubsectionHint = styled.div<Level>`
     align-items: center;
-    background: ${(props: PropsWithTheme & Level) =>
-        'info' === props.level ? props.theme.color.blue10 : props.theme.color.yellow10};
+    background: ${props => ('info' === props.level ? props.theme.color.blue10 : props.theme.color.yellow10)};
     display: flex;
     margin-bottom: 1px;
 `;
@@ -27,7 +25,7 @@ const HintIcon = styled.div<Level>`
 `;
 
 const HintTitle = styled.div`
-    border-left: 1px solid ${({theme}: PropsWithTheme) => theme.color.grey80};
+    border-left: 1px solid ${({theme}) => theme.color.grey80};
     flex-grow: 1;
     font-weight: 600;
     padding-left: 16px;

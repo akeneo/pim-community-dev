@@ -5,6 +5,7 @@ parameters:
 
 services:
     pim_user.repository.role:
+        public: true
         class: '%pim_user.repository.role.class%'
         factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_user.entity.role.class%']

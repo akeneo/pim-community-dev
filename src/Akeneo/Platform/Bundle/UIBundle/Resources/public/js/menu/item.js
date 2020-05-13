@@ -51,6 +51,7 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
+                this.getRoot().on('pim_menu:item:update_route_params', this.updateRouteParams, this);
                 this.trigger('pim_menu:column:register_navigation_item', {
                     route: this.getRoute(),
                     label: this.getLabel(),
@@ -131,6 +132,21 @@ define(
                 this.active = (event.extension === this.code);
 
                 this.render();
+            },
+
+            /**
+             * Update the route params of the matching route.
+             *
+             * @param {string} payload
+             * @param {string} payload.route
+             * @param {string} payload.routeParams
+             */
+            updateRouteParams: function (payload) {
+                if (this.config.to !== payload.route) {
+                    return;
+                }
+
+                this.config.routeParams = payload.routeParams;
             }
         });
     });
