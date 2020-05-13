@@ -94,10 +94,14 @@ pim:
   updateStrategy:
     type: RollingUpdate
   daemons:
+    all-but-linking-assets-to-products:
+      enabled: true
+      pimCommand: "akeneo:batch:job-queue-consumer-daemon --blacklisted-job asset_manager_link_assets_to_products"
+      replicas: 1
     default:
       enabled: true
       pimCommand: "akeneo:batch:job-queue-consumer-daemon"
-      replicas: 2
+      replicas: 1
   replicas: 2
   extraLabels: {}
   secret: null # Generate me with `uuidgen`
