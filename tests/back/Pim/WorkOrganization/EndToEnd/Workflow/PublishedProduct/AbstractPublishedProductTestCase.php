@@ -99,7 +99,8 @@ abstract class AbstractPublishedProductTestCase extends AbstractProductTestCase
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {},
+    "quantified_associations": {}
 }
 JSON;
 
@@ -118,7 +119,8 @@ JSON;
     "values": {},
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {},
+    "quantified_associations": {}
 }
 JSON;
 
@@ -137,7 +139,8 @@ JSON;
     "values": {},
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {},
+    "quantified_associations": {}
 }
 JSON;
 
@@ -161,7 +164,8 @@ JSON;
             "products": ["product_viewable_by_everybody_2", "product_not_viewable_by_redactor"],
             "groups": []
         }
-    }
+    },
+    "quantified_associations": {}
 }
 JSON;
 

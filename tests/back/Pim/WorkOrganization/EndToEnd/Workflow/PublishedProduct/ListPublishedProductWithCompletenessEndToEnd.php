@@ -103,7 +103,8 @@ class ListPublishedProductWithCompletenessEndToEnd extends AbstractPublishedProd
 		        },
 		        "created": "2017-03-17T16:11:46+01:00",
 		        "updated": "2017-03-17T16:11:46+01:00",
-		        "associations": {}
+		        "associations": {},
+		        "quantified_associations": {}
 		    },
 		    {
 		        "_links": {
@@ -145,7 +146,8 @@ class ListPublishedProductWithCompletenessEndToEnd extends AbstractPublishedProd
 		        },
                 "created": "2017-03-17T16:11:46+01:00",
                 "updated": "2017-03-17T16:11:46+01:00",
-                "associations": []
+                "associations": [],
+                "quantified_associations": {}
 		    }
 		]
     },

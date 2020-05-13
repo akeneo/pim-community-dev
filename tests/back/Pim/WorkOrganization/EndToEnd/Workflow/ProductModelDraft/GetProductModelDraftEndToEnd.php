@@ -54,6 +54,7 @@ class GetProductModelDraftEndToEnd extends ApiTestCase
   "created": "2017-07-17T14:23:49+02:00",
   "updated": "2017-07-17T14:23:49+02:00",
   "associations": {},
+  "quantified_associations": [],
   "family": "clothing",
   "metadata": {
       "workflow_status": "draft_in_progress"
