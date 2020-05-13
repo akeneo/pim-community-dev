@@ -51,8 +51,9 @@ function collectBundleImports(bundlePaths) {
     * /srv/subfolder/src/pim/vendor/my-domain/my-bundle/src/bar/bundle/resources => src/bar/bundle/resources
     */
     const indexFiles = bundlePaths.map(bundlePath => {
+        console.log(`${bundlePath}/${BUNDLE_LESS_INDEX_PATH}`)
         return `${bundlePath}/${BUNDLE_LESS_INDEX_PATH}`
-                .replace(/^(.+?(?=\/vendor\/)|.+(?=\/src\/))/gm, '');
+                .replace(/^(.+?(?=\/vendor\/)|.+(?=\/src\/))\//gm, '');
     })
 
     const bundleImports = []
