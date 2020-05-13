@@ -6,5 +6,5 @@
     "esModuleInterop": true,
     "baseUrl": ".",
   },
-  "include": ["src", "tests", "types.d.ts", "hooks", "index.ts", "provider", "components"]
+  "include": ["src"]
 }

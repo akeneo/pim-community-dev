@@ -1,10 +1,7 @@
-'use strict';
-
-//TODO move this test to new package @akeneo-pim-community/shared
 import '@testing-library/jest-dom/extend-expect';
-import {useAutoFocus} from '@akeneo-pim-community/shared/hooks/useAutoFocus';
 import {renderHook} from '@testing-library/react-hooks';
 import {act} from '@testing-library/react';
+import {useAutoFocus} from '../../../../src/hooks/useAutoFocus';
 
 test('It sets automatically the focus on the given ref', async () => {
   const mockFocus = jest.fn();
