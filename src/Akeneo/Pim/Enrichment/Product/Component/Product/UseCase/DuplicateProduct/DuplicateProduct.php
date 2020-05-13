@@ -11,18 +11,18 @@
 
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct;
 
-class DuplicateProductWithoutUniqueValues
+class DuplicateProduct
 {
     /** @var string */
     private $productId;
 
     /** @var string */
-    private $identifier;
+    private $duplicatedProductIdentifier;
 
-    public function __construct(string $productId, string $identifier)
+    public function __construct(string $productId, string $duplicatedProductIdentifier)
     {
         $this->productId = $productId;
-        $this->identifier = $identifier;
+        $this->duplicatedProductIdentifier = $duplicatedProductIdentifier;
     }
 
     public function productId(): string
@@ -30,8 +30,8 @@ class DuplicateProductWithoutUniqueValues
         return $this->productId;
     }
 
-    public function identifier(): string
+    public function duplicatedProductIdentifier(): string
     {
-        return $this->identifier;
+        return $this->duplicatedProductIdentifier;
     }
 }

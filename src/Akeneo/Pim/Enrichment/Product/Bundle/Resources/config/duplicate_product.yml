@@ -3,10 +3,10 @@ services:
         public: true
         class: 'Akeneo\Pim\Enrichment\Product\Bundle\Controller\InternalApi\DuplicateProductController'
         arguments:
-            - '@pimee_enrich.product.duplicate_product_without_unique_values_handler'
+            - '@pimee_enrich.product.duplicate_product_handler'
 
-    pimee_enrich.product.duplicate_product_without_unique_values_handler:
-        class: 'Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductWithoutUniqueValuesHandler'
+    pimee_enrich.product.duplicate_product_handler:
+        class: 'Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductHandler'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.builder.product'

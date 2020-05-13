@@ -34,7 +34,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
             'id' => $productToDuplicate->getId()
         ]);
 
-        $this->client->request('POST', $url, ['identifier' => 'duplicated_product']);
+        $this->client->request('POST', $url, ['duplicated_product_identifier' => 'duplicated_product']);
 
         $duplicatedProduct = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier('duplicated_product');
 

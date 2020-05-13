@@ -13,12 +13,11 @@ namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProdu
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class DuplicateProductWithoutUniqueValuesHandler
+class DuplicateProductHandler
 {
     /** @var ProductRepositoryInterface */
     private $productRepository;
@@ -49,18 +48,18 @@ class DuplicateProductWithoutUniqueValuesHandler
         $this->productSaver = $productSaver;
     }
 
-    public function handle(DuplicateProductWithoutUniqueValues $query): DuplicateProductResponse
+    public function handle(DuplicateProduct $query): DuplicateProductResponse
     {
-        /** @var Product */
-        $product = $this->productRepository->find($query->productId());
+        /** @var ProductInterface */
+        $productToDuplicate = $this->productRepository->find($query->productId());
 
         $duplicatedProduct = $this->productBuilder->createProduct(
-            $query->identifier(),
-            $product->getFamilyId()
+            $query->duplicatedProductIdentifier(),
+            $productToDuplicate->getFamilyId()
         );
 
         $normalizedProduct = $this->normalizer->normalize(
-            $product,
+            $productToDuplicate,
             'standard'
         );
         // @TODO: To remove this line when we will remove the unique values from the duplicated product (https://akeneo.atlassian.net/browse/CHRIS-8)
