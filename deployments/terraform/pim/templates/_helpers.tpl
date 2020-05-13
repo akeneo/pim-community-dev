@@ -61,8 +61,8 @@ app: onboarder # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-78
 app.kubernetes.io/name: onboarder
 chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-release: "{{ .Release.Name }}" # Ex: srnt-invivo
-product_reference: serenity
+release: "{{ .Release.Name }}" # Ex: akob-jdgroup
+product_reference: onboarder
 product_version: "{{ .Chart.Version | replace "+" "_" }}"
 heritage: "{{ .Release.Service }}" # Deprecated
 {{- end }}
