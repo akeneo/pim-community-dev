@@ -17,7 +17,6 @@ class AkeneoPimEnterpriseProductEnrichmentExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('controllers.yml');
-        $loader->load('product.yml');
+        $loader->load('duplicate_product.yml');
     }
 }
