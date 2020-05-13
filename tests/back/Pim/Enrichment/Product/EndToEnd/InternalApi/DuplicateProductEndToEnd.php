@@ -12,11 +12,20 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DuplicateProductEndToEnd extends InternalApiTestCase
 {
+    /** @var RouterInterface */
+    private $router;
+
+    /** @var UserInterface */
+    private $adminUser;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->router = $this->get('router');
+        $this->adminUser = $this->get('pim_user.repository.user')->findOneByIdentifier('admin');
 
-        $this->authenticate($this->getAdminUser());
+        $this->authenticate($this->adminUser);
+
     }
 
     public function test_it_duplicates_a_product()
@@ -30,7 +39,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
             $normalizedProductToDuplicate
         );
 
-        $url = $this->getRouter()->generate('pimee_enrich_product_rest_duplicate', [
+        $url = $this->router->generate('pimee_enrich_product_rest_duplicate', [
             'id' => $productToDuplicate->getId()
         ]);
 
@@ -46,16 +55,6 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
-    }
-
-    private function getRouter(): RouterInterface
-    {
-        return self::$container->get('router');
-    }
-
-    private function getAdminUser(): UserInterface
-    {
-        return self::$container->get('pim_user.repository.user')->findOneByIdentifier('admin');
     }
 
     private function createProduct($identifier, array $data = []): ProductInterface

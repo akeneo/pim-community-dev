@@ -18,11 +18,12 @@ use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\Dup
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class DuplicateProductController
 {
-    /** @var DuplicateProductWithoutUniqueValuesHandler */
+    /** @var DuplicateProductHandler */
     private $duplicateProductHandler;
 
     /** @var ProductRepository */
@@ -36,7 +37,7 @@ class DuplicateProductController
         $this->duplicateProductHandler = $duplicateProductHandler;
     }
 
-    public function duplicateProductAction(Request $request, $id)
+    public function duplicateProductAction(Request $request, string $id)
     {
         if (!$request->request->has('duplicated_product_identifier')) {
             throw new UnprocessableEntityHttpException('You should give either an "identifier" key.');
@@ -44,6 +45,9 @@ class DuplicateProductController
 
         /** @var ProductInterface */
         $product = $this->productRepository->find($id);
+        if (null === $product) {
+            throw new NotFoundHttpException(sprintf('Product with id %s could not be found.', $id));
+        }
 
         $query = new DuplicateProduct(
             $product->getIdentifier(),
