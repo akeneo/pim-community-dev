@@ -1,0 +1,38 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
+
+/**
+ * @author Pierre Jolly <pierre.jolly@akeneo.com>
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+final class ErrorCountPerConnection
+{
+    /** @var array */
+    private $errorCounts;
+
+    /**
+     * @param ErrorCount[] $errorCounts
+     */
+    public function __construct(array $errorCounts)
+    {
+        foreach($errorCounts as $errorCount) {
+            if (false === $errorCount instanceof ErrorCount) {
+                throw new \InvalidArgumentException('One of the given element is not an ErrorCount object.');
+            }
+
+            $this->errorCounts[] = $errorCount;
+        }
+    }
+
+    /**
+     * @return ErrorCount[]
+     */
+    public function errorCounts(): array
+    {
+        return $this->errorCounts;
+    }
+}

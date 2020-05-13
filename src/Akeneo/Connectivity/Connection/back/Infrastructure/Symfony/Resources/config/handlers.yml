@@ -61,7 +61,14 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.event_count'
 
+    akeneo_connectivity.connection.application.audit.handler.get_error_count_by_connection:
+        class: Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountByConnectionHandler
+        arguments:
+            - '@akeneo_connectivity_connection.persistence.query.select_error_count_per_connection'
+
     akeneo_connectivity.connection.application.error_management.handler.get_connection_business_errors:
         class: Akeneo\Connectivity\Connection\Application\ErrorManagement\Query\GetConnectionBusinessErrorsHandler
         arguments:
             - '@akeneo_connectivity_connection.persistence.query.select_last_connection_business_errors'
+
+
