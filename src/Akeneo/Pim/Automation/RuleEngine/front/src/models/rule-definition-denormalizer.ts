@@ -9,10 +9,12 @@ import { denormalizeTextAttributeCondition } from './TextAttributeCondition';
 import { Router } from '../dependenciesTools';
 import { getAttributesByIdentifiers } from '../repositories/AttributeRepository';
 import { denormalizeClearAction } from './actions/ClearAction';
+import { denormalizeCopyAction } from './actions/CopyAction';
 
 function denormalizeAction(jsonAction: any): Action {
   const denormalizers: ((json: any) => Action | null)[] = [
     denormalizeClearAction,
+    denormalizeCopyAction,
   ];
 
   for (let i = 0; i < denormalizers.length; i++) {

@@ -1,4 +1,5 @@
 import { FallbackAction } from './FallbackAction';
 import { ClearAction } from './actions/ClearAction';
+import { CopyAction } from './actions/CopyAction';
 
-export type Action = FallbackAction | ClearAction;
+export type Action = FallbackAction | ClearAction | CopyAction;
