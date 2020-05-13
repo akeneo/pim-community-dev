@@ -27,7 +27,7 @@ class LoadEntitySubscriberSpec extends ObjectBehavior
 
     function it_subscribes_to_the_postLoad_event()
     {
-        $this->getSubscribedEvents()->shouldReturn(['postLoad' => 'loadQuantifiedAssociations']);
+        $this->getSubscribedEvents()->shouldReturn(['postLoad']);
     }
 
     function it_loads_values_of_a_product(
@@ -49,7 +49,7 @@ class LoadEntitySubscriberSpec extends ObjectBehavior
         $getIdMappingFromProductIds->execute($productIds)->willReturn($productIdMapping);
         $getIdMappingFromProductModelIds->execute($productModelIds)->willReturn($productModelIdMapping);
 
-        $this->loadQuantifiedAssociations($event);
+        $this->postLoad($event);
     }
 
     function it_ignores_non_entities_with_quantified_associations($getIdMappingFromProductIds, LifecycleEventArgs $event, \stdClass $randomEntity)
@@ -57,7 +57,7 @@ class LoadEntitySubscriberSpec extends ObjectBehavior
         $event->getObject()->willReturn($randomEntity);
         $getIdMappingFromProductIds->execute(Argument::cetera())->shouldNotBeCalled();
 
-        $this->loadQuantifiedAssociations($event);
+        $this->postLoad($event);
     }
 
     private function anIdMapping(): IdMapping

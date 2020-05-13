@@ -74,7 +74,9 @@ class ProductStandardSortedCollectionIntegration extends TestCase
                     'products' => [],
                     'product_models' => [],
                 ],
-            ]
+            ],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $this->assertStandardFormat($product, $expected);
@@ -130,7 +132,9 @@ class ProductStandardSortedCollectionIntegration extends TestCase
                     'products' => [],
                     'product_models' => [],
                 ],
-            ]
+            ],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $this->assertStandardFormat($product, $expected);
@@ -186,7 +190,9 @@ class ProductStandardSortedCollectionIntegration extends TestCase
                     'products' => [],
                     'product_models' => [],
                 ],
-            ]
+            ],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $this->assertStandardFormat($product, $expected);

@@ -35,6 +35,9 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
             case 'associations':
                 $convertedItem = $this->convertAssociations($data, $convertedItem);
                 break;
+            case 'quantified_associations':
+                // @todo https://akeneo.atlassian.net/browse/MET-198
+                break;
             case 'categories':
                 $convertedItem[$property] = implode(',', $data);
                 break;

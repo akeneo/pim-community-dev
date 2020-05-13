@@ -124,7 +124,19 @@ class ProductUpdater implements ObjectUpdaterInterface
      *              "groups": ["foo_group", "bar_group"],
      *              "product": ["foo_product", "bar_product"]
      *          }
-     *      }
+     *      },
+     *      "quantified_associations": {
+     *          "PACK": {
+     *              "products": [
+     *                  {"identifier": "foo_product", "quantity": 3},
+     *                  {"identifier": "bar_product", "quantity": 4},
+     *              ],
+     *              "product_models": [
+     *                  {"identifier": "foo_product_model", "quantity": 3},
+     *                  {"identifier": "bar_product_model", "quantity": 4},
+     *              ],
+     *          },
+     *      },
      * }
      */
     public function update($product, array $data, array $options = []): ProductUpdater
@@ -153,6 +165,9 @@ class ProductUpdater implements ObjectUpdaterInterface
                     $data = $this->filterParentAssociations($data, $context['parent_associations']);
                 }
                 break;
+            case 'quantified_associations':
+                // @todo RAC-19
+                break;
         }
 
         return $data;
@@ -174,6 +189,9 @@ class ProductUpdater implements ObjectUpdaterInterface
                 break;
             case 'associations':
                 $this->updateProductFields($product, $field, $data);
+                break;
+            case 'quantified_associations':
+                // @todo RAC-19
                 break;
             case 'values':
                 $this->valuesUpdater->update($product, $data, $options);
