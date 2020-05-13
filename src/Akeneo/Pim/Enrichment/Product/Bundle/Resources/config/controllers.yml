@@ -4,4 +4,3 @@ services:
         class: 'Akeneo\Pim\Enrichment\Product\Bundle\Controller\InternalApi\DuplicateProductController'
         arguments:
             - '@pimee_enrich.product.duplicate_product_without_unique_values_handler'
-            - '@pim_catalog.saver.product'

@@ -24,15 +24,10 @@ class DuplicateProductController
     /** @var DuplicateProductWithoutUniqueValuesHandler */
     private $duplicateProductWithoutUniqueValuesHandler;
 
-    /** @var SaverInterface */
-    private $productSaver;
-
     public function __construct(
-        DuplicateProductWithoutUniqueValuesHandler $duplicateProductWithoutUniqueValuesHandler,
-        SaverInterface $productSaver
+        DuplicateProductWithoutUniqueValuesHandler $duplicateProductWithoutUniqueValuesHandler
     ) {
         $this->duplicateProductWithoutUniqueValuesHandler = $duplicateProductWithoutUniqueValuesHandler;
-        $this->productSaver = $productSaver;
     }
 
     public function duplicateProductAction(Request $request, $id)
@@ -43,13 +38,11 @@ class DuplicateProductController
 
         $query = new DuplicateProductWithoutUniqueValues($id, $request->request->get('identifier'));
 
-        list($duplicatedProduct) = $this->duplicateProductWithoutUniqueValuesHandler->handle($query);
-
-        $this->productSaver->save($duplicatedProduct);
+        $duplicateProductResponse = $this->duplicateProductWithoutUniqueValuesHandler->handle($query);
 
         return new JsonResponse(
-            null,
-            Response::HTTP_NO_CONTENT
+            ['unique_attribute_codes' => $duplicateProductResponse->uniqueAttributeValues()],
+            Response::HTTP_OK
         );
     }
 }

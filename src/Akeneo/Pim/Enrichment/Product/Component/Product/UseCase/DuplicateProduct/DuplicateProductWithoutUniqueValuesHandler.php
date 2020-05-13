@@ -14,6 +14,7 @@ namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProdu
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -31,19 +32,24 @@ class DuplicateProductWithoutUniqueValuesHandler
     /** @var ObjectUpdaterInterface */
     private $productUpdater;
 
+    /** @var SaverInterface */
+    private $productSaver;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
         NormalizerInterface $normalizer,
-        ObjectUpdaterInterface $productUpdater
+        ObjectUpdaterInterface $productUpdater,
+        SaverInterface $productSaver
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
         $this->normalizer = $normalizer;
         $this->productUpdater = $productUpdater;
+        $this->productSaver = $productSaver;
     }
 
-    public function handle(DuplicateProductWithoutUniqueValues $query): array
+    public function handle(DuplicateProductWithoutUniqueValues $query): DuplicateProductResponse
     {
         /** @var Product */
         $product = $this->productRepository->find($query->productId());
@@ -62,6 +68,8 @@ class DuplicateProductWithoutUniqueValuesHandler
 
         $this->productUpdater->update($duplicatedProduct, $normalizedProduct);
 
-        return [$duplicatedProduct];
+        $this->productSaver->save($duplicatedProduct);
+
+        return new DuplicateProductResponse([]);
     }
 }

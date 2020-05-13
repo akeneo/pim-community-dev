@@ -40,7 +40,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
 
         Assert::assertNotNull($duplicatedProduct);
         $this->assertSameData($duplicatedProduct, $normalizedProductToDuplicate);
-        Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
+        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
     protected function getConfiguration(): Configuration
