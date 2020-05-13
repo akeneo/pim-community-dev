@@ -114,7 +114,7 @@ create-pim-main-tf: $(INSTANCE_DIR)
 	@echo "}" >> $(INSTANCE_DIR)/main.tf
 	@echo "module \"pim\" {" >> $(INSTANCE_DIR)/main.tf
 	@echo "source = \"$(PIM_SRC_DIR)/deployments/terraform\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "google_project_id                 = \"$(GOOGLE_PROJECT_ID)\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "google_project_id                   = \"$(GOOGLE_PROJECT_ID)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "google_project_zone                 = \"$(GOOGLE_CLUSTER_ZONE)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "instance_name                       = \"$(INSTANCE_NAME)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "dns_external                        = \"$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS).\"" >> $(INSTANCE_DIR)/main.tf
@@ -184,10 +184,31 @@ delete_pr_environments:
 		echo "---[DELETED] namespace $${namespace}"; \
 	done
 
-terraform-prerequisites-monitoring:
-	terraform import module.pim.google_logging_metric.login_count $(PFID)-login-count
-	terraform import module.pim.google_logging_metric.login-response-time-distribution $(PFID)-login-response-time-distribution
-	terraform import module.pim.google_logging_metric.logs-count $(PFID)-logs-count
-	terraform state rm module.pim.template_file.metric-template
-	terraform state rm module.pim.local_file.metric-rendered
-	terraform state rm module.pim.null_resource.metric
+.PHONY: prepare-pim-intermediate
+prepare-pim-intermediate: create-ci-release-files terraform-init
+	rm -Rf $(DEPLOYMENTS_INSTANCES_DIR)/pim-$(IMAGE_TAG)
+	git clone -n -b $(IMAGE_TAG) git@github.com:akeneo/pim-enterprise-dev.git --depth 1 $(DEPLOYMENTS_INSTANCES_DIR)/pim-$(IMAGE_TAG)
+	cd $(DEPLOYMENTS_INSTANCES_DIR)/pim-$(IMAGE_TAG) && git checkout HEAD deployments/terraform/pim
+	mv $(PWD)/deployments/terraform/pim $(PWD)/deployments/terraform/pim_new
+	mv $(DEPLOYMENTS_INSTANCES_DIR)/pim-$(IMAGE_TAG)/deployments/terraform/pim $(PWD)/deployments/terraform/pim
+
+.PHONY: deploy-pim-intermediate
+deploy-pim-intermediate: prepare-pim-intermediate deploy
+	rm -Rf $(PWD)/deployments/terraform/pim $(DEPLOYMENTS_INSTANCES_DIR)/pim-$(IMAGE_TAG)
+	mv $(PWD)/deployments/terraform/pim_new $(PWD)/deployments/terraform/pim
+	# Seems that Kubernetes need a bit of time after upgrade in order to clean old resources
+	sleep 30
+
+.PHONY: terraform-pre-upgrade
+terraform-pre-upgrade: terraform-init
+	yq d -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks"
+	for PD in $$(kubectl get -n $(PFID) pv $$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') -o jsonpath='{..spec.gcePersistentDisk.pdName}'); do \
+		yq w -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks[+]" "$${PD}"; \
+	done
+	# Unused as CI does not install pim-monitoring module
+	# cd $(INSTANCE_DIR) && terraform import module.pim-monitoring.google_logging_metric.login_count $(PFID)-login-count
+	# cd $(INSTANCE_DIR) && terraform import module.pim-monitoring.google_logging_metric.login-response-time-distribution $(PFID)-login-response-time-distribution
+	# cd $(INSTANCE_DIR) && terraform import module.pim-monitoring.google_logging_metric.logs-count $(PFID)-logs-count
+	# cd $(INSTANCE_DIR) && terraform state rm module.pim.template_file.metric-template
+	# cd $(INSTANCE_DIR) && terraform state rm module.pim.local_file.metric-rendered
+	# cd $(INSTANCE_DIR) && terraform state rm module.pim.null_resource.metric

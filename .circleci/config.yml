@@ -340,15 +340,18 @@ jobs:
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
           - run:
-              name: Upgrade oldest SaaS prod (PIM v3) to intermediate version from mid-February
+              name: Upgrade oldest SaaS prod (PIM v3) to intermediate version from 11th February
               command: |
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200211172331 INSTANCE_NAME=pimup-$CIRCLE_SHA1 make create-ci-release-files
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200211172331 INSTANCE_NAME=pimup-$CIRCLE_SHA1 make deploy
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200211172331 INSTANCE_NAME=pimup-$CIRCLE_SHA1 make deploy-pim-intermediate
+          - run:
+              name: Upgrade oldest SaaS prod (PIM v3) to intermediate version from 1st April
+              command: |
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200401020139 INSTANCE_NAME=pimup-$CIRCLE_SHA1 make deploy-pim-intermediate
           - run:
               name: Upgrade intermediate version SaaS to master
               command: |
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make terraform-prerequisites-monitoring
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy
           - run:
               name: Production tests on upgraded env

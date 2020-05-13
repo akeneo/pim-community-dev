@@ -35,3 +35,4 @@ coverage/*
 config/gcp_credentials.json
 deployments/terraform/pim/charts/*
 deployments/instances
+/pim-enterprise-cloud

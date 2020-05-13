@@ -73,9 +73,9 @@ HELM_STATUS_CODE=$${?}
 kubectl scale -n ${local.pfid} deploy/pim-web deploy/pim-daemon-default --replicas=2
 KUBECTL_SCALE_CODE=$${?}
 if [ $${KUBECTL_SCALE_CODE} -eq 0 ]; then
- exit $${HELM_STATUS_CODE}
+  exit $${HELM_STATUS_CODE}
 else
- exit $${KUBECTL_SCALE_CODE}
+  exit $${KUBECTL_SCALE_CODE}
 fi
 EOF
   }
