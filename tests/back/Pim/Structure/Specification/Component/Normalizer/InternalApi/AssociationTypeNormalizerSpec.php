@@ -37,7 +37,7 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
                         'model_type' => "association_type",
                         'created' => null,
                         'updated' => null,
-                    ]
+                    ],
                 ]
             );
     }

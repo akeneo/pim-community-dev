@@ -33,6 +33,7 @@ class AssociationTypeRepository extends EntityRepository implements DatagridRepo
             ->addSelect('(CASE WHEN translation.label IS NULL THEN a.code ELSE translation.label END) AS label')
             ->addSelect('translation.label')
             ->addSelect('a.isTwoWay')
+            ->addSelect('a.isQuantified')
             ->leftJoin('a.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
 
         return $qb;

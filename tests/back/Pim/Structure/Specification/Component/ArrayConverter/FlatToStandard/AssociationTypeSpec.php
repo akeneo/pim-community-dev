@@ -18,7 +18,8 @@ class AssociationTypeSpec extends ObjectBehavior
             'code'        => 'mycode',
             'label-fr_FR' => 'Vente croisée',
             'label-en_US' => 'Cross sell',
-            'is_two_way' => true,
+            'is_two_way' => 1,
+            'is_quantified' => 0,
         ];
 
         $this->convert($fields)->shouldReturn(
@@ -29,14 +30,15 @@ class AssociationTypeSpec extends ObjectBehavior
                 ],
                 'code'   => 'mycode',
                 'is_two_way' => true,
+                'is_quantified' => false,
             ]
         );
     }
 
-    function it_converts_is_not_two_way_by_default()
+    function it_converts_two_way_and_quantified_to_false_by_default()
     {
         $fields = [
-            'code'        => 'mycode',
+            'code' => 'mycode',
             'label-fr_FR' => 'Vente croisée',
             'label-en_US' => 'Cross sell',
         ];
@@ -47,8 +49,31 @@ class AssociationTypeSpec extends ObjectBehavior
                     'fr_FR' => 'Vente croisée',
                     'en_US' => 'Cross sell',
                 ],
-                'code'   => 'mycode',
+                'code' => 'mycode',
+                'is_quantified' => false,
                 'is_two_way' => false,
+            ]
+        );
+    }
+
+    function it_converts_to_is_quantified_when_quantified()
+    {
+        $fields = [
+            'code' => 'mycode',
+            'label-fr_FR' => 'Vente croisée',
+            'label-en_US' => 'Cross sell',
+            'is_quantified' => 1,
+        ];
+
+        $this->convert($fields)->shouldReturn(
+            [
+                'labels' => [
+                    'fr_FR' => 'Vente croisée',
+                    'en_US' => 'Cross sell',
+                ],
+                'code' => 'mycode',
+                'is_two_way' => false,
+                'is_quantified' => true,
             ]
         );
     }

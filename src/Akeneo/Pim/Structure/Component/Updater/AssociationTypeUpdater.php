@@ -65,6 +65,8 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
             $this->translatableUpdater->update($associationType, $data);
         } elseif ('is_two_way' === $field) {
             $associationType->setIsTwoWay($data);
+        } elseif ('is_quantified' === $field) {
+            $associationType->setIsQuantified($data);
         }
     }
 
@@ -99,6 +101,10 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
             }
         } elseif ('is_two_way' === $field) {
+            if (null !== $data && !is_bool($data)) {
+                throw InvalidPropertyTypeException::booleanExpected($field, static::class, $data);
+            }
+        } elseif ('is_quantified' === $field) {
             if (null !== $data && !is_bool($data)) {
                 throw InvalidPropertyTypeException::booleanExpected($field, static::class, $data);
             }
