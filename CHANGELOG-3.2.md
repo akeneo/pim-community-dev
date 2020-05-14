@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.55 (2020-05-14)
+
 ## Bug fixes
 
 - PIM-9245: Fix relative JS files path for less compilation
