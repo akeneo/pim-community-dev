@@ -18,7 +18,7 @@ import {
   useTranslate,
   useUserContext,
 } from '../../dependenciesTools/hooks';
-import { Locale, RuleDefinition, getRuleDefinitionLabel } from '../../models';
+import { Locale, RuleDefinition } from '../../models';
 import { useSubmitEditRuleForm } from './hooks';
 import { IndexedScopes } from '../../repositories/ScopeRepository';
 
@@ -63,13 +63,17 @@ const EditRulesContent: React.FC<Props> = ({
     setIsDirty(formMethods.formState.dirty);
   }, [formMethods.formState.dirty]);
 
+  const title =
+    (formMethods.watch(`labels.${currentCatalogLocale}`) as string) ||
+    `[${ruleDefinitionCode}]`;
+
   return (
     <ThemeProvider theme={akeneoTheme}>
       {pending && <AkeneoSpinner />}
       <RulesHeader
         buttonLabel='pim_common.save'
         formId='edit-rules-form'
-        title={getRuleDefinitionLabel(ruleDefinition, currentCatalogLocale)}
+        title={title}
         translate={translate}
         unsavedChanges={formMethods.formState.dirty}>
         <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>

@@ -46,7 +46,9 @@ const RulesHeader: React.FC<Props> = ({
         </div>
       </BreadcrumbAndButtons>
       <div className='AknTitleContainer-line'>
-        <div className='AknTitleContainer-title'>{title}</div>
+        <div className='AknTitleContainer-title' data-testid='rule-title'>
+          {title}
+        </div>
         {unsavedChanges && <UnsavedChangesWarning translate={translate} />}
       </div>
     </Header>
