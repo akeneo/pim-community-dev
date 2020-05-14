@@ -76,6 +76,7 @@ const AddConditionButton: React.FC<Props> = ({
         if (event.val !== null) {
           // Use has not clicked on a group
           handleAddCondition(event.val);
+          ($(event.target) as any).select2('close');
         }
       }}
       ajax={{

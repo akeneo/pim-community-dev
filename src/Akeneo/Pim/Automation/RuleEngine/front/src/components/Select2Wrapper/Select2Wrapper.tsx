@@ -87,7 +87,6 @@ const Select2Wrapper: React.FC<Props> = ({
     const $select = $(select2Ref.current) as any;
     $select.val(value);
 
-    $select.select2('destroy');
     const options: any = {
       allowClear,
       containerCssClass,
@@ -108,15 +107,30 @@ const Select2Wrapper: React.FC<Props> = ({
     if (onChange) {
       $select.on('change', (event: Select2Event) => onChange(event.val));
     }
+  }
+
+  useEffect(() => {
+    if (null === select2Ref.current) {
+      return;
+    }
+    const $select = $(select2Ref.current) as any;
+
+    if (onChange) {
+      $select.on('change', (event: Select2Event) => onChange(event.val));
+    }
+  }, [onChange]);
+
+  useEffect(() => {
+    if (null === select2Ref.current) {
+      return;
+    }
+    const $select = $(select2Ref.current) as any;
+
     if (onSelecting) {
       $select.off('select2-selecting');
       $select.on('select2-selecting', onSelecting);
     }
-  };
-
-  useEffect(() => {
-    initSelect2();
-  }, [select2Ref, onSelecting, onChange, formatResult]);
+  }, [onSelecting]);
 
   useEffect(() => {
     initSelect2();
@@ -138,6 +152,20 @@ const Select2Wrapper: React.FC<Props> = ({
       return;
     }
     const $select = $(select2Ref.current) as any;
+
+    $select.select2('destroy');
+    initSelect2($select);
+  }, [formatResult])
+
+  useEffect(() => {
+    if (null === select2Ref.current) {
+      return;
+    }
+    const $select = $(select2Ref.current) as any;
+
+    $select.val(value);
+
+    initSelect2($select);
 
     return () => {
       $select.off('change');
