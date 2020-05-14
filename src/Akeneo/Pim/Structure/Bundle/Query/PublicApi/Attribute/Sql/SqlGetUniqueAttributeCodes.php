@@ -34,7 +34,7 @@ SQL;
 
         $uniqueAttributeCodes = [];
 
-        foreach($rawResults as $rawAttribute) {
+        foreach ($rawResults as $rawAttribute) {
             $uniqueAttributeCodes[] = $rawAttribute['code'];
         }
 

@@ -34,14 +34,14 @@ class RemoveUniqueAttributeValues
         $attributeCodes = $valueCollection->getAttributeCodes();
         $uniqueAttributeCodes = $this->getUniqueAttributeCodes->fromAttributeCodes($attributeCodes);
         foreach ($attributeCodes as $attributeCode) {
-            if(in_array($attributeCode, $uniqueAttributeCodes)) {
+            if (in_array($attributeCode, $uniqueAttributeCodes)) {
                 $valueCollection->removeByAttributeCode($attributeCode);
             }
         }
 
         $uniqueAttributeCodesWithoutIdentifier = array_filter(
             $uniqueAttributeCodes,
-            function($attributeCode) {
+            function ($attributeCode) {
                 return $attributeCode !== $this->attributeRepository->getIdentifierCode();
             }
         );
