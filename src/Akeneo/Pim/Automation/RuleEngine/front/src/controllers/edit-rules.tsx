@@ -25,10 +25,19 @@ class EditRules extends ReactController {
   }
 
   initialize() {
+    this.$el.addClass('AknRuleEngine-edit');
+
     return super.initialize();
   }
 
   renderRoute(routeParams: RouteParams) {
+    dependencies.mediator.trigger('pim_menu:highlight:tab', {
+      extension: 'pim-menu-settings',
+    });
+    dependencies.mediator.trigger('pim_menu:highlight:item', {
+      extension: 'pim-menu-enrich-rule',
+    });
+
     return super.renderRoute(routeParams);
   }
 
