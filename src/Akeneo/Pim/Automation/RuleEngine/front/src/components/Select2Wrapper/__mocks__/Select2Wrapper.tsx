@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import {
-  option,
-  optionsGroup,
+  Select2Option,
+  Select2OptionGroup,
   Select2Props,
   Select2Wrapper as BaseWrapper,
 } from '../Select2Wrapper';
@@ -20,7 +20,7 @@ const Select2Wrapper: typeof BaseWrapper = ({
   ajax,
   onSelecting,
 }: Select2Props) => {
-  const [options, setOptions] = React.useState<(option | optionsGroup)[]>(
+  const [options, setOptions] = React.useState<(Select2Option | Select2OptionGroup)[]>(
     data || []
   );
 
@@ -32,7 +32,7 @@ const Select2Wrapper: typeof BaseWrapper = ({
         throw new Error(`You did not mock the result of ${url}!`);
       }
       result.then(response => {
-        response.json().then((fetchedOptions: (option | optionsGroup)[]) => {
+        response.json().then((fetchedOptions: (Select2Option | Select2OptionGroup)[]) => {
           setOptions(fetchedOptions);
         });
       });
@@ -69,10 +69,10 @@ const Select2Wrapper: typeof BaseWrapper = ({
         ) : (
           ''
         )}
-        {options.map((option: option | optionsGroup, i) => {
+        {options.map((option: Select2Option | Select2OptionGroup, i) => {
           return option.hasOwnProperty('children') ? (
             <optgroup key={option.id || i} label={option.text}>
-              {(option as optionsGroup).children.map((subOption, j) => (
+              {(option as Select2OptionGroup).children.map((subOption, j) => (
                 <option key={subOption.id || j} value={subOption.id || j}>
                   {subOption.text}
                 </option>

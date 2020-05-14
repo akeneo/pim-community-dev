@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select2Wrapper } from '../Select2Wrapper';
+import { Select2SimpleSyncWrapper } from '../Select2Wrapper';
 import { Operator } from '../../models/Operator';
 import { Translate } from '../../dependenciesTools';
 
@@ -38,12 +38,12 @@ const OperatorSelector: React.FC<Props> = ({
   });
 
   return (
-    <Select2Wrapper
+    <Select2SimpleSyncWrapper
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string | string[] | number) => {
-        onSelectorChange(Array.isArray(value) ? '' : (value as string));
+      onChange={(value: string) => {
+        onSelectorChange(value);
       }}
       value={currentOperator}
       data={operatorChoices}

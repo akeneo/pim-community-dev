@@ -2,16 +2,16 @@ import $ from 'jquery';
 import React, { useRef, useEffect } from 'react';
 import { Label } from '../Labels';
 
-type option = {
+type Select2Option = {
   id: number | string;
   text: string;
   disabled?: boolean;
 };
 
-type optionsGroup = {
+type Select2OptionGroup = {
   id: number | string | null;
   text: string;
-  children: option[];
+  children: Select2Option[];
   disabled?: boolean;
 };
 
@@ -19,43 +19,48 @@ type Select2Event = {
   val: any;
 } & JQuery.Event;
 
-type ajaxResults = {
-  more: boolean;
-  results: option[] | optionsGroup[];
-};
+type InitSelectionCallback = (arg: Select2Option[] | Select2Option) => void;
 
-type InitSelectionCallback = (arg: option[] | option) => void;
-
-type Props = {
+type Select2GlobalProps = {
   allowClear?: boolean;
   containerCssClass?: string;
-  data?: (option | optionsGroup)[];
   dropdownCssClass?: string;
-  formatResult?: (item: option | optionsGroup) => string;
-  formatSelection?: (item: option | optionsGroup) => string;
+  formatResult?: (item: Select2Option | Select2OptionGroup) => string;
+  formatSelection?: (item: Select2Option | Select2OptionGroup) => string;
   hiddenLabel?: boolean;
   id: string;
   label: string;
   onChange?: (value: string | string[] | number) => void;
   onSelecting?: (event: any) => void;
   placeholder?: string;
-  value?: number | string | string[];
-  multiple?: boolean;
-  ajax?: {
-    url: string;
-    quietMillis?: number;
-    cache?: boolean;
-    data: (
-      term: string,
-      page: number
-    ) => {
-      search: string;
-      options?: any;
-    };
-    results: (values: any) => ajaxResults;
+  initSelection?: (element: any, callback: InitSelectionCallback) => void;
+}
+
+type Select2Ajax = {
+  url: string;
+  quietMillis?: number;
+  cache?: boolean;
+  data: (
+    term: string,
+    page: number
+  ) => {
+    search: string;
+    options?: any;
+  };
+  results: (values: any) => {
+    more: boolean;
+    results: Select2Option[] | Select2OptionGroup[];
   };
   initSelection?: (element: any, callback: InitSelectionCallback) => void;
   hideSearch?: boolean;
+};
+
+type Props = Select2GlobalProps & {
+  data?: (Select2Option | Select2OptionGroup)[];
+  onChange?: (value: string | string[]) => void;
+  value?: number | string | string[];
+  multiple: boolean;
+  ajax?: Select2Ajax;
 };
 
 const Select2Wrapper: React.FC<Props> = ({
@@ -72,7 +77,7 @@ const Select2Wrapper: React.FC<Props> = ({
   onSelecting,
   placeholder,
   value,
-  multiple = false,
+  multiple,
   ajax,
   initSelection,
   hideSearch = false,
@@ -186,8 +191,9 @@ export {
   Select2Wrapper,
   Select2Event,
   Props as Select2Props,
-  option,
-  optionsGroup,
+  Select2Option,
+  Select2OptionGroup,
   InitSelectionCallback,
-  ajaxResults,
+  Select2GlobalProps,
+  Select2Ajax,
 };

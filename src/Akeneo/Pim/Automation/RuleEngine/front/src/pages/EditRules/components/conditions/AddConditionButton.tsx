@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-  ajaxResults,
-  Select2Wrapper,
+  Select2SimpleAsyncWrapper
 } from '../../../../components/Select2Wrapper';
 import { Router, Translate } from '../../../../dependenciesTools';
 
@@ -42,7 +41,7 @@ const AddConditionButton: React.FC<Props> = ({
   };
 
   let lastDisplayedGroupLabel: string;
-  const handleResults = (result: AddConditionResults): ajaxResults => {
+  const handleResults = (result: AddConditionResults) => {
     const fieldCount = result.reduce((previousCount, group) => {
       return previousCount + group.children.length;
     }, 0);
@@ -65,7 +64,7 @@ const AddConditionButton: React.FC<Props> = ({
   };
 
   return (
-    <Select2Wrapper
+    <Select2SimpleAsyncWrapper
       id={'add_conditions'}
       label={translate('pimee_catalog_rule.form.edit.add_conditions')}
       hiddenLabel={true}

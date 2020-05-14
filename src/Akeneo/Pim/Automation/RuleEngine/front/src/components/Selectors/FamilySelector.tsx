@@ -1,9 +1,8 @@
 import React from 'react';
 import {
-  ajaxResults,
   InitSelectionCallback,
-  Select2Wrapper,
-  option,
+  Select2MultiAsyncWrapper,
+  Select2Option,
 } from '../Select2Wrapper';
 import { Router } from '../../dependenciesTools';
 import { IndexedFamilies } from '../../fetch/FamilyFetcher';
@@ -35,11 +34,11 @@ const dataProvider = (term: string, page: number) => {
 const handleResults = (
   families: IndexedFamilies,
   currentCatalogLocale: string
-): ajaxResults => {
+) => {
   return {
     more: 20 === Object.keys(families).length,
     results: Object.keys(families).map(
-      (familyIdentifier): option => {
+      (familyIdentifier): Select2Option => {
         return {
           id: families[familyIdentifier].code,
           text:
@@ -77,21 +76,19 @@ const FamilySelector: React.FC<Props> = ({
   id,
   label,
   hiddenLabel = false,
-  multiple,
   selectedFamilyCodes,
   currentCatalogLocale,
   onSelectorChange,
 }) => {
   return (
-    <Select2Wrapper
+    <Select2MultiAsyncWrapper
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string | string[] | number) => {
-        onSelectorChange(Array.isArray(value) ? value : [value as string]);
+      onChange={(value: string[]) => {
+        onSelectorChange(value);
       }}
       value={selectedFamilyCodes}
-      multiple={multiple}
       ajax={{
         url: router.generate('pim_enrich_family_rest_index'),
         quietMillis: 250,
