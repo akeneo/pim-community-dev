@@ -37,7 +37,6 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
   router,
   lineNumber,
   translate,
-  condition,
   currentCatalogLocale,
 }) => {
   const { register, setValue, getValues } = useFormContext();
@@ -60,7 +59,7 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
   const setFormValue = (newValue: string[] | null): void => {
     setValue(
       `content.conditions[${lineNumber}].value`,
-      valueMustBeSet() ? newValue || condition.value || [] : null
+      valueMustBeSet() ? newValue || [] : null
     );
   };
   const setFormOperator = (operator: Operator): void => {
@@ -70,7 +69,7 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
 
   const [displayFamilySelector, setDisplayFamilySelector] = React.useState<
     boolean
-  >(valueMustBeSet() ? true : false);
+  >(valueMustBeSet());
 
   return (
     <div>
@@ -82,12 +81,12 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
           id={`edit-rules-input-${lineNumber}-operator`}
           label='Operator'
           hiddenLabel={true}
-          currentOperator={condition.operator}
+          currentOperator={getFormOperator()}
           availableOperators={FamilyOperators}
           translate={translate}
           onSelectorChange={(value: string): void => {
             setFormOperator(value as Operator);
-            setDisplayFamilySelector(valueMustBeSet() ? true : false);
+            setDisplayFamilySelector(valueMustBeSet());
           }}
         />
       </OperatorColumn>
@@ -99,7 +98,7 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
             label='Families'
             hiddenLabel={true}
             multiple={true}
-            selectedFamilyCodes={condition.value || []}
+            selectedFamilyCodes={getFormValue() || []}
             currentCatalogLocale={currentCatalogLocale}
             onSelectorChange={(values: string[]): void => {
               setFormValue(values);

@@ -95,7 +95,7 @@ describe('FamilyConditionLine', () => {
     userEvent.selectOptions(operatorSelector, Operator.NOT_IN_LIST);
     expect(setValueMock).toHaveBeenCalledTimes(4);
     expect(setValueMock).toHaveBeenNthCalledWith(3, 'content.conditions[1].operator', Operator.NOT_IN_LIST);
-    expect(setValueMock).toHaveBeenNthCalledWith(4, 'content.conditions[1].value', ['accessories', 'mugs']);
+    expect(setValueMock).toHaveBeenNthCalledWith(4, 'content.conditions[1].value', []);
     expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
   });
 });

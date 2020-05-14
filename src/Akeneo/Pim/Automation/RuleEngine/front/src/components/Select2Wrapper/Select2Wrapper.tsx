@@ -32,10 +32,11 @@ type Props = {
   data?: (option | optionsGroup)[];
   dropdownCssClass?: string;
   formatResult?: (item: option | optionsGroup) => string;
+  formatSelection?: (item: option | optionsGroup) => string;
   hiddenLabel?: boolean;
   id: string;
   label: string;
-  onChange?: (value: string | string[]) => void;
+  onChange?: (value: string | string[] | number) => void;
   onSelecting?: (event: any) => void;
   placeholder?: string;
   value?: number | string | string[];
@@ -54,6 +55,7 @@ type Props = {
     results: (values: any) => ajaxResults;
   };
   initSelection?: (element: any, callback: InitSelectionCallback) => void;
+  hideSearch?: boolean;
 };
 
 const Select2Wrapper: React.FC<Props> = ({
@@ -62,6 +64,7 @@ const Select2Wrapper: React.FC<Props> = ({
   data,
   dropdownCssClass,
   formatResult,
+  formatSelection,
   hiddenLabel = false,
   id,
   label,
@@ -72,9 +75,12 @@ const Select2Wrapper: React.FC<Props> = ({
   multiple = false,
   ajax,
   initSelection,
+  hideSearch = false,
 }) => {
   const select2Ref = useRef<HTMLInputElement>(null);
-  useEffect(() => {
+  const encodedData: string = JSON.stringify(data);
+
+  const initSelect2 = () => {
     if (null === select2Ref.current) {
       return;
     }
@@ -82,17 +88,22 @@ const Select2Wrapper: React.FC<Props> = ({
     $select.val(value);
 
     $select.select2('destroy');
-    $select.select2({
+    const options: any = {
       allowClear,
       containerCssClass,
       data,
       dropdownCssClass,
       formatResult,
+      formatSelection,
       placeholder,
       multiple,
       ajax,
       initSelection,
-    });
+    };
+    if (hideSearch) {
+      options.minimumResultsForSearch = Infinity;
+    }
+    $select.select2(options);
 
     if (onChange) {
       $select.on('change', (event: Select2Event) => onChange(event.val));
@@ -101,7 +112,26 @@ const Select2Wrapper: React.FC<Props> = ({
       $select.off('select2-selecting');
       $select.on('select2-selecting', onSelecting);
     }
+  };
+
+  useEffect(() => {
+    initSelect2();
   }, [select2Ref, onSelecting, onChange, formatResult]);
+
+  useEffect(() => {
+    initSelect2();
+  }, [encodedData]);
+
+  useEffect(() => {
+    if (null === select2Ref.current) {
+      return;
+    }
+    const $select = $(select2Ref.current) as any;
+    $select.val(value).trigger('change');
+    if (onChange && value) {
+      onChange(value);
+    }
+  }, [value]);
 
   useEffect(() => {
     if (null === select2Ref.current) {

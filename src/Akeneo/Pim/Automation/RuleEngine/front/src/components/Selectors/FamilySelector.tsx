@@ -87,8 +87,8 @@ const FamilySelector: React.FC<Props> = ({
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string | string[]) => {
-        onSelectorChange(Array.isArray(value) ? value : [value]);
+      onChange={(value: string | string[] | number) => {
+        onSelectorChange(Array.isArray(value) ? value : [value as string]);
       }}
       value={selectedFamilyCodes}
       multiple={multiple}

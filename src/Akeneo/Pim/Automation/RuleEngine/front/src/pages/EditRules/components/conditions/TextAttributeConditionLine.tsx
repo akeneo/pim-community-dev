@@ -8,8 +8,10 @@ import {
 import { Operator } from '../../../../models/Operator';
 import { ConditionLineProps } from './ConditionLineProps';
 import { Locale } from '../../../../models';
-import { Scope } from '../../../../models';
 import { InputText } from '../../../../components/Inputs';
+import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
+import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
+import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';
 
 const FieldColumn = styled.span`
   width: 100px;
@@ -54,14 +56,43 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   scopes,
   currentCatalogLocale,
 }) => {
-  const { register } = useFormContext();
-  const [operator, setOperator] = React.useState<Operator>(condition.operator);
+  const { register, getValues, setValue } = useFormContext();
   const [scopeCode, setScopeCode] = React.useState<string | undefined>(
     condition.scope
   );
 
-  const getScopeLabel = (scope: Scope): string => {
-    return scope.labels[currentCatalogLocale] || `[${scope.code}]`;
+  register({ name: `content.conditions[${lineNumber}].field` });
+  register({ name: `content.conditions[${lineNumber}].operator` });
+  if (condition.attribute.scopable) {
+    register({ name: `content.conditions[${lineNumber}].scope` });
+  }
+  if (condition.attribute.localizable) {
+    register({ name: `content.conditions[${lineNumber}].locale` });
+  }
+
+  const getFormOperator = (): Operator =>
+    getValues()[`content.conditions[${lineNumber}].operator`];
+  const getFormLocale = (): string =>
+    getValues()[`content.conditions[${lineNumber}].locale`] || '';
+  const getFormScope = (): string =>
+    getValues()[`content.conditions[${lineNumber}].scope`] || '';
+  const valueMustBeSet = (): boolean =>
+    ![Operator.IS_EMPTY, Operator.IS_NOT_EMPTY].includes(getFormOperator());
+
+  const [displayValueInput, setDisplayValueInput] = React.useState<boolean>(
+    valueMustBeSet()
+  );
+
+  const handleOperatorChange = (operator: Operator) => {
+    setValue(`content.conditions[${lineNumber}].operator`, operator);
+    const actualFormValue = getValues()[
+      `content.conditions[${lineNumber}].value`
+    ];
+    setValue(
+      `content.conditions[${lineNumber}].value`,
+      valueMustBeSet() ? actualFormValue || condition.value || '' : null
+    );
+    setDisplayValueInput(valueMustBeSet());
   };
 
   const computeLocales = (): Locale[] => {
@@ -72,46 +103,27 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       : [];
   };
 
-  const translateOperator = (operator: string): string => {
-    const label = translate(
-      'pimee_catalog_rule.form.edit.conditions.operators.' + operator
-    );
-
-    return label.charAt(0).toUpperCase() + label.slice(1);
-  };
-
   return (
     <div>
       <FieldColumn className={'AknGrid-bodyCell--highlight'}>
         {condition.attribute.labels[currentCatalogLocale] ||
           '[' + condition.attribute.code + ']'}
-        <input
-          type='hidden'
-          name={`content.conditions[${lineNumber}].field`}
-          ref={register}
-        />
       </FieldColumn>
       <OperatorColumn>
-        <select
-          name={`content.conditions[${lineNumber}].operator`}
-          data-testid={`edit-rules-input-${lineNumber}-operator`}
-          ref={register}
-          onChange={event => {
-            setOperator(event.target.value as Operator);
-          }}>
-          {TextAttributeOperators.map((operator, i) => {
-            return (
-              <option key={i} value={operator}>
-                {translateOperator(operator)}
-              </option>
-            );
-          })}
-        </select>
+        <OperatorSelector
+          id={`edit-rules-input-${lineNumber}-operator`}
+          label='Operator'
+          hiddenLabel={true}
+          currentOperator={getFormOperator()}
+          availableOperators={TextAttributeOperators}
+          translate={translate}
+          onSelectorChange={(value: string): void => {
+            handleOperatorChange(value as Operator);
+          }}
+        />
       </OperatorColumn>
       <ValueColumn>
-        {!([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
-          operator
-        ) && (
+        {displayValueInput && (
           <InputText
             data-testid={`edit-rules-input-${lineNumber}-value`}
             name={`content.conditions[${lineNumber}].value`}
@@ -124,37 +136,32 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       </ValueColumn>
       <ScopeColumn>
         {condition.attribute.scopable && (
-          <select
-            ref={register}
-            data-testid={`edit-rules-input-${lineNumber}-scope`}
-            name={`content.conditions[${lineNumber}].scope`}
-            onChange={event => {
-              setScopeCode(event.target.value);
-            }}>
-            {Object.values(scopes).map((scope: Scope, i: number) => {
-              return (
-                <option key={i} value={scope.code}>
-                  {getScopeLabel(scope)}
-                </option>
-              );
-            })}
-          </select>
+          <ScopeSelector
+            id={`edit-rules-input-${lineNumber}-scope`}
+            label='Scope'
+            hiddenLabel={true}
+            currentScopeCode={getFormScope()}
+            availableScopes={Object.values(scopes)}
+            onSelectorChange={(value: string): void => {
+              setValue(`content.conditions[${lineNumber}].scope`, value);
+              setScopeCode(value);
+            }}
+            currentCatalogLocale={currentCatalogLocale}
+          />
         )}
       </ScopeColumn>
       <LocaleColumn>
         {condition.attribute.localizable && (
-          <select
-            ref={register}
-            data-testid={`edit-rules-input-${lineNumber}-locale`}
-            name={`content.conditions[${lineNumber}].locale`}>
-            {computeLocales().map((locale: Locale, i: number) => {
-              return (
-                <option key={i} value={locale.code}>
-                  {locale.label}
-                </option>
-              );
-            })}
-          </select>
+          <LocaleSelector
+            id={`edit-rules-input-${lineNumber}-locale`}
+            label='Locale'
+            hiddenLabel={true}
+            currentLocaleCode={getFormLocale()}
+            availableLocales={computeLocales()}
+            onSelectorChange={(value: string): void => {
+              setValue(`content.conditions[${lineNumber}].locale`, value);
+            }}
+          />
         )}
       </LocaleColumn>
     </div>
