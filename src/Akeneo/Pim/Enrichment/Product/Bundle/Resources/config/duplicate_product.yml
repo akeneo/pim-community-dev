@@ -5,17 +5,19 @@ services:
         arguments:
             - '@pim_catalog.repository.product_without_permission'
             - '@pimee_enrich.product.duplicate_product_handler'
+            - '@pim_enrich.normalizer.product_violation'
 
     pimee_enrich.product.duplicate_product_handler:
         class: 'Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductHandler'
         arguments:
             - '@pim_catalog.repository.product_without_permission'
             - '@pim_catalog.repository.attribute'
+            - '@pimee_enrich.product.remove_unique_attribute_values'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.normalizer.standard.product'
             - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
             - '@pim_catalog.saver.product'
-            - '@pimee_enrich.product.remove_unique_attribute_values'
 
     pimee_enrich.product.remove_unique_attribute_values:
         class: 'Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\RemoveUniqueAttributeValues'

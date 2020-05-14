@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class DuplicateProductController
 {
@@ -29,12 +30,17 @@ class DuplicateProductController
     /** @var ProductRepository */
     private $productRepository;
 
+    /** @var NormalizerInterface */
+    private $constraintViolationNormalizer;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        DuplicateProductHandler $duplicateProductHandler
+        DuplicateProductHandler $duplicateProductHandler,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->productRepository = $productRepository;
         $this->duplicateProductHandler = $duplicateProductHandler;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     public function duplicateProductAction(Request $request, string $id)
@@ -56,9 +62,24 @@ class DuplicateProductController
 
         $duplicateProductResponse = $this->duplicateProductHandler->handle($query);
 
+        if ($duplicateProductResponse->isOk()) {
+            return new JsonResponse(
+                ['unique_attribute_codes' => $duplicateProductResponse->uniqueAttributeValues()],
+                Response::HTTP_OK
+            );
+        }
+
+        $normalizedViolations = [];
+        foreach ($duplicateProductResponse->constraintViolationList() as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api'
+            );
+        }
+
         return new JsonResponse(
-            ['unique_attribute_codes' => $duplicateProductResponse->uniqueAttributeValues()],
-            Response::HTTP_OK
+            ['values' => $normalizedViolations],
+            Response::HTTP_BAD_REQUEST
         );
     }
 }

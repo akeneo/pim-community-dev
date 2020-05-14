@@ -66,6 +66,34 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         );
     }
 
+    public function test_it_validates_the_duplicated_product()
+    {
+        $productToDuplicate = $this->createProduct(
+            'product_to_duplicate',
+            ['family' => 'familyA']
+        );
+        $url = $this->router->generate('pimee_enrich_product_rest_duplicate', [
+            'id' => $productToDuplicate->getId()
+        ]);
+
+        $this->client->request('POST', $url, ['duplicated_product_identifier' => $productToDuplicate->getIdentifier()]);
+
+        Assert::assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
+        Assert::assertEquals(
+            [
+              'values' => [
+                  [
+                    'attribute' => 'sku',
+                    'locale' => null,
+                    'scope' => null,
+                    'message' => 'The same identifier is already set on another product'
+                  ]
+              ]
+            ],
+            json_decode($this->client->getResponse()->getContent(), 1)
+        );
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
