@@ -31,12 +31,20 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 Define the tag of the PIM Enterprise Cloud image
 Can be with or without the Onboarder bundle activated
 */}}
-{{- define "pim.imageNameAndTag" -}}
+{{- define "pim.imageName" -}}
 {{- if .Values.onboarder.enabled -}}
-{{- printf "%s:%s-onboarder" .Values.image.pim.repository .Values.image.pim.tag -}}
+{{- printf "%s-onboarder" .Values.image.pim.repository -}}
 {{- else -}}
-{{- printf "%s:%s" .Values.image.pim.repository .Values.image.pim.tag -}}
+{{- printf "%s" .Values.image.pim.repository -}}
 {{- end -}}
+{{- end -}}
+
+{{/*
+Define the tag of the PIM Enterprise Cloud image
+Can be with or without the Onboarder bundle activated
+*/}}
+{{- define "pim.imageNameAndTag" -}}
+{{- printf "%s:%s" (include "pim.imageName" .) .Values.image.pim.tag -}}
 {{- end -}}
 
 {{/*

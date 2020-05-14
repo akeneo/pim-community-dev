@@ -321,8 +321,15 @@ jobs:
               name: Test PIM connexion on kubernetes
               command: IMAGE_TAG=$CIRCLE_SHA1 make test-prod
           - run:
+              name: Prepare infrastructure artifacts
+              command: IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - run:
               name: Remove env on kubernetes
               command: IMAGE_TAG=$CIRCLE_SHA1 make delete
+              when: always
 
   deploy_upgrade_oldest_prod_environment:
       environment:
@@ -340,14 +347,6 @@ jobs:
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
           - run:
-              name: Upgrade oldest SaaS prod (PIM v3) to intermediate version from 11th February
-              command: |
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200211172331 INSTANCE_NAME=pimup-$CIRCLE_SHA1 make deploy-pim-intermediate
-          - run:
-              name: Upgrade oldest SaaS prod (PIM v3) to intermediate version from 1st April
-              command: |
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200401020139 INSTANCE_NAME=pimup-$CIRCLE_SHA1 make deploy-pim-intermediate
-          - run:
               name: Upgrade intermediate version SaaS to master
               command: |
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
@@ -357,8 +356,15 @@ jobs:
               name: Production tests on upgraded env
               command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make test-prod
           - run:
+              name: Prepare infrastructure artifacts
+              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - run:
               name: Remove upgraded env
               command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
+              when: always
 
   release:
       environment:

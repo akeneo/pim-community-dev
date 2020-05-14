@@ -63,6 +63,34 @@ terraform-plan: terraform-init
 terraform-apply:
 	cd $(INSTANCE_DIR) && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 
+.PHONY: prepare-infrastructure-artifacts
+prepare-infrastructure-artifacts: render-helm-templates dump-kubernetes-namespace
+	cd $(INSTANCE_DIR) ;\
+	mkdir -p ~/artifacts/infra ;\
+	rm -Rf $(INSTANCE_DIR)/.terraform ;\
+	mv $(INSTANCE_DIR) ~/artifacts/infra/
+
+.PHONY: render-helm-templates
+render-helm-templates:
+	cd $(INSTANCE_DIR) ;\
+	mkdir -p helm-render ;\
+	helm template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render
+
+# TODO
+.PHONY: dump-kubernetes-namespace
+dump-kubernetes-namespace:
+	cd $(INSTANCE_DIR) ;\
+	mkdir -p k8s-dump ;\
+	RESOURCES=$$(kubectl -n $(PFID) get all -o jsonpath='{range .items[*]}{.kind}{"\n"}{end}' | uniq) ;\
+	for RESOURCE in $${RESOURCES};do \
+		echo $${RESOURCE} \
+		# RESOURCE_NAMES=$$(kubectl --context $${CONTEXT} -n $(PFID) get -o json $${RESOURCE}|jq '.items[].metadata.name'|sed "s/\"//g") ;\
+		# for RESOURCE_NAME in ${RESOURCE_NAMES};do \
+		# 	mkdir -p "k8s-dump" ;\
+		# 	kubectl --context $${CONTEXT} -n $(PFID) get -o yaml $${RESOURCE} $${RESOURCE_NAME} > "k8s-dump/$${RESOURCE_NAME}.yaml" ;\
+		# done ;\
+	done
+
 .PHONY: delete
 delete: terraform-delete purge-release-all
 
@@ -92,6 +120,8 @@ ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200211172331"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200401020139"
 endif
 ifeq ($(INSTANCE_NAME),pimci-helpdesk)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
@@ -184,31 +214,9 @@ delete_pr_environments:
 		echo "---[DELETED] namespace $${namespace}"; \
 	done
 
-.PHONY: prepare-pim-intermediate
-prepare-pim-intermediate: create-ci-release-files terraform-init
-	rm -Rf $(DEPLOYMENTS_INSTANCES_DIR)/pim-$(IMAGE_TAG)
-	git clone -n -b $(IMAGE_TAG) git@github.com:akeneo/pim-enterprise-dev.git --depth 1 $(DEPLOYMENTS_INSTANCES_DIR)/pim-$(IMAGE_TAG)
-	cd $(DEPLOYMENTS_INSTANCES_DIR)/pim-$(IMAGE_TAG) && git checkout HEAD deployments/terraform/pim
-	mv $(PWD)/deployments/terraform/pim $(PWD)/deployments/terraform/pim_new
-	mv $(DEPLOYMENTS_INSTANCES_DIR)/pim-$(IMAGE_TAG)/deployments/terraform/pim $(PWD)/deployments/terraform/pim
-
-.PHONY: deploy-pim-intermediate
-deploy-pim-intermediate: prepare-pim-intermediate deploy
-	rm -Rf $(PWD)/deployments/terraform/pim $(DEPLOYMENTS_INSTANCES_DIR)/pim-$(IMAGE_TAG)
-	mv $(PWD)/deployments/terraform/pim_new $(PWD)/deployments/terraform/pim
-	# Seems that Kubernetes need a bit of time after upgrade in order to clean old resources
-	sleep 30
-
 .PHONY: terraform-pre-upgrade
 terraform-pre-upgrade: terraform-init
 	yq d -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks"
 	for PD in $$(kubectl get -n $(PFID) pv $$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') -o jsonpath='{..spec.gcePersistentDisk.pdName}'); do \
 		yq w -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks[+]" "$${PD}"; \
 	done
-	# Unused as CI does not install pim-monitoring module
-	# cd $(INSTANCE_DIR) && terraform import module.pim-monitoring.google_logging_metric.login_count $(PFID)-login-count
-	# cd $(INSTANCE_DIR) && terraform import module.pim-monitoring.google_logging_metric.login-response-time-distribution $(PFID)-login-response-time-distribution
-	# cd $(INSTANCE_DIR) && terraform import module.pim-monitoring.google_logging_metric.logs-count $(PFID)-logs-count
-	# cd $(INSTANCE_DIR) && terraform state rm module.pim.template_file.metric-template
-	# cd $(INSTANCE_DIR) && terraform state rm module.pim.local_file.metric-rendered
-	# cd $(INSTANCE_DIR) && terraform state rm module.pim.null_resource.metric

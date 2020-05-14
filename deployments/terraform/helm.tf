@@ -72,8 +72,7 @@ kubectl scale -n ${local.pfid} deploy/pim-daemon-all-but-linking-assets-to-produ
 helm upgrade --atomic --cleanup-on-fail --wait --install --force --timeout 1202 ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
 HELM_STATUS_CODE=$${?}
 kubectl scale -n ${local.pfid} deploy/pim-web --replicas=2
-kubectl scale -n ${local.pfid} deploy/pim-daemon-default --replicas=1
-kubectl scale -n ${local.pfid} deploy/pim-daemon-all-but-linking-assets-to-products --replicas=1 || true
+kubectl scale -n ${local.pfid} deploy/pim-daemon-default deploy/pim-daemon-all-but-linking-assets-to-products --replicas=1
 KUBECTL_SCALE_CODE=$${?}
 if [ $${KUBECTL_SCALE_CODE} -eq 0 ]; then
   exit $${HELM_STATUS_CODE}
