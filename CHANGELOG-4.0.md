@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.25 (2020-05-14)
+
 ## Bug fixes
 
 - PIM-9241 - Target transformation was not empty when source attribute value was empty
