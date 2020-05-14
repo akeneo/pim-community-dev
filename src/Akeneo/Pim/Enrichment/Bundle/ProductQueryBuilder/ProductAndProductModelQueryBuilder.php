@@ -134,6 +134,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             'field',
             'self_and_ancestor.label_or_identifier'
         );
+        $hasLabelOrIdentifierFilter = $this->hasRawFilter('field', 'label_or_identifier');
         $hasGroupsFilter = $this->hasRawFilter('field', 'groups');
         $hasCategoryFilter = $this->hasFilterOnCategoryWhichImplyAggregation();
 
@@ -146,7 +147,8 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             !$hasSelfAndAncestorsIdsFilter &&
             !$hasSelfAndAncestorsLabelOrIdentifierFilter &&
             !$hasGroupsFilter &&
-            !$hasCategoryFilter;
+            !$hasCategoryFilter &&
+            !$hasLabelOrIdentifierFilter;
     }
 
     /**
