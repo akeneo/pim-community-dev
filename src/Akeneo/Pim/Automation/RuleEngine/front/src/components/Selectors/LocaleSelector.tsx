@@ -1,6 +1,6 @@
 import React from 'react';
-import { option, optionsGroup, Select2Wrapper } from '../Select2Wrapper';
 import { Locale } from '../../models';
+import { Select2Option, Select2OptionGroup, Select2SimpleSyncWrapper } from "../Select2Wrapper";
 
 type Props = {
   id: string;
@@ -35,7 +35,7 @@ const LocaleSelector: React.FC<Props> = ({
     setValue(availableLocales.length > 0 ? availableLocales[0].code : '');
   }
 
-  const formatLocale = (item: option | optionsGroup): string => {
+  const formatLocale = (item: Select2Option | Select2OptionGroup): string => {
     const locale = availableLocales.find(
       (locale: Locale) => locale.code === item.id
     );
@@ -51,13 +51,13 @@ const LocaleSelector: React.FC<Props> = ({
   };
 
   return (
-    <Select2Wrapper
+    <Select2SimpleSyncWrapper
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string | string[] | number) => {
-        setValue(value as string);
-        onSelectorChange(value as string);
+      onChange={(value: string) => {
+        setValue(value);
+        onSelectorChange(value);
       }}
       value={value}
       data={localeChoices}

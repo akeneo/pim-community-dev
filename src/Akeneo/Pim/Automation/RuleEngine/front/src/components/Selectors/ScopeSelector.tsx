@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select2Wrapper } from '../Select2Wrapper';
+import { Select2SimpleSyncWrapper } from '../Select2Wrapper';
 import { Scope } from '../../models';
 
 type Props = {
@@ -33,12 +33,12 @@ const ScopeSelector: React.FC<Props> = ({
   });
 
   return (
-    <Select2Wrapper
+    <Select2SimpleSyncWrapper
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string | string[] | number) => {
-        onSelectorChange(Array.isArray(value) ? '' : (value as string));
+      onChange={(value: string) => {
+        onSelectorChange(value);
       }}
       value={currentScopeCode}
       data={scopeChoices}

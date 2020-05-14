@@ -37,7 +37,6 @@ type Select2Ajax = {
     results: Select2Option[] | Select2OptionGroup[];
   };
   initSelection?: (element: any, callback: InitSelectionCallback) => void;
-  hideSearch?: boolean;
 };
 
 type Select2Value = string | number;
@@ -54,6 +53,7 @@ type Select2GlobalProps = {
   initSelection?: (element: any, callback: InitSelectionCallback) => void;
   formatResult?: (item: Select2Option | Select2OptionGroup) => string;
   formatSelection?: (item: Select2Option | Select2OptionGroup) => string;
+  hideSearch?: boolean;
 }
 
 type Props = Select2GlobalProps & {
@@ -160,7 +160,7 @@ const Select2Wrapper: React.FC<Props> = ({
     const $select = $(select2Ref.current) as any;
 
     $select.select2('destroy');
-    initSelect2($select);
+    initSelect2();
   }, [formatResult])
 
   useEffect(() => {
@@ -171,7 +171,7 @@ const Select2Wrapper: React.FC<Props> = ({
 
     $select.val(value);
 
-    initSelect2($select);
+    initSelect2();
 
     return () => {
       $select.off('change');
