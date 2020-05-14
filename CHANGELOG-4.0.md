@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9246: Add a validation on locale codes
+
 # 4.0.24 (2020-05-07)
 
 # 4.0.23 (2020-05-06)
