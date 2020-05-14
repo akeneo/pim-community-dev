@@ -20,7 +20,7 @@ type Security = { isGranted: (acl: string) => boolean };
 
 type Translate = (
   id: string,
-  placeholders?: { [name: string]: string },
+  placeholders?: { [name: string]: string | number },
   count?: number
 ) => string;
 

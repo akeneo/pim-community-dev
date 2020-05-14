@@ -176,7 +176,7 @@ describe('EditRules', () => {
     expect((await findByTestId('condition-list')).children.length).toEqual(1);
   });
 
-  it('should render an error', async () => {
+  it('should render a 404 error', async () => {
     // Given
     fetchMock.mockResponses(
       [JSON.stringify({}), { status: 404 }],
@@ -191,6 +191,24 @@ describe('EditRules', () => {
       }
     );
     // Then
-    expect(await findByText('There was an error (TODO: better display)')).toBeInTheDocument();
+    expect(await findByText('404')).toBeInTheDocument();
+  });
+
+  it('should render a fallback error', async () => {
+    // Given
+    fetchMock.mockResponses(
+      [JSON.stringify({ foo: 'bar' }), { status: 200 }],
+      [JSON.stringify(localesPayload), { status: 200 }],
+      [JSON.stringify(scopesPayload), { status: 200 }]
+    )
+    // When
+    const { findByText } = render(
+      <EditRules ruleDefinitionCode="malformed_rule" setIsDirty={setIsDirty}/>,
+      {
+        legacy: true
+      }
+    );
+    // Then
+    expect(await findByText('500')).toBeInTheDocument();
   });
 });
