@@ -18,6 +18,7 @@ $rules = [
 
             // Dependency on Symfony Validator to ease validation
             'Symfony\Component\Validator',
+            'Symfony\Component\HttpKernel\Exception\HttpException'
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 

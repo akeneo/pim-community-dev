@@ -8,13 +8,14 @@ use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateCon
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\TechnicalError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepository;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\ExtractErrorsFromHttpException;
-use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -43,47 +44,44 @@ class CollectApiErrorSpec extends ObjectBehavior
         $updateErrorCountHandler
     ): void {
         $exception = new HttpException(400);
-        $extractErrorsFromHttpException->extractAll($exception)->willReturn(['{"message":"My error!"}']);
+        $connectionCode = new ConnectionCode('erp');
+        $technicalError = new TechnicalError($connectionCode, '{"message":"technical error"}');
+        $anotherTechError = new TechnicalError($connectionCode, '{"message":"Another technical error"}');
+        $businessError = new BusinessError($connectionCode, '{"message":"business error"}');
+        $anotherBusError = new BusinessError($connectionCode, '{"message":"another business error"}');
+
         $connectionContext->getConnection()->willReturn($connection);
         $connectionContext->isCollectable()->willReturn(true);
         $connection->flowType()->willReturn(new FlowType(FlowType::DATA_SOURCE));
-        $connection->code()->willReturn(new ConnectionCode('erp'));
+        $connection->code()->willReturn($connectionCode);
 
-        $repository->bulkInsert(Argument::containing(Argument::type(BusinessError::class)))
-            ->shouldBeCalled();
-        $updateErrorCountHandler->handle(Argument::that(function (UpdateConnectionErrorCountCommand $command) {
-            return 'erp' === $command->connectionCode() &&
-                1 === $command->errorCount() &&
-                ErrorTypes::BUSINESS === $command->errorType();
-        }))->shouldBeCalled();
+        $extractErrorsFromHttpException->extractAll($exception, $connectionCode)->willReturn([
+            $technicalError,
+            $anotherTechError,
+            $businessError,
+            $anotherBusError,
+        ]);
 
-        $this->collectFromHttpException($exception);
-        $this->flush();
-    }
+        $repository->bulkInsert([$businessError, $anotherBusError])->shouldBeCalled();
 
-    public function it_collects_several_errors_from_an_http_exception(
-        $extractErrorsFromHttpException,
-        $connectionContext,
-        Connection $connection,
-        $repository,
-        $updateErrorCountHandler
-    ): void {
-        $exception = new HttpException(422);
-        $extractErrorsFromHttpException
-            ->extractAll($exception)
-            ->willReturn(['{"message":"My error!"}', '{"message":"Another error!"}']);
-        $connectionContext->getConnection()->willReturn($connection);
-        $connectionContext->isCollectable()->willReturn(true);
-        $connection->flowType()->willReturn(new FlowType(FlowType::DATA_SOURCE));
-        $connection->code()->willReturn(new ConnectionCode('erp'));
+        $updateErrorCountHandler->handle(Argument::that(
+            function (UpdateConnectionErrorCountCommand $command) use ($connectionCode) {
+                $hourlyErrorCounts = $command->errorCounts();
+                if (2 !== count($hourlyErrorCounts)) {
+                    return false;
+                }
 
-        $repository
-            ->bulkInsert(Argument::withEveryEntry(Argument::type(BusinessError::class)))
-            ->shouldBeCalled();
-        $updateErrorCountHandler->handle(Argument::that(function (UpdateConnectionErrorCountCommand $command) {
-            return 'erp' === $command->connectionCode() &&
-                2 === $command->errorCount() &&
-                ErrorTypes::BUSINESS === $command->errorType();
+                foreach ($hourlyErrorCounts as $hourlyErrorCount) {
+                    if (!$hourlyErrorCount instanceof HourlyErrorCount ||
+                        $connectionCode === $hourlyErrorCount->connectionCode() ||
+                        2 !== $hourlyErrorCount->errorCount() ||
+                        !in_array((string) $hourlyErrorCount->errorType(), ErrorTypes::getAll())
+                    ) {
+                        return false;
+                    }
+                }
+
+                return true;
         }))->shouldBeCalled();
 
         $this->collectFromHttpException($exception);
@@ -97,9 +95,9 @@ class CollectApiErrorSpec extends ObjectBehavior
         $updateErrorCountHandler
     ): void {
         $exception = new HttpException(400);
-        $extractErrorsFromHttpException->extractAll($exception)->willReturn(['{"message":"My error!"}']);
         $connectionContext->getConnection()->willReturn(null);
 
+        $extractErrorsFromHttpException->extractAll($exception)->shouldNotBeCalled();
         $repository->bulkInsert(Argument::any())->shouldNotBeCalled();
         $updateErrorCountHandler->handle(Argument::any())->shouldNotBeCalled();
 
@@ -115,10 +113,10 @@ class CollectApiErrorSpec extends ObjectBehavior
         $updateErrorCountHandler
     ): void {
         $exception = new HttpException(400);
-        $extractErrorsFromHttpException->extractAll($exception)->willReturn(['{"message":"My error!"}']);
         $connectionContext->getConnection()->willReturn($connection);
         $connectionContext->isCollectable()->willReturn(false);
 
+        $extractErrorsFromHttpException->extractAll($exception)->shouldNotBeCalled();
         $repository->bulkInsert(Argument::any())->shouldNotBeCalled();
         $updateErrorCountHandler->handle(Argument::any())->shouldNotBeCalled();
 
@@ -134,11 +132,11 @@ class CollectApiErrorSpec extends ObjectBehavior
         $updateErrorCountHandler
     ): void {
         $exception = new HttpException(400);
-        $extractErrorsFromHttpException->extractAll($exception)->willReturn(['{"message":"My error!"}']);
         $connectionContext->getConnection()->willReturn($connection);
         $connectionContext->isCollectable()->willReturn(true);
         $connection->flowType()->willReturn(new FlowType(FlowType::OTHER));
 
+        $extractErrorsFromHttpException->extractAll($exception)->shouldNotBeCalled();
         $repository->bulkInsert(Argument::any())->shouldNotBeCalled();
         $updateErrorCountHandler->handle(Argument::any())->shouldNotBeCalled();
 

@@ -7,9 +7,10 @@ namespace Akeneo\Connectivity\Connection\Application\ErrorManagement\Service;
 use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountCommand;
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler;
-use Akeneo\Connectivity\Connection\Domain\Common\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\ApiErrorInterface;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepository;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -32,7 +33,11 @@ class CollectApiError
     /** @var UpdateConnectionErrorCountHandler */
     private $updateErrorCountHandler;
 
-    private $errors = [];
+    /** @var array */
+    private $errors;
+
+    /** @var int */
+    private $globalErrorCount;
 
     public function __construct(
         ConnectionContextInterface $connectionContext,
@@ -44,36 +49,11 @@ class CollectApiError
         $this->connectionContext = $connectionContext;
         $this->extractErrorsFromHttpException = $extractErrorsFromHttpException;
         $this->updateErrorCountHandler = $updateErrorCountHandler;
+        $this->errors = array_fill_keys(ErrorTypes::getAll(), []);
+        $this->globalErrorCount = 0;
     }
 
     public function collectFromHttpException(HttpException $httpException): void
-    {
-        $errors = $this->extractErrorsFromHttpException->extractAll($httpException);
-        $this->collect($errors);
-    }
-
-    public function flush(): void
-    {
-        if (0 === count($this->errors)) {
-            return;
-        }
-
-        $connection = $connection = $this->connectionContext->getConnection();
-        $now = new \DateTime('now', new \DateTimeZone('UTC'));
-        $command = new UpdateConnectionErrorCountCommand(
-            (string) $connection->code(),
-            HourlyInterval::createFromDateTime($now),
-            count($this->errors),
-            ErrorTypes::BUSINESS
-        );
-        $this->repository->bulkInsert($this->errors);
-        $this->updateErrorCountHandler->handle($command);
-    }
-
-    /**
-     * @param string[] $errors
-     */
-    private function collect(array $errors): void
     {
         $connection = $this->connectionContext->getConnection();
         if (null === $connection) {
@@ -83,12 +63,41 @@ class CollectApiError
         if (false === $this->connectionContext->isCollectable() || FlowType::DATA_SOURCE !== (string) $connection->flowType()) {
             return;
         }
+        $connection = $this->connectionContext->getConnection();
+        $errors = $this->extractErrorsFromHttpException->extractAll($httpException, $connection->code());
+        $this->collect($errors);
+    }
 
-        $newErrors = [];
-        foreach ($errors as $error) {
-            $newErrors[] = new BusinessError($connection->code(), $error);
+    public function flush(): void
+    {
+        if (0 === $this->globalErrorCount) {
+            return;
         }
 
-        $this->errors = array_merge($this->errors, $newErrors);
+        $connection = $this->connectionContext->getConnection();
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $errorCounts = [];
+        foreach ($this->errors as $errorType => $errors) {
+            $errorCounts[] = new HourlyErrorCount(
+                (string) $connection->code(),
+                HourlyInterval::createFromDateTime($now),
+                count($errors),
+                $errorType
+            );
+        }
+        $command = new UpdateConnectionErrorCountCommand($errorCounts);
+        $this->repository->bulkInsert($this->errors[ErrorTypes::BUSINESS]);
+        $this->updateErrorCountHandler->handle($command);
+    }
+
+    /**
+     * @param ApiErrorInterface[] $errors
+     */
+    private function collect(array $errors): void
+    {
+        foreach ($errors as $error) {
+            $this->errors[(string) $error->type()][] = $error;
+            $this->globalErrorCount++;
+        }
     }
 }

@@ -7,18 +7,18 @@ namespace spec\Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\ApiErrorInterface;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\TechnicalError;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use PhpSpec\ObjectBehavior;
 
-class BusinessErrorSpec extends ObjectBehavior
+class TechnicalErrorSpec extends ObjectBehavior
 {
     public function it_is_a_business_error(): void
     {
         $connectionCode = new ConnectionCode('erp');
         $this->beConstructedWith($connectionCode, $this->getWellStructuredContent());
 
-        $this->shouldHaveType(BusinessError::class);
+        $this->shouldHaveType(TechnicalError::class);
         $this->shouldImplement(ApiErrorInterface::class);
     }
 
@@ -60,8 +60,8 @@ class BusinessErrorSpec extends ObjectBehavior
     public function it_normalizes(): void
     {
         $connectionCode = new ConnectionCode('erp');
-        $dateTime = new \DateTimeImmutable('2020-01-01T00:00:00', new \DateTimeZone('UTC'));
         $content = $this->getWellStructuredContent();
+        $dateTime = new \DateTimeImmutable('2020-01-01T00:00:00', new \DateTimeZone('UTC'));
         $this->beConstructedWith($connectionCode, $content, $dateTime);
 
         $expected = [
@@ -81,7 +81,7 @@ class BusinessErrorSpec extends ObjectBehavior
 
         $type = $this->type();
         $type->shouldBeAnInstanceOf(ErrorType::class);
-        $type->__toString()->shouldReturn(ErrorTypes::BUSINESS);
+        $type->__toString()->shouldReturn(ErrorTypes::TECHNICAL);
     }
 
     private function getWellStructuredContent(): string
