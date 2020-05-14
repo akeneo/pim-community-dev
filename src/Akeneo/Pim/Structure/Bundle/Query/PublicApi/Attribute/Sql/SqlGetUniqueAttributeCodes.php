@@ -17,20 +17,19 @@ final class SqlGetUniqueAttributeCodes implements GetUniqueAttributeCodes
         $this->connection = $connection;
     }
 
-    public function fromFamilyCode(string $familyCode): array
+    public function fromAttributeCodes(array $attributeCodes): array
     {
         $query = <<<SQL
-SELECT a.code
-FROM akeneo_pim.pim_catalog_attribute a
-    LEFT JOIN akeneo_pim.pim_catalog_family_attribute fa ON fa.attribute_id = a .id
-    LEFT JOIN akeneo_pim.pim_catalog_family f ON f.id = fa.family_id
-WHERE a.is_unique = 1
-AND f.code = (:familyCode)
+SELECT attribute.code
+FROM akeneo_pim.pim_catalog_attribute attribute
+WHERE attribute.is_unique = 1
+AND attribute.code IN (:attributeCodes)
 SQL;
 
         $rawResults = $this->connection->executeQuery(
             $query,
-            ['familyCode' =>  $familyCode]
+            ['attributeCodes' =>  $attributeCodes],
+            ['attributeCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll();
 
         $uniqueAttributeCodes = [];

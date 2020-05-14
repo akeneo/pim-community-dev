@@ -6,5 +6,5 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType;
 
 interface GetUniqueAttributeCodes
 {
-    public function fromFamilyCode(string $familyCode): array;
+    public function fromAttributeCodes(array $attributeCodes): array;
 }

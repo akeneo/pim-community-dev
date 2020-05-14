@@ -8,11 +8,6 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
-/**
- * @author    Christophe Chausseray
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class SqlGetUniqueAttributeCodesIntegration extends TestCase
 {
     public function setUp(): void
@@ -22,8 +17,9 @@ class SqlGetUniqueAttributeCodesIntegration extends TestCase
         $this->getUniqueAttributeCodes = $this->get('pimee_structure.product.query.sql_get_unique_attribute_codes');
     }
 
-    public function test_it_gets_unique_codes_for_a_family()
+    public function test_it_gets_unique_attribute_codes_from_codes()
     {
+        $attributeCodes = ['unique_attribute_1', 'optional_unique_attribute', 'non_unique_attribute'];
         $attributes = [
             [
                 'code' => 'unique_attribute_1',
@@ -32,6 +28,10 @@ class SqlGetUniqueAttributeCodesIntegration extends TestCase
             [
                 'code' => 'unique_attribute_2',
                 'unique' => true,
+            ],
+            [
+                'code' => 'optional_unique_attribute',
+                'unique' => true
             ],
             [
                 'code' => 'non_unique_attribute'
@@ -45,9 +45,9 @@ class SqlGetUniqueAttributeCodesIntegration extends TestCase
             ]
         );
 
-        $uniqueAttributeCodes = $this->getUniqueAttributeCodes->fromFamilyCode('familyA');
+        $uniqueAttributeCodes = $this->getUniqueAttributeCodes->fromAttributeCodes($attributeCodes);
 
-        $this->assertEquals(['sku', 'unique_attribute_1', 'unique_attribute_2'], $uniqueAttributeCodes);
+        Assert::assertEqualsCanonicalizing(['unique_attribute_1', 'optional_unique_attribute'], $uniqueAttributeCodes);
     }
 
     private function givenFamily(array $familyData)

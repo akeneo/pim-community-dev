@@ -14,4 +14,10 @@ services:
             - '@pim_catalog.normalizer.standard.product'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.saver.product'
+            - '@pimee_enrich.product.remove_unique_attribute_values'
+
+    pimee_enrich.product.remove_unique_attribute_values:
+        class: 'Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\RemoveUniqueAttributeValues'
+        arguments:
             - '@pimee_structure.product.query.sql_get_unique_attribute_codes'
+            - '@pim_catalog.repository.attribute'

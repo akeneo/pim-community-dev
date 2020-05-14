@@ -13,7 +13,6 @@ namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProdu
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetUniqueAttributeCodes;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -35,8 +34,8 @@ class DuplicateProductHandler
     /** @var SaverInterface */
     private $productSaver;
 
-    /** @var GetUniqueAttributeCodes */
-    private $getUniqueAttributeCodes;
+    /** @var RemoveUniqueAttributeValues */
+    private $removeUniqueAttributeValues;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -44,27 +43,22 @@ class DuplicateProductHandler
         NormalizerInterface $normalizer,
         ObjectUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
-        GetUniqueAttributeCodes $getUniqueAttributeCodes
+        RemoveUniqueAttributeValues $removeUniqueAttributeValues
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
         $this->normalizer = $normalizer;
         $this->productUpdater = $productUpdater;
         $this->productSaver = $productSaver;
-        $this->getUniqueAttributeCodes = $getUniqueAttributeCodes;
+        $this->removeUniqueAttributeValues = $removeUniqueAttributeValues;
     }
 
     public function handle(DuplicateProduct $query): DuplicateProductResponse
     {
         /** @var ProductInterface */
         $productToDuplicate = $this->productRepository->findOneByIdentifier($query->productToDuplicateIdentifier());
-        $familyCode = $productToDuplicate->getFamily()->getCode();
 
-        $uniqueAttributeCodes = $this->getUniqueAttributeCodes->fromFamilyCode($familyCode);
-        RemoveUniqueAttributeValues::fromCollection(
-            $productToDuplicate->getValues(),
-            $uniqueAttributeCodes
-        );
+        $uniqueAttributeCodes = $this->removeUniqueAttributeValues->fromCollection($productToDuplicate->getValues());
 
         $normalizedProduct = $this->normalizer->normalize(
             $productToDuplicate,
@@ -73,13 +67,13 @@ class DuplicateProductHandler
 
         $duplicatedProduct = $this->productBuilder->createProduct(
             $query->duplicatedProductIdentifier(),
-            $familyCode
+            $productToDuplicate->getFamily()->getCode()
         );
 
         $this->productUpdater->update($duplicatedProduct, $normalizedProduct);
 
         $this->productSaver->save($duplicatedProduct);
 
-        return new DuplicateProductResponse([$uniqueAttributeCodes]);
+        return new DuplicateProductResponse($uniqueAttributeCodes);
     }
 }
