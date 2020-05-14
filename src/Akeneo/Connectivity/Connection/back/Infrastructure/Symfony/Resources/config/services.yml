@@ -61,8 +61,9 @@ services:
             - '@fos_rest.serializer'
 
     akeneo_connectivity.connection.error_management.service.collect_api_error:
-        class: Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\CollectApiError
+        class: Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\CollectApiError
         arguments:
             - '@akeneo_connectivity.connection.service.connection_context'
             - '@akeneo_connectivity.connection.persistence.repository.business_error'
             - '@akeneo_connectivity.connection.error_management.service.extract_errors_from_http_exception'
+            - '@akeneo_connectivity.connection.application.error_management.handler.update_connection_error_count'

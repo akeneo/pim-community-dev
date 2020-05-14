@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement;
 
+use Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\ExtractErrorsFromHttpExceptionInterface;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\TechnicalError;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
@@ -16,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExtractErrorsFromHttpException
+class ExtractErrorsFromHttpException implements ExtractErrorsFromHttpExceptionInterface
 {
     /** @var Serializer */
     private $serializer;
@@ -26,10 +30,7 @@ class ExtractErrorsFromHttpException
         $this->serializer = $serializer;
     }
 
-    /**
-     * @return string[]
-     */
-    public function extractAll(HttpException $httpException): array
+    public function extractAll(HttpException $httpException, ConnectionCode $connectionCode): array
     {
         if (
             false === $httpException instanceof UnprocessableEntityHttpException
@@ -41,22 +42,22 @@ class ExtractErrorsFromHttpException
         $json = $this->serializer->serialize($httpException, 'json', new Context());
 
         if ($httpException instanceof ViolationHttpException) {
-            return $this->extractViolationErrors($json);
+            return $this->extractViolationErrors($connectionCode, $json);
         }
 
-        return [$json];
+        return [new TechnicalError($connectionCode, $json)];
     }
 
     /**
-     * @return string[]
+     * @return BusinessError[]
      */
-    private function extractViolationErrors(string $json): array
+    private function extractViolationErrors(ConnectionCode $connectionCode, string $json): array
     {
         $data = json_decode($json, true);
 
         $errors = [];
         foreach ($data['errors'] as $error) {
-            $errors[] = json_encode($error);
+            $errors[] = new BusinessError($connectionCode, json_encode($error));
         }
 
         return $errors;

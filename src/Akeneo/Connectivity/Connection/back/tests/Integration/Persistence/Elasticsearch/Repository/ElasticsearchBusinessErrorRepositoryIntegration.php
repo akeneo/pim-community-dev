@@ -38,7 +38,7 @@ class ElasticsearchBusinessErrorRepositoryIntegration extends TestCase
         Assert::assertEquals([
             'connection_code' => 'erp',
             'content' => ['message' => 'First error!'],
-            'error_datetime' => '2019-12-31T00:00:00+00:00'
+            'error_datetime' => '2019-12-31T00:00:00+00:00',
         ], $doc1);
 
         Assert::assertEquals([
