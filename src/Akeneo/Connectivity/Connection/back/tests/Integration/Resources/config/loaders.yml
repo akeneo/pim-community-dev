@@ -9,3 +9,8 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo_connectivity.connection.persistence.repository.event_count'
+
+    akeneo_connectivity.connection.fixtures.audit_error_loader:
+        class: 'Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditErrorLoader'
+        arguments:
+            - '@akeneo_connectivity.connection.application.error_management.handler.update_connection_error_count'
