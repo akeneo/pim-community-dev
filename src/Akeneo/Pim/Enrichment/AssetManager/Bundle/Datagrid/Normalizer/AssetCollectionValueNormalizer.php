@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Normalizer;
 
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Query\AssetInformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetDetailsInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Query\GetAssetInformationQueryInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -28,12 +28,17 @@ class AssetCollectionValueNormalizer implements NormalizerInterface, CacheableSu
     /** @var GetAssetInformationQueryInterface */
     private $getAssetInformationQuery;
 
+    /** @var FindAssetDetailsInterface */
+    private $findAssetDetailsQuery;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        GetAssetInformationQueryInterface $getAssetInformationQuery
+        GetAssetInformationQueryInterface $getAssetInformationQuery, // TODO: This value is never used, it should be remove when pull-up on master
+        FindAssetDetailsInterface $findAssetDetailsQuery = null // TODO : remove default null value when pull-up on master (added to avoid BC break)
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->getAssetInformationQuery = $getAssetInformationQuery;
+        $this->findAssetDetailsQuery = $findAssetDetailsQuery;
     }
 
     /**
@@ -41,17 +46,15 @@ class AssetCollectionValueNormalizer implements NormalizerInterface, CacheableSu
      */
     public function normalize($assetFamilyValue, $format = null, array $context = []): ?array
     {
-        if ($this->valueIsEmpty($assetFamilyValue)) {
+        if ($this->valueIsEmpty($assetFamilyValue) || !isset($context['data_locale'], $context['data_channel'])) {
             return null;
         }
 
-        $arr = [
+        return [
             'locale' => $assetFamilyValue->getLocaleCode(),
             'scope'  => $assetFamilyValue->getScopeCode(),
-            'data'   => $this->formatAssetCollection($assetFamilyValue, $context['data_locale']),
+            'data'   => $this->formatAssetCollection($assetFamilyValue, $context['data_locale'], $context['data_channel']),
         ];
-
-        return $arr;
     }
 
     /**
@@ -72,41 +75,125 @@ class AssetCollectionValueNormalizer implements NormalizerInterface, CacheableSu
         return empty($value->getData());
     }
 
-    private function formatAssetCollection(AssetCollectionValueInterface $value, string $catalogLocaleCode)
-    {
-        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
-
-        $labels = array_map(
-            function (AssetCode $assetCode) use ($attribute, $catalogLocaleCode) {
-                return $this->formatAsset($assetCode, $attribute, $catalogLocaleCode);
-            },
-            $value->getData()
-        );
-
-        return implode(', ', $labels);
-    }
-
-    private function formatAsset(AssetCode $assetCode, AttributeInterface $attribute, string $catalogLocaleCode): string
-    {
-        $assetInformation = $this->getAssetInformation($attribute, $assetCode);
-
-        if (array_key_exists($catalogLocaleCode, $assetInformation->labels)) {
-            $result = $assetInformation->labels[$catalogLocaleCode] ?? null;
-        } else {
-            $result = sprintf('[%s]', $assetCode->normalize());
+    /**
+     * @return string[]|null
+     */
+    private function formatAssetCollection(
+        AssetCollectionValueInterface $value,
+        string $catalogLocaleCode,
+        string $catalogChannelCode
+    ): ?array {
+        // TODO : remove this check when pull-up on master
+        if (null === $this->findAssetDetailsQuery) {
+            return null;
         }
 
-        return $result;
+        $assetCodes = $value->getData();
+        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+        if (!$attribute instanceof AttributeInterface) {
+            return null;
+        }
+
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($attribute->getReferenceDataName());
+        $firstAssetCode = array_shift($assetCodes);
+
+        $assetDetails = $this->findAssetDetailsQuery->find($assetFamilyIdentifier, $firstAssetCode);
+        if ($assetDetails === null) {
+            return null;
+        }
+
+        $image = $this->findRelatedImage($assetDetails->image, $catalogLocaleCode, $catalogChannelCode);
+        if (null === $image) {
+            return [
+                'attribute' => $assetDetails->attributeAsMainMediaIdentifier->normalize(),
+            ];
+        }
+
+        return [
+            'data' => $image['data'],
+            'attribute' => $assetDetails->attributeAsMainMediaIdentifier->normalize(),
+        ];
     }
 
-    private function getAssetInformation(AttributeInterface $attribute, AssetCode $assetCode): AssetInformation
+    /**
+     * @return string[]|null
+     */
+    private function findRelatedImage(array $images, $catalogLocaleCode, $catalogChannelCode): ?array
     {
-        $assetFamilyIdentifier = $attribute->getReferenceDataName();
-        $assetInformation = $this->getAssetInformationQuery->fetch(
-            $assetFamilyIdentifier,
-            $assetCode->normalize()
-        );
+        $foundImage = $this->findByLocalAndScopeImage($images, $catalogLocaleCode, $catalogChannelCode);
+        if ($foundImage) {
+            return $foundImage;
+        }
 
-        return $assetInformation;
+        $foundImage = $this->findByLocalImage($images, $catalogLocaleCode);
+        if ($foundImage) {
+            return $foundImage;
+        }
+
+        $foundImage = $this->findByScopeImage($images, $catalogChannelCode);
+        if ($foundImage) {
+            return $foundImage;
+        }
+
+        return $this->findUnLocalizableAndNonScopedImage($images);
+    }
+
+    /**
+     * @return string[]|null
+     */
+    private function findByLocalAndScopeImage(
+        array $images,
+        string $catalogLocaleCode,
+        string $catalogChannelCode
+    ): ?array {
+        foreach ($images as $image) {
+            if ($catalogLocaleCode === $image['locale'] && $catalogChannelCode === $image['channel']) {
+                return $image;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return string[]|null
+     */
+    private function findByLocalImage(array $images, string $catalogLocaleCode): ?array
+    {
+        foreach ($images as $image) {
+            if ($catalogLocaleCode === $image['locale'] && $image['channel'] === null) {
+                return $image;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return string[]|null
+     */
+    private function findByScopeImage(array $images, string $catalogChannelCode): ?array
+    {
+        foreach ($images as $image) {
+            if ($catalogChannelCode === $image['channel'] && $image['locale'] === null) {
+                return $image;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return string[]|null
+     */
+    private function findUnLocalizableAndNonScopedImage(array $images): ?array
+    {
+        foreach ($images as $image) {
+            if (null === $image['locale'] && null === $image['channel']) {
+                return $image;
+            }
+        }
+
+        return null;
     }
 }

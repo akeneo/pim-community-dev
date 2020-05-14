@@ -45,7 +45,7 @@ class AssetDetails
     public $assetFamilyIdentifier;
 
     /** * @var AttributeIdentifier */
-    private $attributeAsMainMediaIdentifier;
+    public $attributeAsMainMediaIdentifier;
 
     /** @var AssetCode */
     public $code;
