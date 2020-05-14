@@ -1,9 +1,9 @@
 import React from "react";
-import { Select2Ajax, Select2GlobalProps, Select2Wrapper } from "./Select2Wrapper";
+import { Select2Ajax, Select2GlobalProps, Select2Value, Select2Wrapper } from "./Select2Wrapper";
 
 type Props = Select2GlobalProps & {
-  onChange?: (value: string[]) => void;
-  value?: string[];
+  onChange?: (value: Select2Value[]) => void;
+  value?: Select2Value[];
   ajax: Select2Ajax;
 }
 

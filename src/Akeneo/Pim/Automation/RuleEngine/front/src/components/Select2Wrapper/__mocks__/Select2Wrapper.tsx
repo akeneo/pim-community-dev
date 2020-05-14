@@ -58,7 +58,7 @@ const Select2Wrapper: typeof BaseWrapper = ({
       <select
         id={id}
         data-testid={id}
-        defaultValue={defaultValue || ''}
+        defaultValue={(defaultValue || '') as string}
         onChange={handleChange}
         onClick={handleClick}
         multiple={multiple}>

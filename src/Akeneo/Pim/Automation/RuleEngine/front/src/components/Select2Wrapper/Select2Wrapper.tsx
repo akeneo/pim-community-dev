@@ -21,21 +21,6 @@ type Select2Event = {
 
 type InitSelectionCallback = (arg: Select2Option[] | Select2Option) => void;
 
-type Select2GlobalProps = {
-  allowClear?: boolean;
-  containerCssClass?: string;
-  dropdownCssClass?: string;
-  formatResult?: (item: Select2Option | Select2OptionGroup) => string;
-  formatSelection?: (item: Select2Option | Select2OptionGroup) => string;
-  hiddenLabel?: boolean;
-  id: string;
-  label: string;
-  onChange?: (value: string | string[] | number) => void;
-  onSelecting?: (event: any) => void;
-  placeholder?: string;
-  initSelection?: (element: any, callback: InitSelectionCallback) => void;
-}
-
 type Select2Ajax = {
   url: string;
   quietMillis?: number;
@@ -55,10 +40,26 @@ type Select2Ajax = {
   hideSearch?: boolean;
 };
 
+type Select2Value = string | number;
+
+type Select2GlobalProps = {
+  allowClear?: boolean;
+  containerCssClass?: string;
+  dropdownCssClass?: string;
+  hiddenLabel?: boolean;
+  id: string;
+  label: string;
+  onSelecting?: (event: any) => void;
+  placeholder?: string;
+  initSelection?: (element: any, callback: InitSelectionCallback) => void;
+  formatResult?: (item: Select2Option | Select2OptionGroup) => string;
+  formatSelection?: (item: Select2Option | Select2OptionGroup) => string;
+}
+
 type Props = Select2GlobalProps & {
   data?: (Select2Option | Select2OptionGroup)[];
-  onChange?: (value: string | string[]) => void;
-  value?: number | string | string[];
+  onChange?: (value: Select2Value | Select2Value[]) => void;
+  value?: Select2Value | Select2Value[];
   multiple: boolean;
   ajax?: Select2Ajax;
 };
@@ -196,4 +197,5 @@ export {
   InitSelectionCallback,
   Select2GlobalProps,
   Select2Ajax,
+  Select2Value,
 };
