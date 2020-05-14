@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Query;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionQuery;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\ErrorTypes;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -18,7 +18,7 @@ class GetErrorCountPerConnectionQuerySpec extends ObjectBehavior
     public function let(): void
     {
         $this->beConstructedWith(
-            ErrorTypes::BUSINESS_ERROR,
+            ErrorTypes::BUSINESS,
             new \DateTimeImmutable('2020-05-10 00:00:00', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2020-05-12 00:00:00', new \DateTimeZone('UTC'))
         );
@@ -31,7 +31,7 @@ class GetErrorCountPerConnectionQuerySpec extends ObjectBehavior
 
     public function it_returns_the_error_type(): void
     {
-        $this->eventType()->shouldReturn(ErrorTypes::BUSINESS_ERROR);
+        $this->eventType()->shouldReturn(ErrorTypes::BUSINESS);
     }
 
     public function it_returns_the_from_date_time(): void
@@ -47,7 +47,7 @@ class GetErrorCountPerConnectionQuerySpec extends ObjectBehavior
     public function it_checks_that_the_from_date_time_is_utc(): void
     {
         $this->beConstructedWith(
-            ErrorTypes::TECHNICAL_ERROR,
+            ErrorTypes::TECHNICAL,
             new \DateTimeImmutable('2020-05-01 00:00:00', new \DateTimeZone('Europe/Paris')),
             new \DateTimeImmutable('2020-05-02 00:00:00', new \DateTimeZone('UTC'))
         );
@@ -57,7 +57,7 @@ class GetErrorCountPerConnectionQuerySpec extends ObjectBehavior
     public function it_checks_that_the_up_to_date_time_is_utc(): void
     {
         $this->beConstructedWith(
-            ErrorTypes::TECHNICAL_ERROR,
+            ErrorTypes::TECHNICAL,
             new \DateTimeImmutable('2020-05-01 00:00:00', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('Europe/Paris'))
         );

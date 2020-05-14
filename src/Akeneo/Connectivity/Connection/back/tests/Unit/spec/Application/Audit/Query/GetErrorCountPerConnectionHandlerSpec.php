@@ -6,7 +6,8 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Query;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionQuery;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\ErrorTypes;
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCount;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQuery;
 use PhpSpec\ObjectBehavior;
@@ -28,21 +29,21 @@ class GetErrorCountPerConnectionHandlerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(GetErrorCountPerConnectionHandler::class);
     }
 
-    public function it_handles_the_error_count($selectErrorCountByConnectionQuery): void
+    public function it_handles_the_get_error_count($selectErrorCountByConnectionQuery): void
     {
         $fromDateTime = new \DateTimeImmutable('2020-05-10 00:00:00', new \DateTimeZone('UTC'));
         $upToDateTime = new \DateTimeImmutable('2020-05-12 00:00:00', new \DateTimeZone('UTC'));
 
         $errorCountByConnection = [
             new ErrorCountPerConnection([
-                'erp' => 11,
-                'ecommerce' => 1024,
+                new ErrorCount('erp', 11),
+                new ErrorCount('ecommerce', 21),
             ])
         ];
-        $selectErrorCountByConnectionQuery->execute(ErrorTypes::BUSINESS_ERROR, $fromDateTime, $upToDateTime)
+        $selectErrorCountByConnectionQuery->execute(ErrorTypes::BUSINESS, $fromDateTime, $upToDateTime)
             ->willReturn($errorCountByConnection);
 
-        $query = new GetErrorCountPerConnectionQuery(ErrorTypes::BUSINESS_ERROR, $fromDateTime, $upToDateTime);
+        $query = new GetErrorCountPerConnectionQuery(ErrorTypes::BUSINESS, $fromDateTime, $upToDateTime);
         $this->handle($query)->shouldReturn($errorCountByConnection);
     }
 }

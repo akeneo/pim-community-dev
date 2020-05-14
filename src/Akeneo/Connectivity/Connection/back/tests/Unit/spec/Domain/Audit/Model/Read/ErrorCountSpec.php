@@ -27,13 +27,11 @@ class ErrorCountSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ErrorCount::class);
     }
 
-    public function it_returns_the_connection_code(): void
+    public function it_normalizes_the_error_count(): void
     {
-        $this->connectionCode()->shouldReturn('erp');
-    }
-
-    public function it_returns_the_error_count(): void
-    {
-        $this->count()->shouldReturn(5);
+        $this->normalize()->shouldReturn([
+            'connection_code' => 'erp',
+            'count' => 5,
+        ]);
     }
 }

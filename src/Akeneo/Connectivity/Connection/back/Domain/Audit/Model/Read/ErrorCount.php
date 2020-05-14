@@ -25,13 +25,11 @@ final class ErrorCount
         $this->count = $count;
     }
 
-    public function connectionCode(): string
+    public function normalize(): array
     {
-        return $this->connectionCode;
-    }
-
-    public function count(): int
-    {
-        return $this->count;
+        return [
+            'connection_code' => $this->connectionCode,
+            'count' => $this->count,
+        ];
     }
 }

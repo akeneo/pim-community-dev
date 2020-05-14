@@ -11,7 +11,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
  */
 final class ErrorCountPerConnection
 {
-    /** @var array */
+    /** @var ErrorCount[] */
     private $errorCounts;
 
     /**
@@ -28,11 +28,14 @@ final class ErrorCountPerConnection
         }
     }
 
-    /**
-     * @return ErrorCount[]
-     */
-    public function errorCounts(): array
+    public function normalize(): array
     {
-        return $this->errorCounts;
+        $errorCountPerConnection = [];
+
+        foreach ($this->errorCounts as $errorCount) {
+            $errorCountPerConnection[] = $errorCount->normalize();
+        }
+
+        return $errorCountPerConnection;
     }
 }

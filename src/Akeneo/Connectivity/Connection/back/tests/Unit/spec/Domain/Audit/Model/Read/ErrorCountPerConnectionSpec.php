@@ -31,15 +31,17 @@ class ErrorCountPerConnectionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ErrorCountPerConnection::class);
     }
 
-    public function it_returns_the_error_counts(): void
+    public function it_normalizes_the_error_count_per_connection(): void
     {
-        $errorCount1 = new ErrorCount('erp', 5);
-        $errorCount2 = new ErrorCount('ecommerce', 8);
-
-        $this->beConstructedWith(
-            [$errorCount1, $errorCount2]
-        );
-
-        $this->errorCounts()->shouldReturn([$errorCount1, $errorCount2]);
+        $this->normalize()->shouldReturn([
+            [
+                'connection_code' => 'erp',
+                'count' => 5,
+            ],
+            [
+                'connection_code' => 'ecommerce',
+                'count' => 8,
+            ],
+        ]);
     }
 }
