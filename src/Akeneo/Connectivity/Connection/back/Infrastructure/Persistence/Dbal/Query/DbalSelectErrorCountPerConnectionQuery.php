@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQuery;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -30,7 +31,7 @@ class DbalSelectErrorCountPerConnectionQuery implements SelectErrorCountPerConne
         \DateTimeImmutable $upToDateTime
     ): ErrorCountPerConnection {
         $sqlQuery = <<<SQL
-SELECT connection_code, error_count
+SELECT connection_code, sum(error_count) as error_count
 FROM akeneo_connectivity_connection_audit_error
 WHERE error_type = :error_type
 AND error_datetime >= :from_datetime AND error_datetime < :up_to_datetime
@@ -43,6 +44,10 @@ SQL;
                 'error_type' => $errorType,
                 'from_datetime' => $fromDateTime,
                 'up_to_datetime' => $upToDateTime,
+            ],
+            [
+                'from_datetime' => Types::DATETIME_IMMUTABLE,
+                'up_to_datetime' => Types::DATETIME_IMMUTABLE,
             ]
         )->fetchAll();
 
@@ -50,7 +55,7 @@ SQL;
         foreach ($dataRows as $dataRow) {
             $errorCounts[] = new ErrorCount(
                 $dataRow['connection_code'],
-                $dataRow['error_count'],
+                (int) $dataRow['error_count'],
             );
         }
 
