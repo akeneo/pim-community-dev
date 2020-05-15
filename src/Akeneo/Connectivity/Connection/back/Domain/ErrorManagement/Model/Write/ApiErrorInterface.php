@@ -13,8 +13,6 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionC
  */
 interface ApiErrorInterface
 {
-    public function connectionCode(): ConnectionCode;
-
     public function content(): string;
 
     public function type(): ErrorType;
