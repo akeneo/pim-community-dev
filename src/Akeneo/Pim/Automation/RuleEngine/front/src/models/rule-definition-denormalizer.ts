@@ -11,12 +11,14 @@ import { getAttributesByIdentifiers } from '../repositories/AttributeRepository'
 import { denormalizeClearAction } from './actions/ClearAction';
 import { denormalizeCopyAction } from './actions/CopyAction';
 import { denormalizeAddAction } from './actions/AddAction';
+import { denormalizeRemoveAction } from './actions/RemoveAction';
 
 function denormalizeAction(jsonAction: any): Action {
   const denormalizers: ((json: any) => Action | null)[] = [
     denormalizeClearAction,
     denormalizeCopyAction,
     denormalizeAddAction,
+    denormalizeRemoveAction,
   ];
 
   for (let i = 0; i < denormalizers.length; i++) {

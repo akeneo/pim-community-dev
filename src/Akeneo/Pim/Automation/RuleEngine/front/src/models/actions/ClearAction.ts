@@ -17,7 +17,7 @@ export const denormalizeClearAction = (json: any): ClearAction | null => {
   return {
     module: ClearActionLine,
     field: json.field,
-    locale: json.locale,
-    scope: json.scope,
+    locale: json.locale || null,
+    scope: json.scope || null,
   };
 };

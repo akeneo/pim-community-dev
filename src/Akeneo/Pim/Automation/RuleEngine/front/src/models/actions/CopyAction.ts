@@ -19,11 +19,11 @@ export const denormalizeCopyAction = (json: any): CopyAction | null => {
 
   return {
     module: CopyActionLine,
-    fromField: json.from_field,
-    fromLocale: json.from_locale,
-    fromScope: json.from_scope,
-    toField: json.to_field,
-    toLocale: json.to_locale,
-    toScope: json.to_scope,
+    fromField: json.from_field || null,
+    fromLocale: json.from_locale || null,
+    fromScope: json.from_scope || null,
+    toField: json.to_field || null,
+    toLocale: json.to_locale || null,
+    toScope: json.to_scope || null,
   };
 };
