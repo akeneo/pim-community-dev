@@ -82,7 +82,7 @@ class CategoryProjectRemover implements ProjectRemoverInterface
     {
         $filters = $project->getProductFilters();
         foreach ($filters as $filter) {
-            if ('categories' === $filter['field'] && in_array($categoryCode, $filter['value'])) {
+            if ('categories' === $filter['field'] && in_array($categoryCode, $filter['value']) && 'IN OR UNCLASSIFIED' !== $filter['operator']) {
                 return true;
             }
         }
