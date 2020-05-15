@@ -70,6 +70,10 @@ pimee_catalog_rule:
                     allowed_characters: Rule code can only be alphanumeric and underscore characters.
             cross_link: Leave create rule form
         edit:
+            properties:
+                section:
+                    general: General parameters
+                    labels: Label translations
             priority:
                 label: Priority
             add_to_category: Add to category
