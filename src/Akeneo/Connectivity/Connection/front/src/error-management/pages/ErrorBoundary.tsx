@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {PageContent, RuntimeError} from '../../common/components';
-import {NotFoundError, UnauthorizedError} from '../services/fetch';
+import {NotFoundError, UnauthorizedError} from '../../shared/fetch';
 
 class ErrorBoundary extends Component<unknown, {error?: Error}> {
     constructor(props: unknown) {
