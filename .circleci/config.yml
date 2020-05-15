@@ -569,17 +569,9 @@ workflows:
           - deploy_pr_environment:
                 requires:
                     - deploy_pr_environment?
-          - deploy_upgrade_oldest_prod_environment?:
-                type: approval
-                filters:
-                    branches:
-                        ignore:
-                            - master
-                requires:
-                    - build_prod
           - deploy_upgrade_oldest_prod_environment:
                 requires:
-                    - deploy_upgrade_oldest_prod_environment?
+                    - build_prod
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -633,7 +625,7 @@ workflows:
   nightly_cleanup:
       triggers:
           - schedule:
-                cron: "0 * * * *"
+                cron: "0 0 * * *"
                 filters:
                     branches:
                         only:

@@ -197,22 +197,7 @@ deploy_pr_environment:
 
 .PHONY: delete_pr_environments
 delete_pr_environments:
-	kubectl get ns|grep "srnt-pimci-pr"; \
-	for namespace in $$(kubectl get ns|grep "srnt-pimci-pr"|awk '{print $$1}'); do \
-		NS_INFO=$$(kubectl get ns |grep $${namespace}); \
-		NS_STATUS=$$(echo $${NS_INFO}|awk '{print $$2}'); \
-		NS_AGE=$$(echo $${NS_INFO}|awk '{print $$3}'); \
-		INSTANCE_NAME=$$(echo $${namespace} | awk -F'srnt-pimci-pr-' '{print $$NF}'); \
-		echo "---[INFO] namespace $${namespace} with status $${NS_STATUS} since $${NS_AGE} (instance_name=$${INSTANCE_NAME})"; \
-		if [[ "$${NS_AGE}" == *24* ]] ; then \
-			echo "Environment will be deleted !"; \
-		else \
-			continue; \
-		fi; \
-		INSTANCE_NAME=pimci-pr-$${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
-		INSTANCE_NAME_PREFIX=pimci-pr IMAGE_TAG=$${INSTANCE_NAME} make delete; \
-		echo "---[DELETED] namespace $${namespace}"; \
-	done
+	bash $(PWD)/deployments/bin/remove_pr_instance.sh
 
 .PHONY: terraform-pre-upgrade
 terraform-pre-upgrade: terraform-init
