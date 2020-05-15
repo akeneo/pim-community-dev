@@ -87,7 +87,10 @@ class DuplicateProductHandler
 
         if (0 === $violations->count()) {
             $this->productSaver->save($duplicatedProduct);
-            $removedUniqueAttributeCodesWithoutIdentifier = $this->getRemovedUniqueAttributeCodesWithoutIdentifier($productToDuplicate,  $duplicatedProduct);
+            $removedUniqueAttributeCodesWithoutIdentifier = $this->getRemovedUniqueAttributeCodesWithoutIdentifier(
+                $productToDuplicate,
+                $duplicatedProduct
+            );
 
             return DuplicateProductResponse::ok($removedUniqueAttributeCodesWithoutIdentifier);
         }
