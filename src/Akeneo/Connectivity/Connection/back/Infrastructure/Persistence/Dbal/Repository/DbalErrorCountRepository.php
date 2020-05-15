@@ -26,9 +26,9 @@ class DbalErrorCountRepository implements ErrorCountRepository
     public function upsert(HourlyErrorCount $hourlyErrorCount): void
     {
         $upsertQuery = <<<SQL
-INSERT INTO akeneo_connectivity_connection_audit_error (connection_code, error_datetime, error_count, error_type, updated)
-VALUES(:connection_code, :error_datetime, :error_count, :error_type, UTC_TIMESTAMP())
-ON DUPLICATE KEY UPDATE error_count = error_count + :error_count, updated = UTC_TIMESTAMP()
+INSERT INTO akeneo_connectivity_connection_audit_error (connection_code, error_datetime, error_count, error_type)
+VALUES(:connection_code, :error_datetime, :error_count, :error_type)
+ON DUPLICATE KEY UPDATE error_count = error_count + :error_count
 SQL;
 
         $this->dbalConnection->executeUpdate(
@@ -37,7 +37,7 @@ SQL;
                 'connection_code' => (string) $hourlyErrorCount->connectionCode(),
                 'error_datetime' => $hourlyErrorCount->hourlyInterval()->fromDateTime(),
                 'error_count' => $hourlyErrorCount->errorCount(),
-                'error_type' => $hourlyErrorCount->errorType(),
+                'error_type' => (string) $hourlyErrorCount->errorType(),
             ],
             [
                 'error_datetime' => Types::DATETIME_IMMUTABLE,
