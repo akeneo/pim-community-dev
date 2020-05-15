@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Application\ErrorManagement\Service;
 use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountCommand;
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\ApiErrorInterface;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\ApiErrorCollection;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
@@ -33,11 +33,8 @@ class CollectApiError
     /** @var UpdateConnectionErrorCountHandler */
     private $updateErrorCountHandler;
 
-    /** @var array */
+    /** @var ApiErrorCollection */
     private $errors;
-
-    /** @var int */
-    private $globalErrorCount;
 
     public function __construct(
         ConnectionContextInterface $connectionContext,
@@ -49,8 +46,7 @@ class CollectApiError
         $this->connectionContext = $connectionContext;
         $this->extractErrorsFromHttpException = $extractErrorsFromHttpException;
         $this->updateErrorCountHandler = $updateErrorCountHandler;
-        $this->errors = array_fill_keys(ErrorTypes::getAll(), []);
-        $this->globalErrorCount = 0;
+        $this->errors = new ApiErrorCollection();
     }
 
     public function collectFromHttpException(HttpException $httpException): void
@@ -60,23 +56,28 @@ class CollectApiError
             return;
         }
 
-        if (false === $this->connectionContext->isCollectable() || FlowType::DATA_SOURCE !== (string) $connection->flowType()) {
+        if (false === $this->connectionContext->isCollectable() ||
+            FlowType::DATA_SOURCE !== (string) $connection->flowType()
+        ) {
             return;
         }
+
         $errors = $this->extractErrorsFromHttpException->extractAll($httpException);
-        $this->collect($errors);
+        foreach ($errors as $error) {
+            $this->errors->add($error);
+        }
     }
 
     public function flush(): void
     {
-        if (0 === $this->globalErrorCount) {
+        if (0 === $this->errors->count()) {
             return;
         }
 
         $connection = $this->connectionContext->getConnection();
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $errorCounts = [];
-        foreach ($this->errors as $errorType => $errors) {
+        foreach ($this->errors->getSorted() as $errorType => $errors) {
             $errorCounts[] = new HourlyErrorCount(
                 (string) $connection->code(),
                 HourlyInterval::createFromDateTime($now),
@@ -87,17 +88,6 @@ class CollectApiError
         $command = new UpdateConnectionErrorCountCommand($errorCounts);
         $this->updateErrorCountHandler->handle($command);
 
-        $this->repository->bulkInsert($connection->code(), $this->errors[ErrorTypes::BUSINESS]);
-    }
-
-    /**
-     * @param ApiErrorInterface[] $errors
-     */
-    private function collect(array $errors): void
-    {
-        foreach ($errors as $error) {
-            $this->errors[(string) $error->type()][] = $error;
-            $this->globalErrorCount++;
-        }
+        $this->repository->bulkInsert($connection->code(), $this->errors->getByType(ErrorTypes::BUSINESS));
     }
 }
