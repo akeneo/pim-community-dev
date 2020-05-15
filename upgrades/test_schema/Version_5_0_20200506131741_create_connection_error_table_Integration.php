@@ -36,7 +36,6 @@ class Version_5_0_20200506131741_create_connection_error_table_Integration exten
             'error_datetime'  => 'datetime',
             'error_count'     => 'integer',
             'error_type'      => 'string',
-            'updated'         => 'datetime',
         ];
 
         $tableColumns = $this->schemaManager->listTableColumns('akeneo_connectivity_connection_audit_error');

@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection_audit_error(
     error_datetime DATETIME NOT NULL,
     error_count INT NOT NULL,
     error_type VARCHAR(100) NOT NULL,
-    updated DATETIME NOT NULL,
     PRIMARY KEY (error_datetime, connection_code, error_type)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
 SQL;
