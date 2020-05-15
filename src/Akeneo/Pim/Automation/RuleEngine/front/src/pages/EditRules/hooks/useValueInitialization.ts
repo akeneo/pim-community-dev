@@ -5,12 +5,14 @@ const useValueInitialization = (
   prefix: string,
   values: { [key: string]: any }
 ) => {
-  const { register, setValue } = useFormContext();
+  const { register } = useFormContext();
 
   const initializeValue = (prefix: string, field: string, value: any): void => {
-    const key = `${prefix}.${field}`;
-    register(key);
-    setValue(key, value);
+    const name = `${prefix}.${field}`;
+    register({
+      name,
+      value,
+    });
   };
 
   useEffect(() => {

@@ -6,8 +6,8 @@ import {
 } from '../Select2Wrapper';
 import { Router } from '../../dependenciesTools';
 import { IndexedFamilies } from '../../fetch/FamilyFetcher';
-import { Family } from '../../models';
 import { getFamiliesByIdentifiers } from '../../repositories/FamilyRepository';
+import { Family } from '../../models';
 
 type Props = {
   router: Router;
@@ -15,9 +15,8 @@ type Props = {
   label: string;
   hiddenLabel?: boolean;
   multiple: boolean;
-  selectedFamilyCodes: string[];
   currentCatalogLocale: string;
-  onSelectorChange: (values: string[]) => void;
+  name: string;
 };
 
 const dataProvider = (term: string, page: number) => {
@@ -76,19 +75,15 @@ const FamilySelector: React.FC<Props> = ({
   id,
   label,
   hiddenLabel = false,
-  selectedFamilyCodes,
   currentCatalogLocale,
-  onSelectorChange,
+  name,
 }) => {
   return (
     <Select2MultiAsyncWrapper
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string[]) => {
-        onSelectorChange(value);
-      }}
-      value={selectedFamilyCodes}
+      name={name}
       ajax={{
         url: router.generate('pim_enrich_family_rest_index'),
         quietMillis: 250,
@@ -97,14 +92,14 @@ const FamilySelector: React.FC<Props> = ({
         results: (families: IndexedFamilies) =>
           handleResults(families, currentCatalogLocale),
       }}
-      initSelection={(_element, callback) =>
+      initSelection={(element, callback) => {
         initSelectedFamilies(
           router,
-          selectedFamilyCodes,
+          element.val().split(','),
           currentCatalogLocale,
           callback
-        )
-      }
+        );
+      }}
     />
   );
 };

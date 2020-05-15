@@ -20,9 +20,9 @@ const Select2Wrapper: typeof BaseWrapper = ({
   ajax,
   onSelecting,
 }: Select2Props) => {
-  const [options, setOptions] = React.useState<(Select2Option | Select2OptionGroup)[]>(
-    data || []
-  );
+  const [options, setOptions] = React.useState<
+    (Select2Option | Select2OptionGroup)[]
+  >(data || []);
 
   const handleClick = () => {
     if (options.length === 0 && ajax) {
@@ -32,9 +32,11 @@ const Select2Wrapper: typeof BaseWrapper = ({
         throw new Error(`You did not mock the result of ${url}!`);
       }
       result.then(response => {
-        response.json().then((fetchedOptions: (Select2Option | Select2OptionGroup)[]) => {
-          setOptions(fetchedOptions);
-        });
+        response
+          .json()
+          .then((fetchedOptions: (Select2Option | Select2OptionGroup)[]) => {
+            setOptions(fetchedOptions);
+          });
       });
     }
   };

@@ -7,20 +7,18 @@ type Props = {
   id: string;
   label: string;
   hiddenLabel?: boolean;
-  currentOperator: string;
   availableOperators: Operator[];
   translate: Translate;
-  onSelectorChange: (value: string) => void;
+  name: string;
 };
 
 const OperatorSelector: React.FC<Props> = ({
   id,
   label,
   hiddenLabel = false,
-  currentOperator,
   availableOperators,
   translate,
-  onSelectorChange,
+  name,
 }) => {
   const translateOperator = (operator: string): string => {
     const label = translate(
@@ -42,11 +40,8 @@ const OperatorSelector: React.FC<Props> = ({
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string) => {
-        onSelectorChange(value);
-      }}
-      value={currentOperator}
       data={operatorChoices}
+      name={name}
     />
   );
 };

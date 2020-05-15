@@ -6,9 +6,10 @@ import {
   FamilyCondition,
   FamilyOperators,
 } from '../../../../models/FamilyCondition';
+import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
+import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { Operator } from '../../../../models/Operator';
 import { FamilySelector } from '../../../../components/Selectors/FamilySelector';
-import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 
 const FieldColumn = styled.span`
   width: 100px;
@@ -38,38 +39,24 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
   lineNumber,
   translate,
   currentCatalogLocale,
+  condition,
 }) => {
-  const { register, setValue, getValues } = useFormContext();
+  const { watch } = useFormContext();
 
-  register({ name: `content.conditions[${lineNumber}].field` });
-  register({ name: `content.conditions[${lineNumber}].operator` });
-  register({ name: `content.conditions[${lineNumber}].value` });
+  useValueInitialization(`content.conditions[${lineNumber}]`, {
+    field: condition.field,
+    operator: condition.operator,
+    value: condition.value,
+  });
 
   const getFormOperator = (): Operator =>
-    getValues()[`content.conditions[${lineNumber}].operator`];
-  const getFormValue = (): string[] | null =>
-    getValues()[`content.conditions[${lineNumber}].value`];
+    watch(`content.conditions[${lineNumber}].operator`);
 
-  const valueMustBeSet = (): boolean => {
-    return ![Operator.IS_EMPTY, Operator.IS_NOT_EMPTY].includes(
+  const shouldDisplayFamilySelector = () => {
+    return !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
       getFormOperator()
     );
   };
-
-  const setFormValue = (newValue: string[] | null): void => {
-    setValue(
-      `content.conditions[${lineNumber}].value`,
-      valueMustBeSet() ? newValue || [] : null
-    );
-  };
-  const setFormOperator = (operator: Operator): void => {
-    setValue(`content.conditions[${lineNumber}].operator`, operator);
-    setFormValue(getFormValue());
-  };
-
-  const [displayFamilySelector, setDisplayFamilySelector] = React.useState<
-    boolean
-  >(valueMustBeSet());
 
   return (
     <div>
@@ -81,16 +68,12 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
           id={`edit-rules-input-${lineNumber}-operator`}
           label='Operator'
           hiddenLabel={true}
-          currentOperator={getFormOperator()}
           availableOperators={FamilyOperators}
           translate={translate}
-          onSelectorChange={(value: string): void => {
-            setFormOperator(value as Operator);
-            setDisplayFamilySelector(valueMustBeSet());
-          }}
+          name={`content.conditions[${lineNumber}].operator`}
         />
       </OperatorColumn>
-      {displayFamilySelector && (
+      {shouldDisplayFamilySelector() && (
         <ValueColumn>
           <FamilySelector
             router={router}
@@ -98,11 +81,8 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
             label='Families'
             hiddenLabel={true}
             multiple={true}
-            selectedFamilyCodes={getFormValue() || []}
             currentCatalogLocale={currentCatalogLocale}
-            onSelectorChange={(values: string[]): void => {
-              setFormValue(values);
-            }}
+            name={`content.conditions[${lineNumber}].value`}
           />
         </ValueColumn>
       )}

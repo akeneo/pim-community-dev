@@ -1,6 +1,6 @@
-import $ from 'jquery';
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Label } from '../Labels';
+import { useFormContext } from 'react-hook-form';
 
 type Select2Option = {
   id: number | string;
@@ -32,7 +32,9 @@ type Select2Ajax = {
     search: string;
     options?: any;
   };
-  results: (values: any) => {
+  results: (
+    values: any
+  ) => {
     more: boolean;
     results: Select2Option[] | Select2OptionGroup[];
   };
@@ -50,11 +52,15 @@ type Select2GlobalProps = {
   label: string;
   onSelecting?: (event: any) => void;
   placeholder?: string;
-  initSelection?: (element: any, callback: InitSelectionCallback) => void;
+  initSelection?: (
+    element: { val: any },
+    callback: InitSelectionCallback
+  ) => void;
   formatResult?: (item: Select2Option | Select2OptionGroup) => string;
   formatSelection?: (item: Select2Option | Select2OptionGroup) => string;
   hideSearch?: boolean;
-}
+  name?: string;
+};
 
 type Props = Select2GlobalProps & {
   data?: (Select2Option | Select2OptionGroup)[];
@@ -65,125 +71,96 @@ type Props = Select2GlobalProps & {
 };
 
 const Select2Wrapper: React.FC<Props> = ({
-  allowClear,
-  containerCssClass,
-  data,
-  dropdownCssClass,
-  formatResult,
-  formatSelection,
   hiddenLabel = false,
   id,
   label,
-  onChange,
-  onSelecting,
-  placeholder,
-  value,
-  multiple,
+  name,
   ajax,
+  data,
+  multiple,
   initSelection,
-  hideSearch = false,
+  placeholder,
+  formatSelection,
+  formatResult,
+  containerCssClass,
+  dropdownCssClass,
+  onSelecting,
 }) => {
-  const select2Ref = useRef<HTMLInputElement>(null);
-  const encodedData: string = JSON.stringify(data);
+  const select2ref = useRef<HTMLInputElement | null>(null);
+  const { watch, setValue } = useFormContext();
 
-  const initSelect2 = () => {
-    if (null === select2Ref.current) {
-      return;
-    }
-    const $select = $(select2Ref.current) as any;
-    $select.val(value);
+  const getFormValue: any = () => {
+    return name ? watch(name) : undefined;
+  };
 
-    const options: any = {
-      allowClear,
-      containerCssClass,
-      data,
-      dropdownCssClass,
-      formatResult,
-      formatSelection,
-      placeholder,
-      multiple,
-      ajax,
-      initSelection,
-    };
-    if (hideSearch) {
-      options.minimumResultsForSearch = Infinity;
+  const setFormValue = (value: any) => {
+    if (name) {
+      setValue(name, value);
     }
-    $select.select2(options);
+  };
 
-    if (onChange) {
-      $select.on('change', (event: Select2Event) => onChange(event.val));
+  const getSelect2Input: () => any = () => {
+    return $(select2ref.current as any) as any;
+  };
+
+  const initSelect2 = (destroy = false) => {
+    if (select2ref !== null) {
+      if (destroy) {
+        getSelect2Input().select2('destroy');
+      }
+      if (undefined !== getFormValue()) {
+        getSelect2Input().val(getFormValue());
+      }
+      getSelect2Input().select2({
+        ajax,
+        data,
+        multiple,
+        initSelection,
+        placeholder,
+        formatSelection,
+        formatResult,
+        containerCssClass,
+        dropdownCssClass,
+      });
+
+      if (onSelecting) {
+        getSelect2Input().off('select2-selecting');
+        getSelect2Input().on('select2-selecting', onSelecting);
+      }
+
+      getSelect2Input().on('change', (e: Select2Event) => {
+        setFormValue(e.val);
+      });
     }
-  }
+  };
 
   useEffect(() => {
-    if (null === select2Ref.current) {
-      return;
-    }
-    const $select = $(select2Ref.current) as any;
-
-    if (onChange) {
-      $select.on('change', (event: Select2Event) => onChange(event.val));
-    }
-  }, [onChange]);
+    initSelect2();
+  }, [select2ref]);
 
   useEffect(() => {
-    if (null === select2Ref.current) {
-      return;
+    if (name) {
+      const value = getFormValue();
+      if (select2ref !== null && value !== undefined) {
+        getSelect2Input()
+          .val(value)
+          .trigger('change.select2');
+      }
     }
-    const $select = $(select2Ref.current) as any;
+  }, [getFormValue()]);
 
-    if (onSelecting) {
-      $select.off('select2-selecting');
-      $select.on('select2-selecting', onSelecting);
-    }
+  useEffect(() => {
+    initSelect2(true);
+  }, [JSON.stringify(data)]);
+
+  useEffect(() => {
+    initSelect2(true);
   }, [onSelecting]);
-
-  useEffect(() => {
-    initSelect2();
-  }, [encodedData]);
-
-  useEffect(() => {
-    if (null === select2Ref.current) {
-      return;
-    }
-    const $select = $(select2Ref.current) as any;
-    $select.val(value).trigger('change');
-    if (onChange && value) {
-      onChange(value);
-    }
-  }, [value]);
-
-  useEffect(() => {
-    if (null === select2Ref.current) {
-      return;
-    }
-    const $select = $(select2Ref.current) as any;
-
-    $select.select2('destroy');
-    initSelect2();
-  }, [formatResult])
-
-  useEffect(() => {
-    if (null === select2Ref.current) {
-      return;
-    }
-    const $select = $(select2Ref.current) as any;
-
-    $select.val(value);
-
-    initSelect2();
-
-    return () => {
-      $select.off('change');
-      $select.select2('destroy');
-      $select.select2('container').remove();
-    };
-  }, [select2Ref]);
 
   return (
     <>
       <Label label={label} hiddenLabel={hiddenLabel} htmlFor={id} />
-      <input id={id} type='hidden' ref={select2Ref} />
+      <input id={id} type='hidden' ref={select2ref} name={name} />
     </>
   );
 };

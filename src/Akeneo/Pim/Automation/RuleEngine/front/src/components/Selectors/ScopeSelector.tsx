@@ -6,20 +6,18 @@ type Props = {
   id: string;
   label: string;
   hiddenLabel?: boolean;
-  currentScopeCode: string;
   availableScopes: Scope[];
-  onSelectorChange: (value: string) => void;
   currentCatalogLocale: string;
+  name: string;
 };
 
 const ScopeSelector: React.FC<Props> = ({
   id,
   label,
   hiddenLabel = false,
-  currentScopeCode,
   availableScopes,
-  onSelectorChange,
   currentCatalogLocale,
+  name,
 }) => {
   const getScopeLabel = (scope: Scope): string => {
     return scope.labels[currentCatalogLocale] || `[${scope.code}]`;
@@ -37,12 +35,10 @@ const ScopeSelector: React.FC<Props> = ({
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string) => {
-        onSelectorChange(value);
-      }}
-      value={currentScopeCode}
       data={scopeChoices}
       hideSearch={true}
+      name={name}
+      placeholder={'Channel'}
     />
   );
 };

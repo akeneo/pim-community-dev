@@ -1,25 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { Locale } from '../../models';
-import { Select2Option, Select2OptionGroup, Select2SimpleSyncWrapper } from "../Select2Wrapper";
+import {
+  Select2Option,
+  Select2OptionGroup,
+  Select2SimpleSyncWrapper,
+} from '../Select2Wrapper';
 
 type Props = {
   id: string;
   label: string;
   hiddenLabel?: boolean;
-  currentLocaleCode: string;
   availableLocales: Locale[];
-  onSelectorChange: (value: string) => void;
+  name: string;
 };
 
 const LocaleSelector: React.FC<Props> = ({
   id,
   label,
   hiddenLabel = false,
-  currentLocaleCode,
   availableLocales,
-  onSelectorChange,
+  name,
 }) => {
-  const [value, setValue] = React.useState<string>(currentLocaleCode);
+  const { watch, setValue } = useFormContext();
+
+  const getFormLocale = () => watch(name);
+
+  const resetLocale = () => {
+    setValue(name, undefined);
+  };
+
+  useEffect(() => {
+    if (
+      getFormLocale() &&
+      !availableLocales.map(locale => locale.code).includes(getFormLocale())
+    ) {
+      resetLocale();
+    }
+  }, [getFormLocale(), availableLocales]);
 
   const localeChoices = availableLocales.map((locale: Locale) => {
     return {
@@ -27,13 +45,6 @@ const LocaleSelector: React.FC<Props> = ({
       text: locale.language,
     };
   });
-
-  const localeIsFound = availableLocales.find(
-    (locale: Locale) => locale.code === value
-  );
-  if (!localeIsFound) {
-    setValue(availableLocales.length > 0 ? availableLocales[0].code : '');
-  }
 
   const formatLocale = (item: Select2Option | Select2OptionGroup): string => {
     const locale = availableLocales.find(
@@ -55,15 +66,12 @@ const LocaleSelector: React.FC<Props> = ({
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string) => {
-        setValue(value);
-        onSelectorChange(value);
-      }}
-      value={value}
       data={localeChoices}
       hideSearch={true}
       formatResult={formatLocale}
       formatSelection={formatLocale}
+      name={name}
+      placeholder={'Locale'}
     />
   );
 };

@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Select2SimpleAsyncWrapper
-} from '../../../../components/Select2Wrapper';
+import { Select2SimpleAsyncWrapper } from '../../../../components/Select2Wrapper';
 import { Router, Translate } from '../../../../dependenciesTools';
 
 type AddConditionAttribute = {
