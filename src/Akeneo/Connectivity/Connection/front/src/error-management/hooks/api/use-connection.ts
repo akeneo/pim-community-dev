@@ -1,4 +1,4 @@
-import {useQuery} from '../../services/fetch';
+import {useQuery} from '../../../shared/fetch';
 
 type Connection = {label: string};
 
