@@ -45,6 +45,11 @@ services:
         arguments:
             - '@akeneo_connectivity.client.connection_error'
 
+    akeneo_connectivity_connection.persistence.query.select_error_count_per_connection:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectErrorCountPerConnectionQuery
+        arguments:
+            - '@database_connection'
+
     akeneo_connectivity_connection.persistence.query.purge_audit_error:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\PurgeAuditErrorQuery
         arguments:
