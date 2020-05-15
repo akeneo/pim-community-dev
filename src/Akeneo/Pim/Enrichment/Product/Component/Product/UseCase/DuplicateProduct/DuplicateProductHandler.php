@@ -65,15 +65,15 @@ class DuplicateProductHandler
         $this->productSaver = $productSaver;
     }
 
-    public function handle(DuplicateProduct $query): DuplicateProductResponse
+    public function handle(DuplicateProduct $duplicateProductCommand): DuplicateProductResponse
     {
         /** @var ProductInterface */
-        $productToDuplicate = $this->productRepository->findOneByIdentifier($query->productToDuplicateIdentifier());
+        $productToDuplicate = $this->productRepository->findOneByIdentifier($duplicateProductCommand->productToDuplicateIdentifier());
 
         $normalizedProductWithoutIdentifier = $this->normalizeProductWithoutIdentifier($productToDuplicate);
 
         $duplicatedProduct = $this->productBuilder->createProduct(
-            $query->duplicatedProductIdentifier(),
+            $duplicateProductCommand->duplicatedProductIdentifier(),
             $productToDuplicate->getFamily() !== null ? $productToDuplicate->getFamily()->getCode() : null
         );
 

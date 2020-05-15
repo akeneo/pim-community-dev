@@ -55,12 +55,12 @@ class DuplicateProductController
             throw new NotFoundHttpException(sprintf('Product with id %s could not be found.', $id));
         }
 
-        $query = new DuplicateProduct(
+        $duplicateProductCommand = new DuplicateProduct(
             $product->getIdentifier(),
             $request->request->get('duplicated_product_identifier')
         );
 
-        $duplicateProductResponse = $this->duplicateProductHandler->handle($query);
+        $duplicateProductResponse = $this->duplicateProductHandler->handle($duplicateProductCommand);
 
         if ($duplicateProductResponse->isOk()) {
             return new JsonResponse(
