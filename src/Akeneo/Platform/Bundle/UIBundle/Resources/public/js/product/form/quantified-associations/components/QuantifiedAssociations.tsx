@@ -1,17 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Button, SearchBar, NoDataSection, NoDataTitle, AssociationTypeIllustration} from '@akeneo-pim-community/shared';
 import {
   Identifier,
   QuantifiedAssociationCollection,
-  getQuantifiedAssociationCollectionIdentifiers,
-  getQuantifiedLinkForIdentifier,
   setQuantifiedAssociationCollection,
   getProductsType,
+  ProductsType,
+  ProductType,
+  Product,
 } from '../models';
 import {QuantifiedAssociationRow} from '.';
-import {useProducts} from '../hooks';
+import {useProducts, getAssociationIdentifiers, getAssociationIdentifiers, addProductToRows} from '../hooks';
 
 const HeaderCell = styled.th`
   text-align: left;
@@ -50,15 +51,77 @@ const Buttons = styled.div`
   padding: 10px 0;
 `;
 
-const filterOnLabelOrIdentifier = (searchValue: string) => (entity: {label: string; identifier: Identifier}): boolean =>
-  -1 !== entity.label.toLowerCase().indexOf(searchValue.toLowerCase()) ||
-  (undefined !== entity.identifier && -1 !== entity.identifier.toLowerCase().indexOf(searchValue.toLowerCase()));
+const filterOnLabelOrIdentifier = (searchValue: string) => (row: Row): boolean =>
+  (null !== row.product && -1 !== row.product.label.toLowerCase().indexOf(searchValue.toLowerCase())) ||
+  (undefined !== row.identifier && -1 !== row.identifier.toLowerCase().indexOf(searchValue.toLowerCase()));
+
+export type Row = {
+  associationTypeCode: string;
+  quantity: string;
+  identifier: Identifier;
+  productType: ProductType;
+  product: null | Product;
+};
+
+export type RowWithProduct = {
+  associationTypeCode: string;
+  quantity: string;
+  identifier: Identifier;
+  productType: ProductType;
+  product: Product;
+};
 
 type QuantifiedAssociationsProps = {
   value: QuantifiedAssociationCollection;
   associationTypeCode: string;
   onAssociationsChange: (updatedValue: QuantifiedAssociationCollection) => void;
   onOpenPicker: () => void;
+};
+
+const quantifiedAssociationCollectionToRowCollection = (collection: QuantifiedAssociationCollection): Row[] => {
+  return Object.keys(collection).reduce((result: Row[], associationTypeCode) => {
+    return [
+      ...result,
+      ...collection[associationTypeCode].products.map(({identifier, quantity}) => ({
+        associationTypeCode,
+        identifier,
+        quantity,
+        productType: ProductType.Product,
+        product: null,
+      })),
+      ...collection[associationTypeCode].product_models.map(({identifier, quantity}) => ({
+        associationTypeCode,
+        identifier,
+        quantity,
+        productType: ProductType.ProductModel,
+        product: null,
+      })),
+    ];
+  }, []);
+};
+
+const rowCollectionToQuantifiedAssociationCollection = (rows: Row[]): QuantifiedAssociationCollection => {
+  return rows.reduce(
+    (
+      quantifiedAssociationCollection: QuantifiedAssociationCollection,
+      {productType, associationTypeCode, identifier, quantity}: Row
+    ): QuantifiedAssociationCollection => {
+      if (!(associationTypeCode in quantifiedAssociationCollection)) {
+        quantifiedAssociationCollection[associationTypeCode] = {
+          [ProductsType.Products]: [],
+          [ProductsType.ProductModels]: [],
+        };
+      }
+
+      quantifiedAssociationCollection[associationTypeCode][getProductsType(productType)].push({
+        quantity,
+        identifier,
+      });
+
+      return quantifiedAssociationCollection;
+    },
+    {}
+  );
 };
 
 const QuantifiedAssociations = ({
@@ -68,24 +131,39 @@ const QuantifiedAssociations = ({
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
-  const [collection, setCollection] = useState<QuantifiedAssociationCollection>(value);
+  const [collection, setCollection] = useState<Row[]>(quantifiedAssociationCollectionToRowCollection(value));
   const [searchValue, setSearchValue] = useState('');
-  const identifiers = getQuantifiedAssociationCollectionIdentifiers(value, associationTypeCode);
-  const products = useProducts(identifiers);
+  const products = useProducts(getAssociationIdentifiers(collection));
+  const collectionWithProducts = addProductToRows(collection, null === products ? [] : products);
 
-  const filteredProducts = null === products ? null : products.filter(filterOnLabelOrIdentifier(searchValue));
+  const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
 
   useEffect(() => {
-    if (collection !== value) {
-      onAssociationsChange(collection);
+    const updatedValue = rowCollectionToQuantifiedAssociationCollection(collection);
+    if (updatedValue !== value) {
+      onAssociationsChange(updatedValue);
     }
   }, [collection]);
+
+  const onRowDelete = useCallback(
+    ({identifier, productType}: Row) => {
+      const updatedCollection = collection.filter(
+        row =>
+          row.identifier !== identifier ||
+          row.associationTypeCode !== associationTypeCode ||
+          row.productType !== productType
+      );
+
+      setCollection(updatedCollection);
+    },
+    [collection, associationTypeCode]
+  );
 
   return (
     <>
       <SearchBar
         placeholder={translate('pim_enrich.entity.product.module.associations.search.placeholder')}
-        count={filteredProducts?.length || 0}
+        count={filteredCollectionWithProducts.length || 0}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
       />
@@ -94,13 +172,13 @@ const QuantifiedAssociations = ({
           {translate('pim_enrich.entity.product.module.associations.add_associations')}
         </Button>
       </Buttons>
-      {null === filteredProducts ? (
+      {null === products ? (
         <TablePlaceholder className={`AknLoadingPlaceHolderContainer`}>
-          {[...Array(5)].map((_, i) => (
+          {[...Array(collection.length)].map((_, i) => (
             <div key={i} />
           ))}
         </TablePlaceholder>
-      ) : 0 === filteredProducts.length ? (
+      ) : 0 === filteredCollectionWithProducts.length ? (
         '' === searchValue ? (
           <NoDataSection>
             <AssociationTypeIllustration size={256} />
@@ -126,28 +204,30 @@ const QuantifiedAssociations = ({
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map(product => (
-              <QuantifiedAssociationRow
-                key={product.document_type + product.id}
-                product={product}
-                quantifiedLink={getQuantifiedLinkForIdentifier(
-                  collection,
-                  associationTypeCode,
-                  getProductsType(product.document_type),
-                  product.identifier
-                )}
-                onChange={quantifiedLink =>
-                  setCollection(
-                    setQuantifiedAssociationCollection(
-                      collection,
-                      associationTypeCode,
-                      getProductsType(product.document_type),
-                      quantifiedLink
+            {filteredCollectionWithProducts.map(row => {
+              if (null === row.product) {
+                // loading row
+                return;
+              }
+
+              return (
+                <QuantifiedAssociationRow
+                  key={row.product.document_type + row.product.id}
+                  onRowDelete={onRowDelete}
+                  row={row as RowWithProduct}
+                  onChange={quantifiedLink =>
+                    setCollection(
+                      setQuantifiedAssociationCollection(
+                        collection,
+                        associationTypeCode,
+                        row.productType,
+                        quantifiedLink
+                      )
                     )
-                  )
-                }
-              />
-            ))}
+                  }
+                />
+              );
+            })}
           </tbody>
         </TableContainer>
       )}
