@@ -42,7 +42,7 @@ class SqlGetUniqueAttributeCodesIntegration extends TestCase
 
         $uniqueAttributeCodes = $this->getUniqueAttributeCodes->all();
 
-        Assert::assertEqualsCanonicalizing(
+        Assert::assertEquals(
             ['sku', 'unique_attribute', 'optional_unique_attribute'],
             $uniqueAttributeCodes
         );

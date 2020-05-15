@@ -32,7 +32,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
     public function test_it_duplicates_a_product_without_unique_values()
     {
         $familyCode = 'familyTest';
-        $uniqueAttributeCodes = ['attribute_unique_1', 'attribute_unique_2'];
+        $uniqueAttributeCodes = ['unique_attribute_1', 'unique_attribute_2'];
         $this->createAttributes($this->getAttributeData());
         $this->addAttributesToFamily($familyCode, $uniqueAttributeCodes);
         $associatedProduct = $this->createProduct('associated_product', [
@@ -60,8 +60,8 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         $this->assertSameData($normalizedDuplicatedProduct, $normalizedProductToDuplicate, $uniqueAttributeCodes);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        Assert::assertEqualsCanonicalizing(
-            ['unique_attribute_codes' => ['attribute_unique_1']],
+        Assert::assertEquals(
+            ['unique_attribute_codes' => $uniqueAttributeCodes],
             json_decode($this->client->getResponse()->getContent(), true)
         );
     }
@@ -170,11 +170,18 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
                         'data' => 'product_to_duplicate'
                     ]
                 ],
-                'attribute_unique_1' => [
+                'unique_attribute_1' => [
                     [
                         'locale' => null,
                         'scope' => null,
                         'data' => 'The first unique value'
+                    ]
+                ],
+                'unique_attribute_2' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'The second unique value'
                     ]
                 ],
                 'non_unique_attribute' => [
@@ -214,12 +221,12 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
     {
         return [
             [
-                'code' => 'attribute_unique_1',
+                'code' => 'unique_attribute_1',
                 'group' => 'other',
                 'unique' => true,
             ],
             [
-                'code' => 'attribute_unique_2',
+                'code' => 'unique_attribute_2',
                 'group' => 'other',
                 'unique' => true,
             ],

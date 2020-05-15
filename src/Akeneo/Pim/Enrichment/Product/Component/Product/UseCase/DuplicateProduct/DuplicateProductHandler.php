@@ -102,11 +102,13 @@ class DuplicateProductHandler
             $duplicatedProduct->getValues()->getAttributeCodes()
         );
 
-        $removedUniqueAttributeCodesWithoutIdentifier = array_filter(
-            $removedUniqueAttributeCodes,
-            function($uniqueAttributeCode) {
-                return $uniqueAttributeCode !== $this->attributeRepository->getIdentifierCode();
-            }
+        $removedUniqueAttributeCodesWithoutIdentifier = array_values(
+            array_filter(
+                $removedUniqueAttributeCodes,
+                function($uniqueAttributeCode) {
+                    return $uniqueAttributeCode !== $this->attributeRepository->getIdentifierCode();
+                }
+            )
         );
 
         return $removedUniqueAttributeCodesWithoutIdentifier;
