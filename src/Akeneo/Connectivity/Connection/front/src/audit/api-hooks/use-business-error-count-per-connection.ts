@@ -1,12 +1,16 @@
-type ConnectionBusinessErrorCount = {
-    connectionCode: string;
-    errorCount: number;
-};
+import {useQuery} from '../../shared/fetch';
 
 export const useBusinessErrorCountPerConnection = () => {
-    const data: ConnectionBusinessErrorCount[] = [];
+    const {loading, data} = useQuery<{[connectionCode: string]: number}>(
+        'akeneo_connectivity_connection_audit_rest_error_count_per_connection',
+        {
+            error_type: 'business',
+        }
+    );
 
-    const sortedData = data.sort((a, b) => (a.errorCount <= b.errorCount ? 1 : -1));
+    const errorCountPerConnection = Object.entries(data || {})
+        .map(([connectionCode, errorCount]) => ({connectionCode, errorCount}))
+        .sort((a, b) => b.errorCount - a.errorCount);
 
-    return {loading: false, errorCountPerConnection: sortedData};
+    return {loading, errorCountPerConnection};
 };
