@@ -73,13 +73,6 @@ class AuditController
         [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval($endDateUser, $timezone, new \DateInterval('P6D'));
         [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
 
-
-        dump($startDateTimeUser);
-        dump($fromDateTime);
-
-        dump($endDateTimeUser);
-        dump($upToDateTime);
-
         $query = new GetErrorCountPerConnectionQuery($errorType, $fromDateTime, $upToDateTime);
         $errorCountPerConnection = $this->getErrorCountPerConnectionHandler->handle($query);
 
