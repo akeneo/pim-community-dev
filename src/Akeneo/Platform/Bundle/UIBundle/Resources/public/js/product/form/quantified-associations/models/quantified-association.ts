@@ -1,4 +1,6 @@
-import {QuantifiedLink, Identifier, AssociationIdentifiers, setQuantifiedLink, ProductsType} from '.';
+import {QuantifiedLink, Identifier, AssociationIdentifiers, ProductsType} from '.';
+import {Row} from '../components/QuantifiedAssociations';
+import {ProductType} from './product';
 
 type QuantifiedAssociation = {
   products: QuantifiedLink[];
@@ -10,7 +12,7 @@ type QuantifiedAssociationCollection = {
 };
 
 const getQuantifiedAssociationCollectionIdentifiers = (
-  quantifiedAssociationCollection: QuantifiedAssociationCollection,
+  quantifiedAssociationCollection: Row[],
   associationTypeCode: string
 ): AssociationIdentifiers => {
   if (!(associationTypeCode in quantifiedAssociationCollection)) {
@@ -32,47 +34,35 @@ const getQuantifiedLinkForIdentifier = (
   associationTypeCode: string,
   productsType: ProductsType,
   identifier: Identifier
-): QuantifiedLink => {
+): QuantifiedLink | undefined => {
   const quantifiedLink = quantifiedAssociationCollection[associationTypeCode][productsType].find(
     entity => entity.identifier === identifier
   );
 
-  if (undefined === quantifiedLink) {
-    throw Error('Quantified link not found');
-  }
+  // if (undefined === quantifiedLink) {
+  //   throw Error('Quantified link not found');
+  // }
 
   return quantifiedLink;
 };
 
-const setQuantifiedAssociation = (
-  quantifiedAssociation: QuantifiedAssociation,
-  productsType: ProductsType,
-  quantifiedLink: QuantifiedLink
-): QuantifiedAssociation => ({
-  ...quantifiedAssociation,
-  [productsType]: setQuantifiedLink(quantifiedAssociation[productsType], quantifiedLink),
-});
-
 const setQuantifiedAssociationCollection = (
-  quantifiedAssociationCollection: QuantifiedAssociationCollection,
+  rows: Row[],
   associationTypeCode: string,
-  productsType: ProductsType,
-  quantifiedLink: QuantifiedLink
-): QuantifiedAssociationCollection =>
-  Object.keys(quantifiedAssociationCollection).reduce(
-    (updated, currentAssociationTypeCode) => ({
-      ...updated,
-      [currentAssociationTypeCode]:
-        currentAssociationTypeCode === associationTypeCode
-          ? setQuantifiedAssociation(
-              quantifiedAssociationCollection[currentAssociationTypeCode],
-              productsType,
-              quantifiedLink
-            )
-          : quantifiedAssociationCollection[currentAssociationTypeCode],
-    }),
-    {}
-  );
+  productType: ProductType,
+  {identifier, quantity}: QuantifiedLink
+) => {
+  return rows.map(row => {
+    if (
+      row.identifier !== identifier ||
+      row.productType !== productType ||
+      row.associationTypeCode !== associationTypeCode
+    )
+      return row;
+
+    return {...row, quantity};
+  });
+};
 
 export {
   QuantifiedAssociationCollection,

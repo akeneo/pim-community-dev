@@ -8,4 +8,7 @@ type QuantifiedLink = {
 const setQuantifiedLink = (collection: QuantifiedLink[], quantifiedLink: QuantifiedLink): QuantifiedLink[] =>
   collection.map(current => (current.identifier === quantifiedLink.identifier ? quantifiedLink : current));
 
-export {QuantifiedLink, setQuantifiedLink};
+const removeQuantifiedLink = (collection: QuantifiedLink[], identifier: Identifier): QuantifiedLink[] =>
+  collection.filter(current => current.identifier !== identifier);
+
+export {QuantifiedLink, setQuantifiedLink, removeQuantifiedLink};

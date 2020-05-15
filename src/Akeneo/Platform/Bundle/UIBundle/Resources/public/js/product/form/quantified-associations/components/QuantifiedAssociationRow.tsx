@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
 import {TransparentButton, EditIcon, CloseIcon} from '@akeneo-pim-community/shared';
-import {QuantifiedLink, Product} from '../models';
+import {QuantifiedLink, ProductType} from '../models';
+import {Row, RowWithProduct} from './QuantifiedAssociations';
 
 const Container = styled.tr`
   height: 74px;
@@ -63,19 +64,23 @@ const RowAction = styled(TransparentButton)`
 `;
 
 type QuantifiedAssociationRowProps = {
-  product: Product;
-  quantifiedLink: QuantifiedLink;
+  row: RowWithProduct;
   onChange: (updatedQuantifiedLink: QuantifiedLink) => void;
+  onRowDelete: (row: Row) => void;
 };
 
-const QuantifiedAssociationRow = ({product, quantifiedLink, onChange}: QuantifiedAssociationRowProps) => {
+const QuantifiedAssociationRow = ({row, onChange, onRowDelete}: QuantifiedAssociationRowProps) => {
   const translate = useTranslate();
-  const isProduct = 'product' === product.document_type;
+  const isProduct = ProductType.Product === row.productType;
+  const productEditUrl = useRoute(`pim_enrich_${row.productType}_edit`, {id: row.product.id.toString()});
+  const product = row.product;
 
   return (
     <Container>
       <td>
-        <Thumbnail src={null !== product.image ? product.image.filePath : '/bundles/pimui/img/image_default.png'} />
+        <Thumbnail
+          src={null !== row.product.image ? row.product.image.filePath : '/bundles/pimui/img/image_default.png'}
+        />
       </td>
       <LabelCell isProduct={isProduct}>{product.label}</LabelCell>
       <td>{product.identifier}</td>
@@ -97,16 +102,18 @@ const QuantifiedAssociationRow = ({product, quantifiedLink, onChange}: Quantifie
           title={translate('pim_enrich.entity.product.module.associations.quantified.quantity')}
           type="number"
           min={1}
-          value={quantifiedLink.quantity}
-          onChange={event => onChange({...quantifiedLink, quantity: event.currentTarget.value})}
+          value={row.quantity}
+          onChange={event => onChange({...row, quantity: event.currentTarget.value})}
         />
       </td>
       <td>
         <RowActions>
           <RowAction>
-            <EditIcon size={20} />
+            <a href={`#${productEditUrl}`} target="_blank">
+              <EditIcon size={20} />
+            </a>
           </RowAction>
-          <RowAction>
+          <RowAction onClick={() => onRowDelete(row)}>
             <CloseIcon title={translate('pim_enrich.entity.product.module.associations.remove')} size={20} />
           </RowAction>
         </RowActions>
