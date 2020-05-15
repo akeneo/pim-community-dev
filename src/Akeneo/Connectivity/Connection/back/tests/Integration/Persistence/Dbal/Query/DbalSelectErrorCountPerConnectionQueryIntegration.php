@@ -7,7 +7,7 @@ use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditErrorLoa
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQuery;
-use Akeneo\Connectivity\Connection\Domain\Common\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write;
 use Akeneo\Test\Integration\Configuration;
@@ -38,14 +38,12 @@ class DbalSelectErrorCountPerConnectionQueryIntegration extends TestCase
     public function test_it_gets_error_count_per_connection()
     {
         $this->createHourlyErrorCounts([
-            ['sap', ErrorTypes::TECHNICAL, '2020-01-01 12:00:00', 5],
-            ['bynder', ErrorTypes::BUSINESS, '2020-01-01 23:00:00', 12],
-            // Begin of expected results
+            ['bynder', ErrorTypes::BUSINESS, '2020-01-01 23:00:00', 12], // ignored
             ['sap', ErrorTypes::BUSINESS, '2020-01-02 00:00:00', 10],
             ['bynder', ErrorTypes::BUSINESS, '2020-01-02 12:00:00', 8],
+            ['sap', ErrorTypes::TECHNICAL, '2020-01-03 12:00:00', 5], // ignored
             ['sap', ErrorTypes::BUSINESS, '2020-01-03 23:00:00', 4],
-            // End of expected results
-            ['bynder', ErrorTypes::BUSINESS, '2020-01-04 00:00:00', 2],
+            ['bynder', ErrorTypes::BUSINESS, '2020-01-04 00:00:00', 2], // ignored
         ]);
 
         $fromDateTime = new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC'));
@@ -74,14 +72,13 @@ class DbalSelectErrorCountPerConnectionQueryIntegration extends TestCase
         foreach ($hourlyErrorCountsData as [$connectionCode, $errorType, $dateTimeStr, $errorCount]) {
             $utcDateTime = (new \DateTimeImmutable($dateTimeStr, new \DateTimeZone('UTC')));
 
-            $hourlyEventCount = new Write\HourlyErrorCount(
-                $connectionCode,
-                HourlyInterval::createFromDateTime($utcDateTime),
-                $errorCount,
-                $errorType
-            );
-
-            $this->auditErrorLoader->insert($hourlyEventCount);
+            $this->auditErrorLoader
+                ->insert(
+                    $connectionCode,
+                    HourlyInterval::createFromDateTime($utcDateTime),
+                    $errorCount,
+                    $errorType
+                );
         }
     }
 }
