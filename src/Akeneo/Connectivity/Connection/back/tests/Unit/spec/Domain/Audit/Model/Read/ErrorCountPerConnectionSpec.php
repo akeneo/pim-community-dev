@@ -7,7 +7,6 @@ namespace spec\Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -34,14 +33,8 @@ class ErrorCountPerConnectionSpec extends ObjectBehavior
     public function it_normalizes_the_error_count_per_connection(): void
     {
         $this->normalize()->shouldReturn([
-            [
-                'connection_code' => 'erp',
-                'count' => 5,
-            ],
-            [
-                'connection_code' => 'ecommerce',
-                'count' => 8,
-            ],
+            'erp' => 5,
+            'ecommerce' => 8,
         ]);
     }
 }

@@ -60,7 +60,7 @@ class DbalSelectErrorCountPerConnectionQueryIntegration extends TestCase
             new ErrorCount('sap', 14),
             new ErrorCount('bynder', 8),
         ]);
-        
+
         Assert::assertEquals($expectedResult, $result);
     }
 

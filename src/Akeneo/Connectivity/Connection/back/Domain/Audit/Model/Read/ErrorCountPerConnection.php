@@ -33,7 +33,8 @@ final class ErrorCountPerConnection
         $errorCountPerConnection = [];
 
         foreach ($this->errorCounts as $errorCount) {
-            $errorCountPerConnection[] = $errorCount->normalize();
+            $data = $errorCount->normalize();
+            $errorCountPerConnection[$data['connection_code']] = (int) $data['count'];
         }
 
         return $errorCountPerConnection;

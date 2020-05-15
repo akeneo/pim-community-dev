@@ -15,22 +15,19 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCou
 class GetErrorCountPerConnectionHandler
 {
     /** @var SelectErrorCountPerConnectionQuery */
-    private $selectErrorCountByConnectionQuery;
+    private $selectErrorCountPerConnectionQuery;
 
-    public function __construct(SelectErrorCountPerConnectionQuery $selectErrorCountByConnectionQuery)
+    public function __construct(SelectErrorCountPerConnectionQuery $selectErrorCountPerConnectionQuery)
     {
-        $this->selectErrorCountByConnectionQuery = $selectErrorCountByConnectionQuery;
+        $this->selectErrorCountPerConnectionQuery = $selectErrorCountPerConnectionQuery;
     }
 
-    /**
-     * @return ErrorCountPerConnection[]
-     */
-    public function handle(GetErrorCountPerConnectionQuery $query): array
+    public function handle(GetErrorCountPerConnectionQuery $query): ErrorCountPerConnection
     {
-        $errorCountsByConnection = $this
-            ->selectErrorCountByConnectionQuery
+        $errorCountsPerConnection = $this
+            ->selectErrorCountPerConnectionQuery
             ->execute($query->eventType(), $query->fromDateTime(), $query->upToDateTime());
 
-        return $errorCountsByConnection;
+        return $errorCountsPerConnection;
     }
 }

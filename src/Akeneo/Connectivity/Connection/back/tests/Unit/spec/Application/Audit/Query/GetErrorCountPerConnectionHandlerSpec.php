@@ -19,9 +19,9 @@ use PhpSpec\ObjectBehavior;
  */
 class GetErrorCountPerConnectionHandlerSpec extends ObjectBehavior
 {
-    public function let(SelectErrorCountPerConnectionQuery $selectErrorCountByConnectionQuery): void
+    public function let(SelectErrorCountPerConnectionQuery $selectErrorCountPerConnectionQuery): void
     {
-        $this->beConstructedWith($selectErrorCountByConnectionQuery);
+        $this->beConstructedWith($selectErrorCountPerConnectionQuery);
     }
 
     public function it_is_initializable(): void
@@ -29,21 +29,19 @@ class GetErrorCountPerConnectionHandlerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(GetErrorCountPerConnectionHandler::class);
     }
 
-    public function it_handles_the_get_error_count($selectErrorCountByConnectionQuery): void
+    public function it_handles_the_get_error_count($selectErrorCountPerConnectionQuery): void
     {
         $fromDateTime = new \DateTimeImmutable('2020-05-10 00:00:00', new \DateTimeZone('UTC'));
         $upToDateTime = new \DateTimeImmutable('2020-05-12 00:00:00', new \DateTimeZone('UTC'));
 
-        $errorCountByConnection = [
-            new ErrorCountPerConnection([
-                new ErrorCount('erp', 11),
-                new ErrorCount('ecommerce', 21),
-            ])
-        ];
-        $selectErrorCountByConnectionQuery->execute(ErrorTypes::BUSINESS, $fromDateTime, $upToDateTime)
-            ->willReturn($errorCountByConnection);
+        $errorCountPerConnection = new ErrorCountPerConnection([
+            new ErrorCount('erp', 11),
+            new ErrorCount('ecommerce', 21),
+        ]);
+        $selectErrorCountPerConnectionQuery->execute(ErrorTypes::BUSINESS, $fromDateTime, $upToDateTime)
+            ->willReturn($errorCountPerConnection);
 
         $query = new GetErrorCountPerConnectionQuery(ErrorTypes::BUSINESS, $fromDateTime, $upToDateTime);
-        $this->handle($query)->shouldReturn($errorCountByConnection);
+        $this->handle($query)->shouldReturn($errorCountPerConnection);
     }
 }
