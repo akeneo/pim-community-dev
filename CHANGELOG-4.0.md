@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9252: Fix TWA project unwanted deletion when a category not used as a filter was deleted
+
 # 4.0.25 (2020-05-14)
 
 ## Bug fixes
