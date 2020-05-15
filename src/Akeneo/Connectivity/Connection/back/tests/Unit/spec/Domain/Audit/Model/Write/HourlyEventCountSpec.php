@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Domain\Audit\Model\Write;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
-use Akeneo\Connectivity\Connection\Domain\Common\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use PhpSpec\ObjectBehavior;
 

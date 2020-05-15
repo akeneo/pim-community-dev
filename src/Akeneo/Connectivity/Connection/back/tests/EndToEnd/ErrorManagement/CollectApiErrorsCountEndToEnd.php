@@ -1,30 +1,27 @@
 <?php
-
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Connection;
+namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\ErrorManagement;
 
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\FetchMode;
+use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @author    Willy Mesnage <willy.mesnage@akeneo.com>
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- */
-class CollectApiBusinessErrorsEndToEnd extends ApiTestCase
+class CollectApiErrorsCountEndToEnd extends ApiTestCase
 {
-    /** @var Client */
-    private $esClient;
+    /** @var Connection */
+    private $dbalConnection;
 
-    // test_it_collects_errors_from_a_product_delete
-    public function test_it_dos_not_collect_an_error_from_a_not_found_http_exception(): void
+    // test_it_collects_the_error_count_from_a_product_delete
+    public function test_it_collects_the_error_count_from_a_not_found_http_exception(): void
     {
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
@@ -40,14 +37,11 @@ class CollectApiBusinessErrorsEndToEnd extends ApiTestCase
         $client->request('DELETE', '/api/rest/v1/products/unknown_product_identifier');
         Assert::assertSame(Response::HTTP_NOT_FOUND, $client->getResponse()->getStatusCode());
 
-        $this->esClient->refreshIndex();
-        $result = $this->esClient->search([]);
-
-        Assert::assertCount(0, $result['hits']['hits']);
+        $this->errorCountMustBe('erp', 1, ErrorTypes::TECHNICAL);
     }
 
-    // test_it_collects_errors_from_a_product_create
-    public function test_it_does_not_collect_an_error_from_a_unprocessable_entity_http_exception(): void
+    // test_it_collects_the_error_count_from_a_product_create
+    public function test_it_collects_the_error_count_from_a_unprocessable_entity_http_exception(): void
     {
         $this->createAttribute([
             'code' => 'name',
@@ -85,14 +79,11 @@ JSON;
         $client->request('POST', '/api/rest/v1/products', [], [], [], $content);
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
 
-        $this->esClient->refreshIndex();
-        $result = $this->esClient->search([]);
-
-        Assert::assertCount(0, $result['hits']['hits']);
+        $this->errorCountMustBe('erp', 1, ErrorTypes::TECHNICAL);
     }
 
-    // test_it_collects_errors_from_a_product_partial_update
-    public function test_it_collects_each_violation_error_from_a_violation_http_exception()
+    // test_it_collects_the_error_count_from_a_product_partial_update
+    public function test_it_collects_the_error_count_from_a_violation_http_exception()
     {
         $this->createAttribute([
             'code' => 'name',
@@ -146,23 +137,10 @@ JSON;
         $client->request('PATCH', '/api/rest/v1/products/big_screen', [], [], [], $content);
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
 
-        $expectedContent = json_decode($client->getResponse()->getContent(), true);
-
-        $this->esClient->refreshIndex();
-        $result = $this->esClient->search([]);
-
-        Assert::assertCount(2, $result['hits']['hits']);
-
-        $doc1 = $result['hits']['hits'][0]['_source'];
-        Assert::assertEquals('erp', $doc1['connection_code']);
-        Assert::assertEquals($expectedContent['errors'][0], $doc1['content']);
-
-        $doc2 = $result['hits']['hits'][1]['_source'];
-        Assert::assertEquals('erp', $doc2['connection_code']);
-        Assert::assertEquals($expectedContent['errors'][1], $doc2['content']);
+        $this->errorCountMustBe('erp', 2, ErrorTypes::BUSINESS);
     }
 
-    public function test_it_collects_errors_from_a_product_partial_update_list(): void
+    public function test_it_collects_the_error_count_from_a_product_partial_update_list(): void
     {
         $this->createAttribute([
             'code' => 'name',
@@ -213,7 +191,6 @@ JSON;
                 ]]
             ]
         ]);
-
         $streamedContent = '';
         ob_start(function ($buffer) use (&$streamedContent) {
             $streamedContent .= $buffer;
@@ -231,22 +208,45 @@ JSON;
 
         Assert::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $this->esClient->refreshIndex();
-        $result = $this->esClient->search([]);
-
-        Assert::assertCount(0, $result['hits']['hits']);
+        $this->errorCountMustBe('erp', 1, ErrorTypes::TECHNICAL);
     }
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->esClient = $this->get('akeneo_connectivity.client.connection_error');
+        $this->dbalConnection = $this->get('database_connection');
     }
 
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function errorCountMustBe(string $connectionCode, int $count, string $errorType): void
+    {
+        $selectQuery = <<<SQL
+SELECT count(connection_code) AS count
+FROM akeneo_connectivity_connection_audit_error
+WHERE connection_code = :code AND error_count = :count AND error_type = :type
+SQL;
+
+        $result = $this->dbalConnection->executeQuery(
+            $selectQuery,
+            [
+                'code' => $connectionCode,
+                'count' => $count,
+                'type' => $errorType,
+            ],
+            [
+                'code' => Types::STRING,
+                'count' => Types::INTEGER,
+                'type' => Types::STRING,
+            ]
+        )->fetchAll(FetchMode::COLUMN);
+
+        Assert::assertCount(1, $result);
+        Assert::assertEquals('1', $result[0]);
     }
 
     private function createAttribute(array $data): void

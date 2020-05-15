@@ -23,13 +23,10 @@ class UpdateConnectionErrorCountHandler
 
     public function handle(UpdateConnectionErrorCountCommand $command): void
     {
-        $hourlyEventCount = new HourlyErrorCount(
-            $command->connectionCode(),
-            $command->hourlyInterval(),
-            $command->errorCount(),
-            $command->errorType()
-        );
-
-        $this->errorCountRepository->upsert($hourlyEventCount);
+        foreach ($command->errorCounts() as $hourlyErrorCount) {
+            if (0 < $hourlyErrorCount->errorCount()) {
+                $this->errorCountRepository->upsert($hourlyErrorCount);
+            }
+        }
     }
 }

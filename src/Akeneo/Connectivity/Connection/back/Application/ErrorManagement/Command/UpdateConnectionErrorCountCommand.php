@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\ErrorManagement\Command;
 
-use Akeneo\Connectivity\Connection\Domain\Common\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -12,47 +12,22 @@ use Akeneo\Connectivity\Connection\Domain\Common\HourlyInterval;
  */
 final class UpdateConnectionErrorCountCommand
 {
-    /** @var string */
-    private $connectionCode;
+    /** @var HourlyErrorCount[] */
+    private $errorCounts;
 
-    /** @var HourlyInterval */
-    private $hourlyInterval;
-
-    /** @var int */
-    private $errorCount;
-
-    /** @var string */
-    private $errorType;
-
-    public function __construct(
-        string $connectionCode,
-        HourlyInterval $hourlyInterval,
-        int $errorCount,
-        string $errorType
-    ) {
-        $this->connectionCode = $connectionCode;
-        $this->hourlyInterval = $hourlyInterval;
-        $this->errorCount = $errorCount;
-        $this->errorType = $errorType;
+    /**
+     * @param HourlyErrorCount[] $errorCounts
+     */
+    public function __construct(array $errorCounts)
+    {
+        $this->errorCounts = $errorCounts;
     }
 
-    public function connectionCode(): string
+    /**
+     * @return HourlyErrorCount[]
+     */
+    public function errorCounts(): array
     {
-        return $this->connectionCode;
-    }
-
-    public function hourlyInterval(): HourlyInterval
-    {
-        return $this->hourlyInterval;
-    }
-
-    public function errorCount(): int
-    {
-        return $this->errorCount;
-    }
-
-    public function errorType(): string
-    {
-        return $this->errorType;
+        return $this->errorCounts;
     }
 }

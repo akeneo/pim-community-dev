@@ -1,29 +1,41 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures;
 
+use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountCommand;
+use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\ErrorCountRepository;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 
 /**
- * @author Pierre Jolly <pierre.jolly@akeneo.com>
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @author    Willy Mesnage <willy.mesnage@akeneo.com>
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class AuditErrorLoader
 {
-    /** @var ErrorCountRepository */
-    private $errorCountRepository;
+    /** @var UpdateConnectionErrorCountHandler */
+    private $updateConnectionErrorCountHandler;
 
-    public function __construct(ErrorCountRepository $errorCountRepository)
+    public function __construct(UpdateConnectionErrorCountHandler $updateConnectionErrorCountHandler)
     {
-        $this->errorCountRepository = $errorCountRepository;
+        $this->updateConnectionErrorCountHandler = $updateConnectionErrorCountHandler;
     }
 
-    public function insert(HourlyErrorCount $hourlyErrorCount): void
-    {
-        $this->errorCountRepository->upsert($hourlyErrorCount);
+    public function insert(
+        string $connectionCode,
+        HourlyInterval $hourlyInterval,
+        int $errorCount,
+        string $errorType
+    ): void {
+        $hourlyErrorCount = new HourlyErrorCount(
+            $connectionCode,
+            $hourlyInterval,
+            $errorCount,
+            $errorType
+        );
+        $command = new UpdateConnectionErrorCountCommand([$hourlyErrorCount]);
+        $this->updateConnectionErrorCountHandler->handle($command);
     }
 }

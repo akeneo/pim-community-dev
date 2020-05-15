@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write;
 
-use Akeneo\Connectivity\Connection\Domain\Common\HourlyInterval;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 
 /**
@@ -14,7 +14,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionC
  */
 class HourlyErrorCount
 {
-    /** @var string */
+    /** @var ConnectionCode */
     private $connectionCode;
 
     /** @var HourlyInterval */
@@ -23,7 +23,7 @@ class HourlyErrorCount
     /** @var int */
     private $errorCount;
 
-    /** @var string */
+    /** @var ErrorType */
     private $errorType;
 
     public function __construct(
@@ -40,12 +40,7 @@ class HourlyErrorCount
             );
         }
         $this->errorCount = $errorCount;
-        if (!in_array($errorType, ErrorTypes::getAll())) {
-            throw new \InvalidArgumentException(
-                sprintf('The given error type "%s" is unknown.', $errorType)
-            );
-        }
-        $this->errorType = $errorType;
+        $this->errorType = new ErrorType($errorType);
     }
 
     public function connectionCode(): ConnectionCode
@@ -63,7 +58,7 @@ class HourlyErrorCount
         return $this->errorCount;
     }
 
-    public function errorType(): string
+    public function errorType(): ErrorType
     {
         return $this->errorType;
     }

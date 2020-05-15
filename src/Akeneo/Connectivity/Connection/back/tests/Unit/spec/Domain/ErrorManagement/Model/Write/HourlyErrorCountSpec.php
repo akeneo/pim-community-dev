@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write;
 
-use Akeneo\Connectivity\Connection\Domain\Common\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
@@ -57,7 +58,9 @@ class HourlyErrorCountSpec extends ObjectBehavior
 
     public function it_returns_the_error_type(): void
     {
-        $this->errorType()->shouldBe(ErrorTypes::BUSINESS);
+        $errorType = $this->errorType();
+        $errorType->shouldBeAnInstanceOf(ErrorType::class);
+        $errorType->__toString()->shouldReturn('business');
     }
 
     public function it_validates_that_the_count_is_positive(): void

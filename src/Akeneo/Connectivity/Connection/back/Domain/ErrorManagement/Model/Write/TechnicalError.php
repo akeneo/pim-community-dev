@@ -12,10 +12,10 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Erro
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BusinessError extends ApiError
+class TechnicalError extends ApiError
 {
     function type(): ErrorType
     {
-        return new ErrorType(ErrorTypes::BUSINESS);
+        return new ErrorType(ErrorTypes::TECHNICAL);
     }
 }

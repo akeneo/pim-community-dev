@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\ErrorManagement\Service;
 
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\ApiErrorInterface;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
@@ -12,5 +14,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 interface ExtractErrorsFromHttpExceptionInterface
 {
-    public function extractAll(HttpException $httpException): array;
+    /**
+     * @param HttpException $httpException
+     * @param ConnectionCode $connectionCode
+     *
+     * @return ApiErrorInterface[]
+     */
+    public function extractAll(HttpException $httpException, ConnectionCode $connectionCode): array;
 }

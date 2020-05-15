@@ -5,12 +5,11 @@ namespace spec\Akeneo\Connectivity\Connection\Application\ErrorManagement\Comman
 
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountCommand;
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler;
-use Akeneo\Connectivity\Connection\Domain\Common\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\ErrorCountRepository;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class UpdateConnectionErrorCountHandlerSpec extends ObjectBehavior
 {
@@ -24,17 +23,46 @@ class UpdateConnectionErrorCountHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(UpdateConnectionErrorCountHandler::class);
     }
 
-    public function it_updates_an_error_count($errorCountRepository): void
+    public function it_updates_error_counts($errorCountRepository): void
     {
-        $hourlyInterval = HourlyInterval::createFromDateTime(new \DateTime('now'));
-        $command = new UpdateConnectionErrorCountCommand(
+        $firstCount = new HourlyErrorCount(
             'erp',
-            $hourlyInterval,
-            42,
+            HourlyInterval::createFromDateTime(new \DateTime('now')),
+            2,
             ErrorTypes::BUSINESS
         );
+        $secondCount = new HourlyErrorCount(
+            'erp',
+            HourlyInterval::createFromDateTime(new \DateTime('now')),
+            2,
+            ErrorTypes::TECHNICAL
+        );
+        $command = new UpdateConnectionErrorCountCommand([$firstCount, $secondCount]);
 
-        $errorCountRepository->upsert(Argument::type(HourlyErrorCount::class))->shouldBeCalled();
+        $errorCountRepository->upsert($firstCount)->shouldBeCalled();
+        $errorCountRepository->upsert($secondCount)->shouldBeCalled();
+
+        $this->handle($command);
+    }
+
+    public function it_does_not_update_a_0_count($errorCountRepository)
+    {
+        $firstCount = new HourlyErrorCount(
+            'erp',
+            HourlyInterval::createFromDateTime(new \DateTime('now')),
+            2,
+            ErrorTypes::BUSINESS
+        );
+        $secondCount = new HourlyErrorCount(
+            'erp',
+            HourlyInterval::createFromDateTime(new \DateTime('now')),
+            0,
+            ErrorTypes::TECHNICAL
+        );
+        $command = new UpdateConnectionErrorCountCommand([$firstCount, $secondCount]);
+
+        $errorCountRepository->upsert($firstCount)->shouldBeCalled();
+        $errorCountRepository->upsert($secondCount)->shouldNotBeCalled();
 
         $this->handle($command);
     }

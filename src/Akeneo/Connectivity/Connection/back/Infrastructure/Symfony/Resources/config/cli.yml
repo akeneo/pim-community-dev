@@ -21,3 +21,9 @@ services:
             - '@akeneo_connectivity_connection.persistence.query.purge_connection_errors'
         tags:
             - {name: 'console.command'}
+
+    Akeneo\Connectivity\Connection\Infrastructure\Cli\PurgeAuditErrorCommand:
+        arguments:
+            - '@akeneo_connectivity_connection.persistence.query.purge_audit_error'
+        tags:
+            - {name: 'console.command'}
