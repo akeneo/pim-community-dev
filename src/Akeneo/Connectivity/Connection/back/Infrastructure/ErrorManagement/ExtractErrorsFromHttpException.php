@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement;
 
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\ExtractErrorsFromHttpExceptionInterface;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\ApiErrorInterface;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\TechnicalError;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
@@ -30,7 +30,7 @@ class ExtractErrorsFromHttpException implements ExtractErrorsFromHttpExceptionIn
         $this->serializer = $serializer;
     }
 
-    public function extractAll(HttpException $httpException, ConnectionCode $connectionCode): array
+    public function extractAll(HttpException $httpException): array
     {
         if (
             false === $httpException instanceof UnprocessableEntityHttpException
@@ -42,22 +42,24 @@ class ExtractErrorsFromHttpException implements ExtractErrorsFromHttpExceptionIn
         $json = $this->serializer->serialize($httpException, 'json', new Context());
 
         if ($httpException instanceof ViolationHttpException) {
-            return $this->extractViolationErrors($connectionCode, $json);
+            return $this->extractViolationErrors($json);
         }
 
-        return [new TechnicalError($connectionCode, $json)];
+        return [new TechnicalError($json)];
     }
 
     /**
-     * @return BusinessError[]
+     * @param string $json
+     *
+     * @return ApiErrorInterface[]
      */
-    private function extractViolationErrors(ConnectionCode $connectionCode, string $json): array
+    private function extractViolationErrors(string $json): array
     {
         $data = json_decode($json, true);
 
         $errors = [];
         foreach ($data['errors'] as $error) {
-            $errors[] = new BusinessError($connectionCode, json_encode($error));
+            $errors[] = new BusinessError(json_encode($error));
         }
 
         return $errors;

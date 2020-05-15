@@ -63,8 +63,7 @@ class CollectApiError
         if (false === $this->connectionContext->isCollectable() || FlowType::DATA_SOURCE !== (string) $connection->flowType()) {
             return;
         }
-        $connection = $this->connectionContext->getConnection();
-        $errors = $this->extractErrorsFromHttpException->extractAll($httpException, $connection->code());
+        $errors = $this->extractErrorsFromHttpException->extractAll($httpException);
         $this->collect($errors);
     }
 
@@ -86,8 +85,9 @@ class CollectApiError
             );
         }
         $command = new UpdateConnectionErrorCountCommand($errorCounts);
-        $this->repository->bulkInsert($this->errors[ErrorTypes::BUSINESS]);
         $this->updateErrorCountHandler->handle($command);
+
+        $this->repository->bulkInsert($connection->code(), $this->errors[ErrorTypes::BUSINESS]);
     }
 
     /**

@@ -13,16 +13,13 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionC
  */
 abstract class ApiError implements ApiErrorInterface
 {
-    /** @var ConnectionCode */
-    private $connectionCode;
-
     /** @var string */
     private $content;
 
     /** @var \DateTimeImmutable */
     private $dateTime;
 
-    public function __construct(ConnectionCode $connectionCode, string $content, \DateTimeImmutable $dateTime = null)
+    public function __construct(string $content, \DateTimeImmutable $dateTime = null)
     {
         try {
             $decoded = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
@@ -44,13 +41,7 @@ abstract class ApiError implements ApiErrorInterface
         }
 
         $this->content = $content;
-        $this->connectionCode = $connectionCode;
         $this->dateTime = $dateTime;
-    }
-
-    public function connectionCode(): ConnectionCode
-    {
-        return $this->connectionCode;
     }
 
     public function content(): string
@@ -63,7 +54,6 @@ abstract class ApiError implements ApiErrorInterface
     public function normalize(): array
     {
         return [
-            'connection_code' => (string) $this->connectionCode,
             'content' => json_decode($this->content(), true),
             'error_datetime' => $this->dateTime->format(\DateTimeInterface::ATOM),
         ];

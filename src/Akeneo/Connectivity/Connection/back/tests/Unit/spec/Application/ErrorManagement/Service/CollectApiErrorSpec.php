@@ -45,24 +45,24 @@ class CollectApiErrorSpec extends ObjectBehavior
     ): void {
         $exception = new HttpException(400);
         $connectionCode = new ConnectionCode('erp');
-        $technicalError = new TechnicalError($connectionCode, '{"message":"technical error"}');
-        $anotherTechError = new TechnicalError($connectionCode, '{"message":"Another technical error"}');
-        $businessError = new BusinessError($connectionCode, '{"message":"business error"}');
-        $anotherBusError = new BusinessError($connectionCode, '{"message":"another business error"}');
+        $technicalError = new TechnicalError('{"message":"technical error"}');
+        $anotherTechError = new TechnicalError('{"message":"Another technical error"}');
+        $businessError = new BusinessError('{"message":"business error"}');
+        $anotherBusError = new BusinessError('{"message":"another business error"}');
 
         $connectionContext->getConnection()->willReturn($connection);
         $connectionContext->isCollectable()->willReturn(true);
         $connection->flowType()->willReturn(new FlowType(FlowType::DATA_SOURCE));
         $connection->code()->willReturn($connectionCode);
 
-        $extractErrorsFromHttpException->extractAll($exception, $connectionCode)->willReturn([
+        $extractErrorsFromHttpException->extractAll($exception)->willReturn([
             $technicalError,
             $anotherTechError,
             $businessError,
             $anotherBusError,
         ]);
 
-        $repository->bulkInsert([$businessError, $anotherBusError])->shouldBeCalled();
+        $repository->bulkInsert($connectionCode, [$businessError, $anotherBusError])->shouldBeCalled();
 
         $updateErrorCountHandler->handle(Argument::that(
             function (UpdateConnectionErrorCountCommand $command) use ($connectionCode) {
