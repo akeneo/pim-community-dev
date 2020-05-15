@@ -78,7 +78,7 @@ class AuditController
 
         $data = $errorCountPerConnection->normalize();
 
-        return new JsonResponse();
+        return new JsonResponse($data);
     }
 
     private function createUserDateTimeInterval(string $endDateUser, \DateTimeZone $timezone): array
