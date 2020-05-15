@@ -526,15 +526,6 @@ class ProductController
             } else {
                 $data['values'] = [];
             }
-        } catch (UnknownPropertyException $exception) {
-            throw new DocumentedHttpException(
-                Documentation::URL . 'patch_products__code_',
-                sprintf(
-                    'Property "%s" does not exist. Check the expected format on the API documentation.',
-                    $exception->getPropertyName()
-                ),
-                $exception
-            );
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . 'patch_products__code_',

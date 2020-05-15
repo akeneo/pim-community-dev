@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater;
 
@@ -115,6 +116,22 @@ class ProductUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(UnknownPropertyException::unknownProperty('unknown_property'))
+            ->during('update', [$product, $updates, []]);
+    }
+
+    function it_throws_an_exception_when_updating_an_unknown_attribute($valuesUpdater, ProductInterface $product)
+    {
+        $updates = [
+            'values' => [
+                'unknown_attribute' => [],
+            ]
+        ];
+
+        $valuesUpdater->update($product, $updates['values'], [])
+            ->willThrow(UnknownPropertyException::unknownProperty('unknown_attribute'));
+
+        $this
+            ->shouldThrow(UnknownAttributeException::unknownAttribute('unknown_attribute'))
             ->during('update', [$product, $updates, []]);
     }
 

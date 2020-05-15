@@ -1,14 +1,10 @@
-import React, {FormEvent, useCallback, useContext, useState} from 'react';
+import React, {FormEvent, useCallback, useState} from 'react';
 import {Modal, ModalBodyWithIllustration, ModalCloseButton, ModalTitle} from 'akeneomeasure/shared/components/Modal';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
-import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
-import {UserContext} from 'akeneomeasure/context/user-context';
 import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
 import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {HelperLevel, HelperRibbon} from 'akeneomeasure/shared/components/HelperRibbon';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
-import {Button} from 'akeneomeasure/shared/components/Button';
 import {useCreateMeasurementFamilySaver} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
 import {
   CreateMeasurementFamilyForm,
@@ -20,15 +16,17 @@ import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
 import {useForm} from 'akeneomeasure/hooks/use-form';
 import {MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
+import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {Button} from '@akeneo-pim-community/shared';
 
 type CreateMeasurementFamilyProps = {
   onClose: (createdMeasurementFamilyCode?: MeasurementFamilyCode) => void;
 };
 
 const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
-  const __ = useContext(TranslateContext);
-  const notify = useContext(NotifyContext);
-  const locale = useContext(UserContext)('uiLocale');
+  const __ = useTranslate();
+  const notify = useNotify();
+  const locale = useUserContext().get('uiLocale');
 
   const [form, setFormValue] = useForm<CreateMeasurementFamilyForm>(initializeCreateMeasurementFamilyForm());
   const saveMeasurementFamily = useCreateMeasurementFamilySaver();

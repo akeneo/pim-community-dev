@@ -1,13 +1,10 @@
 import React, {FormEvent, useCallback, useContext, useRef, useState} from 'react';
 import {Modal, ModalBodyWithIllustration, ModalCloseButton, ModalTitle} from 'akeneomeasure/shared/components/Modal';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
-import {UserContext} from 'akeneomeasure/context/user-context';
 import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
 import {Subsection} from 'akeneomeasure/shared/components/Subsection';
 import {HelperLevel, HelperRibbon} from 'akeneomeasure/shared/components/HelperRibbon';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
-import {Button} from 'akeneomeasure/shared/components/Button';
 import {useForm} from 'akeneomeasure/hooks/use-form';
 import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
@@ -22,11 +19,11 @@ import {
 } from 'akeneomeasure/pages/create-unit/form/create-unit-form';
 import {useCreateUnitValidator} from 'akeneomeasure/pages/create-unit/hooks/use-create-unit-validator';
 import {CheckboxField} from 'akeneomeasure/shared/components/CheckboxField';
-import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
 import {Operation} from 'akeneomeasure/model/operation';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
-import {useAutoFocus} from 'akeneomeasure/shared/hooks/use-auto-focus';
+import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {Button, useAutoFocus} from '@akeneo-pim-community/shared';
 
 type CreateUnitProps = {
   measurementFamily: MeasurementFamily;
@@ -35,9 +32,9 @@ type CreateUnitProps = {
 };
 
 const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) => {
-  const __ = useContext(TranslateContext);
-  const notify = useContext(NotifyContext);
-  const locale = useContext(UserContext)('uiLocale');
+  const __ = useTranslate();
+  const notify = useNotify();
+  const locale = useUserContext().get('uiLocale');
   const config = useContext(ConfigContext);
 
   const [form, setFormValue, clearForm] = useForm<CreateUnitForm>(initializeCreateUnitForm());

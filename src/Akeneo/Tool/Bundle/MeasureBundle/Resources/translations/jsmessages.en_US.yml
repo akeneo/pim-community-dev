@@ -59,7 +59,6 @@ measurements:
         create_another: Create another unit
         will_be_read_only: A product attribute is linked to this measurement family. Once the unit is created, you will only be able to edit its translated labels and symbol.
     list:
-        result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"
         header:
             standard_unit: Standard unit
             unit_count: Number of units
