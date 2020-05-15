@@ -12,12 +12,12 @@
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 class DuplicateProductHandler
 {
@@ -76,7 +76,7 @@ class DuplicateProductHandler
 
         $duplicatedProduct = $this->removeUniqueAttributeValues->fromProduct($duplicatedProduct);
 
-        $removedUniqueAttributeCodesWithoutIdentifier = $this->getRemovedUniqueAttributeCodesWithoutIdentifier($productToDuplicate,  $duplicatedProduct);
+        $removedUniqueAttributeCodesWithoutIdentifier = $this->getRemovedUniqueAttributeCodesWithoutIdentifier($productToDuplicate, $duplicatedProduct);
 
         $this->productSaver->save($duplicatedProduct);
 
@@ -105,7 +105,7 @@ class DuplicateProductHandler
         $removedUniqueAttributeCodesWithoutIdentifier = array_values(
             array_filter(
                 $removedUniqueAttributeCodes,
-                function($uniqueAttributeCode) {
+                function ($uniqueAttributeCode) {
                     return $uniqueAttributeCode !== $this->attributeRepository->getIdentifierCode();
                 }
             )
