@@ -1,30 +1,26 @@
-import React, {useCallback, useContext, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
-import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
 import {HelperTitle, HelperText, Helper} from 'akeneomeasure/shared/components/Helper';
 import {Link} from 'akeneomeasure/shared/components/Link';
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/NoData';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
-import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
 import {
   sortMeasurementFamily,
   filterOnLabelOrCode,
   MeasurementFamilyCode,
 } from 'akeneomeasure/model/measurement-family';
-import {UserContext} from 'akeneomeasure/context/user-context';
 import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
-import {Button} from 'akeneomeasure/shared/components/Button';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
 import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
 import {Direction} from 'akeneomeasure/model/direction';
-import {SecurityContext} from 'akeneomeasure/context/security-context';
+import {Button, SearchBar} from '@akeneo-pim-community/shared';
+import {useTranslate, useUserContext, useSecurity, PimView} from '@akeneo-pim-community/legacy-bridge';
 
 const useSorting = (
   defaultColumn: string
@@ -45,9 +41,9 @@ const useSorting = (
 };
 
 const List = () => {
-  const __ = useContext(TranslateContext);
-  const isGranted = useContext(SecurityContext);
-  const locale = useContext(UserContext)('uiLocale');
+  const __ = useTranslate();
+  const {isGranted} = useSecurity();
+  const locale = useUserContext().get('uiLocale');
   const history = useHistory();
   const [searchValue, setSearchValue] = useState('');
   const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
@@ -144,6 +140,7 @@ const List = () => {
         {null !== filteredMeasurementFamilies && 0 < measurementFamiliesCount && (
           <>
             <SearchBar
+              placeholder={__('measurements.search.placeholder')}
               count={filteredMeasurementFamiliesCount}
               searchValue={searchValue}
               onSearchChange={setSearchValue}

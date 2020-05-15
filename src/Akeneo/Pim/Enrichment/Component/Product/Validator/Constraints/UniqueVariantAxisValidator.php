@@ -90,7 +90,11 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             return;
         }
 
-        $siblingValues = $this->getValuesOfSiblings->for($entity);
+        $axesAttributesCodesToFilter = array_map(function (AttributeInterface $axisAttribute) {
+            return $axisAttribute->getCode();
+        }, $axes);
+
+        $siblingValues = $this->getValuesOfSiblings->for($entity, $axesAttributesCodesToFilter);
 
         if (empty($siblingValues)) {
             return;

@@ -16,6 +16,13 @@ services:
     _defaults:
         public: true
 
+    akeneo_integration_tests.migration_command_launcher:
+        class: 'Akeneo\Tool\Component\Console\CommandLauncher'
+        arguments:
+            - '%kernel.root_dir%'
+            - 'prod'
+            - '%kernel.logs_dir%'
+
     akeneo_integration_tests.loader.reference_data_loader:
         class: '%akeneo_integration_tests.loader.reference_data_loader.class%'
         arguments:
@@ -193,3 +200,10 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@pim_serializer'
+
+    akeneo.pim.structure.query.cache.get_existing_attribute_option_codes_from_option_codes:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Query\PublicApi\AttributeOption\Cache\LRUClearableCachedGetExistingAttributeOptions'
+        decorates: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes
+        decoration_inner_name: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql'

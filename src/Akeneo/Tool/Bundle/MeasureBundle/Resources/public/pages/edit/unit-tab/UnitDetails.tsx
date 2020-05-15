@@ -1,11 +1,9 @@
-import React, {useContext, FormEvent, useCallback} from 'react';
+import React, {FormEvent, useCallback} from 'react';
 import styled from 'styled-components';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
-import {Button} from 'akeneomeasure/shared/components/Button';
 import {
   setUnitSymbol,
   setUnitLabel,
@@ -16,12 +14,12 @@ import {
 } from 'akeneomeasure/model/measurement-family';
 import {Operation} from 'akeneomeasure/model/operation';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
-import {SecurityContext} from 'akeneomeasure/context/security-context';
 import {UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {filterErrors, ValidationError} from 'akeneomeasure/model/validation-error';
-import {UserContext} from 'akeneomeasure/context/user-context';
 import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
+import {useTranslate, useUserContext, useSecurity} from '@akeneo-pim-community/legacy-bridge';
+import {Button} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`
   margin-left: 40px;
@@ -55,10 +53,10 @@ const UnitDetails = ({
   selectUnitCode,
   errors,
 }: UnitDetailsProps) => {
-  const __ = useContext(TranslateContext);
-  const isGranted = useContext(SecurityContext);
+  const __ = useTranslate();
+  const {isGranted} = useSecurity();
   const locales = useUiLocales();
-  const locale = useContext(UserContext)('uiLocale');
+  const locale = useUserContext().get('uiLocale');
   const selectedUnit = getUnit(measurementFamily, selectedUnitCode);
   const [isConfirmDeleteUnitModalOpen, openConfirmDeleteUnitModal, closeConfirmDeleteUnitModal] = useToggleState(false);
 

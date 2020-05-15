@@ -1494,7 +1494,7 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "unknown_attribute" does not exist. Check the expected format on the API documentation.',
+            'message' => 'Attribute "unknown_attribute" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"

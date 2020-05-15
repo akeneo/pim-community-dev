@@ -1,5 +1,5 @@
-import React, {PropsWithChildren, isValidElement, Children, DetailedHTMLProps, AnchorHTMLAttributes} from 'react';
-import defaultIllustrationUrl from '../assets/illustrations/api.svg';
+import React, {AnchorHTMLAttributes, Children, DetailedHTMLProps, isValidElement, PropsWithChildren} from 'react';
+import defaultIllustrationUrl from '../assets/illustrations/NewAPI.svg';
 
 export const HelperTitle = ({children}: PropsWithChildren<{}>) => <>{children}</>;
 

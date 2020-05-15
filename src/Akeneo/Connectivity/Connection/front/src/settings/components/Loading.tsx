@@ -1,10 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import loaderUrl from '../../common/assets/icons/loader.svg';
-import {PropsWithTheme} from '../../common/theme';
+import styled from '../../common/styled-with-theme';
 
 const Container = styled.div`
-    background-color: ${({theme}: PropsWithTheme) => theme.color.grey140};
+    background-color: ${({theme}) => theme.color.grey140};
     display: flex;
     flex-direction: row;
     padding: 0 5px;
@@ -16,7 +15,7 @@ const Loader = styled.img`
     width: 14px;
 `;
 const DisplayRatio = styled.span`
-    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.small};
+    font-size: ${({theme}) => theme.fontSize.small};
     color: #c7cbd4;
     margin-left: 5px;
 `;

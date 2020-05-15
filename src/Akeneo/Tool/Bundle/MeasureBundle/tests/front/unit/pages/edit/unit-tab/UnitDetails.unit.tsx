@@ -2,8 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {act, getByRole, getByText, fireEvent, waitForElement} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import {AkeneoThemeProvider} from 'akeneomeasure/AkeneoThemeProvider';
+import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+
+jest.mock('legacy-bridge/provider/dependencies.ts');
 
 declare global {
   namespace NodeJS {
@@ -92,20 +95,22 @@ test('It displays a details edit form', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <UnitDetails
-          measurementFamily={measurementFamily}
-          selectedUnitCode={selectedUnitCode}
-          onMeasurementFamilyChange={onMeasurementFamilyChange}
-          selectUnitCode={selectUnitCode}
-          errors={errors}
-        />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <UnitDetails
+            measurementFamily={measurementFamily}
+            selectedUnitCode={selectedUnitCode}
+            onMeasurementFamilyChange={onMeasurementFamilyChange}
+            selectUnitCode={selectUnitCode}
+            errors={errors}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
 
-  expect(getByText(container, 'measurements.unit.title?unitLabel=%5BSQUARE_METER%5D')).toBeInTheDocument();
+  expect(getByText(container, 'measurements.unit.title')).toBeInTheDocument();
   expect((getByRole(container, 'unit-label-input-en_US') as HTMLInputElement).value).toEqual('Square Meter');
 });
 
@@ -122,15 +127,17 @@ test('It allows symbol edition', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <UnitDetails
-          measurementFamily={measurementFamily}
-          selectedUnitCode={selectedUnitCode}
-          onMeasurementFamilyChange={onMeasurementFamilyChange}
-          selectUnitCode={selectUnitCode}
-          errors={errors}
-        />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <UnitDetails
+            measurementFamily={measurementFamily}
+            selectedUnitCode={selectedUnitCode}
+            onMeasurementFamilyChange={onMeasurementFamilyChange}
+            selectUnitCode={selectUnitCode}
+            errors={errors}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -156,15 +163,17 @@ test('It allows convertion value edition', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <UnitDetails
-          measurementFamily={measurementFamily}
-          selectedUnitCode={selectedUnitCode}
-          onMeasurementFamilyChange={onMeasurementFamilyChange}
-          selectUnitCode={selectUnitCode}
-          errors={errors}
-        />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <UnitDetails
+            measurementFamily={measurementFamily}
+            selectedUnitCode={selectedUnitCode}
+            onMeasurementFamilyChange={onMeasurementFamilyChange}
+            selectUnitCode={selectUnitCode}
+            errors={errors}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -190,15 +199,17 @@ test('It allows label edition', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <UnitDetails
-          measurementFamily={measurementFamily}
-          selectedUnitCode={selectedUnitCode}
-          onMeasurementFamilyChange={onMeasurementFamilyChange}
-          selectUnitCode={selectUnitCode}
-          errors={errors}
-        />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <UnitDetails
+            measurementFamily={measurementFamily}
+            selectedUnitCode={selectedUnitCode}
+            onMeasurementFamilyChange={onMeasurementFamilyChange}
+            selectUnitCode={selectUnitCode}
+            errors={errors}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -224,15 +235,17 @@ test('It allows to delete the unit', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <UnitDetails
-          measurementFamily={measurementFamily}
-          selectedUnitCode={selectedUnitCode}
-          onMeasurementFamilyChange={onMeasurementFamilyChange}
-          selectUnitCode={selectUnitCode}
-          errors={errors}
-        />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <UnitDetails
+            measurementFamily={measurementFamily}
+            selectedUnitCode={selectedUnitCode}
+            onMeasurementFamilyChange={onMeasurementFamilyChange}
+            selectUnitCode={selectUnitCode}
+            errors={errors}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -261,15 +274,17 @@ test('It does not render if the selected unit is not found', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <UnitDetails
-          measurementFamily={measurementFamily}
-          selectedUnitCode={selectedUnitCode}
-          onMeasurementFamilyChange={onMeasurementFamilyChange}
-          selectUnitCode={selectUnitCode}
-          errors={errors}
-        />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <UnitDetails
+            measurementFamily={measurementFamily}
+            selectedUnitCode={selectedUnitCode}
+            onMeasurementFamilyChange={onMeasurementFamilyChange}
+            selectUnitCode={selectUnitCode}
+            errors={errors}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });

@@ -1,7 +1,6 @@
 import React, {FC, ReactNode, useContext, useEffect, useState} from 'react';
-import styled from 'styled-components';
 import {VictoryChartProps, VictoryThemeDefinition} from 'victory';
-import {PropsWithTheme} from '../../common/theme';
+import styled from '../../common/styled-with-theme';
 import {AuditEventType} from '../../model/audit-event-type.enum';
 import {useNumberFormatter} from '../../shared/formatter/use-number-formatter';
 import {Translate, useTranslate} from '../../shared/translate';
@@ -85,9 +84,9 @@ export const EventChart: FC<Props> = ({
 };
 
 const Title = styled.div`
-    color: ${({theme}: PropsWithTheme) => theme.color.purple100};
+    color: ${({theme}) => theme.color.purple100};
     display: block;
-    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.bigger};
+    font-size: ${({theme}) => theme.fontSize.bigger};
     font-weight: bold;
     line-height: 21px;
     text-transform: uppercase;
@@ -96,13 +95,13 @@ const Title = styled.div`
 `;
 
 const SubTitle = styled.div`
-    color: ${({theme}: PropsWithTheme) => theme.color.grey140};
-    font-size: ${({theme}: PropsWithTheme) => theme.fontSize.bigger};
+    color: ${({theme}) => theme.color.grey140};
+    font-size: ${({theme}) => theme.fontSize.bigger};
     font-weight: bold;
     line-height: 21px;
     padding-bottom: 20px;
 `;
 
 const Count = styled.span`
-    color: ${({theme}: PropsWithTheme) => theme.color.purple100};
+    color: ${({theme}) => theme.color.purple100};
 `;

@@ -1,8 +1,6 @@
 import React, {useState, useContext, useCallback, useEffect, ChangeEvent} from 'react';
 import styled, {css, ThemeContext} from 'styled-components';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
-import {Button, TransparentButton} from 'akeneomeasure/shared/components/Button';
 import {DownIcon} from 'akeneomeasure/shared/icons/DownIcon';
 import {LockIcon} from 'akeneomeasure/shared/icons/LockIcon';
 import {CloseIcon} from 'akeneomeasure/shared/icons/CloseIcon';
@@ -14,6 +12,8 @@ import {ValidationError, filterErrors, getErrorsForPath} from 'akeneomeasure/mod
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 import {Input, InputContainer} from 'akeneomeasure/shared/components/TextField';
 import {useLocalizedNumber} from 'akeneomeasure/shared/hooks/use-localized-number';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {Button, TransparentButton} from '@akeneo-pim-community/shared';
 
 const AknFieldContainer = styled.div`
   margin-bottom: 20px;
@@ -134,7 +134,7 @@ const OperationCollection = ({
   readOnly = false,
   onOperationsChange,
 }: OperationCollectionProps) => {
-  const __ = useContext(TranslateContext);
+  const __ = useTranslate();
   const akeneoTheme = useContext(ThemeContext);
   const config = useContext(ConfigContext);
   const [openOperatorSelector, setOpenOperatorSelector] = useState<number | null>(null);

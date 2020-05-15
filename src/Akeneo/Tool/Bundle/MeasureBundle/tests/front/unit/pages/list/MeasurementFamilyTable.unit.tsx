@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router} from 'react-router';
-import {act, fireEvent} from '@testing-library/react';
+import {act, fireEvent, getByTitle} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import {AkeneoThemeProvider} from 'akeneomeasure/AkeneoThemeProvider';
+import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
 import {createMemoryHistory} from 'history';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+
+jest.mock('legacy-bridge/provider/dependencies.ts');
 
 const measurementFamilies = [
   {
@@ -58,9 +61,15 @@ test('It displays an empty table', async () => {
   await act(async () => {
     ReactDOM.render(
       <Router history={history}>
-        <AkeneoThemeProvider>
-          <MeasurementFamilyTable measurementFamilies={[]} toggleSortDirection={() => {}} getSortDirection={() => {}} />
-        </AkeneoThemeProvider>
+        <DependenciesProvider>
+          <AkeneoThemeProvider>
+            <MeasurementFamilyTable
+              measurementFamilies={[]}
+              toggleSortDirection={() => {}}
+              getSortDirection={() => {}}
+            />
+          </AkeneoThemeProvider>
+        </DependenciesProvider>
       </Router>,
       container
     );
@@ -76,13 +85,15 @@ test('It displays some measurement families', async () => {
   await act(async () => {
     ReactDOM.render(
       <Router history={history}>
-        <AkeneoThemeProvider>
-          <MeasurementFamilyTable
-            measurementFamilies={measurementFamilies}
-            toggleSortDirection={() => {}}
-            getSortDirection={() => {}}
-          />
-        </AkeneoThemeProvider>
+        <DependenciesProvider>
+          <AkeneoThemeProvider>
+            <MeasurementFamilyTable
+              measurementFamilies={measurementFamilies}
+              toggleSortDirection={() => {}}
+              getSortDirection={() => {}}
+            />
+          </AkeneoThemeProvider>
+        </DependenciesProvider>
       </Router>,
       container
     );
@@ -103,13 +114,15 @@ test('It toggles the sort direction on the columns', async () => {
   await act(async () => {
     ReactDOM.render(
       <Router history={history}>
-        <AkeneoThemeProvider>
-          <MeasurementFamilyTable
-            measurementFamilies={measurementFamilies}
-            toggleSortDirection={(columnCode: string) => (sortDirections[columnCode] = 'Descending')}
-            getSortDirection={(columnCode: string) => sortDirections[columnCode]}
-          />
-        </AkeneoThemeProvider>
+        <DependenciesProvider>
+          <AkeneoThemeProvider>
+            <MeasurementFamilyTable
+              measurementFamilies={measurementFamilies}
+              toggleSortDirection={(columnCode: string) => (sortDirections[columnCode] = 'Descending')}
+              getSortDirection={(columnCode: string) => sortDirections[columnCode]}
+            />
+          </AkeneoThemeProvider>
+        </DependenciesProvider>
       </Router>,
       container
     );
@@ -136,19 +149,21 @@ test('It changes the history when clicking on a row', async () => {
   await act(async () => {
     ReactDOM.render(
       <Router history={history}>
-        <AkeneoThemeProvider>
-          <MeasurementFamilyTable
-            measurementFamilies={measurementFamilies}
-            toggleSortDirection={() => {}}
-            getSortDirection={() => {}}
-          />
-        </AkeneoThemeProvider>
+        <DependenciesProvider>
+          <AkeneoThemeProvider>
+            <MeasurementFamilyTable
+              measurementFamilies={measurementFamilies}
+              toggleSortDirection={() => {}}
+              getSortDirection={() => {}}
+            />
+          </AkeneoThemeProvider>
+        </DependenciesProvider>
       </Router>,
       container
     );
   });
 
-  const areaRow = container.querySelector('tbody tr[title="[AREA]"]');
+  const areaRow = getByTitle(container, 'Area');
 
   await act(async () => {
     fireEvent.click(areaRow);
