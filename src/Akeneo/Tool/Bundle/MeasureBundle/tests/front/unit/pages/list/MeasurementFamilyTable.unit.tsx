@@ -8,7 +8,7 @@ import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamily
 import {createMemoryHistory} from 'history';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
-jest.mock('pimui/workspaces/legacy-bridge/provider/dependencies.ts');
+jest.mock('legacy-bridge/provider/dependencies.ts');
 
 const measurementFamilies = [
   {

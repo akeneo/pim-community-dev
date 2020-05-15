@@ -6,7 +6,7 @@ import {renderHook} from '@testing-library/react-hooks';
 import {useCreateMeasurementFamilySaver} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
-jest.mock('pimui/workspaces/legacy-bridge/provider/dependencies.ts');
+jest.mock('legacy-bridge/provider/dependencies.ts');
 
 declare global {
   namespace NodeJS {

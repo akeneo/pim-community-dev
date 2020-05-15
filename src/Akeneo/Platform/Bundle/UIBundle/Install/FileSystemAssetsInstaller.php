@@ -30,8 +30,8 @@ class FileSystemAssetsInstaller implements AssetsInstaller
     {
         $legacyBridgeOriginDir = __DIR__ . '/../Resources/workspaces/legacy-bridge/src';
         $sharedOriginDir = __DIR__ . '/../Resources/workspaces/shared/src';
-        $legacyBridgeTargetDir = $this->projectDir . '/public/bundles/pimui/workspaces/legacy-bridge';
-        $sharedTargetDir = $this->projectDir . '/public/bundles/pimui/workspaces/shared';
+        $legacyBridgeTargetDir = $this->projectDir . '/public/bundles/legacy-bridge';
+        $sharedTargetDir = $this->projectDir . '/public/bundles/shared';
         if ($shouldSymlink) {
             $this->relativeSymlinkWithFallback($legacyBridgeOriginDir, $legacyBridgeTargetDir);
             $this->relativeSymlinkWithFallback($sharedOriginDir, $sharedTargetDir);

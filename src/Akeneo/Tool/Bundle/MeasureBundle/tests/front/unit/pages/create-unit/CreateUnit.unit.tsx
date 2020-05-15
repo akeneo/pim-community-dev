@@ -8,7 +8,7 @@ import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
-jest.mock('pimui/workspaces/legacy-bridge/provider/dependencies.ts');
+jest.mock('legacy-bridge/provider/dependencies.ts');
 
 declare global {
   namespace NodeJS {
