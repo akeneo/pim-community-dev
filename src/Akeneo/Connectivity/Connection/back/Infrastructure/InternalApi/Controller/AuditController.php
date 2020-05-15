@@ -74,7 +74,7 @@ class AuditController
         [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
 
         $query = new GetErrorCountPerConnectionQuery($errorType, $fromDateTime, $upToDateTime);
-        $errorCountPerConnection = $this->countDailyEventsByConnectionHandler->handle($query);
+        $errorCountPerConnection = $this->getErrorCountPerConnectionHandler->handle($query);
 
         $data = $errorCountPerConnection->normalize();
 
