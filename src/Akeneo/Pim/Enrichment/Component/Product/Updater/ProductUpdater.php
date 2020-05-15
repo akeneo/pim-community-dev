@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\QuantifiedAssociation\QuantifiedAssociationsFromAncestorsFilter;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
@@ -34,22 +35,28 @@ class ProductUpdater implements ObjectUpdaterInterface
     /** @var ParentAssociationsFilter */
     private $parentAssociationsFilter;
 
+    /** @var QuantifiedAssociationsFromAncestorsFilter */
+    private $quantifiedAssociationsFromAncestorsFilter;
+
     /**
      * @param PropertySetterInterface  $propertySetter
      * @param ObjectUpdaterInterface   $valuesUpdater
      * @param ParentAssociationsFilter $parentAssociationsFilter
+     * @param QuantifiedAssociationsFromAncestorsFilter $quantifiedAssociationsFromAncestorsFilter
      * @param array                    $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ObjectUpdaterInterface $valuesUpdater,
         ParentAssociationsFilter $parentAssociationsFilter,
+        QuantifiedAssociationsFromAncestorsFilter $quantifiedAssociationsFromAncestorsFilter,
         array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
         $this->valuesUpdater = $valuesUpdater;
         $this->ignoredFields = $ignoredFields;
         $this->parentAssociationsFilter = $parentAssociationsFilter;
+        $this->quantifiedAssociationsFromAncestorsFilter = $quantifiedAssociationsFromAncestorsFilter;
     }
 
     /**
@@ -149,14 +156,14 @@ class ProductUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $code => $value) {
-            $filteredValue = $this->filterData($code, $value, $data);
+            $filteredValue = $this->filterData($product, $code, $value, $data);
             $this->setData($product, $code, $filteredValue, $options);
         }
 
         return $this;
     }
 
-    protected function filterData(string $field, $data, array $context = [])
+    protected function filterData(ProductInterface $product, string $field, $data, array $context = [])
     {
         switch ($field) {
             case 'associations':
@@ -166,7 +173,7 @@ class ProductUpdater implements ObjectUpdaterInterface
                 }
                 break;
             case 'quantified_associations':
-                // @todo RAC-19
+                $data = $this->filterQuantifiedAssociationsFromAncestors($product, $data);
                 break;
         }
 
@@ -188,10 +195,8 @@ class ProductUpdater implements ObjectUpdaterInterface
                 $this->updateProductFields($product, $field, $data);
                 break;
             case 'associations':
-                $this->updateProductFields($product, $field, $data);
-                break;
             case 'quantified_associations':
-                // @todo RAC-19
+                $this->updateProductFields($product, $field, $data);
                 break;
             case 'values':
                 $this->valuesUpdater->update($product, $data, $options);
@@ -242,6 +247,16 @@ class ProductUpdater implements ObjectUpdaterInterface
         );
 
         return $associations;
+    }
+
+    protected function filterQuantifiedAssociationsFromAncestors(
+        ProductInterface $product,
+        array $data
+    ): array {
+        return $this->quantifiedAssociationsFromAncestorsFilter->filter(
+            $data,
+            $product
+        );
     }
 
     protected function validateScalar(string $field, $data): void

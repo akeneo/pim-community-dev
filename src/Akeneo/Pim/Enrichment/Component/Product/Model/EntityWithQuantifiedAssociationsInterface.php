@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
 
 /**
  * Interface to implement for any entity that should be aware of any quantified associations it is holding.
@@ -14,6 +16,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMappin
  */
 interface EntityWithQuantifiedAssociationsInterface
 {
+    /**
+     * Set the quantified associations
+     */
+    public function setQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void;
+
     /**
      * Get all associated product ids
      *
@@ -56,7 +63,10 @@ interface EntityWithQuantifiedAssociationsInterface
      * @param IdMapping $mappedProductIdentifiers
      * @param IdMapping $mappedProductModelIdentifiers
      */
-    public function updateRawQuantifiedAssociations(IdMapping $mappedProductIdentifiers, IdMapping $mappedProductModelIdentifiers): void;
+    public function updateRawQuantifiedAssociations(
+        IdMapping $mappedProductIdentifiers,
+        IdMapping $mappedProductModelIdentifiers
+    ): void;
 
     /**
      * Normalize the quantified associations

@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
+use Akeneo\Pim\Enrichment\Component\Product\QuantifiedAssociation\QuantifiedAssociationsMerger;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -15,6 +16,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class QuantifiedAssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
+    /** @var QuantifiedAssociationsMerger */
+    private $quantifedAssociationMerger;
+
+    public function __construct(
+        QuantifiedAssociationsMerger $quantifiedAssociationMerger
+    ) {
+        $this->quantifedAssociationMerger = $quantifiedAssociationMerger;
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -57,97 +67,23 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
             );
         }
 
-        $ancestors = $this->getAncestors($entity);
-        $associations = [];
+        $entities = $this->getAncestors($entity);
+        $entities[] = $entity;
 
-        foreach ($ancestors as $ancestor) {
-            if (!$ancestor instanceof EntityWithQuantifiedAssociationsInterface) {
-                continue;
-            }
-
-            $associations = $this->mergeQuantifiedAssociations(
-                $associations,
-                $ancestor->normalizeQuantifiedAssociations()
-            );
-        }
-
-        return $associations;
-    }
-
-    private function mergeQuantifiedAssociations(array $source, array $values): array
-    {
-        foreach ($values as $associationTypeCode => $association) {
-            foreach ($association as $associationEntityType => $rows) {
-                foreach ($rows as $row) {
-                    $key = $this->searchKeyOfDuplicatedQuantifiedAssociation(
-                        $source,
-                        $associationTypeCode,
-                        $associationEntityType,
-                        $row
-                    );
-
-                    if (null !== $key) {
-                        $source[$associationTypeCode][$associationEntityType][$key]['quantity'] = $row['quantity'];
-                        continue;
-                    }
-
-                    $source[$associationTypeCode][$associationEntityType][] = $row;
-                }
-            }
-        }
-
-        return $source;
-    }
-
-    /**
-     * Since we are using an unindexed array for the quantified associations,
-     * we need to find if there is a row with the same identifier as the one we have and with its key,
-     * we will be able to overwrite the quantity.
-     *
-     * For context, this is the structure:
-     * [
-     *      'PACK' => [
-     *          'products' => [
-     *              ['identifier' => 'foo', 'quantity' => 2],
-     *              ['identifier' => 'bar', 'quantity' => 4],
-     *          ]
-     *      ]
-     * ]
-     *
-     */
-    private function searchKeyOfDuplicatedQuantifiedAssociation(
-        array $source,
-        string $associationTypeCode,
-        string $associationEntityType,
-        array $quantifiedAssociation
-    ): ?int {
-        $matchingSourceQuantifiedAssociations = array_filter(
-            $source[$associationTypeCode][$associationEntityType] ?? [],
-            function ($sourceQuantifiedAssociation) use ($quantifiedAssociation) {
-                return $sourceQuantifiedAssociation['identifier'] === $quantifiedAssociation['identifier'];
-            }
-        );
-
-        if (empty($matchingSourceQuantifiedAssociations)) {
-            return null;
-        }
-
-        return array_keys($matchingSourceQuantifiedAssociations)[0];
+        return $this->quantifedAssociationMerger->normalizeAndMergeQuantifiedAssociationsFrom($entities);
     }
 
     /**
      * This function returns an array with the ancestors in the following order:
      * [product_model, product_variant_level_1, product_variant_level_2]
-     * when given a product variant.
-     * It will only look for parents of course, if an intermediate (or the product model) is given,
-     * there will no children in the ancestors tree.
+     * It will only returns the parents, not the current entity.
      *
      * @param EntityWithFamilyVariantInterface $entity
      * @return array
      */
     private function getAncestors(EntityWithFamilyVariantInterface $entity): array
     {
-        $ancestors = [$entity];
+        $ancestors = [];
         $current = $entity;
 
         while (null !== $parent = $current->getParent()) {
