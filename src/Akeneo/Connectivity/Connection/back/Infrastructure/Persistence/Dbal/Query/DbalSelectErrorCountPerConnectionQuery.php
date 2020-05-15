@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
@@ -26,7 +27,7 @@ class DbalSelectErrorCountPerConnectionQuery implements SelectErrorCountPerConne
     }
 
     public function execute(
-        string $errorType,
+        ErrorType $errorType,
         \DateTimeImmutable $fromDateTime,
         \DateTimeImmutable $upToDateTime
     ): ErrorCountPerConnection {

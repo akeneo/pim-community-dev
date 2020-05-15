@@ -31,7 +31,7 @@ class GetErrorCountPerConnectionQuerySpec extends ObjectBehavior
 
     public function it_returns_the_error_type(): void
     {
-        $this->eventType()->shouldReturn(ErrorTypes::BUSINESS);
+        $this->errorType()->shouldReturn(ErrorTypes::BUSINESS);
     }
 
     public function it_returns_the_from_date_time(): void

@@ -7,6 +7,7 @@ use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditErrorLoa
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write;
@@ -49,7 +50,7 @@ class DbalSelectErrorCountPerConnectionQueryIntegration extends TestCase
         $fromDateTime = new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC'));
         $upToDateTime = new \DateTimeImmutable('2020-01-04 00:00:00', new \DateTimeZone('UTC'));
         $result = $this->selectErrorCountPerConnectionQuery->execute(
-            ErrorTypes::BUSINESS,
+            new ErrorType(ErrorTypes::BUSINESS),
             $fromDateTime,
             $upToDateTime,
         );

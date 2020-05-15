@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
 
 /**
  * @author Pierre Jolly <romain@akeneo.com>
@@ -17,7 +18,7 @@ interface SelectErrorCountPerConnectionQuery
      * @return ErrorCountPerConnection
      */
     public function execute(
-        string $eventType,
+        ErrorType $errorType,
         \DateTimeImmutable $fromDateTime,
         \DateTimeImmutable $upToDateTime
     ): ErrorCountPerConnection;

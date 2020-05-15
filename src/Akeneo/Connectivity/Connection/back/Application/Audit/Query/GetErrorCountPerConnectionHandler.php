@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Application\Audit\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -26,7 +27,7 @@ class GetErrorCountPerConnectionHandler
     {
         $errorCountsPerConnection = $this
             ->selectErrorCountPerConnectionQuery
-            ->execute($query->eventType(), $query->fromDateTime(), $query->upToDateTime());
+            ->execute(new ErrorType($query->errorType()), $query->fromDateTime(), $query->upToDateTime());
 
         return $errorCountsPerConnection;
     }
