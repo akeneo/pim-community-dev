@@ -6,6 +6,8 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateProductEventCounts;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,18 +20,23 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AuditController
 {
-    /** @var CountDailyEventsByConnectionHandler */
-    private $countDailyEventsByConnectionHandler;
-
     /** @var UserContext */
     private $userContext;
 
+    /** @var CountDailyEventsByConnectionHandler */
+    private $countDailyEventsByConnectionHandler;
+
+    /** @var GetErrorCountPerConnectionHandler */
+    private $getErrorCountPerConnectionHandler;
+
     public function __construct(
+        UserContext $userContext,
         CountDailyEventsByConnectionHandler $countDailyEventsByConnectionHandler,
-        UserContext $userContext
+        GetErrorCountPerConnectionHandler $getErrorCountPerConnectionHandler
     ) {
         $this->userContext = $userContext;
         $this->countDailyEventsByConnectionHandler = $countDailyEventsByConnectionHandler;
+        $this->getErrorCountPerConnectionHandler = $getErrorCountPerConnectionHandler;
     }
 
     public function getWeeklyAudit(Request $request): JsonResponse
@@ -51,6 +58,27 @@ class AuditController
         $data = AggregateProductEventCounts::normalize($periodEventCounts, $timezone);
 
         return new JsonResponse($data);
+    }
+
+    public function getErrorCountPerConnection(Request $request): JsonResponse
+    {
+        $timezone = new \DateTimeZone($this->userContext->getUserTimezone());
+
+        $errorType = $request->get('error_type');
+        $endDateUser = $request->get(
+            'end_date',
+            (new \DateTimeImmutable('now', $timezone))->format('Y-m-d')
+        );
+
+        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval($endDateUser, $timezone);
+        [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
+
+        $query = new GetErrorCountPerConnectionQuery($errorType, $fromDateTime, $upToDateTime);
+        $errorCountPerConnection = $this->countDailyEventsByConnectionHandler->handle($query);
+
+        $data = $errorCountPerConnection->normalize();
+
+        return new JsonResponse();
     }
 
     private function createUserDateTimeInterval(string $endDateUser, \DateTimeZone $timezone): array
