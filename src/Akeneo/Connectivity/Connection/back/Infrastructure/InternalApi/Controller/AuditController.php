@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler;
-use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateProductEventCounts;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +23,7 @@ class AuditController
     /** @var UserContext */
     private $userContext;
 
-    /** @var CountDailyEventsByConnectionHandler */
+    /** @var GetPeriodEventCountPerConnectionHandler */
     private $countDailyEventsByConnectionHandler;
 
     /** @var GetErrorCountPerConnectionHandler */
@@ -31,7 +31,7 @@ class AuditController
 
     public function __construct(
         UserContext $userContext,
-        CountDailyEventsByConnectionHandler $countDailyEventsByConnectionHandler,
+        GetPeriodEventCountPerConnectionHandler $countDailyEventsByConnectionHandler,
         GetErrorCountPerConnectionHandler $getErrorCountPerConnectionHandler
     ) {
         $this->userContext = $userContext;
@@ -52,7 +52,7 @@ class AuditController
         [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval($endDateUser, $timezone, new \DateInterval('P7D'));
         [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
 
-        $query = new CountDailyEventsByConnectionQuery($eventType, $fromDateTime, $upToDateTime);
+        $query = new GetPeriodEventCountPerConnectionQuery($eventType, $fromDateTime, $upToDateTime);
         $periodEventCounts = $this->countDailyEventsByConnectionHandler->handle($query);
 
         $data = AggregateProductEventCounts::normalize($periodEventCounts, $timezone);
