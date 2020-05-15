@@ -10,4 +10,4 @@ error_count_per_connection:
     defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.audit:getErrorCountPerConnection }
     methods: [GET]
     requirements:
-        event_type: '[a-zA-Z_]+'
+        error_type: '[a-zA-Z_]+'

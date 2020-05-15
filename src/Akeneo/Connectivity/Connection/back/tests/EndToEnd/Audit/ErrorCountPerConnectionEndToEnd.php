@@ -26,22 +26,18 @@ class ErrorCountPerConnectionEndToEnd extends WebTestCase
     public function test_it_get_error_count_per_connection()
     {
         $this->createHourlyErrorCounts([
-            ['bynder', 'business', '2019-12-31 23:00:00', 1], // ignored
-            ['bynder', 'business', '2020-01-01 00:00:00', 3],
+            ['bynder', 'business', '2019-12-31 23:00:00', 1], // ignored date
+            ['bynder', 'technical', '2020-01-01 12:00:00', 1], // ignored technical
+            ['bynder', 'business', '2020-01-01 16:00:00', 3],
             ['bynder', 'business', '2020-01-04 15:00:00', 5],
             ['bynder', 'business', '2020-01-04 16:00:00', 7],
-            ['bynder', 'technical', '2020-01-07 16:00:00', 7], // ignored
-            ['bynder', 'business', '2020-01-08 00:00:00', 9], // ignored
+            ['bynder', 'technical', '2020-01-07 16:00:00', 7], // ignored technical
+            ['bynder', 'business', '2020-01-08 00:00:00', 9], // ignored date
             ['sap', 'business', '2020-01-04 14:00:00', 10],
             ['sap', 'business', '2020-01-04 15:00:00', 30],
-            ['sap', 'business', '2020-01-08 23:00:00', 50],
-            ['sap', 'technical', '2020-01-08 23:00:00', 50], // ignored
+            ['sap', 'business', '2020-01-08 23:00:00', 50], // ignored date
+            ['sap', 'technical', '2020-01-08 23:00:00', 20], // ignored technical
         ], 'Asia/Tokyo');
-
-        $expectedResult = [
-            'bynder' => 15,
-            'sap' => 90,
-        ];
 
         $user = $this->authenticateAsAdmin();
         $user->setTimezone('Asia/Tokyo');
@@ -56,6 +52,11 @@ class ErrorCountPerConnectionEndToEnd extends WebTestCase
             ],
         );
         $result = json_decode($this->client->getResponse()->getContent(), true);
+
+        $expectedResult = [
+            'bynder' => 15,
+            'sap' => 40,
+        ];
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals($expectedResult, $result);

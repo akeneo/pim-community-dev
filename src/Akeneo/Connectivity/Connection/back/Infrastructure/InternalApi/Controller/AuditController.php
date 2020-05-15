@@ -49,7 +49,7 @@ class AuditController
             (new \DateTimeImmutable('now', $timezone))->format('Y-m-d')
         );
 
-        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval($endDateUser, $timezone);
+        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval($endDateUser, $timezone, new \DateInterval('P7D'));
         [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
 
         $query = new CountDailyEventsByConnectionQuery($eventType, $fromDateTime, $upToDateTime);
@@ -70,8 +70,15 @@ class AuditController
             (new \DateTimeImmutable('now', $timezone))->format('Y-m-d')
         );
 
-        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval($endDateUser, $timezone);
+        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval($endDateUser, $timezone, new \DateInterval('P6D'));
         [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
+
+
+        dump($startDateTimeUser);
+        dump($fromDateTime);
+
+        dump($endDateTimeUser);
+        dump($upToDateTime);
 
         $query = new GetErrorCountPerConnectionQuery($errorType, $fromDateTime, $upToDateTime);
         $errorCountPerConnection = $this->getErrorCountPerConnectionHandler->handle($query);
@@ -81,7 +88,7 @@ class AuditController
         return new JsonResponse($data);
     }
 
-    private function createUserDateTimeInterval(string $endDateUser, \DateTimeZone $timezone): array
+    private function createUserDateTimeInterval(string $endDateUser, \DateTimeZone $timezone, \DateInterval $dateInterval): array
     {
         $endDateTimeUser = \DateTimeImmutable::createFromFormat(
             'Y-m-d',
@@ -95,7 +102,7 @@ class AuditController
             ));
         }
 
-        $startDateTimeUser = $endDateTimeUser->sub(new \DateInterval('P7D'));
+        $startDateTimeUser = $endDateTimeUser->sub($dateInterval);
 
         return [$startDateTimeUser, $endDateTimeUser];
     }
