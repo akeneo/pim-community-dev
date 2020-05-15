@@ -1,11 +1,11 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {MeasurementFamilyRow} from 'akeneomeasure/pages/list/MeasurementFamilyRow';
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Caret} from 'akeneomeasure/shared/components/Caret';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Table, HeaderCell} from 'akeneomeasure/pages/common/Table';
 import {Direction} from 'akeneomeasure/model/direction';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const SortableHeaderCell = styled(HeaderCell)`
   &:hover {
@@ -24,7 +24,7 @@ const MeasurementFamilyTable = ({
   toggleSortDirection,
   getSortDirection,
 }: MeasurementFamilyTableProps) => {
-  const __ = useContext(TranslateContext);
+  const __ = useTranslate();
 
   return (
     <Table>

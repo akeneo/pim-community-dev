@@ -1,7 +1,6 @@
-import {useContext} from 'react';
-import {RouterContext} from 'akeneomeasure/context/router-context';
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {ValidationError} from 'akeneomeasure/model/validation-error';
+import {useRouter} from '@akeneo-pim-community/legacy-bridge';
 
 type SaverResult = {
   success: boolean;
@@ -11,7 +10,7 @@ type SaverResult = {
 type Saver = (measurementFamily: MeasurementFamily) => Promise<SaverResult>;
 
 const useSaveMeasurementFamilySaver = (): Saver => {
-  const router = useContext(RouterContext);
+  const router = useRouter();
 
   return async (measurementFamily: MeasurementFamily) => {
     const response = await fetch(

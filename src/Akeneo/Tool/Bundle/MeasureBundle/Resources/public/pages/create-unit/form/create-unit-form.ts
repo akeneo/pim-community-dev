@@ -3,7 +3,7 @@ import {Unit} from 'akeneomeasure/model/unit';
 import {LocaleCode} from 'akeneomeasure/model/locale';
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {ValidationError} from 'akeneomeasure/model/validation-error';
-import {TranslateContextValue} from 'akeneomeasure/context/translate-context';
+import {Translate} from '@akeneo-pim-community/legacy-bridge';
 
 type CreateUnitForm = {
   code: string;
@@ -40,7 +40,7 @@ const createUnitFromForm = (data: CreateUnitForm, locale: LocaleCode): Unit => {
 const validateCreateUnitForm = (
   data: CreateUnitForm,
   measurementFamily: MeasurementFamily,
-  __: TranslateContextValue
+  __: Translate
 ): ValidationError[] => {
   const unitCodes = measurementFamily.units.map((unit: Unit) => unit.code.toLowerCase());
 
