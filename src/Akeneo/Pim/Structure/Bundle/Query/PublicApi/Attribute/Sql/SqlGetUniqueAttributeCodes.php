@@ -17,26 +17,15 @@ final class SqlGetUniqueAttributeCodes implements GetUniqueAttributeCodes
         $this->connection = $connection;
     }
 
-    public function fromAttributeCodes(array $attributeCodes): array
+    public function all(): array
     {
         $query = <<<SQL
 SELECT attribute.code
 FROM akeneo_pim.pim_catalog_attribute attribute
 WHERE attribute.is_unique = 1
-AND attribute.code IN (:attributeCodes)
 SQL;
 
-        $rawResults = $this->connection->executeQuery(
-            $query,
-            ['attributeCodes' =>  $attributeCodes],
-            ['attributeCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
-
-        $uniqueAttributeCodes = [];
-
-        foreach ($rawResults as $rawAttribute) {
-            $uniqueAttributeCodes[] = $rawAttribute['code'];
-        }
+        $uniqueAttributeCodes = $this->connection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN);
 
         return $uniqueAttributeCodes;
     }

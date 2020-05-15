@@ -19,14 +19,9 @@ class SqlGetUniqueAttributeCodesIntegration extends TestCase
 
     public function test_it_gets_unique_attribute_codes_from_codes()
     {
-        $attributeCodes = ['unique_attribute_1', 'optional_unique_attribute', 'non_unique_attribute'];
         $attributes = [
             [
-                'code' => 'unique_attribute_1',
-                'unique' => true,
-            ],
-            [
-                'code' => 'unique_attribute_2',
+                'code' => 'unique_attribute',
                 'unique' => true,
             ],
             [
@@ -41,13 +36,16 @@ class SqlGetUniqueAttributeCodesIntegration extends TestCase
         $this->givenFamily(
             [
                 'code' => 'familyA',
-                'attribute_codes' => ['unique_attribute_1', 'unique_attribute_2', 'non_unique_attribute']
+                'attribute_codes' => ['unique_attribute', 'non_unique_attribute']
             ]
         );
 
-        $uniqueAttributeCodes = $this->getUniqueAttributeCodes->fromAttributeCodes($attributeCodes);
+        $uniqueAttributeCodes = $this->getUniqueAttributeCodes->all();
 
-        Assert::assertEqualsCanonicalizing(['unique_attribute_1', 'optional_unique_attribute'], $uniqueAttributeCodes);
+        Assert::assertEqualsCanonicalizing(
+            ['sku', 'unique_attribute', 'optional_unique_attribute'],
+            $uniqueAttributeCodes
+        );
     }
 
     private function givenFamily(array $familyData)

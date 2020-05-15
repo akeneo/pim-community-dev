@@ -11,8 +11,7 @@
 
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetUniqueAttributeCodes;
 
 class RemoveUniqueAttributeValues
@@ -20,32 +19,23 @@ class RemoveUniqueAttributeValues
     /** @var GetUniqueAttributeCodes */
     private $getUniqueAttributeCodes;
 
-    /** @var AttributeRepository */
-    private $attributeRepository;
 
-    public function __construct(GetUniqueAttributeCodes $getUniqueAttributeCodes, AttributeRepository $attributeRepository)
+    public function __construct(GetUniqueAttributeCodes $getUniqueAttributeCodes)
     {
         $this->getUniqueAttributeCodes = $getUniqueAttributeCodes;
-        $this->attributeRepository = $attributeRepository;
     }
 
-    public function fromCollection(WriteValueCollection $valueCollection): array
+    public function fromProduct(ProductInterface $product): ProductInterface
     {
+        $valueCollection = $product->getValues();
         $attributeCodes = $valueCollection->getAttributeCodes();
-        $uniqueAttributeCodes = $this->getUniqueAttributeCodes->fromAttributeCodes($attributeCodes);
+        $uniqueAttributeCodes = $this->getUniqueAttributeCodes->all();
         foreach ($attributeCodes as $attributeCode) {
             if (in_array($attributeCode, $uniqueAttributeCodes)) {
                 $valueCollection->removeByAttributeCode($attributeCode);
             }
         }
 
-        $uniqueAttributeCodesWithoutIdentifier = array_filter(
-            $uniqueAttributeCodes,
-            function ($attributeCode) {
-                return $attributeCode !== $this->attributeRepository->getIdentifierCode();
-            }
-        );
-
-        return $uniqueAttributeCodesWithoutIdentifier;
+        return $product;
     }
 }

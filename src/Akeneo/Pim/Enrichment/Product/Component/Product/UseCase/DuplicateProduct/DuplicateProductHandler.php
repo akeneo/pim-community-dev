@@ -16,11 +16,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 class DuplicateProductHandler
 {
     /** @var ProductRepositoryInterface */
     private $productRepository;
+
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
 
     /** @var ProductBuilderInterface */
     private $productBuilder;
@@ -39,6 +44,7 @@ class DuplicateProductHandler
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $attributeRepository,
         ProductBuilderInterface $productBuilder,
         NormalizerInterface $normalizer,
         ObjectUpdaterInterface $productUpdater,
@@ -46,6 +52,7 @@ class DuplicateProductHandler
         RemoveUniqueAttributeValues $removeUniqueAttributeValues
     ) {
         $this->productRepository = $productRepository;
+        $this->attributeRepository = $attributeRepository;
         $this->productBuilder = $productBuilder;
         $this->normalizer = $normalizer;
         $this->productUpdater = $productUpdater;
@@ -58,22 +65,50 @@ class DuplicateProductHandler
         /** @var ProductInterface */
         $productToDuplicate = $this->productRepository->findOneByIdentifier($query->productToDuplicateIdentifier());
 
-        $uniqueAttributeCodes = $this->removeUniqueAttributeValues->fromCollection($productToDuplicate->getValues());
-
-        $normalizedProduct = $this->normalizer->normalize(
-            $productToDuplicate,
-            'standard'
-        );
+        $normalizedProductWithoutIdentifier = $this->normalizeProductWithoutIdentifier($productToDuplicate);
 
         $duplicatedProduct = $this->productBuilder->createProduct(
             $query->duplicatedProductIdentifier(),
             $productToDuplicate->getFamily()->getCode()
         );
 
-        $this->productUpdater->update($duplicatedProduct, $normalizedProduct);
+        $this->productUpdater->update($duplicatedProduct, $normalizedProductWithoutIdentifier);
+
+        $duplicatedProduct = $this->removeUniqueAttributeValues->fromProduct($duplicatedProduct);
+
+        $removedUniqueAttributeCodesWithoutIdentifier = $this->getRemovedUniqueAttributeCodesWithoutIdentifier($productToDuplicate,  $duplicatedProduct);
 
         $this->productSaver->save($duplicatedProduct);
 
-        return new DuplicateProductResponse($uniqueAttributeCodes);
+        return new DuplicateProductResponse($removedUniqueAttributeCodesWithoutIdentifier);
+    }
+
+    private function normalizeProductWithoutIdentifier(ProductInterface $productToDuplicate): array
+    {
+        $normalizedProduct = $this->normalizer->normalize(
+            $productToDuplicate,
+            'standard'
+        );
+
+        unset($normalizedProduct['values'][$this->attributeRepository->getIdentifierCode()]);
+
+        return $normalizedProduct;
+    }
+
+    private function getRemovedUniqueAttributeCodesWithoutIdentifier(ProductInterface $productToDuplicate, ProductInterface $duplicatedProduct): array
+    {
+        $removedUniqueAttributeCodes = array_diff(
+            $productToDuplicate->getValues()->getAttributeCodes(),
+            $duplicatedProduct->getValues()->getAttributeCodes()
+        );
+
+        $removedUniqueAttributeCodesWithoutIdentifier = array_filter(
+            $removedUniqueAttributeCodes,
+            function($uniqueAttributeCode) {
+                return $uniqueAttributeCode !== $this->attributeRepository->getIdentifierCode();
+            }
+        );
+
+        return $removedUniqueAttributeCodesWithoutIdentifier;
     }
 }

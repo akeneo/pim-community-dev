@@ -62,7 +62,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEqualsCanonicalizing(
             ['unique_attribute_codes' => ['attribute_unique_1']],
-            json_decode($this->client->getResponse()->getContent(), 1)
+            json_decode($this->client->getResponse()->getContent(), true)
         );
     }
 

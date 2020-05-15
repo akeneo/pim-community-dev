@@ -10,6 +10,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductHandler'
         arguments:
             - '@pim_catalog.repository.product_without_permission'
+            - '@pim_catalog.repository.attribute'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.normalizer.standard.product'
             - '@pim_catalog.updater.product'
@@ -20,4 +21,3 @@ services:
         class: 'Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\RemoveUniqueAttributeValues'
         arguments:
             - '@pimee_structure.product.query.sql_get_unique_attribute_codes'
-            - '@pim_catalog.repository.attribute'
