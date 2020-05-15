@@ -4,7 +4,7 @@ import {act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import {UserContext} from '@src/shared/user/user-context';
-import {renderWithProviders} from '../../../../test-utils';
+import {renderWithProviders} from '../../../test-utils';
 import {DataDestinationCharts} from '@src/audit/components/DataDestinationCharts';
 import {State} from '@src/audit/reducers/dashboard-reducer';
 import {FlowType} from '@src/model/flow-type.enum';
