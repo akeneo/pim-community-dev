@@ -229,6 +229,7 @@ batch_jobs:
   default_steps:
     fetch_products: Recupera i dati del prodotto
     create_proposals: Crea proposte
+    validate_configuration: Validazione configurazione Franklin Insights
   franklin_insights_subscribe_products:
     label: Iscrizione in massa a Franklin Insights
     validate_configuration.label: Validazione configurazione Franklin Insights
@@ -259,3 +260,8 @@ pim_title:
 pim_notification:
   types:
     franklin_insights: Franklin Insights
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        franklin_insights: Franklin Insights

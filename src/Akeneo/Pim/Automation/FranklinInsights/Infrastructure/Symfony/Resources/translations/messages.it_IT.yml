@@ -36,4 +36,5 @@ pim_datagrid:
   cells:
     type:
       franklin_insights_fetch_products: Franklin Insights
+      franklin_insights: Franklin Insights
 Franklin subscription: Iscrizione Franklin
