@@ -36,4 +36,5 @@ pim_datagrid:
   cells:
     type:
       franklin_insights_fetch_products: フランクリンインサイト
+      franklin_insights: フランクリンインサイト
 Franklin subscription: フランクリンサブスクリプション

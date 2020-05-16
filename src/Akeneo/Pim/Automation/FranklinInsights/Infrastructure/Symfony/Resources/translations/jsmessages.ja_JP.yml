@@ -229,6 +229,7 @@ batch_jobs:
   default_steps:
     fetch_products: 商品データを取得
     create_proposals: 提案を作成
+    validate_configuration: フランクリンインサイト構成を確認
   franklin_insights_subscribe_products:
     label: フランクリンインサイトの一括サブスクリプション
     validate_configuration.label: フランクリンインサイト構成を確認
@@ -259,3 +260,8 @@ pim_title:
 pim_notification:
   types:
     franklin_insights: フランクリンインサイト
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        franklin_insights: フランクリンインサイト
