@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema\Tests;
@@ -23,9 +24,9 @@ class Version_5_0_20200506131741_create_connection_error_table_Integration exten
     /** @var AbstractSchemaManager */
     private $schemaManager;
 
-    private const MIGRATION_LABEL = '_5_0_20200506131741_create_connection_error_count_table';
+    private const MIGRATION_LABEL = '_5_0_20200506131741_create_connection_error_table';
 
-    public function test_it_creates_the_audit_error_count_table(): void
+    public function test_it_creates_the_audit_error_table(): void
     {
         $this->dbalConnection->executeQuery('DROP TABLE IF EXISTS akeneo_connectivity_connection_audit_error');
         $this->reExecuteMigration(self::MIGRATION_LABEL);
@@ -40,6 +41,7 @@ class Version_5_0_20200506131741_create_connection_error_table_Integration exten
 
         $tableColumns = $this->schemaManager->listTableColumns('akeneo_connectivity_connection_audit_error');
         $this->assertCount(count($expectedColumnsAndTypes), $tableColumns);
+
         $actualColumnsAndTypes = [];
         foreach ($tableColumns as $actualColumn) {
             $actualColumnsAndTypes[$actualColumn->getName()] =  $actualColumn->getType()->getName();
