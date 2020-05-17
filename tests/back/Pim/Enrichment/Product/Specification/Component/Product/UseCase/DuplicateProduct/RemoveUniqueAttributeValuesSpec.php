@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct;
 
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\RemoveUniqueAttributeValues;
@@ -12,9 +13,10 @@ use Prophecy\Argument;
 class RemoveUniqueAttributeValuesSpec extends ObjectBehavior
 {
     function let(
-        GetUniqueAttributeCodes $getUniqueAttributeCodes
+        GetUniqueAttributeCodes $getUniqueAttributeCodes,
+        AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($getUniqueAttributeCodes);
+        $this->beConstructedWith($getUniqueAttributeCodes, $attributeRepository);
     }
 
     function it_is_initializable()
