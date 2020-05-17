@@ -69,7 +69,7 @@ class DuplicateProductHandler
 
         $duplicatedProduct = $this->productBuilder->createProduct(
             $query->duplicatedProductIdentifier(),
-            $productToDuplicate->getFamily()->getCode()
+            $productToDuplicate->getFamily() !== null ? $productToDuplicate->getFamily()->getCode() : null
         );
 
         $this->productUpdater->update($duplicatedProduct, $normalizedProductWithoutIdentifier);
@@ -102,14 +102,10 @@ class DuplicateProductHandler
             $duplicatedProduct->getValues()->getAttributeCodes()
         );
 
-        $removedUniqueAttributeCodesWithoutIdentifier = array_values(
-            array_filter(
-                $removedUniqueAttributeCodes,
-                function ($uniqueAttributeCode) {
-                    return $uniqueAttributeCode !== $this->attributeRepository->getIdentifierCode();
-                }
-            )
-        );
+        $removedUniqueAttributeCodesWithoutIdentifier = array_values(array_diff(
+            $removedUniqueAttributeCodes,
+            [$this->attributeRepository->getIdentifierCode()]
+        ));
 
         return $removedUniqueAttributeCodesWithoutIdentifier;
     }
