@@ -215,11 +215,11 @@ define(
                     let productIds = [];
                     let productModelIds = [];
                     productAndProductModelIdentifiers.forEach((item) => {
-                        const matchProductModel = item.match(/^product_model_(.*)$/);
+                        const matchProductModel = item.match(/^product_model;(.*)$/);
                         if (matchProductModel) {
                             productModelIds.push(matchProductModel[1]);
                         } else {
-                            const matchProduct = item.match(/^product_(.*)$/);
+                            const matchProduct = item.match(/^product;(.*)$/);
                             productIds.push(matchProduct[1]);
                         }
                     });

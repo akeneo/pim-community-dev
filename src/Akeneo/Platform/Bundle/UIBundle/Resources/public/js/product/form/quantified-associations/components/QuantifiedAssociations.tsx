@@ -10,9 +10,10 @@ import {
   ProductsType,
   ProductType,
   Product,
+  QuantifiedLink,
 } from '../models';
 import {QuantifiedAssociationRow} from '.';
-import {useProducts, getAssociationIdentifiers, getAssociationIdentifiers, addProductToRows} from '../hooks';
+import {useProducts, getAssociationIdentifiers, addProductToRows} from '../hooks';
 
 const HeaderCell = styled.th`
   text-align: left;
@@ -75,21 +76,24 @@ type QuantifiedAssociationsProps = {
   value: QuantifiedAssociationCollection;
   associationTypeCode: string;
   onAssociationsChange: (updatedValue: QuantifiedAssociationCollection) => void;
-  onOpenPicker: () => void;
+  onOpenPicker: () => Promise<Row[]>;
 };
 
 const quantifiedAssociationCollectionToRowCollection = (collection: QuantifiedAssociationCollection): Row[] => {
   return Object.keys(collection).reduce((result: Row[], associationTypeCode) => {
+    const products = collection[associationTypeCode].products || [];
+    const productModels = collection[associationTypeCode].product_models || [];
+
     return [
       ...result,
-      ...collection[associationTypeCode].products.map(({identifier, quantity}) => ({
+      ...products.map(({identifier, quantity}) => ({
         associationTypeCode,
         identifier,
         quantity,
         productType: ProductType.Product,
         product: null,
       })),
-      ...collection[associationTypeCode].product_models.map(({identifier, quantity}) => ({
+      ...productModels.map(({identifier, quantity}) => ({
         associationTypeCode,
         identifier,
         quantity,
@@ -114,8 +118,8 @@ const rowCollectionToQuantifiedAssociationCollection = (rows: Row[]): Quantified
       }
 
       quantifiedAssociationCollection[associationTypeCode][getProductsType(productType)].push({
-        quantity,
         identifier,
+        quantity,
       });
 
       return quantifiedAssociationCollection;
@@ -159,6 +163,41 @@ const QuantifiedAssociations = ({
     [collection, associationTypeCode]
   );
 
+  const onAddAssociation = useCallback(async () => {
+    const addedRows = await onOpenPicker();
+
+    const mergedRows = addedRows.reduce(
+      (collection: Row[], addedRow: Row) => {
+        const row = collection.find(
+          row =>
+            addedRow.identifier === row.identifier &&
+            addedRow.productType === row.productType &&
+            addedRow.associationTypeCode === row.associationTypeCode
+        );
+
+        if (undefined !== row) {
+          row.quantity = '1';
+        } else {
+          collection.push(addedRow);
+        }
+
+        return collection;
+      },
+      [...collection]
+    );
+
+    setCollection(mergedRows);
+  }, [JSON.stringify(collection)]);
+
+  const onRowChange = useCallback(
+    (quantifiedLink: QuantifiedLink, row: Row) => {
+      setCollection(
+        setQuantifiedAssociationCollection(collection, associationTypeCode, row.productType, quantifiedLink)
+      );
+    },
+    [JSON.stringify(collection), associationTypeCode]
+  );
+
   return (
     <>
       <SearchBar
@@ -168,7 +207,7 @@ const QuantifiedAssociations = ({
         onSearchChange={setSearchValue}
       />
       <Buttons>
-        <Button color="blue" outline={true} onClick={onOpenPicker}>
+        <Button color="blue" outline={true} onClick={onAddAssociation}>
           {translate('pim_enrich.entity.product.module.associations.add_associations')}
         </Button>
       </Buttons>
@@ -215,16 +254,7 @@ const QuantifiedAssociations = ({
                   key={row.product.document_type + row.product.id}
                   onRowDelete={onRowDelete}
                   row={row as RowWithProduct}
-                  onChange={quantifiedLink =>
-                    setCollection(
-                      setQuantifiedAssociationCollection(
-                        collection,
-                        associationTypeCode,
-                        row.productType,
-                        quantifiedLink
-                      )
-                    )
-                  }
+                  onChange={quantifiedLink => onRowChange(quantifiedLink, row)}
                 />
               );
             })}

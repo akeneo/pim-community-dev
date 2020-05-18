@@ -7,6 +7,7 @@ enum ProductsType {
   Products = 'products',
   ProductModels = 'product_models',
 }
+
 const getProductsType = (productType: ProductType): ProductsType =>
   ProductType.Product === productType ? ProductsType.Products : ProductsType.ProductModels;
 

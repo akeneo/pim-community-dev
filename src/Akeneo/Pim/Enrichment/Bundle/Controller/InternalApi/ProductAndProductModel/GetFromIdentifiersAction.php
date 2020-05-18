@@ -43,9 +43,9 @@ class GetFromIdentifiersAction
     public function __invoke(
         Request $request
     ): Response {
-        // if (!$request->isXmlHttpRequest()) {
-        //     return new RedirectResponse('/');
-        // }
+        if ($request->headers->get('X-Requested-With') !== 'fetch') {
+            return new RedirectResponse('/');
+        }
 
         $channelCode = $request->query->get('channel');
         $localeCode = $request->query->get('locale');
