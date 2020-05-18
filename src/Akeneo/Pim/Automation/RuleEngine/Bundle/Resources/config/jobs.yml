@@ -105,3 +105,15 @@ services:
                 - '@pimee_catalog_rule.step.rule_impacted_product_count'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%pimee_catalog_rule.mass_edit_type%' }
+
+    ## Rules execution
+    pimee_catalog_rule.job.execute_rules:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'rule_engine_execute_rules'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_catalog_rule.step.execute_rules'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%pimee_catalog_rule.mass_edit_type%' }

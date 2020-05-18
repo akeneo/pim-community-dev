@@ -112,3 +112,11 @@ services:
             - '@pimee_catalog_rule.processor.product_loader'
             - '@pimee_catalog_rule.executor.rules'
             - '%pim_job_product_batch_size%'
+
+    pimee_catalog_rule.step.execute_rules:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'execute_rules'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_catalog_rule.tasklet.execute_rules'

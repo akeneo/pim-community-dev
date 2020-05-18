@@ -63,3 +63,11 @@ services:
                 - 'rule_impacted_product_count'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pimee_catalog_rule.job.job_parameters.constraint_collection_provider.execute_rules:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ExecuteRules'
+        arguments:
+            -
+                - 'rule_engine_execute_rules'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
