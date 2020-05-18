@@ -11,6 +11,7 @@
 
 namespace Akeneo\Tool\Component\RuleEngine\ActionApplier;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 
 /**
@@ -25,8 +26,10 @@ interface ActionApplierInterface
      *
      * @param ActionInterface $action
      * @param array           $items
+     *
+     * @return EntityWithValuesInterface[] entities updated by the action applier
      */
-    public function applyAction(ActionInterface $action, array $items = []);
+    public function applyAction(ActionInterface $action, array $items = []): array;
 
     /**
      * Does the action applier support the given action ?

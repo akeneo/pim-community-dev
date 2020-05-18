@@ -72,7 +72,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
         $getAttributes->forCode('ratio_fr_en')->willReturn($this->getDestinationAttribute());
         $propertySetter->setData($product, Argument::cetera())->shouldNotBeCalled();
 
-        $this->applyAction($this->productCalculateAction(), [$product]);
+        $this->applyAction($this->productCalculateAction(), [$product])->shouldReturn([]);
     }
 
     function it_does_nothing_if_destination_field_does_not_belong_to_family(
@@ -85,7 +85,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
 
         $propertySetter->setData($product, Argument::cetera())->shouldNotBeCalled();
 
-        $this->applyAction($this->productCalculateAction(), [$product]);
+        $this->applyAction($this->productCalculateAction(), [$product])->shouldReturn([]);
     }
 
     function it_does_nothing_if_attribute_is_not_on_same_variation_level_as_entity(
@@ -105,7 +105,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
 
         $propertySetter->setData($product, Argument::cetera())->shouldNotBeCalled();
 
-        $this->applyAction($this->productCalculateAction(), [$product]);
+        $this->applyAction($this->productCalculateAction(), [$product])->shouldReturn([]);
     }
 
     function it_skips_the_entity_if_one_of_the_operation_values_is_null(
@@ -124,7 +124,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
 
         $propertySetter->setData($product, Argument::cetera())->shouldNotBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([]);
     }
 
     function it_skips_the_entity_if_there_is_a_division_by_zero_operation(
@@ -146,7 +146,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
 
         $propertySetter->setData($product, Argument::cetera())->shouldNotBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([]);
     }
 
     function it_calculates_a_number_value(
@@ -168,7 +168,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
 
         $propertySetter->setData($product, 'ratio_fr_en', 260.0, ['scope' => null, 'locale' => null])->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_calculates_a_metric_value_with_the_default_metric_unit(
@@ -195,7 +195,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
             ['scope' => null, 'locale' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_calculates_a_metric_value_with_the_specified_unit(
@@ -224,7 +224,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
             ['scope' => null, 'locale' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_calculates_a_new_price_collection_value(
@@ -254,7 +254,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
             ['scope' => null, 'locale' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_updates_an_existing_price_collection_value(
@@ -292,7 +292,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
             ['scope' => null, 'locale' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     private function productCalculateAction(array $additionalOptions = []): ProductCalculateActionInterface

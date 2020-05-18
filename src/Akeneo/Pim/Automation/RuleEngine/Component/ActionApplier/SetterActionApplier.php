@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
@@ -43,13 +44,18 @@ class SetterActionApplier implements ActionApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
+    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): array
     {
-        foreach ($entitiesWithValues as $entityWithValues) {
-            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
+        foreach ($entitiesWithValues as $index => $entityWithValues) {
+            try {
+                $this->actionCanBeAppliedToEntity($entityWithValues, $action);
                 $this->setDataOnEntityWithValues($entityWithValues, $action);
+            } catch (NonApplicableActionException $e) {
+                unset($entitiesWithValues[$index]);
             }
         }
+
+        return $entitiesWithValues;
     }
 
     /**
@@ -70,37 +76,37 @@ class SetterActionApplier implements ActionApplierInterface
     private function actionCanBeAppliedToEntity(
         EntityWithFamilyVariantInterface $entity,
         ProductSetActionInterface $action
-    ): bool {
+    ): void {
         $field = $action->getField();
 
         if ('categories' === $field) {
             $newCategoryCodes = $action->getValue();
             $parent = $entity->getParent();
 
-            return (null === $parent || empty(array_diff($parent->getCategoryCodes(), $newCategoryCodes)));
+            if (null !== $parent && !empty(array_diff($parent->getCategoryCodes(), $newCategoryCodes))) {
+                throw new NonApplicableActionException();
+            }
         }
 
         // TODO: RUL-170: remove "?? ''" in the next line
         $attribute = $this->getAttributes->forCode($field ?? '');
         if (null === $attribute) {
-            return true;
+            return;
         }
 
         $family = $entity->getFamily();
         if (null === $family) {
-            return true;
+            return;
         }
         if (!$family->hasAttributeCode($attribute->code())) {
-            return false;
+            throw new NonApplicableActionException();
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
-            return false;
+            throw new NonApplicableActionException();
         }
-
-        return true;
     }
 
     /**

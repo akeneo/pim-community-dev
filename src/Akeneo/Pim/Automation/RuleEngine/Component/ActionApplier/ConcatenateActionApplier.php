@@ -61,7 +61,7 @@ final class ConcatenateActionApplier implements ActionApplierInterface
         return $action instanceof ProductConcatenateActionInterface;
     }
 
-    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
+    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): array
     {
         if (!$this->supports($action)) {
             throw new \LogicException(
@@ -69,20 +69,16 @@ final class ConcatenateActionApplier implements ActionApplierInterface
             );
         }
 
-        foreach ($entitiesWithValues as $entityWithValues) {
-            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
-                try {
-                    $this->concatenateDataOnEntityWithValues($entityWithValues, $action);
-                } catch (NonApplicableActionException $e) {
-                    // @TODO RUL-90 throw exception when the runner will be executed in a job.
-                    // For now just skip the exception otherwise the process will stop.
-//                throw new InvalidItemException(
-//                    $e->getMessage(),
-//                    new DataInvalidItem(['identifier' => $entityWithValues->getIdentifier()])
-//                );
-                }
+        foreach ($entitiesWithValues as $index => $entityWithValues) {
+            try {
+                $this->actionCanBeAppliedToEntity($entityWithValues, $action);
+                $this->concatenateDataOnEntityWithValues($entityWithValues, $action);
+            } catch (NonApplicableActionException $e) {
+                unset($entitiesWithValues[$index]);
             }
         }
+
+        return $entitiesWithValues;
     }
 
     /**
@@ -94,23 +90,21 @@ final class ConcatenateActionApplier implements ActionApplierInterface
     private function actionCanBeAppliedToEntity(
         EntityWithFamilyVariantInterface $entity,
         ProductConcatenateActionInterface $action
-    ): bool {
+    ): void {
         $field = $action->getTarget()->getField();
         $attribute = $this->getAttributes->forCode($field);
         Assert::isInstanceOf($attribute, Attribute::class);
 
         $family = $entity->getFamily();
         if (null === $family || !$family->hasAttributeCode($attribute->code())) {
-            return false;
+            throw new NonApplicableActionException();
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
-            return false;
+            throw new NonApplicableActionException();
         }
-
-        return true;
     }
 
     private function concatenateDataOnEntityWithValues(
@@ -123,7 +117,11 @@ final class ConcatenateActionApplier implements ActionApplierInterface
         foreach ($action->getSourceCollection() as $source) {
             $field = $source->getField();
             $attribute = $this->getAttributes->forCode($field);
-            Assert::isInstanceOf($attribute, Attribute::class, sprintf('Attribute with code "%s" was not found', $field));
+            Assert::isInstanceOf(
+                $attribute,
+                Attribute::class,
+                sprintf('Attribute with code "%s" was not found', $field)
+            );
             $attributeCode = $attribute->code();
 
             $value = $entity->getValue($attributeCode, $source->getLocale(), $source->getScope());
@@ -134,10 +132,13 @@ final class ConcatenateActionApplier implements ActionApplierInterface
             }
 
             $stringifier = $this->getStringifier($attributeCode, $attribute->type());
-            $stringValue = $stringifier->stringify($value, array_merge(
-                $source->getOptions(),
-                ['target_attribute_code' => $action->getTarget()->getField()]
-            ));
+            $stringValue = $stringifier->stringify(
+                $value,
+                array_merge(
+                    $source->getOptions(),
+                    ['target_attribute_code' => $action->getTarget()->getField()]
+                )
+            );
             if ('' === $stringValue) {
                 throw new NonApplicableActionException(
                     sprintf('The value for the "%s" attribute is empty for the entity.', $attributeCode)
@@ -162,11 +163,13 @@ final class ConcatenateActionApplier implements ActionApplierInterface
     {
         $stringifier = $this->valueStringifierRegistry->getStringifier($attributeType);
         if (null === $stringifier) {
-            throw new \InvalidArgumentException(sprintf(
-                'Stringifier was not found for the "%s" attribute code of type "%s".',
-                $attributeCode,
-                $attributeType
-            ));
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Stringifier was not found for the "%s" attribute code of type "%s".',
+                    $attributeCode,
+                    $attributeType
+                )
+            );
         }
 
         return $stringifier;

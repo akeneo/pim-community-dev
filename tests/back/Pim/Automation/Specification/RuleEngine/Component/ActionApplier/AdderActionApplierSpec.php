@@ -36,7 +36,7 @@ class AdderActionApplierSpec extends ObjectBehavior
         $getAttributes->forCode('color')->willReturn(null);
         $propertyAdder->addData($product, 'color', ['red', 'blue'], [])->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_add_attribute_action_on_non_variant_product(
@@ -85,7 +85,7 @@ class AdderActionApplierSpec extends ObjectBehavior
 
         $propertyAdder->addData($variantProduct, 'color', ['red', 'blue'], [])->shouldBeCalled();
 
-        $this->applyAction($action, [$variantProduct]);
+        $this->applyAction($action, [$variantProduct])->shouldReturn([$variantProduct]);
     }
 
     function it_applies_add_action_on_product_model(
@@ -112,7 +112,7 @@ class AdderActionApplierSpec extends ObjectBehavior
 
         $propertyAdder->addData($productModel, 'color', ['red', 'blue'], [])->shouldBeCalled();
 
-        $this->applyAction($action, [$productModel]);
+        $this->applyAction($action, [$productModel])->shouldReturn([$productModel]);
     }
 
     function it_does_not_apply_add_action_on_entity_with_family_variant_if_variation_level_is_not_right(
@@ -139,7 +139,7 @@ class AdderActionApplierSpec extends ObjectBehavior
 
         $propertyAdder->addData(Argument::cetera())->shouldNotBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
 
     function it_applies_add_action_if_the_field_is_not_an_attribute(
@@ -155,7 +155,7 @@ class AdderActionApplierSpec extends ObjectBehavior
         $getAttributes->forCode('categories')->willReturn(null);
         $propertyAdder->addData($entityWithFamilyVariant, 'categories', ['socks'], [])->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([$entityWithFamilyVariant]);
     }
 
     function it_does_not_apply_add_action_if_the_field_is_not_an_attribute_of_the_family(
@@ -177,7 +177,7 @@ class AdderActionApplierSpec extends ObjectBehavior
         $entityWithFamilyVariant->getFamilyVariant()->shouldNotBeCalled();
         $propertyAdder->addData(Argument::cetera())->shouldNotBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
 
     private function buildAttribute(string $code): Attribute

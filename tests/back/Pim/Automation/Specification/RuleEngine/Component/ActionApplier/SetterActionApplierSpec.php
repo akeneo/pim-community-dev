@@ -47,7 +47,7 @@ class SetterActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_set_attribute_action_on_non_variant_product(
@@ -74,7 +74,7 @@ class SetterActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_set_action_on_variant_product(
@@ -106,7 +106,7 @@ class SetterActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$variantProduct]);
+        $this->applyAction($action, [$variantProduct])->shouldReturn([$variantProduct]);
     }
 
     function it_applies_set_action_on_product_model(
@@ -138,7 +138,7 @@ class SetterActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$productModel]);
+        $this->applyAction($action, [$productModel])->shouldReturn([$productModel]);
     }
 
     function it_does_not_apply_set_action_on_entity_with_family_variant_if_variation_level_is_not_right(
@@ -165,7 +165,7 @@ class SetterActionApplierSpec extends ObjectBehavior
 
         $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
 
     function it_applies_set_action_on_entity_with_family_variant_if_the_set_action_field_is_not_an_attribute(
@@ -187,7 +187,7 @@ class SetterActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$entity]);
+        $this->applyAction($action, [$entity])->shouldReturn([$entity]);
     }
 
     function it_applies_set_action_on_entity_with_family_variant_on_categories_for_a_non_variant_product(
@@ -206,7 +206,7 @@ class SetterActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_set_action_on_a_parentless_entity_categories(
@@ -227,7 +227,7 @@ class SetterActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$entity]);
+        $this->applyAction($action, [$entity])->shouldReturn([$entity]);
     }
 
     function it_applies_set_action_on_an_entity_if_it_includes_all_of_its_parent_categories_too(
@@ -250,7 +250,7 @@ class SetterActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$entity]);
+        $this->applyAction($action, [$entity])->shouldReturn([$entity]);
     }
 
     function it_does_not_apply_set_action_on_an_entity_if_it_does_not_include_all_of_its_parent_categories_too(
@@ -268,7 +268,7 @@ class SetterActionApplierSpec extends ObjectBehavior
 
         $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
 
-        $this->applyAction($action, [$entity]);
+        $this->applyAction($action, [$entity])->shouldReturn([]);
     }
 
     function it_does_not_apply_set_action_if_the_field_is_not_an_attribute_of_the_family(
@@ -290,7 +290,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $entityWithFamilyVariant->getFamilyVariant()->shouldNotBeCalled();
         $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
 
     function it_sets_an_attribute_value_to_null_if_the_action_value_is_an_empty_string(
@@ -314,7 +314,7 @@ class SetterActionApplierSpec extends ObjectBehavior
 
         $propertySetter->setData($product, 'release_date', null, [])->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     private function buildAttribute(string $code): Attribute

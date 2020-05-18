@@ -53,7 +53,7 @@ class CopierActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_copy_action_on_variant_product(
@@ -86,7 +86,7 @@ class CopierActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$variantProduct]);
+        $this->applyAction($action, [$variantProduct])->shouldReturn([$variantProduct]);
     }
 
     function it_applies_copy_action_on_product_model(
@@ -129,7 +129,7 @@ class CopierActionApplierSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$productModel]);
+        $this->applyAction($action, [$productModel])->shouldReturn([$productModel]);
     }
 
     function it_does_not_apply_copy_action_on_entity_with_family_variant_if_variation_level_is_not_right(
@@ -156,7 +156,7 @@ class CopierActionApplierSpec extends ObjectBehavior
 
         $propertyCopier->copyData(Argument::cetera())->shouldNotBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
 
     function it_applies_copy_action_if_the_field_is_not_an_attribute(
@@ -179,7 +179,7 @@ class CopierActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([$entityWithFamilyVariant]);
     }
 
     function it_does_not_apply_copy_action_if_the_field_is_not_an_attribute_of_the_family(
@@ -201,7 +201,7 @@ class CopierActionApplierSpec extends ObjectBehavior
         $entityWithFamilyVariant->getFamilyVariant()->shouldNotBeCalled();
         $propertyCopier->copyData(Argument::cetera())->shouldNotBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
 
     private function buildAttribute(string $code): Attribute

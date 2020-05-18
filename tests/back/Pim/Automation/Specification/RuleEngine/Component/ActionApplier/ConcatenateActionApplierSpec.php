@@ -119,7 +119,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
             ['locale' => 'en_US', 'scope' => 'print']
         )->shouldBeCalled();
 
-        $this->applyAction($concatenateAction, [$product]);
+        $this->applyAction($concatenateAction, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_a_concatenate_action_on_product_model(
@@ -172,10 +172,10 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
             ['locale' => 'en_US', 'scope' => 'print']
         )->shouldBeCalled();
 
-        $this->applyAction($concatenateAction, [$productModel]);
+        $this->applyAction($concatenateAction, [$productModel])->shouldReturn([$productModel]);
     }
 
-    function it_throws_an_exception_when_a_value_is_not_found(
+    function it_skips_the_entity_if_a_value_is_not_found(
         PropertySetterInterface $propertySetter,
         ValueStringifierRegistry $valueStringifierRegistry,
         GetAttributes $getAttributes,
@@ -217,7 +217,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
             Argument::any()
         )->shouldNotBeCalled();
 
-        $this->applyAction($concatenateAction, [$entity]);
+        $this->applyAction($concatenateAction, [$entity])->shouldReturn([]);;
     }
 
     function it_throws_an_exception_when_a_stringifier_is_not_found(
@@ -302,7 +302,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
             Argument::any()
         )->shouldNotBeCalled();
 
-        $this->applyAction($concatenateAction, [$productModel]);
+        $this->applyAction($concatenateAction, [$productModel])->shouldReturn([]);
     }
 
     private function buildAttribute(string $code, string $type): ConnectorAttribute

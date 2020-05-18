@@ -68,7 +68,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_remove_field_action_on_non_variant_product(
@@ -97,7 +97,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_remove_action_on_variant_product(
@@ -132,7 +132,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$variantProduct]);
+        $this->applyAction($action, [$variantProduct])->shouldReturn([$variantProduct]);
     }
 
     function it_applies_remove_action_on_product_model(
@@ -167,7 +167,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$productModel]);
+        $this->applyAction($action, [$productModel])->shouldReturn([$productModel]);
     }
 
     function it_does_not_apply_remove_action_on_entity_with_family_variant_if_variation_level_is_not_right(
@@ -194,7 +194,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
 
         $propertyRemover->removeData(Argument::cetera())->shouldNotBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
 
     function it_applies_remove_action_if_the_field_is_not_an_attribute(
@@ -211,7 +211,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
 
         $propertyRemover->removeData($entityWithFamilyVariant, 'categories', ['socks'], [])->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([$entityWithFamilyVariant]);
     }
 
     function it_removes_children_categories_with_include_children_option_set_to_true(
@@ -264,7 +264,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithValues]);
+        $this->applyAction($action, [$entityWithValues])->shouldReturn([$entityWithValues]);
     }
 
     function it_throws_exception_if_items_is_not_an_array(
@@ -302,7 +302,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $entityWithFamilyVariant->getFamilyVariant()->shouldNotBeCalled();
         $propertyRemover->removeData(Argument::cetera())->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([$entityWithFamilyVariant]);
     }
 
     private function buildAttribute(string $code): Attribute

@@ -69,7 +69,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
             ['locale' => null, 'scope' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($clearerAction, [$product]);
+        $this->applyAction($clearerAction, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_clear_attribute_action_with_locale_and_scope_on_non_variant_product(
@@ -88,7 +88,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
             ['locale' => 'en_US', 'scope' => 'ecommerce']
         )->shouldBeCalled();
 
-        $this->applyAction($clearerAction, [$product]);
+        $this->applyAction($clearerAction, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_clear_attribute_action_on_product_model_when_attribute_is_at_same_level(
@@ -116,7 +116,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
             ['locale' => null, 'scope' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($clearerAction, [$productModel]);
+        $this->applyAction($clearerAction, [$productModel])->shouldReturn([$productModel]);
     }
 
     function it_applies_clear_attribute_action_on_product_model_with_no_family_variant(
@@ -142,7 +142,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
             ['locale' => null, 'scope' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($clearerAction, [$productModel]);
+        $this->applyAction($clearerAction, [$productModel])->shouldReturn([$productModel]);
     }
 
     function it_does_not_apply_clear_attribute_action_on_product_model_when_variation_level_is_not_right(
@@ -170,7 +170,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
             Argument::any()
         )->shouldNotBeCalled();
 
-        $this->applyAction($clearerAction, [$productModel]);
+        $this->applyAction($clearerAction, [$productModel])->shouldReturn([]);
     }
 
     function it_clears_an_attribute_value_even_if_attribute_does_not_belong_to_the_family(
@@ -191,7 +191,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
             ['locale' => null, 'scope' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($clearerAction, [$product]);
+        $this->applyAction($clearerAction, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_clear_action_on_product_field(PropertyClearerInterface $propertyClearer)
@@ -205,7 +205,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
             ['locale' => null, 'scope' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($clearerAction, [$product]);
+        $this->applyAction($clearerAction, [$product])->shouldReturn([$product]);
     }
 
     private function buildAttribute(string $code): Attribute

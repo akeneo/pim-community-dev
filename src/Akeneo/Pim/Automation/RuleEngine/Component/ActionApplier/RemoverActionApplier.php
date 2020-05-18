@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -53,13 +53,24 @@ class RemoverActionApplier implements ActionApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
+    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): array
     {
-        foreach ($entitiesWithValues as $entityWithValues) {
-            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
-                $this->removeDataOnEntityWithValues($entityWithValues, $action);
+        $impactedItems = $this->getImpactedItems($action);
+        foreach ($entitiesWithValues as $index => $entityWithValues) {
+            try {
+                $this->actionCanBeAppliedToEntity($entityWithValues, $action);
+                $this->propertyRemover->removeData(
+                    $entityWithValues,
+                    $action->getField(),
+                    $impactedItems,
+                    $action->getOptions()
+                );
+            } catch (NonApplicableActionException $e) {
+                unset($entitiesWithValues[$index]);
             }
         }
+
+        return $entitiesWithValues;
     }
 
     /**
@@ -77,42 +88,24 @@ class RemoverActionApplier implements ActionApplierInterface
     private function actionCanBeAppliedToEntity(
         EntityWithFamilyVariantInterface $entity,
         ProductRemoveActionInterface $action
-    ): bool {
+    ): void {
         $field = $action->getField();
         // TODO: RUL-170: remove "?? ''" in the next line
         $attribute = $this->getAttributes->forCode($field ?? '');
         if (null === $attribute) {
-            return true;
+            return;
         }
 
         $family = $entity->getFamily();
         if (null === $family || !$family->hasAttributeCode($attribute->code())) {
-            return true;
+            return;
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
-            return false;
+            throw new NonApplicableActionException();
         }
-
-        return true;
-    }
-
-    /**
-     * @param EntityWithValuesInterface    $entityWithValues
-     * @param ProductRemoveActionInterface $action
-     */
-    private function removeDataOnEntityWithValues(
-        EntityWithValuesInterface $entityWithValues,
-        ProductRemoveActionInterface $action
-    ): void {
-        $this->propertyRemover->removeData(
-            $entityWithValues,
-            $action->getField(),
-            $this->getImpactedItems($action),
-            $action->getOptions()
-        );
     }
 
     /**

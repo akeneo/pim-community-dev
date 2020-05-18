@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductClearActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
@@ -53,15 +54,20 @@ final class ClearerActionApplier implements ActionApplierInterface
     /**
      * {@inheritDoc}
      */
-    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
+    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): array
     {
         Assert::isInstanceOf($action, ProductClearActionInterface::class);
 
-        foreach ($entitiesWithValues as $entityWithValues) {
-            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
+        foreach ($entitiesWithValues as $index => $entityWithValues) {
+            try {
+                $this->actionCanBeAppliedToEntity($entityWithValues, $action);
                 $this->clearDataOnEntityWithValues($entityWithValues, $action);
+            } catch (NonApplicableActionException $e) {
+                unset($entitiesWithValues[$index]);
             }
         }
+
+        return $entitiesWithValues;
     }
 
     /**
@@ -71,25 +77,23 @@ final class ClearerActionApplier implements ActionApplierInterface
     private function actionCanBeAppliedToEntity(
         EntityWithFamilyVariantInterface $entity,
         ProductClearActionInterface $action
-    ): bool {
+    ): void {
         $field = $action->getField();
         $attribute = $this->getAttributes->forCode($field);
         if (null === $attribute) {
-            return true;
+            return;
         }
 
         $family = $entity->getFamily();
         if (null === $family || !$family->hasAttributeCode($attribute->code())) {
-            return true;
+            return;
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
-            return false;
+            throw new NonApplicableActionException();
         }
-
-        return true;
     }
 
     private function clearDataOnEntityWithValues(

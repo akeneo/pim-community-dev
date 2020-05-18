@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
@@ -41,13 +42,18 @@ class CopierActionApplier implements ActionApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applyAction(ActionInterface $action, array $entitiesWithValues = [])
+    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): array
     {
-        foreach ($entitiesWithValues as $entityWithValues) {
-            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
+        foreach ($entitiesWithValues as $index => $entityWithValues) {
+            try {
+                $this->actionCanBeAppliedToEntity($entityWithValues, $action);
                 $this->copyDataOnEntityWithValues($entityWithValues, $action);
+            } catch (NonApplicableActionException $e) {
+                unset($entitiesWithValues[$index]);
             }
         }
+
+        return $entitiesWithValues;
     }
 
     /**
@@ -66,29 +72,27 @@ class CopierActionApplier implements ActionApplierInterface
     private function actionCanBeAppliedToEntity(
         EntityWithFamilyVariantInterface $entity,
         ProductCopyActionInterface $action
-    ): bool {
+    ): void {
         $toField = $action->getToField();
         // TODO: RUL-170: remove "?? ''" in the next line
         $attribute = $this->getAttributes->forCode($toField ?? '');
         if (null === $attribute) {
-            return true;
+            return;
         }
 
         $family = $entity->getFamily();
         if (null === $family) {
-            return true;
+            return;
         }
         if (!$family->hasAttributeCode($attribute->code())) {
-            return false;
+            throw new NonApplicableActionException();
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
-            return false;
+            throw new NonApplicableActionException();
         }
-
-        return true;
     }
 
     /**

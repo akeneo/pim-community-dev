@@ -56,21 +56,16 @@ class CalculateActionApplier implements ActionApplierInterface
         $this->propertySetter = $propertySetter;
     }
 
-    public function applyAction(ActionInterface $action, array $items = [])
+    public function applyAction(ActionInterface $action, array $items = []): array
     {
         Assert::isInstanceOf($action, ProductCalculateActionInterface::class);
-        foreach ($items as $item) {
-            if ($this->actionCanBeAppliedToEntity($item, $action)) {
-                try {
-                    $result = $this->calculateDataForEntity($item, $action);
-                    $data = $this->getStandardData($item, $action->getDestination(), $result);
-                } catch (NonApplicableActionException $e) {
-                    // TODO RUL-90 throw exception when the runner will be executed in a job.
-                    continue;
-                }
-
+        foreach ($items as $index => $entityWithValues) {
+            try {
+                $this->actionCanBeAppliedToEntity($entityWithValues, $action);
+                $result = $this->calculateDataForEntity($entityWithValues, $action);
+                $data = $this->getStandardData($entityWithValues, $action->getDestination(), $result);
                 $this->propertySetter->setData(
-                    $item,
+                    $entityWithValues,
                     $action->getDestination()->getField(),
                     $data,
                     [
@@ -78,8 +73,12 @@ class CalculateActionApplier implements ActionApplierInterface
                         'locale' => $action->getDestination()->getLocale(),
                     ]
                 );
+            } catch (NonApplicableActionException $e) {
+                unset($items[$index]);
             }
         }
+
+        return $items;
     }
 
     public function supports(ActionInterface $action)
@@ -96,21 +95,19 @@ class CalculateActionApplier implements ActionApplierInterface
     private function actionCanBeAppliedToEntity(
         EntityWithFamilyVariantInterface $entity,
         ProductCalculateActionInterface $action
-    ): bool {
+    ): void {
         $destination = $this->getAttributes->forCode($action->getDestination()->getField());
         Assert::isInstanceOf($destination, Attribute::class);
 
         $family = $entity->getFamily();
         if (null === $family || !$family->hasAttributeCode($destination->code())) {
-            return false;
+            throw new NonApplicableActionException();
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant && $familyVariant->getLevelForAttributeCode($destination->code()) !== $entity->getVariationLevel()) {
-            return false;
+            throw new NonApplicableActionException();
         }
-
-        return true;
     }
 
     private function calculateDataForEntity(EntityWithValuesInterface $entity, ProductCalculateActionInterface $action): float
