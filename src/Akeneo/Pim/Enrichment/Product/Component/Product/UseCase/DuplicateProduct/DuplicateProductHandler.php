@@ -12,15 +12,23 @@
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DuplicateProductHandler
 {
     /** @var ProductRepositoryInterface */
     private $productRepository;
+
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+    /** @var RemoveUniqueAttributeValues */
+    private $removeUniqueAttributeValues;
 
     /** @var ProductBuilderInterface */
     private $productBuilder;
@@ -31,44 +39,89 @@ class DuplicateProductHandler
     /** @var ObjectUpdaterInterface */
     private $productUpdater;
 
+    /** @var ValidatorInterface */
+    private $validator;
+
     /** @var SaverInterface */
     private $productSaver;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        RemoveUniqueAttributeValues $removeUniqueAttributeValues,
         ProductBuilderInterface $productBuilder,
         NormalizerInterface $normalizer,
         ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $validator,
         SaverInterface $productSaver
     ) {
         $this->productRepository = $productRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->removeUniqueAttributeValues = $removeUniqueAttributeValues;
         $this->productBuilder = $productBuilder;
         $this->normalizer = $normalizer;
         $this->productUpdater = $productUpdater;
+        $this->validator = $validator;
         $this->productSaver = $productSaver;
     }
 
-    public function handle(DuplicateProduct $query): DuplicateProductResponse
+    public function handle(DuplicateProduct $duplicateProductCommand): DuplicateProductResponse
     {
         /** @var ProductInterface */
-        $productToDuplicate = $this->productRepository->findOneByIdentifier($query->productToDuplicateIdentifier());
+        $productToDuplicate = $this->productRepository->findOneByIdentifier($duplicateProductCommand->productToDuplicateIdentifier());
+
+        $normalizedProductWithoutIdentifier = $this->normalizeProductWithoutIdentifier($productToDuplicate);
 
         $duplicatedProduct = $this->productBuilder->createProduct(
-            $query->duplicatedProductIdentifier(),
-            $productToDuplicate->getFamily()->getCode()
+            $duplicateProductCommand->duplicatedProductIdentifier(),
+            $productToDuplicate->getFamily() !== null ? $productToDuplicate->getFamily()->getCode() : null
         );
 
+        $this->productUpdater->update($duplicatedProduct, $normalizedProductWithoutIdentifier);
+
+        $duplicatedProduct = $this->removeUniqueAttributeValues->fromProduct($duplicatedProduct);
+
+        $removedUniqueAttributeCodesWithoutIdentifier = $this->getRemovedUniqueAttributeCodesWithoutIdentifier($productToDuplicate, $duplicatedProduct);
+
+        $violations = $this->validator->validate($duplicatedProduct);
+
+        if (0 === $violations->count()) {
+            $this->productSaver->save($duplicatedProduct);
+            $removedUniqueAttributeCodesWithoutIdentifier = $this->getRemovedUniqueAttributeCodesWithoutIdentifier(
+                $productToDuplicate,
+                $duplicatedProduct
+            );
+
+            return DuplicateProductResponse::ok($removedUniqueAttributeCodesWithoutIdentifier);
+        }
+
+        return DuplicateProductResponse::error($violations);
+    }
+
+    private function normalizeProductWithoutIdentifier(ProductInterface $productToDuplicate): array
+    {
         $normalizedProduct = $this->normalizer->normalize(
             $productToDuplicate,
             'standard'
         );
-        // @TODO: To remove this line when we will remove the unique values from the duplicated product (https://akeneo.atlassian.net/browse/CHRIS-8)
-        unset($normalizedProduct['values']['sku']);
 
-        $this->productUpdater->update($duplicatedProduct, $normalizedProduct);
+        unset($normalizedProduct['values'][$this->attributeRepository->getIdentifierCode()]);
 
-        $this->productSaver->save($duplicatedProduct);
+        return $normalizedProduct;
+    }
 
-        return new DuplicateProductResponse([]);
+    private function getRemovedUniqueAttributeCodesWithoutIdentifier(ProductInterface $productToDuplicate, ProductInterface $duplicatedProduct): array
+    {
+        $removedUniqueAttributeCodes = array_diff(
+            $productToDuplicate->getValues()->getAttributeCodes(),
+            $duplicatedProduct->getValues()->getAttributeCodes()
+        );
+
+        $removedUniqueAttributeCodesWithoutIdentifier = array_values(array_diff(
+            $removedUniqueAttributeCodes,
+            [$this->attributeRepository->getIdentifierCode()]
+        ));
+
+        return $removedUniqueAttributeCodesWithoutIdentifier;
     }
 }
