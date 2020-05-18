@@ -47,6 +47,10 @@ class ResetIndexesCommandSpec extends ObjectBehavior
         QuestionHelper $questionHelper
     ) {
         $container->get('akeneo_elasticsearch.registry.clients')->willReturn($clientRegistry);
+        $container->getParameter('elasticsearch_indexing_commands')->willReturn([
+            'Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand',
+            'Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand'
+        ]);
         $clientRegistry->getClients()->willReturn([$client1, $client2]);
 
         $input->getOption('index')->willReturn([]);
@@ -75,8 +79,11 @@ class ResetIndexesCommandSpec extends ObjectBehavior
         $output->writeln('<info>All the indexes have been successfully reset!</info>')
             ->shouldBeCalled();
         $output->writeln('')->shouldBeCalled();
-        $output->writeln('<info>You can now use the command pim:product:index and pim:product-model:index to start re-indexing your product and product models.</info>')
+        $output
+            ->writeln('<info>You can now use the following commands to manually re-index the entities you want:</info>')
             ->shouldBeCalled();
+        $output->writeln('    <info>- pim:product:index</info>')->shouldBeCalled();
+        $output->writeln('    <info>- pim:product-model:index</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
             'command'    => 'pim:indexes:reset',
@@ -112,6 +119,10 @@ class ResetIndexesCommandSpec extends ObjectBehavior
         QuestionHelper $questionHelper
     ) {
         $container->get('akeneo_elasticsearch.registry.clients')->willReturn($clientRegistry);
+        $container->getParameter('elasticsearch_indexing_commands')->willReturn([
+            'Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand',
+            'Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand'
+        ]);
         $clientRegistry->getClients()->willReturn([$client1, $client2]);
 
         $input->getOption('index')->willReturn(['index_1']);
@@ -138,8 +149,11 @@ class ResetIndexesCommandSpec extends ObjectBehavior
         $output->writeln('<info>All the indexes have been successfully reset!</info>')
             ->shouldBeCalled();
         $output->writeln('')->shouldBeCalled();
-        $output->writeln('<info>You can now use the command pim:product:index and pim:product-model:index to start re-indexing your product and product models.</info>')
+        $output
+            ->writeln('<info>You can now use the following commands to manually re-index the entities you want:</info>')
             ->shouldBeCalled();
+        $output->writeln('    <info>- pim:product:index</info>')->shouldBeCalled();
+        $output->writeln('    <info>- pim:product-model:index</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
             'command'    => 'pim:indexes:reset',

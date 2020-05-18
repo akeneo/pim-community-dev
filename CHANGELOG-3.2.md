@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Improvement
+
+- PIM-9165: Improve message of `akeneo:elasticsearch:reset-indexes` command. Now, all commands available to re-index entities are shown.
+
 # 3.2.55 (2020-05-14)
 
 ## Bug fixes
