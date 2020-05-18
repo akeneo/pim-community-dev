@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
-use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
+use Akeneo\AssetManager\Domain\Event\DomainEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -55,14 +54,7 @@ class InMemoryAssetRepository implements AssetRepositoryInterface
 
             return;
         } finally {
-            $this->eventDispatcher->dispatch(
-                AssetCreatedEvent::class,
-                new AssetCreatedEvent(
-                    $asset->getIdentifier(),
-                    $asset->getCode(),
-                    $asset->getAssetFamilyIdentifier()
-                )
-            );
+            $this->dispatchAssetEvents($asset);
         }
 
         throw new \RuntimeException('Asset already exists');
@@ -76,10 +68,7 @@ class InMemoryAssetRepository implements AssetRepositoryInterface
 
         $this->assets[$asset->getIdentifier()->__toString()] = $asset;
 
-        $this->eventDispatcher->dispatch(
-            AssetUpdatedEvent::class,
-            new AssetUpdatedEvent($asset->getIdentifier(), $asset->getCode(), $asset->getAssetFamilyIdentifier())
-        );
+        $this->dispatchAssetEvents($asset);
     }
 
     public function getByIdentifier(AssetIdentifier $identifier): Asset
@@ -195,5 +184,18 @@ class InMemoryAssetRepository implements AssetRepositoryInterface
         }
 
         return $count;
+    }
+
+    private function dispatchAssetEvents(Asset $asset)
+    {
+        foreach ($asset->getRecordedEvents() as $event) {
+            if (!$event instanceof DomainEvent) {
+                continue;
+            }
+
+            $this->eventDispatcher->dispatch(get_class($event), $event);
+        }
+
+        $asset->clearRecordedEvents();
     }
 }

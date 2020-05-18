@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetDeletedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetFamilyAssetsDeletedEvent;
-use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
+use Akeneo\AssetManager\Domain\Event\DomainEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -30,6 +29,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -103,9 +103,13 @@ SQL;
                 'code' => (string) $asset->getCode(),
                 'asset_family_identifier' => (string) $asset->getAssetFamilyIdentifier(),
                 'value_collection' => $valueCollection,
+                'created_at' => $asset->getCreatedAt(),
+                'updated_at' => $asset->getUpdatedAt(),
             ],
             [
                 'value_collection' => Type::JSON_ARRAY,
+                'created_at' => Types::DATETIME_IMMUTABLE,
+                'updated_at' => Types::DATETIME_IMMUTABLE,
             ]
         );
         if ($affectedRows > 1) {
@@ -114,14 +118,7 @@ SQL;
             );
         }
 
-        $this->eventDispatcher->dispatch(
-            AssetCreatedEvent::class,
-            new AssetCreatedEvent(
-                $asset->getIdentifier(),
-                $asset->getCode(),
-                $asset->getAssetFamilyIdentifier()
-            )
-        );
+        $this->dispatchAssetEvents($asset);
     }
 
     public function update(Asset $asset): void
@@ -130,7 +127,8 @@ SQL;
 
         $update = <<<SQL
         UPDATE akeneo_asset_manager_asset
-        SET value_collection = :value_collection
+        SET value_collection = :value_collection,
+            updated_at = :updated_at
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -138,9 +136,11 @@ SQL;
             [
                 'identifier' => $asset->getIdentifier(),
                 'value_collection' => $valueCollection,
+                'updated_at' => $asset->getUpdatedAt(),
             ],
             [
                 'value_collection' => Type::JSON_ARRAY,
+                'updated_at' => Types::DATETIME_IMMUTABLE
             ]
         );
 
@@ -150,10 +150,7 @@ SQL;
             );
         }
 
-        $this->eventDispatcher->dispatch(
-            AssetUpdatedEvent::class,
-            new AssetUpdatedEvent($asset->getIdentifier(), $asset->getCode(), $asset->getAssetFamilyIdentifier())
-        );
+        $this->dispatchAssetEvents($asset);
     }
 
     public function getByAssetFamilyAndCode(
@@ -161,7 +158,7 @@ SQL;
         AssetCode $code
     ): Asset {
         $fetch = <<<SQL
-        SELECT identifier, code, asset_family_identifier, value_collection
+        SELECT identifier, code, asset_family_identifier, value_collection, created_at, updated_at
         FROM akeneo_asset_manager_asset
         WHERE code = :code AND asset_family_identifier = :asset_family_identifier;
 SQL;
@@ -184,7 +181,7 @@ SQL;
     public function getByIdentifier(AssetIdentifier $identifier): Asset
     {
         $fetch = <<<SQL
-        SELECT asset.identifier, asset.code, asset.asset_family_identifier, asset.value_collection, reference.attribute_as_label, reference.attribute_as_main_media
+        SELECT asset.identifier, asset.code, asset.asset_family_identifier, asset.value_collection, reference.attribute_as_label, reference.attribute_as_main_media, created_at, updated_at
         FROM akeneo_asset_manager_asset AS asset
         INNER JOIN akeneo_asset_manager_asset_family AS reference
             ON reference.identifier = asset.asset_family_identifier
@@ -308,5 +305,18 @@ SQL;
             $valueKeyCollection,
             $attributesIndexedByIdentifier
         );
+    }
+
+    private function dispatchAssetEvents(Asset $asset)
+    {
+        foreach ($asset->getRecordedEvents() as $event) {
+            if (!$event instanceof DomainEvent) {
+                continue;
+            }
+
+            $this->eventDispatcher->dispatch(get_class($event), $event);
+        }
+
+        $asset->clearRecordedEvents();
     }
 }

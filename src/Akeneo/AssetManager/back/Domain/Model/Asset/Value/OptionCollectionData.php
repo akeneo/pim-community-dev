@@ -36,6 +36,11 @@ class OptionCollectionData implements ValueDataInterface
         $this->optionCodes = $optionCodes;
     }
 
+    public function equals(ValueDataInterface $valueData): bool
+    {
+        return $valueData instanceof self && $valueData->normalize() === $this->normalize();
+    }
+
     /**
      * @return string[]
      */

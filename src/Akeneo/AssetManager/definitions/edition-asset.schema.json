@@ -5,6 +5,8 @@
     "identifier": {"type": "string"},
     "code": {"type": "string"},
     "labels": {"$ref": "labels.schema.json"},
+    "created_at": {"type":  "string"},
+    "updated_at": {"type":  "string"},
     "image": {
       "type": "array",
       "items": {"$ref": "asset/edition-value.schema.json"}
@@ -17,6 +19,6 @@
     "permission": {"$ref": "permission.schema.json"},
     "attribute_as_main_media_identifier": {"type": "string"}
   },
-  "required": ["identifier", "code", "labels", "values"],
+  "required": ["identifier", "code", "labels", "values", "created_at", "updated_at"],
   "additionalProperties": false
 }

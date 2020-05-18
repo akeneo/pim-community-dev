@@ -20,7 +20,9 @@ class AssetDetailsSpec extends ObjectBehavior
         AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeIdentifier $attributeAsMainMediaIdentifier,
         AssetCode $code,
-        LabelCollection $labelCollection
+        LabelCollection $labelCollection,
+        \DateTimeImmutable $createdAt,
+        \DateTimeImmutable $updatedAt
     ) {
         $this->beConstructedWith(
             $identifier,
@@ -28,6 +30,8 @@ class AssetDetailsSpec extends ObjectBehavior
             $attributeAsMainMediaIdentifier,
             $code,
             $labelCollection,
+            $createdAt,
+            $updatedAt,
             ['image_value'],
             [],
             true
@@ -44,13 +48,17 @@ class AssetDetailsSpec extends ObjectBehavior
         AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeIdentifier $attributeAsMainMediaIdentifier,
         AssetCode $code,
-        LabelCollection $labelCollection
+        LabelCollection $labelCollection,
+        \DateTimeImmutable $createdAt,
+        \DateTimeImmutable $updatedAt
     ) {
         $identifier->normalize()->willReturn('starck_designer_fingerprint');
         $assetFamilyIdentifier->normalize()->willReturn('designer');
         $attributeAsMainMediaIdentifier->normalize()->willReturn('main_image');
         $code->normalize()->willReturn('starck');
         $labelCollection->normalize()->willReturn(['fr_FR' => 'Philippe Starck']);
+        $createdAt->format('c')->willReturn('2020-05-14T09:24:03-07:00');
+        $updatedAt->format('c')->willReturn('2020-05-14T09:30:13-07:00');
 
         $this->normalize()->shouldReturn([
             'identifier'                         => 'starck_designer_fingerprint',
@@ -58,6 +66,8 @@ class AssetDetailsSpec extends ObjectBehavior
             'attribute_as_main_media_identifier' => 'main_image',
             'code'                               => 'starck',
             'labels'                             => ['fr_FR' => 'Philippe Starck'],
+            'created_at' => '2020-05-14T09:24:03-07:00',
+            'updated_at' => '2020-05-14T09:30:13-07:00',
             'image'                              => ['image_value'],
             'values'                             => [],
             'permission'                         => [

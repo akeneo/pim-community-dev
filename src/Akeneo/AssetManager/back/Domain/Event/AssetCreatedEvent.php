@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\Event;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @api
  */
-class AssetCreatedEvent extends Event
+class AssetCreatedEvent extends Event implements DomainEvent
 {
     /** @var AssetIdentifier */
     private $assetIdentifier;

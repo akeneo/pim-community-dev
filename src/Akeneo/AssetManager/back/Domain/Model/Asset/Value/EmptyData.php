@@ -16,6 +16,11 @@ class EmptyData implements ValueDataInterface
     {
     }
 
+    public function equals(ValueDataInterface $valueData): bool
+    {
+        return $valueData instanceof self;
+    }
+
     /**
      * @return null
      */

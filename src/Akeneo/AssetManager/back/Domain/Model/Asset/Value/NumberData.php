@@ -39,6 +39,11 @@ class NumberData implements ValueDataInterface
         return $this->number;
     }
 
+    public function equals(ValueDataInterface $valueData): bool
+    {
+        return $valueData instanceof self && $valueData->normalize() === $this->normalize();
+    }
+
     public static function createFromNormalize($normalizedData): ValueDataInterface
     {
         Assert::string($normalizedData, 'Normalized data should be a string');

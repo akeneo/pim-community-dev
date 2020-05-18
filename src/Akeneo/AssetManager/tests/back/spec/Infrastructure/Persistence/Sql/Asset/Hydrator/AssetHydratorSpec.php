@@ -60,6 +60,8 @@ class AssetHydratorSpec extends ObjectBehavior
                 'code'                        => 'world_of_warcraft',
                 'asset_family_identifier' => 'game',
                 'value_collection'            => json_encode([]),
+                'created_at' => '2020-05-14 16:05:27',
+                'updated_at' => '2020-05-14 16:14:27',
             ],
             $expectedValueKeys,
             $indexedAttributes
@@ -199,6 +201,8 @@ class AssetHydratorSpec extends ObjectBehavior
                 'code'                        => 'world_of_warcraft',
                 'asset_family_identifier' => 'game',
                 'value_collection'            => json_encode($rawValues),
+                'created_at' => '2020-05-14 16:05:27',
+                'updated_at' => '2020-05-14 16:14:27',
             ],
             $expectedValueKeys,
             $indexedAttributes
@@ -265,6 +269,8 @@ class AssetHydratorSpec extends ObjectBehavior
                 'asset_family_identifier' => 'game',
                 'labels'                      => json_encode([]),
                 'value_collection'            => json_encode($rawValues),
+                'created_at' => '2020-05-14 16:05:27',
+                'updated_at' => '2020-05-14 16:14:27',
             ],
             $expectedValueKeys,
             $indexedAttributes
@@ -296,6 +302,8 @@ class AssetHydratorSpec extends ObjectBehavior
                 'asset_family_identifier' => 'game',
                 'labels'                      => json_encode([]),
                 'value_collection' => json_encode(['description_game_finger-fr_FR' => ['attribute' => 'description_game_fingerprint']]),
+                'created_at' => '2020-05-14 16:05:27',
+                'updated_at' => '2020-05-14 16:14:27',
             ],
             $expectedValueKeys,
             $indexedAttributes

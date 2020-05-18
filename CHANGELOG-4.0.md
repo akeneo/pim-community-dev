@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9243: Creation and update dates are not displayed on the asset page 
+
 # 4.0.24 (2020-05-07)
 
 ## Bug fixes

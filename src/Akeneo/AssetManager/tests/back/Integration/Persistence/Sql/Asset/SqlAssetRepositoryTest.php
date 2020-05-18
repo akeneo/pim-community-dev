@@ -81,9 +81,12 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
             ValueCollection::fromValues([])
         );
 
+        $this->assertNotEmpty($asset->getRecordedEvents());
         $this->repository->create($asset);
 
         $this->eventDispatcherMock->assertEventDispatched(AssetCreatedEvent::class);
+        $this->assertEmpty($asset->getRecordedEvents());
+
         $assetFound = $this->repository->getByIdentifier($identifier);
         $this->assertSame($asset->normalize(), $assetFound->normalize());
     }
@@ -349,9 +352,11 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
             TextData::fromString('A completely new and updated description')
         );
         $asset->setValue($valueToUpdate);
+        $this->assertNotEmpty($asset->getRecordedEvents());
         $this->repository->update($asset);
 
         $this->eventDispatcherMock->assertEventDispatched(AssetUpdatedEvent::class);
+        $this->assertEmpty($asset->getRecordedEvents());
         $assetFound = $this->repository->getByIdentifier($identifier);
         $this->assertEquals($asset->normalize(), $assetFound->normalize());
     }

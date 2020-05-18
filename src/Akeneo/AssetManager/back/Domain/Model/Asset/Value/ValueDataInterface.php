@@ -14,4 +14,6 @@ interface ValueDataInterface
     public function normalize();
 
     public static function createFromNormalize($normalizedData): ValueDataInterface;
+
+    public function equals(ValueDataInterface $valueData): bool;
 }

@@ -23,6 +23,11 @@ class MediaLinkData implements ValueDataInterface
         $this->text = $text;
     }
 
+    public function equals(ValueDataInterface $valueData): bool
+    {
+        return $valueData instanceof self && $valueData->normalize() === $this->normalize();
+    }
+
     /**
      * @return string
      */

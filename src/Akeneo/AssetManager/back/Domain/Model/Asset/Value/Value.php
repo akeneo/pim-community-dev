@@ -110,4 +110,14 @@ class Value
     {
         return ValueKey::create($this->attributeIdentifier, $this->channelReference, $this->localeReference);
     }
+
+    public function equals(Value $anotherValue): bool
+    {
+        return
+            $anotherValue->getAttributeIdentifier()->equals($this->attributeIdentifier)
+            && $this->sameAttribute($anotherValue)
+            && $this->sameChannel($anotherValue)
+            && $this->sameLocale($anotherValue)
+            && $anotherValue->getData()->equals($this->getData());
+    }
 }

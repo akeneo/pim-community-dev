@@ -24,4 +24,7 @@ class SearchableAssetItem
     
     /** @var array */
     public $values;
+
+    /** @var \DateTimeImmutable */
+    public $updatedAt;
 }

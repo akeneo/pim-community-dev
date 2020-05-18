@@ -28,6 +28,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -69,7 +70,10 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
             ->convertToPHPValue($row['asset_family_identifier'], $this->platform);
         $assetCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
-
+        $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)
+            ->convertToPHPValue($row['created_at'], $this->platform);
+        $updatedAt = Type::getType(Types::DATETIME_IMMUTABLE)
+            ->convertToPHPValue($row['updated_at'], $this->platform);
         $values = $this->hydrateValues($valueKeyCollection, $attributes, $valueCollection);
         $normalizedValues = [];
         foreach ($values as $key => $value) {
@@ -87,6 +91,8 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
             AttributeIdentifier::fromString($attributeAsMainMedia),
             AssetCode::fromString($assetCode),
             LabelCollection::fromArray($labels),
+            $createdAt,
+            $updatedAt,
             $assetImage,
             $allValues,
             true

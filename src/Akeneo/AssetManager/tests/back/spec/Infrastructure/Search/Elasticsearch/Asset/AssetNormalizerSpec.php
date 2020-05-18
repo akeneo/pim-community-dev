@@ -45,9 +45,12 @@ class AssetNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_searchable_asset_by_asset_identifier(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableAssets $findSearchableAssets,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        \DateTimeImmutable $updatedAt
     ) {
         $assetIdentifier = AssetIdentifier::fromString('stark');
+        $updatedAt->getTimestamp()->willReturn(1589524960);
+
         $stark = new SearchableAssetItem();
         $stark->identifier = 'designer_stark_fingerprint';
         $stark->assetFamilyIdentifier = 'designer';
@@ -61,6 +64,8 @@ class AssetNormalizerSpec extends ObjectBehavior
                 'data' => 'Bio',
             ],
         ];
+        $stark->updatedAt = \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2020-05-15T10:16:21+0000');
+
         $findSearchableAssets
             ->byAssetIdentifier($assetIdentifier)
             ->willReturn($stark);
@@ -101,7 +106,8 @@ class AssetNormalizerSpec extends ObjectBehavior
                 'description_mobile_en_US' => true,
             ]
         );
-        $normalizedAsset['updated_at']->shouldBeInt();
+
+        $normalizedAsset['updated_at']->shouldBeEqualTo(1589537781);
     }
 
     function it_normalizes_a_searchable_assets_by_asset_family(

@@ -26,6 +26,9 @@ import {getLabel} from 'pimui/js/i18n';
 import EditionAsset, {getEditionAssetCompleteness} from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {MainMediaThumbnail} from 'akeneoassetmanager/application/component/asset/edit/main-media-thumbnail';
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
+import {formatDateForUILocale} from 'akeneoassetmanager/tools/format-date';
+import {Label} from "akeneoassetmanager/application/component/app/label";
+import styled from "styled-components";
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -35,6 +38,8 @@ interface StateProps {
   context: {
     locale: string;
     channel: string;
+    createdAt: string;
+    updatedAt: string;
   };
   rights: {
     asset: {
@@ -63,6 +68,10 @@ interface DispatchProps {
 }
 
 interface EditProps extends StateProps, DispatchProps {}
+
+const DateLabel = styled(Label)`
+  margin: 0 10px;
+`;
 
 class AssetEditView extends React.Component<EditProps> {
   public props: EditProps;
@@ -195,11 +204,34 @@ class AssetEditView extends React.Component<EditProps> {
                         </div>
                       </div>
                     </div>
-                    {completeness.hasRequiredAttribute() ? (
-                      <div>
-                        <CompletenessLabel completeness={completeness} />
-                      </div>
-                    ) : null}
+                    <div>
+                      <span>
+                      {completeness.hasRequiredAttribute() ? (
+                          <CompletenessLabel completeness={completeness} />
+                      ) : null}
+                      </span>
+                      <span>
+                        <DateLabel>
+                           {__('pim_asset_manager.asset.created_at')}: {formatDateForUILocale(this.props.context.createdAt, {
+                            year: 'numeric',
+                            month: 'numeric',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                          })}
+                        </DateLabel>
+                        |
+                        <DateLabel>
+                         {__('pim_asset_manager.asset.updated_at')}: {formatDateForUILocale(this.props.context.updatedAt, {
+                          year: 'numeric',
+                          month: 'numeric',
+                          day: 'numeric',
+                          hour: 'numeric',
+                          minute: 'numeric',
+                        })}
+                        </DateLabel>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </header>
@@ -233,6 +265,8 @@ export default connect(
       context: {
         locale,
         channel: state.user.catalogChannel,
+        createdAt: state.form.data.createdAt,
+        updatedAt: state.form.data.updatedAt,
       },
       asset: state.form.data,
       structure: {

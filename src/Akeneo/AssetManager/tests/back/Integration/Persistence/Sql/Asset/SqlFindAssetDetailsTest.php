@@ -173,6 +173,8 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
             $assetFamily->getAttributeAsMainMediaReference()->getIdentifier(),
             $assetCode,
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
+            new \DateTimeImmutable(),
+            new \DateTimeImmutable(),
             [
                 [
                     'data'      => [

@@ -37,6 +37,16 @@ class ValueCollection implements \IteratorAggregate, \Countable
         return (array_key_exists($key, $this->values)) ? $this->values[$key] : null;
     }
 
+    public function hasValue(Value $value): bool
+    {
+        $existingValue = $this->findValue($value->getValueKey());
+        if (! $existingValue instanceof Value) {
+            return $value->isEmpty();
+        }
+
+        return $value->equals($existingValue);
+    }
+
     public function setValue(Value $newValue): ValueCollection
     {
         $values = $this->values;

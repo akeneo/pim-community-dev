@@ -31,6 +31,11 @@ class OptionData implements ValueDataInterface
         $this->optionCode = $optionCode;
     }
 
+    public function equals(ValueDataInterface $valueData): bool
+    {
+        return $valueData instanceof self && $valueData->normalize() === $this->normalize();
+    }
+
     public function normalize(): string
     {
         return $this->optionCode;

@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\Asset;
 
+use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
+use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
+use Akeneo\AssetManager\Domain\Event\DomainEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
@@ -37,16 +40,29 @@ class Asset
     /** @var ValueCollection */
     private $valueCollection;
 
+    /** @var \DateTimeImmutable */
+    private $createdAt;
+
+    /** @var \DateTimeImmutable */
+    private $updatedAt;
+
+    /** @var array */
+    private $recordedEvents = [];
+
     private function __construct(
         AssetIdentifier $identifier,
         AssetFamilyIdentifier $assetFamilyIdentifier,
         AssetCode $code,
-        ValueCollection $valueCollection
+        ValueCollection $valueCollection,
+        \DateTimeImmutable $createdAt,
+        \DateTimeImmutable $updatedAt
     ) {
         $this->identifier = $identifier;
         $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->code = $code;
         $this->valueCollection = $valueCollection;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     public static function create(
@@ -55,7 +71,33 @@ class Asset
         AssetCode $code,
         ValueCollection $valueCollection
     ): self {
-        return new self($identifier, $assetFamilyIdentifier, $code, $valueCollection);
+        $asset = new self(
+            $identifier,
+            $assetFamilyIdentifier,
+            $code,
+            $valueCollection,
+            new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
+        );
+
+        $asset->recordedEvents[AssetCreatedEvent::class] = new AssetCreatedEvent(
+            $identifier,
+            $code,
+            $assetFamilyIdentifier
+        );
+
+        return $asset;
+    }
+
+    public static function fromState(
+        AssetIdentifier $identifier,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AssetCode $code,
+        ValueCollection $valueCollection,
+        \DateTimeImmutable $createdAt,
+        \DateTimeImmutable $updatedAt
+    ) {
+        return new self($identifier, $assetFamilyIdentifier, $code, $valueCollection, $createdAt, $updatedAt);
     }
 
     public function getIdentifier(): AssetIdentifier
@@ -66,6 +108,16 @@ class Asset
     public function getCode(): AssetCode
     {
         return $this->code;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): \DateTimeImmutable
+    {
+        return $this->updatedAt;
     }
 
     public function getAssetFamilyIdentifier(): AssetFamilyIdentifier
@@ -85,7 +137,17 @@ class Asset
 
     public function setValue(Value $value): void
     {
+        if ($this->valueCollection->hasValue($value)) {
+            return;
+        }
+
         $this->valueCollection = $this->valueCollection->setValue($value);
+        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $this->recordedEvents[AssetUpdatedEvent::class] = new AssetUpdatedEvent(
+            $this->identifier,
+            $this->code,
+            $this->assetFamilyIdentifier,
+        );
     }
 
     public function findValue(ValueKey $valueKey): ?Value
@@ -106,5 +168,18 @@ class Asset
     public function filterValues(\Closure $closure): ValueCollection
     {
         return $this->valueCollection->filter($closure);
+    }
+
+    /**
+     * @return DomainEvent[]
+     */
+    public function getRecordedEvents(): array
+    {
+        return array_values($this->recordedEvents);
+    }
+
+    public function clearRecordedEvents()
+    {
+        $this->recordedEvents = [];
     }
 }
