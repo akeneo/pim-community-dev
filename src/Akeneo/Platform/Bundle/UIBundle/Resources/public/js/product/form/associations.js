@@ -302,7 +302,7 @@ define([
      * Refresh the associations panel after model change
      */
     postUpdate: function() {
-      if (this.isVisible() && !this.$el.is(':empty')) {
+      if (this.isVisible()) {
         this.$('.selection-inputs input').val('');
         state.selectedAssociations = {};
         this.render();
