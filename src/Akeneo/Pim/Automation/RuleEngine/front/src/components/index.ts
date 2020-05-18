@@ -9,4 +9,5 @@ export * from './Inputs';
 export * from './Labels';
 export * from './RulesHeader';
 export * from './Select2Wrapper';
+export * from './Subsection';
 export * from './UnsavedChangesWarning';

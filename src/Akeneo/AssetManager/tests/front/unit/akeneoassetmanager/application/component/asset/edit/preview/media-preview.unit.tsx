@@ -7,6 +7,8 @@ import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribu
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
 
 const mediaLinkImageAttribute = {
   identifier: 'media_link_image_attribute_identifier',
@@ -56,17 +58,38 @@ describe('Tests media preview component', () => {
   test('It renders a media file preview', () => {
     const {container} = render(
       <ThemeProvider theme={akeneoTheme}>
-        <MediaPreview data={mediaFileData} label="" attribute={mediaFileAttribute} />
+        <Provider store={createStore(() => ({reloadPreview: false}))}>
+          <MediaPreview data={mediaFileData} label="" attribute={mediaFileAttribute} />
+        </Provider>
       </ThemeProvider>
     );
 
     expect(container.querySelector('[data-role="media-data-preview"]')).toBeInTheDocument();
   });
 
+  test('It renders a media file reloaded preview', () => {
+    global.fetch = jest.fn().mockImplementation(() => new Promise(() => {}));
+
+    const {container} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <Provider store={createStore(() => ({reloadPreview: true}))}>
+          <MediaPreview data={mediaLinkData} label="" attribute={mediaLinkImageAttribute} />
+        </Provider>
+      </ThemeProvider>
+    );
+
+    expect(container.querySelector('.AknLoadingPlaceHolderContainer')).toBeInTheDocument();
+
+    global.fetch.mockClear();
+    delete global.fetch;
+  });
+
   test('It renders a media link image preview', () => {
     const {container} = render(
       <ThemeProvider theme={akeneoTheme}>
-        <MediaPreview data={mediaLinkData} label="" attribute={mediaLinkImageAttribute} />
+        <Provider store={createStore(() => ({reloadPreview: false}))}>
+          <MediaPreview data={mediaLinkData} label="" attribute={mediaLinkImageAttribute} />
+        </Provider>
       </ThemeProvider>
     );
 

@@ -1,16 +1,20 @@
 import React from 'react';
 import { Attribute, validateLocalizableScopableAttribute } from './Attribute';
 import { Router } from '../dependenciesTools';
-import { getAttributeByIdentifier } from '../fetch/AttributeFetcher';
-import { TextAttributeConditionLine } from '../pages/EditRules/TextAttributeConditionLine';
+import { getAttributeByIdentifier } from '../repositories/AttributeRepository';
+import {
+  TextAttributeConditionLine,
+  TextAttributeConditionLineProps,
+} from '../pages/EditRules/components/conditions/TextAttributeConditionLine';
 import { Operator } from './Operator';
-import { checkLocaleExists } from '../fetch/LocaleFetcher';
 import {
   checkLocaleIsBoundToScope,
   checkScopeExists,
-} from '../fetch/ScopeFetcher';
-import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
-import { ConditionFactoryType } from './Condition';
+} from '../repositories/ScopeRepository';
+import { checkLocaleExists } from '../repositories/LocaleRepository';
+import { ConditionDenormalizer, ConditionFactory } from './Condition';
+
+const TYPE = 'pim_catalog_text';
 
 const TextAttributeOperators = [
   Operator.EQUALS,
@@ -24,7 +28,7 @@ const TextAttributeOperators = [
 
 type TextAttributeCondition = {
   scope?: string;
-  module: React.FC<ConditionLineProps>;
+  module: React.FC<TextAttributeConditionLineProps>;
   attribute: Attribute;
   field: string;
   operator: Operator;
@@ -32,7 +36,7 @@ type TextAttributeCondition = {
   locale?: string;
 };
 
-const createTextAttributeCondition: ConditionFactoryType = async (
+const denormalizeTextAttributeCondition: ConditionDenormalizer = async (
   json: any,
   router: Router
 ): Promise<TextAttributeCondition | null> => {
@@ -52,7 +56,7 @@ const createTextAttributeCondition: ConditionFactoryType = async (
     return null;
   }
 
-  if (attribute.type === 'pim_catalog_text') {
+  if (attribute.type === TYPE) {
     const localeCode = json.locale || null;
     const scopeCode = json.scope || null;
 
@@ -79,8 +83,26 @@ const createTextAttributeCondition: ConditionFactoryType = async (
   return null;
 };
 
+const createTextAttributeCondition: ConditionFactory = async (
+  fieldCode: string,
+  router: Router
+): Promise<TextAttributeCondition | null> => {
+  const attribute = await getAttributeByIdentifier(fieldCode, router);
+  if (null === attribute || attribute.type !== TYPE) {
+    return null;
+  }
+
+  return {
+    module: TextAttributeConditionLine,
+    attribute,
+    field: fieldCode,
+    operator: Operator.IS_EMPTY,
+  };
+};
+
 export {
   TextAttributeOperators,
   TextAttributeCondition,
+  denormalizeTextAttributeCondition,
   createTextAttributeCondition,
 };

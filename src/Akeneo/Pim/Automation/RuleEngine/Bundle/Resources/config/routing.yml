@@ -54,5 +54,10 @@ pimee_enrich_rule_definition_get_impacted_product_count:
     defaults: { _controller: pimee_enrich.controller.rule_definition.get_impacted_product_count }
     methods: [GET]
 
+pimee_enrich_rule_definition_get_available_condition_fields:
+    path: /rest/rule_definition_available_condition_fields
+    defaults: { _controller: pimee_enrich.controller.rule_definition.get_available_condition_fields }
+    methods: [GET]
+
 pimee_catalog_rule_new:
     path: /configuration/rules/create

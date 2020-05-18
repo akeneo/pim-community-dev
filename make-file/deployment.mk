@@ -63,6 +63,34 @@ terraform-plan: terraform-init
 terraform-apply:
 	cd $(INSTANCE_DIR) && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 
+.PHONY: prepare-infrastructure-artifacts
+prepare-infrastructure-artifacts: render-helm-templates dump-kubernetes-namespace
+	cd $(INSTANCE_DIR) ;\
+	mkdir -p ~/artifacts/infra ;\
+	rm -Rf $(INSTANCE_DIR)/.terraform ;\
+	mv $(INSTANCE_DIR) ~/artifacts/infra/
+
+.PHONY: render-helm-templates
+render-helm-templates:
+	cd $(INSTANCE_DIR) ;\
+	mkdir -p helm-render ;\
+	helm template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render
+
+# TODO
+.PHONY: dump-kubernetes-namespace
+dump-kubernetes-namespace:
+	cd $(INSTANCE_DIR) ;\
+	mkdir -p k8s-dump ;\
+	RESOURCES=$$(kubectl -n $(PFID) get all -o jsonpath='{range .items[*]}{.kind}{"\n"}{end}' | uniq) ;\
+	for RESOURCE in $${RESOURCES};do \
+		echo $${RESOURCE} \
+		# RESOURCE_NAMES=$$(kubectl --context $${CONTEXT} -n $(PFID) get -o json $${RESOURCE}|jq '.items[].metadata.name'|sed "s/\"//g") ;\
+		# for RESOURCE_NAME in ${RESOURCE_NAMES};do \
+		# 	mkdir -p "k8s-dump" ;\
+		# 	kubectl --context $${CONTEXT} -n $(PFID) get -o yaml $${RESOURCE} $${RESOURCE_NAME} > "k8s-dump/$${RESOURCE_NAME}.yaml" ;\
+		# done ;\
+	done
+
 .PHONY: delete
 delete: terraform-delete purge-release-all
 
@@ -81,7 +109,7 @@ terraform-delete: terraform-init
 	cd $(INSTANCE_DIR) && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 
 .PHONY: create-ci-release-files
-create-ci-release-files: create-ci-values create-pim-main-tf
+create-ci-release-files: create-ci-values create-pim-main-tf create-serenity-commons-tf
 
 .PHONY: create-ci-values
 create-ci-values: $(INSTANCE_DIR)
@@ -92,6 +120,8 @@ ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200211172331"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200401020139"
 endif
 ifeq ($(INSTANCE_NAME),pimci-helpdesk)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
@@ -114,7 +144,7 @@ create-pim-main-tf: $(INSTANCE_DIR)
 	@echo "}" >> $(INSTANCE_DIR)/main.tf
 	@echo "module \"pim\" {" >> $(INSTANCE_DIR)/main.tf
 	@echo "source = \"$(PIM_SRC_DIR)/deployments/terraform\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "google_project_id                 = \"$(GOOGLE_PROJECT_ID)\"" >> $(INSTANCE_DIR)/main.tf
+	@echo "google_project_id                   = \"$(GOOGLE_PROJECT_ID)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "google_project_zone                 = \"$(GOOGLE_CLUSTER_ZONE)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "instance_name                       = \"$(INSTANCE_NAME)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "dns_external                        = \"$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS).\"" >> $(INSTANCE_DIR)/main.tf
@@ -125,6 +155,12 @@ create-pim-main-tf: $(INSTANCE_DIR)
 	@echo "force_destroy_storage               = true" >> $(INSTANCE_DIR)/main.tf
 	@echo "pim_version                         = \"$(IMAGE_TAG)\"" >> $(INSTANCE_DIR)/main.tf
 	@echo "}" >> $(INSTANCE_DIR)/main.tf
+
+.PHONY: create-serenity-commons-tf
+create-serenity-commons-tf: $(INSTANCE_DIR)
+	@echo "provider \"google\" {" > $(INSTANCE_DIR)/commons_serenity.tf
+	@echo "  version = \"~> 3.17.0\"" >> $(INSTANCE_DIR)/commons_serenity.tf
+	@echo "}" >> $(INSTANCE_DIR)/commons_serenity.tf
 
 .PHONY: test-prod
 test-prod:
@@ -161,19 +197,11 @@ deploy_pr_environment:
 
 .PHONY: delete_pr_environments
 delete_pr_environments:
-	kubectl get ns|grep "srnt-pimci-pr"; \
-	for namespace in $$(kubectl get ns|grep "srnt-pimci-pr"|awk '{print $$1}'); do \
-		NS_INFO=$$(kubectl get ns |grep $${namespace}); \
-		NS_STATUS=$$(echo $${NS_INFO}|awk '{print $$2}'); \
-		NS_AGE=$$(echo $${NS_INFO}|awk '{print $$3}'); \
-		INSTANCE_NAME=$$(echo $${namespace} | awk -F'srnt-pimci-pr-' '{print $$NF}'); \
-		echo "---[INFO] namespace $${namespace} with status $${NS_STATUS} since $${NS_AGE} (instance_name=$${INSTANCE_NAME})"; \
-		if [[ "$${NS_AGE}" == *24* ]] ; then \
-			echo "Environment will be deleted !"; \
-		else \
-			continue; \
-		fi; \
-		INSTANCE_NAME=pimci-pr-$${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
-		INSTANCE_NAME_PREFIX=pimci-pr IMAGE_TAG=$${INSTANCE_NAME} make delete; \
-		echo "---[DELETED] namespace $${namespace}"; \
+	bash $(PWD)/deployments/bin/remove_pr_instance.sh
+
+.PHONY: terraform-pre-upgrade
+terraform-pre-upgrade: terraform-init
+	yq d -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks"
+	for PD in $$(kubectl get -n $(PFID) pv $$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') -o jsonpath='{..spec.gcePersistentDisk.pdName}'); do \
+		yq w -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks[+]" "$${PD}"; \
 	done

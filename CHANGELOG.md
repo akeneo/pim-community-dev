@@ -1,5 +1,6 @@
 ## Bug fixes
 
+- PIM-9226: Fix error on channel deletion after migration from v3.2
 - Fixes memory leak when indexing product models with a lot of product models in the same family (see https://github.com/akeneo/pim-community-dev/pull/11742)
 - PIM-9109: Fix SSO not working behind reverse proxy.
 - PIM-9133: Fix product and product model save when the user has no permission on some attribute groups
@@ -8,6 +9,8 @@
 - PIM-9138: Rules import not working with asset manager
 - PIM-9196: Allow the search on label and code on the rules grid
 - PIM-9197: Fix the rule execution when attribute code is not in lower case
+- PIM-9239: Fix proposal datagrid when there is a product model proposal with an empty value suggestion
+- PIM-9202: Fix Asset Manager / Product link rules not working with multiple consumers
 
 ## Improvements
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { FormContext } from 'react-hook-form';
 
@@ -18,15 +18,16 @@ import {
   useTranslate,
   useUserContext,
 } from '../../dependenciesTools/hooks';
-import { Locale, RuleDefinition, getRuleDefinitionLabel } from '../../models';
+import { Locale, RuleDefinition } from '../../models';
 import { useSubmitEditRuleForm } from './hooks';
-import { IndexedScopes } from '../../fetch/ScopeFetcher';
+import { IndexedScopes } from '../../repositories/ScopeRepository';
 
 type Props = {
   ruleDefinitionCode: string;
   ruleDefinition: RuleDefinition;
   locales: Locale[];
   scopes: IndexedScopes;
+  setIsDirty: (isDirty: boolean) => void;
 };
 
 const EditRulesContent: React.FC<Props> = ({
@@ -34,6 +35,7 @@ const EditRulesContent: React.FC<Props> = ({
   ruleDefinition,
   locales,
   scopes,
+  setIsDirty,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -57,13 +59,21 @@ const EditRulesContent: React.FC<Props> = ({
     locales
   );
 
+  useEffect(() => {
+    setIsDirty(formMethods.formState.dirty);
+  }, [formMethods.formState.dirty]);
+
+  const title =
+    (formMethods.watch(`labels.${currentCatalogLocale}`) as string) ||
+    `[${ruleDefinitionCode}]`;
+
   return (
     <ThemeProvider theme={akeneoTheme}>
       {pending && <AkeneoSpinner />}
       <RulesHeader
         buttonLabel='pim_common.save'
         formId='edit-rules-form'
-        title={getRuleDefinitionLabel(ruleDefinition, currentCatalogLocale)}
+        title={title}
         translate={translate}
         unsavedChanges={formMethods.formState.dirty}>
         <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>

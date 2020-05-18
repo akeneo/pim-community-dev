@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRankCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductAxesRanksQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductAxesRanksQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 

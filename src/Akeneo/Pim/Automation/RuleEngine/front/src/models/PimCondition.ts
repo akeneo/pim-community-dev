@@ -3,13 +3,15 @@
  * Its difference with the fallback is that it can be have its renderer.
  * Each native condition coming from the PIM has the same fields.
  */
-import { PimConditionLine } from '../pages/EditRules/PimConditionLine';
+import {
+  PimConditionLine,
+  PimConditionLineProps,
+} from '../pages/EditRules/components/conditions/PimConditionLine';
 import React from 'react';
-import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
-import { ConditionFactoryType } from './Condition';
+import { ConditionDenormalizer } from './Condition';
 
 type PimCondition = {
-  module: React.FC<ConditionLineProps>;
+  module: React.FC<PimConditionLineProps>;
   field: string;
   operator: string;
   value: any | null;
@@ -17,7 +19,7 @@ type PimCondition = {
   scope: string | null;
 };
 
-export const createPimCondition: ConditionFactoryType = async (
+export const denormalizePimCondition: ConditionDenormalizer = async (
   json: any
 ): Promise<PimCondition | null> => {
   if (

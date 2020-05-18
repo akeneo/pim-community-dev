@@ -42,8 +42,8 @@ const OperatorSelector: React.FC<Props> = ({
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string | string[]) => {
-        onSelectorChange(Array.isArray(value) ? '' : value);
+      onChange={(value: string | string[] | number) => {
+        onSelectorChange(Array.isArray(value) ? '' : (value as string));
       }}
       value={currentOperator}
       data={operatorChoices}

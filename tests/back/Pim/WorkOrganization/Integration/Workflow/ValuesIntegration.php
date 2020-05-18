@@ -2,8 +2,9 @@
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
-use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use AkeneoTestEnterprise\Pim\Permission\Integration\Security\AbstractSecurityTestCase;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
@@ -79,8 +80,8 @@ class ValuesIntegration extends AbstractSecurityTestCase
 
     public function testUpdateAProductDraftWithAttributeGroupNotViewable()
     {
-        $this->expectException(UnknownPropertyException::class);
-        $this->expectExceptionMessage('Property "a_multi_select" does not exist.');
+        $this->expectException(UnknownAttributeException::class);
+        $this->expectExceptionMessage('Attribute "a_multi_select" does not exist.');
 
         $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'values' => ['a_multi_select' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
         $this->generateToken('mary');
@@ -123,7 +124,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
 
     public function testUpdateAProductDraftWithLocaleNotViewable()
     {
-        $this->expectException(UnknownPropertyException::class);
+        $this->expectException(InvalidAttributeException::class);
         $this->expectExceptionMessage('Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "de_DE" given');
 
         $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'de_DE', 'scope' => 'ecommerce']]]]);

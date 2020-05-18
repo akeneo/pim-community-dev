@@ -63,6 +63,8 @@
   "workspaces": [
     "vendor/akeneo/pim-community-dev",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/front",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared",
     "src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "src/Akeneo/Pim/Automation/RuleEngine/front"
   ]

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Textarea\EvaluateUppercaseWords;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateUppercaseWords;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
@@ -41,24 +41,18 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
     public function it_gives_a_criterion_evaluation_by_its_code()
     {
         $completenessEvaluation = new Read\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode('completeness_of_required_attributes'),
             new ProductId(42),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
-            null,
-            null,
             null
         );
 
         $spellingEvaluation = new Read\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode('consistency_textarea_uppercase_words'),
             new ProductId(42),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
-            null,
-            null,
             null
         );
 
@@ -72,24 +66,18 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
     public function it_gives_the_count_of_the_criteria_evaluations()
     {
         $completenessEvaluation = new Read\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode('completeness_of_required_attributes'),
             new ProductId(42),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
-            null,
-            null,
             null
         );
 
         $spellingEvaluation = new Read\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode('consistency_textarea_uppercase_words'),
             new ProductId(42),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
-            null,
-            null,
             null
         );
 
@@ -103,35 +91,26 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
     public function it_filters_criteria_evaluations_by_axis()
     {
         $completenessEvaluation = new Read\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE),
             new ProductId(42),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
-            null,
-            null,
             null
         );
 
         $spellingEvaluation = new Read\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             new ProductId(42),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
-            null,
-            null,
             null
         );
 
         $upperCaseEvaluation = new Read\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode(EvaluateUppercaseWords::CRITERION_CODE),
             new ProductId(42),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
-            null,
-            null,
             null
         );
 
@@ -162,24 +141,18 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
         );
 
         $completenessEvaluation = new Read\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode('completeness_of_required_attributes'),
             new ProductId(42),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
-            $completenessResult,
-            null,
-            null
+            $completenessResult
         );
 
         $spellingEvaluation = new Read\CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode('consistency_textarea_uppercase_words'),
             new ProductId(42),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
-            null,
-            null,
             null
         );
 

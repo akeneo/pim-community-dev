@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductEvaluationQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -55,8 +56,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 class GetProductEvaluation
 {
-    /** @var GetLatestCriteriaEvaluationsByProductIdQueryInterface */
-    private $getLatestCriteriaEvaluationsByProductIdQuery;
+    /** @var GetCriteriaEvaluationsByProductIdQueryInterface */
+    private $getProductEvaluationQuery;
 
     /** @var GetLocalesByChannelQueryInterface */
     private $getLocalesByChannelQuery;
@@ -65,27 +66,27 @@ class GetProductEvaluation
     private $axisRegistry;
 
     public function __construct(
-        GetLatestProductEvaluationQueryInterface $getLatestProductEvaluationQuery,
+        GetProductEvaluationQueryInterface $getProductEvaluationQuery,
         GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
         AxisRegistry $axisRegistry
     ) {
-        $this->getLatestCriteriaEvaluationsByProductIdQuery = $getLatestProductEvaluationQuery;
+        $this->getProductEvaluationQuery = $getProductEvaluationQuery;
         $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;
         $this->axisRegistry = $axisRegistry;
     }
 
     public function get(ProductId $productId): array
     {
-        $latestProductEvaluation = $this->getLatestCriteriaEvaluationsByProductIdQuery->execute($productId);
+        $productEvaluation = $this->getProductEvaluationQuery->execute($productId);
         $channelsLocales = $this->getLocalesByChannelQuery->getChannelLocaleCollection();
-        $productEvaluation = [];
+        $formattedProductEvaluation = [];
 
         /** @var AxisEvaluation $axisEvaluation */
-        foreach ($latestProductEvaluation->getAxesEvaluations() as $axisEvaluation) {
-            $productEvaluation[strval($axisEvaluation->getAxisCode())] = $this->formatAxisEvaluation($axisEvaluation, $channelsLocales);
+        foreach ($productEvaluation->getAxesEvaluations() as $axisEvaluation) {
+            $formattedProductEvaluation[strval($axisEvaluation->getAxisCode())] = $this->formatAxisEvaluation($axisEvaluation, $channelsLocales);
         }
 
-        return $productEvaluation;
+        return $formattedProductEvaluation;
     }
 
     private function formatAxisEvaluation(AxisEvaluation $axisEvaluation, ChannelLocaleCollection $channelsLocales): array

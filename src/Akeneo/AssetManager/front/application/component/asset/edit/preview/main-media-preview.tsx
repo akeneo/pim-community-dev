@@ -4,7 +4,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import EditionAsset, {getEditionAssetMediaData} from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {MediaPreview} from './media-preview';
+import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
 import {Fullscreen} from 'akeneoassetmanager/application/component/app/icon/fullscreen';
@@ -15,9 +15,12 @@ import {
   Action,
   DownloadAction,
   CopyUrlAction,
+  ReloadAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import {Subsection, SubsectionHeader} from 'akeneoassetmanager/application/component/app/subsection';
+import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
+import {connect} from 'react-redux';
 
 const Container = styled.div`
   display: flex;
@@ -26,6 +29,7 @@ const Container = styled.div`
   margin: 20px 0;
   max-height: calc(100vh - 500px);
   min-height: 250px;
+  position: relative;
 `;
 
 const Actions = styled.div`
@@ -51,7 +55,9 @@ type MainMediaPreviewProps = {
   };
 };
 
-export const MainMediaPreview = ({asset, context}: MainMediaPreviewProps) => {
+export const MainMediaPreview = connect(null, dispatch => ({
+  onReloadPreview: () => dispatch(doReloadAllPreviews() as any),
+}))(({asset, context, onReloadPreview}: MainMediaPreviewProps & {onReloadPreview: () => void}) => {
   const attributeAsMainMedia = getAttributeAsMainMedia(asset.assetFamily);
   const data = getEditionAssetMediaData(asset, context.channel, context.locale);
   const attributeLabel = getLabelInCollection(
@@ -67,6 +73,13 @@ export const MainMediaPreview = ({asset, context}: MainMediaPreviewProps) => {
         <span>{__('pim_asset_manager.asset.enrich.main_media_preview')}</span>
         {!isDataEmpty(data) && (
           <Actions>
+            <ReloadAction
+              color={akeneoTheme.color.grey100}
+              size={20}
+              data={data}
+              attribute={attributeAsMainMedia}
+              onReload={onReloadPreview}
+            />
             <CopyUrlAction color={akeneoTheme.color.grey100} size={20} data={data} attribute={attributeAsMainMedia} />
             <DownloadAction color={akeneoTheme.color.grey100} size={20} data={data} attribute={attributeAsMainMedia} />
             <FullscreenPreview anchor={Action} label={attributeLabel} data={data} attribute={attributeAsMainMedia}>
@@ -84,4 +97,4 @@ export const MainMediaPreview = ({asset, context}: MainMediaPreviewProps) => {
       </Container>
     </Subsection>
   );
-};
+});

@@ -15,26 +15,62 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "%s-%s" .Release.Name $name | trunc 53 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "pim.extraLabels" }}
+{{- define "pim.extraLabels" -}}
 {{- range $key, $value := .Values.global.extraLabels }}
 {{ $key }}: {{ $value | quote }}
-{{- end }}
+{{- end -}}
 {{- range $key, $value := .Values.common.extraLabels }}
 {{ $key }}: {{ $value | quote }}
-{{- end }}
+{{- end -}}
 {{- range $key, $value := .Values.pim.extraLabels }}
 {{ $key }}: {{ $value | quote }}
-{{- end }}
-{{- end }}
+{{- end -}}
+{{- end -}}
 
 {{/*
 Define the tag of the PIM Enterprise Cloud image
 Can be with or without the Onboarder bundle activated
 */}}
-{{- define "pim.imageNameAndTag" }}
-{{- if .Values.onboarder.enabled }}
-{{- printf "%s:%s-onboarder" .Values.image.pim.repository .Values.image.pim.tag -}}
-{{- else }}
-{{- printf "%s:%s" .Values.image.pim.repository .Values.image.pim.tag -}}
+{{- define "pim.imageName" -}}
+{{- if .Values.onboarder.enabled -}}
+{{- printf "%s-onboarder" .Values.image.pim.repository -}}
+{{- else -}}
+{{- printf "%s" .Values.image.pim.repository -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Define the tag of the PIM Enterprise Cloud image
+Can be with or without the Onboarder bundle activated
+*/}}
+{{- define "pim.imageNameAndTag" -}}
+{{- printf "%s:%s" (include "pim.imageName" .) .Values.image.pim.tag -}}
+{{- end -}}
+
+{{/*
+Define standard labels for PIM objects
+*/}}
+{{- define "pim.standardLabels" }}
+app: pim # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+app.kubernetes.io/name: pim
+chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+release: "{{ .Release.Name }}" # Ex: srnt-invivo
+product_reference: serenity
+product_version: "{{ .Chart.Version | replace "+" "_" }}"
+heritage: "{{ .Release.Service }}" # Deprecated
 {{- end }}
+
+{{/*
+Define standard labels for Onboarder objects
+*/}}
+{{- define "onboarder.standardLabels" }}
+app: onboarder # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+app.kubernetes.io/name: onboarder
+chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+release: "{{ .Release.Name }}" # Ex: akob-jdgroup
+product_reference: onboarder
+product_version: "{{ .Chart.Version | replace "+" "_" }}"
+heritage: "{{ .Release.Service }}" # Deprecated
 {{- end }}

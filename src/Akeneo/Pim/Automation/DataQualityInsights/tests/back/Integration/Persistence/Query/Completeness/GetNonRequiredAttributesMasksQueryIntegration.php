@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\Completeness;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetNonRequiredAttributesMasksQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Persistence\Query\Completeness\CompletenessTestCase;
+use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\Completeness\CompletenessTestCase;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Webmozart\Assert\Assert;
 

@@ -1,0 +1,149 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2020 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace AkeneoTestEnterprise\Pim\Automation\Integration\RuleEngine\Query\Sql;
+
+use Akeneo\Pim\Automation\RuleEngine\Bundle\Query\Sql\SqlGetGroupedAttributes;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
+
+/**
+ * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ */
+final class SqlGetGroupedAttributesIntegration extends TestCase
+{
+    public function test_it_returns_only_given_attribute_types(): void
+    {
+        $results = $this->getSqlGetGroupedAttributes()->getForAttributeTypes(
+            ['pim_catalog_text'],
+            'en_US',
+            100
+        );
+        $this->assertNotNull($this->findAttributeInResults('erp', 'erp_name', $results));
+        $this->assertNotNull($this->findAttributeInResults('marketing', 'name', $results));
+        $this->assertNull($this->findAttributeInResults('marketing', 'description', $results));
+
+        $results = $this->getSqlGetGroupedAttributes()->getForAttributeTypes(
+            ['pim_catalog_number', 'pim_catalog_textarea'],
+            'en_US',
+            100
+        );
+        $this->assertNull($this->findAttributeInResults('erp', 'erp_name', $results));
+        $this->assertNull($this->findAttributeInResults('marketing', 'name', $results));
+        $this->assertNotNull($this->findAttributeInResults('marketing', 'description', $results));
+    }
+
+    public function test_it_returns_paginate_results(): void
+    {
+        $results = $this->getSqlGetGroupedAttributes()->getForAttributeTypes(
+            ['pim_catalog_text', 'pim_catalog_number', 'pim_catalog_textarea'],
+            'en_US',
+            4,
+            1
+        );
+        $this->assertCount(4, $results);
+        $codeForFirstResult = $results[0]['code'];
+
+        $results = $this->getSqlGetGroupedAttributes()->getForAttributeTypes(
+            ['pim_catalog_text', 'pim_catalog_number', 'pim_catalog_textarea'],
+            'en_US',
+            4,
+            2
+        );
+        $this->assertCount(4, $results);
+        $this->assertNotEquals($codeForFirstResult, $results[0]['code']);
+
+        $results = $this->getSqlGetGroupedAttributes()->getForAttributeTypes(
+            ['pim_catalog_text', 'pim_catalog_number', 'pim_catalog_textarea'],
+            'en_US',
+            4,
+            200
+        );
+        $this->assertCount(0, $results);
+    }
+
+    public function test_it_searches_attribute_by_name(): void
+    {
+        $results = $this->getSqlGetGroupedAttributes()->getForAttributeTypes(
+            ['pim_catalog_text', 'pim_catalog_number', 'pim_catalog_textarea'],
+            'en_US',
+            4,
+            1,
+            'eSCript'
+        );
+        $this->assertNotEmpty($results);
+        $this->assertNotNull($this->findAttributeInResults('marketing', 'description', $results));
+
+        $results = $this->getSqlGetGroupedAttributes()->getForAttributeTypes(
+            ['pim_catalog_text', 'pim_catalog_number'],
+            'en_US',
+            4,
+            1,
+            'eSCript'
+        );
+        $this->assertNull($this->findAttributeInResults('marketing', 'description', $results));
+    }
+
+    public function test_it_uses_the_locale_code_for_labels(): void
+    {
+        $results = $this->getSqlGetGroupedAttributes()->getForAttributeTypes(
+            ['pim_catalog_text', 'pim_catalog_number', 'pim_catalog_textarea'],
+            'fr_FR',
+            100
+        );
+        $this->assertNotEmpty($results);
+        $erpNameAttribute = $this->findAttributeInResults('erp', 'erp_name', $results);
+        $this->assertNotNull($erpNameAttribute);
+        $this->assertSame('Nom ERP', $erpNameAttribute['label']);
+        $topCompositionAttribute = $this->findAttributeInResults('product', 'top_composition', $results);
+        $this->assertNotNull($topCompositionAttribute);
+        $this->assertSame('Composition dessus', $topCompositionAttribute['label']);
+        $this->assertSame('Produit', $topCompositionAttribute['group_label']);
+
+        $results = $this->getSqlGetGroupedAttributes()->getForAttributeTypes(
+            ['pim_catalog_text', 'pim_catalog_number', 'pim_catalog_textarea'],
+            'unnown',
+            100
+        );
+        $this->assertNotEmpty($results);
+        $erpNameAttribute = $this->findAttributeInResults('erp', 'erp_name', $results);
+        $this->assertNotNull($erpNameAttribute);
+        $this->assertSame('[erp_name]', $erpNameAttribute['label']);
+        $this->assertSame('[erp]', $erpNameAttribute['group_label']);
+    }
+
+    private function findAttributeInResults(string $attributeGroupCode, string $attributeCode, array $results): ?array
+    {
+        foreach ($results as $result) {
+            if ($attributeGroupCode === $result['group_code'] && $attributeCode === $result['code']) {
+                return $result;
+            }
+        }
+
+        return null;
+    }
+
+    private function getSqlGetGroupedAttributes(): SqlGetGroupedAttributes
+    {
+        return $this->get('pimee_catalog_rule.query.sql.get_grouped_attributes');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration(): Configuration
+    {
+        return $this->catalog->useFunctionalCatalog('catalog_modeling');
+    }
+}

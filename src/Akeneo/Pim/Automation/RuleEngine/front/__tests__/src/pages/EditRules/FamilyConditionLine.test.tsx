@@ -3,7 +3,7 @@ import { render } from '../../../../test-utils';
 import { Operator } from '../../../../src/models/Operator';
 import { Router } from '../../../../src/dependenciesTools';
 import { FamilyCondition } from '../../../../src/models/FamilyCondition';
-import { FamilyConditionLine } from '../../../../src/pages/EditRules/FamilyConditionLine';
+import { FamilyConditionLine } from '../../../../src/pages/EditRules/components/conditions/FamilyConditionLine';
 import userEvent from '@testing-library/user-event';
 
 const condition: FamilyCondition = {
@@ -95,7 +95,7 @@ describe('FamilyConditionLine', () => {
     userEvent.selectOptions(operatorSelector, Operator.NOT_IN_LIST);
     expect(setValueMock).toHaveBeenCalledTimes(4);
     expect(setValueMock).toHaveBeenNthCalledWith(3, 'content.conditions[1].operator', Operator.NOT_IN_LIST);
-    expect(setValueMock).toHaveBeenNthCalledWith(4, 'content.conditions[1].value', ['accessories', 'mugs']);
+    expect(setValueMock).toHaveBeenNthCalledWith(4, 'content.conditions[1].value', []);
     expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
   });
 });

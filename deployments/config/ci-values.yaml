@@ -4,7 +4,7 @@ pim:
     askFranklinUrl: "https://ask-franklin-test.dev.cloud.akeneo.com"
   secret: 5f559ffb-5b36-4922-9481-022057992057
   defaultAdminUser:
-    login : pim-ci
+    login: pim-ci
     firstName: test1
     lastName: test2
     email: pim-ci@akeneo.fr
@@ -26,10 +26,14 @@ pim:
     requests:
       cpu: "100m"
       memory: "256Mi"
+  daemon-all-but-linking-assets-to-products:
+    enabled: true
+    pimCommand: "akeneo:batch:job-queue-consumer-daemon  --blacklisted-job asset_manager_link_assets_to_products"
+    replicas: 1
   daemon-default:
     enabled: true
     pimCommand: "akeneo:batch:job-queue-consumer-daemon"
-    replicas: 2
+    replicas: 1
 backup:
   enabled: false
 

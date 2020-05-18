@@ -65,6 +65,10 @@ pimee_catalog_rule:
             ">=": equals or greater than
             "<": less than
             "<=": equals or less than
+        fields:
+            family: Family
+        field_groups:
+            system: System
     acl_group:
         rule: Rules
     acl:

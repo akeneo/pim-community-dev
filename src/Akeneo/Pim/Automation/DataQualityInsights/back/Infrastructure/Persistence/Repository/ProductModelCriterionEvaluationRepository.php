@@ -15,7 +15,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Doctrine\DBAL\Connection;
 
 final class ProductModelCriterionEvaluationRepository implements CriterionEvaluationRepositoryInterface
@@ -42,35 +41,14 @@ final class ProductModelCriterionEvaluationRepository implements CriterionEvalua
         $this->repository->updateCriterionEvaluationsForProductModels($criteriaEvaluations);
     }
 
-    public function purgeUntil(\DateTimeImmutable $date): void
-    {
-        $query = <<<SQL
-DELETE old_evaluations
-FROM pimee_data_quality_insights_product_model_criteria_evaluation AS old_evaluations
-INNER JOIN pimee_data_quality_insights_product_model_criteria_evaluation AS younger_evaluations
-    ON younger_evaluations.product_id = old_evaluations.product_id
-    AND younger_evaluations.criterion_code = old_evaluations.criterion_code
-    AND younger_evaluations.created_at > old_evaluations.created_at
-WHERE old_evaluations.created_at < :purge_date
-SQL;
-
-        $this->db->executeQuery(
-            $query,
-            ['purge_date' => $date->format('Y-m-d 00:00:00')]
-        );
-    }
-
-    public function deleteUnknownProductsPendingEvaluations(): void
+    public function deleteUnknownProductsEvaluations(): void
     {
         $query = <<<SQL
 DELETE evaluation
 FROM pimee_data_quality_insights_product_model_criteria_evaluation AS evaluation
 LEFT JOIN pim_catalog_product_model AS product_model ON(evaluation.product_id = product_model.id)
-WHERE evaluation.status = :status
-AND product_model.id IS NULL
+WHERE product_model.id IS NULL
 SQL;
-        $this->db->executeQuery($query, [
-            'status' => CriterionEvaluationStatus::PENDING,
-        ]);
+        $this->db->executeQuery($query);
     }
 }

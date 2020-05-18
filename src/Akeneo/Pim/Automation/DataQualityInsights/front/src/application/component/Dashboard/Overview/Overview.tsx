@@ -41,10 +41,10 @@ const Overview = ({catalogChannel, catalogLocale, timePeriod, familyCode, catego
     if (dataset === null) {
       return;
     }
-    // @ts-ignore
+
     const enrichmentChartDataset = formatBackendRanksToVictoryFormat(dataset, 'enrichment');
     setEnrichmentChart(<TimePeriodAxisChart dataset={enrichmentChartDataset} timePeriod={timePeriod}/>);
-    // @ts-ignore
+
     const consistencyChartDataset = formatBackendRanksToVictoryFormat(dataset, 'consistency');
     setConsistencyChart(<TimePeriodAxisChart dataset={consistencyChartDataset} timePeriod={timePeriod}/>);
 

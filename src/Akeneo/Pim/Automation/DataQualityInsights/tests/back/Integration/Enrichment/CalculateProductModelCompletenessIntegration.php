@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Enrichment;
+namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Persistence\Query\Completeness\CompletenessTestCase;
+use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\Completeness\CompletenessTestCase;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**

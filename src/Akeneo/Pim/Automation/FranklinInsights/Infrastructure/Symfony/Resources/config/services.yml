@@ -105,7 +105,7 @@ services:
     Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\InitJobInstancesCommand:
         arguments:
             - '@pim_enrich.repository.job_instance'
-            - '@pim_catalog.command_launcher'
+            - '@database_connection'
         tags:
             - { name: console.command }
 

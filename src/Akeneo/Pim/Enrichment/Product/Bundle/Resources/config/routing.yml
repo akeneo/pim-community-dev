@@ -1,0 +1,3 @@
+product_internal_api:
+    resource: '@AkeneoPimEnterpriseProductEnrichmentBundle/Resources/config/routing/internal_api/product.yml'
+    prefix: /enrich/product

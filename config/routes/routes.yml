@@ -26,6 +26,9 @@ pim_franklin_insights:
 pim_data_quality_insights:
     resource: "@AkeneoDataQualityInsightsBundle/Resources/config/routing.yml"
 
+pimee_enrichment:
+    resource: "@AkeneoPimEnterpriseProductEnrichmentBundle/Resources/config/routing.yml"
+
 # SSO
 akeneo_authentication:
     resource: "@AkeneoAuthenticationBundle/Resources/config/routing.yml"

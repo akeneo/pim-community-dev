@@ -4,7 +4,12 @@ import {render, fireEvent} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {view as MediaLinkView} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media-link';
+import {ReloadAction} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
+import {Provider} from 'react-redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunkMiddleware from 'redux-thunk';
 
 const mediaLinkImageAttribute = {
   code: 'mlimage',
@@ -25,17 +30,38 @@ const mediaLinkValue = {
   data: mediaLinkData,
 };
 
+const mediaFileImageAttribute = {
+  code: 'mfimage',
+  identifier: 'media_file_image_attribute_identifier',
+  type: MEDIA_FILE_ATTRIBUTE_TYPE,
+  media_type: 'image',
+  prefix: 'http://',
+  suffix: '.png',
+  labels: {},
+};
+const mediaFileValue = {
+  attribute: mediaLinkImageAttribute,
+  channel,
+  locale,
+  data: {
+    originalFilename: 'pim',
+    filePath: 'pim.png',
+  },
+};
+
 describe('Tests media link attribute component', () => {
   test('It renders the media link attribute with its preview and its actions', () => {
     const {container, getByTitle, getAllByTitle, getByAltText} = render(
       <ThemeProvider theme={akeneoTheme}>
-        <MediaLinkView
-          value={mediaLinkValue}
-          locale={locale}
-          onChange={() => {}}
-          onSubmit={() => {}}
-          canEditData={true}
-        />
+        <Provider store={createStore(() => ({reloadPreview: false}))}>
+          <MediaLinkView
+            value={mediaLinkValue}
+            locale={locale}
+            onChange={() => {}}
+            onSubmit={() => {}}
+            canEditData={true}
+          />
+        </Provider>
       </ThemeProvider>
     );
 
@@ -49,11 +75,61 @@ describe('Tests media link attribute component', () => {
     expect(getByAltText('pim_asset_manager.attribute.media_type_preview')).toBeInTheDocument();
   });
 
+  test('It renders the media link attribute with its reloaded preview', () => {
+    global.fetch = jest.fn().mockImplementation(() => new Promise(() => {}));
+
+    const {container, getByTitle, getAllByTitle, getByAltText} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <Provider store={createStore(() => ({reloadPreview: true}), applyMiddleware(thunkMiddleware))}>
+          <MediaLinkView
+            value={mediaLinkValue}
+            locale={locale}
+            onChange={() => {}}
+            onSubmit={() => {}}
+            canEditData={true}
+          />
+        </Provider>
+      </ThemeProvider>
+    );
+
+    const loadingElement = container.querySelector<HTMLImageElement>('.AknLoadingPlaceHolder');
+    expect(loadingElement).toBeInTheDocument();
+    expect(getAllByTitle('pim_asset_manager.asset_preview.download')[0]).toBeInTheDocument();
+    expect(getByTitle('pim_asset_manager.asset.button.fullscreen')).toBeInTheDocument();
+    fireEvent.click(getByTitle('pim_asset_manager.attribute.media_link.reload'));
+
+    global.fetch.mockClear();
+    delete global.fetch;
+  });
+
+  test('It does not render a reload action if it is not a media link', () => {
+    const {container} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <ReloadAction
+          data={mediaFileValue.data}
+          onReload={() => {}}
+          attribute={mediaFileValue.attribute}
+          label={'pim_asset_manager.attribute.media_link.reload'}
+        />
+      </ThemeProvider>
+    );
+
+    expect(container.querySelector('[title="pim_asset_manager.attribute.media_link.reload"]')).toBe(null);
+  });
+
   test('It renders the an empty preview and the placeholder when the value is empty', () => {
     const emptyValue = {...mediaLinkValue, data: null};
     const {container, getByAltText} = render(
       <ThemeProvider theme={akeneoTheme}>
-        <MediaLinkView value={emptyValue} locale={locale} onChange={() => {}} onSubmit={() => {}} canEditData={true} />
+        <Provider store={createStore(() => ({reloadPreview: false}))}>
+          <MediaLinkView
+            value={emptyValue}
+            locale={locale}
+            onChange={() => {}}
+            onSubmit={() => {}}
+            canEditData={true}
+          />
+        </Provider>
       </ThemeProvider>
     );
 
@@ -69,7 +145,15 @@ describe('Tests media link attribute component', () => {
     const otherValue = {...mediaLinkValue, data: {some: 'thing'}};
     const {container} = render(
       <ThemeProvider theme={akeneoTheme}>
-        <MediaLinkView value={otherValue} locale={locale} onChange={() => {}} onSubmit={() => {}} canEditData={true} />
+        <Provider store={createStore(() => ({reloadPreview: false}))}>
+          <MediaLinkView
+            value={otherValue}
+            locale={locale}
+            onChange={() => {}}
+            onSubmit={() => {}}
+            canEditData={true}
+          />
+        </Provider>
       </ThemeProvider>
     );
 
@@ -85,7 +169,15 @@ describe('Tests media link attribute component', () => {
     const change = jest.fn().mockImplementationOnce(value => (editionValue = value));
     const {container} = render(
       <ThemeProvider theme={akeneoTheme}>
-        <MediaLinkView value={editionValue} locale={locale} onChange={change} onSubmit={() => {}} canEditData={true} />
+        <Provider store={createStore(() => ({reloadPreview: false}))}>
+          <MediaLinkView
+            value={editionValue}
+            locale={locale}
+            onChange={change}
+            onSubmit={() => {}}
+            canEditData={true}
+          />
+        </Provider>
       </ThemeProvider>
     );
 
@@ -102,13 +194,15 @@ describe('Tests media link attribute component', () => {
     const submit = jest.fn().mockImplementationOnce(() => {});
     const {container} = render(
       <ThemeProvider theme={akeneoTheme}>
-        <MediaLinkView
-          value={mediaLinkValue}
-          locale={locale}
-          onChange={() => {}}
-          onSubmit={submit}
-          canEditData={true}
-        />
+        <Provider store={createStore(() => ({reloadPreview: false}))}>
+          <MediaLinkView
+            value={mediaLinkValue}
+            locale={locale}
+            onChange={() => {}}
+            onSubmit={submit}
+            canEditData={true}
+          />
+        </Provider>
       </ThemeProvider>
     );
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\PurgeOutdatedData;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PeriodicTasksParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -53,7 +53,6 @@ final class PurgeOutdatedDataTasklet implements TaskletInterface
             $jobParameters = $this->stepExecution->getJobParameters();
             $purgeDate = \DateTimeImmutable::createFromFormat(PeriodicTasksParameters::DATE_FORMAT, $jobParameters->get(PeriodicTasksParameters::DATE_FIELD));
 
-            $this->purgeOutdatedData->purgeCriterionEvaluationsFrom($purgeDate);
             $this->purgeOutdatedData->purgeProductAxisRatesFrom($purgeDate);
             $this->purgeOutdatedData->purgeDashboardProjectionRatesFrom($purgeDate);
         } catch (\Exception $exception) {

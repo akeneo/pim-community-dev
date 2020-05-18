@@ -1,0 +1,5 @@
+services:
+    pimee_structure.product.query.sql_get_unique_attribute_codes:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetUniqueAttributeCodes'
+        arguments:
+            $connection: '@database_connection'

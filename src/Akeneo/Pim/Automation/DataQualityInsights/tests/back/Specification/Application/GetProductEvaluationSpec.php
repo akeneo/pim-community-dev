@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\AxisRegistry;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateTitleFormatting;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
@@ -30,11 +30,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestProductEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductEvaluationQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -53,33 +52,33 @@ class GetProductEvaluationSpec extends ObjectBehavior
     ];
 
     public function let(
-        GetLatestProductEvaluationQueryInterface $getLatestProductEvaluationQuery,
+        GetProductEvaluationQueryInterface $getProductEvaluationQuery,
         GetLocalesByChannelQueryInterface $getLocalesByChannelQuery
     ) {
-        $this->beConstructedWith($getLatestProductEvaluationQuery, $getLocalesByChannelQuery, new AxisRegistry());
+        $this->beConstructedWith($getProductEvaluationQuery, $getLocalesByChannelQuery, new AxisRegistry());
 
         $getLocalesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(self::CHANNELS_LOCALES));
     }
 
     public function it_gets_the_evaluations_of_a_product(
-        GetLatestProductEvaluationQueryInterface $getLatestProductEvaluationQuery
+        GetProductEvaluationQueryInterface $getProductEvaluationQuery
     ) {
         $productId = new ProductId(2000);
 
         $productEvaluationReadModel = $this->givenAProductEvaluation($productId);
         $expectedEvaluation = $this->getExpectedProductEvaluation();
 
-        $getLatestProductEvaluationQuery->execute($productId)->willReturn($productEvaluationReadModel);
+        $getProductEvaluationQuery->execute($productId)->willReturn($productEvaluationReadModel);
 
         $this->get($productId)->shouldBeLike($expectedEvaluation);
     }
 
     public function it_returns_default_values_if_the_product_has_no_evaluation(
-        GetLatestProductEvaluationQueryInterface $getLatestProductEvaluationQuery
+        GetProductEvaluationQueryInterface $getProductEvaluationQuery
     ) {
         $productId = new ProductId(42);
         $productEvaluation = $this->givenAnEmptyProductEvaluation($productId);
-        $getLatestProductEvaluationQuery->execute($productId)->willReturn($productEvaluation);
+        $getProductEvaluationQuery->execute($productId)->willReturn($productEvaluation);
 
         $expectedEvaluation = $this->getExpectedEmptyProductEvaluation();
 
@@ -87,11 +86,11 @@ class GetProductEvaluationSpec extends ObjectBehavior
     }
 
     public function it_handle_deprecated_improvable_attribute_structure(
-        GetLatestProductEvaluationQueryInterface $getLatestProductEvaluationQuery
+        GetProductEvaluationQueryInterface $getProductEvaluationQuery
     ) {
         $productId = new ProductId(39);
         $productEvaluation = $this->givenADeprecatedProductEvaluation($productId);
-        $getLatestProductEvaluationQuery->execute($productId)->willReturn($productEvaluation);
+        $getProductEvaluationQuery->execute($productId)->willReturn($productEvaluation);
 
         $expectedEvaluation = [
             "consistency" => [
@@ -240,14 +239,11 @@ class GetProductEvaluationSpec extends ObjectBehavior
     private function generateCriterionEvaluation(ProductId $productId, string $code, string $status, ChannelLocaleRateCollection $resultRates, CriterionEvaluationResultStatusCollection $resultStatusCollection, array $resultData)
     {
         return new CriterionEvaluation(
-            new CriterionEvaluationId(),
             new CriterionCode($code),
             $productId,
             new \DateTimeImmutable(),
             new CriterionEvaluationStatus($status),
-            new CriterionEvaluationResult($resultRates, $resultStatusCollection, $resultData),
-            new \DateTimeImmutable(),
-            new \DateTimeImmutable()
+            new CriterionEvaluationResult($resultRates, $resultStatusCollection, $resultData)
         );
     }
 

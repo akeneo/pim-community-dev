@@ -2,15 +2,15 @@ nameOverride: ""
 global:
   extraLabels:
     type: srnt
-    instanceName: nil # Generated with terraform template
-    pfid: nil # Generated with terraform template
+    instanceName: null # Generated with terraform template
+    pfid: null # Generated with terraform template
   monitoring:
     enabled: false
 
 backup:
   enabled: true
-  projectId: nil # Generated with terraform template
-  zone: nil # Generated with terraform template
+  projectId: null # Generated with terraform template
+  zone: null # Generated with terraform template
   snapshot:
     schedule: "0 0 */1 * * *" # Once every hour: https://godoc.org/github.com/robfig/cron
     retentionPolicy:
@@ -21,7 +21,7 @@ backup:
 
 common:
   extraLabels: {}
-  pimMasterDomain: nil # Generated with terraform template
+  pimMasterDomain: null # Generated with terraform template
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "60"
@@ -59,8 +59,8 @@ common:
     value: "Etc/UTC"
 
 mailer:
-  login: nil # Generated with terraform template
-  password: nil # Generated with terraform template
+  login: null # Generated with terraform template
+  password: null # Generated with terraform template
   base_mailer_url: "smtp://smtp.mailgun.org:2525"
 
 image:
@@ -89,18 +89,22 @@ pim:
     upgradeES:
       enabled: false
   storage:
-    bucketName: nil
-    serviceAccountKey: nil
+    bucketName: null
+    serviceAccountKey: null
   updateStrategy:
     type: RollingUpdate
   daemons:
+    all-but-linking-assets-to-products:
+      enabled: true
+      pimCommand: "akeneo:batch:job-queue-consumer-daemon --blacklisted-job asset_manager_link_assets_to_products"
+      replicas: 1
     default:
       enabled: true
       pimCommand: "akeneo:batch:job-queue-consumer-daemon"
-      replicas: 2
+      replicas: 1
   replicas: 2
   extraLabels: {}
-  secret: nil # Generate me with `uuidgen`
+  secret: null # Generate me with `uuidgen`
   resources:
     limits:
       memory: "2048Mi"
@@ -112,11 +116,11 @@ pim:
       totalFieldsLimit: 10000
   defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
   defaultAdminUser:
-    login : nil # Fill me
-    firstName: nil # Fill me
-    lastName: nil # Fill me
-    email: nil # Fill me
-    password: nil # Generate me with `pwgen -sB 22`
+    login: null # Fill me
+    firstName: null # Fill me
+    lastName: null # Fill me
+    email: null # Fill me
+    password: null # Generate me with `pwgen -sB 22`
     uiLocale: en_US # Change me if needed
   jobs:
     versioning-purge:
@@ -194,12 +198,12 @@ onboarder:
       enabled: true
       hook: "post-install"
   pubsub:
-    topicPubMiddleware: nil
-    topicPubOnboarder: nil
-    topicCon: nil
-    queueName: nil
+    topicPubMiddleware: null
+    topicPubOnboarder: null
+    topicCon: null
+    queueName: null
     maxReplicas: 10
-  serviceAccount: nil
+  serviceAccount: null
 
 mysql:
   image:
@@ -212,8 +216,8 @@ mysql:
     dataDiskPath: "/var/lib/mysql/"
     serviceName: pim-mysql
     defaultUser: akeneo_pim
-    userPassword: nil # Generate me with `pwgen -sB 22`
-    rootPassword: nil # Generate me with `pwgen -sB 22`
+    userPassword: null # Generate me with `pwgen -sB 22`
+    rootPassword: null # Generate me with `pwgen -sB 22`
     defaultDatabase: akeneo_pim
     dataDiskSize: 100Gi
     stateful:
@@ -303,4 +307,6 @@ elasticsearch:
         memory: "1024Mi"
     updateStrategy:
       type: RollingUpdate
-
+    hooks:
+      drain:
+        enabled: false

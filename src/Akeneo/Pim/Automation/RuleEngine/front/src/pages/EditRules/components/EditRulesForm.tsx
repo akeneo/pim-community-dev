@@ -6,7 +6,8 @@ import { RuleDefinition } from '../../../models';
 import { RulesBuilder } from './RulesBuilder';
 import { RuleProperties } from './RuleProperties';
 import { Locale } from '../../../models';
-import { IndexedScopes } from '../../../fetch/ScopeFetcher';
+import { IndexedScopes } from '../../../repositories/ScopeRepository';
+import { useFormContext } from 'react-hook-form';
 
 const getTabBorder = ({ id, selectedId, theme }: any): string | number => {
   if (id === selectedId) {
@@ -82,6 +83,20 @@ const EditRulesForm: React.FC<Props> = ({
   router,
 }) => {
   const tab = useTabState({ selectedId: 'rulesBuilderTab' });
+
+  const { formState } = useFormContext();
+  const beforeUnload = (event: Event) => {
+    event = event || window.event;
+    if (formState.dirty) {
+      const message = translate('pimee_catalog_rule.form.edit.discard_changes');
+      event.returnValue = true;
+
+      return message;
+    }
+    return;
+  };
+  window.onbeforeunload = beforeUnload;
+
   return (
     <form
       id='edit-rules-form'

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetIgnoredProductTitleSuggestionQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\GetLatestCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateTitleFormatting;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetIgnoredProductTitleSuggestionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -26,21 +26,21 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 class GetProductTitleSuggestion
 {
-    private $getLatestCriteriaEvaluationsByProductIdQuery;
+    private $getCriteriaEvaluationsByProductIdQuery;
 
     private $getIgnoredProductTitleSuggestionQuery;
 
     public function __construct(
-        GetLatestCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         GetIgnoredProductTitleSuggestionQueryInterface $getIgnoredProductTitleSuggestionQuery
     ) {
-        $this->getLatestCriteriaEvaluationsByProductIdQuery = $getLatestCriteriaEvaluationsByProductIdQuery;
+        $this->getCriteriaEvaluationsByProductIdQuery = $getCriteriaEvaluationsByProductIdQuery;
         $this->getIgnoredProductTitleSuggestionQuery = $getIgnoredProductTitleSuggestionQuery;
     }
 
     public function get(ProductId $productId, ChannelCode $channel, LocaleCode $locale): ?string
     {
-        $evaluation = $this->getLatestCriteriaEvaluationsByProductIdQuery->execute($productId);
+        $evaluation = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);
         $criterionEvaluation = $evaluation->get(new CriterionCode(EvaluateTitleFormatting::CRITERION_CODE));
 
         if ($criterionEvaluation === null) {

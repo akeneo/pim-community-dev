@@ -55,7 +55,7 @@ export const getEditionAssetMainMediaThumbnail = (
   asset: EditionAsset,
   channel: ChannelCode,
   locale: LocaleCode,
-  previewType: MediaPreviewType = MediaPreviewType.ThumbnailSmall
+  previewType: MediaPreviewType = MediaPreviewType.Thumbnail
 ): MediaPreview => {
   const mediaData = getEditionAssetMediaData(asset, channel, locale);
   if (isDataEmpty(mediaData)) {

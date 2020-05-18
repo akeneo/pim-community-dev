@@ -1,19 +1,19 @@
 import React from 'react';
-import { FallbackConditionLine } from '../pages/EditRules/FallbackConditionLine';
-import { ConditionLineProps } from '../pages/EditRules/ConditionLineProps';
+import {
+  FallbackConditionLine,
+  FallbackConditionLineProps,
+} from '../pages/EditRules/components/conditions/FallbackConditionLine';
 
 export type FallbackCondition = {
-  module: React.FC<ConditionLineProps>;
+  module: React.FC<FallbackConditionLineProps>;
   json: any;
 };
 
-export const createFallbackCondition = async (
+export const denormalizeFallbackCondition = async (
   json: any
 ): Promise<FallbackCondition> => {
-  return new Promise<FallbackCondition>(() => {
-    return {
-      module: FallbackConditionLine,
-      json: json,
-    };
+  return Promise.resolve({
+    module: FallbackConditionLine,
+    json: json,
   });
 };

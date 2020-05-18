@@ -11,13 +11,14 @@
 
 namespace Akeneo\Pim\Permission\Component\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -110,7 +111,7 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
     private function checkViewableAttributeGroup(AttributeInterface $attribute, array $permissions): void
     {
         if (!$permissions['view_attribute'] && !$permissions['edit_attribute']) {
-            throw UnknownPropertyException::unknownProperty($attribute->getCode());
+            throw UnknownAttributeException::unknownAttribute($attribute->getCode());
         }
     }
 
@@ -125,11 +126,16 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
         string $localeCode
     ): void {
         if (!$permissions['view_locale'] && !$permissions['edit_locale']) {
-            throw new UnknownPropertyException($localeCode, sprintf(
-                'Attribute "%s" expects an existing and activated locale, "%s" given.',
-                $attribute->getCode(),
-                $localeCode
-            ));
+            throw new InvalidAttributeException(
+                'attribute',
+                null,
+                self::class,
+                sprintf(
+                    'Attribute "%s" expects an existing and activated locale, "%s" given.',
+                    $attribute->getCode(),
+                    $localeCode
+                ),
+            );
         }
     }
 
@@ -161,7 +167,8 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
             ));
         }
 
-        if (null !== $newValue &&
+        if (
+            null !== $newValue &&
             null !== $newValue->getLocaleCode() &&
             true === $permissions['view_locale'] &&
             false === $permissions['edit_locale']

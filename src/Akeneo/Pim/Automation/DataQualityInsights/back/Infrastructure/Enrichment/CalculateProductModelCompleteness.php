@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\CalculateProductCompletenessInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CompletenessCalculationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -23,7 +23,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProdu
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 
-class CalculateProductModelCompleteness implements CalculateProductCompletenessInterface
+class CalculateProductModelCompleteness implements \Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface
 {
     /** @var GetCompletenessProductMasks */
     private $getCompletenessProductMasks;

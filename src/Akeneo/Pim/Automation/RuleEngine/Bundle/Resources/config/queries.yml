@@ -1,0 +1,5 @@
+services:
+    pimee_catalog_rule.query.sql.get_grouped_attributes:
+        class: Akeneo\Pim\Automation\RuleEngine\Bundle\Query\Sql\SqlGetGroupedAttributes
+        arguments:
+            - '@database_connection'

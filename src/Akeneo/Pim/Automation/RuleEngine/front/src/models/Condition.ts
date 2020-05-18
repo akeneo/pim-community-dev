@@ -10,7 +10,12 @@ export type Condition =
   | FamilyCondition
   | TextAttributeCondition;
 
-export type ConditionFactoryType = (
+export type ConditionDenormalizer = (
   json: any,
+  router: Router
+) => Promise<Condition | null>;
+
+export type ConditionFactory = (
+  fieldCode: string,
   router: Router
 ) => Promise<Condition | null>;

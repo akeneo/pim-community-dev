@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\PurgeOutdatedData;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,7 +27,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 final class PurgeOutdatedDataCommand extends Command
 {
-    private const PURGE_CRITERION_EVALUATIONS = 'criterion-evaluations';
     private const PURGE_PRODUCT_AXIS_RATES = 'product-axis-rates';
     private const PURGE_DASHBOARD_PROJECTION_RATES = 'dashboard-projection-rates';
 
@@ -46,8 +45,7 @@ final class PurgeOutdatedDataCommand extends Command
         $this
             ->setName('pimee:data-quality-insights:purge-outdated-data')
             ->setDescription('Purge the outdated data persisted for Data-Quality-Insights.')
-            ->addArgument('type', InputArgument::OPTIONAL, sprintf('Type of data to purge (%s, %s, %s)',
-                self::PURGE_CRITERION_EVALUATIONS,
+            ->addArgument('type', InputArgument::OPTIONAL, sprintf('Type of data to purge (%s, %s)',
                 self::PURGE_PRODUCT_AXIS_RATES,
                 self::PURGE_DASHBOARD_PROJECTION_RATES
             ))
@@ -72,7 +70,6 @@ final class PurgeOutdatedDataCommand extends Command
         }
 
         if (null === $purgeType) {
-            $this->purgeCriterionEvaluations($purgeDate, $output);
             $this->purgeProductAxisRates($purgeDate, $output);
             $this->purgeDashboardProjectionRates($purgeDate, $output);
 
@@ -80,9 +77,6 @@ final class PurgeOutdatedDataCommand extends Command
         }
 
         switch ($purgeType) {
-            case self::PURGE_CRITERION_EVALUATIONS:
-                $this->purgeCriterionEvaluations($purgeDate, $output);
-                break;
             case self::PURGE_PRODUCT_AXIS_RATES:
                 $this->purgeProductAxisRates($purgeDate, $output);
                 break;
@@ -92,13 +86,6 @@ final class PurgeOutdatedDataCommand extends Command
             default:
                 throw new \InvalidArgumentException(sprintf('Purge type "%s" does not exist.', $purgeType));
         }
-    }
-
-    private function purgeCriterionEvaluations(\DateTimeImmutable $purgeDate, OutputInterface $output): void
-    {
-        $output->writeln('Start to purge criterion evaluations.');
-        $this->purgeOutdatedData->purgeCriterionEvaluationsFrom($purgeDate);
-        $output->writeln('Purge done.');
     }
 
     private function purgeProductAxisRates(\DateTimeImmutable $purgeDate, OutputInterface $output): void

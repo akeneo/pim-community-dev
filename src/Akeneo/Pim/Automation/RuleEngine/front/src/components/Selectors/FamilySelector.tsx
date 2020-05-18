@@ -6,11 +6,9 @@ import {
   option,
 } from '../Select2Wrapper';
 import { Router } from '../../dependenciesTools';
-import {
-  getFamiliesByIdentifiers,
-  IndexedFamilies,
-} from '../../fetch/FamilyFetcher';
+import { IndexedFamilies } from '../../fetch/FamilyFetcher';
 import { Family } from '../../models';
+import { getFamiliesByIdentifiers } from '../../repositories/FamilyRepository';
 
 type Props = {
   router: Router;
@@ -89,8 +87,8 @@ const FamilySelector: React.FC<Props> = ({
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string | string[]) => {
-        onSelectorChange(Array.isArray(value) ? value : [value]);
+      onChange={(value: string | string[] | number) => {
+        onSelectorChange(Array.isArray(value) ? value : [value as string]);
       }}
       value={selectedFamilyCodes}
       multiple={multiple}

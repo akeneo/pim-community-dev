@@ -1,5 +1,20 @@
 # 4.0.x
 
+# 4.0.24 (2020-05-07)
+
+## Bug fixes
+
+- PIM-9237: Add missing scrollbar in asset navigation panel
+
+# 4.0.23 (2020-05-06)
+
+# 4.0.22 (2020-05-05)
+
+## Bug fixes
+
+- Fix typescript compilation error inside the DataQualityInsights context
+- PIM-9181: Backport PIM-9133 to 4.0 (Fix product/product model save when the user has no permission on some attribute groups)
+
 # 4.0.21 (2020-04-29)
 
 ## Bug fixes

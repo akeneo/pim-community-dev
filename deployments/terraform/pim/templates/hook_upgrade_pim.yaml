@@ -1,28 +1,35 @@
-{{- if .Values.pim.hook.upgradePim.enabled }}
+{{ if .Values.pim.hook.upgradePim.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: pim-upgrader
   labels:
-    app: {{ template "pim.fullName" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
-    component: {{ template "pim.fullName" . }}
-    {{ include "pim.extraLabels" . | indent 4 }}
+    component: "hook-upgrader" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/component: "hook-upgrader"
+    {{- include "pim.standardLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
     "helm.sh/hook": {{ .Values.pim.hook.upgradePim.hook | quote }}
+    {{- if .Values.pim.hook.intermediateUpgrades }}
+    "helm.sh/hook-weight": {{ add (len .Values.pim.hook.intermediateUpgrades) 1 | quote }} # After last intermediate upgrade (As index start to 0, length is last index + 1)
+    {{- else }}
     "helm.sh/hook-weight": "1"
+    {{- end }}
     "helm.sh/hook-delete-policy": "before-hook-creation"
 spec:
   template:
     metadata:
       labels:
-        component: {{ template "pim.fullName" . }}
-        role: pim-upgrade
-        {{ include "pim.extraLabels" . | indent 8 }}
+        component: "hook-upgrader" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/component: "hook-upgrader"
+        {{- include "pim.standardLabels" . | indent 8 }}
+        {{- include "pim.extraLabels" . | indent 8 }}
+      annotations:
+        checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
     spec:
       restartPolicy: Never
       containers:
