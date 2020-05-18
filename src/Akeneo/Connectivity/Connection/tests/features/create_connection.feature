@@ -1,4 +1,4 @@
-@javascript
+@skip @javascript
 Feature: Create a connection
   In order to connect my PIM
   As an administrator
