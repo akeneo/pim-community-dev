@@ -73,7 +73,6 @@ const QuantifiedAssociationRow = ({row, onChange, onRowDelete}: QuantifiedAssoci
   const translate = useTranslate();
   const isProduct = ProductType.Product === row.productType;
   const productEditUrl = useRoute(`pim_enrich_${row.productType}_edit`, {id: row.product.id.toString()});
-  const product = row.product;
 
   return (
     <Container>
@@ -82,18 +81,22 @@ const QuantifiedAssociationRow = ({row, onChange, onRowDelete}: QuantifiedAssoci
           src={null !== row.product.image ? row.product.image.filePath : '/bundles/pimui/img/image_default.png'}
         />
       </td>
-      <LabelCell isProduct={isProduct}>{product.label}</LabelCell>
-      <td>{product.identifier}</td>
+      <LabelCell isProduct={isProduct}>{row.product.label}</LabelCell>
+      <td>{row.product.identifier}</td>
       <td>
-        {null === product.completeness ? translate('pim_common.not_available') : <Badge>{product.completeness}%</Badge>}
+        {null === row.product.completeness ? (
+          translate('pim_common.not_available')
+        ) : (
+          <Badge>{row.product.completeness}%</Badge>
+        )}
       </td>
       <td>
-        {null === product.variant_product_completenesses ? (
+        {null === row.product.variant_product_completenesses ? (
           translate('pim_common.not_available')
         ) : (
           <Badge>
-            {product.variant_product_completenesses.completeChildren} /{' '}
-            {product.variant_product_completenesses.totalChildren}
+            {row.product.variant_product_completenesses.completeChildren} /{' '}
+            {row.product.variant_product_completenesses.totalChildren}
           </Badge>
         )}
       </td>

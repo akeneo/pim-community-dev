@@ -15,16 +15,12 @@ const getQuantifiedAssociationCollectionIdentifiers = (
   quantifiedAssociationCollection: Row[],
   associationTypeCode: string
 ): AssociationIdentifiers => {
-  if (!(associationTypeCode in quantifiedAssociationCollection)) {
-    return {products: [], product_models: []};
-  }
-
-  const productQuantifiedLinks = quantifiedAssociationCollection[associationTypeCode].products;
-  const productIdentifiers =
-    undefined === productQuantifiedLinks ? [] : productQuantifiedLinks.map(({identifier}) => identifier);
-  const productModelQuantifiedLinks = quantifiedAssociationCollection[associationTypeCode].product_models;
-  const productModelIdentifiers =
-    undefined === productModelQuantifiedLinks ? [] : productModelQuantifiedLinks.map(({identifier}) => identifier);
+  const productIdentifiers = quantifiedAssociationCollection
+    .filter(row => ProductType.Product === row.productType && associationTypeCode === row.associationTypeCode)
+    .map(({identifier}) => identifier);
+  const productModelIdentifiers = quantifiedAssociationCollection
+    .filter(row => ProductType.ProductModel === row.productType && associationTypeCode === row.associationTypeCode)
+    .map(({identifier}) => identifier);
 
   return {products: productIdentifiers, product_models: productModelIdentifiers};
 };

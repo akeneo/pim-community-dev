@@ -286,13 +286,19 @@ define([
           this.getRoot().trigger('pim_enrich:form:entity:update_state');
         },
         onOpenPicker: () => {
-          this.launchProductPicker().then(productAndProductModelIdentifiers => {
-            const associationType = this.getCurrentAssociationType();
-            const product = this.getFormData();
+          return this.launchProductPicker().then((identifiers) => {
+            const associationTypeCode = this.getCurrentAssociationType();
 
-            const updatedAssociations = this.getUpdatedAssociations(product, associationType, productAndProductModelIdentifiers);
-
-            this.setData({quantified_associations: updatedAssociations});
+            return identifiers.map(item => {
+              const matchProductModel = item.match(/^product_model;(.*)$/);
+              return {
+                identifier: matchProductModel ? matchProductModel[1] : item.match(/^product;(.*)$/)[1],
+                quantity: 1,
+                productType: matchProductModel ? 'product_model' : 'product',
+                associationTypeCode,
+                product: null
+              }
+            });
           });
         }
       });
@@ -728,11 +734,11 @@ define([
         let productIds = [];
         let productModelIds = [];
         productAndProductModelIdentifiers.forEach(item => {
-          const matchProductModel = item.match(/^product_model_(.*)$/);
+          const matchProductModel = item.match(/^product_model;(.*)$/);
           if (matchProductModel) {
             productModelIds.push(matchProductModel[1]);
           } else {
-            const matchProduct = item.match(/^product_(.*)$/);
+            const matchProduct = item.match(/^product;(.*)$/);
             productIds.push(matchProduct[1]);
           }
         });
@@ -820,7 +826,7 @@ define([
         [];
 
       const linkedProducts = productAndProductModelIdentifiers.reduce((linkedProducts, identifier) => {
-        const matchProduct = identifier.match(/^product_(.*)$/);
+        const matchProduct = identifier.match(/^product;(.*)$/);
         if (!matchProduct) {
           return linkedProducts;
         }
@@ -832,7 +838,7 @@ define([
       }, previousQuantifiedLinkedProducts);
 
       const linkedProductModels = productAndProductModelIdentifiers.reduce((linkedProductModels, identifier) => {
-        const matchProductModel = identifier.match(/^product_model_(.*)$/);
+        const matchProductModel = identifier.match(/^product_model;(.*)$/);
         if (!matchProductModel) {
           return linkedProductModels;
         }
