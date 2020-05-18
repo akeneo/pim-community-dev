@@ -1,0 +1,4 @@
+pimee_enrich_product_duplicate:
+    type: action
+    label: pimee_enrich.acl.product.duplicate
+    group_name: pim_enrich.acl_group.product
