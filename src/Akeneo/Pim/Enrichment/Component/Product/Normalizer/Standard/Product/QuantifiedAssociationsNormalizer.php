@@ -17,12 +17,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class QuantifiedAssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var QuantifiedAssociationsMerger */
-    private $quantifedAssociationMerger;
+    private $quantifiedAssociationsMerger;
 
     public function __construct(
         QuantifiedAssociationsMerger $quantifiedAssociationMerger
     ) {
-        $this->quantifedAssociationMerger = $quantifiedAssociationMerger;
+        $this->quantifiedAssociationsMerger = $quantifiedAssociationMerger;
     }
 
     /**
@@ -70,7 +70,7 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
         $entities = $this->getAncestors($entity);
         $entities[] = $entity;
 
-        return $this->quantifedAssociationMerger->normalizeAndMergeQuantifiedAssociationsFrom($entities);
+        return $this->quantifiedAssociationsMerger->normalizeAndMergeQuantifiedAssociationsFrom($entities);
     }
 
     /**

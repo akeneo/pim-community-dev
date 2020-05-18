@@ -9,6 +9,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociatio
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * This class merge the quantified associations of a list of entities, this is used for inherited associations
+ * between product models and product variants.
+ *
+ * Given an array of entities, eg [product_model_1, product_variant_1, product_variant_2],
+ * the returned values will be an array of normalized quantified associations from all this entities.
+ * When the same association is defined at different levels, the quantity in the child will override
+ * the one of the parent.
  */
 class QuantifiedAssociationsMerger
 {
@@ -37,25 +45,25 @@ class QuantifiedAssociationsMerger
     private function mergeQuantifiedAssociations(array $quantifiedAssociations1, array $quantifiedAssociations2): array
     {
         foreach ($quantifiedAssociations2 as $associationTypeCode => $association) {
-            foreach ($association as $associationEntityType => $rows) {
+            foreach ($association as $associationEntityType => $quantifiedLinks) {
                 if (!isset($quantifiedAssociations1[$associationTypeCode][$associationEntityType])) {
                     $quantifiedAssociations1[$associationTypeCode][$associationEntityType] = [];
                 }
 
-                foreach ($rows as $row) {
+                foreach ($quantifiedLinks as $quantifiedLink) {
                     $key = $this->searchKeyOfDuplicatedQuantifiedAssociation(
                         $quantifiedAssociations1,
                         $associationTypeCode,
                         $associationEntityType,
-                        $row
+                        $quantifiedLink
                     );
 
                     if (null !== $key) {
-                        $quantifiedAssociations1[$associationTypeCode][$associationEntityType][$key]['quantity'] = $row['quantity'];
+                        $quantifiedAssociations1[$associationTypeCode][$associationEntityType][$key]['quantity'] = $quantifiedLink['quantity'];
                         continue;
                     }
 
-                    $quantifiedAssociations1[$associationTypeCode][$associationEntityType][] = $row;
+                    $quantifiedAssociations1[$associationTypeCode][$associationEntityType][] = $quantifiedLink;
                 }
             }
         }
@@ -83,12 +91,12 @@ class QuantifiedAssociationsMerger
         array $source,
         string $associationTypeCode,
         string $associationEntityType,
-        array $quantifiedAssociation
+        array $quantifiedLink
     ): ?int {
         $matchingSourceQuantifiedAssociations = array_filter(
             $source[$associationTypeCode][$associationEntityType] ?? [],
-            function ($sourceQuantifiedAssociation) use ($quantifiedAssociation) {
-                return $sourceQuantifiedAssociation['identifier'] === $quantifiedAssociation['identifier'];
+            function ($sourceQuantifiedAssociation) use ($quantifiedLink) {
+                return $sourceQuantifiedAssociation['identifier'] === $quantifiedLink['identifier'];
             }
         );
 

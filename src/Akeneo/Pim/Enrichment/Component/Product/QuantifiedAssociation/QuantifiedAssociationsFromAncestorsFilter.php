@@ -10,16 +10,24 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociatio
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * This class filter quantified associations that are existing in one of the parent of this entity.
+ *
+ * This is needed because we merge all the quantified associations from a product variant with
+ * the quantified associations of its parents.
+ * When this collection is then submitted to the product updater, it will contains both quantified associations from
+ * the parents and from the current entity.
+ * This filter make sure we are not persisting inherited quantified associations.
  */
 class QuantifiedAssociationsFromAncestorsFilter
 {
     /** @var QuantifiedAssociationsMerger */
-    private $quantifiedAssociationMerger;
+    private $quantifiedAssociationsMerger;
 
     public function __construct(
-        QuantifiedAssociationsMerger $quantifiedAssociationMerger
+        QuantifiedAssociationsMerger $quantifiedAssociationsMerger
     ) {
-        $this->quantifiedAssociationMerger = $quantifiedAssociationMerger;
+        $this->quantifiedAssociationsMerger = $quantifiedAssociationsMerger;
     }
 
     public function filter(array $data, EntityWithQuantifiedAssociationsInterface $entity)
@@ -34,7 +42,7 @@ class QuantifiedAssociationsFromAncestorsFilter
             return $data;
         }
 
-        $ancestorsQuantifiedAssociations = $this->quantifiedAssociationMerger->normalizeAndMergeQuantifiedAssociationsFrom($ancestors);
+        $ancestorsQuantifiedAssociations = $this->quantifiedAssociationsMerger->normalizeAndMergeQuantifiedAssociationsFrom($ancestors);
 
         if (empty($ancestorsQuantifiedAssociations)) {
             return $data;
