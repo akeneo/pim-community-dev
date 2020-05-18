@@ -4,7 +4,7 @@ import {renderHook} from '@testing-library/react-hooks';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {useProducts} from '../../../../Resources/public/js/product/form/quantified-associations/hooks/useProducts';
 
-jest.mock('@akeneo-pim-community/legacy-bridge/provider/dependencies.ts');
+jest.mock('legacy-bridge/provider/dependencies.ts');
 
 declare global {
   namespace NodeJS {

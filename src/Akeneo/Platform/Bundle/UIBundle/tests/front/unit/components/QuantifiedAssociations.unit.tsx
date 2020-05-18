@@ -6,7 +6,7 @@ import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {QuantifiedAssociations} from '../../../../Resources/public/js/product/form/quantified-associations/components/QuantifiedAssociations';
 
-jest.mock('@akeneo-pim-community/legacy-bridge/provider/dependencies.ts');
+jest.mock('legacy-bridge/provider/dependencies.ts');
 jest.mock('pimui/js/product/form/quantified-associations/hooks/useProducts.ts', () => ({
   useProducts: (identifiers: {products: string[]; product_models: string[]}) => {
     if (0 === identifiers.products.length) return [];

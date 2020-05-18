@@ -43,16 +43,16 @@ class GetFromIdentifiersAction
     public function __invoke(
         Request $request
     ): Response {
-        // if (!$request->isXmlHttpRequest()) {
-        //     return new RedirectResponse('/');
-        // }
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
 
         $channelCode = $request->query->get('channel');
         $localeCode = $request->query->get('locale');
         $identifiers = json_decode($request->getContent(), true);
 
-        $productRows = $this->findProductsByIdentifiers($identifiers['products'], ProductInterface::class, $localeCode, $channelCode);
-        $productModelRows = $this->findProductsByIdentifiers($identifiers['product_models'], ProductModelInterface::class, $localeCode, $channelCode);
+        $productRows = $this->findLinkedEntityWithAssociations($identifiers['products'], ProductInterface::class, $localeCode, $channelCode);
+        $productModelRows = $this->findLinkedEntityWithAssociations($identifiers['product_models'], ProductModelInterface::class, $localeCode, $channelCode);
 
         $normalizedProducts = $this->linkedProductsNormalizer->normalize($productRows, $channelCode, $localeCode);
         $normalizedProductModels = $this->linkedProductsNormalizer->normalize($productModelRows, $channelCode, $localeCode);
@@ -63,7 +63,7 @@ class GetFromIdentifiersAction
         );
     }
 
-    private function findProductsByIdentifiers(
+    private function findLinkedEntityWithAssociations(
         array $productIdentifiers,
         string $type,
         string $localeCode,

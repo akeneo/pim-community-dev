@@ -7,7 +7,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {QuantifiedAssociationRow} from '../../../../Resources/public/js/product/form/quantified-associations/components/QuantifiedAssociationRow';
 import {Product} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 
-jest.mock('@akeneo-pim-community/legacy-bridge/provider/dependencies.ts');
+jest.mock('legacy-bridge/provider/dependencies.ts');
 
 let container: HTMLElement;
 beforeEach(() => {

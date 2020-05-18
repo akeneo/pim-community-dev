@@ -80,7 +80,7 @@ const QuantifiedAssociationRow = ({product, quantifiedLink, onChange}: Quantifie
       <LabelCell isProduct={isProduct}>{product.label}</LabelCell>
       <td>{product.identifier}</td>
       <td>
-        <Badge>{product.completeness || 0}%</Badge>
+        {null === product.completeness ? translate('pim_common.not_available') : <Badge>{product.completeness}</Badge>}
       </td>
       <td>
         {null === product.variant_product_completenesses ? (

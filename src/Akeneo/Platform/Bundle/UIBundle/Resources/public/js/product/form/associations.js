@@ -465,9 +465,9 @@ define([
     },
 
     isQuantifiedAssociation: function (associationTypes, associationTypeCode) {
-      const associationType =  associationTypes.find(associationType => associationType.code === associationTypeCode);
+      const associationType = associationTypes.find(associationType => associationType.code === associationTypeCode);
 
-      if (undefined === associationType) throw new Error(`Cannot find assocation type ${associationTypeCode}`);
+      if (undefined === associationType) throw new Error(`Cannot find association type ${associationTypeCode}`);
 
       return associationType.code === 'PACK';
     },
@@ -833,7 +833,7 @@ define([
         }
 
         const productIdentifierToAdd = matchProduct[1];
-        linkedProducts.filter((linkedProduct) =>  linkedProduct.identifier !== productIdentifierToAdd);
+        linkedProducts.filter((linkedProduct) => linkedProduct.identifier !== productIdentifierToAdd);
 
         return [...linkedProducts, {identifier: productIdentifierToAdd, quantity: 1}];
       }, previousQuantifiedLinkedProducts);
@@ -845,7 +845,7 @@ define([
         }
 
         const productModelIdentifierToAdd = matchProductModel[1];
-        linkedProductModels.filter((linkedProduct) =>  linkedProduct.identifier !== productModelIdentifierToAdd);
+        linkedProductModels.filter((linkedProduct) => linkedProduct.identifier !== productModelIdentifierToAdd);
 
         return [...linkedProductModels, {identifier: productModelIdentifierToAdd, quantity: 1}];
       }, previousQuantifiedLinkedProductModels);
