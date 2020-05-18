@@ -12,6 +12,7 @@ import { denormalizeClearAction } from './actions/ClearAction';
 import { denormalizeCopyAction } from './actions/CopyAction';
 import { denormalizeAddAction } from './actions/AddAction';
 import { denormalizeRemoveAction } from './actions/RemoveAction';
+import { denormalizeConcatenateAction } from './actions/ConcatenateAction';
 
 function denormalizeAction(jsonAction: any): Action {
   const denormalizers: ((json: any) => Action | null)[] = [
@@ -19,6 +20,7 @@ function denormalizeAction(jsonAction: any): Action {
     denormalizeCopyAction,
     denormalizeAddAction,
     denormalizeRemoveAction,
+    denormalizeConcatenateAction,
   ];
 
   for (let i = 0; i < denormalizers.length; i++) {

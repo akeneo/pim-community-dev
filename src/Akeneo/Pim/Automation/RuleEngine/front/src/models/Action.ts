@@ -4,4 +4,4 @@ import { CopyAction } from './actions/CopyAction';
 import { AddAction } from './actions/AddAction';
 import { RemoveAction } from './actions/RemoveAction';
 
-export type Action = FallbackAction | ClearAction | CopyAction | AddAction | RemoveAction;
+export type Action = FallbackAction | ClearAction | CopyAction | AddAction | RemoveAction | ConcatenateAction;
