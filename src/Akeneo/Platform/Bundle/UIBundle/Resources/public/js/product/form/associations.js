@@ -274,16 +274,8 @@ define([
     renderQuantifiedAssociations: function() {
       if (!this.isQuantifiedAssociation(state.associationTypes, this.getCurrentAssociationType())) return;
 
-      //TODO real data
-      const associations = {
-        PACK: {
-          products: [{identifier: '1111111171', quantity: '25'}],
-          product_models: [{identifier: 'amor', quantity: '12'}]
-        }
-      };
-
       const Component = React.createElement(QuantifiedAssociationsTab, {
-        value: associations,
+        value: this.getFormData().quantified_associations,
         associationTypeCode: this.getCurrentAssociationType(),
         onAssociationsChange: (updatedAssociations) => {
           const formData = this.getFormData();
@@ -469,7 +461,7 @@ define([
 
       if (undefined === associationType) throw new Error(`Cannot find association type ${associationTypeCode}`);
 
-      return associationType.code === 'PACK';
+      return associationType.is_quantified;
     },
 
     /**

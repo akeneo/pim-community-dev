@@ -13,12 +13,16 @@ const getQuantifiedAssociationCollectionIdentifiers = (
   quantifiedAssociationCollection: QuantifiedAssociationCollection,
   associationTypeCode: string
 ): AssociationIdentifiers => {
-  const productIdentifiers = quantifiedAssociationCollection[associationTypeCode].products.map(
-    ({identifier}) => identifier
-  );
-  const productModelIdentifiers = quantifiedAssociationCollection[associationTypeCode].product_models.map(
-    ({identifier}) => identifier
-  );
+  if (!(associationTypeCode in quantifiedAssociationCollection)) {
+    return {products: [], product_models: []};
+  }
+
+  const productQuantifiedLinks = quantifiedAssociationCollection[associationTypeCode].products;
+  const productIdentifiers =
+    undefined === productQuantifiedLinks ? [] : productQuantifiedLinks.map(({identifier}) => identifier);
+  const productModelQuantifiedLinks = quantifiedAssociationCollection[associationTypeCode].product_models;
+  const productModelIdentifiers =
+    undefined === productModelQuantifiedLinks ? [] : productModelQuantifiedLinks.map(({identifier}) => identifier);
 
   return {products: productIdentifiers, product_models: productModelIdentifiers};
 };
