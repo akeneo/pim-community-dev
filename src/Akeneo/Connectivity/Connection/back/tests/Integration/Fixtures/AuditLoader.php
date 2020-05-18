@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
-use Doctrine\DBAL\Connection as DbalConnecion;
+use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\Types\Types;
 
 /**
@@ -17,13 +17,13 @@ use Doctrine\DBAL\Types\Types;
  */
 class AuditLoader
 {
-    /** @var DbalConnecion */
+    /** @var DbalConnection */
     private $dbalConnection;
 
     /** @var EventCountRepository */
     private $eventCountRepository;
 
-    public function __construct(DbalConnecion $dbalConnection, EventCountRepository $eventCountRepository)
+    public function __construct(DbalConnection $dbalConnection, EventCountRepository $eventCountRepository)
     {
         $this->dbalConnection = $dbalConnection;
         $this->eventCountRepository = $eventCountRepository;

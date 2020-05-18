@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
-use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\CollectApiError;
+use Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\CollectApiError;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\MonitoredRoutes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;

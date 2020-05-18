@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useRoute} from '../../../../shared/router';
+import {useRoute} from '../../router';
 import {BadRequestError} from '../errors/bad-request-error';
 import {NotFoundError} from '../errors/not-found-error';
 import {UnauthorizedError} from '../errors/unauthorized-error';
