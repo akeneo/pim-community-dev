@@ -21,6 +21,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociatio
  */
 class QuantifiedAssociationsFromAncestorsFilter
 {
+    private const PRODUCTS_QUANTIFIED_LINKS_KEY = 'products';
+    private const PRODUCT_MODELS_QUANTIFIED_LINKS_KEY = 'product_models';
+
     /** @var QuantifiedAssociationsMerger */
     private $quantifiedAssociationsMerger;
 
@@ -51,19 +54,19 @@ class QuantifiedAssociationsFromAncestorsFilter
         $filteredData = [];
 
         foreach ($data as $associationTypeCode => $associationTypeValues) {
-            foreach ($associationTypeValues['products'] as $quantifiedLink) {
-                $ancestorsQuantifiedLinks = $ancestorsQuantifiedAssociations[$associationTypeCode]['products'] ?? [];
+            foreach ($associationTypeValues[self::PRODUCTS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
+                $ancestorsQuantifiedLinks = $ancestorsQuantifiedAssociations[$associationTypeCode][self::PRODUCTS_QUANTIFIED_LINKS_KEY] ?? [];
 
                 if (!in_array($quantifiedLink, $ancestorsQuantifiedLinks)) {
-                    $filteredData[$associationTypeCode]['products'][] = $quantifiedLink;
+                    $filteredData[$associationTypeCode][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
                 }
             }
 
-            foreach ($associationTypeValues['product_models'] as $quantifiedLink) {
-                $ancestorsQuantifiedLinks = $ancestorsQuantifiedAssociations[$associationTypeCode]['product_models'] ?? [];
+            foreach ($associationTypeValues[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
+                $ancestorsQuantifiedLinks = $ancestorsQuantifiedAssociations[$associationTypeCode][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] ?? [];
 
                 if (!in_array($quantifiedLink, $ancestorsQuantifiedLinks)) {
-                    $filteredData[$associationTypeCode]['product_models'][] = $quantifiedLink;
+                    $filteredData[$associationTypeCode][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
                 }
             }
         }
