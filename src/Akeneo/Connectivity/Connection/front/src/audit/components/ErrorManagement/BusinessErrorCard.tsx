@@ -44,7 +44,6 @@ export const BusinessErrorCard: FC<Props> = ({code, label, image, errorCount}) =
 const Card = styled.div`
     cursor: pointer;
     display: flex;
-    overflow: hidden;
 `;
 
 const CardImage = styled.img`
@@ -57,29 +56,34 @@ const CardImage = styled.img`
     width: 80px;
 `;
 
+const CardContent = styled.div`
+    margin-left: 20px;
+    margin-top: 5px;
+    min-width: 0;
+`;
+
 const ConnectionLabel = styled.div`
     color: ${({theme}) => theme.color.grey140};
     font-size: ${({theme}) => theme.fontSize.big};
     font-weight: bold;
     margin-bottom: 10px;
-    text-overflow: ellipsis; /* Doesn't seem to work with the css grid */
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
-`;
-
-const ErrorCount = styled.span`
-    color: ${({theme}) => theme.color.red100};
-    font-size: ${({theme}) => theme.fontSize.metricsBig};
-    font-weight: bold;
 `;
 
 const ErrorCountLabel = styled.div`
     color: ${({theme}) => theme.color.grey140};
 `;
 
-const OverTheLastSevenDays = styled.div`
-    font-size: ${({theme}) => theme.fontSize.small};
+const ErrorCount = styled.span`
+    color: ${({theme}) => theme.color.red100};
+    font-size: ${({theme}) => theme.fontSize.metricsBig};
+    font-weight: bold;
+    line-height: 1.2em;
 `;
 
-const CardContent = styled.div`
-    margin-left: 20px;
+const OverTheLastSevenDays = styled.div`
+    font-size: ${({theme}) => theme.fontSize.small};
+    line-height: 1.2em;
 `;
