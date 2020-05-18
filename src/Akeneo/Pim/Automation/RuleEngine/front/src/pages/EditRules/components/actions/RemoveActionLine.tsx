@@ -43,9 +43,15 @@ const RemoveActionLine: React.FC<Props> = ({
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
       {/* It is not translated since it is temporary. */}
-      {`The value${action.items.length > 1 ? 's' : ''} ${action.items.map((item: string) => `"${item}"`).join(
-        ', '
-      )} ${action.items.length > 1 ? 'are' : 'is'} removed from `}
+      {`The value${action.items.length > 1 ? 's' : ''}`} {action.items.map((item: string) => {
+        return (
+          <FallbackField
+            field={item}
+            scope={action.scope}
+            locale={action.locale}
+          />
+        );
+      })} {`${action.includeChildren ? ' and children' : ''} ${action.items.length > 1 || action.includeChildren ? 'are' : 'is'} removed from `}
       <FallbackField
         field={action.field}
         scope={action.scope}
