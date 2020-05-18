@@ -9,24 +9,19 @@ use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class DuplicateProductEndToEnd extends InternalApiTestCase
 {
     /** @var RouterInterface */
     private $router;
 
-    /** @var UserInterface */
-    private $adminUser;
-
     protected function setUp(): void
     {
         parent::setUp();
         $this->router = $this->get('router');
-        $this->adminUser = $this->get('pim_user.repository.user')->findOneByIdentifier('admin');
 
-        $this->authenticate($this->adminUser);
-
+        $adminUser = $this->get('pim_user.repository.user')->findOneByIdentifier('admin');
+        $this->authenticate($adminUser);
     }
 
     public function test_it_duplicates_a_product_without_unique_values()
@@ -48,7 +43,22 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
             'id' => $productToDuplicate->getId()
         ]);
 
-        $this->client->request('POST', $url, ['duplicated_product_identifier' => 'duplicated_product']);
+        $this->client->request(
+            'POST',
+            $url,
+            ['duplicated_product_identifier' => 'duplicated_product'],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+
+        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        Assert::assertEquals(
+            ['unique_attribute_codes' => $uniqueAttributeCodes],
+            json_decode($this->client->getResponse()->getContent(), true)
+        );
 
         $duplicatedProduct = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier('duplicated_product');
         Assert::assertNotNull($duplicatedProduct);
@@ -58,12 +68,31 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
             'standard'
         );
         $this->assertSameData($normalizedDuplicatedProduct, $normalizedProductToDuplicate, $uniqueAttributeCodes);
+    }
+
+    public function test_it_duplicates_a_product_without_family()
+    {
+        $productToDuplicate = $this->createProduct(
+            'product_to_duplicate',
+            []
+        );
+
+        $url = $this->router->generate('pimee_enrich_product_rest_duplicate', [
+            'id' => $productToDuplicate->getId()
+        ]);
+
+        $this->client->request(
+            'POST',
+            $url,
+            ['duplicated_product_identifier' => 'duplicated_product'],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals(
-            ['unique_attribute_codes' => $uniqueAttributeCodes],
-            json_decode($this->client->getResponse()->getContent(), true)
-        );
     }
 
     public function test_it_validates_the_duplicated_product()
@@ -76,7 +105,16 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
             'id' => $productToDuplicate->getId()
         ]);
 
-        $this->client->request('POST', $url, ['duplicated_product_identifier' => $productToDuplicate->getIdentifier()]);
+        $this->client->request(
+            'POST',
+            $url,
+            ['duplicated_product_identifier' => $productToDuplicate->getIdentifier()],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
 
         Assert::assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals(
@@ -90,7 +128,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
                   ]
               ]
             ],
-            json_decode($this->client->getResponse()->getContent(), 1)
+            json_decode($this->client->getResponse()->getContent(), true)
         );
     }
 

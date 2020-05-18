@@ -11,15 +11,19 @@
 
 namespace Akeneo\Pim\Enrichment\Product\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProduct;
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductHandler;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class DuplicateProductController
@@ -33,20 +37,29 @@ class DuplicateProductController
     /** @var NormalizerInterface */
     private $constraintViolationNormalizer;
 
+    /** @var UserContext */
+    private $userContext;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         DuplicateProductHandler $duplicateProductHandler,
-        NormalizerInterface $constraintViolationNormalizer
+        NormalizerInterface $constraintViolationNormalizer,
+        UserContext $userContext
     ) {
         $this->productRepository = $productRepository;
         $this->duplicateProductHandler = $duplicateProductHandler;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->userContext = $userContext;
     }
 
     public function duplicateProductAction(Request $request, string $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         if (!$request->request->has('duplicated_product_identifier')) {
-            throw new UnprocessableEntityHttpException('You should give either an "identifier" key.');
+            throw new UnprocessableEntityHttpException('You should give either a "duplicated_product_identifier" key.');
         }
 
         /** @var ProductInterface */
@@ -57,10 +70,16 @@ class DuplicateProductController
 
         $duplicateProductCommand = new DuplicateProduct(
             $product->getIdentifier(),
-            $request->request->get('duplicated_product_identifier')
+            $request->request->get('duplicated_product_identifier'),
+            $this->userContext->getUser()->getId()
         );
 
-        $duplicateProductResponse = $this->duplicateProductHandler->handle($duplicateProductCommand);
+        try {
+            $duplicateProductResponse = $this->duplicateProductHandler->handle($duplicateProductCommand);
+        } catch (ObjectNotFoundException $exception) {
+            throw new AccessDeniedException();
+        }
+
 
         if ($duplicateProductResponse->isOk()) {
             return new JsonResponse(

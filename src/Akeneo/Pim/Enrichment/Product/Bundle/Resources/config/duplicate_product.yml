@@ -6,6 +6,7 @@ services:
             - '@pim_catalog.repository.product_without_permission'
             - '@pimee_enrich.product.duplicate_product_handler'
             - '@pim_enrich.normalizer.product_violation'
+            - '@pim_user.context.user'
 
     pimee_enrich.product.duplicate_product_handler:
         class: 'Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductHandler'
@@ -18,6 +19,8 @@ services:
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.saver.product'
+            - '@oro_security.security_facade'
+            - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
 
     pimee_enrich.product.remove_unique_attribute_values:
         class: 'Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\RemoveUniqueAttributeValues'
