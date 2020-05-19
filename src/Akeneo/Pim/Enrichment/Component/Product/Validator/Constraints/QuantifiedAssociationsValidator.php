@@ -122,7 +122,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         foreach ($targetTypes as $targetType) {
             if (!in_array($targetType, self::ALLOWED_TARGET_TYPES)) {
                 $this->context->buildViolation(
-                    QuantifiedAssociationsConstraint::TARGET_TYPE_UNEXPECTED_MESSAGE,
+                    QuantifiedAssociationsConstraint::LINK_TYPE_UNEXPECTED_MESSAGE,
                     [
                         'value' => $targetType,
                         'allowed' => implode(',', self::ALLOWED_TARGET_TYPES),

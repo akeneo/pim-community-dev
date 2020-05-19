@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class QuantifiedAssociations extends Constraint
 {
-    public const TARGET_TYPE_UNEXPECTED_MESSAGE = 'pim_catalog.constraint.quantified_associations.unexpected_target_type';
+    public const LINK_TYPE_UNEXPECTED_MESSAGE = 'pim_catalog.constraint.quantified_associations.unexpected_link_type';
     public const MAX_ASSOCIATIONS_MESSAGE = 'pim_catalog.constraint.quantified_associations.max_associations';
     public const INVALID_QUANTITY_MESSAGE = 'pim_catalog.constraint.quantified_associations.invalid_quantity';
     public const PRODUCTS_DO_NOT_EXIST_MESSAGE = 'pim_catalog.constraint.quantified_associations.products_do_not_exist';
