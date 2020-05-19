@@ -241,6 +241,14 @@ jobs:
       - store_artifacts:
           path: var/tests/screenshots
 
+  pull_request_success:
+      docker:
+          - image: alpine/git
+      steps:
+          - run:
+                name: Success
+                command: echo "The build has run with success! Let's merge :)"
+
   test_front_static_acceptance_and_integration:
       machine:
           image: ubuntu-1604:201903-01
@@ -554,7 +562,10 @@ workflows:
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
                     - test_onboarder_bundle
-
+          - pull_request_success:
+                requires:
+                    - back_behat_legacy
+                    - test_back_performance
   nightly:
       triggers:
           - schedule:
