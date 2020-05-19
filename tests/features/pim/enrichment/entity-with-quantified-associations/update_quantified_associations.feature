@@ -5,6 +5,7 @@ Feature: Update the quantified associations of an entity
 
   Background:
     Given a catalog with the attribute "sku" as product identifier
+    And a quantified association type "PACK"
 
   @acceptance-back
   Scenario: Associate a product to another product with quantity
@@ -30,13 +31,3 @@ Feature: Update the quantified associations of an entity
     And this product has a parent with a quantified associations
     When I add the same quantified association with a different quantity
     Then this product should have this quantified association and all the other parent quantified associations
-
-  # TODO:
-  # association type does not exist
-  # target type is invalid
-  # association quantity is an integer
-  # association quantity is at least 1
-  # association quantity is at max 9999
-  # product does not exist
-  # product models does not exist
-  # maximum 100 associations

@@ -362,6 +362,7 @@ services:
     pim_connector.validator.constraints.quantified_associations_validator:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociationsValidator'
         arguments:
+            - '@pim_catalog.repository.association_type'
             - '@akeneo.pim.enrichment.product.query.find_non_existing_product_identifiers_query'
             - '@akeneo.pim.enrichment.product.query.find_non_existing_product_model_codes_query'
         tags:

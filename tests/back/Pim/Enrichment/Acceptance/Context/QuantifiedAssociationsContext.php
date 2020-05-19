@@ -8,12 +8,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductNormalizer;
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
+use Akeneo\Test\Acceptance\AssociationType\InMemoryAssociationTypeRepository;
+use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
+use Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository;
 use Akeneo\Test\Common\Structure\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
@@ -55,16 +59,31 @@ final class QuantifiedAssociationsContext implements Context
     /** @var ProductNormalizer */
     private $standardProductNormalizer;
 
+    /** @var InMemoryProductRepository */
+    private $productRepository;
+
+    /** @var InMemoryAssociationTypeRepository */
+    private $associationTypeRepository;
+
+    /** @var InMemoryProductModelRepository */
+    private $productModelRepository;
+
     public function __construct(
         ValidatorInterface $validator,
         ObjectUpdaterInterface $productUpdater,
         ObjectUpdaterInterface $productModelUpdater,
-        ProductNormalizer $standardProductNormalizer
+        ProductNormalizer $standardProductNormalizer,
+        InMemoryProductRepository $productRepository,
+        InMemoryProductModelRepository $productModelRepository,
+        InMemoryAssociationTypeRepository $associationTypeRepository
     ) {
         $this->validator = $validator;
         $this->productUpdater = $productUpdater;
         $this->productModelUpdater = $productModelUpdater;
         $this->standardProductNormalizer = $standardProductNormalizer;
+        $this->productRepository = $productRepository;
+        $this->productModelRepository = $productModelRepository;
+        $this->associationTypeRepository = $associationTypeRepository;
     }
 
     private function createProduct(array $fields): Product
@@ -148,10 +167,32 @@ final class QuantifiedAssociationsContext implements Context
         return $this->familyVariant;
     }
 
+    private function createAndPersistProductWithIdentifier(string $identifier): void
+    {
+        $this->productRepository->save($this->createProduct([
+            'values' => [
+                'sku' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => $identifier,
+                    ],
+                ],
+            ],
+        ]));
+    }
+
+    private function createAndPersistProductModelWithCode(string $code): void
+    {
+        $this->productModelRepository->save($this->createProductModel([
+            'code' => $code,
+        ]));
+    }
+
     /**
-     * @Given a product with an invalid quantified association
+     * @Given a product with a quantified association where the association type does not exist
      */
-    public function aProductWithAnInvalidQuantifiedAssociation(): void
+    public function aProductWithAQuantifiedAssociationWhereTheAssociationTypeDoesNotExist(): void
     {
         $this->product = $this->createProduct([
             'values' => [
@@ -247,6 +288,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function iAssociateAProductToThisProductWithAQuantity()
     {
+        $this->createAndPersistProductWithIdentifier('accessory');
+
         $fields = [
             'quantified_associations' => [
                 'PACK' => [
@@ -277,6 +320,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function iAssociateAProductToThisProductModelWithAQuantity()
     {
+        $this->createAndPersistProductWithIdentifier('accessory');
+
         $fields = [
             'quantified_associations' => [
                 'PACK' => [
@@ -344,6 +389,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function iAddTheSameQuantifiedAssociationWithADifferentQuantity()
     {
+        $this->createAndPersistProductWithIdentifier('accessory');
+
         $fields = [
             'quantified_associations' => [
                 'PACK' => [
@@ -385,6 +432,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function iAssociateAProductModelToThisProductModelWithAQuantity()
     {
+        $this->createAndPersistProductModelWithCode('accessory');
+
         $fields = [
             'quantified_associations' => [
                 'PACK' => [
@@ -416,5 +465,17 @@ final class QuantifiedAssociationsContext implements Context
         ];
 
         Assert::same($actualQuantifiedAssociations, $expectedQuantifiedAssociations);
+    }
+
+    /**
+     * @Given /^a quantified association type "([^"]*)"$/
+     */
+    public function aQuantifiedAssociationType($code)
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode($code);
+        $associationType->setIsQuantified(true);
+
+        $this->associationTypeRepository->save($associationType);
     }
 }
