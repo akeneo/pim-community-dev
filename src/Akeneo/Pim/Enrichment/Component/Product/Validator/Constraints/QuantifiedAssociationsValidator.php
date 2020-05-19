@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\Quantifi
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductModelCodesQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations as QuantifiedAssociationsConstraint;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -60,7 +61,10 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         foreach ($normalized as $associationTypeCode => $targets) {
             $propertyPath = sprintf('[%s]', $associationTypeCode);
 
-            $this->validateAssociationTypeExists($associationTypeCode, $propertyPath);
+            $associationType = $this->associationTypeRepository->findOneByIdentifier($associationTypeCode);
+
+            $this->validateAssociationTypeExists($associationType, $propertyPath);
+            $this->validateAssociationTypeIsQuantified($associationType, $propertyPath);
             $this->validateTargetTypes(array_keys($targets), $propertyPath);
 
             foreach ($targets['products'] as $index => $quantifiedLink) {
@@ -83,13 +87,30 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         }
     }
 
-    private function validateAssociationTypeExists($associationTypeCode, string $propertyPath = ''): void
-    {
-        $associationType = $this->associationTypeRepository->findOneByIdentifier($associationTypeCode);
-
+    private function validateAssociationTypeExists(
+        ?AssociationTypeInterface $associationType,
+        string $propertyPath = ''
+    ): void {
         if (null === $associationType) {
             $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::ASSOCIATION_TYPE_DOES_NOT_EXIST_MESSAGE
+            )
+                ->atPath($propertyPath)
+                ->addViolation();
+        }
+    }
+
+    private function validateAssociationTypeIsQuantified(
+        ?AssociationTypeInterface $associationType,
+        string $propertyPath = ''
+    ): void {
+        if (null === $associationType) {
+            return;
+        }
+
+        if (!$associationType->isQuantified()) {
+            $this->context->buildViolation(
+                QuantifiedAssociationsConstraint::ASSOCIATION_TYPE_IS_NOT_QUANTIFIED_MESSAGE
             )
                 ->atPath($propertyPath)
                 ->addViolation();

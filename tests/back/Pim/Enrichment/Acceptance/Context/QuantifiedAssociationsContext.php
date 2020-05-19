@@ -21,6 +21,7 @@ use Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository;
 use Akeneo\Test\Common\Structure\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
@@ -41,9 +42,6 @@ final class QuantifiedAssociationsContext implements Context
 
     /** @var AttributeInterface|null */
     private $attribute;
-
-    /** @var ConstraintViolationListInterface|null */
-    private $violations;
 
     /* --- */
 
@@ -189,44 +187,22 @@ final class QuantifiedAssociationsContext implements Context
         ]));
     }
 
-    /**
-     * @Given a product with a quantified association where the association type does not exist
-     */
-    public function aProductWithAQuantifiedAssociationWhereTheAssociationTypeDoesNotExist(): void
+    private function createAndPersistQuantifiedAssociationType(string $code): void
     {
-        $this->product = $this->createProduct([
-            'values' => [
-                'sku' => [
-                    [
-                        'scope' => null,
-                        'locale' => null,
-                        'data' => 'yellow_chair',
-                    ],
-                ],
-            ],
-            'quantified_associations' => [
-                'INVALID_ASSOCIATION_TYPE' => [
-                    'products' => [],
-                    'product_models' => [],
-                ],
-            ],
-        ]);
+        $associationType = new AssociationType();
+        $associationType->setCode($code);
+        $associationType->setIsQuantified(true);
+
+        $this->associationTypeRepository->save($associationType);
     }
 
-    /**
-     * @When I try to save this product
-     */
-    public function iTryToSaveThisProduct(): void
+    private function createAndPersistNormalAssociationType(string $code): void
     {
-        $this->violations = $this->validator->validate($this->product);
-    }
+        $associationType = new AssociationType();
+        $associationType->setCode($code);
+        $associationType->setIsQuantified(false);
 
-    /**
-     * @Then there is a validation error on this quantified association
-     */
-    public function thereIsAValidationErrorOnThisQuantifiedAssociation()
-    {
-//        dump($this->violations);
+        $this->associationTypeRepository->save($associationType);
     }
 
     /**
@@ -472,10 +448,78 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function aQuantifiedAssociationType($code)
     {
-        $associationType = new AssociationType();
-        $associationType->setCode($code);
-        $associationType->setIsQuantified(true);
+        $this->createAndPersistQuantifiedAssociationType($code);
+    }
 
-        $this->associationTypeRepository->save($associationType);
+    /**
+     * @Then /^there is the validation error "([^"]*)"$/
+     */
+    public function thereIsTheValidationError($message)
+    {
+        /** @var ConstraintViolationListInterface $violations */
+        $violations = $this->validator->validate($this->product);
+
+        $violationsMessages = [];
+
+        /** @var ConstraintViolation $violation */
+        foreach ($violations as $violation) {
+            $violationsMessages[] = $violation->getMessage();
+        }
+
+        Assert::true(in_array($message, $violationsMessages), sprintf(
+            'The validation error "%s" was not found, got "%"',
+            $message,
+            implode(',', $violationsMessages)
+        ));
+    }
+
+    /**
+     * @Given a product with a quantified link where the association type does not exist
+     */
+    public function aProductWithAQuantifiedLinkWhereTheAssociationTypeDoesNotExist(): void
+    {
+        $this->product = $this->createProduct([
+            'values' => [
+                'sku' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => 'yellow_chair',
+                    ],
+                ],
+            ],
+            'quantified_associations' => [
+                'INVALID_ASSOCIATION_TYPE' => [
+                    'products' => [],
+                    'product_models' => [],
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * @Given /^a product with a quantified link where the association type is not quantified$/
+     */
+    public function aProductWithAQuantifiedLinkWhereTheAssociationTypeIsNotQuantified()
+    {
+        $this->createAndPersistNormalAssociationType('XSELL');
+
+        $this->product = $this->createProduct([
+            'values' => [
+                'sku' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => 'yellow_chair',
+                    ],
+                ],
+            ],
+            'quantified_associations' => [
+                'XSELL' => [
+                    'products' => [],
+                    'product_models' => [],
+                ],
+            ],
+        ]);
     }
 }
