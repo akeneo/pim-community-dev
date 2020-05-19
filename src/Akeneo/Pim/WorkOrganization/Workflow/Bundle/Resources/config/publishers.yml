@@ -62,6 +62,7 @@ services:
             - '@pim_catalog.updater.property_setter'
             - '@pimee_workflow.updater.entity_with_values_without_permission'
             - '@pim_catalog.association.filter.parent_associations'
+            - '@pim_catalog.quantified_associations.quantified_associations_from_ancestors_filter'
             - ['identifier', 'created', 'updated', 'parent_associations', 'metadata']
 
     pimee_workflow.updater.entity_with_values_without_permission:
