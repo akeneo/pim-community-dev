@@ -53,9 +53,14 @@ class CommandLauncher
      */
     protected function buildCommandString($command)
     {
-        $memoryLimit = ini_get('memory_limit');
+        $phpCommand = $this->getPhp();
 
-        return "{$this->getPhp()} -d memory_limit={$memoryLimit} {$this->rootDir}/../bin/console --env={$this->environment} {$command}";
+        if ('cli' === php_sapi_name()) {
+            $memoryLimit = ini_get('memory_limit');
+            $phpCommand = "{$this->getPhp()} -d memory_limit={$memoryLimit}";
+        }
+
+        return "{$phpCommand} {$this->rootDir}/../bin/console --env={$this->environment} {$command}";
     }
 
     /**
