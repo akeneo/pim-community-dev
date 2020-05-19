@@ -126,6 +126,10 @@ class QuantifiedAssociations
     {
         $result = [];
         foreach ($this->quantifiedAssociations as $associationType => $associations) {
+            $result[$associationType] = [
+                self::PRODUCTS_QUANTIFIED_LINKS_KEY => [],
+                self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY => [],
+            ];
 
             /** @var QuantifiedLink $quantifiedLink */
             foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {

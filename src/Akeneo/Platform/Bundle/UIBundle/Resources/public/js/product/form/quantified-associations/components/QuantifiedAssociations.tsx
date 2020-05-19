@@ -3,14 +3,15 @@ import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Button, SearchBar, NoDataSection, NoDataTitle, AssociationTypeIllustration} from '@akeneo-pim-community/shared';
 import {
-  Identifier,
   QuantifiedAssociationCollection,
   setQuantifiedAssociationCollection,
   getProductsType,
   ProductsType,
   ProductType,
-  Product,
   QuantifiedLink,
+  Row,
+  filterOnLabelOrIdentifier,
+  isRowWithProduct,
 } from '../models';
 import {QuantifiedAssociationRow} from '.';
 import {useProducts, getAssociationIdentifiers, addProductToRows} from '../hooks';
@@ -51,26 +52,6 @@ const Buttons = styled.div`
   justify-content: flex-end;
   padding: 10px 0;
 `;
-
-const filterOnLabelOrIdentifier = (searchValue: string) => (row: Row): boolean =>
-  (null !== row.product && -1 !== row.product.label.toLowerCase().indexOf(searchValue.toLowerCase())) ||
-  (undefined !== row.identifier && -1 !== row.identifier.toLowerCase().indexOf(searchValue.toLowerCase()));
-
-export type Row = {
-  associationTypeCode: string;
-  quantity: string;
-  identifier: Identifier;
-  productType: ProductType;
-  product: null | Product;
-};
-
-export type RowWithProduct = {
-  associationTypeCode: string;
-  quantity: string;
-  identifier: Identifier;
-  productType: ProductType;
-  product: Product;
-};
 
 type QuantifiedAssociationsProps = {
   value: QuantifiedAssociationCollection;
@@ -128,6 +109,12 @@ const rowCollectionToQuantifiedAssociationCollection = (rows: Row[]): Quantified
   );
 };
 
+const isQuantifiedAssociationCollectionEmpty = (value: QuantifiedAssociationCollection) =>
+  !Object.values(value).some(
+    quantifiedAssociation =>
+      quantifiedAssociation.products.length !== 0 || quantifiedAssociation.product_models.length !== 0
+  );
+
 const QuantifiedAssociations = ({
   value,
   associationTypeCode,
@@ -144,7 +131,10 @@ const QuantifiedAssociations = ({
 
   useEffect(() => {
     const updatedValue = rowCollectionToQuantifiedAssociationCollection(collection);
-    if (updatedValue !== value) {
+    const emptyCollection = Array.isArray(value) && isQuantifiedAssociationCollectionEmpty(updatedValue);
+    if (isQuantifiedAssociationCollectionEmpty(updatedValue) && !Array.isArray(value)) {
+      onAssociationsChange({});
+    } else if (!emptyCollection && updatedValue !== value) {
       onAssociationsChange(updatedValue);
     }
   }, [collection]);
@@ -176,7 +166,7 @@ const QuantifiedAssociations = ({
         );
 
         if (undefined !== row) {
-          row.quantity = '1';
+          row.quantity = 1;
         } else {
           collection.push(addedRow);
         }
@@ -244,7 +234,7 @@ const QuantifiedAssociations = ({
           </thead>
           <tbody>
             {filteredCollectionWithProducts.map(row => {
-              if (null === row.product) {
+              if (!isRowWithProduct(row)) {
                 // loading row
                 return;
               }
@@ -253,7 +243,7 @@ const QuantifiedAssociations = ({
                 <QuantifiedAssociationRow
                   key={row.product.document_type + row.product.id}
                   onRowDelete={onRowDelete}
-                  row={row as RowWithProduct}
+                  row={row}
                   onChange={quantifiedLink => onRowChange(quantifiedLink, row)}
                 />
               );

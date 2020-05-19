@@ -2,7 +2,7 @@ import {Identifier} from '.';
 
 type QuantifiedLink = {
   identifier: Identifier;
-  quantity: string;
+  quantity: number;
 };
 
 const setQuantifiedLink = (collection: QuantifiedLink[], quantifiedLink: QuantifiedLink): QuantifiedLink[] =>
