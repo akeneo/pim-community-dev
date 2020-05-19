@@ -38,25 +38,18 @@ const RemoveActionLine: React.FC<Props> = ({
   return (
     <ActionTemplate
       translate={translate}
-      title='Unknown Action'
+      title='Remove Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
       {/* It is not translated since it is temporary. */}
-      {`The value${action.items.length > 1 ? 's' : ''}`}{' '}
-      {action.items.map((item: string, key: number) => {
-        return (
-          <FallbackField
-            key={key}
-            field={item}
-            scope={action.scope}
-            locale={action.locale}
-          />
-        );
-      })}{' '}
-      {`${action.includeChildren ? ' and children' : ''} ${
-        action.items.length > 1 || action.includeChildren ? 'are' : 'is'
-      } removed from `}
+      The value{action.items.length > 1 && 's'}&nbsp;
+      <span className='AknRule-attribute'>
+        {action.items.map((item: string) => `${item}`).join(', ')}
+        {action.includeChildren && ' and children'}
+      </span>
+      {action.items.length > 1 || action.includeChildren ? ' are' : ' is'}
+      &nbsp;removed from&nbsp;
       <FallbackField
         field={action.field}
         scope={action.scope}

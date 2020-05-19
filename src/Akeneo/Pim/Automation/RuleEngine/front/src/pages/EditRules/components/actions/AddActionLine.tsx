@@ -34,14 +34,17 @@ const AddActionLine: React.FC<Props> = ({
   return (
     <ActionTemplate
       translate={translate}
-      title='Unknown Action'
+      title='Add Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
       {/* It is not translated since it is temporary. */}
-      {`The value${action.items.length > 1 ? 's' : ''} ${action.items.join(
-        ', '
-      )} ${action.items.length > 1 ? 'are' : 'is'} added to `}
+      The value{action.items.length > 1 && 's'}&nbsp;
+      <span className='AknRule-attribute'>
+        {action.items.map((item: string) => `${item}`).join(', ')}
+      </span>
+      {action.items.length > 1 ? ' are' : ' is'}
+      &nbsp;added to&nbsp;
       <FallbackField
         field={action.field}
         scope={action.scope}

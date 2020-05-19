@@ -33,7 +33,7 @@ const ClearActionLine: React.FC<Props> = ({
   return (
     <ActionTemplate
       translate={translate}
-      title='Unknown Action'
+      title='Clear Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
@@ -43,7 +43,7 @@ const ClearActionLine: React.FC<Props> = ({
         locale={action.locale}
       />
       {/* It is not translated since it is temporary. */}
-      {' is cleared.'}
+      &nbsp;is cleared.
     </ActionTemplate>
   );
 };

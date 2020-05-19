@@ -42,7 +42,7 @@ const CopyActionLine: React.FC<Props> = ({
   return (
     <ActionTemplate
       translate={translate}
-      title='Unknown Action'
+      title='Copy Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
@@ -52,7 +52,7 @@ const CopyActionLine: React.FC<Props> = ({
         locale={action.fromLocale}
       />
       {/* It is not translated since it is temporary. */}
-      {' is copied into '}
+      &nbsp;is copied into&nbsp;
       <FallbackField
         field={action.toField}
         scope={action.toScope}
