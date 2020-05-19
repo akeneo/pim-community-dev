@@ -1,4 +1,5 @@
 export * from './AddAction';
+export * from './CalculateAction';
 export * from './ClearAction';
 export * from './ConcatenateAction';
 export * from './CopyAction';

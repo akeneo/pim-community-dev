@@ -10,6 +10,7 @@ import { Router } from '../dependenciesTools';
 import { getAttributesByIdentifiers } from '../repositories/AttributeRepository';
 import {
   denormalizeAddAction,
+  denormalizeCalculateAction,
   denormalizeClearAction,
   denormalizeConcatenateAction,
   denormalizeCopyAction,
@@ -20,6 +21,7 @@ import {
 function denormalizeAction(jsonAction: any): Action {
   const denormalizers: ((json: any) => Action | null)[] = [
     denormalizeAddAction,
+    denormalizeCalculateAction,
     denormalizeClearAction,
     denormalizeConcatenateAction,
     denormalizeCopyAction,
