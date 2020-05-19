@@ -40,9 +40,7 @@ const AddActionLine: React.FC<Props> = ({
       handleDelete={handleDelete}>
       {/* It is not translated since it is temporary. */}
       The value{action.items.length > 1 && 's'}&nbsp;
-      <span className='AknRule-attribute'>
-        {action.items.map((item: string) => `${item}`).join(', ')}
-      </span>
+      <span className='AknRule-attribute'>{action.items.join(', ')}</span>
       {action.items.length > 1 ? ' are' : ' is'}
       &nbsp;added to&nbsp;
       <FallbackField

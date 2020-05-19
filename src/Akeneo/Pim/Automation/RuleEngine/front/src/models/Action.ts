@@ -1,10 +1,11 @@
 import { FallbackAction } from './FallbackAction';
 import {
-  ClearAction,
-  CopyAction,
   AddAction,
-  RemoveAction,
+  ClearAction,
   ConcatenateAction,
+  CopyAction,
+  RemoveAction,
+  SetAction,
 } from './actions';
 
 export type Action =
@@ -13,4 +14,5 @@ export type Action =
   | CopyAction
   | AddAction
   | RemoveAction
+  | SetAction
   | ConcatenateAction;
