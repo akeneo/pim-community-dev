@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Audit;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
-use Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateProductEventCounts;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateAuditData;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AggregateProductEventCountsSpec extends ObjectBehavior
+class AggregateAuditDataSpec extends ObjectBehavior
 {
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(AggregateProductEventCounts::class);
+        $this->shouldBeAnInstanceOf(AggregateAuditData::class);
     }
 
     public function it_normalizes_period_event_counts(): void
@@ -49,19 +49,23 @@ class AggregateProductEventCountsSpec extends ObjectBehavior
 
         $this::normalize($periodEventCounts, $dateTimeZone)->shouldReturn([
             '<all>' => [
-                'daily' => [
+                'previous_week' => [
                     '2020-01-01' => 10,
+                ],
+                'current_week' => [
                     '2020-01-02' => 0,
                 ],
-                'weekly_total' => 10
+                'current_week_total' => 0
             ],
             'magento' => [
-                'daily' => [
+                'previous_week' => [
                     '2020-01-02' => 0,
+                ],
+                'current_week' => [
                     '2020-01-03' => 0,
                     '2020-01-04' => 100,
                 ],
-                'weekly_total' => 100
+                'current_week_total' => 100
             ]
         ]);
     }
@@ -97,12 +101,14 @@ class AggregateProductEventCountsSpec extends ObjectBehavior
 
         $this::normalize($periodEventCounts, $dateTimeZone)->shouldReturn([
             '<all>' => [
-                'daily' => [
+                'previous_week' => [
                     '2020-01-01' => 10,
+                ],
+                'current_week' => [
                     '2020-01-02' => 1100,
                     '2020-01-03' => 10000,
                 ],
-                'weekly_total' => 11110
+                'current_week_total' => 11100
             ],
         ]);
     }
