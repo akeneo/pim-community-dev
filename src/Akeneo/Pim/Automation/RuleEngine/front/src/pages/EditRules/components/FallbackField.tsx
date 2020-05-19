@@ -23,25 +23,14 @@ const FallbackField: React.FC<Props> = ({ field, scope, locale }) => {
   return (
     <>
       <span className='AknRule-attribute'>{field}</span>
-      {scope || locale ? (
-        scope && locale ? (
-          <span className='AknRule-attribute'>
-            {' [ '}
-            {displayLocale(locale)}
-            {' | '}
-            {scope}
-            {' ] '}
-          </span>
-        ) : (
-          <span className='AknRule-attribute'>
-            {' [ '}
-            {displayLocale(locale)}
-            {scope}
-            {' ] '}
-          </span>
-        )
-      ) : (
-        ''
+      {(scope || locale) && (
+        <span className='AknRule-attribute'>
+          {' [ '}
+          {displayLocale(locale)}
+          {scope && locale && ' | '}
+          {scope}
+          {' ] '}
+        </span>
       )}
     </>
   );

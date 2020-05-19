@@ -1,21 +1,17 @@
 import React from 'react';
 import { ConcatenateActionLine } from '../../pages/EditRules/components/actions/ConcatenateActionLine';
 import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
-
-// TODO export this type in a new file and use it in the other actions
-export type Field = {
-    field: string;
-    locale: string | null;
-    scope: string | null;
-}
+import { ProductField } from './ProductField';
 
 export type ConcatenateAction = {
   module: React.FC<{ action: ConcatenateAction } & ActionLineProps>;
-  from: Field[];
-  to: Field;
+  from: ProductField[];
+  to: ProductField;
 };
 
-export const denormalizeConcatenateAction = (json: any): ConcatenateAction | null => {
+export const denormalizeConcatenateAction = (
+  json: any
+): ConcatenateAction | null => {
   if (json.type !== 'concatenate') {
     return null;
   }

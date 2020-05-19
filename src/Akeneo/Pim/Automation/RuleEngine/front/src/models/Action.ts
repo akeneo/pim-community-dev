@@ -1,7 +1,16 @@
 import { FallbackAction } from './FallbackAction';
-import { ClearAction } from './actions/ClearAction';
-import { CopyAction } from './actions/CopyAction';
-import { AddAction } from './actions/AddAction';
-import { RemoveAction } from './actions/RemoveAction';
+import {
+  ClearAction,
+  CopyAction,
+  AddAction,
+  RemoveAction,
+  ConcatenateAction,
+} from './actions';
 
-export type Action = FallbackAction | ClearAction | CopyAction | AddAction | RemoveAction | ConcatenateAction;
+export type Action =
+  | FallbackAction
+  | ClearAction
+  | CopyAction
+  | AddAction
+  | RemoveAction
+  | ConcatenateAction;

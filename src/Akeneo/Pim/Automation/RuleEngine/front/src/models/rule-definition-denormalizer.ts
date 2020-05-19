@@ -8,11 +8,13 @@ import { denormalizePimCondition } from './PimCondition';
 import { denormalizeTextAttributeCondition } from './TextAttributeCondition';
 import { Router } from '../dependenciesTools';
 import { getAttributesByIdentifiers } from '../repositories/AttributeRepository';
-import { denormalizeClearAction } from './actions/ClearAction';
-import { denormalizeCopyAction } from './actions/CopyAction';
-import { denormalizeAddAction } from './actions/AddAction';
-import { denormalizeRemoveAction } from './actions/RemoveAction';
-import { denormalizeConcatenateAction } from './actions/ConcatenateAction';
+import {
+  denormalizeClearAction,
+  denormalizeConcatenateAction,
+  denormalizeCopyAction,
+  denormalizeAddAction,
+  denormalizeRemoveAction,
+} from './actions';
 
 function denormalizeAction(jsonAction: any): Action {
   const denormalizers: ((json: any) => Action | null)[] = [

@@ -1,9 +1,10 @@
 import React from 'react';
-import { ConcatenateAction } from '../../../../models/actions/ConcatenateAction';
+import { ConcatenateAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { FallbackField } from '../FallbackField';
+import { ProductField } from '../../../../models/actions';
 
 type Props = {
   action: ConcatenateAction;
@@ -15,53 +16,40 @@ const ConcatenateActionLine: React.FC<Props> = ({
   action,
   handleDelete,
 }) => {
-  const toField: any = { field: fromField.field };
-
-  if (toField.locale) {
-    value.locale = toField.locale;
-  }
-
-  if (toField.scope) {
-    value.scope = toField.scope;
-  }
-
   const values: any = {
     type: 'concatenate',
-    from: action.from.map((fromField: Field) => {
-      const value: any = { field: fromField.field };
-
-      if (fromField.locale) {
-        value.locale = fromField.locale;
-      }
-
-      if (fromField.scope) {
-        value.scope = fromField.scope;
-      }
-
-      return value;
-    }),
-    to: toField,
+    from: action.from,
+    to: action.to,
   };
 
   useValueInitialization(`content.actions[${lineNumber}]`, values);
 
-  // TODO templating
   return (
     <ActionTemplate
       translate={translate}
-      title='Unknown Action'
+      title='Concatenate Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
+      {action.from.map((field: ProductField, key: number) => (
+        <>
+          <FallbackField
+            key={key}
+            field={field.field}
+            scope={field.scope}
+            locale={field.locale}
+          />
+          {key < action.from.length - 1 && ', '}
+        </>
+      ))}
+      &nbsp;are concatenated into&nbsp;
       <FallbackField
-        field={action.field}
-        scope={action.scope}
-        locale={action.locale}
+        field={action.to.field}
+        scope={action.to.scope}
+        locale={action.to.locale}
       />
-      {/* It is not translated since it is temporary. */}
-      {' is cleared.'}
     </ActionTemplate>
-  )
+  );
 };
 
 export { ConcatenateActionLine };
