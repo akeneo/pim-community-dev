@@ -1,6 +1,4 @@
-import {QuantifiedLink, Identifier, AssociationIdentifiers, ProductsType} from '.';
-import {Row} from '../components/QuantifiedAssociations';
-import {ProductType} from './product';
+import {QuantifiedLink, Identifier, AssociationIdentifiers, ProductsType, Row, ProductType} from '../models';
 
 type QuantifiedAssociation = {
   products: QuantifiedLink[];

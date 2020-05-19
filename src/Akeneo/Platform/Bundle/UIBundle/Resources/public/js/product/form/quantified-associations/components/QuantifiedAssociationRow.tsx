@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
 import {TransparentButton, EditIcon, CloseIcon} from '@akeneo-pim-community/shared';
-import {QuantifiedLink, ProductType} from '../models';
-import {Row, RowWithProduct} from './QuantifiedAssociations';
+import {ProductType, RowWithProduct, Row} from '../models';
 
 const Container = styled.tr`
   height: 74px;
@@ -65,7 +64,7 @@ const RowAction = styled(TransparentButton)`
 
 type QuantifiedAssociationRowProps = {
   row: RowWithProduct;
-  onChange: (updatedQuantifiedLink: QuantifiedLink) => void;
+  onChange: (row: Row) => void;
   onRowDelete: (row: Row) => void;
 };
 
@@ -106,7 +105,7 @@ const QuantifiedAssociationRow = ({row, onChange, onRowDelete}: QuantifiedAssoci
           type="number"
           min={1}
           value={row.quantity}
-          onChange={event => onChange({...row, quantity: event.currentTarget.value})}
+          onChange={event => onChange({...row, quantity: Number(event.currentTarget.value)})}
         />
       </td>
       <td>
