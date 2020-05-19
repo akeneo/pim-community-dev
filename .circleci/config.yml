@@ -414,6 +414,16 @@ jobs:
                 name: Deploy PR environment
                 command: |
                     ENV_NAME=dev make deploy_pr_environment
+          - run:
+              name: Prepare infrastructure artifacts
+              command: ENV_NAME=dev make prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - run:
+              name: Remove env on kubernetes
+              command: ENV_NAME=dev make delete
+              when: always
 
   delete_pr_environments:
       environment:

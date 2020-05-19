@@ -1,5 +1,10 @@
 # Adapted CircleCi Jobs (CI=true) OR manual run from release dir
 
+# Force bash compatibility wether the user default shell
+SHELL := /bin/bash
+# Usefull in order to retrieve env variable in sub shells
+.EXPORT_ALL_VARIABLES:
+
 INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
 PFID ?= srnt-$(INSTANCE_NAME)
@@ -65,16 +70,21 @@ terraform-apply:
 
 .PHONY: prepare-infrastructure-artifacts
 prepare-infrastructure-artifacts: render-helm-templates dump-kubernetes-namespace
-	cd $(INSTANCE_DIR) ;\
-	mkdir -p ~/artifacts/infra ;\
-	rm -Rf $(INSTANCE_DIR)/.terraform ;\
-	mv $(INSTANCE_DIR) ~/artifacts/infra/
+	mkdir -p ~/artifacts/infra
+	rm -Rf $(DEPLOYMENTS_INSTANCES_DIR)/**/.terraform || true
+	rm -Rf $(DEPLOYMENTS_INSTANCES_DIR)/**/.kubeconfig || true
+	mv $(DEPLOYMENTS_INSTANCES_DIR)/* ~/artifacts/infra/ || true
 
 .PHONY: render-helm-templates
 render-helm-templates:
 	cd $(INSTANCE_DIR) ;\
 	mkdir -p helm-render ;\
-	helm template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render
+	helm template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
+ifeq ($(INSTANCE_NAME_PREFIX),pimup)
+	cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
+	mkdir -p helm-render ;\
+	helm template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
+endif
 
 # TODO
 .PHONY: dump-kubernetes-namespace
@@ -89,7 +99,7 @@ dump-kubernetes-namespace:
 		# 	mkdir -p "k8s-dump" ;\
 		# 	kubectl --context $${CONTEXT} -n $(PFID) get -o yaml $${RESOURCE} $${RESOURCE_NAME} > "k8s-dump/$${RESOURCE_NAME}.yaml" ;\
 		# done ;\
-	done
+	done || true
 
 .PHONY: delete
 delete: terraform-delete purge-release-all
@@ -109,7 +119,7 @@ terraform-delete: terraform-init
 	cd $(INSTANCE_DIR) && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 
 .PHONY: create-ci-release-files
-create-ci-release-files: create-ci-values create-pim-main-tf create-serenity-commons-tf
+create-ci-release-files: create-ci-values create-pim-main-tf
 
 .PHONY: create-ci-values
 create-ci-values: $(INSTANCE_DIR)
@@ -134,33 +144,7 @@ endif
 
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
-	touch $(INSTANCE_DIR)/values.yaml
-	@echo $(INSTANCE_NAME_PREFIX)
-	@echo "terraform {" > $(INSTANCE_DIR)/main.tf
-	@echo "backend \"gcs\" {" >> $(INSTANCE_DIR)/main.tf
-	@echo "bucket  = \"akecld-terraform-dev\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "prefix  = \"saas/$(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)/$(PFID)/\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "}" >> $(INSTANCE_DIR)/main.tf
-	@echo "}" >> $(INSTANCE_DIR)/main.tf
-	@echo "module \"pim\" {" >> $(INSTANCE_DIR)/main.tf
-	@echo "source = \"$(PIM_SRC_DIR)/deployments/terraform\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "google_project_id                   = \"$(GOOGLE_PROJECT_ID)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "google_project_zone                 = \"$(GOOGLE_CLUSTER_ZONE)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "instance_name                       = \"$(INSTANCE_NAME)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "dns_external                        = \"$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS).\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "dns_internal                        = \"$(CLUSTER_DNS_NAME)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "dns_zone                            = \"$(GOOGLE_MANAGED_ZONE_NAME)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "google_storage_location             = \"eu\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "papo_project_code                   = \"NOT_ON_PAPO_$(PFID)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "force_destroy_storage               = true" >> $(INSTANCE_DIR)/main.tf
-	@echo "pim_version                         = \"$(IMAGE_TAG)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "}" >> $(INSTANCE_DIR)/main.tf
-
-.PHONY: create-serenity-commons-tf
-create-serenity-commons-tf: $(INSTANCE_DIR)
-	@echo "provider \"google\" {" > $(INSTANCE_DIR)/commons_serenity.tf
-	@echo "  version = \"~> 3.17.0\"" >> $(INSTANCE_DIR)/commons_serenity.tf
-	@echo "}" >> $(INSTANCE_DIR)/commons_serenity.tf
+	envsubst < $(PWD)/deployments/config/serenity_instance.tpl.tf > $(INSTANCE_DIR)/main.tf
 
 .PHONY: test-prod
 test-prod:
@@ -189,11 +173,13 @@ slack_helpdesk:
 
 .PHONY: deploy_pr_environment
 deploy_pr_environment:
-	@PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/} && \
-	echo "This environment will be available at https://pimci-pr-$${PR_NUMBER}.$(GOOGLE_MANAGED_ZONE_DNS) once deployed :)"
-	PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/} && \
-	INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
-	INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make deploy
+	@export PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/}
+	@export INSTANCE_NAME_PREFIX=pimci-pr
+	@export INSTANCE_NAME=pimci-pr-$${PR_NUMBER}
+	@export IMAGE_TAG=$${CIRCLE_SHA1}
+	@echo "This environment will be available at https://pimci-pr-$${PR_NUMBER}.$(GOOGLE_MANAGED_ZONE_DNS) once deployed :)"
+	make create-ci-release-files
+	make deploy
 
 .PHONY: delete_pr_environments
 delete_pr_environments:
@@ -201,7 +187,19 @@ delete_pr_environments:
 
 .PHONY: terraform-pre-upgrade
 terraform-pre-upgrade: terraform-init
-	yq d -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks"
-	for PD in $$(kubectl get -n $(PFID) pv $$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') -o jsonpath='{..spec.gcePersistentDisk.pdName}'); do \
-		yq w -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks[+]" "$${PD}"; \
-	done
+	# Required by https://github.com/akeneo/pim-enterprise-dev/pull/8599
+	# yq d -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks"
+	# for PD in $$(kubectl get -n $(PFID) pv $$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') -o jsonpath='{..spec.gcePersistentDisk.pdName}'); do \
+	# 	yq w -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks[+]" "$${PD}"; \
+	# done
+	# Required by https://github.com/akeneo/pim-enterprise-dev/pull/8716
+	# Because of this issue with Google Provider https://github.com/terraform-providers/terraform-provider-google/issues/4460,
+	# we need to force the project in the monitoring provider before importing resources
+	cd $(INSTANCE_DIR)/.terraform/modules/pim-monitoring && sed -i.bak 's/var\.google_project_id/"$(GOOGLE_PROJECT_ID)"/g' main.tf
+	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.login_count" $(PFID)-login-count
+	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.login-response-time-distribution" $(PFID)-login-response-time-distribution
+	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.logs-count" $(PFID)-logs-count
+	cd $(INSTANCE_DIR)/.terraform/modules/pim-monitoring && rm main.tf && mv main.tf.bak main.tf
+	cd $(INSTANCE_DIR) && terraform state rm module.pim.template_file.metric-template
+	cd $(INSTANCE_DIR) && terraform state rm module.pim.local_file.metric-rendered
+	cd $(INSTANCE_DIR) && terraform state rm module.pim.null_resource.metric
