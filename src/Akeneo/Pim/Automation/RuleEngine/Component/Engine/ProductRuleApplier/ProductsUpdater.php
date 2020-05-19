@@ -11,7 +11,9 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
 
@@ -38,20 +40,38 @@ class ProductsUpdater
      * @param RuleInterface      $rule
      * @param ProductInterface[] $products
      */
-    public function update(RuleInterface $rule, array $products)
+    public function update(RuleInterface $rule, array $products): array
     {
-        $this->updateFromRule($products, $rule);
+        return $this->updateFromRule($products, $rule);
     }
 
     /**
      * @param ProductInterface[] $products
      * @param RuleInterface      $rule
      */
-    protected function updateFromRule(array $products, RuleInterface $rule)
+    protected function updateFromRule(array $products, RuleInterface $rule): array
     {
+        $updatedEntities = [];
         $actions = $rule->getActions();
         foreach ($actions as $action) {
-            $this->applierRegistry->getActionApplier($action)->applyAction($action, $products);
+            $updatedByAction = $this->applierRegistry->getActionApplier($action)->applyAction($action, $products);
+            foreach ($updatedByAction as $entity) {
+                $id = $this->getEntityId($entity);
+                if (!isset($updatedEntities[$id])) {
+                    $updatedEntities[$id] = $entity;
+                }
+            }
         }
+
+        return $updatedEntities;
+    }
+
+    private function getEntityId(EntityWithValuesInterface $entity): string
+    {
+        return sprintf(
+            '%s_%d',
+            $entity instanceof ProductModelInterface ? 'product_model' : 'product',
+            $entity->getId()
+        );
     }
 }

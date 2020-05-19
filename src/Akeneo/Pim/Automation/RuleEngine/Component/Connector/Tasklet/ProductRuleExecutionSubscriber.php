@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedSubjectActionEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SavedSubjectsEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
@@ -36,7 +38,8 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
         return [
             RuleEvents::PRE_APPLY => 'preApply',
             RuleEvents::POST_APPLY => 'postApply',
-            RuleEvents::SKIP => 'skip',
+            RuleEvents::POST_SAVE_SUBJECTS => 'postSave',
+            RuleEvents::SKIP => 'skipInvalid',
         ];
     }
 
@@ -53,11 +56,13 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
         $this->stepExecution->incrementSummaryInfo('executed_rules');
     }
 
-    public function skip(SkippedSubjectRuleEvent $event)
+    public function postSave(SavedSubjectsEvent $event): void
     {
-        if (null === $this->stepExecution) {
-            return;
-        }
+        $this->stepExecution->incrementSummaryInfo('updated_entities', count($event->getSubjects()));
+    }
+
+    public function skipInvalid(SkippedSubjectRuleEvent $event)
+    {
         $rule = $event->getDefinition();
         $subject = $event->getSubject();
         if ($subject instanceof ProductModelInterface) {

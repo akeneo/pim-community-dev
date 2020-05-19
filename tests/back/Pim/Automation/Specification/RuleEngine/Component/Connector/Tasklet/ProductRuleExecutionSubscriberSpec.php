@@ -3,8 +3,11 @@
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet\ProductRuleExecutionSubscriber;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SavedSubjectsEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
@@ -37,6 +40,7 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
     {
         $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::PRE_APPLY);
         $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::POST_APPLY);
+        $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::POST_SAVE_SUBJECTS);
         $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::SKIP);
     }
 
@@ -61,6 +65,13 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
         $this->postApply(new SelectedRuleEvent(new RuleDefinition(), new RuleSubjectSet()));
     }
 
+    function it_updates_step_execution_summary_after_saving_rule_subjects(StepExecution $stepExecution)
+    {
+        $stepExecution->incrementSummaryInfo('updated_entities', 2)->shouldBeCalled();
+
+        $this->postSave(new SavedSubjectsEvent(new RuleDefinition(), [new Product(), new ProductModel()]));
+    }
+
     function it_adds_warnings_for_a_skipped_product(
         StepExecution $stepExecution,
         ProductInterface $product
@@ -83,6 +94,6 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
         )->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_invalid')->shouldBeCalled();
 
-        $this->skip(new SkippedSubjectRuleEvent($rule, $product->getWrappedObject(), $reasons));
+        $this->skipInvalid(new SkippedSubjectRuleEvent($rule, $product->getWrappedObject(), $reasons));
     }
 }
