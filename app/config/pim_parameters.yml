@@ -68,6 +68,14 @@ parameters:
         - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
         - '%pim_ee_dev_src_folder_location%/src/Akeneo/Pim/WorkOrganization/Workflow/Bundle/Resources/elasticsearch/published_product_mapping.yml'
 
+    # TODO 4.0 add akeneo:asset-manager:index-assets
+    elasticsearch_indexing_commands:
+        - Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand
+        - Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand
+        - Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexRecordsCommand
+        - Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\IndexProductProposalCommand
+        - Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\IndexPublishedProductCommand
+
     # these parameters indicate the advisable limitations of the PIM in term of volume
     # if your volume of data exceeds these limits, it can impact the performance
     average_max_attributes_per_family_limit: 125

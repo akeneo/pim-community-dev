@@ -26,6 +26,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class IndexProductProposalCommand extends ContainerAwareCommand
 {
+    public const NAME = 'pimee:product-proposal:index';
+
     /** @var integer */
     const DEFAULT_BATCH_SIZE = 100;
 
@@ -35,7 +37,7 @@ class IndexProductProposalCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pimee:product-proposal:index')
+            ->setName(self::NAME)
             ->addOption(
                 'batch-size',
                 false,

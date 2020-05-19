@@ -17,6 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class IndexPublishedProductCommand extends ContainerAwareCommand
 {
+    public const NAME = 'pimee:published-product:index';
+
     /** @var integer */
     const DEFAULT_PAGE_SIZE = 100;
 
@@ -26,7 +28,7 @@ class IndexPublishedProductCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pimee:published-product:index')
+            ->setName(self::NAME)
             ->addOption(
                 'page-size',
                 false,

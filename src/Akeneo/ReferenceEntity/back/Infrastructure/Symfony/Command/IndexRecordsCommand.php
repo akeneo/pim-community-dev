@@ -28,6 +28,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class IndexRecordsCommand extends ContainerAwareCommand
 {
     public const INDEX_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:index-records';
+    public const NAME = 'akeneo:reference-entity:index-records';
     private const ERROR_CODE_USAGE = 1;
 
     /**
