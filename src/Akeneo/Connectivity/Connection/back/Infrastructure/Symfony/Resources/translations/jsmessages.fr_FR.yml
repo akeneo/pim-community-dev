@@ -1,9 +1,14 @@
 pim_menu:
+  navigation_back:
+    connection: Retour aux connexions
   item:
     connection_audit: Tableau de bord des connexions
     connection_settings: Connexions
+    connection_settings_edit: Paramètres de connexion
 pim_title:
   akeneo_connectivity_connection_settings_index: Connexions
+  akeneo_connectivity_connection_settings_edit: Paramètres de connexion
+  akeneo_connectivity_connection_settings_any: Paramètres de connexion
   akeneo_connectivity_connection_audit_index: Tableau de bord des connexions
   akeneo_connectivity_connection_audit_any: Tableau de bord des connexions
   akeneo_connectivity_connection_error_management_dashboard: Tableau de bord des connexions
@@ -169,6 +174,18 @@ akeneo_connectivity.connection:
       message_without_permission:
         message: Demandez à votre administrateur d'en créer une.
         link: En savoir plus sur les connexions ici...
+  error_management:
+    connection_monitoring:
+      helper:
+        title: '{0} Vous avez {{ count }} erreur |[1,Inf] Vous avez {{ count }} erreurs'
+      search_filter:
+        placeholder: Rechercher dans les messages d'erreur
+        result_count: '{0} Aucun résultat |[1,Inf] {{ count }} résultats'
+      error_list:
+        date_time_column: Jour et heure
+        content_column: Message d'erreur
+      no_error:
+        title: Génial ! Aucune erreur trouvée !
   runtime_error:
     error_message: Oups ! Une erreur s'est produite...
     reload_helper: Merci de rafraîchir la page et de réessayer.

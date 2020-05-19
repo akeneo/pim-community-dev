@@ -1,12 +1,21 @@
 pim_menu:
+  navigation_back:
+    connection: Back to connections
+  navigation_block:
+    connection: Connection navigation
   item:
     connection_audit: Connection dashboard
     connection_settings: Connections
+    connection_settings_edit: Connection settings
+    connection_monitoring: Monitoring
 pim_title:
   akeneo_connectivity_connection_settings_index: Connections
+  akeneo_connectivity_connection_settings_edit: Connection settings
+  akeneo_connectivity_connection_settings_any: Connection settings
   akeneo_connectivity_connection_audit_index: Connection dashboard
   akeneo_connectivity_connection_audit_any: Connection dashboard
   akeneo_connectivity_connection_error_management_dashboard: Connection dashboard
+  akeneo_connectivity_connection_error_management_connection_monitoring: Connection monitoring
 akeneo_connectivity.connection:
   connections: Connections
   secondary_actions:
@@ -158,6 +167,11 @@ akeneo_connectivity.connection:
       legend:
         during_the_last_seven_days: 'Total over the last 7 days:'
         today: Today
+    error_management:
+      widget:
+        title: Business errors per source connection
+        over_the_last_seven_days: Over the last 7 days
+        business_errors: business errors
     no_connection:
       title:
         default: Want to see some fancy charts about your connections?
@@ -169,6 +183,21 @@ akeneo_connectivity.connection:
       message_without_permission:
         message: Ask your administrator to create one.
         link: Learn more about connections here...
+  error_management:
+    connection_monitoring:
+      title: Monitoring
+      helper:
+        title: '{0} You have {{ count }} error |[1,Inf] You have {{ count }} errors'
+        description: Here, you can see the detail of each error for this connection over the last 7 days. Error number is limited to 100 errors.
+        link: To understand how to solve this, please visit the API help center.
+      search_filter:
+        placeholder: Search in error messages
+        result_count: '{0} No result |[1,Inf] {{ count }} results'
+      error_list:
+        date_time_column: Day and time
+        content_column: Error message
+      no_error:
+        title: Awesome! No error found!
   runtime_error:
     error_message: Oh snap! An error occurred...
     reload_helper: Please reload the page and try again.
