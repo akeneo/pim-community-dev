@@ -8,7 +8,7 @@ import {
 
 type Props = Select2GlobalProps & {
   data: Select2Option[];
-  onChange?: (value: Select2Value) => void;
+  onValueChange?: (value: Select2Value) => void;
   value?: Select2Value;
 };
 

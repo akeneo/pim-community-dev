@@ -28,6 +28,8 @@ const AddConditionButton: React.FC<Props> = ({
   translate,
   isActiveConditionField,
 }) => {
+  const [closeTick, setCloseTick] = React.useState<boolean>(false);
+
   const dataProvider = (term: string, page: number) => {
     return {
       search: term,
@@ -73,7 +75,7 @@ const AddConditionButton: React.FC<Props> = ({
         if (event.val !== null) {
           // Use has not clicked on a group
           handleAddCondition(event.val);
-          ($(event.target) as any).select2('close');
+          setCloseTick(!closeTick);
         }
       }}
       ajax={{
@@ -93,6 +95,7 @@ const AddConditionButton: React.FC<Props> = ({
           isActiveConditionField(option.id as string) ? 'active-condition' : ''
         }">${option.text}</span>`;
       }}
+      closeTick={closeTick}
     />
   );
 };

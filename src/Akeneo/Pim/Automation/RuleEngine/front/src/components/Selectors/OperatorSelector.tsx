@@ -9,7 +9,8 @@ type Props = {
   hiddenLabel?: boolean;
   availableOperators: Operator[];
   translate: Translate;
-  name: string;
+  value: Operator;
+  onChange: (value: Operator) => void;
 };
 
 const OperatorSelector: React.FC<Props> = ({
@@ -18,7 +19,8 @@ const OperatorSelector: React.FC<Props> = ({
   hiddenLabel = false,
   availableOperators,
   translate,
-  name,
+  value,
+  onChange,
 }) => {
   const translateOperator = (operator: string): string => {
     const label = translate(
@@ -41,7 +43,8 @@ const OperatorSelector: React.FC<Props> = ({
       label={label}
       hiddenLabel={hiddenLabel}
       data={operatorChoices}
-      name={name}
+      value={value}
+      onValueChange={value => onChange(value as Operator)}
     />
   );
 };

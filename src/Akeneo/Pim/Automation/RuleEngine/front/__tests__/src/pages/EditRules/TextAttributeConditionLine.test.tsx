@@ -1,4 +1,4 @@
-import { render } from '../../../../test-utils';
+import { renderWithProviders } from '../../../../test-utils';
 import React from 'react';
 import { TextAttributeConditionLine } from '../../../../src/pages/EditRules/components/conditions/TextAttributeConditionLine';
 import { TextAttributeCondition } from '../../../../src/models/TextAttributeCondition';
@@ -66,6 +66,13 @@ const conditionWithNonLocalizableScopableAttribute: TextAttributeCondition = {
   value: 'Canon',
 };
 
+const defaultCondition: TextAttributeCondition = {
+  module: TextAttributeConditionLine,
+  attribute: createAttribute({localizable: true, scopable: true}),
+  field: 'name',
+  operator: Operator.IS_EMPTY,
+}
+
 const locales = [
   {
     code: 'de_DE',
@@ -99,7 +106,7 @@ const scopes: IndexedScopes = {
   mobile: {
     code: 'mobile',
     currencies: ['EUR', 'USD'],
-    locales: locales,
+    locales: [locales[0], locales[1]],
     category_tree: 'master',
     conversion_units: [],
     labels: { en_US: 'Mobile' },
@@ -113,42 +120,11 @@ const router: Router = {
   'redirect': jest.fn(),
 };
 
-const formStateMock = {};
-const setValueMock = jest.fn((key: string, value: any) => {
-  formStateMock[key] = value;
-});
-
-jest.mock('react-hook-form', () => {
-  return {
-    useFormContext: () => {
-      return {
-        register: jest.fn(),
-        setValue: setValueMock,
-        getValues: () => {
-          return formStateMock;
-        },
-      };
-    },
-  };
-});
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
-
-const initFormWithCondition = (condition: TextAttributeCondition, lineNumber: number): void => {
-  setValueMock(`content.conditions[${lineNumber}].field`, condition.field);
-  setValueMock(`content.conditions[${lineNumber}].operator`, condition.operator);
-  setValueMock(`content.conditions[${lineNumber}].value`, condition.value);
-  if (condition.scope) {
-    setValueMock(`content.conditions[${lineNumber}].scope`, condition.scope);
-  }
-  if (condition.locale) {
-    setValueMock(`content.conditions[${lineNumber}].locale`, condition.locale);
-  }
-};
 
 describe('TextAttributeConditionLine', () => {
   it('should display the text attribute conditionWithLocalizableScopableAttribute with locale and scope selectors', async () => {
-    initFormWithCondition(conditionWithLocalizableScopableAttribute, 1);
-    const { findByText, findByTestId } = render(
+    const { findByText, findByTestId } = renderWithProviders(
       <TextAttributeConditionLine
         condition={conditionWithLocalizableScopableAttribute}
         lineNumber={1}
@@ -157,21 +133,21 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         router={router}
-      />
+      />, { reactHookForm: true }
     );
 
     expect(await findByText('Nom')).toBeInTheDocument();
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');
     expect(operatorSelector).toBeInTheDocument();
     expect(operatorSelector).toHaveValue('!=');
-
     expect(await findByTestId('edit-rules-input-1-scope')).toBeInTheDocument();
+    expect(await findByTestId('edit-rules-input-1-scope')).toHaveValue('mobile');
     expect(await findByTestId('edit-rules-input-1-locale')).toBeInTheDocument();
+    expect(await findByTestId('edit-rules-input-1-locale')).toHaveValue('en_US');
   });
 
   it('should display the text attribute conditionWithLocalizableScopableAttribute without locale and scope selectors', async () => {
-    initFormWithCondition(conditionWithNonLocalizableScopableAttribute, 1);
-    const { findByText, findByTestId, queryByTestId } = render(
+    const { findByText, findByTestId, queryByTestId } = renderWithProviders(
       <TextAttributeConditionLine
         condition={conditionWithNonLocalizableScopableAttribute}
         lineNumber={1}
@@ -180,7 +156,7 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         router={router}
-      />
+      />, { reactHookForm: true }
     );
 
     expect(await findByText('Nom')).toBeInTheDocument();
@@ -193,8 +169,7 @@ describe('TextAttributeConditionLine', () => {
 
   it('handles values option appearance based on selected operator', async () => {
     // Given
-    initFormWithCondition(conditionWithLocalizableScopableAttribute, 1);
-    const { findByText, findByTestId, queryByTestId } = render(
+    const { findByText, findByTestId, queryByTestId } = renderWithProviders(
       <TextAttributeConditionLine
         condition={conditionWithLocalizableScopableAttribute}
         lineNumber={1}
@@ -203,55 +178,45 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
         router={router}
-      />
+      />, { reactHookForm: true }
     );
     expect(await findByText('Name')).toBeInTheDocument();
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');
     expect(operatorSelector).toBeInTheDocument();
     expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
 
-    // When
     userEvent.selectOptions(operatorSelector, Operator.IS_NOT_EMPTY);
-    // Then
-    expect(setValueMock).toHaveBeenCalledWith('content.conditions[1].operator', Operator.IS_NOT_EMPTY);
-    expect(setValueMock).toHaveBeenCalledWith('content.conditions[1].value', null);
     await wait(() => expect(queryByTestId('edit-rules-input-1-value')).toBeNull());
-    // When
+
     userEvent.selectOptions(operatorSelector, Operator.NOT_EQUAL);
-    // Then
-    expect(setValueMock).toHaveBeenCalledWith('content.conditions[1].operator', Operator.NOT_EQUAL);
-    expect(setValueMock).toHaveBeenCalledWith('content.conditions[1].value', 'Canon');
     expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
   });
 
-  it('handles locale and channel changes', async () => {
+  it('displays the matching locales regarding the scope', async () => {
     // Given
-    initFormWithCondition(conditionWithLocalizableScopableAttribute, 1);
-    const { findByTestId } = render(
+    const { findByText, findByTestId, queryByTestId, queryByText } = renderWithProviders(
       <TextAttributeConditionLine
-        condition={conditionWithLocalizableScopableAttribute}
+        condition={defaultCondition}
         lineNumber={1}
         translate={translate}
         locales={locales}
         scopes={scopes}
-        currentCatalogLocale={'fr_FR'}
+        currentCatalogLocale={'en_US'}
         router={router}
-      />
+      />, { reactHookForm: true }
     );
-    const scopeSelector = await findByTestId('edit-rules-input-1-scope');
-    expect(scopeSelector).toBeInTheDocument();
-    expect(scopeSelector).toHaveValue('mobile');
-    const localeSelector = await findByTestId('edit-rules-input-1-locale');
-    expect(localeSelector).toBeInTheDocument();
-    expect(localeSelector).toHaveValue('en_US');
+    expect(await findByText('Name')).toBeInTheDocument();
+    const operatorSelector = await findByTestId('edit-rules-input-1-operator');
+    expect(operatorSelector).toBeInTheDocument();
+    expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
 
-    // When
-    userEvent.selectOptions(scopeSelector, 'ecommerce');
-    // Then
-    expect(setValueMock).toHaveBeenCalledWith('content.conditions[1].scope', 'ecommerce');
-    // When
-    userEvent.selectOptions(localeSelector, 'fr_FR');
-    // Then
-    expect(setValueMock).toHaveBeenCalledWith('content.conditions[1].locale', 'fr_FR');
+    userEvent.selectOptions(await findByTestId('edit-rules-input-1-scope'), 'ecommerce');
+    expect(queryByText('German')).toBeInTheDocument();
+    expect(queryByText('French')).toBeInTheDocument();
+    expect(queryByText('English')).toBeInTheDocument();
+    userEvent.selectOptions(await findByTestId('edit-rules-input-1-scope'), 'mobile');
+    expect(queryByText('German')).toBeInTheDocument();
+    expect(queryByText('French')).not.toBeInTheDocument();
+    expect(queryByText('English')).toBeInTheDocument();
   });
 });

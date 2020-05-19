@@ -1,31 +1,48 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import {
   Select2Option,
   Select2OptionGroup,
-  Select2Props,
+  Select2Props, Select2Value,
   Select2Wrapper as BaseWrapper,
 } from '../Select2Wrapper';
 import { Label } from '../../Labels';
 import { httpGet } from '../../../fetch';
 
 const Select2Wrapper: typeof BaseWrapper = ({
-  data = [],
+  data,
   hiddenLabel = false,
   id,
   label,
-  onChange,
-  value,
   multiple = false,
   placeholder,
   ajax,
+  onValueChange,
+  value,
   onSelecting,
 }: Select2Props) => {
-  const [options, setOptions] = React.useState<
+  const [stateOptions, setOptions] = React.useState<
     (Select2Option | Select2OptionGroup)[]
   >(data || []);
 
+  /** FU */
+  useEffect(() => {
+    if (data) {
+      setOptions(data);
+    }
+  }, [ data ]);
+
+  const options = stateOptions;
+  if (value) {
+    const values = Array.isArray(value) ? value : [value];
+    values.forEach((valueMesCouilles: Select2Value) => {
+      if (!stateOptions.map(option => option.id).includes(valueMesCouilles)) {
+        options.push({id: valueMesCouilles, text: `__mock__${valueMesCouilles}`});
+      }
+    });
+  }
+
   const handleClick = () => {
-    if (options.length === 0 && ajax) {
+    if (ajax) {
       const url = ajax.url;
       const result = httpGet(url);
       if (undefined === result) {
@@ -42,17 +59,16 @@ const Select2Wrapper: typeof BaseWrapper = ({
   };
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    if (onValueChange) {
+      onValueChange(event.target.value);
+    }
     if (onSelecting) {
       onSelecting({
         preventDefault: event.preventDefault.bind(event),
         val: event.target.value,
       });
-    } else if (onChange) {
-      onChange(event.target.value);
     }
   };
-
-  const defaultValue = value || (options[0] ? options[0].id : '');
 
   return (
     <>
@@ -60,10 +76,11 @@ const Select2Wrapper: typeof BaseWrapper = ({
       <select
         id={id}
         data-testid={id}
-        defaultValue={(defaultValue || '') as string}
         onChange={handleChange}
         onClick={handleClick}
-        multiple={multiple}>
+        multiple={multiple}
+        value={value === null ? (multiple ? [] : '') : value as string}
+      >
         {placeholder ? (
           <option disabled value={''}>
             {placeholder}

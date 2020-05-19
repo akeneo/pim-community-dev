@@ -7,7 +7,7 @@ import {
 } from './Select2Wrapper';
 
 type Props = Select2GlobalProps & {
-  onChange?: (value: Select2Value) => void;
+  onValueChange?: (value: Select2Value) => void;
   value?: Select2Value;
   ajax: Select2Ajax;
 };

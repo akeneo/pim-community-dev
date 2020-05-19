@@ -41,7 +41,7 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
   currentCatalogLocale,
   condition,
 }) => {
-  const { watch } = useFormContext();
+  const { watch, setValue } = useFormContext();
 
   useValueInitialization(`content.conditions[${lineNumber}]`, {
     field: condition.field,
@@ -49,14 +49,30 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
     value: condition.value,
   });
 
-  const getFormOperator = (): Operator =>
-    watch(`content.conditions[${lineNumber}].operator`);
-
-  const shouldDisplayFamilySelector = () => {
+  const shouldDisplayValue: () => boolean = () => {
     return !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
-      getFormOperator()
+      getOperatorFormValue()
     );
   };
+
+  const getOperatorFormValue: (() => Operator) = () => {
+    return watch(`content.conditions[${lineNumber}].operator`);
+  }
+
+  const setValueFormValue = ((value: string[] | null) => {
+    setValue(`content.conditions[${lineNumber}].value`, value);
+  });
+
+  const setOperatorFormValue = ((value: Operator) => {
+    setValue(`content.conditions[${lineNumber}].operator`, value);
+    if (!shouldDisplayValue()) {
+      setValueFormValue(null);
+    }
+  });
+
+  const getValueFormValue: (() => string[]) = () => {
+    return watch(`content.conditions[${lineNumber}].value`);
+  }
 
   return (
     <div>
@@ -70,10 +86,11 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
           hiddenLabel={true}
           availableOperators={FamilyOperators}
           translate={translate}
-          name={`content.conditions[${lineNumber}].operator`}
+          value={getOperatorFormValue()}
+          onChange={setOperatorFormValue}
         />
       </OperatorColumn>
-      {shouldDisplayFamilySelector() && (
+      {shouldDisplayValue() && (
         <ValueColumn>
           <FamilySelector
             router={router}
@@ -82,7 +99,8 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
             hiddenLabel={true}
             multiple={true}
             currentCatalogLocale={currentCatalogLocale}
-            name={`content.conditions[${lineNumber}].value`}
+            value={getValueFormValue()}
+            onChange={setValueFormValue}
           />
         </ValueColumn>
       )}

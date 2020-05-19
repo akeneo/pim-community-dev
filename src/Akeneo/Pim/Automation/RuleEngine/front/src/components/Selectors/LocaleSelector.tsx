@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
+import React  from 'react';
 import { Locale } from '../../models';
 import {
   Select2Option,
@@ -12,7 +11,8 @@ type Props = {
   label: string;
   hiddenLabel?: boolean;
   availableLocales: Locale[];
-  name: string;
+  value: string;
+  onChange: (value: string) => void;
 };
 
 const LocaleSelector: React.FC<Props> = ({
@@ -20,25 +20,9 @@ const LocaleSelector: React.FC<Props> = ({
   label,
   hiddenLabel = false,
   availableLocales,
-  name,
+  value,
+  onChange,
 }) => {
-  const { watch, setValue } = useFormContext();
-
-  const getFormLocale = () => watch(name);
-
-  const resetLocale = () => {
-    setValue(name, undefined);
-  };
-
-  useEffect(() => {
-    if (
-      getFormLocale() &&
-      !availableLocales.map(locale => locale.code).includes(getFormLocale())
-    ) {
-      resetLocale();
-    }
-  }, [getFormLocale(), availableLocales]);
-
   const localeChoices = availableLocales.map((locale: Locale) => {
     return {
       id: locale.code,
@@ -70,8 +54,9 @@ const LocaleSelector: React.FC<Props> = ({
       hideSearch={true}
       formatResult={formatLocale}
       formatSelection={formatLocale}
-      name={name}
       placeholder={'Locale'}
+      value={value}
+      onValueChange={(value) => onChange(value as string) }
     />
   );
 };

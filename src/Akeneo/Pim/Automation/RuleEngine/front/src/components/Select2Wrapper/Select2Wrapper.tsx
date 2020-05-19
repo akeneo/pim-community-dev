@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { Label } from '../Labels';
-import { useFormContext } from 'react-hook-form';
 
 type Select2Option = {
   id: number | string;
@@ -59,22 +58,21 @@ type Select2GlobalProps = {
   formatResult?: (item: Select2Option | Select2OptionGroup) => string;
   formatSelection?: (item: Select2Option | Select2OptionGroup) => string;
   hideSearch?: boolean;
-  name?: string;
+  closeTick?: boolean;
 };
 
 type Props = Select2GlobalProps & {
   data?: (Select2Option | Select2OptionGroup)[];
-  onChange?: (value: Select2Value | Select2Value[]) => void;
-  value?: Select2Value | Select2Value[];
   multiple: boolean;
   ajax?: Select2Ajax;
+  onValueChange?: (value: (Select2Value | Select2Value[])) => void;
+  value?: Select2Value | Select2Value[];
 };
 
 const Select2Wrapper: React.FC<Props> = ({
   hiddenLabel = false,
   id,
   label,
-  name,
   ajax,
   data,
   multiple,
@@ -85,32 +83,22 @@ const Select2Wrapper: React.FC<Props> = ({
   containerCssClass,
   dropdownCssClass,
   onSelecting,
+  value,
+  onValueChange,
+  closeTick = false,
 }) => {
   const select2ref = useRef<HTMLInputElement | null>(null);
-  const { watch, setValue } = useFormContext();
-
-  const getFormValue: any = () => {
-    return name ? watch(name) : undefined;
-  };
-
-  const setFormValue = (value: any) => {
-    if (name) {
-      setValue(name, value);
-    }
-  };
 
   const getSelect2Input: () => any = () => {
     return $(select2ref.current as any) as any;
   };
 
   const initSelect2 = (destroy = false) => {
-    if (select2ref !== null) {
+    if (select2ref) {
       if (destroy) {
         getSelect2Input().select2('destroy');
       }
-      if (undefined !== getFormValue()) {
-        getSelect2Input().val(getFormValue());
-      }
+      getSelect2Input().val(value);
       getSelect2Input().select2({
         ajax,
         data,
@@ -128,9 +116,11 @@ const Select2Wrapper: React.FC<Props> = ({
         getSelect2Input().on('select2-selecting', onSelecting);
       }
 
-      getSelect2Input().on('change', (e: Select2Event) => {
-        setFormValue(e.val);
-      });
+      if (onValueChange) {
+        getSelect2Input().on('change', (e: Select2Event) => {
+          onValueChange(e.val);
+        });
+      }
     }
   };
 
@@ -139,15 +129,10 @@ const Select2Wrapper: React.FC<Props> = ({
   }, [select2ref]);
 
   useEffect(() => {
-    if (name) {
-      const value = getFormValue();
-      if (select2ref !== null && value !== undefined) {
-        getSelect2Input()
-          .val(value)
-          .trigger('change.select2');
-      }
+    if (select2ref) {
+      getSelect2Input().val(value).trigger('change.select2');
     }
-  }, [getFormValue()]);
+  }, [ value ]);
 
   useEffect(() => {
     initSelect2(true);
@@ -157,10 +142,16 @@ const Select2Wrapper: React.FC<Props> = ({
     initSelect2(true);
   }, [onSelecting]);
 
+  useEffect(() => {
+    if (select2ref) {
+      getSelect2Input().select2('close');
+    }
+  }, [closeTick])
+
   return (
     <>
       <Label label={label} hiddenLabel={hiddenLabel} htmlFor={id} />
-      <input id={id} type='hidden' ref={select2ref} name={name} />
+      <input id={id} type='hidden' ref={select2ref} />
     </>
   );
 };

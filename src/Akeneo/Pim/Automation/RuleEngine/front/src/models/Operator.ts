@@ -8,4 +8,4 @@ export enum Operator {
   DOES_NOT_CONTAIN = 'DOES NOT CONTAIN',
   EQUALS = '=',
   NOT_EQUAL = '!=',
-}
+};

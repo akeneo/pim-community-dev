@@ -16,7 +16,8 @@ type Props = {
   hiddenLabel?: boolean;
   multiple: boolean;
   currentCatalogLocale: string;
-  name: string;
+  value: string[];
+  onChange: (value: string[]) => void;
 };
 
 const dataProvider = (term: string, page: number) => {
@@ -76,14 +77,16 @@ const FamilySelector: React.FC<Props> = ({
   label,
   hiddenLabel = false,
   currentCatalogLocale,
-  name,
+  value,
+  onChange,
 }) => {
   return (
     <Select2MultiAsyncWrapper
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      name={name}
+      value={value}
+      onValueChange={value => onChange(value as string[])}
       ajax={{
         url: router.generate('pim_enrich_family_rest_index'),
         quietMillis: 250,
@@ -92,10 +95,10 @@ const FamilySelector: React.FC<Props> = ({
         results: (families: IndexedFamilies) =>
           handleResults(families, currentCatalogLocale),
       }}
-      initSelection={(element, callback) => {
+      initSelection={(_element, callback) => {
         initSelectedFamilies(
           router,
-          element.val().split(','),
+          value,
           currentCatalogLocale,
           callback
         );

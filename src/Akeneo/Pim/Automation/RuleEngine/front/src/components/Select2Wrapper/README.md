@@ -26,8 +26,8 @@ register({ name: 'select2input' })
  <Select2SimpleSyncWrapper
         label="toto" // input should always have a label
         hiddenLabel // that you can't hide (screen readers only)
-        onChange={(event) => {
-          setValue("select2Input", event.val);
+        onValueChange={(value) => {
+          setValue("select2Input", value);
         }}
         id="select2input"
         value={getValues()["select2Input"]}
