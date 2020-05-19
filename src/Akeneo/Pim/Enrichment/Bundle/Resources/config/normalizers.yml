@@ -89,6 +89,11 @@ services:
             - '@pim_catalog.doctrine.query.find_variant_product_completeness'
             - !tagged pim_axis_value_label_normalizer
 
+    pim_enrich.normalizer.linked_product_normalizer:
+        class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\LinkedProductsNormalizer
+        arguments:
+            - '@pim_enrich.normalizer.image'
+
     pim_enrich.normalizer.entity_with_family_variant.simple_select.label.normalizer:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\SimpleSelectOptionNormalizer'
         arguments:
