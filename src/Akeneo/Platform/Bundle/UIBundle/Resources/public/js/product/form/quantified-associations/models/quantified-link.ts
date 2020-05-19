@@ -1,4 +1,4 @@
-import {Identifier} from '.';
+import {Identifier} from '../models';
 
 type QuantifiedLink = {
   identifier: Identifier;

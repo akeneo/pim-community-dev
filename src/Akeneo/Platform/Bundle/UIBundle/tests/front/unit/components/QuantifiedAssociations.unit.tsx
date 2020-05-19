@@ -10,7 +10,7 @@ jest.mock('legacy-bridge/provider/dependencies.ts');
 jest.mock('pimui/js/product/form/quantified-associations/hooks/useProducts.ts', () => ({
   useProducts: (identifiers: {products: string[]; product_models: string[]}) => {
     if (0 === identifiers.products.length) return [];
-    if (null === identifiers.products[0]) return null;
+    if ('null' === identifiers.products[0]) return null;
 
     return [
       {
@@ -145,6 +145,36 @@ test('It triggers the onChange event when a quantity is changed', async () => {
   });
 });
 
+test('It triggers the onRowDelete event when the remove button is clicked', async () => {
+  const onChange = jest.fn();
+
+  await act(async () => {
+    ReactDOM.render(
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <QuantifiedAssociations
+            value={quantifiedAssociationCollection}
+            associationTypeCode="PACK"
+            onAssociationsChange={onChange}
+            onOpenPicker={jest.fn()}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
+      container
+    );
+  });
+
+  const removeButton = getAllByTitle(container, 'pim_enrich.entity.product.module.associations.remove');
+  fireEvent.click(removeButton[0]);
+
+  expect(onChange).toBeCalledWith({
+    PACK: {
+      products: [],
+      product_models: [{identifier: 'braided-hat', quantity: 15}],
+    },
+  });
+});
+
 test('It displays no rows and a placeholder when the quantified association collection is loading', async () => {
   await act(async () => {
     ReactDOM.render(
@@ -153,8 +183,8 @@ test('It displays no rows and a placeholder when the quantified association coll
           <QuantifiedAssociations
             value={{
               PACK: {
-                //The useProducts mock defined above will simulate loading
-                products: [{identifier: null, quantity: null}],
+                //The useProducts mock defined above will simulate loading thanks to the 'null' identifier
+                products: [{identifier: 'null', quantity: 2}],
                 product_models: [],
               },
             }}
