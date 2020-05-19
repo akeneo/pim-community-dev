@@ -5,6 +5,8 @@ import '@testing-library/jest-dom/extend-expect';
 import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {QuantifiedAssociations} from '../../../../Resources/public/js/product/form/quantified-associations/components/QuantifiedAssociations';
+import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
+import {queryByDisplayValue} from '@testing-library/dom';
 
 jest.mock('legacy-bridge/provider/dependencies.ts');
 jest.mock('pimui/js/product/form/quantified-associations/hooks/useProducts.ts', () => ({
@@ -175,6 +177,61 @@ test('It triggers the onRowDelete event when the remove button is clicked', asyn
   });
 });
 
+test('It adds products when the user confirm the picker', async () => {
+  const onChange = jest.fn();
+
+  const smallQuantifiedAssociationCollection = {
+    PACK: {
+      products: [{identifier: 'bag', quantity: 3}],
+      product_models: [],
+    },
+  };
+
+  await act(async () => {
+    ReactDOM.render(
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <QuantifiedAssociations
+            value={smallQuantifiedAssociationCollection}
+            associationTypeCode="PACK"
+            onAssociationsChange={onChange}
+            onOpenPicker={() =>
+              Promise.resolve([
+                {
+                  associationTypeCode: 'PACK',
+                  productType: ProductType.ProductModel,
+                  identifier: 'braided-hat',
+                  quantity: 1,
+                  product: null,
+                },
+                {
+                  associationTypeCode: 'PACK',
+                  productType: ProductType.Product,
+                  identifier: 'bag',
+                  quantity: 1,
+                  product: null,
+                },
+              ])
+            }
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
+      container
+    );
+  });
+
+  expect(queryByDisplayValue(container, '3')).toBeInTheDocument();
+  expect(queryByText(container, 'Nice bag')).toBeInTheDocument();
+
+  await act(async () => {
+    const addButton = getByText(container, 'pim_enrich.entity.product.module.associations.add_associations');
+    fireEvent.click(addButton);
+  });
+
+  expect(queryByText(container, '3')).not.toBeInTheDocument();
+  expect(queryByText(container, 'Nice bag')).toBeInTheDocument();
+  expect(queryByText(container, 'Braided hat')).toBeInTheDocument();
+});
 test('It displays no rows and a placeholder when the quantified association collection is loading', async () => {
   await act(async () => {
     ReactDOM.render(
