@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProduct;
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductHandler;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use LogicException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,6 +67,10 @@ class DuplicateProductController
         $product = $this->productRepository->find($id);
         if (null === $product) {
             throw new NotFoundHttpException(sprintf('Product with id %s could not be found.', $id));
+        }
+
+        if (null === $this->userContext->getUser()) {
+            throw new LogicException('No authenticated user found.');
         }
 
         $duplicateProductCommand = new DuplicateProduct(

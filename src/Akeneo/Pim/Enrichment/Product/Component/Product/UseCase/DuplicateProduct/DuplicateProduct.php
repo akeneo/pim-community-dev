@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct;
 
-class DuplicateProduct
+final class DuplicateProduct
 {
     /** @var string */
     private $productToDuplicateIdentifier;

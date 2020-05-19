@@ -153,7 +153,7 @@ class DuplicateProductHandler
             $userId
         );
 
-        return $this->securityFacade->isGranted('pimee_enrich_product_duplicate')
+        return $this->securityFacade->isGranted('pimee_enrichment_product_duplicate')
             && $this->securityFacade->isGranted('pim_enrich_product_create')
             && $userRightsOnProduct->isProductEditable();
     }

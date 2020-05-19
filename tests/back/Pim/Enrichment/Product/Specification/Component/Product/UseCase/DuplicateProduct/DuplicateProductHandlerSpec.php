@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProduct;
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductHandler;
@@ -55,8 +56,7 @@ class DuplicateProductHandlerSpec extends ObjectBehavior
 
     function it_can_duplicate_a_product(
         $securityFacade,
-        $fetchUserRightsOnProduct,
-        DuplicateProduct $duplicateProductCommand
+        $fetchUserRightsOnProduct
     ) {
         $userRightsOnProduct = new UserRightsOnProduct(
             'product_to_duplicate',
@@ -66,18 +66,21 @@ class DuplicateProductHandlerSpec extends ObjectBehavior
             1,
             1
         );
-        $duplicateProductCommand->productToDuplicateIdentifier()->willReturn('product_to_duplicate');
-        $duplicateProductCommand->userId()->willReturn(1);
+        $duplicateProductCommand = new DuplicateProduct(
+            'product_to_duplicate',
+            'duplicated_product',
+            1
+        );
+
         $fetchUserRightsOnProduct->fetchByIdentifier(Argument::type('string'), Argument::type('integer'))->willReturn($userRightsOnProduct);
         $securityFacade->isGranted(Argument::type('string'))->willReturn(true);
 
-        $this->shouldNotThrow('Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException')->during('handle', [$duplicateProductCommand]);
+        $this->shouldNotThrow(ObjectNotFoundException::class)->during('handle', [$duplicateProductCommand]);
     }
 
     function it_throws_an_error_when_the_user_does_not_have_the_editable_right(
         $securityFacade,
-        $fetchUserRightsOnProduct,
-        DuplicateProduct $duplicateProductCommand
+        $fetchUserRightsOnProduct
     ) {
         $userRightsOnProduct = new UserRightsOnProduct(
             'product_to_duplicate',
@@ -87,18 +90,21 @@ class DuplicateProductHandlerSpec extends ObjectBehavior
             0,
             1
         );
-        $duplicateProductCommand->productToDuplicateIdentifier()->willReturn('product_to_duplicate');
-        $duplicateProductCommand->userId()->willReturn(1);
+        $duplicateProductCommand = new DuplicateProduct(
+            'product_to_duplicate',
+            'duplicated_product',
+            1
+        );
+
         $fetchUserRightsOnProduct->fetchByIdentifier(Argument::type('string'), Argument::type('integer'))->willReturn($userRightsOnProduct);
         $securityFacade->isGranted(Argument::type('string'))->willReturn(true);
 
-        $this->shouldThrow('Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException')->during('handle', [$duplicateProductCommand]);
+        $this->shouldThrow(ObjectNotFoundException::class)->during('handle', [$duplicateProductCommand]);
     }
 
     function it_throws_an_error_when_the_user_does_not_have_the_acls(
         $securityFacade,
-        $fetchUserRightsOnProduct,
-        DuplicateProduct $duplicateProductCommand
+        $fetchUserRightsOnProduct
     ) {
         $userRightsOnProduct = new UserRightsOnProduct(
             'product_to_duplicate',
@@ -108,11 +114,15 @@ class DuplicateProductHandlerSpec extends ObjectBehavior
             1,
             1
         );
-        $duplicateProductCommand->productToDuplicateIdentifier()->willReturn('product_to_duplicate');
-        $duplicateProductCommand->userId()->willReturn(1);
+        $duplicateProductCommand = new DuplicateProduct(
+            'product_to_duplicate',
+            'duplicated_product',
+            1
+        );
+
         $fetchUserRightsOnProduct->fetchByIdentifier(Argument::type('string'), Argument::type('integer'))->willReturn($userRightsOnProduct);
         $securityFacade->isGranted(Argument::type('string'))->willReturn(false);
 
-        $this->shouldThrow('Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException')->during('handle', [$duplicateProductCommand]);
+        $this->shouldThrow(ObjectNotFoundException::class)->during('handle', [$duplicateProductCommand]);
     }
 }
