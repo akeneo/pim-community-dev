@@ -54,6 +54,8 @@ services:
 
     pim_catalog.normalizer.standard.product.quantified_associations:
         class: '%pim_catalog.normalizer.standard.product.quantified_associations.class%'
+        arguments:
+            - '@pim_catalog.quantified_associations.quantified_associations_merger'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 40 }
 

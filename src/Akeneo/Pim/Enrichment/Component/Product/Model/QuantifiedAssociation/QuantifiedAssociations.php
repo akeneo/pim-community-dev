@@ -20,16 +20,57 @@ class QuantifiedAssociations
     private $quantifiedAssociations;
 
     private function __construct(
+        array $quantifiedAssociations
+    ) {
+        $this->quantifiedAssociations = $quantifiedAssociations;
+    }
+
+    public static function createFromNormalized(array $normalizedQuantifiedAssociations): self
+    {
+        $mappedQuantifiedAssociations = [];
+
+        foreach ($normalizedQuantifiedAssociations as $associationType => $associations) {
+            $mappedQuantifiedAssociations[$associationType] = [
+                self::PRODUCTS_QUANTIFIED_LINKS_KEY => [],
+                self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY => [],
+            ];
+
+            foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] ?? [] as $productAssociation) {
+                $quantifiedLink = new QuantifiedLink(
+                    $productAssociation['identifier'],
+                    $productAssociation['quantity']
+                );
+                $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
+            }
+
+            foreach ($associations[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] ?? [] as $productModelAssociation) {
+                $quantifiedLink = new QuantifiedLink(
+                    $productModelAssociation['identifier'],
+                    $productModelAssociation['quantity']
+                );
+                $mappedQuantifiedAssociations[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
+            }
+        }
+
+        return new self($mappedQuantifiedAssociations);
+    }
+
+    public static function createWithAssociationsAndMapping(
         array $rawQuantifiedAssociations,
         IdMapping $mappedProductIds,
         IdMapping $mappedProductModelIds
-    ) {
+    ): self {
         $mappedQuantifiedAssociations = [];
         foreach ($rawQuantifiedAssociations as $associationType => $associations) {
             Assert::keyExists($associations, self::PRODUCTS_QUANTIFIED_LINKS_KEY);
             Assert::keyExists($associations, self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY);
 
-            foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] as $productAssociation) {
+            $mappedQuantifiedAssociations[$associationType] = [
+                self::PRODUCTS_QUANTIFIED_LINKS_KEY => [],
+                self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY => [],
+            ];
+
+            foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] ?? [] as $productAssociation) {
                 Assert::keyExists($productAssociation, 'id');
                 Assert::keyExists($productAssociation, 'quantity');
 
@@ -40,7 +81,7 @@ class QuantifiedAssociations
                 $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
             }
 
-            foreach ($associations[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] as $productModelAssociation) {
+            foreach ($associations[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] ?? [] as $productModelAssociation) {
                 Assert::keyExists($productModelAssociation, 'id');
                 Assert::keyExists($productModelAssociation, 'quantity');
 
@@ -52,15 +93,7 @@ class QuantifiedAssociations
             }
         }
 
-        $this->quantifiedAssociations = $mappedQuantifiedAssociations;
-    }
-
-    public static function createWithAssociationsAndMapping(
-        array $rawQuantifiedAssociations,
-        IdMapping $mappedProductIds,
-        IdMapping $mappedProductModelIds
-    ): self {
-        return new self($rawQuantifiedAssociations, $mappedProductIds, $mappedProductModelIds);
+        return new self($mappedQuantifiedAssociations);
     }
 
     public function getQuantifiedAssociationsProductIdentifiers(): array
@@ -106,9 +139,9 @@ class QuantifiedAssociations
             /** @var QuantifiedLink $quantifiedLink */
             foreach ($associations[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
                 $normalizedQuantifiedLink = $quantifiedLink->normalize();
-                $result[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY][] =  [
+                $result[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY][] = [
                     'id' => $mappedProductModelIdentifiers->getId($normalizedQuantifiedLink['identifier']),
-                    'quantity'   => $normalizedQuantifiedLink['quantity']
+                    'quantity' => $normalizedQuantifiedLink['quantity']
                 ];
             }
         }
@@ -120,6 +153,10 @@ class QuantifiedAssociations
     {
         $result = [];
         foreach ($this->quantifiedAssociations as $associationType => $associations) {
+            $result[$associationType] = [
+                self::PRODUCTS_QUANTIFIED_LINKS_KEY => [],
+                self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY => [],
+            ];
 
             /** @var QuantifiedLink $quantifiedLink */
             foreach ($associations[self::PRODUCTS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
