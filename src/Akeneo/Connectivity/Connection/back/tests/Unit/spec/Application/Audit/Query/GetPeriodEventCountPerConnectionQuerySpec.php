@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Query;
 
-use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use PhpSpec\ObjectBehavior;
 
@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class CountDailyEventsByConnectionQuerySpec extends ObjectBehavior
+class GetPeriodEventCountPerConnectionQuerySpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -26,7 +26,7 @@ class CountDailyEventsByConnectionQuerySpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(CountDailyEventsByConnectionQuery::class);
+        $this->shouldBeAnInstanceOf(GetPeriodEventCountPerConnectionQuery::class);
     }
 
     public function it_returns_the_event_type(): void
