@@ -54,7 +54,6 @@ final class ExecuteRulesTasklet implements TaskletInterface
         $this->eventDispatcher->addSubscriber($subscriber);
 
         foreach ($this->getRuleDefinitions() as $ruleDefinition) {
-            $this->stepExecution->incrementSummaryInfo('read_rules');
             try {
                 $this->ruleRunner->run($ruleDefinition);
             } catch (\LogicException $e) {
