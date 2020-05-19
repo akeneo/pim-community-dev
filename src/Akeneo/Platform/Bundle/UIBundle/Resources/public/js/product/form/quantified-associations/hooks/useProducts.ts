@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useUserContext, useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {AssociationIdentifiers, Product, ProductsType, getProductsType, Row} from '../models';
+import {AssociationIdentifiers, Product} from '../models';
 
 const productFetcher = async (route: string, identifiers: AssociationIdentifiers): Promise<Product[]> => {
   const response = await fetch(route, {
@@ -14,28 +14,6 @@ const productFetcher = async (route: string, identifiers: AssociationIdentifiers
 
   return (await response.json()).items;
 };
-
-const addProductToRows = (rows: Row[], products: Product[]): Row[] =>
-  rows.map((row: Row) => {
-    if (null === products) return {...row, product: null};
-    const product = products.find(product => product.identifier === row.identifier);
-    if (undefined === product) return {...row, product: null};
-
-    return {...row, product};
-  });
-
-const getAssociationIdentifiers = (rows: Row[]): AssociationIdentifiers =>
-  rows.reduce(
-    (identifiers: AssociationIdentifiers, row): AssociationIdentifiers => {
-      identifiers[getProductsType(row.productType)].push(row.identifier);
-
-      return identifiers;
-    },
-    {
-      [ProductsType.Products]: [],
-      [ProductsType.ProductModels]: [],
-    }
-  );
 
 const useProducts = (identifiers: AssociationIdentifiers): Product[] | null => {
   const [products, setProducts] = useState<Product[] | null>(null);
@@ -54,4 +32,4 @@ const useProducts = (identifiers: AssociationIdentifiers): Product[] | null => {
   return products;
 };
 
-export {useProducts, addProductToRows, getAssociationIdentifiers};
+export {useProducts};

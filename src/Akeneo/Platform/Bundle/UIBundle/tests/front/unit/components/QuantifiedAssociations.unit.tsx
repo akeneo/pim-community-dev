@@ -11,6 +11,7 @@ jest.mock('pimui/js/product/form/quantified-associations/hooks/useProducts.ts', 
   useProducts: (identifiers: {products: string[]; product_models: string[]}) => {
     if (0 === identifiers.products.length) return [];
     if (null === identifiers.products[0]) return null;
+
     return [
       {
         id: 1,
@@ -50,8 +51,8 @@ afterEach(() => {
 
 const quantifiedAssociationCollection = {
   PACK: {
-    products: [{identifier: 'bag', quantity: '3'}],
-    product_models: [{identifier: 'braided-hat', quantity: '15'}],
+    products: [{identifier: 'bag', quantity: 3}],
+    product_models: [{identifier: 'braided-hat', quantity: 15}],
   },
 };
 
@@ -138,8 +139,8 @@ test('It triggers the onChange event when a quantity is changed', async () => {
 
   expect(onChange).toBeCalledWith({
     PACK: {
-      products: [{identifier: 'bag', quantity: '16'}],
-      product_models: [{identifier: 'braided-hat', quantity: '15'}],
+      products: [{identifier: 'bag', quantity: 16}],
+      product_models: [{identifier: 'braided-hat', quantity: 15}],
     },
   });
 });

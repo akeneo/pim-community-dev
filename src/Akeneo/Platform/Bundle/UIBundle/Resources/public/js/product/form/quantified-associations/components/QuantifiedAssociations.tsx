@@ -12,9 +12,11 @@ import {
   Row,
   filterOnLabelOrIdentifier,
   isRowWithProduct,
+  addProductToRows,
+  getAssociationIdentifiers,
 } from '../models';
 import {QuantifiedAssociationRow} from '.';
-import {useProducts, getAssociationIdentifiers, addProductToRows} from '../hooks';
+import {useProducts} from '../hooks';
 
 const HeaderCell = styled.th`
   text-align: left;
