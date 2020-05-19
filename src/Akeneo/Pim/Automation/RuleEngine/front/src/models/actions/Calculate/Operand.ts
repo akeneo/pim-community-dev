@@ -21,10 +21,9 @@ export const denormalizeOperand = (data: any): Operand => {
 
   if (data.field) {
     return {
-      field: data.field,
-      scope: data.scope || null,
-      locale: data.locale || null,
-      currency: data.currency || null,
+      scope: null,
+      locale: null,
+      ...data,
     };
   }
 
