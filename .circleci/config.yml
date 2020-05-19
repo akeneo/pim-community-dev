@@ -193,7 +193,7 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
-  back_behat_legacy:
+  test_back_behat_legacy:
     machine:
         image: ubuntu-1604:201903-01
     parallelism: 20
@@ -550,7 +550,7 @@ workflows:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
-          - back_behat_legacy:
+          - test_back_behat_legacy:
                 requires:
                     - test_back_data_migrations
                     - test_back_missing_structure_migrations
@@ -564,7 +564,7 @@ workflows:
                     - test_onboarder_bundle
           - pull_request_success:
                 requires:
-                    - back_behat_legacy
+                    - test_back_behat_legacy
                     - test_back_performance
                     - deploy_upgrade_oldest_prod_environment
   nightly:
@@ -591,7 +591,7 @@ workflows:
           - test_back_phpunit:
                 requires:
                     - build_dev
-          - back_behat_legacy:
+          - test_back_behat_legacy:
                 requires:
                     - build_dev
           - test_back_data_migrations:
