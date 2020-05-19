@@ -1,16 +1,18 @@
 import {
   getProductsType,
   getProductType,
-} from '../../../../Resources/public/js/product/form/quantified-associations/models';
+  ProductType,
+  ProductsType,
+} from '../../../../Resources/public/js/product/form/quantified-associations/models/product';
 
 describe('product', () => {
   it('should return the corresponding productsType for the provided productType', () => {
-    expect(getProductsType('product')).toEqual('products');
-    expect(getProductsType('product_model')).toEqual('product_models');
+    expect(getProductsType(ProductType.Product)).toEqual(ProductsType.Products);
+    expect(getProductsType(ProductType.ProductModel)).toEqual(ProductsType.ProductModels);
   });
 
   it('should return the corresponding productType for the provided productsType', () => {
-    expect(getProductType('products')).toEqual('product');
-    expect(getProductType('product_models')).toEqual('product_model');
+    expect(getProductType(ProductsType.Products)).toEqual(ProductType.Product);
+    expect(getProductType(ProductsType.ProductModels)).toEqual(ProductType.ProductModel);
   });
 });

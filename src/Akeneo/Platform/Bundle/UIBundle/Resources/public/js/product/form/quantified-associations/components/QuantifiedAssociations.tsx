@@ -15,7 +15,7 @@ import {
   addProductToRows,
   getAssociationIdentifiers,
 } from '../models';
-import {QuantifiedAssociationRow} from '.';
+import {QuantifiedAssociationRow} from '../components';
 import {useProducts} from '../hooks';
 
 const HeaderCell = styled.th`

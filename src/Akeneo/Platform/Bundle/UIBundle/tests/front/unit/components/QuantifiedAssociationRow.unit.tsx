@@ -45,6 +45,7 @@ const productModel: Product = {
 
 test('It displays a quantified association row for a product', async () => {
   const onChange = jest.fn();
+  const onRowDelete = jest.fn();
 
   await act(async () => {
     ReactDOM.render(
@@ -61,7 +62,7 @@ test('It displays a quantified association row for a product', async () => {
                   product: product,
                 }}
                 onChange={onChange}
-                onRowDelete={() => {}}
+                onRowDelete={onRowDelete}
               />
             </tbody>
           </table>
@@ -83,6 +84,7 @@ test('It displays a quantified association row for a product', async () => {
 
 test('It displays a quantified association row for a product model', async () => {
   const onChange = jest.fn();
+  const onRowDelete = jest.fn();
 
   await act(async () => {
     ReactDOM.render(
@@ -99,7 +101,7 @@ test('It displays a quantified association row for a product model', async () =>
                   product: productModel,
                 }}
                 onChange={onChange}
-                onRowDelete={() => {}}
+                onRowDelete={onRowDelete}
               />
             </tbody>
           </table>
@@ -121,6 +123,7 @@ test('It displays a quantified association row for a product model', async () =>
 
 test('It triggers the onChange event when updating the quantity', async () => {
   const onChange = jest.fn();
+  const onRowDelete = jest.fn();
 
   await act(async () => {
     ReactDOM.render(
@@ -137,7 +140,7 @@ test('It triggers the onChange event when updating the quantity', async () => {
                   product: productModel,
                 }}
                 onChange={onChange}
-                onRowDelete={() => {}}
+                onRowDelete={onRowDelete}
               />
             </tbody>
           </table>
@@ -161,4 +164,40 @@ test('It triggers the onChange event when updating the quantity', async () => {
     identifier: 'braided-hat',
     product: productModel,
   });
+});
+
+test('It triggers the onRowDelete event when the remove button is clicked', async () => {
+  const onChange = jest.fn();
+  const onRowDelete = jest.fn();
+
+  await act(async () => {
+    ReactDOM.render(
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <table>
+            <tbody>
+              <QuantifiedAssociationRow
+                row={{
+                  productType: ProductType.ProductModel,
+                  associationTypeCode: 'PACK',
+                  quantity: 15,
+                  identifier: 'braided-hat',
+                  product: productModel,
+                }}
+                onChange={onChange}
+                onRowDelete={onRowDelete}
+              />
+            </tbody>
+          </table>
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
+      container
+    );
+  });
+
+  const removeButton = getByTitle(container, 'pim_enrich.entity.product.module.associations.remove');
+  fireEvent.click(removeButton);
+
+  expect(onChange).not.toBeCalled();
+  expect(onRowDelete).toBeCalled();
 });

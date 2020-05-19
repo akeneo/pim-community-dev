@@ -1,4 +1,4 @@
-import {QuantifiedLink, Identifier, AssociationIdentifiers, ProductsType, Row, ProductType} from '../models';
+import {QuantifiedLink, Row, ProductType} from '../models';
 
 type QuantifiedAssociation = {
   products: QuantifiedLink[];
@@ -7,31 +7,6 @@ type QuantifiedAssociation = {
 
 type QuantifiedAssociationCollection = {
   [associationTypeCode: string]: QuantifiedAssociation;
-};
-
-const getQuantifiedAssociationCollectionIdentifiers = (
-  quantifiedAssociationCollection: Row[],
-  associationTypeCode: string
-): AssociationIdentifiers => {
-  const productIdentifiers = quantifiedAssociationCollection
-    .filter(row => ProductType.Product === row.productType && associationTypeCode === row.associationTypeCode)
-    .map(({identifier}) => identifier);
-  const productModelIdentifiers = quantifiedAssociationCollection
-    .filter(row => ProductType.ProductModel === row.productType && associationTypeCode === row.associationTypeCode)
-    .map(({identifier}) => identifier);
-
-  return {products: productIdentifiers, product_models: productModelIdentifiers};
-};
-
-const getQuantifiedLinkForIdentifier = (
-  quantifiedAssociationCollection: QuantifiedAssociationCollection,
-  associationTypeCode: string,
-  productsType: ProductsType,
-  identifier: Identifier
-): QuantifiedLink | undefined => {
-  return quantifiedAssociationCollection[associationTypeCode][productsType].find(
-    entity => entity.identifier === identifier
-  );
 };
 
 const setQuantifiedAssociationCollection = (
@@ -52,9 +27,4 @@ const setQuantifiedAssociationCollection = (
   });
 };
 
-export {
-  QuantifiedAssociationCollection,
-  getQuantifiedAssociationCollectionIdentifiers,
-  getQuantifiedLinkForIdentifier,
-  setQuantifiedAssociationCollection,
-};
+export {QuantifiedAssociationCollection, setQuantifiedAssociationCollection};
