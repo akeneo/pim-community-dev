@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {QuantifiedAssociationRow} from '../../../../Resources/public/js/product/form/quantified-associations/components/QuantifiedAssociationRow';
-import {Product} from '../../../../Resources/public/js/product/form/quantified-associations/models';
+import {Product, ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 
 jest.mock('legacy-bridge/provider/dependencies.ts');
 
@@ -24,7 +24,7 @@ const product: Product = {
   id: 1,
   identifier: 'bag',
   label: 'Nice bag',
-  document_type: 'product',
+  document_type: ProductType.Product,
   image: null,
   completeness: 100,
   variant_product_completenesses: null,
@@ -34,7 +34,7 @@ const productModel: Product = {
   id: 2,
   identifier: 'braided-hat',
   label: 'Braided hat',
-  document_type: 'product_model',
+  document_type: ProductType.ProductModel,
   image: {filePath: '/some.jpg', originalFileName: 'some.jpg'},
   completeness: null,
   variant_product_completenesses: {
@@ -46,18 +46,23 @@ const productModel: Product = {
 test('It displays a quantified association row for a product', async () => {
   const onChange = jest.fn();
 
-  const quantifiedLink = {
-    identifier: 'bag',
-    quantity: '3',
-  };
-
   await act(async () => {
     ReactDOM.render(
       <DependenciesProvider>
         <AkeneoThemeProvider>
           <table>
             <tbody>
-              <QuantifiedAssociationRow product={product} quantifiedLink={quantifiedLink} onChange={onChange} />
+              <QuantifiedAssociationRow
+                row={{
+                  productType: ProductType.Product,
+                  associationTypeCode: 'PACK',
+                  quantity: 3,
+                  identifier: 'bag',
+                  product: product,
+                }}
+                onChange={onChange}
+                onRowDelete={() => {}}
+              />
             </tbody>
           </table>
         </AkeneoThemeProvider>
@@ -79,18 +84,23 @@ test('It displays a quantified association row for a product', async () => {
 test('It displays a quantified association row for a product model', async () => {
   const onChange = jest.fn();
 
-  const quantifiedLink = {
-    identifier: 'braided-hat',
-    quantity: '15',
-  };
-
   await act(async () => {
     ReactDOM.render(
       <DependenciesProvider>
         <AkeneoThemeProvider>
           <table>
             <tbody>
-              <QuantifiedAssociationRow product={productModel} quantifiedLink={quantifiedLink} onChange={onChange} />
+              <QuantifiedAssociationRow
+                row={{
+                  productType: ProductType.ProductModel,
+                  associationTypeCode: 'PACK',
+                  quantity: 15,
+                  identifier: 'braided-hat',
+                  product: productModel,
+                }}
+                onChange={onChange}
+                onRowDelete={() => {}}
+              />
             </tbody>
           </table>
         </AkeneoThemeProvider>
@@ -112,18 +122,23 @@ test('It displays a quantified association row for a product model', async () =>
 test('It triggers the onChange event when updating the quantity', async () => {
   const onChange = jest.fn();
 
-  const quantifiedLink = {
-    identifier: 'braided-hat',
-    quantity: '15',
-  };
-
   await act(async () => {
     ReactDOM.render(
       <DependenciesProvider>
         <AkeneoThemeProvider>
           <table>
             <tbody>
-              <QuantifiedAssociationRow product={productModel} quantifiedLink={quantifiedLink} onChange={onChange} />
+              <QuantifiedAssociationRow
+                row={{
+                  productType: ProductType.ProductModel,
+                  associationTypeCode: 'PACK',
+                  quantity: 15,
+                  identifier: 'braided-hat',
+                  product: productModel,
+                }}
+                onChange={onChange}
+                onRowDelete={() => {}}
+              />
             </tbody>
           </table>
         </AkeneoThemeProvider>
@@ -139,5 +154,11 @@ test('It triggers the onChange event when updating the quantity', async () => {
 
   fireEvent.change(quantityInput, {target: {value: '16'}});
 
-  expect(onChange).toBeCalledWith({identifier: 'braided-hat', quantity: '16'});
+  expect(onChange).toBeCalledWith({
+    productType: ProductType.ProductModel,
+    associationTypeCode: 'PACK',
+    quantity: 16,
+    identifier: 'braided-hat',
+    product: productModel,
+  });
 });

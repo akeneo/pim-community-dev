@@ -29,15 +29,9 @@ const getQuantifiedLinkForIdentifier = (
   productsType: ProductsType,
   identifier: Identifier
 ): QuantifiedLink | undefined => {
-  const quantifiedLink = quantifiedAssociationCollection[associationTypeCode][productsType].find(
+  return quantifiedAssociationCollection[associationTypeCode][productsType].find(
     entity => entity.identifier === identifier
   );
-
-  // if (undefined === quantifiedLink) {
-  //   throw Error('Quantified link not found');
-  // }
-
-  return quantifiedLink;
 };
 
 const setQuantifiedAssociationCollection = (
