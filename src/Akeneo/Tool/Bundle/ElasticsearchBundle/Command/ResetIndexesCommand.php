@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Command;
 
-use Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand;
-use Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -179,12 +177,10 @@ class ResetIndexesCommand extends ContainerAwareCommand
         $output->writeln('');
         $output->writeln('<info>All the indexes have been successfully reset!</info>');
         $output->writeln('');
-        $output->writeln(
-            sprintf(
-                '<info>You can now use the command %s and %s to start re-indexing your product and product models.</info>',
-                IndexProductCommand::NAME,
-                IndexProductModelCommand::NAME
-            )
-        );
+        $output->writeln('<info>You can now use the following commands to manually re-index the entities you want:</info>');
+        $commands = $this->getContainer()->getParameter('elasticsearch_indexing_commands');
+        foreach ($commands as $command) {
+            $output->writeln(sprintf('    <info>- %s</info>', $command::NAME));
+        }
     }
 }
