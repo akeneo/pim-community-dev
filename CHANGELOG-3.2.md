@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- AOB-953: Fix `ComputeFamilyVariantStructureChanges` constraint by accepting array of several elements
+
 ## Improvement
 
 - PIM-9165: Improve message of `akeneo:elasticsearch:reset-indexes` command. Now, all commands available to re-index entities are shown.
