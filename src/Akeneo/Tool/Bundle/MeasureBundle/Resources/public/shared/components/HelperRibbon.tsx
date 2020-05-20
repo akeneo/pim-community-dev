@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React, {PropsWithChildren} from 'react';
 import {WarningIcon} from 'akeneomeasure/shared/icons/WarningIcon';
-import {akeneoTheme} from 'akeneomeasure/shared/theme';
+import {akeneoTheme} from '@akeneo-pim-community/shared';
 
 enum HelperLevel {
   HELPER_LEVEL_WARNING = 'warning',

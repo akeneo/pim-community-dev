@@ -40,6 +40,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -150,6 +151,9 @@ class ProductController
     /** @var DuplicateValueChecker */
     protected $duplicateValueChecker;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -179,7 +183,8 @@ class ProductController
         ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave,
         WarmupQueryCache $warmupQueryCache,
         EventDispatcherInterface $eventDispatcher,
-        DuplicateValueChecker $duplicateValueChecker = null // TODO @merge master Remove this null parameter and the conditions
+        DuplicateValueChecker $duplicateValueChecker,
+        ?LoggerInterface $logger
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -210,6 +215,7 @@ class ProductController
         $this->warmupQueryCache = $warmupQueryCache;
         $this->eventDispatcher = $eventDispatcher;
         $this->duplicateValueChecker = $duplicateValueChecker;
+        $this->logger = $logger;
     }
 
     /**
@@ -323,16 +329,14 @@ class ProductController
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        if (null !== $this->duplicateValueChecker) {
-            try {
-                $this->duplicateValueChecker->check($data);
-            } catch (InvalidPropertyTypeException $e) {
-                throw new DocumentedHttpException(
-                    Documentation::URL . 'patch_products__code_',
-                    sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
-                    $e
-                );
-            }
+        try {
+            $this->duplicateValueChecker->check($data);
+        } catch (InvalidPropertyTypeException $e) {
+            throw new DocumentedHttpException(
+                Documentation::URL . 'patch_products__code_',
+                sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
+                $e
+            );
         }
 
         $data = $this->populateIdentifierProductValue($data);
@@ -365,16 +369,14 @@ class ProductController
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        if (null !== $this->duplicateValueChecker) {
-            try {
-                $this->duplicateValueChecker->check($data);
-            } catch (InvalidPropertyTypeException $e) {
-                throw new DocumentedHttpException(
-                    Documentation::URL . 'patch_products__code_',
-                    sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
-                    $e
-                );
-            }
+        try {
+            $this->duplicateValueChecker->check($data);
+        } catch (InvalidPropertyTypeException $e) {
+            throw new DocumentedHttpException(
+                Documentation::URL . 'patch_products__code_',
+                sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
+                $e
+            );
         }
 
         $product = $this->productRepository->findOneByIdentifier($code);
@@ -432,7 +434,13 @@ class ProductController
         $resource = $request->getContent(true);
         $this->apiAggregatorForProductPostSave->activate();
         $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
-            $this->apiAggregatorForProductPostSave->dispatchAllEvents();
+            try {
+                $this->apiAggregatorForProductPostSave->dispatchAllEvents();
+            } catch (\Throwable $exception) {
+                $this->logger->critical('An exception has been thrown in the post-save events', [
+                    'exception' => $exception,
+                ]);
+            }
             $this->apiAggregatorForProductPostSave->deactivate();
         });
 
@@ -518,15 +526,6 @@ class ProductController
             } else {
                 $data['values'] = [];
             }
-        } catch (UnknownPropertyException $exception) {
-            throw new DocumentedHttpException(
-                Documentation::URL . 'patch_products__code_',
-                sprintf(
-                    'Property "%s" does not exist. Check the expected format on the API documentation.',
-                    $exception->getPropertyName()
-                ),
-                $exception
-            );
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . 'patch_products__code_',

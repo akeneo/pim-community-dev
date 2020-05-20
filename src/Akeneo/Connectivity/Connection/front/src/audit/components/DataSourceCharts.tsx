@@ -1,15 +1,14 @@
 import React from 'react';
-import {EventChart} from './EventChart';
-import {AuditEventType} from '../../model/audit-event-type.enum';
-import {blueTheme, purpleTheme} from '../event-chart-themes';
-import {Translate} from '../../shared/translate';
 import {Section} from '../../common';
-import {ConnectionSelect} from './ConnectionSelect';
-import styled from 'styled-components';
-import useConnectionSelect from '../useConnectionSelect';
+import styled from '../../common/styled-with-theme';
+import {AuditEventType} from '../../model/audit-event-type.enum';
 import {FlowType} from '../../model/flow-type.enum';
+import {Translate} from '../../shared/translate';
+import {blueTheme, purpleTheme} from '../event-chart-themes';
+import useConnectionSelect from '../useConnectionSelect';
+import {ConnectionSelect} from './ConnectionSelect';
+import {EventChart} from './EventChart';
 import {NoConnection} from './NoConnection';
-import {PropsWithTheme} from '../../common/theme';
 
 const DataSourceChartsContainer = styled.div`
     padding-bottom: 25px;
@@ -24,7 +23,7 @@ const EventChartContainer = styled.div`
     width: 49%;
 `;
 const NoConnectionContainer = styled.div`
-    border: 1px solid ${({theme}: PropsWithTheme) => theme.color.grey70};
+    border: 1px solid ${({theme}) => theme.color.grey60};
     padding-bottom: 20px;
     margin-top: 20px;
 `;

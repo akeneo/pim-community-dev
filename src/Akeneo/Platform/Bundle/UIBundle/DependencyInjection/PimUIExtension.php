@@ -34,6 +34,7 @@ class PimUIExtension extends Extension
         $loader->load('providers.yml');
         $loader->load('services.yml');
         $loader->load('view_elements.yml');
+        $loader->load('install.yml');
 
         $container->setParameter('pim_ui.wrap_class', 'block-wrap');
         $this->placeholdersConfig($config, $container);

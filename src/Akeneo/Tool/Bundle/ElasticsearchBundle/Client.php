@@ -96,7 +96,7 @@ class Client
 
     /**
      * @param array        $documents
-     * @param string       $keyAsId
+     * @param ?string      $keyAsId
      * @param Refresh|null $refresh
      *
      * @throws MissingIdentifierException
@@ -104,22 +104,22 @@ class Client
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_indexing_documents.html#_bulk_indexing}
      */
-    public function bulkIndexes($documents, $keyAsId, Refresh $refresh = null)
+    public function bulkIndexes($documents, $keyAsId = null, Refresh $refresh = null)
     {
         $params = [];
 
         foreach ($documents as $document) {
-            if (!isset($document[$keyAsId])) {
-                throw new MissingIdentifierException(sprintf('Missing "%s" key in document', $keyAsId));
+            $action = ['index' => ['_index' => $this->indexName]];
+
+            if (null !== $keyAsId) {
+                if (!isset($document[$keyAsId])) {
+                    throw new MissingIdentifierException(sprintf('Missing "%s" key in document', $keyAsId));
+                }
+
+                $action['index']['_id'] = $this->idPrefix . $document[$keyAsId];
             }
 
-            $params['body'][] = [
-                'index' => [
-                    '_index' => $this->indexName,
-                    '_id' => $this->idPrefix.$document[$keyAsId],
-                ],
-            ];
-
+            $params['body'][] = $action;
             $params['body'][] = $document;
 
             if (null !== $refresh) {

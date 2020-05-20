@@ -151,3 +151,10 @@ services:
             - '@event_dispatcher'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.persist_two_way_association_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithAssociations\PersistTwoWayAssociationSubscriber'
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: kernel.event_subscriber }

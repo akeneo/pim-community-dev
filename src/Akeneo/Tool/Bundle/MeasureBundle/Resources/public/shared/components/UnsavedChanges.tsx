@@ -1,9 +1,8 @@
 import React from 'react';
-import {useContext} from 'react';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const UnsavedChanges = () => {
-  const __ = useContext(TranslateContext);
+  const __ = useTranslate();
 
   return (
     <div className="AknTitleContainer-state">

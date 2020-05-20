@@ -72,7 +72,7 @@ const utils = {
     getModulePaths(baseDir, sourceDir) {
         const pathSourceFile = require(path.join(baseDir, 'public/js/require-paths.js'));
         const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir);
-        const aliases = Object.assign(paths, getFrontModules(process.cwd(), './public/bundles')(), {
+        const aliases = Object.assign(getFrontModules(process.cwd(), './public/bundles')(), paths, {
           'require-polyfill': path.resolve(sourceDir, './frontend/webpack/require-polyfill.js'),
           'require-context': path.resolve(sourceDir, './frontend/webpack/require-context.js'),
           'module-registry': path.resolve(baseDir, './public/js/module-registry.js'),
@@ -89,6 +89,8 @@ const utils = {
             baseDir,
             'public/bundles/akeneoconnectivityconnection-react/index.ts'
           ),
+          '@akeneo-pim-community/legacy-bridge': path.resolve(baseDir, 'public/bundles/legacy-bridge/index.ts'),
+          '@akeneo-pim-community/shared': path.resolve(baseDir, 'public/bundles/shared/index.ts'),
         });
 
         return { config, aliases };

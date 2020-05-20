@@ -1,8 +1,7 @@
-import {useContext} from 'react';
-import {RouterContext} from 'akeneomeasure/context/router-context';
 import {MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
 import {Unit} from 'akeneomeasure/model/unit';
 import {ValidationError} from 'akeneomeasure/model/validation-error';
+import {useRouter} from '@akeneo-pim-community/legacy-bridge';
 
 type ValidatorResult = {
   valid: boolean;
@@ -12,7 +11,7 @@ type ValidatorResult = {
 type Validator = (measurementFamilyCode: MeasurementFamilyCode, data: Unit) => Promise<ValidatorResult>;
 
 const useCreateUnitValidator = (): Validator => {
-  const router = useContext(RouterContext);
+  const router = useRouter();
 
   return async (measurementFamilyCode: MeasurementFamilyCode, data: Unit) => {
     const response = await fetch(

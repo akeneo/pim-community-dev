@@ -1,14 +1,14 @@
 import React from 'react';
-import {dependencies} from '../dependencies';
 import ReactController from '../react/react-controller';
-import App from 'akeneomeasure/index';
-import {__} from 'akeneomeasure/bridge/legacy/translator';
+import {Index} from 'akeneomeasure/index';
+import {measurementsDependencies} from '../dependencies';
 
 const mediator = require('oro/mediator');
+const __ = require('oro/translator');
 
 class SettingsController extends ReactController {
   reactElementToMount() {
-    return <App dependencies={dependencies} />;
+    return <Index dependencies={measurementsDependencies} />;
   }
 
   routeGuardToUnmount() {
@@ -23,7 +23,7 @@ class SettingsController extends ReactController {
   }
 
   canLeave() {
-    return !dependencies.unsavedChanges.hasUnsavedChanges || confirm(__('pim_ui.flash.unsaved_changes'));
+    return !measurementsDependencies.unsavedChanges.hasUnsavedChanges || confirm(__('pim_ui.flash.unsaved_changes'));
   }
 }
 

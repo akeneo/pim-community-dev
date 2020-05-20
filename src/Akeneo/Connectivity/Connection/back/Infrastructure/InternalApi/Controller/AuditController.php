@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler;
-use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateProductEventCounts;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,18 +20,23 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AuditController
 {
-    /** @var CountDailyEventsByConnectionHandler */
-    private $countDailyEventsByConnectionHandler;
-
     /** @var UserContext */
     private $userContext;
 
+    /** @var GetPeriodEventCountPerConnectionHandler */
+    private $countDailyEventsByConnectionHandler;
+
+    /** @var GetErrorCountPerConnectionHandler */
+    private $getErrorCountPerConnectionHandler;
+
     public function __construct(
-        CountDailyEventsByConnectionHandler $countDailyEventsByConnectionHandler,
-        UserContext $userContext
+        UserContext $userContext,
+        GetPeriodEventCountPerConnectionHandler $countDailyEventsByConnectionHandler,
+        GetErrorCountPerConnectionHandler $getErrorCountPerConnectionHandler
     ) {
         $this->userContext = $userContext;
         $this->countDailyEventsByConnectionHandler = $countDailyEventsByConnectionHandler;
+        $this->getErrorCountPerConnectionHandler = $getErrorCountPerConnectionHandler;
     }
 
     public function getWeeklyAudit(Request $request): JsonResponse
@@ -42,10 +49,10 @@ class AuditController
             (new \DateTimeImmutable('now', $timezone))->format('Y-m-d')
         );
 
-        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval($endDateUser, $timezone);
+        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval($endDateUser, $timezone, new \DateInterval('P7D'));
         [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
 
-        $query = new CountDailyEventsByConnectionQuery($eventType, $fromDateTime, $upToDateTime);
+        $query = new GetPeriodEventCountPerConnectionQuery($eventType, $fromDateTime, $upToDateTime);
         $periodEventCounts = $this->countDailyEventsByConnectionHandler->handle($query);
 
         $data = AggregateProductEventCounts::normalize($periodEventCounts, $timezone);
@@ -53,7 +60,28 @@ class AuditController
         return new JsonResponse($data);
     }
 
-    private function createUserDateTimeInterval(string $endDateUser, \DateTimeZone $timezone): array
+    public function getErrorCountPerConnection(Request $request): JsonResponse
+    {
+        $timezone = new \DateTimeZone($this->userContext->getUserTimezone());
+
+        $errorType = $request->get('error_type');
+        $endDateUser = $request->get(
+            'end_date',
+            (new \DateTimeImmutable('now', $timezone))->format('Y-m-d')
+        );
+
+        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval($endDateUser, $timezone, new \DateInterval('P6D'));
+        [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
+
+        $query = new GetErrorCountPerConnectionQuery($errorType, $fromDateTime, $upToDateTime);
+        $errorCountPerConnection = $this->getErrorCountPerConnectionHandler->handle($query);
+
+        $data = $errorCountPerConnection->normalize();
+
+        return new JsonResponse($data);
+    }
+
+    private function createUserDateTimeInterval(string $endDateUser, \DateTimeZone $timezone, \DateInterval $dateInterval): array
     {
         $endDateTimeUser = \DateTimeImmutable::createFromFormat(
             'Y-m-d',
@@ -67,7 +95,7 @@ class AuditController
             ));
         }
 
-        $startDateTimeUser = $endDateTimeUser->sub(new \DateInterval('P7D'));
+        $startDateTimeUser = $endDateTimeUser->sub($dateInterval);
 
         return [$startDateTimeUser, $endDateTimeUser];
     }

@@ -81,7 +81,7 @@
     "html-webpack-plugin": "3.2.0",
     "imports-loader": "0.8.0",
     "jest": "^24.3.1",
-    "jest-fetch-mock": "^2.1.2",
+    "jest-fetch-mock": "^3.0.3",
     "loader-utils": "1.2.3",
     "mutationobserver-shim": "^0.3.5",
     "prettier": "^1.16.4",
@@ -128,6 +128,8 @@
   },
   "private": true,
   "workspaces": [
-    "src/Akeneo/Connectivity/Connection/front"
+    "src/Akeneo/Connectivity/Connection/front",
+    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
+    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared"
   ]
 }

@@ -83,6 +83,8 @@ pim_enrich.entity.attribute_option:
 
 pim_enrich.entity.association_type:
     label: association type
+    property:
+        is_two_way: 2-way association
     flash:
         update:
             success: Association type successfully updated.
@@ -97,9 +99,11 @@ pim_enrich.entity.association_type:
         index: "]-Inf, 1]{{ count }} association type|]1, Inf[{{ count }} association types"
     module:
         create:
+            title: Create a new association type
             button: Create association type
         delete:
             confirm: Are you sure you want to delete this association type?
+    hint: <a href="{{link}}" target="_blank">In this article</a>, you'll find everything you need to create your own association type.
 
 pim_enrich.entity.group_type:
     label: group type
@@ -208,6 +212,10 @@ pim_enrich.entity.attribute_group:
     label: attribute group
     uppercase_label: Attribute group
     plural_label: Attribute groups
+    show_more_attribute:
+        title: It's a bit crowded around here, we show you {{ attributeCount }}/{{ totalAttributeCount }} attributes.
+        subtitle: To discover all the attributes of this group, just click below!
+        button: View all attributes
     flash:
         update:
             success: Attribute group successfully updated
@@ -223,7 +231,6 @@ pim_enrich.entity.attribute_group:
             attributes_groups_selected: '{{ itemsCount }} group(s) selected'
         delete:
             confirm: Are you sure you want to delete this attribute group?
-
 
 pim_enrich.mass_edit.family:
     title: Families bulk action

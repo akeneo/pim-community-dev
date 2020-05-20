@@ -18,6 +18,9 @@ $rules = [
 
             // Dependency on Symfony Validator to ease validation
             'Symfony\Component\Validator',
+
+            // Dependency on HttpException to transform them into an ApiError
+            'Symfony\Component\HttpKernel\Exception\HttpException'
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
@@ -105,6 +108,9 @@ $rules = [
 
             // Dependency on Doctrine DBAL for persistence layer
             'Doctrine\DBAL',
+
+            // Dependency on Elasticsearch
+            'Akeneo\Tool\Bundle\ElasticsearchBundle\Client'
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Persistence'),
 

@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- TIP-1406: Add a tag to configure a DIC service based on a feature flag
 - PIM-9133: Fix product save when the user has no permission on some attribute groups
 - Fixes memory leak when indexing product models with a lot of product models in the same family
 - PIM-9119: Fix missing warning when using mass edit with parent filter set to empty
@@ -11,10 +12,14 @@
 - PIM-9157: Fix performance issue when loading the data of a product group
 - PIM-9163: total_fields limit of elasticsearch should be configurable
 - PIM-9197: Make queries in InMemoryGetAttributes case insensitive
+- PIM-9213: Fix tooltip hover on Ellipsis for Family Name on creating product
+- PIM-9184: API - Fix dbal query group by part for saas instance
 
 ## New features
 
+- MET-197: Add possibility to define that an association type is two way & automatically create inversed association when association type is two way
 - MET-14: Measurements (or metrics) are now stored in database
+- AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
 
 ## Improvements
 

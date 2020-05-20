@@ -1,5 +1,74 @@
 # 4.0.x
 
+# 4.0.24 (2020-05-07)
+
+# 4.0.23 (2020-05-06)
+
+# 4.0.22 (2020-05-05)
+
+## Bug fixes
+
+- PIM-9224: Fix versioning refresh command
+- PIM-9227: Fix performance issue on product grid for product model images
+- PIM-9181: Backport PIM-9133 to 4.0 (Fix product/product model save when the user has no permission on some attribute groups)
+
+# 4.0.21 (2020-04-29)
+
+## Technical Improvements
+
+- Lock Symfony version on 4.4.7 because of validation issues with 4.4.8
+
+# 4.0.20 (2020-04-27)
+
+# 4.0.19 (2020-04-24)
+
+## Bug fixes
+
+- PIM-9192: Fix error being printed in the response of partial update of products API
+- AOB-937: Include additional properties when indexing product models
+
+# 4.0.18 (2020-04-23)
+
+## Bug fixes
+
+- PIM-9190: Mitigates deadlock on product completeness calculation on concurrent API calls
+- PIM-9190: Fixes memory leak on product model indexing
+
+# 4.0.17 (2020-04-17)
+
+## Bug fixes
+
+- PIM-9160: Fix the display of the associations list on the product edit form
+- PIM-9175: Fix the import of all price values
+
+## Technical Improvements
+
+- PIM-9195: Add extra ImageMagick library to handle SVG files
+
+# 4.0.16 (2020-04-08)
+
+## Bug fixes
+
+- PIM-9164: Improve the display of the validation error message
+
+# 4.0.15 (2020-04-07)
+
+## Technical Improvements
+
+- PIM-9174: PHP_IDE_CONFIG is not dependant from the PIM edition
+
+# 4.0.14 (2020-04-01)
+
+## Technical Improvements
+
+- PIM-9168: Bump symfony/* dependencies to 4.4.7
+
+# 4.0.13 (2020-03-30)
+
+## Bug fixes
+
+- PIM-9164: Fix build property path for localized attributes validation
+
 # 4.0.12 (2020-03-24)
 
 ## Bug fixes
