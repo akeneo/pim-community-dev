@@ -1,5 +1,5 @@
 import {useMemo} from 'react';
-import {useQuery} from '../../services/fetch';
+import {useQuery} from '../../../shared/fetch';
 
 type ConnectionError = {id: number; timestamp: number; content: {message: string; property?: string}};
 

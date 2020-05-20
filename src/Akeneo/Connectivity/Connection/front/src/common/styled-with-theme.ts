@@ -21,6 +21,7 @@ const theme = {
         big: '15px',
         default: '13px',
         small: '11px',
+        metricsBig: '22px',
     },
     icon: {
         search: searchIconUrl,

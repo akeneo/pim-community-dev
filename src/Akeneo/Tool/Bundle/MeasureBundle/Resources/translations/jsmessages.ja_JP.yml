@@ -57,7 +57,6 @@ measurements:
     create_another: 他のユニットを作成
     will_be_read_only: 商品属性が測定ファミリーにリンクされています。ユニットは一度作成されると、編集できるのが翻訳済みのラベルと記号のみになります。
   list:
-    result_count: "{0}0 結果|{1}1 結果|]1, Inf[{{ itemsCount }} 結果"
     header:
       standard_unit: スタンダードユニット
       unit_count: ユニット数

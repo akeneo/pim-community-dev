@@ -22,10 +22,10 @@ class GetConnectionBusinessErrorsEndToEnd extends WebTestCase
     public function test_it_gets_a_connection_business_errors(): void
     {
         $errors = [
-            new BusinessError(new ConnectionCode('erp'), '{"message":"Error 1"}', new \DateTimeImmutable('2020-01-01T00:00:00+00:00')),
-            new BusinessError(new ConnectionCode('erp'), '{"message":"Error 2"}', new \DateTimeImmutable('2020-01-07T00:00:00+00:00'))
+            new BusinessError('{"message":"Error 1"}', new \DateTimeImmutable('2020-01-01T00:00:00+00:00')),
+            new BusinessError('{"message":"Error 2"}', new \DateTimeImmutable('2020-01-07T00:00:00+00:00'))
         ];
-        $this->insertBusinessErrors($errors);
+        $this->insertBusinessErrors(new ConnectionCode('erp'), $errors);
 
         $expectedResult = [
             [
@@ -58,11 +58,11 @@ class GetConnectionBusinessErrorsEndToEnd extends WebTestCase
     /**
      * @param BusinessError[] $errors
      */
-    private function insertBusinessErrors(array $errors): void
+    private function insertBusinessErrors(ConnectionCode $connectionCode, array $errors): void
     {
         /** @var BusinessErrorRepository */
         $repository = $this->get('akeneo_connectivity.connection.persistence.repository.business_error');
-        $repository->bulkInsert($errors);
+        $repository->bulkInsert($connectionCode, $errors);
 
         /** @var Client */
         $elasticsearchClient = $this->get('akeneo_connectivity.client.connection_error');

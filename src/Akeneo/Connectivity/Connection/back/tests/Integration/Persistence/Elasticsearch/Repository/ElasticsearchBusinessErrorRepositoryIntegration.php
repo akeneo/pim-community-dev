@@ -19,10 +19,19 @@ class ElasticsearchBusinessErrorRepositoryIntegration extends TestCase
         /** @var ElasticsearchBusinessErrorRepository */
         $repository = $this->get('akeneo_connectivity.connection.persistence.repository.business_error');
 
-        $repository->bulkInsert([
-            new BusinessError(new ConnectionCode('erp'), '{"message":"First error!"}', new \DateTimeImmutable('2019-12-31T00:00:00+00:00')),
-            new BusinessError(new ConnectionCode('erp'), '{"message":"Second error!","property":"name"}', new \DateTimeImmutable('2020-01-01T00:00:00+00:00')),
-        ]);
+        $repository->bulkInsert(
+            new ConnectionCode('erp'),
+            [
+                new BusinessError(
+                    '{"message":"First error!"}',
+                    new \DateTimeImmutable('2019-12-31T00:00:00+00:00')
+                ),
+                new BusinessError(
+                    '{"message":"Second error!","property":"name"}',
+                    new \DateTimeImmutable('2020-01-01T00:00:00+00:00')
+                ),
+            ]
+        );
 
         /** @var ElasticsearchClient */
         $client = $this->get('akeneo_connectivity.client.connection_error');
@@ -38,7 +47,7 @@ class ElasticsearchBusinessErrorRepositoryIntegration extends TestCase
         Assert::assertEquals([
             'connection_code' => 'erp',
             'content' => ['message' => 'First error!'],
-            'error_datetime' => '2019-12-31T00:00:00+00:00'
+            'error_datetime' => '2019-12-31T00:00:00+00:00',
         ], $doc1);
 
         Assert::assertEquals([

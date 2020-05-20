@@ -57,7 +57,6 @@ measurements:
     create_another: 다른 단위 만들기
     will_be_read_only: 제품 특성이 이 측정 패밀리에 링크되었습니다. 단위가 생성되면, 번역된 레이블 및 기호만 편집할 수 있습니다.
   list:
-    result_count: "{0}0 결과|{1}1 결과|]1, Inf[{{ itemsCount }} 결과"
     header:
       standard_unit: 표준 단위
       unit_count: 단위 수
