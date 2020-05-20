@@ -40,7 +40,8 @@ class DbalSelectPeriodEventCountsQueryIntegration extends TestCase
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
         $this->auditLoader = $this->get('akeneo_connectivity.connection.fixtures.audit_loader');
-        $this->selectPeriodEventCountsQuery = $this->get('akeneo_connectivity.connection.persistence.query.select_period_event_counts');
+        $this->selectPeriodEventCountsQuery =
+            $this->get('akeneo_connectivity.connection.persistence.query.select_period_event_counts');
     }
 
     public function test_it_gets_data_for_connections_with_audit_data(): void
@@ -87,6 +88,7 @@ class DbalSelectPeriodEventCountsQueryIntegration extends TestCase
 
         $fromDateTime = new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC'));
         $upToDateTime = new \DateTimeImmutable('2020-01-08 00:00:00', new \DateTimeZone('UTC'));
+
         $result = $this->selectPeriodEventCountsQuery->execute(
             EventTypes::PRODUCT_UPDATED,
             $fromDateTime,

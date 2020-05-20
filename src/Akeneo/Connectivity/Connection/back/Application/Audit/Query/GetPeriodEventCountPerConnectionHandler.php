@@ -27,10 +27,6 @@ class GetPeriodEventCountPerConnectionHandler
      */
     public function handle(GetPeriodEventCountPerConnectionQuery $query): array
     {
-        $periodEventCountPerConnection = $this
-            ->selectPeriodEventCountsQuery
-            ->execute($query->eventType(), $query->fromDateTime(), $query->upToDateTime());
-
-        return $periodEventCountPerConnection;
+        return $this->selectPeriodEventCountsQuery->execute($query->eventType(), $query->period());
     }
 }
