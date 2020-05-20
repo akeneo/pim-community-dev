@@ -28,10 +28,10 @@ class SqlFindSearchableAssets implements FindSearchableAssetsInterface
     public function byAssetIdentifier(AssetIdentifier $assetIdentifier): ?SearchableAssetItem
     {
         $sqlQuery = <<<SQL
-        SELECT rec.identifier, rec.asset_family_identifier, rec.code, rec.value_collection, ref.attribute_as_label
-        FROM akeneo_asset_manager_asset rec
-        INNER JOIN akeneo_asset_manager_asset_family ref ON ref.identifier = rec.asset_family_identifier
-        WHERE rec.identifier = :asset_identifier;
+        SELECT ass.identifier, ass.asset_family_identifier, ass.code, ass.value_collection, assfam.attribute_as_label, ass.updated_at
+        FROM akeneo_asset_manager_asset ass
+        INNER JOIN akeneo_asset_manager_asset_family assfam ON assfam.identifier = ass.asset_family_identifier
+        WHERE ass.identifier = :asset_identifier;
 SQL;
 
         $statement = $this->connection->executeQuery($sqlQuery, ['asset_identifier' => (string) $assetIdentifier]);
@@ -41,6 +41,7 @@ SQL;
             $result['identifier'],
             $result['asset_family_identifier'],
             $result['code'],
+            $result['updated_at'],
             ValuesDecoder::decode($result['value_collection']),
             $result['attribute_as_label']
         );
@@ -49,10 +50,10 @@ SQL;
     public function byAssetFamilyIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator
     {
         $sqlQuery = <<<SQL
-        SELECT rec.identifier, rec.asset_family_identifier, rec.code, rec.value_collection, ref.attribute_as_label
-        FROM akeneo_asset_manager_asset rec
-        INNER JOIN akeneo_asset_manager_asset_family ref ON ref.identifier = rec.asset_family_identifier
-        WHERE ref.identifier = :asset_family_identifier;
+        SELECT ass.identifier, ass.asset_family_identifier, ass.code, ass.value_collection, assfam.attribute_as_label, ass.updated_at
+        FROM akeneo_asset_manager_asset ass
+        INNER JOIN akeneo_asset_manager_asset_family assfam ON assfam.identifier = ass.asset_family_identifier
+        WHERE assfam.identifier = :asset_family_identifier;
 SQL;
 
         $statement = $this->connection->executeQuery($sqlQuery, ['asset_family_identifier' => (string) $assetFamilyIdentifier]);
@@ -61,6 +62,7 @@ SQL;
                 $result['identifier'],
                 $result['asset_family_identifier'],
                 $result['code'],
+                $result['updated_at'],
                 ValuesDecoder::decode($result['value_collection']),
                 $result['attribute_as_label']
             );
@@ -71,6 +73,7 @@ SQL;
         string $identifier,
         string $assetFamilyIdentifier,
         string $code,
+        string $updatedAt,
         array $values,
         ?string $attributeAsLabel
     ): SearchableAssetItem {
@@ -81,6 +84,7 @@ SQL;
             ->convertToPHPValue($assetFamilyIdentifier, $platform);
         $code = Type::getType(Type::STRING)->convertToPHPValue($code, $platform);
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($attributeAsLabel, $platform);
+        $updatedAt = Type::getType(Type::DATETIME_IMMUTABLE)->convertToPHPValue($updatedAt, $platform);
 
         $assetItem = new SearchableAssetItem();
         $assetItem->identifier = $identifier;
@@ -88,6 +92,7 @@ SQL;
         $assetItem->code = $code;
         $assetItem->labels = $this->getLabels($attributeAsLabel, $values);
         $assetItem->values = $values;
+        $assetItem->updatedAt = $updatedAt;
 
         return $assetItem;
     }

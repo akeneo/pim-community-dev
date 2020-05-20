@@ -277,7 +277,7 @@ class CreateOrUpdateAssetContext implements Context
             AttributeCode::fromString('label')
         );
 
-        $expectedAsset = Asset::create(
+        $expectedAsset = Asset::fromState(
             $houseAsset->getIdentifier(),
             $assetFamilyIdentifier,
             AssetCode::fromString(self::HOUSE_ASSET_CODE),
@@ -306,7 +306,9 @@ class CreateOrUpdateAssetContext implements Context
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('House english description.')
                 ),
-            ])
+            ]),
+            $houseAsset->getCreatedAt(),
+            $houseAsset->getUpdatedAt()
         );
 
         Assert::assertEquals($expectedAsset, $houseAsset);
@@ -388,7 +390,7 @@ class CreateOrUpdateAssetContext implements Context
             ->setOriginalFilename('house.jpg')
             ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_house.jpg');
 
-        $expectedKartellAsset = Asset::create(
+        $expectedKartellAsset = Asset::fromState(
             AssetIdentifier::fromString('frontview_house_fingerprint'),
             $assetFamilyIdentifier,
             AssetCode::fromString(self::HOUSE_ASSET_CODE),
@@ -429,7 +431,9 @@ class CreateOrUpdateAssetContext implements Context
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($coverImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
-            ])
+            ]),
+            $kartellAsset->getCreatedAt(),
+            $kartellAsset->getUpdatedAt()
         );
 
         Assert::assertEquals($expectedKartellAsset, $kartellAsset);
@@ -561,7 +565,7 @@ class CreateOrUpdateAssetContext implements Context
             AttributeCode::fromString('label')
         );
 
-        $expectedPhoneAsset = Asset::create(
+        $expectedPhoneAsset = Asset::fromState(
             $phoneAsset->getIdentifier(),
             $assetFamilyIdentifier,
             AssetCode::fromString(self::PHONE_ASSET_CODE),
@@ -585,7 +589,9 @@ class CreateOrUpdateAssetContext implements Context
                     LocaleReference::noReference(),
                     TextData::fromString(self::PHONE_ASSET_CODE)
                 )
-            ])
+            ]),
+            $phoneAsset->getCreatedAt(),
+            $phoneAsset->getUpdatedAt()
         );
 
         Assert::assertEquals($expectedPhoneAsset, $phoneAsset);
@@ -611,7 +617,12 @@ class CreateOrUpdateAssetContext implements Context
             ->setOriginalFilename('house.jpg')
             ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_house.jpg');
 
-        $expectedHouseAsset = Asset::create(
+        $houseAsset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::HOUSE_ASSET_CODE)
+        );
+
+        $expectedHouseAsset = Asset::fromState(
             AssetIdentifier::fromString('frontview_house_fingerprint'),
             $assetFamilyIdentifier,
             AssetCode::fromString(self::HOUSE_ASSET_CODE),
@@ -646,17 +657,19 @@ class CreateOrUpdateAssetContext implements Context
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('House english description')
                 )
-            ])
-        );
-
-        $houseAsset = $this->assetRepository->getByAssetFamilyAndCode(
-            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
-            AssetCode::fromString(self::HOUSE_ASSET_CODE)
+            ]),
+            $houseAsset->getCreatedAt(),
+            $houseAsset->getUpdatedAt()
         );
 
         Assert::assertEquals($expectedHouseAsset, $houseAsset);
 
-        $expectedFlowerAsset = Asset::create(
+        $flowerAsset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::FLOWER_ASSET_CODE)
+        );
+
+        $expectedFlowerAsset = Asset::fromState(
             AssetIdentifier::fromString('frontview_flower_fingerprint'),
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AssetCode::fromString(self::FLOWER_ASSET_CODE),
@@ -673,12 +686,9 @@ class CreateOrUpdateAssetContext implements Context
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Updated Flower english name')
                 )
-            ])
-        );
-
-        $flowerAsset = $this->assetRepository->getByAssetFamilyAndCode(
-            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
-            AssetCode::fromString(self::FLOWER_ASSET_CODE)
+            ]),
+            $flowerAsset->getCreatedAt(),
+            $flowerAsset->getUpdatedAt()
         );
 
         Assert::assertEquals($expectedFlowerAsset, $flowerAsset);

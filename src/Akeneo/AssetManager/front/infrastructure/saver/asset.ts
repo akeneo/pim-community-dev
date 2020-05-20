@@ -48,6 +48,8 @@ type BackendEditionAsset = {
   code: AssetCode;
   labels: LabelCollection;
   values: BackendValue[];
+  createdAt: string;
+  updatedAt: string;
 };
 
 export const normalizeEditionAsset = (asset: EditionAsset): BackendEditionAsset => ({
@@ -55,6 +57,8 @@ export const normalizeEditionAsset = (asset: EditionAsset): BackendEditionAsset 
   code: asset.code,
   labels: asset.labels,
   values: asset.values.map(normalizeEditionValue),
+  createdAt: asset.createdAt,
+  updatedAt: asset.updatedAt,
 });
 
 interface AssetSaver {

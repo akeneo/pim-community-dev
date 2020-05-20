@@ -22,6 +22,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -53,12 +54,16 @@ class AssetHydrator implements AssetHydratorInterface
         $assetCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
         $valueCollection = json_decode($row['value_collection'], true);
+        $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['created_at'], $this->platform);
+        $updatedAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['updated_at'], $this->platform);
 
-        $asset = Asset::create(
+        $asset = Asset::fromState(
             AssetIdentifier::fromString($assetIdentifier),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AssetCode::fromString($assetCode),
-            ValueCollection::fromValues($this->hydrateValues($valueKeyCollection, $attributes, $valueCollection))
+            ValueCollection::fromValues($this->hydrateValues($valueKeyCollection, $attributes, $valueCollection)),
+            $createdAt,
+            $updatedAt
         );
 
         return $asset;

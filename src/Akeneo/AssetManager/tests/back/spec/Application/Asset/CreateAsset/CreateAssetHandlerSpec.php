@@ -15,6 +15,7 @@ namespace spec\Akeneo\AssetManager\Application\Asset\CreateAsset;
 
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
+use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -70,27 +71,37 @@ class CreateAssetHandlerSpec extends ObjectBehavior
             Argument::type(AssetCode::class)
         )->willReturn($assetIdentifier);
 
-        $expectedAsset = Asset::create(
+        $assetRepository->create(Argument::that(function ($asset) use (
             $assetIdentifier,
             $assetFamilyIdentifier,
-            AssetCode::fromString('intel'),
-            ValueCollection::fromValues([
-                Value::create(
-                    $labelAttributeReference->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::createFromNormalized('en_US'),
-                    TextData::createFromNormalize('Intel')
-                ),
-                Value::create(
-                    $labelAttributeReference->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::createFromNormalized('fr_FR'),
-                    TextData::createFromNormalize('Intel')
-                ),
-            ])
-        );
+            $labelAttributeReference
+        ) {
+            Assert::count($asset->getRecordedEvents(), 1);
+            Assert::isInstanceOf(current($asset->getRecordedEvents()), AssetCreatedEvent::class);
+            $asset->clearRecordedEvents();
 
-        $assetRepository->create(Argument::that(function ($asset) use ($expectedAsset) {
+            $expectedAsset = Asset::fromState(
+                $assetIdentifier,
+                $assetFamilyIdentifier,
+                AssetCode::fromString('intel'),
+                ValueCollection::fromValues([
+                    Value::create(
+                        $labelAttributeReference->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::createFromNormalized('en_US'),
+                        TextData::createFromNormalize('Intel')
+                    ),
+                    Value::create(
+                        $labelAttributeReference->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::createFromNormalized('fr_FR'),
+                        TextData::createFromNormalize('Intel')
+                    ),
+                ]),
+                $asset->getCreatedAt(),
+                $asset->getUpdatedAt(),
+            );
+
             Assert::eq($expectedAsset, $asset);
             return true;
         }))->shouldBeCalled();

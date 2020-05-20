@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\Asset;
 
+use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
@@ -26,7 +27,9 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValue;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class AssetSpec extends ObjectBehavior
 {
@@ -117,12 +120,128 @@ class AssetSpec extends ObjectBehavior
              LocaleReference::noReference(),
              TextData::fromString('Philippe Stark')
          );
+
          $this->findValue($valueKey)->shouldBeNull();
 
          $this->setValue($value);
 
          $this->findValue($valueKey)->shouldBeEqualTo($value);
      }
+
+     function it_add_created_event_on_recorded_events_when_created()
+     {
+        $identifier = AssetIdentifier::fromString('designer_starck_fingerprint');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetCode = AssetCode::fromString('starck');
+        $this->beConstructedThrough('create', [
+            $identifier,
+            $assetFamilyIdentifier,
+            $assetCode,
+            ValueCollection::fromValues([])
+        ]);
+
+        $recordedEvents = $this->getRecordedEvents();
+
+        $recordedEvents->shouldHaveCount(1);
+        $recordedEvents[0]->shouldBeAnInstanceOf(AssetCreatedEvent::class);
+        $recordedEvents[0]->getAssetIdentifier()->shouldReturn($identifier);
+        $recordedEvents[0]->getAssetCode()->shouldReturn($assetCode);
+        $recordedEvents[0]->getAssetFamilyIdentifier()->shouldReturn($assetFamilyIdentifier);
+     }
+
+     function it_clear_recorded_events()
+     {
+         $this->getRecordedEvents()->shouldHaveCount(1);
+         $this->clearRecordedEvents();
+         $this->getRecordedEvents()->shouldHaveCount(0);
+     }
+
+     function it_does_not_add_created_event_on_recorded_events_when_loaded()
+     {
+         $identifier = AssetIdentifier::fromString('designer_starck_fingerprint');
+         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+         $assetCode = AssetCode::fromString('starck');
+         $valueCollection = ValueCollection::fromValues([
+             Value::create(
+                 AttributeIdentifier::create('designer', 'label', 'fingerprint'),
+                 ChannelReference::noReference(),
+                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                 TextData::fromString('Stark')
+             ),
+             Value::create(
+                 AttributeIdentifier::create('designer', 'label', 'fingerprint'),
+                 ChannelReference::noReference(),
+                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                 TextData::fromString('Stark')
+             ),
+             Value::create(
+                 AttributeIdentifier::create('designer', 'description', 'fingerprint'),
+                 ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                 TextData::fromString('.one value per channel ecommerce / one value per locale fr_FR.')
+             ),
+         ]);
+
+         $this->beConstructedThrough('fromState', [
+             $identifier,
+             $assetFamilyIdentifier,
+             $assetCode,
+             $valueCollection,
+             new \DateTimeImmutable(),
+             new \DateTimeImmutable(),
+         ]);
+
+         $this->getRecordedEvents()->shouldReturn([]);
+     }
+
+     function it_does_not_update_when_value_do_not_change()
+     {
+         $identifier = AssetIdentifier::fromString('designer_starck_fingerprint');
+         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+         $assetCode = AssetCode::fromString('starck');
+         $valueCollection = ValueCollection::fromValues([
+             Value::create(
+                 AttributeIdentifier::create('designer', 'label', 'fingerprint'),
+                 ChannelReference::noReference(),
+                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                 TextData::fromString('Stark')
+             ),
+             Value::create(
+                 AttributeIdentifier::create('designer', 'label', 'fingerprint'),
+                 ChannelReference::noReference(),
+                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                 TextData::fromString('Stark')
+             ),
+             Value::create(
+                 AttributeIdentifier::create('designer', 'description', 'fingerprint'),
+                 ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                 TextData::fromString('.one value per channel ecommerce / one value per locale fr_FR.')
+             ),
+         ]);
+
+         $dateUpdated = new \DateTimeImmutable();
+         $this->beConstructedThrough('fromState', [
+             $identifier,
+             $assetFamilyIdentifier,
+             $assetCode,
+             $valueCollection,
+             new \DateTimeImmutable(),
+             $dateUpdated,
+         ]);
+
+         $this->setValue(Value::create(
+             AttributeIdentifier::create('designer', 'description', 'fingerprint'),
+             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+             TextData::fromString('.one value per channel ecommerce / one value per locale fr_FR.')
+         ));
+
+         $this->getUpdatedAt()->shouldReturn($dateUpdated);
+         $this->getRecordedEvents()->shouldReturn([]);
+     }
+
+
 
      function it_normalizes_itself()
      {

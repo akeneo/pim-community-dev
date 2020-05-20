@@ -133,6 +133,8 @@ CREATE TABLE akeneo_asset_manager_asset (
     code VARCHAR(255) NOT NULL,
     asset_family_identifier VARCHAR(255) NOT NULL,
     value_collection JSON NOT NULL,
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (identifier),
     UNIQUE akeneoasset_manager_identifier_asset_ux (asset_family_identifier, code),
     CONSTRAINT akeneoasset_manager_asset_family_identifier_foreign_key FOREIGN KEY (asset_family_identifier) REFERENCES akeneo_asset_manager_asset_family (identifier)

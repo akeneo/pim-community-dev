@@ -55,7 +55,7 @@ class IndexAssetEventAggregatorSpec extends ObjectBehavior
             new AssetUpdatedEvent(
                 $assetIdentifier,
                 AssetCode::fromString('starck'),
-                AssetFamilyIdentifier::fromString('designer')
+                AssetFamilyIdentifier::fromString('designer'),
             )
         );
         $this->flushEvents();

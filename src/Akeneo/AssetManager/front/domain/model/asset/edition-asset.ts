@@ -19,6 +19,8 @@ type EditionAsset = {
   identifier: AssetIdentifier;
   code: AssetCode;
   labels: LabelCollection;
+  createdAt: string;
+  updatedAt: string;
   assetFamily: AssetFamily;
   values: EditionValueCollection;
 };
@@ -27,6 +29,8 @@ export const createEmptyEditionAsset = (): EditionAsset => ({
   identifier: '',
   code: '',
   labels: {},
+  createdAt: '',
+  updatedAt: '',
   assetFamily: createEmptyAssetFamily(),
   values: [],
 });

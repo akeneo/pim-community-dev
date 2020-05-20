@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\AssetManager\Domain\Model\Asset\Value;
 
+use Akeneo\AssetManager\Domain\Model\Asset\Value\EmptyData;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
@@ -185,6 +186,44 @@ class ValueCollectionSpec extends ObjectBehavior
             return !$value->getChannelReference()->isEmpty();
         })->findValue(ValueKey::createFromNormalized('image_designer_fingerprint_mobile_fr_FR'))
             ->shouldNotBeNull();
+    }
+
+    function it_checks_if_value_already_exist()
+    {
+        $this->hasValue(Value::create(
+            AttributeIdentifier::fromString('another_value'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            EmptyData::create()
+        ))->shouldReturn(true);
+
+        $this->hasValue(Value::create(
+            AttributeIdentifier::fromString('name_designer_fingerprint'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            TextData::fromString('Philippe Starck')
+        ))->shouldReturn(true);
+
+        $this->hasValue(Value::create(
+            AttributeIdentifier::fromString('name_designer_fingerprint'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            TextData::fromString('Philippe Starcks')
+        ))->shouldReturn(false);
+
+        $this->hasValue(Value::create(
+            AttributeIdentifier::fromString('name_designer_fingerprint'),
+            ChannelReference::noReference(),
+            LocaleReference::createFromNormalized('fr_FR'),
+            TextData::fromString('Philippe Starcks')
+        ))->shouldReturn(false);
+
+        $this->hasValue(Value::create(
+            AttributeIdentifier::fromString('name_designer_fingerprint'),
+            ChannelReference::createFromNormalized('e-commerce'),
+            LocaleReference::noReference('fr_FR'),
+            TextData::fromString('Philippe Starcks')
+        ))->shouldReturn(false);
     }
 
     function it_returns_the_count_of_values()

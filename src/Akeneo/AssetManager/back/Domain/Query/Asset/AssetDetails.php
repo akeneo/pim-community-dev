@@ -37,6 +37,10 @@ class AssetDetails
     private const VALUES = 'values';
     private const PERMISSION = 'permission';
     private const EDIT_PERMISSION = 'edit';
+    private const CREATED_AT = 'created_at';
+    private const UPDATED_AT = 'updated_at';
+
+    private const DATE_FORMAT = 'c';
 
     /** @var AssetIdentifier */
     public $identifier;
@@ -53,6 +57,12 @@ class AssetDetails
     /** @var LabelCollection */
     public $labels;
 
+    /** @var \DateTimeImmutable */
+    public $createdAt;
+
+    /** @var \DateTimeImmutable */
+    public $updatedAt;
+
     /** @var array */
     public $image;
 
@@ -68,6 +78,8 @@ class AssetDetails
         AttributeIdentifier $attributeAsMainMediaIdentifier,
         AssetCode $code,
         LabelCollection $labels,
+        \DateTimeImmutable $createdAt,
+        \DateTimeImmutable $updatedAt,
         array $image,
         array $values,
         bool $isAllowedToEdit
@@ -77,6 +89,8 @@ class AssetDetails
         $this->attributeAsMainMediaIdentifier = $attributeAsMainMediaIdentifier;
         $this->code = $code;
         $this->labels = $labels;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
         $this->values = $values;
         $this->image = $image;
         $this->isAllowedToEdit = $isAllowedToEdit;
@@ -90,6 +104,8 @@ class AssetDetails
             self::ATTRIBUTE_AS_MAIN_MEDIA_IDENTIFIER => $this->attributeAsMainMediaIdentifier->normalize(),
             self::CODE                        => $this->code->normalize(),
             self::LABELS                      => $this->labels->normalize(),
+            self::CREATED_AT => $this->createdAt->format(self::DATE_FORMAT),
+            self::UPDATED_AT => $this->updatedAt->format(self::DATE_FORMAT),
             self::IMAGE                       => $this->image,
             self::VALUES                      => $this->values,
             self::PERMISSION                  => [

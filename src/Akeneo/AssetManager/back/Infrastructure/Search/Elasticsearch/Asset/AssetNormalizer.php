@@ -133,11 +133,6 @@ class AssetNormalizer implements AssetNormalizerInterface
         return $result;
     }
 
-    private function now(): int
-    {
-        return (new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp();
-    }
-
     private function generateFilledValueKeys(SearchableAssetItem $searchableAssetItem): array
     {
         return array_fill_keys(array_keys($searchableAssetItem->values), true);
@@ -156,7 +151,7 @@ class AssetNormalizer implements AssetNormalizerInterface
             self::ASSET_FAMILY_CODE => $searchableAssetItem->assetFamilyIdentifier,
             self::ASSET_FULL_TEXT_SEARCH => $fullTextMatrix,
             self::ASSET_CODE_LABEL_SEARCH => $codeLabelMatrix,
-            self::UPDATED_AT => $this->now(),
+            self::UPDATED_AT => $searchableAssetItem->updatedAt->getTimestamp(),
             self::COMPLETE_VALUE_KEYS => $filledValueKeysMatrix,
             self::VALUES_FIELD => $filterableValues
         ];

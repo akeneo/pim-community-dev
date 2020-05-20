@@ -208,6 +208,8 @@ class GetActionTest extends ControllerIntegrationTestCase
             $portraitAttribute->getIdentifier(),
             AssetCode::fromString('starck'),
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2020-05-14T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2020-05-14T09:30:03-07:00'),
             [],
             $values,
             true

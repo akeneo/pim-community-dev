@@ -140,6 +140,54 @@ class ValueSpec extends ObjectBehavior
         ))->shouldReturn(false);
     }
 
+    function it_tell_if_two_values_are_equals()
+    {
+        $this->equals(
+            Value::create(
+                AttributeIdentifier::fromString('name_designer_fingerprint'),
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                TextData::fromString('Starck'),
+            ),
+        )->shouldReturn(true);
+
+        $this->equals(
+            Value::create(
+                AttributeIdentifier::fromString('name_designer_fingerprint'),
+                ChannelReference::noReference(),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                TextData::fromString('Starck'),
+            ),
+        )->shouldReturn(false);
+
+        $this->equals(
+            Value::create(
+                AttributeIdentifier::fromString('name_designer_fingerprint'),
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
+                LocaleReference::noReference(),
+                TextData::fromString('Starck'),
+            )
+        )->shouldReturn(false);
+
+        $this->equals(
+            Value::create(
+                AttributeIdentifier::fromString('another_attribute'),
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                TextData::fromString('Starck'),
+            ),
+        )->shouldReturn(false);
+
+        $this->equals(
+            Value::create(
+                AttributeIdentifier::fromString('another_attribute'),
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                TextData::fromString('Starcks'),
+            ),
+        )->shouldReturn(false);
+    }
+
     function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn([

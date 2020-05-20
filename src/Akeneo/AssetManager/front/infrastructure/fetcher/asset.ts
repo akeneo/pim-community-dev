@@ -33,6 +33,8 @@ const denormalizeEditionAsset = (assetFamily: AssetFamily) => (backendAsset: Bac
   return {
     identifier: backendAsset.identifier,
     code: backendAsset.code,
+    createdAt: backendAsset.created_at,
+    updatedAt: backendAsset.updated_at,
     labels: denormalizeLabelCollection(backendAsset.labels),
     assetFamily,
     values: backendAsset.values.map(backendEditionValue => ({

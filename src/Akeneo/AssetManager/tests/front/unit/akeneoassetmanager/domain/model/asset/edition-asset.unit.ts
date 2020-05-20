@@ -48,6 +48,8 @@ describe('akeneo > asset family > domain > model > asset --- edition-asset', () 
       identifier: '',
       code: '',
       labels: {},
+      createdAt: '',
+      updatedAt: '',
       assetFamily: createEmptyAssetFamily(),
       values: [],
     });

@@ -58,6 +58,11 @@ class FileData implements ValueDataInterface
         $this->updatedAt = $updatedAt;
     }
 
+    public function equals(ValueDataInterface $valueData): bool
+    {
+        return $valueData instanceof self && $valueData->normalize() === $this->normalize();
+    }
+
     /**
      * @return array
      */
