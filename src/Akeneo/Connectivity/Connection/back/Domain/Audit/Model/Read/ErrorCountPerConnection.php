@@ -19,7 +19,7 @@ final class ErrorCountPerConnection
      */
     public function __construct(array $errorCounts)
     {
-        foreach($errorCounts as $errorCount) {
+        foreach ($errorCounts as $errorCount) {
             if (!$errorCount instanceof ErrorCount) {
                 throw new \InvalidArgumentException('One of the given element is not an ErrorCount object.');
             }

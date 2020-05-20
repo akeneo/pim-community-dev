@@ -49,7 +49,7 @@ abstract class ApiError implements ApiErrorInterface
         return $this->content;
     }
 
-    abstract function type(): ErrorType;
+    abstract public function type(): ErrorType;
 
     public function normalize(): array
     {
