@@ -1,8 +1,8 @@
 export type FieldOperand = {
   field: string;
-  scope: string | null;
-  locale: string | null;
-  currency: string | null;
+  scope?: string | null;
+  locale?: string | null;
+  currency?: string | null;
 };
 
 export type ConstantOperand = {

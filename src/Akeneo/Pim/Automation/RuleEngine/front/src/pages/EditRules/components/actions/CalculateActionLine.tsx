@@ -22,8 +22,8 @@ const OperandView: React.FC<{ operand: Operand }> = ({ operand }) => {
     return (
       <FallbackField
         field={fieldOperand.field}
-        scope={fieldOperand.scope}
-        locale={fieldOperand.locale}
+        scope={fieldOperand.scope || null}
+        locale={fieldOperand.locale || null}
       />
     );
   }
