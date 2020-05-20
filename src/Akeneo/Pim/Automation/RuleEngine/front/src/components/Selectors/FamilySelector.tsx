@@ -96,12 +96,7 @@ const FamilySelector: React.FC<Props> = ({
           handleResults(families, currentCatalogLocale),
       }}
       initSelection={(_element, callback) => {
-        initSelectedFamilies(
-          router,
-          value,
-          currentCatalogLocale,
-          callback
-        );
+        initSelectedFamilies(router, value, currentCatalogLocale, callback);
       }}
     />
   );

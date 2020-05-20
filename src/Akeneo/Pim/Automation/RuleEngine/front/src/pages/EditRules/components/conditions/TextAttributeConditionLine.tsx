@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useFormContext } from 'react-hook-form';
-import { TextAttributeCondition, TextAttributeOperators, } from '../../../../models/TextAttributeCondition';
+import {
+  TextAttributeCondition,
+  TextAttributeOperators,
+} from '../../../../models/TextAttributeCondition';
 import { Operator } from '../../../../models/Operator';
 import { ConditionLineProps } from './ConditionLineProps';
 import { Locale } from '../../../../models';
@@ -56,12 +59,12 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
 }) => {
   const { register, watch, setValue } = useFormContext();
 
-  const getOperatorFormValue: (() => Operator) = () => {
+  const getOperatorFormValue: () => Operator = () => {
     return watch(`content.conditions[${lineNumber}].operator`);
-  }
-  const getScopeFormValue: (() => string) = () => {
+  };
+  const getScopeFormValue: () => string = () => {
     return watch(`content.conditions[${lineNumber}].scope`);
-  }
+  };
 
   const getAvailableLocales = (): Locale[] => {
     if (!condition.attribute.scopable) {
@@ -76,9 +79,9 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
     return [];
   };
 
-  const getLocaleFormValue: (() => string) = () => {
+  const getLocaleFormValue: () => string = () => {
     return watch(`content.conditions[${lineNumber}].locale`);
-  }
+  };
 
   const shouldDisplayValue: () => boolean = () => {
     return !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
@@ -94,27 +97,31 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
     locale: condition.locale,
   });
 
-  const setValueFormValue = ((value: string | null) => {
+  const setValueFormValue = (value: string | null) => {
     setValue(`content.conditions[${lineNumber}].value`, value);
-  });
+  };
 
-  const setScopeFormValue = ((value: string) => {
+  const setScopeFormValue = (value: string) => {
     setValue(`content.conditions[${lineNumber}].scope`, value);
-    if (!getAvailableLocales().map(locale => locale.code ).includes(getLocaleFormValue())) {
+    if (
+      !getAvailableLocales()
+        .map(locale => locale.code)
+        .includes(getLocaleFormValue())
+    ) {
       setLocaleFormValue(null);
     }
-  });
+  };
 
-  const setLocaleFormValue = ((value: string | null) => {
+  const setLocaleFormValue = (value: string | null) => {
     setValue(`content.conditions[${lineNumber}].locale`, value);
-  });
+  };
 
-  const setOperatorFormValue = ((value: Operator) => {
+  const setOperatorFormValue = (value: Operator) => {
     setValue(`content.conditions[${lineNumber}].operator`, value);
     if (!shouldDisplayValue()) {
       setValueFormValue(null);
     }
-  });
+  };
 
   return (
     <div>

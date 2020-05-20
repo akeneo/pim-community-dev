@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import { Locale } from '../../models';
 import {
   Select2Option,
@@ -56,7 +56,7 @@ const LocaleSelector: React.FC<Props> = ({
       formatSelection={formatLocale}
       placeholder={'Locale'}
       value={value}
-      onValueChange={(value) => onChange(value as string) }
+      onValueChange={value => onChange(value as string)}
     />
   );
 };

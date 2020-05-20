@@ -65,7 +65,7 @@ type Props = Select2GlobalProps & {
   data?: (Select2Option | Select2OptionGroup)[];
   multiple: boolean;
   ajax?: Select2Ajax;
-  onValueChange?: (value: (Select2Value | Select2Value[])) => void;
+  onValueChange?: (value: Select2Value | Select2Value[]) => void;
   value?: Select2Value | Select2Value[];
 };
 
@@ -130,9 +130,11 @@ const Select2Wrapper: React.FC<Props> = ({
 
   useEffect(() => {
     if (select2ref) {
-      getSelect2Input().val(value).trigger('change.select2');
+      getSelect2Input()
+        .val(value)
+        .trigger('change.select2');
     }
-  }, [ value ]);
+  }, [value]);
 
   useEffect(() => {
     initSelect2(true);
@@ -146,7 +148,7 @@ const Select2Wrapper: React.FC<Props> = ({
     if (select2ref) {
       getSelect2Input().select2('close');
     }
-  }, [closeTick])
+  }, [closeTick]);
 
   return (
     <>

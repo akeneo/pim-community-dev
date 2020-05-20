@@ -1,6 +1,7 @@
 import React from 'react';
 import {
-  Select2GlobalProps, Select2Option,
+  Select2GlobalProps,
+  Select2Option,
   Select2Value,
   Select2Wrapper,
 } from './Select2Wrapper';

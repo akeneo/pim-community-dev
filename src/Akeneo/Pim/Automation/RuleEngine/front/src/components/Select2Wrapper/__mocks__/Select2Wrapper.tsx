@@ -2,7 +2,8 @@ import React, { ChangeEvent, useEffect } from 'react';
 import {
   Select2Option,
   Select2OptionGroup,
-  Select2Props, Select2Value,
+  Select2Props,
+  Select2Value,
   Select2Wrapper as BaseWrapper,
 } from '../Select2Wrapper';
 import { Label } from '../../Labels';
@@ -29,14 +30,17 @@ const Select2Wrapper: typeof BaseWrapper = ({
     if (data) {
       setOptions(data);
     }
-  }, [ data ]);
+  }, [data]);
 
   const options = stateOptions;
   if (value) {
     const values = Array.isArray(value) ? value : [value];
     values.forEach((valueMesCouilles: Select2Value) => {
       if (!stateOptions.map(option => option.id).includes(valueMesCouilles)) {
-        options.push({id: valueMesCouilles, text: `__mock__${valueMesCouilles}`});
+        options.push({
+          id: valueMesCouilles,
+          text: `__mock__${valueMesCouilles}`,
+        });
       }
     });
   }
@@ -79,8 +83,7 @@ const Select2Wrapper: typeof BaseWrapper = ({
         onChange={handleChange}
         onClick={handleClick}
         multiple={multiple}
-        value={value === null ? (multiple ? [] : '') : value as string}
-      >
+        value={value === null ? (multiple ? [] : '') : (value as string)}>
         {placeholder ? (
           <option disabled value={''}>
             {placeholder}

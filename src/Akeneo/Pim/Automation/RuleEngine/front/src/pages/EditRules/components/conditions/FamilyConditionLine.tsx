@@ -55,24 +55,24 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
     );
   };
 
-  const getOperatorFormValue: (() => Operator) = () => {
+  const getOperatorFormValue: () => Operator = () => {
     return watch(`content.conditions[${lineNumber}].operator`);
-  }
+  };
 
-  const setValueFormValue = ((value: string[] | null) => {
+  const setValueFormValue = (value: string[] | null) => {
     setValue(`content.conditions[${lineNumber}].value`, value);
-  });
+  };
 
-  const setOperatorFormValue = ((value: Operator) => {
+  const setOperatorFormValue = (value: Operator) => {
     setValue(`content.conditions[${lineNumber}].operator`, value);
     if (!shouldDisplayValue()) {
       setValueFormValue(null);
     }
-  });
+  };
 
-  const getValueFormValue: (() => string[]) = () => {
+  const getValueFormValue: () => string[] = () => {
     return watch(`content.conditions[${lineNumber}].value`);
-  }
+  };
 
   return (
     <div>

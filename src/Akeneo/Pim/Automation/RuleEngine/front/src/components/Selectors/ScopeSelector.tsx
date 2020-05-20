@@ -41,7 +41,7 @@ const ScopeSelector: React.FC<Props> = ({
       hideSearch={true}
       placeholder={'Channel'}
       value={value}
-      onValueChange={(value) => onChange(value as string) }
+      onValueChange={value => onChange(value as string)}
     />
   );
 };
