@@ -67,7 +67,7 @@ class DuplicateProductController
         $data = json_decode($request->getContent(), true);
 
         if (!isset($data['duplicated_product_identifier'])) {
-            throw new UnprocessableEntityHttpException('You should give either a "duplicated_product_identifier" key.');
+            throw new UnprocessableEntityHttpException('You should give a "duplicated_product_identifier" key.');
         }
 
         /** @var ProductInterface */
