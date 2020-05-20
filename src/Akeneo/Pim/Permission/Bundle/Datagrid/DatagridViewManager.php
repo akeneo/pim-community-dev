@@ -65,7 +65,7 @@ class DatagridViewManager extends BaseDatagridViewManager
 
         foreach ($views as $key => $view) {
             if (false === $this->authorizationChecker->isGranted(Attributes::VIEW, $view)) {
-                unset($views[$key]);
+                unset($views[$key]); /** @phpstan-ignore-line */
             }
         }
 

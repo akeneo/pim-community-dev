@@ -135,5 +135,7 @@ class EditTextValueCommandValidator extends ConstraintValidator
         if ($command->attribute->isValidationRuleSetToEmail()) {
             return $validator->validate($command->text, [new Constraints\Email()]);
         }
+
+        return new ConstraintViolationList();
     }
 }

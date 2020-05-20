@@ -6,3 +6,5 @@ parameters:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests
     symfony:
         container_xml_path: %rootDir%/../../../var/cache/dev/srcKernelDevDebugContainer.xml
+    ignoreErrors:
+        - '#Unsafe usage of new static().#'
