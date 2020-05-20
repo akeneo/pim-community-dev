@@ -170,7 +170,7 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
-  back_behat_legacy:
+  test_back_behat_legacy:
     machine:
         image: ubuntu-1604:201903-01
     parallelism: 20
@@ -217,6 +217,14 @@ jobs:
           path: var/logs
       - store_artifacts:
           path: var/tests/screenshots
+
+  pull_request_success:
+      docker:
+          - image: alpine/git
+      steps:
+          - run:
+              name: Success
+              command: echo "The build has run with success! Let's merge :)"
 
   test_front_static_acceptance_and_integration:
       machine:
@@ -594,7 +602,7 @@ workflows:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
-          - back_behat_legacy:
+          - test_back_behat_legacy:
                 requires:
                     - test_back_data_migrations
                     - test_back_missing_structure_migrations
@@ -606,6 +614,11 @@ workflows:
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
                     - test_onboarder_bundle
+          - pull_request_success:
+                requires:
+                    - test_back_behat_legacy
+                    - test_back_performance
+                    - deploy_upgrade_oldest_prod_environment
 
   nightly_helpdesk:
       triggers:
@@ -674,7 +687,7 @@ workflows:
           - test_onboarder_bundle:
                 requires:
                     - build_dev
-          - back_behat_legacy:
+          - test_back_behat_legacy:
                 requires:
                     - build_dev
           - test_back_data_migrations:
@@ -690,7 +703,7 @@ workflows:
                     - test_back_phpunit
                     - test_onboarder_bundle
                     - test_back_performance
-                    - back_behat_legacy
+                    - test_back_behat_legacy
                     - deploy_master_environment
                     - deploy_upgrade_oldest_prod_environment
                     - test_back_data_migrations
@@ -731,7 +744,7 @@ workflows:
           - test_onboarder_bundle:
                 requires:
                     - build_dev
-          - back_behat_legacy:
+          - test_back_behat_legacy:
                 requires:
                     - build_dev
           - test_back_data_migrations:
@@ -747,7 +760,7 @@ workflows:
                     - test_back_phpunit
                     - test_onboarder_bundle
                     - test_back_performance
-                    - back_behat_legacy
+                    - test_back_behat_legacy
                     - deploy_master_environment
                     - deploy_upgrade_oldest_prod_environment
                     - test_back_data_migrations
