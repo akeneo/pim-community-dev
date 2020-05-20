@@ -16,7 +16,7 @@ Feature: Delete a reference entity
       | entity_identifier | code   | labels                                 | required | order | value_per_channel | value_per_locale | record_type |
       | designer          | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false    | 2     | false             | false            | designer    |
     When the user deletes the reference entity "designer"
-    Then there should be a validation error on the property '' with message 'You can not delete this entity because reference entity attributes are related to this entity'
+    Then there should be a validation error on the property '' with message 'To delete this reference entity, first check the attributes in all your reference entities and then delete the ones linked to this'
     And there is a reference entity "designer" with:
       | identifier | labels                                       | image |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |

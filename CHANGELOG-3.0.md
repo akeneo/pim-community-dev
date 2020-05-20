@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Improvements
+
+- PIM-9247: Improve message when you tried to delete a reference entity linked to another one
+
 # 3.0.78 (2020-05-13)
 
 # 3.0.77 (2020-05-12)
