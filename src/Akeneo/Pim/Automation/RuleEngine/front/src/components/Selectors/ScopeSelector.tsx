@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select2SimpleSyncWrapper } from '../Select2Wrapper';
 import { LocaleCode, Scope, ScopeCode } from '../../models';
-import { Translate } from "../../dependenciesTools";
+import { Translate } from '../../dependenciesTools';
 
 type Props = {
   id: string;

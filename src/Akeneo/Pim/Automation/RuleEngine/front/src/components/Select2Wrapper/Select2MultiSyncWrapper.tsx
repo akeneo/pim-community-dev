@@ -13,6 +13,12 @@ type Props = Select2GlobalProps & {
 };
 
 const Select2MultiSyncWrapper: React.FC<Props> = props => {
+  if (Object.prototype.hasOwnProperty.call(props, 'ajax')) {
+    throw new Error(
+      'You can not instanciate a Select2MultiSyncWrapper with ajax key'
+    );
+  }
+
   const { onValueChange, ...remainingProps } = props;
 
   const handleChange = (value: Select2Value | Select2Value[]) => {

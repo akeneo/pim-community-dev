@@ -71,6 +71,5 @@ describe('FamilyConditionLine', () => {
     expect(queryByTestId('edit-rules-input-1-value')).toBeNull();
     userEvent.selectOptions(operatorSelector, Operator.NOT_IN_LIST);
     expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
-
   });
 });

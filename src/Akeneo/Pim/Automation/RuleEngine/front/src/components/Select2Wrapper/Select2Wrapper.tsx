@@ -86,6 +86,7 @@ const Select2Wrapper: React.FC<Props> = ({
   value,
   onValueChange,
   closeTick = false,
+  hideSearch = false,
 }) => {
   const select2ref = useRef<HTMLInputElement | null>(null);
 
@@ -94,12 +95,13 @@ const Select2Wrapper: React.FC<Props> = ({
   };
 
   const initSelect2 = (destroy = false) => {
-    if (select2ref) {
+    if (select2ref.current) {
       if (destroy) {
+        getSelect2Input().select2('close');
         getSelect2Input().select2('destroy');
       }
       getSelect2Input().val(value);
-      getSelect2Input().select2({
+      const options: any = {
         ajax,
         data,
         multiple,
@@ -109,7 +111,12 @@ const Select2Wrapper: React.FC<Props> = ({
         formatResult,
         containerCssClass,
         dropdownCssClass,
-      });
+        hideSearch,
+      };
+      if (hideSearch) {
+        options.minimumResultsForSearch = Infinity;
+      }
+      getSelect2Input().select2(options);
 
       if (onSelecting) {
         getSelect2Input().off('select2-selecting');
@@ -129,10 +136,18 @@ const Select2Wrapper: React.FC<Props> = ({
 
   useEffect(() => {
     initSelect2();
+
+    return () => {
+      getSelect2Input().off('change');
+      getSelect2Input().select2('destroy');
+      getSelect2Input()
+        .select2('container')
+        .remove();
+    };
   }, [select2ref]);
 
   useEffect(() => {
-    if (select2ref) {
+    if (select2ref.current) {
       getSelect2Input()
         .val(value)
         .trigger('change.select2');
@@ -148,7 +163,7 @@ const Select2Wrapper: React.FC<Props> = ({
   }, [onSelecting]);
 
   useEffect(() => {
-    if (select2ref) {
+    if (select2ref.current) {
       getSelect2Input().select2('close');
     }
   }, [closeTick]);

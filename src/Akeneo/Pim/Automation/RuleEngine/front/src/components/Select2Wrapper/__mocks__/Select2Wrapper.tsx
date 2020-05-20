@@ -33,12 +33,12 @@ const Select2Wrapper: typeof BaseWrapper = ({
 
   const options = stateOptions;
   if (value) {
-    const values = Array.isArray(value) ? value : [value];
-    values.forEach((valueMesCouilles: Select2Value) => {
-      if (!stateOptions.map(option => option.id).includes(valueMesCouilles)) {
+    const valuesArray = Array.isArray(value) ? value : [value];
+    valuesArray.forEach((singleValue: Select2Value) => {
+      if (!stateOptions.map(option => option.id).includes(singleValue)) {
         options.push({
-          id: valueMesCouilles,
-          text: `__mock__${valueMesCouilles}`,
+          id: singleValue,
+          text: `__mock__${singleValue}`,
         });
       }
     });

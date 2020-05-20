@@ -74,8 +74,8 @@ const AddConditionButton: React.FC<Props> = ({
         event.preventDefault();
         if (event.val !== null) {
           // Use has not clicked on a group
-          handleAddCondition(event.val);
           setCloseTick(!closeTick);
+          handleAddCondition(event.val);
         }
       }}
       ajax={{

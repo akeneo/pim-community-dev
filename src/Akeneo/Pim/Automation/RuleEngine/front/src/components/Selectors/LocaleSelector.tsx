@@ -5,7 +5,7 @@ import {
   Select2OptionGroup,
   Select2SimpleSyncWrapper,
 } from '../Select2Wrapper';
-import { Translate } from "../../dependenciesTools";
+import { Translate } from '../../dependenciesTools';
 
 type Props = {
   id: string;
