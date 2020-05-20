@@ -610,6 +610,11 @@ jobs:
         alias:     rule_impacted_product_count
         label:     Calculation of the affected products for the rules
         type:      mass_edit_rule
+    rule_engine_execute_rules:
+        connector: Akeneo Rule Engine Connector
+        alias:     rule_engine_execute_rules
+        label:     Execution of the rules
+        type:      execute_rules
     xlsx_product_model_import:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_model_import
