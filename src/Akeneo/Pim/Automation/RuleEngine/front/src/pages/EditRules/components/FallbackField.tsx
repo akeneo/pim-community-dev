@@ -13,9 +13,12 @@ const FallbackField: React.FC<Props> = ({ field, scope, locale }) => {
       return null;
     }
 
+    const parts = locale.split(/_/);
+    const countryCode = parts.length === 3 ? parts[2]: parts[1];
+
     return (
       <>
-        <Flag locale={locale} flagDescription={locale} /> {locale}
+        <Flag locale={locale} flagDescription={countryCode} /> {parts[0]}
       </>
     );
   };
