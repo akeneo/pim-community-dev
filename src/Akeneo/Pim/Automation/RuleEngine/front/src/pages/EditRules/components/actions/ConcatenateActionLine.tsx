@@ -30,16 +30,20 @@ const ConcatenateActionLine: React.FC<Props> = ({
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
-      {action.from.map((field: ProductField, key: number) => (
-        <React.Fragment key={key}>
+      {action.from
+        .map((field: ProductField, key: number) => (
           <FallbackField
+            key={key}
             field={field.field}
             scope={field.scope || null}
             locale={field.locale || null}
           />
-          {key < action.from.length - 1 && ', '}
-        </React.Fragment>
-      ))}
+        ))
+        .reduce((prev: JSX.Element, curr: JSX.Element): any => [
+          prev,
+          ', ',
+          curr,
+        ])}
       &nbsp;are concatenated into&nbsp;
       <FallbackField
         field={action.to.field}

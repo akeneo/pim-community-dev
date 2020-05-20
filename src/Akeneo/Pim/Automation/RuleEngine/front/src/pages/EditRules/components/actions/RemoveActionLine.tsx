@@ -45,7 +45,7 @@ const RemoveActionLine: React.FC<Props> = ({
       {/* It is not translated since it is temporary. */}
       The value{action.items.length > 1 && 's'}&nbsp;
       <span className='AknRule-attribute'>
-        {action.items.map((item: string) => `${item}`).join(', ')}
+        {action.items.join(', ')}
         {action.includeChildren && ' and children'}
       </span>
       {action.items.length > 1 || action.includeChildren ? ' are' : ' is'}
