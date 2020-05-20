@@ -65,7 +65,8 @@ class SqlFindConnectorAssetsByIdentifiers implements FindConnectorAssetsByIdenti
                 asset_family_identifier, 
                 value_collection
             FROM akeneo_asset_manager_asset
-            WHERE identifier IN (:identifiers);
+            WHERE identifier IN (:identifiers)
+            ORDER BY FIELD(identifier, :identifiers);
 SQL;
 
         $statement = $this->sqlConnection->executeQuery(
