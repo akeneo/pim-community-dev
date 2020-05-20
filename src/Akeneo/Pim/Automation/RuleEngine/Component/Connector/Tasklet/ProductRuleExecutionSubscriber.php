@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedSubjectActionEvent;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SavedSubjectsEvent;
@@ -40,6 +41,7 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
             RuleEvents::POST_APPLY => 'postApply',
             RuleEvents::POST_SAVE_SUBJECTS => 'postSave',
             RuleEvents::SKIP => 'skipInvalid',
+            SkippedActionForSubjectEvent::class => 'skipAction',
         ];
     }
 
@@ -61,18 +63,32 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
         $this->stepExecution->incrementSummaryInfo('updated_entities', count($event->getSubjects()));
     }
 
+    public function skipAction(SkippedActionForSubjectEvent $event): void
+    {
+        $subject = $event->getSubject();
+        // TODO: better error message; we do not have access to the rule here,
+        // and there is no normalizer for the action yet
+        $this->stepExecution->addWarning(
+            \sprintf(
+                'Cannot apply this action to %s: %s', $this->getEntityIdentifier($subject), $event->getReason()
+            ),
+            [],
+            new DataInvalidItem($subject)
+        );
+    }
+
     public function skipInvalid(SkippedSubjectRuleEvent $event)
     {
         $rule = $event->getDefinition();
         $subject = $event->getSubject();
         if ($subject instanceof ProductModelInterface) {
-            $identifier = sprintf('product model %s', $subject->getCode());
+            $identifier = \sprintf('"%s" product model', $subject->getCode());
         } else {
-            $identifier = sprintf('product %s', $subject->getIdentifier());
+            $identifier = \sprintf('"%s" product', $subject->getIdentifier());
         }
 
         $message = \sprintf(
-            'Rule %s: skipped %s:%s%s',
+            'Rule "%s": validation failed for %s:%s%s',
             $rule->getCode(),
             $identifier,
             PHP_EOL,
@@ -80,5 +96,14 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
         );
         $this->stepExecution->addWarning($message, [], new DataInvalidItem($subject));
         $this->stepExecution->incrementSummaryInfo('skipped_invalid');
+    }
+
+    private function getEntityIdentifier(EntityWithValuesInterface $entity): string
+    {
+        return \sprintf(
+            '%s "%s"',
+            $entity instanceof ProductModelInterface ? 'product model' : 'product',
+            $entity instanceof ProductModelInterface ? $entity->getCode() : $entity->getIdentifier(),
+        );
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
@@ -22,6 +23,7 @@ use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Remove action interface used in product rules.
@@ -40,14 +42,19 @@ class RemoverActionApplier implements ActionApplierInterface
     /** @var CategoryRepositoryInterface */
     private $categoryRepository;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         PropertyRemoverInterface $propertyRemover,
         GetAttributes $getAttributes,
-        CategoryRepositoryInterface $categoryRepository
+        CategoryRepositoryInterface $categoryRepository,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->propertyRemover = $propertyRemover;
         $this->getAttributes = $getAttributes;
         $this->categoryRepository = $categoryRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -67,6 +74,9 @@ class RemoverActionApplier implements ActionApplierInterface
                 );
             } catch (NonApplicableActionException $e) {
                 unset($entitiesWithValues[$index]);
+                $this->eventDispatcher->dispatch(
+                    new SkippedActionForSubjectEvent($action, $entityWithValues, $e->getMessage())
+                );
             }
         }
 
@@ -104,7 +114,12 @@ class RemoverActionApplier implements ActionApplierInterface
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
-            throw new NonApplicableActionException();
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'Cannot set the "%s" property to this entity as it is not in the attribute set',
+                    $attribute->code()
+                )
+            );
         }
     }
 

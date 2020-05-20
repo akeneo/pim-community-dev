@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductClearActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
@@ -21,6 +22,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyClearerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -35,12 +37,17 @@ final class ClearerActionApplier implements ActionApplierInterface
     /** @var GetAttributes */
     private $getAttributes;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         PropertyClearerInterface $propertyClearer,
-        GetAttributes $getAttributes
+        GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->propertyClearer = $propertyClearer;
         $this->getAttributes = $getAttributes;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -64,6 +71,9 @@ final class ClearerActionApplier implements ActionApplierInterface
                 $this->clearDataOnEntityWithValues($entityWithValues, $action);
             } catch (NonApplicableActionException $e) {
                 unset($entitiesWithValues[$index]);
+                $this->eventDispatcher->dispatch(
+                    new SkippedActionForSubjectEvent($action, $entityWithValues, $e->getMessage())
+                );
             }
         }
 
@@ -92,7 +102,12 @@ final class ClearerActionApplier implements ActionApplierInterface
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
-            throw new NonApplicableActionException();
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'Cannot set the "%s" property to this entity as it is not in the attribute set',
+                    $attribute->code()
+                )
+            );
         }
     }
 

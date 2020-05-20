@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
@@ -19,6 +20,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyCopierInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Copier action applier
@@ -33,10 +35,17 @@ class CopierActionApplier implements ActionApplierInterface
     /** @var GetAttributes */
     private $getAttributes;
 
-    public function __construct(PropertyCopierInterface $propertyCopier, GetAttributes $getAttributes)
-    {
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    public function __construct(
+        PropertyCopierInterface $propertyCopier,
+        GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->propertyCopier = $propertyCopier;
         $this->getAttributes = $getAttributes;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -50,6 +59,9 @@ class CopierActionApplier implements ActionApplierInterface
                 $this->copyDataOnEntityWithValues($entityWithValues, $action);
             } catch (NonApplicableActionException $e) {
                 unset($entitiesWithValues[$index]);
+                $this->eventDispatcher->dispatch(
+                    new SkippedActionForSubjectEvent($action, $entityWithValues, $e->getMessage())
+                );
             }
         }
 
@@ -91,7 +103,12 @@ class CopierActionApplier implements ActionApplierInterface
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
-            throw new NonApplicableActionException();
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'Cannot set the "%s" property to this entity as it is not in the attribute set',
+                    $attribute->code()
+                )
+            );
         }
     }
 

@@ -85,7 +85,7 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
         ];
 
         $stepExecution->addWarning(<<<EOL
-            Rule my_rule: skipped product foo:
+            Rule "my_rule": validation failed for "foo" product:
             validation error 1
             validation error 2
             EOL,

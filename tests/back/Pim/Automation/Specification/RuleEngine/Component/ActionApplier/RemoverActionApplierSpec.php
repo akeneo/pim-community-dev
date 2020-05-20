@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -17,15 +18,17 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RemoverActionApplierSpec extends ObjectBehavior
 {
     function let(
         PropertyRemoverInterface $propertyRemover,
         GetAttributes $getAttributes,
-        CategoryRepositoryInterface $categoryRepository
+        CategoryRepositoryInterface $categoryRepository,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($propertyRemover, $getAttributes, $categoryRepository);
+        $this->beConstructedWith($propertyRemover, $getAttributes, $categoryRepository, $eventDispatcher);
     }
 
     function it_supports_remove_action(ProductRemoveActionInterface $action)
@@ -173,6 +176,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
     function it_does_not_apply_remove_action_on_entity_with_family_variant_if_variation_level_is_not_right(
         PropertyRemoverInterface $propertyRemover,
         GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher,
         ProductRemoveActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         FamilyVariantInterface $familyVariant,
@@ -193,6 +197,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $entityWithFamilyVariant->getVariationLevel()->willReturn(1);
 
         $propertyRemover->removeData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
         $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }

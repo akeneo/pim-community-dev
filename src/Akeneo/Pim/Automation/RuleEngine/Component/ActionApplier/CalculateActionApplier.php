@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\GetOperandValue;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operand;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operation;
@@ -27,6 +28,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
@@ -44,16 +46,21 @@ class CalculateActionApplier implements ActionApplierInterface
     /** @var PropertySetterInterface */
     private $propertySetter;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         GetAttributes $getAttributes,
         GetOperandValue $getOperandValue,
         NormalizerInterface $priceNormalizer,
-        PropertySetterInterface $propertySetter
+        PropertySetterInterface $propertySetter,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->getAttributes = $getAttributes;
         $this->getOperandValue = $getOperandValue;
         $this->priceNormalizer = $priceNormalizer;
         $this->propertySetter = $propertySetter;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function applyAction(ActionInterface $action, array $items = []): array
@@ -75,6 +82,9 @@ class CalculateActionApplier implements ActionApplierInterface
                 );
             } catch (NonApplicableActionException $e) {
                 unset($items[$index]);
+                $this->eventDispatcher->dispatch(
+                    new SkippedActionForSubjectEvent($action, $entityWithValues, $e->getMessage())
+                );
             }
         }
 
@@ -88,7 +98,6 @@ class CalculateActionApplier implements ActionApplierInterface
 
     /**
      * We do not apply the action if:
-     *  - entity has no family
      *  - destination attribute does not belong to the family
      *  - entity is variant (variant product or product model) and destination attribute is not on the entity's variation level
      */
@@ -100,13 +109,23 @@ class CalculateActionApplier implements ActionApplierInterface
         Assert::isInstanceOf($destination, Attribute::class);
 
         $family = $entity->getFamily();
-        if (null === $family || !$family->hasAttributeCode($destination->code())) {
-            throw new NonApplicableActionException();
+        if (null === $family) {
+            return;
+        }
+        if (!$family->hasAttributeCode($destination->code())) {
+            throw new NonApplicableActionException(
+                \sprintf('The "%s" attribute does not belong to the entity\'s family', $destination->code())
+            );
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant && $familyVariant->getLevelForAttributeCode($destination->code()) !== $entity->getVariationLevel()) {
-            throw new NonApplicableActionException();
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'Cannot set the "%s" property to this entity as it is not in the attribute set',
+                    $destination->code()
+                )
+            );
         }
     }
 

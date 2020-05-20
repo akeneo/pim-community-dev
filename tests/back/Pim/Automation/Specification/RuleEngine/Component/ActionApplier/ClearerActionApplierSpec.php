@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\ClearerActionApplier;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductClearAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetAction;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
@@ -26,12 +27,13 @@ use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyClearerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ClearerActionApplierSpec extends ObjectBehavior
 {
-    function let(PropertyClearerInterface $propertyClearer, GetAttributes $getAttributes)
+    function let(PropertyClearerInterface $propertyClearer, GetAttributes $getAttributes, EventDispatcherInterface $eventDispatcher)
     {
-        $this->beConstructedWith($propertyClearer, $getAttributes);
+        $this->beConstructedWith($propertyClearer, $getAttributes, $eventDispatcher);
     }
 
     function it_is_initializable()
@@ -148,6 +150,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
     function it_does_not_apply_clear_attribute_action_on_product_model_when_variation_level_is_not_right(
         PropertyClearerInterface $propertyClearer,
         GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher,
         ProductModel $productModel,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant
@@ -164,11 +167,8 @@ class ClearerActionApplierSpec extends ObjectBehavior
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getLevelForAttributeCode('name')->willReturn(2);
 
-        $propertyClearer->clear(
-            Argument::any(),
-            Argument::any(),
-            Argument::any()
-        )->shouldNotBeCalled();
+        $propertyClearer->clear(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
         $this->applyAction($clearerAction, [$productModel])->shouldReturn([]);
     }

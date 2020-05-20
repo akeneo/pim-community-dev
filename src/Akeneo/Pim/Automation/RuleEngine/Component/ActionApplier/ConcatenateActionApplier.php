@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierRegistry;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSource;
@@ -24,6 +25,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -46,14 +48,19 @@ final class ConcatenateActionApplier implements ActionApplierInterface
     /** @var GetAttributes */
     private $getAttributes;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         PropertySetterInterface $propertySetter,
         ValueStringifierRegistry $valueStringifierRegistry,
-        GetAttributes $getAttributes
+        GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->propertySetter = $propertySetter;
         $this->valueStringifierRegistry = $valueStringifierRegistry;
         $this->getAttributes = $getAttributes;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function supports(ActionInterface $action): bool
@@ -75,6 +82,9 @@ final class ConcatenateActionApplier implements ActionApplierInterface
                 $this->concatenateDataOnEntityWithValues($entityWithValues, $action);
             } catch (NonApplicableActionException $e) {
                 unset($entitiesWithValues[$index]);
+                $this->eventDispatcher->dispatch(
+                    new SkippedActionForSubjectEvent($action, $entityWithValues, $e->getMessage())
+                );
             }
         }
 
@@ -83,7 +93,6 @@ final class ConcatenateActionApplier implements ActionApplierInterface
 
     /**
      * We do not apply the action if:
-     *  - entity has no family
      *  - target attribute does not belong to the family
      *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
@@ -96,14 +105,24 @@ final class ConcatenateActionApplier implements ActionApplierInterface
         Assert::isInstanceOf($attribute, Attribute::class);
 
         $family = $entity->getFamily();
-        if (null === $family || !$family->hasAttributeCode($attribute->code())) {
-            throw new NonApplicableActionException();
+        if (null === $family) {
+            return;
+        }
+        if (!$family->hasAttributeCode($attribute->code())) {
+            throw new NonApplicableActionException(
+                \sprintf('The "%s" attribute does not belong to the entity\'s family', $attribute->code())
+            );
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
-            throw new NonApplicableActionException();
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'Cannot set the "%s" property to this entity as it is not in the attribute set',
+                    $attribute->code()
+                )
+            );
         }
     }
 

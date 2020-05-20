@@ -50,6 +50,16 @@ final class ExecuteRulesTasklet implements TaskletInterface
 
     public function execute()
     {
+        $this->stepExecution->setSummary(
+            [
+                'read_rules' => 0,
+                'selected_entities' => 0,
+                'skipped_invalid' => 0,
+                'updated_entities' => 0,
+                'executed_rules' => 0,
+            ]
+        );
+
         $subscriber = new ProductRuleExecutionSubscriber($this->stepExecution);
         $this->eventDispatcher->addSubscriber($subscriber);
 

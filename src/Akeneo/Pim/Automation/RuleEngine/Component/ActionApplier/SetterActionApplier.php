@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
@@ -21,6 +22,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Setter action applier
@@ -35,10 +37,17 @@ class SetterActionApplier implements ActionApplierInterface
     /** @var GetAttributes */
     private $getAttributes;
 
-    public function __construct(PropertySetterInterface $propertySetter, GetAttributes $getAttributes)
-    {
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    public function __construct(
+        PropertySetterInterface $propertySetter,
+        GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->propertySetter = $propertySetter;
         $this->getAttributes = $getAttributes;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -52,6 +61,9 @@ class SetterActionApplier implements ActionApplierInterface
                 $this->setDataOnEntityWithValues($entityWithValues, $action);
             } catch (NonApplicableActionException $e) {
                 unset($entitiesWithValues[$index]);
+                $this->eventDispatcher->dispatch(
+                    new SkippedActionForSubjectEvent($action, $entityWithValues, $e->getMessage())
+                );
             }
         }
 
@@ -99,13 +111,20 @@ class SetterActionApplier implements ActionApplierInterface
             return;
         }
         if (!$family->hasAttributeCode($attribute->code())) {
-            throw new NonApplicableActionException();
+            throw new NonApplicableActionException(
+                \sprintf('The "%s" attribute does not belong to this entity\'s family', $attribute->code())
+            );
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
-            throw new NonApplicableActionException();
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'Cannot set the "%s" property to this entity as it is not in the attribute set',
+                    $attribute->code()
+                )
+            );
         }
     }
 

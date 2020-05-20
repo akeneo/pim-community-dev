@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -15,12 +16,13 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SetterActionApplierSpec extends ObjectBehavior
 {
-    function let(PropertySetterInterface $propertySetter, GetAttributes $getAttributes)
+    function let(PropertySetterInterface $propertySetter, GetAttributes $getAttributes, EventDispatcherInterface $eventDispatcher)
     {
-        $this->beConstructedWith($propertySetter, $getAttributes);
+        $this->beConstructedWith($propertySetter, $getAttributes, $eventDispatcher);
     }
 
     function it_supports_set_action(ProductSetActionInterface $action)
@@ -144,6 +146,7 @@ class SetterActionApplierSpec extends ObjectBehavior
     function it_does_not_apply_set_action_on_entity_with_family_variant_if_variation_level_is_not_right(
         PropertySetterInterface $propertySetter,
         GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher,
         ProductSetActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         FamilyVariantInterface $familyVariant,
@@ -164,6 +167,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $familyVariant->getLevelForAttributeCode('name')->willReturn(1);
 
         $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
         $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
@@ -256,6 +260,7 @@ class SetterActionApplierSpec extends ObjectBehavior
     function it_does_not_apply_set_action_on_an_entity_if_it_does_not_include_all_of_its_parent_categories_too(
         PropertySetterInterface $propertySetter,
         ProductSetActionInterface $action,
+        EventDispatcherInterface $eventDispatcher,
         EntityWithFamilyVariantInterface $entity,
         ProductModelInterface $parent
     ) {
@@ -267,6 +272,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $parent->getCategoryCodes()->willReturn(['socks', 'clothing']);
 
         $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
         $this->applyAction($action, [$entity])->shouldReturn([]);
     }
@@ -274,6 +280,7 @@ class SetterActionApplierSpec extends ObjectBehavior
     function it_does_not_apply_set_action_if_the_field_is_not_an_attribute_of_the_family(
         PropertySetterInterface $propertySetter,
         GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher,
         ProductSetActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         FamilyInterface $family
@@ -289,6 +296,7 @@ class SetterActionApplierSpec extends ObjectBehavior
 
         $entityWithFamilyVariant->getFamilyVariant()->shouldNotBeCalled();
         $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
         $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
