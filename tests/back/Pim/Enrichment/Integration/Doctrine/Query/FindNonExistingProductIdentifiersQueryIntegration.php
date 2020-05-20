@@ -27,6 +27,14 @@ class FindNonExistingProductIdentifiersQueryIntegration extends TestCase
     /**
      * @test
      */
+    public function it_return_nothing_when_nothing_passed()
+    {
+        self::assertEquals([], $this->findNonExistingProductIdentifiersQuery->execute([]));
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_the_product_identifiers_that_does_not_exists()
     {
         $existingProductIdentifiers = [

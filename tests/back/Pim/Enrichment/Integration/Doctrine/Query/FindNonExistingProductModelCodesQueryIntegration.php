@@ -27,14 +27,22 @@ class FindNonExistingProductModelCodesQueryIntegration extends TestCase
     /**
      * @test
      */
+    public function it_return_nothing_when_nothing_passed()
+    {
+        self::assertEquals([], $this->findNonExistingProductModelCodesQuery->execute([]));
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_the_product_model_codes_that_does_not_exists()
     {
         $existingProductModelCodes = [
-            'product_1',
-            'product_2',
-            'product_3',
-            'product_4',
-            'product_5',
+            'product_model_1',
+            'product_model_2',
+            'product_model_3',
+            'product_model_4',
+            'product_model_5',
         ];
 
         foreach ($existingProductModelCodes as $productModelCode) {
@@ -42,17 +50,17 @@ class FindNonExistingProductModelCodesQueryIntegration extends TestCase
         }
 
         $lookupProductModelCodes = [
-            'product_1',
-            'product_2',
-            'product_3',
-            'product_does_not_exists',
+            'product_model_1',
+            'product_model_2',
+            'product_model_3',
+            'product_model_does_not_exists',
         ];
 
         $actualNonExistingProductModelCodes = $this->findNonExistingProductModelCodesQuery->execute(
             $lookupProductModelCodes
         );
         $expectedNonExistingProductModelCodes = [
-            'product_does_not_exists',
+            'product_model_does_not_exists',
         ];
 
         self::assertEquals(
