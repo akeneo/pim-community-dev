@@ -45,7 +45,7 @@ const productModel: Product = {
 
 test('It displays a quantified association row for a product', async () => {
   const onChange = jest.fn();
-  const onRowDelete = jest.fn();
+  const onRemove = jest.fn();
 
   await act(async () => {
     ReactDOM.render(
@@ -62,7 +62,7 @@ test('It displays a quantified association row for a product', async () => {
                   product: product,
                 }}
                 onChange={onChange}
-                onRowDelete={onRowDelete}
+                onRemove={onRemove}
               />
             </tbody>
           </table>
@@ -84,7 +84,7 @@ test('It displays a quantified association row for a product', async () => {
 
 test('It displays a quantified association row for a product model', async () => {
   const onChange = jest.fn();
-  const onRowDelete = jest.fn();
+  const onRemove = jest.fn();
 
   await act(async () => {
     ReactDOM.render(
@@ -101,7 +101,7 @@ test('It displays a quantified association row for a product model', async () =>
                   product: productModel,
                 }}
                 onChange={onChange}
-                onRowDelete={onRowDelete}
+                onRemove={onRemove}
               />
             </tbody>
           </table>
@@ -123,7 +123,7 @@ test('It displays a quantified association row for a product model', async () =>
 
 test('It triggers the onChange event when updating the quantity', async () => {
   const onChange = jest.fn();
-  const onRowDelete = jest.fn();
+  const onRemove = jest.fn();
 
   await act(async () => {
     ReactDOM.render(
@@ -140,7 +140,7 @@ test('It triggers the onChange event when updating the quantity', async () => {
                   product: productModel,
                 }}
                 onChange={onChange}
-                onRowDelete={onRowDelete}
+                onRemove={onRemove}
               />
             </tbody>
           </table>
@@ -166,9 +166,9 @@ test('It triggers the onChange event when updating the quantity', async () => {
   });
 });
 
-test('It triggers the onRowDelete event when the remove button is clicked', async () => {
+test('It triggers the onRemove event when the remove button is clicked', async () => {
   const onChange = jest.fn();
-  const onRowDelete = jest.fn();
+  const onRemove = jest.fn();
 
   await act(async () => {
     ReactDOM.render(
@@ -185,7 +185,7 @@ test('It triggers the onRowDelete event when the remove button is clicked', asyn
                   product: productModel,
                 }}
                 onChange={onChange}
-                onRowDelete={onRowDelete}
+                onRemove={onRemove}
               />
             </tbody>
           </table>
@@ -199,5 +199,5 @@ test('It triggers the onRowDelete event when the remove button is clicked', asyn
   fireEvent.click(removeButton);
 
   expect(onChange).not.toBeCalled();
-  expect(onRowDelete).toBeCalled();
+  expect(onRemove).toBeCalled();
 });

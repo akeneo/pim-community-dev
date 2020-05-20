@@ -42,4 +42,55 @@ const filterOnLabelOrIdentifier = (searchValue: string) => (row: Row): boolean =
     -1 !== row.product.label.toLowerCase().indexOf(searchValue.toLowerCase())) ||
   (undefined !== row.identifier && -1 !== row.identifier.toLowerCase().indexOf(searchValue.toLowerCase()));
 
-export {Row, RowWithProduct, isRowWithProduct, filterOnLabelOrIdentifier, getAssociationIdentifiers, addProductToRows};
+const setRowInCollection = (rows: Row[], {identifier, quantity, productType, associationTypeCode}: Row) =>
+  rows.map(row => {
+    if (
+      row.identifier !== identifier ||
+      row.productType !== productType ||
+      row.associationTypeCode !== associationTypeCode
+    )
+      return row;
+
+    return {...row, quantity};
+  });
+
+const removeRowFromCollection = (collection: Row[], {identifier, associationTypeCode, productType}: Row) =>
+  collection.filter(
+    row =>
+      row.identifier !== identifier ||
+      row.associationTypeCode !== associationTypeCode ||
+      row.productType !== productType
+  );
+
+const addRowsToCollection = (collection: Row[], addedRows: Row[]) =>
+  addedRows.reduce(
+    (collection: Row[], addedRow: Row) => {
+      const row = collection.find(
+        row =>
+          addedRow.identifier === row.identifier &&
+          addedRow.productType === row.productType &&
+          addedRow.associationTypeCode === row.associationTypeCode
+      );
+
+      if (undefined !== row) {
+        row.quantity = 1;
+      } else {
+        collection.push(addedRow);
+      }
+
+      return collection;
+    },
+    [...collection]
+  );
+
+export {
+  Row,
+  RowWithProduct,
+  isRowWithProduct,
+  filterOnLabelOrIdentifier,
+  getAssociationIdentifiers,
+  addProductToRows,
+  setRowInCollection,
+  addRowsToCollection,
+  removeRowFromCollection,
+};

@@ -1,73 +1,51 @@
-import {setQuantifiedAssociationCollection} from '../../../../Resources/public/js/product/form/quantified-associations/models/quantified-association';
-import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models/product';
+import {
+  isQuantifiedAssociationCollectionEmpty,
+  quantifiedAssociationCollectionToRowCollection,
+  rowCollectionToQuantifiedAssociationCollection,
+} from '../../../../Resources/public/js/product/form/quantified-associations/models/quantified-association';
+import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 
-const collection = [
+const quantifiedAssociationCollection = {
+  PACK: {
+    products: [{identifier: 'bag', quantity: 4}],
+    product_models: [],
+  },
+  CROSS_SELL: {
+    products: [{identifier: 'sock', quantity: 8}],
+    product_models: [{identifier: 'braided-hat', quantity: 12}],
+  },
+};
+
+const rowCollection = [
+  {identifier: 'bag', quantity: 4, productType: ProductType.Product, associationTypeCode: 'PACK', product: null},
   {
-    associationTypeCode: 'PACK',
+    identifier: 'sock',
+    quantity: 8,
     productType: ProductType.Product,
-    quantity: 3,
-    identifier: 'bag',
+    associationTypeCode: 'CROSS_SELL',
     product: null,
   },
   {
-    associationTypeCode: 'PACK',
-    productType: ProductType.Product,
-    quantity: 9,
-    identifier: 'cap',
-    product: null,
-  },
-  {
-    associationTypeCode: 'PACK',
-    productType: ProductType.ProductModel,
-    quantity: 17,
     identifier: 'braided-hat',
-    product: null,
-  },
-  {
-    associationTypeCode: 'PACK',
+    quantity: 12,
     productType: ProductType.ProductModel,
-    quantity: 6,
-    identifier: 'socks',
+    associationTypeCode: 'CROSS_SELL',
     product: null,
   },
 ];
 
 describe('quantified association', () => {
-  it('should set the provided quantified link among a quantified association collection', () => {
-    const updatedCollection = setQuantifiedAssociationCollection(collection, 'PACK', ProductType.Product, {
-      identifier: 'cap',
-      quantity: 10,
-    });
+  it('should tell if a quantified association collection is empty', () => {
+    expect(isQuantifiedAssociationCollectionEmpty(quantifiedAssociationCollection)).toEqual(false);
+    expect(isQuantifiedAssociationCollectionEmpty({})).toEqual(true);
+    expect(isQuantifiedAssociationCollectionEmpty({PACK: {products: [], product_models: []}})).toEqual(true);
+  });
 
-    expect(updatedCollection).toEqual([
-      {
-        associationTypeCode: 'PACK',
-        productType: 'product',
-        quantity: 3,
-        identifier: 'bag',
-        product: null,
-      },
-      {
-        associationTypeCode: 'PACK',
-        productType: 'product',
-        quantity: 10,
-        identifier: 'cap',
-        product: null,
-      },
-      {
-        associationTypeCode: 'PACK',
-        productType: 'product_model',
-        quantity: 17,
-        identifier: 'braided-hat',
-        product: null,
-      },
-      {
-        associationTypeCode: 'PACK',
-        productType: 'product_model',
-        quantity: 6,
-        identifier: 'socks',
-        product: null,
-      },
-    ]);
+  it('should create a row collection from a quantified association collection', () => {
+    expect(quantifiedAssociationCollectionToRowCollection(quantifiedAssociationCollection)).toEqual(rowCollection);
+  });
+
+  it('should create a quantified association collection from a row collection', () => {
+    expect(rowCollectionToQuantifiedAssociationCollection(rowCollection)).toEqual(quantifiedAssociationCollection);
   });
 });

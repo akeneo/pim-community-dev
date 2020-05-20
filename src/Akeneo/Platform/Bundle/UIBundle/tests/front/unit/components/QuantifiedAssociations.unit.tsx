@@ -232,6 +232,7 @@ test('It adds products when the user confirm the picker', async () => {
   expect(queryByText(container, 'Nice bag')).toBeInTheDocument();
   expect(queryByText(container, 'Braided hat')).toBeInTheDocument();
 });
+
 test('It displays no rows and a placeholder when the quantified association collection is loading', async () => {
   await act(async () => {
     ReactDOM.render(

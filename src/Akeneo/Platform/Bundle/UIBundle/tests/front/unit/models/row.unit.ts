@@ -3,6 +3,9 @@ import {
   getAssociationIdentifiers,
   isRowWithProduct,
   filterOnLabelOrIdentifier,
+  setRowInCollection,
+  removeRowFromCollection,
+  addRowsToCollection,
 } from '../../../../Resources/public/js/product/form/quantified-associations/models/row';
 import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models/product';
 
@@ -83,5 +86,56 @@ describe('row', () => {
     expect(filterOnLabelOrIdentifier('ba')(productRow)).toEqual(true);
     expect(filterOnLabelOrIdentifier('Nice')({...productRow, product})).toEqual(true);
     expect(filterOnLabelOrIdentifier('k')(productRow)).toEqual(false);
+  });
+
+  it('should set a row within a collection', () => {
+    expect(setRowInCollection([productRow, productModelRow], {...productRow, quantity: 5})).toEqual([
+      {...productRow, quantity: 5},
+      productModelRow,
+    ]);
+  });
+
+  it('should remove a row from a collection', () => {
+    expect(removeRowFromCollection([productRow, productModelRow], productRow)).toEqual([productModelRow]);
+  });
+
+  it('should add rows in a collection', () => {
+    expect(
+      addRowsToCollection(
+        [productRow],
+        [
+          {
+            associationTypeCode: 'PACK',
+            productType: ProductType.Product,
+            quantity: 87,
+            identifier: 'sock',
+            product: null,
+          },
+          {
+            associationTypeCode: 'PACK',
+            productType: ProductType.ProductModel,
+            quantity: 64,
+            identifier: 'braided-sock',
+            product: null,
+          },
+        ]
+      )
+    ).toEqual([
+      productRow,
+      {
+        associationTypeCode: 'PACK',
+        productType: ProductType.Product,
+        quantity: 87,
+        identifier: 'sock',
+        product: null,
+      },
+      {
+        associationTypeCode: 'PACK',
+        productType: ProductType.ProductModel,
+        quantity: 64,
+        identifier: 'braided-sock',
+        product: null,
+      },
+    ]);
   });
 });
