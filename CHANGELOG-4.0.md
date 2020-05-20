@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9252: The asset manager is now accessible when the "Create asset family" ACL is disabled.
+
 # 4.0.27 (2020-05-18)
 
 # 4.0.26 (2020-05-15)
