@@ -25,8 +25,8 @@ const HeaderCell = styled.th`
   position: sticky;
   top: 44px;
   height: 44px;
-  box-shadow: 0 1px 0 ${props => props.theme.color.grey120};
-  background-color: ${props => props.theme.color.white};
+  box-shadow: 0 1px 0 ${({theme}) => theme.color.grey120};
+  background-color: ${({theme}) => theme.color.white};
   padding-right: 20px;
   white-space: nowrap;
 
@@ -37,7 +37,7 @@ const HeaderCell = styled.th`
 
 const TableContainer = styled.table`
   width: 100%;
-  color: ${props => props.theme.color.grey140};
+  color: ${({theme}) => theme.color.grey140};
   border-collapse: collapse;
 `;
 
@@ -59,21 +59,30 @@ const Buttons = styled.div`
 
 type QuantifiedAssociationsProps = {
   value: QuantifiedAssociationCollection;
-  associationTypeCode: string; //TODO useless?
+  associationTypeCode: string;
   onAssociationsChange: (updatedValue: QuantifiedAssociationCollection) => void;
   onOpenPicker: () => Promise<Row[]>;
 };
 
-const QuantifiedAssociations = ({value, onOpenPicker, onAssociationsChange}: QuantifiedAssociationsProps) => {
+const QuantifiedAssociations = ({
+  value,
+  associationTypeCode,
+  onOpenPicker,
+  onAssociationsChange,
+}: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
   const [collection, setCollection] = useState<Row[]>(quantifiedAssociationCollectionToRowCollection(value));
   const [searchValue, setSearchValue] = useState('');
   const products = useProducts(getAssociationIdentifiers(collection));
   const collectionWithProducts = addProductToRows(collection, null === products ? [] : products);
 
-  const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
+  //TODO improve, put only the needed collection in the state
+  const filteredCollectionWithProducts = collectionWithProducts
+    .filter(row => row.associationTypeCode === associationTypeCode)
+    .filter(filterOnLabelOrIdentifier(searchValue));
 
   useEffect(() => {
+    //TODO rework this
     const updatedValue = rowCollectionToQuantifiedAssociationCollection(collection);
     const emptyCollection = Array.isArray(value) && isQuantifiedAssociationCollectionEmpty(updatedValue);
     if (isQuantifiedAssociationCollectionEmpty(updatedValue) && !Array.isArray(value)) {
@@ -81,11 +90,15 @@ const QuantifiedAssociations = ({value, onOpenPicker, onAssociationsChange}: Qua
     } else if (!emptyCollection && updatedValue !== value) {
       onAssociationsChange(updatedValue);
     }
-  }, [collection]);
+  }, [JSON.stringify(collection)]);
 
   const handleAdd = useCallback(async () => {
-    const addedRows = await onOpenPicker();
-    setCollection(addRowsToCollection(collection, addedRows));
+    try {
+      const addedRows = await onOpenPicker();
+      setCollection(addRowsToCollection(collection, addedRows));
+    } catch {
+      // We need to catch because the picker has been closed and thus the promise rejected
+    }
   }, [JSON.stringify(collection)]);
 
   const handleRemove = useCallback((row: Row) => setCollection(removeRowFromCollection(collection, row)), [

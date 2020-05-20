@@ -273,7 +273,6 @@ define([
 
     renderQuantifiedAssociations: function() {
       if (!this.isQuantifiedAssociation(state.associationTypes, this.getCurrentAssociationType())) return;
-      if (this.$('#product-quantified-associations').children().length !== 0) return;
 
       const Component = React.createElement(QuantifiedAssociationsTab, {
         value: this.getFormData().quantified_associations,
