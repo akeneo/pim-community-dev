@@ -21,6 +21,10 @@
   terraform import module.pim-monitoring.google_logging_metric.logs-count ${pfid}-logs-count
   rm .terraform/modules/pim-monitoring/main.tf && mv .terraform/modules/pim-monitoring/main.tf.bak .terraform/modules/pim-monitoring/main.tf
 
+	terraform state mv module.pim.google_monitoring_alert_policy.alert_policy module.pim-monitoring.google_monitoring_alert_policy.alert_policy
+	terraform state mv module.pim.google_monitoring_notification_channel.pagerduty module.pim-monitoring.google_monitoring_notification_channel.pagerduty
+	terraform state mv module.pim.google_monitoring_uptime_check_config.https module.pim-monitoring.google_monitoring_uptime_check_config.https
+
   terraform state rm module.pim.template_file.metric-template
   terraform state rm module.pim.local_file.metric-rendered
   terraform state rm module.pim.null_resource.metric

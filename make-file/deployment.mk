@@ -71,9 +71,9 @@ terraform-apply:
 .PHONY: prepare-infrastructure-artifacts
 prepare-infrastructure-artifacts: render-helm-templates dump-kubernetes-namespace
 	mkdir -p ~/artifacts/infra
-	rm -Rf $(DEPLOYMENTS_INSTANCES_DIR)/**/.terraform || true
-	rm -Rf $(DEPLOYMENTS_INSTANCES_DIR)/**/.kubeconfig || true
-	mv $(DEPLOYMENTS_INSTANCES_DIR)/* ~/artifacts/infra/ || true
+	cp -raT $(DEPLOYMENTS_INSTANCES_DIR) ~/artifacts/infra/ || true
+	rm -Rf ~/artifacts/infra/**/.terraform || true
+	rm -Rf ~/artifacts/infra/**/.kubeconfig || true
 
 .PHONY: render-helm-templates
 render-helm-templates:
@@ -116,7 +116,13 @@ terraform-plan-destroy: terraform-init
 
 .PHONY: terraform-delete
 terraform-delete: terraform-init
-	cd $(INSTANCE_DIR) && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
+	if [ -d "$(INSTANCE_DIR)" ]; then \
+		cd $(INSTANCE_DIR) ;\
+		terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) ;\
+	elif [ -d "$(DEPLOYMENTS_INSTANCES_DIR)/3.2" ]; then \
+		cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
+		terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) ;\
+	fi
 
 .PHONY: create-ci-release-files
 create-ci-release-files: create-ci-values create-pim-main-tf
@@ -173,12 +179,12 @@ slack_helpdesk:
 
 .PHONY: deploy_pr_environment
 deploy_pr_environment:
-	@export PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/}
-	@export INSTANCE_NAME_PREFIX=pimci-pr
-	@export INSTANCE_NAME=pimci-pr-$${PR_NUMBER}
-	@export IMAGE_TAG=$${CIRCLE_SHA1}
-	@echo "This environment will be available at https://pimci-pr-$${PR_NUMBER}.$(GOOGLE_MANAGED_ZONE_DNS) once deployed :)"
-	make create-ci-release-files
+	@PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/} && \
+	INSTANCE_NAME_PREFIX=pimci-pr && \
+	INSTANCE_NAME=pimci-pr-$${PR_NUMBER} && \
+	IMAGE_TAG=$${CIRCLE_SHA1} && \
+	echo "This environment will be available at https://pimci-pr-$${PR_NUMBER}.$(GOOGLE_MANAGED_ZONE_DNS) once deployed :)"
+	make create-ci-release-files && \
 	make deploy
 
 .PHONY: delete_pr_environments
@@ -188,18 +194,23 @@ delete_pr_environments:
 .PHONY: terraform-pre-upgrade
 terraform-pre-upgrade: terraform-init
 	# Required by https://github.com/akeneo/pim-enterprise-dev/pull/8599
-	# yq d -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks"
-	# for PD in $$(kubectl get -n $(PFID) pv $$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') -o jsonpath='{..spec.gcePersistentDisk.pdName}'); do \
-	# 	yq w -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks[+]" "$${PD}"; \
-	# done
+	yq d -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks"
+	for PD in $$(kubectl get -n $(PFID) pv $$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') -o jsonpath='{..spec.gcePersistentDisk.pdName}'); do \
+		yq w -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks[+]" "$${PD}"; \
+	done
 	# Required by https://github.com/akeneo/pim-enterprise-dev/pull/8716
 	# Because of this issue with Google Provider https://github.com/terraform-providers/terraform-provider-google/issues/4460,
 	# we need to force the project in the monitoring provider before importing resources
 	cd $(INSTANCE_DIR)/.terraform/modules/pim-monitoring && sed -i.bak 's/var\.google_project_id/"$(GOOGLE_PROJECT_ID)"/g' main.tf
-	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.login_count" $(PFID)-login-count
-	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.login-response-time-distribution" $(PFID)-login-response-time-distribution
-	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.logs-count" $(PFID)-logs-count
+	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.login_count" $(PFID)-login-count || true
+	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.login-response-time-distribution" $(PFID)-login-response-time-distribution || true
+	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.logs-count" $(PFID)-logs-count || true
 	cd $(INSTANCE_DIR)/.terraform/modules/pim-monitoring && rm main.tf && mv main.tf.bak main.tf
-	cd $(INSTANCE_DIR) && terraform state rm module.pim.template_file.metric-template
-	cd $(INSTANCE_DIR) && terraform state rm module.pim.local_file.metric-rendered
-	cd $(INSTANCE_DIR) && terraform state rm module.pim.null_resource.metric
+	# Move monitoring resources from pim to pim-monitoring
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_alert_policy.alert_policy module.pim-monitoring.google_monitoring_alert_policy.alert_policy || true
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_notification_channel.pagerduty module.pim-monitoring.google_monitoring_notification_channel.pagerduty || true
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_uptime_check_config.https module.pim-monitoring.google_monitoring_uptime_check_config.https || true
+	# Delete useless resources
+	cd $(INSTANCE_DIR) && terraform state rm module.pim.template_file.metric-template || true
+	cd $(INSTANCE_DIR) && terraform state rm module.pim.local_file.metric-rendered || true
+	cd $(INSTANCE_DIR) && terraform state rm module.pim.null_resource.metric || true
