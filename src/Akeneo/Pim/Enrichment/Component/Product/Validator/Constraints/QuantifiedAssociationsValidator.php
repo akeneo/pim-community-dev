@@ -56,6 +56,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, QuantifiedAssociationsConstraint::class);
         }
 
+        /** @see https://github.com/akeneo/pim-community-dev/blob/9b9f18385d51f5d2147a79374bd5b5aa9eae3464/src/Akeneo/Tool/Component/Api/Normalizer/Exception/ViolationNormalizer.php#L144 */
         $constraint->payload['normalize_property_path'] = false;
         $normalized = $value->normalize();
 
