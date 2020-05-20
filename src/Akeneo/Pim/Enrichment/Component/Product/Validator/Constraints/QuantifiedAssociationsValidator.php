@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class QuantifiedAssociationsValidator extends ConstraintValidator
 {
-    const ALLOWED_TARGET_TYPES = [
+    const ALLOWED_LINK_TYPES = [
         'products',
         'product_models',
     ];
@@ -56,40 +56,43 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, QuantifiedAssociationsConstraint::class);
         }
 
+        $constraint->payload['normalize_property_path'] = false;
         $normalized = $value->normalize();
 
         foreach ($normalized as $associationTypeCode => $targets) {
             $propertyPath = sprintf('[%s]', $associationTypeCode);
+            $productsPropertyPath = sprintf('%s[products]', $propertyPath);
+            $productModelsPropertyPath = sprintf('%s[product_models]', $propertyPath);
 
             $associationType = $this->associationTypeRepository->findOneByIdentifier($associationTypeCode);
 
             $this->validateAssociationTypeExists($associationType, $propertyPath);
             $this->validateAssociationTypeIsQuantified($associationType, $propertyPath);
-            $this->validateTargetTypes(array_keys($targets), $propertyPath);
+            $this->validateLinkTypes(array_keys($targets), $propertyPath);
 
             foreach ($targets['products'] as $index => $quantifiedLink) {
-                $quantityPropertyPath = sprintf('%s[%d][\'products\']', $propertyPath, $index);
+                $quantityPropertyPath = sprintf('%s[%d]', $productsPropertyPath, $index);
 
                 $this->validateAssociationQuantity($quantifiedLink['quantity'], $quantityPropertyPath);
             }
 
             foreach ($targets['product_models'] as $index => $quantifiedLink) {
-                $quantityPropertyPath = sprintf('%s[%d][\'product_models\']', $propertyPath, $index);
+                $quantityPropertyPath = sprintf('%s[%d]', $productModelsPropertyPath, $index);
 
                 $this->validateAssociationQuantity($quantifiedLink['quantity'], $quantityPropertyPath);
             }
 
-            $this->validateProductsExist($targets['products']);
-            $this->validateProductModelsExist($targets['product_models']);
+            $this->validateProductsExist($targets['products'], $productsPropertyPath);
+            $this->validateProductModelsExist($targets['product_models'], $productModelsPropertyPath);
 
             $totalQuantifiedLinkCount = count($targets['product_models']) + count($targets['products']);
-            $this->validateTotalCount($totalQuantifiedLinkCount);
+            $this->validateTotalCount($totalQuantifiedLinkCount, $propertyPath);
         }
     }
 
     private function validateAssociationTypeExists(
         ?AssociationTypeInterface $associationType,
-        string $propertyPath = ''
+        string $propertyPath
     ): void {
         if (null === $associationType) {
             $this->context->buildViolation(
@@ -102,7 +105,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 
     private function validateAssociationTypeIsQuantified(
         ?AssociationTypeInterface $associationType,
-        string $propertyPath = ''
+        string $propertyPath
     ): void {
         if (null === $associationType) {
             return;
@@ -117,15 +120,15 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         }
     }
 
-    private function validateTargetTypes(array $targetTypes, string $propertyPath = ''): void
+    private function validateLinkTypes(array $linkTypes, string $propertyPath): void
     {
-        foreach ($targetTypes as $targetType) {
-            if (!in_array($targetType, self::ALLOWED_TARGET_TYPES)) {
+        foreach ($linkTypes as $linkType) {
+            if (!in_array($linkType, self::ALLOWED_LINK_TYPES)) {
                 $this->context->buildViolation(
                     QuantifiedAssociationsConstraint::LINK_TYPE_UNEXPECTED_MESSAGE,
                     [
-                        'value' => $targetType,
-                        'allowed' => implode(',', self::ALLOWED_TARGET_TYPES),
+                        'value' => $linkType,
+                        'allowed' => implode(',', self::ALLOWED_LINK_TYPES),
                     ]
                 )
                     ->atPath($propertyPath)
@@ -134,7 +137,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         }
     }
 
-    private function validateProductsExist(array $quantifiedLinks): void
+    private function validateProductsExist(array $quantifiedLinks, string $propertyPath): void
     {
         $productIdentifiers = array_map(
             function ($quantifiedLink) {
@@ -147,16 +150,18 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             $productIdentifiers
         );
         if (count($nonExistingProductIdentifiers) > 0) {
-            $this->context->addViolation(
+            $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::PRODUCTS_DO_NOT_EXIST_MESSAGE,
                 [
                     'values' => implode(', ', $nonExistingProductIdentifiers),
                 ]
-            );
+            )
+                ->atPath($propertyPath)
+                ->addViolation();
         }
     }
 
-    private function validateProductModelsExist(array $quantifiedLinks): void
+    private function validateProductModelsExist(array $quantifiedLinks, string $propertyPath): void
     {
         $productModelCodes = array_map(
             function ($quantifiedLink) {
@@ -167,16 +172,18 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 
         $nonExistingProductModelCodes = $this->findNonExistingProductModelCodesQuery->execute($productModelCodes);
         if (count($nonExistingProductModelCodes) > 0) {
-            $this->context->addViolation(
+            $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::PRODUCT_MODELS_DO_NOT_EXIST_MESSAGE,
                 [
                     'values' => implode(', ', $nonExistingProductModelCodes),
                 ]
-            );
+            )
+                ->atPath($propertyPath)
+                ->addViolation();
         }
     }
 
-    private function validateAssociationQuantity($quantity, string $propertyPath = ''): void
+    private function validateAssociationQuantity($quantity, string $propertyPath): void
     {
         if (!preg_match('/^[0-9]{1,4}$/', $quantity)
             || intval($quantity) < self::MIN_QUANTITY
@@ -194,16 +201,18 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         }
     }
 
-    private function validateTotalCount(int $count): void
+    private function validateTotalCount(int $count, string $propertyPath): void
     {
         if ($count > self::MAX_ASSOCIATIONS) {
-            $this->context->addViolation(
+            $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::MAX_ASSOCIATIONS_MESSAGE,
                 [
                     'value' => $count,
                     'limit' => self::MAX_ASSOCIATIONS,
                 ]
-            );
+            )
+                ->atPath($propertyPath)
+                ->addViolation();
         }
     }
 }
