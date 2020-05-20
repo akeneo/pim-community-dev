@@ -1,5 +1,5 @@
 import React from 'react';
-import { CopyAction } from '../../../../models/actions/CopyAction';
+import { CopyAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
@@ -17,26 +17,22 @@ const CopyActionLine: React.FC<Props> = ({
 }) => {
   const values: any = {
     type: 'copy',
-    fromField: action.fromField,
-    toField: action.toField,
+    from_field: action.fromField,
+    to_field: action.toField,
   };
 
   if (action.fromLocale) {
-    values.fromLocale = action.fromLocale;
+    values.from_locale = action.fromLocale;
   }
-
   if (action.fromScope) {
-    values.fromScope = action.fromScope;
+    values.from_scope = action.fromScope;
   }
-
   if (action.toLocale) {
-    values.toLocale = action.toLocale;
+    values.to_locale = action.toLocale;
   }
-
   if (action.toScope) {
-    values.toScope = action.toScope;
+    values.to_scope = action.toScope;
   }
-
   useValueInitialization(`content.actions[${lineNumber}]`, values);
 
   return (

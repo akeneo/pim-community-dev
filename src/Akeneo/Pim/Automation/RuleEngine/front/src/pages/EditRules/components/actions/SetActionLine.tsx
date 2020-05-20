@@ -15,13 +15,18 @@ const SetActionLine: React.FC<Props> = ({
   action,
   handleDelete,
 }) => {
-  useValueInitialization(`content.actions[${lineNumber}]`, {
+  const values: any = {
     type: 'set',
     field: action.field,
     value: action.value,
-    locale: action.locale,
-    scope: action.scope,
-  });
+  };
+  if (action.locale) {
+    values.locale = action.locale;
+  }
+  if (action.scope) {
+    values.scope = action.scope;
+  }
+  useValueInitialization(`content.actions[${lineNumber}]`, values);
 
   const displayNull = (value: any): string | null => {
     return null === value ? '' : null;

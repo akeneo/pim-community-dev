@@ -9,14 +9,6 @@ export type ConcatenateAction = {
   to: ProductField;
 };
 
-const addLocaleAndScope = (data: any) => {
-  return {
-    scope: null,
-    locale: null,
-    ...data,
-  };
-};
-
 export const denormalizeConcatenateAction = (
   json: any
 ): ConcatenateAction | null => {
@@ -26,7 +18,7 @@ export const denormalizeConcatenateAction = (
 
   return {
     module: ConcatenateActionLine,
-    from: json.from.map((item: any) => addLocaleAndScope(item)),
-    to: addLocaleAndScope(json.to),
+    from: json.from,
+    to: json.to,
   };
 };

@@ -21,7 +21,6 @@ const ConcatenateActionLine: React.FC<Props> = ({
     from: action.from,
     to: action.to,
   };
-
   useValueInitialization(`content.actions[${lineNumber}]`, values);
 
   return (
@@ -35,8 +34,8 @@ const ConcatenateActionLine: React.FC<Props> = ({
         <React.Fragment key={key}>
           <FallbackField
             field={field.field}
-            scope={field.scope}
-            locale={field.locale}
+            scope={field.scope || null}
+            locale={field.locale || null}
           />
           {key < action.from.length - 1 && ', '}
         </React.Fragment>
@@ -44,8 +43,8 @@ const ConcatenateActionLine: React.FC<Props> = ({
       &nbsp;are concatenated into&nbsp;
       <FallbackField
         field={action.to.field}
-        scope={action.to.scope}
-        locale={action.to.locale}
+        scope={action.to.scope || null}
+        locale={action.to.locale || null}
       />
       .
     </ActionTemplate>

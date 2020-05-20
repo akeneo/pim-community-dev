@@ -137,8 +137,8 @@ const CalculateActionLine: React.FC<Props> = ({
       handleDelete={handleDelete}>
       <FallbackField
         field={action.destination.field}
-        scope={action.destination.scope}
-        locale={action.destination.locale}
+        scope={action.destination.scope || null}
+        locale={action.destination.locale || null}
       />
       &nbsp;is calculated&nbsp;
       {action.operation_list.map((operation: Operation, key: number) => (
