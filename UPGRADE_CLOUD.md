@@ -15,19 +15,13 @@
   In order to reimport them inside Terraform state, run:
   ```bash
   terraform init
-  sed -i.bak 's/var\.google_project_id/"$(GOOGLE_PROJECT_ID)"/g' .terraform/modules/pim-monitoring/main.tf
-  terraform import module.pim-monitoring.google_logging_metric.login_count ${pfid}-login-count
-  terraform import module.pim-monitoring.google_logging_metric.login-response-time-distribution ${pfid}-login-response-time-distribution
-  terraform import module.pim-monitoring.google_logging_metric.logs-count ${pfid}-logs-count
-  rm .terraform/modules/pim-monitoring/main.tf && mv .terraform/modules/pim-monitoring/main.tf.bak .terraform/modules/pim-monitoring/main.tf
+  terraform import module.pim-monitoring.google_logging_metric.login_count "${google_project_id} ${pfid}-login-count"
+  terraform import module.pim-monitoring.google_logging_metric.login-response-time-distribution "${google_project_id} ${pfid}-login-response-time-distribution"
+  terraform import module.pim-monitoring.google_logging_metric.logs-count "${google_project_id} ${pfid}-logs-count"
 
-	terraform state mv module.pim.google_monitoring_alert_policy.alert_policy module.pim-monitoring.google_monitoring_alert_policy.alert_policy
-	terraform state mv module.pim.google_monitoring_notification_channel.pagerduty module.pim-monitoring.google_monitoring_notification_channel.pagerduty
-	terraform state mv module.pim.google_monitoring_uptime_check_config.https module.pim-monitoring.google_monitoring_uptime_check_config.https
-
-  terraform state rm module.pim.template_file.metric-template
-  terraform state rm module.pim.local_file.metric-rendered
-  terraform state rm module.pim.null_resource.metric
+  terraform state rm module.pim-monitoring.template_file.metric-template
+  terraform state rm module.pim-monitoring.local_file.metric-rendered
+  terraform state rm module.pim-monitoring.null_resource.metric
   ```
 
 # Migrate from PIM 3.2 to 4.x :
@@ -67,6 +61,15 @@ pim:
       - v20200401020139
 ```
 
-- **Follow the other upgrades above** (From older to earlier).
+- **Follow the other upgrades above** (From older to earlier) and replace the `terraform state rm` part with those ones:
+```bash
+  terraform state mv module.pim.google_monitoring_alert_policy.alert_policy module.pim-monitoring.google_monitoring_alert_policy.alert_policy
+  terraform state mv module.pim.google_monitoring_notification_channel.pagerduty module.pim-monitoring.google_monitoring_notification_channel.pagerduty
+  terraform state mv module.pim.google_monitoring_uptime_check_config.https module.pim-monitoring.google_monitoring_uptime_check_config.https
+  
+  terraform state rm module.pim.template_file.metric-template
+  terraform state rm module.pim.local_file.metric-rendered
+  terraform state rm module.pim.null_resource.metric
+```
 
 - In values.yaml, *remove* the "hook" section you added before.

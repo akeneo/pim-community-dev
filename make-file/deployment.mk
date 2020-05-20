@@ -201,11 +201,9 @@ terraform-pre-upgrade: terraform-init
 	# Required by https://github.com/akeneo/pim-enterprise-dev/pull/8716
 	# Because of this issue with Google Provider https://github.com/terraform-providers/terraform-provider-google/issues/4460,
 	# we need to force the project in the monitoring provider before importing resources
-	cd $(INSTANCE_DIR)/.terraform/modules/pim-monitoring && sed -i.bak 's/var\.google_project_id/"$(GOOGLE_PROJECT_ID)"/g' main.tf
-	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.login_count" $(PFID)-login-count
-	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.login-response-time-distribution" $(PFID)-login-response-time-distribution
-	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.logs-count" $(PFID)-logs-count
-	cd $(INSTANCE_DIR)/.terraform/modules/pim-monitoring && rm main.tf && mv main.tf.bak main.tf
+	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.login_count" "$(GOOGLE_PROJECT_ID) $(PFID)-login-count"
+	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.login-response-time-distribution" "$(GOOGLE_PROJECT_ID) $(PFID)-login-response-time-distribution"
+	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.logs-count" "$(GOOGLE_PROJECT_ID) $(PFID)-logs-count"
 	# Move monitoring resources from pim to pim-monitoring
 	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_alert_policy.alert_policy module.pim-monitoring.google_monitoring_alert_policy.alert_policy
 	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_notification_channel.pagerduty module.pim-monitoring.google_monitoring_notification_channel.pagerduty
