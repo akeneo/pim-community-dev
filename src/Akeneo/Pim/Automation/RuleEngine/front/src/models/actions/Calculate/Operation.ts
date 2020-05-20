@@ -18,3 +18,10 @@ export const denormalizeOperation = (data: any): Operation => {
     operand: denormalizeOperand(data),
   };
 };
+
+export const normalizeOperation = (operation: Operation) => {
+  return {
+    operator: operation.operator,
+    ...operation.operand,
+  };
+};

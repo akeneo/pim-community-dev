@@ -5,6 +5,7 @@ import { ActionLineProps } from './ActionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { FallbackField } from '../FallbackField';
 import {
+  normalizeOperation,
   Operation,
   Operator,
 } from '../../../../models/actions/Calculate/Operation';
@@ -27,7 +28,11 @@ const OperandView: React.FC<{ operand: Operand }> = ({ operand }) => {
     );
   }
 
-  return <>{(operand as ConstantOperand).value}</>;
+  return (
+    <span className='AknRule-attribute'>
+      {(operand as ConstantOperand).value}
+    </span>
+  );
 };
 
 const AddView: React.FC<{ operand: Operand; source: Operand | null }> = ({
@@ -118,6 +123,7 @@ const CalculateActionLine: React.FC<Props> = ({
     type: 'calculate',
     destination: action.destination,
     source: action.source,
+    operation_list: action.operation_list.map((operation: Operation) => normalizeOperation(operation)),
     // TODO: uncomment when it will be ready
     // round_precision: action.round_precision,
   });
