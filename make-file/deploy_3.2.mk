@@ -1,11 +1,15 @@
+# Force bash compatibility (Instead of user default shell)
+SHELL := /bin/bash
+# Usefull in order to retrieve env variable in sub shells
+.EXPORT_ALL_VARIABLES:
+
 INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
 PFID ?= srnt-$(INSTANCE_NAME)
 
 PHONY: create-main-tf-for-pim3-with-last-tag
 create-main-tf-for-pim3-with-last-tag:
-	rm -Rf pim-enterprise-cloud; git clone git@github.com:akeneo/pim-enterprise-cloud.git; \
-	RELEASE_TO_DEPLOY=$$(cd pim-enterprise-cloud; git describe --tags $$(git rev-list --tags --max-count=1)); \
+	RELEASE_TO_DEPLOY=$$(git ls-remote --tags --sort="version:refname" git@github.com:akeneo/pim-enterprise-cloud | grep -oE 'v3\.2\.[0-9]+-[0-9]{2}$$' | tail -n1); \
 	echo $${RELEASE_TO_DEPLOY}; \
 	PEC_TAG=$${RELEASE_TO_DEPLOY} make create-main-tf-for-pim3
 
@@ -13,25 +17,7 @@ PHONY: create-main-tf-for-pim3
 create-main-tf-for-pim3:
 	@echo $(PEC_TAG);
 	mkdir -p $(DEPLOYMENTS_INSTANCES_DIR)/3.2/
-	@echo "terraform {" > $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "backend \"gcs\" {" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "bucket  = \"akecld-terraform-dev\"" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "prefix  = \"saas/$(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)/$(PFID)/\"" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "}" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "}" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "module \"pim\" {" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "source = \"git@github.com:akeneo/pim-enterprise-cloud.git//infra/terraform?ref=$(PEC_TAG)\"" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "google_project_id                 = \"$(GOOGLE_PROJECT_ID)\"" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "google_project_zone                 = \"$(GOOGLE_CLUSTER_ZONE)\"" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "instance_name                       = \"$(INSTANCE_NAME)\"" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "dns_external                        = \"$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS).\"" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "dns_internal                        = \"$(CLUSTER_DNS_NAME)\"" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "dns_zone                            = \"$(GOOGLE_MANAGED_ZONE_NAME)\"" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "pager_duty_service_key              = \"d55f85282a8e4e16b2c822249ad440bd\"" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "google_storage_location             = \"eu\"" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "papo_project_code                   = \"NOT_ON_PAPO_$(PFID)\"" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "force_destroy_storage               = true" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
-	@echo "}" >> $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
+	envsubst < $(PWD)/deployments/config/serenity_32_instance.tpl.tf > $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
 
 PHONY: create-pimyaml-for-pim3
 create-pimyaml-for-pim3:
