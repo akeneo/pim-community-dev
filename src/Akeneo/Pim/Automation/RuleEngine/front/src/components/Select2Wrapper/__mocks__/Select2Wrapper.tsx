@@ -24,7 +24,7 @@ const Select2Wrapper: typeof BaseWrapper = ({
   const [stateOptions, setOptions] = React.useState<
     (Select2Option | Select2OptionGroup)[]
   >(data || []);
-  
+
   useEffect(() => {
     if (data) {
       setOptions(data);

@@ -154,6 +154,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
             currentCatalogLocale={currentCatalogLocale}
             value={getScopeFormValue()}
             onChange={setScopeFormValue}
+            translate={translate}
           />
         )}
       </ScopeColumn>
@@ -166,6 +167,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
             availableLocales={getAvailableLocales()}
             value={getLocaleFormValue()}
             onChange={setLocaleFormValue}
+            translate={translate}
           />
         )}
       </LocaleColumn>

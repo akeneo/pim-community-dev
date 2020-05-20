@@ -1,6 +1,7 @@
 import React from 'react';
 import { Select2SimpleSyncWrapper } from '../Select2Wrapper';
 import { LocaleCode, Scope, ScopeCode } from '../../models';
+import { Translate } from "../../dependenciesTools";
 
 type Props = {
   id: string;
@@ -10,6 +11,7 @@ type Props = {
   currentCatalogLocale: LocaleCode;
   value: ScopeCode;
   onChange: (value: ScopeCode) => void;
+  translate: Translate;
 };
 
 const ScopeSelector: React.FC<Props> = ({
@@ -20,6 +22,7 @@ const ScopeSelector: React.FC<Props> = ({
   currentCatalogLocale,
   value,
   onChange,
+  translate,
 }) => {
   const getScopeLabel = (scope: Scope): string => {
     return scope.labels[currentCatalogLocale] || `[${scope.code}]`;
@@ -39,7 +42,7 @@ const ScopeSelector: React.FC<Props> = ({
       hiddenLabel={hiddenLabel}
       data={scopeChoices}
       hideSearch={true}
-      placeholder={'Channel'}
+      placeholder={translate('pim_enrich.entity.channel.uppercase_label')}
       value={value}
       onValueChange={value => onChange(value as ScopeCode)}
     />

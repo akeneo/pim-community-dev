@@ -5,6 +5,7 @@ import {
   Select2OptionGroup,
   Select2SimpleSyncWrapper,
 } from '../Select2Wrapper';
+import { Translate } from "../../dependenciesTools";
 
 type Props = {
   id: string;
@@ -13,6 +14,7 @@ type Props = {
   availableLocales: Locale[];
   value: LocaleCode;
   onChange: (value: LocaleCode) => void;
+  translate: Translate;
 };
 
 const LocaleSelector: React.FC<Props> = ({
@@ -22,6 +24,7 @@ const LocaleSelector: React.FC<Props> = ({
   availableLocales,
   value,
   onChange,
+  translate,
 }) => {
   const localeChoices = availableLocales.map((locale: Locale) => {
     return {
@@ -54,7 +57,7 @@ const LocaleSelector: React.FC<Props> = ({
       hideSearch={true}
       formatResult={formatLocale}
       formatSelection={formatLocale}
-      placeholder={'Locale'}
+      placeholder={translate('pim_enrich.entity.locale.uppercase_label')}
       value={value}
       onValueChange={value => onChange(value as LocaleCode)}
     />
