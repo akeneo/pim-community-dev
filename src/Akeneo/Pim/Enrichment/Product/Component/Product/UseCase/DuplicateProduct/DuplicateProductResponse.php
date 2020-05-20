@@ -11,11 +11,15 @@
 
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use LogicException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class DuplicateProductResponse
 {
+    /** @var ProductInterface */
+    private $duplicatedProduct;
+
     /** @var array */
     private $uniqueAttributeValues;
 
@@ -23,26 +27,37 @@ class DuplicateProductResponse
     private $constraintViolationList;
 
     private function __construct(
+        ?ProductInterface $duplicatedProduct,
         ?array $uniqueAttributeValues,
         ?ConstraintViolationListInterface $constraintViolationList
     ) {
+        $this->duplicatedProduct = $duplicatedProduct;
         $this->uniqueAttributeValues = $uniqueAttributeValues;
         $this->constraintViolationList = $constraintViolationList;
     }
 
-    public static function ok(array $uniqueAttributeValues)
+    public static function ok(ProductInterface $duplicatedProduct, array $uniqueAttributeValues)
     {
-        return new self($uniqueAttributeValues, null);
+        return new self($duplicatedProduct, $uniqueAttributeValues, null);
     }
 
     public static function error(ConstraintViolationListInterface $constraintViolationList)
     {
-        return new self(null, $constraintViolationList);
+        return new self(null, null, $constraintViolationList);
     }
 
     public function isOk(): bool
     {
         return $this->constraintViolationList === null;
+    }
+
+    public function duplicatedProduct(): ProductInterface
+    {
+        if (!$this->isOk()) {
+            throw new LogicException("DuplicateProductResponse is not valid. You cannot get the duplicated product value.");
+        }
+
+        return $this->duplicatedProduct;
     }
 
     public function uniqueAttributeValues(): array

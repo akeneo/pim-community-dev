@@ -41,16 +41,21 @@ class DuplicateProductController
     /** @var UserContext */
     private $userContext;
 
+    /** @var NormalizerInterface */
+    private $normalizer;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         DuplicateProductHandler $duplicateProductHandler,
         NormalizerInterface $constraintViolationNormalizer,
-        UserContext $userContext
+        UserContext $userContext,
+        NormalizerInterface $normalizer
     ) {
         $this->productRepository = $productRepository;
         $this->duplicateProductHandler = $duplicateProductHandler;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->userContext = $userContext;
+        $this->normalizer = $normalizer;
     }
 
     public function duplicateProductAction(Request $request, string $id)
@@ -59,7 +64,9 @@ class DuplicateProductController
             return new RedirectResponse('/');
         }
 
-        if (!$request->request->has('duplicated_product_identifier')) {
+        $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['duplicated_product_identifier'])) {
             throw new UnprocessableEntityHttpException('You should give either a "duplicated_product_identifier" key.');
         }
 
@@ -75,7 +82,7 @@ class DuplicateProductController
 
         $duplicateProductCommand = new DuplicateProduct(
             $product->getIdentifier(),
-            $request->request->get('duplicated_product_identifier'),
+            $data['duplicated_product_identifier'],
             $this->userContext->getUser()->getId()
         );
 
@@ -88,7 +95,13 @@ class DuplicateProductController
 
         if ($duplicateProductResponse->isOk()) {
             return new JsonResponse(
-                ['unique_attribute_codes' => $duplicateProductResponse->uniqueAttributeValues()],
+                [
+                    'duplicated_product' => $this->normalizer->normalize(
+                        $duplicateProductResponse->duplicatedProduct(),
+                        'internal_api'
+                    ),
+                    'unique_attribute_codes' => $duplicateProductResponse->uniqueAttributeValues()
+                ],
                 Response::HTTP_OK
             );
         }

@@ -46,22 +46,31 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         $this->client->request(
             'POST',
             $url,
-            ['duplicated_product_identifier' => 'duplicated_product'],
+            [],
             [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
-            ]
+            ],
+            json_encode(['duplicated_product_identifier' => 'duplicated_product'])
         );
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals(
-            ['unique_attribute_codes' => $uniqueAttributeCodes],
-            json_decode($this->client->getResponse()->getContent(), true)
-        );
 
         $duplicatedProduct = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier('duplicated_product');
         Assert::assertNotNull($duplicatedProduct);
+
+        $normalizedDuplicatedProductResponse = $this->get('pim_internal_api_serializer')->normalize(
+            $duplicatedProduct,
+            'internal_api'
+        );
+        Assert::assertEquals(
+            [
+                'unique_attribute_codes' => $uniqueAttributeCodes,
+                'duplicated_product' => $normalizedDuplicatedProductResponse
+            ],
+            json_decode($this->client->getResponse()->getContent(), true)
+        );
 
         $normalizedDuplicatedProduct = $this->get('pim_catalog.normalizer.standard.product')->normalize(
             $duplicatedProduct,
@@ -84,12 +93,13 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         $this->client->request(
             'POST',
             $url,
-            ['duplicated_product_identifier' => 'duplicated_product'],
+            [],
             [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
-            ]
+            ],
+            json_encode(['duplicated_product_identifier' => 'duplicated_product'])
         );
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -108,12 +118,13 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         $this->client->request(
             'POST',
             $url,
-            ['duplicated_product_identifier' => $productToDuplicate->getIdentifier()],
+            [],
             [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE' => 'application/json',
-            ]
+            ],
+            json_encode(['duplicated_product_identifier' => $productToDuplicate->getIdentifier()])
         );
 
         Assert::assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());

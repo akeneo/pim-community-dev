@@ -113,7 +113,7 @@ class DuplicateProductHandler
                 $duplicatedProduct
             );
 
-            return DuplicateProductResponse::ok($removedUniqueAttributeCodesWithoutIdentifier);
+            return DuplicateProductResponse::ok($duplicatedProduct, $removedUniqueAttributeCodesWithoutIdentifier);
         }
 
         return DuplicateProductResponse::error($violations);
