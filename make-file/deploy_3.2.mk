@@ -1,4 +1,4 @@
-# Force bash compatibility wether the user default shell
+# Force bash compatibility (Instead of user default shell)
 SHELL := /bin/bash
 # Usefull in order to retrieve env variable in sub shells
 .EXPORT_ALL_VARIABLES:
