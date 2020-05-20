@@ -70,13 +70,26 @@ pimee_catalog_rule:
           allowed_characters: Rule code can only be alphanumeric and underscore characters.
       cross_link: Leave create rule form
     edit:
+      properties:
+        section:
+          general: General parameters
+          labels: Label translations
       priority:
         label: Priority
       add_to_category: Add to category
       add_conditions: Add conditions
       count_products: "{{ count }} products and product models"
       product_selection: Product selection
+      fields:
+        family: Family
+      actions:
+        delete:
+          label: Remove action
+          description: Are you sure you want to remove this action?
       conditions:
+        delete:
+          label: Remove condition
+          description: Are you sure you want to remove this condition?
         operators:
           "STARTS WITH": starts with
           "ENDS WITH": ends with
@@ -99,7 +112,9 @@ pimee_catalog_rule:
           "<": less than
           "<=": equals to or less than
       notification:
+        success: Rule updated successfully
         failed: Rule update failed
+      discard_changes: You will lose changes to the rule if you leave the page.
     helper:
       add_to_category: To add your product selection to one or more categories, please start by selecting our category trees and then, your categories.
       product_selection: "You must define your product selection in order to create your rule. If you don't know how, "
@@ -107,6 +122,8 @@ pimee_catalog_rule:
     legend:
       add_to_category: Create an action
       product_selection: Create a condition
+  exceptions:
+    loading: An error occurred during rule definition loading.
 pim_enrich:
   entity:
     rule:

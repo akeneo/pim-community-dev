@@ -230,6 +230,8 @@ pim_asset_manager:
       link: Click here to add your first user group
   asset:
     img: The main media of the asset named "{{ label }}"
+    created_at: Created
+    updated_at: Updated
     validation:
       limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
       code:
@@ -479,9 +481,11 @@ pim_asset_manager:
     media_link:
       placeholder: Put your media link here
       read_only: This media link is read only
+      reload: Reload the media link thumbnail
     media_file:
       placeholder: Drag and drop to upload or click here
       read_only: This media file is read only
+      uploading: Uploading...
     used_as_transformation_target: This field is read only as it is used as a target in an asset transformation.
   modal:
     delete:
