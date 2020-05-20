@@ -25,6 +25,8 @@ const Thumbnail = styled.div<{isProductModel: boolean}>`
   img {
     border: 1px solid ${({theme}) => theme.color.grey80};
     width: inherit;
+    height: inherit;
+    object-fit: contain;
     ${({isProductModel, theme}) =>
       isProductModel &&
       css`
