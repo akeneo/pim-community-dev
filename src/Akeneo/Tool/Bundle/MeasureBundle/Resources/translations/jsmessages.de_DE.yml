@@ -57,7 +57,6 @@ measurements:
     create_another: Erstelle eine weitere Einheit
     will_be_read_only: Ein Produkt-Attribut ist mit dieser Messfamilie verknüpft. Sobald die Einheit erstellt wurde, kann nur die übersetzten Label und das Symbol bearbeitet werden.
   list:
-    result_count: "{0}0 Ergebnisse|{1}1 Ergebnis|]1, Inf[{{ itemsCount }} Ergebnisse"
     header:
       standard_unit: Standardeinheit
       unit_count: Anzahl der Einheiten

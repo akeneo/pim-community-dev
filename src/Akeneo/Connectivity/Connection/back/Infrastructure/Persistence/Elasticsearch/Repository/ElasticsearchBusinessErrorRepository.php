@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearc
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
@@ -23,14 +24,15 @@ class ElasticsearchBusinessErrorRepository implements BusinessErrorRepository
         $this->errorClient = $errorClient;
     }
 
-    public function bulkInsert(array $businessErrors): void
+    public function bulkInsert(ConnectionCode $connectionCode, array $businessErrors): void
     {
         if (0 === count($businessErrors)) {
             return;
         }
 
-        $documents = array_map(function (BusinessError $businessError) {
-            return $businessError->normalize();
+        $code = (string) $connectionCode;
+        $documents = array_map(function (BusinessError $businessError) use ($code) {
+            return array_merge(['connection_code' => $code], $businessError->normalize());
         }, $businessErrors);
 
         $this->errorClient->bulkIndexes($documents);

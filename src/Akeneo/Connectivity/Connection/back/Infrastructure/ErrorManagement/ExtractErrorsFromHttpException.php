@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement;
 
+use Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\ExtractErrorsFromHttpExceptionInterface;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\ApiErrorInterface;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\TechnicalError;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
@@ -16,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExtractErrorsFromHttpException
+class ExtractErrorsFromHttpException implements ExtractErrorsFromHttpExceptionInterface
 {
     /** @var Serializer */
     private $serializer;
@@ -26,9 +30,6 @@ class ExtractErrorsFromHttpException
         $this->serializer = $serializer;
     }
 
-    /**
-     * @return string[]
-     */
     public function extractAll(HttpException $httpException): array
     {
         if (
@@ -44,11 +45,13 @@ class ExtractErrorsFromHttpException
             return $this->extractViolationErrors($json);
         }
 
-        return [$json];
+        return [new TechnicalError($json)];
     }
 
     /**
-     * @return string[]
+     * @param string $json
+     *
+     * @return ApiErrorInterface[]
      */
     private function extractViolationErrors(string $json): array
     {
@@ -56,7 +59,7 @@ class ExtractErrorsFromHttpException
 
         $errors = [];
         foreach ($data['errors'] as $error) {
-            $errors[] = json_encode($error);
+            $errors[] = new BusinessError(json_encode($error));
         }
 
         return $errors;

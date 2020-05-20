@@ -1,15 +1,16 @@
 import React, {useEffect} from 'react';
-import {FlowType} from '../../model/flow-type.enum';
 import {Connection} from '../../model/connection';
+import {FlowType} from '../../model/flow-type.enum';
 import {fetchResult} from '../../shared/fetch-result';
 import {isOk} from '../../shared/fetch-result/result';
 import {useRoute} from '../../shared/router';
 import {connectionsFetched} from '../actions/dashboard-actions';
+import {DataDestinationCharts} from '../components/DataDestinationCharts';
 import {useDashboardDispatch, useDashboardState} from '../dashboard-context';
+import {DataSourceCharts} from './DataSourceCharts';
+import {BusinessErrorCountWidget} from './ErrorManagement/BusinessErrorCountWidget';
 import {NoConnection} from './NoConnection';
 import {UserSurvey} from './UserSurvey';
-import {DataSourceCharts} from './DataSourceCharts';
-import {DataDestinationCharts} from '../components/DataDestinationCharts';
 
 export const Charts = () => {
     const dispatch = useDashboardDispatch();
@@ -59,6 +60,7 @@ export const Charts = () => {
     return (
         <>
             {orderedCharts}
+            <BusinessErrorCountWidget />
             <UserSurvey />
         </>
     );
