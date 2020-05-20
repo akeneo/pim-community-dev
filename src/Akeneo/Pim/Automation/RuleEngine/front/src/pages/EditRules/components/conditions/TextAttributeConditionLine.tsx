@@ -101,6 +101,10 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
     setValue(`content.conditions[${lineNumber}].value`, value);
   };
 
+  const setLocaleFormValue = (value: string | null) => {
+    setValue(`content.conditions[${lineNumber}].locale`, value);
+  };
+
   const setScopeFormValue = (value: string) => {
     setValue(`content.conditions[${lineNumber}].scope`, value);
     if (
@@ -110,10 +114,6 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
     ) {
       setLocaleFormValue(null);
     }
-  };
-
-  const setLocaleFormValue = (value: string | null) => {
-    setValue(`content.conditions[${lineNumber}].locale`, value);
   };
 
   const setOperatorFormValue = (value: Operator) => {

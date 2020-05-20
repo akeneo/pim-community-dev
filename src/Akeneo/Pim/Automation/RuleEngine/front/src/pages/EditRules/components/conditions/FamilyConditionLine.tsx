@@ -49,14 +49,14 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
     value: condition.value,
   });
 
+  const getOperatorFormValue: () => Operator = () => {
+    return watch(`content.conditions[${lineNumber}].operator`);
+  };
+
   const shouldDisplayValue: () => boolean = () => {
     return !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
       getOperatorFormValue()
     );
-  };
-
-  const getOperatorFormValue: () => Operator = () => {
-    return watch(`content.conditions[${lineNumber}].operator`);
   };
 
   const setValueFormValue = (value: string[] | null) => {

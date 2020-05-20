@@ -118,7 +118,10 @@ const Select2Wrapper: React.FC<Props> = ({
 
       if (onValueChange) {
         getSelect2Input().on('change', (e: Select2Event) => {
-          onValueChange(e.val);
+          const val = e.val;
+          onValueChange(
+            Array.isArray(val) ? (val as Select2Value[]) : (val as Select2Value)
+          );
         });
       }
     }

@@ -13,7 +13,21 @@ type Props = Select2GlobalProps & {
 };
 
 const Select2MultiSyncWrapper: React.FC<Props> = props => {
-  return <Select2Wrapper {...props} multiple={true} />;
+  const { onValueChange, ...remainingProps } = props;
+
+  const handleChange = (value: Select2Value | Select2Value[]) => {
+    if (onValueChange && Array.isArray(value)) {
+      return onValueChange(value);
+    }
+  };
+
+  return (
+    <Select2Wrapper
+      onValueChange={handleChange}
+      {...remainingProps}
+      multiple={true}
+    />
+  );
 };
 
 export { Select2MultiSyncWrapper };
