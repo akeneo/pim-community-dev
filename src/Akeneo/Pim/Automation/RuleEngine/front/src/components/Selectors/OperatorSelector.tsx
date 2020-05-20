@@ -22,7 +22,7 @@ const OperatorSelector: React.FC<Props> = ({
   value,
   onChange,
 }) => {
-  const translateOperator = (operator: string): string => {
+  const translateOperator = (operator: Operator): string => {
     const label = translate(
       `pimee_catalog_rule.form.edit.conditions.operators.${operator}`
     );

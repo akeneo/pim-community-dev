@@ -1,5 +1,5 @@
 import React from 'react';
-import { Locale } from '../../models';
+import { Locale, LocaleCode } from '../../models';
 import {
   Select2Option,
   Select2OptionGroup,
@@ -11,8 +11,8 @@ type Props = {
   label: string;
   hiddenLabel?: boolean;
   availableLocales: Locale[];
-  value: string;
-  onChange: (value: string) => void;
+  value: LocaleCode;
+  onChange: (value: LocaleCode) => void;
 };
 
 const LocaleSelector: React.FC<Props> = ({
@@ -56,7 +56,7 @@ const LocaleSelector: React.FC<Props> = ({
       formatSelection={formatLocale}
       placeholder={'Locale'}
       value={value}
-      onValueChange={value => onChange(value as string)}
+      onValueChange={value => onChange(value as LocaleCode)}
     />
   );
 };

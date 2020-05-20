@@ -10,6 +10,7 @@ import { OperatorSelector } from '../../../../components/Selectors/OperatorSelec
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { Operator } from '../../../../models/Operator';
 import { FamilySelector } from '../../../../components/Selectors/FamilySelector';
+import { FamilyCode } from '../../../../models';
 
 const FieldColumn = styled.span`
   width: 100px;
@@ -49,9 +50,10 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
     value: condition.value,
   });
 
-  const getOperatorFormValue: () => Operator = () => {
-    return watch(`content.conditions[${lineNumber}].operator`);
-  };
+  const getOperatorFormValue: () => Operator = () =>
+    watch(`content.conditions[${lineNumber}].operator`);
+  const getValueFormValue: () => FamilyCode[] = () =>
+    watch(`content.conditions[${lineNumber}].value`);
 
   const shouldDisplayValue: () => boolean = () => {
     return !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
@@ -59,19 +61,13 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
     );
   };
 
-  const setValueFormValue = (value: string[] | null) => {
+  const setValueFormValue = (value: FamilyCode[] | null) =>
     setValue(`content.conditions[${lineNumber}].value`, value);
-  };
-
   const setOperatorFormValue = (value: Operator) => {
     setValue(`content.conditions[${lineNumber}].operator`, value);
     if (!shouldDisplayValue()) {
       setValueFormValue(null);
     }
-  };
-
-  const getValueFormValue: () => string[] = () => {
-    return watch(`content.conditions[${lineNumber}].value`);
   };
 
   return (

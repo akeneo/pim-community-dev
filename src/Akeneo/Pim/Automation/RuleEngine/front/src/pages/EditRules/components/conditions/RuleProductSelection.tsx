@@ -3,7 +3,11 @@ import styled from 'styled-components';
 import { Router, Translate } from '../../../../dependenciesTools';
 import { SmallHelper } from '../../../../components';
 import { TextBoxBlue } from '../TextBoxBlue';
-import { ConditionFactory, RuleDefinition } from '../../../../models/';
+import {
+  ConditionFactory,
+  LocaleCode,
+  RuleDefinition,
+} from '../../../../models/';
 import { Condition } from '../../../../models/';
 import { Locale } from '../../../../models/';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
@@ -52,7 +56,7 @@ type Props = {
   translate: Translate;
   locales: Locale[];
   scopes: IndexedScopes;
-  currentCatalogLocale: string;
+  currentCatalogLocale: LocaleCode;
   router: Router;
 };
 

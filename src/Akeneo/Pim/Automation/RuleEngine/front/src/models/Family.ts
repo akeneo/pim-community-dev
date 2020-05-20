@@ -1,8 +1,10 @@
+type FamilyCode = string;
+
 type Family = {
-  code: string;
+  code: FamilyCode;
   labels: {
     [locale: string]: string;
   };
 };
 
-export { Family };
+export { Family, FamilyCode };

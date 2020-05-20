@@ -7,7 +7,7 @@ import {
 import { Router } from '../../dependenciesTools';
 import { IndexedFamilies } from '../../fetch/FamilyFetcher';
 import { getFamiliesByIdentifiers } from '../../repositories/FamilyRepository';
-import { Family } from '../../models';
+import { Family, FamilyCode, LocaleCode } from '../../models';
 
 type Props = {
   router: Router;
@@ -15,9 +15,9 @@ type Props = {
   label: string;
   hiddenLabel?: boolean;
   multiple: boolean;
-  currentCatalogLocale: string;
-  value: string[];
-  onChange: (value: string[]) => void;
+  currentCatalogLocale: LocaleCode;
+  value: FamilyCode[];
+  onChange: (value: FamilyCode[]) => void;
 };
 
 const dataProvider = (term: string, page: number) => {
@@ -33,7 +33,7 @@ const dataProvider = (term: string, page: number) => {
 
 const handleResults = (
   families: IndexedFamilies,
-  currentCatalogLocale: string
+  currentCatalogLocale: LocaleCode
 ) => {
   return {
     more: 20 === Object.keys(families).length,
@@ -52,8 +52,8 @@ const handleResults = (
 
 const initSelectedFamilies = async (
   router: Router,
-  selectedFamilyCodes: string[],
-  currentCatalogLocale: string,
+  selectedFamilyCodes: FamilyCode[],
+  currentCatalogLocale: LocaleCode,
   callback: InitSelectionCallback
 ): Promise<void> => {
   const families: IndexedFamilies = await getFamiliesByIdentifiers(

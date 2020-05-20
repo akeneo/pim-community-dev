@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTabState, Tab, TabList, TabPanel } from 'reakit/Tab';
 import { Router, Translate } from '../../../dependenciesTools';
-import { RuleDefinition } from '../../../models';
+import { LocaleCode, RuleDefinition } from '../../../models';
 import { RulesBuilder } from './RulesBuilder';
 import { RuleProperties } from './RuleProperties';
 import { Locale } from '../../../models';
@@ -69,7 +69,7 @@ type Props = {
   locales: Locale[];
   ruleDefinition: RuleDefinition;
   scopes: IndexedScopes;
-  currentCatalogLocale: string;
+  currentCatalogLocale: LocaleCode;
   router: Router;
 };
 

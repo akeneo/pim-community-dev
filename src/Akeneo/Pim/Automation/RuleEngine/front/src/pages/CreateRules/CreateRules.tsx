@@ -17,10 +17,11 @@ import { CreateRulesForm, FormDataInput } from './components/CreateRulesForm';
 import { httpPost } from '../../fetch';
 import { AkeneoSpinner, SmallHelper } from '../../components';
 import { Payload } from '../../rules.types';
+import { LocaleCode } from '../../models';
 
 const transformFormData = (
   formData: FormDataInput,
-  currentCatalogLocale: string
+  currentCatalogLocale: LocaleCode
 ): Payload => {
   return {
     labels: { [currentCatalogLocale]: formData.label },

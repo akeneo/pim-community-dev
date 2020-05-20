@@ -7,7 +7,7 @@ import {
 } from '../../../../models/TextAttributeCondition';
 import { Operator } from '../../../../models/Operator';
 import { ConditionLineProps } from './ConditionLineProps';
-import { Locale } from '../../../../models';
+import { Locale, LocaleCode, ScopeCode } from '../../../../models';
 import { InputText } from '../../../../components/Inputs';
 import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
 import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';
@@ -59,12 +59,12 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
 }) => {
   const { register, watch, setValue } = useFormContext();
 
-  const getOperatorFormValue: () => Operator = () => {
-    return watch(`content.conditions[${lineNumber}].operator`);
-  };
-  const getScopeFormValue: () => string = () => {
-    return watch(`content.conditions[${lineNumber}].scope`);
-  };
+  const getOperatorFormValue: () => Operator = () =>
+    watch(`content.conditions[${lineNumber}].operator`);
+  const getScopeFormValue: () => ScopeCode = () =>
+    watch(`content.conditions[${lineNumber}].scope`);
+  const getLocaleFormValue: () => LocaleCode = () =>
+    watch(`content.conditions[${lineNumber}].locale`);
 
   const getAvailableLocales = (): Locale[] => {
     if (!condition.attribute.scopable) {
@@ -77,10 +77,6 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
     }
 
     return [];
-  };
-
-  const getLocaleFormValue: () => string = () => {
-    return watch(`content.conditions[${lineNumber}].locale`);
   };
 
   const shouldDisplayValue: () => boolean = () => {
@@ -97,15 +93,12 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
     locale: condition.locale,
   });
 
-  const setValueFormValue = (value: string | null) => {
+  const setValueFormValue = (value: string | null) =>
     setValue(`content.conditions[${lineNumber}].value`, value);
-  };
-
-  const setLocaleFormValue = (value: string | null) => {
+  const setLocaleFormValue = (value: LocaleCode | null) =>
     setValue(`content.conditions[${lineNumber}].locale`, value);
-  };
 
-  const setScopeFormValue = (value: string) => {
+  const setScopeFormValue = (value: ScopeCode) => {
     setValue(`content.conditions[${lineNumber}].scope`, value);
     if (
       !getAvailableLocales()

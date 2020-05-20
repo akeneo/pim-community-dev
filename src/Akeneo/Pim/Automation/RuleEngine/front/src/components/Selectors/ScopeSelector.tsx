@@ -1,15 +1,15 @@
 import React from 'react';
 import { Select2SimpleSyncWrapper } from '../Select2Wrapper';
-import { Scope } from '../../models';
+import { LocaleCode, Scope, ScopeCode } from '../../models';
 
 type Props = {
   id: string;
   label: string;
   hiddenLabel?: boolean;
   availableScopes: Scope[];
-  currentCatalogLocale: string;
-  value: string;
-  onChange: (value: string) => void;
+  currentCatalogLocale: LocaleCode;
+  value: ScopeCode;
+  onChange: (value: ScopeCode) => void;
 };
 
 const ScopeSelector: React.FC<Props> = ({
@@ -41,7 +41,7 @@ const ScopeSelector: React.FC<Props> = ({
       hideSearch={true}
       placeholder={'Channel'}
       value={value}
-      onValueChange={value => onChange(value as string)}
+      onValueChange={value => onChange(value as ScopeCode)}
     />
   );
 };
