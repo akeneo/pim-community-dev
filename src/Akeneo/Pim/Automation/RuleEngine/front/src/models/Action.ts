@@ -10,11 +10,11 @@ import {
 } from './actions';
 
 export type Action =
-  | FallbackAction
+  | AddAction
   | CalculateAction
   | ClearAction
+  | ConcatenateAction
   | CopyAction
-  | AddAction
+  | FallbackAction
   | RemoveAction
-  | SetAction
-  | ConcatenateAction;
+  | SetAction;

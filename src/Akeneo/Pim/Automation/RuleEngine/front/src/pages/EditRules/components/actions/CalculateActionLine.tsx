@@ -123,7 +123,9 @@ const CalculateActionLine: React.FC<Props> = ({
     type: 'calculate',
     destination: action.destination,
     source: action.source,
-    operation_list: action.operation_list.map((operation: Operation) => normalizeOperation(operation)),
+    operation_list: action.operation_list.map((operation: Operation) =>
+      normalizeOperation(operation)
+    ),
     // TODO: uncomment when it will be ready
     // round_precision: action.round_precision,
   });
