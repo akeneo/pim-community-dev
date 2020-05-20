@@ -370,10 +370,10 @@ define([
      * @param associationTypes
      */
     setAssociationCount: function(associationTypes) {
-      const associations = this.getFormData().associations;
+      const {associations, quantified_associations} = this.getFormData();
 
       _.each(associationTypes, function(assocType) {
-        const association = associations[assocType.code];
+        const association = quantified_associations[assocType.code] || associations[assocType.code];
 
         assocType.productCount = association && association.products ? association.products.length : 0;
 
@@ -812,9 +812,12 @@ define([
     },
 
     getAssociationCount: function() {
-      return Object.values(this.getFormData().associations).reduce((typeCount, typeItem) => {
-        return typeCount + Object.values(typeItem).reduce((count, item) => count + item.length, 0);
-      }, 0);
+      const {associations, quantified_associations} = this.getFormData();
+
+      return [...Object.values(associations), ...Object.values(quantified_associations)].reduce(
+        (typeCount, typeItem) => typeCount + Object.values(typeItem).reduce((count, item) => count + item.length, 0),
+        0
+      );
     },
 
     getUpdatedAssociations: function(product, associationType, productAndProductModelIdentifiers) {
