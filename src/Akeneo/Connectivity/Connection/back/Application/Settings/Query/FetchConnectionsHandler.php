@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Settings\Query;
 
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQuery;
 
 /**
@@ -21,6 +22,9 @@ class FetchConnectionsHandler
         $this->selectConnectionsQuery = $selectConnectionsQuery;
     }
 
+    /**
+     * @return Connection[]
+     */
     public function query(): array
     {
         return $this->selectConnectionsQuery->execute();

@@ -128,6 +128,21 @@ class ConnectionWithCredentials
         return $this->auditable;
     }
 
+    /**
+     * @return array{
+     *  code: string,
+     *  label: string,
+     *  flow_type: string,
+     *  image: ?string,
+     *  client_id: string,
+     *  secret: string,
+     *  username: string,
+     *  password: ?string,
+     *  user_role_id: string,
+     *  user_group_id: ?string,
+     *  auditable: bool
+     * }
+     */
     public function normalize(): array
     {
         return [

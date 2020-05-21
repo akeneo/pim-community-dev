@@ -16,10 +16,13 @@ class FlowType
     const OTHER = 'other';
 
     private const CONSTRAINT_KEY = 'akeneo_connectivity.connection.connection.constraint.flow_type.%s';
+
+    /** @var FlowType::* */
     private $flowType;
 
     public function __construct(string $flowType)
     {
+        /** @var FlowType::* $flowType */
         if (!in_array($flowType, [self::DATA_DESTINATION, self::DATA_SOURCE, self::OTHER])) {
             throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'invalid'));
         }
@@ -27,6 +30,9 @@ class FlowType
         $this->flowType = $flowType;
     }
 
+    /**
+     * @return FlowType::*
+     */
     public function __toString(): string
     {
         return $this->flowType;

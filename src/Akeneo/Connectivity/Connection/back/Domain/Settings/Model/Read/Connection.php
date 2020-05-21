@@ -65,6 +65,15 @@ class Connection
         return $this->auditable;
     }
 
+    /**
+     * @return array{
+     *  code: string,
+     *  label: string,
+     *  flowType: string,
+     *  image: ?string,
+     *  auditable: bool
+     * }
+     */
     public function normalize(): array
     {
         return [
