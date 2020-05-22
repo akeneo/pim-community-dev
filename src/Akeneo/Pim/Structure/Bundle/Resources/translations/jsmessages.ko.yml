@@ -80,6 +80,8 @@ pim_enrich.entity.attribute_option:
       cancel_description: '경고: 저장되지 않은 데이터는 손실됩니다. 이 새로운 옵션에 대한 수정을 취소하시겠습니까?'
 pim_enrich.entity.association_type:
   label: 연결 유형
+  property:
+    is_two_way: 양방향 연결
   flash:
     update:
       success: 연결 유형이 업데이트되었습니다.
@@ -94,9 +96,11 @@ pim_enrich.entity.association_type:
     index: "]-Inf, 1]{{ count }} 특성 유형|]1, Inf[{{ count }} 특성 유형"
   module:
     create:
+      title: 새 연결 유형 만들기
       button: 연결 유형 만들기
     delete:
       confirm: 이 연결 유형을 삭제하시겠습니까?
+  hint: <a href="{{link}}" target="_blank">이 문서에서</a> 고유한 연결 유형을 만드는 데 필요한 모든 내용을 볼 수 있습니다.
 pim_enrich.entity.group_type:
   label: 그룹 유형
   flash:
@@ -137,6 +141,7 @@ pim_enrich.entity.attribute:
     date_min: 최소 날짜
     decimals_allowed: 소수 값 허용됨
     default_metric_unit:
+      label: 기본 측정 단위
       choose: 단위 선택
     group:
       label: 특성 그룹
@@ -146,6 +151,7 @@ pim_enrich.entity.attribute:
     max_characters: 최대 문자수
     max_file_size: 최대 파일 크기(MB)
     metric_family:
+      label: 측정 패밀리
       choose: 패밀리 선택
     minimum_input_length: 자동 완성의 최소 길이
     name: 이름
@@ -169,6 +175,7 @@ pim_enrich.entity.attribute:
       pim_catalog_image: 이미지
       pim_catalog_boolean: "예/아니요"
       pim_catalog_date: 날짜
+      pim_catalog_metric: 측정
       pim_reference_data_simpleselect: 참조 데이터 단일 선택
       pim_reference_data_multiselect: 참조 데이터 다중 선택
     unique: 고유한 값
@@ -199,6 +206,10 @@ pim_enrich.entity.attribute_group:
   label: 특성 그룹
   uppercase_label: 특성 그룹
   plural_label: 특성 그룹
+  show_more_attribute:
+    title: 여기는 약간 혼잡합니다. {{ attributeCount }}/{{ totalAttributeCount }}개 특성이 표시됩니다.
+    subtitle: 이 그룹의 모든 특성을 알아보려면 아래를 클릭하면 됩니다!
+    button: 모든 특성 보기
   flash:
     update:
       success: 특성 그룹 업데이트됨

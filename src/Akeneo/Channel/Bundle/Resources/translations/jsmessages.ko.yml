@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: 카테고리 트리
     do_not_convert: 변환 안 함
+    label_conversion_units: 제품 내보내기 중에 사용되는 각 측정 특성에 대한 변환 단위 선택
   module:
     create:
       button: 채널 만들기

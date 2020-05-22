@@ -53,6 +53,7 @@ pim_import_export:
         show_profile.title: 프로필 표시
         download_log.title: 로그 다운로드
         download_file.title: 생성된 파일 다운로드
+        download_archive.title: 생성된 아카이브 다운로드
       summary:
         fetching: 작업 실행에 대한 데이터 수집 중...
         warning: 경고
@@ -138,6 +139,7 @@ pim_import_export:
       profile_name: 프로필 이름
       details: 세부 정보
       warning_count: 경고
+      username: 사용자 이름
       job_type:
         import: 가져오기
         export: 내보내기
