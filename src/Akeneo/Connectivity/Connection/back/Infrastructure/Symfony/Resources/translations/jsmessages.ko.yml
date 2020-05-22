@@ -1,12 +1,21 @@
 pim_menu:
+  navigation_back:
+    connection: 연결로 돌아가기
+  navigation_block:
+    connection: 연결 탐색
   item:
     connection_audit: 연결 대시보드
     connection_settings: 연결
+    connection_settings_edit: 연결 설정
+    connection_monitoring: 모니터링
 pim_title:
   akeneo_connectivity_connection_settings_index: 연결
+  akeneo_connectivity_connection_settings_edit: 연결 설정
+  akeneo_connectivity_connection_settings_any: 연결 설정
   akeneo_connectivity_connection_audit_index: 연결 대시보드
   akeneo_connectivity_connection_audit_any: 연결 대시보드
   akeneo_connectivity_connection_error_management_dashboard: 연결 대시보드
+  akeneo_connectivity_connection_error_management_connection_monitoring: 연결 모니터링
 akeneo_connectivity.connection:
   connections: 연결
   secondary_actions:
@@ -147,6 +156,7 @@ akeneo_connectivity.connection:
     connection_selector:
       title:
         source: 소스 연결
+        destination: 대상 연결
       all: 모두
     charts:
       inbound: 인바운드
@@ -157,6 +167,11 @@ akeneo_connectivity.connection:
       legend:
         during_the_last_seven_days: '지난 7일간 합계:'
         today: 오늘
+    error_management:
+      widget:
+        title: 소스 연결별 비즈니스 오류
+        over_the_last_seven_days: 지난 7일간
+        business_errors: 비즈니스 오류
     no_connection:
       title:
         default: 해당 연결에 대한 유용한 차트를 보고 싶으십니까?
@@ -168,6 +183,21 @@ akeneo_connectivity.connection:
       message_without_permission:
         message: 관리자에게 요청하여 연결을 생성하십시오.
         link: 연결에 대해 자세히 알아보기...
+  error_management:
+    connection_monitoring:
+      title: 모니터링
+      helper:
+        title: '{0} {{ count }}개 오류가 있습니다 |[1,Inf] {{ count }}개 오류가 있습니다'
+        description: 지난 7일간 이 연결에 대한 각 오류의 세부 정보를 여기서 볼 수 있습니다. 오류 개수는 100개 오류로 제한됩니다.
+        link: 이를 해결하는 방법을 알아보려면 API 헬프 센터를 방문하십시오.
+      search_filter:
+        placeholder: 오류 메시지에서 검색
+        result_count: '{0} 결과 없음|[1,Inf] {{ count }} 결과'
+      error_list:
+        date_time_column: 요일과 시간
+        content_column: 오류 메시지
+      no_error:
+        title: 대단합니다! 오류가 없습니다!
   runtime_error:
     error_message: 죄송합니다! 오류가 발생했습니다...
     reload_helper: 페이지를 다시 로드하고 다시 시도하십시오.
