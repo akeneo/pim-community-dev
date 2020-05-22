@@ -1,4 +1,4 @@
-import {Identifier, Row, ProductType, getProductsType, ProductsType} from '../models';
+import {Identifier, Row, ProductType, getProductsType} from '../models';
 
 type QuantifiedLink = {
   identifier: Identifier;
@@ -10,66 +10,40 @@ type QuantifiedAssociation = {
   product_models: QuantifiedLink[];
 };
 
-type QuantifiedAssociationCollection = {
-  [associationTypeCode: string]: QuantifiedAssociation;
+const quantifiedAssociationToRowCollection = (collection: QuantifiedAssociation): Row[] => {
+  const products = collection.products || [];
+  const productModels = collection.product_models || [];
+
+  return [
+    ...products.map(quantifiedLink => ({
+      quantifiedLink,
+      productType: ProductType.Product,
+      product: null,
+    })),
+    ...productModels.map(quantifiedLink => ({
+      quantifiedLink,
+      productType: ProductType.ProductModel,
+      product: null,
+    })),
+  ];
 };
 
-const isQuantifiedAssociationCollectionEmpty = (value: QuantifiedAssociationCollection) =>
-  !Object.values(value).some(
-    quantifiedAssociation =>
-      quantifiedAssociation.products.length !== 0 || quantifiedAssociation.product_models.length !== 0
+const rowCollectionToQuantifiedAssociation = (rows: Row[]): QuantifiedAssociation => {
+  const result: QuantifiedAssociation = {
+    products: [],
+    product_models: [],
+  };
+
+  rows.forEach(({quantifiedLink: {identifier, quantity}, productType}) =>
+    result[getProductsType(productType)].push({identifier, quantity})
   );
 
-const quantifiedAssociationCollectionToRowCollection = (collection: QuantifiedAssociationCollection): Row[] =>
-  Object.keys(collection).reduce((result: Row[], associationTypeCode) => {
-    const products = collection[associationTypeCode].products || [];
-    const productModels = collection[associationTypeCode].product_models || [];
-
-    return [
-      ...result,
-      ...products.map(({identifier, quantity}) => ({
-        associationTypeCode,
-        identifier,
-        quantity,
-        productType: ProductType.Product,
-        product: null,
-      })),
-      ...productModels.map(({identifier, quantity}) => ({
-        associationTypeCode,
-        identifier,
-        quantity,
-        productType: ProductType.ProductModel,
-        product: null,
-      })),
-    ];
-  }, []);
-
-const rowCollectionToQuantifiedAssociationCollection = (rows: Row[]): QuantifiedAssociationCollection =>
-  rows.reduce(
-    (
-      quantifiedAssociationCollection: QuantifiedAssociationCollection,
-      {productType, associationTypeCode, identifier, quantity}: Row
-    ): QuantifiedAssociationCollection => {
-      if (!(associationTypeCode in quantifiedAssociationCollection)) {
-        quantifiedAssociationCollection[associationTypeCode] = {
-          [ProductsType.Products]: [],
-          [ProductsType.ProductModels]: [],
-        };
-      }
-
-      quantifiedAssociationCollection[associationTypeCode][getProductsType(productType)].push({
-        identifier,
-        quantity,
-      });
-
-      return quantifiedAssociationCollection;
-    },
-    {}
-  );
+  return result;
+};
 
 export {
-  QuantifiedAssociationCollection,
-  isQuantifiedAssociationCollectionEmpty,
-  quantifiedAssociationCollectionToRowCollection,
-  rowCollectionToQuantifiedAssociationCollection,
+  QuantifiedLink,
+  QuantifiedAssociation,
+  quantifiedAssociationToRowCollection,
+  rowCollectionToQuantifiedAssociation,
 };

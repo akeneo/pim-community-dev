@@ -3,18 +3,16 @@ import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Button, SearchBar, NoDataSection, NoDataTitle, AssociationTypeIllustration} from '@akeneo-pim-community/shared';
 import {
-  QuantifiedAssociationCollection,
   Row,
   filterOnLabelOrIdentifier,
-  isRowWithProduct,
   addProductToRows,
   getAssociationIdentifiers,
   setRowInCollection,
-  isQuantifiedAssociationCollectionEmpty,
-  quantifiedAssociationCollectionToRowCollection,
-  rowCollectionToQuantifiedAssociationCollection,
+  quantifiedAssociationToRowCollection,
+  rowCollectionToQuantifiedAssociation,
   addRowsToCollection,
   removeRowFromCollection,
+  QuantifiedAssociation,
 } from '../models';
 import {QuantifiedAssociationRow} from '../components';
 import {useProducts} from '../hooks';
@@ -41,16 +39,6 @@ const TableContainer = styled.table`
   border-collapse: collapse;
 `;
 
-const TablePlaceholder = styled.div`
-  display: grid;
-  grid-row-gap: 10px;
-  margin-top: 49px;
-
-  > div {
-    height: 64px;
-  }
-`;
-
 const Buttons = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -58,55 +46,50 @@ const Buttons = styled.div`
 `;
 
 type QuantifiedAssociationsProps = {
-  value: QuantifiedAssociationCollection;
+  quantifiedAssociations: QuantifiedAssociation;
   associationTypeCode: string;
-  onAssociationsChange: (updatedValue: QuantifiedAssociationCollection) => void;
+  onAssociationsChange: (quantifiedAssociations: QuantifiedAssociation) => void;
   onOpenPicker: () => Promise<Row[]>;
 };
 
 const QuantifiedAssociations = ({
-  value,
+  quantifiedAssociations,
   associationTypeCode,
   onOpenPicker,
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
-  const [collection, setCollection] = useState<Row[]>(quantifiedAssociationCollectionToRowCollection(value));
+  const [rowCollection, setRowCollection] = useState<Row[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  const products = useProducts(getAssociationIdentifiers(collection));
-  const collectionWithProducts = addProductToRows(collection, null === products ? [] : products);
+  const products = useProducts(getAssociationIdentifiers(rowCollection));
+  const collectionWithProducts = addProductToRows(rowCollection, null === products ? [] : products);
 
-  //TODO improve, put only the needed collection in the state
-  const filteredCollectionWithProducts = collectionWithProducts
-    .filter(row => row.associationTypeCode === associationTypeCode)
-    .filter(filterOnLabelOrIdentifier(searchValue));
+  const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
 
   useEffect(() => {
-    //TODO rework this
-    const updatedValue = rowCollectionToQuantifiedAssociationCollection(collection);
-    const emptyCollection = Array.isArray(value) && isQuantifiedAssociationCollectionEmpty(updatedValue);
-    if (isQuantifiedAssociationCollectionEmpty(updatedValue) && !Array.isArray(value)) {
-      onAssociationsChange({});
-    } else if (!emptyCollection && updatedValue !== value) {
-      onAssociationsChange(updatedValue);
-    }
-  }, [JSON.stringify(collection)]);
+    setRowCollection(quantifiedAssociationToRowCollection(quantifiedAssociations));
+  }, [associationTypeCode]);
+
+  useEffect(() => {
+    //TODO check with empty value
+    const updatedValue = rowCollectionToQuantifiedAssociation(rowCollection);
+    onAssociationsChange(updatedValue);
+  }, [JSON.stringify(rowCollection)]);
 
   const handleAdd = useCallback(async () => {
     try {
       const addedRows = await onOpenPicker();
-      setCollection(addRowsToCollection(collection, addedRows));
-    } catch {
-      // We need to catch because the picker has been closed and thus the promise rejected
-    }
-  }, [JSON.stringify(collection)]);
+      setRowCollection(addRowsToCollection(rowCollection, addedRows));
+      // We need to catch in case the picker gets closed and the promise rejected
+    } catch {}
+  }, [JSON.stringify(rowCollection)]);
 
-  const handleRemove = useCallback((row: Row) => setCollection(removeRowFromCollection(collection, row)), [
-    JSON.stringify(collection),
+  const handleRemove = useCallback((row: Row) => setRowCollection(removeRowFromCollection(rowCollection, row)), [
+    JSON.stringify(rowCollection),
   ]);
 
-  const handleChange = useCallback((row: Row) => setCollection(setRowInCollection(collection, row)), [
-    JSON.stringify(collection),
+  const handleChange = useCallback((row: Row) => setRowCollection(setRowInCollection(rowCollection, row)), [
+    JSON.stringify(rowCollection),
   ]);
 
   return (
@@ -122,13 +105,7 @@ const QuantifiedAssociations = ({
           {translate('pim_enrich.entity.product.module.associations.add_associations')}
         </Button>
       </Buttons>
-      {null === products ? (
-        <TablePlaceholder className="AknLoadingPlaceHolderContainer">
-          {[...Array(collection.length)].map((_, i) => (
-            <div key={i} />
-          ))}
-        </TablePlaceholder>
-      ) : 0 === filteredCollectionWithProducts.length ? (
+      {null === products ? null : 0 === filteredCollectionWithProducts.length ? (
         <NoDataSection>
           <AssociationTypeIllustration size={256} />
           <NoDataTitle>
@@ -153,21 +130,9 @@ const QuantifiedAssociations = ({
             </tr>
           </thead>
           <tbody>
-            {filteredCollectionWithProducts.map(row => {
-              if (!isRowWithProduct(row)) {
-                //TODO use Row instead of RowWithProduct? in QuantifiedAssociationRow loading row
-                return;
-              }
-
-              return (
-                <QuantifiedAssociationRow
-                  key={row.product.document_type + row.product.id}
-                  row={row}
-                  onRemove={handleRemove}
-                  onChange={handleChange}
-                />
-              );
-            })}
+            {filteredCollectionWithProducts.map((row, index) => (
+              <QuantifiedAssociationRow key={index} row={row} onRemove={handleRemove} onChange={handleChange} />
+            ))}
           </tbody>
         </TableContainer>
       )}

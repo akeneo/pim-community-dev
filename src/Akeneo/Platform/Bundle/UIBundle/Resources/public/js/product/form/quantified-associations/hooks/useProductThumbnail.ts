@@ -3,12 +3,18 @@ import {Product} from '../models';
 
 const PLACEHOLDER_PATH = '/bundles/pimui/img/image_default.png';
 
-const useProductThumbnail = (product: Product) =>
-  null === product.image
-    ? PLACEHOLDER_PATH
-    : useRoute('pim_enrich_media_show', {
-        filename: encodeURIComponent(product.image.filePath),
-        filter: 'thumbnail',
-      });
+const useProductThumbnail = (product: Product | null) => {
+  const thumbnailUrl = useRoute(
+    'pim_enrich_media_show',
+    product?.image
+      ? {
+          filename: encodeURIComponent(product.image.filePath),
+          filter: 'thumbnail',
+        }
+      : undefined
+  );
+
+  return product?.image ? thumbnailUrl : PLACEHOLDER_PATH;
+};
 
 export {useProductThumbnail};

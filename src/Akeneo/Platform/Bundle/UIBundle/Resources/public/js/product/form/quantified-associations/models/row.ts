@@ -1,9 +1,7 @@
-import {ProductType, Identifier, Product, ProductsType, getProductsType, AssociationIdentifiers} from '../models';
+import {ProductType, QuantifiedLink, Product, ProductsType, getProductsType, AssociationIdentifiers} from '../models';
 
 type Row = {
-  associationTypeCode: string;
-  quantity: number;
-  identifier: Identifier;
+  quantifiedLink: QuantifiedLink;
   productType: ProductType;
   product: null | Product;
 };
@@ -15,7 +13,7 @@ type RowWithProduct = Row & {
 const addProductToRows = (rows: Row[], products: Product[]): Row[] =>
   rows.map((row: Row) => {
     if (null === products) return {...row, product: null};
-    const product = products.find(product => product.identifier === row.identifier);
+    const product = products.find(product => product.identifier === row.quantifiedLink.identifier);
     if (undefined === product) return {...row, product: null};
 
     return {...row, product};
@@ -24,7 +22,7 @@ const addProductToRows = (rows: Row[], products: Product[]): Row[] =>
 const getAssociationIdentifiers = (rows: Row[]): AssociationIdentifiers =>
   rows.reduce(
     (identifiers: AssociationIdentifiers, row): AssociationIdentifiers => {
-      identifiers[getProductsType(row.productType)].push(row.identifier);
+      identifiers[getProductsType(row.productType)].push(row.quantifiedLink.identifier);
 
       return identifiers;
     },
@@ -40,26 +38,19 @@ const filterOnLabelOrIdentifier = (searchValue: string) => (row: Row): boolean =
   (null !== row.product &&
     null !== row.product.label &&
     -1 !== row.product.label.toLowerCase().indexOf(searchValue.toLowerCase())) ||
-  (undefined !== row.identifier && -1 !== row.identifier.toLowerCase().indexOf(searchValue.toLowerCase()));
+  (undefined !== row.quantifiedLink.identifier &&
+    -1 !== row.quantifiedLink.identifier.toLowerCase().indexOf(searchValue.toLowerCase()));
 
-const setRowInCollection = (rows: Row[], {identifier, quantity, productType, associationTypeCode}: Row) =>
+const setRowInCollection = (rows: Row[], {quantifiedLink, productType}: Row) =>
   rows.map(row => {
-    if (
-      row.identifier !== identifier ||
-      row.productType !== productType ||
-      row.associationTypeCode !== associationTypeCode
-    )
-      return row;
+    if (row.quantifiedLink.identifier !== quantifiedLink.identifier || row.productType !== productType) return row;
 
-    return {...row, quantity};
+    return {...row, quantifiedLink};
   });
 
-const removeRowFromCollection = (collection: Row[], {identifier, associationTypeCode, productType}: Row) =>
+const removeRowFromCollection = (collection: Row[], {quantifiedLink, productType}: Row) =>
   collection.filter(
-    row =>
-      row.identifier !== identifier ||
-      row.associationTypeCode !== associationTypeCode ||
-      row.productType !== productType
+    row => row.quantifiedLink.identifier !== quantifiedLink.identifier || row.productType !== productType
   );
 
 const addRowsToCollection = (collection: Row[], addedRows: Row[]) =>
@@ -67,13 +58,12 @@ const addRowsToCollection = (collection: Row[], addedRows: Row[]) =>
     (collection: Row[], addedRow: Row) => {
       const row = collection.find(
         row =>
-          addedRow.identifier === row.identifier &&
-          addedRow.productType === row.productType &&
-          addedRow.associationTypeCode === row.associationTypeCode
+          addedRow.quantifiedLink.identifier === row.quantifiedLink.identifier &&
+          addedRow.productType === row.productType
       );
 
       if (undefined !== row) {
-        row.quantity = 1;
+        row.quantifiedLink.quantity = 1;
       } else {
         collection.push(addedRow);
       }
