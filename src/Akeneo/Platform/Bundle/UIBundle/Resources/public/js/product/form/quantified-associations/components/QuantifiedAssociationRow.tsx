@@ -2,7 +2,7 @@ import React from 'react';
 import styled, {css} from 'styled-components';
 import {useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
 import {TransparentButton, EditIcon, CloseIcon} from '@akeneo-pim-community/shared';
-import {ProductType, RowWithProduct, Row} from '../models';
+import {ProductType, Row} from '../models';
 import {useProductThumbnail} from '../hooks';
 
 const Container = styled.tr`
@@ -16,6 +16,11 @@ const Container = styled.tr`
   td:first-child {
     padding-left: 15px;
   }
+`;
+
+const CellPlaceholder = styled.div`
+  height: 64px;
+  margin-top: 10px;
 `;
 
 const Thumbnail = styled.div<{isProductModel: boolean}>`
@@ -78,7 +83,7 @@ const RowAction = styled(TransparentButton)`
 `;
 
 type QuantifiedAssociationRowProps = {
-  row: RowWithProduct;
+  row: Row;
   onChange: (row: Row) => void;
   onRemove: (row: Row) => void;
 };
@@ -86,10 +91,16 @@ type QuantifiedAssociationRowProps = {
 const QuantifiedAssociationRow = ({row, onChange, onRemove}: QuantifiedAssociationRowProps) => {
   const translate = useTranslate();
   const isProductModel = ProductType.ProductModel === row.productType;
-  const productEditUrl = useRoute(`pim_enrich_${row.productType}_edit`, {id: row.product.id.toString()});
+  const productEditUrl = useRoute(`pim_enrich_${row.productType}_edit`, {id: row.product?.id.toString() || ''});
   const thumbnailUrl = useProductThumbnail(row.product);
 
-  return (
+  return null === row.product ? (
+    <tr>
+      <td colSpan={7}>
+        <CellPlaceholder className="AknLoadingPlaceHolder" />
+      </td>
+    </tr>
+  ) : (
     <Container>
       <td>
         <Thumbnail isProductModel={isProductModel}>
@@ -120,8 +131,13 @@ const QuantifiedAssociationRow = ({row, onChange, onRemove}: QuantifiedAssociati
           title={translate('pim_enrich.entity.product.module.associations.quantified.quantity')}
           type="number"
           min={1}
-          value={row.quantity}
-          onChange={event => onChange({...row, quantity: Number(event.currentTarget.value) || 1})}
+          value={row.quantifiedLink.quantity}
+          onChange={event =>
+            onChange({
+              ...row,
+              quantifiedLink: {...row.quantifiedLink, quantity: Number(event.currentTarget.value) || 1},
+            })
+          }
         />
       </td>
       <td>
