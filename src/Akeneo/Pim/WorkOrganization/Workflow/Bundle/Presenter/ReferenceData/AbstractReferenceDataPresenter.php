@@ -38,6 +38,7 @@ abstract class AbstractReferenceDataPresenter extends AbstractProductValuePresen
      */
     public function supports(string $attributeType, string $referenceDataName = null): bool
     {
+        /* @phpstan-ignore-next-line */
         return parent::supports($attributeType) && $this->referenceDataName === $referenceDataName;
     }
 }

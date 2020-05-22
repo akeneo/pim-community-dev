@@ -142,5 +142,7 @@ class EditTextValueCommandValidator extends ConstraintValidator
                 'message' => static::TEXT_INVALID_EMAIL,
             ])]);
         }
+
+        return new ConstraintViolationList();
     }
 }
