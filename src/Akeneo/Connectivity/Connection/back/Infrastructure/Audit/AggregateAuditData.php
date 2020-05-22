@@ -12,19 +12,21 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class AggregateProductEventCounts
+final class AggregateAuditData
 {
     /**
      * @param PeriodEventCount[] $periodEventCounts
      *
      * @return array [
      *      [$connectionCode] => [
-     *          'daily' => [
-     *              2020-01-01 => 3,
-     *              2020-01-02 => 0,
-     *              2020-01-03 => 6,
+     *          'previous_week' => [
+     *              '2020-01-01' => 3,
      *          ],
-     *          'weekly_total' => 9
+     *          'current_week' => [
+     *              '2020-01-02' => 0,
+     *              '2020-01-03' => 6,
+     *          ],
+     *          'current_week_total' => 6
      *      ]
      * ]
      */
@@ -33,24 +35,25 @@ final class AggregateProductEventCounts
         return array_reduce(
             $periodEventCounts,
             function (array $data, PeriodEventCount $periodEventCount) use ($dateTimeZone) {
-                $dailyEventCounts = self::groupHourlyEventCountsByDay(
+                $dailyEventCounts = self::groupHourlyEventCountByDay(
                     $periodEventCount->hourlyEventCounts(),
                     $dateTimeZone
                 );
 
-                $dailyEventCountsData = self::normalizeDailyEventCounts(
+
+                $dailyEventCounts = self::fillMissingDays(
                     $dailyEventCounts,
                     $periodEventCount->fromDateTime()->setTimezone($dateTimeZone),
                     $periodEventCount->upToDateTime()->setTimezone($dateTimeZone),
                 );
 
-                $total = array_reduce($dailyEventCountsData, function (int $total, int $count) {
-                    return $total + $count;
-                }, 0);
+                $previousWeekEventCounts = array_slice($dailyEventCounts, 0, 1);
+                $currentWeekEventCounts = array_slice($dailyEventCounts, 1);
 
                 $data[$periodEventCount->connectionCode()] = [
-                    'daily' => $dailyEventCountsData,
-                    'weekly_total' => $total
+                    'previous_week' => $previousWeekEventCounts,
+                    'current_week' => $currentWeekEventCounts,
+                    'current_week_total' => array_sum($currentWeekEventCounts)
                 ];
 
                 return $data;
@@ -64,7 +67,7 @@ final class AggregateProductEventCounts
      *
      * @return array ['2020-01-01' => 3, '2020-01-03' => 6]
      */
-    private static function groupHourlyEventCountsByDay(array $hourlyEventCounts, \DateTimeZone $dateTimeZone): array
+    private static function groupHourlyEventCountByDay(array $hourlyEventCounts, \DateTimeZone $dateTimeZone): array
     {
         return array_reduce(
             $hourlyEventCounts,
@@ -85,13 +88,9 @@ final class AggregateProductEventCounts
     /**
      * @param array $dailyEventCounts = ['2020-01-01' => 3, '2020-01-03' => 6]
      *
-     * @return array [
-     *      2020-01-01 => 3,
-     *      2020-01-02 => 0,
-     *      2020-01-03 => 6,
-     * ]
+     * @return array ['2020-01-01' => 3, '2020-01-02' => 0, '2020-01-03' => 6]
      */
-    private static function normalizeDailyEventCounts(
+    private static function fillMissingDays(
         array $dailyEventCounts,
         \DateTimeImmutable $startDateTime,
         \DateTimeImmutable $endDateTime

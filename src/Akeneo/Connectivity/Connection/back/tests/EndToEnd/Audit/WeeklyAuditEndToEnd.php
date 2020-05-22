@@ -50,7 +50,7 @@ class WeeklyAuditEndToEnd extends WebTestCase
                     '2020-01-07' => 0,
                     '2020-01-08' => 0,
                 ],
-                'weekly_total' => 15
+                'weekly_total' => 12
             ],
             'sap' => [
                 'daily' => [
@@ -76,7 +76,7 @@ class WeeklyAuditEndToEnd extends WebTestCase
                     '2020-01-07' => 0,
                     '2020-01-08' => 0,
                 ],
-                'weekly_total' => 100
+                'weekly_total' => 0
             ]
         ];
 
@@ -122,7 +122,7 @@ class WeeklyAuditEndToEnd extends WebTestCase
                     '2020-01-07' => 0,
                     '2020-01-08' => 0,
                 ],
-                'weekly_total' => 15
+                'weekly_total' => 12
             ],
             '<all>' => [
                 'daily' => [
