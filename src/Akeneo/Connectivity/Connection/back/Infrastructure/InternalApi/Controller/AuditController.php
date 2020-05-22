@@ -6,10 +6,10 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionQuery;
-use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionHandler;
-use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodErrorCountPerConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod;
 use Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateAuditData;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
