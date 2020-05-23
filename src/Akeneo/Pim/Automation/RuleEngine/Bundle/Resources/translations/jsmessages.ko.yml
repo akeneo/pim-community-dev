@@ -49,10 +49,81 @@ pimee_catalog_rule:
           error: 규칙을 삭제하는 중에 오류가 발생했습니다.
           empty_selection: 규칙을 선택하지 않았습니다.
   form:
+    tab:
+      list: 규칙 작성기 및 속성 탭
+      rule_builder: 규칙 작성기
     attribute:
       tab:
         rules:
           title: 규칙
+    creation:
+      helper: 규칙 엔진은 작업을 자동화하여 PIM에서 생산성을 대폭 늘릴 수 있습니다.
+      english_flag: 영어용 레이블
+      title: 새 규칙 만들기
+      notification:
+        success: 규칙 생성 성공
+        failed: 규칙 생성 실패
+      constraint:
+        code:
+          required: 규칙 코드가 필요합니다.
+          too_short: "규칙 코드가 너무 짧습니다. {{ characterLimit }}자 이상이 필요합니다."
+          allowed_characters: 규칙 코드는 영숫자와 밑줄만 사용할 수 있습니다.
+      cross_link: 규칙 생성 양식 끝내기
+    edit:
+      properties:
+        section:
+          general: 일반 매개변수
+          labels: 레이블 번역
+      priority:
+        label: 우선순위
+      add_to_category: 카테고리에 추가
+      add_conditions: 조건 추가
+      count_products: "{{ count }}개 제품 및 제품 모델"
+      product_selection: 제품 선택
+      fields:
+        family: 패밀리
+      actions:
+        delete:
+          label: 작업 제거
+          description: 이 작업을 제거하시겠습니까?
+      conditions:
+        delete:
+          label: 조건 제거
+          description: 이 조건을 제거하시겠습니까?
+        operators:
+          "STARTS WITH": 다음으로 시작
+          "ENDS WITH": 다음으로 끝남
+          "CONTAINS": 다음을 포함
+          "DOES NOT CONTAIN": 다음을 포함하지 않음
+          "EMPTY": 비어 있음
+          "NOT EMPTY": 비어 있지 않음
+          "IN": 있음
+          "NOT IN": 없음
+          "IN CHILDREN": 하위 항목에 있음
+          "NOT IN CHILDREN": 하위 항목에 없음
+          "UNCLASSIFIED": 미분류
+          "IN OR UNCLASSIFIED": 미분류 또는 있음
+          "BETWEEN": 사이
+          "NOT BETWEEN": 사이에 없음
+          "=": 같음
+          "!=": 같지 않음
+          ">": 보다 큼
+          ">=": 크거나 같음
+          "<": 보다 작음
+          "<=": 작거나 같음
+      notification:
+        success: 규칙 업데이트 성공
+        failed: 규칙 업데이트 실패
+      discard_changes: 이 페이지를 나가면 규칙에 대한 변경 사항이 손실됩니다.
+    helper:
+      add_to_category: 하나 이상의 카테고리에 제품 선택을 추가하려면 카테고리 트리, 카테고리를 차례로 선택하여 시작하십시오.
+      product_selection: "규칙을 만들려면 제품 선택을 정의해야 합니다. 방법을 모르시는 경우,"
+      product_selection_doc_link: 이 문서를 살펴보십시오.
+    legend:
+      add_to_category: 작업 만들기
+      product_selection: 조건 만들기
+  exceptions:
+    loading: 규칙 정의 로드 중에 오류가 발생했습니다.
 pim_enrich:
   entity:
     rule:
