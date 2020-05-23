@@ -6,12 +6,15 @@ pimee_catalog_rule:
         execute: 실행
       title: 규칙
       column:
+        label: 레이블
         conditions: 조건
         actions: 작업
         impacted_product_count:
           label: 영향받는 제품
           count: '{0,1}%count% 영향받는 제품|]1,Inf[%count% 영향받는 제품'
           no_yet_calculated: 아직 계산되지 않음
+        tags:
+          label: 작업
       mass_edit_action:
         impacted_product_count: 영향받는 제품 계산
         execute: 실행
@@ -25,6 +28,18 @@ pimee_catalog_rule:
       "add": 그런 다음 %value%이(가) %field%에 추가됩니다
       "remove": 그런 다음 %value%이(가) %field%에서 제거됩니다
       "concatenate": 그런 다음 %fields%이(가) %to_field%에 연결됩니다
+      clear: 그런 다음 %field%이(가) 지워집니다.
+      calculate: '그런 다음 %field%이(가) 계산됩니다: %operation_details% '
+      calculate_first_operation:
+        add: '%source%에 %operand% 더하기'
+        subtract: '%source%에서 %operand% 빼기'
+        multiply: '%source%에 %operand% 곱하기'
+        divide: '%source%을(를) %operand%(으)로 나누기'
+      calculate_other_operation:
+        add: ', 그런 다음 %operand% 더하기'
+        subtract: ', 그런 다음 %operand% 빼기'
+        divide: ', 그런 다음 %operand%(으)로 나누기'
+        multiply: ', 그런 다음 %operand% 곱하기'
     options:
       include_children: 및 하위 항목
   condition:
@@ -50,6 +65,10 @@ pimee_catalog_rule:
       ">=": 크거나 같음
       "<": 보다 작음
       "<=": 작거나 같음
+    fields:
+      family: 패밀리
+    field_groups:
+      system: 시스템
   acl_group:
     rule: 규칙
   acl:

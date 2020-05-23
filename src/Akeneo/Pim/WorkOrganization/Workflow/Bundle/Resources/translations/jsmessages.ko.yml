@@ -198,6 +198,10 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span> 게시 취소|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>게시 취소"
       description: 제품이 게시 취소됩니다
       warning: 선택된 {{ itemsCount }}개 제품이 게시 취소됩니다.
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: 게시된 제품에 링크된 카테고리를 삭제할 수 없습니다.
 pim_menu:
   navigation:
     published_products: 게시된 제품
