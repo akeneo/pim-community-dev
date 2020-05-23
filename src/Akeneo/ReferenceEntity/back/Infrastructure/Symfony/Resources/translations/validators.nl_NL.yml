@@ -7,8 +7,6 @@ pim_reference_entity:
         limit_reached: 'U kunt de referentie-entiteit "%reference_entity_label%" niet aanmaken omdat u de limiet van %limit% referentie-entiteiten hebt bereikt'
       records:
         should_have_no_record: 'U kunt deze entiteit niet verwijderen omdat er records bestaan voor deze entiteit'
-      reference_entity_attributes:
-        should_not_be_linked: 'Je kunt deze entiteit niet verwijderen omdat entiteit attributen gerelateerd zijn aan deze entiteit'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Ten minste één gebruikersgroep moet de toestemming hebben om deze entiteit te bewerken'
       product_attributes:
