@@ -1,4 +1,4 @@
-import {useQuery} from '../../shared/fetch';
+import {useQuery} from '../../../shared/fetch';
 
 export const useBusinessErrorCountPerConnection = () => {
     const {loading, data} = useQuery<{[connectionCode: string]: number}>(

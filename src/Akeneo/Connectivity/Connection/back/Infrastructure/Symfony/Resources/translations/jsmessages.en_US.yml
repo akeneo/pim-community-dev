@@ -172,6 +172,12 @@ akeneo_connectivity.connection:
                 during_the_last_seven_days: 'Total over the last 7 days:'
                 today: Today
         error_management:
+            data_source_error_chart:
+                section:
+                    title: Errors on source connections
+                    helper: Here you can see the total number of errors, including business errors.
+                chart:
+                    title: Error count per day
             widget:
                 title: Business errors per source connection
                 over_the_last_seven_days : Over the last 7 days
@@ -204,6 +210,14 @@ akeneo_connectivity.connection:
                 content_column: Error message
             no_error:
                 title: Awesome! No error found!
+            not_auditable:
+                title: Unmonitored connection
+                description:
+                    1: To track errors on this connection, 
+                    2: activate monitoring
+                    3: in the settings.
+            not_data_source:
+                title: '{{ flow_type }} connections are not monitored for errors.'
 
     runtime_error:
         error_message: Oh snap! An error occurred...

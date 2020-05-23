@@ -1,10 +1,10 @@
-import React, {PropsWithChildren} from 'react';
-import useConnectionSelect from '@src/audit/useConnectionSelect';
+import {DashboardProvider} from '@src/audit/dashboard-context';
+import useConnectionSelect from '@src/audit/hooks/useConnectionSelect';
+import {State} from '@src/audit/reducers/dashboard-reducer';
+import {AuditEventType} from '@src/model/audit-event-type.enum';
 import {FlowType} from '@src/model/flow-type.enum';
 import {act, renderHook} from '@testing-library/react-hooks';
-import {DashboardProvider} from '@src/audit/dashboard-context';
-import {AuditEventType} from '@src/model/audit-event-type.enum';
-import {State} from '@src/audit/reducers/dashboard-reducer';
+import React, {PropsWithChildren} from 'react';
 
 const initialState: State = {
     connections: {
@@ -37,7 +37,8 @@ const wrapper = ({children}: PropsWithChildren<{}>) => (
 describe('Select connection', () => {
     it('selects a connection', () => {
         const {result} = renderHook(() => useConnectionSelect(FlowType.DATA_DESTINATION), {wrapper});
-        const [connections, defaultConnectionCode, setSelectedConnectionCode] = result.current;
+        const {connections, connectionCode, selectConnectionCode} = result.current;
+
         expect(connections).toStrictEqual([
             {
                 code: '<all>',
@@ -54,11 +55,14 @@ describe('Select connection', () => {
                 auditable: true,
             },
         ]);
-        expect(defaultConnectionCode).toBe('<all>');
+
+        expect(connectionCode).toBe('<all>');
+
         act(() => {
-            setSelectedConnectionCode('magento');
+            selectConnectionCode('magento');
         });
-        const [, selectedConnectionCode] = result.current;
+
+        const {connectionCode: selectedConnectionCode} = result.current;
         expect(selectedConnectionCode).toBe('magento');
     });
 });
