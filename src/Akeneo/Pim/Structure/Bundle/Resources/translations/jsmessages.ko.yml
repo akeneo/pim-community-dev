@@ -202,6 +202,10 @@ pim_enrich.entity.attribute_group:
   label: 특성 그룹
   uppercase_label: 특성 그룹
   plural_label: 특성 그룹
+  show_more_attribute:
+    title: 여기는 약간 혼잡합니다. {{ attributeCount }}/{{ totalAttributeCount }}개 특성이 표시됩니다.
+    subtitle: 이 그룹의 모든 특성을 알아보려면 아래를 클릭하면 됩니다!
+    button: 모든 특성 보기
   flash:
     update:
       success: 특성 그룹 업데이트됨
