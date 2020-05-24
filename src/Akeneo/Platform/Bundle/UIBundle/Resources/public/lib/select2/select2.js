@@ -1,3 +1,5 @@
+import jQuery from 'jquery';
+
 /*
 Copyright 2012 Igor Vaynberg
 

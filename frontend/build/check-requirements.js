@@ -11,6 +11,6 @@ if (!existsSync(BUNDLE_REQUIRE_PATH)) {
 }
 
 if (!existsSync(ROUTES_PATH)) {
-    console.log(`${ROUTES_PATH} does not exist - Run "bin/console --ansi fos:js-routing:dump --target=public/js/routes.js" and try again.`.red)
+    console.log(`${ROUTES_PATH} does not exist - Run "bin/console --ansi fos:js-routing:dump --format=json --target=public/js/routes.json" and try again.`.red)
     process.exit(1)
 }

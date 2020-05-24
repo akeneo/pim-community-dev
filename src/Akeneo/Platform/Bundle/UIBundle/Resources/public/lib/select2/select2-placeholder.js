@@ -1,3 +1,6 @@
+import jQuery from 'jquery';
+import _ from 'underscore';
+
 (function($, _) {
     /**
      * Extension of select2 to allow placeholder in the search input field

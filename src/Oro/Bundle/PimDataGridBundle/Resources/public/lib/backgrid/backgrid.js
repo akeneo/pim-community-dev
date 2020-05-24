@@ -1,3 +1,7 @@
+import Backbone from 'backbone';
+import $ from 'jquery';
+import _ from 'underscore';
+
 /*
   backgrid
   http://github.com/wyuenho/backgrid
@@ -5,18 +9,8 @@
   Copyright (c) 2013 Jimmy Yuen Ho Wong and contributors
   Licensed under the MIT @license.
 */
-(function (root, $, _, Backbone) {
 
-  "use strict";
-/*
-  backgrid
-  http://github.com/wyuenho/backgrid
-
-  Copyright (c) 2013 Jimmy Yuen Ho Wong and contributors
-  Licensed under the MIT @license.
-*/
-
-var window = root;
+const root = {};
 
 // Copyright 2009, 2010 Kristopher Michael Kowal
 // https://github.com/kriskowal/es5-shim
@@ -2548,6 +2542,4 @@ var Grid = Backgrid.Grid = Backbone.View.extend({
 
 });
 
-}(this, jQuery, _, Backbone));
-
-module.exports = this.Backgrid
+module.exports = Backgrid

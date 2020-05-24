@@ -1,3 +1,7 @@
+import Backbone from 'backbone';
+import jQuery from 'jquery';
+import _ from 'underscore';
+
 /**
  * Bootstrap Modal wrapper for use with Backbone.
  *

@@ -11,8 +11,7 @@ define(
     'pim/asynctab',
     'pim/ui',
     'oro/loading-mask',
-    'pim/router',
-    'require-polyfill'
+    'pim/router'
 ],
     function (
         $,

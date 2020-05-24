@@ -1,7 +1,7 @@
-require('fos-routing-base')
-require('routes')
-var Routing = Routing || window.Routing;
+import Routing from 'fos-routing-base';
+import routes from 'routes';
 
+Routing.setRoutingData(routes);
 Routing.generateHash = (route, routeParams) => `#${Routing.generate(route, routeParams)}`;
 
 module.exports = Routing;
