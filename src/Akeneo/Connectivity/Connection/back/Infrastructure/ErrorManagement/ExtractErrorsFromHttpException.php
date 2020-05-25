@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\ExtractEr
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\ApiErrorInterface;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\TechnicalError;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
@@ -41,11 +42,20 @@ class ExtractErrorsFromHttpException implements ExtractErrorsFromHttpExceptionIn
 
         $json = $this->serializer->serialize($httpException, 'json', new Context());
 
-        if ($httpException instanceof ViolationHttpException) {
-            return $this->extractViolationErrors($json);
+        switch (true) {
+            case $httpException instanceof ViolationHttpException:
+                $extractedErrors = $this->extractViolationErrors($json);
+                break;
+
+            case $httpException->getPrevious() instanceof UnknownAttributeException:
+                $extractedErrors = [new BusinessError($json)];
+                break;
+
+            default:
+                $extractedErrors = [new TechnicalError($json)];
         }
 
-        return [new TechnicalError($json)];
+        return $extractedErrors;
     }
 
     /**
