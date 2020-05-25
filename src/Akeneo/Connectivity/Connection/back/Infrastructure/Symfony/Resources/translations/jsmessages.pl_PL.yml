@@ -1,0 +1,204 @@
+pim_menu:
+  navigation_back:
+    connection: Powrót do połączeń
+  navigation_block:
+    connection: Nawigacja po połączeniach
+  item:
+    connection_audit: Panel połączenia
+    connection_settings: Połączenia
+    connection_settings_edit: Ustawienia połączeń
+    connection_monitoring: Monitorowanie
+pim_title:
+  akeneo_connectivity_connection_settings_index: Połączenia
+  akeneo_connectivity_connection_settings_edit: Ustawienia połączeń
+  akeneo_connectivity_connection_settings_any: Ustawienie połączenia
+  akeneo_connectivity_connection_audit_index: Panel połączenia
+  akeneo_connectivity_connection_audit_any: Panel połączenia
+  akeneo_connectivity_connection_error_management_dashboard: Panel połączenia
+  akeneo_connectivity_connection_error_management_connection_monitoring: Monitorowanie połączeń
+akeneo_connectivity.connection:
+  connections: Połączenia
+  secondary_actions:
+    title: Inne działania
+  connection:
+    code: Kod
+    label: Nazwa
+    flow_type: Typ przepływu
+    image: Obraz
+    auditable: Śledź to połączenie na pulpicie nawigacyjnym
+    client_id: ID klienta
+    secret: Sekret
+    username: Nazwa użytkownika
+    password: Hasło
+    user_role_id: Rola
+    user_group_id: Grupa
+    constraint:
+      code:
+        required: Kod połączenia jest wymagany
+        invalid: Kod połączenia może zawierać tylko litery, cyfry i podkreślenia.
+        too_short: Kod połączenia jest zbyt krótki. Powinien mieć co najmniej 3 znaki.
+        too_long: Kod połączenia jest zbyt długi. Powinien mieć 100 lub mniej znaków.
+        must_be_unique: Kod połączenia musi być unikalny.
+      label:
+        required: Etykieta połączenia jest wymagana.
+        too_short: Etykieta połączenia jest zbyt krótka. Powinna mieć co najmniej 3 znaki.
+        too_long: Etykieta połączenia jest zbyt długa. Powinna mieć 100 lub mniej znaków.
+      flow_type:
+        invalid: Typ połączeń może być tylko 'data_source', 'data_destination' lub 'other'.
+      image:
+        must_exist: Obraz nie został znaleziony. Spróbuj ponownie.
+  flow_type:
+    data_source: Źródło danych | Źródła danych
+    data_destination: Przeznaczenie danych | Przeznaczenia danych
+    other: Inne | Inne
+  connection_count: '{{ count }} połączenie | {{ count }} połączenia | {{ count }} połączeń'
+  no_connection:
+    title: Nie zadeklarowano jeszcze połączenia.
+    message: Dodaj pierwszy/e klikając na przycisk "Utwórz" powyżej lub
+    message_link: kliknij tutaj.
+  create_connection:
+    title: Utwórz nowe połączenie
+    description: Możesz utworzyć do 50 połączeń.
+    flash:
+      success: Połączenie zostało pomyślnie utworzone.
+      error: Przepraszamy, wystąpił błąd podczas tworzenia połączenia.
+  edit_connection:
+    subtitle: Ustawienia
+    flash:
+      success: Połączenie zostało pomyślnie zaktualizowane.
+      error: Przepraszamy, wystąpił błąd podczas edycji połączenia.
+    image_uploader:
+      extension_not_allowed: Przepraszamy, ale plik który próbujesz przesłać, ma niedozwolone rozszerzenie.
+    credentials:
+      title: Dane uwierzytelniające
+      helper:
+        message: 'Oto poświadczenia do użycia w Twoim konektorze {{ label }}.'
+        link: Dowiedz się więcej...
+      wrong_credentials_combinations:
+        single: Zauważyliśmy, że dla tego połączenia używasz błędnego użytkownika - {{ wrong_username }} (ostatnio użyty {{ date }} o {{ time }}. Sugerujemy użycie poprawnego użytkownika - {{ good_username }}
+        link: Sprawdź dlaczego powinieneś go używać.
+        link_list: Sprawdź dlaczego zalecamy użycie tej nazwy użytkownika.
+        several: Zauważyliśmy, że nie używasz nazwy użytkownika {{ good_username }} do tego połączenia.
+        list: 'Oto lista nazw użytkowników, które były używane w ciągu ostatnich 7 dni:'
+        username_date: '{{ wrong_username }} dnia {{ date }} o {{ time }}'
+      password_helper:
+        message: Jeśli zapomniałeś hasła, możesz wygenerować nowe tutaj.
+        link: Więcej informacji...
+      clear_password_helper:
+        message: Upewnij się, że to hasło zostało zapisane, ponieważ nie pokażemy Ci go ponownie.
+        link: Więcej informacji...
+      action:
+        copy: Skopiuj do schowka
+        regenerate: Wygeneruj ponownie
+      flash:
+        copied: '{{ name }} skopiowane do schowka'
+    permissions:
+      title: Uprawnienia
+      helper:
+        message: 'W tej sekcji możesz zdefiniować uprawnienia dla połączenia {{ label }}.'
+        link: Dowiedz się więcej o uprawnieniach do połączenia...
+      user_role_helper:
+        message: Domyślna rola `{{ role }}` nie jest najlepszym wyborem dla Twojego połączenia. Zalecamy wybranie roli dostosowanej do potrzeb Twojego połączenia.
+        link: Więcej informacji tutaj...
+      user_group_helper:
+        message: Zalecamy wybranie grupy dostosowanej do potrzeb Twojego połączenia.
+        link: Więcej informacji tutaj...
+  regenerate_secret:
+    title: Potwierdź regenerację
+    description: Czy na pewno chcesz wygenerować ponownie hasło dla połączenia? Nie jesteś pewien co do skutków?
+    link: Oto co się stanie.
+    action:
+      regenerate: Wygeneruj ponownie
+    flash:
+      success: Wygenerowano ponownie hasło połączenia.
+      error: Przepraszamy, wystąpił błąd podczas regeneracji hasła połączenia.
+  regenerate_password:
+    title: Potwierdź regenerację
+    description: Czy na pewno chcesz wygenerować ponownie hasło dla połączenia? Nie jesteś pewien co do skutków?
+    link: Oto co się stanie.
+    action:
+      regenerate: Wygeneruj ponownie
+    flash:
+      success: Wygenerowano hasło połączenia.
+      error: Przepraszamy, wystąpił błąd podczas regeneracji hasła połączenia.
+  delete_connection:
+    title: Potwierdź usunięcie
+    description: Czy na pewno chcesz usunąć połączenie? Nie jesteś pewien co do skutków?
+    link: Oto co się stanie.
+    flash:
+      success: Połączenie pomyślnie usunięte.
+  helper:
+    title: '👋 Witamy w funkcji, która poprawnie połączy Twój PIM!'
+    description: PIM bez integracji z innymi firmami nie jest bezużyteczny, prawda? Dzięki połączeniom możesz zadeklarować wszystkie przepływy danych, które zostaną przepchnięte i pobrane poza PIM.
+    link: Chcesz dowiedzieć się więcej? Dowiedz się, co jest połączenie i jak je wykorzystać tutaj!
+  flow_type_helper:
+    message: Zastanawiasz się czym jest typ przepływu danych?
+    link: Możemy Ci pomóc tutaj!
+  auditable_helper:
+    message: Możesz śledzić tylko połączenia "Źródło" i "Docelowe".
+    link: Więcej informacji...
+  edit_image:
+    upload_helper: Zmień swój obraz, przeciągnij i upuść lub
+    remove_helper: Usuń obrazek
+    click_here: kliknij tutaj
+    flash:
+      extension_not_allowed: Przepraszamy, ale plik który próbujesz przesłać, ma niedozwolone rozszerzenie.
+  grid.wrong_credentials_combination_helper: Niektóre z poniższych połączeń nie używają swoich nazw użytkowników. Są one oznaczone za pomocą żółtego znaku ostrzegawczego.
+  dashboard:
+    helper:
+      title: '👋 Witaj w panelu połączeń!'
+      description: Tutaj będziesz mógł śledzić wszystkie przepływy danych, które są zbierane do Twojego PIM za pośrednictwem połączeń, a także wszystkie przepływy danych, które są rozprowadzane do kanałów za pośrednictwem połączeń.
+      link: Chcesz wiedzieć więcej? Proszę bardzo!
+    user_survey:
+      title: Chcesz więcej danych na tym pulpicie?
+      content: Twoja opinia jest dla nas bardzo cenna. Pomóż nam wybrać następny widżet odpowiadając na jedno pytanie!
+      button: Zaczynajmy!
+    connection_selector:
+      title:
+        source: Połączenia źródeł
+        destination: Docelowe połączenie
+      all: Wszystkie
+    charts:
+      inbound: Przychodzące
+      outbound: Wychodzące
+      number_of_products_created: Utworzone produkty
+      number_of_products_updated: Uaktualnione produkty
+      number_of_products_sent: Wysłano produkty
+      legend:
+        during_the_last_seven_days: 'Łącznie w ciągu ostatnich 7 dni:'
+        today: Dzisiaj
+    error_management:
+      widget:
+        title: Błędy biznesowe dla połączenia źródłowego
+        over_the_last_seven_days: W ciągu ostatnich 7 dni
+        business_errors: błędy biznesowe
+    no_connection:
+      title:
+        default: Chcesz zobaczyć kilka fajnych wykresów dotyczących twoich połączeń?
+        data_source: Chcesz zobaczyć kilka fantazyjnych wykresów dotyczących twoich połączeń źródłowych?
+        data_destination: Chcesz zobaczyć kilka fajnych wykresów dotyczących twoich połączeń?
+      message_with_permission:
+        message: Utwórz i zacznij śledzić swoje pierwsze połączenie
+        link: tutaj.
+      message_without_permission:
+        message: Poproś administratora o utworzenie.
+        link: Dowiedz się więcej o połączeniach tutaj...
+  error_management:
+    connection_monitoring:
+      title: Monitorowanie
+      helper:
+        title: '{0} Masz {{ count }} błąd |[1,Inf] Masz {{ count }} błędów'
+        description: Tutaj możesz zobaczyć szczegóły każdego błędu dla tego połączenia w ciągu ostatnich 7 dni. Liczba błędów jest ograniczona do 100 błędów.
+        link: Aby zrozumieć, jak to rozwiązać, odwiedź centrum pomocy API.
+      search_filter:
+        placeholder: Szukaj w komunikatach błędów
+        result_count: '{0} Brak wyniku |[1,Inf] {{ count }} wyników'
+      error_list:
+        date_time_column: Dzień i czas
+        content_column: Komunikat o błędzie
+      no_error:
+        title: Wspaniale! Nie znaleziono błędu!
+  runtime_error:
+    error_message: Motyla noga! Mamy błąd...
+    reload_helper: Proszę odświeżyć stronę i spróbować ponownie
+    reload_button: Odśwież

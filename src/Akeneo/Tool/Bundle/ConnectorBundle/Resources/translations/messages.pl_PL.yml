@@ -1,156 +1,23 @@
 pim_connector:
   steps:
-    dummy_reader.title: Pozorny mechanizm odczytu
-    product_reader.title: Odczyt produktu
-    entity_reader.title: Odczyt encji
-    csv_reader:
-      title: Czytnik CSV
-    csv_product_reader.title: Czytnik produktów z CSV
-    csv_category_reader.title: Czytnik kategorii z CSV
-    csv_variant_group .title: Czytnik grup wariantów z CSV
-    dummy_processor.title: Pozorny mechanizm przetwarzania
-    product_processor.title: Tworzenie produktu
-    variant_group_processor.title: Tworzenie grupy wariantów / aktualizacja
-    category_processor.title: Tworzenie kategorii
-    association_processor.title: Tworzenie powiązania
-    product_association_processor.title: Tworzenie powiązania
-    group_processor.title: Tworzenie grupy
-    attribute_processor.title: Tworzenie atrybutu
-    attribute_option_processor.title: Tworzenie ustawień atrybutu
-    heterogeneous_processor.title: Serializator produktu CSV
-    homogeneous_processor.title: Serializator encji CSV
-    transformer_processor.title: Transformacja
-    dummy_writer.title: Pozorny zapis
-    file_writer.title: Wyjście
-    product_writer.title: Magazyn produktów
-    category_writer.title: Magazyn kategorii
-    variant_group_writer.title: Magazyn grup wariantów
-    writer.title: Jednostki składowania
-    csv_writer.title: Zapis Csv
+    file_reader:
+      invalid_item_columns_count: 'Oczekiwano %totalColumnsCount% kolumn, aktualnie mają %itemColumnsCount% w %filePath%:%lineno%'
 job_execution.summary:
-  read: odczytano
+  read: odczyt
   write: zapisano
-  skip: pominięto
+  skip: pominięte
   create: utworzono
   process: przetworzono
-  update_products: zaktualizowano produktów
-  process_products: produkty przetworzone
-  skip_products: pominięte produkty
-  displayed: pierwsze ostrzeżenie wyświetlone
+  update_products: zaktualizowanych produktów
+  process_products: przetworzonych produktów
+  skip_products: pominiętych produktów
+  displayed: pierwsze ostrzeżenia wyświetlone
   charset_validator:
-    title: 'Strona kodowa pliku:'
+    title: 'Kodowanie pliku:'
     skipped: pominięte, rozszerzenie na białej liście
   product_skipped_no_diff: produkt pominięty (brak różnic)
-  item_position: odczytane wiersze
-batch_jobs:
-  csv_product_export:
-    label: Eksport produktów do CSV
-    export.label: Eksport produktów
-  csv_category_export:
-    label: Eksport kategorii do CSV
-    export.label: Eksport kategorii
-  csv_attribute_export:
-    label: Eksport atrybutów do CSV
-    export.label: Eksport atrybutów
-  csv_attribute_option_export:
-    label: Eksport opcji atrybutów do CSV
-    export.label: Eksport opcji atrybutów
-  csv_association_type_export:
-    label: Eksport typów powiązań do CSV
-    export.label: Eksport typów powiązań
-  csv_group_export:
-    label: Eksport grup do CSV
-    export.label: Eksport grup
-  csv_variant_group_export:
-    label: Eksport grup wariantów do CSV
-    export.label: Eksport grup wariantów
-  csv_family_export:
-    label: Eksport rodzin do pliku CSV
-    export.label: Eksport rodziny
-  csv_product_import:
-    label: Import produktów z CSV
-    validation.label: Sprawdzanie pliku
-    import.label: Import Produktu
-    import_associations.label: Import Powiązań
-  csv_category_import:
-    label: Import kategorii z CSV
-    validation.label: Sprawdzanie pliku
-    import.label: Import kategorii
-  csv_attribute_import:
-    label: Import atrybutów z CSV
-    validation.label: Sprawdzanie pliku
-    import.label: Import atrybutu
-  csv_attribute_option_import:
-    label: Import ustawień atrybutów z CSV
-    validation.label: Sprawdzanie pliku
-    import.label: Import ustawień atrybutów
-  csv_association_type_import:
-    label: Import typów powiązań z CSV
-    validation.label: Sprawdzanie pliku
-    import.label: Import typów powiązań
-  csv_family_import:
-    label: Import rodziny z pliku CSV
-    validation.label: Sprawdzanie pliku
-    import.label: Import rodziny
-  csv_group_import:
-    label: Import grup z CSV
-    validation.label: Sprawdzanie pliku
-    import.label: Import grup
-  csv_variant_group_import:
-    label: Import grup wariantów z CSV
-    validation.label: Sprawdzanie pliku
-    import.label: Import grup wariantów
-  csv_channel_import:
-    validation.label: Sprawdzanie pliku
-  csv_locale_import:
-    validation.label: Sprawdzanie pliku
-  csv_attribute_group_import:
-    validation.label: Sprawdzanie pliku
-  csv_currency_import:
-    validation.label: Sprawdzanie pliku
-  csv_group_type_import:
-    validation.label: Sprawdzanie pliku
-  xlsx_category_import:
-    validation.label: Sprawdzanie pliku
-    import.label: Import kategorii
-  xlsx_association_type_import:
-    validation.label: Sprawdzanie pliku
-    import.label: Import typów powiązań
-  xlsx_attribute_import:
-    validation.label: Sprawdzanie pliku
-    import.label: Import atrybutu
-  xlsx_attribute_option_import:
-    validation.label: Sprawdzanie pliku
-    import.label: Import ustawień atrybutów
-  xlsx_family_import:
-    validation.label: Sprawdzanie pliku
-    import.label: Import rodziny
-  xlsx_product_export:
-    export.label: Eksport produktów
-  xlsx_product_import:
-    validation.label: Sprawdzanie pliku
-    import.label: Import Produktu
-    import_associations.label: Import Powiązań
-  xlsx_group_export:
-    export.label: Eksport grup
-  xlsx_variant_group_export:
-    export.label: Eksport grup wariantów
-  xlsx_group_import:
-    validation.label: Sprawdzanie pliku
-    import.label: Import grup
-  xlsx_variant_group_import:
-    validation.label: Sprawdzanie pliku
-  xlsx_family_export:
-    export.label: Eksport rodziny
-  xlsx_category_export:
-    export.label: Eksport kategorii
-  xlsx_channel_import:
-    validation.label: Sprawdzanie pliku
-  xlsx_locale_import:
-    validation.label: Sprawdzanie pliku
-  xlsx_attribute_group_import:
-    validation.label: Sprawdzanie pliku
-  xlsx_currency_import:
-    validation.label: Sprawdzanie pliku
-  xlsx_group_type_import:
-    validation.label: Sprawdzanie pliku
+  product_skipped_no_associations: pominięty produkt (nie wykryto żadnych skojarzeń)
+  product_model_skipped_no_diff: pominięty model produktu (brak różnic)
+  item_position: odczytanych wierszy
+  skipped_in_root_product_model: pominięty produkt z elementem nadrzędnym
+  skipped_in_sub_product_model: pominięty produkt bez elementu nadrzędnego
