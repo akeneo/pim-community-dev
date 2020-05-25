@@ -128,8 +128,8 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
                 $this->context->buildViolation(
                     QuantifiedAssociationsConstraint::LINK_TYPE_UNEXPECTED_MESSAGE,
                     [
-                        'value' => $linkType,
-                        'allowed' => implode(',', self::ALLOWED_LINK_TYPES),
+                        '{{ value }}' => $linkType,
+                        '{{ allowed }}' => implode(',', self::ALLOWED_LINK_TYPES),
                     ]
                 )
                     ->atPath($propertyPath)
@@ -154,7 +154,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::PRODUCTS_DO_NOT_EXIST_MESSAGE,
                 [
-                    'values' => implode(', ', $nonExistingProductIdentifiers),
+                    '{{ values }}' => implode(', ', $nonExistingProductIdentifiers),
                 ]
             )
                 ->atPath($propertyPath)
@@ -176,7 +176,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::PRODUCT_MODELS_DO_NOT_EXIST_MESSAGE,
                 [
-                    'values' => implode(', ', $nonExistingProductModelCodes),
+                    '{{ values }}' => implode(', ', $nonExistingProductModelCodes),
                 ]
             )
                 ->atPath($propertyPath)
@@ -192,9 +192,9 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::INVALID_QUANTITY_MESSAGE,
                 [
-                    'value' => $quantity,
-                    'min' => self::MIN_QUANTITY,
-                    'max' => self::MAX_QUANTITY,
+                    '{{ value }}' => $quantity,
+                    '{{ min }}' => self::MIN_QUANTITY,
+                    '{{ max }}' => self::MAX_QUANTITY,
                 ]
             )
                 ->atPath($propertyPath)
@@ -208,8 +208,8 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::MAX_ASSOCIATIONS_MESSAGE,
                 [
-                    'value' => $count,
-                    'limit' => self::MAX_ASSOCIATIONS,
+                    '{{ value }}' => $count,
+                    '{{ limit }}' => self::MAX_ASSOCIATIONS,
                 ]
             )
                 ->atPath($propertyPath)
