@@ -1,7 +1,8 @@
 import {useEffect, useState} from 'react';
 import {useUserContext, useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {AssociationIdentifiers, Product} from '../models';
+import {AssociationIdentifiers, Product, ProductType} from '../models';
 
+const productPromises = {};
 const productFetcher = async (route: string, identifiers: AssociationIdentifiers): Promise<Product[]> => {
   const response = await fetch(route, {
     method: 'POST',
@@ -23,11 +24,35 @@ const useProducts = (identifiers: AssociationIdentifiers): Product[] | null => {
     locale: userContext.get('catalogLocale'),
   });
 
+  const identifiersToFetch: AssociationIdentifiers =
+    null === products
+      ? identifiers
+      : {
+          products: identifiers.products.filter(
+            identifier =>
+              !products.some(
+                product => product.identifier === identifier && product.document_type === ProductType.Product
+              )
+          ),
+          product_models: identifiers.product_models.filter(
+            identifier =>
+              !products.some(
+                product => product.identifier === identifier && product.document_type === ProductType.ProductModel
+              )
+          ),
+        };
+
   useEffect(() => {
     (async () => {
-      setProducts(await productFetcher(url, identifiers));
+      if (0 === identifiersToFetch.product_models.length && 0 === identifiersToFetch.products.length) return;
+      debugger;
+      const newProducts = await productFetcher(url, identifiersToFetch);
+
+      setProducts(currentProducts => {
+        return null === currentProducts ? newProducts : [...newProducts, ...currentProducts];
+      });
     })();
-  }, [JSON.stringify(identifiers), url]);
+  }, [JSON.stringify(identifiersToFetch), url]);
 
   return products;
 };

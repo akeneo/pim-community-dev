@@ -176,16 +176,7 @@ define([
      * {@inheritdoc}
      */
     render: function() {
-      const newAssociationCount = this.getAssociationCount();
-      if (this.associationCount !== newAssociationCount) {
-        this.associationCount = newAssociationCount;
-
-        this.trigger('tab:register', {
-          code: undefined === this.config.tabCode ? this.code : this.config.tabCode,
-          isVisible: this.isVisible.bind(this),
-          label: __('pim_enrich.entity.product.module.associations.title', {count: newAssociationCount}),
-        });
-      }
+      this.updateAssociationCountInSidebar();
 
       const code = undefined === this.config.tabCode ? this.code : this.config.tabCode;
 
@@ -242,6 +233,19 @@ define([
       return this;
     },
 
+    updateAssociationCountInSidebar: function () {
+      const newAssociationCount = this.getAssociationCount();
+      if (this.associationCount !== newAssociationCount) {
+        this.associationCount = newAssociationCount;
+
+        this.trigger('tab:register', {
+          code: undefined === this.config.tabCode ? this.code : this.config.tabCode,
+          isVisible: this.isVisible.bind(this),
+          label: __('pim_enrich.entity.product.module.associations.title', {count: newAssociationCount}),
+        });
+      }
+    },
+
     /**
      * Prepend for each association type each tab content
      */
@@ -280,6 +284,7 @@ define([
     renderQuantifiedAssociations: function() {
       const associationTypeCode = this.getCurrentAssociationType();
       if (!this.isQuantifiedAssociation(state.associationTypes, associationTypeCode)) return;
+      if (this.$('#product-quantified-associations').children().length !== 0) return;
 
       const Component = React.createElement(QuantifiedAssociationsTab, {
         quantifiedAssociations: this.getFormData().quantified_associations[associationTypeCode],
@@ -397,6 +402,7 @@ define([
       event.preventDefault();
       const associationType = event.currentTarget.dataset.associationType;
       this.setCurrentAssociationType(associationType);
+      this.$('#product-quantified-associations').empty();
 
       const isQuantifiedAssociation = this.isQuantifiedAssociation(state.associationTypes, associationType);
       if (isQuantifiedAssociation) {
