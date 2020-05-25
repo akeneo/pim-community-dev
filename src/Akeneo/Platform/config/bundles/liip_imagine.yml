@@ -7,6 +7,7 @@ liip_imagine:
             filters:
                 thumbnail:    { size: [58, 58], mode: outbound }
                 strip:        ~
+
         preview:
             quality:          95
             format:           jpg
@@ -14,18 +15,23 @@ liip_imagine:
                 background:
                     color: "#ffffff"
                 strip:        ~
+
         thumbnail:
             quality:          95
             format:           png
             filters:
                 thumbnail:    { size: [320, 320], mode: outbound }
                 strip:        ~
+                auto_rotate: ~
+
         thumbnail_small:
             quality:          95
             format:           png
             filters:
+                auto_rotate: ~
                 thumbnail:    { size: [280, 280], mode: outbound }
                 strip:        ~
+
         pdf_thumbnail:
             quality:          95
             format:           png

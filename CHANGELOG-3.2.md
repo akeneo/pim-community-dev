@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - AOB-953: Fix `ComputeFamilyVariantStructureChanges` constraint by accepting array of several elements
+- PIM-9262: Keep image rotation on images and assets thumbnails
 
 ## Improvement
 
