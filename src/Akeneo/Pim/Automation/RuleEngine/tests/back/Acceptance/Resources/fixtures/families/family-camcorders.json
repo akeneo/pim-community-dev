@@ -11,6 +11,7 @@
         "processor",
         "price",
         "weight",
+        "rounded_item_weight",
         "item_weight",
         "color",
         "connectivity",

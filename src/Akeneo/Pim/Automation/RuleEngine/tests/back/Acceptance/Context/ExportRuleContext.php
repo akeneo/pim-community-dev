@@ -159,7 +159,7 @@ rules:
         value:
           - camcorders
     actions:
-      - type: calculate      
+      - type: calculate
         destination:
           field: item_weight
           scope: ecommerce
@@ -173,6 +173,16 @@ rules:
           -
             operator: subtract
             value: 3              
+      - type: calculate
+        round_precision: 2
+        destination:
+          field: rounded_item_weight
+        source:
+          field: weight
+        operation_list:
+          -
+            operator: divide
+            value: 3
 YAML;
 
     private static $normalizedRules = [];

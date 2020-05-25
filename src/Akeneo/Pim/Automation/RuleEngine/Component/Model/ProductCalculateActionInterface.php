@@ -22,4 +22,8 @@ interface ProductCalculateActionInterface extends ActionInterface
     public function getSource(): Operand;
 
     public function getOperationList(): OperationList;
+
+    public function isRoundEnabled(): bool;
+
+    public function getRoundPrecision(): ?int;
 }
