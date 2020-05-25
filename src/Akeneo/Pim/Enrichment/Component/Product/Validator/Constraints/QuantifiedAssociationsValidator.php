@@ -56,8 +56,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, QuantifiedAssociationsConstraint::class);
         }
 
-        /** @see https://github.com/akeneo/pim-community-dev/blob/9b9f18385d51f5d2147a79374bd5b5aa9eae3464/src/Akeneo/Tool/Component/Api/Normalizer/Exception/ViolationNormalizer.php#L144 */
-        $constraint->payload['normalize_property_path'] = false;
+        $this->disablePropertyPathNormalization($constraint);
         $normalized = $value->normalize();
 
         foreach ($normalized as $associationTypeCode => $targets) {
@@ -65,10 +64,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             $productsPropertyPath = sprintf('%s[products]', $propertyPath);
             $productModelsPropertyPath = sprintf('%s[product_models]', $propertyPath);
 
-            $associationType = $this->associationTypeRepository->findOneByIdentifier($associationTypeCode);
-
-            $this->validateAssociationTypeExists($associationType, $propertyPath);
-            $this->validateAssociationTypeIsQuantified($associationType, $propertyPath);
+            $this->validateAssociationType($associationTypeCode, $propertyPath);
             $this->validateLinkTypes(array_keys($targets), $propertyPath);
 
             foreach ($targets['products'] as $index => $quantifiedLink) {
@@ -91,24 +87,19 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         }
     }
 
-    private function validateAssociationTypeExists(
-        ?AssociationTypeInterface $associationType,
+    private function validateAssociationType(
+        string $associationTypeCode,
         string $propertyPath
     ): void {
+        $associationType = $this->associationTypeRepository->findOneByIdentifier($associationTypeCode);
+
         if (null === $associationType) {
             $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::ASSOCIATION_TYPE_DOES_NOT_EXIST_MESSAGE
             )
                 ->atPath($propertyPath)
                 ->addViolation();
-        }
-    }
 
-    private function validateAssociationTypeIsQuantified(
-        ?AssociationTypeInterface $associationType,
-        string $propertyPath
-    ): void {
-        if (null === $associationType) {
             return;
         }
 
@@ -215,5 +206,14 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
                 ->atPath($propertyPath)
                 ->addViolation();
         }
+    }
+
+    /**
+     * The Violation normalizer rename property paths with uppercase characters, this method disable this behavior
+     * @see https://github.com/akeneo/pim-community-dev/blob/9b9f18385d51f5d2147a79374bd5b5aa9eae3464/src/Akeneo/Tool/Component/Api/Normalizer/Exception/ViolationNormalizer.php#L144
+     */
+    private function disablePropertyPathNormalization(QuantifiedAssociationsConstraint $constraint): void
+    {
+        $constraint->payload['normalize_property_path'] = false;
     }
 }
