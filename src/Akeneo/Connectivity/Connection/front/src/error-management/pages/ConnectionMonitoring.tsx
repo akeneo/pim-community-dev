@@ -48,7 +48,7 @@ const ConnectionMonitoring: FC = memo(() => {
 
             <PageContent>
                 {FlowType.DATA_SOURCE !== connection.flow_type ? (
-                    <NotDataSourceConnection flowType={connection.flow_type} />
+                    <NotDataSourceConnection />
                 ) : !connection.auditable ? (
                     <NotAuditableConnection />
                 ) : (
