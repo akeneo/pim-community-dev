@@ -212,6 +212,7 @@ pim_notification:
     types:
         rule: Rules Settings
         mass_edit_rule: Mass edit rule
+        execute_rules: Rules execution
 
 pim_menu:
     item:

@@ -8,6 +8,7 @@ parameters:
     pimee_catalog_rule.job_name.rule_impacted_product_count: 'rule_impacted_product_count'
     pimee_catalog_rule.connector_name.rule_engine: 'Akeneo Rule Engine Connector'
     pimee_catalog_rule.mass_edit_type: 'mass_edit_rule'
+    pimee_catalog_rule.execute_type: 'execute_rules'
 
 services:
     # CSV Imports -----------------------------------------------------------------------------------------------------
@@ -116,4 +117,4 @@ services:
             -
                 - '@pimee_catalog_rule.step.execute_rules'
         tags:
-            - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%pimee_catalog_rule.mass_edit_type%' }
+            - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: 'execute_rules' }
