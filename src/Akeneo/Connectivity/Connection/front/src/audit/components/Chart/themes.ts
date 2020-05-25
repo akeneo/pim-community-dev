@@ -7,9 +7,9 @@ const lightBlue = '#dee0ef';
 const lightGreen = '#bbe6e6';
 const lightGrey = '#e8ebee';
 const lightPurple = '#ded5e4';
-const lightRed = '#dc7f72';
+const lightRed = '#f7dee3';
 const purple = '#52267d';
-const red = '#a94c3f';
+const red = '#c92343';
 
 const theme = (primaryColor: string, secondaryColor: string): VictoryThemeDefinition => ({
     line: {
