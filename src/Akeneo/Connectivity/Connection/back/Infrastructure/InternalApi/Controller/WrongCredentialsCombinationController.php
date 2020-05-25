@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
@@ -24,7 +25,7 @@ class WrongCredentialsCombinationController
     public function list(): JsonResponse
     {
         $wrongCombinations = $this->repository->findAll(
-            new \DateTime('now - 7 day', new \DateTimeZone('UTC'))
+            new \DateTimeImmutable('now - 7 day', new \DateTimeZone('UTC'))
         );
 
         return new JsonResponse($wrongCombinations->normalize());

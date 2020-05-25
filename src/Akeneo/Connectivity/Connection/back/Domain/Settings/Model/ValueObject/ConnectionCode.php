@@ -11,7 +11,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  */
 class ConnectionCode
 {
-    private const CONSTRAINT_KEY = 'akeneo_connectivity.connection.connection.constraint.code.%s';
+    /** @var string */
     private $code;
 
     public function __construct(string $code)
@@ -19,16 +19,16 @@ class ConnectionCode
         $code = trim($code);
 
         if (empty($code)) {
-            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'required'));
+            throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.required');
         }
         if (mb_strlen($code) < 3) {
-            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'too_short'));
+            throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.too_short');
         }
         if (mb_strlen($code) > 100) {
-            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'too_long'));
+            throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.too_long');
         }
         if (!preg_match('/^[0-9a-zA-Z_]+$/', $code)) {
-            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'invalid'));
+            throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.invalid');
         }
 
         $this->code = $code;

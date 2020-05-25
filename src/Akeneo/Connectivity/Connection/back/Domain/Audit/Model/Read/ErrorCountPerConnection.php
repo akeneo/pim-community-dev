@@ -28,6 +28,9 @@ final class ErrorCountPerConnection
         }
     }
 
+    /**
+     * @return array<string, int>
+     */
     public function normalize(): array
     {
         $errorCountPerConnection = [];

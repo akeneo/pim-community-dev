@@ -26,6 +26,13 @@ final class BusinessError
         $this->content = $content;
     }
 
+    /**
+     * @return array{
+     *  connection_code: string,
+     *  date_time: string,
+     *  content: string
+     * }
+     */
     public function normalize(): array
     {
         return [

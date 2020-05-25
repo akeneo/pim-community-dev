@@ -25,6 +25,9 @@ final class ErrorCount
         $this->count = $count;
     }
 
+    /**
+     * @return array{connection_code: string, count: int}
+     */
     public function normalize(): array
     {
         return [

@@ -71,9 +71,12 @@ final class CreateConnectionHandler
         );
         $this->repository->create($connection);
 
-        $connectionDTO = $this->findAConnectionHandler->handle(
-            new FindAConnectionQuery((string) $connection->code())
-        );
+        $query = new FindAConnectionQuery((string) $connection->code());
+        $connectionDTO = $this->findAConnectionHandler->handle($query);
+        if (null === $connectionDTO) {
+            throw new \RuntimeException();
+        }
+
         $connectionDTO->setPassword($user->password());
 
         return $connectionDTO;

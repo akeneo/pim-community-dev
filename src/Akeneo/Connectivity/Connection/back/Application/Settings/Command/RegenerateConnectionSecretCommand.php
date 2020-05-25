@@ -19,7 +19,7 @@ class RegenerateConnectionSecretCommand
         $this->code = $code;
     }
 
-    public function code()
+    public function code(): string
     {
         return $this->code;
     }

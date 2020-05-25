@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\WrongCredentialsConnection;
@@ -22,7 +23,9 @@ class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
         $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
 
         $apiClient = static::createClient(['debug' => false]);
-        $apiClient->request('POST', 'api/oauth/v1/token',
+        $apiClient->request(
+            'POST',
+            'api/oauth/v1/token',
             [
                 'username'   => $apiConnection->username(),
                 'password'   => $apiConnection->password(),
@@ -48,7 +51,9 @@ class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
         $bynderConnection = $this->createConnection('bynder', 'Magento', FlowType::DATA_DESTINATION);
 
         $apiClient = static::createClient(['debug' => false]);
-        $apiClient->request('POST', 'api/oauth/v1/token',
+        $apiClient->request(
+            'POST',
+            'api/oauth/v1/token',
             [
                 'username'   => $magentoConnection->username(),
                 'password'   => $magentoConnection->password(),
@@ -75,7 +80,7 @@ class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
     {
         $repository = $this->get('akeneo_connectivity.connection.persistence.repository.wrong_credentials_combination');
 
-        return $repository->findAll(new \DateTime('now - 1 day', new \DateTimeZone('UTC')));
+        return $repository->findAll(new \DateTimeImmutable('now - 1 day', new \DateTimeZone('UTC')));
     }
 
     protected function getConfiguration(): Configuration
