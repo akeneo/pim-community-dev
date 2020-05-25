@@ -16,8 +16,8 @@ const productFetcher = async (route: string, identifiers: AssociationIdentifiers
   return (await response.json()).items;
 };
 
-const useProducts = (identifiers: AssociationIdentifiers): Product[] | null => {
-  const [products, setProducts] = useState<Product[] | null>(null);
+const useProducts = (identifiers: AssociationIdentifiers): Product[] => {
+  const [products, setProducts] = useState<Product[]>([]);
   const userContext = useUserContext();
   const url = useRoute('pim_enrich_product_and_product_model_by_identifiers_rest_list', {
     channel: userContext.get('catalogScope'),
@@ -44,13 +44,13 @@ const useProducts = (identifiers: AssociationIdentifiers): Product[] | null => {
 
   useEffect(() => {
     (async () => {
-      if (0 === identifiersToFetch.product_models.length && 0 === identifiersToFetch.products.length) return;
-      debugger;
+      if (0 === identifiersToFetch.product_models.length && 0 === identifiersToFetch.products.length) {
+        return;
+      }
+
       const newProducts = await productFetcher(url, identifiersToFetch);
 
-      setProducts(currentProducts => {
-        return null === currentProducts ? newProducts : [...newProducts, ...currentProducts];
-      });
+      setProducts(currentProducts => [...newProducts, ...currentProducts]);
     })();
   }, [JSON.stringify(identifiersToFetch), url]);
 

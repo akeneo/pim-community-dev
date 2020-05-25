@@ -286,12 +286,20 @@ define([
       if (!this.isQuantifiedAssociation(state.associationTypes, associationTypeCode)) return;
       if (this.$('#product-quantified-associations').children().length !== 0) return;
 
+      const quantifiedAssociations = undefined === this.getFormData().quantified_associations[associationTypeCode] ?
+        {products: [], product_models: []} :
+        this.getFormData().quantified_associations[associationTypeCode];
+      const parentQuantifiedAssociations = undefined === this.getFormData().quantified_associations[associationTypeCode] ?
+        {products: [], product_models: []} :
+        this.getFormData().quantified_associations[associationTypeCode];
+
       const Component = React.createElement(QuantifiedAssociationsTab, {
-        quantifiedAssociations: this.getFormData().quantified_associations[associationTypeCode],
+        quantifiedAssociations,
+        parentQuantifiedAssociations,
         associationTypeCode,
         onAssociationsChange: updatedAssociations => {
           const formData = this.getFormData();
-          formData.quantified_associations[associationTypeCode] = updatedAssociations;
+          formData.quantified_associations = {...formData.quantified_associations, [associationTypeCode]: updatedAssociations};
 
           this.setData(formData, {silent: true});
           this.getRoot().trigger('pim_enrich:form:entity:update_state');

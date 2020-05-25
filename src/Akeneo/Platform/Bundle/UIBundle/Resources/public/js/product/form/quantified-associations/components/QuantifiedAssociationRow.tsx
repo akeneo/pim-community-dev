@@ -1,9 +1,10 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {TransparentButton, EditIcon, CloseIcon} from '@akeneo-pim-community/shared';
-import {ProductType, Row} from '../models';
+import {TransparentButton, EditIcon, CloseIcon, useAkeneoTheme} from '@akeneo-pim-community/shared';
+import {ProductType, Row, QuantifiedLink} from '../models';
 import {useProductThumbnail} from '../hooks';
+import {UnlinkIcon} from 'shared/icons/UnlinkIcon';
 
 const Container = styled.tr`
   height: 74px;
@@ -84,15 +85,17 @@ const RowAction = styled(TransparentButton)`
 
 type QuantifiedAssociationRowProps = {
   row: Row;
+  parentQuantifiedLink: QuantifiedLink | undefined;
   onChange: (row: Row) => void;
   onRemove: (row: Row) => void;
 };
 
-const QuantifiedAssociationRow = ({row, onChange, onRemove}: QuantifiedAssociationRowProps) => {
+const QuantifiedAssociationRow = ({row, parentQuantifiedLink, onChange, onRemove}: QuantifiedAssociationRowProps) => {
   const translate = useTranslate();
   const isProductModel = ProductType.ProductModel === row.productType;
   const productEditUrl = useRoute(`pim_enrich_${row.productType}_edit`, {id: row.product?.id.toString() || ''});
   const thumbnailUrl = useProductThumbnail(row.product);
+  const blueColor = useAkeneoTheme().color.blue100;
 
   return null === row.product ? (
     <tr>
@@ -142,6 +145,13 @@ const QuantifiedAssociationRow = ({row, onChange, onRemove}: QuantifiedAssociati
       </td>
       <td>
         <RowActions>
+          {(undefined !== parentQuantifiedLink && parentQuantifiedLink.quantity !== row.quantifiedLink.quantity) ||
+            (true && (
+              <UnlinkIcon
+                color={blueColor}
+                title={translate('pim_enrich.entity.product.module.associations.quantified.unlinked')}
+              />
+            ))}
           <RowAction>
             <a href={`#${productEditUrl}`} target="_blank">
               <EditIcon size={20} />

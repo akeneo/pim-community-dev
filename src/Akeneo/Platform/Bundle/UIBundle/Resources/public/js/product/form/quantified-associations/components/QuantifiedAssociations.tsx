@@ -13,6 +13,7 @@ import {
   addRowsToCollection,
   removeRowFromCollection,
   QuantifiedAssociation,
+  getProductsType,
 } from '../models';
 import {QuantifiedAssociationRow} from '../components';
 import {useProducts} from '../hooks';
@@ -47,6 +48,7 @@ const Buttons = styled.div`
 
 type QuantifiedAssociationsProps = {
   quantifiedAssociations: QuantifiedAssociation;
+  parentQuantifiedAssociations: QuantifiedAssociation;
   associationTypeCode: string;
   onAssociationsChange: (quantifiedAssociations: QuantifiedAssociation) => void;
   onOpenPicker: () => Promise<Row[]>;
@@ -54,6 +56,7 @@ type QuantifiedAssociationsProps = {
 
 const QuantifiedAssociations = ({
   quantifiedAssociations,
+  parentQuantifiedAssociations,
   associationTypeCode,
   onOpenPicker,
   onAssociationsChange,
@@ -75,9 +78,6 @@ const QuantifiedAssociations = ({
   }, [associationTypeCode, quantifiedAssociations]);
 
   useEffect(() => {
-    // Prevent a false-positive trigger of the unsaved changes when the quantifiedAssociation is new and empty
-    if (undefined === quantifiedAssociations && 0 === rowCollection.length) return;
-
     const updatedValue = rowCollectionToQuantifiedAssociation(rowCollection);
     if (quantifiedAssociations !== updatedValue) {
       onAssociationsChange(updatedValue);
@@ -141,7 +141,15 @@ const QuantifiedAssociations = ({
           </thead>
           <tbody>
             {filteredCollectionWithProducts.map((row, index) => (
-              <QuantifiedAssociationRow key={index} row={row} onRemove={handleRemove} onChange={handleChange} />
+              <QuantifiedAssociationRow
+                key={index}
+                row={row}
+                parentQuantifiedLink={parentQuantifiedAssociations[getProductsType(row.productType)].find(
+                  quantifiedAssociation => quantifiedAssociation.identifier === row.quantifiedLink.identifier
+                )}
+                onRemove={handleRemove}
+                onChange={handleChange}
+              />
             ))}
           </tbody>
         </TableContainer>
