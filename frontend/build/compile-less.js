@@ -45,9 +45,14 @@ function getFileContents(filePath) {
  */
 function collectBundleImports(bundlePaths) {
     // Make each path relative
+    /*
+    * regex explanation: remove everything before the FIRST 'src' that is after the LAST 'vendor' occurrence
+    * /srv/pim/vendor/my-domain/my-bundle/src/foo/bundle/resources => src/foo/bundle/resources
+    * /srv/subfolder/src/pim/vendor/my-domain/my-bundle/src/bar/bundle/resources => src/bar/bundle/resources
+    */
     const indexFiles = bundlePaths.map(bundlePath => {
         return `${bundlePath}/${BUNDLE_LESS_INDEX_PATH}`
-                .replace(/(^.+)((?<=src).*[^vendor])(?=\/src)\//gm, '')
+                .replace(/^(.+?(?=\/vendor\/)|.+(?=\/src\/))\//gm, '');
     })
 
     const bundleImports = []

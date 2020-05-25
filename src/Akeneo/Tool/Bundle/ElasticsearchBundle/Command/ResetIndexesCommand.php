@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Command;
 
-use Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand;
-use Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Symfony\Component\Console\Command\Command;
