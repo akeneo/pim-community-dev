@@ -1,21 +1,13 @@
 import React, {FC} from 'react';
 import {EmptyState} from '../../common';
-import {FlowType} from '../../model/flow-type.enum';
-import {Translate, useTranslate} from '../../shared/translate';
+import {Translate} from '../../shared/translate';
 
-const NotDataSourceConnection: FC<{flowType: FlowType}> = ({flowType}) => {
-    const translate = useTranslate();
-
+const NotDataSourceConnection: FC = () => {
     return (
         <EmptyState.EmptyState>
-            <EmptyState.Illustration />
+            <EmptyState.Illustration illustration='api' />
             <EmptyState.Heading>
-                <Translate
-                    id='akeneo_connectivity.connection.error_management.connection_monitoring.not_data_source.title'
-                    placeholders={{
-                        flow_type: translate(`akeneo_connectivity.connection.flow_type.${flowType}`, undefined, 1),
-                    }}
-                />
+                <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.not_data_source.title' />
             </EmptyState.Heading>
         </EmptyState.EmptyState>
     );

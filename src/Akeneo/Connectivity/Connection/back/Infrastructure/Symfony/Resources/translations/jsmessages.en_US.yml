@@ -217,7 +217,7 @@ akeneo_connectivity.connection:
                     2: activate monitoring
                     3: in the settings.
             not_data_source:
-                title: '{{ flow_type }} connections are not monitored for errors.'
+                title: For now, monitoring page is only available for source connection.
 
     runtime_error:
         error_message: Oh snap! An error occurred...
