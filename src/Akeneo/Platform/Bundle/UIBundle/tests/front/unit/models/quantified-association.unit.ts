@@ -25,9 +25,12 @@ const rowCollection = [
 describe('quantified association', () => {
   it('should create a row collection from a quantified association collection', () => {
     expect(quantifiedAssociationToRowCollection(quantifiedAssociation)).toEqual(rowCollection);
+    //@ts-ignore
+    expect(quantifiedAssociationToRowCollection({})).toEqual([]);
   });
 
   it('should create a quantified association collection from a row collection', () => {
     expect(rowCollectionToQuantifiedAssociation(rowCollection)).toEqual(quantifiedAssociation);
+    expect(rowCollectionToQuantifiedAssociation([])).toEqual({products: [], product_models: []});
   });
 });

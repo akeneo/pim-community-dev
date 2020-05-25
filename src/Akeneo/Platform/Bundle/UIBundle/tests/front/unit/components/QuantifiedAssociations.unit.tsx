@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {act, getByText, fireEvent, queryByText, getByTitle, getAllByTitle} from '@testing-library/react';
+import {act, getByText, fireEvent, queryByText, getAllByTitle} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
@@ -90,10 +90,7 @@ test('It displays no rows and a no data information when the quantified associat
       <DependenciesProvider>
         <AkeneoThemeProvider>
           <QuantifiedAssociations
-            quantifiedAssociations={{
-              products: [],
-              product_models: [],
-            }}
+            quantifiedAssociations={undefined}
             associationTypeCode="PACK"
             onAssociationsChange={jest.fn()}
             onOpenPicker={jest.fn()}
@@ -217,4 +214,28 @@ test('It adds products when the user confirm the picker', async () => {
   expect(queryByText(container, '3')).not.toBeInTheDocument();
   expect(queryByText(container, 'Nice bag')).toBeInTheDocument();
   expect(queryByText(container, 'Braided hat')).toBeInTheDocument();
+});
+
+test('It displays no table rows when the quantified association collection is null', async () => {
+  await act(async () => {
+    ReactDOM.render(
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <QuantifiedAssociations
+            quantifiedAssociations={{
+              //The useProducts mock defined above will simulate loading thanks to the 'null' identifier
+              products: [{identifier: 'null', quantity: 2}],
+              product_models: [],
+            }}
+            associationTypeCode="PACK"
+            onAssociationsChange={jest.fn()}
+            onOpenPicker={jest.fn()}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
+      container
+    );
+  });
+
+  expect(container.querySelector('table')).toBe(null);
 });
