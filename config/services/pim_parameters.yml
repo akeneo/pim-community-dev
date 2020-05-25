@@ -42,10 +42,6 @@ parameters:
         - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
         - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/product_mapping.yml'
 
-    elasticsearch_indexing_commands:
-        - Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand
-        - Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand
-
     # these parameters indicate the advisable limitations of the PIM in term of volume
     # if your volume of data exceeds these limits, it can impact the performance
     average_max_attributes_per_family_limit: 125
