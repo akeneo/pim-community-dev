@@ -96,7 +96,9 @@ class SetterActionApplier implements ActionApplierInterface
             $parent = $entity->getParent();
 
             if (null !== $parent && !empty(array_diff($parent->getCategoryCodes(), $newCategoryCodes))) {
-                throw new NonApplicableActionException();
+                throw new NonApplicableActionException(
+                    // TODO: error message
+                );
             }
         }
 

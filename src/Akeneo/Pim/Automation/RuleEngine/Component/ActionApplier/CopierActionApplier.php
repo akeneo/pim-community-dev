@@ -97,7 +97,9 @@ class CopierActionApplier implements ActionApplierInterface
             return;
         }
         if (!$family->hasAttributeCode($attribute->code())) {
-            throw new NonApplicableActionException();
+            throw new NonApplicableActionException(
+                \sprintf('The "%s" attribute does not belong to this entity\'s family', $attribute->code())
+            );
         }
 
         $familyVariant = $entity->getFamilyVariant();

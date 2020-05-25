@@ -56,10 +56,7 @@ class ProductsUpdater
         foreach ($actions as $action) {
             $updatedByAction = $this->applierRegistry->getActionApplier($action)->applyAction($action, $products);
             foreach ($updatedByAction as $entity) {
-                $id = $this->getEntityId($entity);
-                if (!isset($updatedEntities[$id])) {
-                    $updatedEntities[$id] = $entity;
-                }
+                $updatedEntities[$this->getEntityId($entity)] = $entity;
             }
         }
 
