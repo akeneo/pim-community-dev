@@ -34,6 +34,7 @@ class IndexRecordsCommand extends Command
     protected static $defaultName = self::INDEX_RECORDS_COMMAND_NAME;
 
     public const INDEX_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:index-records';
+    public const NAME = 'akeneo:reference-entity:index-records';
     private const ERROR_CODE_USAGE = 1;
 
     /** @var Client */
