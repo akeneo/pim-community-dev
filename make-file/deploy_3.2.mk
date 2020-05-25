@@ -9,6 +9,7 @@ PFID ?= srnt-$(INSTANCE_NAME)
 
 PHONY: create-main-tf-for-pim3-with-last-tag
 create-main-tf-for-pim3-with-last-tag:
+	export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes' && \
 	RELEASE_TO_DEPLOY=$$(git ls-remote --tags --sort="version:refname" git@github.com:akeneo/pim-enterprise-cloud | grep -oE 'v3\.2\.[0-9]+-[0-9]{2}$$' | tail -n1); \
 	echo $${RELEASE_TO_DEPLOY}; \
 	PEC_TAG=$${RELEASE_TO_DEPLOY} make create-main-tf-for-pim3
@@ -30,7 +31,7 @@ deploy-pim3: create-main-tf-for-pim3-with-last-tag terraform-init-for-pim3 creat
 
 .PHONY: terraform-init-for-pim3
 terraform-init-for-pim3:
-	cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 && terraform init $(TF_INPUT_FALSE) -upgrade
+	cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 && export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes' && terraform init $(TF_INPUT_FALSE) -upgrade
 
 .PHONY: terraform-apply-for-pim3
 terraform-apply-for-pim3:
