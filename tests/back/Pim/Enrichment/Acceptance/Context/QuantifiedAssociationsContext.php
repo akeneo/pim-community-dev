@@ -444,7 +444,7 @@ final class QuantifiedAssociationsContext implements Context
     }
 
     /**
-     * @Then /^there is the validation error "([^"]*)"$/
+     * @Then /^there is the validation error "(.*)"$/
      */
     public function thereIsTheValidationError($message)
     {
