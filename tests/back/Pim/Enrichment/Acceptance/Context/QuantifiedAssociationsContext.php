@@ -466,9 +466,9 @@ final class QuantifiedAssociationsContext implements Context
     }
 
     /**
-     * @Given /^a product with a quantified link where the association type does not exist$/
+     * @When /^a product is associated with a quantity for an association type that does not exist$/
      */
-    public function aProductWithAQuantifiedLinkWhereTheAssociationTypeDoesNotExist(): void
+    public function aProductIsAssociatedWithAQuantityForAnAssociationTypeThatDoesNotExist(): void
     {
         $this->product = $this->createProduct([
             'values' => [
@@ -490,9 +490,9 @@ final class QuantifiedAssociationsContext implements Context
     }
 
     /**
-     * @Given /^a product with a quantified link where the association type is not quantified$/
+     * @When /^a product is associated with a quantity for an association type that is not quantified$/
      */
-    public function aProductWithAQuantifiedLinkWhereTheAssociationTypeIsNotQuantified()
+    public function aProductIsAssociatedWithAQuantityForAnAssociationTypeThatIsNotQuantified()
     {
         $this->createAndPersistNormalAssociationType('XSELL');
 
@@ -614,7 +614,7 @@ final class QuantifiedAssociationsContext implements Context
     }
 
     /**
-     * @Given /^a product with invalid quantified link type$/
+     * @When /^a product is associated with invalid quantified link type$/
      */
     public function aProductWithInvalidQuantifiedLinkType()
     {
@@ -650,7 +650,7 @@ final class QuantifiedAssociationsContext implements Context
     }
 
     /**
-     * @Given /^a product model with an invalid quantified association$/
+     * @When /^a product model is associated with an invalid quantified association$/
      */
     public function aProductModelWithAnInvalidQuantifiedAssociation()
     {

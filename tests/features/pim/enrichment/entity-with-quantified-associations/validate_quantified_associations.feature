@@ -8,12 +8,12 @@ Feature: Validate the quantified associations of a product
 
   @acceptance-back
   Scenario: Cannot save a product with a nonexistent quantified association type
-    Given a product with a quantified link where the association type does not exist
+    When a product is associated with a quantity for an association type that does not exist
     Then there is the validation error "This association type doesn't exist. Please, check if it has been deleted before trying again."
 
   @acceptance-back
   Scenario: Cannot save a product with a quantified link in a normal association type
-    Given a product with a quantified link where the association type is not quantified
+    When a product is associated with a quantity for an association type that is not quantified
     Then there is the validation error "This association type isn't used to write quantities. Please, choose a different one before trying again."
 
   @acceptance-back
@@ -74,10 +74,10 @@ Feature: Validate the quantified associations of a product
 
   @acceptance-back
   Scenario: Cannot save a product with invalid quantified link type
-    Given a product with invalid quantified link type
+    When a product is associated with invalid quantified link type
     Then there is the validation error "The link type "product_drafts" doesn't exist. You can only associate products or product models."
 
   @acceptance-back
   Scenario: Cannot save a product model with an invalid quantified association
-    Given a product model with an invalid quantified association
+    When a product model is associated with an invalid quantified association
     Then there is at least a validation error on this product model
