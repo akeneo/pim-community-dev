@@ -156,6 +156,14 @@ test('It triggers the onChange event when updating the quantity', async () => {
     quantifiedLink: {quantity: 16, identifier: 'braided-hat'},
     product: productModel,
   });
+
+  fireEvent.change(quantityInput, {target: {value: 'NotANumber'}});
+
+  expect(onChange).toBeCalledWith({
+    productType: ProductType.ProductModel,
+    quantifiedLink: {quantity: 1, identifier: 'braided-hat'},
+    product: productModel,
+  });
 });
 
 test('It triggers the onRemove event when the remove button is clicked', async () => {

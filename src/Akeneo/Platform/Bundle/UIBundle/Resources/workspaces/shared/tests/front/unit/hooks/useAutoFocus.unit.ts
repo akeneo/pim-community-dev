@@ -34,3 +34,14 @@ test('I can request the focus on the given ref', async () => {
 
   expect(mockFocus).toHaveBeenCalledTimes(2);
 });
+
+test('It does not try to focus if the current ref is null', async () => {
+  const mockFocus = jest.fn();
+  const ref = {
+    current: null,
+  };
+
+  // @ts-ignore
+  renderHook(() => useAutoFocus(ref));
+  expect(mockFocus).not.toHaveBeenCalled();
+});
