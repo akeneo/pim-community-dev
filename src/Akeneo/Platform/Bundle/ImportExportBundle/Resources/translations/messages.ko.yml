@@ -164,3 +164,4 @@ FAILED: 실패
 ABANDONED: 중단됨
 UNKNOWN: 알 수 없음
 warning.label: 경고
+pim_datagrid.column.username: 사용자 이름

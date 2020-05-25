@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- TIP-1406: Add a tag to configure a DIC service based on a feature flag
 - PIM-9133: Fix product save when the user has no permission on some attribute groups
 - Fixes memory leak when indexing product models with a lot of product models in the same family
 - PIM-9119: Fix missing warning when using mass edit with parent filter set to empty

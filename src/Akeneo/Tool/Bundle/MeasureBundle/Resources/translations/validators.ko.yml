@@ -26,6 +26,7 @@ pim_measurements:
           invalid_operator: '{{ value }} 연산자가 유효하지 않습니다. 대신 {{ choices }}을(를) 사용하십시오.'
         should_contain_at_least_one_unit: '측정 패밀리에 %limit%개 이상의 단위가 있어야 합니다.'
         should_not_contain_duplicates: '측정 패밀리에서 중복 단위가 발견되었습니다. 측정 패밀리에는 고유한 단위가 필요합니다.'
+        must_be_indexed_by_code: '이 인덱스는 단위 코드와 일치하지 않습니다.'
     unit:
       code:
         must_be_unique: '이 단위 코드가 이미 존재합니다.'

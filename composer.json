@@ -139,8 +139,8 @@
         "squizlabs/php_codesniffer": "2.*",
         "friends-of-behat/symfony-extension": "^2.0",
         "liuggio/fastest": "1.6.*",
-        "phpstan/phpstan": "^0.11.1",
-        "phpstan/phpstan-symfony": "^0.11.1",
+        "phpstan/phpstan": "^0.12.25",
+        "phpstan/phpstan-symfony": "^0.12.6",
         "league/flysystem-aws-s3-v3": "^1.0"
     },
     "conflict": {
