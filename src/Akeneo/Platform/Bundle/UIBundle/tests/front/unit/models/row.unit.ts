@@ -12,16 +12,14 @@ import {ProductType} from '../../../../Resources/public/js/product/form/quantifi
 const productRow = {
   associationTypeCode: 'PACK',
   productType: ProductType.Product,
-  quantity: 3,
-  identifier: 'bag',
+  quantifiedLink: {quantity: 3, identifier: 'bag'},
   product: null,
 };
 
 const productModelRow = {
   associationTypeCode: 'PACK',
   productType: ProductType.ProductModel,
-  quantity: 17,
-  identifier: 'braided-hat',
+  quantifiedLink: {quantity: 17, identifier: 'braided-hat'},
   product: null,
 };
 
@@ -89,10 +87,12 @@ describe('row', () => {
   });
 
   it('should set a row within a collection', () => {
-    expect(setRowInCollection([productRow, productModelRow], {...productRow, quantity: 5})).toEqual([
-      {...productRow, quantity: 5},
-      productModelRow,
-    ]);
+    expect(
+      setRowInCollection([productRow, productModelRow], {
+        ...productRow,
+        quantifiedLink: {...productRow.quantifiedLink, quantity: 5},
+      })
+    ).toEqual([{...productRow, quantifiedLink: {...productRow.quantifiedLink, quantity: 5}}, productModelRow]);
   });
 
   it('should remove a row from a collection', () => {
@@ -105,17 +105,13 @@ describe('row', () => {
         [productRow],
         [
           {
-            associationTypeCode: 'PACK',
             productType: ProductType.Product,
-            quantity: 87,
-            identifier: 'sock',
+            quantifiedLink: {quantity: 87, identifier: 'sock'},
             product: null,
           },
           {
-            associationTypeCode: 'PACK',
             productType: ProductType.ProductModel,
-            quantity: 64,
-            identifier: 'braided-sock',
+            quantifiedLink: {quantity: 64, identifier: 'braided-sock'},
             product: null,
           },
         ]
@@ -123,17 +119,13 @@ describe('row', () => {
     ).toEqual([
       productRow,
       {
-        associationTypeCode: 'PACK',
         productType: ProductType.Product,
-        quantity: 87,
-        identifier: 'sock',
+        quantifiedLink: {quantity: 87, identifier: 'sock'},
         product: null,
       },
       {
-        associationTypeCode: 'PACK',
         productType: ProductType.ProductModel,
-        quantity: 64,
-        identifier: 'braided-sock',
+        quantifiedLink: {quantity: 64, identifier: 'braided-sock'},
         product: null,
       },
     ]);

@@ -52,10 +52,8 @@ afterEach(() => {
 });
 
 const quantifiedAssociationCollection = {
-  PACK: {
-    products: [{identifier: 'bag', quantity: 3}],
-    product_models: [{identifier: 'braided-hat', quantity: 15}],
-  },
+  products: [{identifier: 'bag', quantity: 3}],
+  product_models: [{identifier: 'braided-hat', quantity: 15}],
 };
 
 test('It displays quantified association rows for a quantified association collection', async () => {
@@ -64,7 +62,7 @@ test('It displays quantified association rows for a quantified association colle
       <DependenciesProvider>
         <AkeneoThemeProvider>
           <QuantifiedAssociations
-            value={quantifiedAssociationCollection}
+            quantifiedAssociations={quantifiedAssociationCollection}
             associationTypeCode="PACK"
             onAssociationsChange={jest.fn()}
             onOpenPicker={jest.fn()}
@@ -92,11 +90,9 @@ test('It displays no rows and a no data information when the quantified associat
       <DependenciesProvider>
         <AkeneoThemeProvider>
           <QuantifiedAssociations
-            value={{
-              PACK: {
-                products: [],
-                product_models: [],
-              },
+            quantifiedAssociations={{
+              products: [],
+              product_models: [],
             }}
             associationTypeCode="PACK"
             onAssociationsChange={jest.fn()}
@@ -121,7 +117,7 @@ test('It triggers the onChange event when a quantity is changed', async () => {
       <DependenciesProvider>
         <AkeneoThemeProvider>
           <QuantifiedAssociations
-            value={quantifiedAssociationCollection}
+            quantifiedAssociations={quantifiedAssociationCollection}
             associationTypeCode="PACK"
             onAssociationsChange={onChange}
             onOpenPicker={jest.fn()}
@@ -140,10 +136,8 @@ test('It triggers the onChange event when a quantity is changed', async () => {
   fireEvent.change(quantityInputs[0], {target: {value: '16'}});
 
   expect(onChange).toBeCalledWith({
-    PACK: {
-      products: [{identifier: 'bag', quantity: 16}],
-      product_models: [{identifier: 'braided-hat', quantity: 15}],
-    },
+    products: [{identifier: 'bag', quantity: 16}],
+    product_models: [{identifier: 'braided-hat', quantity: 15}],
   });
 });
 
@@ -155,7 +149,7 @@ test('It triggers the onRowDelete event when the remove button is clicked', asyn
       <DependenciesProvider>
         <AkeneoThemeProvider>
           <QuantifiedAssociations
-            value={quantifiedAssociationCollection}
+            quantifiedAssociations={quantifiedAssociationCollection}
             associationTypeCode="PACK"
             onAssociationsChange={onChange}
             onOpenPicker={jest.fn()}
@@ -170,10 +164,8 @@ test('It triggers the onRowDelete event when the remove button is clicked', asyn
   fireEvent.click(removeButton[0]);
 
   expect(onChange).toBeCalledWith({
-    PACK: {
-      products: [],
-      product_models: [{identifier: 'braided-hat', quantity: 15}],
-    },
+    products: [],
+    product_models: [{identifier: 'braided-hat', quantity: 15}],
   });
 });
 
@@ -181,10 +173,8 @@ test('It adds products when the user confirm the picker', async () => {
   const onChange = jest.fn();
 
   const smallQuantifiedAssociationCollection = {
-    PACK: {
-      products: [{identifier: 'bag', quantity: 3}],
-      product_models: [],
-    },
+    products: [{identifier: 'bag', quantity: 3}],
+    product_models: [],
   };
 
   await act(async () => {
@@ -192,23 +182,19 @@ test('It adds products when the user confirm the picker', async () => {
       <DependenciesProvider>
         <AkeneoThemeProvider>
           <QuantifiedAssociations
-            value={smallQuantifiedAssociationCollection}
+            quantifiedAssociations={smallQuantifiedAssociationCollection}
             associationTypeCode="PACK"
             onAssociationsChange={onChange}
             onOpenPicker={() =>
               Promise.resolve([
                 {
-                  associationTypeCode: 'PACK',
                   productType: ProductType.ProductModel,
-                  identifier: 'braided-hat',
-                  quantity: 1,
+                  quantifiedLink: {identifier: 'braided-hat', quantity: 1},
                   product: null,
                 },
                 {
-                  associationTypeCode: 'PACK',
                   productType: ProductType.Product,
-                  identifier: 'bag',
-                  quantity: 1,
+                  quantifiedLink: {identifier: 'bag', quantity: 1},
                   product: null,
                 },
               ])
@@ -231,30 +217,4 @@ test('It adds products when the user confirm the picker', async () => {
   expect(queryByText(container, '3')).not.toBeInTheDocument();
   expect(queryByText(container, 'Nice bag')).toBeInTheDocument();
   expect(queryByText(container, 'Braided hat')).toBeInTheDocument();
-});
-
-test('It displays no rows and a placeholder when the quantified association collection is loading', async () => {
-  await act(async () => {
-    ReactDOM.render(
-      <DependenciesProvider>
-        <AkeneoThemeProvider>
-          <QuantifiedAssociations
-            value={{
-              PACK: {
-                //The useProducts mock defined above will simulate loading thanks to the 'null' identifier
-                products: [{identifier: 'null', quantity: 2}],
-                product_models: [],
-              },
-            }}
-            associationTypeCode="PACK"
-            onAssociationsChange={jest.fn()}
-            onOpenPicker={jest.fn()}
-          />
-        </AkeneoThemeProvider>
-      </DependenciesProvider>,
-      container
-    );
-  });
-
-  expect(container.querySelector('.AknLoadingPlaceHolderContainer')).toBeInTheDocument();
 });

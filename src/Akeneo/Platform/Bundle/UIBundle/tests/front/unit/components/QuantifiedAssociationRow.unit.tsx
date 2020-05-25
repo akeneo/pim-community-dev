@@ -56,9 +56,7 @@ test('It displays a quantified association row for a product', async () => {
               <QuantifiedAssociationRow
                 row={{
                   productType: ProductType.Product,
-                  associationTypeCode: 'PACK',
-                  quantity: 3,
-                  identifier: 'bag',
+                  quantifiedLink: {quantity: 3, identifier: 'bag'},
                   product: product,
                 }}
                 onChange={onChange}
@@ -95,9 +93,7 @@ test('It displays a quantified association row for a product model', async () =>
               <QuantifiedAssociationRow
                 row={{
                   productType: ProductType.ProductModel,
-                  associationTypeCode: 'PACK',
-                  quantity: 15,
-                  identifier: 'braided-hat',
+                  quantifiedLink: {quantity: 15, identifier: 'braided-hat'},
                   product: productModel,
                 }}
                 onChange={onChange}
@@ -134,9 +130,7 @@ test('It triggers the onChange event when updating the quantity', async () => {
               <QuantifiedAssociationRow
                 row={{
                   productType: ProductType.ProductModel,
-                  associationTypeCode: 'PACK',
-                  quantity: 15,
-                  identifier: 'braided-hat',
+                  quantifiedLink: {quantity: 15, identifier: 'braided-hat'},
                   product: productModel,
                 }}
                 onChange={onChange}
@@ -159,9 +153,7 @@ test('It triggers the onChange event when updating the quantity', async () => {
 
   expect(onChange).toBeCalledWith({
     productType: ProductType.ProductModel,
-    associationTypeCode: 'PACK',
-    quantity: 16,
-    identifier: 'braided-hat',
+    quantifiedLink: {quantity: 16, identifier: 'braided-hat'},
     product: productModel,
   });
 });
@@ -179,9 +171,7 @@ test('It triggers the onRemove event when the remove button is clicked', async (
               <QuantifiedAssociationRow
                 row={{
                   productType: ProductType.ProductModel,
-                  associationTypeCode: 'PACK',
-                  quantity: 15,
-                  identifier: 'braided-hat',
+                  quantifiedLink: {quantity: 15, identifier: 'braided-hat'},
                   product: productModel,
                 }}
                 onChange={onChange}
