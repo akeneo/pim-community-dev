@@ -50,16 +50,27 @@ Feature: Validate the quantified associations of a product
     Then there is the validation error "The following product models don't exist: accessory. Please, check if they have been deleted before trying again."
 
   @acceptance-back
-  Scenario: Cannot save a product with more than 100 quantified associations
+  Scenario Outline: Cannot save a product with more than 100 quantified associations
     Given a product without quantified associations
-    When I associate "101" products with a quantity to this product
+    When I associate "<nb_products>" products and "<nb_product_models>" product models with a quantity to this product
     Then there is the validation error "You've reached the limit of 100 associations. Please delete some existing associations before adding new ones."
+    Examples:
+      | nb_products | nb_product_models |
+      | 101         | 0                 |
+      | 0           | 101               |
+      | 50          | 51                |
+      | 51          | 50                |
 
   @acceptance-back
-  Scenario: Can save a product with 100 quantified associations
+  Scenario Outline: Can save a product with 100 quantified associations
     Given a product without quantified associations
-    When I associate "100" products with a quantity to this product
+    When I associate "<nb_products>" products and "<nb_product_models>" product models with a quantity to this product
     Then the product is valid
+    Examples:
+      | nb_products | nb_product_models |
+      | 100         | 0                 |
+      | 0           | 100               |
+      | 50          | 50                |
 
   @acceptance-back
   Scenario: Cannot save a product with invalid quantified link type

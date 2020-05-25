@@ -578,16 +578,26 @@ final class QuantifiedAssociationsContext implements Context
     }
 
     /**
-     * @When /^I associate "([^"]*)" products with a quantity to this product$/
+     * @When /^I associate "([^"]*)" products and "([^"]*)" product models with a quantity to this product$/
      */
-    public function iAssociateProductsWithAQuantityToThisProduct(string $numberOfAssociation)
-    {
+    public function iAssociateProductsWithAQuantityToThisProduct(
+        string $numberOfProductAssociation,
+        string $numberOfProductModelAssociation
+    ) {
         $productAssociations = [];
-        for ($i = 0; $i < intval($numberOfAssociation); $i++) {
+        $productModelAssociations = [];
+        for ($i = 0; $i < intval($numberOfProductAssociation); $i++) {
             $productIdentifier = "product-$i";
             $this->createAndPersistProductWithIdentifier($productIdentifier);
 
             $productAssociations[] = ['identifier' => $productIdentifier, 'quantity' => 42];
+        }
+
+        for ($i = 0; $i < intval($numberOfProductModelAssociation); $i++) {
+            $productModelCode = "product-model-$i";
+            $this->createAndPersistProductModelWithCode($productModelCode);
+
+            $productModelAssociations[] = ['identifier' => $productModelCode, 'quantity' => 42];
         }
 
         $this->createAndPersistQuantifiedAssociationType('PACK');
@@ -595,7 +605,7 @@ final class QuantifiedAssociationsContext implements Context
             'quantified_associations' => [
                 'PACK' => [
                     'products' => $productAssociations,
-                    'product_models' => [],
+                    'product_models' => $productModelAssociations,
                 ],
             ],
         ];
