@@ -180,7 +180,9 @@ class DatabaseCommand extends Command
         );
 
         // TODO: Should be in an event subscriber
-        $this->createNotMappedTables($output);
+        if (!$input->getOption('doNotDropDatabase')) {
+            $this->createNotMappedTables($output);
+        }
 
         if (false === $input->getOption('withoutFixtures')) {
             $this->eventDispatcher->dispatch(
