@@ -7,7 +7,7 @@ import {
   filterOnLabelOrIdentifier,
   addProductToRows,
   getAssociationIdentifiers,
-  setRowInCollection,
+  updateRowInCollection,
   quantifiedAssociationToRowCollection,
   rowCollectionToQuantifiedAssociation,
   addRowsToCollection,
@@ -75,6 +75,7 @@ const QuantifiedAssociations = ({
   }, [associationTypeCode, quantifiedAssociations]);
 
   useEffect(() => {
+    // Prevent a false-positive trigger of the unsaved changes when the quantifiedAssociation is new and empty
     if (undefined === quantifiedAssociations && 0 === rowCollection.length) return;
 
     const updatedValue = rowCollectionToQuantifiedAssociation(rowCollection);
@@ -97,7 +98,7 @@ const QuantifiedAssociations = ({
   );
 
   const handleChange = useCallback(
-    (row: Row) => setRowCollection(rowCollection => setRowInCollection(rowCollection, row)),
+    (row: Row) => setRowCollection(rowCollection => updateRowInCollection(rowCollection, row)),
     []
   );
 

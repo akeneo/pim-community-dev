@@ -3,7 +3,7 @@ import {
   getAssociationIdentifiers,
   isRowWithProduct,
   filterOnLabelOrIdentifier,
-  setRowInCollection,
+  updateRowInCollection,
   removeRowFromCollection,
   addRowsToCollection,
 } from '../../../../Resources/public/js/product/form/quantified-associations/models/row';
@@ -88,7 +88,7 @@ describe('row', () => {
 
   it('should set a row within a collection', () => {
     expect(
-      setRowInCollection([productRow, productModelRow], {
+      updateRowInCollection([productRow, productModelRow], {
         ...productRow,
         quantifiedLink: {...productRow.quantifiedLink, quantity: 5},
       })
