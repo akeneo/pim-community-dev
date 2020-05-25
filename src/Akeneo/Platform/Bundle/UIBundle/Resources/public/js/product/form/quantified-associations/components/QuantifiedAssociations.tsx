@@ -67,30 +67,39 @@ const QuantifiedAssociations = ({
   const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
 
   useEffect(() => {
-    setRowCollection(quantifiedAssociationToRowCollection(quantifiedAssociations));
-  }, [associationTypeCode]);
+    if (quantifiedAssociations) {
+      setRowCollection(quantifiedAssociationToRowCollection(quantifiedAssociations));
+    } else {
+      setRowCollection([]);
+    }
+  }, [associationTypeCode, quantifiedAssociations]);
 
   useEffect(() => {
-    //TODO check with empty value
+    if (undefined === quantifiedAssociations && 0 === rowCollection.length) return;
+
     const updatedValue = rowCollectionToQuantifiedAssociation(rowCollection);
-    onAssociationsChange(updatedValue);
+    if (quantifiedAssociations !== updatedValue) {
+      onAssociationsChange(updatedValue);
+    }
   }, [JSON.stringify(rowCollection)]);
 
   const handleAdd = useCallback(async () => {
     try {
       const addedRows = await onOpenPicker();
-      setRowCollection(addRowsToCollection(rowCollection, addedRows));
+      setRowCollection(rowCollection => addRowsToCollection(rowCollection, addedRows));
       // We need to catch in case the picker gets closed and the promise rejected
     } catch {}
-  }, [JSON.stringify(rowCollection)]);
+  }, []);
 
-  const handleRemove = useCallback((row: Row) => setRowCollection(removeRowFromCollection(rowCollection, row)), [
-    JSON.stringify(rowCollection),
-  ]);
+  const handleRemove = useCallback(
+    (row: Row) => setRowCollection(rowCollection => removeRowFromCollection(rowCollection, row)),
+    []
+  );
 
-  const handleChange = useCallback((row: Row) => setRowCollection(setRowInCollection(rowCollection, row)), [
-    JSON.stringify(rowCollection),
-  ]);
+  const handleChange = useCallback(
+    (row: Row) => setRowCollection(rowCollection => setRowInCollection(rowCollection, row)),
+    []
+  );
 
   return (
     <>
