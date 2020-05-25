@@ -1,15 +1,13 @@
 import React from 'react';
 import { RemoveActionLine } from '../../pages/EditRules/components/actions/RemoveActionLine';
 import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
+import { ProductField } from './ProductField';
 
 export type RemoveAction = {
   module: React.FC<{ action: RemoveAction } & ActionLineProps>;
-  field: string;
   items: string[];
-  locale: string | null;
-  scope: string | null;
   includeChildren: boolean | null;
-};
+} & ProductField;
 
 export const denormalizeRemoveAction = (json: any): RemoveAction | null => {
   if (json.type !== 'remove') {

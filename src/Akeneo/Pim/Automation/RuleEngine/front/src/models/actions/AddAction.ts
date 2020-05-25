@@ -1,14 +1,12 @@
 import React from 'react';
 import { AddActionLine } from '../../pages/EditRules/components/actions/AddActionLine';
 import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
+import { ProductField } from './ProductField';
 
 export type AddAction = {
   module: React.FC<{ action: AddAction } & ActionLineProps>;
-  field: string;
   items: string[];
-  locale: string | null;
-  scope: string | null;
-};
+} & ProductField;
 
 export const denormalizeAddAction = (json: any): AddAction | null => {
   if (json.type !== 'add') {
