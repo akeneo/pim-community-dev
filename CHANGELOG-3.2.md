@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.56 (2020-05-25)
+
 ## Bug fixes
 
 - AOB-953: Fix `ComputeFamilyVariantStructureChanges` constraint by accepting array of several elements
