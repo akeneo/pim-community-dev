@@ -1,7 +1,5 @@
 # Force bash compatibility (Instead of user default shell)
 SHELL := /bin/bash
-# Usefull in order to retrieve env variable in sub shells
-.EXPORT_ALL_VARIABLES:
 
 INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
@@ -18,6 +16,14 @@ PHONY: create-main-tf-for-pim3
 create-main-tf-for-pim3:
 	@echo $(PEC_TAG);
 	mkdir -p $(DEPLOYMENTS_INSTANCES_DIR)/3.2/
+	CLUSTER_DNS_NAME=$(CLUSTER_DNS_NAME) \
+	GOOGLE_CLUSTER_ZONE=$(GOOGLE_CLUSTER_ZONE) \
+	GOOGLE_MANAGED_ZONE_DNS=$(GOOGLE_MANAGED_ZONE_DNS) \
+	GOOGLE_MANAGED_ZONE_NAME=$(GOOGLE_MANAGED_ZONE_NAME) \
+	GOOGLE_PROJECT_ID=$(GOOGLE_PROJECT_ID) \
+	INSTANCE_NAME=$(INSTANCE_NAME) \
+	PEC_TAG=$(PEC_TAG) \
+	PFID=$(PFID) \
 	envsubst < $(PWD)/deployments/config/serenity_32_instance.tpl.tf > $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
 
 PHONY: create-pimyaml-for-pim3
@@ -35,7 +41,7 @@ terraform-init-for-pim3:
 
 .PHONY: terraform-apply-for-pim3
 terraform-apply-for-pim3:
-	cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
+	cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 && TF_LOG=TRACE TF_LOG_PATH=terraform.log terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 
 .PHONY: terraform-destroy-for-pim3
 terraform-destroy-for-pim3:

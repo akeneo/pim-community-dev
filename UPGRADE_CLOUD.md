@@ -11,7 +11,6 @@
   **All the pods will be recreated and MySQL will take longer to re-create as it will wait for existing disk to be releases from former pod.**
 
 - Metrics are now managed by Terraform resources.  
-  Until Google Provider fix the [metric import issue](https://github.com/terraform-providers/terraform-provider-google/issues/4460), it will require to force project name in pim-monitoring module provider  
   In order to reimport them inside Terraform state, run:
   ```bash
   terraform init

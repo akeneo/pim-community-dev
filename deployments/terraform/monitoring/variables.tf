@@ -15,3 +15,8 @@ variable "instance_name" {
   type = string
 }
 
+variable "helm_exec_id" {
+  type        = string
+  description = "Force module dependency based on helm release"
+  default     = ""
+}
