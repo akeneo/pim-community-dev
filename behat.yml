@@ -982,24 +982,6 @@ legacy:
 
 acceptance:
     suites:
-#        This CE suite cannot work in EE because of permissions.
-#        Contexts need to be overridden.
-#        pim:
-#            paths:
-#                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/pim'
-#            contexts:
-#                - test.catalog.product_creation.context
-#                - test.catalog.product_validation.context
-#            filters:
-#                tags: '@acceptance-back'
-        channel:
-            paths:
-                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/channel'
-            contexts:
-                - test.locale.context
-                - test.channel.context
-            filters:
-                tags: '@acceptance-back'
         enrichment:
             paths:
                 - '%paths.base%/tests/features/pim/enrichment'
