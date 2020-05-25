@@ -578,6 +578,7 @@ workflows:
                 requires:
                     - test_back_behat_legacy
                     - test_back_performance
+                    - deploy_upgrade_oldest_prod_environment
 
   nightly:
       triggers:
