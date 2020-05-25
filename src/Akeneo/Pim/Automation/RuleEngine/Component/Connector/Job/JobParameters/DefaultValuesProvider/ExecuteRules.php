@@ -37,6 +37,8 @@ class ExecuteRules implements DefaultValuesProviderInterface
         return [
             'rule_codes' => [],
             'user_to_notify' => null,
+            'stop_on_error' => false,
+            'dry_run' => false,
         ];
     }
 

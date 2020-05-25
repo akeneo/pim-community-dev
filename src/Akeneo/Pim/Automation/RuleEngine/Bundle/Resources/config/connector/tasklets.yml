@@ -14,5 +14,5 @@ services:
         class: Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet\ExecuteRulesTasklet
         arguments:
             - '@akeneo_rule_engine.repository.rule_definition'
-            - '@pimee_catalog_rule.runner.product'
+            - '@akeneo_rule_engine.runner.strict_chained'
             - '@event_dispatcher'

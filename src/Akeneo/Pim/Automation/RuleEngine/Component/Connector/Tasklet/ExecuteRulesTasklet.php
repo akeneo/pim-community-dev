@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Runner\ProductRuleRunner;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -27,7 +28,7 @@ final class ExecuteRulesTasklet implements TaskletInterface
     /** @var RuleDefinitionRepositoryInterface */
     private $ruleDefinitionRepository;
 
-    /** @var ProductRuleRunner */
+    /** @var RunnerInterface */
     private $ruleRunner;
 
     /** @var EventDispatcherInterface */
@@ -35,7 +36,7 @@ final class ExecuteRulesTasklet implements TaskletInterface
 
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
-        ProductRuleRunner $ruleRunner,
+        RunnerInterface $ruleRunner,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->ruleDefinitionRepository = $ruleDefinitionRepository;
@@ -50,6 +51,7 @@ final class ExecuteRulesTasklet implements TaskletInterface
 
     public function execute()
     {
+        $dryRun = $this->stepExecution->getJobParameters()->get('dry_run');
         $this->stepExecution->setSummary(
             [
                 'read_rules' => 0,
@@ -65,10 +67,17 @@ final class ExecuteRulesTasklet implements TaskletInterface
 
         foreach ($this->getRuleDefinitions() as $ruleDefinition) {
             try {
-                $this->ruleRunner->run($ruleDefinition);
+                if (true === $dryRun) {
+                    $this->ruleRunner->dryRun($ruleDefinition);
+                } else {
+                    $this->ruleRunner->run($ruleDefinition);
+                }
             } catch (\LogicException $e) {
                 $this->stepExecution->addError($e->getMessage());
                 $this->stepExecution->incrementSummaryInfo('errored_rules');
+                if ($this->stepExecution->getJobParameters()->get('stop_on_error')) {
+                    throw $e;
+                }
             }
         }
         $this->eventDispatcher->removeSubscriber($subscriber);
