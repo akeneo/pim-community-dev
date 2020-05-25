@@ -3,6 +3,8 @@
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet\ProductRuleExecutionSubscriber;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetAction;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
@@ -15,9 +17,9 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSet;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PhpSpec\ObjectBehavior;
 
 class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
 {
@@ -42,6 +44,7 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
         $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::POST_APPLY);
         $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::POST_SAVE_SUBJECTS);
         $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::SKIP);
+        $this::getSubscribedEvents()->shouldHaveKey(SkippedActionForSubjectEvent::class);
     }
 
     function it_updates_step_execution_summary_before_applying_a_rule(
@@ -72,7 +75,7 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
         $this->postSave(new SavedSubjectsEvent(new RuleDefinition(), [new Product(), new ProductModel()]));
     }
 
-    function it_adds_warnings_for_a_skipped_product(
+    function it_adds_warnings_for_an_invalid_product(
         StepExecution $stepExecution,
         ProductInterface $product
     ) {
@@ -95,5 +98,21 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skipped_invalid')->shouldBeCalled();
 
         $this->skipInvalid(new SkippedSubjectRuleEvent($rule, $product->getWrappedObject(), $reasons));
+    }
+
+    function it_adds_a_warning_if_an_action_cannot_be_applied_to_a_product(
+        StepExecution $stepExecution
+    ) {
+        $product = new Product();
+        $product->setIdentifier('super_shoes');
+
+        $stepExecution->addWarning(
+            'Cannot apply this action to product "super_shoes": Invalid product data',
+            [],
+            Argument::type(DataInvalidItem::class)
+        )->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skipped_invalid')->shouldBeCalled();
+
+        $this->skipAction(new SkippedActionForSubjectEvent(new ProductSetAction([]), $product, 'Invalid product data'));
     }
 }
