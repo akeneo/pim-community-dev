@@ -41,7 +41,7 @@ const filterOnLabelOrIdentifier = (searchValue: string) => (row: Row): boolean =
   (undefined !== row.quantifiedLink.identifier &&
     -1 !== row.quantifiedLink.identifier.toLowerCase().indexOf(searchValue.toLowerCase()));
 
-const setRowInCollection = (rows: Row[], {quantifiedLink, productType}: Row) =>
+const updateRowInCollection = (rows: Row[], {quantifiedLink, productType}: Row) =>
   rows.map(row => {
     if (row.quantifiedLink.identifier !== quantifiedLink.identifier || row.productType !== productType) return row;
 
@@ -80,7 +80,7 @@ export {
   filterOnLabelOrIdentifier,
   getAssociationIdentifiers,
   addProductToRows,
-  setRowInCollection,
+  updateRowInCollection,
   addRowsToCollection,
   removeRowFromCollection,
 };
