@@ -25,3 +25,4 @@ csv_product_export;IT support,Manager,Redactor
 compute_completeness_of_products_family;IT support,Manager,Redactor
 compute_family_variant_structure_changes;IT support,Manager,Redactor
 change_parent_product;IT support,Manager,Redactor
+rule_engine_execute_rules;All

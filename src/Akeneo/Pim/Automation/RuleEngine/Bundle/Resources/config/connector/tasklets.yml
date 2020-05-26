@@ -15,4 +15,5 @@ services:
         arguments:
             - '@akeneo_rule_engine.repository.rule_definition'
             - '@akeneo_rule_engine.runner.strict_chained'
+            - '@akeneo_rule_engine.runner.strict_chained'
             - '@event_dispatcher'

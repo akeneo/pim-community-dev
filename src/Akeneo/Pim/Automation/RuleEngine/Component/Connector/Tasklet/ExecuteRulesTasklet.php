@@ -31,16 +31,21 @@ final class ExecuteRulesTasklet implements TaskletInterface
     /** @var RunnerInterface */
     private $ruleRunner;
 
+    /** @var DryRunnerInterface */
+    private $dryRuleRunner;
+
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
         RunnerInterface $ruleRunner,
+        DryRunnerInterface $dryRuleRunner,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->ruleDefinitionRepository = $ruleDefinitionRepository;
         $this->ruleRunner = $ruleRunner;
+        $this->dryRuleRunner = $dryRuleRunner;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -68,7 +73,7 @@ final class ExecuteRulesTasklet implements TaskletInterface
         foreach ($this->getRuleDefinitions() as $ruleDefinition) {
             try {
                 if (true === $dryRun) {
-                    $this->ruleRunner->dryRun($ruleDefinition);
+                    $this->dryRuleRunner->dryRun($ruleDefinition);
                 } else {
                     $this->ruleRunner->run($ruleDefinition);
                 }
