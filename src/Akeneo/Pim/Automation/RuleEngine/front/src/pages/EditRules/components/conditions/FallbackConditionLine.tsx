@@ -18,9 +18,9 @@ const FallbackConditionLine: React.FC<FallbackConditionLineProps> = ({
     [condition]
   );
 
-  return <div className={'AknGrid-bodyCell'}>
-    {JSON.stringify(condition.json)}
-  </div>;
+  return (
+    <div className={'AknGrid-bodyCell'}>{JSON.stringify(condition.json)}</div>
+  );
 };
 
 export { FallbackConditionLine, FallbackConditionLineProps };

@@ -101,7 +101,7 @@ const RuleProductSelection: React.FC<Props> = ({
 
   React.useEffect(() => {
     setConditions(ruleDefinition.conditions);
-  }, [ ruleDefinition ]);
+  }, [ruleDefinition]);
 
   async function createCondition(fieldCode: string): Promise<Condition> {
     const factories: ConditionFactory[] = [
@@ -139,7 +139,9 @@ const RuleProductSelection: React.FC<Props> = ({
     });
   };
 
-  const Component = ruleDefinition.actions.length ? RuleProductSelectionFieldsetWithAction : RuleProductSelectionFieldset;
+  const Component = ruleDefinition.actions.length
+    ? RuleProductSelectionFieldsetWithAction
+    : RuleProductSelectionFieldset;
   return (
     <Component>
       <Header className='AknSubsection-title'>

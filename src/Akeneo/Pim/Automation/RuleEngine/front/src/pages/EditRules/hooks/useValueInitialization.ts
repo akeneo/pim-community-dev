@@ -5,7 +5,7 @@ const useValueInitialization = (
   prefix: string,
   values: { [key: string]: any },
   validation?: { [key: string]: any },
-  deps?: any[],
+  deps?: any[]
 ) => {
   const { register, setValue } = useFormContext();
 

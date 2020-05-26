@@ -23,7 +23,7 @@ const ScopeSelector: React.FC<Props> = ({
   value,
   onChange,
   translate,
-  children
+  children,
 }) => {
   const getScopeLabel = (scope: Scope): string => {
     return scope.labels[currentCatalogLocale] || `[${scope.code}]`;

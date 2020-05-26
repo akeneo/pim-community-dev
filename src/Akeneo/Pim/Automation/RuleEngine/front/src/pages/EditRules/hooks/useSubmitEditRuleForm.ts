@@ -1,4 +1,4 @@
-import { omit } from "lodash";
+import { omit } from 'lodash';
 import { Payload } from '../../../rules.types';
 import { httpPut } from '../../../fetch';
 import { generateUrl } from '../../../dependenciesTools/hooks';
@@ -11,7 +11,7 @@ import {
   Notify,
   NotificationLevel,
 } from '../../../dependenciesTools';
-import { denormalize } from "../../../models/rule-definition-denormalizer";
+import { denormalize } from '../../../models/rule-definition-denormalizer';
 
 type Reset = (
   values?: DeepPartial<FormData>,
@@ -50,7 +50,7 @@ const submitEditRuleForm = (
   notify: Notify,
   router: Router,
   reset: Reset,
-  setRuleDefinition: any,
+  setRuleDefinition: any
 ) => {
   return async (formData: FormData, event?: React.BaseSyntheticEvent) => {
     if (event) {
@@ -100,12 +100,13 @@ const createFormDefaultValues = (
   labels: locales.reduce(createLocalesLabels(ruleDefinition), {}),
   content: {
     conditions: ruleDefinition.conditions || [],
-    actions: ruleDefinition.actions.map((action) => {
-      if (action.json) {
-        return action.json;
-      }
-      return omit(action, 'module');
-    }) || [],
+    actions:
+      ruleDefinition.actions.map(action => {
+        if (action.json) {
+          return action.json;
+        }
+        return omit(action, 'module');
+      }) || [],
   },
 });
 
@@ -116,7 +117,7 @@ const useSubmitEditRuleForm = (
   router: Router,
   ruleDefinition: RuleDefinition,
   locales: Locale[],
-  setRuleDefinition: any,
+  setRuleDefinition: any
 ) => {
   const defaultValues = createFormDefaultValues(ruleDefinition, locales);
   const formMethods = useForm<FormData>({
@@ -128,7 +129,7 @@ const useSubmitEditRuleForm = (
     notify,
     router,
     formMethods.reset,
-    setRuleDefinition,
+    setRuleDefinition
   );
   return {
     onSubmit: formMethods.handleSubmit(onSubmit),

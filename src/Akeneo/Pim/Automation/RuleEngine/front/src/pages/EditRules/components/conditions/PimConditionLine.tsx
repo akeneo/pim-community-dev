@@ -26,12 +26,9 @@ const PimConditionLine: React.FC<PimConditionLineProps> = ({
   if (condition.value) {
     values.value = condition.value;
   }
-  useValueInitialization(
-    `content.conditions[${lineNumber}]`,
-    values,
-    {},
-    [condition]
-  );
+  useValueInitialization(`content.conditions[${lineNumber}]`, values, {}, [
+    condition,
+  ]);
 
   const isMetric = (value: any): boolean => {
     return (

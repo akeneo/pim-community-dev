@@ -5,7 +5,7 @@ import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
 import { useInitEditRules } from '../EditRules';
 import { EditRulesContent } from './EditRulesContent';
 import { FullScreenError } from '../../components/FullScreenError';
-import { RuleDefinition } from "../../models";
+import { RuleDefinition } from '../../models';
 
 type Props = {
   ruleDefinitionCode: string;

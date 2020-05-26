@@ -16,14 +16,14 @@ const ActionContainer = styled.div`
   margin-left: -12px;
   background-repeat: no-repeat;  
   padding-bottom: 20px;
-`
+`;
 
 const LastActionContainer = styled.div`
   background-image: url('${endImage}');
   padding-left: 12px;
   margin-left: -12px;
   background-repeat: no-repeat;  
-`
+`;
 
 type Props = {
   translate: Translate;
@@ -62,7 +62,7 @@ const RulesBuilder: React.FC<Props> = ({
 
   React.useEffect(() => {
     setActions(ruleDefinition.actions);
-  }, [ ruleDefinition ]);
+  }, [ruleDefinition]);
 
   return (
     <>
@@ -75,7 +75,8 @@ const RulesBuilder: React.FC<Props> = ({
         router={router}
       />
       {actions.map((action: Action | null, i) => {
-        const Component = i === (actions.length - 1) ? LastActionContainer : ActionContainer;
+        const Component =
+          i === actions.length - 1 ? LastActionContainer : ActionContainer;
         return (
           action && (
             <Component key={`action_${i}`}>

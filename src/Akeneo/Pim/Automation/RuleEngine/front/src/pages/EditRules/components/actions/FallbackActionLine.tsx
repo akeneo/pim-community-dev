@@ -14,12 +14,9 @@ const FallbackActionLine: React.FC<Props> = ({
   action,
   handleDelete,
 }) => {
-  useValueInitialization(
-    `content.actions[${lineNumber}]`,
-    action.json,
-    {},
-    [action]
-  );
+  useValueInitialization(`content.actions[${lineNumber}]`, action.json, {}, [
+    action,
+  ]);
 
   return (
     <ActionTemplate
@@ -31,7 +28,11 @@ const FallbackActionLine: React.FC<Props> = ({
       <div className='AknGrid AknGrid--unclickable'>
         <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
           <div className='AknGrid-bodyCell'>
-            <div style={{ fontFamily: 'Courier, "MS Courier New", Prestige, "Everson Mono"' }}>
+            <div
+              style={{
+                fontFamily:
+                  'Courier, "MS Courier New", Prestige, "Everson Mono"',
+              }}>
               {JSON.stringify(action.json)}
             </div>
           </div>

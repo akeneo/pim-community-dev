@@ -13,7 +13,7 @@ import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
 import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
-import { InputErrorMsg } from "../../../../components/InputErrorMsg";
+import { InputErrorMsg } from '../../../../components/InputErrorMsg';
 
 const FieldColumn = styled.span`
   width: 100px;
@@ -58,7 +58,13 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   scopes,
   currentCatalogLocale,
 }) => {
-  const { register, watch, setValue, errors, triggerValidation } = useFormContext();
+  const {
+    register,
+    watch,
+    setValue,
+    errors,
+    triggerValidation,
+  } = useFormContext();
 
   const getOperatorFormValue: () => Operator = () =>
     watch(`content.conditions[${lineNumber}].operator`);
@@ -95,11 +101,16 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       value: condition.value,
       scope: condition.scope,
       locale: condition.locale,
-    }, {
-      scope: condition.attribute.scopable ? { required: translate('pimee_catalog_rule.exceptions.required') } : {},
-      locale: condition.attribute.localizable ? { required: translate('pimee_catalog_rule.exceptions.required') } : {},
     },
-    [ condition ]
+    {
+      scope: condition.attribute.scopable
+        ? { required: translate('pimee_catalog_rule.exceptions.required') }
+        : {},
+      locale: condition.attribute.localizable
+        ? { required: translate('pimee_catalog_rule.exceptions.required') }
+        : {},
+    },
+    [condition]
   );
 
   const setValueFormValue = (value: string | null) =>
@@ -107,7 +118,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   const setLocaleFormValue = (value: LocaleCode | null) => {
     setValue(`content.conditions[${lineNumber}].locale`, value);
     triggerValidation(`content.conditions[${lineNumber}].locale`);
-  }
+  };
 
   const setScopeFormValue = (value: ScopeCode) => {
     setValue(`content.conditions[${lineNumber}].scope`, value);
@@ -166,9 +177,10 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
             currentCatalogLocale={currentCatalogLocale}
             value={getScopeFormValue()}
             onChange={setScopeFormValue}
-            translate={translate}
-          >
-            <ErrorMessage errors={errors} name={`content.conditions[${lineNumber}].scope`}>
+            translate={translate}>
+            <ErrorMessage
+              errors={errors}
+              name={`content.conditions[${lineNumber}].scope`}>
               {({ message }) => <InputErrorMsg>{message}</InputErrorMsg>}
             </ErrorMessage>
           </ScopeSelector>
@@ -183,9 +195,10 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
             availableLocales={getAvailableLocales()}
             value={getLocaleFormValue()}
             onChange={setLocaleFormValue}
-            translate={translate}
-          >
-            <ErrorMessage errors={errors} name={`content.conditions[${lineNumber}].locale`}>
+            translate={translate}>
+            <ErrorMessage
+              errors={errors}
+              name={`content.conditions[${lineNumber}].locale`}>
               {({ message }) => <InputErrorMsg>{message}</InputErrorMsg>}
             </ErrorMessage>
           </LocaleSelector>

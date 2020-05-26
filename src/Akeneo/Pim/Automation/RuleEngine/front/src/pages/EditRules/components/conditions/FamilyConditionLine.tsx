@@ -45,13 +45,14 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
   const { watch, setValue } = useFormContext();
 
   useValueInitialization(
-    `content.conditions[${lineNumber}]`, {
+    `content.conditions[${lineNumber}]`,
+    {
       field: condition.field,
       operator: condition.operator,
       value: condition.value,
     },
     {},
-    [ condition ]
+    [condition]
   );
 
   const getOperatorFormValue: () => Operator = () =>
