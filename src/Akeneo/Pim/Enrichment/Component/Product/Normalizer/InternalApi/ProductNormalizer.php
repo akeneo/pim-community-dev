@@ -118,7 +118,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         CatalogContext $catalogContext,
         CompletenessCalculator $completenessCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
-        NormalizerInterface $quantifiedAssociationsNormalizer
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -190,7 +190,8 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             'completenesses'    => $this->completenessCollectionNormalizer->normalize($completenesses),
             'required_missing_attributes' => $this->missingRequiredAttributesNormalizer->normalize($completenesses),
             'image'             => $this->normalizeImage($product->getImage(), $this->catalogContext->getScopeCode(), $this->catalogContext->getLocaleCode()),
-            'quantified_associations_for_this_level' => $this->quantifiedAssociationsNormalizer->normalize($product, 'standard', ['merge_ancestors' => false]),
+            'quantified_associations_for_this_level' => $this->quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations($product, 'standard', $context),
+            'parent_quantified_associations' => $this->quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations($product, 'standard', $context),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 
         $normalizedProduct['meta']['ascendant_category_ids'] = $product->isVariant() ?
