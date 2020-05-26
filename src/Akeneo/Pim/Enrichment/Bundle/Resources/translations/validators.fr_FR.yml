@@ -86,11 +86,11 @@ pim_catalog:
     quantified_associations:
       unexpected_link_type: Le type de lien "{{ value }}" n'existe pas. Seuls des produits ou des modèles de produits peuvent être associés entre eux.
       max_associations: Vous avez atteint la limite de {{ limit }} associations. Merci de supprimer des associations existantes si vous souhaitez en rajouter de nouvelles.
-      invalid_quantity: La quantité "{{ value }}" est invalide. Merci d'entrer une valeur comprise entre {{ min }} et {{ max }}.
-      products_do_not_exist: "Les produits suivants: {{ values }} n'existent pas. Merci de vérifier qu'ils n'ont pas été supprimés entre temps."
-      product_models_do_not_exist: "Les modèles de produits suivants: {{ values }} n'existent pas. Merci de vérifier qu'ils n'ont pas été supprimés entre temps."
+      invalid_quantity: La quantité "{{ value }}" est invalide. Merci d'entrer une valeur comprise entre {{ min }} et {{ max }} inclus.
+      products_do_not_exist: "Les produits suivants : {{ values }} n'existent pas. Merci de vérifier qu'ils n'ont pas été supprimés entre temps."
+      product_models_do_not_exist: "Les modèles de produits suivants : {{ values }} n'existent pas. Merci de vérifier qu'ils n'ont pas été supprimés entre temps."
       association_type_does_not_exist: Ce type d'association n'existe pas. Merci de vérifier qu'il n'a pas été supprimé entre temps.
-      association_type_is_not_quantified: Le type d'association choisi n'est pas approprié pour fixer des quantités. Merci de modifier le type d'association avant de réessayer.
+      association_type_is_not_quantified: Le type d'association choisi n'est pas celui approprié pour écrire des quantités. Merci de modifier le type d'association avant de réessayer.
 
 mass_edit:
   edit_common_attributes:

@@ -455,7 +455,7 @@ final class QuantifiedAssociationsContext implements Context
 
         /** @var ConstraintViolation $violation */
         foreach ($violations as $violation) {
-            $violationsMessages[] = $violation->getMessage();
+            $violationsMessages[] = $violation->getMessageTemplate();
         }
 
         Assert::true(in_array($message, $violationsMessages), sprintf(
