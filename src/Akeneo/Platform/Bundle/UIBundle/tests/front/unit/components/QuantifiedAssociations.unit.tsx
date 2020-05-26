@@ -63,6 +63,7 @@ test('It displays quantified association rows for a quantified association colle
         <AkeneoThemeProvider>
           <QuantifiedAssociations
             quantifiedAssociations={quantifiedAssociationCollection}
+            parentQuantifiedAssociations={{products: [{identifier: 'bag', quantity: 1}], product_models: []}}
             associationTypeCode="PACK"
             onAssociationsChange={jest.fn()}
             onOpenPicker={jest.fn()}
@@ -79,6 +80,9 @@ test('It displays quantified association rows for a quantified association colle
   ) as HTMLInputElement[];
 
   expect(getByText(container, 'Nice bag')).toBeInTheDocument();
+  expect(
+    getAllByTitle(container, 'pim_enrich.entity.product.module.associations.quantified.unlinked')[0]
+  ).toBeInTheDocument();
   expect(queryByText(container, 'Braided hat')).toBeInTheDocument();
   expect(quantityInputs[0].value).toBe('3');
   expect(quantityInputs.length).toBe(2);
@@ -91,6 +95,7 @@ test('It displays no rows and a no data information when the quantified associat
         <AkeneoThemeProvider>
           <QuantifiedAssociations
             quantifiedAssociations={undefined}
+            parentQuantifiedAssociations={{products: [], product_models: []}}
             associationTypeCode="PACK"
             onAssociationsChange={jest.fn()}
             onOpenPicker={jest.fn()}
@@ -115,6 +120,7 @@ test('It triggers the onChange event when a quantity is changed', async () => {
         <AkeneoThemeProvider>
           <QuantifiedAssociations
             quantifiedAssociations={quantifiedAssociationCollection}
+            parentQuantifiedAssociations={{products: [], product_models: []}}
             associationTypeCode="PACK"
             onAssociationsChange={onChange}
             onOpenPicker={jest.fn()}
@@ -147,6 +153,7 @@ test('It triggers the onRowDelete event when the remove button is clicked', asyn
         <AkeneoThemeProvider>
           <QuantifiedAssociations
             quantifiedAssociations={quantifiedAssociationCollection}
+            parentQuantifiedAssociations={{products: [], product_models: []}}
             associationTypeCode="PACK"
             onAssociationsChange={onChange}
             onOpenPicker={jest.fn()}
@@ -180,6 +187,7 @@ test('It adds products when the user confirm the picker', async () => {
         <AkeneoThemeProvider>
           <QuantifiedAssociations
             quantifiedAssociations={smallQuantifiedAssociationCollection}
+            parentQuantifiedAssociations={{products: [], product_models: []}}
             associationTypeCode="PACK"
             onAssociationsChange={onChange}
             onOpenPicker={() =>
@@ -227,6 +235,7 @@ test('It displays no table rows when the quantified association collection is nu
               products: [{identifier: 'null', quantity: 2}],
               product_models: [],
             }}
+            parentQuantifiedAssociations={{products: [], product_models: []}}
             associationTypeCode="PACK"
             onAssociationsChange={jest.fn()}
             onOpenPicker={jest.fn()}
