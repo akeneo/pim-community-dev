@@ -50,7 +50,7 @@ const submitEditRuleForm = (
   notify: Notify,
   router: Router,
   reset: Reset,
-  setRuleDefinition: (ruleDefinition: RuleDefinition) => void,
+  setRuleDefinition: (ruleDefinition: RuleDefinition) => void
 ) => {
   return async (formData: FormData, event?: React.BaseSyntheticEvent) => {
     if (event) {
@@ -117,7 +117,7 @@ const useSubmitEditRuleForm = (
   router: Router,
   ruleDefinition: RuleDefinition,
   locales: Locale[],
-  setRuleDefinition: (ruleDefinition: RuleDefinition) => void,
+  setRuleDefinition: (ruleDefinition: RuleDefinition) => void
 ) => {
   const defaultValues = createFormDefaultValues(ruleDefinition, locales);
   const formMethods = useForm<FormData>({

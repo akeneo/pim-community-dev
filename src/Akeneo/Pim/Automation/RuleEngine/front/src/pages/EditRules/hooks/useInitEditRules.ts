@@ -18,7 +18,7 @@ type Error = {
 const useInitEditRules = (
   ruleDefinitionCode: string,
   router: Router,
-  setRuleDefinition: (ruleDefinition: RuleDefinition) => void,
+  setRuleDefinition: (ruleDefinition: RuleDefinition) => void
 ) => {
   const [error, setError] = useState<Error>({
     exception: null,
