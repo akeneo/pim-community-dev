@@ -77,6 +77,6 @@ category:
   edit: Édition de la catégorie
   overview: Catégories
 tree:
-  edit: Modifier l'arboresence
+  edit: Modifier l'arborescence
   remove:
     error_linked: Cet arbre de catégorie ne peut pas être supprimé, il est lié à un canal
