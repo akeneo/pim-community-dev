@@ -2,7 +2,7 @@ public/bundles/*
 !public/bundles/.gitkeep
 public/media/*
 public/css/*
-public/js/*
+/public/js/*
 public/dist/*
 public/test_dist/*
 public/cache/
