@@ -1,0 +1,5 @@
+config:
+    paths:
+        akeneo/communication-channel: akeneocommunicationchannel/menu/communication-channel
+
+        akeneo/template/menu/communication-channel: akeneocommunicationchannel/menu/communication-channel.html
