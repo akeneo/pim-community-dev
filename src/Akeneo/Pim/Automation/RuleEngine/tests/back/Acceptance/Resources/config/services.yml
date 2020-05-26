@@ -68,11 +68,6 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
 
-    akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes:
-        class: 'AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition\InMemoryGetExistingAttributeOptionCodes'
-        arguments:
-            - '@pim_catalog.repository.attribute_option'
-
     pimee.reference_entity.enrichment.find_all_existent_records_for_record_identifiers:
         class: 'AkeneoEnterprise\Test\Acceptance\Enrichment\InMemory\InMemoryFindAllExistentRecordsForReferenceEntityIdentifiers'
         arguments:
