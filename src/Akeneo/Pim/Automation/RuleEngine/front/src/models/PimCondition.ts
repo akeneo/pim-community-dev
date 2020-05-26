@@ -31,8 +31,8 @@ export const denormalizePimCondition: ConditionDenormalizer = async (
       field: json.field,
       operator: json.operator,
       value: json.value,
-      locale: json.locale,
-      scope: json.scope,
+      locale: json.locale || null,
+      scope: json.scope || null,
     });
   }
 

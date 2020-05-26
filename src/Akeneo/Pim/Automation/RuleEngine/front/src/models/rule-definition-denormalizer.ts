@@ -2,21 +2,42 @@ import { RuleDefinition } from './RuleDefinition';
 import { Condition, ConditionDenormalizer } from './Condition';
 import { denormalizeFamilyCondition } from './FamilyCondition';
 import { denormalizeFallbackCondition } from './FallbackCondition';
-import { createFallbackAction, FallbackAction } from './FallbackAction';
+import { denormalizeFallbackAction, FallbackAction } from './FallbackAction';
 import { Action } from './Action';
 import { denormalizePimCondition } from './PimCondition';
 import { denormalizeTextAttributeCondition } from './TextAttributeCondition';
 import { Router } from '../dependenciesTools';
 import { getAttributesByIdentifiers } from '../repositories/AttributeRepository';
+import {
+  denormalizeAddAction,
+  denormalizeCalculateAction,
+  denormalizeClearAction,
+  denormalizeConcatenateAction,
+  denormalizeCopyAction,
+  denormalizeRemoveAction,
+  denormalizeSetAction,
+} from './actions';
 
 function denormalizeAction(jsonAction: any): Action {
-  const factories: ((json: any) => Action | null)[] = [];
-  const factory =
-    factories.find(factory => {
-      return factory(jsonAction) !== null;
-    }) || createFallbackAction;
+  const denormalizers: ((json: any) => Action | null)[] = [
+    denormalizeAddAction,
+    denormalizeCalculateAction,
+    denormalizeClearAction,
+    denormalizeConcatenateAction,
+    denormalizeCopyAction,
+    denormalizeRemoveAction,
+    denormalizeSetAction,
+  ];
 
-  return factory(jsonAction) as Action;
+  for (let i = 0; i < denormalizers.length; i++) {
+    const denormalizer = denormalizers[i];
+    const action = denormalizer(jsonAction);
+    if (action !== null) {
+      return action;
+    }
+  }
+
+  return denormalizeFallbackAction(jsonAction);
 }
 
 async function denormalizeCondition(

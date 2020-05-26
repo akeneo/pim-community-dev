@@ -7,7 +7,7 @@ export type FallbackAction = {
   json: any;
 };
 
-export const createFallbackAction = (json: any): FallbackAction => {
+export const denormalizeFallbackAction = (json: any): FallbackAction => {
   return {
     module: FallbackActionLine,
     json,
