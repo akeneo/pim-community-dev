@@ -394,9 +394,7 @@ define([
       let urlParams = params;
       urlParams.alias = gridName;
       urlParams.params = _.clone(params);
-      if (params.dataScope) {
-        urlParams.filters = {scope: {value: params.dataScope}};
-      }
+      urlParams.filters = {scope: {value: params.dataScope}};
 
       const datagridState = DatagridState.get(gridName, ['filters']);
       if (null !== datagridState.filters) {
