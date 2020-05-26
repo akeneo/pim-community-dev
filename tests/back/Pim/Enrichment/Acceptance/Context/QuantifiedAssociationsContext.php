@@ -8,15 +8,20 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductNormalizer;
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
+use Akeneo\Test\Acceptance\AssociationType\InMemoryAssociationTypeRepository;
+use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
+use Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository;
 use Akeneo\Test\Common\Structure\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
@@ -38,9 +43,6 @@ final class QuantifiedAssociationsContext implements Context
     /** @var AttributeInterface|null */
     private $attribute;
 
-    /** @var ConstraintViolationListInterface|null */
-    private $violations;
-
     /* --- */
 
     /** @var ValidatorInterface */
@@ -55,16 +57,31 @@ final class QuantifiedAssociationsContext implements Context
     /** @var ProductNormalizer */
     private $standardProductNormalizer;
 
+    /** @var InMemoryProductRepository */
+    private $productRepository;
+
+    /** @var InMemoryAssociationTypeRepository */
+    private $associationTypeRepository;
+
+    /** @var InMemoryProductModelRepository */
+    private $productModelRepository;
+
     public function __construct(
         ValidatorInterface $validator,
         ObjectUpdaterInterface $productUpdater,
         ObjectUpdaterInterface $productModelUpdater,
-        ProductNormalizer $standardProductNormalizer
+        ProductNormalizer $standardProductNormalizer,
+        InMemoryProductRepository $productRepository,
+        InMemoryProductModelRepository $productModelRepository,
+        InMemoryAssociationTypeRepository $associationTypeRepository
     ) {
         $this->validator = $validator;
         $this->productUpdater = $productUpdater;
         $this->productModelUpdater = $productModelUpdater;
         $this->standardProductNormalizer = $standardProductNormalizer;
+        $this->productRepository = $productRepository;
+        $this->productModelRepository = $productModelRepository;
+        $this->associationTypeRepository = $associationTypeRepository;
     }
 
     private function createProduct(array $fields): Product
@@ -148,44 +165,44 @@ final class QuantifiedAssociationsContext implements Context
         return $this->familyVariant;
     }
 
-    /**
-     * @Given a product with an invalid quantified association
-     */
-    public function aProductWithAnInvalidQuantifiedAssociation(): void
+    private function createAndPersistProductWithIdentifier(string $identifier): void
     {
-        $this->product = $this->createProduct([
+        $this->productRepository->save($this->createProduct([
             'values' => [
                 'sku' => [
                     [
                         'scope' => null,
                         'locale' => null,
-                        'data' => 'yellow_chair',
+                        'data' => $identifier,
                     ],
                 ],
             ],
-            'quantified_associations' => [
-                'INVALID_ASSOCIATION_TYPE' => [
-                    'products' => [],
-                    'product_models' => [],
-                ],
-            ],
-        ]);
+        ]));
     }
 
-    /**
-     * @When I try to save this product
-     */
-    public function iTryToSaveThisProduct(): void
+    private function createAndPersistProductModelWithCode(string $code): void
     {
-        $this->violations = $this->validator->validate($this->product);
+        $this->productModelRepository->save($this->createProductModel([
+            'code' => $code,
+        ]));
     }
 
-    /**
-     * @Then there is a validation error on this quantified association
-     */
-    public function thereIsAValidationErrorOnThisQuantifiedAssociation()
+    private function createAndPersistQuantifiedAssociationType(string $code): void
     {
-//        dump($this->violations);
+        $associationType = new AssociationType();
+        $associationType->setCode($code);
+        $associationType->setIsQuantified(true);
+
+        $this->associationTypeRepository->save($associationType);
+    }
+
+    private function createAndPersistNormalAssociationType(string $code): void
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode($code);
+        $associationType->setIsQuantified(false);
+
+        $this->associationTypeRepository->save($associationType);
     }
 
     /**
@@ -247,6 +264,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function iAssociateAProductToThisProductWithAQuantity()
     {
+        $this->createAndPersistProductWithIdentifier('accessory');
+
         $fields = [
             'quantified_associations' => [
                 'PACK' => [
@@ -277,6 +296,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function iAssociateAProductToThisProductModelWithAQuantity()
     {
+        $this->createAndPersistProductWithIdentifier('accessory');
+
         $fields = [
             'quantified_associations' => [
                 'PACK' => [
@@ -316,15 +337,7 @@ final class QuantifiedAssociationsContext implements Context
     public function thisProductHasAParentWithAQuantifiedAssociations()
     {
         $productModel = $this->createProductModel([
-            'values' => [
-                'sku' => [
-                    [
-                        'scope' => null,
-                        'locale' => null,
-                        'data' => 'standard_chair',
-                    ],
-                ],
-            ],
+            'code' => 'standard_chair',
             'quantified_associations' => [
                 'PACK' => [
                     'products' => [
@@ -344,6 +357,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function iAddTheSameQuantifiedAssociationWithADifferentQuantity()
     {
+        $this->createAndPersistProductWithIdentifier('accessory');
+
         $fields = [
             'quantified_associations' => [
                 'PACK' => [
@@ -385,6 +400,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function iAssociateAProductModelToThisProductModelWithAQuantity()
     {
+        $this->createAndPersistProductModelWithCode('accessory');
+
         $fields = [
             'quantified_associations' => [
                 'PACK' => [
@@ -416,5 +433,248 @@ final class QuantifiedAssociationsContext implements Context
         ];
 
         Assert::same($actualQuantifiedAssociations, $expectedQuantifiedAssociations);
+    }
+
+    /**
+     * @Given /^a quantified association type "([^"]*)"$/
+     */
+    public function aQuantifiedAssociationType($code)
+    {
+        $this->createAndPersistQuantifiedAssociationType($code);
+    }
+
+    /**
+     * @Then /^there is the validation error "(.*)"$/
+     */
+    public function thereIsTheValidationError($message)
+    {
+        /** @var ConstraintViolationListInterface $violations */
+        $violations = $this->validator->validate($this->product);
+
+        $violationsMessages = [];
+
+        /** @var ConstraintViolation $violation */
+        foreach ($violations as $violation) {
+            $violationsMessages[] = $violation->getMessageTemplate();
+        }
+
+        Assert::true(in_array($message, $violationsMessages), sprintf(
+            'The validation error "%s" was not found, got "%s"',
+            $message,
+            implode(',', $violationsMessages)
+        ));
+    }
+
+    /**
+     * @When /^a product is associated with a quantity for an association type that does not exist$/
+     */
+    public function aProductIsAssociatedWithAQuantityForAnAssociationTypeThatDoesNotExist(): void
+    {
+        $this->product = $this->createProduct([
+            'values' => [
+                'sku' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => 'yellow_chair',
+                    ],
+                ],
+            ],
+            'quantified_associations' => [
+                'INVALID_ASSOCIATION_TYPE' => [
+                    'products' => [],
+                    'product_models' => [],
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * @When /^a product is associated with a quantity for an association type that is not quantified$/
+     */
+    public function aProductIsAssociatedWithAQuantityForAnAssociationTypeThatIsNotQuantified()
+    {
+        $this->createAndPersistNormalAssociationType('XSELL');
+
+        $this->product = $this->createProduct([
+            'values' => [
+                'sku' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => 'yellow_chair',
+                    ],
+                ],
+            ],
+            'quantified_associations' => [
+                'XSELL' => [
+                    'products' => [],
+                    'product_models' => [],
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * @When /^I associate a product to this product with the quantity "([^"]*)"$/
+     */
+    public function iAssociateAProductToThisProductWithTheQuantity($quantity)
+    {
+        $this->createAndPersistProductWithIdentifier('accessory');
+        $this->createAndPersistQuantifiedAssociationType('PACK');
+
+        $fields = [
+            'quantified_associations' => [
+                'PACK' => [
+                    'products' => [
+                        ['identifier' => 'accessory', 'quantity' => (int)$quantity],
+                    ],
+                    'product_models' => [],
+                ],
+            ],
+        ];
+
+        $this->updateProduct($this->product, $fields);
+    }
+
+    /**
+     * @When /^I associate a nonexistent product to this product with a quantity$/
+     */
+    public function iAssociateANonExistentProductToThisProductWithAQuantity()
+    {
+        $this->createAndPersistQuantifiedAssociationType('PACK');
+        $fields = [
+            'quantified_associations' => [
+                'PACK' => [
+                    'products' => [
+                        ['identifier' => 'accessory', 'quantity' => 1],
+                    ],
+                    'product_models' => [],
+                ],
+            ],
+        ];
+
+        $this->updateProduct($this->product, $fields);
+    }
+
+    /**
+     * @When /^I associate a nonexistent product model to this product with a quantity$/
+     */
+    public function iAssociateANonExistentProductModelToThisProductWithAQuantity()
+    {
+        $this->createAndPersistQuantifiedAssociationType('PACK');
+        $fields = [
+            'quantified_associations' => [
+                'PACK' => [
+                    'products' => [],
+                    'product_models' => [
+                        ['identifier' => 'accessory', 'quantity' => 42],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->updateProduct($this->product, $fields);
+    }
+
+    /**
+     * @When /^I associate "([^"]*)" products and "([^"]*)" product models with a quantity to this product$/
+     */
+    public function iAssociateProductsWithAQuantityToThisProduct(
+        string $numberOfProductAssociation,
+        string $numberOfProductModelAssociation
+    ) {
+        $productAssociations = [];
+        $productModelAssociations = [];
+        for ($i = 0; $i < intval($numberOfProductAssociation); $i++) {
+            $productIdentifier = "product-$i";
+            $this->createAndPersistProductWithIdentifier($productIdentifier);
+
+            $productAssociations[] = ['identifier' => $productIdentifier, 'quantity' => 42];
+        }
+
+        for ($i = 0; $i < intval($numberOfProductModelAssociation); $i++) {
+            $productModelCode = "product-model-$i";
+            $this->createAndPersistProductModelWithCode($productModelCode);
+
+            $productModelAssociations[] = ['identifier' => $productModelCode, 'quantity' => 42];
+        }
+
+        $this->createAndPersistQuantifiedAssociationType('PACK');
+        $fields = [
+            'quantified_associations' => [
+                'PACK' => [
+                    'products' => $productAssociations,
+                    'product_models' => $productModelAssociations,
+                ],
+            ],
+        ];
+
+        $this->updateProduct($this->product, $fields);
+    }
+
+    /**
+     * @When /^a product is associated with invalid quantified link type$/
+     */
+    public function aProductWithInvalidQuantifiedLinkType()
+    {
+        $this->createAndPersistQuantifiedAssociationType('PACK');
+
+        $this->product = $this->createProduct([
+            'values' => [
+                'sku' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => 'yellow_chair',
+                    ],
+                ],
+            ],
+            'quantified_associations' => [
+                'PACK' => [
+                    'products' => [],
+                    'product_drafts' => [],
+                    'product_models' => [],
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * @Then /^the product is valid$/
+     */
+    public function theProductIsValid()
+    {
+        $violations = $this->validator->validate($this->product);
+        Assert::count($violations, 0);
+    }
+
+    /**
+     * @When /^a product model is associated with an invalid quantified association$/
+     */
+    public function aProductModelWithAnInvalidQuantifiedAssociation()
+    {
+        $this->productModel = $this->createProductModel([
+            'code' => 'standard_chair',
+            'quantified_associations' => [
+                'INVALID_ASSOCIATION_TYPE' => [
+                    'products' => [
+                        ['identifier' => 'accessory', 'quantity' => -1],
+                        ['identifier' => 'something_else', 'quantity' => 10000],
+                    ],
+                    'product_models' => [],
+                    'product_drafts' => [],
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * @Then /^there is at least a validation error on this product model$/
+     */
+    public function thereIsAtLeastAValidationErrorOnThisProductModel()
+    {
+        $violations = $this->validator->validate($this->productModel);
+        Assert::greaterThan(count($violations), 0);
     }
 }

@@ -272,6 +272,16 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.enrichment.product.query.find_non_existing_product_identifiers_query:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindNonExistingProductIdentifiersQuery'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.find_non_existing_product_model_codes_query:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindNonExistingProductModelCodesQuery'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_identifiers_query:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductIdentifiersQuery'
         arguments:

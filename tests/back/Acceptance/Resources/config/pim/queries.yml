@@ -22,3 +22,14 @@ services:
         class: 'Akeneo\Test\Acceptance\Channel\InMemoryGetChannelCodeWithLocaleCodes'
         arguments:
             - '@pim_catalog.repository.channel'
+
+    ### Catalog
+    akeneo.pim.enrichment.product.query.find_non_existing_product_identifiers_query:
+        class: 'Akeneo\Test\Acceptance\Product\InMemoryFindNonExistingProductIdentifiersQuery'
+        arguments:
+            - '@pim_catalog.repository.product'
+
+    akeneo.pim.enrichment.product.query.find_non_existing_product_model_codes_query:
+        class: 'Akeneo\Test\Acceptance\ProductModel\InMemoryFindNonExistingProductModelCodesQuery'
+        arguments:
+            - '@pim_catalog.repository.product_model'

@@ -24,7 +24,6 @@ class QuantifiedLink
 
     public function __construct(string $identifier, int $quantity)
     {
-        Assert::greaterThan($quantity, 0, 'A quantity should be greater than 0');
         Assert::stringNotEmpty($identifier, 'Quantified link identifier cannot be empty');
 
         $this->identifier = $identifier;
