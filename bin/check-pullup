@@ -133,6 +133,14 @@ class Dispatched implements Reason
     }
 }
 
+class Removed implements Reason
+{
+    public function __toString(): string
+    {
+        return 'This folder has been completely removed and should not be pulled up anymore';
+    }
+}
+
 $check = new CheckPullUp;
 $pullUpOk = $check(
     [
@@ -220,6 +228,8 @@ $pullUpOk = $check(
         new ForbiddenDirectory('src/PimEnterprise/Component/Workflow', new Moved('src/Akeneo/Pim/WorkOrganization')),
         new ForbiddenDirectory('src/PimEnterprise/Bundle/EnrichBundle', Dispatched::mainEnterpriseBusinessTopics()),
         new ForbiddenDirectory('src/PimEnterprise/Component/Enrich', Dispatched::mainEnterpriseBusinessTopics()),
+        new ForbiddenDirectory('src/Akeneo/Asset', new Removed()),
+        new ForbiddenDirectory('src/Akeneo/Pim/Enrichment/Asset', new Removed()),
 
         //tests folder
         new ForbiddenDirectory('spec/', new Dispatched(['tests/back/Pim/**/Specification','tests/back/Pim/**/spec'])),
