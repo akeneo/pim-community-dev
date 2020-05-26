@@ -20,6 +20,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
 {
@@ -40,14 +41,22 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
 
     function it_subscribes_to_rule_events()
     {
-        $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::PRE_APPLY);
-        $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::POST_APPLY);
+        $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::PRE_EXECUTE);
+        $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::POST_SELECT);
+        $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::POST_EXECUTE);
         $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::POST_SAVE_SUBJECTS);
         $this::getSubscribedEvents()->shouldHaveKey(RuleEvents::SKIP);
         $this::getSubscribedEvents()->shouldHaveKey(SkippedActionForSubjectEvent::class);
     }
 
-    function it_updates_step_execution_summary_before_applying_a_rule(
+    function it_updates_step_execution_before_executing_a_rule(StepExecution $stepExecution)
+    {
+        $stepExecution->incrementSummaryInfo('read_rules')->shouldBeCalled();
+
+        $this->preExecute(new GenericEvent());
+    }
+
+    function it_updates_step_execution_summary_after_selecting_rule_subjects(
         StepExecution $stepExecution,
         CursorInterface $cursor
     ) {
@@ -55,17 +64,16 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
         $subjectSet = new RuleSubjectSet();
         $subjectSet->setSubjectsCursor($cursor->getWrappedObject());
 
-        $stepExecution->incrementSummaryInfo('read_rules')->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('selected_entities', 3099)->shouldBeCalled();
 
-        $this->preApply(new SelectedRuleEvent(new RuleDefinition(), $subjectSet));
+        $this->postSelect(new SelectedRuleEvent(new RuleDefinition(), $subjectSet));
     }
 
     function it_updates_step_execution_summary_after_applying_a_rule(StepExecution $stepExecution)
     {
         $stepExecution->incrementSummaryInfo('executed_rules')->shouldBeCalled();
 
-        $this->postApply(new SelectedRuleEvent(new RuleDefinition(), new RuleSubjectSet()));
+        $this->postExecute(new GenericEvent(new RuleDefinition()));
     }
 
     function it_updates_step_execution_summary_after_saving_rule_subjects(StepExecution $stepExecution)

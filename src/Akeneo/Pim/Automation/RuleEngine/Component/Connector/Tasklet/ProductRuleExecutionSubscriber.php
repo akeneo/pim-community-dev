@@ -23,6 +23,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class ProductRuleExecutionSubscriber implements EventSubscriberInterface
 {
@@ -37,23 +38,27 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RuleEvents::PRE_APPLY => 'preApply',
-            RuleEvents::POST_APPLY => 'postApply',
+            RuleEvents::PRE_EXECUTE => 'preExecute',
+            RuleEvents::POST_SELECT => 'postSelect',
+            RuleEvents::POST_EXECUTE => 'postExecute',
             RuleEvents::POST_SAVE_SUBJECTS => 'postSave',
             RuleEvents::SKIP => 'skipInvalid',
             SkippedActionForSubjectEvent::class => 'skipAction',
         ];
     }
 
-    public function preApply(SelectedRuleEvent $event): void
+    public function preExecute(GenericEvent $event): void
     {
         $this->stepExecution->incrementSummaryInfo('read_rules');
+    }
 
+    public function postSelect(SelectedRuleEvent $event): void
+    {
         $subjectSet = $event->getSubjectSet();
         $this->stepExecution->incrementSummaryInfo('selected_entities', $subjectSet->getSubjectsCursor()->count());
     }
 
-    public function postApply(SelectedRuleEvent $event): void
+    public function postExecute(GenericEvent $event): void
     {
         $this->stepExecution->incrementSummaryInfo('executed_rules');
     }

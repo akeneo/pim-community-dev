@@ -98,6 +98,7 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         RuleDefinition $ruleDefinition1,
         RuleDefinition $ruleDefinition2
     ) {
+        $ruleDefinition1->getCode()->willReturn('my_rule_code');
         $ruleDefinitionRepository->findAllOrderedByPriority()->willReturn([$ruleDefinition1, $ruleDefinition2]);
         $jobParameters->get('rule_codes')->willReturn([]);
         $jobParameters->get('dry_run')->willReturn(false);
@@ -108,7 +109,7 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         $exception = new \LogicException('error message');
         $ruleRunner->run($ruleDefinition1)->willThrow($exception);
 
-        $stepExecution->addError('error message')->shouldBeCalled();
+        $stepExecution->addError('Rule "my_rule_code": error message')->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('errored_rules')->shouldBeCalled();
 
         $ruleRunner->run($ruleDefinition2)->shouldNotBeCalled();
@@ -124,6 +125,7 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         RuleDefinition $ruleDefinition1,
         RuleDefinition $ruleDefinition2
     ) {
+        $ruleDefinition1->getCode()->willReturn('my_rule_code');
         $ruleDefinitionRepository->findAllOrderedByPriority()->willReturn([$ruleDefinition1, $ruleDefinition2]);
         $jobParameters->get('rule_codes')->willReturn([]);
         $jobParameters->get('dry_run')->willReturn(false);
@@ -134,7 +136,7 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         $exception = new \LogicException('error message');
         $ruleRunner->run($ruleDefinition1)->willThrow($exception);
 
-        $stepExecution->addError('error message')->shouldBeCalled();
+        $stepExecution->addError('Rule "my_rule_code": error message')->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('errored_rules')->shouldBeCalled();
 
         $ruleRunner->run($ruleDefinition2)->shouldBeCalled();

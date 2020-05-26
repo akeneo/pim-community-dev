@@ -78,7 +78,8 @@ final class ExecuteRulesTasklet implements TaskletInterface
                     $this->ruleRunner->run($ruleDefinition);
                 }
             } catch (\LogicException $e) {
-                $this->stepExecution->addError($e->getMessage());
+                $error = \sprintf('Rule "%s": %s', $ruleDefinition->getCode(), $e->getMessage());
+                $this->stepExecution->addError($error);
                 $this->stepExecution->incrementSummaryInfo('errored_rules');
                 if ($this->stepExecution->getJobParameters()->get('stop_on_error')) {
                     throw $e;
