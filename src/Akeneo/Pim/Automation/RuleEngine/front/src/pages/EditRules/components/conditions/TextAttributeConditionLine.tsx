@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, ErrorMessage } from 'react-hook-form';
 import {
   TextAttributeCondition,
   TextAttributeOperators,
@@ -13,6 +13,7 @@ import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
 import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
+import { InputErrorMsg } from "../../../../components/InputErrorMsg";
 
 const FieldColumn = styled.span`
   width: 100px;
@@ -57,10 +58,11 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   scopes,
   currentCatalogLocale,
 }) => {
-  const { register, watch, setValue } = useFormContext();
+  const { register, watch, setValue, errors, triggerValidation } = useFormContext();
 
   const getOperatorFormValue: () => Operator = () =>
     watch(`content.conditions[${lineNumber}].operator`);
+
   const getScopeFormValue: () => ScopeCode = () =>
     watch(`content.conditions[${lineNumber}].scope`);
   const getLocaleFormValue: () => LocaleCode = () =>
@@ -85,21 +87,31 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
     );
   };
 
-  useValueInitialization(`content.conditions[${lineNumber}]`, {
-    field: condition.field,
-    operator: condition.operator,
-    value: condition.value,
-    scope: condition.scope,
-    locale: condition.locale,
-  });
+  useValueInitialization(
+    `content.conditions[${lineNumber}]`,
+    {
+      field: condition.field,
+      operator: condition.operator,
+      value: condition.value,
+      scope: condition.scope,
+      locale: condition.locale,
+    }, {
+      scope: condition.attribute.scopable ? { required: translate('pimee_catalog_rule.exceptions.required') } : {},
+      locale: condition.attribute.localizable ? { required: translate('pimee_catalog_rule.exceptions.required') } : {},
+    },
+    [ condition ]
+  );
 
   const setValueFormValue = (value: string | null) =>
     setValue(`content.conditions[${lineNumber}].value`, value);
-  const setLocaleFormValue = (value: LocaleCode | null) =>
+  const setLocaleFormValue = (value: LocaleCode | null) => {
     setValue(`content.conditions[${lineNumber}].locale`, value);
+    triggerValidation(`content.conditions[${lineNumber}].locale`);
+  }
 
   const setScopeFormValue = (value: ScopeCode) => {
     setValue(`content.conditions[${lineNumber}].scope`, value);
+    triggerValidation(`content.conditions[${lineNumber}].scope`);
     if (
       !getAvailableLocales()
         .map(locale => locale.code)
@@ -117,7 +129,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   };
 
   return (
-    <div>
+    <div className={'AknGrid-bodyCell'}>
       <FieldColumn className={'AknGrid-bodyCell--highlight'}>
         {condition.attribute.labels[currentCatalogLocale] ||
           '[' + condition.attribute.code + ']'}
@@ -155,7 +167,11 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
             value={getScopeFormValue()}
             onChange={setScopeFormValue}
             translate={translate}
-          />
+          >
+            <ErrorMessage errors={errors} name={`content.conditions[${lineNumber}].scope`}>
+              {({ message }) => <InputErrorMsg>{message}</InputErrorMsg>}
+            </ErrorMessage>
+          </ScopeSelector>
         )}
       </ScopeColumn>
       <LocaleColumn>
@@ -168,7 +184,11 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
             value={getLocaleFormValue()}
             onChange={setLocaleFormValue}
             translate={translate}
-          />
+          >
+            <ErrorMessage errors={errors} name={`content.conditions[${lineNumber}].locale`}>
+              {({ message }) => <InputErrorMsg>{message}</InputErrorMsg>}
+            </ErrorMessage>
+          </LocaleSelector>
         )}
       </LocaleColumn>
     </div>

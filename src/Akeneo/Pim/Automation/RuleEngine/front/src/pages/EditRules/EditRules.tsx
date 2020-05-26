@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import * as akeneoTheme from '../../theme';
 import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
 import { useInitEditRules } from '../EditRules';
 import { EditRulesContent } from './EditRulesContent';
 import { FullScreenError } from '../../components/FullScreenError';
+import { RuleDefinition } from "../../models";
 
 type Props = {
   ruleDefinitionCode: string;
@@ -14,10 +15,13 @@ type Props = {
 const EditRules: React.FC<Props> = ({ ruleDefinitionCode, setIsDirty }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
-  const { error, ruleDefinition, locales, scopes } = useInitEditRules(
+  const [ruleDefinition, setRuleDefinition] = useState<RuleDefinition>();
+  const { error, locales, scopes } = useInitEditRules(
     ruleDefinitionCode,
-    router
+    router,
+    setRuleDefinition
   );
+
   return (
     <ThemeProvider theme={akeneoTheme}>
       {error.status ? (
@@ -35,6 +39,7 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode, setIsDirty }) => {
           locales={locales}
           scopes={scopes}
           setIsDirty={setIsDirty}
+          setRuleDefinition={setRuleDefinition}
         />
       )}
     </ThemeProvider>

@@ -1,9 +1,9 @@
+import { omit } from "lodash";
 import { Payload } from '../../../rules.types';
 import { httpPut } from '../../../fetch';
 import { generateUrl } from '../../../dependenciesTools/hooks';
 import { FormData } from '../edit-rules.types';
 import { useForm, DeepPartial } from 'react-hook-form';
-
 import { Condition, Locale, RuleDefinition } from '../../../models';
 import {
   Router,
@@ -11,6 +11,7 @@ import {
   Notify,
   NotificationLevel,
 } from '../../../dependenciesTools';
+import { denormalize } from "../../../models/rule-definition-denormalizer";
 
 type Reset = (
   values?: DeepPartial<FormData>,
@@ -48,7 +49,8 @@ const submitEditRuleForm = (
   translate: Translate,
   notify: Notify,
   router: Router,
-  reset: Reset
+  reset: Reset,
+  setRuleDefinition: any,
 ) => {
   return async (formData: FormData, event?: React.BaseSyntheticEvent) => {
     if (event) {
@@ -68,20 +70,10 @@ const submitEditRuleForm = (
         NotificationLevel.SUCCESS,
         translate('pimee_catalog_rule.form.edit.notification.success')
       );
-      reset(
-        {
-          ...formData,
-        },
-        {
-          errors: false,
-          dirtyFields: false,
-          dirty: false,
-          isSubmitted: false,
-          touched: false,
-          isValid: false,
-          submitCount: false,
-        }
-      );
+      reset({ ...formData });
+      const json = await response.json();
+      const ruleDefinition = await denormalize(json, router);
+      setRuleDefinition(ruleDefinition);
     } else {
       notify(
         NotificationLevel.ERROR,
@@ -108,7 +100,12 @@ const createFormDefaultValues = (
   labels: locales.reduce(createLocalesLabels(ruleDefinition), {}),
   content: {
     conditions: ruleDefinition.conditions || [],
-    actions: ruleDefinition.actions || [],
+    actions: ruleDefinition.actions.map((action) => {
+      if (action.json) {
+        return action.json;
+      }
+      return omit(action, 'module');
+    }) || [],
   },
 });
 
@@ -118,7 +115,8 @@ const useSubmitEditRuleForm = (
   notify: Notify,
   router: Router,
   ruleDefinition: RuleDefinition,
-  locales: Locale[]
+  locales: Locale[],
+  setRuleDefinition: any,
 ) => {
   const defaultValues = createFormDefaultValues(ruleDefinition, locales);
   const formMethods = useForm<FormData>({
@@ -129,7 +127,8 @@ const useSubmitEditRuleForm = (
     translate,
     notify,
     router,
-    formMethods.reset
+    formMethods.reset,
+    setRuleDefinition,
   );
   return {
     onSubmit: formMethods.handleSubmit(onSubmit),

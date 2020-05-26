@@ -16,6 +16,7 @@ import { ConditionLine } from './ConditionLine';
 import { AddConditionButton } from './AddConditionButton';
 import { createFamilyCondition } from '../../../../models/FamilyCondition';
 import { createTextAttributeCondition } from '../../../../models/TextAttributeCondition';
+import startImage from '../../../../assets/illustrations/start.svg';
 
 const Header = styled.header`
   font-weight: normal;
@@ -49,6 +50,18 @@ const AddConditionContainer = styled.div`
   display: flex;
   margin-left: 15px;
   padding-left: 15px;
+`;
+
+const RuleProductSelectionFieldsetWithAction = styled.fieldset`
+  background-image: url('${startImage}');
+  padding-left: 12px;
+  margin-left: -12px;
+  background-repeat: no-repeat;
+  padding-bottom: 20px;
+`;
+
+const RuleProductSelectionFieldset = styled.fieldset`
+  padding-bottom: 20px;
 `;
 
 type Props = {
@@ -86,6 +99,10 @@ const RuleProductSelection: React.FC<Props> = ({
     );
   };
 
+  React.useEffect(() => {
+    setConditions(ruleDefinition.conditions);
+  }, [ ruleDefinition ]);
+
   async function createCondition(fieldCode: string): Promise<Condition> {
     const factories: ConditionFactory[] = [
       createFamilyCondition,
@@ -122,8 +139,9 @@ const RuleProductSelection: React.FC<Props> = ({
     });
   };
 
+  const Component = ruleDefinition.actions.length ? RuleProductSelectionFieldsetWithAction : RuleProductSelectionFieldset;
   return (
-    <fieldset>
+    <Component>
       <Header className='AknSubsection-title'>
         <HeaderPartContainer>
           <TextBoxBlue>
@@ -181,7 +199,7 @@ const RuleProductSelection: React.FC<Props> = ({
       <LegendSrOnly>
         {translate('pimee_catalog_rule.form.legend.product_selection')}
       </LegendSrOnly>
-    </fieldset>
+    </Component>
   );
 };
 

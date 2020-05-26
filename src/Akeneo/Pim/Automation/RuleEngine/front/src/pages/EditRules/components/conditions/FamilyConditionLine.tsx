@@ -44,11 +44,15 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
 }) => {
   const { watch, setValue } = useFormContext();
 
-  useValueInitialization(`content.conditions[${lineNumber}]`, {
-    field: condition.field,
-    operator: condition.operator,
-    value: condition.value,
-  });
+  useValueInitialization(
+    `content.conditions[${lineNumber}]`, {
+      field: condition.field,
+      operator: condition.operator,
+      value: condition.value,
+    },
+    {},
+    [ condition ]
+  );
 
   const getOperatorFormValue: () => Operator = () =>
     watch(`content.conditions[${lineNumber}].operator`);
@@ -71,7 +75,7 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
   };
 
   return (
-    <div>
+    <div className={'AknGrid-bodyCell'}>
       <FieldColumn className={'AknGrid-bodyCell--highlight'}>
         {translate('pimee_catalog_rule.form.edit.fields.family')}
       </FieldColumn>

@@ -26,7 +26,12 @@ const PimConditionLine: React.FC<PimConditionLineProps> = ({
   if (condition.value) {
     values.value = condition.value;
   }
-  useValueInitialization(`content.conditions[${lineNumber}]`, values);
+  useValueInitialization(
+    `content.conditions[${lineNumber}]`,
+    values,
+    {},
+    [condition]
+  );
 
   const isMetric = (value: any): boolean => {
     return (
@@ -72,12 +77,14 @@ const PimConditionLine: React.FC<PimConditionLineProps> = ({
   };
 
   return (
-    <div className='AknRule'>
-      <FallbackField
-        field={condition.field}
-        scope={condition.scope}
-        locale={condition.locale}
-      />
+    <div className='AknGrid-bodyCell AknRule'>
+      <span className='AknRule-attribute'>
+        <FallbackField
+          field={condition.field}
+          scope={condition.scope}
+          locale={condition.locale}
+        />
+      </span>
       {` ${translate(
         `pimee_catalog_rule.form.edit.conditions.operators.${condition.operator}`
       )} `}

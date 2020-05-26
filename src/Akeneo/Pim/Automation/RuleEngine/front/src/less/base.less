@@ -1,5 +1,44 @@
 .AknRuleEngine {
   &-edit {
     overflow: auto;
+
+    .select2-container-multi .select2-choices {
+      padding-right: 4px;
+      padding-bottom: 4px;
+    }
+
+    .select2-container-multi .select2-choices .select2-search-field {
+      height: 34px;
+    }
+
+    .select2-container-multi .select2-choices .select2-search-choice {
+      margin-top: 4px;
+      margin-left: 4px;
+      height: 29px;
+      line-height: 29px;
+    }
+
+    .select2-container-multi .select2-choices .select2-search-choice .select2-search-choice-close,
+    .select2-container.select2-allowclear .select2-choice .select2-search-choice-close {
+      top: 7px;
+    }
+  }
+}
+
+#edit-rules-form {
+  .AknGrid {
+    display: table;
+  }
+
+  .AknGrid-body {
+    display: table-row-group;
+  }
+
+  .AknGrid-bodyRow {
+    display: table-row;
+  }
+
+  .AknGrid-bodyCell {
+    display: table-cell;
   }
 }

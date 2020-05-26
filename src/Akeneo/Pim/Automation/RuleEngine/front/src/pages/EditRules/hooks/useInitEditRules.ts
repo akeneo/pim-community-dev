@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { getRuleDefinitionByCode } from '../../../fetch/RuleDefinitionFetcher';
-import { RuleDefinition } from '../../../models';
 import { Locale } from '../../../models';
 import { Router } from '../../../dependenciesTools';
 import {
@@ -16,13 +15,12 @@ type Error = {
   statusCode: number;
 };
 
-const useInitEditRules = (ruleDefinitionCode: string, router: Router) => {
+const useInitEditRules = (ruleDefinitionCode: string, router: Router, setRuleDefinition: any) => {
   const [error, setError] = useState<Error>({
     exception: null,
     status: false,
     statusCode: 500,
   });
-  const [ruleDefinition, setRuleDefinition] = useState<RuleDefinition>();
   const [locales, setLocales] = useState<Locale[]>();
   const [scopes, setScopes] = useState<IndexedScopes>();
 
@@ -54,7 +52,6 @@ const useInitEditRules = (ruleDefinitionCode: string, router: Router) => {
   return {
     error,
     locales,
-    ruleDefinition,
     scopes,
   };
 };

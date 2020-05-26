@@ -28,6 +28,7 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   setIsDirty: (isDirty: boolean) => void;
+  setRuleDefinition: any;
 };
 
 const EditRulesContent: React.FC<Props> = ({
@@ -36,6 +37,7 @@ const EditRulesContent: React.FC<Props> = ({
   locales,
   scopes,
   setIsDirty,
+  setRuleDefinition,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -56,7 +58,8 @@ const EditRulesContent: React.FC<Props> = ({
     notify,
     router,
     ruleDefinition,
-    locales
+    locales,
+    setRuleDefinition
   );
 
   useEffect(() => {

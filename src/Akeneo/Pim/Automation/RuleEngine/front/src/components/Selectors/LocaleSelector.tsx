@@ -25,6 +25,7 @@ const LocaleSelector: React.FC<Props> = ({
   value,
   onChange,
   translate,
+  children,
 }) => {
   const localeChoices = availableLocales.map((locale: Locale) => {
     return {
@@ -49,18 +50,21 @@ const LocaleSelector: React.FC<Props> = ({
   };
 
   return (
-    <Select2SimpleSyncWrapper
-      id={id}
-      label={label}
-      hiddenLabel={hiddenLabel}
-      data={localeChoices}
-      hideSearch={true}
-      formatResult={formatLocale}
-      formatSelection={formatLocale}
-      placeholder={translate('pim_enrich.entity.locale.uppercase_label')}
-      value={value}
-      onValueChange={value => onChange(value as LocaleCode)}
-    />
+    <>
+      <Select2SimpleSyncWrapper
+        id={id}
+        label={label}
+        hiddenLabel={hiddenLabel}
+        data={localeChoices}
+        hideSearch={true}
+        formatResult={formatLocale}
+        formatSelection={formatLocale}
+        placeholder={translate('pim_enrich.entity.locale.uppercase_label')}
+        value={value}
+        onValueChange={value => onChange(value as LocaleCode)}
+      />
+      {children}
+    </>
   );
 };
 
