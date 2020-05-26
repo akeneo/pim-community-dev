@@ -1,7 +1,17 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Button, SearchBar, NoDataSection, NoDataTitle, AssociationTypeIllustration} from '@akeneo-pim-community/shared';
+import {
+  Button,
+  SearchBar,
+  NoDataSection,
+  NoDataTitle,
+  AssociationTypeIllustration,
+  HelperRibbon,
+  HelperLevel,
+  UnlinkIcon,
+  useAkeneoTheme,
+} from '@akeneo-pim-community/shared';
 import {
   Row,
   filterOnLabelOrIdentifier,
@@ -14,9 +24,14 @@ import {
   removeRowFromCollection,
   QuantifiedAssociation,
   getProductsType,
+  newAndUpdatedQuantifiedAssociationsCount,
+  hasUpdatedQuantifiedAssociations,
+  isQuantifiedAssociationEmpty,
 } from '../models';
 import {QuantifiedAssociationRow} from '../components';
 import {useProducts} from '../hooks';
+
+const MAX_LIMIT = 10;
 
 const HeaderCell = styled.th`
   text-align: left;
@@ -68,22 +83,28 @@ const QuantifiedAssociations = ({
   const [searchValue, setSearchValue] = useState('');
   const products = useProducts(getAssociationIdentifiers(rowCollection));
   const collectionWithProducts = addProductToRows(rowCollection, null === products ? [] : products);
+  const newAndUpdatedCount = newAndUpdatedQuantifiedAssociationsCount(
+    parentQuantifiedAssociations,
+    rowCollectionToQuantifiedAssociation(rowCollection)
+  );
+  const hasUpdatedVariant = hasUpdatedQuantifiedAssociations(
+    parentQuantifiedAssociations,
+    rowCollectionToQuantifiedAssociation(rowCollection)
+  );
 
   const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
 
   useEffect(() => {
-    if (quantifiedAssociations) {
-      setRowCollection(quantifiedAssociationToRowCollection(quantifiedAssociations));
-    } else {
-      setRowCollection([]);
-    }
+    setRowCollection(quantifiedAssociationToRowCollection(quantifiedAssociations));
   }, [associationTypeCode, quantifiedAssociations]);
 
   useEffect(() => {
     const updatedValue = rowCollectionToQuantifiedAssociation(rowCollection);
-    if (JSON.stringify(quantifiedAssociations) !== JSON.stringify(updatedValue)) {
-      onAssociationsChange(updatedValue);
-    }
+
+    // Early return if both current value and updated value are empty to prevent false-positive unsaved changes
+    if (isQuantifiedAssociationEmpty(quantifiedAssociations) && isQuantifiedAssociationEmpty(updatedValue)) return;
+
+    onAssociationsChange(updatedValue);
   }, [JSON.stringify(rowCollection)]);
 
   const handleAdd = useCallback(async () => {
@@ -106,6 +127,19 @@ const QuantifiedAssociations = ({
 
   return (
     <>
+      {MAX_LIMIT <= newAndUpdatedCount && (
+        <HelperRibbon level={HelperLevel.HELPER_LEVEL_INFO}>
+          {translate('pim_enrich.entity.product.module.associations.limit_reached', {maxLimit: MAX_LIMIT.toString()})}
+        </HelperRibbon>
+      )}
+      {hasUpdatedVariant && (
+        <HelperRibbon
+          level={HelperLevel.HELPER_LEVEL_INFO}
+          icon={<UnlinkIcon color={useAkeneoTheme().color.blue100} />}
+        >
+          {translate('pim_enrich.entity.product.module.associations.variant_updated')}
+        </HelperRibbon>
+      )}
       <SearchBar
         placeholder={translate('pim_enrich.entity.product.module.associations.search.placeholder')}
         count={filteredCollectionWithProducts.length || 0}

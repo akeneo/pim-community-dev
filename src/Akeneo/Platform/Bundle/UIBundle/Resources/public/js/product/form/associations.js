@@ -286,12 +286,14 @@ define([
       if (!this.isQuantifiedAssociation(state.associationTypes, associationTypeCode)) return;
       if (this.$('#product-quantified-associations').children().length !== 0) return;
 
-      const quantifiedAssociations = undefined === this.getFormData().quantified_associations[associationTypeCode] ?
-        {products: [], product_models: []} :
-        this.getFormData().quantified_associations[associationTypeCode];
-      const parentQuantifiedAssociations = undefined === this.getFormData().quantified_associations[associationTypeCode] ?
-        {products: [], product_models: []} :
-        this.getFormData().quantified_associations[associationTypeCode];
+      const quantifiedAssociations = this.getFormData().quantified_associations[associationTypeCode] || {
+        products: [],
+        product_models: [],
+      };
+      const parentQuantifiedAssociations = this.getFormData().parent_quantified_associations[associationTypeCode] || {
+        products: [],
+        product_models: [],
+      };
 
       const Component = React.createElement(QuantifiedAssociationsTab, {
         quantifiedAssociations,

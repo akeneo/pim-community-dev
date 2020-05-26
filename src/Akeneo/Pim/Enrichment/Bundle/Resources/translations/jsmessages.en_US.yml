@@ -102,8 +102,10 @@ pim_enrich.entity.product:
             search:
                 placeholder: Search on label or identifier
             no_result: Sorry, there is no result for your search.
-            no_data: There are no associations.
+            no_data: There are no associated products.
             remove: Remove association
+            limit_reached: You cannot add more than {{ maxLimit }} associations to this product.
+            variant_updated: You have updated a quantity on a variant, the quantities will no longer be synchronized.
         attribute_filter:
             display: Display
             all: All attributes

@@ -10,6 +10,9 @@ type QuantifiedAssociation = {
   product_models: QuantifiedLink[];
 };
 
+const isQuantifiedAssociationEmpty = (quantifiedAssociation: QuantifiedAssociation): boolean =>
+  0 === quantifiedAssociation.products.length && 0 === quantifiedAssociation.product_models.length;
+
 const quantifiedAssociationToRowCollection = (collection: QuantifiedAssociation): Row[] => {
   const products = collection.products || [];
   const productModels = collection.product_models || [];
@@ -41,9 +44,54 @@ const rowCollectionToQuantifiedAssociation = (rows: Row[]): QuantifiedAssociatio
   return result;
 };
 
+const newAndUpdatedQuantifiedAssociationsCount = (
+  parentQuantifiedAssociations: QuantifiedAssociation,
+  quantifiedAssociations: QuantifiedAssociation
+): number => {
+  const newAndUpdatedProductQuantifiedLinks = quantifiedAssociations.products.filter(quantifiedLink => {
+    const parentQuantifiedLink = parentQuantifiedAssociations.products.find(
+      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+    );
+
+    return undefined === parentQuantifiedLink || parentQuantifiedLink.quantity !== quantifiedLink.quantity;
+  });
+
+  const newAndUpdatedProductModelQuantifiedLinks = quantifiedAssociations.product_models.filter(quantifiedLink => {
+    const parentQuantifiedLink = parentQuantifiedAssociations.product_models.find(
+      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+    );
+
+    return undefined === parentQuantifiedLink || parentQuantifiedLink.quantity !== quantifiedLink.quantity;
+  });
+
+  return newAndUpdatedProductQuantifiedLinks.length + newAndUpdatedProductModelQuantifiedLinks.length;
+};
+
+const hasUpdatedQuantifiedAssociations = (
+  parentQuantifiedAssociations: QuantifiedAssociation,
+  quantifiedAssociations: QuantifiedAssociation
+): boolean =>
+  quantifiedAssociations.products.some(quantifiedLink => {
+    const parentQuantifiedLink = parentQuantifiedAssociations.products.find(
+      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+    );
+
+    return undefined !== parentQuantifiedLink && parentQuantifiedLink.quantity !== quantifiedLink.quantity;
+  }) ||
+  quantifiedAssociations.product_models.some(quantifiedLink => {
+    const parentQuantifiedLink = parentQuantifiedAssociations.product_models.find(
+      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+    );
+
+    return undefined !== parentQuantifiedLink && parentQuantifiedLink.quantity !== quantifiedLink.quantity;
+  });
+
 export {
   QuantifiedLink,
   QuantifiedAssociation,
   quantifiedAssociationToRowCollection,
   rowCollectionToQuantifiedAssociation,
+  newAndUpdatedQuantifiedAssociationsCount,
+  hasUpdatedQuantifiedAssociations,
+  isQuantifiedAssociationEmpty,
 };
