@@ -58,7 +58,7 @@ services:
     akeneo_connectivity.connection.error_management.service.extract_errors_from_http_exception:
         class: Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\ExtractErrorsFromHttpException
         arguments:
-            - '@fos_rest.serializer'
+            - '@akeneo_connectivity.connection.exception_serializer'
 
     akeneo_connectivity.connection.error_management.service.collect_api_error:
         class: Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\CollectApiError
