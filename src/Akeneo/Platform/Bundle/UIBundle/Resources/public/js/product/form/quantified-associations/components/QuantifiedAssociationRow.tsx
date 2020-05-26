@@ -144,14 +144,12 @@ const QuantifiedAssociationRow = ({row, parentQuantifiedLink, onChange, onRemove
       </td>
       <td>
         <RowActions>
-          {undefined !== parentQuantifiedLink &&
-            parentQuantifiedLink.quantity !== row.quantifiedLink.quantity &&
-            false && (
-              <UnlinkIcon
-                color={blueColor}
-                title={translate('pim_enrich.entity.product.module.associations.quantified.unlinked')}
-              />
-            )}
+          {undefined !== parentQuantifiedLink && parentQuantifiedLink.quantity !== row.quantifiedLink.quantity && (
+            <UnlinkIcon
+              color={blueColor}
+              title={translate('pim_enrich.entity.product.module.associations.quantified.unlinked')}
+            />
+          )}
           <RowAction>
             <a href={`#${productEditUrl}`} target="_blank">
               <EditIcon size={20} />

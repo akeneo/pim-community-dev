@@ -190,8 +190,6 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
 
         $normalizedProductModel['parent_associations'] = $this->parentAssociationsNormalizer
             ->normalize($productModel, $format, $context);
-        $normalizedProductModel['parent_quantified_associations'] = $this->quantifiedAssociationsNormalizer
-            ->normalizeOnlyParentsAssociations($productModel, 'standard', $context);
 
         $normalizedFamilyVariant = $this->normalizer->normalize($productModel->getFamilyVariant(), 'standard');
 
@@ -219,6 +217,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
                 'required_missing_attributes' => $requiredMissingAttributes,
                 'level'                     => $productModel->getVariationLevel(),
                 'quantified_associations_for_this_level' => $this->quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations($productModel, 'standard', $context),
+                'parent_quantified_associations' => $this->quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations($productModel, 'standard', $context),
             ] + $this->getLabels($productModel, $scopeCode) + $this->getAssociationMeta($productModel);
 
         return $normalizedProductModel;

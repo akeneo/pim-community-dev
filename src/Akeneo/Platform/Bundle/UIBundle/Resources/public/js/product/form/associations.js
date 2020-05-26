@@ -290,7 +290,7 @@ define([
         products: [],
         product_models: [],
       };
-      const parentQuantifiedAssociations = this.getFormData().parent_quantified_associations[associationTypeCode] || {
+      const parentQuantifiedAssociations = this.getFormData().meta.parent_quantified_associations[associationTypeCode] || {
         products: [],
         product_models: [],
       };

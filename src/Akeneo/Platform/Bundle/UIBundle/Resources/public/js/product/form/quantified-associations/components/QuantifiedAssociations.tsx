@@ -77,6 +77,7 @@ const QuantifiedAssociations = ({
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
+  const theme = useAkeneoTheme();
   const [rowCollection, setRowCollection] = useState<Row[]>(
     quantifiedAssociationToRowCollection(quantifiedAssociations)
   );
@@ -133,10 +134,7 @@ const QuantifiedAssociations = ({
         </HelperRibbon>
       )}
       {hasUpdatedVariant && (
-        <HelperRibbon
-          level={HelperLevel.HELPER_LEVEL_INFO}
-          icon={<UnlinkIcon color={useAkeneoTheme().color.blue100} />}
-        >
+        <HelperRibbon level={HelperLevel.HELPER_LEVEL_INFO} icon={<UnlinkIcon color={theme.color.blue100} />}>
           {translate('pim_enrich.entity.product.module.associations.variant_updated')}
         </HelperRibbon>
       )}
