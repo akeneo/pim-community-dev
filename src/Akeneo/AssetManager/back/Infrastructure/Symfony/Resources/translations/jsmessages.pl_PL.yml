@@ -1,0 +1,526 @@
+pim_title:
+  akeneo_asset_manager_asset_family_index: Menedżer zasobów
+  akeneo_asset_manager_asset_family_edit: Edytowanie rodziny zasobów
+  akeneo_asset_manager_asset_edit: Edytowanie zasobu
+pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Podejrzany osadzony link
+        message: Przepraszamy, nie wyświetlamy tego osadzonego elementu, ale zostanie on poprawnie zapisany
+  result_counter: '{0} Brak wyników|{1} {{ count }} wynik|[1,Inf] {{ count }} wyników'
+  asset_counter: '{0} Brak zasobów|{1} {{ count }} zasób|[1,Inf] {{ count }} zasobów'
+  asset_collection:
+    add_asset: 'Dodaj zasób'
+    upload_asset: 'Wczytaj zasób'
+    add_asset_title: 'Otwórz selektor zasobów, aby dodać zasoby do kolekcji'
+    no_asset_in_collection: 'Przepraszamy, nie ma żadnych zasobów w tej kolekcji.'
+    helper:
+      title: 'Witaj w nowym obszarze zarządzania zasobami produktów!'
+      text: 'Nie ma kolekcji zasobów dla tej rodziny. Aby wziąć udział w tym nowym doświadczeniu, po prostu dodaj atrybut zasobów w ustawieniach.'
+      link: 'Jak dodać kolekcję zasobów?'
+    no_asset:
+      title: 'Przepraszamy, nie ma żadnych zasobów dla tego produktu.'
+    notification:
+      product_rule: 'Ta kolekcja może być aktualizowana przez regułę produktu:'
+      limit: 'Osiągnąłeś limit {{ limit }} zasobów na kolekcję, nie możesz już dodawać zasobów do kolekcji.'
+    edit_asset: Edytuj zasób
+    remove_asset: Usuwań zasób
+    remove_one_asset: Usuń zasób {{ assetName }} z kolekcji zasobów
+    remove_all_assets: Usuń wszystkie zasoby
+    other_actions: Inne akcje
+    open_other_actions: Otwórz inne akcje
+    dismiss_other_actions: Odrzuć inne akcje
+    move_asset_to_left: Przesuń zasób {{ assetName }} w lewo
+    move_asset_to_right: Przesuń zasób {{ assetName }} w prawo
+    legacy_helper:
+      moved_to_assets_tab: Aby zobaczyć kolekcję zasobów {{ label }}, przejdź do sekcji zasobów produktu.
+      is_missing_required: Kolekcja zasobów {{ label }} jest wymagana. Wzbogacaj ją w sekcji zasobów produktu.
+  asset_picker:
+    title: Dodaj zasoby do swojego produktu
+    sub_title: Wybierz zasoby, które chcesz dołączyć do produktu {{ productLabel }} w kolekcji {{ attributeLabel }}
+    no_result:
+      title: Przepraszamy, brak wyników twojego wyszukiwania zasobów.
+      sub_title: Spróbuj ponownie, podając nowe kryteria wyszukiwania.
+    filter:
+      title: Filtry zasobów
+    basket:
+      title: '{{ assetCount }} wybrany zasób|{{ assetCount }} wybranych/e zasobów/y'
+      empty_title: Twój koszyk jest pusty
+      remove_one_asset: Usuń zasób {{ assetName }} z wyboru zasobów
+      remove_all_assets: Usuń wszystkie
+  asset_preview:
+    previous: Poprzedni zasób
+    next: Następny zasób
+    empty_main_media: Ten zasób nie ma mediów.
+    other_main_media: Nie możemy wygenerować podglądu tego zasobu.
+    edit_asset: Edytuj zasób
+    download: Pobierz
+    copy_url: Kopiuj adres URL
+    error: Wystąpił błąd podczas renderowania podglądu
+  close: Zamknij modal
+  breadcrumb:
+    products: Produkty
+  app:
+    image:
+      wide:
+        remove: Usuń plik
+        download: Pobierz plik
+        upload: Przeciągnij i upuść, aby przesłać lub kliknij tutaj
+      small:
+        remove: Usuń
+        download: Pobierz
+        upload: Przeciągnij i upuść aby przesłać
+  grid:
+    counter: '{{ resultCount }} wyniki/ów'
+    counter_empty: '0 wyników'
+  asset_family:
+    column:
+      title: Nawigacja zasobów
+      selector:
+        title: Rodzina zasobów
+        no_data: Brak dostępnych rodzin zasobów
+    validation:
+      code:
+        pattern: 'To pole może zawierać tylko litery, cyfry i podkreślenia.'
+        should_be_unique: 'Rodzina zasobów już istnieje z kodem "{{ %asset_family_identifier%}}"'
+        limit_reached: 'Nie możesz utworzyć rodziny zasobów "{{ %asset_family_label% }}", ponieważ osiągnąłeś limit {{ %limit% }} rodzin zasobów'
+      transformation:
+        limit_reached: 'Osiągnąłeś limit transformacji {{ %limit%}}'
+        same_operation_twice: 'Operacja "{{ %operation_type% }}" nie może być zdefiniowana dwukrotnie w pojedynczej transformacji'
+        source_can_not_be_a_target: 'Atrybut źródłowy "{{ %attribute_code% }}" nie może być atrybutem docelowym transformacji.'
+        attribute_reference_should_exist: 'Atrybut "%attribute_code%" nie istnieje dla tej rodziny zasobów'
+        filename_is_not_unique: 'Transformacja z prefiksem "{{ %filename_prefix% }}" i sufiksem "{{ %filename_suffix% }}" już istnieje dla atrybutu źródłowego "{{ %attribute_code%}}"'
+        code_is_not_unique: 'Nie można zdefiniować dwóch transformacji z tym samym kodem "{{ %transformation_code%}}"'
+        unknown_extra_field: 'Właściwość {{ {{ field }} }} nie była oczekiwana.'
+      naming_convention:
+        property_should_exist: 'Właściwość "{{ %property% }}" nie istnieje dla tej rodziny zasobów'
+        not_main_media_attribute_code: 'Właściwość musi odpowiadać kodowi atrybutu zdefiniowanego jako media główne'
+      rule_template:
+        limit_reached: 'Osiągnąłeś limit {{ %limit% }} reguł linkowania produktów dla rodziny zasobów "{{ %asset_family_identifier% }}".'
+        product_selection_cannot_be_empty: 'Musisz podać co najmniej jeden wybór produktu w regule linkowania produktu'
+        product_assignment_cannot_be_empty: 'Musisz określić co najmniej jedno przypisanie produktu w regule linku do produktu'
+        extrapolated_attribute_should_exist: 'Atrybut "%attribute_code%" nie istnieje dla tej rodziny zasobów'
+        extrapolated_attribute_type_should_be_supported: 'Atrybut "{{ %attribute_code% }}" typu "{{ %attribute_type% }}" nie jest obsługiwany, tylko następujące typy atrybutów są obsługiwane dla tego pola: {{ %supported_attribute_type%}}'
+        channel_should_exist: 'Kanał "{{ %channel_code% }}" nie istnieje'
+        locale_should_exist: 'Lokalizacja "{{ %locale_code% }}" nie jest aktywowana lub nie istnieje'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: 'Atrybut "{{ %attribute_code% }}" nie może być użyty do ekstrapolacji, ponieważ ma jedną wartość na kanał'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: 'Atrybut "{{ %attribute_code% }}" nie może być użyty do ekstrapolacji, ponieważ ma jedną wartość na lokalizację'
+        assignment_mode_not_supported: 'Nieprawidłowy tryb przypisania "{{ %assignment_mode% }}" znaleziony w regule linku produktu; powinna być "zastąp" lub "dodaj"'
+        channel_not_supported_for_field: 'Nie można określić kanału dla pola "{{ %product_field%}}"'
+        locale_not_supported_for_field: 'Nie można określić lokalizacji dla pola "{{ %product_field%}}"'
+        assignmement_attribute_does_not_support_this_asset_family: 'Atrybut produktu "{{ %product_attribute_code% }}" nie może zawierać zasobów rodziny zasobów "{{ %asset_family_identifier%}}"'
+        assignmement_attribute_does_not_exist: 'atrybut produktu "{{ %product_attribute_code% }}" nie istnieje'
+        assignmement_attribute_is_not_an_asset_collection: 'atrybut produktu "{{ %product_attribute_code% }}" nie jest atrybutem typu kolekcja zasobów'
+    button:
+      save: Zapisz
+      save_permission: Zapisz
+      create: Utwórz rodzinę zasobów
+      edit: Edytuj rodzinę
+      view: Zobacz rodzinę
+      execute_product_link_rules: Wykonaj reguły
+    permission:
+      title: Uprawnienia rodziny zasobów
+    title: Zasoby
+    breadcrumb: Rodziny zasobów
+    img: Główne media rodziny zasobów o nazwie "{{ label }}"
+    tab:
+      assets: Zasoby
+      attribute: Atrybuty
+      properties: Właściwości
+      permission: Uprawnienia
+      transformations: Transformacje
+      product_link_rules: Reguły linkowania produktu
+    transformations:
+      help:
+        title: 'Witaj w nowym obszarze zarządzania zasobami!'
+        description: 'Tutaj możesz zdefiniować do 10 transformacji w rodzinie zasobów.'
+        link: 'Jeśli chcesz dowiedzieć się więcej o nowych transformacjach Menedżera Zasobów, kliknij tutaj'
+      subsection: 'Właściwości transformacji'
+    product_link_rules:
+      naming_convention_subsection: 'Właściwości konwencji nazewnictwa'
+      product_link_rules_subsection: 'Właściwości reguł linkowania produktu'
+      help:
+        title: 'Witaj w nowym obszarze zarządzania zasobami!'
+        description: 'Tu możesz określić do dwóch reguł linkowania produktów na rodzinę zasobów.'
+        link: 'Jeśli chcesz dowiedzieć się więcej o regułach linkowania produktów, kliknij tutaj'
+      execute_rules:
+        confirm_title: Potwierdź wykonanie
+        confirm_content: Czy na pewno chcesz wykonać wszystkie reguły? (może to zająć dużo czasu)
+        execute_rules: Wykonaj reguły
+        cancel: Anuluj
+    properties:
+      title: Właściwości rodziny zasobów
+      identifier: Kod
+      label: Etykieta
+      media_file: Pliki mediów
+      attribute_as_main_media: Atrybut jako główne medium
+    attribute:
+      title: Atrybuty zasobów
+      attribute:
+        error:
+          render_list: 'Wystąpił błąd podczas renderowania atrybutu "{{ %attribute_code%}}"'
+          render_edit: 'Wystąpił błąd podczas renderowania dodatkowych pól właściwości atrybutu "{{ %attribute_code%}}"'
+    module:
+      delete:
+        button: Usuń rodzinę zasobów
+        confirm: Czy na pewno chcesz usunąć tę rodzinę zasobów?
+    index:
+      grid:
+        count: '{0} Brak Rodziny Zasobów|{1} {{ count }} Rodzina Zasobów|]1,Inf] {{ count }} Rodzin/y Zasobów'
+        help:
+          title: 'Witaj w Rodzinach Zasobów!'
+          description_part_one: Wzbogacaj istotne informacje dotyczące produktów (np. marki, producentów, kolory, materiały, składniki...).
+          description_part_two: Pozwoli to Tobie na zapewnienie klientom lepszych doświadczeń produktowych.
+          description_part_three: Kliknij przycisk "Utwórz", aby utworzyć swoją pierwszą rodzinę zasobów, ustaw jej atrybuty i zasoby.
+          description_part_four: Następnie, aby połączyć z produktami, utwórz typ atrybutu produktu powiązany z tą rodziną zasobów.
+          description_part_five: Aby uzyskać więcej informacji, zapraszamy do przejrzenia tego artykułu.
+    create:
+      header:
+        title: Utwórz
+      subtitle: Rodziny zasobów
+      title: Utwórz nową rodzinę zasobów
+      input:
+        label: Etykieta
+        code: Kod (wymagany)
+      confirm: Zapisz
+    delete:
+      message: Czy na pewno chcesz usunąć rodzinę zasobów"{{ assetFamilyLabel }}"?
+      title: Atrybut
+    edit:
+      discard_changes: Stracisz zmiany w rodzinie zasobów "{{ assetFamilyLabel }}" jeśli opuścisz stronę.
+    notification:
+      save:
+        success: Rodzina zasobów pomyślnie zaktualizowana.
+        fail: Wystąpił błąd podczas zapisywania rodziny zasobów
+      create:
+        success: Rodzina zasobów pomyślnie utworzona.
+        fail: Wystąpił błąd podczas tworzenia rodziny zasobów
+      delete:
+        success: Rodzina zasobów pomyślnie usunięta.
+        fail: Wystąpił błąd podczas usuwania rodziny zasobów
+      compute_transformations:
+        success: Transformacje zostały uruchomione. Po zakończeniu tego zadania zobaczysz nowe zmiany zaktualizowane w zasobach.
+        fail: Wystąpił błąd podczas próby przeliczenia transformacji
+      execute_product_link_rules:
+        success: Reguły linkowania do produktu zostały uruchomione
+        fail: Wystąpił błąd podczas próby uruchomienia reguł linkowania produktu
+    helper:
+      title: Witaj w Menedżerze Zasobów!
+      no_asset:
+        text: W rodzinie {{ family }} nie ma zasobów. Kliknij na "Utwórz" i wybierz czy chcesz utworzyć pusty zasób czy masowo przesłać zasoby.
+      no_asset_family:
+        text: Biblioteka która zbiera Twoje zasoby (zdjęcia, filmy, dokumenty...), filtrowana przez rodziny zasobów. Utwórz swoją pierwszą rodzinę zasobów, ustaw jej atrybuty i wgraj zasoby!
+        link: Aby uzyskać więcej informacji, zapraszamy do przejrzenia tego artykułu.
+    no_data:
+      no_asset:
+        title: Przepraszamy, nie ma żadnego zasobu!
+        link: Kliknij tutaj, aby dodać zasób
+      no_asset_family:
+        title: Przepraszamy, nie ma żadnej rodziny zasobów!
+        link: Kliknij tutaj, aby dodać rodzinę zasobów
+  permission:
+    notification:
+      save:
+        success: Uprawnienia rodziny zasobów pomyślnie zaktualizowane.
+        fail: Co najmniej jedna grupa użytkowników powinna mieć uprawnienia do edycji tej rodziny zasobów
+    no_data:
+      title: Nie masz żadnej grupy użytkowników
+      subtitle: Aby zarządzać uprawnieniami w rodzinie zasobów musisz mieć co najmniej jedną grupę użytkowników.
+      link: Kliknij tutaj, aby dodać swoją pierwszą grupę użytkowników
+  asset:
+    img: Główne media zasobu o nazwie "{{ label }}"
+    created_at: Utworzono
+    updated_at: Zaktualizowano
+    validation:
+      limit_reached: 'Nie możesz utworzyć zasobu "{{ %attribute_label% }}", ponieważ osiągnąłeś limit zasobów {{ %limit% }} dla tej rodziny zasobów'
+      code:
+        pattern: 'To pole może zawierać tylko litery, cyfry i podkreślenia.'
+        should_be_unique: 'Ten kod już istnieje dla innego zasobu.'
+    no_data:
+      title: Brak zasobów dla {{ entityLabel }}
+      subtitle: Kliknij przycisk "Dodaj nowe", aby utworzyć pierwszy zasób
+    no_result:
+      title: Przepraszamy, brak wyników twojego wyszukiwania.
+      subtitle: Spróbuj ponownie, podając nowe kryteria wyszukiwania.
+    selector:
+      no_value: Kliknij tutaj, aby wybrać zasób.
+      error:
+        value: Ups, wydaje się, że wyświetlanie pola "{{ fieldName }}" nie powiodło się. Zobacz konsolę deweloperską, aby uzyskać więcej informacji.
+    button:
+      save: Zapisz
+      create: Utwórz zasób
+      mass_upload: Masowe przesyłanie
+      delete: Usuń
+      delete_all: Usuń wszystkie zasoby
+      back: Powrót do listy
+      launch_transformations: Uruchom transformacje
+      fullscreen: Pełny ekran
+    product:
+      attribute: Atrybut produktu
+      counter: '{{ count }} wynik|{{ count }} wyników'
+      dropdown:
+        attribute: Atrybut produktu
+      title: Produkty
+      no_attribute:
+        title: Nie ma atrybutu produktu powiązanego z rodziną zasobów "{{ entityLabel }}"
+        subtitle: 'Aby rozpocząć powiązanie produktów z tą rodziną zasobów, możesz utworzyć nowy: '
+        link: Utwórz nowy atrybut produktu
+      not_enough_items:
+        title: Do diaska! Możesz zobaczyć tylko {{ productCount }}/{{ totalCount }} produktów.
+        subtitle:
+          usable_in_grid: Aby odkryć wszystkie powiązane produkty, kliknij poniżej!
+          not_usable_in_grid: Aby odkryć wszystkie powiązane produkty, atrybut produktu musi być ustawiony jako „używalny w tabeli”.
+        button: Zobacz wszystkie produkty
+      no_product:
+        title: Ten zasób nie jest powiązany z żadnym produktem przez "{{ entityLabel }}" atrybut produktu
+        subtitle: 'Zacznij łączyć produkty z tym atrybutem, aby zobaczyć je tutaj'
+    no_linked_products: Ten zasób nie jest powiązany z produktami
+    enrich:
+      title: Atrybuty zasobów
+      code: Kod
+      label: Etykieta
+      edit_subsection: Edytuj zasób
+      product_subsection: Powiązane produkty
+      main_media_preview: Podgląd głównych mediów
+    title: Zasoby
+    create:
+      header:
+        title: Utwórz
+      subtitle: Rodziny zasobów
+      title: Dodaj nowy zasób w {{ entityLabel }}
+      input:
+        label: Etykieta
+        code: Kod (wymagany)
+        create_another: Utwórz kolejny zasób
+      confirm: Zapisz
+    upload:
+      line_count: '[0,1]{{ count }} plik|]1,Inf] {{ count }} plików'
+      title: Wczytaj zasoby
+      lines: Pliki
+      retry: Spróbuj ponownie
+      remove: Usuń
+      remove_all: Usuń wszystkie
+      confirm: Utwórz
+      add_to_product: Dodaj do produktu
+      drop_or_click_here: Przeciągnij i upuść plik lub kliknij tutaj
+      will_appear_here: Prześlij zasoby i pojawią się tutaj!
+      files_limit: Próbujesz przesłać zbyt wiele plików, tylko pierwsze {{ limit }} zostanie przesłane.
+      discard_changes: Stracisz swoje zasoby, jeśli zamkniesz ten modal bez ich utworzenia.
+      disabled_for_media_link: Nie możesz przesłać zasobów do tej rodziny, ponieważ atrybut używany jako główne media jest atrybutem typu link do mediów
+      upload_failure: Wystąpił błąd podczas przesyłania pliku.
+      cannot_retry: Wystąpił błąd podczas próby przesłania pliku.
+      list:
+        asset: Zasób
+        filename: Nazwa pliku
+        code: Kod (wymagany)
+        locale: Język (wymagany)
+        channel: Kanał (wymagany)
+        status: Status
+      status:
+        waiting_for_upload: nie przesłano
+        upload_in_progress: w toku
+        uploaded: przesłano
+        valid: gotowe do utworzenia
+        invalid: błąd
+        created: utworzono
+    delete:
+      message: Czy na pewno chcesz usunąć zasób "{{ assetLabel }}"? Jeśli jest on powiązany z produktami, linki zostaną usunięte.
+      title: Zasób
+    delete_all:
+      confirm: Czy na pewno chcesz usunąć wszystkie zasoby "{{ entityIdentifier }}"? Jeśli są powiązane z produktami, linki do produktów zostaną usunięte.
+    grid:
+      search: Szukaj na etykiecie, kodzie i tekstach atrybutów
+      filter:
+        completeness:
+          label: Zakończone
+          all: Wszystkie
+          'yes': 'Tak'
+          'no': 'Nie'
+        option:
+          all: Wszystkie
+          no_value: Wybierz opcję do filtrowania
+          operator:
+            in: Na liście
+      more_result:
+        title: To nie tak!
+        description: Właśnie przejrzałeś pierwsze {{ maxDisplayedAssets }} wyników z {{ total }} zasobów. Aby zobaczyć więcej, użyj bardziej szczegółowych kryteriów wyszukiwania.
+      column:
+        code: Kod
+        image: Obrazek
+        label: Etykieta
+        complete: Zakończone
+        action: Działania
+      completeness:
+        title_no_required: Nie jest wymagany atrybut
+        title_non_complete: Ukończono 0  {{ required }} atrybutów
+        title_ongoing: 'Ukończono {{ complete }} z {{ required }} atrybutów'
+        title_complete: Wszystkie atrybuty {{ required }} zakończone
+    tab:
+      enrich: Wzbogacaj
+      product: Produkty
+    notification:
+      save:
+        success: Zasób pomyślnie zaktualizowany.
+        fail: Wystąpił błąd podczas zapisywania zasobu
+        validation_error: Nie można zaktualizować zasobu
+      create:
+        success: Zasób pomyślnie utworzony.
+        fail: Wystąpił błąd podczas tworzenia zasobu
+      delete:
+        success: Zasób "{{ code }}" został usunięty.
+        fail: Wystąpił błąd podczas usuwania zasobu
+      delete_all:
+        success: Usunięto wszystkie zasoby "{{ entityIdentifier }}".
+        fail: Wystąpił błąd podczas usuwania wszystkich zasobów tej rodziny
+    completeness:
+      label: Zakończone
+  attribute:
+    validation:
+      limit_reached: 'Nie możesz utworzyć atrybutu "{{ %attribute_label% }}", ponieważ osiągnąłeś limit atrybutów {{ %limit% }} dla tej rodziny zasobów'
+    default:
+      code: Kod
+      label: Etykieta
+      media_file: Plik multimedialny
+    type:
+      text: Tekst
+      media_file: Plik multimedialny
+      asset: Pojedynczy link do zasobu
+      asset_collection: Kolekcja zasobów
+      option: Pojedyncza opcja
+      option_collection: Wiele opcji
+      number: Liczba
+      media_link: Link do mediów
+    is_required: wymagane do kompletności
+    is_read_only: Tylko do odczytu w interfejsie użytkownika
+    media_type_preview: Podgląd typu mediów
+    no_data:
+      title: Brak niestandardowych atrybutów dla {{ entityLabel }}
+      subtitle: Kliknij przycisk "Dodaj atrybut", aby skonfigurować swój pierwszy atrybut niestandardowy
+    button:
+      add: Dodaj atrybut
+    create:
+      header:
+        title: Utwórz
+      subtitle: Rodziny zasobów
+      title: Dodaj nowy atrybut zasobów
+      description: Następujące parametry, z wyjątkiem etykiety, nie mogą być aktualizowane po utworzeniu atrybutu
+      input:
+        code: Kod (wymagany)
+        label: Etykieta
+        type: Typ atrybutu
+        asset_type: Rodzina zasobów do połączenia (wymagana)
+        value_per_locale: Wartość dla lokalizacji
+        value_per_channel: Wartość dla kanału
+      placeholder:
+        asset_type: Wybierz powiązaną rodzinę zasobów
+      confirm: Zapisz
+    edit:
+      delete: Usuń atrybut
+      title: Edytuj atrybut {{ code }}
+      save: Zapisz
+      cancel: Anuluj
+      input:
+        code: Kod (wymagany)
+        label: Etykieta
+        type: Typ atrybutu
+        asset_type: Powiązana rodzina zasobów (wymagana)
+        value_per_locale: Wartość dla wersji językowej
+        value_per_channel: Wartość dla kanału
+        is_required: wymagane do kompletności
+        is_read_only: Tylko do odczytu w interfejsie użytkownika
+        max_length: Maksymalna liczba znaków
+        textarea: Pole tekstowe
+        is_rich_text_editor: Edytor tekstu
+        max_file_size: Maksymalny rozmiar pliku (MB)
+        allowed_extensions: Dozwolone rozszerzenia
+        validation_rule: Reguły walidacji
+        regular_expression: Wyrażenie regularne
+        min_value: Wartość minimalna
+        max_value: Wartość maksymalna
+        manage_options:
+          confirmation:
+            discard_changes: Utracisz zmiany w liście opcji, jeśli opuścisz stronę
+          quick_edit:
+            label: Zarządzaj opcjami
+          option:
+            label:
+              placeholder: Napisz tutaj nową etykietę opcji
+        options:
+          validation_rule:
+            none: Żaden
+            email: E-mail
+            regular_expression: Wyrażenie regularne
+            url: URL
+        decimals_allowed: Dozwolone wartości dziesiętne
+        prefix: Prefix
+        suffix: Sufiks
+        media_type: Typ mediów
+    delete:
+      message: Czy na pewno chcesz usunąć atrybut "{{ attributeLabel }}"?
+      title: Atrybut
+    notification:
+      list:
+        fail: Wystąpił błąd podczas aktualizacji listy atrybutów
+      save:
+        success: Atrybut pomyślnie zaktualizowany.
+        fail: Wystąpił błąd podczas zapisywania atrybutu
+        validation_error: Nie można zaktualizować atrybutu.
+      create:
+        success: Atrybut pomyślnie utworzony.
+        fail: Wystąpił błąd podczas tworzenia atrybutu
+        validation_error: Nie można utworzyć atrybutu.
+      delete:
+        success: Atrybut pomyślnie usunięty.
+        fail: Wystąpił błąd podczas usuwania atrybutu
+    options:
+      no_value: Kliknij tutaj, aby wybrać opcję.
+      sub_title: Rodziny zasobów
+      helper:
+        title: Tłumaczenia etykiety
+    media_link:
+      placeholder: Umieść link do mediów tutaj
+      read_only: Ten link do mediów jest tylko do odczytu
+      reload: Przeładuj miniaturkę łącza multimediów
+    media_file:
+      placeholder: Przeciągnij i upuść, aby przesłać lub kliknij tutaj
+      read_only: Ten link do mediów jest tylko do odczytu
+      uploading: Wysyłanie...
+    used_as_transformation_target: To pole jest tylko do odczytu, ponieważ jest używane jako cel w transformacji zasobów.
+  modal:
+    delete:
+      subtitle: Potwierdź usunięcie
+      button:
+        cancel: Anuluj
+        confirm: Usuń
+pim_enrich:
+  confirmation:
+    discard_changes: 'Utracisz wszystkie zmiany w obiekcie "{{ entity }}", jeśli opuścisz tę stronę.'
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_asset_collection: Kolekcja zasobów
+        section:
+          type_specific: Parametry specyficzne
+        asset_family:
+          identifier: Powiązana rodzina zasobów (wymagana)
+          default_label: Proszę wybrać rodzinę zasobów
+permission:
+  mass_action: Zastosuj {{ rightLevel }} do wszystkich grup
+#Analytics
+pim_catalog_volume:
+  section:
+    asset_family:
+      title: Osie rodzin aktywów
+      hint: Jeśli używasz wariantowania zasobów skorzystaj z tych osi by monitorować objętość katalogu.
+  axis:
+    count_asset_family: Rodziny zasobów
+    average_max_assets_per_asset_family: Zasoby na rodzinę zasobów
+    average_max_attributes_per_asset_family: Atrybuty na rodzinę zasobów
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "Wykonaj transformację zasobów"
+        asset_manager_link_assets_to_products: "Połącz zasoby z produktami"
