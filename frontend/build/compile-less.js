@@ -52,7 +52,7 @@ function collectBundleImports(bundlePaths) {
     */
     const indexFiles = bundlePaths.map(bundlePath => {
         return `${bundlePath}/${BUNDLE_LESS_INDEX_PATH}`
-                .replace(/^(.+?(?=\/vendor\/)|.+(?=\/src\/))\//gm, '');
+                .replace(/^(.+?(?=vendor\/)|.+(?=src\/))\//gm, '');
     })
 
     const bundleImports = []
@@ -71,7 +71,7 @@ function collectOverrideImports(bundlePaths) {
     const overrideFiles = [];
 
     bundlePaths.forEach((bundlePath) => {
-        const resolvedPath = bundlePath.replace(/(^.+)[^vendor](?=\/src|\/vendor)\//gm, '')
+        const resolvedPath = bundlePath.replace(/^(.+?(?=vendor\/)|.+(?=src\/))\//gm, '')
         const overrides = glob.sync(`${resolvedPath}/**/overrides-**.less`)
         overrides.forEach(override => overrideFiles.push(override));
     });

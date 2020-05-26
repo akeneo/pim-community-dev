@@ -27,7 +27,7 @@ const EXTENSION_DEFAULTS = {
  * @param {string} path
  */
 function getRelativeBundlePath(path) {
-    return path.replace(/^(.+?(?=\/vendor\/)|.+(?=\/src\/))\//gm, '')
+    return path.replace(/^(.+?(?=vendor\/)|.+(?=src\/))\//gm, '')
 }
 
 /**
