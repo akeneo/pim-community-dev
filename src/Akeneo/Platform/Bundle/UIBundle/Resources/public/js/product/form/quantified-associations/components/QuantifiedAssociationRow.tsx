@@ -155,9 +155,11 @@ const QuantifiedAssociationRow = ({row, parentQuantifiedLink, onChange, onRemove
               <EditIcon size={20} />
             </a>
           </RowAction>
-          <RowAction onClick={() => onRemove(row)}>
-            <CloseIcon title={translate('pim_enrich.entity.product.module.associations.remove')} size={20} />
-          </RowAction>
+          {undefined === parentQuantifiedLink && (
+            <RowAction onClick={() => onRemove(row)}>
+              <CloseIcon title={translate('pim_enrich.entity.product.module.associations.remove')} size={20} />
+            </RowAction>
+          )}
         </RowActions>
       </td>
     </Container>
