@@ -5,7 +5,10 @@ import {Router} from 'react-router-dom';
 import {fetchMockResponseOnce, renderWithProviders} from '../../../test-utils';
 
 test('renders the connection monitoring page', async () => {
-    fetchMockResponseOnce('akeneo_connectivity_connection_rest_get?code=erp', JSON.stringify({label: 'ERP'}));
+    fetchMockResponseOnce(
+        'akeneo_connectivity_connection_rest_get?code=erp',
+        JSON.stringify({label: 'ERP', flow_type: 'data_source', auditable: true})
+    );
     fetchMockResponseOnce(
         'akeneo_connectivity_connection_error_management_rest_get_connection_business_errors?connection_code=erp',
         JSON.stringify([
@@ -42,7 +45,10 @@ test('renders the connection monitoring page', async () => {
 });
 
 test('renders the connection monitoring page with no error', async () => {
-    fetchMockResponseOnce('akeneo_connectivity_connection_rest_get?code=erp', JSON.stringify({label: 'ERP'}));
+    fetchMockResponseOnce(
+        'akeneo_connectivity_connection_rest_get?code=erp',
+        JSON.stringify({label: 'ERP', flow_type: 'data_source', auditable: true})
+    );
     fetchMockResponseOnce(
         'akeneo_connectivity_connection_error_management_rest_get_connection_business_errors?connection_code=erp',
         JSON.stringify([])

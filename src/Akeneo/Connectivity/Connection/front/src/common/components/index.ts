@@ -1,3 +1,5 @@
+import * as EmptyState from '../../common/components/EmptyState';
+import * as Typography from '../../common/components/Typography';
 import {Breadcrumb} from './breadcrumb/Breadcrumb';
 import {BreadcrumbItem} from './breadcrumb/BreadcrumbItem';
 import {ApplyButton} from './button/ApplyButton';
@@ -58,4 +60,6 @@ export {
     TableHeaderCell,
     TableHeaderRow,
     TableRow,
+    EmptyState,
+    Typography,
 };

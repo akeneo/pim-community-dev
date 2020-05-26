@@ -2,8 +2,8 @@ import React from 'react';
 import {Section} from '../../../common';
 import styled from '../../../common/styled-with-theme';
 import {Translate} from '../../../shared/translate';
-import {useBusinessErrorCountPerConnection} from '../../api-hooks/use-business-error-count-per-connection';
 import {useDashboardState} from '../../dashboard-context';
+import {useBusinessErrorCountPerConnection} from '../../hooks/api/use-business-error-count-per-connection';
 import {BusinessErrorCard} from './BusinessErrorCard';
 
 const Grid = styled.div`

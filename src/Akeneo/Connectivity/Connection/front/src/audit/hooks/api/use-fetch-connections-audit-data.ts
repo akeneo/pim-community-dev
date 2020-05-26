@@ -1,11 +1,11 @@
 import {useEffect} from 'react';
-import {AuditEventType} from '../../model/audit-event-type.enum';
-import {fetchResult} from '../../shared/fetch-result';
-import {isOk} from '../../shared/fetch-result/result';
-import {useRoute} from '../../shared/router';
-import {connectionsAuditDataFetched} from '../actions/dashboard-actions';
-import {useDashboardDispatch, useDashboardState} from '../dashboard-context';
-import {ConnectionsAuditData} from '../model/connections-audit-data';
+import {AuditEventType} from '../../../model/audit-event-type.enum';
+import {fetchResult} from '../../../shared/fetch-result';
+import {isOk} from '../../../shared/fetch-result/result';
+import {useRoute} from '../../../shared/router';
+import {connectionsAuditDataFetched} from '../../actions/dashboard-actions';
+import {useDashboardDispatch, useDashboardState} from '../../dashboard-context';
+import {ConnectionsAuditData} from '../../model/connections-audit-data';
 
 type ResultValue = ConnectionsAuditData;
 

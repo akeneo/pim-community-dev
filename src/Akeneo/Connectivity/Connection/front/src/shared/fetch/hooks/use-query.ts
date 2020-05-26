@@ -4,7 +4,7 @@ import {BadRequestError} from '../errors/bad-request-error';
 import {NotFoundError} from '../errors/not-found-error';
 import {UnauthorizedError} from '../errors/unauthorized-error';
 
-const useQuery = <T, E = unknown>(route: string, params: {[param: string]: string}) => {
+const useQuery = <T, E = unknown>(route: string, params?: {[param: string]: string}) => {
     const url = useRoute(route, params);
 
     const [{loading, error, data}, setState] = useState<{
