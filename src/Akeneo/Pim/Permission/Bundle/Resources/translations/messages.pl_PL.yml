@@ -3,3 +3,98 @@ pimee_enrich.acl.category.edit_permissions: Zarządzać uprawnieniami w kategori
 pimee_enrich.acl.attribute_group.edit_permissions: Zarządzaj dostępem do grup atrybutów
 pimee_importexport.acl.export_profile.edit_permissions: Zarządzaj uprawnieniami profili eksportu
 pimee_importexport.acl.import_profile.edit_permissions: Zarządzaj uprawnieniami profili importu
+pimee_enrich.groups.label: Właściciel grup
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Edytuj atrybuty
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Dodaj wartość produktu z uprawnieniami
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Zaktualizuj wartość produktu z uprawnieniami
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Usuń wartość produktu z uprawnieniami
+edit_common_attributes_with_permission: Edytuj atrybuty z uprawnieniami
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Edytuj atrybuty z uprawnieniami
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Liczba niestandardowych dostępów do ustawień katalogów
+    nb_custom_category_accesses: Liczba niestandardowych dostępów do ustawień katalogów
+    nb_custom_attribute_group_accesses: Liczba niestandardowych dostępów do ustawień katalogów
+job_profile.permissions:
+  execute.label: Możliwość wykonywania zadań
+  edit.label: Możliwość edycji profilu zadania
+pim_title.locale:
+  edit: "%locale.code% ustawienia regionalne | Edycja"
+attribute group.permissions:
+  view.label: Możliwość wyświetlenia atrybutów
+  view.help: Pozwól na zobaczenie produktu w tej grupie atrybutów
+  edit.label: Możliwość edycji atrybutów
+  edit.help: Pozwól na edycję tego produktu w tej grupie atrybutów
+  no_access_to_attributes: Nie masz dostępu do żadnego atrybutu tego produktu. Skontaktuj się z administratorem.
+category.permissions:
+  view.label: Możliwości wyświetlania produktu
+  view.help: Zezwól na przeglądanie produktów w kategorii
+  edit.label: Możliwość edycji produktów
+  edit.help: Pozwala na edycję produktów w tej kategorii (pociąga za sobą uprawnienie Wyświetl)
+  own.label: Może zawierać produkty
+  own.help: Możliwość przeglądu, publikowania, cofnięcia publikacji, klasyfikowania, powiązywania produktów w tej kategorii (implikuje możliwość edycji)
+  no_access_to_products: Nie masz dostępu do produktów w drzewie. Skontaktuj się z administratorem
+  apply_on_children.label: Zastosuj zmiany dla dzieci
+  apply_on_children.help: Skopiuj zmiany uprawnienia na wszystkie dzieci, zachowane są istniejące uprawnienia dla dzieci
+locale.permissions:
+  view.label: Zezwolono na przeglądanie informacji
+  view.help: Zezwól na wyświetlanie informacji w tej lokalizacji
+  edit.label: Zezwolono na edycję informacji
+  edit.help: Pozwól na edycję informacji w tej lokalizacji (implikuje uprawnienia do przeglądania)
+  no_access_to_products: Nie masz dostęp do produktów z żadnych aktywnych katalogów, skontaktuj się z administratorem
+flash.locale.updated: Katalogi i uprawnienia zostały zaktualizowane
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Nie posiadasz uprawnień aby edytować produkt "%identifiers%".
+      page_title: Produkty
+      page_subtitle: Edycja zbiorcza (1 produkt) | Edycja zbiorcza (%count% produktów)
+      title: Wybierz działanie
+      subtitle: Wybierz działanie, które chcesz wykonać na wybranym produkcie | Wybierz działanie, którą chcesz wykonać na %count% wybranych produktach
+      confirm: Zamierzasz zaktualizować produkt o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% produkty(ów) o następujące informacje, proszę potwierdź.
+      steps:
+        first: Wybierz produkty
+        second: Wybierz działanie
+        third: Konfiguruj
+        fourth: Potwierdź
+    publish:
+      message:
+        error: Nie jesteś właścicielem produktu, nie możesz go opublikować.
+        warning: Nie jesteś właścicielem wszystkich wybranych produktów. Nie można opublikować produktów " %notGranted%".
+      not_editable: Nie posiadasz uprawnień aby edytować produkt "%identifiers%".
+    unpublish:
+      message:
+        error: Nie jesteś właścicielem produktu, nie możesz go opublikować.
+        warning: Nie jesteś właścicielem wszystkich wybranych produktów. Nie można cofnąć publikacji produktów " %notGranted%".
+        info: '%nbProducts% wybranym produktom zostanie cofnięta publikacja.'
+      not_editable: Nie posiadasz uprawnień aby edytować produkt "%identifiers%".
+    classify:
+      message:
+        error: Nie jesteś właścicielem produktu, nie możesz go edytować.
+        warning: Nie jesteś właścicielem wszystkich wybranych produktów. Nie można opublikować produktów '%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Nie jesteś właścicielem produktu, nie możesz go edytować.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Uprawnienia
+  acl.product_ownership.title: Własność
+  attributes:
+    empty: żaden
+  category:
+    tab:
+      permission:
+        title: Uprawnienia
+  groups:
+    label: właściciel grupy
+    empty: żaden
+add_product_value_with_permission_and_rules:
+  steps.perform: Dodaj wartość produktu
+update_product_value_with_permission_and_rules:
+  steps.perform: Aktualizuj wartość produktu
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Edytuj atrybuty
+  steps.edit_common_attributes_processor.title: Edytuj atrybuty
+pim_enrich_attribute_form:
+  isReadOnly: Tylko do odczytu
