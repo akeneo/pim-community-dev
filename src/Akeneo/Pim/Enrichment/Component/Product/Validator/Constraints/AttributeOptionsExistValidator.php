@@ -89,11 +89,11 @@ class AttributeOptionsExistValidator extends ConstraintValidator
             }
 
             if ($value instanceof OptionValueInterface) {
-                $optionCodesIndexedByAttributeCode[$attributeCode][] = strtolower($value->getData());
+                $optionCodesIndexedByAttributeCode[$attributeCode][] = $value->getData();
             } elseif ($value instanceof OptionsValueInterface) {
                 $optionCodesIndexedByAttributeCode[$attributeCode] = array_merge(
                     $optionCodesIndexedByAttributeCode[$attributeCode],
-                    array_map('strtolower', $value->getData())
+                    $value->getData()
                 );
             }
         }
