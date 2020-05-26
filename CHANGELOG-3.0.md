@@ -1,5 +1,17 @@
 # 3.0.x
 
+# 3.0.77 (2020-05-12)
+
+## Bug fixes:
+
+- PIM-9238: Fix type defintions (backport of PIM-8358)
+
+# 3.0.76 (2020-04-27)
+
+## Bug fixes:
+
+- PIM-9217: Allow copying reference entity single and multiple link attribute values with the rule engine
+
 # 3.0.75 (2020-04-21)
 
 ## Bug fixes:
