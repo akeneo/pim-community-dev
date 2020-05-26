@@ -23,11 +23,6 @@ services:
             - '@akeneo.pim.automation.franklin_insights.repository.family'
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_identifier_values_query'
 
-    akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Persistence\InMemory\Query\InMemoryGetExistingAttributeOptionCodes'
-        arguments:
-            - '@akeneo.pim.automation.franklin_insights.repository.attribute_option'
-
     akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_exact_match_attribute_codes:
         class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Query\InMemorySelectExactMatchAttributeCodeQuery'
         arguments:
