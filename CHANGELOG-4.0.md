@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9260: do not use FPM memory_limit for CommandLauncher
+
 # 4.0.28 (2020-05-20)
 
 # 4.0.27 (2020-05-18)
