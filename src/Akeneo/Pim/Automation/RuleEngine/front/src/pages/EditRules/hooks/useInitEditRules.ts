@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getRuleDefinitionByCode } from '../../../fetch/RuleDefinitionFetcher';
-import { Locale } from '../../../models';
+import { Locale, RuleDefinition } from '../../../models';
 import { Router } from '../../../dependenciesTools';
 import {
   getAllScopes,
@@ -18,7 +18,7 @@ type Error = {
 const useInitEditRules = (
   ruleDefinitionCode: string,
   router: Router,
-  setRuleDefinition: any
+  setRuleDefinition: (ruleDefinition: RuleDefinition) => void,
 ) => {
   const [error, setError] = useState<Error>({
     exception: null,

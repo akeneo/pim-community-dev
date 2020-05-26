@@ -28,7 +28,7 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   setIsDirty: (isDirty: boolean) => void;
-  setRuleDefinition: any;
+  setRuleDefinition: (ruleDefinition: RuleDefinition) => void;
 };
 
 const EditRulesContent: React.FC<Props> = ({
