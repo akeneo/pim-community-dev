@@ -29,5 +29,6 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('controllers.yml');
         $loader->load('event_subscribers.yml');
+        $loader->load('normalizers.yml');
     }
 }
