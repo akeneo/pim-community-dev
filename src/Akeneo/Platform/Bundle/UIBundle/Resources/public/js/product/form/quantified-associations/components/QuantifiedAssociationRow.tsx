@@ -1,10 +1,9 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {TransparentButton, EditIcon, CloseIcon, useAkeneoTheme} from '@akeneo-pim-community/shared';
+import {TransparentButton, EditIcon, CloseIcon, UnlinkIcon, useAkeneoTheme} from '@akeneo-pim-community/shared';
 import {ProductType, Row, QuantifiedLink} from '../models';
 import {useProductThumbnail} from '../hooks';
-import {UnlinkIcon} from 'shared/icons/UnlinkIcon';
 
 const Container = styled.tr`
   height: 74px;
@@ -145,13 +144,14 @@ const QuantifiedAssociationRow = ({row, parentQuantifiedLink, onChange, onRemove
       </td>
       <td>
         <RowActions>
-          {(undefined !== parentQuantifiedLink && parentQuantifiedLink.quantity !== row.quantifiedLink.quantity) ||
-            (true && (
+          {undefined !== parentQuantifiedLink &&
+            parentQuantifiedLink.quantity !== row.quantifiedLink.quantity &&
+            false && (
               <UnlinkIcon
                 color={blueColor}
                 title={translate('pim_enrich.entity.product.module.associations.quantified.unlinked')}
               />
-            ))}
+            )}
           <RowAction>
             <a href={`#${productEditUrl}`} target="_blank">
               <EditIcon size={20} />

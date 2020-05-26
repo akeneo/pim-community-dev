@@ -62,7 +62,9 @@ const QuantifiedAssociations = ({
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
-  const [rowCollection, setRowCollection] = useState<Row[]>([]);
+  const [rowCollection, setRowCollection] = useState<Row[]>(
+    quantifiedAssociationToRowCollection(quantifiedAssociations)
+  );
   const [searchValue, setSearchValue] = useState('');
   const products = useProducts(getAssociationIdentifiers(rowCollection));
   const collectionWithProducts = addProductToRows(rowCollection, null === products ? [] : products);
@@ -79,7 +81,7 @@ const QuantifiedAssociations = ({
 
   useEffect(() => {
     const updatedValue = rowCollectionToQuantifiedAssociation(rowCollection);
-    if (quantifiedAssociations !== updatedValue) {
+    if (JSON.stringify(quantifiedAssociations) !== JSON.stringify(updatedValue)) {
       onAssociationsChange(updatedValue);
     }
   }, [JSON.stringify(rowCollection)]);

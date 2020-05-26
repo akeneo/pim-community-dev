@@ -2,7 +2,6 @@ import {useEffect, useState} from 'react';
 import {useUserContext, useRoute} from '@akeneo-pim-community/legacy-bridge';
 import {AssociationIdentifiers, Product, ProductType} from '../models';
 
-const productPromises = {};
 const productFetcher = async (route: string, identifiers: AssociationIdentifiers): Promise<Product[]> => {
   const response = await fetch(route, {
     method: 'POST',

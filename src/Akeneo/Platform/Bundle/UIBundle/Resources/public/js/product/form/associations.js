@@ -410,7 +410,6 @@ define([
       event.preventDefault();
       const associationType = event.currentTarget.dataset.associationType;
       this.setCurrentAssociationType(associationType);
-      this.$('#product-quantified-associations').empty();
 
       const isQuantifiedAssociation = this.isQuantifiedAssociation(state.associationTypes, associationType);
       if (isQuantifiedAssociation) {
@@ -426,6 +425,7 @@ define([
         .siblings('.AknTitleContainer.association-type:not(.AknTitleContainer--hidden)')
         .addClass('AknTitleContainer--hidden');
 
+      ReactDOM.unmountComponentAtNode(document.getElementById('product-quantified-associations'));
       this.renderQuantifiedAssociations();
       this.renderPanes();
       this.updateListenerSelectors();
