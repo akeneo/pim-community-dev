@@ -7,6 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\TechnicalError;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
@@ -33,6 +34,22 @@ class ExtractErrorsFromHttpExceptionSpec extends ObjectBehavior
         $result->shouldBeArray();
         $result->shouldHaveCount(1);
         $result[0]->shouldBeAnInstanceOf(TechnicalError::class);
+    }
+
+    public function it_extracts_an_error_from_an_unknown_attribute_http_exception($serializer): void
+    {
+        $exception = new UnprocessableEntityHttpException(
+            '{"message":"My error!"}',
+            new UnknownAttributeException('description')
+        );
+        $connectionCode = new ConnectionCode('erp');
+
+        $serializer->serialize($exception, 'json', new Context())->willReturn('{"message":"My error!"}');
+
+        $result = $this->extractAll($exception, $connectionCode);
+        $result->shouldBeArray();
+        $result->shouldHaveCount(1);
+        $result[0]->shouldBeAnInstanceOf(BusinessError::class);
     }
 
     public function it_extracts_an_error_from_a_not_found_http_exception($serializer): void

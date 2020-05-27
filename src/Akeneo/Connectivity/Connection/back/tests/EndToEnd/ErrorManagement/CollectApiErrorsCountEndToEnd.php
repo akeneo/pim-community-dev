@@ -79,7 +79,7 @@ JSON;
         $client->request('POST', '/api/rest/v1/products', [], [], [], $content);
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
 
-        $this->errorCountMustBe('erp', 1, ErrorTypes::TECHNICAL);
+        $this->errorCountMustBe('erp', 1, ErrorTypes::BUSINESS);
     }
 
     // test_it_collects_the_error_count_from_a_product_partial_update
@@ -208,7 +208,7 @@ JSON;
 
         Assert::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $this->errorCountMustBe('erp', 1, ErrorTypes::TECHNICAL);
+        $this->errorCountMustBe('erp', 1, ErrorTypes::BUSINESS);
     }
 
     protected function setUp(): void
