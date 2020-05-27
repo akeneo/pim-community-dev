@@ -1,0 +1,5 @@
+pim_asset_manager:
+  asset_family:
+    validation:
+      rule_template:
+        extrapolated_attribute_type_should_be_supported: 'Атрибут "%attribute_code%" типа "%attribute_type%" не поддерживается, для этого поля поддерживаются только следующие типы атрибутов: %supported_attribute_type%'

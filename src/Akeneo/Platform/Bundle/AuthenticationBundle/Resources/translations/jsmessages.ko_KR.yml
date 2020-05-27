@@ -1,0 +1,44 @@
+pim_menu.item.sso: SAML 기반 Single Sign-On
+pim_title:
+  authentication_sso_configuration_edit: SAML 기반 Single Sign-On 구성
+authentication:
+  sso:
+    configuration:
+      download_logs_button: 로그 다운로드
+      info:
+        update_successful: 구성이 저장되었습니다
+        update_failed: 구성을 저장할 수 없습니다
+        fields_not_ready: "이 구성은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      section:
+        activation:
+          title: SSO 활성화
+          info:
+            description: SSO 인증을 활성화할 경우 현재 세션이 유효하게 됩니다. 구성을 저장한 후 로그아웃되고 ID 공급자로 리디렉션됩니다.
+        identity_provider:
+          title: ID 공급자(IdP)
+          info:
+            description: IdP와 통신하는 데 필요한 모든 매개변수를 여기에서 설정할 수 있습니다. 이러한 정보는 IdP가 제공해야합니다. SSO 관리자에게 문의하여 해당 정보를 확인하십시오.
+        service_provider:
+          title: 서비스 공급자(SP)
+          info:
+            description: 서비스 공급자 관련 정보를 아래에서 찾을 수 있습니다. 이 정보는 자동 생성되는 값입니다. 필요하면 편집할 수 있습니다. IdP를 구성하려면 SSO 관리자에게 해당 정보를 제공해야 합니다.
+      field:
+        activation:
+          label: SSO 활성화됨
+        entity_id:
+          label: 엔터티 ID
+        sign_on_url:
+          label: 로그온 URL
+        logout_url:
+          label: 로그아웃 URL
+        certificate:
+          label: 인증서
+          expiration_warning: 이 인증서는 {{date}}에 만료됩니다.
+        private_key:
+          label: 개인 키
+        metadata_url:
+          label: 메타데이터 URL
+          tooltip_label: URL 복사
+        acs_url:
+          label: ACS URL
+          tooltip_label: URL 복사

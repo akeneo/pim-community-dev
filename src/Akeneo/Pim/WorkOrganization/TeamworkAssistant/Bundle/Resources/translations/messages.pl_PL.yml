@@ -3,6 +3,7 @@ teamwork_assistant:
     required: Ta wartość nie może być pusta.
     label_maxlength: Ta wartość jest zbyt długa. Powinna mieć {{ max }} znaków lub mniej.
     project_identifier: Projekt o nazwie {{ project }} nie istnieje.
+    project_locale: Lokalizacja {{ locale }} nie jest obsługiwana przez kanał {{ channel }}.
     project_due_date: Nie możesz wybrać daty przeszłej.
   notification:
     project_calculation:
@@ -27,6 +28,10 @@ teamwork_assistant:
     owner_todo: Do zrobienia (przegląd projektu)
     owner_in_progress: W trakcie (przegląd projektu)
     owner_done: Wykonane (przegląd projektu)
+  user:
+    deletion:
+      user_linked_to_project: Ten użytkownik jest nadal powiązany z jednym lub kilkoma projektami. Usuń grupy, z którymi jest połączony na koncie użytkownika
+      user_is_project_owner: Ten użytkownik jest nadal właścicielem jednego lub więcej projektów. Proszę usunąć wszystkie projekty tego użytkownika.
 job_execution:
   summary:
     processed_products: Przetworzone produkty
@@ -37,3 +42,4 @@ pim_datagrid:
   cells:
     type:
       project_calculation: Obliczanie projektu
+      refresh_project_completeness_calculation: Odśwież obliczenie kompletności projektu

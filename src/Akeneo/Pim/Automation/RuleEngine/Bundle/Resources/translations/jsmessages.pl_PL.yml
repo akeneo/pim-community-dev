@@ -1,4 +1,5 @@
 pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} reguła|]1, Inf[{{ count }} reguł"
   execution_button: Wykonywanie reguł
   selected: 'wybrano reguły'
   popin:
@@ -39,11 +40,13 @@ pimee_catalog_rule:
           confirm_title: Potwierdź wykonanie
           confirm_content: Czy na pewno chcesz wykonać zaznaczone reguły?
           success: Rozpoczęto zbiorowe wykonywanie reguł. Zostaniesz powiadomiony, kiedy zostanie zakończone
+          error: Wystąpił błąd podczas wykonywania reguł.
           empty_selection: Nie wybrano reguł.
         delete:
           confirm_title: Potwierdź wykonanie
           confirm_content: Czy na pewno chcesz usunąć zaznaczone reguły?
           success: Pomyślnie usunięto reguły.
+          error: Wystąpił błąd podczas usuwania reguł.
           empty_selection: Nie wybrano reguł.
   form:
     attribute:
@@ -94,6 +97,7 @@ batch_jobs:
 pim_notification:
   types:
     rule: Ustawienia Reguł
+    mass_edit_rule: Masowa edycja reguł
 pim_menu:
   item:
     rule: Reguły

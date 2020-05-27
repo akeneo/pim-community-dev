@@ -27,6 +27,9 @@ teamwork_assistant:
     owner_todo: Нужно сделать (обзор проекта)
     owner_in_progress: Выполняется (обзор проекта)
     owner_done: Готово (обзор проекта)
+  user:
+    deletion:
+      user_is_project_owner: Этот пользователь по-прежнему является владельцем одного или нескольких проектов. Пожалуйста, удалите все проекты этого пользователя.
 job_execution:
   summary:
     processed_products: Обработанные продукты

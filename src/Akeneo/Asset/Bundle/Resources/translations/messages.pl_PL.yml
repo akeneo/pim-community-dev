@@ -6,6 +6,7 @@ pimee_product_asset:
       remove: Usuwanie zasobu
       categories_view: Określenie kategorii dla produktu
       mass_upload: Masowe przekazywanie zasobów
+      remove_from_collection: Usuń zasób tego produktu z kolekcji zasobów
     category_asset_picker:
       list: Lista kategorii aktywów w selektorze aktywów
     category:
@@ -50,14 +51,17 @@ pimee_product_asset:
     flash:
       update:
         success: Zasób został zaktualizowany.
+        error: Zasób nie został zaktualizowany. Wystąpił błąd.
       create:
         success: Zasób został utworzony.
+        error: Zasób nie został utworzony. Wystąpił błąd.
       remove:
         success: Zasób został usunięty.
   enrich_reference:
     flash:
       delete:
         success: Plik referencyjny został usunięty.
+        error: Plik referencyjny nie został usunięty. Wystąpił błąd.
   enrich_variation:
     flash:
       transformation:
@@ -66,12 +70,15 @@ pimee_product_asset:
         image_height_error: Niemożliwe wygenerowanie zmiany %channel% ponieważ przesłany obraz ponieważ przesłany obraz ma wysokość mniejszą niż wymagana przez transformację.
         not_applicable: Niemożliwe wygenerowanie zmiany %channel%.
         non_registered: '%transformation% Transformacja nie została zarejestrowana dla typu mime %mimeType%. Niemożliwe wygenerowanie zmiany %channel%.'
+        missing_asset_transformation_for_channel: Nie można wygenerować wariantu dla %channel%, proszę ustawić transformację zasobów dla tego kanału.
         error: Niemożliwe wygenerowanie zmiany %channel%.
         success: Pliki zmian zostały wygenerowane pomyślnie.
       update:
         success: Plik zmian został zaktualizowany.
+        error: Plik zmiany nie został zaktualizowany. Wystąpił błąd.
       delete:
         success: Plik Zmian został usunięty.
+        error: Plik zmiany nie został usunięty. Wystąpił błąd.
   popin.create:
     title: Utwórz nowy zasób
     is_localized: Tłumaczony
@@ -119,6 +126,7 @@ pimee_product_asset:
     import: Import
     executed: Masowego wysyłania wykonywane
     error:
+      upload: Wystąpił błąd podczas przesyłania
       code: Nieprawidłowy format kody dla zasobu
       localizable: Zasób istnieje, ale nie może zostać zlokalizowany
       invalid_locale: Ustawienia lokalne są wyłączone lub nieprawidłowe
@@ -141,6 +149,7 @@ pimee_product_asset:
         first: Wybierz zasoby
         second: Konfiguruj
         third: Potwierdź
+  not_editable: Nie masz uprawnień do edycji zasobu "%code%".
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
@@ -175,10 +184,13 @@ pim_datagrid:
   cells:
     type:
       mass_upload: Masowe przesyłanie zasobów
+      compute_completeness_of_products_linked_to_assets: Oblicz kompletność produktów powiązanych z zasobami
 pim_analytics:
   info_type:
     nb_assets: Liczba zasobów
 pim_assets_collection: Kolekcja zasobów
+akeneo_reference_entity: Pojedynczy link do obiektu referencyjnego
+akeneo_reference_entity_collection: Wielokrotne linki do obiektu referencyjnego
 pim_api:
   acl:
     asset_category:
@@ -224,3 +236,6 @@ pimee_enrich:
       options:
         width: '%value%pikseli szerokości'
         height: '%value%pikseli szerokości'
+asset_tree:
+  remove:
+    error_linked: Drzewo tej kategorii nie może zostać usunięte, jest ustawione jako domyślne drzewo kategorii zasobów użytkownika.

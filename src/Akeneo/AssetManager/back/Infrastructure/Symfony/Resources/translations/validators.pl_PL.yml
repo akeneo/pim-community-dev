@@ -1,0 +1,106 @@
+pim_asset_manager:
+  asset_family:
+    validation:
+      code:
+        pattern: 'To pole może zawierać tylko litery, cyfry i podkreślenia.'
+        should_be_unique: 'Rodzina zasobów już istnieje z kodem "{{ %asset_family_identifier%}}"'
+        limit_reached: 'Nie możesz utworzyć rodziny zasobów "{{ %asset_family_label% }}", ponieważ osiągnąłeś limit {{ %limit% }} rodzin zasobów'
+      assets:
+        should_have_no_asset: 'Nie możesz usunąć tego obiektu, ponieważ istnieją zasoby dla tego obiektu'
+      asset_family_attributes:
+        should_not_be_linked: 'Nie możesz usunąć tego obiektu, ponieważ atrybuty rodziny zasobów są związane z tym obiektem'
+      asset_family_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'Co najmniej jedna grupa użytkowników powinna mieć uprawnienia do edycji tego obiektu'
+      product_attributes:
+        should_not_be_linked: 'Nie możesz usunąć tego obiektu, ponieważ atrybuty produktu są związane z tym obiektem'
+      should_exist: 'Nie znaleziono rodziny zasobów "%asset_family_code%".'
+      rule_template:
+        limit_reached: 'Nie możesz utworzyć rodziny zasobów "{{ %asset_family_label% }}", ponieważ osiągnąłeś limit {{ %limit% }} reguł powiązań produktu'
+        product_selection_cannot_be_empty: 'Musisz podać co najmniej jeden wybór produktu w regule linkowania produktu'
+        product_assignment_cannot_be_empty: 'Musisz określić co najmniej jedno przypisanie produktu w regule linku do produktu'
+        extrapolated_attribute_should_exist: 'Atrybut "%attribute_code%" nie istnieje dla tej rodziny zasobów'
+        extrapolated_attribute_type_should_be_supported: 'Atrybut "{{ %attribute_code% }}" typu "{{ %attribute_type% }}" nie jest obsługiwany, tylko następujące typy atrybutów są obsługiwane dla tego pola: {{ %supported_attribute_type%}}'
+        channel_should_exist: 'Kanał "{{ %channel_code% }}" nie istnieje'
+        locale_should_exist: 'Lokalizacja "{{ %locale_code% }}" nie jest aktywowana lub nie istnieje'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: 'Atrybut "{{ %attribute_code% }}" nie może być użyty do ekstrapolacji, ponieważ ma jedną wartość na kanał'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: 'Atrybut "{{ %attribute_code% }}" nie może być użyty do ekstrapolacji, ponieważ ma jedną wartość na lokalizację'
+        assignment_mode_not_supported: 'Nieprawidłowy tryb przypisania "{{ %assignment_mode% }}" znaleziony w regule linku produktu; powinno być "zastąp" lub "dodaj"'
+        channel_not_supported_for_field: 'Nie można określić kanału dla pola "{{ %product_field%}}"'
+        locale_not_supported_for_field: 'Nie można określić lokalizacji dla pola "{{ %product_field%}}"'
+        assignmement_attribute_does_not_support_this_asset_family: 'Atrybut produktu "{{ %product_attribute_code% }}" nie może zawierać zasobów z rodziny zasobów "{{ %asset_family_identifier%}}"'
+  asset:
+    validation:
+      code:
+        pattern: 'To pole może zawierać tylko litery, cyfry i podkreślenia.'
+        should_be_unique: 'Zasób już istnieje z kodem "%code%"'
+        should_exist: 'Nie znaleziono zasobu'
+      text:
+        incompatible_with_regular_expression: 'Tekst jest niezgodny z wyrażeniem regularnym "%regular_expression%"'
+      file:
+        extension_not_allowed: 'Pliki "%file_extension%" nie są dozwolone dla tego atrybutu. Dozwolone rozszerzenia to: %allowed_file_extensions%'
+        file_size_exceeded: 'Plik przekracza maksymalny rozmiar pliku ustawiony dla atrybutu.'
+        should_exist: 'Plik "%file_path%" nie został znaleziony.'
+      option:
+        code_does_not_exist: 'Opcja z kodem "%option_code%" nie istnieje dla tego atrybutu'
+      option_collection:
+        codes_dont_exist: "Następujące kody opcji nie istnieją dla tego atrybutu: \"%option_codes%\""
+      asset:
+        should_exist: 'Zasób "%asset_code%" nie został znaleziony.'
+      asset_collection:
+        should_exist: 'Zasoby "%asset_codes%" nie zostały znalezione.'
+      limit_reached: 'Nie możesz utworzyć zasobu "%asset_label%", ponieważ osiągnęłeś limit %limit% zasobów dla tej rodziny zasobów'
+      channel:
+        is_expected: 'Kanał jest oczekiwany dla atrybutu "%attribute_code%", ponieważ przyjmuje on różne wartości dla kanału.'
+        is_not_expected: 'Kanał nie jest oczekiwany dla atrybutu "%attribute_code%", ponieważ nie ma różnych wartości dla kanału.'
+        should_exist: 'Kanał "%channel_identifier%" nie istnieje.'
+      locale:
+        is_expected: 'Ustawienie lokalizacji jest oczekiwane dla atrybutu "%attribute_code%", ponieważ atrybut ma przyjmować wartości dla poszczególnych lokalizacji.'
+        is_not_expected: 'Ustawienie lokalizacji nie jest oczekiwane dla atrybutu "%attribute_code%", ponieważ atrybut nie ma przyjmować wartości dla poszczególnych lokalizacji.'
+        is_not_activated: 'Lokalizacja "%locale_identifier%" nie jest aktywowana.'
+        is_not_activated_for_channel: 'Lokalizacja "%locale_identifier%" nie jest aktywowana dla kanału "%channel_identifier%".'
+      number:
+        should_be_string: 'To pole powinno być ciągiem znaków'
+        should_be_integer: 'To pole powinno być liczbą całkowitą'
+        integer_too_long: 'Ta liczba całkowita jest zbyt duża'
+        should_be_numeric: 'To pole powinno być wartością liczbową z właściwym separatorem dziesiętnym'
+  attribute:
+    validation:
+      options:
+        should_exist: 'Opcja nie została znaleziona.'
+        duplicated: 'Opcja "%option_code%" już istnieje'
+        too_many: 'Osiągnąłeś limit {{ limit }} opcji atrybutów na atrybut.'
+        code:
+          pattern: 'To pole może zawierać tylko litery, cyfry i podkreślenia.'
+          should_not_be_blank: 'Kod opcji nie powinien być pusty'
+      max_length:
+        should_be_an_integer: 'Ta wartość powinna być liczbą całkowitą.'
+      max_file_size:
+        should_be_a_number: 'Ta wartość powinna być liczbą.'
+      min_value:
+        should_be_a_number: 'Ta wartość powinna być liczbą z właściwym separatorem dziesiętnym.'
+        cannot_be_greater_than_max: 'Wartość minimalna nie może być większa niż wartość maksymalna.'
+      max_value:
+        should_be_a_number: 'Ta wartość powinna być liczbą z właściwym separatorem dziesiętnym.'
+        cannot_be_lower_than_min: 'Maksymalna wartość nie może być mniejsza niż wartość minimalna'
+      code:
+        pattern: 'To pole może zawierać tylko litery, cyfry i podkreślenia. "{{ value }}" podano.'
+        reserved_codes: 'Kod nie może być żadną z tych wartości: "{{ comma_separated_reserved_keywords }}"'
+        should_not_exist: 'Ten atrybut już istnieje dla rodziny zasobów "{{ asset_family_identifier }}" i kodu atrybutu "{{ code }}"'
+        should_exist: 'Atrybut nie został znaleziony'
+      regular_expression:
+        invalid_regular_expression: 'To wyrażenie regularne jest nieprawidłowe. Oto przykład poprawnego wyrażenia regularnego: "/[a-z]+[0-9]*/"'
+        should_not_be_empty: 'Wyrażenie regularne nie może być puste.'
+      should_be_a_textarea_to_update_is_rich_text_editor: 'Prosty atrybut tekstowy nie może mieć edytora tekstu'
+      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'Atrybut obszaru tekstowego nie może mieć reguły sprawdzania poprawności'
+      cannot_set_a_non_empty_regular_expression: 'Atrybut nie powinien mieć wyrażenia regularnego'
+      cannot_update_the_regular_expression: 'Nie można ustawić wyrażenia regularnego w atrybucie tekstowym'
+      limit_reached: 'Nie można utworzyć atrybutu "%attribute_label%", ponieważ osiągnąłeś limit %limit% atrybutów dla tej rodziny zasobów'
+      asset_type:
+        is_required: 'Musisz określić typ rodziny zasobów, aby utworzyć atrybut połączenia z rodziną zasobów'
+        asset_family_should_exist: 'Nie znaleziono rodziny zasobów "%asset_family_code%".'
+      prefix:
+        should_not_be_empty: 'Prefiks nie może być pustym ciągiem znaków.'
+      suffix:
+        should_not_be_empty: 'Sufiks nie może być pustym ciągiem znaków.'
+      media_type:
+        not_expected: 'Podany typ mediów nie odpowiada oczekiwanym (%supported_media_types%).'

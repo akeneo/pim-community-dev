@@ -25,6 +25,7 @@ teamwork_assistant:
     title: Edytuj projekt
   create_project_modal:
     saved: Projekt został zapisany, zostaniesz powiadomiony, kiedy obliczanie zostanie wykonane.
+    title: Projekt
   widget:
     no_project: Nie masz bieżącego projektu
     no_project_create: utwórz nowy projekt
@@ -34,6 +35,7 @@ teamwork_assistant:
     in_progress: W TOKU
     done: GOTOWE
     all_contributors: Wszyscy współtwórcy
+    you: Ty
     display_products: Wyświetl produkty
     placeholder:
       contributor_selector: Wyszukaj współautorów

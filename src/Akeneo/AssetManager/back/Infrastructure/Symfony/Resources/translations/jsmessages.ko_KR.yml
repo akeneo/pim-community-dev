@@ -6,56 +6,56 @@ pim_asset_manager:
   editor:
     embedded:
       invalid_link:
-        title: Podejrzany osadzony link
-        message: Przepraszamy, nie wyświetlamy tego osadzonego elementu, ale zostanie on poprawnie zapisany
+        title: 의심스러운 임베디드 링크
+        message: 죄송하지만 이 임베드 항목을 표시할 수 없습니다. 하지만 제대로 저장됩니다.
   asset_collection:
-    asset_count: '{0} Brak zasobów|{1} {{ count }} zasób|[1,Inf] {{ count }} zasobów/y'
-    add_asset: 'Dodaj zasób'
-    add_asset_title: 'Otwórz selektor zasobów, aby dodać zasoby do kolekcji'
-    no_asset_in_collection: 'Przepraszamy, nie ma żadnych zasobów w tej kolekcji.'
+    asset_count: '{0} 자산 없음|{1} {{ resultCount }} 자산|]1,Inf] {{ resultCount }} 자산'
+    add_asset: '자산 추가'
+    add_asset_title: '자산 선택기를 열어 컬렉션에 자산 추가'
+    no_asset_in_collection: '죄송합니다. 이 컬렉션에 자산이 없습니다.'
     helper:
-      title: 'Witaj w nowym obszarze zarządzania zasobami produktów!'
-      text: 'Nie ma kolekcji zasobów dla rodziny {{ family }} ! Jak dodać kolekcję zasobów?'
-      link: 'Jak dodać kolekcję zasobów?'
+      title: '새로운 제품 자산 관리 영역입니다!'
+      text: '{{ family }} 패밀리에 대한 자산 컬렉션이 없습니다! 자산 컬렉션을 추가하는 방법은?'
+      link: '자산 컬렉션을 추가하는 방법은?'
     no_asset:
-      title: 'Przepraszamy, nie ma żadnych zasobów dla tego produktu.'
-      text: 'Nie ma kolekcji zasobów dla rodziny {{ family }}!'
+      title: '죄송합니다. 이 제품에 대한 자산이 없습니다.'
+      text: '{{ family }} 패밀리에 대한 자산 컬렉션이 없습니다!'
     notification:
-      product_rule: 'Ta kolekcja może być aktualizowana przez regułę produktu:'
-      limit: 'Osiągnąłeś limit {{ limit }} zasobów na kolekcję, nie możesz już dodawać zasobów do kolekcji.'
-    remove_one_asset: Usuń zasób {{ assetName }} z kolekcji zasobów
-    remove_all_assets: Usuń wszystkie zasoby
-    other_actions: Inne akcje
-    open_other_actions: Otwórz inne akcje
-    dismiss_other_actions: Odrzuć inne akcje
-    move_asset_to_left: Przesuń zasób {{ assetName }} w lewo
-    move_asset_to_right: Przesuń zasób {{ assetName }} w prawo
+      product_rule: '이 컬렉션은 다음 제품 규칙에 의해 업데이트될 수 있습니다:'
+      limit: '컬렉션별 {{ limit }} 자산 제한에 도달했습니다. 더 이상 컬렉션에 자산을 추가할 수 없습니다.'
+    remove_one_asset: 자산 컬렉션에서 자산 {{ assetName }} 제거
+    remove_all_assets: 모든 자산 제거
+    other_actions: 기타 작업
+    open_other_actions: 기타 작업 열기
+    dismiss_other_actions: 기타 작업 취소
+    move_asset_to_left: 왼쪽으로 자산 {{ assetName }} 이동
+    move_asset_to_right: 오른쪽으로 자산 {{ assetName }} 이동
     legacy_helper:
-      moved_to_assets_tab: Aby zobaczyć kolekcję zasobów {{ label }}, przejdź do sekcji zasobów produktu.
-      is_missing_required: Kolekcja zasobów {{ label }} jest wymagana. Wzbogacaj ją w sekcji zasobów produktu.
+      moved_to_assets_tab: 자산 컬렉션 {{ label }}을(를) 보려면 제품의 자산 섹션으로 이동하십시오.
+      is_missing_required: 자산 컬렉션 {{ label }}은(는) 필수입니다. 제품의 자산 섹션에서 이를 보강하십시오.
   asset_picker:
-    title: Dodaj zasoby do swojego produktu
-    sub_title: Wybierz zasoby, które chcesz dołączyć do produktu {{ productLabel }} w kolekcji {{ attributeLabel }}
+    title: 제품에 자산 추가
+    sub_title: '{{ attributeLabel }} 컬렉션에서 {{ productLabel }} 제품에 연결할 자산 선택'
     no_result:
-      title: Przepraszamy, brak wyników twojego wyszukiwania zasobów.
-      sub_title: Spróbuj ponownie, podając nowe kryteria wyszukiwania.
+      title: 죄송합니다. 검색할 자산이 없습니다.
+      sub_title: 새 검색 조건으로 다시 시도하십시오
     filter:
-      title: Filtry zasobów
+      title: 자산 필터
     basket:
-      title: '{{ assetCount }} wybrany zasób|{{ assetCount }} wybranych/e zasobów/y'
-      empty_title: Twój koszyk jest pusty
-      remove_one_asset: Usuń zasób {{ assetName }} z wyboru zasobów
-      remove_all_assets: Usuń wszystkie
+      title: '{{ assetCount }}개 자산 선택됨|{{ assetCount }}개 자산 선택됨'
+      empty_title: 장바구니가 비어 있습니다
+      remove_one_asset: 자산 선택에서 자산 {{ assetName }} 제거
+      remove_all_assets: 모두 제거
   asset_preview:
-    previous: Poprzedni zasób
-    next: Następny zasób
-    empty_main_image: Ten zasób nie ma obrazka.
-    edit_asset: Edytuj zasób
-    download: Pobierz
-    copy_url: Kopiuj adres URL
-  close: Zamknij modal
+    previous: 이전 자산
+    next: 다음 자산
+    empty_main_image: 이 자산에 이미지가 없습니다.
+    edit_asset: 자산 편집
+    download: 다운로드
+    copy_url: URL 복사
+  close: 모달 닫기
   breadcrumb:
-    products: Produkty
+    products: 제품
   #app:
   #image:
   #wide:
@@ -67,8 +67,8 @@ pim_asset_manager:
   #download: Download
   #upload: Drag and drop to upload
   grid:
-    counter: '{{ resultCount }} wyniki/ów'
-    counter_empty: '0 wyników'
+    counter: '결과 {{ resultCount }}개'
+    counter_empty: '결과 0개'
   asset_family:
     #validation:
     #code:
@@ -81,7 +81,7 @@ pim_asset_manager:
     #create: Create
     #permission:
     #title: Entity permissions
-    title: Zasoby
+    title: 자산
   #breadcrumb: Asset Families
   #img: The main image of the asset family named "{{ label }}"
   #tab:
@@ -158,7 +158,7 @@ pim_asset_manager:
     #title: There are no result for your search
     #subtitle: Try again with new search criteria.
     selector:
-      no_value: Kliknij tutaj, aby wybrać zasób.
+      no_value: 여기를 클릭하여 자산을 선택하십시오.
     #error:
     #value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
     #button:
@@ -207,21 +207,21 @@ pim_asset_manager:
     #delete_all:
     #confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
     grid:
-      search: Szukaj na etykiecie, kodzie i tekstach atrybutów
+      search: 레이블, 코드 및 텍스트 특성 검색
       filter:
         completeness:
-          label: Zakończone
-          all: Wszystkie
-          'yes': 'Tak'
-          'no': 'Nie'
+          label: 완료
+          all: 모두
+          'yes': '예'
+          'no': '아니요'
         option:
-          all: Wszystkie
-          no_value: Wybierz opcję do filtrowania
+          all: 모두
+          no_value: 필터링하려면 옵션 선택
           operator:
-            in: Na liście
+            in: 목록에 있음
       more_result:
-        title: To nie tak!
-        description: Właśnie przejrzałeś pierwsze {{ maxDisplayedAssets }} wyników z {{ total }} zasobów. Aby zobaczyć więcej, użyj bardziej szczegółowych kryteriów wyszukiwania.
+        title: 끝이 아닙니다!
+        description: '{{ total }}개 자산 중에서 처음 {{ maxDisplayedAssets }}개 레코드까지만 스크롤했습니다. 더 보려면 더 구체적인 검색 조건을 사용해보십시오.'
   #column:
   #code: Code
   #image: Image
@@ -267,7 +267,7 @@ pim_asset_manager:
     #option: Single option
     #option_collection: Multiple options
     #number: Number
-    is_required: wymagane do kompletności
+    is_required: 완성도를 위해 필요
 #media_type_preview: Preview of media type
 #no_data:
 #title: There are no custom attributes for {{ entityLabel }}
@@ -366,5 +366,5 @@ pim_enrich:
         #section:
         #type_specific: Type specific parameters
         asset_family:
-          identifier: Powiązana rodzina zasobów (wymagana)
-          default_label: Proszę wybrać rodzinę zasobów
+          identifier: 관련 자산 패밀리(필수)
+          default_label: 자산 패밀리를 선택하십시오

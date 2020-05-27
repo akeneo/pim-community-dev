@@ -1,0 +1,5 @@
+akeneo_franklin_insights:
+  entity:
+    product_subscription:
+      constraint:
+        product_subscription_with_same_identifier_already_exist: 'Inny produkt z co najmniej jednym identycznym identyfikatorem został już zapisany.'
