@@ -4,7 +4,7 @@ import { generateUrl } from '../../../dependenciesTools/hooks';
 import { FormData } from '../edit-rules.types';
 import { useForm, DeepPartial } from 'react-hook-form';
 
-import { Locale, RuleDefinition } from '../../../models';
+import { Condition, Locale, RuleDefinition } from '../../../models';
 import {
   Router,
   Translate,
@@ -26,12 +26,18 @@ type Reset = (
 ) => void;
 
 const transformFormData = (formData: FormData): Payload => {
+  const filledConditions = formData.content
+    ? formData.content.conditions.filter((condition: Condition | null) => {
+        return condition !== null;
+      })
+    : [];
+
   return {
     ...formData,
     priority: Number(formData.priority),
     content: {
       ...formData.content,
-      conditions: (formData.content && formData.content.conditions) || [],
+      conditions: filledConditions,
       actions: (formData.content && formData.content.actions) || [],
     },
   };

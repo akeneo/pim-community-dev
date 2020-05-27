@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select2Wrapper } from '../Select2Wrapper';
+import { Select2SimpleSyncWrapper } from '../Select2Wrapper';
 import { Operator } from '../../models/Operator';
 import { Translate } from '../../dependenciesTools';
 
@@ -7,22 +7,22 @@ type Props = {
   id: string;
   label: string;
   hiddenLabel?: boolean;
-  currentOperator: string;
   availableOperators: Operator[];
   translate: Translate;
-  onSelectorChange: (value: string) => void;
+  value: Operator;
+  onChange: (value: Operator) => void;
 };
 
 const OperatorSelector: React.FC<Props> = ({
   id,
   label,
   hiddenLabel = false,
-  currentOperator,
   availableOperators,
   translate,
-  onSelectorChange,
+  value,
+  onChange,
 }) => {
-  const translateOperator = (operator: string): string => {
+  const translateOperator = (operator: Operator): string => {
     const label = translate(
       `pimee_catalog_rule.form.edit.conditions.operators.${operator}`
     );
@@ -38,15 +38,13 @@ const OperatorSelector: React.FC<Props> = ({
   });
 
   return (
-    <Select2Wrapper
+    <Select2SimpleSyncWrapper
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string | string[] | number) => {
-        onSelectorChange(Array.isArray(value) ? '' : (value as string));
-      }}
-      value={currentOperator}
       data={operatorChoices}
+      value={value}
+      onValueChange={value => onChange(value as Operator)}
     />
   );
 };

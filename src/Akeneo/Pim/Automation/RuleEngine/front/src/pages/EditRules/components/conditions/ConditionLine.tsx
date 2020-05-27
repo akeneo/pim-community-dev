@@ -4,7 +4,7 @@ import { AlertDialog } from '../../../../components/AlertDialog/AlertDialog';
 import { PimConditionLine } from './PimConditionLine';
 import { FallbackConditionLine } from './FallbackConditionLine';
 import styled from 'styled-components';
-import { Condition, Locale } from '../../../../models';
+import { Condition, Locale, LocaleCode } from '../../../../models';
 import { Router, Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { ConditionLineProps } from './ConditionLineProps';
@@ -20,7 +20,7 @@ type Props = {
   translate: Translate;
   locales: Locale[];
   scopes: IndexedScopes;
-  currentCatalogLocale: string;
+  currentCatalogLocale: LocaleCode;
   router: Router;
   deleteCondition: (lineNumber: number) => void;
   condition: Condition;

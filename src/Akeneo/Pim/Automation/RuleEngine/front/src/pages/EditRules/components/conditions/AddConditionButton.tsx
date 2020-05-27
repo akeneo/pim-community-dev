@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  ajaxResults,
-  Select2Wrapper,
-} from '../../../../components/Select2Wrapper';
+import { Select2SimpleAsyncWrapper } from '../../../../components/Select2Wrapper';
 import { Router, Translate } from '../../../../dependenciesTools';
 
 type AddConditionAttribute = {
@@ -31,6 +28,8 @@ const AddConditionButton: React.FC<Props> = ({
   translate,
   isActiveConditionField,
 }) => {
+  const [closeTick, setCloseTick] = React.useState<boolean>(false);
+
   const dataProvider = (term: string, page: number) => {
     return {
       search: term,
@@ -42,7 +41,7 @@ const AddConditionButton: React.FC<Props> = ({
   };
 
   let lastDisplayedGroupLabel: string;
-  const handleResults = (result: AddConditionResults): ajaxResults => {
+  const handleResults = (result: AddConditionResults) => {
     const fieldCount = result.reduce((previousCount, group) => {
       return previousCount + group.children.length;
     }, 0);
@@ -65,7 +64,7 @@ const AddConditionButton: React.FC<Props> = ({
   };
 
   return (
-    <Select2Wrapper
+    <Select2SimpleAsyncWrapper
       id={'add_conditions'}
       label={translate('pimee_catalog_rule.form.edit.add_conditions')}
       hiddenLabel={true}
@@ -75,6 +74,7 @@ const AddConditionButton: React.FC<Props> = ({
         event.preventDefault();
         if (event.val !== null) {
           // Use has not clicked on a group
+          setCloseTick(!closeTick);
           handleAddCondition(event.val);
         }
       }}
@@ -95,6 +95,7 @@ const AddConditionButton: React.FC<Props> = ({
           isActiveConditionField(option.id as string) ? 'active-condition' : ''
         }">${option.text}</span>`;
       }}
+      closeTick={closeTick}
     />
   );
 };

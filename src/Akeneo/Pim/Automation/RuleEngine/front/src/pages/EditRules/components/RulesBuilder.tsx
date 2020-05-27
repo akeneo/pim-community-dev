@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Translate } from '../../../dependenciesTools';
 import { RuleProductSelection } from './conditions/RuleProductSelection';
-import { RuleDefinition, Locale } from '../../../models';
+import { RuleDefinition, Locale, LocaleCode } from '../../../models';
 import { Action } from '../../../models/Action';
 import { IndexedScopes } from '../../../repositories/ScopeRepository';
 import { useFormContext } from 'react-hook-form';
@@ -12,7 +12,7 @@ type Props = {
   ruleDefinition: RuleDefinition;
   locales: Locale[];
   scopes: IndexedScopes;
-  currentCatalogLocale: string;
+  currentCatalogLocale: LocaleCode;
   router: Router;
 };
 

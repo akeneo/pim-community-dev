@@ -1,25 +1,28 @@
 import React from 'react';
-import { Select2Wrapper } from '../Select2Wrapper';
-import { Scope } from '../../models';
+import { Select2SimpleSyncWrapper } from '../Select2Wrapper';
+import { LocaleCode, Scope, ScopeCode } from '../../models';
+import { Translate } from '../../dependenciesTools';
 
 type Props = {
   id: string;
   label: string;
   hiddenLabel?: boolean;
-  currentScopeCode: string;
   availableScopes: Scope[];
-  onSelectorChange: (value: string) => void;
-  currentCatalogLocale: string;
+  currentCatalogLocale: LocaleCode;
+  value: ScopeCode;
+  onChange: (value: ScopeCode) => void;
+  translate: Translate;
 };
 
 const ScopeSelector: React.FC<Props> = ({
   id,
   label,
   hiddenLabel = false,
-  currentScopeCode,
   availableScopes,
-  onSelectorChange,
   currentCatalogLocale,
+  value,
+  onChange,
+  translate,
 }) => {
   const getScopeLabel = (scope: Scope): string => {
     return scope.labels[currentCatalogLocale] || `[${scope.code}]`;
@@ -33,16 +36,15 @@ const ScopeSelector: React.FC<Props> = ({
   });
 
   return (
-    <Select2Wrapper
+    <Select2SimpleSyncWrapper
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string | string[] | number) => {
-        onSelectorChange(Array.isArray(value) ? '' : (value as string));
-      }}
-      value={currentScopeCode}
       data={scopeChoices}
       hideSearch={true}
+      placeholder={translate('pim_enrich.entity.channel.uppercase_label')}
+      value={value}
+      onValueChange={value => onChange(value as ScopeCode)}
     />
   );
 };

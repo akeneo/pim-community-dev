@@ -1,56 +1,77 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import {
-  option,
-  optionsGroup,
+  Select2Option,
+  Select2OptionGroup,
   Select2Props,
+  Select2Value,
   Select2Wrapper as BaseWrapper,
 } from '../Select2Wrapper';
 import { Label } from '../../Labels';
 import { httpGet } from '../../../fetch';
 
 const Select2Wrapper: typeof BaseWrapper = ({
-  data = [],
+  data,
   hiddenLabel = false,
   id,
   label,
-  onChange,
-  value,
   multiple = false,
   placeholder,
   ajax,
+  onValueChange,
+  value,
   onSelecting,
 }: Select2Props) => {
-  const [options, setOptions] = React.useState<(option | optionsGroup)[]>(
-    data || []
-  );
+  const [stateOptions, setOptions] = React.useState<
+    (Select2Option | Select2OptionGroup)[]
+  >(data || []);
+
+  useEffect(() => {
+    if (data) {
+      setOptions(data);
+    }
+  }, [data]);
+
+  const options = stateOptions;
+  if (value) {
+    const valuesArray = Array.isArray(value) ? value : [value];
+    valuesArray.forEach((singleValue: Select2Value) => {
+      if (!stateOptions.map(option => option.id).includes(singleValue)) {
+        options.push({
+          id: singleValue,
+          text: `__mock__${singleValue}`,
+        });
+      }
+    });
+  }
 
   const handleClick = () => {
-    if (options.length === 0 && ajax) {
+    if (ajax) {
       const url = ajax.url;
       const result = httpGet(url);
       if (undefined === result) {
         throw new Error(`You did not mock the result of ${url}!`);
       }
       result.then(response => {
-        response.json().then((fetchedOptions: (option | optionsGroup)[]) => {
-          setOptions(fetchedOptions);
-        });
+        response
+          .json()
+          .then((fetchedOptions: (Select2Option | Select2OptionGroup)[]) => {
+            setOptions(fetchedOptions);
+          });
       });
     }
   };
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    if (onValueChange) {
+      onValueChange(event.target.value);
+    }
     if (onSelecting) {
       onSelecting({
         preventDefault: event.preventDefault.bind(event),
         val: event.target.value,
       });
-    } else if (onChange) {
-      onChange(event.target.value);
     }
   };
-
-  const defaultValue = value || (options[0] ? options[0].id : '');
 
   return (
     <>
@@ -58,10 +79,10 @@ const Select2Wrapper: typeof BaseWrapper = ({
       <select
         id={id}
         data-testid={id}
-        defaultValue={defaultValue || ''}
         onChange={handleChange}
         onClick={handleClick}
-        multiple={multiple}>
+        multiple={multiple}
+        value={value === null ? (multiple ? [] : '') : (value as string)}>
         {placeholder ? (
           <option disabled value={''}>
             {placeholder}
@@ -69,10 +90,10 @@ const Select2Wrapper: typeof BaseWrapper = ({
         ) : (
           ''
         )}
-        {options.map((option: option | optionsGroup, i) => {
+        {options.map((option: Select2Option | Select2OptionGroup, i) => {
           return option.hasOwnProperty('children') ? (
             <optgroup key={option.id || i} label={option.text}>
-              {(option as optionsGroup).children.map((subOption, j) => (
+              {(option as Select2OptionGroup).children.map((subOption, j) => (
                 <option key={subOption.id || j} value={subOption.id || j}>
                   {subOption.text}
                 </option>

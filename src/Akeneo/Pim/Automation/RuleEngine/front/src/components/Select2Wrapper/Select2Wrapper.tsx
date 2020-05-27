@@ -1,17 +1,16 @@
-import $ from 'jquery';
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Label } from '../Labels';
 
-type option = {
+type Select2Option = {
   id: number | string;
   text: string;
   disabled?: boolean;
 };
 
-type optionsGroup = {
+type Select2OptionGroup = {
   id: number | string | null;
   text: string;
-  children: option[];
+  children: Select2Option[];
   disabled?: boolean;
 };
 
@@ -19,137 +18,160 @@ type Select2Event = {
   val: any;
 } & JQuery.Event;
 
-type ajaxResults = {
-  more: boolean;
-  results: option[] | optionsGroup[];
+type InitSelectionCallback = (arg: Select2Option[] | Select2Option) => void;
+
+type Select2Ajax = {
+  url: string;
+  quietMillis?: number;
+  cache?: boolean;
+  data: (
+    term: string,
+    page: number
+  ) => {
+    search: string;
+    options?: any;
+  };
+  results: (
+    values: any
+  ) => {
+    more: boolean;
+    results: Select2Option[] | Select2OptionGroup[];
+  };
+  initSelection?: (element: any, callback: InitSelectionCallback) => void;
 };
 
-type InitSelectionCallback = (arg: option[] | option) => void;
+type Select2Value = string | number;
 
-type Props = {
+type Select2GlobalProps = {
   allowClear?: boolean;
   containerCssClass?: string;
-  data?: (option | optionsGroup)[];
   dropdownCssClass?: string;
-  formatResult?: (item: option | optionsGroup) => string;
-  formatSelection?: (item: option | optionsGroup) => string;
   hiddenLabel?: boolean;
   id: string;
   label: string;
-  onChange?: (value: string | string[] | number) => void;
   onSelecting?: (event: any) => void;
   placeholder?: string;
-  value?: number | string | string[];
-  multiple?: boolean;
-  ajax?: {
-    url: string;
-    quietMillis?: number;
-    cache?: boolean;
-    data: (
-      term: string,
-      page: number
-    ) => {
-      search: string;
-      options?: any;
-    };
-    results: (values: any) => ajaxResults;
-  };
-  initSelection?: (element: any, callback: InitSelectionCallback) => void;
+  initSelection?: (
+    element: { val: any },
+    callback: InitSelectionCallback
+  ) => void;
+  formatResult?: (item: Select2Option | Select2OptionGroup) => string;
+  formatSelection?: (item: Select2Option | Select2OptionGroup) => string;
   hideSearch?: boolean;
+  closeTick?: boolean;
+};
+
+type Props = Select2GlobalProps & {
+  data?: (Select2Option | Select2OptionGroup)[];
+  multiple: boolean;
+  ajax?: Select2Ajax;
+  onValueChange?: (value: Select2Value | Select2Value[]) => void;
+  value?: Select2Value | Select2Value[];
 };
 
 const Select2Wrapper: React.FC<Props> = ({
-  allowClear,
-  containerCssClass,
-  data,
-  dropdownCssClass,
-  formatResult,
-  formatSelection,
   hiddenLabel = false,
   id,
   label,
-  onChange,
-  onSelecting,
-  placeholder,
-  value,
-  multiple = false,
   ajax,
+  data,
+  multiple,
   initSelection,
+  placeholder,
+  formatSelection,
+  formatResult,
+  containerCssClass,
+  dropdownCssClass,
+  onSelecting,
+  value,
+  onValueChange,
+  closeTick = false,
   hideSearch = false,
 }) => {
-  const select2Ref = useRef<HTMLInputElement>(null);
-  const encodedData: string = JSON.stringify(data);
+  const select2ref = useRef<HTMLInputElement | null>(null);
 
-  const initSelect2 = () => {
-    if (null === select2Ref.current) {
-      return;
-    }
-    const $select = $(select2Ref.current) as any;
-    $select.val(value);
+  const getSelect2Input: () => any = () => {
+    return $(select2ref.current as any) as any;
+  };
 
-    $select.select2('destroy');
-    const options: any = {
-      allowClear,
-      containerCssClass,
-      data,
-      dropdownCssClass,
-      formatResult,
-      formatSelection,
-      placeholder,
-      multiple,
-      ajax,
-      initSelection,
-    };
-    if (hideSearch) {
-      options.minimumResultsForSearch = Infinity;
-    }
-    $select.select2(options);
+  const initSelect2 = (destroy = false) => {
+    if (select2ref.current) {
+      if (destroy) {
+        getSelect2Input().select2('close');
+        getSelect2Input().select2('destroy');
+      }
+      getSelect2Input().val(value);
+      const options: any = {
+        ajax,
+        data,
+        multiple,
+        initSelection,
+        placeholder,
+        formatSelection,
+        formatResult,
+        containerCssClass,
+        dropdownCssClass,
+        hideSearch,
+      };
+      if (hideSearch) {
+        options.minimumResultsForSearch = Infinity;
+      }
+      getSelect2Input().select2(options);
 
-    if (onChange) {
-      $select.on('change', (event: Select2Event) => onChange(event.val));
-    }
-    if (onSelecting) {
-      $select.off('select2-selecting');
-      $select.on('select2-selecting', onSelecting);
+      if (onSelecting) {
+        getSelect2Input().off('select2-selecting');
+        getSelect2Input().on('select2-selecting', onSelecting);
+      }
+
+      if (onValueChange) {
+        getSelect2Input().on('change', (e: Select2Event) => {
+          const val = e.val;
+          onValueChange(
+            Array.isArray(val) ? (val as Select2Value[]) : (val as Select2Value)
+          );
+        });
+      }
     }
   };
 
   useEffect(() => {
     initSelect2();
-  }, [select2Ref, onSelecting, onChange, formatResult]);
+
+    return () => {
+      getSelect2Input().off('change');
+      getSelect2Input().select2('destroy');
+      getSelect2Input()
+        .select2('container')
+        .remove();
+    };
+  }, [select2ref]);
 
   useEffect(() => {
-    initSelect2();
-  }, [encodedData]);
-
-  useEffect(() => {
-    if (null === select2Ref.current) {
-      return;
-    }
-    const $select = $(select2Ref.current) as any;
-    $select.val(value).trigger('change');
-    if (onChange && value) {
-      onChange(value);
+    if (select2ref.current) {
+      getSelect2Input()
+        .val(value)
+        .trigger('change.select2');
     }
   }, [value]);
 
   useEffect(() => {
-    if (null === select2Ref.current) {
-      return;
-    }
-    const $select = $(select2Ref.current) as any;
+    initSelect2(true);
+  }, [JSON.stringify(data)]);
 
-    return () => {
-      $select.off('change');
-      $select.select2('destroy');
-      $select.select2('container').remove();
-    };
-  }, [select2Ref]);
+  useEffect(() => {
+    initSelect2(true);
+  }, [onSelecting]);
+
+  useEffect(() => {
+    if (select2ref.current) {
+      getSelect2Input().select2('close');
+    }
+  }, [closeTick]);
 
   return (
     <>
       <Label label={label} hiddenLabel={hiddenLabel} htmlFor={id} />
-      <input id={id} type='hidden' ref={select2Ref} />
+      <input id={id} type='hidden' ref={select2ref} />
     </>
   );
 };
@@ -158,8 +180,10 @@ export {
   Select2Wrapper,
   Select2Event,
   Props as Select2Props,
-  option,
-  optionsGroup,
+  Select2Option,
+  Select2OptionGroup,
   InitSelectionCallback,
-  ajaxResults,
+  Select2GlobalProps,
+  Select2Ajax,
+  Select2Value,
 };

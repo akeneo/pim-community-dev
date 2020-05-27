@@ -1,14 +1,13 @@
 import React from 'react';
 import {
-  ajaxResults,
   InitSelectionCallback,
-  Select2Wrapper,
-  option,
+  Select2MultiAsyncWrapper,
+  Select2Option,
 } from '../Select2Wrapper';
 import { Router } from '../../dependenciesTools';
 import { IndexedFamilies } from '../../fetch/FamilyFetcher';
-import { Family } from '../../models';
 import { getFamiliesByIdentifiers } from '../../repositories/FamilyRepository';
+import { Family, FamilyCode, LocaleCode } from '../../models';
 
 type Props = {
   router: Router;
@@ -16,9 +15,9 @@ type Props = {
   label: string;
   hiddenLabel?: boolean;
   multiple: boolean;
-  selectedFamilyCodes: string[];
-  currentCatalogLocale: string;
-  onSelectorChange: (values: string[]) => void;
+  currentCatalogLocale: LocaleCode;
+  value: FamilyCode[];
+  onChange: (value: FamilyCode[]) => void;
 };
 
 const dataProvider = (term: string, page: number) => {
@@ -34,12 +33,12 @@ const dataProvider = (term: string, page: number) => {
 
 const handleResults = (
   families: IndexedFamilies,
-  currentCatalogLocale: string
-): ajaxResults => {
+  currentCatalogLocale: LocaleCode
+) => {
   return {
     more: 20 === Object.keys(families).length,
     results: Object.keys(families).map(
-      (familyIdentifier): option => {
+      (familyIdentifier): Select2Option => {
         return {
           id: families[familyIdentifier].code,
           text:
@@ -53,8 +52,8 @@ const handleResults = (
 
 const initSelectedFamilies = async (
   router: Router,
-  selectedFamilyCodes: string[],
-  currentCatalogLocale: string,
+  selectedFamilyCodes: FamilyCode[],
+  currentCatalogLocale: LocaleCode,
   callback: InitSelectionCallback
 ): Promise<void> => {
   const families: IndexedFamilies = await getFamiliesByIdentifiers(
@@ -77,21 +76,17 @@ const FamilySelector: React.FC<Props> = ({
   id,
   label,
   hiddenLabel = false,
-  multiple,
-  selectedFamilyCodes,
   currentCatalogLocale,
-  onSelectorChange,
+  value,
+  onChange,
 }) => {
   return (
-    <Select2Wrapper
+    <Select2MultiAsyncWrapper
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
-      onChange={(value: string | string[] | number) => {
-        onSelectorChange(Array.isArray(value) ? value : [value as string]);
-      }}
-      value={selectedFamilyCodes}
-      multiple={multiple}
+      value={value}
+      onValueChange={value => onChange(value as string[])}
       ajax={{
         url: router.generate('pim_enrich_family_rest_index'),
         quietMillis: 250,
@@ -100,14 +95,9 @@ const FamilySelector: React.FC<Props> = ({
         results: (families: IndexedFamilies) =>
           handleResults(families, currentCatalogLocale),
       }}
-      initSelection={(_element, callback) =>
-        initSelectedFamilies(
-          router,
-          selectedFamilyCodes,
-          currentCatalogLocale,
-          callback
-        )
-      }
+      initSelection={(_element, callback) => {
+        initSelectedFamilies(router, value, currentCatalogLocale, callback);
+      }}
     />
   );
 };

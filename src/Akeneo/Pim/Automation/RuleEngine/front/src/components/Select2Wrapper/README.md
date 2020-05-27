@@ -2,6 +2,8 @@
 
 This component wrap the select2 jquery lib in a react component.
 
+For best typehinting, don't use directly the Select2Wrapper, prefer use the Simple/Multi Sync/Async matching component.
+
 ## Use with react hook form
 
 In our use case with react hook form
@@ -21,11 +23,11 @@ const data = [
 const { register, setValue, getValues } = useForm()
 register({ name: 'select2input' })
 
- <Select2Wrapper
+ <Select2SimpleSyncWrapper
         label="toto" // input should always have a label
         hiddenLabel // that you can't hide (screen readers only)
-        onChange={(event) => {
-          setValue("select2Input", event.val);
+        onValueChange={(value) => {
+          setValue("select2Input", value);
         }}
         id="select2input"
         value={getValues()["select2Input"]}
