@@ -1,2 +1,4 @@
 pim_notification:
-  report: Rapport
+  report: Raport
+  mark_all_as_read: Oznacz wszystkie jako przeczytane
+  no_notifications: Brak powiadomień

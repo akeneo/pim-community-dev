@@ -1,19 +1,165 @@
 job_execution:
   summary:
-    display_item: Pokaż element
+    display_item: Wyświetl element
     hide_item: Ukryj element
 pim_connector:
   export:
     categories:
       selector:
         modal:
-          cancel: Anuluj
-          confirm: Potwierdź
-        edit: Edytuj
-page_title:
+          title: Wybór kategorii
+        label: "{0}Wszystkie produkty|{1}Jedna wybrana kategoria|]1,Inf[{{ count }} wybrane kategorie"
+        title: Wybierz kategorie
+    locales:
+      validation:
+        not_blank: Jedna wersja językowa musi zostać wybrana, proszę wybierz wersję językową do eksportu.
+pim_import_export:
+  entity:
+    job_instance:
+      label: profil pracy
+      flash:
+        update:
+          success: Zadanie pomyślnie zaktualizowane.
+          fail: Nie można zaktualizować zadania.
+        delete:
+          success: Zadanie usunięte pomyślnie
+    import_profile:
+      uppercase_label: Importuj profil
+      flash:
+        create:
+          success: Profil importu pomyślnie utworzony
+        upload:
+          error: Nie można przesłać pliku. Jego rozmiar może przekroczyć maksymalny rozmiar pliku zdefiniowany w konfiguracji serwera PHP lub HTTP
+      page_title:
+        index: "]-Inf, 1] {{ count }} import|]1, Inf [{{ count }} importów"
+      module:
+        create:
+          button: Utwórz profil importu
+    export_profile:
+      uppercase_label: Eksportuj profil
+      flash:
+        create:
+          success: Profil eksportu pomyślnie utworzony
+      page_title:
+        index: "]-Inf, 1] {{ count }} profil eksportu|]1, Inf [{{ count }} profile eksportu"
+      module:
+        create:
+          button: Utwórz profil exportu
+  form:
+    job_execution:
+      title.details: Szczegóły wykonania
+      refreshBtn.title: Odśwież
+      button:
+        show_profile.title: Pokaż profil
+        download_log.title: Pobierz dziennik
+        download_file.title: Pobierz wygenerowany plik
+        download_archive.title: Pobierz wygenerowane archiwum
+      summary:
+        fetching: Zbieranie danych o wykonywaniu zadania...
+        warning: Uwaga
+        header.step: Krok
+        header.warnings: Ostrzeżenia
+        header.summary: Podsumowanie
+        header.start: Start
+        header.end: Koniec
+    job_instance:
+      fail:
+        launch: Nie udało się uruchomić zadania. Upewnij się, że jest poprawne i że masz prawo je uruchomić.
+        save: Nie udało się zapisać zadania. Upewnij się, że masz prawo je edytować.
+      button:
+        export.title: Eksportuj teraz
+        import.launch: Importuj teraz
+        import.upload: Załaduj i importuj teraz
+        import.upload_file: Prześlij plik
+      meta:
+        job: Zadanie
+        connector: Wtyczka
+      subsection:
+        last_executions: Ostatnie wykonania
+      tab:
+        content:
+          title: Zawartość
+        properties:
+          decimal_separator:
+            title: Separator dziesiętny
+            help: Określ separator dziesiętny
+          date_format:
+            title: Format daty
+            help: Określ format pola Data
+          file_path:
+            title: Ścieżka do pliku
+            help: Gdzie zapisać utworzony plik w systemie plików
+          delimiter:
+            title: Separator
+            help: Jeden znak używany do rozdzielenia poszczególnych pól
+          enclosure:
+            title: Ogranicznik zawartości pola
+            help: Znak użyty do rozgraniczenia wartości pola
+          with_header:
+            title: Z nagłówkiem
+            help: Drukować, czy nie nazwę kolumny
+          with_media:
+            title: Eksportuj pliki i zdjęcia
+            help: Czy eksportować pliki produktów i obrazy
+          lines_per_file:
+            title: Liczba wierszy na plik
+            help: Określ limit liczby wierszy na plik
+          upload_allowed:
+            title: Zezwól na załadowanie pliku
+            help: Czy zezwolić na wgrywanie plików bezpośrednio, czy nie
+          categories_column:
+            title: Kolumna Kategorii
+            help: Nazwa kolumny kategorii
+          escape:
+            title: Znak ucieczki
+            help: Znak ucieczki powodujący inną niż domyślna interpretację znaku lub sekwencji znaków po nim następujących
+          family_column:
+            title: Kolumna rodziny
+            help: Nazwa kolumny rodziny produktu
+          groups_column:
+            title: Kolumna grup
+            help: Nazwa kolumny grup
+          enabled:
+            title: Włącz produkt
+            help: Czy zaimportowane produkty mają zostać włączone, czy nie
+          enabled_comparison:
+            title: Porównaj wartości
+            help: Włącza porównanie wartości istniejących z importowanymi. Przyśpiesza proces importu, jeżeli wartości importowane są bardzo podobne do istniejących
+          real_time_versioning:
+            title: Aktualizacja historii w czasie rzeczywistym
+            help: Oznacza że historia dla produktu będzie aktualizowana automatycznie, wyłącz w celu poprawy wydajności
+          family_variant_column:
+            title: Kolumna wariantów rodziny
+      file_path: Ścieżka do pliku
+confirmation:
+  remove:
+    import_profile: Czy na pewno chcesz usunąć ten profil importu?
+    export_profile: Czy na pewno chcesz usunąć ten profil eksportu?
+    job_instance: Czy na pewno chcesz usunąć to zadanie?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Czy na pewno chcesz usunąć ten profil importu?
+      flash:
+        delete:
+          success: Profil importu pomyślnie usunięty
+    export_profile:
+      module:
+        delete:
+          confirm: Czy na pewno chcesz usunąć ten profil eksportu?
+      flash:
+        delete:
+          success: Profil eksportu pomyślnie usunięty
+pim_title:
   pim_importexport_export_profile_index: Zarządzanie profilami eksportu
+  pim_importexport_export_profile_edit: Profil eksportu {{ job.label }} | Edytuj
+  pim_importexport_export_profile_show: Profil eksportu {{ job.label }} | Pokaż
   pim_importexport_export_execution_index: Historia wykonanych eksportów
   pim_importexport_export_execution_show: Wykonane eksporty | Szczegóły
   pim_importexport_import_profile_index: Zarządzanie profilami importu
+  pim_importexport_import_profile_edit: Profil importu {{ job.label }} | Edytuj
+  pim_importexport_import_profile_show: Profil importu {{ job.label }} | Pokaż
   pim_importexport_import_execution_index: Historia wykonanych importów
   pim_importexport_import_execution_show: Wykonane importy | Szczegóły
