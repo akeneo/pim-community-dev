@@ -1,4 +1,4 @@
-import { Family } from '../models';
+import { Family, FamilyCode } from '../models';
 import { Router } from '../dependenciesTools';
 import {
   fetchFamiliesByIdentifiers,
@@ -8,13 +8,13 @@ import {
 const cacheFamilies: { [familyCode: string]: Family | null } = {};
 
 const getFamiliesByIdentifiers = async (
-  familyIdentifiers: string[],
+  familyIdentifiers: FamilyCode[],
   router: Router
 ): Promise<IndexedFamilies> => {
   const results: IndexedFamilies = {};
 
-  const familyIdentifiersToFetch: string[] = [];
-  familyIdentifiers.forEach((identifier: string) => {
+  const familyIdentifiersToFetch: FamilyCode[] = [];
+  familyIdentifiers.forEach((identifier: FamilyCode) => {
     if (typeof cacheFamilies[identifier] !== 'undefined') {
       results[identifier] = cacheFamilies[identifier] as Family;
     } else {
@@ -27,7 +27,7 @@ const getFamiliesByIdentifiers = async (
       familyIdentifiersToFetch,
       router
     );
-    familyIdentifiersToFetch.forEach((familyIdentifier: string): void => {
+    familyIdentifiersToFetch.forEach((familyIdentifier: FamilyCode): void => {
       if (typeof fetchResults[familyIdentifier] !== 'undefined') {
         results[familyIdentifier] = fetchResults[familyIdentifier];
         cacheFamilies[familyIdentifier] = fetchResults[familyIdentifier];
@@ -40,4 +40,12 @@ const getFamiliesByIdentifiers = async (
   return results;
 };
 
-export { getFamiliesByIdentifiers };
+const getFamilyByIdentifier = async (
+  familyIdentifier: FamilyCode,
+  router: Router
+): Promise<Family> => {
+  const family = await getFamiliesByIdentifiers([familyIdentifier], router);
+  return family[familyIdentifier];
+}
+
+export { getFamiliesByIdentifiers, getFamilyByIdentifier };

@@ -7,6 +7,7 @@ import {
   CopyAction,
   RemoveAction,
   SetAction,
+  SetFamilyAction,
 } from './actions';
 
 export type Action =
@@ -17,4 +18,5 @@ export type Action =
   | CopyAction
   | FallbackAction
   | RemoveAction
-  | SetAction;
+  | SetAction
+  | SetFamilyAction;

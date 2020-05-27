@@ -7,6 +7,8 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   translate,
   lineNumber,
   handleDelete,
+  router,
+  currentCatalogLocale,
 }) => {
   const Line = action.module as React.FC<ActionLineProps & { action: Action }>;
 
@@ -16,6 +18,8 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
       translate={translate}
       lineNumber={lineNumber}
       handleDelete={handleDelete}
+      router={router}
+      currentCatalogLocale={currentCatalogLocale}
     />
   );
 };

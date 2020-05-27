@@ -1,11 +1,12 @@
 import React from 'react';
 import {
   InitSelectionCallback,
-  Select2Option, Select2SimpleAsyncWrapper,
+  Select2MultiAsyncWrapper,
+  Select2Option,
 } from '../Select2Wrapper';
 import { Router } from '../../dependenciesTools';
 import { IndexedFamilies } from '../../fetch/FamilyFetcher';
-import { getFamilyByIdentifier } from '../../repositories/FamilyRepository';
+import { getFamiliesByIdentifiers } from '../../repositories/FamilyRepository';
 import { Family, FamilyCode, LocaleCode } from '../../models';
 
 type Props = {
@@ -14,8 +15,8 @@ type Props = {
   label: string;
   hiddenLabel?: boolean;
   currentCatalogLocale: LocaleCode;
-  value: FamilyCode | null;
-  onChange: (value: FamilyCode) => void;
+  value: FamilyCode[];
+  onChange: (value: FamilyCode[]) => void;
 };
 
 const dataProvider = (term: string, page: number) => {
@@ -48,24 +49,28 @@ const handleResults = (
   };
 };
 
-const initSelectedFamily = async (
+const initSelectedFamilies = async (
   router: Router,
-  selectedFamilyCode: FamilyCode,
+  selectedFamilyCodes: FamilyCode[],
   currentCatalogLocale: LocaleCode,
   callback: InitSelectionCallback
 ): Promise<void> => {
-  const family: Family = await getFamilyByIdentifier(
-    selectedFamilyCode,
+  const families: IndexedFamilies = await getFamiliesByIdentifiers(
+    selectedFamilyCodes,
     router
   );
 
-  callback({
-    id: family.code,
-    text: family.labels[currentCatalogLocale] || `[${family.code}]`,
-  });
+  callback(
+    Object.values(families).map((family: Family) => {
+      return {
+        id: family.code,
+        text: family.labels[currentCatalogLocale] || `[${family.code}]`,
+      };
+    })
+  );
 };
 
-const FamilySelector: React.FC<Props> = ({
+const FamiliesSelector: React.FC<Props> = ({
   router,
   id,
   label,
@@ -74,14 +79,13 @@ const FamilySelector: React.FC<Props> = ({
   value,
   onChange,
 }) => {
-  console.log(value);
   return (
-    <Select2SimpleAsyncWrapper
+    <Select2MultiAsyncWrapper
       id={id}
       label={label}
       hiddenLabel={hiddenLabel}
       value={value}
-      onValueChange={value => onChange(value as string)}
+      onValueChange={value => onChange(value as string[])}
       ajax={{
         url: router.generate('pim_enrich_family_rest_index'),
         quietMillis: 250,
@@ -91,14 +95,10 @@ const FamilySelector: React.FC<Props> = ({
           handleResults(families, currentCatalogLocale),
       }}
       initSelection={(_element, callback) => {
-        if (value) {
-          initSelectedFamily(router, value, currentCatalogLocale, callback);
-        }
+        initSelectedFamilies(router, value, currentCatalogLocale, callback);
       }}
-      placeholder={'Select a family'}
-      allowClear={true}
     />
   );
 };
 
-export { FamilySelector };
+export { FamiliesSelector };
