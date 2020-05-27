@@ -11,6 +11,7 @@ pimee_catalog_rule:
         actions: Działanie
         impacted_product_count:
           label: Dotyczy produktów
+          count: 'Dotyczy {0,1}%count%  produktu|]1,Inf[Dotyczy %count% produktów '
           no_yet_calculated: Jeszcze nie przeliczone
       mass_edit_action:
         impacted_product_count: Oblicz produkty, których dotyczy problem
@@ -87,3 +88,7 @@ btn:
   Execute rules: Wykonywanie reguł
 mass_edit_rule: Ustawienia Reguł
 job_execution.summary.rule_calculated: Liczba zasad
+pim_datagrid:
+  cells:
+    type:
+      mass_edit_rule: Ustawienia reguł

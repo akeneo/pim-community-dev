@@ -19,6 +19,11 @@ pim_reference_entity:
       identifier: Pod Produktu
       label: Etykieta
       image: Zdjęcie
+    attribute:
+      attribute:
+        error:
+          render_list: 'Wystąpił błąd podczas renderowania atrybutu "{{ %attribute_code%}}"'
+          render_edit: 'Wystąpił błąd podczas renderowania dodatkowych pól właściwości atrybutu "{{ %attribute_code%}}"'
     create:
       header:
         title: Utwórz
@@ -27,7 +32,19 @@ pim_reference_entity:
       confirm: Zapisz
     delete:
       title: Atrybut
+    notification:
+      save:
+        fail: Wystąpił błąd podczas zapisywania obiektów referencyjnych
+      create:
+        fail: Wystąpił błąd podczas zapisywania obiektu referencyjnego
+      delete:
+        fail: Wystąpił błąd podczas usuwania obiektu referencyjnego
   record:
+    validation:
+      text:
+        incompatible_with_regular_expression: 'Wprowadź tekst, który spełnia warunki wyrażenia regularnego: "{{ %regular_expression%}}"'
+        invalid_email: 'Wprowadź adres e-mail: xxxxx@xx.xx'
+        invalid_url: 'Wprowadź adres URL: http(s)://xxxx.XXX'
     no_result:
       subtitle: Spróbuj ponownie, podając nowe kryteria wyszukiwania.
     button:
@@ -65,6 +82,15 @@ pim_reference_entity:
     tab:
       enrich: Uzupełnianie
       product: Produkty
+    notification:
+      save:
+        fail: Wystąpił błąd podczas zapisywania rekordu
+      create:
+        fail: Wystąpił błąd podczas tworzenia rekordu
+      delete:
+        fail: Wystąpił błąd podczas usuwania rekordu
+      delete_all:
+        fail: Wystąpił błąd podczas usuwania wszystkich rekordów tego obiektu referencyjnego
     completeness:
       label: Kompletny
   attribute:
@@ -107,12 +133,17 @@ pim_reference_entity:
     delete:
       title: Atrybut
     notification:
+      list:
+        fail: Wystąpił błąd podczas aktualizacji listy atrybutów
       save:
         success: Atrybut pomyślnie zaktualizowany.
+        fail: Wystąpił błąd podczas zapisywania atrybutu
       create:
         success: Atrybut pomyślnie utworzony.
+        fail: Wystąpił błąd podczas tworzenia atrybutu
       delete:
         success: Atrybut pomyślnie usunięty.
+        fail: Wystąpił błąd podczas usuwania atrybutu
     options:
       helper:
         title: Tłumaczenia etykiety

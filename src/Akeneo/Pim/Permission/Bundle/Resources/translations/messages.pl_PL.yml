@@ -37,6 +37,10 @@ category.permissions:
   apply_on_children.label: Zastosuj zmiany dla dzieci
   apply_on_children.help: Skopiuj zmiany uprawnienia na wszystkie dzieci, zachowane są istniejące uprawnienia dla dzieci
 locale.permissions:
+  view.label: Zezwolono na przeglądanie informacji
+  view.help: Zezwól na wyświetlanie informacji w tej lokalizacji
+  edit.label: Zezwolono na edycję informacji
+  edit.help: Pozwól na edycję informacji w tej lokalizacji (implikuje uprawnienia do przeglądania)
   no_access_to_products: Nie masz dostęp do produktów z żadnych aktywnych katalogów, skontaktuj się z administratorem
 flash.locale.updated: Katalogi i uprawnienia zostały zaktualizowane
 pim_enrich:

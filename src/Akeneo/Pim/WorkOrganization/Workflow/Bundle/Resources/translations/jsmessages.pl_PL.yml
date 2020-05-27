@@ -29,16 +29,19 @@ pimee_workflow:
     partial_accept:
       modal.title: Zatwierdź częściowe informacje
       modal.label: Zostaw komentarz (opcjonalnie)
+      modal.error: Wystąpił błąd, propozycja nie została częściowo zatwierdzona
       modal.success: Wniosek został częściowo zatwierdzony
     partial_approve:
       modal:
         title: Częściowo zaakceptuj zmiany
         label: Zostaw komentarz (opcjonalnie)
+        error: Wystąpił błąd, propozycja nie została częściowo zatwierdzona
         success: Zmiany zostały zaakceptowane
     partial_reject:
       modal:
         title: Częściowo zaakceptuj zmiany
         label: Zostaw komentarz (opcjonalnie)
+        error: Wystąpił błąd, propozycja nie została częściowo odrzucona
         success: Zmiany zostały pozytywnie zapisane
 batch_jobs:
   csv_published_product_export:
@@ -175,6 +178,10 @@ pimee_enrich.mass_edit.product:
       label: Cofnij publikację
       description: Produkty nie będą publiczne
       warning: '{{ itemsCount }} wybranym produktom zostanie cofnięta publikacja.'
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: Nie można usunąć kategorii powiązanej z opublikowanym produktem.
 pim_menu:
   navigation:
     published_products: Opublikowane produkty

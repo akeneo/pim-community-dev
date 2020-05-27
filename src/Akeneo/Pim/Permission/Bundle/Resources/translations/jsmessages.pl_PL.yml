@@ -21,12 +21,14 @@ pimee_enrich.entity.attribute group:
 pimee_enrich.entity.attribute_group:
   module:
     permissions:
+      added: Grupa {{ group }} będzie miała dostęp do grupy atrybutów {{ permission }} 
       view: Możliwość wyświetlenia atrybutów
       edit: Możliwość edycji atrybutów
       removed: Grupa {{ group }} nie będzie mogła korzystać z {{ permission }} grupy atrybutów
 pimee_enrich.entity.job_instance:
   module:
     permissions:
+      added: Grupa {{ group }} będzie miała dostęp do profilu pracy {{ permission }}
       execute: Możliwość wykonywania zadań
       edit: Możliwość edycji profilu zadania
       removed: Grupa {{ group }} nie ma pozwolenia {{ permission }} tą pracę
@@ -44,3 +46,7 @@ batch_jobs:
     label: Edytuj zwykłe atrybuty ze sprawdzeniem upranień i zasad aplikacji
     perform.label: Edytuj atrybuty
     cleaner.label: Wyczyść pliki tymczasowe
+  default_steps:
+    send_for_approval: Wyślij do zatwierdzenia
+pim_title:
+  pimee_enrich_locale_edit: Lokalizacja | Edytuj
