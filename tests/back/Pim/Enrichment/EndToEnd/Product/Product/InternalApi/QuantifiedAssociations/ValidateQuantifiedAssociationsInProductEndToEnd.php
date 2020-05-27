@@ -47,9 +47,9 @@ class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWit
 
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $body = json_decode($response->getContent(), true);
-        $this->assertContainsError($body['quantifiedAssociations'], [
+        $this->assertContainsError($body['quantified_associations'], [
             'messageTemplate' => 'pim_catalog.constraint.quantified_associations.products_do_not_exist',
-            'propertyPath' => 'quantifiedAssociations[PRODUCTSET][products]',
+            'propertyPath' => 'quantifiedAssociations.PRODUCTSET.products',
         ]);
     }
 

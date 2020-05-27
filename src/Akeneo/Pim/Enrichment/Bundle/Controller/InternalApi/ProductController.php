@@ -458,8 +458,8 @@ class ProductController
         foreach ($violations as $violation) {
             $propertyPath = $violation->getPropertyPath();
 
-            if (0 === strpos($propertyPath, 'quantifiedAssociations[')) {
-                $normalizedViolations['quantifiedAssociations'][] = $this->normalizer->normalize(
+            if (0 === strpos($propertyPath, 'quantifiedAssociations.')) {
+                $normalizedViolations['quantified_associations'][] = $this->normalizer->normalize(
                     $violation,
                     'internal_api',
                     ['translate' => false]
