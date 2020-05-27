@@ -9,18 +9,18 @@ Feature: Validate the quantified associations of a product
   @acceptance-back
   Scenario: Cannot save a product with a nonexistent quantified association type
     When a product is associated with a quantity for an association type that does not exist
-    Then there is the validation error "pim_catalog.constraint.quantified_associations.association_type_does_not_exist"
+    Then this product has a validation error about association type does not exist
 
   @acceptance-back
   Scenario: Cannot save a product with a quantified link in a normal association type
     When a product is associated with a quantity for an association type that is not quantified
-    Then there is the validation error "pim_catalog.constraint.quantified_associations.association_type_is_not_quantified"
+    Then this product has a validation error about association type is not quantified
 
   @acceptance-back
   Scenario Outline: Cannot save a product with a quantified link with an invalid quantity
     Given a product without quantified associations
     When I associate a product to this product with the quantity "<quantity>"
-    Then there is the validation error "pim_catalog.constraint.quantified_associations.invalid_quantity"
+    Then this product has a validation error about invalid quantity
     Examples:
       | quantity |
       | -1       |
@@ -41,19 +41,19 @@ Feature: Validate the quantified associations of a product
   Scenario: Cannot save a product with a quantified link with nonexistent product
     Given a product without quantified associations
     When I associate a nonexistent product to this product with a quantity
-    Then there is the validation error "pim_catalog.constraint.quantified_associations.products_do_not_exist"
+    Then this product has a validation error about product do not exist
 
   @acceptance-back
   Scenario: Cannot save a product with a quantified link with nonexistent product model
     Given a product without quantified associations
     When I associate a nonexistent product model to this product with a quantity
-    Then there is the validation error "pim_catalog.constraint.quantified_associations.product_models_do_not_exist"
+    Then this product has a validation about product models do not exist
 
   @acceptance-back
   Scenario Outline: Cannot save a product with more than 100 quantified associations
     Given a product without quantified associations
     When I associate "<nb_products>" products and "<nb_product_models>" product models with a quantity to this product
-    Then there is the validation error "pim_catalog.constraint.quantified_associations.max_associations"
+    Then this product has a validation about maximum number of associations
     Examples:
       | nb_products | nb_product_models |
       | 101         | 0                 |
@@ -75,7 +75,7 @@ Feature: Validate the quantified associations of a product
   @acceptance-back
   Scenario: Cannot save a product with invalid quantified link type
     When a product is associated with invalid quantified link type
-    Then there is the validation error "pim_catalog.constraint.quantified_associations.unexpected_link_type"
+    Then this product has a validation error about unexpected link type
 
   @acceptance-back
   Scenario: Cannot save a product model with an invalid quantified association

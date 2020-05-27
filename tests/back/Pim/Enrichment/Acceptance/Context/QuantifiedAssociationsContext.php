@@ -677,4 +677,100 @@ final class QuantifiedAssociationsContext implements Context
         $violations = $this->validator->validate($this->productModel);
         Assert::greaterThan(count($violations), 0);
     }
+
+    private function assertProductHasValidationError(string $message, string $propertyPath)
+    {
+        /** @var ConstraintViolationListInterface $violations */
+        $violations = $this->validator->validate($this->product);
+
+        /** @var ConstraintViolation $violation */
+        foreach ($violations as $violation) {
+            if ($violation->getMessageTemplate() === $message && $violation->getPropertyPath() === $propertyPath) {
+                return;
+            }
+        }
+
+        throw new \InvalidArgumentException(sprintf(
+            'The expected validation error was not found, got %d errors: "%s"',
+            count($violations),
+            implode(',', iterator_to_array($violations))
+        ));
+    }
+
+    /**
+     * @Then /^this product has a validation error about association type does not exist$/
+     */
+    public function thisProductHasAValidationErrorAboutAssociationTypeDoesNotExist()
+    {
+        $this->assertProductHasValidationError(
+            'pim_catalog.constraint.quantified_associations.association_type_does_not_exist',
+            'quantifiedAssociations.INVALID_ASSOCIATION_TYPE'
+        );
+    }
+
+    /**
+     * @Then /^this product has a validation error about association type is not quantified$/
+     */
+    public function thisProductHasAValidationErrorAboutAssociationTypeIsNotQuantified()
+    {
+        $this->assertProductHasValidationError(
+            'pim_catalog.constraint.quantified_associations.association_type_is_not_quantified',
+            'quantifiedAssociations.XSELL'
+        );
+    }
+
+    /**
+     * @Then /^this product has a validation error about invalid quantity$/
+     */
+    public function thisProductHasAValidationErrorAboutInvalidQuantity()
+    {
+        $this->assertProductHasValidationError(
+            'pim_catalog.constraint.quantified_associations.invalid_quantity',
+            'quantifiedAssociations.PACK.products[0].quantity'
+        );
+    }
+
+    /**
+     * @Then /^this product has a validation error about product do not exist$/
+     */
+    public function thisProductHasAValidationErrorAboutProductDoNotExist()
+    {
+        $this->assertProductHasValidationError(
+            'pim_catalog.constraint.quantified_associations.products_do_not_exist',
+            'quantifiedAssociations.PACK.products'
+        );
+    }
+
+    /**
+     * @Then /^this product has a validation about product models do not exist$/
+     */
+    public function thisProductHasAValidationAboutProductModelsDoNotExist()
+    {
+        $this->assertProductHasValidationError(
+            'pim_catalog.constraint.quantified_associations.product_models_do_not_exist',
+            'quantifiedAssociations.PACK.product_models'
+        );
+    }
+
+    /**
+     * @Then /^this product has a validation about maximum number of associations$/
+     */
+    public function thisProductHasAValidationAboutMaximumNumberOfAssociations()
+    {
+        $this->assertProductHasValidationError(
+            'pim_catalog.constraint.quantified_associations.max_associations',
+            'quantifiedAssociations.PACK'
+        );
+    }
+
+    /**
+     * @Then /^this product has a validation error about unexpected link type$/
+     */
+    public function thisProductHasAValidationErrorAboutUnexpectedLinkType()
+    {
+        $this->assertProductHasValidationError(
+            'pim_catalog.constraint.quantified_associations.unexpected_link_type',
+            'quantifiedAssociations.PACK'
+        );
+    }
 }

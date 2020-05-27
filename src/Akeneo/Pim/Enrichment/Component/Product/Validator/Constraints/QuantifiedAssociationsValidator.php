@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\Quantifi
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductModelCodesQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations as QuantifiedAssociationsConstraint;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -60,21 +59,21 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         $normalized = $value->normalize();
 
         foreach ($normalized as $associationTypeCode => $targets) {
-            $propertyPath = sprintf('[%s]', $associationTypeCode);
-            $productsPropertyPath = sprintf('%s[products]', $propertyPath);
-            $productModelsPropertyPath = sprintf('%s[product_models]', $propertyPath);
+            $propertyPath = sprintf('%s', $associationTypeCode);
+            $productsPropertyPath = sprintf('%s.products', $propertyPath);
+            $productModelsPropertyPath = sprintf('%s.product_models', $propertyPath);
 
             $this->validateAssociationType($associationTypeCode, $propertyPath);
             $this->validateLinkTypes(array_keys($targets), $propertyPath);
 
             foreach ($targets['products'] as $index => $quantifiedLink) {
-                $quantityPropertyPath = sprintf('%s[%d]', $productsPropertyPath, $index);
+                $quantityPropertyPath = sprintf('%s[%d].quantity', $productsPropertyPath, $index);
 
                 $this->validateAssociationQuantity($quantifiedLink['quantity'], $quantityPropertyPath);
             }
 
             foreach ($targets['product_models'] as $index => $quantifiedLink) {
-                $quantityPropertyPath = sprintf('%s[%d]', $productModelsPropertyPath, $index);
+                $quantityPropertyPath = sprintf('%s[%d].quantity', $productModelsPropertyPath, $index);
 
                 $this->validateAssociationQuantity($quantifiedLink['quantity'], $quantityPropertyPath);
             }
