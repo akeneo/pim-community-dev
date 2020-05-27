@@ -71,8 +71,9 @@ define(
                 notificationView.setElement(this.$('.notification')).render();
                 notificationView.refresh();
 
-                const CommunicationChannelView = new CommunicationChannel();
-                CommunicationChannelView.setElement(this.$('.communication-channel')).render();
+                const communicationChannelView = new CommunicationChannel();
+                communicationChannelView.setElement(this.$('.communication-channel')).render();
+                communicationChannelView.refresh();
 
                 this.delegateEvents();
 
