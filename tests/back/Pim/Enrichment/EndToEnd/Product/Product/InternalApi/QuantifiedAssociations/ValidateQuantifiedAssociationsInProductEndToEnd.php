@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\InternalApi;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi\QuantifiedAssociations;
 
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi\QuantifiedAssociations\AbstractProductWithQuantifiedAssociationsTestCase;
 use Symfony\Component\HttpFoundation\Response;
