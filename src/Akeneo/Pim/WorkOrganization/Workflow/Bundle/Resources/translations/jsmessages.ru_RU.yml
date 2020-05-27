@@ -1,4 +1,4 @@
-View the product: Посмотреть продукт
+View the product: Посмотр продукта
 Unpublish the product: Снять продукт с публикации
 Approve: Одобрить
 Refuse: Отклонить
@@ -22,29 +22,27 @@ pimee_workflow:
     proposal:
       modal.title: Оставить комментарий (255 символов макс.)
   proposal:
+    selected: предложения выбраны
     mass_action_group:
       review:
         label: Массовое действие
     partial_accept:
       modal.title: Частичнo oдобрить информацию
       modal.label: Оставить комментарий (необязательно)
-      modal.error: Произошла ошибка, это предложение не былo частично одобренo
       modal.success: Это предложение было успешно частично одобренo
     partial_approve:
       modal:
         title: Частично утвердить изменения
         label: Оставить комментарий (необязательно)
-        error: Произошла ошибка, это предложение не былo частично одобренo
         success: Изменения были успешно утверждены
     partial_reject:
       modal:
         title: Частично отклонить изменения
         label: Оставить комментарий (необязательно)
-        error: Произошла ошибка, это предложение не было частично отклонено
         success: Изменения были успешно отклонены
 batch_jobs:
   csv_published_product_export:
-    label: Экспорт размещенных товаров в CSV
+    label: Экспорт опубликованных товаров в CSV
     export.label: Экспорт опубликованных товаров
   csv_product_proposal_import:
     label: Импорт предложений из CSV
@@ -93,6 +91,7 @@ pimee_dashboard:
       product: Продукт
       review: Обзор
       empty: Нет предложений для обзора
+    header.view_all: Просмотреть все
 pimee_enrich.entity.product:
   module:
     history:
@@ -100,10 +99,10 @@ pimee_enrich.entity.product:
       revert: Восстановить
     meta:
       published_version: Опубликованная версия
-      owner_groups: Группы владельцы
+      owner_groups: Владельцы группы
       draft_status: Статус черновика
       draft:
-        in_progress: В процессе
+        in_progress: В ходе выполнения
         sent_for_approval: В ожидании утверждения
         working_copy: Рабочая копия
     revert:
@@ -121,7 +120,7 @@ pimee_enrich.entity.product:
       draft_of: "Черновики пользователя {{ author }}"
     approval:
       send: Отправить на утверждение
-      sent: Отправлено на утверждение
+      sent: Отправить на утверждение
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -137,24 +136,23 @@ pimee_enrich.entity.published_product:
       label: Опубликовать
       publish_this_version: Опубликовать эту версию
     unpublish:
-      label: Снять с публикации
+      label: Отменить публикацию
 pimee_enrich.entity.product_draft:
   flash:
     approve:
       success: Предложение было успешно применено.
+      fail: "Предложение не может быт применено из-за следующей ошибки: {{ error }}"
     reject:
       success: Это предложение было отклонено.
     remove:
       success: Предложение было удалено.
     update:
       success: Черновик продукта успешно сохранен
-      fail: Черновик продукта не обновлен
+      fail: Не удалось обновить черновик продукта
     create:
       success: Черновик продукта отправлен на утверждение
       fail: Невозможно отправить черновик на утверждение
   module:
-    create:
-      label: Сохранить черновик
     proposal:
       accept: Принять предложение
       accept_selected: Принять выбранные предложения
@@ -171,14 +169,19 @@ pimee_enrich.mass_edit.product:
   operation:
     publish:
       label: Опубликовать
+      description: Продукты будут опубликованы
+      warning: '{{ itemsCount }} выбранных продуктов будут опубликованы.'
     unpublish:
-      label: Снять с публикации
+      label: Отменить публикацию
+      description: Продукты будут сняты с публикации
+      warning: Выбранные продукты {{ itemsCount }} будет сняты с публикации.
 pim_menu:
   navigation:
-    published_products: Опубликованные продукты
+    published_products: Опубликованные товары
   item:
     proposal: Предложения
-    published_product: Опубликованные продукты
+    published_product: Опубликованные товары
 pim_title:
   pimee_workflow_proposal_index: Предложения
-  pimee_workflow_published_product_index: Опубликованные продукты
+  pimee_workflow_published_product_index: Опубликованные товары
+  pimee_workflow_published_product_view: Опубликованные продукты {{ product.label }} | Просмотр

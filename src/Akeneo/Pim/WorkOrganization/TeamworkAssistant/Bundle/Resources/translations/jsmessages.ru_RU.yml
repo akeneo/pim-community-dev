@@ -1,8 +1,13 @@
 teamwork_assistant:
   common:
     required: Обязательно
+    warning: Процесс расчета по проекту может занять некоторое время, поэтому ваш проект может быть не виден сразу, не волнуйтесь.
   grid:
     view_selector:
+      create: Создать проект
+      edit: Редактировать проект
+      remove: Удалить проект
+      create_from_view: Создать проекта из этого представления
       start_new_project: Начать новый проект
       confirmation:
         remove: Вы действительно хотите удалить этот проект?
@@ -10,17 +15,52 @@ teamwork_assistant:
   project:
     label: Имя
     locale: Локаль
+    label_maxlength: Это значение слишком длинное. Лимит составляет не более {{ max }} символов.
     description: Описание
+    due_date: Дата исполнения
     due_date_past: Нельзя выбрать прошедшую дату.
+    leaving_scope: Вы покидаете пределы видимости проекта.
   edit_project_modal:
     saved: Проект сохранён.
+    title: Редактировать проект
+  create_project_modal:
+    saved: Проект был сохранен, и вы будете уведомлены, когда расчет будет завершен.
   widget:
+    no_project: У вас нет текущего проекта
+    no_project_create: создать новый проект
     description: Описание
+    due_date: Дата исполнения
+    todo: СДЕЛАТЬ
+    in_progress: ВЫПОЛНЯЕТСЯ
     done: ГОТОВО
+    all_contributors: Все участники
+    display_products: Показать продукты
+    placeholder:
+      contributor_selector: Поиск участника
+      project_selector: Поиск проекта
+    completeness:
+      to_start: СТАРТ ПРОДУКТОВ
+      in_progress: ПРОДУКТЫ В ПРОЦЕССЕ ВЫПОЛНЕНИЯ
+      done: ПРОДУКТЫ ЗАВЕРШЕНЫ
 pim_datagrid:
   view_selector:
     project: Проекты
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Помощник по команде
+        project_calculation: Помощник по команде
+batch_jobs:
+  project_calculation:
+    project_calculation.label: Подсчет статистики проекта
+    prepare_project_calculation.label: Подготовка к подсчету статистики проекта
+    clean_contributor_group.label: Проверить доступы пользователей на локали проекта
+  refresh_project_completeness_calculation:
+    label: Обновить полноту заполнения проекта
+    refresh_project_completeness_calculation.label: Обновить полноту заполнения проекта
 pim_notification:
   types:
     project_created: Новый проект для вас
     project_finished: Проект завершён
+    project_calculation: Подсчет статистики проекта

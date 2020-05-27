@@ -1,1 +1,163 @@
+pimee_workflow:
+  product_draft:
+    author: Autor
+    source: Źródło
+    created: Proponowane w
+    changes: Zmiany
+    locale: Kontekst lokalny
+    product:
+      label: Etykieta produktu
+    attribute:
+      label: Atrybut
+    status:
+      label: Status
+      working_copy: Kopia robocza
+      in_progress: W Toku
+      ready: Oczekuje na akceptację
+      can_be_partially_reviewed: Może być częściowo przejrzane
+      can_not_be_approved: Nie może być usunięty
+      can_not_be_deleted: Nie może być usunięty
+    status_message:
+      can_be_partially_reviewed: Możesz przejrzeć tą propozycję tylko częściowo, ponieważ niektóre zmiany dotyczą wartości, których nie możesz edytować. Skontaktuj się z administratorem, aby zmienić swoje uprawnienia.
+      can_not_be_approved: Nie możesz przejrzeć tej propozycji, ponieważ wszystkie zmiany dotyczą wartości, których nie możesz edytować. Skontaktuj się z administratorem, aby zmienić swoje uprawnienia.
+      can_not_be_deleted: Nie możesz usunąć tej propozycji, ponieważ wszystkie zmiany dotyczą wartości, których nie możesz edytować. Skontaktuj się z administratorem, aby zmienić swoje uprawnienia.
+      in_progress: Ta propozycja jest obecnie w tworzeniu i nie może być jeszcze opublikowana.
+    action:
+      approve: Zatwierdź wszystkie
+      refuse: Odrzuć wszystkie
+      remove: Usuń
+      partial_approve: Zatwierdź zmiany w atrybucie %attribute% produktu %product%
+      partial_reject: Odrzuć zmiany w atrybucie %attribute% produktu %product%
+    notification:
+      partial_approve: '%owner% zaakceptował watrość(i) dla %attributes% dla produktu %product%'
+      partial_approve_number: '%owner% zaakceptował wartości dla %attributes_count% atrybutów dla produktu %product%'
+      partial_reject: '%owner% odrzucił wartość(i) dla %attributes% dla produktu %product%'
+      partial_reject_number: '%owner% odrzucił wartości dla %attributes_count% atrybutów dla produktu %product%'
+      partial_remove: '%owner% usunął wartość(i) dla %attributes% dla produktu %product%'
+      partial_remove_number: '%owner% usunął wartości dla %attributes_count% atrybutów dla produktu %product%'
+      approve: '%owner% zaakceptował twoją propozycję dla produktu %product%'
+      refuse: '%owner% odrzucił twoją propozycję dla produktu %product%'
+      remove: '%owner% usunął twoją propozycję dla produktu %product%'
+    mass_review_action:
+      approve: Zatwierdź wszystkie zaznaczone
+      refuse: Odrzuć wszystkie zaznaczone
+      error:
+        draft_not_ready: Wniosek nie może zostać zaakceptowany
+        not_product_owner: Nie posiadasz produktu związanego z tą propozycją
+        cannot_edit_attributes: Nie możesz edytować atrybutów przez niniejszy wniosek
+        invalid_draft: Propozycja nie może zostać zastosowana ze względu na następujący błąd. %error%
+  proposal:
+    to_review: '%author.firstname%%author.lastname% wysłał propozycję przeglądu produktu %product.label%'
+    individual_import: '%author.firstname% %author.lastname% wysłał propozycje przeglądu z importu pracy'
+    generic_import: Masz propozycję do przejrzenia z importu zadań
+    original_value: Oryginał
+    new_value: Nowy
+    no_diff: Wartość "%value%" jest taka sama między propozycją a kopią roboczą.
+    draft_in_progress: Projekt jest w toku przez %author% dla tego produktu.
+  published_product:
+    index: Opublikowany produkty
+    title: Opublikowany produkt
+  acl.published_product:
+    index: Zarządzaj opublikowanymi produktami
+  product:
+    permission:
+      own: Przejrzyj / publikuj
+      edit: Edytuj
+      view: Zobacz
+  steps:
+    product_draft_processor.title: Edytor propozycji
+    approve.title: Zatwierdzono propozycje
+    refuse.title: Odrzucono propozycje
+  mass_edit_action:
+    published:
+      page_title: Opublikowane produkty
+      page_subtitle: Masowa edycja (1 opublikowany produkt)| Masowa edycja (%count% opublikowanych produktów)
+      title: Wybierz działanie
+      subtitle: Wybierz operację, którą chcesz wykonać na wybranych opublikowanych produktach| Wybierz operację, którą chcesz wykonać na wybranych %count% opublikowanych produktach
+      confirm: Masz zamiar zaktualizować opublikowane produkty o następujące informacje, Proszę potwierdzić. | Masz zamiar zaktualizować %count% opublikowanych produktów z następujących informacji, Proszę potwierdzić.
+      steps:
+        first: Wybierz opublikowane produkty
+        second: Wybierz działanie
+        third: Konfiguruj
+        fourth: Potwierdź
+btn:
+  publish: Opublikuj
+  unpublish: Cofnij publikację
+  save working copy: Zapisz kopię roboczą
+  save working copy and next: Zapisz kopię roboczą i dalej
+  save working copy and finish: Zapisz kopię roboczą i zakończ
+  send for approval: Wyślij do zatwierdzenia
+  sent for approval: Wyślij do zatwierdzenia
+  editworkingcopy: Edytuj kopię roboczą
+flash:
+  product:
+    updated: Kopia robocza produktu została zaktualizowana
+    published: Produkt został pomyślnie opublikowany.
+    unpublished: Publikacja produktu została cofnięta pomyślnie.
+  product_draft:
+    updated: Szkic zapisany pomyślnie
+    approve:
+      success: Propozycja została zastosowana pomyślnie.
+      error: Wniosek nie może być stosowany z powodu następującego błędu. %error%
+    refuse:
+      success: Propozycja została odrzucona.
+    remove:
+      success: Propozycja zostałą usunięta.
+pim_menu:
+  item:
+    published_product: Opublikowane produkty
+    proposal: Propozycje
+confirmation:
+  product:
+    publish: Jesteś pewien, że chcesz opublikować ten produkt?
+    unpublish: Jesteś pewien, że chcesz cofnąć publikacje tego produktu?
+Attributes.title: Atrybuty
 Completeness.title: Kompletność
+publish_product.steps.publish_product_tasklet.title: Opublikuj produkt
+unpublish_product.steps.unpublish_product_tasklet.title: Cofnij publikowanie produktu
+approve_product_draft.steps.approve.title: Zatwierdzono propozycje
+approve_product_draft.steps.refuse.title: Odrzucono propozycje
+job_execution.summary:
+  approved: zatwierdzone
+  refused: odrzucone
+  mass_published: Produkt opublikowany
+  mass_unpublished: Produkt nieopublikowany
+  proposal: Utworzono propozycje
+  proposal_deleted: usunięto propozycje
+  proposal_updated: zaktualizowano propozycje
+  proposal_created: utworzono propozycje
+  proposal_skipped: produkt pominięty (brak różnic)
+published products: Opublikowane produkty
+pim_analytics:
+  info_type:
+    nb_published_products: Numer opublikowanego produktu
+    nb_product_drafts: Liczba projektów produktu
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Propozycje do wystawienia opinii
+      date: Data
+      author: Autor
+      product: Produkt
+      review: Opinia
+      empty: Brak szkiców produktów do odczytu
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Opublikuj
+      description: Publikowanie wybranych produktów, aktualne dane opublikowane zostaną usunięte przez bieżącą kopię roboczą.
+      success_flash: Wybrane produkty zostały pomyślnie opublikowane.
+      launched_flash: Zadanie eksportu produktów jest aktualnie wykonywane.
+      message:
+        info: '%nbProducts% wybrane produkty zostaną opublikowane.'
+    unpublish:
+      label: Cofnij publikację
+      description: Cofnij publikację wybranych produktów, bieżące opublikowane dane zostaną usunięte.
+      success_flash: Publikacja produktu została cofnięta pomyślnie.
+      launched_flash: Produkt(y) wycofujący publikację jest aktualnie uruchomiony.
+      message:
+        info: '%nbProducts% wybranym produktom zostanie cofnięta publikacja.'
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Propozycje

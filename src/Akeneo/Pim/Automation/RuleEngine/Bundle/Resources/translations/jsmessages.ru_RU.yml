@@ -1,9 +1,12 @@
 pimee_catalog_rule:
   execution_button: Выполнить привила
+  selected: 'правила выбраны'
   popin:
     execute_rules:
+      confirm_title: Подтвердить выполнение
       confirm_content: Вы уверены, что хотите выполнить все правила? (это может занять много времени)
   notification:
+    fail: Действие не может быть выполнено
     launched: Начато выполнение правил. Вы будете уведомлены, когда это будет сделано.
   attribute:
     list:
@@ -26,28 +29,33 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
+          confirm_title: Подтвердить выполнение
           confirm_content: Вы уверены, что хотите выполнить правило?
       mass_edit_action:
+        confirm_title: Подтвердить расчет
         confirm_content: Вы уверены, что вы хотите вычислить количество продуктов затрагиваемых правилами?
       mass_action:
         execute:
+          confirm_title: Подтвердить выполнение
           confirm_content: Вы уверены, что хотите выполнить выбранные правила?
           success: Выполнение выбранных правил начато. Вы будете уведомлены, когда это будет сделано
-          error: Произошла ошибка во время выполнения правил.
           empty_selection: Правила не выбраны.
         delete:
+          confirm_title: Подтвердить выполнение
           confirm_content: Вы уверены, что хотите удалить выбранные правила?
           success: Вы успешно удалили правила.
-          error: Произошла ошибка при удалении правил.
           empty_selection: Правила не выбраны.
   form:
     attribute:
       tab:
         rules:
           title: Правила
-confirmation:
-  remove:
-    rule: Вы уверены, что хотите удалить это правило? Это действие отменить невозможно
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Вы уверены, что хотите удалить это правило? Это действие отменить невозможно
 pim_datagrid:
   entity:
     rule:

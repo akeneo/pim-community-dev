@@ -9,73 +9,89 @@ pim_reference_entity:
   reference_entity:
     button:
       save: Сохранить
+      save_permission: Сохранить
       create: Создать
     tab:
       attribute: Атрибуты
       properties: Свойства
+      permission: Права доступа
     properties:
       identifier: Код
-      label: Метка
+      label: Ярлык
       image: Изображение
     create:
       header:
         title: Создать
       input:
-        label: Метка
+        label: Ярлык
       confirm: Сохранить
     delete:
       title: Атрибут
   record:
+    no_result:
+      subtitle: Попробовать еще раз по другому критерию поиска.
     button:
       save: Сохранить
       create: Добавить новый
       delete: Удалить
+    product:
+      title: Продукты
     enrich:
       code: Код
-      label: Метка
+      label: Ярлык
     create:
       header:
         title: Создать
       input:
-        label: Метка
+        label: Ярлык
       confirm: Сохранить
     grid:
       filter:
         completeness:
           label: Завершено
-          'yes': 'YES'
-          'no': 'NO'
+          all: Все
+          'yes': 'Да'
+          'no': 'Нет'
+        option:
+          all: Все
+          operator:
+            in: В списке
       column:
         code: Код
         image: Изображение
-        label: Метка
+        label: Ярлык
         complete: Завершено
         action: Действия
     tab:
       enrich: Дополнить данные
+      product: Продукты
     completeness:
       label: Завершено
   attribute:
     default:
       code: Код
-      label: Метка
+      label: Ярлык
       image: Изображение
     type:
-      text: Текст
+      text: Текст до 255 символов
       image: Изображение
     create:
       header:
         title: Создать
       input:
-        label: Метка
+        label: Ярлык
         type: Тип атрибута
+        value_per_locale: Значение в локали
+        value_per_channel: Значение в канале
       confirm: Сохранить
     edit:
       save: Сохранить
-      cancel: Отмена
+      cancel: oтменить
       input:
-        label: Метка
+        label: Ярлык
         type: Тип атрибута
+        value_per_locale: Значение в локали
+        value_per_channel: Значение в канале
         max_length: Максимум символов
         textarea: Текстовая область
         max_file_size: Максимальный размер файла (МБ)
@@ -84,8 +100,8 @@ pim_reference_entity:
         regular_expression: Регулярное выражение
         options:
           validation_rule:
-            none: Нет
-            email: E-mail
+            none: (Пусто)
+            email: Адрес электронной почты
             regular_expression: Регулярное выражение
             url: URL
     delete:
@@ -104,5 +120,11 @@ pim_reference_entity:
     delete:
       subtitle: Подтвердить удаление
       button:
-        cancel: Отмена
+        cancel: oтменить
         confirm: Удалить
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Параметры, специфические для типа

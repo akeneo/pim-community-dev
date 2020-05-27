@@ -6,11 +6,33 @@ akeneo_franklin_insights:
           active: Активен
           inactive: Неактивен
     attributes_mapping:
+      flash:
+        fail_to_retrieve_franklin_mapping: 'Сопоставление атрибутов недоступно. Пожалуйста, вернитесь позже.'
       fields:
         franklin_insights:
-          mapped: Активен
-          unmapped: Неактивен
+          active: Активен
+          inactive: Неактивен
+      module:
+        index:
+          family_progress:
+            mapped_attribute: '{{ mapped_count }} атрибутов сопоставлено, и {{ suggested_count }} предложено'
+          suggested: Рекомендуется
+    attribute_options_mapping:
+      flash:
+        load_failed: 'Обновление не удалось'
   connection:
     module:
       activation:
         activated: 'Активированный'
+  key_figures:
+    axis:
+      franklin_attribute_created: Атрибуты созданы
+      franklin_attribute_added_to_family: Атрибуты добавлены в семейство
+      credits_consumed: Использовано кредитов
+      franklin_values_validated: Значения атрибутов проверены
+      franklin_values_in_error: Значения атрибутов при ошибке
+      franklin_values_suggested: Предложенные значения атрибутов
+      franklin_names_and_values_suggested: Предложены имена атрибутов и значения
+batch_jobs:
+  default_steps:
+    notify_if_pending_attributes: Уведомлять пользователей об отложенных атрибутах на карте

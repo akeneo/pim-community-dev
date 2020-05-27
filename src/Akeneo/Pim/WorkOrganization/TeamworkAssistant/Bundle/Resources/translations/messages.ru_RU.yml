@@ -1,19 +1,42 @@
 teamwork_assistant:
   project:
     required: Это значение не должно быть пустым.
+    label_maxlength: Это значение слишком длинное. Лимит составляет не более {{ max }} символов.
     project_identifier: Проект {{ project }} не существует.
     project_due_date: Нельзя выбрать прошедшую дату.
   notification:
     project_calculation:
+      error: Подсчет статиcтики проекта для <strong>%project_label%</strong> не был удачно завершен
+      warning: Подсчет статиcтики проекта для <strong>%project_label%</strong> был завершен с предупреждениями
+      success: Проект <strong>%project_label%</strong> готов и участники уведомлены. Давайте начнем!
       start: Начало
+    message: У вас есть новые продукты для обогащения "%project_label%". До даты "%due_date%".
     project_finished:
+      contributor: Поздравления! Вы на 100% завершили продукт в %project_label%.
+      owner: '%project_label% до %due_date% закончен.'
       show: Показать
     due_date:
+      contributor: Вы выполнили %percent%% продуктов %project_label%. Не забудьте заполнить остальные продукты до %due_date%.
+      owner: '%project_label% на %due_date% выпонены не на 100%.'
       start: Начало
   datagrid:
-    contributor_in_progress: В процессе
+    project_completeness: Прогресс выполнения проекта
+    contributor_todo: Нужно сделать
+    contributor_in_progress: В ходе выполнения
     contributor_done: Готово
+    owner_todo: Нужно сделать (обзор проекта)
+    owner_in_progress: Выполняется (обзор проекта)
     owner_done: Готово (обзор проекта)
+  user:
+    deletion:
+      user_is_project_owner: Этот пользователь по-прежнему является владельцем одного или нескольких проектов. Пожалуйста, удалите все проекты этого пользователя.
+job_execution:
+  summary:
+    processed_products: Обработанные продукты
 pim_analytics:
   info_type:
     nb_projects: Количество проектов
+pim_datagrid:
+  cells:
+    type:
+      project_calculation: Подсчет статистики проекта

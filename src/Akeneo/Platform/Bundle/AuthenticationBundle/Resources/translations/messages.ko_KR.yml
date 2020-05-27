@@ -1,0 +1,6 @@
+akeneo_authentication:
+  acl:
+    sso:
+      title: Single Sign-On(SSO) 관리
+  sso:
+    unknown_user_error: 이 애플리케이션에 액세스할 수 있는 권한이 없습니다. 관리자에게 문의하십시오.

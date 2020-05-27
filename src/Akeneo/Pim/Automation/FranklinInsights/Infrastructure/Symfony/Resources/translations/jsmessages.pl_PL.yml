@@ -1,0 +1,43 @@
+akeneo_franklin_insights:
+  entity:
+    identifier_mapping:
+      fields:
+        status:
+          active: Aktywne
+          inactive: Nieaktywny
+    attributes_mapping:
+      flash:
+        fail_to_retrieve_franklin_mapping: 'Mapowanie atrybutów nie jest teraz dostępne. Proszę wrócić później.'
+      fields:
+        franklin_insights:
+          active: Aktywne
+          inactive: Nieaktywny
+      module:
+        index:
+          family_progress:
+            mapped_attribute: '{{ mapped_count }} atrybutów zamapowanych oraz {{ suggested_count }} zasugerowanych'
+          suggested: Sugerowane
+    product_subscription:
+      constraint:
+        product_subscription_with_same_identifier_already_exist: 'Inny produkt z co najmniej jednym identycznym identyfikatorem został już zapisany.'
+    attribute_options_mapping:
+      flash:
+        load_failed: 'Aktualizacja nieudana'
+  connection:
+    flash:
+      error: Przepraszamy, wystąpił błąd.
+    module:
+      activation:
+        activated: 'Aktywowany'
+  key_figures:
+    axis:
+      franklin_attribute_created: Utworzono atrybuty
+      franklin_attribute_added_to_family: Atrybuty dodane do rodziny
+      credits_consumed: Zużyte kredyty
+      franklin_values_validated: Potwierdzone wartości atrybutu
+      franklin_values_in_error: Błędne wartości atrybutu
+      franklin_values_suggested: Sugerowane wartości atrybutów
+      franklin_names_and_values_suggested: Sugerowane nazwy i wartości atrybutów
+batch_jobs:
+  default_steps:
+    notify_if_pending_attributes: Powiadom użytkowników o oczekujących atrybutach do mapy

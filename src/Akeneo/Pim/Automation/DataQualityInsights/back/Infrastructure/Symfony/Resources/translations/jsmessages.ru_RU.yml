@@ -1,0 +1,48 @@
+akeneo_data_quality_insights:
+  title: Прогнозы качества данных
+  dqi_dashboard:
+    menu: Прогнозы качества данных
+    title: Обзор качества данных
+    no_data_title: К сожалению, мы не располагаем достаточными данными, чтобы показать обзор качества данных.
+    no_data_subtitle: Пожалуйста, зайдите позже.
+    legend:
+      excellent: Отлично
+      good: Хорошо
+      average: Среднее
+      below_average: Ниже среднего
+      to_improve: Улучшить
+    widgets:
+      title: Заголовок
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: Необходимые атрибуты с отсутствующими значениями
+      completeness_of_non_required_attributes:
+        recommendation: Необязательные атрибуты с отсутствующими значениями
+      consistency_spelling:
+        recommendation: Атрибуты с орфографическими проблемами
+    axis:
+      enrichment:
+        title: Обогащение
+        attributes_link: Показать все недостающие атрибуты
+        success: Данные вашего продукта полностью обогащены. Поздравляем!
+      consistency:
+        title: Согласованность
+        attributes_link: Показать все улучшенные атрибуты
+        success: Данные вашего продукта полностью согласованы. Поздравляем!
+    messages:
+      success:
+        criterion: Все хорошо.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: Все недостающие атрибуты
+      all_improvable_attributes: Все улучшенные атрибуты
+    spellcheck_popover:
+      title: Исправления
+      original_text_title: Оригинал
+      suggestions_title: Предложения
+      ignore_all_suggestions_button_label: Пропустить
+    title_suggestion_popover:
+      ignore_all_suggestions_button_label: Пропустить
+pim_title:
+  akeneo_data_quality_insights_dashboard: Прогнозы качества данных
