@@ -5,16 +5,21 @@ services:
             - '@akeneo_connectivity.connection.serializer'
 
     akeneo_connectivity.connection.serializer:
-        class: 'Symfony\Component\Serializer\Serializer'
+        class: Symfony\Component\Serializer\Serializer
 
     akeneo_connectivity.connection.normalizer.exception.violation:
-        class: 'Akeneo\Connectivity\Connection\Infrastructure\Normalizer\ViolationNormalizer'
+        class: Akeneo\Connectivity\Connection\Infrastructure\Normalizer\ViolationNormalizer
         arguments:
             - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name:  akeneo_connectivity.connection.serializer.normalizer, priority: 100 }
 
     akeneo_connectivity.connection.encoder.exception.violation:
-        class: 'Symfony\Component\Serializer\Encoder\JsonEncoder'
+        class: Symfony\Component\Serializer\Encoder\JsonEncoder
         tags:
             - { name:  akeneo_connectivity.connection.serializer.encoder, priority: 100 }
+
+    akeneo_connectivity.connection.normalizer.exception.documented:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Normalizer\DocumentedNormalizer
+        tags:
+            - { name:  akeneo_connectivity.connection.serializer.normalizer, priority: 100 }
