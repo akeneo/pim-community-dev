@@ -1,19 +1,19 @@
 import * as Backbone from 'backbone';
 import * as _ from 'underscore';
+import CampaignFetcher from 'akeneocommunicationchannel/fetcher/campaign-fetcher';
 
-const DataCollector = require('pim/data-collector');
 const __ = require('oro/translator');
-
 const CommunicationChannelTemplate = require('akeneo/template/menu/communication-channel');
 
 class CommunicationChannel extends Backbone.View<any> {
-  private analyticsUrl: string = 'pim_analytics_data_collect';
+  private baseUrl: string = 'https://help.akeneo.com/pim/serenity/updates/index.html';
 
-  private baseUrl: string =
-    'https://help.akeneo.com/pim/serenity/updates/index.html?utm_source=akeneo-app&utm_medium=communication-icon&utm_campaign=';
+  private source: string = 'akeneo-app';
+
+  private medium: string = 'communication-icon';
 
   public render(): Backbone.View {
-    const template: any = _.template(CommunicationChannelTemplate);
+    const template = _.template(CommunicationChannelTemplate);
     this.$el.empty().append(
       template({
         title: __('pim_communication_channel.link.title'),
@@ -23,18 +23,19 @@ class CommunicationChannel extends Backbone.View<any> {
     return Backbone.View.prototype.render.apply(this, arguments);
   }
 
-  public refresh(): void {
-    this.getCampaign().then((campaign: string) => {
-      this.$('a').attr('href', `${this.baseUrl}${campaign}`);
-    });
+  public async refresh(): Promise<void> {
+    const url = await this.buildUrl();
+    this.$('a').attr('href', `${url.href}`);
   }
 
-  private getCampaign() {
-    return DataCollector.collect(this.analyticsUrl).then((data: any) => {
-      const {pim_version, pim_edition} = data;
+  private async buildUrl(): Promise<URL> {
+    const campaign = await CampaignFetcher.fetch();
+    const url = new URL(this.baseUrl);
+    url.searchParams.append('utm_source', this.source);
+    url.searchParams.append('utm_medium', this.medium);
+    url.searchParams.append('utm_campaign', campaign);
 
-      return `${pim_edition}${pim_version}`;
-    });
+    return url;
   }
 }
 
