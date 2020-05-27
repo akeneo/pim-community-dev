@@ -67,13 +67,13 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             $this->validateLinkTypes(array_keys($targets), $propertyPath);
 
             foreach ($targets['products'] as $index => $quantifiedLink) {
-                $quantityPropertyPath = sprintf('%s[%d]', $productsPropertyPath, $index);
+                $quantityPropertyPath = sprintf('%s[%d].quantity', $productsPropertyPath, $index);
 
                 $this->validateAssociationQuantity($quantifiedLink['quantity'], $quantityPropertyPath);
             }
 
             foreach ($targets['product_models'] as $index => $quantifiedLink) {
-                $quantityPropertyPath = sprintf('%s[%d]', $productModelsPropertyPath, $index);
+                $quantityPropertyPath = sprintf('%s[%d].quantity', $productModelsPropertyPath, $index);
 
                 $this->validateAssociationQuantity($quantifiedLink['quantity'], $quantityPropertyPath);
             }

@@ -726,7 +726,7 @@ final class QuantifiedAssociationsContext implements Context
     {
         $this->assertProductHasValidationError(
             'pim_catalog.constraint.quantified_associations.invalid_quantity',
-            'quantifiedAssociations.PACK.products[0]'
+            'quantifiedAssociations.PACK.products[0].quantity'
         );
     }
 
