@@ -4,6 +4,10 @@
 
 - PIM-9259: Add an optimize jpeg operation on asset's transformations
 
+## Bug fixes
+
+- PIM-9258: Fix linked products view in reference entities when an asset is set as main image.
+
 # 4.0.29 (2020-05-26)
 
 # 4.0.28 (2020-05-20)
