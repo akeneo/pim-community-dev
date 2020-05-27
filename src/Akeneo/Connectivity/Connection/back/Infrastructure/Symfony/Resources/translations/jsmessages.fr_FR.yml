@@ -198,6 +198,11 @@ akeneo_connectivity.connection:
         content_column: Message d'erreur
       no_error:
         title: Génial ! Aucune erreur trouvée !
+      not_auditable:
+        description:
+          1: To track errors on this connection,
+          2: activate monitoring
+          3: in the settings.
   runtime_error:
     error_message: Oups ! Une erreur s'est produite...
     reload_helper: Merci de rafraîchir la page et de réessayer.

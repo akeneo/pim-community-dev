@@ -198,6 +198,11 @@ akeneo_connectivity.connection:
         content_column: 오류 메시지
       no_error:
         title: 대단합니다! 오류가 없습니다!
+      not_auditable:
+        description:
+          1: To track errors on this connection,
+          2: activate monitoring
+          3: in the settings.
   runtime_error:
     error_message: 죄송합니다! 오류가 발생했습니다...
     reload_helper: 페이지를 다시 로드하고 다시 시도하십시오.

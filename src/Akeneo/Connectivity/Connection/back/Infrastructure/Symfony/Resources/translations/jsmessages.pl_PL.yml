@@ -198,6 +198,11 @@ akeneo_connectivity.connection:
         content_column: Komunikat o błędzie
       no_error:
         title: Wspaniale! Nie znaleziono błędu!
+      not_auditable:
+        description:
+          1: To track errors on this connection,
+          2: activate monitoring
+          3: in the settings.
   runtime_error:
     error_message: Motyla noga! Mamy błąd...
     reload_helper: Proszę odświeżyć stronę i spróbować ponownie
