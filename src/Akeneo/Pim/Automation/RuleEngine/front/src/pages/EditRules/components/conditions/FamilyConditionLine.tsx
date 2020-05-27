@@ -10,7 +10,7 @@ import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { Operator } from '../../../../models/Operator';
 import { FamilyCode } from '../../../../models';
 import { FieldColumn, OperatorColumn, ValueColumn } from './style';
-import { FamiliesSelector } from "../../../../components/Selectors/FamiliesSelector";
+import { FamiliesSelector } from '../../../../components/Selectors/FamiliesSelector';
 
 type FamilyConditionLineProps = ConditionLineProps & {
   condition: FamilyCondition;

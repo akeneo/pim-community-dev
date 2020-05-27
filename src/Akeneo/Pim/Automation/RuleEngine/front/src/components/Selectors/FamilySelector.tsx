@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   InitSelectionCallback,
-  Select2Option, Select2SimpleAsyncWrapper,
+  Select2Option,
+  Select2SimpleAsyncWrapper,
 } from '../Select2Wrapper';
 import { Router } from '../../dependenciesTools';
 import { IndexedFamilies } from '../../fetch/FamilyFetcher';
@@ -16,6 +17,7 @@ type Props = {
   currentCatalogLocale: LocaleCode;
   value: FamilyCode | null;
   onChange: (value: FamilyCode) => void;
+  placeholder?: string;
 };
 
 const dataProvider = (term: string, page: number) => {
@@ -73,8 +75,8 @@ const FamilySelector: React.FC<Props> = ({
   currentCatalogLocale,
   value,
   onChange,
+  placeholder,
 }) => {
-  console.log(value);
   return (
     <Select2SimpleAsyncWrapper
       id={id}
@@ -95,7 +97,7 @@ const FamilySelector: React.FC<Props> = ({
           initSelectedFamily(router, value, currentCatalogLocale, callback);
         }
       }}
-      placeholder={'Select a family'}
+      placeholder={placeholder}
       allowClear={true}
     />
   );

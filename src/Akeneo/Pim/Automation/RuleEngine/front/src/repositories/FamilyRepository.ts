@@ -46,6 +46,6 @@ const getFamilyByIdentifier = async (
 ): Promise<Family> => {
   const family = await getFamiliesByIdentifiers([familyIdentifier], router);
   return family[familyIdentifier];
-}
+};
 
 export { getFamiliesByIdentifiers, getFamilyByIdentifier };

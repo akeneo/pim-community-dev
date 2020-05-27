@@ -1,5 +1,5 @@
 import { Router, Translate } from '../../../../dependenciesTools';
-import { LocaleCode } from "../../../../models";
+import { LocaleCode } from '../../../../models';
 
 type ActionLineProps = {
   lineNumber: number;

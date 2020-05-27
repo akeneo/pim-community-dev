@@ -15,7 +15,8 @@ import {
   denormalizeConcatenateAction,
   denormalizeCopyAction,
   denormalizeRemoveAction,
-  denormalizeSetAction, denormalizeSetFamilyAction,
+  denormalizeSetAction,
+  denormalizeSetFamilyAction,
 } from './actions';
 
 function denormalizeAction(jsonAction: any): Action {

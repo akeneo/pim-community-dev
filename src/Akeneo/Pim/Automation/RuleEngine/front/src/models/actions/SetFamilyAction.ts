@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
-import { SetFamilyActionLine } from "../../pages/EditRules/components/actions/SetFamilyActionLine";
-import { FamilyCode } from "../Family";
+import { SetFamilyActionLine } from '../../pages/EditRules/components/actions/SetFamilyActionLine';
+import { FamilyCode } from '../Family';
 
 export type SetFamilyAction = {
   module: React.FC<{ action: SetFamilyAction } & ActionLineProps>;
@@ -10,7 +10,9 @@ export type SetFamilyAction = {
   value: FamilyCode | null;
 };
 
-export const denormalizeSetFamilyAction = (json: any): SetFamilyAction | null => {
+export const denormalizeSetFamilyAction = (
+  json: any
+): SetFamilyAction | null => {
   if (json.type !== 'set') {
     return null;
   }
