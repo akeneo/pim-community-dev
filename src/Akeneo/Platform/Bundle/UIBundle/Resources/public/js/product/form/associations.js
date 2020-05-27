@@ -31,7 +31,7 @@ define([
   'react',
   'react-dom',
   'pimui/js/product/form/quantified-associations/QuantifiedAssociationsTab',
-  'shared/models/validation-error'
+  'shared/models/validation-error',
 ], function(
   $,
   _,
@@ -249,7 +249,7 @@ define([
       }
     },
 
-    setValidationErrors: function ({response: {values}}) {
+    setValidationErrors: function({response: {values}}) {
       this.validationErrors = values;
       ReactDOM.unmountComponentAtNode(document.getElementById('product-quantified-associations'));
       this.renderQuantifiedAssociations();
@@ -306,28 +306,27 @@ define([
         product_models: [],
       };
 
-      this.validationErrors = [{
-        messageTemplate: 'titi.tata',
-        parameters: {
-          yolo: 'life',
+      this.validationErrors = [
+        {
+          messageTemplate: 'This quantity is too low',
+          parameters: {},
+          message: 'This is a message',
+          propertyPath: 'quantifiedAssociation.PACK.products[0].quantity',
+          invalidValue: -1,
         },
-        message: 'nope',
-        propertyPath: 'quantified_association.PACK.products[0].quantity',
-        invalidValue: 10000,
-      }, {
-        messageTemplate: 'titi.tata',
-        parameters: {
-          yolo: 'life',
+        {
+          messageTemplate: 'This quantity is too high',
+          parameters: {},
+          message: 'nice',
+          propertyPath: 'quantifiedAssociation.PACK.products[1].quantity',
+          invalidValue: 10000,
         },
-        message: 'nice',
-        propertyPath: 'quantified_association.PACK.products[0].quantity',
-        invalidValue: 10000,
-      }];
+      ];
 
       const Component = React.createElement(QuantifiedAssociationsTab, {
         quantifiedAssociations,
         parentQuantifiedAssociations,
-        errors: filterErrors(this.validationErrors, `quantified_association.${associationTypeCode}.`),
+        errors: filterErrors(this.validationErrors, `quantifiedAssociation.${associationTypeCode}.`),
         onAssociationsChange: updatedAssociations => {
           const formData = this.getFormData();
           formData.quantified_associations = {
