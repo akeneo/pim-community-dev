@@ -1,0 +1,155 @@
+pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
+      small:
+        remove: Usuń
+        download: Pobierz
+  reference_entity:
+    button:
+      save: Zapisz
+      save_permission: Zapisz
+      create: Utwórz
+    tab:
+      attribute: Atrybuty
+      properties: Ustawienia
+      permission: Uprawnienia
+    properties:
+      identifier: Pod Produktu
+      label: Etykieta
+      image: Zdjęcie
+    attribute:
+      attribute:
+        error:
+          render_list: 'Wystąpił błąd podczas renderowania atrybutu "{{ %attribute_code%}}"'
+          render_edit: 'Wystąpił błąd podczas renderowania dodatkowych pól właściwości atrybutu "{{ %attribute_code%}}"'
+    create:
+      header:
+        title: Utwórz
+      input:
+        label: Etykieta
+      confirm: Zapisz
+    delete:
+      title: Atrybut
+    notification:
+      save:
+        fail: Wystąpił błąd podczas zapisywania obiektów referencyjnych
+      create:
+        fail: Wystąpił błąd podczas zapisywania obiektu referencyjnego
+      delete:
+        fail: Wystąpił błąd podczas usuwania obiektu referencyjnego
+  record:
+    validation:
+      text:
+        incompatible_with_regular_expression: 'Wprowadź tekst, który spełnia warunki wyrażenia regularnego: "{{ %regular_expression%}}"'
+        invalid_email: 'Wprowadź adres e-mail: xxxxx@xx.xx'
+        invalid_url: 'Wprowadź adres URL: http(s)://xxxx.XXX'
+    no_result:
+      subtitle: Spróbuj ponownie, podając nowe kryteria wyszukiwania.
+    button:
+      save: Zapisz
+      create: Dodaj nowy
+      delete: Skasuj
+    enrich:
+      code: Pod Produktu
+      label: Etykieta
+    create:
+      header:
+        title: Utwórz
+      input:
+        label: Etykieta
+      confirm: Zapisz
+    grid:
+      filter:
+        counter: '{{ count }} wynik|{{ count }} wyników'
+        completeness:
+          label: Kompletny
+          all: WSZYSTKIE
+          'yes': 'TAK'
+          'no': 'NIE'
+      column:
+        code: Pod Produktu
+        image: Zdjęcie
+        label: Etykieta
+        complete: Kompletny
+        action: Działania
+    tab:
+      enrich: Uzupełnianie
+    notification:
+      save:
+        fail: Wystąpił błąd podczas zapisywania rekordu
+      create:
+        fail: Wystąpił błąd podczas tworzenia rekordu
+      delete:
+        fail: Wystąpił błąd podczas usuwania rekordu
+      delete_all:
+        fail: Wystąpił błąd podczas usuwania wszystkich rekordów tego obiektu referencyjnego
+    completeness:
+      label: Kompletny
+  attribute:
+    default:
+      code: Pod Produktu
+      label: Etykieta
+      image: Zdjęcie
+    type:
+      text: Tekst
+      image: Zdjęcie
+    create:
+      header:
+        title: Utwórz
+      input:
+        label: Etykieta
+        type: Typ atrybutu
+        value_per_locale: Wartość dla wersji językowej
+        value_per_channel: Wartość dla kanału
+      confirm: Zapisz
+    edit:
+      save: Zapisz
+      cancel: Anuluj
+      input:
+        label: Etykieta
+        type: Typ atrybutu
+        value_per_locale: Wartość dla wersji językowej
+        value_per_channel: Wartość dla kanału
+        max_length: Maksymalna liczba znaków
+        textarea: Pole tekstowe
+        max_file_size: Maksymalny rozmiar pliku (MB)
+        allowed_extensions: Dozwolone rozszerzenia
+        validation_rule: Reguła poprawności
+        regular_expression: Wyrażenie regularne
+        options:
+          validation_rule:
+            none: Żaden
+            email: E-mail
+            regular_expression: Wyrażenie regularne
+            url: URL
+    delete:
+      title: Atrybut
+    notification:
+      list:
+        fail: Wystąpił błąd podczas aktualizacji listy atrybutów
+      save:
+        success: Atrybut pomyślnie zaktualizowany.
+        fail: Wystąpił błąd podczas zapisywania atrybutu
+      create:
+        success: Atrybut pomyślnie utworzony.
+        fail: Wystąpił błąd podczas tworzenia atrybutu
+      delete:
+        success: Atrybut pomyślnie usunięty.
+        fail: Wystąpił błąd podczas usuwania atrybutu
+    options:
+      helper:
+        title: Tłumaczenia etykiety
+  modal:
+    delete:
+      subtitle: Potwierdź usunięcie
+      button:
+        cancel: Anuluj
+        confirm: Skasuj
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Określone parametry

@@ -1,26 +1,241 @@
 pimee_product_asset:
+  acl:
+    asset:
+      index: Wzbogać zasób
+      create: Utwórz zasób
+      remove: Usuwanie zasobu
+      categories_view: Określenie kategorii dla produktu
+      mass_upload: Masowe przekazywanie zasobów
+      remove_from_collection: Usuń zasób tego produktu z kolekcji zasobów
+    category_asset_picker:
+      list: Lista kategorii aktywów w selektorze aktywów
+    category:
+      create: Tworzenie kateogrii zasobów
+      edit: Edytowanie kategorii zasobów
+      list: Przeglądanie kategorii zasobów
+      remove: Usuwanie kategorii zasobów
+      manage: Zarządzanie uprawnieniami kategorii zasobów
+      history: Przeglądanie historii kategorii zasobu
+  acl_group:
+    asset: Zasoby produktu
+    category: Kategorie aktywów
+  enrich_asset:
+    button:
+      upload: Wgraj na serwer
+      delete: Skasuj
+      download: Pobierz
+      generate_from_reference: Generowanie z odniesienia
+      reset_variations: Badanie zmian
+    confirmation.remove: Czy na pewno chcesz usunąć zasób "%asset%" ?
+    confirmation.subTitle: Zasoby
+    grid:
+      edit: Edycja ustawień zasobów
+    view:
+      title: Zasób produktu
+      code: Pod Produktu
+      description: Opis
+      end_of_use: Koniec użytkowania
+      reference: Referencje
+      filename: Nazwa pliku
+      width: Szerokość
+      height: Wysokość
+      resolution: Rozdzielczość
+      colors: Przestrzeń kolorów
+      filesize: Rozmiar pliku
+      filetype: Typ pliku
+      actions: Działania
+      download: Pobierz
+      tag: Tagi
+      no_reference: Nie przesłano jeszcze pliku referencyjnego.
+      no_variation: Nie utworzono jeszcze pliku zmian.
+    flash:
+      update:
+        success: Zasób został zaktualizowany.
+        error: Zasób nie został zaktualizowany. Wystąpił błąd.
+      create:
+        success: Zasób został utworzony.
+        error: Zasób nie został utworzony. Wystąpił błąd.
+      remove:
+        success: Zasób został usunięty.
+  enrich_reference:
+    flash:
+      delete:
+        success: Plik referencyjny został usunięty.
+        error: Plik referencyjny nie został usunięty. Wystąpił błąd.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: Niemożliwe wygenerowanie zmiany %channel% ze względu na nieprawidłowe opcje.
+        image_width_error: Niemożliwe wygenerowanie zmiany %channel% ponieważ przesłany obraz ponieważ przesłany obraz ma szerokość mniejszą niż wymagana przez transformację.
+        image_height_error: Niemożliwe wygenerowanie zmiany %channel% ponieważ przesłany obraz ponieważ przesłany obraz ma wysokość mniejszą niż wymagana przez transformację.
+        not_applicable: Niemożliwe wygenerowanie zmiany %channel%.
+        non_registered: '%transformation% Transformacja nie została zarejestrowana dla typu mime %mimeType%. Niemożliwe wygenerowanie zmiany %channel%.'
+        missing_asset_transformation_for_channel: Nie można wygenerować wariantu dla %channel%, proszę ustawić transformację zasobów dla tego kanału.
+        error: Niemożliwe wygenerowanie zmiany %channel%.
+        success: Pliki zmian zostały wygenerowane pomyślnie.
+      update:
+        success: Plik zmian został zaktualizowany.
+        error: Plik zmiany nie został zaktualizowany. Wystąpił błąd.
+      delete:
+        success: Plik Zmian został usunięty.
+        error: Plik zmiany nie został usunięty. Wystąpił błąd.
   popin.create:
-    is_localized: Określaj ustawienia regionalne
+    title: Utwórz nowy zasób
+    is_localized: Tłumaczony
+  menu: Zasoby
+  page_tab:
+    title:
+      view: Zasób produktu %asset.code% | Widok
+      edit: Zasób produktu %asset.code% | Edycja
+      index: Zasoby produktu
   code:
-    label: Kod
+    label: Pod Produktu
+  thumbnail:
+    label: Miniatura
   status:
     label: Status
+  description:
+    label: Opis
+  endOfUse:
+    label: Koniec zużycia
+  createdAt:
+    label: Data utworzenia
+  updatedAt:
+    label: Ostatnia aktualizacja w
+  tags:
+    label: Tagi
   tabs:
+    properties.title: Ustawienia
+    variations.title: Wariacje
     categories.title: Kategorie
-batch_jobs:
-  yml_asset_channel_configuration_import:
-    validation.label: Sprawdzanie pliku
-  csv_asset_import:
-    validation.label: Sprawdzanie pliku
-  csv_tag_import:
-    validation.label: Sprawdzanie pliku
-  csv_asset_category_import:
-    validation.label: Sprawdzanie pliku
-  csv_asset_configuration_import:
-    validation.label: Sprawdzanie pliku
-  xlsx_tag_import:
-    validation.label: Sprawdzanie pliku
-  xlsx_asset_import:
-    validation.label: Sprawdzanie pliku
-  xlsx_asset_category_import:
-    validation.label: Sprawdzanie pliku
+  validation:
+    code:
+      not_empty: Kod jest wymagany. Nie może być pusty.
+      unique: Kod musi być unikatowy.
+      new_generation: Wygenerowaliśmy nowy dla Ciebie.
+  notAvailable:
+    label: nie dostępne
+  asset:
+    title: Zasób
+  mass_upload:
+    menu: Wczytaj zasoby
+    new: Nowy zasób zostanie utworzony
+    add_files: dodaj pliki
+    start: Zacznij wysyłanie
+    cancel: Anuluj wysyłanie
+    import: Import
+    executed: Masowego wysyłania wykonywane
+    error:
+      upload: Wystąpił błąd podczas przesyłania
+      code: Nieprawidłowy format kody dla zasobu
+      localizable: Zasób istnieje, ale nie może zostać zlokalizowany
+      invalid_locale: Ustawienia lokalne są wyłączone lub nieprawidłowe
+  category:
+    menu: Kategorie aktywów
+    permissions:
+      view.label: Możliwości wyświetlania produktu
+      view.help: Zezwól na przeglądanie produktów w kategorii
+      edit.label: Możliwości wyświetlania produktu
+      edit.help: Pozwala na edycję produktów w tej kategorii (pociąga za sobą uprawnienie Wyświetl)
+      no_access_to_products: Nie masz dostępu do produktów w katalogu. Skontaktuj się z administratorem
+      apply_on_children.label: Zastosuj zmiany dla dzieci
+      apply_on_children.help: Skopiuj zmiany uprawnienia na wszystkie dzieci, zachowane są istniejące uprawnienia dla dzieci
+  mass_edit_action:
+    asset:
+      page_title: Zasoby
+      page_subtitle: Masowa edycja (1 rodzina) | Masowa edycja (%count% Zasobów)
+      confirm: Za chwilę zaktualizujesz zasób, podając następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować% %count% majątku o następujące informacje, proszę potwierdź.
+      steps:
+        first: Wybierz zasoby
+        second: Konfiguruj
+        third: Potwierdź
+  not_editable: Nie masz uprawnień do edycji zasobu "%code%".
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Przenieś zasoby do kategorii
+      description: Zasoby zostaną umieszczone w następujących kategoriach, istniejące rozmieszczenie zostanie utracone
+      success_flash: Zasób(y) został(y) przeniesione do wybranych kategorii
+      launched_flash: Zadanie zbiorcze "przenieś do kategorii" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
+    add-tags-to-assets:
+      label: Dodaj tagi do zasobów
+      description: Tagi zostaną dodane do zasobów. Jeśli jakieś tagi nie istnieją, zostaną utworzone.
+      success_flash: Tag(i) został(y) dodany(dodane) do zasobu(zasobów)
+      launched_flash: Masowe zadanie "dodaj tagi do zasobów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
+      message.error: Wprowadzony tag nie istnieje
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Klasyfikowanie
+      add_tags_to_assets: Dodaj tagi
+      delete_assets: Usuń zasoby
+btn.create.asset: Utwórz zasób
+btn.drag_or_upload: Przeciągnij i upuść plik lub kliknij tutaj
+job_execution.summary:
+  variations_not_generated: Wariacje nie zostały wygenerowane
+  pimee_product_asset.mass_upload.new: Utworzono z pliku zasobów
+  pimee_product_asset.mass_upload.updated: Zasób zaktualizowany
+  error: Błąd podczas przetwarzania pliku zasobów
+  skipped_assets: Pomiń zasoby
+assets_mass_upload.steps:
+  asset_mass_upload.title: Masowe przesyłanie zasobów
+import_asset.steps.channel_configuration_processor.title: Proces konfiguracji kanału
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: Masowe przesyłanie zasobów
+      compute_completeness_of_products_linked_to_assets: Oblicz kompletność produktów powiązanych z zasobami
+pim_analytics:
+  info_type:
+    nb_assets: Liczba zasobów
+pim_assets_collection: Kolekcja zasobów
+akeneo_reference_entity: Pojedynczy link do obiektu referencyjnego
+akeneo_reference_entity_collection: Wielokrotne linki do obiektu referencyjnego
+pim_api:
+  acl:
+    asset_category:
+      edit: Twórz i aktualizuj kategorie zasobów
+      list: Przeglądanie kategorii zasobów
+    asset:
+      edit: Edytuj zasoby i przesyłaj pliki referencyjne i pliki zmian
+      list: Wyświetlaj zasoby oraz wyświetlaj i pobieraj pliki referencyjne i pliki zmian
+  acl_group:
+    asset_category: Kategorie aktywów
+    asset: Zasoby
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Przekształcenia zasobów
+  asset_transformation:
+    not_found: Nie znaleziono transformacji
+    title:
+      transformation: Transformacja
+      options: Ustawienia
+    colorspace:
+      title: Przestrzeń kolorów
+      options:
+        colorspace: '%value% przestrzeń kolorów'
+    resize:
+      title: Zmień rozmiar
+      options:
+        width: '%value%px długości'
+        height: '%value%px szerokości'
+    resolution:
+      title: Rozdzielczość
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skalowanie
+      options:
+        width: '%value%pikseli szerokości'
+        height: '%value%pikseli szerokości'
+        ratio: '%value%% stosunek'
+    thumbnail:
+      title: Miniatura
+      options:
+        width: '%value%pikseli szerokości'
+        height: '%value%pikseli szerokości'
+asset_tree:
+  remove:
+    error_linked: Drzewo tej kategorii nie może zostać usunięte, jest ustawione jako domyślne drzewo kategorii zasobów użytkownika.

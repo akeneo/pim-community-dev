@@ -1,0 +1,67 @@
+teamwork_assistant:
+  common:
+    required: Wymagany
+    warning: Nie martw się, obliczanie projektu może chwilę potrwać, więc Twój projekt może nie być widoczny od razu.
+  grid:
+    view_selector:
+      create: Utwórz projekt
+      edit: Edytuj projekt
+      remove: Usuń projekt
+      create_from_view: Utwórz projekt z tego widoku
+      start_new_project: Utwórz nowy projekt
+      confirmation:
+        remove: Czy na pewno chcesz usunąć ten projekt?
+      projects: Projekty
+  project:
+    label: Nazwa
+    locale: Wersja językowa
+    label_maxlength: Ta wartość jest zbyt długa. Powinna mieć {{ max }} znaków lub mniej.
+    description: Opis
+    due_date: Termin realizacji
+    due_date_past: Nie możesz wybrać daty przeszłej.
+    leaving_scope: Opuszczasz zakres projektu.
+  edit_project_modal:
+    saved: Projekt został zapisany.
+    title: Edytuj projekt
+  create_project_modal:
+    saved: Projekt został zapisany, zostaniesz powiadomiony, kiedy obliczanie zostanie wykonane.
+    title: Projekt
+  widget:
+    no_project: Nie masz bieżącego projektu
+    no_project_create: utwórz nowy projekt
+    description: Opis
+    due_date: Termin realizacji
+    todo: TODO
+    in_progress: W TOKU
+    done: GOTOWE
+    all_contributors: Wszyscy współtwórcy
+    display_products: Wyświetl produkty
+    placeholder:
+      contributor_selector: Wyszukaj współautorów
+      project_selector: Wyszukaj projekt
+    completeness:
+      to_start: PRODUKTY DO ROZPOCZĘCIA
+      in_progress: PRODUKTY W TOKU
+      done: PRODUKTY GOTOWE
+pim_datagrid:
+  view_selector:
+    project: Projekty
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Asystent pracy zespołowej
+        project_calculation: Asystent pracy zespołowej
+batch_jobs:
+  project_calculation:
+    project_calculation.label: Obliczanie projektu
+    prepare_project_calculation.label: Przygotuj obliczenia projektu
+    clean_contributor_group.label: Sprawdź uprawnienia użytkowników do ustawień regionalnych projektu
+  refresh_project_completeness_calculation:
+    label: Odśwież kompletność projektu
+    refresh_project_completeness_calculation.label: Odśwież kompletność projektu
+pim_notification:
+  types:
+    project_created: Nowy projekt dla Ciebie
+    project_finished: Projekt zakończony
+    project_calculation: Obliczanie projektu
