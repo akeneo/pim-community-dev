@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9255: Refresh completeness of associated products in grid when channel is switched
+
 # 3.2.56 (2020-05-25)
 
 ## Bug fixes
