@@ -103,7 +103,8 @@ resource "google_monitoring_alert_policy" "alert_policy" {
     google_logging_metric.login-response-time-distribution,
     google_logging_metric.login_count,
     google_logging_metric.logs-count,
-    google_monitoring_uptime_check_config.https
+    google_monitoring_uptime_check_config.https,
+    var.helm_exec_id
   ]
 
   conditions {

@@ -14,7 +14,19 @@ output "pfid" {
   value = local.pfid
 }
 
+output "dns_external" {
+  value = google_dns_record_set.main.name
+}
+
+output "instance_name" {
+  value = var.instance_name
+}
+
 output "tf-helm-pim-values" {
   value = data.template_file.helm_pim_config.rendered
 }
 
+output "helm_exec_id" {
+  description = "Provide the ID in order to allow other modules to depends on it"
+  value       = null_resource.helm_release_pim.id
+}

@@ -2,8 +2,6 @@
 
 # Force bash compatibility (Instead of user default shell)
 SHELL := /bin/bash
-# Usefull in order to retrieve env variable in sub shells
-.EXPORT_ALL_VARIABLES:
 
 INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
@@ -66,7 +64,7 @@ terraform-plan: terraform-init
 
 .PHONY: terraform-apply
 terraform-apply:
-	cd $(INSTANCE_DIR) && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
+	cd $(INSTANCE_DIR) && TF_LOG=TRACE TF_LOG_PATH=terraform.log terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 
 .PHONY: prepare-infrastructure-artifacts
 prepare-infrastructure-artifacts: render-helm-templates dump-kubernetes-namespace
@@ -116,11 +114,13 @@ terraform-plan-destroy: terraform-init
 
 .PHONY: terraform-delete
 terraform-delete: terraform-init
-	if [ -d "$(INSTANCE_DIR)" ]; then \
+	if [ -f "$(INSTANCE_DIR)/main.tf" ]; then \
 		cd $(INSTANCE_DIR) ;\
+		echo "Destroying $(INSTANCE_DIR) ..." ;\
 		terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) ;\
-	elif [ -d "$(DEPLOYMENTS_INSTANCES_DIR)/3.2" ]; then \
+	elif [ -f "$(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf" ]; then \
 		cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
+		echo "Destroying $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ..." ;\
 		terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) ;\
 	fi
 
@@ -150,6 +150,15 @@ endif
 
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
+	CLUSTER_DNS_NAME=$(CLUSTER_DNS_NAME) \
+	GOOGLE_CLUSTER_ZONE=$(GOOGLE_CLUSTER_ZONE) \
+	GOOGLE_MANAGED_ZONE_DNS=$(GOOGLE_MANAGED_ZONE_DNS) \
+	GOOGLE_MANAGED_ZONE_NAME=$(GOOGLE_MANAGED_ZONE_NAME) \
+	GOOGLE_PROJECT_ID=$(GOOGLE_PROJECT_ID) \
+	IMAGE_TAG=$(IMAGE_TAG) \
+	INSTANCE_NAME=$(INSTANCE_NAME) \
+	PFID=$(PFID) \
+	PIM_SRC_DIR=$(PIM_SRC_DIR) \
 	envsubst < $(PWD)/deployments/config/serenity_instance.tpl.tf > $(INSTANCE_DIR)/main.tf
 
 .PHONY: test-prod
@@ -180,12 +189,10 @@ slack_helpdesk:
 .PHONY: deploy_pr_environment
 deploy_pr_environment:
 	@PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/} && \
-	INSTANCE_NAME_PREFIX=pimci-pr && \
-	INSTANCE_NAME=pimci-pr-$${PR_NUMBER} && \
-	IMAGE_TAG=$${CIRCLE_SHA1} && \
 	echo "This environment will be available at https://pimci-pr-$${PR_NUMBER}.$(GOOGLE_MANAGED_ZONE_DNS) once deployed :)"
-	make create-ci-release-files && \
-	make deploy
+	PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/} && \
+	INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
+	INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make deploy
 
 .PHONY: delete_pr_environments
 delete_pr_environments:
@@ -198,17 +205,10 @@ terraform-pre-upgrade: terraform-init
 	for PD in $$(kubectl get -n $(PFID) pv $$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') -o jsonpath='{..spec.gcePersistentDisk.pdName}'); do \
 		yq w -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks[+]" "$${PD}"; \
 	done
-	# Required by https://github.com/akeneo/pim-enterprise-dev/pull/8716
-	# Because of this issue with Google Provider https://github.com/terraform-providers/terraform-provider-google/issues/4460,
-	# we need to force the project in the monitoring provider before importing resources
-	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.login_count" "$(GOOGLE_PROJECT_ID) $(PFID)-login-count"
-	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.login-response-time-distribution" "$(GOOGLE_PROJECT_ID) $(PFID)-login-response-time-distribution"
-	cd $(INSTANCE_DIR) && terraform import "module.pim-monitoring.google_logging_metric.logs-count" "$(GOOGLE_PROJECT_ID) $(PFID)-logs-count"
 	# Move monitoring resources from pim to pim-monitoring
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.login_count module.pim-monitoring.google_logging_metric.login_count
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.login-response-time-distribution module.pim-monitoring.google_logging_metric.login-response-time-distribution
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.logs-count module.pim-monitoring.google_logging_metric.logs-count
 	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_alert_policy.alert_policy module.pim-monitoring.google_monitoring_alert_policy.alert_policy
 	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_notification_channel.pagerduty module.pim-monitoring.google_monitoring_notification_channel.pagerduty
 	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_uptime_check_config.https module.pim-monitoring.google_monitoring_uptime_check_config.https
-	# Delete useless resources
-	cd $(INSTANCE_DIR) && terraform state rm module.pim.template_file.metric-template
-	cd $(INSTANCE_DIR) && terraform state rm module.pim.local_file.metric-rendered
-	cd $(INSTANCE_DIR) && terraform state rm module.pim.null_resource.metric
