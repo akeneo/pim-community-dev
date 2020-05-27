@@ -3,7 +3,7 @@ pim_user:
     title: Пользователь
     fields:
       name_prefix: Префикс имени
-      email: E-mail
+      email: Адрес электронной почты
       username: Имя пользователя
       first_name: Имя
       middle_name: Отчество
@@ -24,15 +24,15 @@ pim_user:
       new_password: Новый пароль
       new_password_again: Новый пароль (повтор)
       default_grid_view:
-        none: Нет
+        none: (Пусто)
       default_product_grid_view:
         label: Представление сетки продуктов по умолчанию
       ui_locale: Локаль пользовательского интерфейса
       last_logged_in: Дата последнего входа
       login_count: Количество входов
       user_salt: Соль пользователя
-      created: Создано
-      updated: Обновлено
+      created: Создан
+      updated: обновлено
       status: Статус
       capabilities: Способности
       has_role: Имеет роль
@@ -44,13 +44,13 @@ pim_user:
         title: Основные
         contact_information: Контактная информация
       additional:
-        title: Дополнительно
+        title: Дополнительные
       interfaces:
         title: Интерфейсы
       group_and_role.title: Группы и роли
       password.title: Пароль
-      business_unit.title: Бизнес-единицы
-      email_synchronization.title: Параметры синхронизации email
+      business_unit.title: Бизнес-подразделения
+      email_synchronization.title: Настройки синхронизации email
     removed_user: Удаленный пользователь
     login:
       username_or_email: Имя пользователя или Email
@@ -60,13 +60,14 @@ pim_user:
       forgot_password: Восстановить пароль
       request: Запрос
       reset: Сброс
+      password_reset_email_sent: Пользователю выслан email со ссылкой на сброс пароля.
       homepage: Перейти на главную страницу
   group:
     tab:
       general.title: Основные
       users.title: Пользователи
   roles:
-    title: Роль
+    title: роль
     tab:
       general: Основные
       action: Права доступа
@@ -84,10 +85,10 @@ pim_user:
 pim_datagrid:
   columns:
     user:
-      createdAt: "Создано"
-      updatedAt: "Обновлено"
+      createdAt: "Дата создания"
+      updatedAt: "Дата обновления"
     roles:
-      label: "Метка"
+      label: "Ярлык"
     groups:
       name: "Имя"
 confirmation:
@@ -120,10 +121,11 @@ oro_security:
       create: Создание группы пользователя
       edit: Изменение групп пользователя
       delete: Удаление группы пользователя
+#Security
 (default): Разрешения по умолчанию на сущности
-VIEW: Просмотр
+VIEW: Представление
 CREATE: Создать
-EDIT: Редактировать
+EDIT: Изменить
 DELETE: Удалить
 ASSIGN: Назначить
 SHARE: Поделиться

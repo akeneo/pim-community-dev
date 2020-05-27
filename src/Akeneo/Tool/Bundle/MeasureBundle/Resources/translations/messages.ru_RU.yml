@@ -18,11 +18,13 @@ pim_measure:
     Pressure: Давление
     Energy: Энергия
     CaseBox: Упаковка
+    Brightness: Яркость
   units:
+    #Area
     ACRE: Акр
     ARE: Ар
     ARPENT: Арпан
-    CENTIARE: Центнер
+    CENTIARE: Сантиар
     HECTARE: Гектар
     SQUARE_CENTIMETER: Квадратный сантиметр
     SQUARE_DECIMETER: Квадратный дециметр
@@ -37,18 +39,22 @@ pim_measure:
     SQUARE_MILE: Квадратная миля
     SQUARE_MILLIMETER: Квадратный миллиметр
     SQUARE_YARD: Квадратный ярд
+    #Binary
     BIT: Бит
     BYTE: Байт
     KILOBYTE: Килобайт
     MEGABYTE: Мегабайт
     GIGABYTE: Гигабайт
     TERABYTE: Терабайт
+    #Decibel
     DECIBEL: Децибел
+    #Frequency
     GIGAHERTZ: Гигагерц
     KILOHERTZ: Килогерц
     MEGAHERTZ: Мегагерц
     TERAHERTZ: Терагерц
     HERTZ: Герц
+    #Length
     CENTIMETER: Сантиметр
     CHAIN: Чейн
     DECIMETER: Дециметр
@@ -63,11 +69,13 @@ pim_measure:
     MILE: Миля
     MILLIMETER: Миллиметр
     YARD: Ярд
+    #Power
     GIGAWATT: Гигаватт
     KILOWATT: Киловатт
     MEGAWATT: Мегаватт
     TERAWATT: Тераватт
     WATT: Ватт
+    #Resistance
     MILLIOHM: Миллиом
     CENTIOHM: Сантиом
     DECIOHM: Дециом
@@ -76,6 +84,7 @@ pim_measure:
     HECTOHM: Гектоом
     KILOHM: Килоом
     MEGOHM: Мегаом
+    #Voltage
     MILLIVOLT: Милливольт
     CENTIVOLT: Сантивольт
     DECIVOLT: Децивольт
@@ -83,6 +92,7 @@ pim_measure:
     DEKAVOLT: Декавольт
     HECTOVOLT: Гектовольт
     KILOVOLT: Киловольт
+    #Intensity
     MILLIAMPERE: Миллиампер
     CENTIAMPERE: Сантиампер
     DECIAMPERE: Дециампер
@@ -91,6 +101,7 @@ pim_measure:
     HECTOAMPERE: Гектоампер
     KILOAMPERE: Килоампер
     MEGAAMPERE: Мегаампер
+    #ElectricCharge
     MILLIAMPEREHOUR: Миллиампер в час
     AMPEREHOUR: Ампер в час
     MILLICOULOMB: Милликулон
@@ -100,6 +111,7 @@ pim_measure:
     DEKACOULOMB: Декакулон
     HECTOCOULOMB: Гектокулон
     KILOCOULOMB: Килокулон
+    #Duration
     MILLISECOND: Миллисекунда
     SECOND: Секунда
     MINUTE: Минута
@@ -108,6 +120,7 @@ pim_measure:
     WEEK: Неделя
     MONTH: месяцев
     YEAR: лет
+    #Speed
     FOOT_PER_SECOND: Футов в секунду
     FOOT_PER_HOUR: Футoв в час
     KILOMETER_PER_HOUR: Километров в час
@@ -116,11 +129,13 @@ pim_measure:
     METER_PER_SECOND: Метров в секунду
     MILE_PER_HOUR: Миль в час
     YARD_PER_HOUR: Ярдов в час
+    #Temperature
     CELSIUS: По Цельсию
     FAHRENHEIT: По Фаренгейту
     KELVIN: По Кельвину
     RANKINE: По Ранкину
     REAUMUR: По Реомюру
+    #Volume
     BARREL: Баррель
     CENTILITER: Сантилитр
     CUBIC_CENTIMETER: Кубический сантиметр
@@ -134,8 +149,8 @@ pim_measure:
     GALLON: Галлон
     LITER: Литр
     MILLILITER: Миллилитр
-    OUNCE: Унция
     PINT: Пинта
+    #Weight
     DENIER: Денье
     GRAIN: Гран
     GRAM: Грамм
@@ -144,8 +159,10 @@ pim_measure:
     MARC: Марка
     MILLIGRAM: Миллиграмм
     ONCE: Унция
+    OUNCE: Унция
     POUND: Фунт
     TON: Тонна
+    #Pressure
     BAR: Бар
     PASCAL: Паскаль
     HECTOPASCAL: Гектопаскаль
@@ -156,5 +173,8 @@ pim_measure:
     MMHG: Миллиметр ртутного столба
     KILOCALORIE: килокалория
     KILOJOULE: килоджоуль
+    #CaseBox
     PIECE: шт.
     DOZEN: Дюжина
+    #Brightness
+    LUMEN: Просвет
