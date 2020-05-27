@@ -8,6 +8,7 @@ pim_connector:
       selector:
         modal:
           title: Wybór kategorii
+        label: "{0}Wszystkie produkty|{1}Jedna wybrana kategoria|]1,Inf[{{ count }} wybrane kategorie"
         title: Wybierz kategorie
     locales:
       validation:
@@ -27,6 +28,10 @@ pim_import_export:
       flash:
         create:
           success: Profil importu pomyślnie utworzony
+        upload:
+          error: Nie można przesłać pliku. Jego rozmiar może przekroczyć maksymalny rozmiar pliku zdefiniowany w konfiguracji serwera PHP lub HTTP
+      page_title:
+        index: "]-Inf, 1] {{ count }} import|]1, Inf [{{ count }} importów"
       module:
         create:
           button: Utwórz profil importu
@@ -35,6 +40,8 @@ pim_import_export:
       flash:
         create:
           success: Profil eksportu pomyślnie utworzony
+      page_title:
+        index: "]-Inf, 1] {{ count }} profil eksportu|]1, Inf [{{ count }} profile eksportu"
       module:
         create:
           button: Utwórz profil exportu
@@ -82,6 +89,7 @@ pim_import_export:
           file_path:
             title: Ścieżka do pliku
             help: Gdzie zapisać utworzony plik w systemie plików
+            help_import: Katalog pliku do importu
           delimiter:
             title: Separator
             help: Jeden znak używany do rozdzielenia poszczególnych pól
@@ -135,6 +143,7 @@ pim_import_export:
         import: Import
         export: Eksport
         mass_edit: Edycja zbiorcza
+        mass_edit_rule: Ustawienia reguł
         quick_export: Szybki eksport
         compute_product_models_descendants: Oblicz potomków modeli produktu
         compute_family_variant_structure_changes: Oblicz zmiany w strukturze wariantu rodziny

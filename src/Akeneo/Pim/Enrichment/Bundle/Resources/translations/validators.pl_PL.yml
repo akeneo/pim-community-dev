@@ -1,6 +1,8 @@
 An identifier attribute already exists.: Atrybut identyfikujący już istnieje.
 Attribute code may contain only letters, numbers and underscore: Kod atrybutu może składać się jedynie z liter, cyfr lub znaku podkreślenia
 Attribute code may contain only letters (at least one), numbers and underscores: Kod atrybutu może zawierać tylko litery (co najmniej jedną), cyfry i znaki podkreślenia
+Attribute code may not contain line-feed characters: Kod atrybutu nie może zawierać znaków końca linii
+Attribute group code may contain only letters, numbers and underscores: Kod grupy atrybutów może zawierać tylko litery, cyfry i znaki podkreślenia
 This attribute type can't be used as a grid filter: Atrybut tego typu nie może być użyty jako filtr siatki
 This code is not available: Ten kod nie jest dostępny
 This attribute type must be required: Tego typu atrybutu musi być wymagany
@@ -40,6 +42,7 @@ pim_catalog:
     cannot_have_parent: 'Model produktu "%product_model%" nie może mieć elementu nadrzędnego'
     attribute_does_not_belong_to_family: 'Atrybut "%attribute%" nie należy do rodziny "%family%"'
     variant_product_invalid_family: 'Rodzina wariantu produktu musi być taka sama, jak jego elementu nadrzędnego'
+    php_int_max_reached: 'Maksymalna liczba musi być mniejsza niż %php_int_max%.'
     not_null_family: Rodzina nie może mieć wartości "null", ponieważ produkt z identyfikatorem "%sku%" jest wariantem produktu.
     variant_product_has_parent: 'Wariant produktu "%variant_product%" musi mieć element nadrzędny'
     invalid_variant_product_parent: 'Wariant produktu "%variant_product%" nie może mieć modelu produktu "%product_model%" jako elementu nadrzędnego (ten model produktu może mieć tylko inne modele produktów jako elementy podrzędne)'

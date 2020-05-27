@@ -9,6 +9,7 @@ pim_user:
       middle_name: Drugie imię
       last_name: Nazwisko
       name_suffix: Przyrostek
+      phone: Telefon
       date_of_birth: Data urodzenia
       avatar: Awatar
       timezone: Strefa czasowa
@@ -39,12 +40,22 @@ pim_user:
       has_group: Ma grupę
       active: Aktywne
       inactive: Nieaktywny
+    fields_errors:
+      new_password:
+        minimum_length: Hasło musi zawierać co najmniej 2 znaki
+      new_password_repeat:
+        not_match: Hasła nie zgadzają się
+      current_password:
+        wrong: Błędne hasło
     tabs:
       general:
         title: Ogólne
+        basic_information: Podstawowe Informacje
         contact_information: Informacje kontaktowe
       additional:
         title: Dodatkowe
+      additional_data:
+        title: Informacje dodatkowe
       interfaces:
         title: Interfejsy
       group_and_role.title: Grupy i Role
@@ -59,6 +70,7 @@ pim_user:
       log_in: Zaloguj się
       forgot_password: Zapomniałem hasła
       request: Żądanie
+      password_reset: Resetowanie hasła
       reset: Resetuj
       password_reset_email_sent: Wiadomość email została wysłana do użytkownika. Zawiera ona link do resetowania hasła.
       homepage: Przejdź do strony głównej

@@ -5,10 +5,13 @@ flash:
   comment:
     create:
       success: Twój komentarz został utworzony pomyślnie.
+      error: Wystąpił błąd podczas tworzenia komentarza.
     delete:
       success: Twój komentarz został pomyślnie usunięty.
+      error: Wystąpił błąd podczas usuwania komentarza.
     reply:
       success: Twoja odpowiedź została utworzona pomyślnie.
+      error: Wystąpił błąd podczas tworzenia Twojej odpowiedzi.
 pim_enrich.entity.product:
   label: produkt
   uppercase_label: Produkt
@@ -19,12 +22,15 @@ pim_enrich.entity.product:
       fail: Nie można zaktualizować produktu.
       fields_not_ready: "Nie można teraz zapisać produktu. Następujące pola nie są gotowe: {{ fields }}"
       already_in_upload: Plik jest aktualnie dodawany dla tego atrybutu w wersji językowej "{{ locale }}" i kanale "{{ scope }}"
+      file_upload: Wystąpił błąd podczas przesyłania pliku
     delete:
       success: Produkt pomyślnie usunięty.
       fail: Nie można usunąć produktu.
     create:
       success: Produkt pomyślnie utworzony
       fail: Żaden atrybut nie jest skonfigurowany jako identyfikator produktu, albo nie masz uprawnień żeby go edytować.
+  page_title:
+    index: "]-Inf, 1]{{ count }} wynik|]1, Inf[{{ count }} wyników"
   module:
     create:
       subtitle: Utwórz produkt
@@ -62,6 +68,7 @@ pim_enrich.entity.product:
       remove_optional: Usuń ten atrybut
       locale_specific_unavailable: To tłumaczone pole nie jest dostępne w tej wersji językowej
       locale_unavailable: To tłumaczone pole nie jest dostępne dla wersji językowej '{{ locale }}' i kanału '{{ channel }}'
+      to_fill_count: "{1}1 brak wymaganego atrybutu|]1, Inf[{{ count }} brakujących wymaganych atrybutów"
       add_attribute_option: Dodaj opcje atrybutu
       add_option: Dodaj Opcję
     completeness:
@@ -69,6 +76,7 @@ pim_enrich.entity.product:
       complete: Kompletny
       no_family: Brak zdefiniowanej rodziny. Proszę zdefiniuj rodzinę w celu przeliczenia kompletności tego produktu.
       no_completeness: Właśnie zmieniłeś rodzinę produktu. Proszę zapisz zmiany w celu przeliczenia kompletności dla nowej rodziny.
+      missing_values: "{1}1 brakująca wartość|]1, Inf[{{ count }} brakujące wartości"
     sequential_edit:
       item_limit: Tylko pierwsze 1000 przedmiotów wyświetlonych w tej edycji sekwencyjnej ({{ count }} zaznaczonych)
       empty: Twój wybór jest pusty, proszę zmień swoje kryteria wyszukiwania
@@ -110,7 +118,10 @@ pim_enrich.entity.product:
       header_reply: '{{ user }} odpowiedział na komentarz'
       delete_confirm: Czy na pewno chcesz usunąć ten komentarz?
       removed_author: Użytkownik usunięty
+    asset:
+      title: Zasoby
 pim_enrich.entity.product_model:
+  label: Model produktu
   uppercase_label: Model produktu
   plural_label: Model produktu
   flash:
@@ -124,6 +135,7 @@ pim_enrich.entity.product_model:
       fields_not_ready: "Nie można teraz zapisać modelu produktu. Następujące pola nie są gotowe: {{ fields }}"
     delete:
       success: Model produktu usunięty pomyślnie.
+      fail: Nie można usunąć tego modelu produktu
   choose: Wybierz model produktu
   property:
     family_variant: Wariant
@@ -135,9 +147,12 @@ pim_enrich.entity.product_model:
       read_only_parent_attribute_from_common: Ten atrybut można zaktualizować we wspólnych atrybutach.
       read_only_parent_attribute_from_model: "Ten atrybut można zaktualizowany w atrybutach przez {{ axes }}"
     variant_axis:
+      label: 'Oś wariantu'
       create: Dodaj nowy
       create_label: "Dodaj nowe {{ axes }}"
       required_label: '(oś wariantu)'
+    completeness:
+      variant_product: "]-Inf, 1]{{ complete }}/{{ total }} wariant produkt|]1, Inf[{{ complete }}/{{ total }} wariant produktów"
     delete:
       confirm: Czy na pewno chcesz usunąć ten model produktu? Wszystkie jego elementy podrzędne, modele i warianty produktów, zostaną również usunięte.
       confirm_for_products_and_product_models: Czy na pewno chcesz usunąć wybrane produkty i modele produktów? Wszystkie elementy podrzędne modelu produktu również zostaną usunięte.
@@ -153,11 +168,20 @@ pim_enrich.entity.group:
     delete:
       success: Grupa pomyślnie usunięta
       fail: Nie można usunąć tej grupy
+  page_title:
+    index: "]-Inf, 1]{{ count }} grupa|]1, Inf[{{ count }} grup"
   module:
     create:
       button: Utwórz grupę
     delete:
       confirm: Czy na pewno chcesz usunąć tę grupę?
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: Czy na pewno chcesz usunąć tę rolę?
+  flash:
+    delete:
+      success: Rola pomyślnie usunięta
 pim_enrich.entity.category:
   label: kategoria
   uppercase_label: Kategorie
@@ -239,15 +263,19 @@ pim_enrich.export.product:
     title: Ustawienia ogólne
 pim_enrich.mass_edit.product:
   title: Działanie zbiorcze produktów
+  confirm: "{1}Zamierzasz zaktualizować produkt z następującymi informacjami, proszę potwierdzić. ]1, Inf[Zamierzasz zaktualizować {{ itemsCount }} produktów z następującymi informacjami, proszę potwierdzić."
   step:
     select:
       label: Wybierz produkty
     choose:
       title: Akcje zbiorcze produktów
+      label_count: "]0, Inf[Wybierz swoją akcję"
     configure:
       label: Konfiguruj
     confirm:
       label: Potwierdź
+    launch_error:
+      label: Wystąpił błąd podczas uruchamiania operacji masowej edycji
     launched:
       label: Działanie zbiorcze "{{ operation }}" zostało uruchomione. Zostaniesz powiadomiony o jego ukończeniu.
   operation:
@@ -255,39 +283,54 @@ pim_enrich.mass_edit.product:
       select_attributes: Wybierz atrybuty
     change_status:
       label: Zmień status
+      label_count: "{1}Zmień status <span class=\"AknFullPage-title--highlight\">1 produktu</span>|]1, Inf[Zmień status <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
       description: Wybrane produkty zostaną włączone lub wyłączone.
       field: Do włączenia
     edit_common:
       label: Edytuj wartości atrybutów
+      label_count: "{1}Edytuj wartości atrybutów <span class=\"AknFullPage-title--highlight\">1 produktu</span>|]1, Inf[Edytuj wartości atrybutów <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
       description: Tylko atrybuty należące do rodzin wybranych produktów będą edytowane z następującymi danymi dla wersji językowej {{ locale }} i dla kanału {{ scope }}.
+      no_update: Wybierz co najmniej jedno pole do aktualizacji
     add_attribute_value:
       label: Dodaj wartości atrybutów
+      label_count: "{1}Dodaj wartości atrybutów dla <span class=\"AknFullPage-title--highlight\">1 produktu</span>|]1, Inf[Dodaj wartości atrybutów dla <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
       description: Tylko wielowartościowe atrybuty należące do rodzin produktów będą edytowane z następującymi danymi dla wersji językowej {{ locale }} i dla kanału {{ scope }}. Nowe wartości zostaną dodane do poprzednich.
     change_family:
       label: Zmiana rodziny
+      label_count: "{1}Zmień rodzinę <span class=\"AknFullPage-title--highlight\">1 produktu</span>|]1, Inf[Zmień rodzinę <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
       description: Rodzina wybranych produktów zostanie zamieniona na wybraną rodzinę
     add_to_group:
       label: Dodaj do grup
+      label_count: "{1}Dodaj <span class=\"AknFullPage-title--highlight\">1 produkt</span> do grupy|]1, Inf[Dodaj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span> do grup"
       description: Wybierz grupy, do których chcesz dodać wybrane produkty
       field: Grupy
+      no_update: Proszę wybrać grupę przed kontynuacją
     add_to_category:
       label: Dodaj do kategorii
+      label_count: "{1}Dodaj <span class=\"AknFullPage-title--highlight\">1 produkt</span> do kategorii|]1, Inf[Dodaj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span> do kategorii"
       description: Produkt będzie przydzielony do następujących kategorii, istniejące przydzielenie zostanie zachowane.
     move_to_category:
       label: Przenieś pomiędzy kategoriami
+      label_count: "{1}Przenieś <span class=\"AknFullPage-title--highlight\">1 produkt</span> pomiędzy kategoriami|]1, Inf[Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkty</span> pomiędzy kategoriami"
       description: Produkt będzie przydzielony do następujących kategorii, istniejące przydzielenie zostanie utracone.
     remove_from_category:
       label: Usuń z kategorii
+      label_count: "{1}Usuń <span class=\"AknFullPage-title--highlight\">1 produkt</span> z kategorii|]1, Inf[Usuń <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span> z kategorii"
       description: Produkty zostaną usunięte z następujących kategorii.
+      no_update: Nie zaznaczono żadnej kategorii, z której mają być usunięte produkty.
     add_to_existing_product_model:
       label: Dodaj do istniejącego modelu produktu
+      label_count: "{1}Dodaj <span class=\"AknFullPage-title--highlight\">1 produkt</span> do istniejącego modelu produktu|]1, Inf[Dodaj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span> do istniejącego modelu produktu"
       description: Wybrany model produktu będzie gromadził produkty i umożliwi wypełnienie ich wspólnych właściwości.
+      no_update: Proszę wybrać model produktu przed kontynuacją
     associate_to_product_and_product_model:
       label: Powiąż
+      label_count: "{1}Powiąż <span class=\"AknFullPage-title--highlight\">1 produkt</span> z produktami lub modelami produktów|]1, Inf[Powiąż <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkty</span> z produktami lub modelami produktów"
       description: Produkty wybrane w tabeli będą powiązane z wybranymi produktami i modelami produktów dla typu wybranego powiązania
       validate: Dodaj powiązanie przed przejściem do następnego kroku
     change_parent_product_model:
       label: Zmień model elementu nadrzędnego
+      label_count: "{1}Zmień nadrzędny model produktu <span class=\"AknFullPage-title--highlight\">1 produktu</span>|]1, Inf[Zmień nadrzędny model produktu <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
       description: Element nadrzędny wariantu produktów lub modele produktu podrzędnego zaznaczone w siatce zostaną zmienione na wybrany model produktu.
 pim_datagrid:
   mass_action_group:
@@ -299,6 +342,7 @@ pim_datagrid:
     delete:
       confirm_content: Czy na pewno chcesz usunąć wybrane produkty?
       success: Wybrane produkty zostały pomyślnie usunięte.
+      error: Wystąpił błąd podczas próby usunięcia wybranych produktów, spróbuj ponownie.
     quick_export:
       csv_all: CSV (wszystkie atrybuty)
       csv_grid_context: CSV (w kontekście siatki)
@@ -376,3 +420,11 @@ batch_jobs:
   set_attribute_requirements:
     label: Określ wymagania atrybutów
     perform.label: Określ wymagania atrybutów
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Kontekst siatki produktów XLSX szybki eksport
+    quick_export_product_model.label: Szybki eksport do XLSX kontekstu siatki modeli produktu
+    perform.label: Szybki eksport kontekstu siatki produktu do XLSX
+  xlsx_product_quick_export:
+    quick_export.label: Szybki eksport produktu do XLSX
+    quick_export_product_model.label: Szybki eksport modelu produktu do XLSX
+    perform.label: Szybki eksport produktu do XLSX

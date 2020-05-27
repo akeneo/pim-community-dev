@@ -74,4 +74,9 @@ pim_enrich:
       quick_export:
         launched_flash: Zadanie eksportu produktów jest aktualnie wykonywane
 category:
+  edit: Edytuj kategorię
   overview: Kategorie
+tree:
+  edit: Edytuj drzewo
+  remove:
+    error_linked: Drzewo tej kategorii nie może zostać usunięte, jest połączone z kanałem
