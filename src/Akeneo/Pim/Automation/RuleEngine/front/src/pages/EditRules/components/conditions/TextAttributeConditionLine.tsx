@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useFormContext, ErrorMessage } from 'react-hook-form';
 import {
   TextAttributeCondition,
@@ -14,37 +13,13 @@ import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector'
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { InputErrorMsg } from '../../../../components/InputErrorMsg';
-
-const FieldColumn = styled.span`
-  width: 100px;
-  display: inline-block;
-  padding: 0 2px;
-  overflow: hidden;
-`;
-
-const OperatorColumn = styled.span`
-  width: 150px;
-  display: inline-block;
-  padding: 0 2px;
-`;
-
-const ValueColumn = styled.span`
-  width: 400px;
-  display: inline-block;
-  padding: 0 2px;
-`;
-
-const LocaleColumn = styled.span`
-  width: 150px;
-  display: inline-block;
-  padding: 0 2px;
-`;
-
-const ScopeColumn = styled.span`
-  width: 150px;
-  display: inline-block;
-  padding: 0 2px;
-`;
+import {
+  FieldColumn,
+  LocaleColumn,
+  OperatorColumn,
+  ScopeColumn,
+  ValueColumn,
+} from './style';
 
 type TextAttributeConditionLineProps = ConditionLineProps & {
   condition: TextAttributeCondition;
@@ -139,11 +114,14 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
     }
   };
 
+  const title =
+    condition.attribute.labels[currentCatalogLocale] ||
+    '[' + condition.attribute.code + ']';
+
   return (
     <div className={'AknGrid-bodyCell'}>
-      <FieldColumn className={'AknGrid-bodyCell--highlight'}>
-        {condition.attribute.labels[currentCatalogLocale] ||
-          '[' + condition.attribute.code + ']'}
+      <FieldColumn className={'AknGrid-bodyCell--highlight'} title={title}>
+        {title}
       </FieldColumn>
       <OperatorColumn>
         <OperatorSelector

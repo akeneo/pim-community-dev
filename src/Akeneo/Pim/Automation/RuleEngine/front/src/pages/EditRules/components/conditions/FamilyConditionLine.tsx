@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useFormContext } from 'react-hook-form';
 import { ConditionLineProps } from './ConditionLineProps';
 import {
@@ -11,25 +10,7 @@ import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { Operator } from '../../../../models/Operator';
 import { FamilySelector } from '../../../../components/Selectors/FamilySelector';
 import { FamilyCode } from '../../../../models';
-
-const FieldColumn = styled.span`
-  width: 100px;
-  display: inline-block;
-  padding: 0 2px;
-  overflow: hidden;
-`;
-
-const OperatorColumn = styled.span`
-  width: 150px;
-  display: inline-block;
-  padding: 0 2px;
-`;
-
-const ValueColumn = styled.span`
-  width: 400px;
-  display: inline-block;
-  padding: 0 2px;
-`;
+import { FieldColumn, OperatorColumn, ValueColumn } from './style';
 
 type FamilyConditionLineProps = ConditionLineProps & {
   condition: FamilyCondition;
@@ -78,7 +59,9 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
 
   return (
     <div className={'AknGrid-bodyCell'}>
-      <FieldColumn className={'AknGrid-bodyCell--highlight'}>
+      <FieldColumn
+        className={'AknGrid-bodyCell--highlight'}
+        title={translate('pimee_catalog_rule.form.edit.fields.family')}>
         {translate('pimee_catalog_rule.form.edit.fields.family')}
       </FieldColumn>
       <OperatorColumn>

@@ -35,10 +35,15 @@
   }
 
   .AknGrid-bodyRow {
-    display: table-row;
+    display: flex;
   }
 
   .AknGrid-bodyCell {
-    display: table-cell;
+    display: inline-flex;
+    width: 100%;
+
+    &.AknGrid-bodyCell--tight {
+      width: 44px;
+    }
   }
 }
