@@ -25,6 +25,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\OptimizeJpegOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResolutionOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ScaleOperation;
@@ -138,6 +139,33 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
         $this->launchTransformationJob($asset->getIdentifier());
 
         $this->assertTransformationSuccess('starck', 960, 800);
+    }
+
+    /**
+     * @test
+     */
+    public function it_applies_a_optimize_operation()
+    {
+        $this->setFamilyTransformations([OptimizeJpegOperation::create(['quality' => 70])]);
+        $asset = $this->getAsset('starck');
+        $this->launchTransformationJob($asset->getIdentifier());
+
+        $this->assertTransformationSuccess('starck', 960, 800, 'image/jpeg', 'jpeg');
+    }
+
+    /**
+     * @test
+     */
+    public function it_applies_a_scale_and_optimize_operation()
+    {
+        $this->setFamilyTransformations([
+            OptimizeJpegOperation::create(['quality' => 70]),
+            ScaleOperation::create(['ratio' => 50]),
+        ]);
+        $asset = $this->getAsset('starck');
+        $this->launchTransformationJob($asset->getIdentifier());
+
+        $this->assertTransformationSuccess('starck', 480, 400, 'image/jpeg', 'jpeg');
     }
 
     /**
@@ -297,8 +325,13 @@ SQL
         );
     }
 
-    private function assertTransformationSuccess(string $assetCode, int $width, int $height): void
-    {
+    private function assertTransformationSuccess(
+        string $assetCode,
+        int $width,
+        int $height,
+        string $mimeType = 'image/png',
+        string $extension = 'png'
+    ): void {
         $lastExecution = $this->getLastExecution();
         Assert::assertNotNull($lastExecution);
         Assert::assertSame(BatchStatus::COMPLETED, $lastExecution->getStatus()->getValue());
@@ -320,16 +353,16 @@ SQL
         Assert::assertInstanceOf(FileData::class, $targetData);
 
         $normalized = $targetData->normalize();
-        Assert::assertSame('image/png', $normalized['mimeType']);
-        Assert::assertSame('png', $normalized['extension']);
-        Assert::assertSame('lardon_computed.png', $targetData->getOriginalFilename());
+        Assert::assertSame($mimeType, $normalized['mimeType']);
+        Assert::assertSame($extension, $normalized['extension']);
+        Assert::assertSame('lardon_computed.' . $extension, $targetData->getOriginalFilename());
 
-        $file = $this->getFileDownloader()->get($targetData->getKey(), $this->workingDir, 'resulting_file.png');
+        $file = $this->getFileDownloader()->get($targetData->getKey(), $this->workingDir, 'resulting_file.' . $extension);
 
         $metadata = getimagesize($file->getPathname());
         Assert::assertSame($width, $metadata[0]);
         Assert::assertSame($height, $metadata[1]);
-        Assert::assertSame('image/png', $metadata['mime']);
+        Assert::assertSame($mimeType, $metadata['mime']);
         $this->get('filesystem')->remove($this->workingDir);
     }
 

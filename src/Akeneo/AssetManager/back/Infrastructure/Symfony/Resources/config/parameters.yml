@@ -18,6 +18,7 @@ parameters:
     # List of available operations
     asset_manager_transformation_operation:
         - 'Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation'
+        - 'Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\OptimizeJpegOperation'
         - 'Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation'
         - 'Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResolutionOperation'
         - 'Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ScaleOperation'

@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Technical Improvements
+
+- PIM-9259: Add an optimize jpeg operation on asset's transformations
+
 # 4.0.29 (2020-05-26)
 
 # 4.0.28 (2020-05-20)
