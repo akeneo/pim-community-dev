@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Exception;
 
+use Akeneo\Pim\Enrichment\Component\DocumentedExceptionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use PhpSpec\ObjectBehavior;
@@ -28,6 +29,11 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
         $this->shouldHaveType(\Exception::class);
     }
 
+    function it_is_a_documented_exception()
+    {
+        $this->shouldImplement(DocumentedExceptionInterface::class);
+    }
+
     function it_returns_an_exception_message()
     {
         $this->getMessage()->shouldReturn(sprintf(
@@ -47,5 +53,37 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
         $this->beConstructedThrough('unknownAttribute', ['attribute_code', $previous]);
 
         $this->getPrevious()->shouldReturn($previous);
+    }
+
+    function it_provides_documentation()
+    {
+        $this->getDocumentation()->shouldReturn([
+            [
+                'message' => 'More information about attributes: %s %s.',
+                'params' => [
+                    [
+                        'href' => 'https://help.akeneo.com/pim/serenity/articles/what-is-an-attribute.html',
+                        'title' => 'What is an attribute?',
+                        'type' => 'href'
+                    ],
+                    [
+                        'href' => 'https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html',
+                        'title' => 'Manage your attributes',
+                        'type' => 'href'
+                    ],
+                ],
+            ],
+            [
+                'message' => 'Please check your %s.',
+                'params' => [
+                    [
+                        'route' => 'pim_enrich_attribute_index',
+                        'params' => [],
+                        'title' => 'Attributes settings',
+                        'type' => 'route',
+                    ],
+                ],
+            ],
+        ]);
     }
 }
