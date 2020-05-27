@@ -41,8 +41,17 @@
 ## BC Breaks
 
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet\ImpactedProductCountTasklet` to change last argument from `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface` to `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`
-- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\AdderActionApplier` to replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
-- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\CopierActionApplier` to replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
-- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\SetterActionApplier` to replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
-- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier` to replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\AdderActionApplier` to:
+  - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
+  - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\CopierActionApplier` to: 
+  - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
+  - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\SetterActionApplier` to:
+  - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
+  - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier` to:
+  - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes
+  - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change return type of `Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface` from `void` to `array`
+- Change return type of `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsUpdater` from `void` to `array`
