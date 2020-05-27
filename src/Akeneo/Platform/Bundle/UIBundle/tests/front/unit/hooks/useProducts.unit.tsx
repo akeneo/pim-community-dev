@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {renderHook} from '@testing-library/react-hooks';
+import {renderHook, act} from '@testing-library/react-hooks';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {useProducts} from '../../../../Resources/public/js/product/form/quantified-associations/hooks/useProducts';
 
@@ -89,13 +89,27 @@ test('It does not fetch products if already fetched', async () => {
               completeness: 100,
               variant_product_completenesses: null,
             },
+            {
+              id: 3,
+              identifier: 'braided-hat',
+              label: 'Braided hat',
+              document_type: 'product_model',
+              image: null,
+              completeness: null,
+              variant_product_completenesses: {
+                completeChildren: 0,
+                totalChildren: 1,
+              },
+            },
           ],
         });
       }
     },
   }));
 
-  const {result, waitForNextUpdate, rerender} = renderHook(() => useProducts({products: ['bag'], product_models: []}), {
+  const identifiers = {products: ['bag'], product_models: []};
+
+  const {result, waitForNextUpdate, rerender} = renderHook(() => useProducts(identifiers), {
     wrapper,
   });
 
@@ -113,22 +127,41 @@ test('It does not fetch products if already fetched', async () => {
     },
   ]);
 
-  rerender({products: ['bag', 'another_bag'], product_models: []});
+  identifiers.products = ['bag', 'another_bag'];
+  identifiers.product_models = ['braided-hat'];
+
+  act(() => {
+    rerender();
+  });
+
+  await waitForNextUpdate();
 
   expect(result.current).toEqual([
     {
-      id: 1,
-      identifier: 'bag',
-      label: 'Nice bag',
+      id: 2,
+      identifier: 'another_bag',
+      label: 'Another hat',
       document_type: 'product',
       image: null,
       completeness: 100,
       variant_product_completenesses: null,
     },
     {
-      id: 2,
-      identifier: 'another_bag',
-      label: 'Another hat',
+      id: 3,
+      identifier: 'braided-hat',
+      label: 'Braided hat',
+      document_type: 'product_model',
+      image: null,
+      completeness: null,
+      variant_product_completenesses: {
+        completeChildren: 0,
+        totalChildren: 1,
+      },
+    },
+    {
+      id: 1,
+      identifier: 'bag',
+      label: 'Nice bag',
       document_type: 'product',
       image: null,
       completeness: 100,

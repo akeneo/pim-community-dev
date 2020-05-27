@@ -94,7 +94,7 @@ test('It displays no rows and a no data information when the quantified associat
       <DependenciesProvider>
         <AkeneoThemeProvider>
           <QuantifiedAssociations
-            quantifiedAssociations={undefined}
+            quantifiedAssociations={{products: [], product_models: []}}
             parentQuantifiedAssociations={{products: [], product_models: []}}
             associationTypeCode="PACK"
             onAssociationsChange={jest.fn()}

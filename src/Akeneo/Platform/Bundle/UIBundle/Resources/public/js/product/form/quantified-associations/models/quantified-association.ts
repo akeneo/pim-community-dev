@@ -13,23 +13,18 @@ type QuantifiedAssociation = {
 const isQuantifiedAssociationEmpty = (quantifiedAssociation: QuantifiedAssociation): boolean =>
   0 === quantifiedAssociation.products.length && 0 === quantifiedAssociation.product_models.length;
 
-const quantifiedAssociationToRowCollection = (collection: QuantifiedAssociation): Row[] => {
-  const products = collection.products || [];
-  const productModels = collection.product_models || [];
-
-  return [
-    ...products.map(quantifiedLink => ({
-      quantifiedLink,
-      productType: ProductType.Product,
-      product: null,
-    })),
-    ...productModels.map(quantifiedLink => ({
-      quantifiedLink,
-      productType: ProductType.ProductModel,
-      product: null,
-    })),
-  ];
-};
+const quantifiedAssociationToRowCollection = (collection: QuantifiedAssociation): Row[] => [
+  ...collection.products.map(quantifiedLink => ({
+    quantifiedLink,
+    productType: ProductType.Product,
+    product: null,
+  })),
+  ...collection.product_models.map(quantifiedLink => ({
+    quantifiedLink,
+    productType: ProductType.ProductModel,
+    product: null,
+  })),
+];
 
 const rowCollectionToQuantifiedAssociation = (rows: Row[]): QuantifiedAssociation => {
   const result: QuantifiedAssociation = {
