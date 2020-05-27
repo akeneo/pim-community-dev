@@ -1,82 +1,92 @@
-import {QuantifiedLink, Identifier, AssociationIdentifiers, setQuantifiedLink, ProductsType} from '.';
+import {Identifier, Row, ProductType, getProductsType} from '../models';
+
+type QuantifiedLink = {
+  identifier: Identifier;
+  quantity: number;
+};
 
 type QuantifiedAssociation = {
   products: QuantifiedLink[];
   product_models: QuantifiedLink[];
 };
 
-type QuantifiedAssociationCollection = {
-  [associationTypeCode: string]: QuantifiedAssociation;
-};
+const isQuantifiedAssociationEmpty = (quantifiedAssociation: QuantifiedAssociation): boolean =>
+  0 === quantifiedAssociation.products.length && 0 === quantifiedAssociation.product_models.length;
 
-const getQuantifiedAssociationCollectionIdentifiers = (
-  quantifiedAssociationCollection: QuantifiedAssociationCollection,
-  associationTypeCode: string
-): AssociationIdentifiers => {
-  if (!(associationTypeCode in quantifiedAssociationCollection)) {
-    return {products: [], product_models: []};
-  }
+const quantifiedAssociationToRowCollection = (collection: QuantifiedAssociation): Row[] => [
+  ...collection.products.map(quantifiedLink => ({
+    quantifiedLink,
+    productType: ProductType.Product,
+    product: null,
+  })),
+  ...collection.product_models.map(quantifiedLink => ({
+    quantifiedLink,
+    productType: ProductType.ProductModel,
+    product: null,
+  })),
+];
 
-  const productQuantifiedLinks = quantifiedAssociationCollection[associationTypeCode].products;
-  const productIdentifiers =
-    undefined === productQuantifiedLinks ? [] : productQuantifiedLinks.map(({identifier}) => identifier);
-  const productModelQuantifiedLinks = quantifiedAssociationCollection[associationTypeCode].product_models;
-  const productModelIdentifiers =
-    undefined === productModelQuantifiedLinks ? [] : productModelQuantifiedLinks.map(({identifier}) => identifier);
+const rowCollectionToQuantifiedAssociation = (rows: Row[]): QuantifiedAssociation => {
+  const result: QuantifiedAssociation = {
+    products: [],
+    product_models: [],
+  };
 
-  return {products: productIdentifiers, product_models: productModelIdentifiers};
-};
-
-const getQuantifiedLinkForIdentifier = (
-  quantifiedAssociationCollection: QuantifiedAssociationCollection,
-  associationTypeCode: string,
-  productsType: ProductsType,
-  identifier: Identifier
-): QuantifiedLink => {
-  const quantifiedLink = quantifiedAssociationCollection[associationTypeCode][productsType].find(
-    entity => entity.identifier === identifier
+  rows.forEach(({quantifiedLink: {identifier, quantity}, productType}) =>
+    result[getProductsType(productType)].push({identifier, quantity})
   );
 
-  if (undefined === quantifiedLink) {
-    throw Error('Quantified link not found');
-  }
-
-  return quantifiedLink;
+  return result;
 };
 
-const setQuantifiedAssociation = (
-  quantifiedAssociation: QuantifiedAssociation,
-  productsType: ProductsType,
-  quantifiedLink: QuantifiedLink
-): QuantifiedAssociation => ({
-  ...quantifiedAssociation,
-  [productsType]: setQuantifiedLink(quantifiedAssociation[productsType], quantifiedLink),
-});
+const newAndUpdatedQuantifiedAssociationsCount = (
+  parentQuantifiedAssociations: QuantifiedAssociation,
+  quantifiedAssociations: QuantifiedAssociation
+): number => {
+  const newAndUpdatedProductQuantifiedLinks = quantifiedAssociations.products.filter(quantifiedLink => {
+    const parentQuantifiedLink = parentQuantifiedAssociations.products.find(
+      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+    );
 
-const setQuantifiedAssociationCollection = (
-  quantifiedAssociationCollection: QuantifiedAssociationCollection,
-  associationTypeCode: string,
-  productsType: ProductsType,
-  quantifiedLink: QuantifiedLink
-): QuantifiedAssociationCollection =>
-  Object.keys(quantifiedAssociationCollection).reduce(
-    (updated, currentAssociationTypeCode) => ({
-      ...updated,
-      [currentAssociationTypeCode]:
-        currentAssociationTypeCode === associationTypeCode
-          ? setQuantifiedAssociation(
-              quantifiedAssociationCollection[currentAssociationTypeCode],
-              productsType,
-              quantifiedLink
-            )
-          : quantifiedAssociationCollection[currentAssociationTypeCode],
-    }),
-    {}
-  );
+    return undefined === parentQuantifiedLink || parentQuantifiedLink.quantity !== quantifiedLink.quantity;
+  });
+
+  const newAndUpdatedProductModelQuantifiedLinks = quantifiedAssociations.product_models.filter(quantifiedLink => {
+    const parentQuantifiedLink = parentQuantifiedAssociations.product_models.find(
+      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+    );
+
+    return undefined === parentQuantifiedLink || parentQuantifiedLink.quantity !== quantifiedLink.quantity;
+  });
+
+  return newAndUpdatedProductQuantifiedLinks.length + newAndUpdatedProductModelQuantifiedLinks.length;
+};
+
+const hasUpdatedQuantifiedAssociations = (
+  parentQuantifiedAssociations: QuantifiedAssociation,
+  quantifiedAssociations: QuantifiedAssociation
+): boolean =>
+  quantifiedAssociations.products.some(quantifiedLink => {
+    const parentQuantifiedLink = parentQuantifiedAssociations.products.find(
+      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+    );
+
+    return undefined !== parentQuantifiedLink && parentQuantifiedLink.quantity !== quantifiedLink.quantity;
+  }) ||
+  quantifiedAssociations.product_models.some(quantifiedLink => {
+    const parentQuantifiedLink = parentQuantifiedAssociations.product_models.find(
+      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+    );
+
+    return undefined !== parentQuantifiedLink && parentQuantifiedLink.quantity !== quantifiedLink.quantity;
+  });
 
 export {
-  QuantifiedAssociationCollection,
-  getQuantifiedAssociationCollectionIdentifiers,
-  getQuantifiedLinkForIdentifier,
-  setQuantifiedAssociationCollection,
+  QuantifiedLink,
+  QuantifiedAssociation,
+  quantifiedAssociationToRowCollection,
+  rowCollectionToQuantifiedAssociation,
+  newAndUpdatedQuantifiedAssociationsCount,
+  hasUpdatedQuantifiedAssociations,
+  isQuantifiedAssociationEmpty,
 };

@@ -1,11 +1,18 @@
-type ProductType = 'product' | 'product_model';
-type ProductsType = 'products' | 'product_models';
+enum ProductType {
+  Product = 'product',
+  ProductModel = 'product_model',
+}
+
+enum ProductsType {
+  Products = 'products',
+  ProductModels = 'product_models',
+}
 
 const getProductsType = (productType: ProductType): ProductsType =>
-  'product' === productType ? 'products' : 'product_models';
+  ProductType.Product === productType ? ProductsType.Products : ProductsType.ProductModels;
 
 const getProductType = (productsType: ProductsType): ProductType =>
-  'products' === productsType ? 'product' : 'product_model';
+  ProductsType.Products === productsType ? ProductType.Product : ProductType.ProductModel;
 
 type VariantProductCompleteness = {
   completeChildren: number;

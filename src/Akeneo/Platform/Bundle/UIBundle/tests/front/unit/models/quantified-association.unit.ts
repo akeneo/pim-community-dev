@@ -1,57 +1,58 @@
 import {
-  getQuantifiedAssociationCollectionIdentifiers,
-  getQuantifiedLinkForIdentifier,
-  setQuantifiedAssociationCollection,
+  quantifiedAssociationToRowCollection,
+  rowCollectionToQuantifiedAssociation,
+  isQuantifiedAssociationEmpty,
+  newAndUpdatedQuantifiedAssociationsCount,
+  hasUpdatedQuantifiedAssociations,
 } from '../../../../Resources/public/js/product/form/quantified-associations/models/quantified-association';
+import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 
-const collection = {
-  PACK: {
-    products: [
-      {identifier: 'bag', quantity: '3'},
-      {identifier: 'cap', quantity: '9'},
-    ],
-    product_models: [
-      {identifier: 'braided-hat', quantity: '17'},
-      {identifier: 'socks', quantity: '6'},
-    ],
-  },
+const quantifiedAssociation = {
+  products: [{identifier: 'bag', quantity: 4}],
+  product_models: [{identifier: 'braided-hat', quantity: 12}],
 };
 
+const parentQuantifiedAssociation = {
+  products: [{identifier: 'bag', quantity: 6}],
+  product_models: [{identifier: 'braided-hat', quantity: 8}],
+};
+
+const rowCollection = [
+  {
+    quantifiedLink: {identifier: 'bag', quantity: 4},
+    productType: ProductType.Product,
+    product: null,
+  },
+  {
+    quantifiedLink: {identifier: 'braided-hat', quantity: 12},
+    productType: ProductType.ProductModel,
+    product: null,
+  },
+];
+
 describe('quantified association', () => {
-  it('should return the identifiers of a quantified association collection', () => {
-    const identifiers = getQuantifiedAssociationCollectionIdentifiers(collection, 'PACK');
-    expect(identifiers).toEqual({products: ['bag', 'cap'], product_models: ['braided-hat', 'socks']});
+  it('should create a row collection from a quantified association collection', () => {
+    expect(quantifiedAssociationToRowCollection(quantifiedAssociation)).toEqual(rowCollection);
+    expect(quantifiedAssociationToRowCollection({products: [], product_models: []})).toEqual([]);
   });
 
-  it('should return the quantified link from quantified association collection', () => {
-    let link = getQuantifiedLinkForIdentifier(collection, 'PACK', 'products', 'bag');
-    expect(link).toEqual({identifier: 'bag', quantity: '3'});
-
-    link = getQuantifiedLinkForIdentifier(collection, 'PACK', 'product_models', 'braided-hat');
-    expect(link).toEqual({identifier: 'braided-hat', quantity: '17'});
+  it('should create a quantified association collection from a row collection', () => {
+    expect(rowCollectionToQuantifiedAssociation(rowCollection)).toEqual(quantifiedAssociation);
+    expect(rowCollectionToQuantifiedAssociation([])).toEqual({products: [], product_models: []});
   });
 
-  it('should throw when no quantified link is found', () => {
-    expect(() => getQuantifiedLinkForIdentifier(collection, 'PACK', 'products', 'UNKNOWN')).toThrowError();
+  it('can tell if a quantified association is empty', () => {
+    expect(isQuantifiedAssociationEmpty(quantifiedAssociation)).toBe(false);
+    expect(isQuantifiedAssociationEmpty({product_models: [], products: []})).toBe(true);
   });
 
-  it('should set the provided quantified link among a quantified association collection', () => {
-    const updatedCollection = setQuantifiedAssociationCollection(collection, 'PACK', 'products', {
-      identifier: 'cap',
-      quantity: '10',
-    });
+  it('should tell the count of new and updated quantified associations', () => {
+    expect(newAndUpdatedQuantifiedAssociationsCount(parentQuantifiedAssociation, quantifiedAssociation)).toEqual(2);
+    expect(newAndUpdatedQuantifiedAssociationsCount(quantifiedAssociation, quantifiedAssociation)).toEqual(0);
+  });
 
-    expect(updatedCollection).toEqual({
-      PACK: {
-        products: [
-          {identifier: 'bag', quantity: '3'},
-          {identifier: 'cap', quantity: '10'},
-        ],
-        product_models: [
-          {identifier: 'braided-hat', quantity: '17'},
-          {identifier: 'socks', quantity: '6'},
-        ],
-      },
-    });
+  it('should tell if the provided quantified association has some updated quantities', () => {
+    expect(hasUpdatedQuantifiedAssociations(parentQuantifiedAssociation, quantifiedAssociation)).toEqual(true);
+    expect(hasUpdatedQuantifiedAssociations(quantifiedAssociation, quantifiedAssociation)).toEqual(false);
   });
 });

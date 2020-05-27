@@ -176,16 +176,7 @@ define([
      * {@inheritdoc}
      */
     render: function() {
-      const newAssociationCount = this.getAssociationCount();
-      if (this.associationCount !== newAssociationCount) {
-        this.associationCount = newAssociationCount;
-
-        this.trigger('tab:register', {
-          code: undefined === this.config.tabCode ? this.code : this.config.tabCode,
-          isVisible: this.isVisible.bind(this),
-          label: __('pim_enrich.entity.product.module.associations.title', {count: newAssociationCount}),
-        });
-      }
+      this.updateAssociationCountInSidebar();
 
       const code = undefined === this.config.tabCode ? this.code : this.config.tabCode;
 
@@ -203,7 +194,10 @@ define([
           ) {
             this.setCurrentAssociationType(currentAssociationType);
           }
-          const isQuantifiedAssociation = this.isQuantifiedAssociation(associationTypes, this.getCurrentAssociationType())
+          const isQuantifiedAssociation = this.isQuantifiedAssociation(
+            associationTypes,
+            this.getCurrentAssociationType()
+          );
 
           state.currentAssociationType = currentAssociationType;
           state.associationTypes = associationTypes;
@@ -219,7 +213,7 @@ define([
               addAssociationsLabel: __('pim_enrich.entity.product.module.associations.add_associations'),
               addAssociationVisible: this.isAddAssociationsVisible(),
               datagridName: this.config.datagridName,
-              isQuantifiedAssociation
+              isQuantifiedAssociation,
             })
           );
           this.renderPanes();
@@ -239,13 +233,29 @@ define([
       return this;
     },
 
+    updateAssociationCountInSidebar: function () {
+      const newAssociationCount = this.getAssociationCount();
+      if (this.associationCount !== newAssociationCount) {
+        this.associationCount = newAssociationCount;
+
+        this.trigger('tab:register', {
+          code: undefined === this.config.tabCode ? this.code : this.config.tabCode,
+          isVisible: this.isVisible.bind(this),
+          label: __('pim_enrich.entity.product.module.associations.title', {count: newAssociationCount}),
+        });
+      }
+    },
+
     /**
      * Prepend for each association type each tab content
      */
     renderPanes: function() {
       this.loadAssociationTypes().then(
         function(associationTypes) {
-          const isQuantifiedAssociation = this.isQuantifiedAssociation(associationTypes, this.getCurrentAssociationType());
+          const isQuantifiedAssociation = this.isQuantifiedAssociation(
+            associationTypes,
+            this.getCurrentAssociationType()
+          );
 
           this.setAssociationCount(associationTypes);
           this.$('.tab-content > .association-type').remove();
@@ -258,13 +268,13 @@ define([
               associationTypes,
               currentAssociationType: this.getCurrentAssociationType(),
               currentAssociationTarget: this.getCurrentAssociationTarget(),
-              numberAssociationLabelKey: isQuantifiedAssociation ?
-                'pim_enrich.entity.product.module.associations.number_of_quantified_associations' :
-                'pim_enrich.entity.product.module.associations.number_of_associations',
+              numberAssociationLabelKey: isQuantifiedAssociation
+                ? 'pim_enrich.entity.product.module.associations.number_of_quantified_associations'
+                : 'pim_enrich.entity.product.module.associations.number_of_associations',
               targetLabel: __('pim_enrich.entity.product.module.associations.target'),
               showProductsLabel: __('pim_enrich.entity.product.module.associations.show_products'),
               showGroupsLabel: __('pim_enrich.entity.product.module.associations.show_groups'),
-              isQuantifiedAssociation
+              isQuantifiedAssociation,
             })
           );
         }.bind(this)
@@ -272,28 +282,45 @@ define([
     },
 
     renderQuantifiedAssociations: function() {
-      if (!this.isQuantifiedAssociation(state.associationTypes, this.getCurrentAssociationType())) return;
+      const associationTypeCode = this.getCurrentAssociationType();
+      if (!this.isQuantifiedAssociation(state.associationTypes, associationTypeCode)) return;
+      if (this.$('#product-quantified-associations').children().length !== 0) return;
+
+      const quantifiedAssociations = this.getFormData().quantified_associations[associationTypeCode] || {
+        products: [],
+        product_models: [],
+      };
+      const parentQuantifiedAssociations = this.getFormData().meta.parent_quantified_associations[associationTypeCode] || {
+        products: [],
+        product_models: [],
+      };
 
       const Component = React.createElement(QuantifiedAssociationsTab, {
-        value: this.getFormData().quantified_associations,
-        associationTypeCode: this.getCurrentAssociationType(),
-        onAssociationsChange: (updatedAssociations) => {
+        quantifiedAssociations,
+        parentQuantifiedAssociations,
+        associationTypeCode,
+        onAssociationsChange: updatedAssociations => {
           const formData = this.getFormData();
-          formData.quantified_associations = updatedAssociations;
+          formData.quantified_associations = {...formData.quantified_associations, [associationTypeCode]: updatedAssociations};
 
           this.setData(formData, {silent: true});
           this.getRoot().trigger('pim_enrich:form:entity:update_state');
         },
-        onOpenPicker: () => {
-          this.launchProductPicker().then(productAndProductModelIdentifiers => {
-            const associationType = this.getCurrentAssociationType();
-            const product = this.getFormData();
-
-            const updatedAssociations = this.getUpdatedAssociations(product, associationType, productAndProductModelIdentifiers);
-
-            this.setData({quantified_associations: updatedAssociations});
-          });
-        }
+        onOpenPicker: () =>
+          this.launchProductPicker().then(identifiers =>
+            identifiers.map(item => {
+              const matchProductModel = item.match(/^product_model;(.*)$/);
+              return {
+                quantifiedLink: {
+                  identifier: matchProductModel ? matchProductModel[1] : item.match(/^product;(.*)$/)[1],
+                  quantity: 1,
+                },
+                productType: matchProductModel ? 'product_model' : 'product',
+                associationTypeCode,
+                product: null,
+              };
+            })
+          ),
       });
       ReactDOM.render(Component, this.$('#product-quantified-associations')[0]);
     },
@@ -363,10 +390,10 @@ define([
      * @param associationTypes
      */
     setAssociationCount: function(associationTypes) {
-      const associations = this.getFormData().associations;
+      const {associations, quantified_associations} = this.getFormData();
 
       _.each(associationTypes, function(assocType) {
-        const association = associations[assocType.code];
+        const association = quantified_associations[assocType.code] || associations[assocType.code];
 
         assocType.productCount = association && association.products ? association.products.length : 0;
 
@@ -400,6 +427,7 @@ define([
         .siblings('.AknTitleContainer.association-type:not(.AknTitleContainer--hidden)')
         .addClass('AknTitleContainer--hidden');
 
+      ReactDOM.unmountComponentAtNode(document.getElementById('product-quantified-associations'));
       this.renderQuantifiedAssociations();
       this.renderPanes();
       this.updateListenerSelectors();
@@ -423,12 +451,15 @@ define([
       const associationTarget = event.currentTarget.dataset.associationTarget;
       this.setCurrentAssociationTarget(associationTarget);
 
-      const isQuantifiedAssociation = this.isQuantifiedAssociation(state.associationTypes, this.getCurrentAssociationType());
+      const isQuantifiedAssociation = this.isQuantifiedAssociation(
+        state.associationTypes,
+        this.getCurrentAssociationType()
+      );
 
       _.each(
         this.datagrids,
         function(datagrid, gridType) {
-          const method = gridType === associationTarget || isQuantifiedAssociation ? 'removeClass' : 'addClass';
+          const method = gridType === associationTarget || isQuantifiedAssociation ? 'removeClass' : 'addClass';
           this.$('.' + datagrid.name)[method]('hide');
         }.bind(this)
       );
@@ -451,12 +482,14 @@ define([
         this.setListenerSelectors();
       }
 
-      isQuantifiedAssociation ?
-        this.$('#product-quantified-associations').removeClass('hide') :
-        this.$('#product-quantified-associations').addClass('hide')
+      isQuantifiedAssociation
+        ? this.$('#product-quantified-associations').removeClass('hide')
+        : this.$('#product-quantified-associations').addClass('hide');
     },
 
-    isQuantifiedAssociation: function (associationTypes, associationTypeCode) {
+    isQuantifiedAssociation: function(associationTypes, associationTypeCode) {
+      if (0 === associationTypes.length) return false;
+
       const associationType = associationTypes.find(associationType => associationType.code === associationTypeCode);
 
       if (undefined === associationType) throw new Error(`Cannot find association type ${associationTypeCode}`);
@@ -727,11 +760,11 @@ define([
         let productIds = [];
         let productModelIds = [];
         productAndProductModelIdentifiers.forEach(item => {
-          const matchProductModel = item.match(/^product_model_(.*)$/);
+          const matchProductModel = item.match(/^product_model;(.*)$/);
           if (matchProductModel) {
             productModelIds.push(matchProductModel[1]);
           } else {
-            const matchProduct = item.match(/^product_(.*)$/);
+            const matchProduct = item.match(/^product;(.*)$/);
             productIds.push(matchProduct[1]);
           }
         });
@@ -776,14 +809,11 @@ define([
               title: __('pim_enrich.entity.product.module.associations.manage', {
                 associationType: getLabel(associationType.labels, locale, associationType.code),
               }),
-              innerDescription: __(
-                'pim_enrich.entity.product.module.associations.manage_description',
-                {productLabel}
-              ),
+              innerDescription: __('pim_enrich.entity.product.module.associations.manage_description', {productLabel}),
               content: '',
               okText: __('pim_common.confirm'),
               template: this.modalTemplate,
-              innerClassName: 'AknFullPage--full'
+              innerClassName: 'AknFullPage--full',
             });
 
             modal.open();
@@ -805,50 +835,12 @@ define([
     },
 
     getAssociationCount: function() {
-      return Object.values(this.getFormData().associations).reduce((typeCount, typeItem) => {
-        return typeCount + Object.values(typeItem).reduce((count, item) => count + item.length, 0);
-      }, 0);
+      const {associations, quantified_associations} = this.getFormData();
+
+      return [...Object.values(associations), ...Object.values(quantified_associations)].reduce(
+        (typeCount, typeItem) => typeCount + Object.values(typeItem).reduce((count, item) => count + item.length, 0),
+        0
+      );
     },
-
-    getUpdatedAssociations: function(product, associationType, productAndProductModelIdentifiers) {
-      const previousQuantifiedLinkedProducts = undefined !== product.quantified_associations && undefined !== product.quantified_associations[associationType] ?
-        product.quantified_associations[associationType].products :
-        [];
-      const previousQuantifiedLinkedProductModels = undefined !== product.quantified_associations && undefined !== product.quantified_associations[associationType] ?
-        product.quantified_associations[associationType].product_models :
-        [];
-
-      const linkedProducts = productAndProductModelIdentifiers.reduce((linkedProducts, identifier) => {
-        const matchProduct = identifier.match(/^product_(.*)$/);
-        if (!matchProduct) {
-          return linkedProducts;
-        }
-
-        const productIdentifierToAdd = matchProduct[1];
-        linkedProducts.filter((linkedProduct) => linkedProduct.identifier !== productIdentifierToAdd);
-
-        return [...linkedProducts, {identifier: productIdentifierToAdd, quantity: 1}];
-      }, previousQuantifiedLinkedProducts);
-
-      const linkedProductModels = productAndProductModelIdentifiers.reduce((linkedProductModels, identifier) => {
-        const matchProductModel = identifier.match(/^product_model_(.*)$/);
-        if (!matchProductModel) {
-          return linkedProductModels;
-        }
-
-        const productModelIdentifierToAdd = matchProductModel[1];
-        linkedProductModels.filter((linkedProduct) => linkedProduct.identifier !== productModelIdentifierToAdd);
-
-        return [...linkedProductModels, {identifier: productModelIdentifierToAdd, quantity: 1}];
-      }, previousQuantifiedLinkedProductModels);
-
-      return {
-        ...product.quantified_associations,
-        [associationType]: {
-          products: linkedProducts,
-          product_models: linkedProductModels
-        }
-      };
-    }
   });
 });

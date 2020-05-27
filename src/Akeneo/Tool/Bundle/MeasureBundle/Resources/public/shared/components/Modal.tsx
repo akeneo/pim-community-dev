@@ -1,7 +1,6 @@
 import React, {PropsWithChildren, ReactElement} from 'react';
 import styled from 'styled-components';
-import {CloseIcon} from 'akeneomeasure/shared/icons/CloseIcon';
-import {useAkeneoTheme} from '@akeneo-pim-community/shared';
+import {useAkeneoTheme, CloseIcon} from '@akeneo-pim-community/shared';
 
 const Modal = styled.div.attrs(() => ({className: 'AknFullPage'}))``;
 

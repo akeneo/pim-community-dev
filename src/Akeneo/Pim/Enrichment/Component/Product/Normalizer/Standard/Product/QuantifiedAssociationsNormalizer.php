@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Normalize associations into an array
+ * Normalize quantified associations into an array
  *
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -32,13 +32,35 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
      */
     public function normalize($entity, $format = null, array $context = [])
     {
-        $mergeAncestors = (bool)($context['merge_ancestors'] ?? true);
+        return $this->normalizeWithParentsAssociations($entity, $format, $context);
+    }
 
-        if ($mergeAncestors && $entity instanceof EntityWithFamilyVariantInterface) {
-            return $this->normalizeAndMergeAncestorsAssociations($entity);
+    public function normalizeWithParentsAssociations($entity, $format = null, array $context = [])
+    {
+        if (!$entity instanceof EntityWithFamilyVariantInterface) {
+            return $this->normalizeWithoutParentsAssociations($entity, $format, $context);
         }
 
+        $entities = $this->getAncestors($entity);
+        $entities[] = $entity;
+
+        return $this->quantifiedAssociationsMerger->normalizeAndMergeQuantifiedAssociationsFrom($entities);
+    }
+
+    public function normalizeWithoutParentsAssociations($entity, $format = null, array $context = [])
+    {
         return $entity->normalizeQuantifiedAssociations();
+    }
+
+    public function normalizeOnlyParentsAssociations($entity, $format = null, array $context = [])
+    {
+        if (!$entity instanceof EntityWithFamilyVariantInterface) {
+            return [];
+        }
+
+        $entities = $this->getAncestors($entity);
+
+        return $this->quantifiedAssociationsMerger->normalizeAndMergeQuantifiedAssociationsFrom($entities);
     }
 
     /**
@@ -52,25 +74,6 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
     public function hasCacheableSupportsMethod(): bool
     {
         return true;
-    }
-
-    private function normalizeAndMergeAncestorsAssociations($entity): array
-    {
-        if (!$entity instanceof EntityWithQuantifiedAssociationsInterface &&
-            !$entity instanceof EntityWithFamilyVariantInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'The given object must implement %s and %s',
-                    EntityWithQuantifiedAssociationsInterface::class,
-                    EntityWithFamilyVariantInterface::class
-                )
-            );
-        }
-
-        $entities = $this->getAncestors($entity);
-        $entities[] = $entity;
-
-        return $this->quantifiedAssociationsMerger->normalizeAndMergeQuantifiedAssociationsFrom($entities);
     }
 
     /**

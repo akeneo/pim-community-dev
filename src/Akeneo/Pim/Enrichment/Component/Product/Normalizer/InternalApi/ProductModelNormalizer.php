@@ -118,7 +118,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
         CatalogContext $catalogContext,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
-        NormalizerInterface $quantifiedAssociationsNormalizer
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
         $this->normalizer = $normalizer;
         $this->versionNormalizer = $versionNormalizer;
@@ -216,7 +216,8 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
                 'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
                 'required_missing_attributes' => $requiredMissingAttributes,
                 'level'                     => $productModel->getVariationLevel(),
-                'quantified_associations_for_this_level' => $this->quantifiedAssociationsNormalizer->normalize($productModel, 'standard', ['merge_ancestors' => false]),
+                'quantified_associations_for_this_level' => $this->quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations($productModel, 'standard', $context),
+                'parent_quantified_associations' => $this->quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations($productModel, 'standard', $context),
             ] + $this->getLabels($productModel, $scopeCode) + $this->getAssociationMeta($productModel);
 
         return $normalizedProductModel;
