@@ -5,8 +5,9 @@ import { ProductField } from './ProductField';
 
 export type RemoveAction = {
   module: React.FC<{ action: RemoveAction } & ActionLineProps>;
+  type: 'remove';
   items: string[];
-  includeChildren: boolean | null;
+  include_children: boolean | null;
 } & ProductField;
 
 export const denormalizeRemoveAction = (json: any): RemoveAction | null => {
@@ -16,10 +17,11 @@ export const denormalizeRemoveAction = (json: any): RemoveAction | null => {
 
   return {
     module: RemoveActionLine,
+    type: 'remove',
     items: json.items,
     field: json.field,
     locale: json.locale || null,
     scope: json.scope || null,
-    includeChildren: json.include_children || null,
+    include_children: json.include_children || null,
   };
 };

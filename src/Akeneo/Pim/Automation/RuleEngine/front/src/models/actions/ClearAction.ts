@@ -5,6 +5,7 @@ import { ProductField } from './ProductField';
 
 export type ClearAction = {
   module: React.FC<{ action: ClearAction } & ActionLineProps>;
+  type: 'clear';
 } & ProductField;
 
 export const denormalizeClearAction = (json: any): ClearAction | null => {
@@ -14,6 +15,7 @@ export const denormalizeClearAction = (json: any): ClearAction | null => {
 
   return {
     module: ClearActionLine,
+    type: 'clear',
     field: json.field,
     locale: json.locale || null,
     scope: json.scope || null,

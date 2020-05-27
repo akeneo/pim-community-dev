@@ -50,17 +50,15 @@ const ConditionLine: React.FC<Props> = ({
       className={`AknGrid-bodyRow${
         isFallback ? ' AknGrid-bodyRow--highlight' : ''
       }`}>
-      <div className='AknGrid-bodyCell'>
-        <Line
-          condition={condition}
-          lineNumber={lineNumber}
-          translate={translate}
-          locales={locales}
-          scopes={scopes}
-          currentCatalogLocale={currentCatalogLocale}
-          router={router}
-        />
-      </div>
+      <Line
+        condition={condition}
+        lineNumber={lineNumber}
+        translate={translate}
+        locales={locales}
+        scopes={scopes}
+        currentCatalogLocale={currentCatalogLocale}
+        router={router}
+      />
       <div className='AknGrid-bodyCell AknGrid-bodyCell--tight'>
         <DeleteButton {...dialog}>
           <img

@@ -28,7 +28,9 @@ const ClearActionLine: React.FC<Props> = ({
     values.scope = action.scope;
   }
 
-  useValueInitialization(`content.actions[${lineNumber}]`, values);
+  useValueInitialization(`content.actions[${lineNumber}]`, values, {}, [
+    action,
+  ]);
 
   return (
     <ActionTemplate
@@ -37,13 +39,19 @@ const ClearActionLine: React.FC<Props> = ({
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
-      <FallbackField
-        field={action.field}
-        scope={action.scope}
-        locale={action.locale}
-      />
-      {/* It is not translated since it is temporary. */}
-      &nbsp;is cleared.
+      <div className='AknGrid AknGrid--unclickable'>
+        <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
+          <div className='AknGrid-bodyCell'>
+            <FallbackField
+              field={action.field}
+              scope={action.scope}
+              locale={action.locale}
+            />
+            {/* It is not translated since it is temporary. */}
+            &nbsp;is cleared.
+          </div>
+        </div>
+      </div>
     </ActionTemplate>
   );
 };

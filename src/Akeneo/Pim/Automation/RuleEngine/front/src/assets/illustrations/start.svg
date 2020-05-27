@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="1000px" viewBox="0 0 12 1000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>start</title>
+    <g id="start" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <path d="M12,22 L5,22 C2.790861,22 1,23.790861 1,26 L1,1000 L1,1000" id="Line" stroke="#4CA8E0"></path>
+    </g>
+</svg>

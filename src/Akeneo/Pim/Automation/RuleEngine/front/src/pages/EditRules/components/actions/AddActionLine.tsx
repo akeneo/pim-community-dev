@@ -29,7 +29,9 @@ const AddActionLine: React.FC<Props> = ({
     values.scope = action.scope;
   }
 
-  useValueInitialization(`content.actions[${lineNumber}]`, values);
+  useValueInitialization(`content.actions[${lineNumber}]`, values, {}, [
+    action,
+  ]);
 
   return (
     <ActionTemplate
@@ -38,17 +40,23 @@ const AddActionLine: React.FC<Props> = ({
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
-      {/* It is not translated since it is temporary. */}
-      The value{action.items.length > 1 && 's'}&nbsp;
-      <span className='AknRule-attribute'>{action.items.join(', ')}</span>
-      {action.items.length > 1 ? ' are' : ' is'}
-      &nbsp;added to&nbsp;
-      <FallbackField
-        field={action.field}
-        scope={action.scope}
-        locale={action.locale}
-      />
-      .
+      <div className='AknGrid AknGrid--unclickable'>
+        <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
+          <div className='AknGrid-bodyCell'>
+            {/* It is not translated since it is temporary. */}
+            The value{action.items.length > 1 && 's'}&nbsp;
+            <span className='AknRule-attribute'>{action.items.join(', ')}</span>
+            {action.items.length > 1 ? ' are' : ' is'}
+            &nbsp;added to&nbsp;
+            <FallbackField
+              field={action.field}
+              scope={action.scope}
+              locale={action.locale}
+            />
+            .
+          </div>
+        </div>
+      </div>
     </ActionTemplate>
   );
 };

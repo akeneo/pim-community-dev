@@ -58,6 +58,7 @@ const RuleProperties: React.FC<Props> = ({ locales, translate }) => {
                     id={`edit-rules-input-label-${locale.code}`}
                     label={locale.label}
                     ref={register}
+                    maxLength={100}
                   />
                 </div>
               );

@@ -45,6 +45,8 @@ const OperatorSelector: React.FC<Props> = ({
       data={operatorChoices}
       value={value}
       onValueChange={value => onChange(value as Operator)}
+      dropdownCssClass={'operator-dropdown'}
+      hideSearch={true}
     />
   );
 };

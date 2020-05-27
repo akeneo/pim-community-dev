@@ -23,6 +23,7 @@ const ScopeSelector: React.FC<Props> = ({
   value,
   onChange,
   translate,
+  children,
 }) => {
   const getScopeLabel = (scope: Scope): string => {
     return scope.labels[currentCatalogLocale] || `[${scope.code}]`;
@@ -36,16 +37,19 @@ const ScopeSelector: React.FC<Props> = ({
   });
 
   return (
-    <Select2SimpleSyncWrapper
-      id={id}
-      label={label}
-      hiddenLabel={hiddenLabel}
-      data={scopeChoices}
-      hideSearch={true}
-      placeholder={translate('pim_enrich.entity.channel.uppercase_label')}
-      value={value}
-      onValueChange={value => onChange(value as ScopeCode)}
-    />
+    <>
+      <Select2SimpleSyncWrapper
+        id={id}
+        label={label}
+        hiddenLabel={hiddenLabel}
+        data={scopeChoices}
+        hideSearch={true}
+        placeholder={translate('pim_enrich.entity.channel.uppercase_label')}
+        value={value}
+        onValueChange={value => onChange(value as ScopeCode)}
+      />
+      {children}
+    </>
   );
 };
 

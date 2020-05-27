@@ -124,6 +124,7 @@ pimee_catalog_rule:
             product_selection: Create a condition
     exceptions:
         loading: An error occurred during rule definition loading.
+        required: This field is required
 
 pim_enrich:
     entity:

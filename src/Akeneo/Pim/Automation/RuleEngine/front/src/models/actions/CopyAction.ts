@@ -4,12 +4,13 @@ import { ActionLineProps } from '../../pages/EditRules/components/actions/Action
 
 export type CopyAction = {
   module: React.FC<{ action: CopyAction } & ActionLineProps>;
-  fromField: string;
-  fromLocale: string | null;
-  fromScope: string | null;
-  toField: string;
-  toLocale: string | null;
-  toScope: string | null;
+  type: 'copy';
+  from_field: string;
+  from_locale: string | null;
+  from_scope: string | null;
+  to_field: string;
+  to_locale: string | null;
+  to_scope: string | null;
 };
 
 export const denormalizeCopyAction = (json: any): CopyAction | null => {
@@ -19,11 +20,12 @@ export const denormalizeCopyAction = (json: any): CopyAction | null => {
 
   return {
     module: CopyActionLine,
-    fromField: json.from_field || null,
-    fromLocale: json.from_locale || null,
-    fromScope: json.from_scope || null,
-    toField: json.to_field || null,
-    toLocale: json.to_locale || null,
-    toScope: json.to_scope || null,
+    type: 'copy',
+    from_field: json.from_field,
+    from_locale: json.from_locale || null,
+    from_scope: json.from_scope || null,
+    to_field: json.to_field,
+    to_locale: json.to_locale || null,
+    to_scope: json.to_scope || null,
   };
 };
