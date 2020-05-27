@@ -66,8 +66,9 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
     );
   };
 
-  const setValueFormValue = (value: FamilyCode[] | null) =>
+  const setValueFormValue = (value: FamilyCode[] | null) => {
     setValue(`content.conditions[${lineNumber}].value`, value);
+  };
   const setOperatorFormValue = (value: Operator) => {
     setValue(`content.conditions[${lineNumber}].operator`, value);
     if (!shouldDisplayValue()) {

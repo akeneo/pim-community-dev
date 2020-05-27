@@ -5,6 +5,7 @@ import { ProductField } from './ProductField';
 
 export type ConcatenateAction = {
   module: React.FC<{ action: ConcatenateAction } & ActionLineProps>;
+  type: 'concatenate';
   from: ProductField[];
   to: ProductField;
 };
@@ -18,6 +19,7 @@ export const denormalizeConcatenateAction = (
 
   return {
     module: ConcatenateActionLine,
+    type: 'concatenate',
     from: json.from,
     to: json.to,
   };

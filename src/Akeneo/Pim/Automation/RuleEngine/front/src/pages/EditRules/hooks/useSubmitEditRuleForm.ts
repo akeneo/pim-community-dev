@@ -12,6 +12,7 @@ import {
   NotificationLevel,
 } from '../../../dependenciesTools';
 import { denormalize } from '../../../models/rule-definition-denormalizer';
+import { Action } from '../../../models/Action';
 
 type Reset = (
   values?: DeepPartial<FormData>,
@@ -100,13 +101,13 @@ const createFormDefaultValues = (
   labels: locales.reduce(createLocalesLabels(ruleDefinition), {}),
   content: {
     conditions: ruleDefinition.conditions || [],
-    actions:
-      ruleDefinition.actions.map(action => {
-        if (action.json) {
-          return action.json;
-        }
-        return omit(action, 'module');
-      }) || [],
+    actions: ruleDefinition.actions.map((action: Action) => {
+      if (Object.prototype.hasOwnProperty.call(action, 'json')) {
+        // It's a FallbackAction
+        return (action as { json: any }).json;
+      }
+      return omit(action, 'module');
+    }),
   },
 });
 
@@ -120,6 +121,7 @@ const useSubmitEditRuleForm = (
   setRuleDefinition: (ruleDefinition: RuleDefinition) => void
 ) => {
   const defaultValues = createFormDefaultValues(ruleDefinition, locales);
+  console.log(defaultValues);
   const formMethods = useForm<FormData>({
     defaultValues,
   });

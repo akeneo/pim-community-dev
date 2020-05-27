@@ -87,7 +87,7 @@ const EditRulesForm: React.FC<Props> = ({
   const { formState } = useFormContext();
   const beforeUnload = (event: Event) => {
     event = event || window.event;
-    if (formState.dirty) {
+    if (formState.dirtyFields.size > 0) {
       const message = translate('pimee_catalog_rule.form.edit.discard_changes');
       event.returnValue = true;
 

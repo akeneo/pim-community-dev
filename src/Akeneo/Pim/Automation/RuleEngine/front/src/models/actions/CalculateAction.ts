@@ -7,6 +7,7 @@ import { denormalizeOperation, Operation } from './Calculate/Operation';
 
 export type CalculateAction = {
   module: React.FC<{ action: CalculateAction } & ActionLineProps>;
+  type: 'calculate';
   destination: ProductField;
   source: Operand;
   operation_list: Operation[];
@@ -24,6 +25,7 @@ export const denormalizeCalculateAction = (
   try {
     return {
       module: CalculateActionLine,
+      type: 'calculate',
       destination: json.destination,
       source: denormalizeOperand(json.source),
       operation_list: json.operation_list.map((operation: any) =>

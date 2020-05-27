@@ -63,8 +63,8 @@ const EditRulesContent: React.FC<Props> = ({
   );
 
   useEffect(() => {
-    setIsDirty(formMethods.formState.dirty);
-  }, [formMethods.formState.dirty]);
+    setIsDirty(formMethods.formState.dirtyFields.size > 0);
+  }, [formMethods.formState.dirtyFields]);
 
   const title =
     (formMethods.watch(`labels.${currentCatalogLocale}`) as string) ||
@@ -78,7 +78,7 @@ const EditRulesContent: React.FC<Props> = ({
         formId='edit-rules-form'
         title={title}
         translate={translate}
-        unsavedChanges={formMethods.formState.dirty}>
+        unsavedChanges={formMethods.formState.dirtyFields.size > 0}>
         <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>
           {translate('pim_menu.tab.settings')}
         </BreadcrumbItem>

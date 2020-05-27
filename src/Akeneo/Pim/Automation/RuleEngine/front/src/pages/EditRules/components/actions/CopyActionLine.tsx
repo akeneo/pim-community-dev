@@ -17,23 +17,25 @@ const CopyActionLine: React.FC<Props> = ({
 }) => {
   const values: any = {
     type: 'copy',
-    from_field: action.fromField,
-    to_field: action.toField,
+    from_field: action.from_field,
+    to_field: action.to_field,
   };
 
-  if (action.fromLocale) {
-    values.from_locale = action.fromLocale;
+  if (action.from_locale) {
+    values.from_locale = action.from_locale;
   }
-  if (action.fromScope) {
-    values.from_scope = action.fromScope;
+  if (action.from_scope) {
+    values.from_scope = action.from_scope;
   }
-  if (action.toLocale) {
-    values.to_locale = action.toLocale;
+  if (action.to_locale) {
+    values.to_locale = action.to_locale;
   }
-  if (action.toScope) {
-    values.to_scope = action.toScope;
+  if (action.to_scope) {
+    values.to_scope = action.to_scope;
   }
-  useValueInitialization(`content.actions[${lineNumber}]`, values);
+  useValueInitialization(`content.actions[${lineNumber}]`, values, {}, [
+    action,
+  ]);
 
   return (
     <ActionTemplate
@@ -42,19 +44,25 @@ const CopyActionLine: React.FC<Props> = ({
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
-      <FallbackField
-        field={action.fromField}
-        scope={action.fromScope}
-        locale={action.fromLocale}
-      />
-      {/* It is not translated since it is temporary. */}
-      &nbsp;is copied into&nbsp;
-      <FallbackField
-        field={action.toField}
-        scope={action.toScope}
-        locale={action.toLocale}
-      />
-      .
+      <div className='AknGrid AknGrid--unclickable'>
+        <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
+          <div className='AknGrid-bodyCell'>
+            <FallbackField
+              field={action.from_field}
+              scope={action.from_scope}
+              locale={action.from_locale}
+            />
+            {/* It is not translated since it is temporary. */}
+            &nbsp;is copied into&nbsp;
+            <FallbackField
+              field={action.to_field}
+              scope={action.to_scope}
+              locale={action.to_locale}
+            />
+            .
+          </div>
+        </div>
+      </div>
     </ActionTemplate>
   );
 };

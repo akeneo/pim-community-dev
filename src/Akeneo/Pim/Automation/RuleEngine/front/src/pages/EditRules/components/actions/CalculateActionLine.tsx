@@ -119,16 +119,21 @@ const CalculateActionLine: React.FC<Props> = ({
   action,
   handleDelete,
 }) => {
-  useValueInitialization(`content.actions[${lineNumber}]`, {
-    type: 'calculate',
-    destination: action.destination,
-    source: action.source,
-    operation_list: action.operation_list.map((operation: Operation) =>
-      normalizeOperation(operation)
-    ),
-    // TODO: uncomment when it will be ready
-    // round_precision: action.round_precision,
-  });
+  useValueInitialization(
+    `content.actions[${lineNumber}]`,
+    {
+      type: 'calculate',
+      destination: action.destination,
+      source: action.source,
+      operation_list: action.operation_list.map((operation: Operation) =>
+        normalizeOperation(operation)
+      ),
+      // TODO: uncomment when it will be ready
+      // round_precision: action.round_precision,
+    },
+    {},
+    [action]
+  );
 
   return (
     <ActionTemplate
@@ -137,43 +142,49 @@ const CalculateActionLine: React.FC<Props> = ({
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
-      <FallbackField
-        field={action.destination.field}
-        scope={action.destination.scope || null}
-        locale={action.destination.locale || null}
-      />
-      &nbsp;is calculated&nbsp;
-      {action.operation_list.map((operation: Operation, key: number) => (
-        <React.Fragment key={key}>
-          {Operator.ADD === operation.operator && (
-            <AddView
-              operand={operation.operand}
-              source={key === 0 ? action.source : null}
+      <div className='AknGrid AknGrid--unclickable'>
+        <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
+          <div className='AknGrid-bodyCell'>
+            <FallbackField
+              field={action.destination.field}
+              scope={action.destination.scope || null}
+              locale={action.destination.locale || null}
             />
-          )}
-          {Operator.SUBSTRACT === operation.operator && (
-            <SubstractView
-              operand={operation.operand}
-              source={key === 0 ? action.source : null}
-            />
-          )}
-          {Operator.MULTIPLY === operation.operator && (
-            <MultiplyView
-              operand={operation.operand}
-              source={key === 0 ? action.source : null}
-            />
-          )}
-          {Operator.DIVIDE === operation.operator && (
-            <DivideView
-              operand={operation.operand}
-              source={key === 0 ? action.source : null}
-            />
-          )}
+            &nbsp;is calculated&nbsp;
+            {action.operation_list.map((operation: Operation, key: number) => (
+              <React.Fragment key={key}>
+                {Operator.ADD === operation.operator && (
+                  <AddView
+                    operand={operation.operand}
+                    source={key === 0 ? action.source : null}
+                  />
+                )}
+                {Operator.SUBSTRACT === operation.operator && (
+                  <SubstractView
+                    operand={operation.operand}
+                    source={key === 0 ? action.source : null}
+                  />
+                )}
+                {Operator.MULTIPLY === operation.operator && (
+                  <MultiplyView
+                    operand={operation.operand}
+                    source={key === 0 ? action.source : null}
+                  />
+                )}
+                {Operator.DIVIDE === operation.operator && (
+                  <DivideView
+                    operand={operation.operand}
+                    source={key === 0 ? action.source : null}
+                  />
+                )}
 
-          {key < action.operation_list.length - 1 && ', then '}
-        </React.Fragment>
-      ))}
-      .
+                {key < action.operation_list.length - 1 && ', then '}
+              </React.Fragment>
+            ))}
+            .
+          </div>
+        </div>
+      </div>
     </ActionTemplate>
   );
 };
