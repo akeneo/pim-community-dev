@@ -217,7 +217,7 @@ class ProductModelController
         $violations = $this->validator->validate($productModel);
 
         if (count($violations) > 0) {
-            $normalizedViolations = $this->normalizeViolations($violations, $productModel);
+            $normalizedViolations = $this->normalizeCreateViolations($violations, $productModel);
 
             return new JsonResponse($normalizedViolations, 400);
         }
@@ -258,7 +258,7 @@ class ProductModelController
             return new JsonResponse($normalizedProductModel);
         }
 
-        $normalizedViolations = $this->normalizeViolations($violations, $productModel);
+        $normalizedViolations = $this->normalizeEditViolations($violations, $productModel);
 
         return new JsonResponse($normalizedViolations, 400);
     }
@@ -483,7 +483,36 @@ class ProductModelController
         return $productModel;
     }
 
-    protected function normalizeViolations(ConstraintViolationListInterface $violations, ProductModelInterface $productModel): array
+    protected function normalizeCreateViolations(ConstraintViolationListInterface $violations, ProductModelInterface $productModel): array
+    {
+        $normalizedViolations = [
+            'values' => [],
+        ];
+
+        /** @var ConstraintViolation $violation */
+        foreach ($violations as $violation) {
+            $propertyPath = $violation->getPropertyPath();
+
+            if (0 === strpos($propertyPath, 'quantifiedAssociations.')) {
+                $normalizedViolations['quantified_associations'][] = $this->normalizer->normalize(
+                    $violation,
+                    'internal_api',
+                    ['translate' => false]
+                );
+                continue;
+            }
+
+            $normalizedViolations['values'][] = $this->violationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['product_model' => $productModel]
+            );
+        }
+
+        return $normalizedViolations;
+    }
+
+    protected function normalizeEditViolations(ConstraintViolationListInterface $violations, ProductModelInterface $productModel): array
     {
         $normalizedViolations = [
             'values' => [],
@@ -505,7 +534,7 @@ class ProductModelController
             $normalizedViolations['values'][] = $this->constraintViolationNormalizer->normalize(
                 $violation,
                 'internal_api',
-                ['product_model' => $productModel]
+                ['productModel' => $productModel]
             );
         }
 
