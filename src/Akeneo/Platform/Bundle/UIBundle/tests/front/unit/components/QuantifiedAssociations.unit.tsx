@@ -8,7 +8,6 @@ import {QuantifiedAssociations} from '../../../../Resources/public/js/product/fo
 import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 import {queryByDisplayValue} from '@testing-library/dom';
 
-jest.mock('legacy-bridge/provider/dependencies.ts');
 jest.mock('pimui/js/product/form/quantified-associations/hooks/useProducts.ts', () => ({
   useProducts: (identifiers: {products: string[]; product_models: string[]}) => {
     if (0 === identifiers.products.length) return [];
@@ -64,7 +63,7 @@ test('It displays quantified association rows for a quantified association colle
           <QuantifiedAssociations
             quantifiedAssociations={quantifiedAssociationCollection}
             parentQuantifiedAssociations={{products: [{identifier: 'bag', quantity: 1}], product_models: []}}
-            associationTypeCode="PACK"
+            errors={[]}
             onAssociationsChange={jest.fn()}
             onOpenPicker={jest.fn()}
           />
@@ -96,7 +95,7 @@ test('It displays no rows and a no data information when the quantified associat
           <QuantifiedAssociations
             quantifiedAssociations={{products: [], product_models: []}}
             parentQuantifiedAssociations={{products: [], product_models: []}}
-            associationTypeCode="PACK"
+            errors={[]}
             onAssociationsChange={jest.fn()}
             onOpenPicker={jest.fn()}
           />
@@ -121,7 +120,7 @@ test('It triggers the onChange event when a quantity is changed', async () => {
           <QuantifiedAssociations
             quantifiedAssociations={quantifiedAssociationCollection}
             parentQuantifiedAssociations={{products: [], product_models: []}}
-            associationTypeCode="PACK"
+            errors={[]}
             onAssociationsChange={onChange}
             onOpenPicker={jest.fn()}
           />
@@ -154,7 +153,7 @@ test('It triggers the onRowDelete event when the remove button is clicked', asyn
           <QuantifiedAssociations
             quantifiedAssociations={quantifiedAssociationCollection}
             parentQuantifiedAssociations={{products: [], product_models: []}}
-            associationTypeCode="PACK"
+            errors={[]}
             onAssociationsChange={onChange}
             onOpenPicker={jest.fn()}
           />
@@ -188,19 +187,21 @@ test('It adds products when the user confirm the picker', async () => {
           <QuantifiedAssociations
             quantifiedAssociations={smallQuantifiedAssociationCollection}
             parentQuantifiedAssociations={{products: [], product_models: []}}
-            associationTypeCode="PACK"
             onAssociationsChange={onChange}
+            errors={[]}
             onOpenPicker={() =>
               Promise.resolve([
                 {
                   productType: ProductType.ProductModel,
                   quantifiedLink: {identifier: 'braided-hat', quantity: 1},
                   product: null,
+                  errors: [],
                 },
                 {
                   productType: ProductType.Product,
                   quantifiedLink: {identifier: 'bag', quantity: 1},
                   product: null,
+                  errors: [],
                 },
               ])
             }
@@ -235,8 +236,8 @@ test('It displays no table rows when the quantified association collection is nu
               products: [{identifier: 'null', quantity: 2}],
               product_models: [],
             }}
+            errors={[]}
             parentQuantifiedAssociations={{products: [], product_models: []}}
-            associationTypeCode="PACK"
             onAssociationsChange={jest.fn()}
             onOpenPicker={jest.fn()}
           />

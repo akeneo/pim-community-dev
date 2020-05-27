@@ -6,14 +6,15 @@ type ValidationError = {
   message: string;
   propertyPath: string;
   invalidValue: any;
+  plural?: number;
 };
 
-const filterErrors = (errors: ValidationError[], propertyPath: string) =>
+const filterErrors = (errors: ValidationError[], propertyPath: string): ValidationError[] =>
   errors
     .filter(error => error.propertyPath.startsWith(propertyPath))
     .map(error => ({...error, propertyPath: error.propertyPath.replace(propertyPath, '')}));
 
-const getErrorsForPath = (errors: ValidationError[], propertyPath: string) =>
+const getErrorsForPath = (errors: ValidationError[], propertyPath: string): ValidationError[] =>
   errors.filter(error => error.propertyPath === propertyPath);
 
 const partition = <T>(items: T[], condition: (item: T) => boolean): T[][] => {

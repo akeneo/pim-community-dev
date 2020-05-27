@@ -45,7 +45,7 @@ const unitConfig = {
       lines: 100,
     },
   },
-  setupFiles: [`${__dirname}/enzyme.js`],
+  setupFiles: [`${__dirname}/enzyme.js`, `${__dirname}/mocks.js`],
 };
 
 module.exports = Object.assign({}, baseConfig, unitConfig);

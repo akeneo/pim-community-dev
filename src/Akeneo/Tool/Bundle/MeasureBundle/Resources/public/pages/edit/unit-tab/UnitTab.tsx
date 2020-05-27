@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import {MeasurementFamily, filterOnLabelOrCode, getUnitIndex} from 'akeneomeasure/model/measurement-family';
 import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
 import {Table, HeaderCell} from 'akeneomeasure/pages/common/Table';
-import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
 import {UnitCode} from 'akeneomeasure/model/unit';
 import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
 import {UnitRow} from 'akeneomeasure/pages/edit/unit-tab/UnitRow';
-import {SearchBar, NoDataSection, NoDataTitle} from '@akeneo-pim-community/shared';
+import {SearchBar, NoDataSection, NoDataTitle, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 
 const TabContainer = styled.div`

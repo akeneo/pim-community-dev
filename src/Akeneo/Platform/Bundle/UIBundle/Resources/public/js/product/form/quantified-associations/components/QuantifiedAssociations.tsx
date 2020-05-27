@@ -11,6 +11,7 @@ import {
   HelperLevel,
   UnlinkIcon,
   useAkeneoTheme,
+  ValidationError,
 } from '@akeneo-pim-community/shared';
 import {
   Row,
@@ -31,7 +32,7 @@ import {
 import {QuantifiedAssociationRow} from '../components';
 import {useProducts} from '../hooks';
 
-const MAX_LIMIT = 10;
+const MAX_LIMIT = 100;
 
 const HeaderCell = styled.th`
   text-align: left;
@@ -64,7 +65,7 @@ const Buttons = styled.div`
 type QuantifiedAssociationsProps = {
   quantifiedAssociations: QuantifiedAssociation;
   parentQuantifiedAssociations: QuantifiedAssociation;
-  associationTypeCode: string;
+  errors: ValidationError[];
   onAssociationsChange: (quantifiedAssociations: QuantifiedAssociation) => void;
   onOpenPicker: () => Promise<Row[]>;
 };
@@ -72,14 +73,14 @@ type QuantifiedAssociationsProps = {
 const QuantifiedAssociations = ({
   quantifiedAssociations,
   parentQuantifiedAssociations,
-  associationTypeCode,
+  errors,
   onOpenPicker,
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
   const theme = useAkeneoTheme();
   const [rowCollection, setRowCollection] = useState<Row[]>(
-    quantifiedAssociationToRowCollection(quantifiedAssociations)
+    quantifiedAssociationToRowCollection(quantifiedAssociations, errors)
   );
   const [searchValue, setSearchValue] = useState('');
   const products = useProducts(getAssociationIdentifiers(rowCollection));
@@ -92,12 +93,11 @@ const QuantifiedAssociations = ({
     parentQuantifiedAssociations,
     rowCollectionToQuantifiedAssociation(rowCollection)
   );
-
   const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
 
   useEffect(() => {
-    setRowCollection(quantifiedAssociationToRowCollection(quantifiedAssociations));
-  }, [associationTypeCode, quantifiedAssociations]);
+    setRowCollection(quantifiedAssociationToRowCollection(quantifiedAssociations, errors));
+  }, [quantifiedAssociations, JSON.stringify(errors)]);
 
   useEffect(() => {
     const updatedValue = rowCollectionToQuantifiedAssociation(rowCollection);

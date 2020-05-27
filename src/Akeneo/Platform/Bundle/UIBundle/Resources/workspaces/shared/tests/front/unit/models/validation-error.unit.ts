@@ -1,4 +1,4 @@
-import {ValidationError, filterErrors, partitionErrors} from 'akeneomeasure/model/validation-error';
+import {ValidationError, filterErrors, partitionErrors} from '../../../../src/models/validation-error';
 
 const createValidationError = (propertyPath: string, message: string = 'error'): ValidationError => {
   return {
@@ -37,17 +37,5 @@ it('should partition the errors based on a list of filters', () => {
     (error: ValidationError) => error.propertyPath.startsWith('code'),
   ];
 
-  expect(partitionErrors(errors, filters)).toEqual([
-    [
-      errors[1],
-      errors[2],
-      errors[3],
-    ],
-    [
-      errors[0],
-    ],
-    [
-      errors[4],
-    ]
-  ]);
+  expect(partitionErrors(errors, filters)).toEqual([[errors[1], errors[2], errors[3]], [errors[0]], [errors[4]]]);
 });

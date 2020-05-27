@@ -1,7 +1,15 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {TransparentButton, EditIcon, CloseIcon, UnlinkIcon, useAkeneoTheme} from '@akeneo-pim-community/shared';
+import {
+  TransparentButton,
+  EditIcon,
+  CloseIcon,
+  UnlinkIcon,
+  useAkeneoTheme,
+  filterErrors,
+  InputErrors,
+} from '@akeneo-pim-community/shared';
 import {ProductType, Row, QuantifiedLink} from '../models';
 import {useProductThumbnail} from '../hooks';
 
@@ -16,6 +24,23 @@ const Container = styled.tr`
   td:first-child {
     padding-left: 15px;
   }
+`;
+
+const CellContainer = styled.div`
+  display: flex;
+  height: 74px;
+  align-items: center;
+`;
+const InputCellContainer = styled(CellContainer)`
+  margin-bottom: -19px;
+`;
+
+const ActionCellContainer = styled(CellContainer)`
+  justify-content: flex-end;
+`;
+
+const Cell = styled.td`
+  vertical-align: top;
 `;
 
 const CellPlaceholder = styled.div`
@@ -47,6 +72,7 @@ const LabelCell = styled.td<{isProductModel: boolean}>`
   font-weight: bold;
   color: ${({theme, isProductModel}) => (isProductModel ? 'inherit' : theme.color.purple100)};
   min-width: 200px;
+  vertical-align: top;
 `;
 
 const Badge = styled.span`
@@ -58,12 +84,13 @@ const Badge = styled.span`
   padding: 2px 5px;
 `;
 
-const QuantityInput = styled.input`
-  border: 1px solid ${({theme}) => theme.color.grey80};
+const QuantityInput = styled.input<{isInvalid: boolean}>`
+  border: 1px solid;
   width: 100px;
   height: 40px;
   padding: 12px 15px;
   color: inherit;
+  border-color: ${({theme, isInvalid}) => (isInvalid ? theme.color.red100 : theme.color.grey80)};
 `;
 
 const RowActions = styled.div`
@@ -96,73 +123,94 @@ const QuantifiedAssociationRow = ({row, parentQuantifiedLink, onChange, onRemove
   const thumbnailUrl = useProductThumbnail(row.product);
   const blueColor = useAkeneoTheme().color.blue100;
 
-  return null === row.product ? (
-    <tr>
-      <td colSpan={7}>
-        <CellPlaceholder className="AknLoadingPlaceHolder" />
-      </td>
-    </tr>
-  ) : (
-    <Container>
-      <td>
-        <Thumbnail isProductModel={isProductModel}>
-          <img src={thumbnailUrl} alt={row.product.label} />
-        </Thumbnail>
-      </td>
-      <LabelCell isProductModel={isProductModel}>{row.product.label}</LabelCell>
-      <td>{row.product.identifier}</td>
-      <td>
-        {null === row.product.completeness ? (
-          translate('pim_common.not_available')
-        ) : (
-          <Badge>{row.product.completeness}%</Badge>
-        )}
-      </td>
-      <td>
-        {null === row.product.variant_product_completenesses ? (
-          translate('pim_common.not_available')
-        ) : (
-          <Badge>
-            {row.product.variant_product_completenesses.completeChildren} /{' '}
-            {row.product.variant_product_completenesses.totalChildren}
-          </Badge>
-        )}
-      </td>
-      <td>
-        <QuantityInput
-          title={translate('pim_enrich.entity.product.module.associations.quantified.quantity')}
-          type="number"
-          min={1}
-          value={row.quantifiedLink.quantity}
-          onChange={event =>
-            onChange({
-              ...row,
-              quantifiedLink: {...row.quantifiedLink, quantity: Number(event.currentTarget.value) || 1},
-            })
-          }
-        />
-      </td>
-      <td>
-        <RowActions>
-          {undefined !== parentQuantifiedLink && parentQuantifiedLink.quantity !== row.quantifiedLink.quantity && (
-            <UnlinkIcon
-              color={blueColor}
-              title={translate('pim_enrich.entity.product.module.associations.quantified.unlinked')}
-            />
-          )}
-          <RowAction>
-            <a href={`#${productEditUrl}`} target="_blank">
-              <EditIcon size={20} />
-            </a>
-          </RowAction>
-          {undefined === parentQuantifiedLink && (
-            <RowAction onClick={() => onRemove(row)}>
-              <CloseIcon title={translate('pim_enrich.entity.product.module.associations.remove')} size={20} />
-            </RowAction>
-          )}
-        </RowActions>
-      </td>
-    </Container>
+  return (
+    <>
+      {null === row.product ? (
+        <tr>
+          <Cell colSpan={7}>
+            <CellPlaceholder className="AknLoadingPlaceHolder" />
+          </Cell>
+        </tr>
+      ) : (
+        <Container>
+          <Cell>
+            <CellContainer>
+              <Thumbnail isProductModel={isProductModel}>
+                <img src={thumbnailUrl} alt={row.product.label} />
+              </Thumbnail>
+            </CellContainer>
+          </Cell>
+          <LabelCell isProductModel={isProductModel}>
+            <CellContainer>{row.product.label}</CellContainer>
+          </LabelCell>
+          <Cell>
+            <CellContainer>{row.product.identifier}</CellContainer>
+          </Cell>
+          <Cell>
+            <CellContainer>
+              {null === row.product.completeness ? (
+                translate('pim_common.not_available')
+              ) : (
+                <Badge>{row.product.completeness}%</Badge>
+              )}
+            </CellContainer>
+          </Cell>
+          <Cell>
+            <CellContainer>
+              {null === row.product.variant_product_completenesses ? (
+                translate('pim_common.not_available')
+              ) : (
+                <Badge>
+                  {row.product.variant_product_completenesses.completeChildren} /{' '}
+                  {row.product.variant_product_completenesses.totalChildren}
+                </Badge>
+              )}
+            </CellContainer>
+          </Cell>
+          <Cell>
+            <InputCellContainer>
+              <QuantityInput
+                title={translate('pim_enrich.entity.product.module.associations.quantified.quantity')}
+                type="number"
+                min={1}
+                value={row.quantifiedLink.quantity}
+                isInvalid={0 < filterErrors(row.errors, 'quantity').length}
+                onChange={event =>
+                  onChange({
+                    ...row,
+                    quantifiedLink: {...row.quantifiedLink, quantity: Number(event.currentTarget.value) || 1},
+                  })
+                }
+              />
+            </InputCellContainer>
+            <InputErrors errors={row.errors} />
+          </Cell>
+          <Cell>
+            <ActionCellContainer>
+              <RowActions>
+                {undefined !== parentQuantifiedLink &&
+                  parentQuantifiedLink.quantity !== row.quantifiedLink.quantity && (
+                    <UnlinkIcon
+                      color={blueColor}
+                      title={translate('pim_enrich.entity.product.module.associations.quantified.unlinked')}
+                    />
+                  )}
+                <RowAction>
+                  <a href={`#${productEditUrl}`} target="_blank">
+                    <EditIcon size={20} />
+                  </a>
+                </RowAction>
+                {undefined === parentQuantifiedLink && (
+                  <RowAction onClick={() => onRemove(row)}>
+                    <CloseIcon title={translate('pim_enrich.entity.product.module.associations.remove')} size={20} />
+                  </RowAction>
+                )}
+              </RowActions>
+            </ActionCellContainer>
+          </Cell>
+        </Container>
+      )}
+    </>
   );
 };
 

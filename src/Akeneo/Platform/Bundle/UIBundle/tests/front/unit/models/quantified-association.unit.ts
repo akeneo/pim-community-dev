@@ -22,18 +22,20 @@ const rowCollection = [
     quantifiedLink: {identifier: 'bag', quantity: 4},
     productType: ProductType.Product,
     product: null,
+    errors: [],
   },
   {
     quantifiedLink: {identifier: 'braided-hat', quantity: 12},
     productType: ProductType.ProductModel,
     product: null,
+    errors: [],
   },
 ];
 
 describe('quantified association', () => {
   it('should create a row collection from a quantified association collection', () => {
-    expect(quantifiedAssociationToRowCollection(quantifiedAssociation)).toEqual(rowCollection);
-    expect(quantifiedAssociationToRowCollection({products: [], product_models: []})).toEqual([]);
+    expect(quantifiedAssociationToRowCollection(quantifiedAssociation, [])).toEqual(rowCollection);
+    expect(quantifiedAssociationToRowCollection({products: [], product_models: []}, [])).toEqual([]);
   });
 
   it('should create a quantified association collection from a row collection', () => {

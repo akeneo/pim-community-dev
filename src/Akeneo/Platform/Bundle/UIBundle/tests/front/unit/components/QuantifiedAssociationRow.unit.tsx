@@ -7,8 +7,6 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {QuantifiedAssociationRow} from '../../../../Resources/public/js/product/form/quantified-associations/components/QuantifiedAssociationRow';
 import {Product, ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 
-jest.mock('legacy-bridge/provider/dependencies.ts');
-
 let container: HTMLElement;
 beforeEach(() => {
   container = document.createElement('div');
@@ -58,7 +56,9 @@ test('It displays a quantified association row for a product', async () => {
                   productType: ProductType.Product,
                   quantifiedLink: {quantity: 3, identifier: 'bag'},
                   product: product,
+                  errors: [],
                 }}
+                parentQuantifiedLink={undefined}
                 onChange={onChange}
                 onRemove={onRemove}
               />
@@ -95,7 +95,9 @@ test('It displays a quantified association row for a product model', async () =>
                   productType: ProductType.ProductModel,
                   quantifiedLink: {quantity: 15, identifier: 'braided-hat'},
                   product: productModel,
+                  errors: [],
                 }}
+                parentQuantifiedLink={undefined}
                 onChange={onChange}
                 onRemove={onRemove}
               />
@@ -132,7 +134,9 @@ test('It triggers the onChange event when updating the quantity', async () => {
                   productType: ProductType.ProductModel,
                   quantifiedLink: {quantity: 15, identifier: 'braided-hat'},
                   product: productModel,
+                  errors: [],
                 }}
+                parentQuantifiedLink={undefined}
                 onChange={onChange}
                 onRemove={onRemove}
               />
@@ -155,6 +159,7 @@ test('It triggers the onChange event when updating the quantity', async () => {
     productType: ProductType.ProductModel,
     quantifiedLink: {quantity: 16, identifier: 'braided-hat'},
     product: productModel,
+    errors: [],
   });
 
   fireEvent.change(quantityInput, {target: {value: 'NotANumber'}});
@@ -163,6 +168,7 @@ test('It triggers the onChange event when updating the quantity', async () => {
     productType: ProductType.ProductModel,
     quantifiedLink: {quantity: 1, identifier: 'braided-hat'},
     product: productModel,
+    errors: [],
   });
 });
 
@@ -181,7 +187,9 @@ test('It triggers the onRemove event when the remove button is clicked', async (
                   productType: ProductType.ProductModel,
                   quantifiedLink: {quantity: 15, identifier: 'braided-hat'},
                   product: productModel,
+                  errors: [],
                 }}
+                parentQuantifiedLink={undefined}
                 onChange={onChange}
                 onRemove={onRemove}
               />

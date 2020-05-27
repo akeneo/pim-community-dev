@@ -1,7 +1,6 @@
 import {
   addProductToRows,
   getAssociationIdentifiers,
-  isRowWithProduct,
   filterOnLabelOrIdentifier,
   updateRowInCollection,
   removeRowFromCollection,
@@ -10,17 +9,17 @@ import {
 import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models/product';
 
 const productRow = {
-  associationTypeCode: 'PACK',
   productType: ProductType.Product,
   quantifiedLink: {quantity: 3, identifier: 'bag'},
   product: null,
+  errors: [],
 };
 
 const productModelRow = {
-  associationTypeCode: 'PACK',
   productType: ProductType.ProductModel,
   quantifiedLink: {quantity: 17, identifier: 'braided-hat'},
   product: null,
+  errors: [],
 };
 
 const product = {
@@ -69,16 +68,6 @@ describe('row', () => {
     });
   });
 
-  it('should tell if the provided row is a RowWithProduct', () => {
-    expect(isRowWithProduct(productRow)).toEqual(false);
-    expect(
-      isRowWithProduct({
-        ...productRow,
-        product,
-      })
-    ).toEqual(true);
-  });
-
   it('can filter a row on its label or identifier', () => {
     expect(filterOnLabelOrIdentifier('b')(productRow)).toEqual(true);
     expect(filterOnLabelOrIdentifier('ba')(productRow)).toEqual(true);
@@ -108,11 +97,13 @@ describe('row', () => {
             productType: ProductType.Product,
             quantifiedLink: {quantity: 87, identifier: 'sock'},
             product: null,
+            errors: [],
           },
           {
             productType: ProductType.ProductModel,
             quantifiedLink: {quantity: 64, identifier: 'braided-sock'},
             product: null,
+            errors: [],
           },
         ]
       )
@@ -122,11 +113,13 @@ describe('row', () => {
         productType: ProductType.Product,
         quantifiedLink: {quantity: 87, identifier: 'sock'},
         product: null,
+        errors: [],
       },
       {
         productType: ProductType.ProductModel,
         quantifiedLink: {quantity: 64, identifier: 'braided-sock'},
         product: null,
+        errors: [],
       },
     ]);
   });

@@ -1,4 +1,5 @@
-import {Identifier, Row, ProductType, getProductsType} from '../models';
+import {Identifier, Row, ProductType, ProductsType, getProductsType} from '../models';
+import {ValidationError, filterErrors} from '@akeneo-pim-community/shared';
 
 type QuantifiedLink = {
   identifier: Identifier;
@@ -13,16 +14,18 @@ type QuantifiedAssociation = {
 const isQuantifiedAssociationEmpty = (quantifiedAssociation: QuantifiedAssociation): boolean =>
   0 === quantifiedAssociation.products.length && 0 === quantifiedAssociation.product_models.length;
 
-const quantifiedAssociationToRowCollection = (collection: QuantifiedAssociation): Row[] => [
-  ...collection.products.map(quantifiedLink => ({
+const quantifiedAssociationToRowCollection = (collection: QuantifiedAssociation, errors: ValidationError[]): Row[] => [
+  ...collection.products.map((quantifiedLink, index) => ({
     quantifiedLink,
     productType: ProductType.Product,
     product: null,
+    errors: filterErrors(errors, `${ProductsType.Products}[${index}].`),
   })),
-  ...collection.product_models.map(quantifiedLink => ({
+  ...collection.product_models.map((quantifiedLink, index) => ({
     quantifiedLink,
     productType: ProductType.ProductModel,
     product: null,
+    errors: filterErrors(errors, `${ProductsType.ProductModels}[${index}].`),
   })),
 ];
 
