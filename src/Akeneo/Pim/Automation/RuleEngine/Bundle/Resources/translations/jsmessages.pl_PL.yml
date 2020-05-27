@@ -1,5 +1,105 @@
 pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} reguła|]1, Inf[{{ count }} reguł"
+  execution_button: Wykonywanie reguł
+  selected: 'wybrano reguły'
+  popin:
+    execute_rules:
+      confirm_title: Potwierdź wykonanie
+      confirm_content: Czy na pewno chcesz wykonać wszystkie reguły? (może to zająć dużo czasu)
+  notification:
+    fail: Akcja nie może być wykonana
+    launched: Wykonywanie reguł zostało rozpoczęte. Zostaniesz powiadomiony, kiedy zostanie zakończone.
+  attribute:
+    list:
+      code.label: Pod Produktu
+      condition.label: Stan
+      action.label: Działanie
+      no_rule_yet.label: Aktualnie brak reguł
+  rule:
+    condition:
+      if.label: jeżeli
+    action:
+      then.label: następnie
+      set_value.label: jest ustawiona na
+      copy_value.label: jest kopiowany do
+      set.label: jest ustawiona na
+      copy.label: jest kopiowany do
+      add.label: jest dodany do
+      remove.label: zostanie usunięty z
   datagrid:
     rule-grid:
+      actions:
+        execute:
+          confirm_title: Potwierdź wykonanie
+          confirm_content: Czy na pewno chcesz wykonać regułę?
       mass_edit_action:
-        confirm_ok: OK
+        confirm_title: Potwierdź obliczenie
+        confirm_content: Czy na pewno chcesz obliczyć produkty objęte tymi regułami?
+      mass_action:
+        execute:
+          confirm_title: Potwierdź wykonanie
+          confirm_content: Czy na pewno chcesz wykonać zaznaczone reguły?
+          success: Rozpoczęto zbiorowe wykonywanie reguł. Zostaniesz powiadomiony, kiedy zostanie zakończone
+          error: Wystąpił błąd podczas wykonywania reguł.
+          empty_selection: Nie wybrano reguł.
+        delete:
+          confirm_title: Potwierdź wykonanie
+          confirm_content: Czy na pewno chcesz usunąć zaznaczone reguły?
+          success: Pomyślnie usunięto reguły.
+          error: Wystąpił błąd podczas usuwania reguł.
+          empty_selection: Nie wybrano reguł.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Reguły
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Czy na pewno chcesz usunąć tą regułę? Tej operacji nie można cofnąć
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Regóła usunięta pomyślnie
+flash:
+  rule:
+    impacted_product_count: Rozpoczęto zbiorowe działanie w celu obliczenia dotkniętych produktów dla reguł. Zostaniesz powiadomiony, kiedy zostanie ono zakończone.
+    executed: Wykonywanie reguły zostało uruchomione. Zostaniesz poinformowany, kiedy zostanie zakończone.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Ustawienia reguł
+batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Wykonywanie reguł
+  default_steps:
+    execute_rules: Wykonywanie reguł
+  yml_rule_import:
+    label: Import reguł z pliku YAML
+    import.label: Import reguł
+  yml_rule_export:
+    label: Eksportuj reguły do pliku YAML
+    export.label: Eksport reguł
+  rule_impacted_product_count:
+    label: Dotknięte produkty dla zasad
+    perform.label: Wpływ liczby produktów
+  csv_product_import_with_rules:
+    label: Import produktów in csv z zasadami
+    import.label: Import Produktu
+  csv_product_model_import_with_rules:
+    label: Importu modelu produktu w formacie CSV z regułami
+  xlsx_product_import_with_rules:
+    label: Importowanie produktu w formacie XLSX z regułami
+    import.label: Import Produktu
+  xlsx_product_model_import_with_rules:
+    label: Importowanie modelu produktu w formacie XLSX z regułami
+pim_notification:
+  types:
+    rule: Ustawienia Reguł
+    mass_edit_rule: Masowa edycja reguł
+pim_menu:
+  item:
+    rule: Reguły
+pim_title:
+  pimee_catalog_rule_rule_index: Reguły

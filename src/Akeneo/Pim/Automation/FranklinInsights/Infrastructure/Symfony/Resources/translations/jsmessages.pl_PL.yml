@@ -1,0 +1,35 @@
+pim_title:
+  akeneo_franklin_insights_connection_edit: 'Połączenie Franklin Insights'
+  akeneo_franklin_insights_identifiers_mapping_edit: 'Ustawienia Franklin Insights'
+  akeneo_franklin_insights_attributes_mapping_edit: 'Ustawienia Franklin Insights'
+akeneo_franklin_insights:
+  entity:
+    data_provider:
+      bad_request_error: "Przepraszamy, wystąpił problem z komunikacją z Franklin Insights. Skontaktuj się z administratorem."
+    identifier_mapping:
+      fields:
+        status:
+          active: Aktywne
+          inactive: Nieaktywny
+    attributes_mapping:
+      fields:
+        franklin_insights:
+          active: Aktywne
+          inactive: Nieaktywny
+        values_summary: "Podsumowanie wartości: {{ label }}"
+      module:
+        index:
+          types_mismatch_warning: 'Uwaga: typy atrybutów nie pasują do siebie.'
+    product_subscription:
+      constraint:
+        product_subscription_with_same_identifier_already_exist: 'Inny produkt z co najmniej jednym identycznym identyfikatorem został już zapisany.'
+    attribute_options_mapping:
+      module:
+        edit:
+          description: 'Aby pomóc w wzbogaceniu katalogu, Franklin będzie musiał znać opcje atrybutu katalogu, które się z nim zgadzają. <a href="#" target="_blank" class="AknDescriptionHeader-link">Czytaj więcej</a>'
+  connection:
+    flash:
+      error: Przepraszamy, wystąpił błąd.
+    module:
+      activation:
+        activated: 'Aktywowany'

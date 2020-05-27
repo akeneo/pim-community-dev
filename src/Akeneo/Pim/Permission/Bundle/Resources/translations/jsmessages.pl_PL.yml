@@ -1,0 +1,50 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Tylko do odczytu
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Grupa <strong>{{ group }}</strong> będzie <strong>{{ permission }}</strong> w tej kategorii
+      revoke: Grupa <strong>{{ group }}</strong> nie będzie <strong>{{ permission }}</strong> w tej kategorii
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Grupa <strong>{{ group }}</strong> będzie <strong>{{ permission }}</strong> w tej kategorii
+      revoke: Grupa <strong>{{ group }}</strong>nie będzie <strong>{{ permission }}</strong> w tej kategorii
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Grupa <strong>{{ group }}</strong> będzie <strong>{{ permission }}</strong> w tych arybutach
+      revoke: Grupa <strong>{{ group }}</strong> nie będzie <strong>{{ permission }}</strong> w tych arybutach
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: Grupa {{ group }} będzie miała dostęp do grupy atrybutów {{ permission }} 
+      view: Możliwość wyświetlenia atrybutów
+      edit: Możliwość edycji atrybutów
+      removed: Grupa {{ group }} nie będzie mogła korzystać z {{ permission }} grupy atrybutów
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: Grupa {{ group }} będzie miała dostęp do profilu pracy {{ permission }}
+      execute: Możliwość wykonywania zadań
+      edit: Możliwość edycji profilu zadania
+      removed: Grupa {{ group }} nie ma pozwolenia {{ permission }} tą pracę
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Dodaj wartość produktu ze sprawdzeniem uprawnień i zasadami aplikacji
+    perform.label: Dodaj wartość produktu
+  update_product_value_with_permission_and_rules:
+    label: Dodaj wartość produktu ze sprawdzeniem uprawnień i zasadami aplikacji
+    perform.label: Aktualizuj wartość produktu
+  remove_product_value_with_permission_and_rules:
+    label: Usuń wartość produktu ze sprawdzeniem uprawnień i zasadami aplikacji
+    perform.label: Usuń wartość produktu
+  edit_common_attributes_with_permission_and_rules:
+    label: Edytuj zwykłe atrybuty ze sprawdzeniem upranień i zasad aplikacji
+    perform.label: Edytuj atrybuty
+    cleaner.label: Wyczyść pliki tymczasowe
+pim_title:
+  pimee_enrich_locale_edit: Lokalizacja | Edytuj
