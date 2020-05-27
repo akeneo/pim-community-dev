@@ -23,6 +23,17 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
     public function normalize($violation, $format = null, array $context = [])
     {
         $path = $this->getStandardPath($violation);
+        $translate = (bool)($context['translate'] ?? true);
+
+        if (!$translate) {
+            return [
+                'messageTemplate' => $violation->getMessageTemplate(),
+                'parameters' => $violation->getParameters(),
+                'message' => $violation->getMessage(),
+                'propertyPath' => $path,
+                'invalidValue' => $violation->getInvalidValue(),
+            ];
+        }
 
         if (null === $path || '' === $path) {
             return [
