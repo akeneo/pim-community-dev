@@ -13,7 +13,7 @@ Logged in as: Вы вошли как
 Logout: Выйти
 Login: Войти
 Previous: Предыдущая
-Next: Следующая
+Next: Следующий
 Channel list: Список каналов
 Select file: Выберите файл
 Change file: Изменить файл
@@ -37,22 +37,32 @@ Most Viewed: Самое просматриваемое
 "Yes": "Да"
 "No": "Нет"
 required: (требуется)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Включить загрузку сообщений
+    loading_message_enabled.tooltip: Показывать информирующие пользователя сообщения во время загрузки страницы
+    loading_messages.label: Доступна загрузка сообщений
+    loading_messages.tooltip: Все загруженные сообщения разделены переносом строки
+  group:
+    loading_message.title: Загрузка сообщений
 other_actions: Другие действия
 pim_common:
-  cancel: Отмена
+  cancel: oтменить
   save: Сохранить
   delete: Удалить
   update: Обновить
-  view: Просмотр
-  edit: Редактировать
-  created: Создано
-  updated: Обновлено
+  view: Представление
+  edit: Изменить
+  created: Создан
+  updated: обновлено
   create: Создать
   permissions: Права доступа
   properties: Свойства
   name: Имя
   remove: Удалить
+  code: Код
 pim_enrich:
+  #ACLs
   acl:
     locale:
       index: Просмотр локалей
@@ -70,12 +80,17 @@ pim_enrich:
       associations_view: Просмотр связей продукта
       associations_edit: Добавление связей продукту
       change_family: Изменить семейство продуктов
-      change_state: Изменить статус продукта
       add_to_groups: Добавление продукта в группы
       mass_edit: Операции массового редактирования продуктов 
       comment: Комментировать продукты
       download: Скачать продукт в PDF
       history: Просмотреть журнал продукта
+    product_model:
+      create: Создать модель продукта
+      edit_attributes: Изменить атрибуты модели продукта
+      categories_view: Обращение к категориям модели продукта
+      history: Просмотр истории модели продукта
+      remove: Удалить модель продукта
     category:
       list: Список категорий
       create: Создать категорию
@@ -96,6 +111,7 @@ pim_enrich:
       create: Создать семейство
       edit_properties: Изменить свойства семейства
       edit_attributes: Изменить атрибуты семейства
+      edit_variants: Изменить вариант семейства
       remove: Удалить семейство
       history: Просмотреть журнал семейства
     family_variant:
@@ -149,6 +165,12 @@ pim_enrich:
     group_type: Типы групп
     locale: Локали
     product: Продукты
+    product_model: Модели продукта
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Локаль была удалена из канала. Идет удаление связанных с ней данных.
+        done: Удаление локали на канале завершено.
   create:
     attribute: создать атрибут
     attribute group: создать группу атрибутов
@@ -159,10 +181,11 @@ pim_enrich:
     family: создать семейство
     locale: создать локаль
     product: создать продукт
-    group: создать группу
-    association type: создать тип ассоциации
+    group: Создать группу
+    association type: создать тип асоциации
     group type: создать тип группы
     drag_or_upload: Перетащите чтобы загрузить, или нажмите здесь
+#Confirmation messages
 confirmation:
   delete: Подтвердить удаление
   leave: Вы уверены, что хотите покинуть эту страницу?
@@ -170,6 +193,7 @@ confirmation:
   remove:
     category: Вы действительно хотите удалить дерево категорий %name%?
     user: Вы уверены, что хотите удалить пользователя %name%?
+#Flash messages
 flash:
   entity:
     removed: Элемент был удален
@@ -179,7 +203,6 @@ flash:
     removed: Категория успешно удалена
   tree:
     removed: Дерево категорий успешно удалено
-    not removable: Нельзя удалить деревья подключенные к каналам.
   currency:
     updated: Валюта успешно обновлена
     error.linked_to_channel: Нельзя дезактивировать валюты, связанныe с каналом.
@@ -191,6 +214,7 @@ flash:
   user:
     removed: Пользователь успешно удален
   error occurred: Не удалось выполнить. Повторите попытку.
+#Info messages
 info:
   updated: Имеются несохраненные изменения.
   category:
@@ -202,15 +226,15 @@ info:
     no family defined: Семейство не определено
     change family: Изменить семейство продуктов
     change family to: Изменить семейство на
-    merge attributes: Текущие атрибуты будут объединены с существующими, в новом семействе.
+    merge attributes: Текущие атрибуты будут объединены с существующими в новом семействе.
     keep attributes: Атрибуты не будут удалены.
     number of associations: '%productCount% продуктов и %groupCount% групп'
-    enable: Включить
-    enabled: Включено
-    disable: Отключить
-    disabled: Отключено
+    enable: Активировать
+    enabled: Активирован
+    disable: Деактивировать
+    disabled: Дезактивирован
   group:
-    axis: 'Ось вариации: %attributes%'
+    axis: 'Конфигурационные атрибуты: %attributes%'
     select products: Пожалуйста, выберите продукты, которые должны принадлежать этой группе.
     selectable products: Следующие выбираемые продукты имеют определенное значение для каждой оси.
     no group types: Типы групп отсутствуют, нажмите здесь, чтобы создать
@@ -219,17 +243,18 @@ info:
     show products: Показать продукты
     show groups: Показать группы
     remove from products: Удаление типа ассоциация удалит его из %count% продуктов.
-    none exist: Титпы ассоциаций отсутствуют.
+    none exist: Типы ассоциаций отсутствуют.
     create one: Нажмите здесь, чтобы создать
   attribute:
     auto option sorting: Если активирован, параметры будут автоматически отсортированы по их локализованным ярлыкaм
   completeness:
-    not calculated: не подсчитана
-Created: Создано
-Updated: Обновлено
+    not calculated: Еще не подсчитана
+#Form elements
+Created: Создан
+Updated: обновлено
 Last update: Последнее обновление
-by: Создано
-N/A: Н/Д
+by: Обновлен
+N/A: '-'
 Manage products: Управление продуктами
 Manage groups: Управление группами
 Code: Код
@@ -241,36 +266,34 @@ Unique: Уникальный
 Not required: Не обязательно
 Translatable: Переводимое
 Scopable: Область назначаема
-Localizable: Локализуемый
 Unique value: Уникальное значение
 Attribute group: Группа атрибутов
 Other: Другие
 Variants behavior when edited: Варианты поведения при редактировании
-Edit: Редактировать
 Remove: Удалить
 Parameters: Параметры
 System: Система
 Values: Значения
 General parameters: Общие параметры
-Backend parameters: Параметры базы данных
-Label: Метка
+Backend parameters: Параметры сервера
+Label: Ярлык
 Default label: Метка по умолчанию
 Default value: Значение по умолчанию
 Attributetype: Тип атрибута
 Attribute type: Тип атрибута
 Defaultvalue: Значение по умолчанию
 Variant: Вариант
-Smart: Smart
-Useable as grid column: Может использоваться как столбец таблицы
+Smart: Умные
+Useable as grid column: Как столбец таблицы
 Useable as grid filter: Используется в сетке
 Family: Семейство
 Image: Изображение
+Variant products: Варианты продуктов
 Available locales: Доступные локали
 Locale specific: Специфично для локали
 default: По умолчанию
-Axis: Ось
+Axis: Конфигурационные атрибуты
 Add attributes: Добавить атрибуты
-Translate from: Перевести с
 switch_on: "Да"
 switch_off: "Нет"
 Close: Закрыть
@@ -292,17 +315,22 @@ No matches found: Совпадений не найдено
 Category tree: Дерево категорий
 Completeness: Завершенность
 Attribute used as label: Атрибут используется в качестве метки
+Credentials: Данные доступа
+#Scopes
 Global: Глобальный
 Channel: Канал
 Expand all channels: Развернуть все каналы
 Collapse all channels: Свернуть все каналы
+#Variants
 Always override: Всегда переопределять
 Ask: Спросить
+#Attribute group
 General Properties: Общие свойства
 Group values: Значения группы
 New group: Новая группа
 Groups overview: Обзор групп
 'Y-m-d h:i:s': 'd-m-Y H:i:s'
+#Attribute properties
 Max characters: Максимум символов
 Validation rule: Правило проверки
 Validation regexp: Регулярное выражения для правила проверки
@@ -317,65 +345,76 @@ Metric family: Семейство измерений
 Default metric unit: Единица измерения по умолчанию
 Max file size: Максимальный размер файла (МБ)
 Allowed extensions: Допустимые расширения
-None: Нет
-E-mail: E-mail
+None: (Пусто)
+E-mail: Адрес электронной почты
 URL: URL
 Regular expression: Регулярное выражение
 Minimum input length: Минимальная длина ввода
 Default: По умолчанию
+#Family
 Attributes: Атрибуты
+#Category
 Title: Название
+#Page titles
 pim_catalog_identifier: Идентификатор
-pim_catalog_text: Текст
+pim_catalog_text: Текст до 255 символов
 pim_catalog_textarea: Текстовая область
 pim_catalog_number: Число
 pim_catalog_price_collection: Цена
-pim_catalog_multiselect: Множественный выбор
-pim_catalog_simpleselect: Простой выбор
+pim_catalog_multiselect: Множественный раскрывающийся список
+pim_catalog_simpleselect: Простой раскрывающийся список
 pim_catalog_file: Файл
 pim_catalog_image: Изображение
 pim_catalog_boolean: "Да/Нет"
 pim_catalog_date: Дата
-pim_catalog_metric: Метрическая
+pim_catalog_metric: Единица измерения
 pim_reference_data_simpleselect: Простой раскрывающийся список справочныx данныx
 pim_reference_data_multiselect: Множественный раскрывающийся список справочныx данныx
+#Locales
 Activated: Активированный
-Disable: Отключить
+Edit: Изменить
+Disable: Деактивировать
 To enable: Включить
 Select attributes: Выберите атрибуты
-Select: Выбрать
+Select: Выберите
 Remove this attribute: Удалить этот атрибут
-Copy: Копия
+Copy: Копировать
+Translate from: Перевести с
 Current tab: Текущая вкладка
+#Product view
 Group: Группа
 View group: Посмотреть группу
 Products: Продукты
+#Tabs
 Properties: Свойства
 History: Журнал
 pane.accordion:
   node_values: Значения узлов
   general_properties: Общие свойства
   locale_values: Данные локали
-  backend_parameters: Параметры базы данных
+  backend_parameters: Параметры сервера
   general_parameters: Общие параметры
   validation_parameters: Параметры проверки
   label_translations: Переводы меток
-  options: Параметры
+  options: Опции
   group_values: Значения группы
+#Popin titles
 popin.create:
   association_type.title: Создать новый тип ассоциации
   group.title: Создать новую группу
   product.title: Создать новый продукт
-  option.title: Создать новое свойство
+  option.title: Создать новую опцию
+#Datagrid contents
 In group: В группе
 Attribute as label: Атрибут как метка
 Is associated: Связанный
 Complete: Завершено
-Created At: Создано
-Updated At: Обновлено
-Enabled: Включено
-Disabled: Отключено
+Created At: Дата создания
+Updated At: Дата обновления
+Enabled: Активирован
+Disabled: Дезактивирован
 Status: Статус
+#Versioning / history
 Change History: История изменений
 Data Audit: Аудит данных
 Data Audit - System: 'Аудит данных - Система'
@@ -390,6 +429,7 @@ Logged at: Дата входа
 Deleted: Удален
 Old values: Старые значения
 New values: Новые значения
+#Configuration
 System configuration: Конфигурация системы
 General setup: Общие установки
 Localization: Локализация
@@ -409,17 +449,18 @@ oro.locale:
       county: "страна"
       area: "район"
       prefecture: "префектура"
-      department: "департамент"
+      department: "Отдел"
       district: "дистрикт"
       province: "провинция"
   form:
     tooltip:
-      locale: "Выберите параметр локалиы, используемoй для форматирования чисел, адресов, имен и даты"
-      location: " Расположение будет использоваться для форматирования адресов, когда опция 'Формат адреса по стандартам страны' отключена"
+      locale: "Выберите параметр локали, используемoй для форматирования чисел, адресов, имен и дат"
+      location: " Пространство будет использоваться для форматирования адресов, когда опция 'Формат адреса по стандартам страны' отключена"
       format_address_by_address_country: "При выборе этого параметра адреса будут отформатированы по стандартам страны, в которой они сейчас находятся. Дезактивация этого параметра приведет к форматированию адресов по стандартам вашего местоположения"
       language: "Выберите язык системы, который вы хотите использовать"
       timezone: "Выберите часовой пояс для отображения даты и времени"
       currency: "Выберите валюту по умолчанию"
+#Datagrid
 Selected products successfully deleted: Выбранные продукты успешно удалены
 pim_mass_edit:
   notification:
@@ -444,11 +485,12 @@ job_execution.summary:
   deleted_products: Удаленные товары
   deleted_product_models: Удаленные модели продуктов
 pim_mass_edit_execution_show: Задачи массового редактирования | Детали
-edit_common_attributes.steps.edit_common_attributes_processor.title: Редактировать атрибуты
+edit_common_attributes.steps.edit_common_attributes_processor.title: Изменить атрибуты
 update_product_value.steps.update_product_value_processor.title: Обновить значение продукта
 remove_product_value.steps.update_product_value_processor.title: Удалить значение продукта
-edit_common_attributes: Редактировать атрибуты
-perform.steps.duplicated.title: Продублированные оси
+edit_common_attributes: Изменить атрибуты
+edit_common_attributes_clean: Очистка файлов для атрибутов
+perform.steps.duplicated.title: Продублированные конфигурационные атрибуты
 perform.steps.excluded.title: Исключенные продукты
 mass_edit report:
   overview: Отчеты массового редактирования
@@ -457,5 +499,3 @@ job_tracker:
     title: Трекер процессов
   filter:
     started_at: Запущеннo в
-
-

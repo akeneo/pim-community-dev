@@ -1,25 +1,27 @@
-Job: Работа
-Connector: Соединитель
+#Entities
+Job: Процесс
+Connector: Коннектор
 pim_import_export:
-  job: Работа
-  connector: Соединитель
+  job: Процесс
+  connector: Коннектор
+  ## Job status
   status:
     0: Готов
   batch_status:
-    1: Completed
-    2: Starting
-    3: Started
-    4: Stopping
-    5: Stopped
-    6: Failed
-    7: Abandoned
-    8: Unknown
+    1: Завершено
+    2: Запущено
+    3: Выполняется
+    4: Завершается
+    5: Остановлено
+    6: Не выполнено
+    7: Прервано
+    8: Неизвестно
   download_archive:
     archive: Скачать созданный архив|Скачать созданные архивы
-    output: Скачать созданный файл|скачать созданные файлы
+    output: скачать созданный файл|скачать созданные файлы
     input: Скачать прочитанный файл|Скачать прочитанные файлы
-    invalid_xlsx: Скачать недопустимые значения
-    invalid_csv: Скачать недопустимые значения
+    invalid_xlsx: скачать недопустимые значения
+    invalid_csv: скачать недопустимые значения
   notification:
     export:
       error: Экспорт <strong>%label%</strong> не удался
@@ -29,24 +31,31 @@ pim_import_export:
       error: Импорт <strong>%label%</strong> не удался
       warning: Импорт <strong>%label%</strong> завершен с некоторыми предупреждениями
       success: Импорт <strong>%label%</strong> завершен
-  list: Выберите задание
+  list: Выбрать процесс
   job_profile:
     tab:
       property.title: Общие свойства
       history.title: Журнал
       job_content.title: Содержание
+#Page titles:
 pim_title.export_profile.index: Управление профилями экспорта
+pim_title.export_profile.edit: Экспорт профиля %job.label% | Изменить
+pim_title.export_profile.show: Экспорт профиля %job.label% | Просмотр
 pim_title.export_execution.index: История запусков экспорта
 pim_title.export_execution.show: Запуск экспорта | Детали
 pim_title.import_profile.index: Управление профилями импорта
+pim_title.import_profile.edit: Импорт профиля %job.label% | Изменить
+pim_title.import_profile.show: Импорт профиля %job.label% | Просмотр
 pim_title.import_execution.index: История запусков импорта
 pim_title.import_execution.show: Запуск импорта | Детали
+#Entity and page header titles
 export profile:
   title: Профиль экспорта
   edit: Редактировать профиль экспорта
 import profile:
   title: Профиль импорта
   edit: Редактировать профиль импорта
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -70,8 +79,8 @@ pim_importexport:
       launch: Запуск исполнения профиля импорта
       history: Просмотр журнала профиля импорта
     export_execution:
-      index: Посмотреть список отчетов об экспорте
-      show: Подробный просмотр отчета об экспорте
+      index: Посмотреть список отчетов по экспорту
+      show: Подробный просмотр отчета по экспорту
       dl_log: Скачать журнал экспорта
       dl_files: Скачать экспортированные файлы
     import_execution:
@@ -82,17 +91,20 @@ pim_importexport:
   acl_group:
     export: Профили экспорта
     import: Профили импорта
+#Buttons
 btn:
   create:
-    export profile: Создать профиль экспорта
+    export profile: создать профиль экспорта
     import profile: Создать профиль импорта
 Upload and import now: Загрузить и импортировать сейчас
 import now: Импортировать сейчас
 export now: Экспортировать сейчас
+#Confirmation messages
 confirmation:
   remove:
     export profile: Вы уверены, что хотите удалить профиль экспорта "%name%"?
     import profile: Вы уверены, что хотите удалить профиль импорта "%name%"?
+#Flash messages
 flash:
   export:
     created: Экспорт был успешно создан
@@ -104,20 +116,23 @@ flash:
     removed: Импорт был успешно удален
     updated: Импорт был успешно обновлен
     running: Выполняется импорт
+#Tabs
 General properties: Общие свойства
 History: Журнал
 pane.accordion:
   properties: Свойства
   global_settings: Глобальные настройки
   filters: Фильтры
+#Popin titles
 popin.create:
   export_profile.title: Создать новый профиль экспорта
   import_profile.title: Создать новый профиль импорта
+#Job execution
 'Display item': Показать элемент
 'Hide item': Скрыть элемент
 'Collecting data about job execution...': Сбор данных о выполнении задания...
 'You must select a file to upload': Необходимо выбрать файл для загрузки
-Download log: Журнал загрузки
+Download log: Журнал загрузок
 Show profile: Показать профиль
 execution details: подробности выполнения
 job_execution.summary:
@@ -126,16 +141,26 @@ job_execution.summary:
   skip: пропущено
   create: создано
   update: обновлено
-  update_products: обновленных продуктов
+  update_products: продуктов обновлено
   skip_products: пропущенных продуктов
-  displayed: отображены первые предупреждения
+  displayed: первые предупреждения отображены
   charset_validator:
     title: 'Кодировка файла:'
-    skipped: пропущено, расширение из белого списка
+    skipped: пропущено, расширение в белом списке
 Step: Этап
 Status: Статус
 Warnings: Предупреждения
 Summary: Сводка
 Start: Начало
-End: Конец
+End: Окончание
+#Process tracker
+set_attribute_requirements: Установить обязательность/ необязательность атрибутов
+COMPLETED: Завершено
+STARTING: Запущено
+STARTED: Запущено
+STOPPING: Завершается
+STOPPED: Остановлено
+FAILED: Не выполнено
+ABANDONED: Прервано
+UNKNOWN: Неизвестно
 warning.label: Предупреждение
