@@ -1,108 +1,385 @@
+pim_title:
+  akeneo_asset_manager_asset_family_edit: Редактировать семейство медиафайлов
+  akeneo_asset_manager_asset_edit: Редактировать медиафайл
 pim_asset_manager:
+  result_counter: '{0} Нет результата |{1} {{ count }} результат|]1,Inf] {{ count }} результатов'
+  asset_counter: '{0} Нет активов |{1} {{ count }} актив|]1,Inf] {{ count }} активы'
+  asset_collection:
+    remove_asset: Удалить актив
+  asset_preview:
+    empty_main_media: Этот актив не имеет медиа.
+    error: Произошла ошибка во время создания предварительного просмотра
   app:
     image:
       wide:
+        remove: Удалить файл
+        download: Загрузить файл
         upload: Перетащите чтобы загрузить, или нажмите здесь
       small:
         remove: Удалить
-        download: Скачать
+        upload: Перетащите для загрузки
   asset_family:
+    column:
+      title: Навигация по активам
+      selector:
+        title: Семейства активов
+        no_data: Нет доступных семейств активов
+    validation:
+      code:
+        pattern: 'Это поле может содержать только буквы, цифры и подчеркивания.'
+        should_be_unique: 'Семейство активов с кодом "{{ %asset_family_identifier% }}" уже существует'
+        limit_reached: 'Вы не можете создать семейство активов "{{ %asset_family_label% }}", потому что вы достигли предела {{ %limit% }} семейств активов'
+      transformation:
+        limit_reached: 'Вы достигли предела в {{ %limit%}} преобразований'
+        same_operation_twice: 'Операция "{{ %operation_type% }}" не может быть определена дважды в одном преобразовании'
+        source_can_not_be_a_target: 'Источник атрибута "{{ %attribute_code% }}" не может быть целью преобразования атрибута.'
+        attribute_reference_should_exist: 'Атрибут "{{ %attribute_code% }}" не существует для этого семейства активов'
+        filename_is_not_unique: 'Преобразование с префиксом имени файла "{{ %filename_prefix% }}" и суффиксом "{{ %filename_suffix% }}" уже существует для источника атрибута "{{ %attribute_code%}}"'
+        code_is_not_unique: 'Вы не можете определить две преобразования с одинаковым кодом "{{ %transformation_code%}}"'
+      rule_template:
+        extrapolated_attribute_should_exist: 'Атрибут "{{ %attribute_code% }}" не существует для этого семейства активов'
+        assignmement_attribute_does_not_exist: 'атрибут продукта "{{ %product_attribute_code% }}" не существует'
+        assignmement_attribute_is_not_an_asset_collection: 'атрибут продукта "{{ %product_attribute_code% }}" не является атрибутом c типом коллекция активов'
     button:
       save: Сохранить
-      create: Создать
+      save_permission: Сохранить
+      create: Создать семейство активов
+      edit: Редактировать семейство
+      view: Просмотр семейства
+    permission:
+      title: Разрешения семейства активов
+    breadcrumb: Семейства активов
+    img: Основные медиа семейства активов под названием "{{ label }}"
     tab:
       attribute: Атрибуты
       properties: Свойства
+      permission: Разрешения
+      transformations: Преобразования
+    transformations:
+      help:
+        title: 'Добро пожаловать в вашу новую область управления активами!'
+        description: 'Вы можете определить здесь до 10 преобразований семейства активов.'
+        link: 'Если вы хотите изучить новые преобразования менеджера активов, нажмите здесь'
+      subsection: 'Свойства преобразования'
+    product_link_rules:
+      help:
+        title: 'Добро пожаловать в вашу новую область управления активами!'
+        description: 'Вы можете определить здесь до 2 правил ссылок на продукты для семейства активов.'
+        link: 'Если вы хотите изучить функцию Product Link Rules нажмите здесь'
+      execute_rules:
+        cancel: Отменить
     properties:
+      title: Семейство семейства активов
       identifier: Код
-      label: Метка
-      image: Изображение
+      label: Обозначение
+      media_file: Медиа файл
+      attribute_as_main_media: Атрибут как главный медиа
+    attribute:
+      title: Атрибуты актива
+      attribute:
+        error:
+          render_list: 'Произошла ошибка при отображении атрибута "{{ %attribute_code%}}"'
+          render_edit: 'Произошла ошибка при отображении дополнительных полей атрибута "{{ %attribute_code%}}"'
+    module:
+      delete:
+        button: Удалить семейство активов
+        confirm: Вы действительно хотите удалить это семейство активов?
+    index:
+      grid:
+        count: '{0} Нет семейства активов|{1} {{ count }} Семейство активов|]1,Inf] {{ count }} Семейств активов'
+        help:
+          title: 'Добро пожаловать в семейства активов!'
+          description_part_one: Обогатите соответствующую информацию, касающуюся товаров (например, бренды, производители, цвета, материалы, ингредиенты...).
+          description_part_two: Это позволит вам улучшить опыт работы с продуктами для ваших клиентов.
+          description_part_three: Нажмите на кнопку «Создать», чтобы создать первую семейство активов, установить его атрибуты и активы.
+          description_part_four: Затем, для связи с продуктами, создайте тип атрибута продукта, связанный с этим семейством активов.
+          description_part_five: Для получения более подробной информации мы приглашаем вас просмотреть эту статью.
     create:
       header:
         title: Создать
+      subtitle: Семейства активов
+      title: Создать новое семейство активов
       input:
-        label: Метка
+        label: Обозначение
+        code: Код (обязательно)
       confirm: Сохранить
     delete:
-      title: Атрибут
-  asset:
-    button:
-      save: Сохранить
-      create: Добавить новый
-      delete: Удалить
-    enrich:
-      code: Код
-      label: Метка
-    create:
-      header:
-        title: Создать
-      input:
-        label: Метка
-      confirm: Сохранить
-    grid:
-      filter:
-        completeness:
-          label: Завершено
-          'yes': 'YES'
-          'no': 'NO'
-      column:
-        code: Код
-        image: Изображение
-        label: Метка
-        complete: Завершено
-        action: Действия
-    tab:
-      enrich: Дополнить данные
-    completeness:
-      label: Завершено
-  attribute:
-    default:
-      code: Код
-      label: Метка
-      image: Изображение
-    type:
-      text: Текст
-      image: Изображение
-    create:
-      header:
-        title: Создать
-      input:
-        label: Метка
-        type: Тип атрибута
-      confirm: Сохранить
-    edit:
-      save: Сохранить
-      cancel: Отмена
-      input:
-        label: Метка
-        type: Тип атрибута
-        max_length: Максимум символов
-        textarea: Текстовая область
-        max_file_size: Максимальный размер файла (МБ)
-        allowed_extensions: Допустимые расширения
-        validation_rule: Правило проверки
-        regular_expression: Регулярное выражение
-        options:
-          validation_rule:
-            none: Нет
-            email: E-mail
-            regular_expression: Регулярное выражение
-            url: URL
-    delete:
+      message: Вы уверены, что хотите удалить семейство активов "{{ assetFamilyLabel }}"?
       title: Атрибут
     notification:
       save:
+        success: Семейство успешно обновлено.
+        fail: Произошла ошибка во время сохранения семейства активов
+      create:
+        success: Семейство активов успешно создано.
+        fail: Произошла ошибка во время создания семейства активов
+      delete:
+        success: Семейство активов успешно удалено.
+        fail: Произошла ошибка во время удаления семейства активов
+      compute_transformations:
+        success: Преобразования были запущены. Как только это задание будет завершено, вы увидите ваши новые вариации в ваших активах.
+        fail: Произошла ошибка при попытке вычислить преобразования
+    helper:
+      no_asset_family:
+        link: Для получения более подробной информации мы приглашаем вас просмотреть эту статью.
+    no_data:
+      no_asset:
+        link: Нажмите здесь, чтобы добавить актив
+      no_asset_family:
+        title: К сожалению, семейства активов нет!
+        link: Нажмите здесь, чтобы добавить семейство активов
+  permission:
+    notification:
+      save:
+        success: Разрешения семейства активов успешно обновлены.
+        fail: По крайней мере одна группа пользователей должна иметь разрешение на изменение этого семейства активов
+    no_data:
+      title: У вас нет группы пользователей
+      subtitle: Для управления разрешениями на семейство активов необходимо иметь по крайней мере одну группу пользователей.
+      link: Нажмите здесь, чтобы добавить свою первую группу пользователей
+  asset:
+    img: Основное медиа актива под названием "{{ label }}"
+    validation:
+      limit_reached: 'Вы не можете создать актив "{{ %asset_label% }}", потому что вы достигли предела {{ %limit% }} активов для этого семейства активов'
+      code:
+        pattern: 'Это поле может содержать только буквы, цифры и подчеркивания.'
+        should_be_unique: 'Этот код уже существует для другого актива.'
+    no_data:
+      subtitle: Нажмите на кнопку "Добавить новый", чтобы создать первый актив
+    no_result:
+      subtitle: Попробуйте еще раз по новым критериям поиска.
+    selector:
+      error:
+        value: Похоже, рендеринг поля{{ fieldName }}" " не удался. Смотрите консоль разработчика для получения более подробной информации.
+    button:
+      save: Сохранить
+      create: Создать актив
+      mass_upload: Массовая загрузка
+      delete: Удалить
+      delete_all: Удалить все активы
+      back: Вернуться к списку
+      launch_transformations: Запустить преобразования
+      fullscreen: На весь экран
+    product:
+      attribute: Атрибут продукта
+      counter: '{{ totalCount }} результат|{{ totalCount }} результатов'
+      dropdown:
+        attribute: Атрибут продукта
+      no_attribute:
+        title: Нет атрибута продукта, связанного с семейством активов "{{ entityLabel }}"
+        subtitle: 'Чтобы начать привязку продуктов к этому семейству активов, вы можете создать новый: '
+        link: Создать новый атрибут продукта
+      not_enough_items:
+        title: Черт! Вы можете увидеть только {{ productCount }}/{{ totalCount }} продуктов.
+        button: Посмотреть все продукты
+      no_product:
+        title: Этот актив не связан ни с одним продуктом через атрибут "{{ entityLabel }}" продукта
+        subtitle: 'Начните привязывать товары к этому атрибуту, чтобы увидеть их здесь'
+    enrich:
+      title: Атрибуты актива
+      code: Код
+      label: Обозначение
+    create:
+      header:
+        title: Создать
+      subtitle: Семейства активов
+      title: Добавить новый актив в {{ entityLabel }}
+      input:
+        label: Обозначение
+        code: Код (обязательно)
+        create_another: Создать другой актив
+      confirm: Сохранить
+    upload:
+      line_count: '[0,1]{{ count }} файл|]1,Inf] {{ count }} файлов'
+      title: Загрузить активы
+      lines: Файлы
+      remove: Удалить
+      confirm: Создать
+      drop_or_click_here: Перетащите файлы или нажмите здесь
+      will_appear_here: Загрузите активы и они появятся здесь!
+      discard_changes: Вы потеряете ваши активы, если закроете это окно, не создав их.
+      list:
+        asset: Актив 
+        filename: Имя файла
+        code: Код (обязательно)
+        locale: Локаль (обязательно)
+        channel: Канал (обязательно)
+        status: Статус
+      status:
+        waiting_for_upload: не загружено
+        upload_in_progress: в процессе выполнения
+        uploaded: загружено
+        valid: готово к созданию
+        invalid: ошибка
+        created: создано
+    delete:
+      title: Актив 
+    delete_all:
+      confirm: Вы уверены, что хотите удалить все "{{ entityIdentifier }}" активы? Если они связаны с продуктами, ссылки на продукты будут удалены.
+    grid:
+      column:
+        code: Код
+        image: Изображение
+        label: Обозначение
+        action: Действия
+      completeness:
+        title_no_required: Атрибут не требуется
+        title_non_complete: 0 из {{ required }} атрибутов завершено
+        title_ongoing: '{{ complete }} из {{ required }} атрибутов завершено'
+        title_complete: Все {{ required }} атрибуты завершены
+    tab:
+      enrich: Обогатить
+    notification:
+      save:
+        success: Актив успешно обновлен.
+        fail: Произошла ошибка во время сохранения актива
+        validation_error: Актив не может быть обновлен
+      create:
+        success: Актив успешно создан.
+        fail: Произошла ошибка во время создания актива
+      delete:
+        success: Актив "{{ code }}" успешно удален.
+        fail: Произошла ошибка во время удаления актива
+      delete_all:
+        success: Все активы "{{ entityIdentifier }}" успешно удалены.
+        fail: Произошла ошибка при удалении всех активов этого семейства активов
+  attribute:
+    validation:
+      limit_reached: 'Вы не можете создать атрибут "{{ %attribute_label% }}", потому что вы достигли предела {{ %limit% }} атрибутов для этого семейства активов'
+    default:
+      code: Код
+      label: Обозначение
+      media_file: Медиа файл
+    type:
+      text: Текст
+      media_file: Медиа файл
+      asset: Ссылка на один актив
+      asset_collection: Коллекция активов
+      option: Одиночный вариант
+      option_collection: Несколько вариантов
+      number: Число
+      media_link: Ссылка на медиа
+    is_read_only: Только чтение в пользовательском интерфейсе
+    media_type_preview: Предпросмотр типа медиа
+    no_data:
+      title: Для {{ entityLabel }} нет пользовательских атрибутов
+      subtitle: Нажмите на кнопку "Добавить атрибут" для настройки вашего первого пользовательского атрибута
+    button:
+      add: Добавить атрибут
+    create:
+      header:
+        title: Создать
+      subtitle: Семейства активов
+      title: Добавить новый атрибут актива
+      description: После создания атрибута невозможно обновить следующие параметры, кроме обозначения
+      input:
+        code: Код (обязательно)
+        label: Обозначение
+        type: Тип атрибута
+        asset_type: Семейство активов для связи (обязательно)
+        value_per_locale: Значение на локаль
+        value_per_channel: Значение на канал
+      placeholder:
+        asset_type: Выберите ваше связанное семейство активов
+      confirm: Сохранить
+    edit:
+      delete: Удалить атрибут
+      title: Изменить атрибут {{ code }}
+      save: Сохранить
+      cancel: Отменить
+      input:
+        code: Код (обязательно)
+        label: Обозначение
+        type: Тип атрибута
+        value_per_locale: Значение на локаль
+        value_per_channel: Значение на канал
+        is_required: Требуется для полноты
+        is_read_only: Только чтение в пользовательском интерфейсе
+        max_length: Максимум символов
+        textarea: Текстовое поле
+        is_rich_text_editor: Расширенный текстовый редактор
+        max_file_size: Максимальный размер файла (МБ)
+        allowed_extensions: Допустимые расширения
+        validation_rule: Правило валидации
+        regular_expression: Регулярное выражение
+        min_value: Минимальное значение
+        max_value: Максимальное значение
+        manage_options:
+          confirmation:
+            discard_changes: Вы потеряете изменения, внесенные в список опций, если покинете страницу
+          quick_edit:
+            label: Настройка опций
+          option:
+            label:
+              placeholder: Напишите ваше новое обозначение варианта здесь
+        options:
+          validation_rule:
+            none: Пусто
+            email: Эл. почта
+            regular_expression: Регулярное выражение
+            url: URL
+        decimals_allowed: Разрешены десятичные значения
+        prefix: Префикс
+        suffix: Суффикс
+        media_type: Тип медиа
+    delete:
+      message: Вы уверены, что хотите удалить атрибут "{{ attributeLabel }}"?
+      title: Атрибут
+    notification:
+      list:
+        fail: Произошла ошибка во время обновления списка атрибутов
+      save:
         success: Атрибут успешно обновлён.
+        fail: Произошла ошибка при сохранении атрибута
+        validation_error: Не удалось обновить атрибут.
       create:
         success: Атрибут успешно создан.
+        fail: Произошла ошибка при создании атрибута
+        validation_error: Не удалось создать атрибут.
       delete:
         success: Атрибут успешно удалён.
+        fail: Произошла ошибка при удалении атрибута
     options:
+      no_value: Нажмите здесь, чтобы выбрать вариант.
+      sub_title: Семейства активов
       helper:
-        title: Переводы меток
+        title: Переводы обозначений
+    media_link:
+      reload: Перезагрузить миниатюру ссылки на медиа
+    media_file:
+      placeholder: Перетащите чтобы загрузить, или нажмите здесь
+    used_as_transformation_target: Это поле только для чтения так как оно используется в качестве цели в преобразовании активов.
   modal:
     delete:
       subtitle: Подтвердить удаление
       button:
-        cancel: Отмена
+        cancel: Отменить
         confirm: Удалить
+pim_enrich:
+  confirmation:
+    discard_changes: 'Вы потеряете изменения в "{{ entity }}" сущности, если покинете страницу.'
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_asset_collection: Коллекция активов
+        section:
+          type_specific: Параметры, специфические для типа
+permission:
+  mass_action: Применить {{ rightLevel }} права от всех групп
+#Analytics
+pim_catalog_volume:
+  section:
+    asset_family:
+      title: Оси на семействах активов
+      hint: Если вы используете семейства активов, то здесь находятся оси, которые помогут вам отслеживать ваш объём.
+  axis:
+    count_asset_family: Семейства активов
+    average_max_assets_per_asset_family: Активы для семейства активов
+    average_max_attributes_per_asset_family: Атрибуты для семейства активов
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "Вычислить преобразования активов"
+        asset_manager_link_assets_to_products: "Связать активы с продуктами"
