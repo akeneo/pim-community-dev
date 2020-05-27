@@ -106,6 +106,7 @@ batch_jobs:
     label: Import produktu z XSLX
     import.label: Import produktu
   xlsx_product_model_import:
+    label: Import modelu produktu z XLSX
     import_product_model_descendants.label: Oblicz potomków modelu produktu
   xlsx_group_export:
     label: Eksport grupy do XLSX

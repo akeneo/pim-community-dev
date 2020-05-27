@@ -3,6 +3,7 @@
 "Yes, do it": "Tak, zrób to"
 "Ok, got it.": "Ok, zrozumiałem."
 "Edit": "Edytuj"
+"Unexpected error occurred. Please contact system administrator.": "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem."
 "Yes, revoke": "Tak, odwołaj"
 "Revoke Confirmation": "Usuń Potwierdzenie"
 Prev: Poprzednia
@@ -108,6 +109,9 @@ oro_config:
           label: Włącz ładowanie wiadomości
         loading_messages:
           label: Dostępne ładowanie wiadomości
+pim_ui:
+  flash:
+    unsaved_changes: 'Masz niezapisane zmiany, czy na pewno chcesz wyjść?'
 "Sorry, page was not loaded correctly": "Przepraszamy, strona nie została prawidłowo załadowana"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Wszystkie zmiany zostaną utracone. Czy na pewno chcesz odświeżyć stronę?"
 "navigation.message.content.outdated": "Zawartość strony {{ title }} jest nieaktualna, proszę <a href='#' data-action='page-refresh'>odświeżyć stronę</a>"
@@ -143,14 +147,17 @@ pim_common:
   actions: Działania
   add: Dodaj
   add_attributes: Dodaj atrybuty
+  after: Po
   all: Wszystkie
   and: i
   apply: Zastosuj
+  before: Przed
   by: autorstwa
   cancel: Anuluj
   code: Pod Produktu
   confirm: Potwierdź
   confirm_deletion: Potwierdź usunięcie
+  confirm_revocation: Potwierdź wykonanie
   create: Utwórz
   created: Utworzono
   delete: Skasuj
@@ -162,6 +169,7 @@ pim_common:
   history: Historia
   label: Etykieta
   label_translations: Tłumaczenia etykiety
+  Label or identifier: etykieta lub identyfikator
   less_than: Mniej niż
   loading: Ładuję...
   media_upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
@@ -203,14 +211,17 @@ pim_common:
     STARTS WITH: Rozpoczyna się od
     ENDS WITH: Kończy się na
 error:
+  exception: O rany! Wystąpił błąd {{ status_code }}...
   forbidden: Nie posiadasz uprawnień do przeglądania tej strony
 alert:
   attribute_option:
+    error_occurred_during_submission: Wystąpił błąd podczas przesyłania formularza na serwer
     save_before_edit_other: Zapisz zmiany w pozostałych wierszach przed edycją tego
   session_storage:
     not_available: Zdaje się, że twoja przeglądarka nie obsługuje sessionStorage. Skontaktuj się z administratorem
 pim_enrich.entity.fallback:
   flash:
+    generic_error: Wystąpił błąd
     update:
       fail: Błąd aktualizacji
       success: Pomyślnie zaktualizowano
@@ -222,16 +233,26 @@ pim_enrich.entity.fallback:
       title: Usunąć ten {{ itemName }}
       alternative_title: Potwierdź usunięcie
       item: Czy na pewno chcesz usunąć ten element?
+      item_placeholder: Czy na pewno chcesz usunąć {{ itemName }}? Nie można cofnąć tej akcji.
     edit:
       leave: Czy na pewno chcesz opuścić tę stronę?
       discard_changes: Utracisz wszystkie zmiany w {{ entity }}, jeśli opuścisz tę stronę.
+      discard_changes_title: Jesteś pewien?
 pim_enrich.entity.api_connection:
   flash:
     create:
       success: Połączenie API pomyślnie utworzone
     delete:
       success: Połączenie API zostało odwołane pomyślnie
+      fail: Nie można odwołać tego połączenia API
+  page_title:
+    index: "] -Inf, 1] {{ count }} połączenie API|] 1, Inf [{{ count }} połączenia API"
+  module:
+    revoke:
+      confirm: Czy na pewno chcesz anulować to połączenie API?
 pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} operacja|]1, Inf[{{ count }} operacji"
   module:
     create:
       upload: Upuść twój plik {{ type }} tutaj, lub kliknij aby przeglądać dysk

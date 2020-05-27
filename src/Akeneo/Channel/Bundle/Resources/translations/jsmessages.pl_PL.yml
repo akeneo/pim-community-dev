@@ -48,6 +48,8 @@ pim_enrich.entity.channel:
     delete:
       success: Kanał został pomyślnie usunięty
       fail: Nie można usunąć tego kanału
+  page_title:
+    index: "]-Inf, 1]{{ count }} kanał|]1, Inf[{{ count }} kanały"
   property:
     category_tree: Drzewo kategorii
     do_not_convert: Nie konwertuj
@@ -61,5 +63,14 @@ pim_enrich.entity.locale:
   label: wersja językowa
   uppercase_label: Wersja językowa
   plural_label: Ustawienia regionalne
+  page_title:
+    index: "]-Inf, 1]{{ count }} lokalizacja|]1, Inf[{{ count }} lokalizacji"
 pim_enrich.entity.currency:
   plural_label: Waluty
+  page_title:
+    index: "]-Inf, 1]{{ count }} waluta|]1, Inf[{{ count }} walut"
+flash:
+  currency:
+    error:
+      linked_to_channel: Nie możesz wyłączyć waluty powiązanej z kanałem
+    updated: Waluta pomyślnie zaktualizowana

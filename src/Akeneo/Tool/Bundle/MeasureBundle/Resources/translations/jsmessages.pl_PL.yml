@@ -170,7 +170,10 @@ pim_measure:
     PSI: Funt na cal kwadratowy
     TORR: Tor
     MMHG: milimetry słupka rtęci
+    #Energy
+    CALORIE: kalorie
     KILOCALORIE: kilokaloria
+    JOULE: dżule
     KILOJOULE: kilodżul
     #CaseBox
     PIECE: Element
