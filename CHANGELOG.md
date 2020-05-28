@@ -12,6 +12,7 @@
 - PIM-9239: Fix proposal datagrid when there is a product model proposal with an empty value suggestion
 - PIM-9202: Fix Asset Manager / Product link rules not working with multiple consumers
 - PIM-9261: Fix API assets pagination
+- PIM-9270: Fix assets family product-link-rule definition
 
 ## Improvements
 
