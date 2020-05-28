@@ -8,9 +8,9 @@ import {
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { Operator } from '../../../../models/Operator';
-import { FamilySelector } from '../../../../components/Selectors/FamilySelector';
 import { FamilyCode } from '../../../../models';
 import { FieldColumn, OperatorColumn, ValueColumn } from './style';
+import { FamiliesSelector } from '../../../../components/Selectors/FamiliesSelector';
 
 type FamilyConditionLineProps = ConditionLineProps & {
   condition: FamilyCondition;
@@ -77,12 +77,11 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
       </OperatorColumn>
       {shouldDisplayValue() && (
         <ValueColumn>
-          <FamilySelector
+          <FamiliesSelector
             router={router}
             id={`edit-rules-input-${lineNumber}-value`}
             label='Families'
             hiddenLabel={true}
-            multiple={true}
             currentCatalogLocale={currentCatalogLocale}
             value={getValueFormValue()}
             onChange={setValueFormValue}
