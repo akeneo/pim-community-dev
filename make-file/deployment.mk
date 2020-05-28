@@ -1,5 +1,8 @@
 # Adapted CircleCi Jobs (CI=true) OR manual run from release dir
 
+# Force bash compatibility (Instead of user default shell)
+SHELL := /bin/bash
+
 INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
 PFID ?= srnt-$(INSTANCE_NAME)
@@ -61,20 +64,25 @@ terraform-plan: terraform-init
 
 .PHONY: terraform-apply
 terraform-apply:
-	cd $(INSTANCE_DIR) && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
+	cd $(INSTANCE_DIR) && TF_LOG=TRACE TF_LOG_PATH=terraform.log terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 
 .PHONY: prepare-infrastructure-artifacts
 prepare-infrastructure-artifacts: render-helm-templates dump-kubernetes-namespace
-	cd $(INSTANCE_DIR) ;\
-	mkdir -p ~/artifacts/infra ;\
-	rm -Rf $(INSTANCE_DIR)/.terraform ;\
-	mv $(INSTANCE_DIR) ~/artifacts/infra/
+	mkdir -p ~/artifacts/infra
+	cp -raT $(DEPLOYMENTS_INSTANCES_DIR) ~/artifacts/infra/ || true
+	rm -Rf ~/artifacts/infra/**/.terraform || true
+	rm -Rf ~/artifacts/infra/**/.kubeconfig || true
 
 .PHONY: render-helm-templates
 render-helm-templates:
 	cd $(INSTANCE_DIR) ;\
 	mkdir -p helm-render ;\
-	helm template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render
+	helm template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
+ifeq ($(INSTANCE_NAME_PREFIX),pimup)
+	cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
+	mkdir -p helm-render ;\
+	helm template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
+endif
 
 # TODO
 .PHONY: dump-kubernetes-namespace
@@ -89,7 +97,7 @@ dump-kubernetes-namespace:
 		# 	mkdir -p "k8s-dump" ;\
 		# 	kubectl --context $${CONTEXT} -n $(PFID) get -o yaml $${RESOURCE} $${RESOURCE_NAME} > "k8s-dump/$${RESOURCE_NAME}.yaml" ;\
 		# done ;\
-	done
+	done || true
 
 .PHONY: delete
 delete: terraform-delete purge-release-all
@@ -106,10 +114,18 @@ terraform-plan-destroy: terraform-init
 
 .PHONY: terraform-delete
 terraform-delete: terraform-init
-	cd $(INSTANCE_DIR) && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
+	if [ -f "$(INSTANCE_DIR)/main.tf" ]; then \
+		cd $(INSTANCE_DIR) ;\
+		echo "Destroying $(INSTANCE_DIR) ..." ;\
+		terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) ;\
+	elif [ -f "$(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf" ]; then \
+		cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
+		echo "Destroying $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ..." ;\
+		terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) ;\
+	fi
 
 .PHONY: create-ci-release-files
-create-ci-release-files: create-ci-values create-pim-main-tf create-serenity-commons-tf
+create-ci-release-files: create-ci-values create-pim-main-tf
 
 .PHONY: create-ci-values
 create-ci-values: $(INSTANCE_DIR)
@@ -134,33 +150,16 @@ endif
 
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
-	touch $(INSTANCE_DIR)/values.yaml
-	@echo $(INSTANCE_NAME_PREFIX)
-	@echo "terraform {" > $(INSTANCE_DIR)/main.tf
-	@echo "backend \"gcs\" {" >> $(INSTANCE_DIR)/main.tf
-	@echo "bucket  = \"akecld-terraform-dev\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "prefix  = \"saas/$(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)/$(PFID)/\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "}" >> $(INSTANCE_DIR)/main.tf
-	@echo "}" >> $(INSTANCE_DIR)/main.tf
-	@echo "module \"pim\" {" >> $(INSTANCE_DIR)/main.tf
-	@echo "source = \"$(PIM_SRC_DIR)/deployments/terraform\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "google_project_id                   = \"$(GOOGLE_PROJECT_ID)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "google_project_zone                 = \"$(GOOGLE_CLUSTER_ZONE)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "instance_name                       = \"$(INSTANCE_NAME)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "dns_external                        = \"$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS).\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "dns_internal                        = \"$(CLUSTER_DNS_NAME)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "dns_zone                            = \"$(GOOGLE_MANAGED_ZONE_NAME)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "google_storage_location             = \"eu\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "papo_project_code                   = \"NOT_ON_PAPO_$(PFID)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "force_destroy_storage               = true" >> $(INSTANCE_DIR)/main.tf
-	@echo "pim_version                         = \"$(IMAGE_TAG)\"" >> $(INSTANCE_DIR)/main.tf
-	@echo "}" >> $(INSTANCE_DIR)/main.tf
-
-.PHONY: create-serenity-commons-tf
-create-serenity-commons-tf: $(INSTANCE_DIR)
-	@echo "provider \"google\" {" > $(INSTANCE_DIR)/commons_serenity.tf
-	@echo "  version = \"~> 3.17.0\"" >> $(INSTANCE_DIR)/commons_serenity.tf
-	@echo "}" >> $(INSTANCE_DIR)/commons_serenity.tf
+	CLUSTER_DNS_NAME=$(CLUSTER_DNS_NAME) \
+	GOOGLE_CLUSTER_ZONE=$(GOOGLE_CLUSTER_ZONE) \
+	GOOGLE_MANAGED_ZONE_DNS=$(GOOGLE_MANAGED_ZONE_DNS) \
+	GOOGLE_MANAGED_ZONE_NAME=$(GOOGLE_MANAGED_ZONE_NAME) \
+	GOOGLE_PROJECT_ID=$(GOOGLE_PROJECT_ID) \
+	IMAGE_TAG=$(IMAGE_TAG) \
+	INSTANCE_NAME=$(INSTANCE_NAME) \
+	PFID=$(PFID) \
+	PIM_SRC_DIR=$(PIM_SRC_DIR) \
+	envsubst < $(PWD)/deployments/config/serenity_instance.tpl.tf > $(INSTANCE_DIR)/main.tf
 
 .PHONY: test-prod
 test-prod:
@@ -201,7 +200,15 @@ delete_pr_environments:
 
 .PHONY: terraform-pre-upgrade
 terraform-pre-upgrade: terraform-init
+	# Required by https://github.com/akeneo/pim-enterprise-dev/pull/8599
 	yq d -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks"
 	for PD in $$(kubectl get -n $(PFID) pv $$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') -o jsonpath='{..spec.gcePersistentDisk.pdName}'); do \
 		yq w -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks[+]" "$${PD}"; \
 	done
+	# Move monitoring resources from pim to pim-monitoring
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.login_count module.pim-monitoring.google_logging_metric.login_count
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.login-response-time-distribution module.pim-monitoring.google_logging_metric.login-response-time-distribution
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.logs-count module.pim-monitoring.google_logging_metric.logs-count
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_alert_policy.alert_policy module.pim-monitoring.google_monitoring_alert_policy.alert_policy
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_notification_channel.pagerduty module.pim-monitoring.google_monitoring_notification_channel.pagerduty
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_uptime_check_config.https module.pim-monitoring.google_monitoring_uptime_check_config.https

@@ -18,7 +18,10 @@ spec:
   snapshot:
     schedule: {{ .Values.backup.snapshot.schedule }}
     pvcNames:
-      - pvc-data-{{ .Release.Name }}-mysql-server-0
+      - data-mysql-server-0
+{{- range $k, $v := until (atoi (quote .Values.elasticsearch.data.replicas) | default 2) }}
+      - data-elasticsearch-data-{{ $k }}    
+{{- end }} 
     retentionPolicy:
 {{ toYaml .Values.backup.snapshot.retentionPolicy | indent 6 }}
 {{- end }}

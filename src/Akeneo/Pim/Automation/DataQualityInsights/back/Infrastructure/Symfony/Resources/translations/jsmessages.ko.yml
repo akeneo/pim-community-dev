@@ -39,6 +39,8 @@ akeneo_data_quality_insights:
       no_family_helper_msg: 데이터 품질을 측정하려는 패밀리 선택
       no_category_helper_msg: 데이터 품질을 측정하려는 카테고리 선택
       see_in_grid: 그리드에서 보기
+    time_axis:
+      day: 일
   product_evaluation:
     criteria:
       completeness_of_required_attributes:
@@ -56,7 +58,7 @@ akeneo_data_quality_insights:
     axis:
       enrichment:
         title: 보강
-        attributes_link: 누락된 특성 표시
+        attributes_link: 누락된 모든 특성 표시
         success: 제품 데이터가 완전히 보강되었습니다. 축하합니다!
       consistency:
         title: 일관성

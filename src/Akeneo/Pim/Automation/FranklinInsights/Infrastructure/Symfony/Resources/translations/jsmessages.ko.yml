@@ -52,6 +52,7 @@ akeneo_franklin_insights:
         suggest_attribute_mapping_error: '카탈로그 특성 "[{{ catalogAttributeCode }}]"이(가) Franklin 특성 "{{ franklinAttributeLabel }}"에 이미 매핑되었습니다.'
         add_attribute_to_family_success: '{1} 특성이 패밀리 "{{ family }}"에 연결되었습니다. |[2,Inf[ 특성이 패밀리 "{{ family }}"에 연결되었습니다.'
         add_attribute_to_family_error: '죄송합니다. 특성을 패밀리에 연결하는 중에 오류가 발생했습니다.'
+        fail_to_retrieve_franklin_mapping: '특성 매핑은 현재 사용 가능하지 않습니다. 나중에 다시 확인하십시오.'
       fields:
         search_bar.placeholder: 'Franklin 특성 검색'
         franklin_attribute: 'Franklin 특성'
@@ -157,6 +158,8 @@ akeneo_franklin_insights:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} 특성 옵션'
           sub_title: '<span class="AknDescriptionHeader-title--highlight">제품 정보 AI 어시스턴트</span>인 Franklin을 만나보십시오!'
           description: '카탈로그 보강에 도움을 주기 위해, Franklin은 매칭되는 해당 카탈로그 특성 옵션을 알아야 합니다. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">자세히 알아보기</a>'
+      flash:
+        load_failed: '업데이트 실패'
   product:
     edit:
       btn.push: 데이터 제안

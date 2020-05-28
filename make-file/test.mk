@@ -22,9 +22,11 @@ lint-back:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
 	$(DOCKER_COMPOSE) run -u www-data --rm php vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
+	$(DOCKER_COMPOSE) run -u www-data --rm php vendor/bin/phpstan analyse vendor/akeneo/pim-community-dev/src/Akeneo/Pim -l 1
 	$(MAKE) data-quality-insights-lint-back reference-entity-lint-back asset-manager-lint-back
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs_ce.php
 
 .PHONY: lint-front
 lint-front: franklin-insights-lint-front
@@ -35,12 +37,20 @@ lint-front: franklin-insights-lint-front
 
 ### Unit tests
 .PHONY: unit-back
-unit-back: var/tests/phpspec reference-entity-unit-back asset-manager-unit-back
+unit-back: var/tests/phpspec community-unit-back reference-entity-unit-back asset-manager-unit-back
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
 else
 	${PHP_RUN} vendor/bin/phpspec run
+endif
+
+.PHONY: community-unit-back
+community-unit-back: var/tests/phpspec
+ifeq ($(CI),true)
+	$(DOCKER_COMPOSE) run -T -u www-data --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run  --format=junit > ../../../var/tests/phpspec/specs-ce.xml"
+else
+	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run"
 endif
 
 .PHONY: unit-front
@@ -52,6 +62,7 @@ unit-front:
 .PHONY: acceptance-back
 acceptance-back: var/tests/behat reference-entity-acceptance-back asset-manager-acceptance-back rule-engine-acceptance-back
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
+	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-community-dev/behat.yml -p acceptance --no-interaction --format=progress --strict
 	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --no-interaction --format=progress --strict
 
 .PHONY: acceptance-front

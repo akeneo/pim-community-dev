@@ -10,6 +10,7 @@
         "processor",
         "price",
         "weight",
+        "rounded_item_weight",
         "color"
     ],
     "attribute_as_label": "name",

@@ -21,7 +21,9 @@ pim_reference_entity:
         should_be_unique: '이 레코드 코드는 참조 엔터티 "%reference_entity_identifier%" 및 레코드 코드 "%code%"에서 이미 존재합니다'
         should_exist: '레코드가 없습니다.'
       text:
-        incompatible_with_regular_expression: '이 텍스트는 "%regular_expression%" 정규식과 호환되지 않습니다'
+        incompatible_with_regular_expression: '정규식을 충족하는 텍스트를 입력하십시오: "%regular_expression%"'
+        invalid_email: '이메일 주소를 입력하십시오: xxxxx@xx.xx'
+        invalid_url: 'URL을 입력하십시오: http(s)://xxxx.XXX'
       file:
         extension_not_allowed: '"%file_extension%" 파일은 이 특성에서 허용되지 않습니다. 허용되는 확장명: %allowed_file_extensions%'
         file_size_exceeded: '이 파일은 특성에 대해 설정된 최대 파일 크기를 초과합니다.'
@@ -90,3 +92,7 @@ pim_reference_entity:
         should_not_be_empty: '접미사는 빈 문자열일 수 없습니다.'
       media_type:
         not_expected: '지정된 미디어 유형은 필요한 유형(%supported_media_types%)에 해당되지 않습니다.'
+  product_value:
+    validation:
+      record_should_exist: '"%attribute_code%" 속성에 올바른 레코드 코드가 필요합니다. "%invalid_record%" 레코드가 존재하지 않습니다.'
+      records_should_exist: '"%attribute_code%" 속성에 올바른 레코드 코드가 필요합니다. 다음 레코드가 존재하지 않습니다: "%invalid_records%"'

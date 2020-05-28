@@ -125,6 +125,10 @@ class CalculateActionApplier implements ActionApplierInterface
             );
         }
 
+        if ($action->isRoundEnabled()) {
+            $value = round($value, $action->getRoundPrecision());
+        }
+
         return $value;
     }
 

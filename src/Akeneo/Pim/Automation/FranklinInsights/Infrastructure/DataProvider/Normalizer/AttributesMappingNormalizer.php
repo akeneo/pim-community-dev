@@ -86,5 +86,7 @@ class AttributesMappingNormalizer
             case AttributeMappingStatus::ATTRIBUTE_INACTIVE:
                 return AttributeMapping::STATUS_INACTIVE;
         }
+
+        return AttributeMapping::STATUS_INACTIVE;
     }
 }

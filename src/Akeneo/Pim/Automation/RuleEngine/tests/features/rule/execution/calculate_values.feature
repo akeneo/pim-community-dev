@@ -102,3 +102,59 @@ Feature: Execute clear rules
     Then no exception has been thrown
     And there should be no fr_FR unscoped processor value for the product "75024"
     But the fr_FR unscoped processor of "75025" should be "12.5000 KILOHERTZ"
+
+  @acceptance-back
+  Scenario: The result is rounded without decimal
+    Given Rules with following configuration:
+    """
+    rules:
+      calculate_rule:
+        priority: 90
+        conditions:
+          - field: family
+            operator: IN
+            value:
+              - camcorders
+        actions:
+          - type: calculate
+            round_precision: 0
+            destination:
+              field: rounded_item_weight
+            source:
+              field: weight
+            operation_list:
+              - operator: divide
+                value: 3
+    """
+    When I execute the "calculate_rule" rule on products
+    Then no exception has been thrown
+    And the unlocalized unscoped rounded_item_weight of "75024" should be "138"
+    And the unlocalized unscoped rounded_item_weight of "75025" should be "13"
+
+  @acceptance-back
+  Scenario: The result is rounded with 2 decimals
+    Given Rules with following configuration:
+    """
+    rules:
+      calculate_rule:
+        priority: 90
+        conditions:
+          - field: family
+            operator: IN
+            value:
+              - camcorders
+        actions:
+          - type: calculate
+            round_precision: 2
+            destination:
+              field: rounded_item_weight
+            source:
+              field: weight
+            operation_list:
+              - operator: divide
+                value: 3
+    """
+    When I execute the "calculate_rule" rule on products
+    Then no exception has been thrown
+    And the unlocalized unscoped rounded_item_weight of "75024" should be "138.33"
+    And the unlocalized unscoped rounded_item_weight of "75025" should be "13.33"

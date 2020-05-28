@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { PimCondition } from '../../../../models/PimCondition';
-import { Flag } from '../../../../components/Flag';
 import { ConditionLineProps } from './ConditionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
+import { FallbackField } from '../FallbackField';
 
 type PimConditionLineProps = ConditionLineProps & {
   condition: PimCondition;
@@ -26,7 +26,9 @@ const PimConditionLine: React.FC<PimConditionLineProps> = ({
   if (condition.value) {
     values.value = condition.value;
   }
-  useValueInitialization(`content.conditions[${lineNumber}]`, values);
+  useValueInitialization(`content.conditions[${lineNumber}]`, values, {}, [
+    condition,
+  ]);
 
   const isMetric = (value: any): boolean => {
     return (
@@ -71,45 +73,19 @@ const PimConditionLine: React.FC<PimConditionLineProps> = ({
     return value;
   };
 
-  const displayLocale = (locale: string | null): ReactElement | null => {
-    if (null === locale) {
-      return null;
-    }
-
-    return (
-      <>
-        <Flag locale={locale} flagDescription={locale} /> {locale}
-      </>
-    );
-  };
-
   return (
-    <div className='AknRule'>
-      <span className='AknRule-attribute'>{condition.field}</span>
+    <div className='AknGrid-bodyCell AknRule'>
+      <span className='AknRule-attribute'>
+        <FallbackField
+          field={condition.field}
+          scope={condition.scope}
+          locale={condition.locale}
+        />
+      </span>
       {` ${translate(
         `pimee_catalog_rule.form.edit.conditions.operators.${condition.operator}`
       )} `}
       <span className='AknRule-attribute'>{displayValue(condition.value)}</span>
-      {condition.scope || condition.locale ? (
-        condition.scope && condition.locale ? (
-          <span className='AknRule-attribute'>
-            {' [ '}
-            {displayLocale(condition.locale)}
-            {' | '}
-            {condition.scope}
-            {' ] '}
-          </span>
-        ) : (
-          <span className='AknRule-attribute'>
-            {' [ '}
-            {displayLocale(condition.locale)}
-            {condition.scope}
-            {' ] '}
-          </span>
-        )
-      ) : (
-        ''
-      )}
     </div>
   );
 };

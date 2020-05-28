@@ -1,8 +1,10 @@
+type LocaleCode = string;
+
 type Locale = {
-  code: string;
+  code: LocaleCode;
   label: string;
   region: string;
   language: string;
 };
 
-export { Locale };
+export { Locale, LocaleCode };

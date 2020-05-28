@@ -85,8 +85,8 @@
         "sensiolabs/behat-page-object-extension": "2.1.0",
         "friends-of-behat/symfony-extension": "^2.0",
         "liuggio/fastest": "1.6.*",
-        "phpstan/phpstan": "^0.11.1",
-        "phpstan/phpstan-symfony": "^0.11.1"
+        "phpstan/phpstan": "^0.12.25",
+        "phpstan/phpstan-symfony": "^0.12.6"
     },
     "repositories": [
         {

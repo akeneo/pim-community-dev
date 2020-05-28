@@ -100,6 +100,7 @@ describe('EditRules', () => {
         legacy: true,
       }
     );
+
     const propertiesTab = (await findByText(
       'pim_common.properties'
     )) as HTMLButtonElement;

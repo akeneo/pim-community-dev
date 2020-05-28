@@ -11,6 +11,8 @@ pim_asset_manager:
         should_not_be_linked: '자산 패밀리 특성이 이 패밀리와 관련되어 있으므로 이 패밀리를 삭제할 수 없습니다'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: '하나 이상의 사용자 그룹에 이 패밀리에 대한 편집 권한이 있어야 합니다'
+      product_attributes:
+        should_not_be_linked: '자산 컬렉션이 이 패밀리에 링크되어 있으므로 이 패밀리를 삭제할 수 없습니다.'
       should_exist: '자산 패밀리 "%asset_family_code%"을(를) 찾지 못했습니다.'
       rule_template:
         limit_reached: '"%asset_family_identifier%" 자산 패밀리에 대한 %limit% 제품 링크 규칙 제한에 도달했습니다.'
@@ -26,6 +28,8 @@ pim_asset_manager:
         channel_not_supported_for_field: '필드 "%product_field%"에 대한 채널을 지정할 수 없습니다'
         locale_not_supported_for_field: '필드 "%product_field%"에 대한 로케일을 지정할 수 없습니다'
         assignmement_attribute_does_not_support_this_asset_family: '제품 특성 "%product_attribute_code%"에는 자산 패밀리 "%asset_family_identifier%"의 자산이 포함될 수 없습니다'
+        assignmement_attribute_does_not_exist: '제품 특성 "%product_attribute_code%"이(가) 없습니다'
+        assignmement_attribute_is_not_an_asset_collection: '제품 특성 "%product_attribute_code%"이(가) 유형 자산 컬렉션의 특성이 아닙니다'
       attribute_as_main_media:
         not_found: '자산 패밀리에 대한 기본 미디어로 설정된 "%attribute_as_main_media%" 특성이 존재하지 않습니다'
         invalid_type: '자산 패밀리에 대한 기본 미디어로 설정된 특성의 유형은 다음과 같아야 합니다: %valid_attribute_as_main_media_types%'

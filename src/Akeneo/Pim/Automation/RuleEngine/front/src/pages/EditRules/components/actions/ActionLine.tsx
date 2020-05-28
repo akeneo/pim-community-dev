@@ -8,7 +8,7 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   lineNumber,
   handleDelete,
 }) => {
-  const Line = action.module;
+  const Line = action.module as React.FC<ActionLineProps & { action: Action }>;
 
   return (
     <Line

@@ -11,7 +11,7 @@
           "properties": {
             "field": {"type": "string"},
             "operator": {"type": "string"},
-            "value": {"type": "string"},
+            "value": {"type": ["string", "boolean", "array"]},
             "channel": {
               "type": [
                 "string",

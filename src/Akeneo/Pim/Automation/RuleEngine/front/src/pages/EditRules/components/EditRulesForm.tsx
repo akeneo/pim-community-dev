@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTabState, Tab, TabList, TabPanel } from 'reakit/Tab';
 import { Router, Translate } from '../../../dependenciesTools';
-import { RuleDefinition } from '../../../models';
+import { LocaleCode, RuleDefinition } from '../../../models';
 import { RulesBuilder } from './RulesBuilder';
 import { RuleProperties } from './RuleProperties';
 import { Locale } from '../../../models';
@@ -69,7 +69,7 @@ type Props = {
   locales: Locale[];
   ruleDefinition: RuleDefinition;
   scopes: IndexedScopes;
-  currentCatalogLocale: string;
+  currentCatalogLocale: LocaleCode;
   router: Router;
 };
 
@@ -87,7 +87,7 @@ const EditRulesForm: React.FC<Props> = ({
   const { formState } = useFormContext();
   const beforeUnload = (event: Event) => {
     event = event || window.event;
-    if (formState.dirty) {
+    if (formState.dirtyFields.size > 0) {
       const message = translate('pimee_catalog_rule.form.edit.discard_changes');
       event.returnValue = true;
 

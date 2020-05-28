@@ -63,4 +63,35 @@ class ProductCalculateActionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(FieldImpactActionInterface::class);
         $this->getImpactedFields()->shouldReturn(['volume']);
     }
+
+    function it_holds_the_non_round_information()
+    {
+        $this->isRoundEnabled()->shouldBe(false);
+        $this->getRoundPrecision()->shouldBeNull();
+    }
+
+    function it_holds_the_round_information()
+    {
+        $this->beConstructedWith([
+            'destination' => [
+                'field' => 'volume',
+            ],
+            'source' => [
+                'field' => 'width',
+            ],
+            'operation_list' => [
+                [
+                    'operator' => Operation::MULTIPLY,
+                    'field' => 'length',
+                ],
+                [
+                    'operator' => Operation::MULTIPLY,
+                    'field' => 'height',
+                ],
+            ],
+            'round_precision' => 0,
+        ]);
+        $this->isRoundEnabled()->shouldBe(true);
+        $this->getRoundPrecision()->shouldBe(0);
+    }
 }

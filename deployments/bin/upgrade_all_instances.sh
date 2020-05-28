@@ -16,7 +16,7 @@ usage () {
 	echo -e "\nexemple : AREA=europe CLOUD_CUSTOMERS_DIR=~/code/cloudCustomers bash $0"
 	echo ""
 	if [ ! -z "$1" ]; then
-	  echo " >> $1" |tee -a ${GLOBALLOGFILE}
+		echo " >> $1" |tee -a ${GLOBALLOGFILE}
 	fi
 	exit 99
 }
@@ -24,7 +24,7 @@ usage () {
 upgrade_in_error () {
 	migration_path=$1
 	echo "ERROR : upgrade of ${migration_path} " >> ${LOGDIR}/${instanceName}.log
-    echo -e "  ${RED}ERROR${DEFAULT}"
+	echo -e "  ${RED}ERROR${DEFAULT}"
 	echo "  ERROR" >> ${GLOBALLOGFILE}
 }
 
@@ -40,10 +40,10 @@ run_migration () {
 	google_project_zone=$2
 	migration_date=$(date '+%Y-%m-%d_%H-%M-%S')
 	echo "[${instanceName}][${google_project_zone}] V4 UPGRADE" >> ${GLOBALLOGFILE}
-    echo -e "[${BOLD}${instanceName}${DEFAULT}][${google_project_zone}] V4 UPGRADE"
+	echo -e "[${BOLD}${instanceName}${DEFAULT}][${google_project_zone}] V4 UPGRADE"
 	echo -e "PIM UPGRADER (AREA $AREA) - $(date '+%Y-%m-%d_%H-%M-%S')\n with directory : ${migration_path}" >> ${LOGDIR}/${instanceName}.log
 
-    bash ${DIR}/upgrade_unit.sh ${migration_path} >> ${LOGDIR}/${instanceName}.log 2>&1 && upgrade_success ${migration_path} || upgrade_in_error ${migration_path}
+	bash ${DIR}/upgrade_unit.sh ${migration_path} >> ${LOGDIR}/${instanceName}.log 2>&1 && upgrade_success ${migration_path} || upgrade_in_error ${migration_path}
 }
 
 upgrade_serenity () {

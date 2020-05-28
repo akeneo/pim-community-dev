@@ -1,7 +1,9 @@
 import { Locale } from './Locale';
 
+type ScopeCode = string;
+
 type Scope = {
-  code: string;
+  code: ScopeCode;
   currencies: string[];
   locales: Locale[];
   category_tree: string;
@@ -10,4 +12,4 @@ type Scope = {
   meta: any;
 };
 
-export { Scope };
+export { Scope, ScopeCode };

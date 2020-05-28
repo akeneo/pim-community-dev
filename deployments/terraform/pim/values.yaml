@@ -135,10 +135,14 @@ pim:
       enabled: true
       pimCommand: "akeneo:connectivity-audit:update-data"
       schedule: "1 * * * *"
-    purge-connectivity-audit-read-product:
+    purge-connectivity-connection-error:
       enabled: true
-      pimCommand: "akeneo:connectivity-audit:purge-read-product"
-      schedule: "0 4 * * *"
+      pimCommand: "akeneo:connectivity-connection:purge-error"
+      schedule: "10 * * * *"
+    purge-connectivity-audit-error-count:
+      enabled: true
+      pimCommand: "akeneo:connectivity-audit:purge-error-count"
+      schedule: "40 12 * * *"
     rule-run:
       enabled: true
       pimCommand: "akeneo:rule:run"

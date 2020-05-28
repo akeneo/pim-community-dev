@@ -16,6 +16,12 @@ Background:
         And the rule list contains the imported calculate rule
 
     @acceptance-back
+    Scenario: Import a valid calculate rule with round_precision parameter
+        When I import a valid calculate rule with round_precision parameter
+        Then no exception has been thrown
+        And the rule list contains the imported calculate_with_round rule
+
+    @acceptance-back
     Scenario: Import a calculate rule with invalid channels
         When I import a calculate rule with invalid channels
         Then an exception with message "actions[0].destination.scope: The \"print\" channel does not exist" has been thrown

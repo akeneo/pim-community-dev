@@ -1,0 +1,43 @@
+akeneo_assetmanager:
+  acl_group:
+    asset_manager: Menedżer zasobów
+  acl:
+    asset_family:
+      create: Utwórz rodzinę zasobów
+      edit: Edytuj właściwości rodziny zasobów
+      delete: Usuń rodzinę zasobów
+      manage_permission: Zarządzanie uprawnieniami rodziny zasobów
+      manage_transformation: Zarządzaj transformacjami rodziny zasobów
+      manage_product_link_rule: Zarządzaj regułami linkowania do produktu dla tej rodziny zasobów
+      execute_product_link_rule: Wykonaj reguły powiązania produktu dla wszystkich aktywów rodziny zasobów
+    asset:
+      create: Utwórz zasób
+      edit: Edytuj zasoby
+      delete: Usuń zasób
+      delete_all: Usuń wszystkie zasoby
+      list_product: Lista produktów powiązanych z zasobem
+    attribute:
+      create: Dodaj atrybut do rodziny zasobów
+      edit: Edytuj atrybut rodziny zasobów
+      delete: Usuń atrybut rodziny zasobów
+    option:
+      edit: Edytuj opcje
+      delete: Usuń opcję
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "Wykonaj transformację zasobów"
+        asset_manager_link_assets_to_products: "Połącz zasoby z produktami"
+#pim_analytics:
+#info_type:
+#nb_asset_families: Number of asset families
+#max_number_of_assets_per_asset_family: Max number of assets per asset family
+#average_number_of_values_per_assets: Average number of values per asset on all asset families
+#average_number_of_assets_per_asset_family: Average number of assets per asset family
+#max_number_of_attributes_per_asset_family: Max number of attributes per asset family
+#average_number_of_attributes_per_asset_family: Average number of attributes per asset family
+#average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
+#average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
+#average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
+pim_catalog_asset_collection: Kolekcja zasobów
