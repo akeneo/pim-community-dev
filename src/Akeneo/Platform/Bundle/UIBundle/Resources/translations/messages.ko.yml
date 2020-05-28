@@ -155,6 +155,7 @@ pim_enrich:
       remove: 제품의 연결 제거
     job_tracker:
       index: 프로세스 트래커 보기
+      view_all_jobs: 프로세스 트래커에서 모든 작업 보기
   acl_group:
     association_type: 연결 유형
     attribute: 특성
@@ -346,6 +347,8 @@ Decimals allowed: 소수 허용
 Negative allowed: 음수 값 허용
 Date min: 최소 날짜
 Date max: 최대 날짜
+Metric family: 측정 패밀리
+Default metric unit: 기본 측정 단위
 Max file size: 최대 파일 크기(MB)
 Allowed extensions: 허용된 확장
 None: 없음
@@ -370,6 +373,7 @@ pim_catalog_file: 파일
 pim_catalog_image: 이미지
 pim_catalog_boolean: "예/아니요"
 pim_catalog_date: 날짜
+pim_catalog_metric: 측정
 pim_reference_data_simpleselect: 참조 데이터 단일 선택
 pim_reference_data_multiselect: 참조 데이터 다중 선택
 #Locales

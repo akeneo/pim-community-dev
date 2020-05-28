@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\HourlyEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountsQuery;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod;
+use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Traits\PeriodEventCountTrait;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
@@ -18,6 +18,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class DbalSelectPeriodEventCountsQuery implements SelectPeriodEventCountsQuery
 {
+    use PeriodEventCountTrait;
+
     /** @var Connection */
     private $dbalConnection;
 
@@ -43,10 +45,14 @@ class DbalSelectPeriodEventCountsQuery implements SelectPeriodEventCountsQuery
             $upToDateTime
         );
 
-        return $this->createPeriodEventCounts(
+        $connectionCodes = array_unique(array_map(function (array $data) {
+            return $data['connection_code'];
+        }, $hourlyEventCountsPerConnectionData));
+
+        return $this->createPeriodEventCountPerConnection(
+            new DateTimePeriod($fromDateTime, $upToDateTime),
+            $connectionCodes,
             array_merge($hourlyEventCountsPerConnectionData, $hourlyEventCountsForAllConnectionsData),
-            $fromDateTime,
-            $upToDateTime
         );
     }
 
@@ -116,57 +122,5 @@ SQL;
         }
 
         return $hourlyEventCountsData;
-    }
-
-    /**
-     * @param array $hourlyEventCountsData = [
-     *      ['connection_code => $connectionCode, 'event_datetime' => '2020-01-01 00:00:00', 'event_count' => 3],
-     * ]
-     *
-     * @return PeriodEventCount[]
-     */
-    private function createPeriodEventCounts(
-        array $hourlyEventCountsData,
-        \DateTimeImmutable $fromDateTime,
-        \DateTimeImmutable $upToDateTime
-    ): array {
-        $format = $this->dbalConnection->getDatabasePlatform()->getDateTimeFormatString();
-
-        $hourlyEventCountsPerConnection = array_reduce(
-            $hourlyEventCountsData,
-            function (array $data, array $row) use ($format) {
-                $connectionCode = $row['connection_code'];
-
-                if (false === isset($data[$connectionCode])) {
-                    $data[$connectionCode] = [];
-                }
-
-                if (null !== $row['event_datetime'] && null !== $row['event_count']) {
-                    $data[$connectionCode][] = new HourlyEventCount(
-                        \DateTimeImmutable::createFromFormat(
-                            $format,
-                            $row['event_datetime'],
-                            new \DateTimeZone('UTC')
-                        ),
-                        (int) $row['event_count']
-                    );
-                }
-
-                return $data;
-            },
-            []
-        );
-
-        $periodEventCounts = [];
-        foreach ($hourlyEventCountsPerConnection as $connectionCode => $hourlyEventCounts) {
-            $periodEventCounts[] = new PeriodEventCount(
-                $connectionCode,
-                $fromDateTime,
-                $upToDateTime,
-                $hourlyEventCounts
-            );
-        }
-
-        return $periodEventCounts;
     }
 }

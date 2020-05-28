@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\ErrorManagement\Service;
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\ApiErrorInterface;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -14,9 +15,9 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 interface ExtractErrorsFromHttpExceptionInterface
 {
     /**
-     * @param HttpException $httpException
+     * @param HttpExceptionInterface $httpException
      *
      * @return ApiErrorInterface[]
      */
-    public function extractAll(HttpException $httpException): array;
+    public function extractAll(HttpExceptionInterface $httpException): array;
 }

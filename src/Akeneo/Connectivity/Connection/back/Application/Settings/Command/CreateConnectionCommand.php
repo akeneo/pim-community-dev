@@ -11,9 +11,16 @@ namespace Akeneo\Connectivity\Connection\Application\Settings\Command;
  */
 class CreateConnectionCommand
 {
+    /** @var string */
     private $code;
+
+    /** @var string */
     private $label;
+
+    /** @var string */
     private $flowType;
+
+    /** @var bool */
     private $auditable;
 
     public function __construct(string $code, string $label, string $flowType, bool $auditable = false)

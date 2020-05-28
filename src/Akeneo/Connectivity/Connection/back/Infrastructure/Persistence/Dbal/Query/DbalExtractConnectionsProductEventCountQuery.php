@@ -6,10 +6,10 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
-use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\Types\Types;

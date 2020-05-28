@@ -1,11 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write;
 
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
-use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>

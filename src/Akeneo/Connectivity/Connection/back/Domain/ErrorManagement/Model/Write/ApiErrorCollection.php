@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write;
@@ -8,9 +9,14 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Erro
 
 class ApiErrorCollection
 {
-    /** @var array */
+    /**
+     * @var array<ErrorTypes::*, ApiErrorInterface[]>
+     */
     private $apiErrors;
 
+    /**
+     * @param ApiErrorInterface[] $apiErrors
+     */
     public function __construct(array $apiErrors = [])
     {
         $this->apiErrors = array_fill_keys(ErrorTypes::getAll(), []);
@@ -61,14 +67,7 @@ class ApiErrorCollection
     }
 
     /**
-     * Returns
-     * [
-     *     'business' => ApiErrorInterface[],
-     *     'technical' => ApiErrorInterface[],
-     *     ...
-     * ]
-     *
-     * @return array
+     * @return array<string, ApiErrorInterface[]>
      */
     public function getSorted(): array
     {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures;
 
-use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\Types\Types;
 

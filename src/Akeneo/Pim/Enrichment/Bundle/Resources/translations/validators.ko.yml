@@ -26,6 +26,8 @@ file.extensions.message: '이 파일 확장명은 허용되지 않습니다(허�
 "This type of value expects the use of the format {{ date_format }} for dates.": 이 유형의 값에는 날짜의 형식 {{date_format}}을(를) 사용해야 합니다.
 "The category \"%category%\" has to be a root category.": '"%category%" 카테고리는 루트 카테고리여야 합니다.'
 "The attribute \"%attributeCode%\" does not exist.": '"%attributeCode%" 특성이 존재하지 않습니다.'
+"The attribute \"%attributeCode%\" is not a metric attribute.": '"%attributeCode%" 특성이 측정 특성이 아닙니다.'
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": '"%unitCode%" 단위가 존재하지 않거나 지정된 특성 "%attributeCode%"의 기본 측정 패밀리에 속하지 않습니다.'
 "The currency \"%currency%\" has to be activated.": '"%currency%" 통화를 활성화해야 합니다.'
 product_model.code.not_blank.message: 제품 모델 코드는 비워둘 수 없습니다.
 product_model.code.unique.message: 동일한 코드가 이미 다른 제품 모델에 설정되어 있습니다.
@@ -49,6 +51,7 @@ pim_catalog:
     family_variant_axes_unique: 변형 축은 고유해야 합니다. "%attributes%"은(는) 변형 특성 세트에서 여러 번 사용되었습니다.
     family_variant_axes_immutable: '레벨 "%level%"에 대한 변형 축을 수정할 수 없습니다'
     family_variant_axes_attribute_type_unique: 변형 축 "%axis%"은(는) 고유하거나 식별자일 수 없습니다
+    family_variant_axes_attribute_type: 변형 축 "%axis%"은(는) 부울, 단일 선택, 단일 참조 데이터 또는 측정이어야 합니다
     family_variant_axes_wrong_type: 변형 축 "%axis%"은(는) 지역화/확장 가능하지 않으며 로케일 관련이 아닙니다
     family_variant_axes_number_of_axes: '변형 특성 세트에는 축이 %max_axes_number%개 이하여야 합니다 '
     family_variant_no_axis: 레벨 "%level%"의 특성 세트에 대한 축으로 정의된 특성이 하나 이상 있어야 합니다

@@ -41,6 +41,7 @@ class FosRegenerateClientSecret implements RegenerateClientSecret
 
     private function findClient(ClientId $clientId): Client
     {
+        /** @var ?Client */
         $fosClient = $this->clientManager->findClientBy(['id' => $clientId->id()]);
         if (null === $fosClient) {
             throw new \InvalidArgumentException(

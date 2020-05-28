@@ -169,6 +169,13 @@ akeneo_connectivity.connection:
       message_without_permission:
         message: Bitten Sie Ihren Administrator, einen zu erstellen.
         link: Erfahren Sie hier mehr über Verbindungen...
+  error_management:
+    connection_monitoring:
+      not_auditable:
+        description:
+          1: To track errors on this connection,
+          2: activate monitoring
+          3: in the settings.
   runtime_error:
     error_message: Oh verdammt! Ein Fehler ist aufgetreten...
     reload_helper: Bitte laden Sie die Seite neu und versuchen Sie es erneut.

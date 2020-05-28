@@ -45,8 +45,8 @@ services:
             - '@akeneo_connectivity.connection.persistence.repository.connection'
             - '@akeneo_connectivity.connection.service.user.regenerate_user_password'
 
-    akeneo_connectivity.connection.application.audit.handler.count_daily_events_by_connection:
-        class: 'Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler'
+    akeneo_connectivity.connection.application.audit.handler.get_period_event_count_per_connection:
+        class: 'Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionHandler'
         arguments:
             - '@akeneo_connectivity.connection.persistence.query.select_period_event_counts'
 
@@ -65,6 +65,11 @@ services:
         class: Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionHandler
         arguments:
             - '@akeneo_connectivity_connection.persistence.query.select_error_count_per_connection'
+
+    akeneo_connectivity.connection.application.audit.handler.get_period_error_count_per_connection:
+        class: Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodErrorCountPerConnectionHandler
+        arguments:
+            - '@akeneo_connectivity_connection.persistence.query.select_period_error_count_per_connection'
 
     akeneo_connectivity.connection.application.error_management.handler.get_connection_business_errors:
         class: Akeneo\Connectivity\Connection\Application\ErrorManagement\Query\GetConnectionBusinessErrorsHandler

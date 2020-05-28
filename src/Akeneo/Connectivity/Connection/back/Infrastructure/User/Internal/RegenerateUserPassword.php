@@ -45,6 +45,7 @@ class RegenerateUserPassword implements RegenerateUserPasswordService
 
     private function findUser(UserId $userId): UserInterface
     {
+        /** @var ?UserInterface */
         $user = $this->userManager->findUserBy(['id' => $userId->id()]);
         if (null === $user) {
             throw new \InvalidArgumentException(

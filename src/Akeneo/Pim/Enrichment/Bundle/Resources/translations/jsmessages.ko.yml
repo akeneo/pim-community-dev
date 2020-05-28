@@ -83,6 +83,7 @@ pim_enrich.entity.product:
       save_and_next: 저장 후 다음
       save_and_finish: 저장 후 완료
     associations:
+      title: 연결({{ count }})
       none_exist: 연결 유형이 없습니다.
       show_products: 제품 표시
       show_groups: 그룹 표시
@@ -90,6 +91,8 @@ pim_enrich.entity.product:
       association_type_selector: 연결 유형
       target: 대상
       manage: '{{ associationType }} 연결 추가'
+      manage_description: '"{{ productLabel }}" 제품과 연결할 제품 선택'
+      mass_edit_description: '{{ productCount }}개 선택 제품과 연결할 제품 선택'
       add_associations: 연결 추가
     attribute_filter:
       display: 표시

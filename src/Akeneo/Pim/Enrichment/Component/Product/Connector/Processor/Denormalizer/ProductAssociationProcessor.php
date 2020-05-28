@@ -155,6 +155,8 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
         } catch (AccessDeniedException $e) {
             $this->skipItemWithMessage($item, $e->getMessage(), $e);
         }
+
+        return null;
     }
 
     /**

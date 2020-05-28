@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository;
@@ -38,7 +39,7 @@ SQL;
         ]);
     }
 
-    public function findAll(\DateTime $since): WrongCredentialsCombinations
+    public function findAll(\DateTimeImmutable $since): WrongCredentialsCombinations
     {
         $selectSql = <<<SQL
 SELECT connection_code, JSON_OBJECTAGG(username, authentication_date) as users

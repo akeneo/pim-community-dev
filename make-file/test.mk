@@ -24,10 +24,12 @@ lint-back:
 	$(DOCKER_COMPOSE) run -u www-data --rm php vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+	$(MAKE) connectivity-connection-static-analysis-back
 
 .PHONY: lint-front
-lint-front: connectivity-connection-lint-front
+lint-front:
 	$(YARN_RUN) lint
+	$(MAKE) connectivity-connection-lint-front
 
 ### Unit tests
 .PHONY: unit-back
@@ -40,13 +42,15 @@ else
 endif
 
 .PHONY: unit-front
-unit-front: connectivity-connection-unit-front
+unit-front:
 	$(YARN_RUN) unit
+	$(MAKE) connectivity-connection-unit-front
 
 ### Acceptance tests
 .PHONY: acceptance-back
-acceptance-back: connectivity-connection-acceptance-back
+acceptance-back:
 	APP_ENV=behat ${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
+	$(MAKE) connectivity-connection-acceptance-back
 
 .PHONY: acceptance-front
 acceptance-front:

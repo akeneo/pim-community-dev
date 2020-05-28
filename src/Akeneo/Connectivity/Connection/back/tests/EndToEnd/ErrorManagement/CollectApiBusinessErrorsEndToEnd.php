@@ -85,10 +85,16 @@ JSON;
         $client->request('POST', '/api/rest/v1/products', [], [], [], $content);
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
 
+        $expectedContent = json_decode($client->getResponse()->getContent(), true);
+
         $this->esClient->refreshIndex();
         $result = $this->esClient->search([]);
 
-        Assert::assertCount(0, $result['hits']['hits']);
+        Assert::assertCount(1, $result['hits']['hits']);
+
+        $doc = $result['hits']['hits'][0]['_source'];
+        Assert::assertEquals('erp', $doc['connection_code']);
+        Assert::assertEquals($expectedContent, $doc['content']);
     }
 
     // test_it_collects_errors_from_a_product_partial_update
@@ -231,10 +237,19 @@ JSON;
 
         Assert::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
+        $expectedContent = array_map(function (string $result) {
+            return json_decode($result, true);
+        }, explode(PHP_EOL, $streamedContent));
+
         $this->esClient->refreshIndex();
         $result = $this->esClient->search([]);
 
-        Assert::assertCount(0, $result['hits']['hits']);
+        Assert::assertCount(1, $result['hits']['hits']);
+
+        $doc = $result['hits']['hits'][0]['_source'];
+        Assert::assertEquals('erp', $doc['connection_code']);
+        Assert::assertArrayHasKey('message', $doc['content']);
+        Assert::assertSame($expectedContent[0]['message'], $doc['content']['message']);
     }
 
     protected function setUp(): void

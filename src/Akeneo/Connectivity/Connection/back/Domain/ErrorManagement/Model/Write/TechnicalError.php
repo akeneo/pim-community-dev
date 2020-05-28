@@ -14,7 +14,7 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Erro
  */
 class TechnicalError extends ApiError
 {
-    function type(): ErrorType
+    public function type(): ErrorType
     {
         return new ErrorType(ErrorTypes::TECHNICAL);
     }

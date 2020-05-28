@@ -11,7 +11,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  */
 class ConnectionLabel
 {
-    private const CONSTRAINT_KEY = 'akeneo_connectivity.connection.connection.constraint.label.%s';
+    /** @var string */
     private $label;
 
     public function __construct(string $label)
@@ -19,13 +19,13 @@ class ConnectionLabel
         $label = trim($label);
 
         if (empty($label)) {
-            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'required'));
+            throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.label.required');
         }
         if (mb_strlen($label) < 3) {
-            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'too_short'));
+            throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.label.too_short');
         }
         if (mb_strlen($label) > 100) {
-            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'too_long'));
+            throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.label.too_long');
         }
 
         $this->label = $label;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query;
 
-use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

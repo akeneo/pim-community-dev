@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement;
@@ -13,6 +14,9 @@ final class ErrorTypes
     const TECHNICAL = 'technical';
     const BUSINESS = 'business';
 
+    /**
+     * @return array<ErrorTypes::*>
+     */
     public static function getAll(): array
     {
         return [self::BUSINESS, self::TECHNICAL];

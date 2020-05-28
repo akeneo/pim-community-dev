@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
@@ -33,9 +34,11 @@ class PurgeConnectionErrorsCommand extends Command
         $this->purgeErrors = $purgeErrors;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $codes = $this->selectAllAuditableConnectionCodes->execute();
         $this->purgeErrors->execute($codes);
+
+        return 0;
     }
 }
