@@ -12,6 +12,7 @@ use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -45,6 +46,7 @@ final class UpdateUserPermissions implements UpdateUserPermissionsInterface
 
     public function execute(UserId $userId, int $userRoleId, ?int $userGroupId): void
     {
+        /** @var ?UserInterface */
         $user = $this->userManager->findUserBy(['id' => $userId->id()]);
         if (null === $user) {
             throw new \InvalidArgumentException(

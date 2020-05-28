@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Read;
@@ -13,7 +14,7 @@ class WrongCredentialsCombination
     /** @var string */
     private $connectionCode;
 
-    /** @var array */
+    /** @var array<string, \DateTime> */
     private $users;
 
     public function __construct(string $connectionCode)
@@ -22,6 +23,9 @@ class WrongCredentialsCombination
         $this->users = [];
     }
 
+    /**
+     * @return array<string, \DateTime>
+     */
     public function users(): array
     {
         return $this->users;
@@ -37,6 +41,9 @@ class WrongCredentialsCombination
         return $this->connectionCode;
     }
 
+    /**
+     * @return array{code: string, users: array<array{username: string, date: string}>}
+     */
     public function normalize(): array
     {
         $users = [];

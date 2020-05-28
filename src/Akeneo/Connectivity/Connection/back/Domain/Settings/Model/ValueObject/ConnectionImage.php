@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
@@ -10,13 +11,13 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  */
 class ConnectionImage
 {
-    private const CONSTRAINT_KEY = 'akeneo_connectivity.connection.connection.constraint.image.%s';
+    /** @var string */
     private $filePath;
 
     public function __construct(string $filePath)
     {
         if (empty($filePath)) {
-            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'not_empty'));
+            throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.image.not_empty');
         }
 
         $this->filePath = $filePath;

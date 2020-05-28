@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\ErrorManagement\Query;
 
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Read\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Query\SelectLastConnectionBusinessErrorsQuery;
 
 /**
@@ -21,6 +22,9 @@ class GetConnectionBusinessErrorsHandler
         $this->selectLastConnectionBusinessErrorsQuery = $selectLastConnectionBusinessErrorsQuery;
     }
 
+    /**
+     * @return BusinessError[]
+     */
     public function handle(GetConnectionBusinessErrorsQuery $query): array
     {
         return $this->selectLastConnectionBusinessErrorsQuery->execute($query->connectionCode(), $query->endDate());

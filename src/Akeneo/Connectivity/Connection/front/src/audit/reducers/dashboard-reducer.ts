@@ -1,8 +1,9 @@
 import {Reducer} from 'react';
 import {AuditEventType} from '../../model/audit-event-type.enum';
-import {Actions, CONNECTIONS_FETCHED, CONNECTIONS_AUDIT_DATA_FETCHED} from '../actions/dashboard-actions';
-import {ConnectionsAuditData} from '../model/connections-audit-data';
 import {Connection} from '../../model/connection';
+import {FlowType} from '../../model/flow-type.enum';
+import {Actions, CONNECTIONS_AUDIT_DATA_FETCHED, CONNECTIONS_FETCHED} from '../actions/dashboard-actions';
+import {ConnectionsAuditData} from '../model/connections-audit-data';
 
 type ConnectionMap = {
     [code: string]: Connection;
@@ -20,10 +21,20 @@ export const reducer: Reducer<State, Actions> = (state, action) => {
         case CONNECTIONS_FETCHED:
             return {
                 ...state,
-                connections: action.payload.reduce((connections, connection) => {
-                    connections[connection.code] = connection;
-                    return connections;
-                }, {} as ConnectionMap),
+                connections: action.payload
+                    .filter(connection => {
+                        switch (connection.flowType) {
+                            case FlowType.DATA_SOURCE:
+                            case FlowType.DATA_DESTINATION:
+                                return true;
+                        }
+                        return false;
+                    })
+                    .filter(connection => connection.auditable)
+                    .reduce((connections, connection) => {
+                        connections[connection.code] = connection;
+                        return connections;
+                    }, {} as ConnectionMap),
             };
         case CONNECTIONS_AUDIT_DATA_FETCHED:
             return {

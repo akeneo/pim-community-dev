@@ -1,5 +1,5 @@
 parameters:
-    level: 6
+    level: 8
     paths:
         - %rootDir%/../../../src/Akeneo/Connectivity/Connection/back/Application
         - %rootDir%/../../../src/Akeneo/Connectivity/Connection/back/Domain

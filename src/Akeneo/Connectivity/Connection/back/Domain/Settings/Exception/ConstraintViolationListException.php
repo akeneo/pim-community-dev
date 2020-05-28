@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Settings\Exception;
 
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -15,9 +16,12 @@ class ConstraintViolationListException extends \InvalidArgumentException
 {
     const MESSAGE = 'akeneo_connectivity.connection.constraint_violation_list_exception';
 
-    /** @var ConstraintViolationListInterface */
+    /** @var ConstraintViolationListInterface<ConstraintViolationInterface> */
     private $constraintViolationList;
 
+    /**
+     * @param ConstraintViolationListInterface<ConstraintViolationInterface> $constraintViolationList
+     */
     public function __construct(ConstraintViolationListInterface $constraintViolationList)
     {
         parent::__construct(self::MESSAGE);
@@ -25,6 +29,9 @@ class ConstraintViolationListException extends \InvalidArgumentException
         $this->constraintViolationList = $constraintViolationList;
     }
 
+    /**
+     * @return ConstraintViolationListInterface<ConstraintViolationInterface>
+     */
     public function getConstraintViolationList(): ConstraintViolationListInterface
     {
         return $this->constraintViolationList;

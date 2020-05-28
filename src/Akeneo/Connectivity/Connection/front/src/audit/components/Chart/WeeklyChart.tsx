@@ -1,54 +1,16 @@
 import React from 'react';
-import {
-    DomainTuple,
-    VictoryAxis,
-    VictoryChart,
-    VictoryChartProps,
-    VictoryLine,
-    VictoryScatter,
-    VictoryThemeDefinition,
-} from 'victory';
-import {grey, lightGreyStroke, purple} from '../event-chart-themes';
-
-const yAxeTheme = {
-    tickLabels: {
-        fill: 'none',
-    },
-    axis: lightGreyStroke,
-    grid: lightGreyStroke,
-};
-const daysAxeTheme = {
-    tickLabels: {
-        fontSize: 11,
-        fontFamily: 'Lato',
-        fontWeight: ({tickValue}: {tickValue: any}) => (7 === tickValue ? 'bold' : 'normal'),
-        fill: ({tickValue}: {tickValue: any}) => (7 === tickValue ? purple : grey),
-    },
-    axis: {
-        stroke: 'none',
-    },
-    grid: {
-        stroke: 'none',
-    },
-};
-const gridYAxesTheme = {
-    tickLabels: {
-        fill: 'none',
-    },
-    grid: {
-        stroke: 'none',
-    },
-    axis: lightGreyStroke,
-};
+import {DomainTuple, VictoryAxis, VictoryChart, VictoryChartProps, VictoryLine, VictoryScatter} from 'victory';
+import {daysAxeTheme, gridYAxesTheme, themes, yAxeTheme} from './themes';
 
 type ChartData = {x: number; y: number; xLabel: string; yLabel: string};
+
 type Props = {
     data: ChartData[];
-    theme: VictoryThemeDefinition;
+    theme: keyof typeof themes;
     chartOptions?: VictoryChartProps;
 };
 
-export const Chart = ({data, theme, chartOptions}: Props) => {
+export const WeeklyChart = ({data, theme, chartOptions}: Props) => {
     let yMax = data.reduce((maxY, {y}) => (y > maxY ? y : maxY), 0);
     let yMin = data.reduce((minY, {y}) => (y < minY ? y : minY), yMax);
 
@@ -94,7 +56,7 @@ export const Chart = ({data, theme, chartOptions}: Props) => {
 
     // The rendering order is based on the elements order. Axes must be first to be draw in background.
     return (
-        <VictoryChart {...chartOptions} padding={0} domain={domain} theme={theme}>
+        <VictoryChart {...chartOptions} padding={0} domain={domain} theme={themes[theme]}>
             <VictoryAxis padding={0} offsetY={25} tickValues={xDaysValues} style={daysAxeTheme} />
             <VictoryAxis dependentAxis tickValues={yGridAxes} style={yAxeTheme} />
             {[1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5].map((value, index) => {

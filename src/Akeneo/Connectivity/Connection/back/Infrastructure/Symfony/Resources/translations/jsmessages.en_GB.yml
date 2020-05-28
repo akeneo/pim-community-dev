@@ -198,6 +198,11 @@ akeneo_connectivity.connection:
         content_column: Error message
       no_error:
         title: Awesome! No error found!
+      not_auditable:
+        description:
+          1: To track errors on this connection,
+          2: activate monitoring
+          3: in the settings.
   runtime_error:
     error_message: Oh snap! An error occurred...
     reload_helper: Please reload the page and try again.

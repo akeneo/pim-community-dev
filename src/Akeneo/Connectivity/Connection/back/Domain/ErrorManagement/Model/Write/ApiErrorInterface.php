@@ -1,10 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write;
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -17,5 +17,8 @@ interface ApiErrorInterface
 
     public function type(): ErrorType;
 
+    /**
+     * @return array{content: string, error_datetime: string}
+     */
     public function normalize(): array;
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
@@ -26,10 +27,13 @@ class PurgeAuditErrorCommand extends Command
         $this->purgeAuditErrorsQuery = $purgeAuditErrorsQuery;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $before = new \DateTimeImmutable('now - 10 days', new \DateTimeZone('UTC'));
-        $before->setTime((int) $before->format('H'), 0, 0);
+        $before = $before->setTime((int) $before->format('H'), 0, 0);
+
         $this->purgeAuditErrorsQuery->execute($before);
+
+        return 0;
     }
 }

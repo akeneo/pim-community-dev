@@ -21,8 +21,14 @@ class ErrorBoundary extends Component<unknown, {error?: Error}> {
         if (this.state.error) {
             return (
                 <PageContent>
-                    {/* TODO Create NotFoundError component */}
-                    {this.state.error instanceof NotFoundError ? <>NotFoundError</> : <RuntimeError />}
+                    {this.state.error instanceof NotFoundError ? (
+                        <>
+                            {/* TODO Create NotFoundError component */}
+                            <RuntimeError />
+                        </>
+                    ) : (
+                        <RuntimeError />
+                    )}
                 </PageContent>
             );
         }

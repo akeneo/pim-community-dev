@@ -1,16 +1,6 @@
 pim_dashboard:
   widget:
-    last_operations:
-      empty: Nie znaleziono żadnych operacji
-      status: Status
-      date: Data
-      type: Typ
-      profile_name: Nazwa profilu
-      details: Szczegóły
-      job_type:
-        import: Import
-        export: Eksport
-        mass_edit: Masowa edycja
-        quick_export: Szybki eksport
-page_title:
+    completeness:
+      load_more: 'Załaduj więcej...'
+pim_title:
   pim_dashboard_index: Kokpit

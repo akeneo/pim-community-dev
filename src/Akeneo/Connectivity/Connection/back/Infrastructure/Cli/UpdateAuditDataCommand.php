@@ -70,7 +70,8 @@ class UpdateAuditDataCommand extends Command
     private function purgeOlderThanXDays(int $days): void
     {
         $before = new \DateTimeImmutable("now - $days days", new \DateTimeZone('UTC'));
-        $before->setTime((int) $before->format('H'), 0, 0);
+        $before = $before->setTime((int) $before->format('H'), 0, 0);
+
         $this->purgeQuery->execute($before);
     }
 
