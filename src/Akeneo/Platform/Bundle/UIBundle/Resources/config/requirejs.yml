@@ -82,9 +82,10 @@ config:
         pimee/product-edit-form/associations:                         pimenterpriseui/js/product/form/associations
         pimee/product-edit-form/meta/status-switcher:                 pimenterpriseui/js/product/form/meta/status-switcher
         pimee/product-edit-form/variant-navigation:                   pimenterpriseui/js/product/form/variant-navigation
+        pimee/product-edit-form/duplicate:                            pimenterpriseui/js/product/form/duplicate.ts
+        pimee/product-edit-form/duplicate/modal:                      pimenterpriseui/js/product/form/duplicate/modal.ts
 
         pimee/mass-edit-form/product/publish:                         pimenterpriseui/js/mass-edit/form/product/publish
-
         # Common
         pimee/common/tab/permission:       pimenterpriseui/js/form/common/tab/permission
         pimee/job/common/edit/launch:      pimenterpriseui/js/job/common/edit/launch
@@ -97,5 +98,7 @@ config:
         pimee/template/product/tab/history/revert:            pimenterpriseui/templates/product/tab/history/revert.html
         pimee/template/product/tab/attribute/smart-attribute: pimenterpriseui/templates/product/tab/attributes/smart-attribute.html
         pimee/template/form/tab/permission:                   pimenterpriseui/templates/form/tab/permission.html
+        pimee/template/product/form/duplicate:                pimenterpriseui/templates/product/form/duplicate.html
+        pimee/template/product/form/duplicate/modal:                pimenterpriseui/templates/product/form/duplicate/modal.html
 
         pimee/template/mass-edit/product/publish:             pimenterpriseui/templates/mass-edit/product/publish.html

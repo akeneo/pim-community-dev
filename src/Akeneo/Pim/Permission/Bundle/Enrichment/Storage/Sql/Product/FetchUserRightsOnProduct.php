@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+use Akeneo\Pim\Permission\Component\Authorization\FetchUserRightsOnProductInterface;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
 use Doctrine\DBAL\Connection;
 
-class FetchUserRightsOnProduct
+class FetchUserRightsOnProduct implements FetchUserRightsOnProductInterface
 {
     /** @var Connection */
     private $connection;

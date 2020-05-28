@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct;
 
-class DuplicateProduct
+final class DuplicateProduct
 {
     /** @var string */
     private $productToDuplicateIdentifier;
@@ -19,10 +19,17 @@ class DuplicateProduct
     /** @var string */
     private $duplicatedProductIdentifier;
 
-    public function __construct(string $productToDuplicateIdentifier, string $duplicatedProductIdentifier)
-    {
+    /** @var int */
+    private $userId;
+
+    public function __construct(
+        string $productToDuplicateIdentifier,
+        string $duplicatedProductIdentifier,
+        int $userId
+    ) {
         $this->productToDuplicateIdentifier = $productToDuplicateIdentifier;
         $this->duplicatedProductIdentifier = $duplicatedProductIdentifier;
+        $this->userId = $userId;
     }
 
     public function productToDuplicateIdentifier(): string
@@ -33,5 +40,10 @@ class DuplicateProduct
     public function duplicatedProductIdentifier(): string
     {
         return $this->duplicatedProductIdentifier;
+    }
+
+    public function userId(): int
+    {
+        return $this->userId;
     }
 }

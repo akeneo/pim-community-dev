@@ -43,6 +43,15 @@ extensions:
         targetZone: secondary-actions
         position: 30
 
+    pim-product-edit-form-duplicate:
+        module: pimee/product-edit-form/duplicate
+        parent: pim-product-edit-form-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pimee_enrichment_product_duplicate
+        position: 90
+        config:
+            form: pim-product-duplicate-modal
+
     pim-product-edit-form-meta-published:
         module: pimee/product-edit-form/meta/published
         parent: pim-product-edit-form-meta
@@ -126,3 +135,23 @@ extensions:
         module: pimee/product-edit-form/variant-navigation
         parent: pim-product-edit-form
         targetZone: navigation
+
+    pim-product-duplicate-modal:
+       module: pimee/product-edit-form/duplicate/modal
+       config:
+           labels:
+               title: pimee_enrich.entity.product.duplicate.title
+               subTitle: pim_enrich.entity.product.plural_label
+           picture: illustrations/Product.svg
+           successMessage: pimee_enrich.entity.product.duplicate.flash.success
+           successMessageWithAttributeCodes: pimee_enrich.entity.product.duplicate.flash.success_with_attribute_codes
+           editRoute: pim_enrich_product_edit
+           postUrl: pimee_enrich_product_rest_duplicate
+
+    pim-product-duplicate-sku-field:
+        module: pim/product-edit-form/creation/identifier
+        parent: pim-product-duplicate-modal
+        targetZone: fields
+        position: 10
+        config:
+            identifier: duplicated_product_identifier

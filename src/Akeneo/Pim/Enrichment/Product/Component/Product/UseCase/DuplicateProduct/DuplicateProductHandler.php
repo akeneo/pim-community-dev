@@ -12,11 +12,14 @@
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Permission\Component\Authorization\FetchUserRightsOnProductInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -45,6 +48,12 @@ class DuplicateProductHandler
     /** @var SaverInterface */
     private $productSaver;
 
+    /** @var SecurityFacade */
+    private $securityFacade;
+
+    /** @var FetchUserRightsOnProductInterface */
+    private $fetchUserRightsOnProduct;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $attributeRepository,
@@ -53,7 +62,9 @@ class DuplicateProductHandler
         NormalizerInterface $normalizer,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $validator,
-        SaverInterface $productSaver
+        SaverInterface $productSaver,
+        SecurityFacade $securityFacade,
+        FetchUserRightsOnProductInterface $fetchUserRightsOnProduct
     ) {
         $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
@@ -63,10 +74,22 @@ class DuplicateProductHandler
         $this->productUpdater = $productUpdater;
         $this->validator = $validator;
         $this->productSaver = $productSaver;
+        $this->securityFacade = $securityFacade;
+        $this->fetchUserRightsOnProduct = $fetchUserRightsOnProduct;
     }
 
     public function handle(DuplicateProduct $duplicateProductCommand): DuplicateProductResponse
     {
+        if (!$this->isUserAllowedToDuplicateProduct($duplicateProductCommand->productToDuplicateIdentifier(), $duplicateProductCommand->userId())) {
+            throw new ObjectNotFoundException(
+                sprintf(
+                    'Product "%s" is not editable by user id "%s".',
+                    $duplicateProductCommand->productToDuplicateIdentifier(),
+                    $duplicateProductCommand->userId()
+                )
+            );
+        }
+
         /** @var ProductInterface */
         $productToDuplicate = $this->productRepository->findOneByIdentifier($duplicateProductCommand->productToDuplicateIdentifier());
 
@@ -81,8 +104,6 @@ class DuplicateProductHandler
 
         $duplicatedProduct = $this->removeUniqueAttributeValues->fromProduct($duplicatedProduct);
 
-        $removedUniqueAttributeCodesWithoutIdentifier = $this->getRemovedUniqueAttributeCodesWithoutIdentifier($productToDuplicate, $duplicatedProduct);
-
         $violations = $this->validator->validate($duplicatedProduct);
 
         if (0 === $violations->count()) {
@@ -92,7 +113,7 @@ class DuplicateProductHandler
                 $duplicatedProduct
             );
 
-            return DuplicateProductResponse::ok($removedUniqueAttributeCodesWithoutIdentifier);
+            return DuplicateProductResponse::ok($duplicatedProduct, $removedUniqueAttributeCodesWithoutIdentifier);
         }
 
         return DuplicateProductResponse::error($violations);
@@ -123,5 +144,17 @@ class DuplicateProductHandler
         ));
 
         return $removedUniqueAttributeCodesWithoutIdentifier;
+    }
+
+    private function isUserAllowedToDuplicateProduct(string $productToDuplicateIdentifier, int $userId): bool
+    {
+        $userRightsOnProduct = $this->fetchUserRightsOnProduct->fetchByIdentifier(
+            $productToDuplicateIdentifier,
+            $userId
+        );
+
+        return $this->securityFacade->isGranted('pimee_enrichment_product_duplicate')
+            && $this->securityFacade->isGranted('pim_enrich_product_create')
+            && $userRightsOnProduct->isProductEditable();
     }
 }
