@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+-PIM-9264: Make "search on..." translatable on Crowdin
 -PIM-9269: Add the key "tree.create" and its associated message in the translation file for Crowdin
 
 # 4.0.29 (2020-05-26)
