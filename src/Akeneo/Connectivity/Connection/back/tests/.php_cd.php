@@ -117,6 +117,7 @@ $rules = [
     $builder->only(
         [
             'Symfony\Component',
+            'Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Symfony'),
 ];
