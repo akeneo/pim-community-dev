@@ -26,6 +26,21 @@ class GetFromIdentifiersAction
 {
     const MAX_RESULTS = 100;
 
+    /** @var ProductQueryBuilderFactoryInterface */
+    private $productQueryBuilderFactory;
+
+    /** @var ProductQueryBuilderFactoryInterface */
+    private $productModelQueryBuilderFactory;
+
+    /** @var LinkedProductsNormalizer */
+    private $linkedProductsNormalizer;
+
+    /** @var FetchProductAndProductModelRows */
+    private $fetchProductAndProductModelRows;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
     public function __construct(
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ProductQueryBuilderFactoryInterface $productModelQueryBuilderFactory,
