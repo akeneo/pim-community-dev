@@ -249,8 +249,8 @@ define([
       }
     },
 
-    setValidationErrors: function({response: {values}}) {
-      this.validationErrors = values;
+    setValidationErrors: function({response}) {
+      this.validationErrors = response;
       ReactDOM.unmountComponentAtNode(document.getElementById('product-quantified-associations'));
       this.renderQuantifiedAssociations();
     },
@@ -305,28 +305,15 @@ define([
         products: [],
         product_models: [],
       };
-
-      this.validationErrors = [
-        {
-          messageTemplate: 'This quantity is too low',
-          parameters: {},
-          message: 'This is a message',
-          propertyPath: 'quantifiedAssociation.PACK.products[0].quantity',
-          invalidValue: -1,
-        },
-        {
-          messageTemplate: 'This quantity is too high',
-          parameters: {},
-          message: 'nice',
-          propertyPath: 'quantifiedAssociation.PACK.products[1].quantity',
-          invalidValue: 10000,
-        },
-      ];
+      const errors = filterErrors(
+        this.validationErrors.quantified_associations || [],
+        `quantifiedAssociations.${associationTypeCode}.`
+      );
 
       const Component = React.createElement(QuantifiedAssociationsTab, {
         quantifiedAssociations,
         parentQuantifiedAssociations,
-        errors: filterErrors(this.validationErrors, `quantifiedAssociation.${associationTypeCode}.`),
+        errors,
         onAssociationsChange: updatedAssociations => {
           const formData = this.getFormData();
           formData.quantified_associations = {
