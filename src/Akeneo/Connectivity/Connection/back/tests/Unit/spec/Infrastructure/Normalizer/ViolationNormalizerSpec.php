@@ -71,6 +71,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
                 'message' => 'message',
                 'errors' =>  [
                     [
+                        'property' => '',
                         'message' => 'test',
                         'raw_message' => 'test',
                         'parameters' => ['%param1%' => 'value1'],
