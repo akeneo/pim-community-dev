@@ -1,7 +1,7 @@
 import React, {PropsWithChildren, ReactElement} from 'react';
 import styled from 'styled-components';
-import {akeneoTheme} from 'akeneomeasure/shared/theme';
 import {CloseIcon} from 'akeneomeasure/shared/icons/CloseIcon';
+import {useAkeneoTheme} from '@akeneo-pim-community/shared';
 
 const Modal = styled.div.attrs(() => ({className: 'AknFullPage'}))``;
 
@@ -21,11 +21,15 @@ const ModalCloseButtonContainer = styled.button`
   }
 `;
 
-const ModalCloseButton = ({title, ...props}: {title: string} & any) => (
-  <ModalCloseButtonContainer title={title} tabIndex={0} aria-label={title} {...props}>
-    <CloseIcon color={akeneoTheme.color.grey100} title={title} size={24} />
-  </ModalCloseButtonContainer>
-);
+const ModalCloseButton = ({title, ...props}: {title: string} & any) => {
+  const akeneoTheme = useAkeneoTheme();
+
+  return (
+    <ModalCloseButtonContainer title={title} tabIndex={0} aria-label={title} {...props}>
+      <CloseIcon color={akeneoTheme.color.grey100} title={title} size={24} />
+    </ModalCloseButtonContainer>
+  );
+};
 
 type ModalWithIllustationProps = {
   illustration: ReactElement;
@@ -42,16 +46,22 @@ const ModalTitleContainer = styled.div.attrs(() => ({className: 'AknFullPage-tit
   margin-bottom: 16px;
 `;
 
+const ModalDescription = styled.div`
+  font-size: ${props => props.theme.fontSize.bigger};
+  line-height: 1.5;
+  margin-bottom: 10px;
+`;
+
 type ModalTitleProps = {
   title: string;
   subtitle?: string;
 };
 
-const ModalTitle = ({title, subtitle}: ModalTitleProps) => (
-  <ModalTitleContainer>
+const ModalTitle = ({title, subtitle, ...props}: ModalTitleProps) => (
+  <ModalTitleContainer {...props}>
     {subtitle && <div className="AknFullPage-subTitle">{subtitle}</div>}
     <div className="AknFullPage-title">{title}</div>
   </ModalTitleContainer>
 );
 
-export {Modal, ModalCloseButton, ModalBodyWithIllustration, ModalTitle};
+export {Modal, ModalCloseButton, ModalBodyWithIllustration, ModalTitle, ModalDescription};

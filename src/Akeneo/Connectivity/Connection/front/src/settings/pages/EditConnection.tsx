@@ -11,14 +11,17 @@ import {
     PageHeader,
     SecondaryActionsDropdownButton,
 } from '../../common';
-import defaultImageUrl from '../../common/assets/illustrations/api.svg';
+import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
 import {PimView} from '../../infrastructure/pim-view/PimView';
 import {Connection} from '../../model/connection';
 import {FlowType} from '../../model/flow-type.enum';
+import {WrongCredentialsCombinations} from '../../model/wrong-credentials-combinations';
+import {fetchResult} from '../../shared/fetch-result';
 import {isErr, isOk} from '../../shared/fetch-result/result';
 import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {connectionFetched, connectionUpdated} from '../actions/connections-actions';
+import {wrongCredentialsCombinationsFetched} from '../actions/wrong-credentials-combinations-actions';
 import {useFetchConnection} from '../api-hooks/use-fetch-connection';
 import {useUpdateConnection} from '../api-hooks/use-update-connection';
 import {ConnectionCredentials} from '../components/ConnectionCredentials';
@@ -30,14 +33,12 @@ import {
     useWrongCredentialsCombinationsDispatch,
     useWrongCredentialsCombinationsState,
 } from '../wrong-credentials-combinations-context';
-import {fetchResult} from '../../shared/fetch-result';
-import {WrongCredentialsCombinations} from '../../model/wrong-credentials-combinations';
-import {wrongCredentialsCombinationsFetched} from '../actions/wrong-credentials-combinations-actions';
 
 export type FormValues = {
     label: string;
     flowType: FlowType;
     image: string | null;
+    auditable: boolean;
     userRoleId: string;
     userGroupId: string | null;
 };
@@ -96,7 +97,7 @@ export const EditConnection = () => {
 
     const updateConnection = useUpdateConnection(code);
     const handleSubmit = async (
-        {label, flowType, image, userRoleId, userGroupId}: FormValues,
+        {label, flowType, image, auditable, userRoleId, userGroupId}: FormValues,
         {setSubmitting}: FormikHelpers<FormValues>
     ) => {
         const result = await updateConnection({
@@ -104,6 +105,7 @@ export const EditConnection = () => {
             label,
             flowType,
             image,
+            auditable,
             userRoleId,
             userGroupId,
         });
@@ -115,6 +117,7 @@ export const EditConnection = () => {
                     code,
                     label,
                     flowType,
+                    auditable,
                     image,
                     userRoleId,
                     userGroupId,
@@ -131,6 +134,7 @@ export const EditConnection = () => {
         label: connection.label,
         flowType: connection.flowType,
         image: connection.image,
+        auditable: connection.auditable,
         userRoleId: connection.userRoleId,
         userGroupId: connection.userGroupId,
     };

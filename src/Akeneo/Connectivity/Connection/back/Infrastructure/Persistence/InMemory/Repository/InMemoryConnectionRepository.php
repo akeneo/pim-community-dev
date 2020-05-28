@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository;
 
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 
@@ -30,6 +29,7 @@ class InMemoryConnectionRepository implements ConnectionRepository
             'username' => (string) $connection->code(),
             'password' => uniqid(),
             'image' => null,
+            'auditable' => $connection->auditable(),
         ];
     }
 
@@ -45,8 +45,9 @@ class InMemoryConnectionRepository implements ConnectionRepository
             $dataRow['label'],
             $dataRow['flow_type'],
             $dataRow['client_id'],
-            new UserId($dataRow['user_id']),
-            $dataRow['image']
+            $dataRow['user_id'],
+            $dataRow['image'],
+            $dataRow['auditable']
         );
     }
 
@@ -59,6 +60,7 @@ class InMemoryConnectionRepository implements ConnectionRepository
         $this->dataRows[(string) $connection->code()]['label'] = (string) $connection->label();
         $this->dataRows[(string) $connection->code()]['flow_type'] = (string) $connection->flowType();
         $this->dataRows[(string) $connection->code()]['image'] = null !== $connection->image() ? (string) $connection->image() : null;
+        $this->dataRows[(string) $connection->code()]['auditable'] = $connection->auditable();
     }
 
     public function delete(Connection $connection): void

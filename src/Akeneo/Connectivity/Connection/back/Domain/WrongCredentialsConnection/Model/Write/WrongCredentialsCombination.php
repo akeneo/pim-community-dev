@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write;
@@ -22,12 +23,12 @@ class WrongCredentialsCombination
         $this->username = $username;
     }
 
-    public function username()
+    public function username(): string
     {
         return $this->username;
     }
 
-    public function connectionCode()
+    public function connectionCode(): string
     {
         return $this->connectionCode;
     }

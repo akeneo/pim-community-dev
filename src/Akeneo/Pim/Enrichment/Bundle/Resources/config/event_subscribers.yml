@@ -131,6 +131,13 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    pim_catalog.event_subscriber.product.on_delete.clear_completeness_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete\DeleteCompletenessSubscriber'
+        arguments:
+            - '@pim_catalog.completeness.remover'
+        tags:
+            - { name: kernel.event_subscriber }
+
     pim_catalog.event_subscriber.product.on_save.api_aggregator_event_subscriber:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ApiAggregatorForProductPostSaveEventSubscriber'
         arguments:
@@ -142,5 +149,12 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ApiAggregatorForProductModelPostSaveEventSubscriber'
         arguments:
             - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.persist_two_way_association_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithAssociations\PersistTwoWayAssociationSubscriber'
+        arguments:
+            - '@doctrine'
         tags:
             - { name: kernel.event_subscriber }

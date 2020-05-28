@@ -1,14 +1,14 @@
 import {AuditEventType} from '../../model/audit-event-type.enum';
 import {ConnectionsAuditData} from '../model/connections-audit-data';
-import {SourceConnection} from '../model/source-connection';
+import {Connection} from '../../model/connection';
 
-export const SOURCE_CONNECTIONS_FETCHED = 'SOURCE_CONNECTIONS_FETCHED';
-type SourceConnectionsFetchedAction = {
-    type: typeof SOURCE_CONNECTIONS_FETCHED;
-    payload: SourceConnection[];
+export const CONNECTIONS_FETCHED = 'CONNECTIONS_FETCHED';
+type ConnectionsFetchedAction = {
+    type: typeof CONNECTIONS_FETCHED;
+    payload: Connection[];
 };
-export const sourceConnectionsFetched = (payload: SourceConnection[]): SourceConnectionsFetchedAction => ({
-    type: SOURCE_CONNECTIONS_FETCHED,
+export const connectionsFetched = (payload: Connection[]): ConnectionsFetchedAction => ({
+    type: CONNECTIONS_FETCHED,
     payload,
 });
 
@@ -31,4 +31,4 @@ export const connectionsAuditDataFetched = (
     },
 });
 
-export type Actions = SourceConnectionsFetchedAction | ConnectionsAuditDataFetchedAction;
+export type Actions = ConnectionsFetchedAction | ConnectionsAuditDataFetchedAction;

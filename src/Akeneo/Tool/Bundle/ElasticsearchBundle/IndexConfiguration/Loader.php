@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Yaml\Parser;
 
 /**
@@ -20,12 +21,16 @@ class Loader
     /** @var array */
     private $configurationFiles;
 
+    /** @var ParameterBagInterface */
+    private $parameterBag;
+
     /**
      * @param array $configurationFiles
      */
-    public function __construct(array $configurationFiles)
+    public function __construct(array $configurationFiles, ParameterBagInterface $parameterBag)
     {
         $this->configurationFiles = $configurationFiles;
+        $this->parameterBag = $parameterBag;
     }
 
     /**
@@ -49,6 +54,10 @@ class Loader
             }
 
             $configuration = $yaml->parse(file_get_contents($configurationFile));
+
+            array_walk_recursive($configuration, function (&$value) {
+                $value = $this->parameterBag->resolveValue($value);
+            });
 
             if (isset($configuration['settings'])) {
                 $settings = array_replace_recursive($settings, $configuration['settings']);

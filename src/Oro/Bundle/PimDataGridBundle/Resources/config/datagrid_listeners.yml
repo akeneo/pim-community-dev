@@ -43,7 +43,7 @@ services:
     pim_enrich.event_listener.association_product_picker_grid_after_listener:
         class: '%pim_datagrid.event_listener.add_parameters_to_product_grid.class%'
         arguments:
-          - [dataLocale]
+          - [dataLocale, dataChannel]
           - '@oro_datagrid.datagrid.request_params'
           - '@pim_catalog.context.catalog'
           - '@pim_user.context.user'
@@ -115,7 +115,7 @@ services:
     pim_enrich.event_listener.association_product_grid_after_listener:
         class: '%pim_datagrid.event_listener.add_parameters_to_product_grid.class%'
         arguments:
-            - [dataLocale, product, associationType]
+            - [dataLocale, dataChannel, product, associationType]
             - '@oro_datagrid.datagrid.request_params'
             - '@pim_catalog.context.catalog'
             - '@pim_user.context.user'
@@ -138,7 +138,7 @@ services:
     pim_enrich.event_listener.association_product_model_grid_after_listener:
         class: '%pim_datagrid.event_listener.add_parameters_to_product_grid.class%'
         arguments:
-            - [dataLocale, product, associationType]
+            - [dataLocale, dataChannel, product, associationType]
             - '@oro_datagrid.datagrid.request_params'
             - '@pim_catalog.context.catalog'
             - '@pim_user.context.user'
@@ -169,6 +169,7 @@ services:
         class: '%pim_datagrid.event_listener.add_username_to_grid_listener.class%'
         arguments:
             - '@security.token_storage'
+            - '@oro_security.security_facade'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.job-tracker-grid, method: onBuildAfter }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-import-executions-grid, method: onBuildAfter }

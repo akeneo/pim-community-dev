@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Integration\Persistence;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
@@ -111,6 +102,40 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
 
         $measurementFamilies = $this->repository->all();
         $this->assertCount(3, $measurementFamilies);
+    }
+
+    /**
+     * @test
+     */
+    public function it_deletes_a_measurement_family(): void
+    {
+        $measurementFamilies = $this->repository->all();
+        $this->assertEquals(
+            ['Area', 'Binary'],
+            array_map(function (MeasurementFamily $measurementFamily) {
+                return $measurementFamily->normalize()['code'];
+            }, $measurementFamilies)
+        );
+
+        $this->repository->deleteByCode(MeasurementFamilyCode::fromString('Area'));
+
+        $measurementFamilies = $this->repository->all();
+        $this->assertEquals(
+            ['Binary'],
+            array_map(function (MeasurementFamily $measurementFamily) {
+                return $measurementFamily->normalize()['code'];
+            }, $measurementFamilies)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_the_measurement_family_being_removed_does_not_exists(): void
+    {
+        $this->expectException(MeasurementFamilyNotFoundException::class);
+
+        $this->repository->deleteByCode(MeasurementFamilyCode::fromString('NOT_EXISTING'));
     }
 
     private function createMeasurementFamily(string $code = 'Area', array $labels = ["en_US" => "Area", "fr_FR" => "Surface"]): MeasurementFamily

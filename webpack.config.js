@@ -11,12 +11,13 @@ const WebpackShellPlugin = require('webpack-shell-plugin');
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
+const isStrict = process.argv && process.argv.indexOf('--strict') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
 
 createModuleRegistry(Object.keys(aliases), rootDir);
 
-console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
+console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode', isStrict ? 'with typechecking' : '');
 
 const webpackConfig = {
   stats: {
@@ -188,6 +189,7 @@ const webpackConfig = {
           {
             loader: 'ts-loader',
             options: {
+              transpileOnly: !isStrict,
               configFile: path.resolve(rootDir, 'tsconfig.json'),
               context: path.resolve(rootDir),
             },

@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler;
-use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\WeeklyEventCounts;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodErrorCountPerConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateAuditData;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,34 +23,148 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AuditController
 {
-    /** @var CountDailyEventsByConnectionHandler */
-    private $countDailyEventsByConnectionHandler;
+    /** @var UserContext */
+    private $userContext;
 
-    public function __construct(CountDailyEventsByConnectionHandler $countDailyEventsByConnectionHandler)
-    {
-        $this->countDailyEventsByConnectionHandler = $countDailyEventsByConnectionHandler;
+    /** @var GetPeriodEventCountPerConnectionHandler */
+    private $getPeriodEventCountPerConnectionHandler;
+
+    /** @var GetErrorCountPerConnectionHandler */
+    private $getErrorCountPerConnectionHandler;
+
+    /** @var GetPeriodErrorCountPerConnectionHandler */
+    private $getPeriodErrorCountPerConnectionHandler;
+
+    public function __construct(
+        UserContext $userContext,
+        GetPeriodEventCountPerConnectionHandler $getPeriodEventCountPerConnectionHandler,
+        GetErrorCountPerConnectionHandler $getErrorCountPerConnectionHandler,
+        GetPeriodErrorCountPerConnectionHandler $getPeriodErrorCountPerConnectionHandler
+    ) {
+        $this->userContext = $userContext;
+        $this->getPeriodEventCountPerConnectionHandler = $getPeriodEventCountPerConnectionHandler;
+        $this->getErrorCountPerConnectionHandler = $getErrorCountPerConnectionHandler;
+        $this->getPeriodErrorCountPerConnectionHandler = $getPeriodErrorCountPerConnectionHandler;
     }
 
-    public function sourceConnectionsEvent(Request $request): JsonResponse
+    public function getWeeklyAudit(Request $request): JsonResponse
     {
-        $eventType = $request->get('event_type', '');
-        $endDate = $request->get(
+        $timezone = new \DateTimeZone($this->userContext->getUserTimezone());
+
+        $eventType = $request->get('event_type');
+        $endDateUser = $request->get(
             'end_date',
-            (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d')
+            (new \DateTimeImmutable('now', $timezone))->format('Y-m-d')
         );
-        $startDate = (new \DateTime($endDate, new \DateTimeZone('UTC')))->modify('-7 day')->format('Y-m-d');
 
-        $query = new CountDailyEventsByConnectionQuery($eventType, $startDate, $endDate);
-        $countDailyEventsByConnection = $this->countDailyEventsByConnectionHandler->handle($query);
-
-        $data = \array_reduce(
-            $countDailyEventsByConnection,
-            function (array $data, WeeklyEventCounts $connectionEventCounts) {
-                return array_merge($data, $connectionEventCounts->normalize());
-            },
-            []
+        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval(
+            $endDateUser,
+            $timezone,
+            new \DateInterval('P7D')
         );
+        [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
+
+        $query = new GetPeriodEventCountPerConnectionQuery($eventType, $fromDateTime, $upToDateTime);
+        $periodEventCounts = $this->getPeriodEventCountPerConnectionHandler->handle($query);
+
+        $data = AggregateAuditData::normalize($periodEventCounts, $timezone);
+
+        // TODO To remove after the UI is updated with the new format.
+        $retroCompatibleData = [];
+        foreach ($data as $connectionCode => $connectionData) {
+            $retroCompatibleData[$connectionCode] = [
+                'daily' => array_merge($connectionData['previous_week'], $connectionData['current_week']),
+                'weekly_total' => $connectionData['current_week_total']
+            ];
+        }
+
+        return new JsonResponse($retroCompatibleData);
+    }
+
+    public function getWeeklyErrorAudit(Request $request): JsonResponse
+    {
+        $timezone = new \DateTimeZone($this->userContext->getUserTimezone());
+
+        $endDateUser = $request->get(
+            'end_date',
+            (new \DateTimeImmutable('now', $timezone))->format('Y-m-d')
+        );
+
+        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval(
+            $endDateUser,
+            $timezone,
+            new \DateInterval('P7D')
+        );
+        [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
+
+        $query = new GetPeriodErrorCountPerConnectionQuery(new DateTimePeriod($fromDateTime, $upToDateTime));
+        $periodEventCountPerConnection = $this->getPeriodErrorCountPerConnectionHandler->handle($query);
+
+        $data = AggregateAuditData::normalize($periodEventCountPerConnection, $timezone);
 
         return new JsonResponse($data);
+    }
+
+    public function getErrorCountPerConnection(Request $request): JsonResponse
+    {
+        $timezone = new \DateTimeZone($this->userContext->getUserTimezone());
+
+        $errorType = $request->get('error_type');
+        $endDateUser = $request->get(
+            'end_date',
+            (new \DateTimeImmutable('now', $timezone))->format('Y-m-d')
+        );
+
+        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval(
+            $endDateUser,
+            $timezone,
+            new \DateInterval('P6D')
+        );
+        [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
+
+        $query = new GetErrorCountPerConnectionQuery($errorType, $fromDateTime, $upToDateTime);
+        $errorCountPerConnection = $this->getErrorCountPerConnectionHandler->handle($query);
+
+        $data = $errorCountPerConnection->normalize();
+
+        return new JsonResponse($data);
+    }
+
+    private function createUserDateTimeInterval(
+        string $endDateUser,
+        \DateTimeZone $timezone,
+        \DateInterval $dateInterval
+    ): array {
+        $endDateTimeUser = \DateTimeImmutable::createFromFormat(
+            'Y-m-d',
+            $endDateUser,
+            $timezone
+        );
+        if (false === $endDateTimeUser) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unexpected format for the `end_date` parameter "%s". Format must be `Y-m-d`',
+                $endDateUser
+            ));
+        }
+
+        $startDateTimeUser = $endDateTimeUser->sub($dateInterval);
+
+        return [$startDateTimeUser, $endDateTimeUser];
+    }
+
+    private function createUtcDateTimeInterval(
+        \DateTimeImmutable $startDateTimeUser,
+        \DateTimeImmutable $endDateTimeUser
+    ): array {
+        $fromDateTime = $startDateTimeUser
+            ->setTime(0, 0)
+            ->setTimezone(new \DateTimeZone('UTC'));
+
+        $upToDateTime = $endDateTimeUser
+            ->setTime(0, 0)
+            ->add(new \DateInterval('P1D'))
+            ->setTimezone(new \DateTimeZone('UTC'));
+
+        return [$fromDateTime, $upToDateTime];
     }
 }

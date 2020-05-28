@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures;
 
+use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Doctrine\DBAL\Connection as DbalConnection;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -16,28 +20,52 @@ class AuditLoader
     /** @var DbalConnection */
     private $dbalConnection;
 
-    public function __construct(DbalConnection $dbalConnection)
+    /** @var EventCountRepository */
+    private $eventCountRepository;
+
+    public function __construct(DbalConnection $dbalConnection, EventCountRepository $eventCountRepository)
     {
         $this->dbalConnection = $dbalConnection;
+        $this->eventCountRepository = $eventCountRepository;
     }
 
-    public function insertData(
+    public function insert(
+        HourlyEventCount $hourlyEventCount,
+        \DateTimeInterface $updated = null
+    ): void {
+        $this->eventCountRepository->bulkInsert([
+            $hourlyEventCount
+        ]);
+
+        if (null !== $updated) {
+            $this->setUpdated(
+                $hourlyEventCount->connectionCode(),
+                $hourlyEventCount->hourlyInterval(),
+                $hourlyEventCount->eventType(),
+                $updated
+            );
+        }
+    }
+
+    private function setUpdated(
         string $connectionCode,
-        \DateTimeInterface $eventDate,
-        int $eventCount,
-        string $eventType
-    ) {
-        $sqlQuery = <<<SQL
-INSERT INTO akeneo_connectivity_connection_audit (connection_code, event_date, event_count, event_type)
-VALUES (:connection_code, :event_date, :event_count, :event_type)
-SQL;
-        $this->dbalConnection->executeQuery(
-            $sqlQuery,
+        HourlyInterval $hourlyInterval,
+        string $eventType,
+        \DateTimeInterface $updated
+    ): void {
+        $this->dbalConnection->update(
+            'akeneo_connectivity_connection_audit_product',
+            [
+                'updated' => $updated
+            ],
             [
                 'connection_code' => $connectionCode,
-                'event_date' => $eventDate->format('Y-m-d'),
-                'event_count' => $eventCount,
-                'event_type' => $eventType
+                'event_datetime' => $hourlyInterval->fromDateTime(),
+                'event_type' => $eventType,
+            ],
+            [
+                'event_datetime' => Types::DATETIME_IMMUTABLE,
+                'updated' => Types::DATETIME_IMMUTABLE,
             ]
         );
     }

@@ -137,7 +137,7 @@ final class ElasticsearchProductModelProjection
 
     public function toArray(): array
     {
-        return [
+        $data = [
             'id' => 'product_model_' . (string) $this->id,
             'identifier' => $this->code,
             'created' => $this->createdDate->format(self::INDEX_DATE_FORMAT),
@@ -163,5 +163,7 @@ final class ElasticsearchProductModelProjection
             'attributes_of_ancestors' => $this->ancestorAttributeCodes,
             'attributes_for_this_level' => $this->attributesForThisLevel,
         ];
+
+        return array_merge($data, $this->additionalData);
     }
 }

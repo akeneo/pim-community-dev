@@ -164,3 +164,4 @@ FAILED: Failed
 ABANDONED: Abandoned
 UNKNOWN: Unknown
 warning.label: Warning
+pim_datagrid.column.username: Username

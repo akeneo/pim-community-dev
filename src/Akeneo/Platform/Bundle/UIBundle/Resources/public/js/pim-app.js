@@ -19,7 +19,6 @@ define(
         'pimuser/js/init-signin',
         'pim/page-title',
         'pim/date-context',
-        'pim/security-context',
         'pim/user-context',
         'pim/template/app',
         'pim/template/common/flash',
@@ -37,7 +36,6 @@ define(
         initSignin,
         pageTitle,
         DateContext,
-        SecurityContext,
         UserContext,
         template,
         flashTemplate
@@ -63,11 +61,10 @@ define(
              */
             configure: function () {
                 return $.when(
-                        FetcherRegistry.initialize(),
-                        DateContext.initialize(),
-                        SecurityContext.initialize(),
-                        UserContext.initialize()
-                    )
+                    FetcherRegistry.initialize(),
+                    DateContext.initialize(),
+                    UserContext.initialize()
+                )
                     .then(initTranslator.fetch)
                     .then(function () {
                         messenger.showQueuedMessages();

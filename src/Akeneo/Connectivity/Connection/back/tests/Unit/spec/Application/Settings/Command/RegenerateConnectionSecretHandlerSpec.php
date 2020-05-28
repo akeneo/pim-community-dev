@@ -32,7 +32,15 @@ class RegenerateConnectionSecretHandlerSpec extends ObjectBehavior
     public function it_regenerates_a_client_secret($repository, $regenerateClientSecret): void
     {
         $userId = new UserId(72);
-        $connection = new Connection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, 42, $userId);
+        $connection = new Connection(
+            'magento',
+            'Magento Connector',
+            FlowType::DATA_DESTINATION,
+            42,
+            $userId->id(),
+            null,
+            false
+        );
 
         $repository->findOneByCode('magento')->willReturn($connection);
         $regenerateClientSecret->execute(new ClientId(42))->shouldBeCalled();

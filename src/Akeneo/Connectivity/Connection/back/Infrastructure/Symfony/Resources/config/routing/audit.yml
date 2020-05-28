@@ -1,0 +1,18 @@
+weekly:
+    path: '/weekly'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.audit:getWeeklyAudit }
+    methods: [GET]
+    requirements:
+        event_type: '[a-zA-Z_]+'
+
+weekly_error:
+    path: '/weekly-error'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.audit:getWeeklyErrorAudit }
+    methods: [GET]
+
+error_count_per_connection:
+    path: '/error-count-per-connection'
+    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.audit:getErrorCountPerConnection }
+    methods: [GET]
+    requirements:
+        error_type: '[a-zA-Z_]+'

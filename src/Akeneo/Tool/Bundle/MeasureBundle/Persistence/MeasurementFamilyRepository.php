@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Bundle\MeasureBundle\Persistence;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
@@ -99,6 +101,38 @@ SQL;
         ]);
 
         return (int) $statement->fetch(\PDO::FETCH_COLUMN);
+    }
+
+    public function clear(): void
+    {
+        $this->allMeasurementFamiliesCache = [];
+        $this->measurementFamilyCache = [];
+    }
+
+    public function deleteByCode(MeasurementFamilyCode $measurementFamilyCode)
+    {
+        $sql = <<<SQL
+    DELETE FROM akeneo_measurement
+    WHERE code = :code
+SQL;
+
+        $affectedRows = $this->sqlConnection->executeUpdate(
+            $sql,
+            [
+                'code' => $measurementFamilyCode->normalize(),
+            ]
+        );
+
+        if (1 !== $affectedRows) {
+            throw new MeasurementFamilyNotFoundException();
+        }
+
+        if (isset($this->measurementFamilyCache[$measurementFamilyCode->normalize()])) {
+            unset($this->measurementFamilyCache[$measurementFamilyCode->normalize()]);
+        }
+        if (isset($this->allMeasurementFamiliesCache[$measurementFamilyCode->normalize()])) {
+            unset($this->allMeasurementFamiliesCache[$measurementFamilyCode->normalize()]);
+        }
     }
 
     private function hydrateMeasurementFamily(

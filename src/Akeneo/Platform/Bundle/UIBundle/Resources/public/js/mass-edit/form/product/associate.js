@@ -256,11 +256,17 @@ define(
                                     backdrop: 'static',
                                     keyboard: false
                                 },
-                                innerDescription:
-                                __('pim_enrich.entity.product.module.associations.manage_description'),
+                                innerDescription: __(
+                                    'pim_enrich.entity.product.module.associations.mass_edit_description',
+                                    {productCount: this.getFormData().itemsCount}
+                                ),
                                 okCloses: false,
                                 title: __('pim_enrich.entity.product.module.associations.manage', {
-                                    associationType: associationType.labels[UserContext.get('catalogLocale')]
+                                    associationType: i18n.getLabel(
+                                      associationType.labels,
+                                      UserContext.get('catalogLocale'),
+                                      associationType.code
+                                    ),
                                 }),
                                 content: '',
                                 cancelText: ' ',

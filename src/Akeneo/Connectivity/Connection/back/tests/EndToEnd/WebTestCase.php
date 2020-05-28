@@ -29,19 +29,21 @@ abstract class WebTestCase extends TestCase
         $this->client = self::$container->get('test.client');
     }
 
-    protected function createConnection(string $code, string $label, string $flowType): ConnectionWithCredentials
+    protected function createConnection(string $code, string $label, string $flowType, bool $auditable): ConnectionWithCredentials
     {
-        $createConnectionCommand = new CreateConnectionCommand($code, $label, $flowType);
+        $createConnectionCommand = new CreateConnectionCommand($code, $label, $flowType, $auditable);
 
         return $this->get('akeneo_connectivity.connection.application.handler.create_connection')
             ->handle($createConnectionCommand);
     }
 
-    protected function authenticateAsAdmin()
+    protected function authenticateAsAdmin(): UserInterface
     {
         $user = $this->createAdminUser();
 
         $this->authenticate($user);
+
+        return $user;
     }
 
     private function authenticate(UserInterface $user)

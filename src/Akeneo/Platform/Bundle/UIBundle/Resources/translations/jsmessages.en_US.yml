@@ -164,7 +164,9 @@ pim_common:
     before: Before
     by: by
     cancel: Cancel
+    close: Close
     code: Code
+    completeness: Completeness
     confirm: Confirm
     confirm_deletion: Confirm deletion
     confirm_revocation: Confirm revocation
@@ -177,6 +179,8 @@ pim_common:
     from: From
     general_properties: General properties
     history: History
+    identifier: Identifier
+    image: Image
     label: Label
     label_translations: Label translations
     Label or identifier: label or identifier
@@ -190,11 +194,13 @@ pim_common:
     not_available: N/A
     now: Now
     ok: OK
+    other_actions: Other actions
     permissions: Permissions
     previous: Previous
     properties: Properties
     remove: Remove
     required_label: (required)
+    result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"
     save: Save
     search: Search
     select2:

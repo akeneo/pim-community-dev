@@ -1,15 +1,16 @@
 import {Reducer} from 'react';
 import {AuditEventType} from '../../model/audit-event-type.enum';
-import {Actions, SOURCE_CONNECTIONS_FETCHED, CONNECTIONS_AUDIT_DATA_FETCHED} from '../actions/dashboard-actions';
-import {SourceConnection} from '../model/source-connection';
+import {Connection} from '../../model/connection';
+import {FlowType} from '../../model/flow-type.enum';
+import {Actions, CONNECTIONS_AUDIT_DATA_FETCHED, CONNECTIONS_FETCHED} from '../actions/dashboard-actions';
 import {ConnectionsAuditData} from '../model/connections-audit-data';
 
-type SourceConnectionMap = {
-    [code: string]: SourceConnection;
+type ConnectionMap = {
+    [code: string]: Connection;
 };
 
 export type State = {
-    sourceConnections: SourceConnectionMap;
+    connections: ConnectionMap;
     events: {
         [eventType in AuditEventType]: ConnectionsAuditData;
     };
@@ -17,13 +18,23 @@ export type State = {
 
 export const reducer: Reducer<State, Actions> = (state, action) => {
     switch (action.type) {
-        case SOURCE_CONNECTIONS_FETCHED:
+        case CONNECTIONS_FETCHED:
             return {
                 ...state,
-                sourceConnections: action.payload.reduce((connections, connection) => {
-                    connections[connection.code] = connection;
-                    return connections;
-                }, {} as SourceConnectionMap),
+                connections: action.payload
+                    .filter(connection => {
+                        switch (connection.flowType) {
+                            case FlowType.DATA_SOURCE:
+                            case FlowType.DATA_DESTINATION:
+                                return true;
+                        }
+                        return false;
+                    })
+                    .filter(connection => connection.auditable)
+                    .reduce((connections, connection) => {
+                        connections[connection.code] = connection;
+                        return connections;
+                    }, {} as ConnectionMap),
             };
         case CONNECTIONS_AUDIT_DATA_FETCHED:
             return {
@@ -39,9 +50,10 @@ export const reducer: Reducer<State, Actions> = (state, action) => {
 };
 
 export const initialState: State = {
-    sourceConnections: {},
+    connections: {},
     events: {
         [AuditEventType.PRODUCT_CREATED]: {},
         [AuditEventType.PRODUCT_UPDATED]: {},
+        [AuditEventType.PRODUCT_READ]: {},
     },
 };

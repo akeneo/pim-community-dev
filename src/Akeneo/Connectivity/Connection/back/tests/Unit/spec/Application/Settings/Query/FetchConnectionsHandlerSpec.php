@@ -30,8 +30,8 @@ class FetchConnectionsHandlerSpec extends ObjectBehavior
     public function it_fetches_connections($selectConnectionsQuery)
     {
         $connections = [
-            new Connection('42', 'magento', 'Magento Connector', FlowType::DATA_DESTINATION),
-            new Connection('43', 'bynder', 'Bynder DAM', FlowType::OTHER),
+            new Connection('42', 'magento', 'Magento Connector', FlowType::DATA_DESTINATION, true),
+            new Connection('43', 'bynder', 'Bynder DAM', FlowType::OTHER, false),
         ];
 
         $selectConnectionsQuery->execute()->willReturn($connections);

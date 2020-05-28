@@ -1,13 +1,12 @@
 import React, {useContext, useRef, useState} from 'react';
-import {useImageUploader} from '../use-image-uploader';
-import {useMediaUrlGenerator} from '../use-media-url-generator';
-import {Translate, TranslateContext} from '../../shared/translate';
-import styled from 'styled-components';
-import {PropsWithTheme} from '../../common/theme';
 import Trash from '../../common/assets/icons/trash';
+import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
+import styled from '../../common/styled-with-theme';
 import {isErr} from '../../shared/fetch-result/result';
 import {NotificationLevel, useNotify} from '../../shared/notify';
-import defaultImageUrl from '../../common/assets/illustrations/api.svg';
+import {Translate, TranslateContext} from '../../shared/translate';
+import {useImageUploader} from '../use-image-uploader';
+import {useMediaUrlGenerator} from '../use-media-url-generator';
 import {Loading} from './Loading';
 
 interface Props {
@@ -17,7 +16,7 @@ interface Props {
 }
 
 const HelperLink = styled.a`
-    color: ${({theme}: PropsWithTheme) => theme.color.blue100};
+    color: ${({theme}) => theme.color.blue100};
     text-decoration: underline;
     font-weight: 700;
 `;
@@ -37,10 +36,10 @@ const Helper = styled.span`
     margin: 0 0 20px 0;
 `;
 
-const ImageUploader = ({image, onChange, onError}: Props) => {
+export const ImageUploader = ({image, onChange, onError}: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [ratio, setRatio] = useState(0);
-    const [uploadingImage, setUploadingImage] = useState();
+    const [uploadingImage, setUploadingImage] = useState<string | null>();
 
     const handleDuringUpload = (e: {loaded: number; total: number}) => {
         const currentRatio = Math.round((e.loaded / e.total) * 100);
@@ -58,7 +57,7 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
         reader.onload = (event: ProgressEvent<FileReader>) => {
             const target = event.target;
             if (null !== target) {
-                setUploadingImage(target.result);
+                setUploadingImage(target.result as string);
             }
         };
         reader.readAsDataURL(file);
@@ -111,7 +110,7 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
     };
 
     let previewImage = null;
-    if (undefined !== uploadingImage && 0 !== uploadingImage.length) {
+    if (undefined !== uploadingImage && null !== uploadingImage && 0 !== uploadingImage.length) {
         previewImage = uploadingImage;
     } else if (null !== image) {
         previewImage = generateMediaUrl(image);
@@ -160,5 +159,3 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
         </>
     );
 };
-
-export default ImageUploader;

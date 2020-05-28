@@ -51,8 +51,8 @@ class ReadValueCollectionFactorySpec extends ObjectBehavior
         GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
-        $sku = new Attribute('sku', AttributeTypes::IDENTIFIER, [], false, false, null, false, 'text', []);
-        $description = new Attribute('description', AttributeTypes::TEXTAREA, [], true, true, null, false, 'textarea', []);
+        $sku = new Attribute('sku', AttributeTypes::IDENTIFIER, [], false, false, null, null, false, 'text', []);
+        $description = new Attribute('description', AttributeTypes::TEXTAREA, [], true, true, null, null, false, 'textarea', []);
 
         $rawValues = [
             'sku' => [

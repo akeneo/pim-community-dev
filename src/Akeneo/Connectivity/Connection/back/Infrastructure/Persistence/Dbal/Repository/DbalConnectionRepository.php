@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository;
 
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use Doctrine\DBAL\Connection as DbalConnection;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -26,25 +26,31 @@ class DbalConnectionRepository implements ConnectionRepository
 
     public function create(Connection $connection): void
     {
-        $insertSQL = <<<SQL
-INSERT INTO akeneo_connectivity_connection (client_id, user_id, code, label, flow_type)
-VALUES (:client_id, :user_id, :code, :label, :flow_type)
+        $insertQuery = <<<SQL
+INSERT INTO akeneo_connectivity_connection (client_id, user_id, code, label, flow_type, auditable)
+VALUES (:client_id, :user_id, :code, :label, :flow_type, :auditable)
 SQL;
 
-        $stmt = $this->dbalConnection->prepare($insertSQL);
-        $stmt->execute([
-            'client_id' => $connection->clientId()->id(),
-            'user_id' => $connection->userId()->id(),
-            'code' => (string) $connection->code(),
-            'label' => (string) $connection->label(),
-            'flow_type' => (string) $connection->flowType(),
-        ]);
+        $this->dbalConnection->executeQuery(
+            $insertQuery,
+            [
+                'client_id' => $connection->clientId()->id(),
+                'user_id' => $connection->userId()->id(),
+                'code' => (string) $connection->code(),
+                'label' => (string) $connection->label(),
+                'flow_type' => (string) $connection->flowType(),
+                'auditable' => (bool) $connection->auditable(),
+            ],
+            [
+                'auditable' => Types::BOOLEAN,
+            ]
+        );
     }
 
     public function findOneByCode(string $code): ?Connection
     {
         $selectQuery = <<<SQL
-SELECT code, label, flow_type, image, client_id, user_id
+SELECT code, label, flow_type, image, client_id, user_id, auditable
 FROM akeneo_connectivity_connection
 WHERE code = :code
 SQL;
@@ -57,8 +63,9 @@ SQL;
                 $dataRow['label'],
                 $dataRow['flow_type'],
                 (int) $dataRow['client_id'],
-                new UserId((int) $dataRow['user_id']),
-                $dataRow['image']
+                (int) $dataRow['user_id'],
+                $dataRow['image'],
+                (bool) $dataRow['auditable']
             ) : null;
     }
 
@@ -66,18 +73,23 @@ SQL;
     {
         $updateQuery = <<<SQL
 UPDATE akeneo_connectivity_connection
-SET label = :label, flow_type = :flow_type, image = :image
+SET label = :label, flow_type = :flow_type, image = :image, auditable = :auditable
 WHERE code = :code
 SQL;
-        $params = [
-            'code' => (string) $connection->code(),
-            'label' => (string) $connection->label(),
-            'flow_type' => (string) $connection->flowType(),
-            'image' => null !== $connection->image() ? (string) $connection->image() : null,
-        ];
 
-        $stmt = $this->dbalConnection->prepare($updateQuery);
-        $stmt->execute($params);
+        $this->dbalConnection->executeQuery(
+            $updateQuery,
+            [
+                'code' => (string) $connection->code(),
+                'label' => (string) $connection->label(),
+                'flow_type' => (string) $connection->flowType(),
+                'image' => null !== $connection->image() ? (string) $connection->image() : null,
+                'auditable' => (bool) $connection->auditable(),
+            ],
+            [
+                'auditable' => Types::BOOLEAN,
+            ]
+        );
     }
 
     public function delete(Connection $connection): void
@@ -87,9 +99,11 @@ DELETE FROM akeneo_connectivity_connection
 WHERE code = :code
 SQL;
 
-        $stmt = $this->dbalConnection->prepare($deleteQuery);
-        $stmt->execute([
-            'code' => (string) $connection->code(),
-        ]);
+        $this->dbalConnection->executeQuery(
+            $deleteQuery,
+            [
+                'code' => (string) $connection->code(),
+            ]
+        );
     }
 }

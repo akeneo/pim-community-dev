@@ -27,6 +27,7 @@ define([
   'require-context',
   'pim/form-builder',
   'pim/security-context',
+  'pim/i18n'
 ], function(
   $,
   _,
@@ -46,7 +47,8 @@ define([
   DatagridState,
   requireContext,
   FormBuilder,
-  securityContext
+  securityContext,
+  {getLabel}
 ) {
   let state = {};
 
@@ -62,6 +64,7 @@ define([
     },
     datagrids: {},
     config: {},
+    associationCount: 0,
 
     /**
      * {@inheritdoc}
@@ -124,7 +127,7 @@ define([
       this.trigger('tab:register', {
         code: undefined === this.config.tabCode ? this.code : this.config.tabCode,
         isVisible: this.isVisible.bind(this),
-        label: __('pim_enrich.entity.product.module.associations.title'),
+        label: __('pim_enrich.entity.product.module.associations.title', {count: this.associationCount}),
       });
 
       _.each(
@@ -167,6 +170,17 @@ define([
      * {@inheritdoc}
      */
     render: function() {
+      const newAssociationCount = this.getAssociationCount();
+      if (this.associationCount !== newAssociationCount) {
+        this.associationCount = newAssociationCount;
+
+        this.trigger('tab:register', {
+          code: undefined === this.config.tabCode ? this.code : this.config.tabCode,
+          isVisible: this.isVisible.bind(this),
+          label: __('pim_enrich.entity.product.module.associations.title', {count: newAssociationCount}),
+        });
+      }
+
       const code = undefined === this.config.tabCode ? this.code : this.config.tabCode;
 
       if (!this.configured || code !== this.getParent().getCurrentTab()) {
@@ -225,10 +239,11 @@ define([
           this.$('.tab-content > .association-type').remove();
           this.$('.tab-content').prepend(
             this.panesTemplate({
-              __: __,
+              __,
+              getLabel,
               label: __('pim_enrich.entity.product.module.associations.association_type_selector'),
               locale: UserContext.get('catalogLocale'),
-              associationTypes: associationTypes,
+              associationTypes,
               currentAssociationType: this.getCurrentAssociationType(),
               currentAssociationTarget: this.getCurrentAssociationTarget(),
               numberAssociationLabelKey: 'pim_enrich.entity.product.module.associations.number_of_associations',
@@ -682,6 +697,10 @@ define([
             // TODO Delete setCustomTitle if possible
             //form.setCustomTitle();
 
+            const formData = this.getFormData();
+            const locale = UserContext.get('catalogLocale');
+            const productLabel = getLabel(formData.meta.label, locale, formData.code || formData.identifier);
+
             let modal = new Backbone.BootstrapModal({
               modalOptions: {
                 backdrop: 'static',
@@ -689,13 +708,16 @@ define([
               },
               okCloses: false,
               title: __('pim_enrich.entity.product.module.associations.manage', {
-                associationType: associationType.labels[UserContext.get('catalogLocale')],
+                associationType: getLabel(associationType.labels, locale, associationType.code),
               }),
-              innerDescription: __('pim_enrich.entity.product.module.associations.manage_description'),
+              innerDescription: __(
+                'pim_enrich.entity.product.module.associations.manage_description',
+                {productLabel}
+              ),
               content: '',
               okText: __('pim_common.confirm'),
               template: this.modalTemplate,
-              innerClassName: 'AknFullPage--full',
+              innerClassName: 'AknFullPage--full'
             });
 
             modal.open();
@@ -715,5 +737,11 @@ define([
 
       return deferred.promise();
     },
+
+    getAssociationCount: function() {
+      return Object.values(this.getFormData().associations).reduce((typeCount, typeItem) => {
+        return typeCount + Object.values(typeItem).reduce((count, item) => count + item.length, 0);
+      }, 0);
+    }
   });
 });

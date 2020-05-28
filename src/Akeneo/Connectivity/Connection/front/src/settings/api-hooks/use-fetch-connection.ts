@@ -1,11 +1,11 @@
+import {useCallback} from 'react';
+import {Connection} from '../../model/connection';
+import {ConnectionCredentials} from '../../model/connection-credentials';
+import {ConnectionUserPermissions} from '../../model/connection-user-permissions';
 import {FlowType} from '../../model/flow-type.enum';
 import {fetchResult} from '../../shared/fetch-result';
 import {isErr, ok} from '../../shared/fetch-result/result';
 import {useRoute} from '../../shared/router';
-import {Connection} from '../../model/connection';
-import {ConnectionUserPermissions} from '../../model/connection-user-permissions';
-import {ConnectionCredentials} from '../../model/connection-credentials';
-import {useCallback} from 'react';
 
 type ResultValue = {
     code: string;
@@ -18,6 +18,7 @@ type ResultValue = {
     password: string;
     user_role_id: string;
     user_group_id: string | null;
+    auditable: boolean;
 };
 
 export const useFetchConnection = (code: string) => {
@@ -35,6 +36,7 @@ export const useFetchConnection = (code: string) => {
             clientId: result.value.client_id,
             userRoleId: result.value.user_role_id,
             userGroupId: result.value.user_group_id,
+            auditable: result.value.auditable,
         };
 
         return ok(connection);

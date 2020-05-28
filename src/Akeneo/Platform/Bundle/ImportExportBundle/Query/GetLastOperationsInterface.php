@@ -18,16 +18,16 @@ interface GetLastOperationsInterface
     /**
      * Get data for the last operations widget.
      *
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      *
      * @return array
      */
-    public function execute(UserInterface $user): array;
+    public function execute(?UserInterface $user = null): array;
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      *
      * @return QueryBuilder
      */
-    public function getQueryBuilder(UserInterface $user): QueryBuilder;
+    public function getQueryBuilder(?UserInterface $user = null): QueryBuilder;
 }

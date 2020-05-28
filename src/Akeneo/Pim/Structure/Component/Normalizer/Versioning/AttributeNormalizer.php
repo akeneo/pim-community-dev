@@ -54,7 +54,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
         $flatAttribute['available_locales'] = implode(self::ITEM_SEPARATOR, $standardAttribute['available_locales']);
         $flatAttribute['locale_specific'] = $attribute->isLocaleSpecific();
 
-        unset($flatAttribute['labels']);
+        unset($flatAttribute['labels']); /** @phpstan-ignore-line */
         $flatAttribute += $this->normalizeTranslations($standardAttribute['labels'], $context);
 
         $flatAttribute['options'] = $this->normalizeOptions($attribute);

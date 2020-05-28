@@ -8,15 +8,11 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
-use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -130,16 +126,33 @@ abstract class ApiTestCase extends WebTestCase
 
     /**
      * Creates an API Connection and returns it with its credentials
-     *
-     * @param string $code
-     *
-     * @return ConnectionWithCredentials
      */
-    protected function createConnection(string $code = 'API_Test'): ConnectionWithCredentials
-    {
-        $command = new CreateConnectionCommand($code, $code, FlowType::OTHER);
+    protected function createConnection(
+        string $code = 'API_Test',
+        ?string $label = 'API_Test',
+        ?string $flowType = FlowType::OTHER,
+        ?bool $auditable = true
+    ): ConnectionWithCredentials {
+        $createConnectionCommand = new CreateConnectionCommand($code, $label, $flowType, $auditable);
 
-        return $this->get('akeneo_connectivity.connection.application.handler.create_connection')->handle($command);
+        $connection = $this->get('akeneo_connectivity.connection.application.handler.create_connection')
+            ->handle($createConnectionCommand);
+
+        $user = $this->get('pim_user.manager')->loadUserByUsername($connection->username());
+
+        $adminRole = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        $user->addRole($adminRole);
+
+        $userRole = $this->get('pim_user.repository.role')->findOneByIdentifier(User::ROLE_DEFAULT);
+        $user->removeRole($userRole);
+
+        $group = $this->get('pim_user.repository.group')->findOneByIdentifier('IT support');
+        $user->addGroup($group);
+
+        $this->get('validator')->validate($user);
+        $this->get('pim_user.saver.user')->save($user);
+
+        return $connection;
     }
 
     /**

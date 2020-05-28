@@ -9,8 +9,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity.connection.persistence.query.select_connections_event_count_by_day:
-        class: 'Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectConnectionsEventCountByDayQuery'
+    akeneo_connectivity.connection.persistence.query.select_period_event_counts:
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectPeriodEventCountsQuery'
         arguments:
             - '@database_connection'
 
@@ -20,7 +20,42 @@ services:
             - '@database_connection'
             - '%pim_catalog.entity.product.class%'
 
-    akeneo_connectivity_connection.persistence.query.select_event_dates_to_refresh:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectEventDatesToRefreshQuery
+    akeneo_connectivity_connection.persistence.query.select_hourly_intervals_to_refresh:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectHourlyIntervalsToRefreshQuery
+        arguments:
+            - '@database_connection'
+
+    akeneo_connectivity_connection.persistence.query.purge_audit_product:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalPurgeAuditProductQuery
+        arguments:
+            - '@database_connection'
+
+    akeneo_connectivity_connection.persistence.query.select_last_connection_business_errors:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\ElasticsearchSelectLastConnectionBusinessErrorsQuery
+        arguments:
+            - '@akeneo_connectivity.client.connection_error'
+
+    akeneo_connectivity_connection.persistence.query.select_all_auditable_connection_code:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\SelectAllAuditableConnectionCodeQuery
+        arguments:
+            - '@database_connection'
+
+    akeneo_connectivity_connection.persistence.query.purge_connection_errors:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeConnectionErrorsQuery
+        arguments:
+            - '@akeneo_connectivity.client.connection_error'
+
+    akeneo_connectivity_connection.persistence.query.select_error_count_per_connection:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectErrorCountPerConnectionQuery
+        arguments:
+            - '@database_connection'
+
+    akeneo_connectivity_connection.persistence.query.purge_audit_error:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\PurgeAuditErrorQuery
+        arguments:
+            - '@database_connection'
+
+    akeneo_connectivity_connection.persistence.query.select_period_error_count_per_connection:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectPeriodErrorCountPerConnectionQuery
         arguments:
             - '@database_connection'

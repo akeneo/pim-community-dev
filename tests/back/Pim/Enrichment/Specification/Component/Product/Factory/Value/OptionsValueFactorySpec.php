@@ -96,6 +96,6 @@ final class OptionsValueFactorySpec extends ObjectBehavior
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
-        return new Attribute('an_attribute', AttributeTypes::OPTION_MULTI_SELECT, [], $isLocalizable, $isScopable, null, false, 'options', []);
+        return new Attribute('an_attribute', AttributeTypes::OPTION_MULTI_SELECT, [], $isLocalizable, $isScopable, null, null, false, 'options', []);
     }
 }

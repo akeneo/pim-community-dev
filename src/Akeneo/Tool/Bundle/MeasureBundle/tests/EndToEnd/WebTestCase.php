@@ -43,7 +43,7 @@ abstract class WebTestCase extends TestCase
     protected function getAdminUser(): UserInterface
     {
         if (!$this->user) {
-            $this->user = $this->createAdminUser();
+            $this->user = self::$container->get('pim_user.manager')->findUserByUsername('admin') ?? $this->createAdminUser();
         }
 
         return $this->user;

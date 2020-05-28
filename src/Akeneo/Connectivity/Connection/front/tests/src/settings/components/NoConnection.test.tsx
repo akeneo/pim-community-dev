@@ -1,16 +1,10 @@
+import {NoConnection} from '@src/settings/components/NoConnection';
 import {act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as React from 'react';
-import {NoConnection} from '@src/settings/components/NoConnection';
-import {createWithProviders, renderWithProviders} from '../../../test-utils';
+import {renderWithProviders} from '../../../test-utils';
 
 describe('NoConnection', () => {
-    it('should render', () => {
-        const component = createWithProviders(<NoConnection onCreate={() => undefined} />);
-
-        expect(component.toJSON()).toMatchSnapshot();
-    });
-
     it('should call `onCreate` when the create connection shortcut is clicked', async () => {
         const handleCreate = jest.fn();
 

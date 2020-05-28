@@ -14,7 +14,7 @@ pim_measurements:
             code:
                 must_be_unique: 'This measurement family code already exists.'
             convert:
-                value_should_be_a_number_in_a_string: 'The conversion value should be a number represented in a string (example: "0.2561")'
+                value_should_be_a_number_in_a_string: 'The operation value should be a valid number'
                 should_contain_min_elements: 'A minimum of one conversion operation per unit is required.'
                 should_contain_max_elements: 'You’ve reached the limit of %limit% conversion operations per unit.'
             measurement_family_units_is_locked_for_updates: 'A product attribute is linked to this measurement family. You can only edit the translated labels and symbol of a unit.'
@@ -26,3 +26,7 @@ pim_measurements:
                     invalid_operator: 'The {{ value }} operator is invalid, please use {{ choices }} instead.'
                 should_contain_at_least_one_unit: 'There should be at least %limit% unit in the measurement family.'
                 should_not_contain_duplicates: 'We found some duplicated units in the measurement family. The measurement family requires unique units.'
+                must_be_indexed_by_code: 'The index does not match the unit code.'
+        unit:
+            code:
+                must_be_unique: 'This unit code already exists.'

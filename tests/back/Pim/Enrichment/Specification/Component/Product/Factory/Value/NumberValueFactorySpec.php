@@ -81,6 +81,6 @@ final class NumberValueFactorySpec extends ObjectBehavior
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
-        return new Attribute('an_attribute', AttributeTypes::NUMBER, [], $isLocalizable, $isScopable, null, false, 'decimal', []);
+        return new Attribute('an_attribute', AttributeTypes::NUMBER, [], $isLocalizable, $isScopable, null, null, false, 'decimal', []);
     }
 }

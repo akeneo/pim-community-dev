@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyCommand;
-use Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\StandardUnitCodeShouldExist;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -20,18 +19,18 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
 {
     private const PROPERTY_PATH = 'standard_unit_code';
 
-    public function validate($saveMeasurementFamilyCommand, Constraint $constraint)
+    public function validate($createMeasurementFamilyCommand, Constraint $constraint)
     {
-        if (!$saveMeasurementFamilyCommand instanceof CreateMeasurementFamilyCommand) {
+        if (!$createMeasurementFamilyCommand instanceof CreateMeasurementFamilyCommand) {
             throw new \LogicException(
                 sprintf(
                     'Expect an instance of class "%s", "%s" given',
                     CreateMeasurementFamilyCommand::class,
-                    get_class($saveMeasurementFamilyCommand)
+                    get_class($createMeasurementFamilyCommand)
                 )
             );
         }
-        $standardUnitCode = $saveMeasurementFamilyCommand->standardUnitCode;
+        $standardUnitCode = $createMeasurementFamilyCommand->standardUnitCode;
         if (empty($standardUnitCode)) {
             $this->context
                 ->buildViolation(StandardUnitCodeShouldExist::STANDARD_UNIT_CODE_IS_REQUIRED)
@@ -42,9 +41,9 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $measurementFamilyCode = $saveMeasurementFamilyCommand->code;
+        $measurementFamilyCode = $createMeasurementFamilyCommand->code;
         $violations = $validator->validate(
-            $saveMeasurementFamilyCommand->units,
+            $createMeasurementFamilyCommand->units,
             [
                 new Callback(
                     function (array $units, ExecutionContextInterface $context) use ($standardUnitCode, $measurementFamilyCode) {

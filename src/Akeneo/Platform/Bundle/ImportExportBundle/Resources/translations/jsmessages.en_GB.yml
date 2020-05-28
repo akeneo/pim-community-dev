@@ -139,10 +139,12 @@ pim_import_export:
       profile_name: Profile name
       details: Details
       warning_count: Warnings
+      username: Username
       job_type:
         import: Import
         export: Export
         mass_edit: Mass edit
+        mass_edit_rule: Rules Settings
         quick_export: Quick export
         compute_family_variant_structure_changes: Compute family variant structure changes
         compute_completeness_of_products_family: Compute completeness of products family

@@ -18,6 +18,9 @@ $rules = [
 
             // Dependency on Symfony Validator to ease validation
             'Symfony\Component\Validator',
+
+            // Dependency on HttpException to transform them into an ApiError
+            'Symfony\Component\HttpKernel\Exception\HttpException'
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
@@ -68,9 +71,11 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
-            'Akeneo\Connectivity\Connection\Infrastructure\WrongCredentialsConnection\Install',
+            'Doctrine\DBAL\Connection',
             'Doctrine\DBAL\Driver\Connection',
             'Symfony\Component',
+            'Akeneo\Connectivity\Connection\Application',
+            'Akeneo\Connectivity\Connection\Domain'
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Install'),
 
@@ -78,6 +83,7 @@ $rules = [
         [
             'Akeneo\Connectivity\Connection\Application',
             'Akeneo\Connectivity\Connection\Domain',
+            'Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateAuditData',
 
             // Dependency on HTTP foundation for Request/Response
             'Symfony\Component\HttpFoundation',
@@ -87,6 +93,8 @@ $rules = [
             'Symfony\Component\Security\Core\Exception\AccessDeniedException',
             'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
+            // Dependency to retrieve the current User (and his timezone).
+            'Akeneo\UserManagement\Bundle\Context\UserContext',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\InternalApi'),
 
@@ -100,6 +108,9 @@ $rules = [
 
             // Dependency on Doctrine DBAL for persistence layer
             'Doctrine\DBAL',
+
+            // Dependency on Elasticsearch
+            'Akeneo\Tool\Bundle\ElasticsearchBundle\Client'
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Persistence'),
 

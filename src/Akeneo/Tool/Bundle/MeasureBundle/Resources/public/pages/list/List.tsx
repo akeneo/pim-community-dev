@@ -1,46 +1,26 @@
-import React, {useCallback, useContext, useState} from 'react';
-import styled from 'styled-components';
-import {PageHeader} from 'akeneomeasure/shared/components/PageHeader';
-import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
+import React, {useCallback, useState} from 'react';
+import {useHistory} from 'react-router-dom';
+import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
 import {HelperTitle, HelperText, Helper} from 'akeneomeasure/shared/components/Helper';
 import {Link} from 'akeneomeasure/shared/components/Link';
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/NoData';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
-import {SearchBar} from 'akeneomeasure/shared/components/SearchBar';
-import {filterMeasurementFamily, sortMeasurementFamily, Direction} from 'akeneomeasure/model/measurement-family';
-import {UserContext} from 'akeneomeasure/context/user-context';
-import {Table} from 'akeneomeasure/pages/list/Table';
-import {Button} from 'akeneomeasure/shared/components/Button';
+import {
+  sortMeasurementFamily,
+  filterOnLabelOrCode,
+  MeasurementFamilyCode,
+} from 'akeneomeasure/model/measurement-family';
+import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
-import {useToggleState} from 'akeneomeasure/hooks/use-toggle-state';
-
-const Container = styled.div``;
-const PageContent = styled.div`
-  padding: 0 40px;
-`;
-
-const PageHeaderPlaceholder = styled.div`
-  width: 200px;
-  height: 34px;
-`;
-
-const TablePlaceholder = styled.div`
-  display: grid;
-  grid-row-gap: 10px;
-
-  > div {
-    height: 54px;
-  }
-`;
-
-const StickySearchBar = styled(SearchBar)`
-  position: sticky;
-  top: 126px;
-`;
+import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
+import {PageContent} from 'akeneomeasure/shared/components/PageContent';
+import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
+import {Direction} from 'akeneomeasure/model/direction';
+import {Button, SearchBar} from '@akeneo-pim-community/shared';
+import {useTranslate, useUserContext, useSecurity, PimView} from '@akeneo-pim-community/legacy-bridge';
 
 const useSorting = (
   defaultColumn: string
@@ -61,25 +41,30 @@ const useSorting = (
 };
 
 const List = () => {
-  const __ = useContext(TranslateContext);
+  const __ = useTranslate();
+  const {isGranted} = useSecurity();
+  const locale = useUserContext().get('uiLocale');
+  const history = useHistory();
   const [searchValue, setSearchValue] = useState('');
   const [sortColumn, getSortDirection, toggleSortDirection] = useSorting('label');
-
-  const [measurementFamilies, fetchMeasurementFamilies] = useMeasurementFamilies();
-  const locale = useContext(UserContext)('uiLocale');
-
+  const [measurementFamilies] = useMeasurementFamilies();
   const [isCreateModalOpen, openCreateModal, closeCreateModal] = useToggleState(false);
 
-  const handleModalClose = useCallback(() => {
-    closeCreateModal();
-    fetchMeasurementFamilies();
-  }, [closeCreateModal, fetchMeasurementFamilies]);
+  const handleModalClose = useCallback(
+    (createdMeasurementFamilyCode?: MeasurementFamilyCode) => {
+      closeCreateModal();
+      if (undefined !== createdMeasurementFamilyCode) {
+        history.push(`/${createdMeasurementFamilyCode}`);
+      }
+    },
+    [closeCreateModal, history]
+  );
 
   const filteredMeasurementFamilies =
     null === measurementFamilies
       ? null
       : measurementFamilies
-          .filter(measurementFamily => filterMeasurementFamily(measurementFamily, searchValue, locale))
+          .filter(filterOnLabelOrCode(searchValue, locale))
           .sort(sortMeasurementFamily(getSortDirection(sortColumn), locale, sortColumn));
 
   const measurementFamiliesCount = null === measurementFamilies ? 0 : measurementFamilies.length;
@@ -97,7 +82,11 @@ const List = () => {
             viewName="pim-measurements-user-navigation"
           />
         }
-        buttons={[<Button onClick={openCreateModal}>{__('measurements.family.create')}</Button>]}
+        buttons={
+          isGranted('akeneo_measurements_measurement_family_create')
+            ? [<Button onClick={openCreateModal}>{__('pim_common.create')}</Button>]
+            : []
+        }
         breadcrumb={
           <Breadcrumb>
             <BreadcrumbItem>{__('pim_menu.tab.settings')}</BreadcrumbItem>
@@ -126,7 +115,7 @@ const List = () => {
             <HelperText>
               {__('measurements.helper.text')}
               <br />
-              <Link href="https://help.akeneo.com/" target="_blank">
+              <Link href="https://help.akeneo.com/pim/articles/what-about-measurements.html" target="_blank">
                 {__('measurements.helper.link')}
               </Link>
             </HelperText>
@@ -149,8 +138,9 @@ const List = () => {
           </NoDataSection>
         )}
         {null !== filteredMeasurementFamilies && 0 < measurementFamiliesCount && (
-          <Container>
-            <StickySearchBar
+          <>
+            <SearchBar
+              placeholder={__('measurements.search.placeholder')}
               count={filteredMeasurementFamiliesCount}
               searchValue={searchValue}
               onSearchChange={setSearchValue}
@@ -162,13 +152,13 @@ const List = () => {
               </NoDataSection>
             )}
             {0 < filteredMeasurementFamiliesCount && (
-              <Table
+              <MeasurementFamilyTable
                 measurementFamilies={filteredMeasurementFamilies}
                 toggleSortDirection={toggleSortDirection}
                 getSortDirection={getSortDirection}
               />
             )}
-          </Container>
+          </>
         )}
       </PageContent>
     </>

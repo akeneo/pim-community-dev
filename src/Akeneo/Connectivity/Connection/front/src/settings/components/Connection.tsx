@@ -1,7 +1,7 @@
 import React from 'react';
 import {useHistory} from 'react-router';
 import {Figure, FigureCaption, FigureImage} from '../../common';
-import imgUrl from '../../common/assets/illustrations/api.svg';
+import imgUrl from '../../common/assets/illustrations/NewAPI.svg';
 import {useMediaUrlGenerator} from '../use-media-url-generator';
 
 interface Props {

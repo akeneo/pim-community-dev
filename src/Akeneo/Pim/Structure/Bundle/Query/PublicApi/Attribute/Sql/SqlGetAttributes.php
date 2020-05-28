@@ -40,6 +40,7 @@ SELECT attribute.code,
        attribute.is_scopable,
        attribute.is_localizable,
        attribute.metric_family,
+       attribute.default_metric_unit,
        attribute.decimals_allowed,
        attribute.backend_type,
        COALESCE(locale_codes, JSON_ARRAY()) AS available_locale_codes
@@ -66,6 +67,7 @@ SQL;
                 boolval($rawAttribute['is_localizable']),
                 boolval($rawAttribute['is_scopable']),
                 $rawAttribute['metric_family'],
+                $rawAttribute['default_metric_unit'],
                 boolval($rawAttribute['decimals_allowed']),
                 $rawAttribute['backend_type'],
                 json_decode($rawAttribute['available_locale_codes'])

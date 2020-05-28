@@ -3,4 +3,5 @@ includes:
 parameters:
     symfony:
         container_xml_path: %rootDir%/../../../var/cache/dev/srcKernelDevDebugContainer.xml
-
+    ignoreErrors:
+        - '#Unsafe usage of new static().#'

@@ -1,13 +1,14 @@
-"Yes, I Agree": "はい、同意します。"
+#ORO messages
+"Yes, I Agree": "はい、同意します"
 "Yes, do it": "はい、実行します"
-"Ok, got it.": "はい、わかりました。"
+"Ok, got it.": "はい、理解しました"
 "Edit": "編集"
 "Unexpected error occurred. Please contact system administrator.": "予期しないエラーが発生しました。システム管理者に問い合わせてください。"
-"Yes, revoke": "削除する"
-"Revoke Confirmation": "削除の確認"
+"Yes, revoke": "はい、取り消します"
+"Revoke Confirmation": "取消の確認"
 Prev: 前
 Today: 今日
-Wk: Wk
+Wk: 週
 AM: 午前
 A: A
 PM: 午後
@@ -20,20 +21,23 @@ Second: 秒
 Millisecond: ミリ秒
 Microsecond: マイクロ秒
 "Time Zone": "タイムゾーン"
-Localized value: ローカライズした値
+#PIM messages
+Localized value: ローカライズ値
 Columns: 列
-Datagrid Configuration: データグリッド設定
+Datagrid Configuration: 一覧表設定
+#Filters
 Action: アクション
-Unit: 単位
+Unit: ユニット
 Currency: 通貨
 jstree:
-  all: すべての製品
-  unclassified: 未分類の製品
+  all: 全ての商品
+  unclassified: 未分類の商品
   product:
-    all: すべての製品
-    unclassified: 未分類の製品
+    all: 全ての商品
+    unclassified: 未分類の商品
   no_tree: 利用できるツリーがありません
   include_sub: サブカテゴリを含む
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: 日曜日
@@ -85,10 +89,11 @@ datetimepicker:
     Oct: 10月
     Nov: 11月
     Dec: 12月
+#ORO
 oro_config:
   form:
     config:
-      title: システム設定
+      title: システム構成
       tab:
         system:
           title: システム
@@ -100,48 +105,84 @@ oro_config:
           title: お知らせ
           system_notification: 新しいバージョンの通知
         loading_message:
-          title: メールを読み込んでいます
-          label: 読み込みメッセージを有効にする
+          title: メッセージを読み込み中...
+          label: メッセージの読み込みを有効にする
         loading_messages:
-          label: 可能な読み込みメッセージ
+          label: メッセージの読み込み有効
+pim_ui:
+  flash:
+    unsaved_changes: '保存していない変更内容があります。このページから移動しますか?'
 "Sorry, page was not loaded correctly": "申し訳ありませんが、ページが正しく読み込まれませんでした。"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "ローカルの変更は失われます。ページを更新してもよろしいですか。"
-"navigation.message.content.outdated": "{{ title }}のコンテンツ ページは古くなっています。 <a href='#' data-action='page-refresh'>ページを更新</a> してください。"
+"navigation.message.content.outdated": "ページ{{ title }}のコンテンツが古くなっています。 <a href='#' data-action='page-refresh'>ページを更新</a> してください"
 "Content of pinned page is outdated": "ピン付されたページのコンテンツが古くなっています"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
 pim_common:
   actions: アクション
   add: 追加
   add_attributes: 属性を追加
+  after: 後
   all: すべて
-  and: と
+  and: および
   apply: 適用
+  before: 前
   by: by
   cancel: キャンセル
+  close: 閉じる
   code: コード
   confirm: 確認
   confirm_deletion: 削除を確認する
+  confirm_revocation: 取消を確認
   create: 作成
-  created: 作成日時
+  created: '作成:'
   delete: 削除
   done: 完了
   edit: 編集
   entity_updated: 保存されていない変更があります。
   from: 開始
-  general_properties: 全般プロパティ
+  general_properties: プロパティ全般
   history: 履歴
   label: ラベル
   label_translations: ラベルの翻訳
-  less_than: 以下
-  loading: 読み込んでいます.
-  media_upload: アップロードするためにドラッグアンドドロップするか、ここをクリック
-  more_than: 以上
+  Label or identifier: ラベルもしくは識別子
+  less_than: <
+  loading: 読み込み中…
+  media_upload: ドラッグ＆ドロップでアップロードするか、こちらをクリック
+  more_than: '>'
   next: 次
   "no": "いいえ"
   none: なし
   not_available: N/A
   now: 今
   ok: OK
-  permissions: パーミッション
+  other_actions: その他の操作
+  permissions: 許可
   previous: 前
   properties: プロパティ
   remove: 削除
@@ -150,7 +191,7 @@ pim_common:
   search: 検索
   select2:
     search: 検索...
-    no_match: 一致するものがみつかりません
+    no_match: 一致が見つかりません
     load_more: 他の結果を読み込み中です…
   status: ステータス
   to: 終了
@@ -159,65 +200,64 @@ pim_common:
   "yes": "はい"
   operator: オペレータ
   operators:
-    "=": 等しい
-    "!=": 等しくない
-    ">=": 以上
-    ">": より大きい
-    "<=": 以下
-    "<": より低い
+    "=": '＝'
+    "!=": '≠'
+    ">=": '≦'
+    ">": <
+    "<=": '≧'
+    "<": '>'
     EMPTY: 空値
     NOT EMPTY: 空ではない
-    CONTAINS: 含む
-    DOES NOT CONTAIN: 含まない
+    CONTAINS: '次を含む:'
+    DOES NOT CONTAIN: '次を含まない:'
     STARTS WITH: で始まる
-    ENDS WITH: で終わる
+    ENDS WITH: 終了部分：
 error:
-  exception: ああスナップ！ {{ status_code }} のエラーが発生しました。
+  exception: 申し訳ありません！ エラー{{ status_code }} が発生しました
   forbidden: このページにアクセスすることはできません
 alert:
   attribute_option:
     error_occurred_during_submission: フォームの情報をサーバーに送信中にエラーが発生しました
-    save_before_edit_other: 他を編集する前に、あなたが他の行で行った変更を確定してください
+    save_before_edit_other: 編集する前に、他の行で行った変更を確定してください
   session_storage:
-    not_available: あなたのウェブブラウザはsessionStorageと互換性がありません。管理者に問い合わせてください。
+    not_available: お使いのウェブブラウザはsessionStorageと互換性がありません。管理者に問い合わせてください。
 pim_enrich.entity.fallback:
   flash:
-    generic_error: エラーが発生しました
+    generic_error: エラーが発生しました。
     update:
       fail: 更新に失敗しました
       success: 正常に更新されました
     delete:
       fail: このアイテムを削除できません
-      success: アイテムを削除しました
+      success: アイテムを正常に削除しました
   module:
     delete:
       title: '{{ itemName }} を削除する'
       alternative_title: 削除を確認
       item: このアイテムを削除してもよろしいですか?
+      item_placeholder: この {{ itemName }} を削除してもよろしいですか？このアクションは元に戻せません。
     edit:
       leave: このページから移動してもよろしいですか？
       discard_changes: このページから移動する場合は {{ entity }} に対する変更が失われます。
-pim_enrich.entity.api_connection:
-  flash:
-    create:
-      success: APIコネクションを作成しました
-    delete:
-      success: APIコネクションを削除しました
+      discard_changes_title: よろしいですか?
 pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} 操作|]1, Inf[{{ count }} 操作"
   module:
     create:
-      upload: '{{ type }} ファイルをドロップするか、またはディスクを参照するをクリックしてください'
+      upload: '{{ type }} ファイルをここにドロップするか、ディスクを参照するをクリックしてください'
     download:
-      archive: 生成されたアーカイブをダウンロードする
-      output: 生成されたファイルをダウンロードする
-      input: 読み取りファイルをダウンロードする
+      archive: 生成されたアーカイブをダウンロード
+      output: 生成されたファイルをダウンロード
+      input: 読み取りファイルをダウンロード
       invalid_xlsx: 無効なデータをダウンロード
       invalid_csv: 無効なデータをダウンロード
 pim_title:
-  oro_default: ダッシュ ボード
+  oro_default: ダッシュボード
   pim_enrich_attributegroup_index: 属性グループ
   pim_enrich_attributegroup_create: 属性グループ |作成
   pim_enrich_attributegroup_edit: 属性グループ {{ group.label }} |編集
+  pim_enrich_catalog_volume_index: カタログボリュームのモニタリング
   pim_enrich_categorytree_index: カテゴリツリー
   pim_enrich_categorytree_create: カテゴリ ツリー |作成
   pim_enrich_categorytree_edit: カテゴリツリー {{ category.label }} |編集
@@ -225,9 +265,9 @@ pim_title:
   pim_enrich_attribute_index: 属性
   pim_enrich_attribute_create: 属性 |作成
   pim_enrich_attribute_edit: 属性 {{ attribute.label }} |編集
-  pim_enrich_product_index: 製品
-  pim_enrich_product_edit: 製品 {{ product.label }} |編集
-  pim_enrich_product_model_edit: 製品モデル {{ product.label }} |編集
+  pim_enrich_product_index: 商品
+  pim_enrich_product_edit: 商品 {{ product.label }} |編集
+  pim_enrich_product_model_edit: 商品モデル {{ product.label }} |編集
   pim_enrich_family_index: ファミリー
   pim_enrich_family_edit: ファミリー {{ family.label }} |編集
   pim_enrich_channel_index: チャンネル
@@ -246,8 +286,6 @@ pim_title:
   pim_enrich_mass_edit_action_perform: 一括編集 |実行
   pim_enrich_job_tracker_index: プロセストラッカー
   pim_enrich_job_tracker_show: プロセストラッカー |ジョブの表示
-  pim_enrich_api_connection_index: API 接続
-  pim_enrich_api_connection_create: API 接続 |作成
   pim_enrich_mass_edit_action: 一括編集
   pim_analytics_system_info_index: システム情報
 pim_menu:
@@ -259,16 +297,17 @@ pim_menu:
     system: システム
     help:
       title: ヘルプ
-      helper: アケネオヘルプセンターを開く
+      helper: Akeneoヘルプセンター
   item:
     association_type: 関連タイプ
     attribute_group: 属性グループ
     channel: チャンネル
     currency: 通貨
-    dashboard: ダッシュ ボード
+    dashboard: ダッシュボード
     family: ファミリー
     group: グループ
     group_type: グループタイプ
+    product_model: 商品モデル
     export_history: エクスポート履歴
     export_profile: エクスポートプロファイル
     import_history: インポート履歴
@@ -280,14 +319,14 @@ pim_menu:
     user_role: 権限
     info: システム情報
     job_tracker: プロセストラッカー
-    api_connection: API 接続
+    catalog_volume: カタログボリュームのモニタリング
   navigation:
     activity: アクティビティナビゲーション
     system: システムナビゲーション
     user: ユーザー管理ナビゲーション
     settings: 設定ナビゲーション
-    product: 製品操作
-    product_infos: 製品情報
+    product: 商品ナビゲーション
+    product_infos: 商品情報
   user:
     logout: ログアウト
     user_account: マイアカウント

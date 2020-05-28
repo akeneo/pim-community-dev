@@ -43,7 +43,11 @@ class DatePresenter implements PresenterInterface
         }
 
         if (!($value instanceof \DateTime)) {
-            $value = new \DateTime($value);
+            try {
+                $value = new \DateTime($value);
+            } catch (\Exception $e) {
+                return null;
+            }
         }
 
         $formatter = $this->dateFactory->create($options);

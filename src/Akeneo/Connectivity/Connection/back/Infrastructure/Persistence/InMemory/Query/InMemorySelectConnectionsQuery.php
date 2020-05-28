@@ -27,7 +27,13 @@ class InMemorySelectConnectionsQuery implements SelectConnectionsQuery
     {
         $connections = [];
         foreach ($this->connectionRepository->dataRows as $dataRow) {
-            $connections[] = new Connection($dataRow['code'], $dataRow['label'], $dataRow['flow_type'], $dataRow['image']);
+            $connections[] = new Connection(
+                $dataRow['code'],
+                $dataRow['label'],
+                $dataRow['flow_type'],
+                $dataRow['image'],
+                $dataRow['auditable']
+            );
         }
 
         return $connections;

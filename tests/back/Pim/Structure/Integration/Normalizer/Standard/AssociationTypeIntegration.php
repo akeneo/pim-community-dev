@@ -18,7 +18,8 @@ class AssociationTypeIntegration extends TestCase
             'labels' => [
                 'en_US' => 'Substitution',
                 'fr_FR' => 'Remplacement'
-            ]
+            ],
+            'is_two_way' => false,
         ];
 
         $repository = $this->get('pim_catalog.repository.association_type');

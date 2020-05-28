@@ -462,6 +462,7 @@ define(
                     : 'pim_enrich_product_edit'
                 ;
 
+                this.getRoot().trigger('pim:product:variant-navigation:navigate-to-level:before', entity);
                 router.redirectToRoute(route, params);
             }
         });

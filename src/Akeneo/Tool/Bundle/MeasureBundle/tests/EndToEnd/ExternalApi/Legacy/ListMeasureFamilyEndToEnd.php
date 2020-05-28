@@ -80,7 +80,7 @@ JSON;
         {
             "code": "MICRORADIAN",
             "convert": {
-                "mul": "1.0E-6"
+                "mul": "0.000001"
             },
             "symbol": "µrad"
         },
@@ -101,7 +101,7 @@ JSON;
         {
             "code": "SECOND",
             "convert": {
-                "mul": "4.848137E-6"
+                "mul": "0.000004848137"
             },
             "symbol": "\""
         },
@@ -715,7 +715,7 @@ JSON;
             "symbol": "kN"
         },
         {
-            "code": "MEGATON",
+            "code": "MEGANEWTON",
             "convert": {
                 "mul": "1000000"
             },
@@ -1555,7 +1555,7 @@ JSON;
         {
             "code": "MILLILITER_PER_SECOND",
             "convert": {
-                "mul": "1.0E-6"
+                "mul": "0.000001"
             },
             "symbol": "ml/s"
         },
@@ -1583,7 +1583,7 @@ JSON;
         {
             "code": "CUBIC_CENTIMETER_PER_SECOND",
             "convert": {
-                "mul": "1.0E-6"
+                "mul": "0.000001"
             },
             "symbol": "cm³/s"
         },

@@ -1,11 +1,12 @@
-pim_menu.item:
-  connection_settings: Verbindungen
-  connection_audit: Verbindungs-Dashboard
+pim_menu:
+  item:
+    connection_audit: Verbindungs-Dashboard
+    connection_settings: Verbindungen
 pim_title:
   akeneo_connectivity_connection_settings_index: Verbindungen
-  akeneo_connectivity_connection_settings_any: Verbindungen
   akeneo_connectivity_connection_audit_index: Verbindungs-Dashboard
   akeneo_connectivity_connection_audit_any: Verbindungs-Dashboard
+  akeneo_connectivity_connection_error_management_dashboard: Verbindungs-Dashboard
 akeneo_connectivity.connection:
   connections: Verbindungen
   secondary_actions:
@@ -15,6 +16,7 @@ akeneo_connectivity.connection:
     label: Bezeichnung
     flow_type: Fluss-Typ
     image: Bild
+    auditable: Diese Verbindung im Dashboard verfolgen
     client_id: Client-ID
     secret: Passwort (Secret)
     username: Benutzername
@@ -63,6 +65,13 @@ akeneo_connectivity.connection:
       helper:
         message: 'Hier sind die Zugangsdaten für Ihren {{ label }} -Konnektor.'
         link: Erfahren Sie hier mehr...
+      wrong_credentials_combinations:
+        single: Wir haben festgestellt, dass Sie den {{ wrong_username }} -Benutzernamen für diese Verbindung verwenden (letzte Verwendung auf {{ date }} unter {{ time }}). Wir empfehlen stattdessen den {{ good_username }} Benutzernamen zu verwenden.
+        link: Entdecken Sie, warum Sie es verwenden sollten.
+        link_list: Erfahren Sie, warum wir diesen Benutzernamen empfehlen.
+        several: Wir haben festgestellt, dass Sie den {{ good_username }} Benutzernamen für diese Verbindung nicht verwenden.
+        list: 'Hier ist die Liste der Benutzernamen, die in den letzten 7 Tagen verwendet wurden:'
+        username_date: '{{ wrong_username }} am {{ date }} am {{ time }}'
       password_helper:
         message: Wenn Sie Ihr Passwort vergessen haben, können Sie hier ein neues erstellen.
         link: Mehr Info…
@@ -110,21 +119,25 @@ akeneo_connectivity.connection:
     flash:
       success: Verbindung erfolgreich gelöscht.
   helper:
-    title: <unk> Willkommen bei der Funktion, die ihr PIM korrekt verbinden wird!
+    title: '👋 Willkommen bei der Funktion, die Ihr PIM korrekt verbindet!'
     description: Ein PIM ohne jegliche Integration von Drittanbietern ist unnütz, oder? Dank Verbindungen können Sie alle Datenströme deklarieren, die nach innen geschoben und außerhalb Ihrer PIM gezogen werden.
     link: Sie möchten mehr wissen? Finden Sie heraus, was eine Verbindung ist und wie Sie das Beste daraus machen können!
   flow_type_helper:
     message: Sie fragen sich, was "Flow Type" ist?
     link: Wir können Ihnen hier helfen!
+  auditable_helper:
+    message: Sie können nur Verbindungen von "Source" und "Destination" verfolgen.
+    link: Mehr Info…
   edit_image:
     upload_helper: Ändern Sie Ihr Bild, ziehen und ablegen oder
     remove_helper: Bild entfernen
     click_here: hier klicken
     flash:
       extension_not_allowed: Die Datei, die Sie hochladen möchten, ist leider nicht erlaubt.
+  grid.wrong_credentials_combination_helper: Einige der folgenden Verbindungen verwenden nicht ihre Benutzernamen für die Verbindung. Sie werden durch ein gelbes Warnzeichen identifiziert.
   dashboard:
     helper:
-      title: '👋 Willkommen in deinem Verbindungs-Dashboard!'
+      title: '👋 Willkommen auf deinem Verbindungs-Dashboard!'
       description: Hier können Sie alle Datenströme, die in Ihrem PIM erfasst werden, über Ihre Verbindungen verfolgen, sowie alle Datenströme, die über Ihre Verbindungen an Ihre Kanäle verteilt werden.
       link: Möchten Sie mehr wissen? Hier geht's!
     user_survey:
@@ -132,21 +145,37 @@ akeneo_connectivity.connection:
       content: Ihr Feedback ist für uns wirklich wertvoll. Helfen Sie uns, das nächste Widget auszuwählen, indem Sie diese Umfrage mit einer Frage beantworten!
       button: Lass uns loslegen!
     connection_selector:
-      title: Quellverbindungen
+      title:
+        source: Quellverbindungen
+        destination: Zielverbindungen
       all: Alle
     charts:
-      number_of_products_created: Anzahl der erstellten Produkte
-      number_of_products_updated: Anzahl der aktualisierten Produkte
+      inbound: Empfangen
+      outbound: Ausgehend
+      number_of_products_created: Produkte erstellt
+      number_of_products_updated: Produkte aktualisiert
+      number_of_products_sent: Produkte gesendet
       legend:
-        during_the_last_seven_days: In den letzten sieben Tagen
+        during_the_last_seven_days: 'Gesamtsumme in den letzten 7 Tagen:'
         today: Heute
     no_connection:
-      title: Noch keine Quellverbindung deklariert.
+      title:
+        default: Möchten Sie einige schöne Diagramme über Ihre Verbindungen sehen?
+        data_source: Möchten Sie einige schöne Diagramme über Ihre Quellverbindungen sehen?
+        data_destination: Möchten Sie einige schöne Diagramme über Ihre Zielverbindungen sehen?
       message_with_permission:
-        link: Hier einen erstellen!
+        message: Erstelle und beginne mit der Verfolgung deines ersten
+        link: hier.
       message_without_permission:
         message: Bitten Sie Ihren Administrator, einen zu erstellen.
         link: Erfahren Sie hier mehr über Verbindungen...
+  error_management:
+    connection_monitoring:
+      not_auditable:
+        description:
+          1: To track errors on this connection,
+          2: activate monitoring
+          3: in the settings.
   runtime_error:
     error_message: Oh verdammt! Ein Fehler ist aufgetreten...
     reload_helper: Bitte laden Sie die Seite neu und versuchen Sie es erneut.

@@ -61,11 +61,18 @@ define(
              * @param {Event} event
              */
             registerTab: function (event) {
-                this.tabs.push({
-                    code: event.code,
-                    isVisible: event.isVisible,
-                    label: event.label
-                });
+                const existingTab = this.tabs.find((currentTab) => currentTab.code === event.code);
+
+                if (undefined === existingTab) {
+                    this.tabs.push({
+                        code: event.code,
+                        isVisible: event.isVisible,
+                        label: event.label
+                    });
+                } else {
+                    existingTab.label = event.label;
+                    existingTab.isVisible = event.isVisible;
+                }
 
                 this.render();
             },

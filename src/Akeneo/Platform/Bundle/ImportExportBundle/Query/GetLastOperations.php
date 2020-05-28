@@ -30,7 +30,7 @@ class GetLastOperations implements GetLastOperationsInterface
     /**
      * {@inheritdoc}
      */
-    public function execute(UserInterface $user): array
+    public function execute(?UserInterface $user = null): array
     {
         $statement = $this->getQueryBuilder($user)->execute();
 
@@ -40,13 +40,14 @@ class GetLastOperations implements GetLastOperationsInterface
     /**
      * {@inheritdoc}
      */
-    public function getQueryBuilder(UserInterface $user): QueryBuilder
+    public function getQueryBuilder(?UserInterface $user = null): QueryBuilder
     {
         $qb = $this->connection->createQueryBuilder();
         $qb
             ->select([
                 'execution.id',
                 'execution.start_time as date',
+                'execution.user as username',
                 'instance.id as job_instance_id',
                 'instance.type',
                 'instance.label',
@@ -72,13 +73,18 @@ class GetLastOperations implements GetLastOperationsInterface
                 'warning',
                 $qb->expr()->eq('warning.step_execution_id', 'step.id')
             )
-            ->where($qb->expr()->eq('execution.user', ':user'))
             ->groupBy('execution.id')
             ->orderBy('execution.start_time', 'DESC')
             ->setMaxResults(10);
 
-        $parameters = ['user' => $user->getUsername()];
-        $types = ['user' => \PDO::PARAM_STR];
+        $parameters = [];
+        $types = [];
+        if (null !== $user) {
+            $qb->where($qb->expr()->eq('execution.user', ':user'));
+
+            $parameters['user'] = $user->getUsername();
+            $types['user'] = \PDO::PARAM_STR;
+        }
         if (!empty($this->notVisibleJobs->getCodes())) {
             $qb->andWhere($qb->expr()->notIn('instance.code', ':blackList'));
 

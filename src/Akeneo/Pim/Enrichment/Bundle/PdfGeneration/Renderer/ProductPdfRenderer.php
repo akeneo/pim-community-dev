@@ -202,10 +202,7 @@ class ProductPdfRenderer implements RendererInterface
                 $optionValue = $product->getValue($attributeCode, $locale, $scope);
                 if ($optionValue instanceof OptionValue) {
                     $optionCode = $optionValue->getData();
-                    $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode . '.' . $optionCode);
-                    $option->setLocale($localeCode);
-                    $translation = $option->getTranslation();
-                    $options[$attributeCode] = null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
+                    $options[$attributeCode] = $this->getOptionLabel($attributeCode, $optionCode, $localeCode);
                 }
             }
             if (null !== $attribute && AttributeTypes::OPTION_MULTI_SELECT === $attribute->getType()) {
@@ -214,10 +211,7 @@ class ProductPdfRenderer implements RendererInterface
                     $optionCodes = $optionValue->getData();
                     $labels = [];
                     foreach ($optionCodes as $optionCode) {
-                        $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode.'.'.$optionCode);
-                        $option->setLocale($localeCode);
-                        $translation = $option->getTranslation();
-                        $labels[] = null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
+                        $labels[] = $this->getOptionLabel($attributeCode, $optionCode, $localeCode);
                     }
                     $options[$attributeCode] = implode(', ', $labels);
                 }
@@ -225,6 +219,20 @@ class ProductPdfRenderer implements RendererInterface
         }
 
         return $options;
+    }
+
+    protected function getOptionLabel($attributeCode, $optionCode, $localeCode): string
+    {
+        $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode . '.' . $optionCode);
+
+        if (null === $option) {
+            return sprintf('[%s]', $optionCode);
+        }
+
+        $option->setLocale($localeCode);
+        $translation = $option->getTranslation();
+
+        return null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
     }
 
     /**

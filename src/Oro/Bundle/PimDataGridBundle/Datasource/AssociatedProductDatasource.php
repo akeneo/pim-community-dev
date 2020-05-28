@@ -235,11 +235,13 @@ class AssociatedProductDatasource extends ProductDatasource
         $scope
     ) {
         $dataLocale = $this->getParameters()['dataLocale'];
+        $dataChannel = $this->getParameters()['dataChannel'];
 
         $context = [
             'locales'       => [$locale],
             'channels'      => [$scope],
             'data_locale'   => $dataLocale,
+            'data_channel'   => $dataChannel,
             'is_associated' => true,
         ];
 

@@ -16,4 +16,13 @@ services:
         public: true
         class: 'Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\AuditController'
         arguments:
-            - '@akeneo_connectivity.connection.application.audit.handler.count_daily_events_by_connection'
+            - '@pim_user.context.user'
+            - '@akeneo_connectivity.connection.application.audit.handler.get_period_event_count_per_connection'
+            - '@akeneo_connectivity.connection.application.audit.handler.get_error_count_per_connection'
+            - '@akeneo_connectivity.connection.application.audit.handler.get_period_error_count_per_connection'
+
+    akeneo_connectivity.connection.internal_api.controller.error_management:
+        public: true
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\ErrorManagementController'
+        arguments:
+            - '@akeneo_connectivity.connection.application.error_management.handler.get_connection_business_errors'

@@ -85,6 +85,15 @@ class InMemoryMeasurementFamilyRepository implements MeasurementFamilyRepository
             : count($this->measurementFamilies);
     }
 
+    public function deleteByCode(MeasurementFamilyCode $measurementFamilyCode)
+    {
+        if (!isset($this->measurementFamilies[$measurementFamilyCode->normalize()])) {
+            throw new MeasurementFamilyNotFoundException();
+        }
+
+        unset($this->measurementFamilies[$measurementFamilyCode->normalize()]);
+    }
+
     public function clear(): void
     {
         $this->measurementFamilies = [];

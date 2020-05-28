@@ -27,8 +27,8 @@ class MeasurementFamilyListValidator
         return [
             'type' => 'array',
             'items' => [
-                'type' => 'object'
-            ]
+                'type' => 'object',
+            ],
         ];
     }
 }

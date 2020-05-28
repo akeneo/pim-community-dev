@@ -36,20 +36,25 @@ class Connection
     /** @var ConnectionImage|null */
     private $image;
 
+    /** @var bool */
+    private $auditable;
+
     public function __construct(
         string $code,
         string $label,
         string $flowType,
         int $clientId,
-        UserId $userId,
-        ?string $image = null
+        int $userId,
+        ?string $image = null,
+        bool $auditable = false
     ) {
         $this->code = new ConnectionCode($code);
         $this->label = new ConnectionLabel($label);
         $this->flowType = new FlowType($flowType);
         $this->clientId = new ClientId($clientId);
-        $this->userId = $userId;
+        $this->userId = new UserId($userId);
         $this->image = null !== $image ? new ConnectionImage($image) : null;
+        $this->auditable = $auditable;
     }
 
     public function code(): ConnectionCode
@@ -82,6 +87,11 @@ class Connection
         return $this->userId;
     }
 
+    public function auditable(): bool
+    {
+        return $this->auditable;
+    }
+
     public function setLabel(ConnectionLabel $label): void
     {
         $this->label = $label;
@@ -95,5 +105,15 @@ class Connection
     public function setImage(?ConnectionImage $image): void
     {
         $this->image = $image;
+    }
+
+    public function enableAudit(): void
+    {
+        $this->auditable = true;
+    }
+
+    public function disableAudit(): void
+    {
+        $this->auditable = false;
     }
 }

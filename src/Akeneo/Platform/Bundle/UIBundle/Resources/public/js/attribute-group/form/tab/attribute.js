@@ -12,6 +12,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
+        'pim/router',
         'pim/form',
         'pim/i18n',
         'pim/user-context',
@@ -19,19 +20,22 @@ define(
         'pim/security-context',
         'pim/dialog',
         'pim/template/form/attribute-group/tab/attribute',
+        'pim/datagrid/state',
         'jquery-ui'
     ],
     function (
         $,
         _,
         __,
+        Router,
         BaseForm,
         i18n,
         UserContext,
         FetcherRegistry,
         SecurityContext,
         Dialog,
-        template
+        template,
+        DatagridState
     ) {
         return BaseForm.extend({
             className: 'tabbable tabs-left',
@@ -40,7 +44,8 @@ define(
             attributeSortOrderKey: 'attributes_sort_order',
 
             events: {
-                'click .remove-attribute': 'removeAttributeRequest'
+                'click .remove-attribute': 'removeAttributeRequest',
+                'click .redirect-attribute-list': 'redirectAttributeList'
             },
 
             /**
@@ -48,6 +53,8 @@ define(
              */
             initialize: function (config) {
                 this.config = config.config;
+                this.config.number_of_attributes_displayed = 500;
+
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -76,8 +83,10 @@ define(
              * {@inheritdoc}
              */
             render: function () {
+                const attributeCodesToFetch = this.getFormData().attributes
+                    .slice(0, this.config.number_of_attributes_displayed);
                 FetcherRegistry.getFetcher('attribute')
-                    .fetchByIdentifiers(this.getFormData().attributes, {rights: 0})
+                    .fetchByIdentifiers(attributeCodesToFetch, {rights: 0})
                     .then(function (attributes) {
                         attributes = attributes.map((attribute) => {
                             let sortOrder = this.getFormData().attributes_sort_order[attribute.code];
@@ -98,7 +107,9 @@ define(
                             UserContext: UserContext,
                             __: __,
                             hasRightToRemove: this.hasRightToRemove(),
-                            canSortAttributes: SecurityContext.isGranted(this.config.sortAttributesACL)
+                            canSortAttributes: SecurityContext.isGranted(this.config.sortAttributesACL),
+                            attributeCount: attributes.length,
+                            totalAttributeCount: this.getFormData().attributes.length,
                         }));
 
                         this.$('.attribute-list').sortable({
@@ -129,14 +140,16 @@ define(
              * Update the sort order of attributes
              */
             updateAttributeOrders: function () {
-                var sortOrder = _.reduce(this.$('.attribute'), function (previous, current, order) {
-                    var next = _.extend({}, previous);
-                    next[current.dataset.attributeCode] = order;
-
-                    return next;
-                }, {});
                 var attributeGroup = _.extend({}, this.getFormData());
-                attributeGroup.attributes_sort_order = sortOrder;
+                attributeGroup.attributes_sort_order = _.reduce(
+                    this.$('.attribute'),
+                    function (previous, current, order) {
+                        var next = _.extend({}, previous);
+                        next[current.dataset.attributeCode] = order;
+
+                        return next;
+                    },
+                    {});
 
                 this.setData(attributeGroup);
 
@@ -228,6 +241,14 @@ define(
 
                 return currentAttributeGroupIsNotOther &&
                     SecurityContext.isGranted(this.config.addAttributeACL)
+            },
+
+            redirectAttributeList: function () {
+                const groupFilters = `f[group][value][]=${this.getFormData().code}`;
+
+                DatagridState.set('attribute-grid', {filters: groupFilters});
+
+                Router.redirectToRoute('pim_enrich_attribute_index');
             }
         });
     });

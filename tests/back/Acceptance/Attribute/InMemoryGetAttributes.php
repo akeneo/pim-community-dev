@@ -24,18 +24,24 @@ class InMemoryGetAttributes implements GetAttributes
 
     public function forCodes(array $attributeCodes): array
     {
+        $attributesIndexedByCode = [];
+        foreach ($this->attributeRepository->findAll() as $attribute) {
+            $attributesIndexedByCode[strtolower($attribute->getCode())] = $attribute;
+        }
+
         $attributes = [];
         foreach ($attributeCodes as $attributeCode) {
             /** @var $attribute AttributeInterface*/
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            $attribute = $attributesIndexedByCode[strtolower($attributeCode)] ?? null;
             if (null !== $attribute) {
                 $attributes[$attributeCode] = new Attribute(
-                    $attributeCode,
+                    $attribute->getCode(),
                     $attribute->getType(),
                     $attribute->getProperties(),
                     (bool) $attribute->isLocalizable(),
                     (bool) $attribute->isScopable(),
                     $attribute->getMetricFamily(),
+                    $attribute->getDefaultMetricUnit(),
                     $attribute->isDecimalsAllowed(),
                     $attribute->getBackendType(),
                     $attribute->getAvailableLocaleCodes()

@@ -1,49 +1,96 @@
-import React, {ChangeEventHandler, useContext} from 'react';
-import styled, {css} from 'styled-components';
+import React, {ChangeEventHandler, InputHTMLAttributes, RefObject, useContext} from 'react';
+import styled, {css, ThemeContext} from 'styled-components';
 import {ValidationError} from 'akeneomeasure/model/validation-error';
 import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {Flag} from 'akeneomeasure/shared/components/Flag';
+import {LockIcon} from 'akeneomeasure/shared/icons/LockIcon';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
-const Input = styled.input.attrs(() => ({className: 'AknTextField'}))<{invalid: boolean}>`
+const Input = styled.input`
+  background-color: transparent;
+  border: none;
+  flex: 1;
+  outline: none;
+  cursor: inherit;
+`;
+
+const InputContainer = styled.div<{readOnly?: boolean; invalid: boolean}>`
+  border: 1px solid ${props => props.theme.color.grey80};
+  background-color: ${props => (props.readOnly ? props.theme.color.grey70 : 'inherit')};
+  cursor: ${props => (props.readOnly ? 'not-allowed' : 'inherit')};
+  height: 40px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding: 0 15px;
+
   ${props =>
     props.invalid === true &&
     css`
       border-color: ${props => props.theme.color.red100};
-    `}
+    `};
+
+  ${Input} {
+    color: ${props => (props.readOnly ? props.theme.color.grey100 : props.theme.color.grey140)};
+  }
 `;
 
 type TextFieldProps = {
   id: string;
-  name: string;
   label: string;
-  locale?: string;
   required?: boolean;
-  flag?: string;
+  readOnly?: boolean;
 
   value: string;
-  onChange: ChangeEventHandler<Element>;
-
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   errors?: ValidationError[];
+
+  flag?: string;
 };
 
-const TextField = ({id, label, errors, propertyPath, required = false, flag, ...props}: TextFieldProps & any) => {
-  const __ = useContext(TranslateContext);
+const TextField = React.forwardRef(
+  (
+    {
+      id,
+      label,
+      required = false,
+      readOnly = false,
+      value,
+      onChange,
+      errors,
+      flag,
+      ...props
+    }: TextFieldProps & InputHTMLAttributes<HTMLInputElement>,
+    ref: RefObject<HTMLInputElement>
+  ) => {
+    const __ = useTranslate();
+    const akeneoTheme = useContext(ThemeContext);
 
-  return (
-    <div className="AknFieldContainer">
-      <div className="AknFieldContainer-header">
-        <label className="AknFieldContainer-label" htmlFor={id}>
-          {label} {required && __('measurements.form.required_suffix')}
-        </label>
-        {flag && <Flag localeCode={flag} />}
+    return (
+      <div className="AknFieldContainer">
+        <div className="AknFieldContainer-header">
+          <label className="AknFieldContainer-label" htmlFor={id}>
+            {label} {required && __('pim_common.required_label')}
+          </label>
+          {flag && <Flag localeCode={flag} />}
+        </div>
+        <InputContainer readOnly={readOnly} invalid={undefined !== errors && 0 < errors.length}>
+          <Input
+            ref={ref}
+            readOnly={readOnly}
+            id={id}
+            value={value}
+            onChange={onChange}
+            type="text"
+            autoComplete="off"
+            {...props}
+          />
+          {readOnly && <LockIcon color={akeneoTheme.color.grey100} size={18} />}
+        </InputContainer>
+        <InputErrors errors={errors} />
       </div>
-      <div className="AknFieldContainer-inputContainer">
-        <Input type="text" autoComplete="off" invalid={errors && errors.length > 0} id={id} {...props} />
-      </div>
-      {errors && <InputErrors errors={errors} />}
-    </div>
-  );
-};
+    );
+  }
+);
 
-export {TextField};
+export {TextField, Input, InputContainer};

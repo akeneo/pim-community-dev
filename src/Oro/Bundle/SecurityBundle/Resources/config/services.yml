@@ -49,6 +49,7 @@ services:
 
     oro_security.acl.manager:
         class: '%oro_security.acl.manager.class%'
+        public: true
         arguments:
             - '@oro_security.acl.object_identity_factory'
             - '@oro_security.acl.extension_selector'
@@ -232,3 +233,8 @@ services:
         class: '%oro_security.acl.entity_class_resolver.class%'
         arguments:
             - '@doctrine'
+
+    oro_security.acl.mask_builder.default_action_mask_builder:
+        class: Oro\Bundle\SecurityBundle\Acl\Extension\ActionMaskBuilder
+        tags:
+            - { name: oro_security.acl.action_mask_builder }

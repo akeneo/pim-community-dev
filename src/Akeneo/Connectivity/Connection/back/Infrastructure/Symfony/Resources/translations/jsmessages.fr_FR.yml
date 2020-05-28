@@ -1,11 +1,21 @@
-pim_menu.item:
-  connection_settings: Connexions
-  connection_audit: Tableau de bord des connexions
+pim_menu:
+  navigation_back:
+    connection: Retour aux connexions
+  navigation_block:
+    connection: Navigation connexions
+  item:
+    connection_audit: Tableau de bord des connexions
+    connection_settings: Connexions
+    connection_settings_edit: Paramètres de connexion
+    connection_monitoring: Supervision
 pim_title:
   akeneo_connectivity_connection_settings_index: Connexions
-  akeneo_connectivity_connection_settings_any: Connexions
+  akeneo_connectivity_connection_settings_edit: Paramètres de connexion
+  akeneo_connectivity_connection_settings_any: Paramètres de connexion
   akeneo_connectivity_connection_audit_index: Tableau de bord des connexions
   akeneo_connectivity_connection_audit_any: Tableau de bord des connexions
+  akeneo_connectivity_connection_error_management_dashboard: Tableau de bord des connexions
+  akeneo_connectivity_connection_error_management_connection_monitoring: Supervision
 akeneo_connectivity.connection:
   connections: Connexions
   secondary_actions:
@@ -15,6 +25,7 @@ akeneo_connectivity.connection:
     label: Libellé
     flow_type: Type de flux
     image: Image
+    auditable: Suivre cette connexion dans le tableau de bord
     client_id: Client ID
     secret: Secret
     username: Username
@@ -123,6 +134,9 @@ akeneo_connectivity.connection:
   flow_type_helper:
     message: Mais qu'est-ce qu'un type de flux ?
     link: Nous pouvons vous aider ici !
+  auditable_helper:
+    message: Vous ne pouvez suivre que les connexions de type "Source" et "Destination".
+    link: En savoir plus…
   edit_image:
     upload_helper: Changez votre image, glissez-déposez là ou
     remove_helper: Supprimer l'image
@@ -140,21 +154,55 @@ akeneo_connectivity.connection:
       content: Vos retours sont très précieux à nos yeux. Voter pour le prochain widget que vous souhaitez voir apparaître sur ce tableau de bord !
       button: C'est parti !
     connection_selector:
-      title: Connexions sources
+      title:
+        source: Connexions sources
+        destination: Connexions destinations
       all: Toutes
     charts:
-      number_of_products_created: Nombre de produits créés
-      number_of_products_updated: Nombre de produits mis à jour
+      inbound: En entrée du PIM
+      outbound: En sortie du PIM
+      number_of_products_created: Produits créés
+      number_of_products_updated: Produits mis à jour
+      number_of_products_sent: Produits envoyés
       legend:
-        during_the_last_seven_days: Au cours des sept derniers jours
+        during_the_last_seven_days: 'Total sur les 7 derniers jours :'
         today: Aujourd'hui
+    error_management:
+      widget:
+        title: Erreurs métier par connexion source
+        over_the_last_seven_days: Au cours des 7 derniers jours
+        business_errors: erreurs métier
     no_connection:
-      title: Il y a 0 connexion pour le moment.
+      title:
+        default: Envie de suivre vos connexions à l'aide de beaux graphiques ?
+        data_source: Envie de suivre vos connexions source à l'aide de beaux graphiques ?
+        data_destination: Envie de suivre vos connexions destination à l'aide de beaux graphiques ?
       message_with_permission:
-        link: Créez-en une nouvelle juste ici !
+        message: Créez-en une et activez son suivi 
+        link: ici !
       message_without_permission:
         message: Demandez à votre administrateur d'en créer une.
         link: En savoir plus sur les connexions ici...
+  error_management:
+    connection_monitoring:
+      title: Supervision
+      helper:
+        title: '{0} Vous avez {{ count }} erreur |[1,Inf] Vous avez {{ count }} erreurs'
+        description: Ici, vous pouvez voir le détail de chaque erreur métier pour cette connexion au cours des 7 derniers jours. Le nombre d'erreur est limité à 100 erreurs.
+        link: Pour savoir comment résoudre ces erreurs, rendez vous sur la documentation de l'API.
+      search_filter:
+        placeholder: Rechercher dans les messages d'erreur
+        result_count: '{0} Aucun résultat |[1,Inf] {{ count }} résultats'
+      error_list:
+        date_time_column: Jour et heure
+        content_column: Message d'erreur
+      no_error:
+        title: Génial ! Aucune erreur trouvée !
+      not_auditable:
+        description:
+          1: To track errors on this connection,
+          2: activate monitoring
+          3: in the settings.
   runtime_error:
     error_message: Oups ! Une erreur s'est produite...
     reload_helper: Merci de rafraîchir la page et de réessayer.

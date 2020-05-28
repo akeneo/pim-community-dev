@@ -1,0 +1,10 @@
+settings:
+    analysis:
+        char_filter:
+            newline_pattern:
+                type: "pattern_replace"
+                pattern: "\\n"
+                replacement: ""
+    mapping:
+        total_fields:
+            limit: '%elasticsearch_total_fields_limit%'

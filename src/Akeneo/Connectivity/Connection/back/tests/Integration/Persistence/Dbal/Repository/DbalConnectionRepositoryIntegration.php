@@ -36,7 +36,7 @@ class DbalConnectionRepositoryIntegration extends TestCase
 
     public function test_it_finds_one_connection_by_code()
     {
-        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
+        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, false);
 
         $connection = $this->repository->findOneByCode('magento');
 
@@ -49,11 +49,12 @@ class DbalConnectionRepositoryIntegration extends TestCase
         Assert::assertGreaterThan(0, $connection->clientId()->id());
         Assert::assertIsInt($connection->userId()->id());
         Assert::assertGreaterThan(0, $connection->userId()->id());
+        Assert::assertIsBool($connection->auditable());
     }
 
     public function test_it_updates_a_connection_from_its_code()
     {
-        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
+        $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, false);
 
         $connection = $this->repository->findOneByCode('magento');
         $connection->setLabel(new ConnectionLabel('Pimgento'));

@@ -2,16 +2,25 @@
 
 ## Bug fixes
 
+- TIP-1406: Add a tag to configure a DIC service based on a feature flag
 - PIM-9133: Fix product save when the user has no permission on some attribute groups
+- Fixes memory leak when indexing product models with a lot of product models in the same family
 - PIM-9119: Fix missing warning when using mass edit with parent filter set to empty
 - PIM-9114: fix errors on mass action when the parent filter is set to empty
 - PIM-9110: avoid deadlock error when loading product and product models in parallel with the API
 - PIM-9113: Locale Specific attribute breaks product grid
 - Fix the dependency issue with the Symfony ConfirmationQuestion component for the PurgeJobExecutionCommand
+- PIM-9157: Fix performance issue when loading the data of a product group
+- PIM-9163: total_fields limit of elasticsearch should be configurable
+- PIM-9197: Make queries in InMemoryGetAttributes case insensitive
+- PIM-9213: Fix tooltip hover on Ellipsis for Family Name on creating product
+- PIM-9184: API - Fix dbal query group by part for saas instance
 
 ## New features
 
+- MET-197: Add possibility to define that an association type is two way & automatically create inversed association when association type is two way
 - MET-14: Measurements (or metrics) are now stored in database
+- AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
 
 ## Improvements
 
@@ -23,6 +32,8 @@
 
 ### Codebase
 
+- Change constructor of `Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader` to
+    - add `Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelController` to
     - add `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface $productEditDataFilter`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController` to
@@ -47,6 +58,10 @@
     - add `Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface $measurementFamilyRepository`
     - add `Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository $baseCachedObjectRepository`
     - add `Psr\Log\LoggerInterface $logger`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\GroupNormalizer` to
+    - add `Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers`
+- Change constructor of `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute` to
+    - add `(string) $defaultMetricUnit`    
 - Change `Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager` to remove method `setMeasureConfig(array $config)`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\DependencyInjection\Configuration`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\AreaFamilyInterface`

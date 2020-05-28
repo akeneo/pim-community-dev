@@ -26,6 +26,9 @@ class AssociationType extends AbstractSimpleArrayConverter implements ArrayConve
                     $convertedItem[$labelKey] = $label;
                 }
                 break;
+            case 'is_two_way':
+                $convertedItem['is_two_way'] = (int) $data;
+                break;
             default:
                 $convertedItem[$property] = (string) $data;
         }

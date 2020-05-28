@@ -42,7 +42,15 @@ class DeleteConnectionHandlerSpec extends ObjectBehavior
     ): void {
         $magentoClientId = new ClientId(1);
         $magentoUserId = new UserId(1);
-        $magentoConnection = new Connection('magento', 'Magento', FlowType::OTHER, 1, $magentoUserId);
+        $magentoConnection = new Connection(
+            'magento',
+            'Magento',
+            FlowType::OTHER,
+            $magentoClientId->id(),
+            $magentoUserId->id(),
+            null,
+            false
+        );
 
         $command = new DeleteConnectionCommand((string) $magentoConnection->code());
 

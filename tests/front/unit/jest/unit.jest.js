@@ -7,11 +7,14 @@ const unitConfig = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   coveragePathIgnorePatterns: [
-    'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/context/',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/icons',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/components/',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/icons/',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/illustrations/',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-measurement-family/CreateMeasurementFamily.tsx',
+    'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-unit/CreateUnit.tsx',
   ],
   moduleNameMapper: {
     '^require-context$': `${__dirname}/../../../../frontend/webpack/require-context.js`,

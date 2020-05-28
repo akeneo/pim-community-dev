@@ -29,13 +29,17 @@ final class UpdateConnectionCommand
     /** @var ?string */
     private $userGroupId;
 
+    /** @var bool */
+    private $auditable;
+
     public function __construct(
         string $code,
         string $label,
         string $flowType,
         ?string $image,
         string $userRoleId,
-        ?string $userGroupId
+        ?string $userGroupId,
+        bool $auditable
     ) {
         $this->code = $code;
         $this->label = $label;
@@ -43,6 +47,7 @@ final class UpdateConnectionCommand
         $this->image = $image;
         $this->userRoleId = $userRoleId;
         $this->userGroupId = $userGroupId;
+        $this->auditable = $auditable;
     }
 
     public function code(): string
@@ -73,5 +78,10 @@ final class UpdateConnectionCommand
     public function userGroupId(): ?string
     {
         return $this->userGroupId;
+    }
+
+    public function auditable(): bool
+    {
+        return $this->auditable;
     }
 }

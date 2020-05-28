@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query;
 
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
+
 /**
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -11,5 +13,8 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query;
  */
 interface SelectConnectionsQuery
 {
+    /**
+     * @return Connection[]
+     */
     public function execute(): array;
 }

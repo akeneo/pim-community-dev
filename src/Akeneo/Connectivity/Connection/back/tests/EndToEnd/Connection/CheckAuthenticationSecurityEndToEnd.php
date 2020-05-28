@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnec
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PHPUnit\Framework\Assert;
@@ -22,7 +23,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 {
     public function test_the_secret_regeneration_disables_the_access_token()
     {
-        $apiConnection = $this->createConnection('magento');
+        $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
 
         $apiClient = $this->createAuthenticatedClient(
             [],
@@ -60,7 +61,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
     public function test_the_secret_regeneration_disables_the_secret()
     {
-        $apiConnection = $this->createConnection('magento');
+        $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
 
         $this->regenerateClientSecret('magento');
 
@@ -86,7 +87,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
     public function test_the_secret_regeneration_disables_the_refresh_token()
     {
-        $apiConnection = $this->createConnection('magento');
+        $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
         $serverParams = [
             'PHP_AUTH_USER' => $apiConnection->clientId(),
             'PHP_AUTH_PW'   => $apiConnection->secret(),
@@ -133,7 +134,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
     public function test_the_password_regeneration_disables_the_access_token()
     {
-        $apiConnection = $this->createConnection('magento');
+        $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
 
         $apiClient = $this->createAuthenticatedClient(
             [],
@@ -171,7 +172,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
     public function test_the_password_regeneration_disables_the_password()
     {
-        $apiConnection = $this->createConnection('magento');
+        $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
 
         $this->regenerateUserPassword('magento');
 
@@ -194,7 +195,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
     public function test_the_password_regeneration_disables_the_refresh_token()
     {
-        $apiConnection = $this->createConnection('magento');
+        $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
         $serverParams = [
             'PHP_AUTH_USER' => $apiConnection->clientId(),
             'PHP_AUTH_PW'   => $apiConnection->secret(),

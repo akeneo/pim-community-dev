@@ -69,6 +69,16 @@ interface AssociationTypeInterface extends
     public function setLabel($label);
 
     /**
+     * @return bool
+     */
+    public function isTwoWay(): bool;
+
+    /**
+     * @param bool $isTwoWay
+     */
+    public function setIsTwoWay(bool $isTwoWay): void;
+
+    /**
      * Returns the label of the association type
      *
      * @return string
