@@ -157,6 +157,36 @@ YAML;
     }
 
     /**
+     * @When I import a calculate rule with invalid round_precision parameter
+     */
+    public function importACalculateRuleWithInvalidRoundPrecisionParameter(): void
+    {
+        $rulesConfig = <<<YAML
+rules:
+    calculate_with_round:
+        priority: 90
+        conditions:
+            - field: family
+              operator: IN
+              value:
+                  - camcorders
+        actions:
+            - type: calculate
+              round_precision: 'foo'
+              destination:
+                field: weight
+              source:
+                field: item_weight
+                scope: ecommerce
+                locale: en_US
+              operation_list:
+                - operator: multiply
+                  value: 1000
+YAML;
+        $this->importRules($rulesConfig);
+    }
+
+    /**
      * @Then the rule list contains the imported :code rule
      */
     public function theRuleListContainsTheValidRule(string $code)

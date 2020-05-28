@@ -13,3 +13,5 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CalculateAction:
             - All:
                 - NotNull: ~
             - Valid: ~
+        roundPrecision:
+            - Type: int

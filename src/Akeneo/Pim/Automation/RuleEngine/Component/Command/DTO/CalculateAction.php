@@ -9,6 +9,7 @@ final class CalculateAction
     public $source;
     public $destination;
     public $operationList;
+    public $roundPrecision;
 
     public function __construct(array $data)
     {
@@ -34,5 +35,7 @@ final class CalculateAction
             );
         }
         $this->operationList = $operationList;
+
+        $this->roundPrecision = $data['round_precision'] ?? null;
     }
 }
