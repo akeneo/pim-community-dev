@@ -20,7 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormaliz
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\QuantifiedAssociationsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -56,7 +56,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
         CompletenessCalculator $completenessCalculator,
-        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -78,7 +79,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             $parentAssociationsNormalizer,
             $catalogContext,
             $completenessCalculator,
-            $missingRequiredAttributesNormalizer
+            $missingRequiredAttributesNormalizer,
+            $quantifiedAssociationsNormalizer
         );
     }
 
@@ -103,6 +105,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         MissingAssociationAdder $missingAssociationAdder,
         CompletenessCalculator $completenessCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -199,6 +202,17 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $missingAssociationAdder->addMissingAssociations($mug)->shouldBeCalled();
 
+        $quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations(
+            $mug,
+            'standard',
+            $options
+        )->willReturn([]);
+        $quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations(
+            $mug,
+            'standard',
+            $options
+        )->willReturn([]);
+
         $this->normalize($mug, 'internal_api', $options)->shouldReturn(
             [
                 'enabled'    => true,
@@ -219,6 +233,8 @@ class ProductNormalizerSpec extends ObjectBehavior
                         'filePath'         => '/p/i/m/4/all.png',
                         'originalFileName' => 'all.png',
                     ],
+                    'quantified_associations_for_this_level' => [],
+                    'parent_quantified_associations' => [],
                     'label'             => [
                         'en_US' => 'A nice Mug!',
                         'fr_FR' => 'Un très beau Mug !'
@@ -259,6 +275,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         MissingAssociationAdder $missingAssociationAdder,
         CompletenessCalculator $completenessCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -382,6 +399,17 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $ascendantCategories->getCategoryIds($mug)->willReturn([42]);
 
+        $quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations(
+            $mug,
+            'standard',
+            $options
+        )->willReturn([]);
+        $quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations(
+            $mug,
+            'standard',
+            $options
+        )->willReturn([]);
+
         $this->normalize($mug, 'internal_api', $options)->shouldReturn(
             [
                 'enabled'    => true,
@@ -402,6 +430,8 @@ class ProductNormalizerSpec extends ObjectBehavior
                         'filePath'         => '/p/i/m/4/all.png',
                         'originalFileName' => 'all.png',
                     ],
+                    'quantified_associations_for_this_level' => [],
+                    'parent_quantified_associations' => [],
                     'label'             => [
                         'en_US' => 'A nice Mug!',
                         'fr_FR' => 'Un très beau Mug !'
