@@ -31,7 +31,7 @@ class QuantifiedAssociationsMergerSpec extends ObjectBehavior
         $this->normalizeAndMergeQuantifiedAssociationsFrom([
             $product_1,
             $product_2,
-        ])->willReturn([
+        ])->shouldReturn([
             'PACK' => [
                 'products' => [
                     ['identifier' => 'A', 'quantity' => 2],
@@ -68,13 +68,13 @@ class QuantifiedAssociationsMergerSpec extends ObjectBehavior
         $this->normalizeAndMergeQuantifiedAssociationsFrom([
             $product_1,
             $product_2,
-        ])->willReturn([
+        ])->shouldReturn([
             'PACK' => [
                 'products' => [
                     ['identifier' => 'A', 'quantity' => 2],
                     ['identifier' => 'B', 'quantity' => 3],
                     ['identifier' => 'C', 'quantity' => 42],
-                    ['identifier' => 'D', 'quantity' => 4],
+                    ['identifier' => 'D', 'quantity' => 5],
                 ],
             ],
         ]);
