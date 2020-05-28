@@ -7,6 +7,7 @@
 ## Bug fixes
 
 - PIM-9258: Fix linked products view in reference entities when an asset is set as main image.
+- PIM-9263: Fix a bad refresh of select value on reference entity edit page
 
 # 4.0.29 (2020-05-26)
 

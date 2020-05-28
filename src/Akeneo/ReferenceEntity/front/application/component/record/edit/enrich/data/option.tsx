@@ -48,7 +48,7 @@ const View = ({
           placeholder: __('pim_reference_entity.attribute.options.no_value'),
         }}
         onChange={(optionCode: string) => {
-          const newData = denormalizeOptionData(optionCode, attribute);
+          const newData = denormalizeOptionData('undefined' === typeof optionCode ? null : optionCode, attribute);
           const newValue = value.setData(newData);
 
           onChange(newValue);
