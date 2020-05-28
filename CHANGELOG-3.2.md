@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Improvement
+
+- PIM-9268: Add ko_KR to locales default list.
+
 ## Bug fixes
 
 - PIM-9255: Refresh completeness of associated products in grid when channel is switched
