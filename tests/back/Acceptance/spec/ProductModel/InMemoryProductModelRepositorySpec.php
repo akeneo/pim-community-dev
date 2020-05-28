@@ -2,14 +2,14 @@
 
 namespace spec\Akeneo\Test\Acceptance\ProductModel;
 
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
-use Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class InMemoryProductModelRepositorySpec extends ObjectBehavior
@@ -70,6 +70,19 @@ class InMemoryProductModelRepositorySpec extends ObjectBehavior
             ->during('save', ['a_thing']);
     }
 
+    function it_finds_all_product_models()
+    {
+        $productModels = [];
+        foreach (['a', 'b', 'c'] as $code) {
+            $productModel = new ProductModel();
+            $productModel->setCode($code);
+            $productModels[$code] = $productModel;
+        }
+
+        $this->beConstructedWith($productModels);
+        $this->findAll()->shouldReturn($productModels);
+    }
+
     function it_asserts_that_the_other_methods_are_not_implemented_yet()
     {
         $productModel = new ProductModel();
@@ -79,7 +92,6 @@ class InMemoryProductModelRepositorySpec extends ObjectBehavior
 
         $this->shouldThrow(NotImplementedException::class)->during('getItemsFromIdentifiers', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('find', ['']);
-        $this->shouldThrow(NotImplementedException::class)->during('findAll', []);
         $this->shouldThrow(NotImplementedException::class)->during('findBy', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('findOneBy', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('getClassName', []);
