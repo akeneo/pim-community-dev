@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.57 (2020-05-28)
+
 ## Improvement
 
 - PIM-9268: Add ko_KR to locales default list.
