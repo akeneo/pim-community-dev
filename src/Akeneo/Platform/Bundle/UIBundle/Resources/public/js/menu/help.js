@@ -13,7 +13,7 @@ define(
         'pim/data-collector',
         'pim/template/menu/help'
     ],
-    function (
+    function(
         _,
         __,
         BaseForm,
@@ -28,7 +28,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            render: function () {
+            render: function() {
                 this.getVersion().then(version => {
                     this.$el.empty().append(this.template({
                         helper: __('pim_menu.tab.help.helper'),
@@ -45,7 +45,16 @@ define(
              */
             getVersion() {
                 return DataCollector.collect(this.analyticsUrl).then((data) => {
-                    return data.pim_version.substring(0, 1);
+                    const {
+                        pim_version,
+                        pim_edition
+                    } = data;
+
+                    if ('Serenity' === pim_edition) {
+                        return pim_edition.toLowerCase();
+                    }
+
+                    return `v${pim_version.substring(0, 1)}`;
                 });
             }
         });
