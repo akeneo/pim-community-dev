@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.30 (2020-05-28)
+
 ## Bug fixes
 
 -PIM-9264: Make "search on..." translatable on Crowdin
