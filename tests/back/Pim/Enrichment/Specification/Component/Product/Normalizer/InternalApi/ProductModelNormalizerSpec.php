@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\QuantifiedAssociationsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CompleteVariantProducts;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
@@ -56,7 +57,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
-        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -78,7 +80,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             $parentAssociationsNormalizer,
             $catalogContext,
             $missingRequiredAttributesCalculator,
-            $missingRequiredAttributesNormalizer
+            $missingRequiredAttributesNormalizer,
+            $quantifiedAssociationsNormalizer
         );
     }
 
@@ -105,6 +108,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         UserContext $userContext,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -233,6 +237,17 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $group->getId()->willReturn(12);
         $association->getGroups()->willReturn($groups);
 
+        $quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations(
+            $productModel,
+            'standard',
+            $options
+        )->willReturn([]);
+        $quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations(
+            $productModel,
+            'standard',
+            $options
+        )->willReturn([]);
+
         $this->normalize($productModel, 'internal_api', $options)->shouldReturn(
             [
                 'code'           => 'tshirt_blue',
@@ -259,6 +274,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'ascendant_category_ids' => [42],
                     'required_missing_attributes' => ['kind of completenesses data normalized here'],
                     'level'          => 0,
+                    'quantified_associations_for_this_level' => [],
+                    'parent_quantified_associations' => [],
                     'label'          => [
                         'en_US' => 'Tshirt blue',
                         'fr_FR' => 'Tshirt bleu',
@@ -291,6 +308,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         UserContext $userContext,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -394,6 +412,17 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getVariationLevel()->willReturn(0);
         $productModel->getAssociations()->willReturn([]);
 
+        $quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations(
+            $productModel,
+            'standard',
+            $options
+        )->willReturn([]);
+        $quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations(
+            $productModel,
+            'standard',
+            $options
+        )->willReturn([]);
+
         $this->normalize($productModel, 'internal_api', $options)->shouldReturn(
             [
                 'code'           => 'tshirt_blue',
@@ -420,6 +449,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'ascendant_category_ids' => [42],
                     'required_missing_attributes' => ['kind of completenesses data normalized here'],
                     'level'          => 0,
+                    'quantified_associations_for_this_level' => [],
+                    'parent_quantified_associations' => [],
                     'label'          => [
                         'en_US' => 'Tshirt blue',
                         'fr_FR' => 'Tshirt bleu',
@@ -448,6 +479,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         UserContext $userContext,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -563,6 +595,17 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getVariationLevel()->willReturn(0);
         $productModel->getAssociations()->willReturn([]);
 
+        $quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations(
+            $productModel,
+            'standard',
+            $options
+        )->willReturn([]);
+        $quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations(
+            $productModel,
+            'standard',
+            $options
+        )->willReturn([]);
+
         $this->normalize($productModel, 'internal_api', $options)->shouldReturn(
             [
                 'code'           => 'tshirt_blue',
@@ -589,6 +632,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'ascendant_category_ids' => [42],
                     'required_missing_attributes' => ['kind of completenesses data normalized here'],
                     'level'          => 0,
+                    'quantified_associations_for_this_level' => [],
+                    'parent_quantified_associations' => [],
                     'label'          => [
                         'en_US' => 'Tshirt blue',
                         'fr_FR' => 'Tshirt bleu',
