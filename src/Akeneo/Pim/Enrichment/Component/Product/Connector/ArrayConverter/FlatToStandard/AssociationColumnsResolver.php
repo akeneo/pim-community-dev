@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 
 /**
@@ -22,6 +23,9 @@ class AssociationColumnsResolver
     /** @var string */
     const PRODUCT_MODEL_ASSOCIATION_SUFFIX = '-product_models';
 
+    /** @var string */
+    const QUANTITY_SUFFIX = '-quantity';
+
     /** @var AssociationTypeRepositoryInterface */
     protected $assocTypeRepository;
 
@@ -38,18 +42,42 @@ class AssociationColumnsResolver
 
     /**
      * Get the association field names
-     *
-     * @return array
      */
-    public function resolveAssociationColumns()
+    public function resolveAssociationColumns(): array
     {
         if (null === $this->assocFieldsCache) {
             $fieldNames = [];
             $assocTypes = $this->assocTypeRepository->findAll();
+            /** @var AssociationType $assocType */
             foreach ($assocTypes as $assocType) {
-                $fieldNames[] = $assocType->getCode() . self::GROUP_ASSOCIATION_SUFFIX;
-                $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX;
-                $fieldNames[] = $assocType->getCode() . self::PRODUCT_MODEL_ASSOCIATION_SUFFIX;
+                if (!$assocType->isQuantified()) {
+                    $fieldNames[] = $assocType->getCode() . self::GROUP_ASSOCIATION_SUFFIX;
+                    $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX;
+                    $fieldNames[] = $assocType->getCode() . self::PRODUCT_MODEL_ASSOCIATION_SUFFIX;
+                }
+            }
+            $this->assocFieldsCache = $fieldNames;
+        }
+
+        return $this->assocFieldsCache;
+    }
+
+    /**
+     * Get the association field names
+     */
+    public function resolveQuantifiedAssociationColumns(): array
+    {
+        if (null === $this->assocFieldsCache) {
+            $fieldNames = [];
+            $assocTypes = $this->assocTypeRepository->findAll();
+            /** @var AssociationType $assocType */
+            foreach ($assocTypes as $assocType) {
+                if ($assocType->isQuantified()) {
+                    $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX;
+                    $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX . self::QUANTITY_SUFFIX;
+                    $fieldNames[] = $assocType->getCode() . self::PRODUCT_MODEL_ASSOCIATION_SUFFIX;
+                    $fieldNames[] = $assocType->getCode() . self::PRODUCT_MODEL_ASSOCIATION_SUFFIX . self::QUANTITY_SUFFIX;;
+                }
             }
             $this->assocFieldsCache = $fieldNames;
         }

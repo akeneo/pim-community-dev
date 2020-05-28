@@ -193,6 +193,8 @@ class Product implements ArrayConverterInterface
     protected function prepareOptions(array $options): array
     {
         $options['with_associations'] = isset($options['with_associations']) ? $options['with_associations'] : true;
+        $options['with_quantified_associations'] = 
+            isset($options['with_quantified_associations']) ? $options['with_quantified_associations'] : true;
         $options['default_values'] = isset($options['default_values']) ? $options['default_values'] : [];
 
         return $options;
@@ -222,9 +224,9 @@ class Product implements ArrayConverterInterface
     protected function filterFields(array $mappedItem, $withAssociations): array
     {
         if (false === $withAssociations) {
-            $isGroupAssPattern = '/^\w+'.AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX.'$/';
-            $isProductAssPattern = '/^\w+'.AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX.'$/';
-            $isProductModelAssPattern = '/^\w+'.AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX.'$/';
+            $isGroupAssPattern = '/^\w+' . AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX . '$/';
+            $isProductAssPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX . '$/';
+            $isProductModelAssPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX . '$/';
             foreach (array_keys($mappedItem) as $field) {
                 $isGroup = (1 === preg_match($isGroupAssPattern, $field));
                 $isProduct = (1 === preg_match($isProductAssPattern, $field));
@@ -319,9 +321,10 @@ class Product implements ArrayConverterInterface
                 sprintf('The field "%s" does not exist.', $unknownFields[0]);
         }
         foreach ($nonLocalizableOrScopableFields as $nonLocalizableOrScopableField) {
-            $messages[] = sprintf('The field "%s" needs an additional locale and/or a channel information; '.
-                'in order to do that, please set the code as follow: '.
-                '\'%s-[locale_code]-[channel_code]\'.',
+            $messages[] = sprintf(
+                'The field "%s" needs an additional locale and/or a channel information; ' .
+                    'in order to do that, please set the code as follow: ' .
+                    '\'%s-[locale_code]-[channel_code]\'.',
                 $nonLocalizableOrScopableField,
                 $nonLocalizableOrScopableField
             );
@@ -352,13 +355,14 @@ class Product implements ArrayConverterInterface
 
     /**
      * Returns associations fields (resolves once)
-     *
-     * @return array
      */
     protected function getOptionalAssociationFields(): array
     {
         if (empty($this->optionalAssocFields)) {
-            $this->optionalAssocFields = $this->assocColumnsResolver->resolveAssociationColumns();
+            $this->optionalAssocFields = array_merge(
+                $this->assocColumnsResolver->resolveAssociationColumns(),
+                $this->assocColumnsResolver->resolveQuantifiedAssociationColumns()
+            );
         }
 
         return $this->optionalAssocFields;
@@ -382,7 +386,8 @@ class Product implements ArrayConverterInterface
         foreach ($attributeCodes as $attributeCode) {
             $found = false;
             foreach ($attributes as $attribute) {
-                if ($attribute->getCode() === $attributeCode &&
+                if (
+                    $attribute->getCode() === $attributeCode &&
                     ($attribute->isLocalizable() || $attribute->isScopable())
                 ) {
                     $found = true;
