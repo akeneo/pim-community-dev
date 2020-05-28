@@ -31,6 +31,36 @@ const rowCollection = [
     errors: [],
   },
 ];
+const rowCollectionWithError = [
+  {
+    quantifiedLink: {identifier: 'bag', quantity: 4},
+    productType: ProductType.Product,
+    product: null,
+    errors: [
+      {
+        propertyPath: 'quantity',
+        messageTemplate: 'an.error',
+        parameters: {},
+        message: 'an error',
+        invalidValue: '10000',
+      },
+    ],
+  },
+  {
+    quantifiedLink: {identifier: 'braided-hat', quantity: 12},
+    productType: ProductType.ProductModel,
+    product: null,
+    errors: [
+      {
+        propertyPath: 'quantity',
+        messageTemplate: 'an.error',
+        parameters: {},
+        message: 'an error',
+        invalidValue: '10000',
+      },
+    ],
+  },
+];
 
 describe('quantified association', () => {
   it('should create a row collection from a quantified association collection', () => {
@@ -56,5 +86,26 @@ describe('quantified association', () => {
   it('should tell if the provided quantified association has some updated quantities', () => {
     expect(hasUpdatedQuantifiedAssociations(parentQuantifiedAssociation, quantifiedAssociation)).toEqual(true);
     expect(hasUpdatedQuantifiedAssociations(quantifiedAssociation, quantifiedAssociation)).toEqual(false);
+  });
+
+  it('adds errors to the matching row', () => {
+    expect(
+      quantifiedAssociationToRowCollection(quantifiedAssociation, [
+        {
+          propertyPath: 'products[0].quantity',
+          messageTemplate: 'an.error',
+          parameters: {},
+          message: 'an error',
+          invalidValue: '10000',
+        },
+        {
+          propertyPath: 'product_models[0].quantity',
+          messageTemplate: 'an.error',
+          parameters: {},
+          message: 'an error',
+          invalidValue: '10000',
+        },
+      ])
+    ).toEqual(rowCollectionWithError);
   });
 });
