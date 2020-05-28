@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9272: Fix the remove of product value linked to a reference entity attribute through API
+
 # 3.2.56 (2020-05-25)
 
 # 3.2.55 (2020-05-14)

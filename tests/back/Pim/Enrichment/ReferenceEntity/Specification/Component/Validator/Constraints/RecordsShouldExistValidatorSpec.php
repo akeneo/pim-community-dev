@@ -65,7 +65,7 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
         $this->validate(new \stdClass(), new RecordsShouldExist());
     }
 
-    function it_does_not_validate_the_values_if_there_are_no_reference_enetity_values(
+    function it_does_not_validate_the_values_if_there_are_no_reference_entity_values_to_validate(
         FindExistingRecordCodesInterface $findExistingRecordCodes,
         ExecutionContextInterface $context
     ) {
@@ -77,6 +77,8 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
                 ScalarValue::value('sku', 'my_identifier'),
                 ScalarValue::localizableValue('description', 'en_US', 'An awesome description'),
                 DateValue::value('release_date', new \DateTime()),
+                ReferenceEntityValue::value('main_color', null),
+                ReferenceEntityCollectionValue::value('designers', []),
             ]
         );
 
