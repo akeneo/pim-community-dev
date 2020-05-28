@@ -56,8 +56,10 @@ final class RecordsShouldExistValidator extends ConstraintValidator
 
         $refEntityValues = $values->filter(
             function (ValueInterface $value): bool {
-                return $value instanceof ReferenceEntityValueInterface ||
-                    $value instanceof ReferenceEntityCollectionValueInterface;
+                return ($value instanceof ReferenceEntityValueInterface ||
+                    $value instanceof ReferenceEntityCollectionValueInterface)
+                    && null !== $value->getData()
+                    && [] !== $value->getData();
             }
         );
 
