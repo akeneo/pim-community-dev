@@ -175,9 +175,9 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
      */
     protected function convertQuantifiedAssociations(array $data, array $convertedItem): array
     {
-        foreach ($data as $assocName => $associations) {
-            foreach ($associations as $assocType => $quantifiedLinks) {
-                $propertyName = sprintf('%s-%s', $assocName, $assocType);
+        foreach ($data as $associationTypeCode => $quantifiedAssociations) {
+            foreach ($quantifiedAssociations as $entityType => $quantifiedLinks) {
+                $propertyName = sprintf('%s-%s', $associationTypeCode, $entityType);
                 $convertedItem[$propertyName] = implode(',', array_column($quantifiedLinks, 'identifier'));
                 $convertedItem[sprintf('%s-quantity', $propertyName)] = implode('|', array_column($quantifiedLinks, 'quantity'));
             }
