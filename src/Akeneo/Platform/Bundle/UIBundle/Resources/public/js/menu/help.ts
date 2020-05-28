@@ -19,12 +19,12 @@ class Help extends BaseView {
   }
 
   public render(): BaseView {
-    this.getVersion().then((version: string) => {
+    this.getUrl().then((url: string) => {
       this.$el.empty().append(
         this.template({
           helper: __('pim_menu.tab.help.helper'),
           title: __('pim_menu.tab.help.title'),
-          version,
+          url,
         })
       );
     });
@@ -32,15 +32,23 @@ class Help extends BaseView {
     return BaseView.prototype.render.apply(this, arguments);
   }
 
-  private getVersion(): Promise<string> {
+  private getUrl(): Promise<string> {
     return DataCollector.collect(this.analyticsUrl).then((data: any) => {
       const {pim_version, pim_edition} = data;
+      let version = `v${pim_version.split('.')[0]}`;
+      let campaign = `${pim_edition}${pim_version}`;
 
-      if ('Serenity' === pim_edition) {
-        return pim_edition.toLowerCase();
+      if ('serenity' === pim_edition.toLowerCase()) {
+        version = pim_edition.toLowerCase();
+        campaign = pim_edition;
       }
 
-      return `v${pim_version.substring(0, 1)}`;
+      const url = new URL(`https://help.akeneo.com/pim/${version}/index.html`);
+      url.searchParams.append('utm_source', 'akeneo-app');
+      url.searchParams.append('utm_medium', 'interrogation-icon');
+      url.searchParams.append('utm_campaign', campaign);
+
+      return url.href;
     });
   }
 }
