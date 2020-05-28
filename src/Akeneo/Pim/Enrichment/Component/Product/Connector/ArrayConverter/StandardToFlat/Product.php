@@ -36,7 +36,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 $convertedItem = $this->convertAssociations($data, $convertedItem);
                 break;
             case 'quantified_associations':
-                // @todo https://akeneo.atlassian.net/browse/MET-198
+                $convertedItem = $this->convertQuantifiedAssociations($data, $convertedItem);
                 break;
             case 'categories':
                 $convertedItem[$property] = implode(',', $data);
@@ -98,7 +98,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
     }
 
     /**
-     * Convert flat formatted associations to standard ones.
+     * Convert standard associations to flat formatted ones.
      *
      * Given this $data:
      * [
@@ -119,18 +119,67 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
      *     'X_SELL-groups'   => 'akeneo_tshirt,oro_tshirt',
      *     'X_SELL-products' => 'akn_ts,oro_tsh',
      * ]
-     *
-     * @param array $data
-     * @param array $convertedItem
-     *
-     * @return array
      */
-    protected function convertAssociations(array $data, array $convertedItem)
+    protected function convertAssociations(array $data, array $convertedItem): array
     {
         foreach ($data as $assocName => $associations) {
             foreach ($associations as $assocType => $entities) {
                 $propertyName = sprintf('%s-%s', $assocName, $assocType);
                 $convertedItem[$propertyName] = implode(',', $entities);
+            }
+        }
+
+        return $convertedItem;
+    }
+
+    /**
+     * Convert standard quantified associations to flat formatted ones.
+     *
+     * Given this $data:
+     * [
+     *     'PACK' => [
+     *         'products' => [],
+     *         'product_models' => [],
+     *     ],
+     *     'PRODUCTSET' => [
+     *         'products' => [
+     *              [
+     *                  'identifier' => 'bag',
+     *                  'quantity' => 2
+     *              ],
+     *              [
+     *                  'identifier' => 'socks',
+     *                  'quantity' => 8
+     *              ]
+     *         ],
+     *         'product_models' => [
+     *              [
+     *                  'identifier' => 'braided-hat',
+     *                  'quantity' => 12
+     *              ]
+     *         ]
+     *     ]
+     * ]
+     *
+     * It will return:
+     * [
+     *     'PACK-products' => '',
+     *     'PACK-products-quantity' => '',
+     *     'PACK-product_models' => '',
+     *     'PACK-product_models-quantity' => '',
+     *     'PRODUCTSET-products' => 'bag,socks',
+     *     'PRODUCTSET-products-quantity' => '2|8',
+     *     'PRODUCTSET-product_models' => 'braided-hat',
+     *     'PRODUCTSET-product_models-quantity' => '12',
+     * ]
+     */
+    protected function convertQuantifiedAssociations(array $data, array $convertedItem): array
+    {
+        foreach ($data as $assocName => $associations) {
+            foreach ($associations as $assocType => $quantifiedLinks) {
+                $propertyName = sprintf('%s-%s', $assocName, $assocType);
+                $convertedItem[$propertyName] = implode(',', array_column($quantifiedLinks, 'identifier'));
+                $convertedItem[sprintf('%s-quantity', $propertyName)] = implode('|', array_column($quantifiedLinks, 'quantity'));
             }
         }
 

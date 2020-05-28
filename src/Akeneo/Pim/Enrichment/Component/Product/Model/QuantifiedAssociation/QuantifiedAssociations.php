@@ -165,7 +165,7 @@ class QuantifiedAssociations
             ];
 
             foreach ($associations as $quantifiedLinksType => $quantifiedLinks) {
-                if (!isset($mappedQuantifiedAssociations[$associationType][$quantifiedLinksType])) {
+                if (!isset($result[$associationType][$quantifiedLinksType])) {
                     $result[$associationType][$quantifiedLinksType] = [];
                 }
 

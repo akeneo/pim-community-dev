@@ -49,18 +49,26 @@ class ProductSpec extends ObjectBehavior
         ]);
 
         $expected = [
-            'categories'              => 'audio_video_sales,loudspeakers,sony',
-            'enabled'                 => '1',
-            'family'                  => 'loudspeakers',
-            'parent'                  => 'parent_model_code',
-            'groups'                  => 'sound,audio,mp3',
-            'UPSELL-groups'           => '',
-            'UPSELL-products'         => '',
-            'X_SELL-groups'           => 'akeneo_tshirt,oro_tshirt',
-            'X_SELL-products'         => 'AKN_TS,ORO_TSH',
-            'sku'                     => '10699783',
-            'weight-de_DE-print'      => '100',
-            'weight-de_DE-print-unit' => 'KILOGRAM',
+            'categories'                         => 'audio_video_sales,loudspeakers,sony',
+            'enabled'                            => '1',
+            'family'                             => 'loudspeakers',
+            'parent'                             => 'parent_model_code',
+            'groups'                             => 'sound,audio,mp3',
+            'UPSELL-groups'                      => '',
+            'UPSELL-products'                    => '',
+            'X_SELL-groups'                      => 'akeneo_tshirt,oro_tshirt',
+            'X_SELL-products'                    => 'AKN_TS,ORO_TSH',
+            'PACK-products'                      => '',
+            'PACK-products-quantity'             => '',
+            'PACK-product_models'                => '',
+            'PACK-product_models-quantity'       => '',
+            'PRODUCTSET-products'                => 'bag,socks',
+            'PRODUCTSET-products-quantity'       => '2|8',
+            'PRODUCTSET-product_models'          => 'braided-hat,tall_antelope',
+            'PRODUCTSET-product_models-quantity' => '12|24',
+            'sku'                                => '10699783',
+            'weight-de_DE-print'                 => '100',
+            'weight-de_DE-print-unit'            => 'KILOGRAM',
         ];
 
         $item = [
@@ -77,6 +85,34 @@ class ProductSpec extends ObjectBehavior
                 'X_SELL' => [
                     'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
                     'products' => ['AKN_TS', 'ORO_TSH']
+                ]
+            ],
+            'quantified_associations' => [
+                'PACK' => [
+                    'products' => [],
+                    'product_models' => [],
+                ],
+                'PRODUCTSET' => [
+                    'products' => [
+                        [
+                            'identifier' => 'bag',
+                            'quantity' => 2
+                        ],
+                        [
+                            'identifier' => 'socks',
+                            'quantity' => 8
+                        ]
+                    ],
+                    'product_models' => [
+                        [
+                            'identifier' => 'braided-hat',
+                            'quantity' => 12
+                        ],
+                        [
+                            'identifier' => 'tall_antelope',
+                            'quantity' => 24
+                        ]
+                    ]
                 ]
             ],
             'sku'               => [
