@@ -182,7 +182,7 @@ JSON;
         $expected = <<<JSON
 {
     "code": 422,
-    "message": "Property \"not_found\" does not exist."
+    "message": "Attribute \"not_found\" does not exist."
 }
 JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());

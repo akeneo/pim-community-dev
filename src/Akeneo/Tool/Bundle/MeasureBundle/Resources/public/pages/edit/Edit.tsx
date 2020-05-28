@@ -2,23 +2,18 @@ import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {useHistory, useParams, Prompt} from 'react-router-dom';
 import styled from 'styled-components';
 import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-family';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {UnitTab} from 'akeneomeasure/pages/edit/unit-tab';
 import {PropertyTab} from 'akeneomeasure/pages/edit/PropertyTab';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
-import {PimView} from 'akeneomeasure/bridge/legacy/pim-view/PimView';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
-import {Button} from 'akeneomeasure/shared/components/Button';
 import {addUnit, getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Unit, UnitCode} from 'akeneomeasure/model/unit';
-import {UserContext} from 'akeneomeasure/context/user-context';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {
   DropdownLink,
   SecondaryActionsDropdownButton,
 } from 'akeneomeasure/shared/components/SecondaryActionsDropdownButton';
-import {NotificationLevel, NotifyContext} from 'akeneomeasure/context/notify-context';
 import {filterErrors, ValidationError, partitionErrors} from 'akeneomeasure/model/validation-error';
 import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family-saver';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
@@ -33,9 +28,17 @@ import {
   MeasurementFamilyRemoverResult,
 } from 'akeneomeasure/hooks/use-measurement-family-remover';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
-import {SecurityContext} from 'akeneomeasure/context/security-context';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {ErrorBlock} from 'akeneomeasure/shared/components/ErrorBlock';
+import {
+  useTranslate,
+  useNotify,
+  NotificationLevel,
+  useUserContext,
+  PimView,
+  useSecurity,
+} from '@akeneo-pim-community/legacy-bridge';
+import {Button} from '@akeneo-pim-community/shared';
 
 enum Tab {
   Units = 'units',
@@ -91,17 +94,17 @@ const Errors = ({errors}: {errors: ValidationError[]}) => {
 };
 
 const Edit = () => {
-  const __ = useContext(TranslateContext);
+  const __ = useTranslate();
+  const notify = useNotify();
   const history = useHistory();
-  const locale = useContext(UserContext)('uiLocale');
-  const isGranted = useContext(SecurityContext);
+  const locale = useUserContext().get('uiLocale');
+  const {isGranted} = useSecurity();
   const config = useContext(ConfigContext);
   const {measurementFamilyCode} = useParams() as {measurementFamilyCode: string};
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.Units);
   const [measurementFamily, setMeasurementFamily] = useMeasurementFamily(measurementFamilyCode);
   const [selectedUnitCode, selectUnitCode] = useState<UnitCode | null>(null);
   const [errors, setErrors] = useState<ValidationError[]>([]);
-  const notify = useContext(NotifyContext);
   const [isAddUnitModalOpen, openAddUnitModal, closeAddUnitModal] = useToggleState(false);
   const [
     isConfirmDeleteMeasurementFamilyModalOpen,

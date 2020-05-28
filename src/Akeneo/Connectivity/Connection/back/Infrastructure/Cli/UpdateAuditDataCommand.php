@@ -6,8 +6,8 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\PurgeAuditProductQuery;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectHourlyIntervalsToRefreshQuery;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -70,7 +70,8 @@ class UpdateAuditDataCommand extends Command
     private function purgeOlderThanXDays(int $days): void
     {
         $before = new \DateTimeImmutable("now - $days days", new \DateTimeZone('UTC'));
-        $before->setTime((int) $before->format('H'), 0, 0);
+        $before = $before->setTime((int) $before->format('H'), 0, 0);
+
         $this->purgeQuery->execute($before);
     }
 

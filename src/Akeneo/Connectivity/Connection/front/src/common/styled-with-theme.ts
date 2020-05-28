@@ -1,5 +1,8 @@
 import styled, {ThemedStyledInterface} from 'styled-components';
 import searchIconUrl from './assets/icons/search.svg';
+import graphIllustrationUrl from './assets/illustrations/Graph.svg';
+import apiIllustrationUrl from './assets/illustrations/NewAPI.svg';
+import surveyIllustrationUrl from './assets/illustrations/UserSurvey.svg';
 
 const theme = {
     color: {
@@ -21,11 +24,19 @@ const theme = {
         big: '15px',
         default: '13px',
         small: '11px',
+        metricsBig: '22px',
     },
     icon: {
         search: searchIconUrl,
     },
+    illustration: {
+        api: apiIllustrationUrl,
+        graph: graphIllustrationUrl,
+        survey: surveyIllustrationUrl,
+    },
 };
 
-export {theme};
-export default styled as ThemedStyledInterface<typeof theme>;
+type Theme = typeof theme;
+
+export {theme, Theme};
+export default styled as ThemedStyledInterface<Theme>;

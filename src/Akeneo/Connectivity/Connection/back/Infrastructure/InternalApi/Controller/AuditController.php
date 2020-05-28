@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionHandler;
-use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
-use Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateProductEventCounts;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodErrorCountPerConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateAuditData;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,18 +23,28 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AuditController
 {
-    /** @var CountDailyEventsByConnectionHandler */
-    private $countDailyEventsByConnectionHandler;
-
     /** @var UserContext */
     private $userContext;
 
+    /** @var GetPeriodEventCountPerConnectionHandler */
+    private $getPeriodEventCountPerConnectionHandler;
+
+    /** @var GetErrorCountPerConnectionHandler */
+    private $getErrorCountPerConnectionHandler;
+
+    /** @var GetPeriodErrorCountPerConnectionHandler */
+    private $getPeriodErrorCountPerConnectionHandler;
+
     public function __construct(
-        CountDailyEventsByConnectionHandler $countDailyEventsByConnectionHandler,
-        UserContext $userContext
+        UserContext $userContext,
+        GetPeriodEventCountPerConnectionHandler $getPeriodEventCountPerConnectionHandler,
+        GetErrorCountPerConnectionHandler $getErrorCountPerConnectionHandler,
+        GetPeriodErrorCountPerConnectionHandler $getPeriodErrorCountPerConnectionHandler
     ) {
         $this->userContext = $userContext;
-        $this->countDailyEventsByConnectionHandler = $countDailyEventsByConnectionHandler;
+        $this->getPeriodEventCountPerConnectionHandler = $getPeriodEventCountPerConnectionHandler;
+        $this->getErrorCountPerConnectionHandler = $getErrorCountPerConnectionHandler;
+        $this->getPeriodErrorCountPerConnectionHandler = $getPeriodErrorCountPerConnectionHandler;
     }
 
     public function getWeeklyAudit(Request $request): JsonResponse
@@ -42,19 +57,84 @@ class AuditController
             (new \DateTimeImmutable('now', $timezone))->format('Y-m-d')
         );
 
-        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval($endDateUser, $timezone);
+        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval(
+            $endDateUser,
+            $timezone,
+            new \DateInterval('P7D')
+        );
         [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
 
-        $query = new CountDailyEventsByConnectionQuery($eventType, $fromDateTime, $upToDateTime);
-        $periodEventCounts = $this->countDailyEventsByConnectionHandler->handle($query);
+        $query = new GetPeriodEventCountPerConnectionQuery($eventType, $fromDateTime, $upToDateTime);
+        $periodEventCounts = $this->getPeriodEventCountPerConnectionHandler->handle($query);
 
-        $data = AggregateProductEventCounts::normalize($periodEventCounts, $timezone);
+        $data = AggregateAuditData::normalize($periodEventCounts, $timezone);
+
+        // TODO To remove after the UI is updated with the new format.
+        $retroCompatibleData = [];
+        foreach ($data as $connectionCode => $connectionData) {
+            $retroCompatibleData[$connectionCode] = [
+                'daily' => array_merge($connectionData['previous_week'], $connectionData['current_week']),
+                'weekly_total' => $connectionData['current_week_total']
+            ];
+        }
+
+        return new JsonResponse($retroCompatibleData);
+    }
+
+    public function getWeeklyErrorAudit(Request $request): JsonResponse
+    {
+        $timezone = new \DateTimeZone($this->userContext->getUserTimezone());
+
+        $endDateUser = $request->get(
+            'end_date',
+            (new \DateTimeImmutable('now', $timezone))->format('Y-m-d')
+        );
+
+        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval(
+            $endDateUser,
+            $timezone,
+            new \DateInterval('P7D')
+        );
+        [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
+
+        $query = new GetPeriodErrorCountPerConnectionQuery(new DateTimePeriod($fromDateTime, $upToDateTime));
+        $periodEventCountPerConnection = $this->getPeriodErrorCountPerConnectionHandler->handle($query);
+
+        $data = AggregateAuditData::normalize($periodEventCountPerConnection, $timezone);
 
         return new JsonResponse($data);
     }
 
-    private function createUserDateTimeInterval(string $endDateUser, \DateTimeZone $timezone): array
+    public function getErrorCountPerConnection(Request $request): JsonResponse
     {
+        $timezone = new \DateTimeZone($this->userContext->getUserTimezone());
+
+        $errorType = $request->get('error_type');
+        $endDateUser = $request->get(
+            'end_date',
+            (new \DateTimeImmutable('now', $timezone))->format('Y-m-d')
+        );
+
+        [$startDateTimeUser, $endDateTimeUser] = $this->createUserDateTimeInterval(
+            $endDateUser,
+            $timezone,
+            new \DateInterval('P6D')
+        );
+        [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
+
+        $query = new GetErrorCountPerConnectionQuery($errorType, $fromDateTime, $upToDateTime);
+        $errorCountPerConnection = $this->getErrorCountPerConnectionHandler->handle($query);
+
+        $data = $errorCountPerConnection->normalize();
+
+        return new JsonResponse($data);
+    }
+
+    private function createUserDateTimeInterval(
+        string $endDateUser,
+        \DateTimeZone $timezone,
+        \DateInterval $dateInterval
+    ): array {
         $endDateTimeUser = \DateTimeImmutable::createFromFormat(
             'Y-m-d',
             $endDateUser,
@@ -67,13 +147,15 @@ class AuditController
             ));
         }
 
-        $startDateTimeUser = $endDateTimeUser->sub(new \DateInterval('P7D'));
+        $startDateTimeUser = $endDateTimeUser->sub($dateInterval);
 
         return [$startDateTimeUser, $endDateTimeUser];
     }
 
-    private function createUtcDateTimeInterval(\DateTimeImmutable $startDateTimeUser, \DateTimeImmutable $endDateTimeUser): array
-    {
+    private function createUtcDateTimeInterval(
+        \DateTimeImmutable $startDateTimeUser,
+        \DateTimeImmutable $endDateTimeUser
+    ): array {
         $fromDateTime = $startDateTimeUser
             ->setTime(0, 0)
             ->setTimezone(new \DateTimeZone('UTC'));

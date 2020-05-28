@@ -4,9 +4,11 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
 import {act, fireEvent, getAllByRole, getByLabelText, getByText} from '@testing-library/react';
-import {AkeneoThemeProvider} from 'akeneomeasure/AkeneoThemeProvider';
+import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
-import {UserContext} from 'akeneomeasure/context/user-context';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+
+jest.mock('legacy-bridge/provider/dependencies.ts');
 
 declare global {
   namespace NodeJS {
@@ -63,21 +65,14 @@ const measurementFamily = Object.freeze({
   is_locked: false,
 });
 
-const mockUserContext = (key: string) => {
-  switch (key) {
-    case 'uiLocale':
-      return 'en_US';
-    default:
-      return '';
-  }
-};
-
 test('It renders without errors', async () => {
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <CreateUnit measurementFamily={measurementFamily} onClose={() => {}} onNewUnit={() => {}} />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <CreateUnit measurementFamily={measurementFamily} onClose={() => {}} onNewUnit={() => {}} />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -94,11 +89,11 @@ test('I can fill the fields, validate and the modal is closed.', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <UserContext.Provider value={mockUserContext}>
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
           <CreateUnit measurementFamily={measurementFamily} onClose={mockOnClose} onNewUnit={mockOnNewUnit} />
-        </UserContext.Provider>
-      </AkeneoThemeProvider>,
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -113,18 +108,15 @@ test('I can fill the fields, validate and the modal is closed.', async () => {
     await fireEvent.click(button);
   });
 
-  expect(mockFetch).toHaveBeenCalledWith(
-    'akeneo_measurements_validate_unit_rest?measurement_family_code=custom_metric',
-    {
-      body:
-        '{"code":"KILOMETER","labels":{"en_US":"Kilometer"},"symbol":"km","convert_from_standard":[{"operator":"mul","value":"10"}]}',
-      headers: [
-        ['Content-type', 'application/json'],
-        ['X-Requested-With', 'XMLHttpRequest']
-      ],
-      method: 'POST',
-    }
-  );
+  expect(mockFetch).toHaveBeenCalledWith('akeneo_measurements_validate_unit_rest', {
+    body:
+      '{"code":"KILOMETER","labels":{"en_US":"Kilometer"},"symbol":"km","convert_from_standard":[{"operator":"mul","value":"10"}]}',
+    headers: [
+      ['Content-type', 'application/json'],
+      ['X-Requested-With', 'XMLHttpRequest'],
+    ],
+    method: 'POST',
+  });
   expect(mockOnNewUnit).toHaveBeenCalledWith({
     code: 'KILOMETER',
     labels: {
@@ -163,11 +155,11 @@ test('I can submit invalid values and have the errors displayed.', async () => {
 
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <UserContext.Provider value={mockUserContext}>
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
           <CreateUnit measurementFamily={measurementFamily} onClose={mockOnClose} onNewUnit={mockOnNewUnit} />
-        </UserContext.Provider>
-      </AkeneoThemeProvider>,
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -179,18 +171,15 @@ test('I can submit invalid values and have the errors displayed.', async () => {
     await fireEvent.click(button);
   });
 
-  expect(mockFetch).toHaveBeenCalledWith(
-    'akeneo_measurements_validate_unit_rest?measurement_family_code=custom_metric',
-    {
-      body:
-        '{"code":"invalid unit code","labels":{"en_US":""},"symbol":"","convert_from_standard":[{"operator":"mul","value":""}]}',
-      headers: [
-        ['Content-type', 'application/json'],
-        ['X-Requested-With', 'XMLHttpRequest']
-      ],
-      method: 'POST',
-    }
-  );
+  expect(mockFetch).toHaveBeenCalledWith('akeneo_measurements_validate_unit_rest', {
+    body:
+      '{"code":"invalid unit code","labels":{"en_US":""},"symbol":"","convert_from_standard":[{"operator":"mul","value":""}]}',
+    headers: [
+      ['Content-type', 'application/json'],
+      ['X-Requested-With', 'XMLHttpRequest'],
+    ],
+    method: 'POST',
+  });
   expect(mockOnNewUnit).not.toHaveBeenCalled();
   expect(mockOnClose).not.toHaveBeenCalled();
   expect(getByText(container, 'This field can only contain letters, numbers, and underscores.')).toBeInTheDocument();

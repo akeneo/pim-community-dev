@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository;
@@ -15,5 +16,5 @@ interface WrongCredentialsCombinationRepository
 {
     public function create(WrongCredentialsCombination $wrongCredentialsCombination): void;
 
-    public function findAll(\DateTime $since): WrongCredentialsCombinations;
+    public function findAll(\DateTimeImmutable $since): WrongCredentialsCombinations;
 }

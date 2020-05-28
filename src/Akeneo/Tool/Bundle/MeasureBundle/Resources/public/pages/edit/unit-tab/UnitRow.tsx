@@ -1,10 +1,9 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import {UserContext} from 'akeneomeasure/context/user-context';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 import {Unit, UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
 import {Row, LabelCell} from 'akeneomeasure/pages/common/Table';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 
 const CodeCell = styled.td`
   padding-right: 15px;
@@ -42,8 +41,8 @@ type UnitRowProps = {
 };
 
 const UnitRow = ({unit, isStandardUnit, isSelected = false, isInvalid = false, onRowSelected}: UnitRowProps) => {
-  const __ = useContext(TranslateContext);
-  const locale = useContext(UserContext)('uiLocale');
+  const __ = useTranslate();
+  const locale = useUserContext().get('uiLocale');
 
   return (
     <Row role="unit-row" isSelected={isSelected} onClick={() => onRowSelected(unit.code)}>

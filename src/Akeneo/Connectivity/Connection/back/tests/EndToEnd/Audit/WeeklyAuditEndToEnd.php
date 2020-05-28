@@ -7,9 +7,9 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Audit;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditLoader;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,7 +50,7 @@ class WeeklyAuditEndToEnd extends WebTestCase
                     '2020-01-07' => 0,
                     '2020-01-08' => 0,
                 ],
-                'weekly_total' => 15
+                'weekly_total' => 12
             ],
             'sap' => [
                 'daily' => [
@@ -76,7 +76,7 @@ class WeeklyAuditEndToEnd extends WebTestCase
                     '2020-01-07' => 0,
                     '2020-01-08' => 0,
                 ],
-                'weekly_total' => 100
+                'weekly_total' => 0
             ]
         ];
 
@@ -122,7 +122,7 @@ class WeeklyAuditEndToEnd extends WebTestCase
                     '2020-01-07' => 0,
                     '2020-01-08' => 0,
                 ],
-                'weekly_total' => 15
+                'weekly_total' => 12
             ],
             '<all>' => [
                 'daily' => [

@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement;
 
+use Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\ExtractErrorsFromHttpExceptionInterface;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\ApiErrorInterface;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\TechnicalError;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
@@ -16,7 +21,7 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExtractErrorsFromHttpException
+class ExtractErrorsFromHttpException implements ExtractErrorsFromHttpExceptionInterface
 {
     /** @var Serializer */
     private $serializer;
@@ -26,10 +31,7 @@ class ExtractErrorsFromHttpException
         $this->serializer = $serializer;
     }
 
-    /**
-     * @return string[]
-     */
-    public function extractAll(HttpException $httpException): array
+    public function extractAll(HttpExceptionInterface $httpException): array
     {
         if (
             false === $httpException instanceof UnprocessableEntityHttpException
@@ -40,15 +42,26 @@ class ExtractErrorsFromHttpException
 
         $json = $this->serializer->serialize($httpException, 'json', new Context());
 
-        if ($httpException instanceof ViolationHttpException) {
-            return $this->extractViolationErrors($json);
+        switch (true) {
+            case $httpException instanceof ViolationHttpException:
+                $extractedErrors = $this->extractViolationErrors($json);
+                break;
+
+            case $httpException->getPrevious() instanceof UnknownAttributeException:
+                $extractedErrors = [new BusinessError($json)];
+                break;
+
+            default:
+                $extractedErrors = [new TechnicalError($json)];
         }
 
-        return [$json];
+        return $extractedErrors;
     }
 
     /**
-     * @return string[]
+     * @param string $json
+     *
+     * @return ApiErrorInterface[]
      */
     private function extractViolationErrors(string $json): array
     {
@@ -56,7 +69,7 @@ class ExtractErrorsFromHttpException
 
         $errors = [];
         foreach ($data['errors'] as $error) {
-            $errors[] = json_encode($error);
+            $errors[] = new BusinessError(json_encode($error));
         }
 
         return $errors;

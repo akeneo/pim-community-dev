@@ -1,12 +1,21 @@
 pim_menu:
+  navigation_back:
+    connection: Retour aux connexions
+  navigation_block:
+    connection: Navigation connexions
   item:
     connection_audit: Tableau de bord des connexions
     connection_settings: Connexions
+    connection_settings_edit: Paramètres de connexion
+    connection_monitoring: Supervision
 pim_title:
   akeneo_connectivity_connection_settings_index: Connexions
+  akeneo_connectivity_connection_settings_edit: Paramètres de connexion
+  akeneo_connectivity_connection_settings_any: Paramètres de connexion
   akeneo_connectivity_connection_audit_index: Tableau de bord des connexions
   akeneo_connectivity_connection_audit_any: Tableau de bord des connexions
   akeneo_connectivity_connection_error_management_dashboard: Tableau de bord des connexions
+  akeneo_connectivity_connection_error_management_connection_monitoring: Supervision
 akeneo_connectivity.connection:
   connections: Connexions
   secondary_actions:
@@ -158,6 +167,11 @@ akeneo_connectivity.connection:
       legend:
         during_the_last_seven_days: 'Total sur les 7 derniers jours :'
         today: Aujourd'hui
+    error_management:
+      widget:
+        title: Erreurs métier par connexion source
+        over_the_last_seven_days: Au cours des 7 derniers jours
+        business_errors: erreurs métier
     no_connection:
       title:
         default: Envie de suivre vos connexions à l'aide de beaux graphiques ?
@@ -169,6 +183,26 @@ akeneo_connectivity.connection:
       message_without_permission:
         message: Demandez à votre administrateur d'en créer une.
         link: En savoir plus sur les connexions ici...
+  error_management:
+    connection_monitoring:
+      title: Supervision
+      helper:
+        title: '{0} Vous avez {{ count }} erreur |[1,Inf] Vous avez {{ count }} erreurs'
+        description: Ici, vous pouvez voir le détail de chaque erreur métier pour cette connexion au cours des 7 derniers jours. Le nombre d'erreur est limité à 100 erreurs.
+        link: Pour savoir comment résoudre ces erreurs, rendez vous sur la documentation de l'API.
+      search_filter:
+        placeholder: Rechercher dans les messages d'erreur
+        result_count: '{0} Aucun résultat |[1,Inf] {{ count }} résultats'
+      error_list:
+        date_time_column: Jour et heure
+        content_column: Message d'erreur
+      no_error:
+        title: Génial ! Aucune erreur trouvée !
+      not_auditable:
+        description:
+          1: To track errors on this connection,
+          2: activate monitoring
+          3: in the settings.
   runtime_error:
     error_message: Oups ! Une erreur s'est produite...
     reload_helper: Merci de rafraîchir la page et de réessayer.

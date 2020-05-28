@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository;
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -15,5 +17,5 @@ interface BusinessErrorRepository
     /**
      * @param BusinessError[] $businessErrors
      */
-    public function bulkInsert(array $businessErrors): void;
+    public function bulkInsert(ConnectionCode $connectionCode, array $businessErrors): void;
 }

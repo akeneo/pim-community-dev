@@ -1,14 +1,13 @@
-import React, {useContext, FormEvent, useRef} from 'react';
+import React, {FormEvent, useRef} from 'react';
 import styled from 'styled-components';
 import {MeasurementFamily, setMeasurementFamilyLabel} from 'akeneomeasure/model/measurement-family';
-import {TranslateContext} from 'akeneomeasure/context/translate-context';
 import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
-import {SecurityContext} from 'akeneomeasure/context/security-context';
-import {useAutoFocus} from 'akeneomeasure/shared/hooks/use-auto-focus';
+import {useAutoFocus} from '@akeneo-pim-community/shared';
+import {useTranslate, useSecurity} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
   display: flex;
@@ -26,9 +25,9 @@ const PropertyTab = ({
   errors: ValidationError[];
   onMeasurementFamilyChange: (measurementFamily: MeasurementFamily) => void;
 }) => {
-  const __ = useContext(TranslateContext);
+  const __ = useTranslate();
   const locales = useUiLocales();
-  const isGranted = useContext(SecurityContext);
+  const {isGranted} = useSecurity();
 
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
   useAutoFocus(firstFieldRef);

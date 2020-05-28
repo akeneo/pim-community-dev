@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
-use Akeneo\Connectivity\Connection\Domain\Audit\Model\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
@@ -68,14 +68,14 @@ class DbalSelectPeriodEventCountsQueryIntegration extends TestCase
         );
 
         $expectedResult = [
+            new PeriodEventCount('<all>', $fromDateTime, $upToDateTime, [
+                new Read\HourlyEventCount(new \DateTimeImmutable('2020-01-02 12:00:00', new \DateTimeZone('UTC')), 8)
+            ]),
             new PeriodEventCount('bynder', $fromDateTime, $upToDateTime, []),
             new PeriodEventCount('sap', $fromDateTime, $upToDateTime, [
                 new Read\HourlyEventCount(new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC')), 10),
                 new Read\HourlyEventCount(new \DateTimeImmutable('2020-01-03 23:00:00', new \DateTimeZone('UTC')), 4)
             ]),
-            new PeriodEventCount('<all>', $fromDateTime, $upToDateTime, [
-                new Read\HourlyEventCount(new \DateTimeImmutable('2020-01-02 12:00:00', new \DateTimeZone('UTC')), 8)
-            ])
         ];
 
         Assert::assertEquals($expectedResult, $result);
@@ -94,8 +94,8 @@ class DbalSelectPeriodEventCountsQueryIntegration extends TestCase
         );
 
         $expectedResult = [
-            new PeriodEventCount('sap', $fromDateTime, $upToDateTime, []),
             new PeriodEventCount('<all>', $fromDateTime, $upToDateTime, []),
+            new PeriodEventCount('sap', $fromDateTime, $upToDateTime, []),
         ];
 
         Assert::assertEquals($expectedResult, $result);

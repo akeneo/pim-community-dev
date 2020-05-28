@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {PageContent, RuntimeError} from '../../common/components';
-import {NotFoundError, UnauthorizedError} from '../services/fetch';
+import {NotFoundError, UnauthorizedError} from '../../shared/fetch';
 
 class ErrorBoundary extends Component<unknown, {error?: Error}> {
     constructor(props: unknown) {
@@ -21,8 +21,14 @@ class ErrorBoundary extends Component<unknown, {error?: Error}> {
         if (this.state.error) {
             return (
                 <PageContent>
-                    {/* TODO Create NotFoundError component */}
-                    {this.state.error instanceof NotFoundError ? <>NotFoundError</> : <RuntimeError />}
+                    {this.state.error instanceof NotFoundError ? (
+                        <>
+                            {/* TODO Create NotFoundError component */}
+                            <RuntimeError />
+                        </>
+                    ) : (
+                        <RuntimeError />
+                    )}
                 </PageContent>
             );
         }

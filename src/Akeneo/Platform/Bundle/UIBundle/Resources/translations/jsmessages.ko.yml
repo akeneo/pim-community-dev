@@ -156,6 +156,7 @@ pim_common:
   cancel: 취소
   close: 닫기
   code: 코드
+  completeness: 완성도
   confirm: 확인
   confirm_deletion: 삭제 확인
   confirm_revocation: 취소 확인
@@ -168,6 +169,8 @@ pim_common:
   from: 시작
   general_properties: 일반 속성
   history: 기록
+  identifier: 식별자
+  image: 이미지
   label: 레이블
   label_translations: 레이블 번역
   Label or identifier: 레이블 또는 식별자
@@ -187,6 +190,7 @@ pim_common:
   properties: 속성
   remove: 제거
   required_label: (필수)
+  result_count: "{0}0 결과|{1}1 결과|]1, Inf[{{ itemsCount }} 결과"
   save: 저장
   search: 검색
   select2:

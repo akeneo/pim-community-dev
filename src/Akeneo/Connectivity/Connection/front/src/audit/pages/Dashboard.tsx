@@ -1,11 +1,31 @@
-import React from 'react';
+import React, {memo, useEffect} from 'react';
 import {Breadcrumb, Helper, HelperLink, HelperTitle, PageContent, PageHeader} from '../../common';
 import {PimView} from '../../infrastructure/pim-view/PimView';
+import {AuditEventType} from '../../model/audit-event-type.enum';
 import {BreadcrumbRouterLink} from '../../shared/router';
 import {Translate} from '../../shared/translate';
-import {Charts} from '../components/Charts';
+import {connectionsFetched} from '../actions/dashboard-actions';
+import {DashboardContent} from '../components/DashboardContent';
+import {useDashboardDispatch} from '../dashboard-context';
+import {useConnections} from '../hooks/api/use-connections';
+import {useFetchConnectionsAuditData} from '../hooks/api/use-fetch-connections-audit-data';
 
-export const Dashboard = () => {
+export const Dashboard = memo(() => {
+    const {connections} = useConnections();
+
+    const dispatch = useDashboardDispatch();
+    useEffect(() => {
+        if (undefined === connections) {
+            return;
+        }
+
+        dispatch(connectionsFetched(connections));
+    }, [connections, dispatch]);
+
+    useFetchConnectionsAuditData(AuditEventType.PRODUCT_CREATED);
+    useFetchConnectionsAuditData(AuditEventType.PRODUCT_UPDATED);
+    useFetchConnectionsAuditData(AuditEventType.PRODUCT_READ);
+
     const breadcrumb = (
         <Breadcrumb>
             <BreadcrumbRouterLink route={'pim_dashboard_index'} isLast={false}>
@@ -40,8 +60,8 @@ export const Dashboard = () => {
                     </HelperLink>
                 </Helper>
 
-                <Charts />
+                <DashboardContent />
             </PageContent>
         </>
     );
-};
+});

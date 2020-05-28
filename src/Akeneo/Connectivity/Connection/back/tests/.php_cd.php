@@ -18,6 +18,9 @@ $rules = [
 
             // Dependency on Symfony Validator to ease validation
             'Symfony\Component\Validator',
+
+            // Dependency on HttpException to transform them into an ApiError
+            'Symfony\Component\HttpKernel\Exception\HttpException'
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
@@ -80,7 +83,7 @@ $rules = [
         [
             'Akeneo\Connectivity\Connection\Application',
             'Akeneo\Connectivity\Connection\Domain',
-            'Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateProductEventCounts',
+            'Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateAuditData',
 
             // Dependency on HTTP foundation for Request/Response
             'Symfony\Component\HttpFoundation',

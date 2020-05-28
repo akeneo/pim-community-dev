@@ -24,7 +24,7 @@ class CollectApiBusinessErrorsEndToEnd extends ApiTestCase
     private $esClient;
 
     // test_it_collects_errors_from_a_product_delete
-    public function test_it_collects_an_error_from_a_not_found_http_exception(): void
+    public function test_it_dos_not_collect_an_error_from_a_not_found_http_exception(): void
     {
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
@@ -40,20 +40,14 @@ class CollectApiBusinessErrorsEndToEnd extends ApiTestCase
         $client->request('DELETE', '/api/rest/v1/products/unknown_product_identifier');
         Assert::assertSame(Response::HTTP_NOT_FOUND, $client->getResponse()->getStatusCode());
 
-        $expectedContent = json_decode($client->getResponse()->getContent(), true);
-
         $this->esClient->refreshIndex();
         $result = $this->esClient->search([]);
 
-        Assert::assertCount(1, $result['hits']['hits']);
-
-        $doc = $result['hits']['hits'][0]['_source'];
-        Assert::assertSame('erp', $doc['connection_code']);
-        Assert::assertSame($expectedContent['message'], $doc['content']['message']);
+        Assert::assertCount(0, $result['hits']['hits']);
     }
 
     // test_it_collects_errors_from_a_product_create
-    public function test_it_collects_an_error_from_a_unprocessable_entity_http_exception(): void
+    public function test_it_does_not_collect_an_error_from_a_unprocessable_entity_http_exception(): void
     {
         $this->createAttribute([
             'code' => 'name',

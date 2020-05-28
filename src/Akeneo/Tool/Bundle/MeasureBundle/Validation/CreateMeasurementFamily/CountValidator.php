@@ -37,7 +37,7 @@ class CountValidator extends ConstraintValidator
         }
 
         if (!$createMeasurementFamilyCommand instanceof CreateMeasurementFamilyCommand) {
-            throw new UnexpectedTypeException(createMeasurementFamilyCommand, CreateMeasurementFamilyCommand::class);
+            throw new UnexpectedTypeException($createMeasurementFamilyCommand, CreateMeasurementFamilyCommand::class);
         }
 
         $excludedMeasurementFamilyCode = MeasurementFamilyCode::fromString($createMeasurementFamilyCommand->code);
