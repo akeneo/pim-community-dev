@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9275: Fix mass upload of Assets ACL in the product edit form
+
 # 3.2.57 (2020-05-28)
 
 ## Bug fixes:
