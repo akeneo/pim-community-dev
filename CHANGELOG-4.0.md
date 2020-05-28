@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+-PIM-9269: Add the key "tree.create" and its associated message in the translation file for Crowdin
+
 # 4.0.29 (2020-05-26)
 
 ## Bug fixes
