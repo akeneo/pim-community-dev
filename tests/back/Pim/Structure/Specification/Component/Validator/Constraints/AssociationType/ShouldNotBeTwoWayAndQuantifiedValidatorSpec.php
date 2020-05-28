@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
+namespace Specification\Akeneo\Pim\Structure\Component\Validator\Constraints\AssociationType;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
