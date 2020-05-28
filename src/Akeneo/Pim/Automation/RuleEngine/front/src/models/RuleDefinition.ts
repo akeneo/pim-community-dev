@@ -6,5 +6,5 @@ export type RuleDefinition = {
   labels: { [localeCode: string]: string };
   priority: number;
   conditions: Condition[];
-  actions: (Action | null)[];
+  actions: Action[];
 };

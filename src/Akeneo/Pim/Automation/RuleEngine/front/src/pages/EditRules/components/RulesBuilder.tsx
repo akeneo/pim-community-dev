@@ -55,26 +55,28 @@ const RulesBuilder: React.FC<Props> = ({
         currentCatalogLocale={currentCatalogLocale}
         router={router}
       />
-      {actions.map((action: Action | null, i) => {
-        const Component =
-          i === actions.length - 1 ? LastActionContainer : ActionContainer;
-        return (
-          action && (
-            <Component key={`action_${i}`}>
-              <ActionLine
-                action={action}
-                translate={translate}
-                lineNumber={i}
-                handleDelete={() => {
-                  handleDeleteAction(i);
-                }}
-                router={router}
-                currentCatalogLocale={currentCatalogLocale}
-              />
-            </Component>
-          )
-        );
-      })}
+      <div data-testid={'action-list'}>
+        {actions.map((action: Action | null, i) => {
+          const Component =
+            i === actions.length - 1 ? LastActionContainer : ActionContainer;
+          return (
+            action && (
+              <Component key={`action_${i}`}>
+                <ActionLine
+                  action={action}
+                  translate={translate}
+                  lineNumber={i}
+                  handleDelete={() => {
+                    handleDeleteAction(i);
+                  }}
+                  router={router}
+                  currentCatalogLocale={currentCatalogLocale}
+                />
+              </Component>
+            )
+          );
+        })}
+      </div>
     </>
   );
 };
