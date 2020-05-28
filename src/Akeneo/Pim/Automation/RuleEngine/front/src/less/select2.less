@@ -36,8 +36,29 @@
   }
 }
 
+.select2-container.add-action-button {
+  .select2-choice {
+    border-color: @AknIllustrationBlue100;
+    color: @AknIllustrationBlue100 !important;
+    text-transform: uppercase;
+    border-radius: 100px;
+    height: 32px;
+    line-height: 32px;
+
+    .select2-arrow {
+      background-image: url('/bundles/akeneopimruleengine/assets/icons/icon-down-blue.svg');
+      background-position-y: 7px;
+    }
+  }
+}
+
 .select2-drop.operator-dropdown {
   min-width: 200px;
+}
+
+.select2-drop.add-action-dropdown {
+  margin-top: -32px;
+  border-top: 1px solid @AknBorderColor;
 }
 
 .select2-drop.add-conditions-dropdown {
