@@ -45,6 +45,13 @@ const RulesBuilder: React.FC<Props> = ({
   actions,
   handleDeleteAction,
 }) => {
+  const isLastAction: (lineNumber: number) => boolean = lineNumber => {
+    const nextActions = actions.slice(lineNumber + 1);
+    return !nextActions.some(action => {
+      return action !== null;
+    });
+  };
+
   return (
     <>
       <RuleProductSelection
@@ -57,8 +64,9 @@ const RulesBuilder: React.FC<Props> = ({
       />
       <div data-testid={'action-list'}>
         {actions.map((action: Action | null, i) => {
-          const Component =
-            i === actions.length - 1 ? LastActionContainer : ActionContainer;
+          const Component = isLastAction(i)
+            ? LastActionContainer
+            : ActionContainer;
           return (
             action && (
               <Component key={`action_${i}`}>
