@@ -1,0 +1,9 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Label:
+    properties:
+        locale:
+            - Type: string
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
+        label:
+            - Type: string
+            - Length:
+                max: 100
