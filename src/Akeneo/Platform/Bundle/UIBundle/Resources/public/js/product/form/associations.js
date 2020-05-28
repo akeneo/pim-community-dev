@@ -251,8 +251,13 @@ define([
 
     setValidationErrors: function({response}) {
       this.validationErrors = response;
-      ReactDOM.unmountComponentAtNode(document.getElementById('product-quantified-associations'));
+      this.unmountQuantifiedAssociations();
       this.renderQuantifiedAssociations();
+    },
+
+    unmountQuantifiedAssociations: function() {
+      const quantifiedAssociationsNode = document.getElementById('product-quantified-associations');
+      if (quantifiedAssociationsNode) ReactDOM.unmountComponentAtNode(quantifiedAssociationsNode);
     },
 
     /**
@@ -445,7 +450,7 @@ define([
         .siblings('.AknTitleContainer.association-type:not(.AknTitleContainer--hidden)')
         .addClass('AknTitleContainer--hidden');
 
-      ReactDOM.unmountComponentAtNode(document.getElementById('product-quantified-associations'));
+      this.unmountQuantifiedAssociations();
       this.renderQuantifiedAssociations();
       this.renderPanes();
       this.updateListenerSelectors();
@@ -506,7 +511,7 @@ define([
     },
 
     isQuantifiedAssociation: function(associationTypes, associationTypeCode) {
-      if (0 === associationTypes.length) return false;
+      if (!associationTypes || 0 === associationTypes.length) return false;
 
       const associationType = associationTypes.find(associationType => associationType.code === associationTypeCode);
 
