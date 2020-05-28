@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Normalizer\ViolationNormalizer
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
@@ -48,8 +49,19 @@ class ViolationNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_a_violation_http_exception(): void
     {
+        $constraintViolationList = new ConstraintViolationList([
+            new ConstraintViolation(
+                'test',
+                'test',
+                ['%param1%' => 'value1'],
+                'root_value',
+                '',
+                'root_value'
+            ),
+        ]);
+
         $exception = new ViolationHttpException(
-            new ConstraintViolationList(),
+            $constraintViolationList,
             'message'
         );
 
@@ -58,10 +70,13 @@ class ViolationNormalizerSpec extends ObjectBehavior
                 'code' => 422,
                 'message' => 'message',
                 'errors' =>  [
+                    [
+                        'message' => 'test',
+                        'raw_message' => 'test',
+                        'parameters' => ['%param1%' => 'value1'],
+                        'type' => 'violation',
+                    ]
                 ],
-                'raw_message' => '',
-                'parameters' => '',
-                'type' => 'violation',
             ]
         );
     }
