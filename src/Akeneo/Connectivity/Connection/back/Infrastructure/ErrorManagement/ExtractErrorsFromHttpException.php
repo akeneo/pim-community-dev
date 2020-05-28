@@ -27,12 +27,12 @@ class ExtractErrorsFromHttpException implements ExtractErrorsFromHttpExceptionIn
     private $serializer;
 
     /** @var Serializer */
-    private $legacySerializer;
+    private $fallbackSerializer;
 
-    public function __construct(Serializer $serializer, Serializer $legacySerializer)
+    public function __construct(Serializer $serializer, Serializer $fallbackSerializer)
     {
         $this->serializer = $serializer;
-        $this->legacySerializer = $legacySerializer;
+        $this->fallbackSerializer = $fallbackSerializer;
     }
 
     public function extractAll(HttpExceptionInterface $httpException): array
@@ -47,7 +47,7 @@ class ExtractErrorsFromHttpException implements ExtractErrorsFromHttpExceptionIn
         try {
             $json = $this->serializer->serialize($httpException, 'json', new Context());
         } catch (\Exception $e) {
-            $json = $this->legacySerializer->serialize($httpException, 'json', new Context());
+            $json = $this->fallbackSerializer->serialize($httpException, 'json', new Context());
         }
 
         switch (true) {

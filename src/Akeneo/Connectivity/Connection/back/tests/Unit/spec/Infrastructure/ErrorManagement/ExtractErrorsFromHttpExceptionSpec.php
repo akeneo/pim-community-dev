@@ -18,9 +18,9 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class ExtractErrorsFromHttpExceptionSpec extends ObjectBehavior
 {
-    public function let(Serializer $serializer, Serializer $legacySerializer): void
+    public function let(Serializer $serializer, Serializer $fallbackSerializer): void
     {
-        $this->beConstructedWith($serializer, $legacySerializer);
+        $this->beConstructedWith($serializer, $fallbackSerializer);
     }
 
     public function it_extracts_an_error_from_an_unprocessable_entity_http_exception($serializer): void

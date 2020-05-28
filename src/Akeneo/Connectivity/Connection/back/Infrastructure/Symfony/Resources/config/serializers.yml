@@ -14,7 +14,7 @@ services:
         tags:
             - { name:  akeneo_connectivity.connection.serializer.normalizer, priority: 100 }
 
-    akeneo_connectivity.connection.encoder.exception.violation:
+    akeneo_connectivity.connection.encoder.json:
         class: 'Symfony\Component\Serializer\Encoder\JsonEncoder'
         tags:
             - { name:  akeneo_connectivity.connection.serializer.encoder, priority: 100 }
