@@ -13,7 +13,7 @@ define(
         'pim/data-collector',
         'pim/template/menu/help'
     ],
-    function(
+    function (
         _,
         __,
         BaseForm,
@@ -28,12 +28,12 @@ define(
             /**
              * {@inheritdoc}
              */
-            render: function() {
-                this.getUrl().then(url => {
+            render: function () {
+                this.getVersion().then(version => {
                     this.$el.empty().append(this.template({
                         helper: __('pim_menu.tab.help.helper'),
                         title: __('pim_menu.tab.help.title'),
-                        url
+                        version
                     }));
                 });
 
@@ -43,11 +43,9 @@ define(
             /**
              * {@inheritdoc}
              */
-            getUrl() {
+            getVersion() {
                 return DataCollector.collect(this.analyticsUrl).then((data) => {
-                    const { pim_version, pim_edition } = data;
-
-                    return `${pim_edition}${pim_version}`;
+                    return data.pim_version.substring(0, 1);
                 });
             }
         });
