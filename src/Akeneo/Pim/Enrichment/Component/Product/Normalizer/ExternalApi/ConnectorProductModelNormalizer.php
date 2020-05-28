@@ -47,6 +47,7 @@ final class ConnectorProductModelNormalizer
             'created' => $this->dateTimeNormalizer->normalize($connectorProductModel->createdDate()),
             'updated' => $this->dateTimeNormalizer->normalize($connectorProductModel->updatedDate()),
             'associations' => empty($connectorProductModel->associations()) ? (object) [] : $connectorProductModel->associations(),
+            'quantified_associations' => empty($connectorProductModel->quantifiedAssociations()) ? (object) [] : $connectorProductModel->quantifiedAssociations(),
         ];
 
         if (!empty($connectorProductModel->metadata())) {

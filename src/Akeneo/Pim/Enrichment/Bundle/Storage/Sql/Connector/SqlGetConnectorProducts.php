@@ -10,6 +10,8 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssoc
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductModelAssociationsByProductIdentifiers;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductIdentifiers;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
@@ -37,6 +39,12 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
     /** @var GetGroupAssociationsByProductIdentifiers */
     private $getGroupAssociationsByProductIdentifiers;
 
+    /** @var GetProductQuantifiedAssociationsByProductIdentifiers */
+    private $getProductQuantifiedAssociationsByProductIdentifiers;
+
+    /** @var GetProductModelQuantifiedAssociationsByProductIdentifiers */
+    private $getProductModelQuantifiedAssociationsByProductIdentifiers;
+
     /** @var GetCategoryCodesByProductIdentifiers */
     private $getCategoryCodesByProductIdentifiers;
 
@@ -51,10 +59,14 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         GetProductAssociationsByProductIdentifiers $getProductAssociationsByProductIdentifiers,
         GetProductModelAssociationsByProductIdentifiers $getProductModelAssociationsByProductIdentifiers,
         GetGroupAssociationsByProductIdentifiers $getGroupAssociationsByProductIdentifiers,
+        GetProductQuantifiedAssociationsByProductIdentifiers $getProductQuantifiedAssociationsByProductIdentifiers,
+        GetProductModelQuantifiedAssociationsByProductIdentifiers $getProductModelQuantifiedAssociationsByProductIdentifiers,
         GetCategoryCodesByProductIdentifiers $getCategoryCodesByProductIdentifiers,
         ReadValueCollectionFactory $readValueCollectionFactory,
         IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
+        $this->getProductQuantifiedAssociationsByProductIdentifiers = $getProductQuantifiedAssociationsByProductIdentifiers;
+        $this->getProductModelQuantifiedAssociationsByProductIdentifiers = $getProductModelQuantifiedAssociationsByProductIdentifiers;
         $this->getValuesAndPropertiesFromProductIdentifiers = $getValuesAndPropertiesFromProductIdentifiers;
         $this->getProductAssociationsByProductIdentifiers = $getProductAssociationsByProductIdentifiers;
         $this->getProductModelAssociationsByProductIdentifiers = $getProductModelAssociationsByProductIdentifiers;
@@ -105,6 +117,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         $rows = array_replace_recursive(
             $this->getValuesAndPropertiesFromProductIdentifiers->fetchByProductIdentifiers($productIdentifiers),
             $this->fetchAssociationsIndexedByProductIdentifier($productIdentifiers),
+            $this->fetchQuantifiedAssociationsIndexedByProductIdentifier($productIdentifiers),
             $this->fetchCategoryCodesIndexedByProductIdentifier($productIdentifiers)
         );
 
@@ -149,6 +162,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 $row['group_codes'],
                 $row['product_model_code'],
                 $row['associations'] ?? [],
+                $row['quantified_associations'] ?? [],
                 [],
                 $filteredRawValuesIndexedByProductIdentifier[$identifier]
             );
@@ -231,5 +245,24 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         }
 
         return $associationsIndexedByIdentifier;
+    }
+
+    private function fetchQuantifiedAssociationsIndexedByProductIdentifier(array $identifiers): array
+    {
+        $quantifiedAssociations = array_replace_recursive(
+            $this->getProductQuantifiedAssociationsByProductIdentifiers->fromProductIdentifiers($identifiers),
+            $this->getProductModelQuantifiedAssociationsByProductIdentifiers->fromProductIdentifiers($identifiers),
+        );
+
+        $quantifiedAssociationsIndexedByIdentifier = [];
+        foreach ($quantifiedAssociations as $identifier => $quantifiedAssociation) {
+            $associationTypes = array_keys($quantifiedAssociation);
+            $quantifiedAssociationsWithoutEntities = array_fill_keys($associationTypes, ['products' => [], 'product_models' => []]);
+            $quantifiedAssociation = array_merge_recursive($quantifiedAssociationsWithoutEntities, $quantifiedAssociation);
+
+            $quantifiedAssociationsIndexedByIdentifier[$identifier]['quantified_associations'] = $quantifiedAssociation;
+        }
+
+        return $quantifiedAssociationsIndexedByIdentifier;
     }
 }

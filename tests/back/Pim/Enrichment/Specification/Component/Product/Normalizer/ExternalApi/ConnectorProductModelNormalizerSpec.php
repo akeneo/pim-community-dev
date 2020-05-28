@@ -61,6 +61,22 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
                     'groups' => ['group_code_3'],
                 ],
             ],
+            [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        [
+                            'identifier' => 'product_identifier_1',
+                            'quantity' => 8,
+                        ],
+                    ],
+                    'product_models' => [
+                        [
+                            'identifier' => 'product_model_5',
+                            'quantity' => 2,
+                        ],
+                    ],
+                ],
+            ],
             ['category_code_1', 'category_code_2'],
             new ReadValueCollection()
         );
@@ -73,6 +89,7 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
             null,
             'another_family',
             'another_family_variant',
+            [],
             [],
             [],
             [],
@@ -103,6 +120,22 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
                                  'groups' => ['group_code_3'],
                              ],
                          ],
+                         'quantified_associations' => [
+                             'PRODUCT_SET' => [
+                                 'products' => [
+                                     [
+                                         'identifier' => 'product_identifier_1',
+                                         'quantity' => 8,
+                                     ],
+                                 ],
+                                 'product_models' => [
+                                     [
+                                         'identifier' => 'product_model_5',
+                                         'quantity' => 2,
+                                     ],
+                                 ],
+                             ],
+                         ],
                          'metadata' => ['a_metadata_key' => 'a_metadata_value'],
                      ],
                      [
@@ -115,6 +148,7 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
                          'created' => '2019-04-23T15:55:50+00:00',
                          'updated' => '2019-04-25T15:55:50+00:00',
                          'associations' => (object)[],
+                         'quantified_associations' => (object)[],
                      ],
                  ]
              );
@@ -147,6 +181,22 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
                     'product_models' => ['other_product_model'],
                 ],
             ],
+            [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        [
+                            'identifier' => 'product_identifier_1',
+                            'quantity' => 10,
+                        ],
+                    ],
+                    'product_models' => [
+                        [
+                            'identifier' => 'product_model_5',
+                            'quantity' => 2,
+                        ],
+                    ],
+                ],
+            ],
             ['sportswear', 'men'],
             new ReadValueCollection([$scalarValue])
         );
@@ -174,6 +224,22 @@ class ConnectorProductModelNormalizerSpec extends ObjectBehavior
                         'groups' => [],
                         'products' => ['product_1'],
                         'product_models' => ['other_product_model'],
+                    ],
+                ],
+                "quantified_associations" => [
+                    'PRODUCT_SET' => [
+                        'products' => [
+                            [
+                                'identifier' => 'product_identifier_1',
+                                'quantity' => 10,
+                            ],
+                        ],
+                        'product_models' => [
+                            [
+                                'identifier' => 'product_model_5',
+                                'quantity' => 2,
+                            ],
+                        ],
                     ],
                 ],
             ]

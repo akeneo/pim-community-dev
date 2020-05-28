@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProdu
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -73,8 +74,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'product_models' => [],
                         'groups' => [],
                     ],
-
                 ],
+                [],
                 [],
                 new ReadValueCollection([])
             ),
@@ -107,6 +108,16 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'products' => ['another_product'],
                         'product_models' => ['simple_pm'],
                         'groups' => ['groupB'],
+                    ],
+                ],
+                [
+                    'PRODUCT_SET' => [
+                        'products' => [],
+                        'product_models' => [['identifier' => 'simple_pm', 'quantity' => 2]],
+                    ],
+                    'ANOTHER_PRODUCT_SET' => [
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                        'product_models' => [],
                     ],
                 ],
                 ['categoryA2'],
@@ -158,6 +169,12 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'products' => ['a_simple_product', 'another_product'],
                         'product_models' => ['simple_pm'],
                         'groups' => ['groupA', 'groupB'],
+                    ],
+                ],
+                [
+                    'PRODUCT_SET' => [
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
+                        'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
                     ],
                 ],
                 ['categoryA1', 'categoryA2'],
@@ -208,7 +225,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
         $dataRootPm = $this->getIdAndDatesFromProductModelCode('root_pm');
         $dataSubPm = $this->getIdAndDatesFromProductModelCode('sub_pm_A');
 
-        $expectedProductModelList = $expectedProductModelList = new ConnectorProductModelList(3, [
+        $expectedProductModelList = new ConnectorProductModelList(3, [
             new ConnectorProductModel(
                 (int)$dataSimplePm['id'],
                 'simple_pm',
@@ -241,6 +258,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                     ],
                 ],
                 [],
+                [],
                 new ReadValueCollection([])
             ),
             new ConnectorProductModel(
@@ -272,6 +290,16 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'products' => ['another_product'],
                         'product_models' => ['simple_pm'],
                         'groups' => ['groupB'],
+                    ],
+                ],
+                [
+                    'PRODUCT_SET' => [
+                        'products' => [],
+                        'product_models' => [['identifier' => 'simple_pm', 'quantity' => 2]],
+                    ],
+                    'ANOTHER_PRODUCT_SET' => [
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                        'product_models' => [],
                     ],
                 ],
                 ['categoryA2'],
@@ -316,6 +344,12 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'products' => ['a_simple_product', 'another_product'],
                         'product_models' => ['simple_pm'],
                         'groups' => ['groupA', 'groupB'],
+                    ],
+                ],
+                [
+                    'PRODUCT_SET' => [
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
+                        'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
                     ],
                 ],
                 ['categoryA1', 'categoryA2'],
@@ -377,6 +411,12 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                     'groups' => ['groupA', 'groupB'],
                 ],
             ],
+            [
+                'PRODUCT_SET' => [
+                    'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
+                    'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
+                ],
+            ],
             ['categoryA1', 'categoryA2'],
             new ReadValueCollection(
                 [
@@ -432,6 +472,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
     {
         parent::setUp();
 
+        $this->createQuantifiedAssociationType('PRODUCT_SET');
+        $this->createQuantifiedAssociationType('ANOTHER_PRODUCT_SET');
         $this->createProduct('a_simple_product', []);
         $this->createProduct('another_product', []);
         $this->createProductModel(
@@ -474,6 +516,14 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'groups' => ['groupB'],
                     ],
                 ],
+                'quantified_associations' => [
+                    'PRODUCT_SET' => [
+                        'product_models' => [['identifier' => 'simple_pm', 'quantity' => 2]],
+                    ],
+                    'ANOTHER_PRODUCT_SET' => [
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                    ],
+                ],
             ]
         );
         $this->createProductModel(
@@ -505,6 +555,12 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'groups' => ['groupA'],
                     ],
                 ],
+                'quantified_associations' => [
+                    'PRODUCT_SET' => [
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
+                        'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
+                    ],
+                ]
             ]
         );
 
@@ -580,5 +636,18 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
         $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
+    }
+
+    private function createQuantifiedAssociationType(string $code)
+    {
+        $associationType = $this->get('pim_catalog.factory.association_type')->create();
+        $this->get('pim_catalog.updater.association_type')->update($associationType,
+            [
+                'code' => $code,
+                'is_quantified' => true
+            ]
+        );
+
+        $this->get('pim_catalog.saver.association_type')->save($associationType);
     }
 }
