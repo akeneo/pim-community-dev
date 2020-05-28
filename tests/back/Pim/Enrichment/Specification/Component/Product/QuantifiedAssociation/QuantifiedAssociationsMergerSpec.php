@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\QuantifiedAssoci
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
 
-class QuantifiedAssociationMergerSpec extends ObjectBehavior
+class QuantifiedAssociationsMergerSpec extends ObjectBehavior
 {
     public function it_merge_quantified_associations(
         ProductInterface $product_1,

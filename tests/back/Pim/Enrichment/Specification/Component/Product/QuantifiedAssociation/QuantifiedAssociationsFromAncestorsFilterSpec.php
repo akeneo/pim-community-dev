@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\QuantifiedAssoci
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\QuantifiedAssociation\QuantifiedAssociationsMerger;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -12,7 +13,16 @@ use PhpSpec\ObjectBehavior;
  */
 class QuantifiedAssociationsFromAncestorsFilterSpec extends ObjectBehavior
 {
+    function let(
+        QuantifiedAssociationsMerger $quantifiedAssociationsMerger
+    ) {
+        $this->beConstructedWith(
+            $quantifiedAssociationsMerger
+        );
+    }
+
     public function it_remove_quantified_associations_on_products_belonging_to_an_ancestor(
+        QuantifiedAssociationsMerger $quantifiedAssociationsMerger,
         ProductModelInterface $product_model,
         ProductModelInterface $variant_level_1,
         ProductInterface $variant_level_2
@@ -21,20 +31,40 @@ class QuantifiedAssociationsFromAncestorsFilterSpec extends ObjectBehavior
         $variant_level_1->getParent()->willReturn($product_model);
         $variant_level_2->getParent()->willReturn($variant_level_1);
 
-        $product_model->normalizeQuantifiedAssociations()->willReturn([
-            'PACK' => [
-                'products' => [
-                    ['identifier' => 'product_A', 'quantity' => 2],
+        $product_model->normalizeQuantifiedAssociations()->willReturn(
+            [
+                'PACK' => [
+                    'products' => [
+                        ['identifier' => 'product_A', 'quantity' => 2],
+                    ],
                 ],
-            ],
-        ]);
-        $variant_level_1->normalizeQuantifiedAssociations()->willReturn([
-            'PACK' => [
-                'products' => [
-                    ['identifier' => 'product_B', 'quantity' => 3],
+            ]
+        );
+        $variant_level_1->normalizeQuantifiedAssociations()->willReturn(
+            [
+                'PACK' => [
+                    'products' => [
+                        ['identifier' => 'product_B', 'quantity' => 3],
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
+
+        $quantifiedAssociationsMerger->normalizeAndMergeQuantifiedAssociationsFrom(
+            [
+                $product_model,
+                $variant_level_1,
+            ]
+        )->willReturn(
+            [
+                'PACK' => [
+                    'products' => [
+                        ['identifier' => 'product_A', 'quantity' => 2],
+                        ['identifier' => 'product_B', 'quantity' => 3],
+                    ],
+                ],
+            ]
+        );
 
         $mergedQuantifiedAssociations = [
             'PACK' => [
@@ -51,6 +81,7 @@ class QuantifiedAssociationsFromAncestorsFilterSpec extends ObjectBehavior
                 'products' => [
                     ['identifier' => 'product_C', 'quantity' => 4],
                 ],
+                'product_models' => [],
             ],
         ];
 
@@ -58,6 +89,7 @@ class QuantifiedAssociationsFromAncestorsFilterSpec extends ObjectBehavior
     }
 
     public function it_remove_quantified_associations_on_product_models_belonging_to_an_ancestor(
+        QuantifiedAssociationsMerger $quantifiedAssociationsMerger,
         ProductModelInterface $product_model,
         ProductModelInterface $variant_level_1,
         ProductInterface $variant_level_2
@@ -66,20 +98,40 @@ class QuantifiedAssociationsFromAncestorsFilterSpec extends ObjectBehavior
         $variant_level_1->getParent()->willReturn($product_model);
         $variant_level_2->getParent()->willReturn($variant_level_1);
 
-        $product_model->normalizeQuantifiedAssociations()->willReturn([
-            'PACK' => [
-                'product_models' => [
-                    ['identifier' => 'productmodel_A', 'quantity' => 2],
+        $product_model->normalizeQuantifiedAssociations()->willReturn(
+            [
+                'PACK' => [
+                    'product_models' => [
+                        ['identifier' => 'productmodel_A', 'quantity' => 2],
+                    ],
                 ],
-            ],
-        ]);
-        $variant_level_1->normalizeQuantifiedAssociations()->willReturn([
-            'PACK' => [
-                'product_models' => [
-                    ['identifier' => 'productmodel_B', 'quantity' => 3],
+            ]
+        );
+        $variant_level_1->normalizeQuantifiedAssociations()->willReturn(
+            [
+                'PACK' => [
+                    'product_models' => [
+                        ['identifier' => 'productmodel_B', 'quantity' => 3],
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
+
+        $quantifiedAssociationsMerger->normalizeAndMergeQuantifiedAssociationsFrom(
+            [
+                $product_model,
+                $variant_level_1,
+            ]
+        )->willReturn(
+            [
+                'PACK' => [
+                    'product_models' => [
+                        ['identifier' => 'productmodel_A', 'quantity' => 2],
+                        ['identifier' => 'productmodel_B', 'quantity' => 3],
+                    ],
+                ],
+            ]
+        );
 
         $mergedQuantifiedAssociations = [
             'PACK' => [
@@ -93,6 +145,7 @@ class QuantifiedAssociationsFromAncestorsFilterSpec extends ObjectBehavior
 
         $expectedQuantifiedAssociations = [
             'PACK' => [
+                'products' => [],
                 'product_models' => [
                     ['identifier' => 'productmodel_C', 'quantity' => 4],
                 ],
@@ -103,19 +156,36 @@ class QuantifiedAssociationsFromAncestorsFilterSpec extends ObjectBehavior
     }
 
     public function it_preserve_quantified_associations_on_products_when_quantity_has_been_overwrited(
+        QuantifiedAssociationsMerger $quantifiedAssociationsMerger,
         ProductModelInterface $product_model,
         ProductModelInterface $variant_level_1
     ) {
         $product_model->getParent()->willReturn(null);
         $variant_level_1->getParent()->willReturn($product_model);
 
-        $product_model->normalizeQuantifiedAssociations()->willReturn([
-            'PACK' => [
-                'products' => [
-                    ['identifier' => 'product_A', 'quantity' => 2],
+        $product_model->normalizeQuantifiedAssociations()->willReturn(
+            [
+                'PACK' => [
+                    'products' => [
+                        ['identifier' => 'product_A', 'quantity' => 2],
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
+
+        $quantifiedAssociationsMerger->normalizeAndMergeQuantifiedAssociationsFrom(
+            [
+                $product_model,
+            ]
+        )->willReturn(
+            [
+                'PACK' => [
+                    'products' => [
+                        ['identifier' => 'product_A', 'quantity' => 2],
+                    ],
+                ],
+            ]
+        );
 
         $mergedQuantifiedAssociations = [
             'PACK' => [
@@ -130,6 +200,7 @@ class QuantifiedAssociationsFromAncestorsFilterSpec extends ObjectBehavior
                 'products' => [
                     ['identifier' => 'product_A', 'quantity' => 42],
                 ],
+                'product_models' => [],
             ],
         ];
 
@@ -137,19 +208,36 @@ class QuantifiedAssociationsFromAncestorsFilterSpec extends ObjectBehavior
     }
 
     public function it_preserve_quantified_associations_on_product_models_when_quantity_has_been_overwrited(
+        QuantifiedAssociationsMerger $quantifiedAssociationsMerger,
         ProductModelInterface $product_model,
         ProductModelInterface $variant_level_1
     ) {
         $product_model->getParent()->willReturn(null);
         $variant_level_1->getParent()->willReturn($product_model);
 
-        $product_model->normalizeQuantifiedAssociations()->willReturn([
-            'PACK' => [
-                'product_models' => [
-                    ['identifier' => 'productmodel_A', 'quantity' => 2],
+        $product_model->normalizeQuantifiedAssociations()->willReturn(
+            [
+                'PACK' => [
+                    'product_models' => [
+                        ['identifier' => 'productmodel_A', 'quantity' => 2],
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
+
+        $quantifiedAssociationsMerger->normalizeAndMergeQuantifiedAssociationsFrom(
+            [
+                $product_model,
+            ]
+        )->willReturn(
+            [
+                'PACK' => [
+                    'product_models' => [
+                        ['identifier' => 'productmodel_A', 'quantity' => 2],
+                    ],
+                ],
+            ]
+        );
 
         $mergedQuantifiedAssociations = [
             'PACK' => [
@@ -161,6 +249,7 @@ class QuantifiedAssociationsFromAncestorsFilterSpec extends ObjectBehavior
 
         $expectedQuantifiedAssociations = [
             'PACK' => [
+                'products' => [],
                 'product_models' => [
                     ['identifier' => 'productmodel_A', 'quantity' => 42],
                 ],
