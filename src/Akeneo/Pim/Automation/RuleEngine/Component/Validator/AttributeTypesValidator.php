@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsAttribute;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-class IsAttributeValidator extends ConstraintValidator
+class AttributeTypesValidator extends ConstraintValidator
 {
     /** @var GetAttributes */
     private $getAttributes;
@@ -31,15 +31,21 @@ class IsAttributeValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        Assert::isInstanceOf($constraint, IsAttribute::class);
-        if (null === $value || !is_string($value)) {
+        Assert::isInstanceOf($constraint, AttributeTypes::class);
+
+        if (!is_string($value)) {
+            return;
+        }
+        $attribute =$this->getAttributes->forCode($value);
+        if (null === $attribute) {
             return;
         }
 
-        $attribute = $this->getAttributes->forCode($value);
-        if (null === $attribute) {
+        $authorizedTypes = (array)$constraint->types;
+        if (!in_array($attribute->type(), $authorizedTypes)) {
             $this->context->buildViolation($constraint->message)
-                          ->setParameter('{{ code }}', $value)
+                          ->setParameter('{{ invalid_type }}', $attribute->type())
+                          ->setParameter('{{ expected_types }}', implode('|', $authorizedTypes))
                           ->addViolation();
         }
     }

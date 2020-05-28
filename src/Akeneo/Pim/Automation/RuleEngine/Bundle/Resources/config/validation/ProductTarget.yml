@@ -8,9 +8,10 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductTarget:
         field:
             - Type: string
             - NotBlank: ~
-            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsAttribute:
-                  - pim_catalog_text
-                  - pim_catalog_textarea
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsAttribute: ~
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AttributeTypes:
+                - pim_catalog_text
+                - pim_catalog_textarea
         scope:
             - Type: string
         locale:

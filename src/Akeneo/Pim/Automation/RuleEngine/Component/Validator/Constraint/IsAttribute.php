@@ -18,15 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 class IsAttribute extends Constraint
 {
-    public $unknownAttributeMessage = 'The "{{ code }}" attribute code does not exist';
-    public $invalidTypeMessage = 'Invalid "{{ invalid_type }}" attribute type. Expected a {{ expected_types }} attribute';
-
-    public $types;
-
-    public function getDefaultOption()
-    {
-        return 'types';
-    }
+    public $message = 'The "{{ code }}" attribute does not exist';
 
     public function validatedBy()
     {

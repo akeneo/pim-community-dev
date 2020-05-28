@@ -114,6 +114,12 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\AttributeTypesValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: validator.constraint_validator }
+
     Akeneo\Pim\Automation\RuleEngine\Component\Validator\IsValidSourceValidator:
         arguments:
             - '@akeneo.pim.structure.query.get_attributes'

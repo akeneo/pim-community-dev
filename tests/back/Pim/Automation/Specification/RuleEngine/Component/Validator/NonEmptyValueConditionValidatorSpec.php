@@ -41,6 +41,7 @@ class NonEmptyValueConditionValidatorSpec extends ObjectBehavior
         ]);
 
         $context->buildViolation(Argument::any(), Argument::any())->willReturn($violation);
+        $violation->setInvalidValue(null)->shouldBeCalled()->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate($condition, $constraint);

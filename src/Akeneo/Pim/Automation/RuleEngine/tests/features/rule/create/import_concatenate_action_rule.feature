@@ -19,12 +19,12 @@ Feature: Import concatenate action rules
   @acceptance-back
   Scenario: Import a concatenate rule with invalid source attributes
     When I import a concatenate rule with invalid source attributes
-    Then an exception with message "actions[0].from[1].field: The \"categories\" attribute code does not exist" has been thrown
+    Then an exception with message "actions[0].from[1].field: The \"categories\" attribute does not exist" has been thrown
 
   @acceptance-back
   Scenario: Import a concatenate rule with unknown target attribute
     When I import a concatenate rule with unknown target attribute
-    Then an exception with message "actions[0].to.field: The \"unknown\" attribute code does not exist" has been thrown
+    Then an exception with message "actions[0].to.field: The \"unknown\" attribute does not exist" has been thrown
 
   @acceptance-back
   Scenario: Import a concatenate rule with invalid target attribute
