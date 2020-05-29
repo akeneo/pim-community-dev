@@ -102,9 +102,7 @@ jobs:
           steps:
               - run:
                   name: Activate Onboarder bundle
-                  command: |
-                      docker-compose run -u www-data --rm php sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
-                      docker-compose run -u www-data --rm php cp vendor/akeneo/pim-onboarder/src/Bundle/Resources/config/onboarder_configuration.yml  config/packages/onboarder.yml
+                  command: docker-compose run -u www-data --rm php sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
       - run:
           name: Check PIM requirements
           command: |
@@ -339,21 +337,24 @@ jobs:
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
           - run:
-              name: Upgrade oldest SaaS prod (PIM v3) to intermediate version from mid-February
-              command: |
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200211172331 INSTANCE_NAME=pimup-$CIRCLE_SHA1 make create-ci-release-files
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=v20200211172331 INSTANCE_NAME=pimup-$CIRCLE_SHA1 make deploy
-          - run:
               name: Upgrade intermediate version SaaS to master
               command: |
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
+                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade
                 INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy
           - run:
               name: Production tests on upgraded env
               command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make test-prod
           - run:
+              name: Prepare infrastructure artifacts
+              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - run:
               name: Remove upgraded env
               command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
+              when: always
 
   deploy_pr_environment:
       environment:
@@ -366,7 +367,18 @@ jobs:
           - run:
                 name: Deploy PR environment
                 command: |
-                    ENV_NAME=dev make deploy_pr_environment
+                    ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make create-ci-release-files
+                    ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make deploy
+          - run:
+              name: Prepare infrastructure artifacts
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - run:
+              name: Remove env on kubernetes
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make delete
+              when: always
 
   test_back_missing_structure_migrations:
       machine:

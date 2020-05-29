@@ -50,7 +50,6 @@ cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
 
 echo "Enable Onboarder bundle on 4.0 branch..."
 if [ -d "vendor/akeneo/pim-onboarder" ]; then
-    cp vendor/akeneo/pim-onboarder/src/Bundle/Resources/config/onboarder_configuration.yml  config/packages/onboarder.yml
     sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
     # on the branch 4.0, the env var and the emulator are not present
     echo "PUBSUB_EMULATOR_HOST=pubsub-emulator:8085" >> .env
@@ -95,7 +94,6 @@ cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
 
 echo "Enable Onboarder bundle on PR branch..."
 if [ -d "vendor/akeneo/pim-onboarder" ]; then
-    cp vendor/akeneo/pim-onboarder/src/Bundle/Resources/config/onboarder_configuration.yml  config/packages/onboarder.yml
     sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
 fi
 
