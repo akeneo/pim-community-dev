@@ -1,6 +1,6 @@
 import * as Backbone from 'backbone';
 import * as _ from 'underscore';
-import CampaignFetcher from 'akeneocommunicationchannel/fetcher/campaign-fetcher';
+import CampaignFetcher from 'akeneocommunicationchannel/fetcher/campaign';
 
 const __ = require('oro/translator');
 const CommunicationChannelTemplate = require('akeneo/template/menu/communication-channel');
@@ -16,14 +16,16 @@ class CommunicationChannel extends Backbone.View<any> {
     const template = _.template(CommunicationChannelTemplate);
     this.$el.empty().append(
       template({
-        title: __('pim_communication_channel.link.title'),
+        title: __('akeneo_communication_channel.link.title'),
       })
     );
+
+    this.setLink();
 
     return Backbone.View.prototype.render.apply(this, arguments);
   }
 
-  public async refresh(): Promise<void> {
+  private async setLink(): Promise<void> {
     const url = await this.buildUrl();
     this.$('a').attr('href', `${url.href}`);
   }
