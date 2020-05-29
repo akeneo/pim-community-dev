@@ -230,6 +230,8 @@ pim_asset_manager:
       link: Cliquez ici pour ajouter votre premier groupe d'utilisateurs
   asset:
     img: Le média principal de la ressource nommée "{{ label }}"
+    created_at: Créé
+    updated_at: Mis à jour
     validation:
       limit_reached: 'Vous ne pouvez pas créer la ressource « {{ %asset_label% }} » car vous avez atteint la limite de {{ %limit% }} ressources pour cette famille de ressources'
       code:

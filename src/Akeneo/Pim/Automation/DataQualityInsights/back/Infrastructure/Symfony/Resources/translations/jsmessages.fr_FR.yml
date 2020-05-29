@@ -39,6 +39,8 @@ akeneo_data_quality_insights:
       no_family_helper_msg: Choisissez les familles à ajouter à votre tableau de bord
       no_category_helper_msg: Choisissez les catégories à ajouter à votre tableau de bord
       see_in_grid: Voir sur la grille
+    time_axis:
+      day: jour
   product_evaluation:
     criteria:
       completeness_of_required_attributes:
