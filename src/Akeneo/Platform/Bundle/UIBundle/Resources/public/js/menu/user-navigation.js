@@ -73,7 +73,6 @@ define(
 
                 const communicationChannelView = new CommunicationChannel();
                 communicationChannelView.setElement(this.$('.communication-channel')).render();
-                communicationChannelView.refresh();
 
                 this.delegateEvents();
 
