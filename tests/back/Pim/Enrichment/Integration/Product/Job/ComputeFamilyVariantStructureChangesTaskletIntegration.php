@@ -78,9 +78,8 @@ final class ComputeFamilyVariantStructureChangesTaskletIntegration extends TestC
     private function moveAttributeAtLevel1InFamilyVariant(string $familyVariantCode, string $attributeCode): void
     {
         $familyVariant = $this->getFamilyVariant($familyVariantCode);
-        $content = $this->get('pim_enrich.normalizer.family_variant')->normalize($familyVariant);
+        $content = $this->get('pim_catalog.normalizer.standard.family_variant')->normalize($familyVariant);
         $content['variant_attribute_sets'][0]['attributes'][] = $attributeCode;
-        unset($content['meta']);
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, $content);
         $this->assertCount(0, $this->get('validator')->validate($familyVariant));
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);

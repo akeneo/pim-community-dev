@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-- PIM-9276: Fix product computing when moving an attribute in family variant
+- PIM-9277: Fix product computing when moving an attribute in family variant
 
 # 4.0.30 (2020-05-28)
 
