@@ -160,6 +160,9 @@ define([
       );
 
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.postUpdate.bind(this));
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () =>
+        this.setValidationErrors({response: {quantified_associations: []}})
+      );
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.setValidationErrors.bind(this));
 
       this.listenTo(
@@ -312,7 +315,7 @@ define([
       };
       const errors = filterErrors(
         this.validationErrors.quantified_associations || [],
-        `quantifiedAssociations.${associationTypeCode}.`
+        `quantifiedAssociations.${associationTypeCode}`
       );
 
       const Component = React.createElement(QuantifiedAssociationsTab, {

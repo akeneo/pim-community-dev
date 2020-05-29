@@ -92,14 +92,14 @@ describe('quantified association', () => {
     expect(
       quantifiedAssociationToRowCollection(quantifiedAssociation, [
         {
-          propertyPath: 'products[0].quantity',
+          propertyPath: '.products[0].quantity',
           messageTemplate: 'an.error',
           parameters: {},
           message: 'an error',
           invalidValue: '10000',
         },
         {
-          propertyPath: 'product_models[0].quantity',
+          propertyPath: '.product_models[0].quantity',
           messageTemplate: 'an.error',
           parameters: {},
           message: 'an error',

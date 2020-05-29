@@ -17,6 +17,18 @@ const filterErrors = (errors: ValidationError[], propertyPath: string): Validati
 const getErrorsForPath = (errors: ValidationError[], propertyPath: string): ValidationError[] =>
   errors.filter(error => error.propertyPath === propertyPath);
 
+const formatParameters = (errors: ValidationError[]): ValidationError[] =>
+  errors.map(error => ({
+    ...error,
+    parameters: Object.keys(error.parameters).reduce(
+      (result, key) => ({
+        ...result,
+        [key.replace('{{ ', '').replace(' }}', '')]: error.parameters[key],
+      }),
+      {}
+    ),
+  }));
+
 const partition = <T>(items: T[], condition: (item: T) => boolean): T[][] => {
   return items.reduce(
     (result: T[][], item: T) => {
@@ -43,4 +55,4 @@ const partitionErrors = (
   return [...results, restErrors];
 };
 
-export {ValidationError, filterErrors, getErrorsForPath, partitionErrors};
+export {ValidationError, filterErrors, getErrorsForPath, partitionErrors, formatParameters};

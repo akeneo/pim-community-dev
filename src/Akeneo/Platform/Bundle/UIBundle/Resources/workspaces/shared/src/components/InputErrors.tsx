@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {ValidationError} from '@akeneo-pim-community/shared';
+import {ValidationError, formatParameters} from '@akeneo-pim-community/shared';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
@@ -20,21 +20,11 @@ const InputErrors = ({errors = []}: InputErrorsProps) => {
 
   return (
     <Container className="AknFieldContainer-footer AknFieldContainer-validationErrors">
-      {errors
-        .map(error => ({
-          ...error,
-          parameters: Object.keys(error.parameters).reduce((result, key) => {
-            return {
-              ...result,
-              [key.replace('{{ ', '').replace(' }}', '')]: error.parameters[key],
-            };
-          }, {}),
-        }))
-        .map((error: ValidationError, key: number) => (
-          <span className="AknFieldContainer-validationError error-message" key={key}>
-            {translate(error.messageTemplate, error.parameters, error.plural)}
-          </span>
-        ))}
+      {formatParameters(errors).map((error, key) => (
+        <span className="AknFieldContainer-validationError error-message" key={key}>
+          {translate(error.messageTemplate, error.parameters, error.plural)}
+        </span>
+      ))}
     </Container>
   );
 };

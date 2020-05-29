@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useNotify, NotificationLevel} from '@akeneo-pim-community/legacy-bridge';
 import {
   Button,
   SearchBar,
@@ -12,6 +12,8 @@ import {
   UnlinkIcon,
   useAkeneoTheme,
   ValidationError,
+  getErrorsForPath,
+  formatParameters,
 } from '@akeneo-pim-community/shared';
 import {
   Row,
@@ -78,6 +80,7 @@ const QuantifiedAssociations = ({
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
+  const notify = useNotify();
   const theme = useAkeneoTheme();
   const [rowCollection, setRowCollection] = useState<Row[]>(
     quantifiedAssociationToRowCollection(quantifiedAssociations, errors)
@@ -94,6 +97,12 @@ const QuantifiedAssociations = ({
     rowCollectionToQuantifiedAssociation(rowCollection)
   );
   const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
+
+  useEffect(() => {
+    formatParameters(getErrorsForPath(errors, '')).forEach(error =>
+      notify(NotificationLevel.ERROR, translate(error.messageTemplate, error.parameters, error.plural))
+    );
+  }, [JSON.stringify(errors)]);
 
   useEffect(() => {
     setRowCollection(quantifiedAssociationToRowCollection(quantifiedAssociations, errors));

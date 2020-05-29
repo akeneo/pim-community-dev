@@ -42,6 +42,7 @@ const useProducts = (identifiers: AssociationIdentifiers): Product[] => {
         };
 
   useEffect(() => {
+    let isSubscribed = true;
     (async () => {
       if (0 === identifiersToFetch.product_models.length && 0 === identifiersToFetch.products.length) {
         return;
@@ -49,8 +50,12 @@ const useProducts = (identifiers: AssociationIdentifiers): Product[] => {
 
       const newProducts = await productFetcher(url, identifiersToFetch);
 
-      setProducts(currentProducts => [...newProducts, ...currentProducts]);
+      if (isSubscribed) setProducts(currentProducts => [...newProducts, ...currentProducts]);
     })();
+
+    return () => {
+      isSubscribed = false;
+    };
   }, [JSON.stringify(identifiersToFetch), url]);
 
   return products;

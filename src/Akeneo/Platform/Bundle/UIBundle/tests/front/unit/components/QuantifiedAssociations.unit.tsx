@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {act, getByText, fireEvent, queryByText, getAllByTitle} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider, dependencies} from '@akeneo-pim-community/legacy-bridge';
 import {QuantifiedAssociations} from '../../../../Resources/public/js/product/form/quantified-associations/components/QuantifiedAssociations';
 import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 import {queryByDisplayValue} from '@testing-library/dom';
@@ -248,4 +248,33 @@ test('It displays no table rows when the quantified association collection is nu
   });
 
   expect(container.querySelector('table')).toBe(null);
+});
+
+test('It notifies when a root error is detected', async () => {
+  await act(async () => {
+    ReactDOM.render(
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <QuantifiedAssociations
+            quantifiedAssociations={quantifiedAssociationCollection}
+            errors={[
+              {
+                propertyPath: '',
+                message: 'an error occured',
+                messageTemplate: 'an.error.occured',
+                invalidValue: '',
+                parameters: {},
+              },
+            ]}
+            parentQuantifiedAssociations={{products: [], product_models: []}}
+            onAssociationsChange={jest.fn()}
+            onOpenPicker={jest.fn()}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
+      container
+    );
+  });
+
+  expect(dependencies.notify).toBeCalledWith('error', 'an.error.occured');
 });

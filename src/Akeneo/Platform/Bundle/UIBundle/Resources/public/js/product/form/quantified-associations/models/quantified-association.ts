@@ -19,13 +19,13 @@ const quantifiedAssociationToRowCollection = (collection: QuantifiedAssociation,
     quantifiedLink,
     productType: ProductType.Product,
     product: null,
-    errors: filterErrors(errors, `${ProductsType.Products}[${index}].`),
+    errors: filterErrors(errors, `.${ProductsType.Products}[${index}].`),
   })),
   ...collection.product_models.map((quantifiedLink, index) => ({
     quantifiedLink,
     productType: ProductType.ProductModel,
     product: null,
-    errors: filterErrors(errors, `${ProductsType.ProductModels}[${index}].`),
+    errors: filterErrors(errors, `.${ProductsType.ProductModels}[${index}].`),
   })),
 ];
 

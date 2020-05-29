@@ -1,4 +1,9 @@
-import {ValidationError, filterErrors, partitionErrors} from '../../../../src/models/validation-error';
+import {
+  ValidationError,
+  filterErrors,
+  partitionErrors,
+  formatParameters,
+} from '../../../../src/models/validation-error';
 
 const createValidationError = (propertyPath: string, message: string = 'error'): ValidationError => {
   return {
@@ -38,4 +43,26 @@ it('should partition the errors based on a list of filters', () => {
   ];
 
   expect(partitionErrors(errors, filters)).toEqual([[errors[1], errors[2], errors[3]], [errors[0]], [errors[4]]]);
+});
+
+it('should format error parameters correctly, removing {{ }}', () => {
+  const errors = [
+    {
+      propertyPath: '',
+      message: 'bad code',
+      messageTemplate: '',
+      parameters: {'{{ limit }}': '100'},
+      invalidValue: null,
+    },
+  ];
+
+  expect(formatParameters(errors)).toEqual([
+    {
+      propertyPath: '',
+      message: 'bad code',
+      messageTemplate: '',
+      parameters: {limit: '100'},
+      invalidValue: null,
+    },
+  ]);
 });
