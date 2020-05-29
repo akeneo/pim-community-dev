@@ -1,21 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Router, Translate } from '../../../../dependenciesTools';
+import { useFormContext, Control } from 'react-hook-form';
 import { SmallHelper } from '../../../../components';
-import { TextBoxBlue } from '../TextBoxBlue';
 import {
+  Condition,
   ConditionFactory,
+  Locale,
   LocaleCode,
   RuleDefinition,
 } from '../../../../models/';
-import { Condition } from '../../../../models/';
-import { Locale } from '../../../../models/';
+import { TextBoxBlue } from '../TextBoxBlue';
+import { useProductsCount } from '../../hooks';
+import { Router, Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
-import { useFormContext } from 'react-hook-form';
 import { ConditionLine } from './ConditionLine';
+import { ProductsCount } from '../ProductsCount';
 import { AddConditionButton } from './AddConditionButton';
 import { createFamilyCondition } from '../../../../models/FamilyCondition';
 import { createTextAttributeCondition } from '../../../../models/TextAttributeCondition';
+import { FormData } from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
 
 const Header = styled.header`
@@ -52,6 +55,8 @@ const AddConditionContainer = styled.div`
   padding-left: 15px;
 `;
 
+const getValuesFromFormData = (getValues: Control['getValues']): FormData =>
+  getValues({ nest: true });
 const RuleProductSelectionFieldsetWithAction = styled.fieldset`
   background-image: url('${startImage}');
   padding-left: 12px;
@@ -65,27 +70,27 @@ const RuleProductSelectionFieldset = styled.fieldset`
 `;
 
 type Props = {
-  ruleDefinition: RuleDefinition;
-  translate: Translate;
-  locales: Locale[];
-  scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
+  locales: Locale[];
   router: Router;
+  ruleDefinition: RuleDefinition;
+  scopes: IndexedScopes;
+  translate: Translate;
 };
 
 const RuleProductSelection: React.FC<Props> = ({
-  ruleDefinition,
-  translate,
-  locales,
-  scopes,
   currentCatalogLocale,
+  locales,
   router,
+  ruleDefinition,
+  scopes,
+  translate,
 }) => {
   const [conditions, setConditions] = React.useState<(Condition | null)[]>(
     ruleDefinition.conditions
   );
 
-  const { getValues, unregister } = useFormContext();
+  const { getValues, unregister, watch } = useFormContext();
   const deleteCondition = (lineNumber: number) => {
     Object.keys(getValues()).forEach((value: string) => {
       if (value.startsWith(`content.conditions[${lineNumber}]`)) {
@@ -97,6 +102,13 @@ const RuleProductSelection: React.FC<Props> = ({
         return i === lineNumber ? null : condition;
       })
     );
+  };
+  const productsCount = useProductsCount(
+    router,
+    getValuesFromFormData(getValues)
+  );
+  const watchCondition = (conditionIdentifier: string) => {
+    watch(conditionIdentifier);
   };
 
   React.useEffect(() => {
@@ -154,11 +166,11 @@ const RuleProductSelection: React.FC<Props> = ({
           </TitleHeader>
         </HeaderPartContainer>
         <HeaderPartContainer>
-          <span className='AknSubsection-comment AknSubsection-comment--clickable'>
-            {translate('pimee_catalog_rule.form.edit.count_products', {
-              count: '0',
-            })}
-          </span>
+          <ProductsCount
+            count={productsCount.value}
+            status={productsCount.status}
+            translate={translate}
+          />
           <AddConditionContainer>
             <AddConditionButton
               router={router}
@@ -180,6 +192,7 @@ const RuleProductSelection: React.FC<Props> = ({
       <div className='AknGrid AknGrid--unclickable'>
         <div className='AknGrid-body' data-testid={'condition-list'}>
           {conditions.map((condition, i) => {
+            watchCondition(`content.conditions[${i}]`);
             return (
               condition && (
                 <ConditionLine

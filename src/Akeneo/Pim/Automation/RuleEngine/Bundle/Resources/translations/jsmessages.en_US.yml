@@ -78,7 +78,10 @@ pimee_catalog_rule:
                 label: Priority
             add_to_category: Add to category
             add_conditions: Add conditions
-            count_products: "{{ count }} products and product models"
+            products_count:
+                complete: "{{ count }} products and product models"
+                pending: Calculating products and product models
+                error: Calculation impossible 
             product_selection: Product selection
             fields:
                 family: Family

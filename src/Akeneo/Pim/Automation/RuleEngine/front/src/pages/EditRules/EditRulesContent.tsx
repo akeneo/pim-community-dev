@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { FormContext } from 'react-hook-form';
-
 import * as akeneoTheme from '../../theme';
 import {
   AkeneoSpinner,
@@ -122,13 +121,13 @@ const EditRulesContent: React.FC<Props> = ({
       <Content>
         <FormContext {...formMethods}>
           <EditRulesForm
-            onSubmit={onSubmit}
-            locales={locales}
-            ruleDefinition={ruleDefinition}
-            translate={translate}
-            scopes={scopes}
             currentCatalogLocale={currentCatalogLocale}
+            locales={locales}
+            onSubmit={onSubmit}
             router={router}
+            ruleDefinition={ruleDefinition}
+            scopes={scopes}
+            translate={translate}
             actions={actions}
             handleDeleteAction={handleDeleteAction}
           />

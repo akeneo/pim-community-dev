@@ -65,23 +65,23 @@ type FormData = {
 };
 
 type Props = {
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  translate: Translate;
   locales: Locale[];
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   ruleDefinition: RuleDefinition;
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
   router: Router;
+  translate: Translate;
   actions: (Action | null)[];
   handleDeleteAction: (lineNumber: number) => void;
 };
 
 const EditRulesForm: React.FC<Props> = ({
-  onSubmit,
   locales,
+  onSubmit,
   ruleDefinition,
-  translate,
   scopes,
+  translate,
   currentCatalogLocale,
   router,
   actions,
@@ -120,12 +120,12 @@ const EditRulesForm: React.FC<Props> = ({
         </TabDiv>
         <StyledTabPanel {...tab} tabIndex={-1}>
           <RulesBuilder
-            ruleDefinition={ruleDefinition}
-            translate={translate}
-            locales={locales}
-            scopes={scopes}
             currentCatalogLocale={currentCatalogLocale}
+            locales={locales}
             router={router}
+            ruleDefinition={ruleDefinition}
+            scopes={scopes}
+            translate={translate}
             actions={actions}
             handleDeleteAction={handleDeleteAction}
           />

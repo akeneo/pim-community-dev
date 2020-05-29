@@ -138,6 +138,7 @@ const useSubmitEditRuleForm = (
     formMethods.reset,
     setRuleDefinition
   );
+
   return {
     onSubmit: formMethods.handleSubmit(onSubmit),
     formMethods,
