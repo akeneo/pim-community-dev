@@ -17,10 +17,6 @@ const Container = styled.tr`
   height: 74px;
   border-bottom: 1px solid ${({theme}) => theme.color.grey70};
 
-  :hover {
-    background-color: ${({theme}) => theme.color.grey60};
-  }
-
   td:first-child {
     padding-left: 15px;
   }
@@ -44,8 +40,8 @@ const Cell = styled.td`
 `;
 
 const CellPlaceholder = styled.div`
-  height: 64px;
-  margin-top: 10px;
+  height: 54px;
+  margin: 10px;
 `;
 
 const Thumbnail = styled.div<{isProductModel: boolean}>`
@@ -125,28 +121,32 @@ const QuantifiedAssociationRow = ({row, parentQuantifiedLink, onChange, onRemove
 
   return (
     <>
-      {null === row.product ? (
-        <tr>
-          <Cell colSpan={7}>
+      <Container>
+        <Cell>
+          {null === row.product ? (
             <CellPlaceholder className="AknLoadingPlaceHolder" />
-          </Cell>
-        </tr>
-      ) : (
-        <Container>
-          <Cell>
+          ) : (
             <CellContainer>
               <Thumbnail isProductModel={isProductModel}>
                 <img src={thumbnailUrl} alt={row.product.label} />
               </Thumbnail>
             </CellContainer>
-          </Cell>
-          <LabelCell isProductModel={isProductModel}>
+          )}
+        </Cell>
+        <LabelCell isProductModel={isProductModel}>
+          {null === row.product ? (
+            <CellPlaceholder className="AknLoadingPlaceHolder" />
+          ) : (
             <CellContainer>{row.product.label}</CellContainer>
-          </LabelCell>
-          <Cell>
-            <CellContainer>{row.product.identifier}</CellContainer>
-          </Cell>
-          <Cell>
+          )}
+        </LabelCell>
+        <Cell>
+          <CellContainer>{row.quantifiedLink.identifier}</CellContainer>
+        </Cell>
+        <Cell>
+          {null === row.product ? (
+            <CellPlaceholder className="AknLoadingPlaceHolder" />
+          ) : (
             <CellContainer>
               {null === row.product.completeness ? (
                 translate('pim_common.not_available')
@@ -154,8 +154,12 @@ const QuantifiedAssociationRow = ({row, parentQuantifiedLink, onChange, onRemove
                 <Badge>{row.product.completeness}%</Badge>
               )}
             </CellContainer>
-          </Cell>
-          <Cell>
+          )}
+        </Cell>
+        <Cell>
+          {null === row.product ? (
+            <CellPlaceholder className="AknLoadingPlaceHolder" />
+          ) : (
             <CellContainer>
               {null === row.product.variant_product_completenesses ? (
                 translate('pim_common.not_available')
@@ -166,50 +170,52 @@ const QuantifiedAssociationRow = ({row, parentQuantifiedLink, onChange, onRemove
                 </Badge>
               )}
             </CellContainer>
-          </Cell>
-          <Cell>
-            <InputCellContainer>
-              <QuantityInput
-                title={translate('pim_enrich.entity.product.module.associations.quantified.quantity')}
-                type="number"
-                min={1}
-                value={row.quantifiedLink.quantity}
-                isInvalid={0 < filterErrors(row.errors, 'quantity').length}
-                onChange={event =>
-                  onChange({
-                    ...row,
-                    quantifiedLink: {...row.quantifiedLink, quantity: Number(event.currentTarget.value) || 1},
-                  })
-                }
-              />
-            </InputCellContainer>
-            <InputErrors errors={row.errors} />
-          </Cell>
-          <Cell>
-            <ActionCellContainer>
-              <RowActions>
-                {undefined !== parentQuantifiedLink &&
-                  parentQuantifiedLink.quantity !== row.quantifiedLink.quantity && (
-                    <UnlinkIcon
-                      color={blueColor}
-                      title={translate('pim_enrich.entity.product.module.associations.quantified.unlinked')}
-                    />
-                  )}
+          )}
+        </Cell>
+        <Cell>
+          <InputCellContainer>
+            <QuantityInput
+              title={translate('pim_enrich.entity.product.module.associations.quantified.quantity')}
+              type="number"
+              min={1}
+              value={row.quantifiedLink.quantity}
+              isInvalid={0 < filterErrors(row.errors, 'quantity').length}
+              onChange={event =>
+                onChange({
+                  ...row,
+                  quantifiedLink: {...row.quantifiedLink, quantity: Number(event.currentTarget.value) || 1},
+                })
+              }
+            />
+          </InputCellContainer>
+          <InputErrors errors={row.errors} />
+        </Cell>
+        <Cell>
+          <ActionCellContainer>
+            <RowActions>
+              {undefined !== parentQuantifiedLink && parentQuantifiedLink.quantity !== row.quantifiedLink.quantity && (
+                <UnlinkIcon
+                  color={blueColor}
+                  title={translate('pim_enrich.entity.product.module.associations.quantified.unlinked')}
+                />
+              )}
+              {null !== row.product && (
                 <RowAction>
                   <a href={`#${productEditUrl}`} target="_blank">
                     <EditIcon size={20} />
                   </a>
                 </RowAction>
-                {undefined === parentQuantifiedLink && (
-                  <RowAction onClick={() => onRemove(row)}>
-                    <CloseIcon title={translate('pim_enrich.entity.product.module.associations.remove')} size={20} />
-                  </RowAction>
-                )}
-              </RowActions>
-            </ActionCellContainer>
-          </Cell>
-        </Container>
-      )}
+              )}
+
+              {undefined === parentQuantifiedLink && (
+                <RowAction onClick={() => onRemove(row)}>
+                  <CloseIcon title={translate('pim_enrich.entity.product.module.associations.remove')} size={20} />
+                </RowAction>
+              )}
+            </RowActions>
+          </ActionCellContainer>
+        </Cell>
+      </Container>
     </>
   );
 };

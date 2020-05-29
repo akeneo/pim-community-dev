@@ -33,6 +33,10 @@ class IdMappingSpec extends ObjectBehavior
 
         $this->getIdentifier($id)->shouldReturn($identifier);
         $this->getId($identifier)->shouldReturn($id);
+        $this->hasId($identifier)->shouldReturn(true);
+        $this->hasIdentifier($id)->shouldReturn(true);
+        $this->hasId('nice')->shouldReturn(false);
+        $this->hasIdentifier(12)->shouldReturn(false);
     }
 
     public function it_throws_if_the_product_id_is_not_an_integer()

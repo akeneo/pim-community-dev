@@ -76,22 +76,26 @@ class QuantifiedAssociations
                 Assert::keyExists($productAssociation, 'id');
                 Assert::keyExists($productAssociation, 'quantity');
 
-                $quantifiedLink = new QuantifiedLink(
-                    $mappedProductIds->getIdentifier($productAssociation['id']),
-                    $productAssociation['quantity']
-                );
-                $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
+                if ($mappedProductIds->hasIdentifier($productAssociation['id'])) {
+                    $quantifiedLink = new QuantifiedLink(
+                        $mappedProductIds->getIdentifier($productAssociation['id']),
+                        $productAssociation['quantity']
+                    );
+                    $mappedQuantifiedAssociations[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
+                }
             }
 
             foreach ($associations[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] ?? [] as $productModelAssociation) {
                 Assert::keyExists($productModelAssociation, 'id');
                 Assert::keyExists($productModelAssociation, 'quantity');
 
-                $quantifiedLink = new QuantifiedLink(
-                    $mappedProductModelIds->getIdentifier($productModelAssociation['id']),
-                    $productModelAssociation['quantity']
-                );
-                $mappedQuantifiedAssociations[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
+                if ($mappedProductModelIds->hasIdentifier($productModelAssociation['id'])) {
+                    $quantifiedLink = new QuantifiedLink(
+                        $mappedProductModelIds->getIdentifier($productModelAssociation['id']),
+                        $productModelAssociation['quantity']
+                    );
+                    $mappedQuantifiedAssociations[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY][] = $quantifiedLink;
+                }
             }
         }
 

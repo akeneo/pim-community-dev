@@ -30,6 +30,7 @@ import {
   newAndUpdatedQuantifiedAssociationsCount,
   hasUpdatedQuantifiedAssociations,
   isQuantifiedAssociationEmpty,
+  ProductsType,
 } from '../models';
 import {QuantifiedAssociationRow} from '../components';
 import {useProducts} from '../hooks';
@@ -100,6 +101,12 @@ const QuantifiedAssociations = ({
 
   useEffect(() => {
     formatParameters(getErrorsForPath(errors, '')).forEach(error =>
+      notify(NotificationLevel.ERROR, translate(error.messageTemplate, error.parameters, error.plural))
+    );
+    formatParameters(getErrorsForPath(errors, `.${ProductsType.Products}`)).forEach(error =>
+      notify(NotificationLevel.ERROR, translate(error.messageTemplate, error.parameters, error.plural))
+    );
+    formatParameters(getErrorsForPath(errors, `.${ProductsType.ProductModels}`)).forEach(error =>
       notify(NotificationLevel.ERROR, translate(error.messageTemplate, error.parameters, error.plural))
     );
   }, [JSON.stringify(errors)]);

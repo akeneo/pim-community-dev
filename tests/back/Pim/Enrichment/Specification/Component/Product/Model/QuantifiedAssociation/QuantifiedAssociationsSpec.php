@@ -70,6 +70,44 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
         $this->normalizeWithMapping($this->anIdMapping(), $this->anIdMapping())->shouldReturn($expectedRawQuantifiedAssociations);
     }
 
+    public function it_ignores_unknown_products_andProductModels()
+    {
+        $rawQuantifiedAssociations = [
+            'PACK' => [
+                'products'       => [
+                    ['id' => 1, 'quantity' => 1],
+                    ['id' => 2, 'quantity' => 2],
+                ],
+                'product_models' => [
+                    ['id' => 1, 'quantity' => 1],
+                    ['id' => 2, 'quantity' => 2],
+                ],
+            ]
+        ];
+
+        $expectedNormalizedAssociations = [
+            'PACK' => [
+                'products'       => [
+                    ['id' => 1, 'quantity' => 1],
+                ],
+                'product_models' => [
+                    ['id' => 1, 'quantity' => 1],
+                ],
+            ]
+        ];
+
+        $this->beConstructedThrough(
+            'createWithAssociationsAndMapping',
+            [
+                $rawQuantifiedAssociations,
+                $this->anIncompleteIdMapping(),
+                $this->anIncompleteIdMapping()
+            ]
+        );
+
+        $this->normalizeWithMapping($this->anIncompleteIdMapping(), $this->anIncompleteIdMapping())->shouldReturn($expectedNormalizedAssociations);
+    }
+
     public function it_returns_the_list_of_product_identifiers()
     {
         $expectedRawQuantifiedAssociations = [
@@ -260,6 +298,15 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             [
                 1 => 'entity_1',
                 2 => 'entity_2'
+            ]
+        );
+    }
+
+    private function anIncompleteIdMapping(): IdMapping
+    {
+        return IdMapping::createFromMapping(
+            [
+                1 => 'entity_1'
             ]
         );
     }

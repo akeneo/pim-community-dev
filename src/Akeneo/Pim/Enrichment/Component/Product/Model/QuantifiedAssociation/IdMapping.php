@@ -42,10 +42,20 @@ final class IdMapping
         return $this->identifiersToIds[$identifier];
     }
 
+    public function hasId(string $identifier): bool
+    {
+        return isset($this->identifiersToIds[$identifier]);
+    }
+
     public function getIdentifier(int $id): string
     {
         Assert::keyExists($this->idsToIdentifiers, $id);
 
         return $this->idsToIdentifiers[$id];
+    }
+
+    public function hasIdentifier(int $id): bool
+    {
+        return isset($this->idsToIdentifiers[$id]);
     }
 }
