@@ -4,9 +4,6 @@ import {
   FamilyConditionLine,
   FamilyConditionLineProps,
 } from '../pages/EditRules/components/conditions/FamilyConditionLine';
-import { IndexedFamilies } from '../fetch/FamilyFetcher';
-import { Router } from '../dependenciesTools';
-import { getFamiliesByIdentifiers } from '../repositories/FamilyRepository';
 import { ConditionDenormalizer, ConditionFactory } from './Condition';
 
 const FIELD = 'family';
@@ -23,7 +20,6 @@ type FamilyCondition = {
   field: string;
   operator: Operator;
   value: string[];
-  families: IndexedFamilies;
 };
 
 const operatorIsValid = (operator: any): boolean => {
@@ -47,16 +43,8 @@ const familyConditionPredicate = (json: any): boolean => {
 
 const denormalizeFamilyCondition: ConditionDenormalizer = async (
   json: any,
-  router: Router
 ): Promise<FamilyCondition | null> => {
   if (!familyConditionPredicate(json)) {
-    return null;
-  }
-
-  const families = json.value
-    ? await getFamiliesByIdentifiers(json.value, router)
-    : {};
-  if (Object.values(families).length !== (json.value || []).length) {
     return null;
   }
 
@@ -65,7 +53,6 @@ const denormalizeFamilyCondition: ConditionDenormalizer = async (
     field: FIELD,
     operator: json.operator,
     value: json.value,
-    families,
   };
 };
 
@@ -81,7 +68,6 @@ const createFamilyCondition: ConditionFactory = async (
     field: FIELD,
     operator: Operator.IN_LIST,
     value: [],
-    families: {},
   });
 };
 

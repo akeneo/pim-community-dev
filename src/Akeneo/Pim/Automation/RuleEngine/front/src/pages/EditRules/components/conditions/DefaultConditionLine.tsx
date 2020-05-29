@@ -65,22 +65,21 @@ const DefaultConditionLine: React.FC<DefaultConditionLineProps> = ({
 
   const localeValidation: any = {};
   if (condition.attribute.localizable) {
-    localeValidation['required'] = translate(
-      'pimee_catalog_rule.exceptions.required'
-    );
+    localeValidation['required'] = translate('pimee_catalog_rule.exceptions.required_locale');
   }
   localeValidation['validate'] = (localeCode: any) => {
     if (condition.attribute.localizable) {
-      console.log(locales);
       if (!locales.some(locale => locale.code === localeCode)) {
-        return `Unknown locale or non activated ${localeCode}`;
+        return translate('pimee_catalog_rule.exceptions.unknown_or_inactive_locale', { localeCode })
       }
       if (!getAvailableLocales().some(locale => locale.code === localeCode)) {
-        return 'Need to be bounded';
+        return condition.attribute.scopable ?
+          translate('pimee_catalog_rule.exceptions.unbound_locale', { localeCode, scopeCode: getScopeFormValue() }) :
+          translate('pimee_catalog_rule.exceptions.unknown_or_inactive_locale', { localeCode });
       }
     } else {
       if (localeCode) {
-        return `Attribute is not localizable, please drop the locale`;
+        return translate('pimee_catalog_rule.exceptions.locale_on_unlocalizable_attribute');
       }
     }
     return true;
@@ -88,18 +87,16 @@ const DefaultConditionLine: React.FC<DefaultConditionLineProps> = ({
 
   const scopeValidation: any = {};
   if (condition.attribute.scopable) {
-    scopeValidation['required'] = translate(
-      'pimee_catalog_rule.exceptions.required'
-    );
+    scopeValidation['required'] = translate('pimee_catalog_rule.exceptions.required_scope');
   }
   scopeValidation['validate'] = (scopeCode: any) => {
     if (condition.attribute.scopable) {
       if (!scopes[scopeCode]) {
-        return `Unknown scope ${scopeCode}`;
+        return translate('pimee_catalog_rule.exceptions.unknown_scope', { scopeCode })
       }
     } else {
       if (scopeCode) {
-        return `Attribute is not scopable, please drop the scope`;
+        return translate('pimee_catalog_rule.exceptions.scope_on_unscopable_attribute');
       }
     }
     return true;
