@@ -66,6 +66,10 @@ pimee_catalog_rule:
           too_short: "Le code de la règle est trop court. Il doit comporter {{ characterLimit }} caractères ou plus."
           allowed_characters: Le code de la règle ne peut être composé que de caractères alphanumériques et de tirets bas.
     edit:
+      properties:
+        section:
+          general: Paramètres généraux
+          labels: Traductions du libellé
       priority:
         label: Priorité
       add_to_category: Ajouter à une catégorie
@@ -94,11 +98,15 @@ pimee_catalog_rule:
           ">=": égal ou supérieur à
           "<": inférieur à
           "<=": inférieur ou égal à
+      discard_changes: Vous perdrez les modifications de la règle si vous quittez la page.
     helper:
       product_selection_doc_link: jetez un coup d'oeil à cet article.
     legend:
       add_to_category: Créer une action
       product_selection: Créer une condition
+  exceptions:
+    loading: Une erreur s'est produite lors du chargement de la définition de règle.
+    required: Ce champ est obligatoire
 pim_enrich:
   entity:
     rule:
