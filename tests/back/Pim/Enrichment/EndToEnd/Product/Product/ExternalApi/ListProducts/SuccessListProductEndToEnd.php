@@ -218,7 +218,8 @@ JSON;
                     "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
                     "UPSELL": { "products" : [], "product_models": [], "groups": [] },
                     "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-                }
+                },
+                "quantified_associations": {}
             },
             {
                 "_links" : {
@@ -238,7 +239,8 @@ JSON;
                     "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
                     "UPSELL": { "products" : [], "product_models": [], "groups": [] },
                     "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-                }
+                },
+                "quantified_associations": {}
             },
             {
                 "_links" : {
@@ -269,7 +271,8 @@ JSON;
                     "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
                     "UPSELL": { "products" : [], "product_models": [], "groups": [] },
                     "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-                }
+                },
+                "quantified_associations": {}
             },
             {
                 "_links" : {
@@ -293,7 +296,8 @@ JSON;
                     "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
                     "UPSELL": { "products" : [], "product_models": [], "groups": [] },
                     "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-                }
+                },
+                "quantified_associations": {}
             },
             {
                 "_links": {
@@ -313,7 +317,8 @@ JSON;
                     "UPSELL": { "products": [], "product_models": [], "groups": [] },
                     "X_SELL": { "products": [], "product_models": [], "groups": [] },
                     "SUBSTITUTION": { "products": [], "product_models": [], "groups": [] }
-                }
+                },
+                "quantified_associations": {}
             }
         ]
     }
@@ -375,7 +380,8 @@ JSON;
                     "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
                     "UPSELL": { "products" : [], "product_models": [], "groups": [] },
                     "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-                }
+                },
+                "quantified_associations": {}
             }
         ]
     }
@@ -752,7 +758,8 @@ JSON;
         "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
         "UPSELL": { "products" : [], "product_models": [], "groups": [] },
         "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-    }
+    },
+    "quantified_associations": {}
 }
 JSON;
 
@@ -806,7 +813,8 @@ JSON;
         "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
         "UPSELL": { "products" : [], "product_models": [], "groups": [] },
         "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-    }
+    },
+    "quantified_associations": {}
 }
 JSON;
 
@@ -853,7 +861,8 @@ JSON;
         "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
         "UPSELL": { "products" : [], "product_models": [], "groups": [] },
         "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-    }
+    },
+    "quantified_associations": {}
 }
 JSON;
 
@@ -900,7 +909,8 @@ JSON;
         "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
         "UPSELL": { "products" : [], "product_models": [], "groups": [] },
         "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-    }
+    },
+    "quantified_associations": {}
 }
 JSON;
 
@@ -925,7 +935,8 @@ JSON;
         "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
         "UPSELL": { "products" : [], "product_models": [], "groups": [] },
         "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-    }
+   },
+   "quantified_associations": {}
 }
 JSON;
 
@@ -956,7 +967,8 @@ JSON;
         "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
         "UPSELL": { "products" : [], "product_models": [], "groups": [] },
         "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-    }
+    },
+    "quantified_associations": {}
 }
 JSON;
 
@@ -987,7 +999,8 @@ JSON;
         "UPSELL": { "products": [], "product_models": [], "groups": [] },
         "X_SELL": { "products": [], "product_models": [], "groups": [] },
         "SUBSTITUTION": { "products": [], "product_models": [], "groups": [] }
-    }
+    },
+    "quantified_associations": {}
 }
 JSON;
 

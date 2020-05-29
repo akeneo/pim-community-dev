@@ -67,7 +67,7 @@ class GetProductModelQuantifiedAssociationsByProductIdentifiersIntegration exten
             ],
         ];
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     /**
@@ -137,7 +137,7 @@ class GetProductModelQuantifiedAssociationsByProductIdentifiersIntegration exten
             ],
         ];
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     /**
@@ -168,7 +168,7 @@ class GetProductModelQuantifiedAssociationsByProductIdentifiersIntegration exten
             ],
         ];
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     /**
@@ -206,7 +206,7 @@ class GetProductModelQuantifiedAssociationsByProductIdentifiersIntegration exten
             ],
         ];
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     /**
@@ -227,7 +227,7 @@ class GetProductModelQuantifiedAssociationsByProductIdentifiersIntegration exten
 
         $actual = $this->getQuery()->fromProductIdentifiers(['productA', 'productB']);
 
-        $this->assertEquals([], $actual);
+        $this->assertSame([], $actual);
     }
 
     /**
@@ -249,7 +249,7 @@ class GetProductModelQuantifiedAssociationsByProductIdentifiersIntegration exten
         $this->getProductModelRemover()->remove($productModelA);
         $actual = $this->getQuery()->fromProductIdentifiers(['productB']);
 
-        $this->assertEquals([], $actual);
+        $this->assertSame([], $actual);
     }
 
     /**
@@ -272,7 +272,7 @@ class GetProductModelQuantifiedAssociationsByProductIdentifiersIntegration exten
         $this->getAssociationTypeRemover()->remove($associationType);
         $actual = $this->getQuery()->fromProductIdentifiers(['productB']);
 
-        $this->assertEquals([], $actual);
+        $this->assertSame([], $actual);
     }
 
     protected function getConfiguration()

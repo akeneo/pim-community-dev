@@ -82,7 +82,7 @@ SQL;
             $productModelCode = $row['product_model_code'];
             $results[$productModelCode][$associationTypeCode]['products'][] = [
                 'identifier' => $row['associated_product_identifier'],
-                'quantity' => $row['associated_product_quantity'],
+                'quantity' => (int)$row['associated_product_quantity'],
             ];
         }
 

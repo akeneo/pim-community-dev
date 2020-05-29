@@ -77,7 +77,8 @@ class GetProductModelEndToEnd extends ApiTestCase
                 'COMPATIBILITY' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []]
-            ]
+            ],
+            'quantified_associations' => [],
         ];
         $client = $this->createAuthenticatedClient();
 
