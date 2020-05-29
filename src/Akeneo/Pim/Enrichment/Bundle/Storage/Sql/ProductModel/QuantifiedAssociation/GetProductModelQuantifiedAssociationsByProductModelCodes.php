@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssoci
 
 use Doctrine\DBAL\Connection;
 
-final class GetProductModelsQuantifiedAssociationsByProductModelCodes
+final class GetProductModelQuantifiedAssociationsByProductModelCodes
 {
     /** @var Connection */
     private $connection;

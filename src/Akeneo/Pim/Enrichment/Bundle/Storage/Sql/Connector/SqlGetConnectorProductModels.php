@@ -10,7 +10,7 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetGroupAssociationsBy
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductAssociationsByProductModelCodes;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductModelsAssociationsByProductModelCodes;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetValuesAndPropertiesFromProductModelCodes;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssociation\GetProductModelsQuantifiedAssociationsByProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductModelCodes;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductModelCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
@@ -44,7 +44,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
     /** @var GetProductQuantifiedAssociationsByProductModelCodes */
     private $getProductQuantifiedAssociationsByProductModelCodes;
 
-    /** @var GetProductModelsQuantifiedAssociationsByProductModelCodes */
+    /** @var GetProductModelQuantifiedAssociationsByProductModelCodes */
     private $getProductModelQuantifiedAssociationsByProductModelCodes;
 
     /** @var ReadValueCollectionFactory */
@@ -57,7 +57,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         GetProductModelsAssociationsByProductModelCodes $getProductModelAssociationsByProductModelCodes,
         GetGroupAssociationsByProductModelCodes $getGroupAssociationsByProductModelCodes,
         GetProductQuantifiedAssociationsByProductModelCodes $getProductQuantifiedAssociationsByProductModelCodes,
-        GetProductModelsQuantifiedAssociationsByProductModelCodes $getProductModelQuantifiedAssociationsByProductModelCodes,
+        GetProductModelQuantifiedAssociationsByProductModelCodes $getProductModelQuantifiedAssociationsByProductModelCodes,
         ReadValueCollectionFactory $readValueCollectionFactory
     ) {
         $this->getValuesAndPropertiesFromProductModelCodes = $getValuesAndPropertiesFromProductModelCodes;

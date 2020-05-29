@@ -187,8 +187,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.enrichment.product_model.query.get_product_models_quantified_associations_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssociation\GetProductModelsQuantifiedAssociationsByProductModelCodes'
+    akeneo.pim.enrichment.product_model.query.get_product_model_quantified_associations_by_product_model_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductModelCodes'
         arguments:
             - '@database_connection'
 
@@ -214,7 +214,7 @@ services:
             - '@akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes'
             - '@akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes'
             - '@akeneo.pim.enrichment.product_model.query.get_product_quantified_associations_by_product_model_codes'
-            - '@akeneo.pim.enrichment.product_model.query.get_product_models_quantified_associations_by_product_model_codes'
+            - '@akeneo.pim.enrichment.product_model.query.get_product_model_quantified_associations_by_product_model_codes'
             - '@akeneo.pim.enrichment.factory.read_value_collection'
 
 
