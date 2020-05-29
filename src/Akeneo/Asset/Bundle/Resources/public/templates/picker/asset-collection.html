@@ -1,9 +1,11 @@
 <div class="AknAssetCollectionField-header AknButtonList AknButtonList--right <%- ('view' === editMode) ? 'AknAssetCollectionField-header--disabled' : '' %>">
     <span class="asset-mass-uploader">
     </span>
+    <% if (canUploadAssets) { %>
     <span class="AknButtonList-item AknButton AknButton--action upload-assets">
         <%- _.__('pimee_product_asset.form.product.asset.upload') %>
     </span>
+    <% } %>
     <% if (canManageAssets) { %>
     <span class="AknButtonList-item AknButton AknButton--apply add-asset">
         <%- _.__('pimee_product_asset.form.product.asset.manage') %>

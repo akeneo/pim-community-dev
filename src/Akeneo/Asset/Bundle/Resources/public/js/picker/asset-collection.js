@@ -65,6 +65,7 @@ define(
                         orderedAssets = orderedAssets.concat(assets.filter(asset => asset.code === assetCode));
                     });
                     const canManageAssets = SecurityContext.isGranted('pimee_product_asset_category_list');
+                    const canUploadAssets = SecurityContext.isGranted('pimee_product_asset_mass_upload');
 
                     this.$el.html(this.template({
                         assets: orderedAssets,
@@ -72,7 +73,8 @@ define(
                         scope: this.context.scope,
                         thumbnailFilter: 'thumbnail',
                         editMode: this.context.editMode,
-                        canManageAssets: canManageAssets
+                        canManageAssets,
+                        canUploadAssets
                     }));
 
                     if ('view' !== this.context.editMode) {
