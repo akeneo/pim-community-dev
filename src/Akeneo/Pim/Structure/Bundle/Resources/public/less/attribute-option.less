@@ -1,0 +1,41 @@
+.AknAttributeOption {
+  display: flex;
+  justify-content: space-between;
+
+  &-list {
+    width: 56%;
+  }
+
+  &-listItem {
+    line-height: 54px;
+    border-bottom: 1px @AknGrey60 solid;
+
+    &:first-child {
+      margin-top: 20px;
+    }
+
+    &:hover {
+    background-color: @AknLightGray;
+    }
+
+    .AknAttributeOption-itemCode {
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: @AknLightPurple;
+    }
+  }
+
+  &-edit {
+    width: 40%;
+  }
+
+  .AknSubsection {
+    &-title {
+      &.AknSubsection-title--glued {
+        font-weight: normal;
+        margin: 20px 0 20px 0;
+      }
+    }
+  }
+}
