@@ -156,6 +156,7 @@ pim_common:
   cancel: Annuler
   close: Fermer
   code: Code
+  completeness: Complétude
   confirm: Confirmation
   confirm_deletion: Supprimer l'élément
   confirm_revocation: Confirmer la révocation
