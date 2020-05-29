@@ -9,7 +9,7 @@ But it works fine if the source is a standard `node_modules` package (or another
 
 They also are limited by the underlying stack: backbone.js + custom code = legacy
 
-⚠️ More notably if you goal is to have a small app inside the PIM with differents routes (urls) using the same React component tree (useful for sharing a global state), you will need to go the extra miles and hack around the legacy routing system to avoid backbone mounting|unmounting the React app on each url change.
+⚠️ More notably if your goal is to have a small app inside the PIM with differents routes (urls) using the same React component tree (useful for sharing a global state), you will need to go the extra miles and hack around the legacy routing system to avoid backbone mounting|unmounting the React app on each url change.
 
 More on this in the frontend controller section of this guide.
 
