@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { Header } from '../Header';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
@@ -19,6 +19,7 @@ type Props = {
   title: string;
   translate: Translate;
   unsavedChanges?: boolean;
+  secondaryButton?: ReactElement;
 };
 
 const RulesHeader: React.FC<Props> = ({
@@ -28,6 +29,7 @@ const RulesHeader: React.FC<Props> = ({
   title,
   translate,
   unsavedChanges = false,
+  secondaryButton,
 }) => {
   return (
     <Header>
@@ -39,6 +41,7 @@ const RulesHeader: React.FC<Props> = ({
             viewName='pim-rule-index-user-navigation'
           />
           <div className='AknTitleContainer-actionsContainer AknButtonList'>
+            <div className='AknButtonList-item'>{secondaryButton}</div>
             <PrimaryButton form={formId} type='submit'>
               {translate(buttonLabel)}
             </PrimaryButton>

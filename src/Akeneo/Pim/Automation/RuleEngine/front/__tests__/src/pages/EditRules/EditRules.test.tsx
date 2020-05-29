@@ -77,7 +77,7 @@ const addConditionFieldsPayload = [
 const setIsDirty = (_isDirty: boolean) => {};
 
 describe('EditRules', () => {
-  beforeEach(() => {
+  afterEach(() => {
     fetchMock.resetMocks();
   });
 
@@ -175,6 +175,28 @@ describe('EditRules', () => {
     });
     expect(await findByText('Family')).toBeInTheDocument();
     expect((await findByTestId('condition-list')).children.length).toEqual(1);
+  });
+
+  it('should add an Action Line', async () => {
+    fetchMock.mockResponses(
+      [JSON.stringify(ruleDefinitionPayload), { status: 200 }],
+      [JSON.stringify(localesPayload), { status: 200 }],
+      [JSON.stringify(scopesPayload), { status: 200 }],
+    );
+    // When
+    const { findByLabelText, findByTestId } = render(
+      <EditRules ruleDefinitionCode={ruleDefinitionCode} setIsDirty={setIsDirty}/>,
+      {
+        legacy: true,
+      }
+    );
+    // Then
+    userEvent.click(await findByLabelText('pimee_catalog_rule.form.edit.actions.add_action'));
+    expect((await findByLabelText('pimee_catalog_rule.form.edit.actions.add_action')).children.length).toBeGreaterThan(1);
+    fireEvent.change(await findByLabelText('pimee_catalog_rule.form.edit.actions.add_action'), {
+      target: { value: 'set_family' },
+    });
+    expect((await findByTestId('action-list')).children.length).toEqual(1);
   });
 
   it('should render a 404 error', async () => {

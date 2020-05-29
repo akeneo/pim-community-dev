@@ -83,8 +83,9 @@ pimee_catalog_rule:
             fields:
                 family: Family
             actions:
+                add_action: Add action
                 set_family:
-                    title: Set Family
+                    title: SET Family
                     subtitle: Select your family
                 delete:
                     label: Remove action

@@ -65,9 +65,9 @@ const SetFamilyActionLine: React.FC<Props> = ({
           currentCatalogLocale={currentCatalogLocale}
           value={getValueFormValue()}
           onChange={setValueFormValue}
-          placeholder={
+          placeholder={translate(
             'pimee_catalog_rule.form.edit.actions.set_family.subtitle'
-          }
+          )}
         />
       </div>
     </ActionTemplate>
