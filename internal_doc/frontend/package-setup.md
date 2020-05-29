@@ -1,15 +1,13 @@
 # How to create an independant frontend package
 
-This guide explains the setup of independent frontend package inside the PIM.
+This guide explains the setup of an independent frontend package inside the PIM.
 
-It come with **some limitations** though, being independent means you can't import any function|class|component from outside the package.
+It comes with **some limitations** though, being independent means you can't import any function|class|component from outside the package.
 
 For example, you can't import a javascript file directly from `pimui/js`.
 But it works fine if the source is a standard `node_modules` package (or another Yarn workspace).
 
-They also are limited by the underlying stack: backbone.js + custom code = legacy
-
-⚠️ More notably if your goal is to have a small app inside the PIM with differents routes (urls) using the same React component tree (useful for sharing a global state), you will need to go the extra miles and hack around the legacy routing system to avoid backbone mounting|unmounting the React app on each url change.
+They also are limited by the underlying stack: backbone.js + custom code
 
 More on this in the frontend controller section of this guide.
 
@@ -72,7 +70,7 @@ Add the yarn workspace to the root `package.json`
 }
 ```
 
-This allow you to use the package anywhere in the PIM via:
+This allows you to use the package anywhere in the PIM via:
 
 ```js
 import { HelloZiggy } from "@akeneo-pim-enterprise/ziggy";
@@ -110,7 +108,7 @@ import { HelloZiggy } from "@akeneo-pim-enterprise/ziggy";
    >   resource: "@AcmeEnterpriseAppBundle/Resources/config/routing.yml"
    > ```
 
-   The route will be accessible under the following url: `http://localhost:8080/#/acme`
+   The route will be accessible under the following URL: `http://localhost:8080/#/acme`
 
 1. Create the controller that will render the page with your React component
 
@@ -141,7 +139,11 @@ import { HelloZiggy } from "@akeneo-pim-enterprise/ziggy";
    export = IndexController;
    ```
 
-1. Add the newly created controller module and his configuration to the `requirejs.yml` configuration file.
+   > ⚠️ If your goal is to have a small app inside the PIM with differents routes (URLs) using the same React component tree (useful for sharing a global state), you will need to go the extra miles and hack around the legacy routing system to avoid backbone mounting|unmounting the React app on each URL change.
+   >
+   > Check out the `ReactController.ts` to have a base controller that can handle this use case.
+
+1) Add the newly created controller module and his configuration to the `requirejs.yml` configuration file.
 
    `src/AcmeEnterprise/Bundle/AppBundle/Resources/config/requirejs.yml`
 
