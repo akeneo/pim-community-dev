@@ -12,6 +12,8 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand:
             - Type: int
         conditions:
             - Type: array
+            - All:
+                - Type: object
             - Valid: ~
         actions:
             - NotBlank:
@@ -19,6 +21,9 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand:
             - Type: array
             - Count:
                 min: 1
+            - All:
+                - Type: object
             - Valid: ~
         labels:
             - Type: array
+            - Valid: ~

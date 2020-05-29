@@ -5,13 +5,16 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operation:
               attributeProperty: field
               channelProperty: scope
               localeProperty: locale
-        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\NotBlankCurrency:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\CurrencyKey:
               attributeProperty: field
               currencyProperty: currency
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\OperandKeys: ~
     properties:
         operator:
             - NotNull: ~
-            - Choice: [add, subtract, multiply, divide]
+            - Choice:
+                choices: [add, subtract, multiply, divide]
+                message: This value should be either "add", "subtract", "multiply" or "divide"
         field:
             - Type: string
             - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsAttribute: ~
@@ -19,8 +22,6 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operation:
                 - pim_catalog_number
                 - pim_catalog_price_collection
                 - pim_catalog_metric
-        value:
-            - Type: numeric
         scope:
             - Type: string
         locale:
@@ -28,3 +29,5 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operation:
         currency:
             - Type: string
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ActiveCurrency: ~
+        value:
+            - Type: numeric

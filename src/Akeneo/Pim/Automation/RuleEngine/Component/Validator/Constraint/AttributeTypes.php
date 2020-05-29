@@ -18,7 +18,8 @@ use Symfony\Component\Validator\Constraint;
 
 class AttributeTypes extends Constraint
 {
-    public $message = 'Invalid "{{ invalid_type }}" attribute type. Expected a {{ expected_types }} attribute';
+    public $message = 'The "{{ attribute_code }}" attribute has an invalid "{{ invalid_type }}" attribute type. Expected an attribute of type {{ expected_types }}';
+
     public $types = [];
 
     public function validatedBy()

@@ -4,6 +4,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductSource:
               attributeProperty: field
               channelProperty: scope
               localeProperty: locale
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ProductSourceOptions:
     properties:
         field:
             - Type: string

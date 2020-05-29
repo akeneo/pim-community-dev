@@ -43,10 +43,14 @@ class AttributeTypesValidator extends ConstraintValidator
 
         $authorizedTypes = (array)$constraint->types;
         if (!in_array($attribute->type(), $authorizedTypes)) {
-            $this->context->buildViolation($constraint->message)
-                          ->setParameter('{{ invalid_type }}', $attribute->type())
-                          ->setParameter('{{ expected_types }}', implode('|', $authorizedTypes))
-                          ->addViolation();
+            $this->context->buildViolation(
+                $constraint->message,
+                [
+                    '{{ attribute_code }}' => $attribute->code(),
+                    '{{ invalid_type }}' => $attribute->type(),
+                    '{{ expected_types }}' => implode(' | ', $authorizedTypes),
+                ]
+            )->addViolation();
         }
     }
 }

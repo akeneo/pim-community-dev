@@ -4,7 +4,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductDestination:
               attributeProperty: field
               channelProperty: scope
               localeProperty: locale
-        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\NotBlankCurrency:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\CurrencyKey:
               attributeProperty: field
               currencyProperty: currency
         - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\MeasurementUnit:

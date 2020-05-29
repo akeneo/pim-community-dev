@@ -37,15 +37,18 @@ class IsValidSourceValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         Assert::isInstanceOf($constraint, IsValidSource::class);
-        if (null === $value || !is_string($value)) {
+        if (!is_string($value)) {
             return;
         }
 
         $attribute = $this->getAttributes->forCode($value);
         if (null !== $attribute && null === $this->valueStringifierRegistry->getStringifier($attribute->type())) {
-            $this->context->buildViolation($constraint->message)
-                          ->setParameter('{{ field }}', $value)
-                          ->addViolation();
+            $this->context->buildViolation(
+                $constraint->message,
+                [
+                    '{{ field }}' => $value,
+                ]
+            )->addViolation();
         }
     }
 }

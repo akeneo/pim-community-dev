@@ -1,6 +1,7 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Label:
     properties:
         locale:
+            - NotBlank: ~
             - Type: string
             - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
         label:

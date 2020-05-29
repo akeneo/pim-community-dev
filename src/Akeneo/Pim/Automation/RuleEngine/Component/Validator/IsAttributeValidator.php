@@ -38,9 +38,12 @@ class IsAttributeValidator extends ConstraintValidator
 
         $attribute = $this->getAttributes->forCode($value);
         if (null === $attribute) {
-            $this->context->buildViolation($constraint->message)
-                          ->setParameter('{{ code }}', $value)
-                          ->addViolation();
+            $this->context->buildViolation(
+                $constraint->message,
+                [
+                    '{{ code }}' => $value,
+                ]
+            )->addViolation();
         }
     }
 }

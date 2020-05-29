@@ -27,7 +27,11 @@ class DivisionByZeroValidator extends ConstraintValidator
         Assert::isInstanceOf($constraint, DivisionByZero::class);
         Assert::isInstanceOf($operation, Operation::class);
 
-        if (0.0 === $operation->value && OperationModel::DIVIDE === $operation->operator) {
+        if (null === $operation->value || !is_numeric($operation->value)) {
+            return;
+        }
+
+        if (0.0 === (float) $operation->value && OperationModel::DIVIDE === $operation->operator) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }

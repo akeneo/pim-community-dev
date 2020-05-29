@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\NotBlankCurrency;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\CurrencyKey;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-final class NotBlankCurrencyValidator extends ConstraintValidator
+final class CurrencyKeyValidator extends ConstraintValidator
 {
     /** @var GetAttributes */
     private $getAttributes;
@@ -37,25 +37,48 @@ final class NotBlankCurrencyValidator extends ConstraintValidator
 
     public function validate($object, Constraint $constraint)
     {
-        Assert::isInstanceOf($constraint, NotBlankCurrency::class);
+        Assert::isInstanceOf($constraint, CurrencyKey::class);
 
-        $currencyCode = $this->propertyAccessor->getValue($object, $constraint->currencyProperty);
-        if (null !== $currencyCode && '' !== $currencyCode) {
+        if (null === $object) {
             return;
         }
 
+        $currencyCode = $this->propertyAccessor->getValue($object, $constraint->currencyProperty);
         $attributeCode = $this->propertyAccessor->getValue($object, $constraint->attributeProperty);
         if (null === $attributeCode || !is_string($attributeCode)) {
             return;
         }
         $attribute = $this->getAttributes->forCode($attributeCode);
-        if (null === $attribute || AttributeTypes::PRICE_COLLECTION !== $attribute->type()) {
+        if (null === $attribute) {
             return;
         }
 
-        $this->context->buildViolation(
-            $constraint->message,
-            ['{{ currencyProperty }}' => $constraint->currencyProperty]
-        )->atPath($constraint->currencyProperty)->setInvalidValue($currencyCode)->addViolation();
+        if (null === $currencyCode || '' === $currencyCode) {
+            if (AttributeTypes::PRICE_COLLECTION === $attribute->type()) {
+                $this->context
+                    ->buildViolation(
+                        $constraint->emptyKeyMessage,
+                        [
+                            '{{ key }}' => $constraint->currencyProperty,
+                        ]
+                    )->atPath($constraint->currencyProperty)
+                    ->setInvalidValue($currencyCode)
+                    ->addViolation();
+            }
+
+            return;
+        }
+
+        if (AttributeTypes::PRICE_COLLECTION !== $attribute->type()) {
+            $this->context
+                ->buildViolation(
+                    $constraint->unexpectedKeyMessage,
+                    [
+                        '{{ key }}' => $constraint->currencyProperty,
+                    ]
+                )->atPath($constraint->currencyProperty)
+                ->setInvalidValue($currencyCode)
+                ->addViolation();
+        }
     }
 }

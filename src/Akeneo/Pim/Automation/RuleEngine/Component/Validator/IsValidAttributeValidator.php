@@ -57,7 +57,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
         }
         Assert::isInstanceOf($constraint, IsValidAttribute::class);
         $attributeCode = $this->propertyAccessor->getValue($object, $constraint->attributeProperty);
-        if (null === $attributeCode) {
+        if (null === $attributeCode || !is_string($attributeCode)) {
             return;
         }
 
@@ -124,13 +124,12 @@ final class IsValidAttributeValidator extends ConstraintValidator
             return;
         }
 
-
         if ($attribute->isLocaleSpecific() && !in_array($locale, $attribute->availableLocaleCodes())) {
             $this->addViolation(
                 'Attribute "{{ attributeCode }}" is locale specific and expects one of these locales: {{ expectedLocales }}, "{{ invalidLocale }}" given.',
                 [
                     '{{ attributeCode }}' => $attribute->code(),
-                    '{{expectedLocales }}' => implode($attribute->availableLocaleCodes(), ', '),
+                    '{{ expectedLocales }}' => implode($attribute->availableLocaleCodes(), ', '),
                     '{{ invalidLocale }}' => $locale,
                 ],
                 $locale
@@ -142,7 +141,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
         if ($attribute->isScopable() && is_string($scope) && $this->channelExistsWithLocale->doesChannelExist($scope)
             && !$this->channelExistsWithLocale->isLocaleBoundToChannel($locale, $scope)) {
             $this->addViolation(
-                'The "{{ invalidLocale }} is not bound to the "{{ channelCode }} channel',
+                'The "{{ invalidLocale }}" is not bound to the "{{ channelCode }}" channel',
                 [
                     '{{ invalidLocale }}' => $locale,
                     '{{ channelCode }}' => $scope,

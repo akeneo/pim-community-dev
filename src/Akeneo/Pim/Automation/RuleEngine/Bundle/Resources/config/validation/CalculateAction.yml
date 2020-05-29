@@ -2,9 +2,11 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CalculateAction:
     properties:
         source:
             - NotNull: ~
+            - Type: object
             - Valid: ~
         destination:
             - NotNull: ~
+            - Type: object
             - Valid: ~
         operationList:
             - Type: array
@@ -12,6 +14,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CalculateAction:
                 min: 1
             - All:
                 - NotNull: ~
+                - Type: object
             - Valid: ~
         roundPrecision:
             - Type: int

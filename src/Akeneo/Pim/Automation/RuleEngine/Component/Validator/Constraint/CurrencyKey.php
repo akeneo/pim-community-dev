@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Validator\NotBlankCurrencyValidator;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\CurrencyKeyValidator;
 use Symfony\Component\Validator\Constraint;
 
-class NotBlankCurrency extends Constraint
+class CurrencyKey extends Constraint
 {
-    public $message = 'The "{{ currencyProperty }}" key is missing or empty';
+    public $emptyKeyMessage = 'The "{{ key }}" key is missing or empty';
+    public $unexpectedKeyMessage = 'The {{ key }} key was unexpected';
     public $attributeProperty;
     public $currencyProperty;
 
@@ -29,7 +30,7 @@ class NotBlankCurrency extends Constraint
 
     public function validatedBy()
     {
-        return NotBlankCurrencyValidator::class;
+        return CurrencyKeyValidator::class;
     }
 
     public function getTargets()

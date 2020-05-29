@@ -48,12 +48,12 @@ final class MeasurementUnitValidator extends ConstraintValidator
         Assert::isInstanceOf($constraint, MeasurementUnit::class);
 
         $unit = $this->propertyAccessor->getValue($object, $constraint->unitProperty);
-        if (null === $unit) {
+        if (!is_string($unit)) {
             return;
         }
 
         $attributeCode = $this->propertyAccessor->getValue($object, $constraint->attributeProperty);
-        if (null === $attributeCode || !is_string($attributeCode)) {
+        if (!is_string($attributeCode)) {
             return;
         }
 

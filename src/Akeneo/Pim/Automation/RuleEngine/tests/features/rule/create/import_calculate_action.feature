@@ -43,9 +43,9 @@ Background:
     @acceptance-back
     Scenario: Import a calculate rule with non numeric attribute types
         When I import a calculate rule with invalid attribute types
-        Then an exception with message "actions[0].destination.field: Invalid \"pim_catalog_text\" attribute type. Expected a pim_catalog_number|pim_catalog_price_collection|pim_catalog_metric attribute" has been thrown
-        And an exception with message "actions[0].source.field: Invalid \"pim_catalog_textarea\" attribute type. Expected a pim_catalog_number|pim_catalog_price_collection|pim_catalog_metric attribute" has been thrown
-        And an exception with message "actions[0].operationList[0].field: Invalid \"pim_catalog_simpleselect\" attribute type. Expected a pim_catalog_number|pim_catalog_price_collection|pim_catalog_metric attribute" has been thrown
+        Then an exception with message "actions[0].source.field: The \"description\" attribute has an invalid \"pim_catalog_textarea\" attribute type. Expected an attribute of type pim_catalog_number | pim_catalog_price_collection | pim_catalog_metric" has been thrown
+        And an exception with message "actions[0].operationList[0].field: The \"color\" attribute has an invalid \"pim_catalog_simpleselect\" attribute type. Expected an attribute of type pim_catalog_number | pim_catalog_price_collection | pim_catalog_metric" has been thrown
+        And an exception with message "actions[0].destination.field: The \"name\" attribute has an invalid \"pim_catalog_text\" attribute type. Expected an attribute of type pim_catalog_number | pim_catalog_price_collection | pim_catalog_metric" has been thrown
 
     @acceptance-back
     Scenario: Import a calculate rule with invalid currencies

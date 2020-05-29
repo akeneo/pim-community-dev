@@ -55,6 +55,14 @@ class DivisionByZeroValidatorSpec extends ObjectBehavior
         $this->validate($operation, new DivisionByZero());
     }
 
+    function it_does_not_build_a_violation_if_value_is_not_numeric(ExecutionContextInterface $context)
+    {
+        $operation = new Operation(['value' => 'foobar', 'operator' => 'divide']);
+        $context->addViolation(Argument::any())->shouldNotBeCalled();
+
+        $this->validate($operation, new DivisionByZero());
+    }
+
     function it_does_not_build_a_violation_if_value_is_different_from_zero(ExecutionContextInterface $context)
     {
         $operation = new Operation(['value' => 0.5, 'operator' => 'divide']);

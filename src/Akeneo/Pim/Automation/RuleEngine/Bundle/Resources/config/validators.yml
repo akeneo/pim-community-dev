@@ -127,7 +127,7 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
-    Akeneo\Pim\Automation\RuleEngine\Component\Validator\NotBlankCurrencyValidator:
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\CurrencyKeyValidator:
         arguments:
             - '@akeneo.pim.structure.query.get_attributes'
             - '@property_accessor'
@@ -145,5 +145,15 @@ services:
     Akeneo\Pim\Automation\RuleEngine\Component\Validator\CustomActionValidator:
         arguments:
             - '@pimee_catalog_rule.denormalizer.product_rule.chained'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\OperandKeysValidator:
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\ProductSourceOptionsValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: validator.constraint_validator }

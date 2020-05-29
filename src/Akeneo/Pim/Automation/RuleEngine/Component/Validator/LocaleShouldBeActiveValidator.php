@@ -38,17 +38,18 @@ final class LocaleShouldBeActiveValidator extends ConstraintValidator
      */
     public function validate($localeCode, Constraint $constraint)
     {
-        if (null === $localeCode) {
+        Assert::isInstanceOf($constraint, LocaleShouldBeActive::class);
+        if (!is_string($localeCode)) {
             return;
         }
 
-        Assert::string($localeCode);
-        Assert::isInstanceOf($constraint, LocaleShouldBeActive::class);
-
         if (!$this->channelExistsWithLocale->isLocaleActive($localeCode)) {
-            $this->context->buildViolation($constraint->message)
-                ->setParameter('%locale_code%', $localeCode)
-                ->addViolation();
+            $this->context->buildViolation(
+                $constraint->message,
+                [
+                    '%locale_code%' => $localeCode,
+                ]
+            )->addViolation();
         }
     }
 }

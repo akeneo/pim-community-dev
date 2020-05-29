@@ -1,13 +1,18 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ConcatenateAction:
     properties:
         from:
-            - NotNull: ~
+            - NotNull:
+                message: The "from" key is missing or empty
             - Type: array
             - Count:
                 min: 2
+                minMessage: This value should contain at least 2 elements
             - All:
                 - NotNull: ~
+                - Type: object
             - Valid: ~
         to:
-            - NotNull: ~
+            - NotNull:
+                message: The "to" key is missing or empty
+            - Type: object
             - Valid: ~

@@ -4,9 +4,10 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operand:
               attributeProperty: field
               channelProperty: scope
               localeProperty: locale
-        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\NotBlankCurrency:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\CurrencyKey:
               attributeProperty: field
               currencyProperty: currency
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\OperandKeys: ~
     properties:
         field:
             - Type: string
@@ -15,12 +16,12 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operand:
                 - pim_catalog_number
                 - pim_catalog_price_collection
                 - pim_catalog_metric
+        scope:
+            - Type: string
+        locale:
+            - Type: string
         currency:
             - Type: string
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ActiveCurrency: ~
         value:
             - Type: numeric
-        scope:
-            - Type: string
-        locale:
-            - Type: string

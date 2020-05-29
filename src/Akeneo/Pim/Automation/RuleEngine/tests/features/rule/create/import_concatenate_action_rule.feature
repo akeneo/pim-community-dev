@@ -29,4 +29,4 @@ Feature: Import concatenate action rules
   @acceptance-back
   Scenario: Import a concatenate rule with invalid target attribute
     When I import a concatenate rule with non text target attribute
-    Then an exception with message "actions[0].to.field: Invalid \"pim_catalog_identifier\" attribute type. Expected a pim_catalog_text|pim_catalog_textarea" has been thrown
+    Then an exception with message "actions[0].to.field: The \"sku\" attribute has an invalid \"pim_catalog_identifier\" attribute type. Expected an attribute of type pim_catalog_text | pim_catalog_textarea" has been thrown

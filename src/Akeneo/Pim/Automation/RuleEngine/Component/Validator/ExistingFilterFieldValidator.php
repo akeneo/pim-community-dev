@@ -44,7 +44,7 @@ class ExistingFilterFieldValidator extends ConstraintValidator
         Assert::isInstanceOf($constraint, ExistingFilterField::class);
         Assert::isInstanceOf($condition, Condition::class);
 
-        if (null === $condition->field || '' === $condition->field || null == $condition->operator || '' === $condition->operator) {
+        if (!is_string($condition->field) || !is_string($condition->operator)) {
             return;
         }
 
