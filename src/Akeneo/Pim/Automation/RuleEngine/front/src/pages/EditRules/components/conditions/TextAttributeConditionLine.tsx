@@ -68,6 +68,44 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
     );
   };
 
+  const localeValidation: any = {};
+  if (condition.attribute.localizable) {
+    localeValidation['required'] = translate('pimee_catalog_rule.exceptions.required');
+  }
+  localeValidation['validate'] = (localeCode: any) => {
+    if (condition.attribute.localizable) {
+      console.log(locales);
+      if (!locales.some(locale => locale.code === localeCode)) {
+        return `Unknown locale or non activated ${localeCode}`;
+      }
+      if (!getAvailableLocales().some(locale => locale.code === localeCode)) {
+        return 'Need to be bounded';
+      }
+    } else {
+      if (localeCode) {
+        return `Attribute is not localizable, please drop the locale`;
+      }
+    }
+    return true;
+  }
+
+  const scopeValidation: any = {};
+  if (condition.attribute.scopable) {
+    scopeValidation['required'] = translate('pimee_catalog_rule.exceptions.required');
+  }
+  scopeValidation['validate'] = (scopeCode: any) => {
+    if (condition.attribute.scopable) {
+      if (!scopes[scopeCode]) {
+        return `Unknown scope ${scopeCode}`;
+      }
+    } else {
+      if (scopeCode) {
+        return `Attribute is not scopable, please drop the scope`;
+      }
+    }
+    return true;
+  }
+
   useValueInitialization(
     `content.conditions[${lineNumber}]`,
     {
@@ -78,12 +116,8 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       locale: condition.locale,
     },
     {
-      scope: condition.attribute.scopable
-        ? { required: translate('pimee_catalog_rule.exceptions.required') }
-        : {},
-      locale: condition.attribute.localizable
-        ? { required: translate('pimee_catalog_rule.exceptions.required') }
-        : {},
+      scope: scopeValidation,
+      locale: localeValidation,
     },
     [condition]
   );
@@ -146,7 +180,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
         )}
       </ValueColumn>
       <ScopeColumn>
-        {condition.attribute.scopable && (
+        {(condition.attribute.scopable || getScopeFormValue()) && (
           <ScopeSelector
             id={`edit-rules-input-${lineNumber}-scope`}
             label='Scope'
@@ -155,7 +189,9 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
             currentCatalogLocale={currentCatalogLocale}
             value={getScopeFormValue()}
             onChange={setScopeFormValue}
-            translate={translate}>
+            translate={translate}
+            allowClear={!condition.attribute.scopable}
+          >
             <ErrorMessage
               errors={errors}
               name={`content.conditions[${lineNumber}].scope`}>
@@ -165,7 +201,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
         )}
       </ScopeColumn>
       <LocaleColumn>
-        {condition.attribute.localizable && (
+        {(condition.attribute.localizable || getLocaleFormValue()) && (
           <LocaleSelector
             id={`edit-rules-input-${lineNumber}-locale`}
             label='Locale'
@@ -173,7 +209,9 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
             availableLocales={getAvailableLocales()}
             value={getLocaleFormValue()}
             onChange={setLocaleFormValue}
-            translate={translate}>
+            translate={translate}
+            allowClear={!condition.attribute.localizable}
+          >
             <ErrorMessage
               errors={errors}
               name={`content.conditions[${lineNumber}].locale`}>

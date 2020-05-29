@@ -1,5 +1,5 @@
 import React from 'react';
-import { Attribute, validateLocalizableScopableAttribute } from './Attribute';
+import { Attribute } from './Attribute';
 import { Router } from '../dependenciesTools';
 import { getAttributeByIdentifier } from '../repositories/AttributeRepository';
 import {
@@ -7,11 +7,6 @@ import {
   TextAttributeConditionLineProps,
 } from '../pages/EditRules/components/conditions/TextAttributeConditionLine';
 import { Operator } from './Operator';
-import {
-  checkLocaleIsBoundToScope,
-  checkScopeExists,
-} from '../repositories/ScopeRepository';
-import { checkLocaleExists } from '../repositories/LocaleRepository';
 import { ConditionDenormalizer, ConditionFactory } from './Condition';
 
 const TYPE = 'pim_catalog_text';
@@ -60,14 +55,15 @@ const denormalizeTextAttributeCondition: ConditionDenormalizer = async (
     const localeCode = json.locale || null;
     const scopeCode = json.scope || null;
 
+    /*
     if (
-      !(await checkLocaleExists(localeCode, router)) ||
       !(await checkScopeExists(scopeCode, router)) ||
       !(await checkLocaleIsBoundToScope(localeCode, scopeCode, router)) ||
       !validateLocalizableScopableAttribute(attribute, localeCode, scopeCode)
     ) {
       return null;
     }
+     */
 
     return {
       module: TextAttributeConditionLine,
