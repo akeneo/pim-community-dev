@@ -2,7 +2,7 @@
 
 This guide explain the setup of independant frontend package inside the PIM.
 
-It come with **some limitations** though, being independant means you can't import any function|class|component from outside the package.
+It come with **some limitations** though, being independent means you can't import any function|class|component from outside the package.
 
 For example, you can't import a javascript file directly from `pimui/js`.
 But it works fine if the source is a standard `node_modules` package (or another Yarn workspace).
