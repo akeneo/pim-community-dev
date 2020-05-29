@@ -1,6 +1,6 @@
 # How to create an independant frontend package
 
-This guide explain the setup of independant frontend package inside the PIM.
+This guide explains the setup of independent frontend package inside the PIM.
 
 It come with **some limitations** though, being independent means you can't import any function|class|component from outside the package.
 
