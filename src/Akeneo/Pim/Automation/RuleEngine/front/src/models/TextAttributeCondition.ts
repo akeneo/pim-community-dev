@@ -31,6 +31,23 @@ type TextAttributeCondition = {
   locale?: string;
 };
 
+const createTextAttributeCondition: ConditionFactory = async (
+  fieldCode: string,
+  router: Router
+): Promise<TextAttributeCondition | null> => {
+  const attribute = await getAttributeByIdentifier(fieldCode, router);
+  if (null === attribute || attribute.type !== TYPE) {
+    return null;
+  }
+
+  return {
+    module: TextAttributeConditionLine,
+    attribute,
+    field: fieldCode,
+    operator: Operator.IS_EMPTY,
+  };
+};
+
 const denormalizeTextAttributeCondition: ConditionDenormalizer = async (
   json: any,
   router: Router
@@ -46,53 +63,20 @@ const denormalizeTextAttributeCondition: ConditionDenormalizer = async (
     return null;
   }
 
-  const attribute = await getAttributeByIdentifier(json.field, router);
-  if (null === attribute) {
-    return null;
-  }
-
-  if (attribute.type === TYPE) {
-    const localeCode = json.locale || null;
-    const scopeCode = json.scope || null;
-
-    /*
-    if (
-      !(await checkScopeExists(scopeCode, router)) ||
-      !(await checkLocaleIsBoundToScope(localeCode, scopeCode, router)) ||
-      !validateLocalizableScopableAttribute(attribute, localeCode, scopeCode)
-    ) {
-      return null;
-    }
-     */
-
-    return {
-      module: TextAttributeConditionLine,
-      attribute,
-      field: json.field,
-      operator: json.operator,
-      value: json.value,
-      locale: localeCode,
-      scope: scopeCode,
-    };
-  }
-
-  return null;
-};
-
-const createTextAttributeCondition: ConditionFactory = async (
-  fieldCode: string,
-  router: Router
-): Promise<TextAttributeCondition | null> => {
-  const attribute = await getAttributeByIdentifier(fieldCode, router);
-  if (null === attribute || attribute.type !== TYPE) {
+  const textAttributeCondition = await createTextAttributeCondition(
+    json.field,
+    router
+  );
+  if (textAttributeCondition === null) {
     return null;
   }
 
   return {
-    module: TextAttributeConditionLine,
-    attribute,
-    field: fieldCode,
-    operator: Operator.IS_EMPTY,
+    ...(textAttributeCondition as TextAttributeCondition),
+    operator: json.operator,
+    value: json.value,
+    locale: json.locale || null,
+    scope: json.scope || null,
   };
 };
 

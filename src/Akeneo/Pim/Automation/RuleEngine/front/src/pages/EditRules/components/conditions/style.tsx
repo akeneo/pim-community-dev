@@ -44,20 +44,27 @@ const ConditionErrorLine = styled.ul`
     flex-basis: 100%;
     line-height: 24px;
     font-weight: bold;
-    background-image: url("/bundles/pimui/images/icon-danger.svg");
+    background-image: url('/bundles/pimui/images/icon-danger.svg');
     background-repeat: no-repeat;
     background-size: 25px;
     background-position: 8px 9px;
     padding-left: 60px;
-    
+
     &:before {
-      content: "";
+      content: '';
       border-left: 1px solid ${({ theme }): string => theme.color.red100};
       position: absolute;
       height: 22px;
       margin-left: -16px;
     }
   }
-`
+`;
 
-export { FieldColumn, OperatorColumn, ValueColumn, LocaleColumn, ScopeColumn, ConditionErrorLine };
+export {
+  FieldColumn,
+  OperatorColumn,
+  ValueColumn,
+  LocaleColumn,
+  ScopeColumn,
+  ConditionErrorLine,
+};
