@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Improvements
+
+- Uses Google Chrome from Node Docker image
+
 ## Bug fixes:
 
 - PIM-9275: Fix mass upload of Assets ACL in the product edit form

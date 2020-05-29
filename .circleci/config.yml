@@ -267,7 +267,7 @@ jobs:
             command: docker-compose run --rm node yarn run unit
         - run:
             name: Front acceptance tests
-            command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
+            command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node yarn run acceptance ./tests/features
 
   back_performance:
     machine:
