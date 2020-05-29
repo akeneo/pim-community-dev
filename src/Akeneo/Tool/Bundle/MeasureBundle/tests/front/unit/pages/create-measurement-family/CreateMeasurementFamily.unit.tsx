@@ -8,8 +8,6 @@ import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
-jest.mock('legacy-bridge/provider/dependencies.ts');
-
 declare global {
   namespace NodeJS {
     interface Global {

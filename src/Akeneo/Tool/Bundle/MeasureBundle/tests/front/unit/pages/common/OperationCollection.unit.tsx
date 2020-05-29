@@ -8,8 +8,6 @@ import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
-jest.mock('legacy-bridge/provider/dependencies.ts');
-
 let container: HTMLElement;
 
 beforeEach(() => {
