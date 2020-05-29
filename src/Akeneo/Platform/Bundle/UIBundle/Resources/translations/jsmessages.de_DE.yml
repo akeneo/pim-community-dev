@@ -156,6 +156,7 @@ pim_common:
   cancel: Abbrechen
   close: Schließen
   code: Code
+  completeness: Vollständigkeit
   confirm: Bestätigen
   confirm_deletion: Löschen bestätigen
   confirm_revocation: Wiederruf bestätigen
@@ -168,6 +169,8 @@ pim_common:
   from: Von
   general_properties: Allgemeine Eigenschaften
   history: Historie
+  identifier: Kennung
+  image: Bild
   label: Bezeichnung
   label_translations: Feldbezeichner-Übersetzungen
   Label or identifier: Label oder Identifikator
@@ -187,6 +190,7 @@ pim_common:
   properties: Eigenschaften
   remove: Entfernen
   required_label: (erforderlich)
+  result_count: "{0}0 Ergebnisse|{1}1 Ergebnis|]1, Inf[{{ itemsCount }} Ergebnisse"
   save: Speichern
   search: Suche
   select2:

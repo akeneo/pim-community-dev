@@ -155,6 +155,7 @@ pim_enrich:
       remove: Verbindungen von einem Produkt entfernen
     job_tracker:
       index: Prozess-Tracker ansehen
+      view_all_jobs: Alle Jobs im Prozess-Tracker anzeigen
   acl_group:
     association_type: Verbindungstypen
     attribute: Attribute
