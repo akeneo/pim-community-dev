@@ -152,7 +152,35 @@ JSON;
         $client->request('PATCH', '/api/rest/v1/products/big_screen', [], [], [], $content);
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
 
-        $expectedContent = json_decode($client->getResponse()->getContent(), true);
+        $expectedContent = [
+            'code' => 422,
+            'message' => 'Validation failed.',
+            'errors' => [
+                [
+                    'property' => 'values',
+                    'message' => 'This value is too long. It should have 5 characters or less.',
+                    'attribute' => 'name',
+                    'locale' => null,
+                    'scope' => null,
+                    'raw_message' => 'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.',
+                    'parameters' => [
+                        '{{ value }}' => '"This name is too long."',
+                        '{{ limit }}' => 5,
+                    ],
+                    'type' => 'violation',
+                ],
+                [
+                    'property' => 'values',
+                    'message' => 'Please specify a valid metric unit',
+                    'attribute' => 'length',
+                    'locale' => null,
+                    'scope' => null,
+                    'raw_message' => 'Please specify a valid metric unit',
+                    'parameters' => [],
+                    'type' => 'violation',
+                ],
+            ]
+        ];
 
         $this->esClient->refreshIndex();
         $result = $this->esClient->search([]);

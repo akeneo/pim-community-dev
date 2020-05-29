@@ -85,47 +85,54 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
         $existingViolation = [];
 
         foreach ($violations as $violation) {
-            $error = [
-                'property' => $this->getErrorField($violation),
-                'message'  => $violation->getMessage()
-            ];
-
-            $propertyPath = $violation->getPropertyPath();
-            $violationMessage = $violation->getMessageTemplate();
-
-            if ($violation->getRoot() instanceof EntityWithValuesInterface &&
-                1 === preg_match(
-                    '|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i',
-                    $violation->getPropertyPath(),
-                    $matches
-                )
-            ) {
-                $error = $this->getProductValuesErrors($violation, $matches['attribute']);
-
-                $productValue = $violation->getRoot()->getValues()->getByKey($matches['attribute']);
-
-                $attribute = $this->attributeRepository->findOneByIdentifier($productValue->getAttributeCode());
-
-                $attributeType = $attribute->getType();
-
-                if (AttributeTypes::IDENTIFIER === $attributeType) {
-                    $propertyPath = 'identifier';
-                }
-            }
-
-            if ($violation->getRoot() instanceof ChannelInterface && 'category' === $violation->getPropertyPath()) {
-                $error['property'] = 'category_tree';
-            }
-
-            $key = $propertyPath.$violationMessage;
-            if (!array_key_exists($key, $existingViolation)) {
-                $errors[] = $error;
-            }
-
-            $existingViolation[$key] = true;
+            $errors[] = $this->normalizeViolation($violation, $existingViolation);
         }
 
         return $errors;
+    }
+
+    protected function normalizeViolation(ConstraintViolationInterface $violation, array &$existingViolation): array
+    {
+        $error = [
+            'property' => $this->getErrorField($violation),
+            'message'  => $violation->getMessage()
+        ];
+
+        $propertyPath = $violation->getPropertyPath();
+        $violationMessage = $violation->getMessageTemplate();
+
+        if ($violation->getRoot() instanceof EntityWithValuesInterface &&
+            1 === preg_match(
+                '|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i',
+                $violation->getPropertyPath(),
+                $matches
+            )
+        ) {
+            $error = $this->getProductValuesErrors($violation, $matches['attribute']);
+
+            $productValue = $violation->getRoot()->getValues()->getByKey($matches['attribute']);
+
+            $attribute = $this->attributeRepository->findOneByIdentifier($productValue->getAttributeCode());
+
+            $attributeType = $attribute->getType();
+
+            if (AttributeTypes::IDENTIFIER === $attributeType) {
+                $propertyPath = 'identifier';
+            }
+        }
+
+        if ($violation->getRoot() instanceof ChannelInterface && 'category' === $violation->getPropertyPath()) {
+            $error['property'] = 'category_tree';
+        }
+
+        $key = $propertyPath.$violationMessage;
+        if (!array_key_exists($key, $existingViolation)) {
+            $errors[] = $error;
+        }
+
+        $existingViolation[$key] = true;
+
+        return $error;
     }
 
     /**
