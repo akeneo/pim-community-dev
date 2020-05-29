@@ -16,7 +16,6 @@ final class GetProductQuantifiedAssociationsByProductModelCodes
         $this->connection = $connection;
     }
 
-
     /**
      * @return array
      * [
