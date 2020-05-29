@@ -155,7 +155,7 @@ class QuantifiedAssociationsFromAncestorsFilterSpec extends ObjectBehavior
         $this->filter($mergedQuantifiedAssociations, $variant_level_2)->shouldReturn($expectedQuantifiedAssociations);
     }
 
-    public function it_preserve_quantified_associations_on_products_when_quantity_has_been_overwrited(
+    public function it_preserve_quantified_associations_on_products_when_quantity_has_been_overwritten(
         QuantifiedAssociationsMerger $quantifiedAssociationsMerger,
         ProductModelInterface $product_model,
         ProductModelInterface $variant_level_1
@@ -207,7 +207,7 @@ class QuantifiedAssociationsFromAncestorsFilterSpec extends ObjectBehavior
         $this->filter($mergedQuantifiedAssociations, $variant_level_1)->shouldReturn($expectedQuantifiedAssociations);
     }
 
-    public function it_preserve_quantified_associations_on_product_models_when_quantity_has_been_overwrited(
+    public function it_preserve_quantified_associations_on_product_models_when_quantity_has_been_overwritten(
         QuantifiedAssociationsMerger $quantifiedAssociationsMerger,
         ProductModelInterface $product_model,
         ProductModelInterface $variant_level_1
