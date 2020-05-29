@@ -24,7 +24,7 @@ class GetIdMappingFromProductIdentifiersQuery implements GetIdMappingFromProduct
 
     public function execute(array $productIdentifiers): IdMapping
     {
-        if(empty($productIdentifiers)) {
+        if (empty($productIdentifiers)) {
             return IdMapping::createFromMapping([]);
         }
 
