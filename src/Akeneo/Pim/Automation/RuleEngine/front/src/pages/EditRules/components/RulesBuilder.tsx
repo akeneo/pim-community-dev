@@ -87,6 +87,8 @@ const RulesBuilder: React.FC<Props> = ({
                 handleDelete={() => {
                   deleteAction(i);
                 }}
+                router={router}
+                currentCatalogLocale={currentCatalogLocale}
               />
             </Component>
           )

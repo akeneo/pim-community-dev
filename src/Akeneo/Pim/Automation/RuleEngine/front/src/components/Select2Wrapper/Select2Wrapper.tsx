@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Label } from '../Labels';
 
 type Select2Option = {
-  id: number | string;
+  id: number | string | null;
   text: string;
   disabled?: boolean;
 };
@@ -40,7 +40,7 @@ type Select2Ajax = {
   initSelection?: (element: any, callback: InitSelectionCallback) => void;
 };
 
-type Select2Value = string | number;
+type Select2Value = string | number | null;
 
 type Select2GlobalProps = {
   allowClear?: boolean;
@@ -87,6 +87,7 @@ const Select2Wrapper: React.FC<Props> = ({
   onValueChange,
   closeTick = false,
   hideSearch = false,
+  allowClear = false,
 }) => {
   const select2ref = useRef<HTMLInputElement | null>(null);
 
@@ -112,6 +113,7 @@ const Select2Wrapper: React.FC<Props> = ({
         containerCssClass,
         dropdownCssClass,
         hideSearch,
+        allowClear,
       };
       if (hideSearch) {
         options.minimumResultsForSearch = Infinity;

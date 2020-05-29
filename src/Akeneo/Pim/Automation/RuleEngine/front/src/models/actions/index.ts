@@ -6,3 +6,4 @@ export * from './CopyAction';
 export * from './RemoveAction';
 export * from './SetAction';
 export * from './ProductField';
+export * from './SetFamilyAction';
