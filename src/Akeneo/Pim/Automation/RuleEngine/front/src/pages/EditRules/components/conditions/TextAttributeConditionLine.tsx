@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormContext, ErrorMessage } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import {
   TextAttributeCondition,
   TextAttributeOperators,
@@ -12,7 +12,6 @@ import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
 import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
-import { InputErrorMsg } from '../../../../components/InputErrorMsg';
 import {
   FieldColumn,
   LocaleColumn,
@@ -20,6 +19,7 @@ import {
   ScopeColumn,
   ValueColumn,
 } from './style';
+import { ConditionLineErrors } from "./ConditionLineErrors";
 
 type TextAttributeConditionLineProps = ConditionLineProps & {
   condition: TextAttributeCondition;
@@ -37,7 +37,6 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
     register,
     watch,
     setValue,
-    errors,
     triggerValidation,
   } = useFormContext();
 
@@ -191,13 +190,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
             onChange={setScopeFormValue}
             translate={translate}
             allowClear={!condition.attribute.scopable}
-          >
-            <ErrorMessage
-              errors={errors}
-              name={`content.conditions[${lineNumber}].scope`}>
-              {({ message }) => <InputErrorMsg>{message}</InputErrorMsg>}
-            </ErrorMessage>
-          </ScopeSelector>
+          />
         )}
       </ScopeColumn>
       <LocaleColumn>
@@ -211,15 +204,10 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
             onChange={setLocaleFormValue}
             translate={translate}
             allowClear={!condition.attribute.localizable}
-          >
-            <ErrorMessage
-              errors={errors}
-              name={`content.conditions[${lineNumber}].locale`}>
-              {({ message }) => <InputErrorMsg>{message}</InputErrorMsg>}
-            </ErrorMessage>
-          </LocaleSelector>
+          />
         )}
       </LocaleColumn>
+      <ConditionLineErrors lineNumber={lineNumber}/>
     </div>
   );
 };
