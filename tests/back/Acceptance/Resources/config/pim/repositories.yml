@@ -16,3 +16,8 @@ services:
 
     pim_catalog.repository.product_without_permission:
         class: 'Akeneo\Test\Acceptance\Product\InMemoryProductRepository'
+
+    pimee_security.repository.product_model:
+        class: 'Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository'
+        decorates: pim_catalog.repository.product_model
+        decoration_inner_name: pim_catalog.repository.product_model_without_permission
