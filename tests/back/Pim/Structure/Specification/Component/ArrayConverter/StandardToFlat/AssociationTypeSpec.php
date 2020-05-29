@@ -22,7 +22,8 @@ class AssociationTypeSpec extends ObjectBehavior
                 'fr_FR' => 'Épée longue',
                 'en_US' => 'Long sword'
             ],
-            'is_two_way' => true
+            'is_two_way' => true,
+            'is_quantified' => false,
         ];
 
         $this->convert($item)->shouldReturn($expected);
@@ -44,7 +45,8 @@ class AssociationTypeSpec extends ObjectBehavior
                 'fr_FR' => 'Épée longue',
                 'en_US' => 'Long sword'
             ],
-            'is_quantified' => true
+            'is_two_way' => false,
+            'is_quantified' => true,
         ];
 
         $this->convert($item)->shouldReturn($expected);

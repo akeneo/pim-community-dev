@@ -54,7 +54,8 @@ class QuantifiedAssociationsFromAncestorsFilter
         $filteredData = [];
 
         foreach ($data as $associationTypeCode => $associationTypeValues) {
-            foreach ($associationTypeValues[self::PRODUCTS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
+            $filteredData[$associationTypeCode][self::PRODUCTS_QUANTIFIED_LINKS_KEY] = [];
+            foreach ($associationTypeValues[self::PRODUCTS_QUANTIFIED_LINKS_KEY] ?? [] as $quantifiedLink) {
                 $ancestorsQuantifiedLinks = $ancestorsQuantifiedAssociations[$associationTypeCode][self::PRODUCTS_QUANTIFIED_LINKS_KEY] ?? [];
 
                 if (!in_array($quantifiedLink, $ancestorsQuantifiedLinks)) {
@@ -62,7 +63,8 @@ class QuantifiedAssociationsFromAncestorsFilter
                 }
             }
 
-            foreach ($associationTypeValues[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] as $quantifiedLink) {
+            $filteredData[$associationTypeCode][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] = [];
+            foreach ($associationTypeValues[self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] ?? [] as $quantifiedLink) {
                 $ancestorsQuantifiedLinks = $ancestorsQuantifiedAssociations[$associationTypeCode][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY] ?? [];
 
                 if (!in_array($quantifiedLink, $ancestorsQuantifiedLinks)) {

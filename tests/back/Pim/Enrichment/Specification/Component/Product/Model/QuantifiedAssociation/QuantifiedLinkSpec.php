@@ -35,14 +35,6 @@ class QuantifiedLinkSpec extends ObjectBehavior
         $this->identifier()->shouldReturn($entityWithAssociationIdentifier);
     }
 
-    function it_throws_if_the_quantified_linked_is_less_than_0()
-    {
-        $invalidQuantity = -1;
-
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__construct', ['dummy_identifier', $invalidQuantity]);
-    }
-
     function it_throws_if_the_identifier_is_empty()
     {
         $emptyIdentifier = '';

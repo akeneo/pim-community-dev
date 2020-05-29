@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily;
+namespace Specification\Akeneo\Pim\Structure\Component\Validator\Constraints\AssociationType;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\AssociationType\ShouldNotBeTwoWayAndQuantified;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ShouldNotBeTwoWayAndQuantifiedValidatorSpec extends ObjectBehavior
 {
@@ -26,8 +27,8 @@ class ShouldNotBeTwoWayAndQuantifiedValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         AssociationType $associationType
     ) {
-        $associationType->isTwoWay()->shouldReturn(false);
-        $associationType->isQuantified()->shouldReturn(true);
+        $associationType->isTwoWay()->willReturn(false);
+        $associationType->isQuantified()->willReturn(true);
 
         $context
             ->addViolation(Argument::any())
@@ -39,13 +40,19 @@ class ShouldNotBeTwoWayAndQuantifiedValidatorSpec extends ObjectBehavior
     public function it_builds_violation_when_association_type_when_is_two_way_and_quantified(
         AssociationType $associationType,
         ShouldNotBeTwoWayAndQuantified $constraint,
-        ExecutionContextInterface $context
+        ExecutionContextInterface $context,
+        ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
-        $associationType->isTwoWay()->shouldReturn(true);
-        $associationType->isQuantified()->shouldReturn(true);
+        $associationType->isTwoWay()->willReturn(true);
+        $associationType->isQuantified()->willReturn(true);
 
         $context
-            ->addViolation('Association type can be either quantified or two-way')
+            ->buildViolation('pim_structure.validation.association_type.cannot_be_quantified_and_two_way')
+            ->shouldBeCalled()
+            ->willReturn($constraintViolationBuilder);
+
+        $constraintViolationBuilder
+            ->addViolation()
             ->shouldBeCalled();
 
         $this->validate($associationType, $constraint);

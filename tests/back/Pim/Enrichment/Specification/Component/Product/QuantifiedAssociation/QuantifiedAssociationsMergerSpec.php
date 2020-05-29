@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\QuantifiedAssoci
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
 
-class QuantifiedAssociationMergerSpec extends ObjectBehavior
+class QuantifiedAssociationsMergerSpec extends ObjectBehavior
 {
     public function it_merge_quantified_associations(
         ProductInterface $product_1,
@@ -31,7 +31,7 @@ class QuantifiedAssociationMergerSpec extends ObjectBehavior
         $this->normalizeAndMergeQuantifiedAssociationsFrom([
             $product_1,
             $product_2,
-        ])->willReturn([
+        ])->shouldReturn([
             'PACK' => [
                 'products' => [
                     ['identifier' => 'A', 'quantity' => 2],
@@ -68,13 +68,13 @@ class QuantifiedAssociationMergerSpec extends ObjectBehavior
         $this->normalizeAndMergeQuantifiedAssociationsFrom([
             $product_1,
             $product_2,
-        ])->willReturn([
+        ])->shouldReturn([
             'PACK' => [
                 'products' => [
                     ['identifier' => 'A', 'quantity' => 2],
                     ['identifier' => 'B', 'quantity' => 3],
                     ['identifier' => 'C', 'quantity' => 42],
-                    ['identifier' => 'D', 'quantity' => 4],
+                    ['identifier' => 'D', 'quantity' => 5],
                 ],
             ],
         ]);

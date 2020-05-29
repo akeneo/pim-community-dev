@@ -24,7 +24,7 @@ class GetIdMappingFromProductIdsQuery implements GetIdMappingFromProductIdsQuery
 
     public function execute(array $productIds): IdMapping
     {
-        if(empty($productIds)) {
+        if (empty($productIds)) {
             return IdMapping::createFromMapping([]);
         }
 
@@ -38,6 +38,6 @@ SQL;
             ['product_ids' => Connection::PARAM_INT_ARRAY]
         )->fetchAll(), 'identifier', 'id');
 
-      return IdMapping::createFromMapping($mapping);
+        return IdMapping::createFromMapping($mapping);
     }
 }
