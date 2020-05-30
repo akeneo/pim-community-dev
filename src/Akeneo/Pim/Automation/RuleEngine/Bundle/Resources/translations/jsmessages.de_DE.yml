@@ -70,13 +70,29 @@ pimee_catalog_rule:
           allowed_characters: Regelcode kann nur alphanumerische Zeichen und Unterstriche enthalten.
       cross_link: Erstellungsregel verlassen
     edit:
+      properties:
+        section:
+          general: Allgemeine Parameter
+          labels: Labelübersetzungen
       priority:
         label: Priorität
       add_to_category: Zu Kategorie hinzufügen
       add_conditions: Füge Bedingungen hinzu
       count_products: "{{ count }} Produkte und Produktmodelle"
       product_selection: Produktauswahl
+      fields:
+        family: Produktfamilie
+      actions:
+        set_family:
+          title: Familie setzen
+          subtitle: Familie wählen
+        delete:
+          label: Aktion entfernen
+          description: Sind Sie sicher, dass Sie diese Aktion entfernen möchten?
       conditions:
+        delete:
+          label: Bedingung entfernen
+          description: Sind Sie sicher, dass Sie diese Bedingung löschen wollen?
         operators:
           "STARTS WITH": beginnt mit
           "ENDS WITH": endet mit
@@ -99,7 +115,9 @@ pimee_catalog_rule:
           "<": kleiner als
           "<=": gleich oder kleiner als
       notification:
+        success: Die Regel wurde erfolgreich aktualisiert
         failed: Regelerstellung fehlgeschlagen
+      discard_changes: Änderungen an der Regel gehen verloren, wenn Sie die Seite verlassen.
     helper:
       add_to_category: Um Ihre Produktauswahl zu einer oder mehreren Kategorien hinzuzufügen, wählen Sie bitte zuerst unsere Kategoriebäume und dann Ihre Kategorien.
       product_selection: "Sie müssen Ihre Produktauswahl definieren, um Ihre Regel zu erstellen. Wenn Sie nicht wissen, wie,"
@@ -107,6 +125,9 @@ pimee_catalog_rule:
     legend:
       add_to_category: Neue Aktion erstellen
       product_selection: Bedingung erstellen
+  exceptions:
+    loading: Beim Laden der Regeldefinition ist ein Fehler aufgetreten.
+    required: Dieses Feld ist erforderlich
 pim_enrich:
   entity:
     rule:

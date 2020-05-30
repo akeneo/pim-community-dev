@@ -1,17 +1,30 @@
+pim_title:
+  akeneo_reference_entities_reference_entity_index: Utwórz nowe entity
+  akeneo_reference_entities_reference_entity_edit: Edytuj entity
+  akeneo_reference_entities_record_edit: Edytuj Rekord
 pim_reference_entity:
   app:
     image:
       wide:
+        remove: Usuń obraz
+        download: Pobierz obraz
         upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
       small:
         remove: Usuń
         download: Pobierz
+  grid:
+    counter: '{{ count }} wynik|{{ count }} wyników'
   reference_entity:
     button:
       save: Zapisz
       save_permission: Zapisz
       create: Utwórz
+    permission:
+      title: Uprawnienia obiektu
+    title: Obiekty
+    breadcrumb: Obiekty referencyjne
     tab:
+      records: Wyniki
       attribute: Atrybuty
       properties: Ustawienia
       permission: Uprawnienia
@@ -29,6 +42,7 @@ pim_reference_entity:
         title: Utwórz
       input:
         label: Etykieta
+        code: Kod (wymagany)
       confirm: Zapisz
     delete:
       title: Atrybut
@@ -39,6 +53,10 @@ pim_reference_entity:
         fail: Wystąpił błąd podczas zapisywania obiektu referencyjnego
       delete:
         fail: Wystąpił błąd podczas usuwania obiektu referencyjnego
+  permission:
+    notification:
+      save:
+        success: Uprawnienia odniesienia obiektu zostały pomyślnie zaktualizowane.
   record:
     validation:
       text:
@@ -51,8 +69,11 @@ pim_reference_entity:
       save: Zapisz
       create: Dodaj nowy
       delete: Skasuj
+      back: Powrót do listy
     product:
       title: Produkty
+      not_enough_items:
+        button: Zobacz wszystkie produkty
     enrich:
       code: Pod Produktu
       label: Etykieta
@@ -61,8 +82,10 @@ pim_reference_entity:
         title: Utwórz
       input:
         label: Etykieta
+        code: Kod (wymagany)
       confirm: Zapisz
     grid:
+      search: Szukaj na etykiecie, kodzie i tekstach atrybutów
       filter:
         completeness:
           label: Kompletny
@@ -79,6 +102,8 @@ pim_reference_entity:
         label: Etykieta
         complete: Kompletny
         action: Działania
+      completeness:
+        title_no_required: Nie jest wymagany atrybut
     tab:
       enrich: Uzupełnianie
       product: Produkty
@@ -101,10 +126,12 @@ pim_reference_entity:
     type:
       text: Tekst
       image: Zdjęcie
+    is_required: wymagane do kompletności
     create:
       header:
         title: Utwórz
       input:
+        code: Kod (wymagany)
         label: Etykieta
         type: Typ atrybutu
         value_per_locale: Wartość dla wersji językowej
@@ -114,6 +141,7 @@ pim_reference_entity:
       save: Zapisz
       cancel: Anuluj
       input:
+        code: Kod (wymagany)
         label: Etykieta
         type: Typ atrybutu
         value_per_locale: Wartość dla wersji językowej

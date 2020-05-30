@@ -13,6 +13,8 @@ pimee_catalog_rule:
           label: Betroffene Produkte
           count: '{0,1}%count% betroffenes Produkt |] 1, Inf [%count% betroffene Produkte'
           no_yet_calculated: Noch nicht berechnet
+        tags:
+          label: Aktionen
       mass_edit_action:
         impacted_product_count: Betroffene Produkte berechnen
         execute: Ausführen
@@ -63,6 +65,10 @@ pimee_catalog_rule:
       ">=": gleich oder größer als
       "<": kleiner als
       "<=": gleich oder kleiner als
+    fields:
+      family: Produktfamilie
+    field_groups:
+      system: System
   acl_group:
     rule: Regeln
   acl:
