@@ -7,6 +7,8 @@ pim_reference_entity:
         limit_reached: 'Nie można utworzyć obiektu referencyjnego "%reference_entity_label%", ponieważ osiągnąłeś limit %limit% obiektów referencyjnych'
       records:
         should_have_no_record: 'Nie możesz usunąć tego obiektu, ponieważ istnieją rekordy dla tego obiektu'
+      reference_entity_attributes:
+        should_not_be_linked: 'Nie możesz usunąć tego obiektu, ponieważ atrybuty obiektu referencyjnego są związane z tym obiektem'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Co najmniej jedna grupa użytkowników powinna mieć uprawnienia do edycji tego obiektu'
       product_attributes:
