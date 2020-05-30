@@ -38,6 +38,8 @@ akeneo_data_quality_insights:
       no_family_helper_msg: Wählen Sie die Familien, für die Sie die Datenqualität messen möchten
       no_category_helper_msg: Wählen Sie die Kategorien, für die Sie die Datenqualität messen möchten
       see_in_grid: Im Raster sehen
+    time_axis:
+      day: Tag
   product_evaluation:
     criteria:
       completeness_of_required_attributes:

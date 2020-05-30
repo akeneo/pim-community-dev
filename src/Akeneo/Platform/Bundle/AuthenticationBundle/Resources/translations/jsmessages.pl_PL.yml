@@ -1,0 +1,6 @@
+authentication:
+  sso:
+    configuration:
+      field:
+        logout_url:
+          label: Adres URL wylogowania

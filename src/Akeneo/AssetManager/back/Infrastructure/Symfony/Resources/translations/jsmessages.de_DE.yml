@@ -479,9 +479,11 @@ pim_asset_manager:
     media_link:
       placeholder: Medienlink hier einfügen
       read_only: Dieser Medienlink kann nur gelesen werden
+      reload: Medien-Link-Thumbnail neu laden
     media_file:
       placeholder: Upload per Drag & Drop oder hier klicken
       read_only: Diese Mediendatei kann nur gelesen werden
+      uploading: Hochladen...
     used_as_transformation_target: Dieses Feld wird nur gelesen, da es als Ziel in einer Asset-Transformation verwendet wird.
   modal:
     delete:
