@@ -114,7 +114,7 @@ pim_import_export:
             help: Namnet på gruppkolumnen
           enabled:
             title: Aktivera produkten
-            help: Om den importerade produkten ska vara aktiv
+            help: Om den importerade produkten ska vara aktiv eller inte
           enabled_comparison:
             title: Jämför värden
             help: Aktivera jämförelsen mellan ursprungliga och importerade värden. Kan påskynda import om importerade värden är mycket liknande ursprungliga värden
@@ -134,6 +134,9 @@ pim_import_export:
         export: Export
         mass_edit: Massredigera
         quick_export: Snabbexport
+        compute_product_models_descendants: Beräkna produktmodellers ättlingar
+        compute_family_variant_structure_changes: Beräkna variantfamiljers strukturförändringar
+        compute_completeness_of_products_family: Beräkna fullständighet av produktfamilj
       header.view_all: Visa alla
   batch_status:
     1: Slutförd
@@ -155,10 +158,16 @@ pim_enrich:
       module:
         delete:
           confirm: Är du säker på att du vill ta bort denna importprofil?
+      flash:
+        delete:
+          success: Importprofilen har tagits bort
     export_profile:
       module:
         delete:
           confirm: Är du säker på att du vill ta bort denna exportprofil?
+      flash:
+        delete:
+          success: Exportprofilen har tagits bort
 pim_title:
   pim_importexport_export_profile_index: Hantera exportprofiler
   pim_importexport_export_execution_index: Exporthistorik

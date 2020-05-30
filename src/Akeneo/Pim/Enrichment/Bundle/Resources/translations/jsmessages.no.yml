@@ -1,0 +1,427 @@
+pim_notification:
+  types:
+    settings: Innstillinger
+flash:
+  comment:
+    create:
+      success: Din kommentar er opprettet.
+      error: Det oppstod en feil under oppretting av din kommentar.
+    delete:
+      success: Din kommentar er slettet.
+      error: Det oppstod en feil under sletting av din kommentar.
+    reply:
+      success: Ditt svar er opprettet.
+      error: Det oppstod en feil under oppretting av svar.
+pim_enrich.entity.product:
+  label: produkt
+  uppercase_label: Produkt
+  plural_label: Produkter
+  flash:
+    update:
+      success: Produktet ble oppdatert.
+      fail: Produktet kunne ikke oppdateres.
+      fields_not_ready: "Produktet kan ikke lagres. Følgende felter er feil: {{ fields }}"
+      already_in_upload: En fil er allerede lastet opp for denne "{{ locale }}" og "{{ scope }}"
+      file_upload: Det oppstod en feil under opplasting av filen.
+    delete:
+      success: Produktet ble slettet.
+      fail: Produktet kunne ikke slettes.
+    create:
+      success: Produktet ble opprettet
+      fail: Ingen attributter er konfigurert med produktidentifikasjon, eller du har ikke rettigheter til å redigere det.
+  page_title:
+    index: "] -Inf, 1] {{ count }} resultat |] 1, Inf [{{ count }} resultater"
+  module:
+    create:
+      subtitle: Opprett produkt
+      title: Velg en handling
+      choose_family: Velg en familie
+      choose_family_variant: Velg en familivariant
+    variant_navigation:
+      common: Vanlig
+    status:
+      enabled: Aktivert
+      disabled: Deaktivert
+    download_pdf:
+      label: PDF
+    copy:
+      label: Sammenlign / Oversett
+      select: Velg
+      all_visible: Alle synlige
+      copy: Kopier
+    history:
+      version: Versjon
+      author: Forfatter
+      logged_at: Logget den
+      from: Fra
+      modified: Endret
+      old_value: Gammel verdi
+      new_value: Ny verdi
+    meta:
+      updated: Sist oppdatert
+      groups: Grupper
+    show_group:
+      title: Gruppe {{ group }}
+      view_group: Se gruppe
+      more_products: '{{ count }} flere produkter...'
+    attribute:
+      remove_optional: Fjern dette attributtet
+      locale_specific_unavailable: Dette lokaliserbare feltet er ikke tilgjengelig for det valgte språket
+      locale_unavailable: Dette lokaliserbare feltet er ikke tilgjengelig for språk '{{ locale }}' og kanal '{{ channel }}'
+      to_fill_count: "{1}1 mangler påkrevd attributt |] 1, Inf [{{ count }} manglende påkrevde attributter"
+      add_attribute_option: Legg til attributtalternativ
+      add_option: Legge til et alternativ
+    completeness:
+      title: Fullstendighet
+      complete: Fullstendig
+      no_family: Ingen familie er definert. Vennligst definer en familie for å beregne fullstendigheten på dette produktet.
+      no_completeness: Du endret nettopp familie for produktet. Lagre for å beregne fullstendighet for den nye familien.
+      missing_values: "{1} 1 mangler verdi |] 1, Inf [{{ count }} manglende verdier"
+    sequential_edit:
+      item_limit: Kun de første 1000 elementene vist i denne sekvensielle redigeringen ({{ count }} valgt)
+      empty: Valget ditt har ingen resultater, vennligst endre dine søkekriterier
+      save_and_next: Lagre og neste
+      save_and_finish: Lagre og Fullfør
+    associations:
+      title: Assosiasjoner
+      none_exist: Ingen tilknytningstyper eksisterer.
+      show_products: Vis produkter
+      show_groups: Vis grupper
+      number_of_associations: "{{ productCount }} produkt(er), {{ productModelCount }} produkt modell(er) og {{ groupCount }} gruppe(r)"
+      association_type_selector: Tilknytningstype
+      target: Mål
+      manage: Legg til {{ associationType }} tilknytning
+      manage_description: Velg produkter du vil tilknytte til det aktuelle produktet
+      add_associations: Legg til tilknytning
+    attribute_filter:
+      display: Vis
+      all: Alle attributter
+      missing_required: Alle manglende påkrevde attributter
+      at_this_level: Alle nivåspesifikke attributter
+    change_family:
+      title: Endre produkt familie
+      merge_attributes: Gjeldene attributter vil bli slått sammen med den nye familien.
+      keep_attributes: Ingen attributter ble fjernet.
+      change_family_to: Endre familie til
+      empty_selection: Velg en familie
+    basket:
+      title: Handlevogn
+      empty_basket: Handlekurven er tom
+    delete:
+      confirm: Er du sikker på at du vil slette dette produktet?
+    comment:
+      post: Legg til ny kommentar
+      reply: Svar
+      title: Kommentarer
+      empty: Ingen kommentar funnet
+      header_comment: '{{ user }} kommenterte produktet'
+      header_reply: '{{ user }} svarte på kommentar'
+      delete_confirm: Er du sikker på at du vil slette denne kommentaren?
+      removed_author: Fjernet brukere
+    asset:
+      title: Ressurs
+pim_enrich.entity.product_model:
+  label: produktmodell
+  uppercase_label: Produktmodell
+  plural_label: Produktmodeller
+  flash:
+    create:
+      success: Produktmodell oppdatert
+      product_model_added: Produktmodell lagt til produktmodellen
+      variant_product_added: Variantprodukt lagt til i produktmodellen
+    update:
+      success: Produktmodellen oppdatert. Fullstendighetsberegning av produktets varianter vil bli beregnet på nytt.
+      fail: Produktmodellen kunne ikke bli oppdatert.
+      fields_not_ready: "Produktmodellen kan ikke lagres nå. Følgende felt er ikke klare: {{ fields }}"
+    delete:
+      success: Produktmodellen ble slettet.
+      fail: Kan ikke slette produktmodellen
+  choose: Velg en produktmodell
+  property:
+    family_variant: Variant
+  module:
+    create:
+      title: Opprett en produktmodell
+      content: En produktmodell samler variantprodukter og forenkler berikelse av felles egenskaper.
+    attribute:
+      read_only_parent_attribute_from_common: Dette attributtet kan oppdateres på fellesattributter.
+      read_only_parent_attribute_from_model: "Dette attributt kan oppdateres for attributter på {{ axes }}"
+    variant_axis:
+      label: 'variantakse'
+      create: Legg til ny
+      create_label: "Legg til ny {{ axes }}"
+      required_label: '(Variantakse)'
+    completeness:
+      variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variantprodukt|]1, Inf[{{ complete }} / {{ total }} produktvarianter"
+    delete:
+      confirm: Er du sikker på at du ønsker å slette denne produktmodellen? Alle underliggende produkter, produktmodeller og produktvarianter slettes også.
+      confirm_for_products_and_product_models: Er du sikker på at du vil slette de valgte produkter og produktmodeller? Alle produktmodeller og underliggende produkter blir også slettet.
+pim_enrich.entity.group:
+  label: Gruppe
+  flash:
+    update:
+      success: Gruppe oppdatert.
+      fail: Gruppen kunne ikke oppdateres.
+      fields_not_ready: "Gruppen kan ikke lagres. Følgende felter er ikke klare: {{ fields }}"
+    create:
+      success: Gruppe ble opprettet
+    delete:
+      success: Gruppe fjernet
+      fail: Kan ikke slette denne gruppen
+  page_title:
+    index: "]-Inf, 1]{{ count }} gruppe|]1, Inf[{{ count }} grupper"
+  module:
+    create:
+      button: Opprett gruppe
+    delete:
+      confirm: Er du sikker på at du vil slette denne gruppen?
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: Er du sikker på at du vil slette denne rollen?
+  flash:
+    delete:
+      success: Rolle ble fjernet
+pim_enrich.entity.category:
+  label: kategori
+  uppercase_label: Kategori
+  plural_label: Kategorier
+pim_enrich.export.product:
+  data:
+    title: Filtrer produktene
+  structure:
+    title: Filtrer data
+  filter:
+    channel:
+      help: Kanalen definerer mulighetene for produktverdier, språk som brukes for å velge data og treet benyttes til å velge produkter.
+    locales:
+      help: "Språk velger de lokaliserede produktverdier til å eksportere. Feks: kun produktinformasjon på fransk."
+    attributes:
+      label: "{0} alle attributter |{1} en attribut valgt |] 1, Inf [{{ count }} attributter valgt"
+      help: "Velg produktinformasjon for eksport. Feks: kun tekniske attributter."
+      empty: Alle attributter vil bli eksportert
+      modal:
+        title: Velg attributter
+    attributes_selector:
+      attributes: "Søk i {{ itemsCount }} attributter"
+      selected: "Velg attributter"
+      clear: Tøm
+      all_group: Alle grupper
+      empty_selection: Alle attributter vil bli eksportert
+      description: Velg produktinformasjon som skal eksporteres
+    family:
+      title: Familie
+      help: "Velg produktene som skal eksporteres fra deres familie. Eks: Eksporter kun sko og kjoler."
+      operators:
+        IN: I listen
+        "NOT IN": Ikke i listen
+        EMPTY: Produkter som ikke har familie
+        "NOT EMPTY": Produkter som har familie
+      empty_selection: Ingen betingelser på familier
+    updated:
+      title: Tidsvilkår
+      operators:
+        ALL: Ingen datovilkår
+        "SINCE LAST N DAYS": Oppdaterte produkter for de siste n dager (feks 6)
+        ">": Oppdaterte produkter siden denne dato
+        "SINCE LAST JOB": Oppdaterte produkter siden siste eksport
+    enabled:
+      title: Status
+      help: "Velg produktene som skal eksporteres etter deres status. Feks: Eksportere produkter uavhengig av status."
+      value:
+        enabled: Aktivert
+        disabled: Deaktivert
+    completeness:
+      title: Fullstendighet
+      help: Velg produktene for å eksportere etter deres fullstendighet.
+      operators:
+        ALL: Ingen krav på fullstendighet
+        ">=": Komplett på minst ett valgt språk
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Komplett på alle valgte språk
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Komplett på minst ett valgt språk
+        LOWER THAN ON ALL LOCALES: Ikke komplett på alle valgte språk
+        AT LEAST COMPLETE: Minst ett underordnet produkt fullstendig på valgt språk
+        ALL COMPLETE: Alle underordnede produkter fullstendig på valgte språk
+      empty_selection: Velg en familie
+    category:
+      title: Kategori
+      help: Bruk produktkategoriene i treet (definert av kanalen ovenfor) for å velge produkter til eksport
+    identifier:
+      title: Identifikator
+      help: Bruk produkt-id til å eksportere adskilt av kommaer, mellomrom eller linjeskift
+    string:
+      operators:
+        ALL: Alle
+    select:
+      operators:
+        IN: I listen
+    date:
+      operators:
+        BETWEEN: Mellom
+        NOT BETWEEN: Ikke mellom
+  global_settings:
+    title: Globale innstillinger
+pim_enrich.mass_edit.product:
+  title: Produkt massehandlinger
+  confirm: "{1} Du holder på å oppdatere et produkt med følgende opplysninger, vennligst bekreft. |Du er i ferd med å oppdatere {{ itemsCount }} produkter med følgende opplysninger, vennligst bekreft."
+  step:
+    select:
+      label: Velg produkt
+    choose:
+      title: Produkt massehandlinger
+      label_count: "] 0, Inf [Velg din handling"
+    configure:
+      label: Konfigurer
+    confirm:
+      label: Bekreft
+    launched:
+      label: Massehandlingen "{{ operation }}" er igangsatt. Du får beskjed, når den er ferdigstilt.
+  operation:
+    common:
+      select_attributes: Velg attribut
+    change_status:
+      label: Endre status
+      label_count: "{1}Endre overordnet produktmodell på <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Endre overordnet produktmodell på <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
+      description: De valgte produktene vil bli aktivert eller deaktivert.
+      field: Aktivere
+    edit_common:
+      label: Endre attributtverdier
+      label_count: "{1}Endre overordnet produktmodell på <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Endre overordnet produktmodell på <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
+      description: Kun de attributter som tilhører familiene til de valgte produkter vil bli redigert med følgende data for {{ locale }} locale og {{ scope }} kanal.
+      no_update: Vennligst velg minst ett felt til å oppdatere
+    add_attribute_value:
+      label: Legg til attributtverdier
+      label_count: "{1}Endre overordnet produktmodell på <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Endre overordnet produktmodell på <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
+      description: Kun flerverdiattributter som tilhører produktgruppenes familier vil bli redigert med følgende data for {{ locale }} lokale og {{ scope }} -kanalen. Attributtenes verdier legges til og de tidligere verdier beholdes.
+    change_family:
+      label: Endre familie
+      label_count: "{1}Endre overordnet produktmodell på <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Endre overordnet produktmodell på <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
+      description: Familien til de valgte produktene vil bli endret på den valgte familien
+    add_to_group:
+      label: Legg til gruppe
+      label_count: "{1}Knytt til <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til produkter eller produktmodeller |] 1, Inf [Knytt til <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til produkter eller produktmodeller"
+      description: Velg de gruppene hvor de valgte produktene skal legges til
+      field: Grupper
+      no_update: Vennligst velg en gruppe for å fortsette
+    add_to_category:
+      label: Legg til kategorier
+      label_count: "{1}Knytt til <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til produkter eller produktmodeller |] 1, Inf [Knytt til <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til produkter eller produktmodeller"
+      description: Produktene vil bli klassifisert i følgende kategorier, eksisterende klassifiseringer vil beholdes.
+    move_to_category:
+      label: Flytt mellom kategorier
+      label_count: "{1}Flytt <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> mellom kategorier |] 1, Inf [Flytt <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> mellom kategorier"
+      description: Produktene vil bli klassifisert i følgende kategorier, eksisterende klassifiseringer vil gå tapt.
+    remove_from_category:
+      label: Fjern fra kategorier
+      label_count: "{1}Fjern <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> fra kategorier |] 1, Inf [Fjern <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> fra kategorier"
+      description: Produktene vil fjernes fra følgende kategorier.
+    add_to_existing_product_model:
+      label: Legg til i en eksisterende produktmodell
+      label_count: "{1}Legg til <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til i en eksisterende produktmodell |] 1, Inf [Legg til <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> i en eksisterende produktmodell"
+      description: En produktmodell samler produkter og gir mulighet for berikelse av felles egenskaper.
+      no_update: Vennligst velg en produktmodell for å fortsette
+    associate_to_product_and_product_model:
+      label: Knytte til
+      label_count: "{1}Knytt til <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til produkter eller produktmodeller |] 1, Inf [Knytt til <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til produkter eller produktmodeller"
+      description: De valgte produkter i listen vil ble knyttet til de utvalgte produkter og produktmodeller for den valgte tilknytningstypen
+      validate: Vennligst velg tilknytning før du fortsetter til neste trinn
+    change_parent_product_model:
+      label: Endre foreldre for produktmodell
+      label_count: "{1}Endre overordnet produktmodell på <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Endre overordnet produktmodell på <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
+      description: I oversikten vil den samlede produktmodellen til variantproduktet eller delproduktmodellen tilpasses den valgte produktmodellen.
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Massehandlinger
+    quick_export:
+      label: Hurtigeksporter
+  mass_action:
+    delete:
+      confirm_content: Er du sikker på at du ønsker å slette de valgte produktene?
+      success: Utvalgte produkter slettet.
+      error: Det oppstod en feil ved sletting av valgte produkter, prøv på nytt.
+    quick_export:
+      csv_all: CSV (alle attributter)
+      csv_grid_context: CSV (rutenett kontekst)
+      xlsx_all: Excel (alle attributter)
+      xlsx_grid_context: Excel (rutenett kontekst)
+    mass_edit: Massehandlinger
+    sequential_edit: Sekvensiell redigering
+    mass_delete: Massesletting
+    selected:
+      family: valgte familier
+      product: utvalgte resultater
+  view_selector:
+    view: Visninger
+  actions:
+    edit_product_attributes: Redigere attributter for produktet
+    classify_product: Klassifisere produktet
+    delete_product: Slett dette produktet
+    change_status: Endre status
+    toggle_status: Vis/skjul-statusen
+    other: Andre handlinger
+  empty_results:
+    associated_product:
+      hint: Det er ingen tilknyttede produkter
+      subHint: 'Trykk på knappen "Legg til tilknytning" for å tilknytte dette produktet'
+  filters:
+    label: Filtre
+    system: System
+batch_jobs:
+  add_association:
+    label: Tilknytt
+    perform.label: Tilknytt
+  add_attribute_value:
+    label: Legg til attributtverdi
+    perform.label: Legg til attributtverdi
+  add_product_value:
+    label: Legg til produktverdi
+    perform.label: Legg til produktverdi
+  add_to_category:
+    label: Legg til kategori
+    perform.label: Legg til kategori
+  add_to_existing_product_model:
+    label: Legg til i en eksisterende produktmodell
+    perform.label: Legg til i en eksisterende produktmodell
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV produktoversikt kontekst hurtigeksport
+    quick_export_product_model.label: CSV produktmodelloversikt kontekst hurtigeksport
+    perform.label: CSV produktoversikt kontekst hurtigeksport
+  csv_product_quick_export:
+    quick_export.label: CSV produkt hurtigeksport
+    quick_export_product_model.label: CSV produktmodell hurtigeksport
+    perform.label: CSV produkt hurtigeksport
+  delete_products_and_product_models:
+    label: Bulk sletting av produkter
+    perform.label: Bulk sletting av produkter
+  change_parent_product:
+    label: Endre overordnet produktmodell
+    perform.label: Endre overordnet produktmodell
+  edit_common_attributes:
+    label: Rediger attributter
+    perform.label: Rediger attributter
+    clean.label: Fjern filer for attributter
+    cleaner.label: Fjern filer for attributter
+  compute_completeness_of_products_family:
+    label: Beregn fullstendighet
+    perform.label: Beregn fullstendighet
+  move_to_category:
+    label: Flytt til kategori
+    perform.label: Flytt til kategori
+  update_product_value:
+    label: Oppdater produktverdi
+    perform.label: Oppdater produktverdi
+  remove_from_category:
+    label: Fjern fra kategori
+    perform.label: Fjern fra kategori
+  set_attribute_requirements:
+    label: Definer attributtkrav
+    perform.label: Sett attributtkrav
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XLSX produkt kontekst hurtigeksport
+    quick_export_product_model.label: XLSX produktmodell kontekst hurtigeksport
+    perform.label: XLSX produkt kontekst hurtigeksport
+  xlsx_product_quick_export:
+    quick_export.label: XLSX produkt hurtigeksport
+    quick_export_product_model.label: XLSX produktmodell hurtigeksport
+    perform.label: XLSX produkt hurtigeksport

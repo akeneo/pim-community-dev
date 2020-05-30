@@ -1,0 +1,294 @@
+pim_notification:
+  types:
+    settings: 设置 
+flash:
+  comment:
+    create:
+      success: 您的评论已经成功创建。
+    delete:
+      success: 已成功删除您的评论。
+    reply:
+      success: 您的回复已经成功创建。
+pim_enrich.entity.product:
+  label: 产品
+  uppercase_label: 产品
+  plural_label: 商品
+  flash:
+    update:
+      success: 产品更新成功。
+      fail: 产品不能更新。
+      fields_not_ready: "该产品现在无法保存。 以下字段未准备好: {{ fields }}"
+      already_in_upload: 在针对本地化语言"{{ locale }}"和"{{ scope }}"范围中的这个属性中，一个文件已经在上传。
+    delete:
+      success: 产品被成功删除。
+      fail: 产品不能被删除。
+    create:
+      success: 产品已创建
+      fail: 产品标识符没有被设定属性，或者是你没有编辑的权限
+  module:
+    create:
+      subtitle: 创建产品
+      title: 选择操作
+      choose_family: 选择一个品类
+    status:
+      enabled: 已启用
+      disabled: 已禁用
+    download_pdf:
+      label: PDF
+    copy:
+      label: 比较/翻译
+      select: 选择
+      all_visible: 所有可见的
+      copy: 复制
+    history:
+      version: 版本
+      author: 作者
+      logged_at: 登录
+      from: 从
+      modified: 已修改
+      old_value: 旧值
+      new_value: 新值
+    meta:
+      updated: 上次更新
+      groups: 分组
+    show_group:
+      title: 组 {{ group }}
+      view_group: 查看组
+      more_products: '{{ count }} 更多产品...'
+    attribute:
+      remove_optional: 删除此属性
+      locale_specific_unavailable: 在此本地化语言中，特定的字段在此不可用。
+      locale_unavailable: 这个可本地化的字段不能用于本地化语言 '{{ locale }}' 和 '{{ channel }}' 通道
+      add_attribute_option: 添加属性选项
+      add_option: 添加一个选项
+    completeness:
+      title: 完整性
+      complete: 完成
+      no_family: 没有定义品类。请定义一个品类来计算这个产品的完成度。
+      no_completeness: 你只是改变了产品的品类。请先保存来计算在该品类下的数据完整性。
+    sequential_edit:
+      item_limit: 在这次序列编辑中只显示头1000个条目（{{ count }}项已选）
+      empty: 您的选择为空，请更改搜索条件
+      save_and_next: 保存和下一步
+      save_and_finish: 保存并完成
+    associations:
+      title: 关联
+      none_exist: 没有关联的类型存在。
+      show_products: 显示产品
+      show_groups: 显示分组
+      association_type_selector: 关联类型
+      target: 目标
+    attribute_filter:
+      display: 显示
+      all: 全部属性
+      missing_required: 全部缺少的必要属性
+    change_family:
+      title: 变更产品族
+      merge_attributes: 当前属性将被合并到新的产品族
+      keep_attributes: 没有属性将被删除。
+      change_family_to: 变更产品族到
+      empty_selection: 选择一个品类
+    basket:
+      title: 购物篮
+      empty_basket: 购物车是空的
+    delete:
+      confirm: 确定要删除这个产品吗？
+    comment:
+      post: 添加新评论
+      reply: 回复
+      title: 评论
+      empty: 当前无评论
+      delete_confirm: 您确定要删除此评论吗？
+      removed_author: 已删除用户
+pim_enrich.entity.product_model:
+  uppercase_label: 产品型号
+  plural_label: 产品模型
+  flash:
+    create:
+      success: 产品型号已经成功创建
+    update:
+      fail: 产品型号无法更新
+    delete:
+      success: 产品型号已经成功删除。
+  choose: 选择产品型号
+  property:
+    family_variant: 变量
+  module:
+    create:
+      title: 创建产品型号
+    variant_axis:
+      create_label: "添加新的{{ axes }}"
+pim_enrich.entity.group:
+  label: 分组
+  flash:
+    update:
+      success: 分组已成功更新。
+      fail: 分组不能更新。
+    create:
+      success: 分组已创建
+    delete:
+      success: 分组已删除
+      fail: 不能删除这个组
+  module:
+    create:
+      button: 创建组
+    delete:
+      confirm: 确定要删除这个组吗？
+pim_enrich.entity.category:
+  label: 类别
+  uppercase_label: 分类
+  plural_label: 分类
+pim_enrich.export.product:
+  data:
+    title: 产品过滤：
+  structure:
+    title: 筛选数据
+  filter:
+    channel:
+      help: 渠道定义了产品值的范围、 用于选择数据的本地化语言，以及用来选择产品的目录树。
+    locales:
+      help: "本地化语言定义了要导出的本地化产品值。例如， 仅法国的产品信息"
+    attributes:
+      help: "选择要导出的产品信息。例如︰ 仅导出有技术类的属性。"
+      empty: 将导出所有属性
+      modal:
+        title: 属性选择
+    attributes_selector:
+      attributes: "在{{ itemsCount }}项属性中搜索"
+      selected: "选定的属性"
+      clear: 清除
+      all_group: 所有群组
+      empty_selection: 将导出所有属性
+    family:
+      title: 产品族
+      help: "按品类选中产品进行导出。例如︰ 只导出鞋和衣服。"
+      operators:
+        IN: 在列表中
+        "NOT IN": 不在列表中
+        EMPTY: 没有品类的产品
+        "NOT EMPTY": 有品类的产品
+      empty_selection: 在产品族中没有条件
+    updated:
+      title: 时间条件
+      operators:
+        ALL: 日期条件
+        "SINCE LAST N DAYS": 在过去 n 天中更新过的产品 (例如， 6)
+        ">": 从该日期开始更新过的产品
+        "SINCE LAST JOB": 从上次导出后更新过的产品
+    enabled:
+      title: 状态
+      help: "根据它们的状态来选择产品导出。例如，导出所有状态的产品。"
+      value:
+        enabled: 已启用
+        disabled: 已禁用
+    completeness:
+      title: 完整性
+      help: 根据它们的完成度来选择产品导出
+      operators:
+        ALL: 在完成度上没有条件
+        ">=": 完成至少一个选定的本地化语言
+        "GREATER OR EQUALS THAN ON ALL LOCALES": 在所有选择的本地化语言中是完整的
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": 完成至少一个选定的本地化语言
+        LOWER THAN ON ALL LOCALES: 在所有选择的本地化语言中是不完整的
+      empty_selection: 选择一个品类
+    category:
+      title: 分类
+      help: 使用在目录树上 （由渠道中定义） 的产品类别来选择要导出的产品
+    identifier:
+      title: 标识
+    string:
+      operators:
+        ALL: 所有
+    select:
+      operators:
+        IN: 在列表中
+    date:
+      operators:
+        BETWEEN: 介于
+        NOT BETWEEN: 不介于
+  global_settings:
+    title: 全局设置
+pim_enrich.mass_edit.product:
+  title: 产品批量操作
+  step:
+    select:
+      label: 选择产品
+    choose:
+      title: 产品批量操作
+    configure:
+      label: 配置
+    confirm:
+      label: 确认
+    launched:
+      label: 批量操作“{{ operation }}”已启动。完成后你会收到通知。
+  operation:
+    common:
+      select_attributes: 选择属性
+    change_status:
+      label: 更改状态
+      description: 将启用或禁用选定的产品。
+      field: 启用
+    change_family:
+      label: 更改品类
+      description: 选定产品的品类将更改为被选定的品类
+    add_to_group:
+      label: 加入到组
+      description: 选择一个组，将所选定的产品加入其中
+      field: 分组
+    add_to_category:
+      label: 添加到类别
+    move_to_category:
+      label: 更改类别
+    remove_from_category:
+      label: 从类别里删除
+      description: 产品将从以下目录中删除。
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: 批量操作
+    quick_export:
+      label: 快速导出
+  mass_action:
+    delete:
+      confirm_content: 确定要删除选定的产品吗？
+      success: 选定的产品被成功删除。
+    quick_export:
+      csv_all: CSV （所有属性）
+      csv_grid_context: CSV （界面内容）
+      xlsx_all: Excel （所有属性）
+      xlsx_grid_context: Excel （界面内容）
+    mass_edit: 批量操作
+    selected:
+      family: 已选品类
+      product: 选定的结果
+  view_selector:
+    view: 视图
+  actions:
+    edit_product_attributes: 编辑产品属性
+    classify_product: 产品分类
+    delete_product: 删除产品
+    change_status: 更改状态
+    toggle_status: 切换状态
+    other: 其它操作
+  filters:
+    label: 过滤器
+    system: 系统
+batch_jobs:
+  add_product_value:
+    label: 添加商品值
+    perform.label: 添加商品值
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV 产品界面内容下快速导出
+    perform.label: CSV 产品界面内容下快速导出
+  csv_product_quick_export:
+    quick_export.label: Csv 产品快速导出
+    perform.label: Csv 产品快速导出
+  edit_common_attributes:
+    label: 编辑属性
+    perform.label: 编辑属性
+  update_product_value:
+    label: 更新商品值
+    perform.label: 更新商品值
+  set_attribute_requirements:
+    label: 设置属性要求
+    perform.label: 设置属性要求

@@ -1,0 +1,77 @@
+No products to remove: Tidak ada produk untuk dihapus
+"dot (.)": titik (.)
+"comma (,)": koma (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Properti
+      history.title: Riwayat
+    suggest_selection: Silahkan pilih kategori dibagian kiri
+    or: atau
+    create_new: Buat kategori baru
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Harap memilih kurang dari %limit% produk untuk mengubah
+    product:
+      page_title: Produk
+      page_subtitle: Massa Edit (1 produk) | Massa Edit (%count% produk)
+      title: "Pilih operasi\n \nKonteks | Permintaan Konteks"
+      subtitle: Memilih operasi ingin anda lakukan pada produk  yang dipilih | Memilih operasi yang ingin anda lakukan  pilih %count% Produk
+      confirm: Anda akan memperbarui produk dengan informasi berikut, mohon konfirmasi.|Anda akan memperbarui %count% produk dengan informasi berikut, mohon konfirmasi.
+      steps:
+        first: Pilih produk
+        second: Pilih operasi
+        third: Konfigurasikan
+        fourth: Memastikan
+    change-status:
+      label: Ganti status
+      description: Produk yang dipilih akan diaktifkan atau dimatikan.
+      success_flash: Status produk telah diubah
+      launched_flash: Sebagian besar tindakan "perubahan status" telah diluncurkan. anda akan diberitahu saat hal itu dilakukan.
+    edit-common-attributes:
+      label: Ubah perlengkapan
+      description: Perlengkapan produk yang dipilih akan diubah  dengan data sebagai berikut untuk pilihan lokal.
+      empty: Silahkan pilih perlengkapan(s) yang ingin anda ubah
+      success_flash: Memperbarui status  produk  pekerjaan yang sedang berjalan
+      launched_flash: Tindakan "sunting atribut" massal telah diluncurkan. Anda akan diberitahu ketika hal tersebut dilakukan.
+      message:
+        warning: Tidak ada perlengkapan  umum untuk produk tertentu. Silahkan ganti pilihan Anda.
+        invalid_attribute: Atribut dengan kode "attribute_code" tidak lazim untuk produk yang dipilih, atribut dilewati.
+        no_valid_attribute: Tidak ada satu pun dari perlengkapan dipilih dapat diterapkan pada produk ini.
+    classify-add:
+      label: Tambahkan ke kategori
+      description: Produk akan diposisikan mengikuti kategori berikut, penempatan yang akan disimpan.
+      success_flash: Produk(s) telah diklasifikasikan ke dalam kategori yang dipilih
+      launched_flash: Sebagian besar aksi "tambahkan ke kategori" telah diluncurkan. Anda akan diberitahu bila hal itu dilakukan.
+    classify-move:
+      label: Pindah diantara kategori
+      description: Produk akan diposisikan dalam kategori berikut, penempatan yang ada hilang.
+      success_flash: Produk(s) telah dipindahkan ke kategori yang dipilih
+      launched_flash: Sebagian besar aksi "pindah ke kategori" telah diluncurkan. Anda akan diberitahu bila hal itu dilakukan.
+    classify-remove:
+      label: Hapus dari kategori
+      description: Produk akan dihapus dari kategori berikut.
+      success_flash: Produk(s) telah dihapus dari kategori yang dipilih
+      launched_flash: Sebagian besar aksi "pindah ke kategori" telah diluncurkan. Anda akan diberitahu bila hal itu dilakukan.
+    change-family:
+      label: Ubah keluarga
+      description: Keluarga dari produk yang terpilih akan diubah menjadi keluarga pilihan
+      success_flash: Keluarga produk(s) terpilih telah berhasil diubah
+      launched_flash: Sebagian besar tindakan "perubahan" telah diluncurkan. Anda akan diberitahu bila hal itu dilakukan.
+    add-to-groups:
+      label: Tambah ke kelompok
+      description: Pilih kelompok untuk Tambahkan produk yang dipilih
+      success_flash: Produk berhasil ditambahkan kepada  kelompok yang dipilih
+      launched_flash: Sebagian besar tindakan "tambah untuk kelompok" telah diluncurkan. Anda akan diberitahu saat hal itu dilakukan.
+      no_group: Tidak ada kelompok  untuk sekarang. Mulailah dengan membuat kelompok.
+    set-attribute-requirements:
+      label: Menetapkan persyaratan atribut
+      description: Persyaratan perlengkapan berikut akan diterapkan pada keluarga terpilih
+      success_flash: Persyaratan atribut diterapkan kepada keluarga yang terpilih
+      launched_flash: Sebagian besar tindakan "menetapkan persyaratan atribut" diluncurkan. Anda akan diberi tahu kapan hal itu akan dilakukan.
+    mass_action:
+      quick_export:
+        launched_flash: Pekerjaan mengekspor produk saat ini sedang berjalan
+category:
+  overview: Kategori

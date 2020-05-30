@@ -1,12 +1,14 @@
+#Entities
 Job: 任务
 Connector: 连接器
 pim_import_export:
   job: 任务
   connector: 连接器
+  ## Job status
   status:
     0: 就绪
   batch_status:
-    1: Completed
+    1: 已完成
     2: Starting
     3: Started
     4: Stopping
@@ -35,18 +37,21 @@ pim_import_export:
       property.title: 常规属性
       history.title: 历史
       job_content.title: 内容
+#Page titles:
 pim_title.export_profile.index: 导出配置文件管理
 pim_title.export_execution.index: 导出处理记录
 pim_title.export_execution.show: 导出处理记录|详情
 pim_title.import_profile.index: 导入配置文件管理
 pim_title.import_execution.index: 导入处理记录
 pim_title.import_execution.show: 导入处理记录|详情
+#Entity and page header titles
 export profile:
   title: 导出配置文件
   edit: 编辑导出配置文件
 import profile:
   title: 导入方案
   edit: 编辑导入方案
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -80,8 +85,9 @@ pim_importexport:
       dl_log: 下载导入报告日志
       dl_files: 下载导入的文件
   acl_group:
-    export: 导出配置文件
+    export: 导出方案
     import: 导入方案
+#Buttons
 btn:
   create:
     export profile: 创建导出配置文件
@@ -89,10 +95,12 @@ btn:
 Upload and import now: 现在上传并导入
 import now: 现在导入
 export now: 现在导出
+#Confirmation messages
 confirmation:
   remove:
     export profile: 你确定你想要删除导出配置文件 %name%？
     import profile: 你确定要删除导入方案 %name%？
+#Flash messages
 flash:
   export:
     created: 导出已成功创建
@@ -104,15 +112,18 @@ flash:
     removed: 导入已被删除
     updated: 导入已成功更新
     running: 导入正在进行
+#Tabs
 General properties: 常规属性
 History: 历史
 pane.accordion:
   properties: 属性
   global_settings: 全局设置
   filters: 过滤器
+#Popin titles
 popin.create:
   export_profile.title: 创建新的导出配置文件
   import_profile.title: 新建的导入方案
+#Job execution
 'Display item': 显示条目
 'Hide item': 隐藏条目
 'Collecting data about job execution...': 正在收集有关作业执行的数据...
@@ -134,7 +145,11 @@ job_execution.summary:
     skipped: 跳过，在白名单中扩展
 Step: 步
 Status: 状态
+Warnings: 警告
 Summary: 总结
 Start: 开始
 End: 结束
+#Process tracker
+set_attribute_requirements: 设置属性要求
+COMPLETED: 已完成
 warning.label: 警告

@@ -1,0 +1,35 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: 参数
+      value.title: 值
+      history.title: 历史
+  #Group type
+  group_type:
+    tab:
+      property.title: 属性
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: 品类
+      page_subtitle: 批量编辑 （1 个品类） |批量编辑 （%count% 个品类）
+      title: 选择操作
+      subtitle: 请选择您希望在所选的品类上执行的操作 |请选择您希望在所选的 %count% 品类上执行的操作
+      confirm: 您将要更新该品类的以下信息，请确认。 |您将要更新 %count% 品类的以下信息，请确认。
+      steps:
+        first: 选择品类
+        second: 选择操作
+        third: 配置
+        fourth: 确认
+pim_enrich_attribute_form:
+  code: 代码
+  type: 属性类型
+  reference_data_name: 引用数据名称
+  scopable: 每个渠道的值
+  localizable: 每项区域设置的值
+  unique: 唯一性值
+  availableLocales: 可用区域
+  locale_specific: 特定的区域
+  group: 属性组
+  useableAsGridFilter: 在表格中可用

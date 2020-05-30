@@ -1,0 +1,45 @@
+pim_api:
+  acl:
+    rights: Permisiuni web API
+    attribute:
+      edit: Creează si actualizează atribute
+      list: Listează atribute
+    attribute_option:
+      edit: Creează si actualizează opțiuni de atribute
+      list: Listează opțiunile atributelor
+    attribute_group:
+      edit: Creează şi actualizează grupurile atributelor
+      list: Listează grupurile atributelor
+    category:
+      edit: Creează şi actualizează categoriile
+      list: Listează categoriile
+    family:
+      edit: Creează şi actualizează familiile
+      list: Listează familiile
+    family_variant:
+      edit: Creează şi actualizează variantele familiei
+      list: Listează variantele familiei
+    channel:
+      edit: Creează şi actualizează canalele
+      list: Listează canalele
+    locale.list: Listează locale
+    currency.list: Listează valutele
+    association_type:
+      edit: Creează şi actualizează tipurile de asociații
+      list: Listează tipuri de asociere
+  acl_group:
+    overall_access: Access WEB API global
+    attribute: Atribute
+    attribute_option: Opțiuni atribute
+    attribute_group: Grupuri atribute
+    category: Categorii
+    family: Familii
+    family_variant: Variantele familiei
+    channel: Canale
+    locale: Locale
+    currency: Valute
+    association_type: Tipurile asociației
+pim_user:
+  roles:
+    tab:
+      api: Permisiuni web API

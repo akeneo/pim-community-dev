@@ -1,0 +1,45 @@
+pim_api:
+  acl:
+    rights: Izin API Web
+    attribute:
+      edit: Buat dan perbarui atribut
+      list: Daftar atribut
+    attribute_option:
+      edit: Buat dan perbarui piihan perlengkapan
+      list: Daftar pilihan atribut
+    attribute_group:
+      edit: Buat dan perbarui grup atribut
+      list: Daftar kelompok atribut
+    category:
+      edit: Buat dan perbarui kategori
+      list: Daftar kategori
+    family:
+      edit: Buat dan perbarui keluarga
+      list: Daftar keluarga
+    family_variant:
+      edit: Buat dan perbarui varian keluarga
+      list: Daftar varian keluarga
+    channel:
+      edit: Buat dan perbarui saluran
+      list: Daftar saluran
+    locale.list: Daftar lokal
+    currency.list: Daftar mata uang
+    association_type:
+      edit: Buat dan perbarui jenis asosiasi
+      list: Daftar jenis asosiasi
+  acl_group:
+    overall_access: Akses Web API secara keseluruhan
+    attribute: Atribut
+    attribute_option: Pilihan atribut
+    attribute_group: Grup atribut
+    category: Kategori
+    family: Keluarga
+    family_variant: Keluarga varian
+    channel: Saluran
+    locale: Lokal
+    currency: Mata Uang
+    association_type: Tipe Asosiasi
+pim_user:
+  roles:
+    tab:
+      api: Izin API Web

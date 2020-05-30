@@ -1,0 +1,45 @@
+pim_analytics:
+  new_patch_available: Patch baru tersedia
+  system_config:
+    group:
+      notification.title: Pemberitahuan
+      version_update.title: Update versi
+    form:
+      version_update.label: Pemberitahuan versi terbaru
+      version_update.tooltip: Kirim permintaan ke server untuk mengambil informasi tentang peluncuran patch baru
+  system_info:
+    title: Sistem informasi
+    download: TXT
+  info_type:
+    pim_edition: Edisi
+    pim_version: Versi
+    pim_storage_driver: Penyimpanan
+    pim_environment: Lingkungan
+    pim_install_time: Waktu pemasangan
+    registered_bundles: Bundel yang terdaftar
+    nb_channels: Jumlah saluran
+    nb_products: Jumlah produk
+    nb_product_models: Jumlah model produk
+    nb_variant_products: Jumlah dari produk varian
+    nb_family_variants: Jumlah dari varian keluarga
+    nb_attributes: Jumlah atribut
+    nb_scopable_attributes: Number dari atribut scopable
+    nb_localizable_attributes: Jumlah atribut yang dilokalkan
+    nb_scopable_localizable_attributes: Jumlah atribut yang dapat di lokalkan dan dijangkau
+    nb_locales: Jumlah lokal
+    nb_families: Jumlah kelompok
+    nb_users: Jumlah pengguna
+    pim_storage_version: Versi Penyimpanan
+    os_version: Versi Sistem Operasi (OS)
+    php_version: Versi PHP
+    mysql_version: Versi MySQL
+    mariadb_version: Versi MariaDB
+    mongodb_version: Versi MongoDB
+    server_version: Versi server
+    php_extensions: Ekstensi PHP
+  acl:
+    system_info:
+      index: Sistem Informasi
+pim_menu:
+  item:
+    system_info: Sistem Informasi

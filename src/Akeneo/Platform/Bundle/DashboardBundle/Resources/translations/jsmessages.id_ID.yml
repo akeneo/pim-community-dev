@@ -1,0 +1,6 @@
+pim_dashboard:
+  widget:
+    completeness:
+      load_more: 'Muat lebih...'
+pim_title:
+  pim_dashboard_index: Dasbor

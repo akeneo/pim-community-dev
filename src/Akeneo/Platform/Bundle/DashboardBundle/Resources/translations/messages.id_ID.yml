@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Dasbor
+  version: Versi
+  widget:
+    completeness:
+      title: Kelengkapan Atas Saluran dan Lokal
+    last_operations:
+      title: Operasi terakhir
+      status: Status
+      type: Tipe

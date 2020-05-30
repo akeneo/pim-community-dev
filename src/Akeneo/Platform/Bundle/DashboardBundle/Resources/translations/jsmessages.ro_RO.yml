@@ -1,0 +1,6 @@
+pim_dashboard:
+  widget:
+    completeness:
+      load_more: 'Încarcă mai multe...'
+pim_title:
+  pim_dashboard_index: Tablou de bord

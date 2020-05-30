@@ -1,0 +1,145 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    validation: Pengesahan berkas
+    import_associations: Masukkan kumpulan
+    import_root_product_model: Akar model produk impor
+    import_sub_product_model: Impor sub model produk
+    compute_data_related_to_family_root_product_models: Menghitung data akar model produk
+    compute_data_related_to_family_sub_product_models: Menghitung data sub produk
+    compute_data_related_to_family_products: Menghitung data produk
+    compute_product_models_descendants: Hitunglah model turunan produk
+    compute_family_variant_structure_changes: Hitung perubahan struktur keluarga varian
+    compute_completeness_of_products_family: Hitunglah perlengkapan produk keluarga
+  csv_product_export:
+    label: Produk ekspor di Indonesia CSV
+    export.label: Product export
+  csv_product_model_export:
+    label: Model produk ekspor di CSV
+    export.label: Model produk ekspor
+  csv_category_export:
+    label: Ekspor kategori in CSV
+    export.label: Category export
+  csv_attribute_export:
+    label: Ekspor perlengkapan di CSV
+    export.label: Ekspor perlengkapan
+  csv_attribute_option_export:
+    label: Pilihan atribut ekspor masuk CSV
+    export.label: Ekspor pilihan perlengkapan
+  csv_association_type_export:
+    label: Jenis kumpulan ekspor di CSV
+    export.label: Jenis kumpulan Ekspor
+  csv_group_export:
+    label: Ekspor kelompok di CSV
+    export.label: Kelompok ekspor
+  csv_family_export:
+    label: Ekspor keluarga pada CSV
+    export.label: Family export
+  csv_family_variant_export:
+    label: Ekspor variasi keluarga pada CSV
+    export.label: Ekspor varian keluarga
+  csv_product_import:
+    label: Impor produk dalam CSV
+    import.label: Masukkan produk
+  csv_product_model_import:
+    label: Model produk masukkan di CSV
+    import_product_model_descendants.label: Menghitung model produk keturunan
+  csv_category_import:
+    label: Kategori Impor di CSV
+    import.label: Impor kategori
+  csv_attribute_import:
+    label: Impor atribut dalam CSV
+    import.label: Masukkan perlengkapan
+  csv_attribute_option_import:
+    label: Impor opsi atribut dalam CSV
+    import.label: Masukkan pilihan perlengkapan
+  csv_association_type_import:
+    label: Impor jenis asosiasi dalam CSV
+    import.label: Jenis asosiasi impor
+  csv_family_import:
+    label: Impor keluarga dalam CSV
+    import.label: Masukkan keluarga
+    compute_data_related_to_family_variants.label: Menghitung model data produk
+  csv_family_variant_import:
+    label: Impor varian keluarga di CSV
+    import.label: Impor varian keluarga
+  csv_group_import:
+    label: Impor grup dalam CSV
+    import.label: Masukkan kelompok
+  csv_attribute_group_export:
+    label: Ekspor kelompok perlengkapan di CSV
+    export.label: Ekspor kelompok perlengkapan
+  csv_group_type_export:
+    label: Ekspor jenis kelompok di CSV
+    export.label: Jenis ekspor kelompok
+  csv_attribute_group_import:
+    label: Masukkan kelompok perlengkapan di CSV
+    import.label: Masukkan perlengkapan kelompok
+  csv_group_type_import:
+    label: Impor jenis kelompok di CSV
+    import.label: Masukkan jenis kelompok
+  xlsx_category_import:
+    label: Impor kategori dalam XLSX
+    import.label: Kategori impor
+  xlsx_association_type_import:
+    label: Impor jenis asosiasi dalam XLSX
+    import.label: Jenis asosiasi impor
+  xlsx_attribute_import:
+    label: Masukkan perlengkapan di XLSX
+    import.label: Attribute import
+  xlsx_attribute_option_import:
+    label: Impor opsi atribut dalam XLSX
+    import.label: Attribute option import
+  xlsx_family_import:
+    label: Impor keluarga dalam XLSX
+    import.label: Family import
+  xlsx_family_variant_import:
+    label: Impor varian keluarga di XLSX
+    import.label: Impor varian keluarga
+  xlsx_product_export:
+    label: Ekspor produk dalam XLSX
+    export.label: Ekspor produk
+  xlsx_product_model_export:
+    label: Model produk ekspor di XLSX
+    export.label: Model produk ekspor
+  xlsx_product_import:
+    label: Impor produk dalam XLSX
+    import.label: Product import
+  xlsx_product_model_import:
+    import_product_model_descendants.label: Hitunglah model produk keturunan
+  xlsx_group_export:
+    label: Ekspor grup dalam XLSX
+    export.label: Group export
+  xlsx_group_import:
+    label: Impor grup dalam XLSX
+    import.label: Group import
+  xlsx_family_export:
+    label: Ekspor keluarga dalam XLSX
+    export.label: Ekspor keluarga
+  xlsx_family_variant_export:
+    label: Ekspor varian keluarga di XLSX
+    export.label: Ekspor variasi Keluarga
+  xlsx_category_export:
+    label: Ekspor kategori dalam XLSX
+    export.label: Category export
+  xlsx_attribute_export:
+    label: Ekspor atribut dalam XLSX
+    export.label: Ekspor atribut dalam XLSX
+  xlsx_attribute_option_export:
+    label: Ekspor opsi atribut dalam XLSX
+    export.label: Ekspor opsi atribut dalam XLSX
+  xlsx_association_type_export:
+    label: Ekspor tipe asosiasi dalam XLSX
+    export.label: Ekspor tipe asosiasi dalam XLSX
+  xlsx_attribute_group_export:
+    label: Ekspor grup atribut dalam XLSX
+    export.label: Ekspor kelompok atribut
+  xlsx_group_type_export:
+    label: Ekspor tipe grup dalam XLSX
+    export.label: Ekspor jenis kelompok
+  xlsx_attribute_group_import:
+    label: Impor grup atribut dalam XLSX
+    import.label: Impor atribut grup
+  xlsx_group_type_import:
+    label: Kelompok jenis impor di XLSX
+    import.label: Group type import

@@ -1,0 +1,39 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parameter
+      value.title: Nilai - nilai
+      history.title: Riwayat
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Tidak dapat menghapus atribut ini yang digunakan sebagai sumbu varian dalam varian keluarga
+  #Group type
+  group_type:
+    tab:
+      property.title: Properti
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Keluarga
+      page_subtitle: Sunting Massa (1 keluarga) | Sunting Massa (%count% keluarga)
+      title: Pilih operasi
+      subtitle: Pilih operasi yang ingin Anda lakukan pada keluarga yang dipilih | Pilih operasi yang ingin Anda lakukan pada keluarga yang dipilih %count%
+      confirm: Anda akan memperbarui keluarga dengan mengikuti informasi berikut, silahkan konfirmasi.|Anda akan memperbarui %count% keluarga dengan mengikuti informasi berikut, silahkan konfirmasi.
+      steps:
+        first: Pilih keluarga
+        second: Pilih operasi
+        third: Konfigurasi
+        fourth: Konfirmasi
+pim_enrich_attribute_form:
+  code: Kode
+  type: Tipe atribut
+  reference_data_name: Nama data referensi
+  scopable: Nilai per channel
+  localizable: Nilai untuk lokal
+  unique: Nilai unik
+  availableLocales: Lokal yang tersedia
+  locale_specific: Lokal spesifik
+  group: Perlengkapan kelompok
+  useableAsGridFilter: Bisa digunakan di grid

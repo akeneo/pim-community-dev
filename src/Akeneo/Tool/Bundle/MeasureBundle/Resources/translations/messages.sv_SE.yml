@@ -1,6 +1,6 @@
 pim_measure:
   families:
-    Area: Område
+    Area: Yta
     Binary: Binär
     Decibel: Decibel
     Frequency: Frekvens
@@ -19,6 +19,7 @@ pim_measure:
     Energy: Energi
     CaseBox: Förpackning
   units:
+    #Area
     ACRE: Tunnland
     ARE: Hektar
     ARPENT: Arpent
@@ -37,18 +38,22 @@ pim_measure:
     SQUARE_MILE: Kvadratmile
     SQUARE_MILLIMETER: Kvadratmillimeter
     SQUARE_YARD: Kvadratyard
+    #Binary
     BIT: Bit
     BYTE: Byte
     KILOBYTE: Kilobyte
     MEGABYTE: Megabyte
     GIGABYTE: Gigabyte
     TERABYTE: Terabyte
+    #Decibel
     DECIBEL: Decibel
+    #Frequency
     GIGAHERTZ: Gigahertz
     KILOHERTZ: Kilohertz
     MEGAHERTZ: Megahertz
     TERAHERTZ: Terahertz
     HERTZ: Hertz
+    #Length
     CENTIMETER: Centimeter
     CHAIN: Chain
     DECIMETER: Decimeter
@@ -63,11 +68,13 @@ pim_measure:
     MILE: Engelsk mil
     MILLIMETER: Millimeter
     YARD: Yard
+    #Power
     GIGAWATT: Gigawatt
     KILOWATT: Kilowatt
     MEGAWATT: Megawatt
     TERAWATT: Terawatt
     WATT: Watt
+    #Resistance
     MILLIOHM: Milliohm
     CENTIOHM: Centiohm
     DECIOHM: Deciohm
@@ -76,6 +83,7 @@ pim_measure:
     HECTOHM: Hectaohm
     KILOHM: Kilohm
     MEGOHM: Megaohm
+    #Voltage
     MILLIVOLT: Millivolt
     CENTIVOLT: Centivolt
     DECIVOLT: Decivolt
@@ -83,6 +91,7 @@ pim_measure:
     DEKAVOLT: Dekavolt
     HECTOVOLT: Hectovolt
     KILOVOLT: Kilovolt
+    #Intensity
     MILLIAMPERE: Milliampere
     CENTIAMPERE: Centiampere
     DECIAMPERE: Deciampere
@@ -91,6 +100,7 @@ pim_measure:
     HECTOAMPERE: Hectoampere
     KILOAMPERE: Kiloampere
     MEGAAMPERE: Megaampere
+    #ElectricCharge
     MILLIAMPEREHOUR: Milliampere timme
     AMPEREHOUR: Ampere timmar
     MILLICOULOMB: Millicoulomb
@@ -100,6 +110,7 @@ pim_measure:
     DEKACOULOMB: Dekacoulomb
     HECTOCOULOMB: Hectocoulomb
     KILOCOULOMB: Kilocoulomb
+    #Duration
     MILLISECOND: Millisekund
     SECOND: Sekund
     MINUTE: Minut
@@ -108,6 +119,7 @@ pim_measure:
     WEEK: Vecka
     MONTH: Månad
     YEAR: År
+    #Speed
     FOOT_PER_SECOND: Fot per sekund
     FOOT_PER_HOUR: Fot per timme
     KILOMETER_PER_HOUR: Kilometer per timme
@@ -116,11 +128,13 @@ pim_measure:
     METER_PER_SECOND: Meter per sekund
     MILE_PER_HOUR: Mile per timme
     YARD_PER_HOUR: Yard per timme
+    #Temperature
     CELSIUS: Celsius
     FAHRENHEIT: Fahrenheit
     KELVIN: Kelvin
     RANKINE: Rankine
     REAUMUR: Reaumur
+    #Volume
     BARREL: Fat
     CENTILITER: Centiliter
     CUBIC_CENTIMETER: Kubikcentimeter
@@ -136,6 +150,7 @@ pim_measure:
     MILLILITER: Milliliter
     OUNCE: Ounce
     PINT: Pint
+    #Weight
     DENIER: Denier
     GRAIN: Grain
     GRAM: Gram
@@ -146,6 +161,7 @@ pim_measure:
     ONCE: Once
     POUND: Pund
     TON: Ton
+    #Pressure
     BAR: Bar
     PASCAL: Pascal
     HECTOPASCAL: hektopascal
@@ -156,5 +172,6 @@ pim_measure:
     MMHG: millimeter kvicksilver
     KILOCALORIE: kilokalori
     KILOJOULE: kilojoule
+    #CaseBox
     PIECE: Stycke
     DOZEN: Dussin

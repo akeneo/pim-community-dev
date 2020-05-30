@@ -48,6 +48,8 @@ pim_enrich.entity.channel:
     delete:
       success: Kanalen har tagits bort
       fail: Kan inte ta bort denna kanal
+  page_title:
+    index: "]-Inf, 1]{{ count }} kanal|]1, Inf[{{ count }} kanaler"
   property:
     category_tree: Kategoriträd
     do_not_convert: Konvertera inte

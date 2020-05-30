@@ -1,0 +1,183 @@
+job_execution:
+  summary:
+    display_item: Tampilan item
+    hide_item: Sembunyikan item
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Pemilihan kategori
+        title: Pilih kategori
+    locales:
+      validation:
+        not_blank: Satu lokal harus dipilih, silahkan pilih lokal untuk diekspor.
+pim_import_export:
+  entity:
+    job_instance:
+      label: profil pekerjaan
+      flash:
+        update:
+          success: Profil pekerjaan telah berhasil diperbaharui.
+          fail: Profil pekerjaan tidak dapat diperbarui.
+        delete:
+          success: Contoh pekerjaan berhasil dihapus
+    import_profile:
+      uppercase_label: Masukkan profil
+      flash:
+        create:
+          success: Profil impor berhasil dibuat
+      module:
+        create:
+          button: Buat profil impor
+    export_profile:
+      uppercase_label: Profil ekspor
+      flash:
+        create:
+          success: Profil ekspor berhasil dibuat
+      module:
+        create:
+          button: Buat profil ekspor
+  form:
+    job_execution:
+      title.details: Melaksanakan rincian
+      refreshBtn.title: Menyegarkan
+      button:
+        show_profile.title: Tampilkan profil
+        download_log.title: Mengunduh log
+        download_file.title: Unduh berkas yang dihasilkan
+        download_archive.title: Unduh arsip yang dihasilkan
+      summary:
+        fetching: Mengumpulkan data tentang pengerjaan ...
+        warning: Peringatan
+        header.step: Langkah
+        header.warnings: Peringatan
+        header.summary: Ringkasan
+        header.start: Mulai
+        header.end: Berakhir
+    job_instance:
+      fail:
+        launch: Gagal meluncurkan profil pekerjaan. Pastikan itu benar dan anda berhak meluncurkannya.
+        save: Gagal menyimpan profil pekerjaan. Pastikan bahwa anda memiliki hak untuk mengubahnya.
+      button:
+        export.title: Ekspor sekarang
+        import.launch: Impor sekarang
+        import.upload: Unggah dan impor sekarang
+        import.upload_file: Unggah sebuah berkas
+      meta:
+        job: Pekerjaan
+        connector: Konektor
+      subsection:
+        last_executions: Langkah terakhir
+      tab:
+        content:
+          title: Konten
+        properties:
+          decimal_separator:
+            title: Pemisah desimal
+            help: Menetukan pemisah desimal
+          date_format:
+            title: Format tanggal
+            help: Tentukan format bidang tanggal
+          file_path:
+            title: Jalur file
+            help: Dimana untuk menulis berkas yang dihasilkan pada sistem berkas
+          delimiter:
+            title: Pembatas
+            help: Satu karakter digunakan untuk mengatur bidang pembatas
+          enclosure:
+            title: Lampiran
+            help: Satu karakter digunakan untuk mengatur bidang lampiran
+          with_header:
+            title: Dengan header
+            help: Apakah atau tidak untuk mencetak nama kolom
+          with_media:
+            title: Ekspor file dan gambar
+            help: Melakukan ekspor file dan gambar produk maupun bukan
+          lines_per_file:
+            title: Jumlah baris tiap berkas
+            help: Tentukan batas jumlah baris per file
+          upload_allowed:
+            title: Izinkan unggah berkas
+            help: Apakah atau tidak untuk memungkinkan memperbaharui berkas secara langsung
+          categories_column:
+            title: Kategori kolom
+            help: Nama kategori kolom
+          escape:
+            title: Melarikan diri
+            help: Satu karakter digunakan untuk mengatur bidang yang melepaskan diri
+          family_column:
+            title: Kolom Keluarga
+            help: Nama kolom keluarga
+          groups_column:
+            title: Kolom grup
+            help: Nama kolom kelompok
+          enabled:
+            title: Memungkinkan produk
+            help: Apakah produk yang diimpor harus diaktifkan atau tidak
+          enabled_comparison:
+            title: Bandingkan nilai
+            help: Memungkinkan perbandingan antara nilai dasar dan nilai impor. Akan dapat mempercepat impor jika nilai impornya sangat mirip dengan nilai dasar
+          real_time_versioning:
+            title: Real time sejarah pembaruan
+            help: Berarti bahwa sejarah produk diperbarui secara otomatis, dapat dimatikan untuk meningkatkan kinerja
+          family_variant_column:
+            title: Kolom keluarga yang berbeda
+      file_path: Jalur file
+  widget:
+    last_operations:
+      empty: Tidak ditemukan operasi
+      date: Tanggal
+      profile_name: Nama profil
+      details: Rincian
+      warning_count: Peringatan
+      job_type:
+        import: Impor
+        export: Ekspor
+        mass_edit: Sunting massa
+        quick_export: Ekspor cepat
+        compute_product_models_descendants: Hitunglah model turunan produk
+        compute_family_variant_structure_changes: Hitung perubahan struktur keluarga varian
+        compute_completeness_of_products_family: Hitunglah perlengkapan produk keluarga
+      header.view_all: Lihat semua
+  batch_status:
+    1: Selesai
+    2: Mulai
+    3: Mulai
+    4: Henti
+    5: Berhenti
+    6: Gagal
+    7: Terbengkalai
+    8: Tak diketahui
+confirmation:
+  remove:
+    import_profile: Yakin ingin menghapus profil impor ini?
+    export_profile: Yakin ingin menghapus profil ekspor ini?
+    job_instance: Yakin ingin menghapus contoh pekerjaan ini?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Apakah Anda yakin Anda ingin menghapus profil impor ini?
+      flash:
+        delete:
+          success: Masukkan profil berhasil dihapus
+    export_profile:
+      module:
+        delete:
+          confirm: Apakah Anda yakin Anda ingin menghapus profil ekspor ini?
+      flash:
+        delete:
+          success: Keluarkan Profil berhasil dihapus
+pim_title:
+  pim_importexport_export_profile_index: Manajemen profil ekspor
+  pim_importexport_export_profile_edit: Ekspor profil {{ job.label }} | Sunting
+  pim_importexport_export_profile_show: Ekspor profil {{ job.label }} | Tampilkan
+  pim_importexport_export_execution_index: Riwayat eksekusi ekspor
+  pim_importexport_export_execution_show: Eksekusi ekspor | Rincian
+  pim_importexport_import_profile_index: Memasukkan manajemen profil
+  pim_importexport_import_profile_edit: Impor profil {{ job.label }} | Sunting
+  pim_importexport_import_profile_show: Impor profil {{ job.label }} | Tampilkan
+  pim_importexport_import_execution_index: Impor riwayat eksekusi
+  pim_importexport_import_execution_show: Impor eksekusi | Rincian

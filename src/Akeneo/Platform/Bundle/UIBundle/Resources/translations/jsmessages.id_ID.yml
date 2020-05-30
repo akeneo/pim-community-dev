@@ -1,0 +1,328 @@
+#ORO messages
+"Yes, I Agree": "Ya, Saya Setuju"
+"Yes, do it": "Ya lakukanlah"
+"Ok, got it.": "Ok, saya mengerti."
+"Edit": "Ubah"
+"Yes, revoke": "Ya, cabut"
+"Revoke Confirmation": "Cabut kan Konfirmasi"
+Prev: Sebelum
+Today: Hari ini
+Wk: Wk
+AM: Malam
+A: A
+PM: SORE
+P: P
+"Choose Time": "Pilih Waktu"
+Time: Waktu
+Hour: Jam
+Minute: Menit
+Second: Detik
+Millisecond: Milidetik
+Microsecond: Mikrodetik
+"Time Zone": "Zona Waktu"
+#PIM messages
+Localized value: Nilai terlokalkan
+Columns: Kolom
+Datagrid Configuration: Konfigurasi Datagrid
+#Filters
+Action: Tindakan
+Unit: Unit
+Currency: Mata uang
+jstree:
+  all: Semua produk
+  unclassified: Produk yang tidak diklasifikasikan
+  product:
+    all: Semua produk
+    unclassified: Produk yang tidak diklasifikasikan
+  no_tree: Tidak ada pohon yang tersedia
+  include_sub: Termasuk sub-kategori
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Minggu
+    Monday: Senin
+    Tuesday: Selasa
+    Wednesday: Rabu
+    Thursday: Kamis
+    Friday: Jum'at
+    Saturday: Sabtu
+  daysShort:
+    Sun: Mgg
+    Mon: Sen
+    Tue: Sel
+    Wed: Rab
+    Thu: Kam
+    Fri: Jum
+    Sat: Sab
+  daysMin:
+    Su: Mgg
+    Mo: Sen
+    Tu: Sel
+    We: Kami
+    Th: Kam
+    Fr: Jum
+    Sa: Sab
+  months:
+    January: Januari
+    February: Februari
+    March: Maret
+    April: April
+    May: Mei
+    June: Juni
+    July: Juli
+    August: Agustus
+    September: September
+    October: Oktober
+    November: November
+    December: Desember
+  monthsShort:
+    Jan: Jan
+    Feb: Feb
+    Mar: Mar
+    Apr: Apr
+    May: Mei
+    Jun: Jun
+    Jul: Jul
+    Aug: Agu
+    Sep: Sep
+    Oct: Okt
+    Nov: Nov
+    Dec: Dec
+#ORO
+oro_config:
+  form:
+    config:
+      title: Sistem konfigurasi
+      tab:
+        system:
+          title: Sistem
+      group:
+        localization:
+          title: Lokalisasi
+          system_locale: Bahasa
+        notification:
+          title: Pemberitahuan
+          system_notification: Pemberitahuan versi terbaru
+        loading_message:
+          title: Memuat pesan
+          label: Memungkinkan pemuatan pesan
+        loading_messages:
+          label: Tersedia pesan pemuatan
+"Sorry, page was not loaded correctly": "Maaf, halaman tidak dimuat dengan benar"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Perubahan lokal anda akan hilang. Apakah anda yakin anda ingin menyegarkan halaman?"
+"navigation.message.content.outdated": "Isi {{ title }} di halaman ketinggalan jaman, silakan <a href='#' data-action='page-refresh'>menyegarkan halaman</a>"
+"Content of pinned page is outdated": "Konten halaman yang disematkan sudah ketinggalan zaman"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Aksi
+  add: Tambahkan
+  add_attributes: Tambahkan atribut
+  all: Semuanya
+  and: dan
+  apply: Terapkan
+  by: oleh
+  cancel: Batal
+  code: Kode
+  confirm: Menyetujui
+  confirm_deletion: Konfirmasi penghapusan
+  create: Buat
+  created: Dibuat
+  delete: Hapus
+  done: Selesai
+  edit: Ubah
+  entity_updated: Tidak ada perubahan tersimpan.
+  from: Dari
+  general_properties: Properti Umum
+  history: Riwayat
+  label: Label
+  label_translations: Terjemahan label
+  less_than: Kurang dari
+  loading: Pemuatan...
+  media_upload: Seret dan letakkan untuk mengunggah atau tekan disini
+  more_than: Lebih dari
+  next: Selanjutnya
+  "no": "Tidak"
+  none: Tidak ada
+  not_available: N/A
+  now: Sekarang
+  ok: Baik
+  permissions: Izin
+  previous: Sebelumnya
+  properties: Properti
+  remove: Hapus
+  required_label: (diharuskan)
+  save: Menyimpan
+  search: Telusuri
+  select2:
+    search: Pencarian...
+    no_match: Tidak ditemukan kecocokan
+    load_more: Memuat hasil lebih banyak...
+  status: Status
+  to: ke
+  type: Jenis
+  update: Perbarui
+  "yes": "Ya"
+  operator: Orang yang mengoperasikan
+  operators:
+    "=": Adalah sama dengan
+    "!=": Tidak sama dengan
+    ">=": Lebih besar dari atau sama dengan
+    ">": Lebih besar dari
+    "<=": Lebih rendah dari atau sama dengan
+    "<": Lebih rendah dari
+    EMPTY: Adalah Kosong
+    NOT EMPTY: Adalah Tidak kosong
+    CONTAINS: Mengandung
+    DOES NOT CONTAIN: Tidak mengandung
+    STARTS WITH: Dimulai dengan
+    ENDS WITH: Berakhir dengan
+error:
+  forbidden: Terlarang. Anda tidak diizinkan mengakses halaman ini
+alert:
+  attribute_option:
+    save_before_edit_other: Silahkan mendaftar modifikasi anda pada baris lain sebelum mengubah yang satu ini
+  session_storage:
+    not_available: Peramban web anda sepertinya tidak kompatibel dengan sessionStorage. Silahkan hubungi pengelola anda
+pim_enrich.entity.fallback:
+  flash:
+    update:
+      fail: Pembaruan gagal
+      success: Berhasil diperbarui
+    delete:
+      fail: tidak dapat menghapus barang ini
+      success: barang berhasil di hapus
+  module:
+    delete:
+      title: Hapus {{ itemName }} ini
+      alternative_title: Konfirmasi penghapusan
+      item: Apakah Anda yakin Anda ingin menghapus produk ini?
+    edit:
+      leave: Apakah anda yakin ingin meninggalkan halaman ini?
+      discard_changes: Anda akan kehilangan perubahan {{ entity }} jika anda meninggalkan halaman.
+pim_enrich.entity.api_connection:
+  flash:
+    create:
+      success: Sambungan API berhasil dibuat
+    delete:
+      success: Sambungan API berhasil dicabut
+pim_enrich.entity.job_execution:
+  module:
+    create:
+      upload: Tarik berkas {{ type }} anda disini, atau tekan untuk menelusuri disket komputer
+    download:
+      archive: Download arsip yang dihasilkan
+      output: Unduh berkas yang dihasilkan
+      input: Unduh berkas baca
+      invalid_xlsx: Unduh data yang tidak valid
+      invalid_csv: Unduh data yang tidak valid
+pim_title:
+  oro_default: Dasbor
+  pim_enrich_attributegroup_index: Grup atribut
+  pim_enrich_attributegroup_create: Perlengkapan kelompok | Membuat
+  pim_enrich_attributegroup_edit: Perlengkapan kelompok {{ group.label }} | Sunting
+  pim_enrich_categorytree_index: Pohon kategori
+  pim_enrich_categorytree_create: Kategori pohon | Membuat
+  pim_enrich_categorytree_edit: Kategori pohon {{ category.label }} | ubah
+  pim_enrich_categorytree_create_tree: Kategori pohon | Membuat
+  pim_enrich_attribute_index: Atribut
+  pim_enrich_attribute_create: Perlengkapan | Membuat
+  pim_enrich_attribute_edit: Perlengkapan {{ attribute.label }} | Sunting
+  pim_enrich_product_index: Banyak produk
+  pim_enrich_product_edit: Produk {{ produk.label }} | Sunting
+  pim_enrich_product_model_edit: Model produk {{ produk.label }} | Sunting
+  pim_enrich_family_index: Keluarga
+  pim_enrich_family_edit: Keluarga {{ family.label }} | Mengedit
+  pim_enrich_channel_index: Saluran
+  pim_enrich_channel_create: Saluran | membuat
+  pim_enrich_channel_edit: Saluran {{ saluran.label }} | Sunting
+  pim_enrich_currency_index: Mata Uang
+  pim_enrich_locale_index: Lokal
+  pim_enrich_group_index: Kelompok
+  pim_enrich_group_edit: Grup {{ group.label }} | Sunting
+  pim_enrich_associationtype_index: Tipe Asosiasi
+  pim_enrich_associationtype_edit: Jenis perkumpulan {{ association type.label }} | Sunting
+  pim_enrich_grouptype_index: Jenis grup
+  pim_enrich_grouptype_edit: Jenis kelompok {{ group type.label }} | Sunting
+  pim_enrich_mass_edit_action_choose: Misa edit | Memilih
+  pim_enrich_mass_edit_action_configure: Misa edit | Konfigurasikan
+  pim_enrich_mass_edit_action_perform: Misa Edit | Melakukan
+  pim_enrich_job_tracker_index: Proses pelacak
+  pim_enrich_job_tracker_show: Proses pelacak | Tampilkan pekerjaan
+  pim_enrich_api_connection_index: Koneksi API
+  pim_enrich_api_connection_create: Koneksi API | Membuat
+  pim_enrich_mass_edit_action: Sunting Massa
+  pim_analytics_system_info_index: Sistem informasi
+pim_menu:
+  tab:
+    activity: Aktifitas
+    imports: Impor
+    exports: Ekspor
+    settings: Pengaturan
+    system: Sistem
+    help:
+      title: Bantuan
+      helper: Pusat Bantuan Akeneo
+  item:
+    association_type: Tipe asosiasi
+    attribute_group: Kelompok atribut
+    channel: Saluran
+    currency: Mata Uang
+    dashboard: Dasbor
+    family: Keluarga
+    group: Kelompok
+    group_type: Jenis grup
+    product_model: Model Produk
+    export_history: Sejarah ekspor
+    export_profile: Ekspor profil
+    import_history: Sejarah impor
+    import_profile: Impor profil
+    configuration: Konfigurasi
+    user_management: Manajemen Pengguna
+    user: Pengguna
+    user_group: Grup Pengguna
+    user_role: Peran
+    info: Sistem informasi
+    job_tracker: Proses pelacak
+    api_connection: Koneksi API
+  navigation:
+    activity: Navigasi aktivitas
+    system: Sistem navigasi
+    user: Pengelolaan navigasi pengguna
+    settings: Pengaturan navigasi
+    product: Navigasi produk
+    product_infos: Info Produk
+  user:
+    logout: Keluar
+    user_account: Akun Saya
+pim_notification:
+  types:
+    import: Impor
+    export: Ekspor
+    quick_export: Cepat Ekspor
+    mass_edit: Sunting Massa
