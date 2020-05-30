@@ -1,43 +1,53 @@
 pim_enrich:
+  #Product
   product:
     tab:
       attribute.title: Atributi
       category.title: Kategorije
-      association.title: Povezanost
+      association.title: Povezanosti
       completeness.title: Potpunost
       history.title: Povijest
+    #Product comparison
     no_comparison_locale_available: Nijedna druga lokalizacija nije dostupna za usporedbu
     no_compared_media: Nema medija dostupnog za usporedbu
+  #Attribute
   attribute:
     tab:
       parameter.title: Parametri
       value.title: Vrijednosti
       history.title: Povijest
+  #Attribute group
   attribute_group:
     tab:
       property.title: Svojstva
       attribute.title: Atributi
       history.title: Povijest
+  #Family
   family:
     tab:
       property.title: Svojstva
       attribute.title: Atributi
       history.title: Povijest
+  #Association type
   association_type:
     tab:
       property.title: Svojstva
       history.title: Povijest
+  #Group type
   group_type:
     tab:
       property.title: Svojstva
+  #Category
   category:
     tab:
       property.title: Svojstva
       history.title: Povijest
+  #Locale
   locale:
     tab:
       property.title: Svojstva
       permission.title: Dozvole
+  #Product group
   group:
     axis.help: 'Osi definiraju atribute nad kojima treba razlikovati proizvode grupe. Osi su atributi s opcijama koje nisu lokalizirane niti u djelokrugu. Ne mogu se mijenjati nakon kreiranja varijante grupe.'
     type:
@@ -49,12 +59,14 @@ pim_enrich:
       product.title: Proizvodi
       property.title: Svojstva
       history.title: Povijest
+  #Product completeness
   completeness:
     progress_bar.title: '%ratio%% kompletno (potrebna 1 vrijednosti)|%ratio% kompletno (%count% potrebne vrijednosti)'
     subtitle: '{0} Dovršeno|{1} 1 vrijednost nedostaje|] 1, Inf] %count% vrijednosti koje nedostaju'
     missing_attributes: Vrijednost koja nedostaje| Vrijednosti koje nedostaju
     legend:
       locale_not_associated: Lokalizacija nije pridružena ovom kanalu
+  #Mass edit operations
   mass_edit_action:
     limit_exceeded: Odaberi manje od %limit% stvari za uređivanje
     product:
@@ -122,10 +134,12 @@ pim_enrich:
     mass_action:
       quick_export:
         launched_flash: Izvoz proizvoda se trenutno izvodi
+  #Sequential edit operations
   sequential_edit_action:
     product:
       previous: Preskoči natrag na "%product%" bez spremanja.
       next: Preskoči na "%product%" bez spremanja.
+  #ACLs
   acl:
     locale:
       index: Popis lokalizacija
@@ -141,7 +155,6 @@ pim_enrich:
       remove_attribute: Ukloni atribut proizvodu
       categories_view: Pogledajte kategorije proizvoda
       change_family: Promjena obitelji proizvoda
-      change_state: Promjena stanja proizvoda
       add_to_groups: Dodaj proizvod u grupe
       mass_edit: Akcije masovnog uređivanja proizvoda
       comment: Komentar proizvoda
@@ -220,6 +233,7 @@ pim_enrich:
     empty_value:
       reference_data_type:
         label: Odaberi tip reference podataka
+#Entity and page header titles
 attribute:
   title: atribut
   edit: uredi atribut
@@ -273,7 +287,9 @@ association type:
   title: tip pridruživanja
   create: kreiraj tip pridruživanja
   edit: uredi tip pridruživanja
+#Custom titles
 products: proizvodi
+#Buttons
 btn:
   create:
     attribute: kreiraj atribut
@@ -303,6 +319,7 @@ btn:
   to parent: natrag prema roditelju
   download_pdf: PDF
   download: preuzimanje
+#Confirmation messages
 confirmation:
   confirm: Potvrda
   delete: Potvrdi brisanje
@@ -324,6 +341,7 @@ confirmation:
     remove attribute: Jeste li sigurni da želite ukloniti atribut %name% iz ove obitelji?
   product:
     remove attribute: Jeste li sigurni da želite ukloniti atribut %name% od ovog proizvoda?
+#Flash messages
 flash:
   entity:
     removed: Stavka je izbrisana
@@ -386,6 +404,7 @@ flash:
   user:
     removed: Korisnik je uspješno uklonjen
   error ocurred: Akcija nije uspjela. Pokušajte ponovno.
+#Info messages
 info:
   updated: Postoje nespremljene promjene.
   category:
@@ -420,6 +439,7 @@ info:
     auto option sorting: Ako je omogućeno, opcije će se automatski razvrstavati prema njihovim lokaliziranim labelama
   completeness:
     not calculated: Nije još izračunato
+#Form elements
 Options: Opcije
 Created at: Kreirano u
 Updated at: Ažurirano u
@@ -446,7 +466,7 @@ Other: Ostalo
 Variants behavior when edited: Ponašanje varijante prilikom uređivanja
 Edit: Uredi
 Remove: Ukloni
-Delete: Obriši
+Delete: Brisanje
 Parameters: Parametri
 System: Sustav
 Values: Vrijednosti
@@ -485,24 +505,28 @@ Active: Aktivno
 Inactive: Neaktivno
 Do not convert: Ne pretvaraj
 Create: Kreiraj
-Cancel: Poništi
+Cancel: Odustani
 Choose a family: Odaberi obitelj
 Choose a unit: Odaberi jedinicu
 No matches found: Nisu pronađeni rezultati
 Category tree: Stablo kategorije
 Completeness: Potpunost
 Attribute used as label: Atribut se koristi kao oznaka
+#Scopes
 Global: Globalno
 Channel: Kanal
 Expand all channels: Proširi sve kanale
 Collapse all channels: Sažmi sve kanale
+#Variants
 Always override: Uvijek imati prednost pred
 Ask: Pitaj
+#Attribute group
 General Properties: Opća svojstva
 Group values: Grupne vrijednosti
 New group: Nova grupa
 Groups overview: Pregled grupe
 'Y-m-d h:i:s': 'G-m-d s:m:s'
+#Attribute properties
 Max characters: Max znakova
 Validation rule: Pravilo provjere valjanosti
 Validation regexp: Provjera valjanosti regexp
@@ -523,8 +547,11 @@ URL: URL
 Regular expression: Regularni izraz
 Minimum input length: Minimalni unos dužine
 Default: Zadani
+#Family
 Attributes: Atributi
+#Category
 Title: Naslov
+#Page titles
 pim_title.attribute_group:
   index: "Grupe atributa"
   create: "Atribut grupe | Kreiraj"
@@ -583,12 +610,15 @@ pim_catalog_date: Datum
 pim_catalog_metric: Metrika
 pim_reference_data_simpleselect: Referentni podatak jednostavnog odabira
 pim_reference_data_multiselect: Referentni podaci višestrukog odabira
+#Locales
 Activated: Aktivirano
 Disable: Onemogući
+#Sequential edit operations
 pim_enrich.sequential_edit_action:
   product:
     previous: Preskoči natrag na "%product%" bez spremanja.
     next: Preskoči na "%product%" bez spremanja.
+#Mass edit operations
 pim_enrich.mass_edit_action:
   limit_exceeded: Odaberi manje od %limit% stvari za uređivanje
   product:
@@ -644,9 +674,11 @@ Select: Odaberi
 Remove this attribute: Ukloni ovaj atribut
 Copy: Kopiraj
 Current tab: Trenutna kartica
+#Product view
 Group: Grupa
 View group: Prikaz grupe
 Products: Proizvodi
+#Tabs
 Properties: Svojstva
 History: Povijest
 pane.accordion:
@@ -659,11 +691,13 @@ pane.accordion:
   label_translations: Prijevodi oznaka
   options: Opcije
   group_values: Grupne vrijednosti
+#Popin titles
 popin.create:
   association_type.title: Kreiraj novi tip pridruživanja
   group.title: Kreiraj novu grupu
   product.title: Kreiraj novi proizvod
   option.title: Kreiraj novu opciju
+#Datagrid contents
 In group: U grupi
 Attribute as label: Atribut kao oznaka
 Is associated: Je pridružena
@@ -673,6 +707,7 @@ Updated At: Ažurirano u
 Enabled: Omogućeno
 Disabled: Onemogućeno
 Status: Status
+#Versioning / history
 Change History: Povijest promjena
 Data Audit: Revizija podataka
 Data Audit - System: 'Revizija podataka - sustav'
@@ -687,6 +722,7 @@ Logged at: Prijavljen u
 Deleted: Obrisan
 Old values: Stare vrijednosti
 New values: Nove vrijednosti
+#Configuration
 System configuration: Konfiguracija sustava
 General setup: Opće postavke
 Localization: Lokalizacija
@@ -718,6 +754,7 @@ oro.locale:
       language: "Odaberi jezik sustava koji želiš koristiti"
       timezone: "Odaberi vremensku zonu za prikaz datuma i vremena"
       currency: "Odaberi zadanu valutu"
+#Datagrid
 Selected products successfully deleted: Odabrani proizvodi su uspješno izbrisani
 pim_mass_edit:
   notification:
@@ -741,6 +778,7 @@ remove_product_value.steps.update_product_value_processor.title: Uklanjanje vrij
 edit_common_attributes: Uredi atribute
 perform.steps.duplicated.title: Dvostruke osi
 perform.steps.excluded.title: Isključeni proizvod
+#Background jobs & steps labels
 batch_jobs:
   add_product_value:
     label: Dodaj vrijednosti proizvoda

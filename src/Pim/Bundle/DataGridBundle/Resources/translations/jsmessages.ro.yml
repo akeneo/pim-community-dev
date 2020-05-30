@@ -1,0 +1,127 @@
+Item deleted: Element şters
+Are you sure you want to delete this item?: Sunteţi sigur că doriţi să ștergeți acest element?
+Delete Error: Eroare în timpul ştergerii
+Are you sure you want to do remove selected items?: Sunteți sigur că doriți să ştergeți elementele selectate?
+Selected items were removed.: Elementele selectate au fost şterse.
+Selected items were not removed.: Elementele selectate nu au fost şterse.
+Please, select items to remove.: Selectați elementele de şters.
+Cannot delete item.: Elementele nu pot fi şterse.
+Refresh Confirmation: Actualizați confirmarea
+Your local changes will be lost. Are you sure you want to refresh grid?: Schimbarile locale vor fi pierdute. Sunteți sigur că doriți să actualizați grila?
+Reset Confirmation: Resetați confirmarea
+Your local changes will be lost. Are you sure you want to reset grid?: Schimbările locale vor fi pierdute. Sunteți sigur că doriți să resetați grila?
+Confirmation: Confirmare
+edit: editează
+copy: copiază
+remove: elimină
+Status: Stare
+All: Toate
+Per page: Pentru fiecare pagină
+Mass Action Confirmation: Confirmare acțiune în masă
+Mass action performed.: Acțiunea în masă a fost efectuată.
+Mass action is not performed.: Acțiunea în masă nu este efectuată.
+Please, select items to perform mass action.: Vă rugăm, selectați elementele pe care se efecutează acțiunea în masă.
+Execution Confirmation: Confirmare de executare
+Are you sure you want to do this?: Ești sigur că vrei să faci asta?
+Action performed.: Acțiune efectuată.
+Action is not performed.: Acțiunea nu a fost efectuată.
+Please, select item to perform action.: Selectați elementul pentru a efectua acțiunea.
+View per page: Vizualizează după pagină
+Enabled: Activat
+Disabled: Dezactivat
+not_available: Ne disponibil
+Yes: true
+No: false
+oro.datagrid.entityHint: Entitate
+oro.datagrid.noentities: Nu a fost găsită nicio înregistrare
+oro.datagrid.noresults: "Nu există nici un rezultat pentru căutarea ta."
+oro.datagrid.noresults_subTitle: "Incearcă din nou cu noi criterii de căutare."
+oro.datagrid.nocolumns: Nici o coloană configurată pentru această grilă
+oro.datagrid.pagination.label: "Pagină"
+oro.datagrid.pagination.totalPages: "din {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} înregistrări"
+oro.datagrid.action.reset: "Resetează"
+oro.datagrid.action.refresh: "Reîmprospătează"
+oro_datagrid.select.all: "Toate"
+oro_datagrid.select.visible: "Toate vizibile"
+oro_datagrid.select.none: "Niciunul"
+oro_datagrid.select.select: "Selectați"
+pim.grid.ajax_choice_filter.label_empty: este gol
+pim.grid.ajax_choice_filter.label_not_empty: nu este gol
+pim:
+  grid:
+    choice_filter:
+      label_contains: conţine
+      label_does_not_contain: nu conţine
+      label_equal: este egal cu
+      label_start_with: începe cu
+      label_empty: este gol
+      label_not_empty: nu este gol
+      label_in_list: în listă
+      operator: Operstor
+    price_filter:
+      label: Monedă
+    category_filter:
+      done: Efectuat
+#Column configuration
+Available Columns: Coloane disponibile
+Displayed Columns: Coloane selectate
+datagrid_view.columns.min_message: Trebuie să selectaţi cel puţin o grilă de date pentru a o afișa
+pim_datagrid:
+  column_configurator:
+    label: Coloane
+    title: Configurare coloane
+    all_groups: Toate grupurile
+    search: Cautare
+    clear: Curăță
+    displayed_columns: Coloanele selectate
+    apply: Aplică
+    cancel: Anulează
+    remove_column: Ștergeți
+    description: Selectați informațiile pe care doriți sa le vedeți ca coloană
+    attribute_groups: Grupuri de atribute
+  mass_action:
+    delete:
+      confirm_title: Confirmă ştergerea
+      confirm_ok: OK
+      empty_selection: Nciun produs selectat
+#Quick export
+pim.grid.mass_action.quick_export.title: Exportare rapidă
+pim.grid.mass_action.quick_export.launched: Exportarea rapidă a fost inițializată
+#Custom actions
+pim.grid.action.launch.title: Lansează
+pim.grid.action.show.title: Afişează
+Please select view: Vă rugăm să selectați o vizualizare
+Loading...: Se incarcă...
+View: Vizualizează
+#Datetimepicker
+from: de la
+to: la
+#View selector
+grid.view_selector:
+  default_view: Vizualizare stabdard
+  save_changes: Salvați această vizualizare
+  remove: Stergeți această vizualizare
+  create_view: Creează vizualizare
+  create: Creează
+  search: Cautare
+  views: Vizualizari
+  placeholder: Nume pentru noua vizualizare
+  choose_label: Alege o etichetă pentru această vizualizare
+  confirmation:
+    remove: Sunteți sigur că doriți să ştergeți această vizualizare?
+    delete: Confirmă ştergere
+#View selector flash messages
+grid.view_selector.flash.updated: Vizualizarea grila de date a fost actualizata cu succes
+#Display selector
+grid.display_selector:
+  label: Afişează
+  gallery: Galerie
+  list: Listă
+#Credentials cell
+Client ID: Cod client
+Secret: Secret
+grid.empty_results:
+  associated_product:
+    hint: Nu exista produse asociate
+    subHint: 'Apasa pe butonul "adauga asociatii" pentru a asocia acest produs'

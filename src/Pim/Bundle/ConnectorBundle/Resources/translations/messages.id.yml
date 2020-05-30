@@ -1,0 +1,252 @@
+pim_connector:
+  steps:
+    dummy_reader.title: Pembaca dummy
+    product_reader.title: Produk ekstraksi
+    entity_reader.title: Ekstraksi badan
+    csv_reader:
+      title: Pembaca CSV
+    file_reader:
+      invalid_item_columns_count: 'Diharapkan untuk memiliki %totalColumnsCount% kolom, benar-benar memiliki %itemColumnsCount% in %filePath%:%lineno%'
+    csv_product_reader.title: CSV pembaca produk
+    csv_category_reader.title: CSV kategori pembaca
+    dummy_processor.title: Prosesor dummy
+    product_processor.title: Pembuatan produk
+    category_processor.title: Pembuatan kategori
+    association_processor.title: Pembuatan asosiasi
+    product_association_processor.title: Association creation
+    group_processor.title: Pembuatan grup
+    attribute_processor.title: Membuat atribut
+    attribute_option_processor.title: Atribut penciptaan opsi
+    heterogeneous_processor.title: CSV produk serializer
+    homogeneous_processor.title: CSV entitas serializer
+    transformer_processor.title: Transformasi
+    dummy_writer.title: Penulis Dummy
+    file_writer.title: Keluaran
+    product_writer.title: Penyimpanan produk
+    category_writer.title: Penyimpanan kategori
+    writer.title: Penyimpanan entitas
+    csv_writer.title: Penulis Csv
+job_execution.summary:
+  read: baca
+  write: menulis
+  skip: melewati
+  create: membuat
+  process: diproses
+  update_products: memperbarui produk
+  process_products: produk diproses
+  skip_products: melewatkan produk
+  displayed: peringatan pertama ditampilkan
+  charset_validator:
+    title: 'Pengkodean berkas:'
+    skipped: dilewati, lanjutan dalam daftar putih
+  product_skipped_no_diff: Produk yang dilewati (tidak ada perbedaan)
+  product_skipped_no_associations: produk yang dilewati (tidak ada asosiasi yang terdeteksi)
+  product_model_skipped_no_diff: model produk yang dilewati (tidak ada perbedaan)
+  item_position: membaca baris
+  skipped_in_root_product_model: melewatkan model produk dengan orang tua
+  skipped_in_sub_product_model: melewatkan model produk tanpa induk
+#Job labels
+batch_jobs:
+  csv_product_export:
+    label: Produk ekspor di CSV
+    export.label: Ekspor produk
+  csv_product_model_export:
+    label: Model produk ekspor di CSV
+    export.label: Model produk ekspor
+  csv_category_export:
+    label: Ekspor kategori in CSV
+    export.label: Ekspor kategori
+  csv_attribute_export:
+    label: Ekspor atribut di CSV
+    export.label: Ekspor atribut
+  csv_attribute_option_export:
+    label: Pilihan atribut ekspor masuk CSV
+    export.label: Pilihan atribut ekspor
+  csv_association_type_export:
+    label: Asosiasi jenis ekspor di CSV
+    export.label: Asosiasi jenis ekspor
+  csv_group_export:
+    label: Ekspor kelompok di CSV
+    export.label: Ekspor kelompok
+  csv_family_export:
+    label: Ekspor keluarga di CSV
+    export.label: Ekspor keluarga
+  csv_family_variant_export:
+    label: Ekspor variasi keluarga pada CSV
+    export.label: Ekspor varian keluarga
+  csv_product_import:
+    label: Impor produk dalam CSV
+    validation.label: Validasi berkas
+    import.label: Impor produk
+    import_associations.label: Asosiasi impor
+  csv_product_model_import:
+    label: Model produk masukkan di CSV
+    validation.label: Validasi berkas
+    import_root_product_model.label: Akar model produk impor
+    import_sub_product_model.label: Impor sub model produk
+    import_product_model_descendants.label: Hitunglah model produk keturunan
+  csv_category_import:
+    label: Kategori Impor di CSV
+    validation.label: Pengesahan berkas
+    import.label: Impor kategori
+  csv_attribute_import:
+    label: Impor atribut dalam CSV
+    validation.label: Pengesahan berkas
+    import.label: Impor atribut
+  csv_attribute_option_import:
+    label: Impor opsi atribut dalam CSV
+    validation.label: Pengesahan berkas
+    import.label: Opsi atribut impor
+  csv_association_type_import:
+    label: Impor jenis asosiasi dalam CSV
+    validation.label: Pengesahan berkas
+    import.label: Jenis asosiasi impor
+  csv_family_import:
+    label: Impor keluarga dalam CSV
+    validation.label: Pengesahan berkas
+    import.label: Impor keluarga
+  csv_family_variant_import:
+    label: Impor varian keluarga di CSV
+    validation.label: Validasi berkas
+    import.label: Impor varian keluarga
+  csv_group_import:
+    label: Impor grup dalam CSV
+    validation.label: Pengesahan berkas
+    import.label: Impor grup
+  csv_channel_export:
+    label: Ekspor saluran di CSV
+    export.label: Ekspor saluran
+  csv_locale_export:
+    label: Ekspor lokal di CSV
+    export.label: Ekspor lokal
+  csv_attribute_group_export:
+    label: Ekspor kelompok atribut di CSV
+    export.label: Ekspor kelompok atribut
+  csv_currency_export:
+    label: Ekspor mata uang dalam CSV
+    export.label: Ekspor mata uang
+  csv_group_type_export:
+    label: Ekspor jenis kelompok di CSV
+    export.label: Jenis ekspor kelompok
+  csv_channel_import:
+    label: Impor saluran di CSV
+    validation.label: Pengesahan berkas
+    import.label: Impor saluran
+  csv_locale_import:
+    label: Impor lokal di CSV
+    validation.label: Pengesahan berkas
+    import.label: Impor lokal
+  csv_attribute_group_import:
+    label: Impor kelompok atribut di CSV
+    validation.label: Pengesahan berkas
+    import.label: Impor grup atribut
+  csv_currency_import:
+    label: Impor mata uang di CSV
+    validation.label: Pengesahan berkas
+    import.label: Impor mata uang
+  csv_group_type_import:
+    label: Impor jenis kelompok di CSV
+    validation.label: Pengesahan berkas
+    import.label: Impor jenis grup
+  xlsx_category_import:
+    label: Impor kategori dalam XLSX
+    validation.label: Validasi berkas
+    import.label: Kategori impor
+  xlsx_association_type_import:
+    label: Impor jenis asosiasi di XLSX
+    validation.label: Validasi berkas
+    import.label: Jenis asosiasi impor
+  xlsx_attribute_import:
+    label: Impor atribut dalam XLSX
+    validation.label: Pengesahan berkas
+    import.label: Attribute import
+  xlsx_attribute_option_import:
+    label: Impor opsi atribut di XLSX
+    validation.label: File validation
+    import.label: Attribute option import
+  xlsx_family_import:
+    label: Impor keluarga dalam XLSX
+    validation.label: File validation
+    import.label: Family import
+  xlsx_family_variant_import:
+    label: Impor varian keluarga di XLSX
+    validation.label: Validasi berkas
+    import.label: Impor varian keluarga
+  xlsx_product_export:
+    label: Ekspor produk dalam XLSX
+    export.label: Ekspor produk
+  xlsx_product_model_export:
+    label: Model produk ekspor di XLSX
+    export.label: Ekspor model produk
+  xlsx_product_import:
+    label: Impor produk dalam XLSX
+    validation.label: Berkas pengesahan
+    import.label: Product import
+    import_associations.label: Perkumpulan impor
+  xlsx_product_model_import:
+    label: Impor model produk di XLSX
+    validation.label: Validasi berkas
+    import_root_product_model.label: Impor model produk akar
+    import_sub_product_model.label: Sub model produk impor
+    import_product_model_descendants.label: Hitunglah model produk keturunan
+    import_associations.label: Asosiasi impor
+  xlsx_group_export:
+    label: Ekspor grup dalam XLSX
+    export.label: Group export
+  xlsx_group_import:
+    label: Impor grup dalam XLSX
+    validation.label: Berkas pengesahan
+    import.label: Group import
+  xlsx_family_export:
+    label: Ekspor keluarga dalam XLSX
+    export.label: Ekspor keluarga
+  xlsx_family_variant_export:
+    label: Keluaran varian keluarga di XLSX
+    export.label: Ekspor variasi Keluarga
+  xlsx_category_export:
+    label: Ekspor kategori dalam XLSX
+    export.label: Category export
+  xlsx_attribute_export:
+    label: Ekspor atribut dalam XLSX
+    export.label: Ekspor atribut dalam XLSX
+  xlsx_attribute_option_export:
+    label: Ekspor opsi atribut dalam XLSX
+    export.label: Ekspor opsi atribut dalam XLSX
+  xlsx_association_type_export:
+    label: Ekspor tipe asosiasi dalam XLSX
+    export.label: Ekspor tipe asosiasi dalam XLSX
+  xlsx_channel_export:
+    label: Ekspor saluran dalam XLSX
+    export.label: Ekspor saluran
+  xlsx_locale_export:
+    label: Ekspor lokal dalam XLSX
+    export.label: Ekspor lokal
+  xlsx_attribute_group_export:
+    label: Ekspor grup atribut dalam XLSX
+    export.label: Ekspor kelompok atribut
+  xlsx_currency_export:
+    label: Ekspor mata uang dalam XLSX
+    export.label: Ekspor mata uang
+  xlsx_group_type_export:
+    label: Ekspor tipe grup dalam XLSX
+    export.label: Ekspor jenis kelompok
+  xlsx_channel_import:
+    label: Impor saluran dalam XLSX
+    validation.label: Validasi berkas
+    import.label: Channel import
+  xlsx_locale_import:
+    label: Impor lokal dalam XLSX
+    validation.label: Validasi berkas
+    import.label: Impor lokal
+  xlsx_attribute_group_import:
+    label: Impor grup atribut dalam XLSX
+    validation.label: Validasi berkas
+    import.label: Impor atribut grup
+  xlsx_currency_import:
+    label: Impor mata uang di XLSX
+    validation.label: File validation
+    import.label: Impor mata uang
+  xlsx_group_type_import:
+    label: Impor jenis grup di XLSX
+    validation.label: File validation
+    import.label: Group type import

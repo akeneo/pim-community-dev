@@ -1,0 +1,166 @@
+#Entities
+Job: Pekerjaan
+Connector: Konektor
+pim_import_export:
+  job: Pekerjaan
+  connector: Konektor
+  ## Job status
+  status:
+    0: Siap
+  batch_status:
+    1: Selesai
+    2: Mulai
+    3: Dimulai
+    4: Henti
+    5: Berhenti
+    6: Gagal
+    7: Terbengkalai
+    8: Tidak diketahui
+  download_archive:
+    archive: unduh arsip yang dihasilkan | unduh arsip yang dihasilkan
+    output: unduh untuk menghasilkan berkas | unduh untuk menghasilkan berkas
+    input: download file baca | download file
+    invalid_xlsx: unduh data yang tidak sah
+    invalid_csv: unduh data yang tidak sah
+  notification:
+    export:
+      error: Ekspor <strong>%label%</strong> gagal
+      warning: Ekspor <strong>%label%</strong> selesai dengan beberapa peringatan
+      success: Ekspor <strong>%label%</strong> selesai
+    import:
+      error: Impor <strong>%label%</strong> gagal
+      warning: Impor <strong>%label%</strong> selesai dengan beberapa peringatan
+      success: Impor <strong>%label%</strong> selesai
+  list: Pilih pekerjaan
+  job_profile:
+    tab:
+      property.title: Properti Umum
+      history.title: Riwayat
+      job_content.title: Konten
+#Page titles:
+pim_title.export_profile.index: Manajemen profil ekspor
+pim_title.export_profile.edit: Profil ekspor %job.label% | Sunting
+pim_title.export_profile.show: Profil ekspor %job.label% | Tampilkan
+pim_title.export_execution.index: Riwayat eksekusi ekspor
+pim_title.export_execution.show: Eksekusi ekspor | Rincian
+pim_title.import_profile.index: Memasukkan manajemen profil
+pim_title.import_profile.edit: Impor profil %job.label% | Sunting
+pim_title.import_profile.show: Impor profil %job.label% | tampilkan
+pim_title.import_execution.index: Impor riwayat eksekusi
+pim_title.import_execution.show: Impor eksekusi | Rincian
+#Entity and page header titles
+export profile:
+  title: profil ekspor
+  edit: sunting profil ekspor
+import profile:
+  title: memasukkan profil
+  edit: mengubah profil yang dimasukkan
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Melihat daftar profil ekspor
+      create: Membuat sebuah profil ekspor
+      show: Tampilkan profil ekspor
+      edit: Sunting profil ekspor
+      remove: Menghapus profil ekspor
+      launch: Luncurkan sebush profil ekspor
+      property_edit: Sunting properti umum profil ekspor
+      property_show: Tampilkan sebuah properti umum profil ekspor
+      history: Lihat riwayat profil ekspor
+      content_edit: Sunting konten profil ekspor
+      content_show: Tampilkan konten profil ekspor
+    import_profile:
+      index: Lihat daftar profil impor
+      create: Membuat sebuah profil impor
+      show: Tampilkan profil impor
+      edit: Sunting profil impor
+      remove: Menghapus sebuah profil impor
+      launch: Luncurkan sebuah profil impor
+      history: Lihat riwayat profil impor
+    export_execution:
+      index: Lihat daftar laporan ekspor
+      show: Lihat rincian laporan ekspor
+      dl_log: Unduh log laporan ekspor
+      dl_files: Unduh berkas yang diekspor
+    import_execution:
+      index: Lihat daftar laporan impor
+      show: Lihat rincian laporan impor
+      dl_log: Unduh laporan impor log
+      dl_files: Mengunduh berkas yang diimpor
+  acl_group:
+    export: Ekspor profil
+    import: Impor profil
+#Buttons
+btn:
+  create:
+    export profile: membuat profil ekspor
+    import profile: buat profil impor
+Upload and import now: Unggah dan impor sekarang
+import now: Impor sekarang
+export now: Ekspor sekarang
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Apakah anda yakin ingin menghapus profil ekspor %name%?
+    import profile: Yakin ingin menghapus profil impor %name%?
+#Flash messages
+flash:
+  export:
+    created: Ekspor telah berhasil dibuat
+    removed: Ekspor telah dihapus
+    updated: Ekspor telah berhasil diperbahrui
+    running: Ekspor sedang berjalan
+  import:
+    created: Impor telah berhasil dibuat
+    removed: Impor telah dihapus
+    updated: Impor telah berhasil diperbarui
+    running: Impor sedang berjalan
+#Tabs
+General properties: Properti Umum
+History: Riwayat
+pane.accordion:
+  properties: Properti
+  global_settings: Pengaturan global
+  filters: Filter
+#Popin titles
+popin.create:
+  export_profile.title: Membuat profil ekspor baru
+  import_profile.title: Membuat profil impor baru
+#Job execution
+'Display item': Tampilan item
+'Hide item': Sembunyikan item
+'Collecting data about job execution...': Mengumpulkan data tentang pengerjaan ...
+'You must select a file to upload': Anda harus memilih berkas untuk diunggah
+Download log: Mengunduh log
+Show profile: Tampilkan profil
+execution details: rincian eksekusi
+job_execution.summary:
+  read: baca
+  write: menulis
+  skip: melewati
+  create: dibuat
+  update: diperbarui
+  update_products: produk diperbarui
+  skip_products: produk dilewati
+  displayed: peringatan pertama ditampilkan
+  charset_validator:
+    title: 'Pengkodean berkas:'
+    skipped: dilewati, lanjutan dalam daftar putih
+Step: Langkah
+Status: Status
+Warnings: Peringatan
+Summary: Ringkasan
+Start: Mulai
+End: Berakhir
+#Process tracker
+set_attribute_requirements: Menerapkan persyaratan atribut
+COMPLETED: Selesai
+STARTING: Memulai
+STARTED: Mulai
+STOPPING: Berhenti
+STOPPED: Berhenti
+FAILED: Gagal
+ABANDONED: Terbengkalai
+UNKNOWN: Tak diketahui
+warning.label: Peringatan

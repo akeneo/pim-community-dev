@@ -1,4 +1,5 @@
 Item deleted: Kohde poistettu
+Are you sure you want to delete this item?: Oletko varma että haluat poistaa tämän kohteen?
 Delete Error: Virhe poistossa
 Are you sure you want to do remove selected items?: Oletko varma, että haluat poistaa valitut kohteet?
 Selected items were removed.: Valitut kohteet poistettiin.
@@ -10,7 +11,10 @@ Your local changes will be lost. Are you sure you want to refresh grid?: Paikall
 Reset Confirmation: Nollauksen vahvistus
 Your local changes will be lost. Are you sure you want to reset grid?: Paikalliset muutoksesi menetetään. Oletko varma, että haluat päivittää gridin?
 Confirmation: Vahvistus
+edit: muokkaa
 copy: kopioi
+remove: poista
+Status: Status
 All: Kaikki
 Per page: Per sivu
 Mass Action Confirmation: Massatoiminnan vahvistus
@@ -23,6 +27,9 @@ Action performed.: Toiminto suoritettu.
 Action is not performed.: Toimintoa ei suoritettu.
 Please, select item to perform action.: Valitse kohde toiminnon suorittamiseen.
 View per page: Sivunäkymä
+Enabled: Otettu käyttöön
+Disabled: Poistettu käytöstä
+not_available: Ei mitään
 Yes: true
 No: false
 oro.datagrid.entityHint: Entiteetti
@@ -37,16 +44,27 @@ oro.datagrid.pagination.totalRecords: "{{ totalRecords }} asiakirjat"
 oro.datagrid.pagination.limit_warning: "Ruudukko ei voi näyttää enempää kuin {{ limit }} tulosta, yritä suodattaa lisää hakuehtoja."
 oro.datagrid.action.reset: "Nollaa muutokset"
 oro.datagrid.action.refresh: "Päivitä"
+oro_datagrid.select.all: "Kaikki"
 oro_datagrid.select.visible: "Kaikki näkyvillä olevat"
+oro_datagrid.select.none: "Ei yhtään"
+oro_datagrid.select.select: "Valitse"
 pim.grid.ajax_choice_filter.label_empty: on tyhjä
 pim.grid.ajax_choice_filter.label_not_empty: ei ole tyhjä
 pim:
   grid:
     choice_filter:
+      label_contains: sisältää
+      label_does_not_contain: ei sisällä
+      label_equal: vastaa
+      label_start_with: alkaa
       label_empty: on tyhjä
       label_not_empty: ei ole tyhjä
       label_in_list: '-luettelosta'
       operator: Operaattori
+    price_filter:
+      label: Valuutta
+    category_filter:
+      done: Valmis
 #Column configuration
 Available Columns: Käytettävissä olevat sarakkeet
 Displayed Columns: Valitut sarakkeet
@@ -56,13 +74,21 @@ pim_datagrid:
     label: Sarakkeet
     title: Muokkaa sarakkeita
     all_groups: Kaikki ryhmät
+    search: Etsi
     clear: Tyhjennä
+    displayed_columns: Valitut sarakkeet
+    apply: Käytä
     cancel: Peruuta
+    remove_column: Poista
     description: Valitse tiedot, jotka haluat näyttää sarakkeina
+    attribute_groups: Attribuuttiryhmät
   mass_action:
     delete:
+      confirm_title: Vahvista poisto
       confirm_ok: OK
       empty_selection: Ei valittuja tuotteita
+#Quick export
+pim.grid.mass_action.quick_export.title: Nopea vienti
 pim.grid.mass_action.quick_export.launched: Nopea vienti on käynnistetty
 #Custom actions
 pim.grid.action.launch.title: Käynnistä
@@ -79,15 +105,19 @@ grid.view_selector:
   save_changes: Tallenna näkymä
   remove: Poista näkymä
   create_view: Näkymän luominen
+  create: Luo
+  search: Etsi
   views: Näkymät
   placeholder: Uuden näkymän nimi
   choose_label: Valitse näkymälle nimike
   confirmation:
     remove: Haluatko varmasti poistaa tämän näkymän?
+    delete: Vahvista poisto
 #View selector flash messages
 grid.view_selector.flash.updated: Datagrid-näkymä päivitetty
 #Display selector
 grid.display_selector:
+  label: Näytä
   gallery: Galleria
   list: Lista
 #Credentials cell

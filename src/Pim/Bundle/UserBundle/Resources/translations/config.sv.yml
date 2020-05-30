@@ -1,3 +1,4 @@
+entity.user.name: Användare
 entity.user.description: Användarprofil
 entity.role.name: roll
 entity.role.description: användarroll

@@ -743,6 +743,11 @@ In group: Ryhmässä
 Attribute as label: Attribuutti otsikkona
 Is associated: Liittyy
 Complete: Valmis
+Created At: Luontiaika
+Updated At: Päivitysaika
+Enabled: Otettu käyttöön
+Disabled: Poistettu käytöstä
+Status: Status
 #Versioning / history
 Change History: Muutoshistoria
 Data Audit: Tietojen audit
@@ -820,12 +825,18 @@ update_product_value.steps.update_product_value_processor.title: Päivitä tuott
 remove_product_value.steps.update_product_value_processor.title: Poista tuotteen arvo
 edit_common_attributes: Muokkaa attribuutteja
 edit_common_attributes_clean: Puhdista tiedostot yhteisiä attribuutteja varten
+perform.steps.duplicated.title: Päällekkäät akselit
+perform.steps.excluded.title: Poissuljetut tuotteet
 #Background jobs & steps labels
 batch_jobs:
   add_product_value:
     label: Lisää tuotteen arvo
     perform:
       label: Lisää tuotteen arvo
+  update_product_value:
+    label: Päivitä tuotteen arvo
+    perform:
+      label: Päivitä tuotteen arvo
   add_attribute_value:
     label: Lisää attribuutin arvoja
     perform:
@@ -856,14 +867,30 @@ batch_jobs:
     label: Liitä
     perform:
       label: Liitä
+  add_to_existing_product_model:
+    label: Lisää olemassaolevaan tuotemalliin
+    perform:
+      label: Lisää olemassaolevaan tuotemalliin
+  set_attribute_requirements:
+    label: Aseta vaaditut attribuutit
+    perform:
+      label: Aseta vaaditut attribuutit
   csv_product_quick_export:
     quick_export.label: Tuotteen nopea vienti CSV:nä
+    perform:
+      label: Tuotteen nopea vienti CSV:nä
   csv_product_grid_context_quick_export:
     quick_export.label: Tuoteruudukon kontekstin nopea vienti CSV:nä
+    perform:
+      label: Tuoteruudukon kontekstin nopea vienti CSV:nä
   xlsx_product_quick_export:
     quick_export.label: Tuotteen nopea vienti XLSX:nä
+    perform:
+      label: Tuotteen nopea vienti XLSX:nä
   xlsx_product_grid_context_quick_export:
     quick_export.label: Tuoteruudukon kontekstin nopea vienti XLSX:nä
+    perform:
+      label: Tuoteruudukon kontekstin nopea vienti XLSX:nä
   delete_products_and_product_models:
     delete_products_and_product_models.label: Massapoista tuotteet
   change_parent_product:
@@ -872,11 +899,18 @@ batch_jobs:
 mass_edit report:
   overview: Massamuokkaa vientejä
 job_tracker:
+  tab:
+    title: Prosessiseurain
   filter:
     started_at: Alkoi
 pim_enrich_attribute_form:
+  code: Koodi
   type: Attribuuttityyppi
   reference_data_name: Referenssidatan nimi
   scopable: Kanavakohtainen arvo
   localizable: Kielikohtainen arvo
+  unique: Yksilöllinen arvo
+  availableLocales: Saatavilla olevat alueet
   locale_specific: Aluekohtainen arvo
+  group: Attribuuttiryhmä
+  useableAsGridFilter: Käytettävissä ruudukossa

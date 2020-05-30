@@ -1,0 +1,127 @@
+Item deleted: Item dihapus
+Are you sure you want to delete this item?: Apakah Anda yakin Anda ingin menghapus produk ini?
+Delete Error: Hapus kesalahan
+Are you sure you want to do remove selected items?: Apakah anda yakin ingin menghapus item yang dipilih?
+Selected items were removed.: barang yang dipilih telah dihapus
+Selected items were not removed.: barang yang dipilih tidak dapat di hapus
+Please, select items to remove.: Silahkan, pilih item untuk dihapuskan.
+Cannot delete item.: tidak dapat menghapus barang
+Refresh Confirmation: Segarkan konfirmasi
+Your local changes will be lost. Are you sure you want to refresh grid?: Perubahan lokal anda akan hilang. Apakah anda yakin anda ingin menyegarkan grid?
+Reset Confirmation: Setel ulang Konfirmasi
+Your local changes will be lost. Are you sure you want to reset grid?: Perubahan lokal anda akan hilang, Apakah anda yakin anda ingin mereset grid?
+Confirmation: Konfirmasi
+edit: sunting
+copy: salin
+remove: hapus
+Status: Status
+All: Semuanya
+Per page: Per halaman
+Mass Action Confirmation: Konfirmasi Aksi Massal
+Mass action performed.: Aksi massa dilakukan.
+Mass action is not performed.: Aksi massa tidak dilakukan.
+Please, select items to perform mass action.: Silahkan, pilih item untuk melakukan aksi massa.
+Execution Confirmation: Konfirmasi Eksekusi
+Are you sure you want to do this?: Apakah anda yakin anda ingin melakukan ini?
+Action performed.: Aksi yang dilakukan.
+Action is not performed.: Tindakan yang tidak dilakukan.
+Please, select item to perform action.: Silahkan, pilih item untuk melakukan tindakan.
+View per page: Lihat per halaman
+Enabled: Diaktifkan
+Disabled: Dinonaktifkan
+not_available: N/A
+Yes: true
+No: false
+oro.datagrid.entityHint: Kesatuan
+oro.datagrid.noentities: Tidak ditemukan catatan
+oro.datagrid.noresults: "Maaf, tidak ada hasil untuk pencarian anda."
+oro.datagrid.noresults_subTitle: "Coba lagi dengan kriteria pencarian baru."
+oro.datagrid.nocolumns: Tidak ada kolom yang dikonfigurasi untuk grid ini
+oro.datagrid.pagination.label: "Halaman"
+oro.datagrid.pagination.totalPages: "dari {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} catatan"
+oro.datagrid.action.reset: "Setel ulang"
+oro.datagrid.action.refresh: "Menyegarkan"
+oro_datagrid.select.all: "Semuanya"
+oro_datagrid.select.visible: "Semua terlihat"
+oro_datagrid.select.none: "Tidak ada"
+oro_datagrid.select.select: "Pilih"
+pim.grid.ajax_choice_filter.label_empty: kosong
+pim.grid.ajax_choice_filter.label_not_empty: tidak kosong
+pim:
+  grid:
+    choice_filter:
+      label_contains: mengandung
+      label_does_not_contain: tidak mengandung
+      label_equal: sama dengan
+      label_start_with: dimulai dengan
+      label_empty: kosong
+      label_not_empty: tidak kosong
+      label_in_list: dalam daftar
+      operator: Operator
+    price_filter:
+      label: Mata uang
+    category_filter:
+      done: Selesai
+#Column configuration
+Available Columns: Kolom yang tersedia
+Displayed Columns: Kolom yang dipilih
+datagrid_view.columns.min_message: Anda harus memilih setidaknya satu kolom datagrid untuk ditampilkan
+pim_datagrid:
+  column_configurator:
+    label: Kolom
+    title: Konfigurasikan kolom
+    all_groups: Semua kelompok
+    search: Pencarian
+    clear: Bersih
+    displayed_columns: Kolom yang dipilih
+    apply: Terapkan
+    cancel: Batal
+    remove_column: Hapus
+    description: Pilih informasi yang ingin ditampilkan sebagai kolom
+    attribute_groups: Kelompok atribut
+  mass_action:
+    delete:
+      confirm_title: Konfirmasi penghapusan
+      confirm_ok: Baik
+      empty_selection: Tidak ada produk yang dipilih
+#Quick export
+pim.grid.mass_action.quick_export.title: Cepat Ekspor
+pim.grid.mass_action.quick_export.launched: Ekspor cepat sudah diluncurkan
+#Custom actions
+pim.grid.action.launch.title: Meluncurkan
+pim.grid.action.show.title: Menunjukkan
+Please select view: Silahkan pilih melihat
+Loading...: Pemuatan...
+View: Melihat
+#Datetimepicker
+from: dari
+to: ke
+#View selector
+grid.view_selector:
+  default_view: Tampilan bawaan
+  save_changes: Simpan tampilan ini
+  remove: Hapus tampilan ini
+  create_view: Buat tampilan
+  create: Membuat
+  search: Cari
+  views: tampilan
+  placeholder: Nama tampilan baru
+  choose_label: Pilih sebuah label untuk tampilan
+  confirmation:
+    remove: Apakah anda yakin ingin menghapus tampilan ini?
+    delete: Konfirmasi penghapusan
+#View selector flash messages
+grid.view_selector.flash.updated: Tampilan datagrid berhasil diperbarui
+#Display selector
+grid.display_selector:
+  label: Tampilan
+  gallery: Galeri
+  list: Daftar
+#Credentials cell
+Client ID: ID klien
+Secret: Rahasia
+grid.empty_results:
+  associated_product:
+    hint: Tidak ada produk yang terkait
+    subHint: 'Klik pada tombol "Tambahkan asosiasi” untuk mengaitkan produk ini'

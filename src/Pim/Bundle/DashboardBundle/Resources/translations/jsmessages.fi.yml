@@ -3,6 +3,9 @@ pim_dashboard:
     last_operations:
       empty: Toimintoja ei löytynyt
       status: Status
+      date: Päivämäärä
+      type: Tyyppi
+      profile_name: Profiilinimi
       details: Lisätiedot
       warning_count: Varoitus
       job_type:
@@ -18,3 +21,5 @@ pim_dashboard:
       load_more: 'Lataa lisää...'
     header:
       view_all: Näytä kaikki
+page_title:
+  pim_dashboard_index: Ohjauspaneeli

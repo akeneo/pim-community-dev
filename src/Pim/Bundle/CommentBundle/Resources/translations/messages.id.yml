@@ -1,0 +1,25 @@
+btn:
+  post: Tambahkan sebuah komentar baru
+  reply: Balas
+confirmation:
+  remove:
+    comment: Apakah anda yakin anda ingin menghapus komentar ini?
+flash:
+  comment:
+    create:
+      success: Komentar anda telah berhasil dibuat.
+      error: Terjadi kesalahan saat pembuatan komentar anda.
+    delete:
+      success: Komentar anda telah berhasil dihapus.
+      error: Terjadi kesalahan saat penghapusan komentar anda.
+    reply:
+      success: Balasan komentar  anda telah berhasil dibuat.
+      error: Terjadi kesalahan saat pembuatan balasan anda.
+comment:
+  index:
+    empty: Tidak ada komentar yang ditemukan.
+  placeholder:
+    new: Tulis sebuah komentar baru...
+    reply: Membalas komentar ini...
+pim_comment:
+  product.tab.comment.title: Komentar

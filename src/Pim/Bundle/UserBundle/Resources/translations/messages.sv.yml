@@ -2,6 +2,7 @@ pim_user:
   user:
     tab:
       general.title: Allmänna
+      additional.title: Ytterligare
       group_and_role.title: Grupper och roller
       password.title: Lösenord
       business_unit.title: Affärsenheter
@@ -25,6 +26,7 @@ oro.user.grid.users:
     lastName: "Efternamn"
     createdAt: "Skapad den"
     updatedAt: "Uppdaterad den"
+    enabled: "Status"
 oro.user.grid.roles:
   columns:
     label: "Etikett"
@@ -35,15 +37,20 @@ oro.user.grid.groups:
 pim_title:
   user.index: Användare
   user_role.index: Roller
+  user_group.index: Grupper
   system_configuration.index: Inställningar
 #User
 user.title: Användare
+user.overview: Användare
 Users Management: Hantering av användare
 Create user: Skapa användare
+btn.create.user: Skapa användare
 New user: Ny användare
+Additional: Ytterligare
 Groups and Roles: Grupper och roller
 Username: Användarnanm
 Password: Lösenord
+Password (again): Lösenord (igen)
 Re-enter password: Ange lösenordet igen
 Name prefix: Namnprefix
 First name: Förnamn
@@ -86,21 +93,27 @@ user:
     label: Standard produktlistningsvy
   default_grid_view:
     none: Inga
+  timezone: Tidszon
 #Role
 Role: Roll
 Owner: Ägare
 General: Allmänna
+Entity: Enhet
 Capabilities: Funktioner
 Save and close: Spara och stäng
 Has role: Har roll
 role:
   title: roll
+  overview: roll
   edit: Redigera roll
   create: Skapa roll
+btn.create.role: Skapa roll
 rights:
   action: Behörigheter
 oro_security:
   acl_group:
+    user: Användare
+    role: Roller
     group: Användargrupper
   acl:
     user:
@@ -129,6 +142,7 @@ SHARE: Dela
 oro:
   security:
     access-level:
+      BASIC: Användare
       LOCAL: Affärsenhet
       DEEP: Avdelning
       GLOBAL: Organisation
@@ -136,7 +150,10 @@ oro:
       NONE: Inga
 #User Group
 Create group: Skapa grupp
+btn.create.user-group: Skapa grupp
 Has group: Har gruppen
+Save and Close: Spara och stäng
+user-group.overview: Grupper
 #Login page
 Log in: Logga in
 Remember me on this computer: Kom ihåg mig på den här datorn
@@ -145,4 +162,5 @@ Username or Email: Användarnamn eller e-post
 Forgot Password: Glömt Lösenord
 Request: Förfrågan
 Check Email: Kontrollera e-post
+password_reset_email_sent: Ett e-postmeddelande har skickats till användaren. Det innehåller en länk för att återställa lösenordet.
 Go to homepage: Gå till hemsidan

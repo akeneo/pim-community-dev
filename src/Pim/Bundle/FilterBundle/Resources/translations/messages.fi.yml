@@ -10,6 +10,8 @@ oro.filter.form.label_type_not_contains: ei sisällä
 oro.filter.form.label_type_equals: vastaa
 oro.filter.form.label_type_start_with: alkaa
 oro.filter.form.label_type_end_with: päättyy
+oro.filter.form.label_type_empty: on tyhjä
+oro.filter.form.label_type_not_empty: ei ole tyhjä
 oro.filter.form.label_type_in_list: '-luettelosta'
 oro.filter.form.label_date_type_between: välillä
 oro.filter.form.label_date_type_not_between: ei välillä

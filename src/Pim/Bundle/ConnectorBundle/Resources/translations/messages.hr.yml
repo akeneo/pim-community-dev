@@ -39,6 +39,7 @@ job_execution.summary:
     skipped: preskočeno, ekstenzija u bijeloj listi
   product_skipped_no_diff: preskočeni proizvodi (bez razlike)
   item_position: čitanje redaka
+#Job labels
 batch_jobs:
   csv_product_export:
     label: Izvoz proizvoda u CSV

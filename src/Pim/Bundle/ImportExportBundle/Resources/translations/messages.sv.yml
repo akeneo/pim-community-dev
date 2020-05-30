@@ -2,6 +2,8 @@
 Job: Jobb
 Connector: Connector
 pim_import_export:
+  job: Jobb
+  connector: Connector
   ## Job status
   status:
     0: Redo
@@ -37,9 +39,13 @@ pim_import_export:
       job_content.title: Innehåll
 #Page titles:
 pim_title.export_profile.index: Hantera exportprofiler
+pim_title.export_profile.edit: Exportprofil %job.label% <unk> Redigera
+pim_title.export_profile.show: Exportprofil %job.label% <unk> Visa
 pim_title.export_execution.index: Exporthistorik
 pim_title.export_execution.show: Exporthistorik | Detaljer
 pim_title.import_profile.index: Hantera importprofiler
+pim_title.import_profile.edit: Importprofil %job.label% <unk> Redigera
+pim_title.import_profile.show: Importera profil %job.label% <unk> Visa
 pim_title.import_execution.index: Importhistorik
 pim_title.import_execution.show: Importhistorik | Detaljer
 #Entity and page header titles
@@ -142,7 +148,19 @@ job_execution.summary:
     title: 'Filkodning:'
     skipped: hoppades över, filändelsen i godkäntlistan
 Step: Steg
+Status: Status
+Warnings: Varningar
 Summary: Sammanfattning
 Start: Start
 End: Slut
+#Process tracker
+set_attribute_requirements: Ange attributkrav
+COMPLETED: Slutförd
+STARTING: Startar
+STARTED: Startad
+STOPPING: Stoppar
+STOPPED: Stoppad
+FAILED: Misslyckad
+ABANDONED: Övergiven
+UNKNOWN: Okänt
 warning.label: Varning

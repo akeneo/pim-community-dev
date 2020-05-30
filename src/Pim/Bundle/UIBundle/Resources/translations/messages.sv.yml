@@ -6,6 +6,7 @@ Attribute Group list: Attributgruppslista
 Users: Användare
 Roles: Roller
 Groups: Grupper
+Configuration: Inställningar
 Currency list: Valutalistan
 Locale list: Språklista
 Logged in as: Inloggad som
@@ -44,3 +45,4 @@ pim_ui.system_config:
     loading_messages.tooltip: Alla tillgängliga laddningsmeddelanden separerade med radbrytningar
   group:
     loading_message.title: Hämtar meddelanden
+other_actions: Andra åtgärder

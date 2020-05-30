@@ -1,3 +1,4 @@
+#Grid action messages
 confirmation:
   title: Potvrdi
   remove:
@@ -29,7 +30,7 @@ pim_datagrid:
     create_view_modal:
       create: Kreiraj
       confirm: OK
-      cancel: Poništi
+      cancel: Odustani
 flash:
   item:
     removed: Stavka je uspješno uklonjena
@@ -49,9 +50,9 @@ flash:
     removed: Grupa je uspješno uklonjena
   group_type:
     removed: Tip grupe je uspješno uklonjen
-  import profile:
+  import_profile:
     removed: Profil uvoza je uspješno uklonjen
-  export profile:
+  export_profile:
     removed: Profil izvoza je uspješno uklonjen
   user:
     removed: Korisnik je uspješno uklonjen
@@ -96,6 +97,7 @@ Classify the product: Klasifikacija proizvoda
 Delete the product: Brisanje proizvoda
 Change status: Promjena statusa
 Toggle status: Uključivanje/isključivanje statusa
+#Quick export labels
 pim:
   grid:
     mass_action:
@@ -106,6 +108,7 @@ pim:
         xlsx_grid_context: Excel (Grid kontekst)
       delete: Obriši
       category_edit: Premjesti proizvode u kategorije
+#Jstree context menu actions
 jstree.create: Kreiraj
 jstree.done: Gotovo
 switch_on: "Da"
@@ -113,7 +116,7 @@ switch_off: "Ne"
 pim_enrich:
   item:
     list:
-      delete.label: Obriši
+      delete.label: Brisanje
       delete.error: Pogreška tijekom brisanje stavke
     delete:
       confirm.content: Jeste li sigurni da želite izbrisati ovaj {{ itemName }}? Nije moguće poništiti ovu akciju
@@ -132,7 +135,7 @@ pim_enrich:
       label: Oznaka
       labels:
         save: Spremi
-        cancel: Poništi
+        cancel: Odustani
     product:
       title: proizvod
       locale: Postavke jezika i regije
@@ -144,7 +147,7 @@ pim_enrich:
         disabled: Onemogućeno
         download_pdf: PDF
         compare_translate: Usporedi / prevedi
-        delete: Obriši
+        delete: Brisanje
         save: Spremi
       history:
         version: Verzija
@@ -203,13 +206,13 @@ pim_enrich:
         labels:
           family: Odaberi obitelj
           save: Spremi
-          cancel: Poništi
+          cancel: Odustani
       message:
         created: Proizvod je uspješno kreiran
       completeness: Kompletan
     product_model:
       add_child:
-        cancel: Poništi
+        cancel: Odustani
         confirm: Potvrdi
         fields:
           code: Kod
@@ -263,7 +266,7 @@ pim_enrich:
         created: Obitelj je uspješno kreirana
       variant:
         create: Kreiraj
-        cancel: Poništi
+        cancel: Odustani
         code: Kod
         label: Oznaka
     attribute_option:
@@ -451,7 +454,7 @@ pim_enrich:
       add_option_modal:
         title: Dodaj opciju atributa
         confirm: Dodaj
-        cancel: Poništi
+        cancel: Odustani
     entity:
       switch:
         "no": "Ne"
@@ -649,7 +652,7 @@ pim_enrich:
           empty: Svi atributi će se izvesti
           modal:
             apply: Primijeni
-            cancel: Poništi
+            cancel: Odustani
             title: Odabir atributa
         attributes_selector:
           attribute_group: Grupe atributa
@@ -788,7 +791,7 @@ pim_enrich:
       create_btn: Kreiraj
   mass_edit:
     next: Sljedeća
-    cancel: Poništi
+    cancel: Odustani
     confirm: Potvrdi
     product:
       step:
@@ -824,6 +827,7 @@ pim_enrich.error:
   exception.title: Ups! Pojavila se pogreška u {{ status_code }}...
   http:
     403: Forbidden. You are not allowed to access this page
+#Page titles
 page_title:
   oro_default: Nadzorna ploča
   pim_enrich_attributegroup_index: Grupe atributa
@@ -848,6 +852,7 @@ page_title:
   pim_enrich_job_tracker_show: Proces praćenja | Pokaži posao
   pim_enrich_mass_edit_action: Masovno uređivanje
   pim_analytics_system_info_index: Informacije o sustavu
+#Batch job labels
 batch_jobs:
   add_product_value:
     label: Dodaj vrijednosti proizvoda

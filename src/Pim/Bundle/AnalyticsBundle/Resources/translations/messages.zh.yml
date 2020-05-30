@@ -19,10 +19,29 @@ pim_analytics:
     registered_bundles: 已注册的包
     nb_channels: 渠道数量：
     nb_products: 产品数量
+    nb_product_models: 产品模型数量
+    nb_variant_products: 可变商品数量
+    nb_family_variants: 家庭组变量数量
     nb_attributes: 属性数量
+    nb_scopable_attributes: 可探测属性的数量
+    nb_localizable_attributes: 本地化属性的数量
+    nb_scopable_localizable_attributes: 本地化和可探测属性的数量
+    nb_useable_as_grid_filter_attributes: 作为网格过滤器可用的属性数
+    avg_percentage_scopable_attributes_per_family: 每个家庭可探测属性的平均百分比(%)
+    avg_percentage_localizable_attributes_per_family: 每个家庭可本地化属性的平均百分比(%)
+    avg_percentage_scopable_localizable_attributes_per_family: 每个家庭可探测属性的平均百分比(%)
+    avg_number_attributes_per_family: 每个家庭平均属性数
     nb_locales: 语言数量
     nb_families: 品类数量
     nb_users: 用户数
+    nb_categories: 分类数量
+    nb_category_trees: 类别树木数
+    max_category_in_one_category: 一个类别类别的最大类别数
+    max_category_levels: 类别数量最大
+    nb_product_values: 产品模型数量
+    avg_product_values_by_product: 按产品分列的产品平均数
+    avg_product_values_by_family: 按家庭分列的潜在产品平均数
+    max_product_values_by_family: 按家庭分列的潜在产品平均数
     pim_storage_version: 存储版本
     os_version: 操作系统版本
     php_version: PHP 版本

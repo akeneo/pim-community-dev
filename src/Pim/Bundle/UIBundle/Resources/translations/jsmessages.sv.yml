@@ -1,8 +1,11 @@
+#ORO messages
+Close: Stäng
 Update: Uppdatera
 Selected Rows: Markerade rader
 "Yes": "Ja"
 "Yes, Delete": "Ja, ta bort"
 "Yes, I Agree": "Ja, jag godkänner"
+"Yes, do it": "Ja, gör det"
 "No": "Nej"
 "Ok, got it.": "Ok, jag förstår."
 "Cancel": "Avbryt"
@@ -32,11 +35,16 @@ Localized value: Språkberoende värde
 Columns: Kolumner
 Datagrid Configuration: Tabellkonfigurering
 Apply: Tillämpa
+#Filters
+Action: Åtgärd
 Unit: Enhet
 Currency: Valuta
 jstree:
   all: Alla produkter
   unclassified: Oklassificerade produkter
+  product:
+    all: Alla produkter
+    unclassified: Oklassificerade produkter
   no_tree: Inga träd är tillgängliga
   include_sub: Inkludera underkategorier
   loading: Laddar ...
@@ -104,6 +112,9 @@ oro_config:
         localization:
           title: Lokalisering
           system_locale: Spåk
+        notification:
+          title: Notiser
+          system_notification: Ny versionsnotiser
         loading_message:
           title: Hämtar meddelanden
           label: Aktivera hämtning av meddelanden

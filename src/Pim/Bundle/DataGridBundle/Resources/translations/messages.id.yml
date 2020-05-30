@@ -1,0 +1,32 @@
+"oro_datagrid.no_data_hint %entityHint%": Tidak ada %entityHint% yang ada.
+oro_datagrid.not_found_hint: Maaf, tidak ada hasil untuk pencarian anda.
+oro_datagrid.label_add_filter: Kelola filter
+oro_datagrid.label_loading_mask: Memuat. . .
+oro.grid.mass_action.selected_rows: Baris yang dipilih
+oro.grid.mass_action.confirm_title: Konfirmasi Aksi Massal
+oro.grid.mass_action.confirm_content: Apakah anda yakin anda ingin melakukan ini?
+oro.grid.mass_action.confirm_ok: Ya, lakukanlah
+oro.grid.mass_action.error_title: Kesalahan Aksi Massa
+oro.grid.mass_action.error_content: Tidak bisa melakukan aksi massa
+oro.grid.mass_action.delete.label: Hapus
+oro.grid.mass_action.delete.confirm_title: Konfirmasi Hapus Massa
+oro.grid.mass_action.delete.confirm_content: Apakah anda yakin anda ingin menghapus item yang dipilih?
+oro.grid.mass_action.delete.item_limit: Anda tdk bisa massa menghapus lebih dari %limit% produk (%count% yang dipilih)
+oro.grid.datagrid.page_size.all: Semua
+oro.grid.mass_action.delete.success_message: "{0} Tidak ada entitas yang dihapus |{1} Satu entitas sudah dihapus |]1,Inf[%count% entitas sudah dihapus"
+#Datagrid views constraints
+datagrid_view:
+  columns:
+    min_message: Anda harus memilih setidaknya satu kolom datagrid untuk ditampilkan
+  label:
+    unique_message: Label harus unik
+    not_blank_message: Label tidak boleh kosong
+#View selector flash messages
+grid.view_selector.flash:
+  created: Tampilan Datagrid berhasil dibuat
+  removed: Tampilan datagrid berhasil dihapus
+  not_removable: Anda tidak memiliki hak untuk menghapus tampilan ini
+quick_export: Ekspor cepat
+import: Impor
+export: Ekspor
+mass_edit: Sunting Massa

@@ -1,3 +1,4 @@
+#ORO messages
 Close: Zatvori
 Update: Ažuriraj
 Selected Rows: Odabrani retci
@@ -7,7 +8,7 @@ Selected Rows: Odabrani retci
 "Yes, do it": "Da, uradi"
 "No": "Ne"
 "Ok, got it.": "Dobro, razumijem."
-"Cancel": "Poništi"
+"Cancel": "Odustani"
 "Delete Confirmation": "Potvrdi brisanje"
 "Edit": "Uredi"
 "Unexpected error occured. Please contact system administrator.": "Došlo je do neočekivane pogreške. Obratite se administratoru sustava."
@@ -29,10 +30,12 @@ Second: Sekunda
 Millisecond: Milisekundi
 Microsecond: Mikrosekundi
 "Time Zone": "Vremenska zona"
+#PIM messages
 Localized value: Vrijednost regionalnih postavki
 Columns: Stupci
 Datagrid Configuration: DataGrid konfiguracija
 Apply: Primijeni
+#Filters
 Action: Akcija
 Unit: Jedinica
 Currency: Valuta
@@ -45,6 +48,7 @@ jstree:
   no_tree: Nema dostupanog stabla
   include_sub: Uključuje pod-kategorije
   loading: Učitavanje ...
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Nedjelja
@@ -88,7 +92,7 @@ datetimepicker:
     Feb: Velj
     Mar: Ožu
     Apr: Tra
-    May: Svibanj
+    May: Svi
     Jun: Lip
     Jul: Srp
     Aug: Kol
@@ -96,6 +100,7 @@ datetimepicker:
     Oct: Lis
     Nov: Stud
     Dec: Pro
+#ORO
 oro_config:
   form:
     config:

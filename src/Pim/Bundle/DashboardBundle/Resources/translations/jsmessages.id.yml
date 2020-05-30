@@ -1,0 +1,24 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Tidak ditemukan operasi
+      status: Status
+      date: Tanggal
+      type: Tipe
+      profile_name: Nama profil
+      details: Rincian
+      warning_count: Peringatan
+      job_type:
+        import: Impor
+        export: Ekspor
+        mass_edit: Sunting massa
+        quick_export: Ekspor cepat
+        compute_product_models_descendants: Hitunglah model produk keturunan
+        compute_family_variant_structure_changes: Hitung perubahan struktur varian keluarga
+        compute_completeness_of_products_family: Hitunglah kelengkapan produk keluarga
+    completeness:
+      load_more: 'Muat lebih...'
+    header:
+      view_all: Lihat semua
+page_title:
+  pim_dashboard_index: Dasbor

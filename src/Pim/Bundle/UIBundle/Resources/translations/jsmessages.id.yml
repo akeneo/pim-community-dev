@@ -1,0 +1,124 @@
+#ORO messages
+Close: Tutup
+Update: Perbarui
+Selected Rows: Baris yang dipilih
+"Yes": "Ya"
+"Yes, Delete": "Ya, Hapus"
+"Yes, I Agree": "Ya, Saya Setuju"
+"Yes, do it": "Ya lakukanlah"
+"No": "Tidak"
+"Ok, got it.": "Ok, mengerti."
+"Cancel": "Batal"
+"Delete Confirmation": "Hapus Konfirmasi"
+"Edit": "Ubah"
+"Unexpected error occured. Please contact system administrator.": "Terjadi kesalahan tidak terduga. Silahkan hubungi administrator sistem."
+"Yes, revoke": "Ya, cabut"
+"Revoke Confirmation": "Cabut Konfirmasi"
+Now: Sekarang
+Prev: Sebelum
+Next: Selanjutnya
+Today: Hari ini
+Wk: Wk
+Done: Selesai
+AM: Malam
+A: A
+PM: SORE
+P: P
+"Choose Time": "Pilih Waktu"
+Time: Waktu
+Hour: Jam
+Minute: Menit
+Second: Detik
+Millisecond: Milidetik
+Microsecond: Mikrodetik
+"Time Zone": "Zona Waktu"
+#PIM messages
+Localized value: Nilai terlokalkan
+Columns: Kolom
+Datagrid Configuration: Konfigurasi Datagrid
+Apply: Terapkan
+#Filters
+Action: Tindakan
+Unit: Unit
+Currency: Mata uang
+jstree:
+  all: Semua produk
+  unclassified: Produk yang tidak diklasifikasikan
+  product:
+    all: Semua produk
+    unclassified: Produk yang tidak diklasifikasikan
+  no_tree: Tidak ada pohon yang tersedia
+  include_sub: Termasuk sub-kategori
+  loading: Sedang memuat ...
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Minggu
+    Monday: Senin
+    Tuesday: Selasa
+    Wednesday: Rabu
+    Thursday: Kamis
+    Friday: Jum'at
+    Saturday: Sabtu
+  daysShort:
+    Sun: Mgg
+    Mon: Sen
+    Tue: Sel
+    Wed: Rab
+    Thu: Kam
+    Fri: Jum
+    Sat: Sab
+  daysMin:
+    Su: Mgg
+    Mo: Sen
+    Tu: Sel
+    We: Kami
+    Th: Kam
+    Fr: Jum
+    Sa: Sab
+  months:
+    January: Januari
+    February: Februari
+    March: Maret
+    April: April
+    May: Mei
+    June: Juni
+    July: Juli
+    August: Agustus
+    September: September
+    October: Oktober
+    November: November
+    December: Desember
+  monthsShort:
+    Jan: Jan
+    Feb: Feb
+    Mar: Mar
+    Apr: Apr
+    May: Mei
+    Jun: Jun
+    Jul: Jul
+    Aug: Agt
+    Sep: Sep
+    Oct: Okt
+    Nov: Nov
+    Dec: Dec
+#ORO
+oro_config:
+  form:
+    config:
+      title: Sistem konfigurasi
+      tab:
+        system:
+          title: Sistem
+      group:
+        localization:
+          title: Lokalisasi
+          system_locale: Bahasa
+        notification:
+          title: Pemberitahuan
+          system_notification: Pemberitahuan versi terbaru
+        loading_message:
+          title: Memuat pesan
+          label: Memungkinkan pemuatan pesan
+        loading_messages:
+          label: Tersedia pemuatan pesan

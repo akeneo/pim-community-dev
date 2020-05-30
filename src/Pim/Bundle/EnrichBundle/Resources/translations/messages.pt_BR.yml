@@ -878,6 +878,8 @@ batch_jobs:
       label: Exportação rápida da grade de produtos em CSV
   xlsx_product_quick_export:
     quick_export.label: Xlsx exportação rápida de produtos
+    perform:
+      label: Xlsx exportação rápida de produtos
   delete_products_and_product_models:
     delete_products_and_product_models.label: Exclusão em massa de produtos
   change_parent_product:

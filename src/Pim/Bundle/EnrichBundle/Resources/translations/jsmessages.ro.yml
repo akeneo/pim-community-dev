@@ -1,0 +1,1305 @@
+#Grid action messages
+confirmation:
+  title: Confirmă
+  remove:
+    item: Ești sigur că vrei să ștergi acest element?
+    association_type: Sunteți sigur că doriți să ştergeți acest tip de asociere?
+    attribute: Sunteți sigur că doriți să ştergeți acest atribut?
+    attribute_group: Sunteți sigur că doriți să ştergeți acest grup de atribute?
+    family: Sunteți sigur că doriți să ştergeți această familie?
+    family_variant: Sunteti sigur ca doriti sa stergeti aceasta varianta de familie?
+    product: Sunteți sigur că doriți să ştergeți acest produs?
+    product_model: Sunteți sigur că doriți să ştergeți acest model de produs? Toți copii lui, modelele de produs şi variantele de produs, vor fi deasemenea şterse.
+    channel: Sunteți sigur că vreți să ștergeți acest canal?
+    group: Sunteți sigur că vreți să ștergeți acest grup?
+    group_type: Sunteți sigur că vreți să ștergeți acest tip de grup?
+    import_profile: Sunteți sigur că vreți să ștergeți acest profil de import?
+    export_profile: Sunteți sigur că vreți să ștergeți acest profil de export?
+    user: Sunteți sigur că vreți să ștergeți acest utilizator?
+    role: Sunteți sigur că vreți să ștergeți acest rol?
+    job_instance: Sunteți sigur că doriți să ştergeți această instanță de muncă?
+    api_connection: Sunteți sigur că doriți să revocați această conexiune API? Toate chemările API efectuate prin această conexiune vor returna o eroare.
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Acțiuni în masă
+    quick_export:
+      label: Exportare rapidă
+  mass_action:
+    delete:
+      label: Şterge
+      confirm_content: Sunteți sigur că doriți să ştergeți produsele selectate?
+      success: Produsele selectate au fost șterse.
+      error: A apărut o eroarea ştergerea produselor selectate, vă rugăm să incercați din nou.
+  view_selector:
+    view: Vizualizari
+    create_view_modal:
+      create: Creează
+      confirm: OK
+      cancel: Anuleaza
+flash:
+  item:
+    removed: Elementul a fost șters
+  association_type:
+    removed: Tipul de asociere a fost şters
+  attribute:
+    removed: Atributul a fost şters
+  attribute_group:
+    removed: Grupul de atribute a fost sters
+  family:
+    removed: Familia a fost ștearsă cu succes
+  family_variant:
+    removed: Varianta de familie a fost stearsa
+  product:
+    removed: Produsul a fost şters cu succes
+  product_model:
+    removed: Modelul de produs a fost şters
+  channel:
+    removed: Canalul a fost șters cu succes
+  group:
+    removed: Grupul a fost şters cu succes
+  group_type:
+    removed: Tipul de grup a fost şters cu succes
+  import_profile:
+    removed: Profilul de import a fost şters
+  export_profile:
+    removed: Profilul de export a fost şters
+  user:
+    removed: Utilizatorul a fost șters cu succes
+  role:
+    removed: Rolul a fost şters
+  job_instance:
+    removed: Instanța de muncă a fost ştearsă
+  api_connection:
+    removed: Conexiunea API a fost revocată
+error:
+  common: A apărut o eroare
+  creating:
+    product: Nu există un atribut configurat ca identificator de produs sau nu aveți drepturile necesare pentru a-l edita.
+  removing:
+    item: Nu puteți şterge acest element
+    association_type: Nu puteți şterge acest tip de asociere
+    attribute: Nu puteți şterge acest atribut
+    family: Nu puteți şterge această familie
+    product: Nu puteți şterge acest produs
+    channel: Nu puteți şterge acest canal
+    group: Nu puteți şterge acest grup
+    group type: Nu puteți şterge acest tip de grup
+    import profile: Nu puteți şterge acest profil de import
+    export profile: Nu puteți şterge acest profil de export
+    user: Nu puteți şterge acest utilizator
+    role: Nu puteți şterge acest rol
+    attribute_option: A avut loc o eroare la ştergerea opțiunii de atribut
+  saving:
+    attribute_option: Opțiunea de atribut nu poate fi salvată
+    export_profile: Nu se poate salva profilul de export. Vă rugăm să verificați că toate filtrele sunt completate bine
+alert:
+  attribute_option:
+    error_occured_during_submission: A apărut o eroare la trimiterea formularului către server
+    save_before_edit_other: Vă rugăm să înregistrați modificările dumneavoastră pe alte rânduri inainte de a edita acest rând
+  session_storage:
+    not_available: Browserul web al dumneavoastră nu pare a fi compatibil cu sessionStorage. Vă rugăm să contactați administratorul
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: Atenție, veți pierde datele nesalvate. Sunteți sigur că doriți să anulați modificările efectuate pe opțiunea nouă ?
+    cancel_edition_on_new_option_title: Anulează modificarea
+label:
+  attribute_option:
+    add_option: Adaugă o opțiune
+Code: Cod
+Edit: Modifică
+Delete: Şterge
+Edit attributes of the product: Modifică atributele produsului
+Classify the product: Clasificați produsul
+Delete the product: Șterge produsul
+Change status: Schimbă status
+#Quick export labels
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (Toate atributele)
+        csv_grid_context: CSV (context grilă)
+        xlsx_all: Excel (Toate atributele)
+        xlsx_grid_context: Excel (context grilă)
+      delete: Şterge
+      category_edit: Mută produsul în categorii
+      sequential_edit: Editare secvențială
+#Jstree context menu actions
+jstree.create: Creează
+jstree.done: Efectuat
+switch_on: "Da"
+switch_off: "Nu"
+pim_enrich:
+  item:
+    list:
+      delete.label: Șterge
+      delete.error: Eroare la ştergerea elementului
+    delete:
+      confirm.content: Sunteți sigur că doriți să ştergeți acest {{ itemName }}? Această acțiune nu va putea fi anulată
+      confirm.title: Șterge {{ itemName }}
+  navigation:
+    link:
+      back_to_grid: Înapoi la grilă
+    other_actions: Alte acțiuni
+  entity:
+    save:
+      label: Salvează
+    info:
+      update_failed: Actualizarea a eșuat
+      update_successful: Actualizat cu succes
+    create_popin:
+      code: Cod
+      label: Etichetă
+      labels:
+        save: Salvează
+        cancel: Anuleaza
+    product:
+      navigation: Navigarea produsului
+      infos: Infornații despre produs
+      index_title: "] -Inf, 1] {{ count }} rezultat|] 1, Inf [{{ count }} rezultate"
+      title: produs
+      locale: Local
+      category: Categorie
+      create: Creează
+      subTitle: Creează produs
+      modalTitle: Selectează acțiune
+      filters: Filtre
+      selected: rezultate selectate
+      common: Comune
+      btn:
+        enabled: Activat
+        disabled: Dezactivat
+        download_pdf: PDF
+        compare_translate: Compară / Tradu
+        delete: Sterge
+        save: Salveaza
+      history:
+        version: Versiune
+        author: Autor
+        logged_at: Conectat la
+        from: De la
+        modified: Modificat
+        old_value: Valoarea veche
+        new_value: Valoarea nouă
+        actions: Acțiuni
+      info:
+        deletion_successful: Produsul a fost sters cu succes.
+        deletion_failed: Produsul nu a putut fi sters.
+        update_successful: Produsul a fost actualizat cu succes.
+        update_failed: Produsul nu poate fi actualizat.
+        field_not_ready: "Produsul nu poate fi salvat acum. Următoarele câmpuri nu sunt gata: {{ fields }}"
+        already_in_upload: Un fișier este deja încărcat pentru acest atribut în localul "{{ locale }}" și scope "{{ scope }}"
+      error:
+        upload: S-a întâmpinat o eroare în timpul încărcării fișierului
+      meta:
+        created: Creat
+        created_by: De
+        updated_by: De
+        updated: Ultima actualizare
+        family:
+          title: Familie
+          none: Niciunul
+        family_variant:
+          title: Variantă
+          none: Niciunul
+        groups:
+          title: Grupuri
+          modal:
+            title: Grup {{ group }}
+            view_group: Vezi grup
+            group_label: Etichetă
+            more_products: '{{ count }} mai multe produse...'
+            close: Închide
+        status: Stare
+        scope: Canal
+        locale: Local
+      copy:
+        select: Selectează
+        all: Tot
+        all_visible: Toate vizibile
+        none: Niciunul
+        copy: Copiază
+      optional_attribute:
+        remove: Elimină acest atribut
+      locale_specific_attribute:
+        unavailable: Acest câmp specific local nu este disponibil în acest local
+      localizable:
+        channel_locale_unavailable: Acest câmp localizabil nu este valabil pentru local '{{ locale }}' şi canalul '{{ channel }}'
+      media:
+        upload: Trage și dă drumul aici pentru a încărca sau apasă aici
+      create_popin:
+        type: Produs
+        title: Creează
+        labels:
+          family: Alegeți o familie
+          family_variant: Alege o variantă de familie
+          save: Salvează
+          cancel: Anulează
+      message:
+        created: Produsul a fost creat
+      completeness: Completează
+      sequential_edit:
+        item_limit: Doar primele 1000 produse sunt vizualizate în această editare secvențială ({{ count }} selectate)
+        empty: Selecția dumneavoastră este goală, vă rugăm să schimbați criterele de căutare
+    product_model:
+      create_popin:
+        type: Model de produs
+        title: Creează un model de produs
+        content: Un model de produs strânge variantele de produs şi uşurează imbogățirea proprietăților lor comune.
+      info:
+        create_successful: Modelul de produs a fost creat
+        update_successful: Modelul de produs a fost actualizat. Completitudinea variantelor de produs ce îi aparțin va fi recalculată.
+        deletion_successful: Modelul de produs a fost şters.
+        update_failed: Modelul de produs nu a putut fi actualizat.
+        field_not_ready: "Momentan modelul de produs nu poate fi salvat.\nUrmătoarele câmpuri nu sunt gata: {{ fields }}"
+      read_only_parent_attribute_from_common: Acest atribut poate fi actualizat în atributele comune.
+      read_only_parent_attribute_from_model: "Acest atribut poate fi actualizat în atributele de către {{ axes }}"
+      variant_axis: Varianta axis
+      title: modele de produs
+      add_child:
+        create: Adaugă nou
+        cancel: Anulează
+        confirm: Confirmează
+        create_label: "Adaugă un nou {{ axes }}"
+        fields:
+          required_label: (Variantă axis)
+          code: Cod
+    association_type:
+      info:
+        deletion_successful: Tipul de asociere a fost şters.
+        deletion_failed: Tipul de asociere nu a putut fi şters.
+        update_successful: Tipul de asociere a fost actualizat.
+        update_failed: Tipul de asociere nu a putut fi actualizat.
+        field_not_ready: "Momentan tipul de asociere nu a putut fi salvat .\nUrmătoarele câmpuri nu sunt gata: {{ fields }}"
+      meta:
+        created: Creat
+        created_by: Creat de
+        updated: Actualizat
+        updated_by: Actualizat de
+      btn:
+        save: Salvează
+      title: tip de asociere
+      create_popin:
+        title: Creează
+      message:
+        created: Tipul de asociere a fost creat
+    group_type:
+      info:
+        deletion_successful: Tipul de grup a fost şters.
+        deletion_failed: Tipul de grup nu poate fi şters.
+        update_successful: Tipul de grup a fost actualizat.
+        update_failed: Tipul de grup nu a putut fi actualizat.
+        field_not_ready: "Momentan tipul de grup nu poate fi salvat.\nUrmătoarele câmpuri nu sunt gata: {{ fields }}"
+      meta:
+        created: Creat
+        created_by: Creat de
+        updated: Actualizat
+        updated_by: Actualizat de
+      btn:
+        save: Salvează
+      title: tip grup
+      create_popin:
+        title: Creează
+      message:
+        created: Tipul de grup a fost creat
+    channel:
+      title: canal
+      info:
+        deletion_successful: Canalul a fost şters.
+        deletion_failed: Canalul nu a putut să fie şters.
+        update_successful: Canalul a fost actualizat.
+        update_failed: Canalul nu a putut fi actualizat.
+        create_successful: Canalul a fost crea.
+        create_failed: Canalul nu a putut fi creat.
+        field_not_ready: "Momentan canalul nu poate fi salvat. Următoarele câmpuri nu sunt gata: {{ fields }}"
+      meta:
+        created: Creat
+        created_by: Creat de
+        updated: Actualizat
+        updated_by: Actualizat de
+      btn:
+        save: Salveaza
+    family:
+      title: familie
+      selected: familii selectate
+      info:
+        update_successful: Familia a fost actualizată.
+        create_successful: Canalul a fost creat.
+        update_failed: A apărut o eroare la actualizarea familiei.
+        cant_remove_attribute_as_label: Nu se poate şterge atributul folosit ca etichetă
+        cant_remove_attribute_as_image: Nu se poate şterge atributul folosit ca imagine principală
+        attribute_edit_permission_is_not_granted: Nu aveți drepturile necesare pentru a edita atributele familiei
+        cant_remove_attribute_used_as_axis: Nu se poate şterge acest atribut folosit ca variantă axis într-o variantă de familie
+      meta:
+        created: Creat
+        created_by: Creat de
+        updated: Actualizat
+        updated_by: Actualizat de
+      btn:
+        save: Salveza
+      create_popin:
+        title: Creează
+      message:
+        created: Familia a fost creeată cu succes
+      variant:
+        common:
+          title: Atributele comune
+          empty: Nu există atribute comune
+        axis.label: Variantă axis
+        level_1.label: Atribute de variantă de nivelul unu
+        level_2.label: Atribute de variantă de nivelul doi
+        add_variant: Adaugă variantă
+        create_label: Creează o nouă variantă de familie
+        create_description: Intr-o varianta familie, poti defini o structura pentru produse cu variante. Alege numarul de niveluri de varianta gestionate, atributele folosite ca varaianta axa pentru fiecare nivel, si apoi definiti modul in care v-or fi distribuite atributele.
+        update_description: Trageti si lasati atributele pe nivelul de varianta selectat pentru a gestiona aceste atribute la nivel de varianta.
+        create: Creează
+        cancel: Anuleaza
+        code: Cod
+        label: Etichetă
+        levels: Niveluri variante
+        axis_level: Nivelul axei variante
+        required: necesar
+        confirm_attribute_removal:
+          title: Confirmează eliminarea atributelor
+          message: Prin eliminare acestor atribute le veți pune înapoi în atributele comune ale familiei variante și elimina valorile din produsele variante
+    family_variant:
+      info:
+        update_successful: Varianta de familie actualizată cu succes. Produsele cu variante vor fi actualizate cu modificările dvs.
+    attribute_option:
+      code: Cod
+      label: Etichetă
+      actions: Acțiuni
+    group:
+      title: Grup
+      info:
+        deletion_successful: Grupul a fost șters cu succes.
+        deletion_failed: Grupul nu s-a putut șterge.
+        update_successful: Grupul a fost actualizat cu succes.
+        update_failed: Grupul nu s-a putut actualiza.
+        field_not_ready: "Grupul nu se poate salva acum. Următoarele câmpuri nu sunt gata: {{ fields }}"
+      btn:
+        save: Salvează
+      meta:
+        product_count: Produse
+        created: Creat
+        created_by: Creat de
+        updated: Actualizat
+        updated_by: Actualizat de
+      create_popin:
+        title: Creează
+      message:
+        created: Grupul a fost creeat cu succes
+    job_instance:
+      title: profil de lucru
+      info:
+        update_failed: Profilul de lucru nu s-a putut actualiza.
+        update_successful: Profilul de lucru a fost actualizat cu succes.
+    attribute:
+      info:
+        deletion_successful: Atributul a fost șters cu succes.
+        deletion_failed: Atributul nu s-a putut șterge.
+        update_successful: Atributul a fost actualizat cu succes.
+        update_failed: Atributul nu s-a putut actualiza.
+        create_successful: Atributul a fost creat cu succes.
+        create_failed: Atributul nu s-a putut crea.
+        field_not_ready: "Atributul nu s-a putut salva acum. Următoarele câmpuri nu sunt gata: {{ fields }}"
+      type:
+        pim_catalog_identifier: Identificator
+        pim_catalog_text: Text
+        pim_catalog_textarea: Zonă text
+        pim_catalog_number: Număr
+        pim_catalog_price_collection: Preţ
+        pim_catalog_multiselect: Selecție multiplă
+        pim_catalog_simpleselect: Selectaţi simplu
+        pim_catalog_file: Fișier
+        pim_catalog_image: Imagine
+        pim_catalog_boolean: "Da/Nu"
+        pim_catalog_date: Data
+        pim_catalog_metric: Metric
+        pim_reference_data_simpleselect: Selectarea simplă a datei de referințe
+        pim_reference_data_multiselect: Selectarea multi a datei de referință
+      validation_rule:
+        email: Adresa de e-mail
+        regexp: Expresie regulară
+        url: URL
+      title: atribut
+    attribute_group:
+      info:
+        update_failed: Grupul de atribut nu s-a putut actualiza
+        update_successful: Grupul de atribut a fost actualizat cu succes
+    api_connection:
+      create_popin:
+        title: Creează
+      message:
+        created: Conexiunea API a fost creată cu succes
+  confirmation:
+    leave: Ești sigur că vrei să părăsești această pagină?
+    discard_changes: Veți pierde modificările în {{ entity }} dacă ieșiți din pagina asta.
+    delete_item: Confirmă ștergerea
+    remove_item: Confirmă eliminarea
+    remove: Elimină
+    delete:
+      attribute: Sunteți sigur că doriți să ștergeți acest atribut din produs?
+      attribute_group: Sunteți sigur că doriți să eliminați atributul {{ attribute }} din acest grup de atribute?
+      product_model: Confirmă ștergerea
+  info:
+    not_applicable: Indisponibil
+    entity:
+      updated: Există schimbări nesalvate.
+  error:
+    upload: A apărut o eroare la încărcarea fișierului
+  alert:
+    not_allowed: Interzis. Nu sunteți permiși să accesați această pagină
+    error_occured: A apărut o eroare la încărcarea paginii
+  form:
+    required: (necesar)
+    product_model:
+      choose_product_model: Alegeți un model de produs
+      choose_variant: Alege un variant
+      complete_variant_product: produs variant
+      complete_variant_products: produse variante
+      family_variant: Variant
+      product_model: Model de produs
+      flash:
+        product_model_added: Modelul de produs a fost adăugat cu succes la modelul produsului
+        variant_product_added: Produsul variant a fost adăugat cu succes la modelul de produs
+    product:
+      tab:
+        associations:
+          title: Asocieri
+          info:
+            none_exist: Niciun tip de asociație nu există.
+            show_products: Afișează produsele
+            show_groups: Afișează grupurile
+            number_of_associations: "{{ productCount }} produs(e), {{ productModelCount }} model(e) de produs și {{ groupCount }} grup(uri)"
+          association_type_selector: Tip de asociație
+          manage: Adaugă {{ associationType }} asociații
+          manage_description: Selectați produsele pe care vreți să le asociați cu produsele actuale
+          add_associations: Adaugă asociații
+        attributes:
+          title: Atribute
+          btn:
+            add: Adaugă
+            add_attributes: Adaugă atribut
+          info:
+            search_attributes: Caută...
+            no_available_attributes: Nu mai există atribute de adăugat
+            attributes_selected: "{{ itemsCount }} atribut(e) selectate"
+            no_match: Nicio potrivire găsită
+            load_more: Se încarcă mai multe rezultate...
+          attribute_group_selector: Grup de atribut
+          attribute_group_all: Tot
+          attribute_filter:
+            display: Afișează
+            all: Toate atribute
+            missing_required: Toate atributele necesare care lipsesc
+        categories:
+          title: Categorii
+      panel:
+        completeness:
+          title: Completitudine
+          info:
+            no_family: Nicio familie definită. Vă rugăm să definiți o familie pentru a calcula completitudinea acestui produs.
+            no_completeness: Tocmai ați schimbat familia produsului. Vă rugăm salvați-o înainte de a calcula completitudinea pentru noua familie.
+        history:
+          title: Istoric
+      switch:
+        "no": "Nu"
+        "yes": "Da"
+      sequential_edit:
+        info:
+          products: produse
+          previous: Săriți înapoi la {{ product }} fără a salva.
+          next: Săriți la {{ product }} fără a salva.
+        btn:
+          save_and_next: Salvează și înainte
+          save_and_finish: Salvează și termină
+      change_family:
+        modal:
+          title: Schimbă familia de produs
+          merge_attributes: Atributele curente vor fi fuzionate cu cele din noua familie.
+          keep_attributes: Niciun atribut nu va fi șters.
+          change_family_to: Schimbă familia la
+          empty_selection: Alegeți o familie
+      flash:
+        attribute_deletion_error: A apărut o eroare în timpul ștergerii atributului
+      mass_edit:
+        select_attributes: Selectează atributele
+        select: Selectează
+    association_type:
+      tab:
+        properties:
+          title: Propietati
+          general: Proprietăți generale
+          code: Cod
+          label_translations: Traduceri de etichetă
+        history:
+          title: Istoric
+    group_type:
+      tab:
+        properties:
+          title: Proprietăți
+          general: Proprietăți generale
+          code: Cod
+          label_translations: Traduceri de etichetă
+        history:
+          title: Istoric
+    channel:
+      tab:
+        history:
+          title: Istoric
+        properties:
+          title: Propietati
+          general: General
+          code: Cod
+          currencies: Valute
+          locales: Locale
+          category_tree: Mulțimea de categorii
+          label_translations: Traduceri de etichetă
+          label_conversion_units: Alege o unitate de conversie pentru fiecare atribut metric care va fi folosit în timpul exportării produsului
+          conversion_unit:
+            do_not_convert: Nu converti
+    family:
+      tab:
+        properties:
+          title: Propietati
+          general: General
+          code: Cod
+          attribute_as_label: Atribut folosit ca etichetă
+          empty_attribute_as_image: Neselectat
+          label_translations: Traduceri de etichetă
+        attributes:
+          title: Atribute
+          label_label: Etichetă
+          toolbox:
+            select_attributes_by_groups: Adăugați pe grupuri
+            select_attributes: Adaugă atribut
+            add: Adaugă
+            attributes_groups_selected: '{{ itemsCount }} grup(uri) selectate'
+          not_required_label: Nu este necesar
+          required_label: Necesar
+        variant:
+          title: Variante
+          flash:
+            family_variant_created: Varianta de familie a fost creată cu succes
+        history:
+          title: Istorie
+    family_variant:
+      tab:
+        labels:
+          title: Traduceri de etichetă
+    attribute_option:
+      flash:
+        option_created: Opțiune de atribut a fost creat cu succes
+        error_creating_option: A apărut o eroare la încercarea creării opțiunii de atribut
+      add_option_modal:
+        title: Adaugă opțiune de atribut
+        confirm: Adaugă
+        cancel: Anulare
+    entity:
+      switch:
+        "no": "Nu"
+        "yes": "Da"
+    group:
+      tab:
+        properties:
+          title: Proprietăți
+          general: Proprietăți generale
+          code: Cod
+          type: Tip
+          label_translations: Traduceri de etichetă
+        history:
+          title: Istorie
+        products:
+          title: Produse
+    attribute_group:
+      tab:
+        properties:
+          title: Proprietăți
+          general: Proprietăți generale
+          code: Cod
+          label_translations: Traduceri de etichetă
+        attribute:
+          title: Atribute
+          table:
+            name: Nume
+            type: Tip
+            localizable: Localizabil
+        history.title: Istoric
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Adaugă
+            add_attributes: Adaugă atribute
+          info:
+            search_attributes: Caută...
+            no_available_attributes: Nu mai sunt atribute de adăugat
+    job_execution:
+      loading: Se încarcă...
+      title.details: Detalii de execuție
+      refreshBtn.title: Reîmprospătare
+      meta:
+        status.title: Stare
+      button:
+        show_profile.title: Afișare profil
+        download_log.title: Descarcă jurnal
+        download_file.title: Descarcă fișierul generat
+        download_archive.title: Descarcă arhiva generată
+      summary:
+        fetching: Se colectează datele despre executarea sarcinii...
+        warning: Avertisment
+        header.step: Pas
+        header.status: Stare
+        header.warnings: Avertismente
+        header.summary: Rezumat
+        header.start: Începe
+        header.end: Sfârșit
+    job_instance:
+      title:
+        import: Importă profil
+        export: Exportă profil
+      button:
+        edit.title: Editați
+        export.title: Exportă acum
+        import.launch: Importă acum
+        import.upload: Încarcă și importă acum
+        import.upload_file: Încarcă un fișier
+      meta:
+        job: Loc de muncă
+        connector: Conector
+      subsection:
+        last_executions: Ultimele execuții
+      tab:
+        content:
+          title: Conținut
+        properties:
+          title: Proprietăți
+          code:
+            title: Cod
+          label:
+            title: Etichetă
+          decimal_separator:
+            title: Separator zecimal
+            help: Determinați separatorul zecimal
+          date_format:
+            title: Formatul datei
+            help: Determinați formatul câmpurilor de date
+          file_path:
+            title: Calea fișierului
+            help: Unde să se scrie fișierul generat pe sistemul de fișier
+          delimiter:
+            title: Delimitator
+          enclosure:
+            title: Împrejmuire
+          with_header:
+            help: Dacă să printeze sau nu numele coloanei
+          with_media:
+            title: Exportă fișierele și imaginile
+            help: Exportă sau nu fișierele produselor sau imaginile
+          lines_per_file:
+            title: Număr de linii per fișier
+            help: Definiți numărul limită de linii per fișier
+          upload_allowed:
+            title: Permite încărcarea fișierului
+            help: Permite sau nu încărcarea directă a fișierului
+          categories_column:
+            title: Coloană de categorii
+            help: Numele coloanei de categorii
+          family_column:
+            title: Coloană de familie
+            help: Numele coloanei de familie
+          groups_column:
+            title: Coloană de grupuri
+            help: Numele coloanei de grupuri
+          enabled:
+            title: Activați produsul
+            help: Produsul importat sau nu, trebuie să fie activat
+          enabled_comparison:
+            title: Comparați valorile
+            help: Activați comparația dintre valorile originale și valorile importate. Importul se poate accelera dacă valorile importate sunt foarte asemănătoare cu valorile originale
+          real_time_versioning:
+            title: Actualizarea istoria timpului real
+            help: Înseamnă că istoria produsului este actualizată automat, poate fi oprită pentru a îmbunătăți performanțele
+        history:
+          title: Istoric
+      file_path: Calea fișierului
+    attribute:
+      meta:
+        created: Creat
+        created_by: de
+        updated: Ultima actualizare
+        updated_by: de
+      tab:
+        properties:
+          title: Proprietăți
+          section:
+            common: Parametrii generali
+            validation: Parametrii de validare
+          label:
+            allowed_extensions: Extensii permise
+            auto_option_sorting: Sortați automat opțiunile în ordine alfabetică
+            available_locales: Locale disponibile
+            code: Cod
+            date_max: Data max
+            date_min: Data min
+            decimals_allowed: Valorile zecimale permise
+            default_metric_unit: Unitate metrică implicită
+            group: Grup de atribut
+            is_locale_specific: Specific local
+            localizable: Valoare pe local
+            max_characters: Caractere max
+            max_file_size: Mărimea maximă a fișierului (MB)
+            metric_family: Familie metrică
+            minimum_input_length: Lungimea minimă pentru autocompletare
+            negative_allowed: Valorile negative permise
+            number_max: Max număr
+            number_min: Min număr
+            scopable: Valoare pe canal
+            type: Tip
+            unique: Valoare unică
+            useable_as_grid_filter: Utilizabil în grilă
+            validation_regexp: Expresie regulară
+            validation_rule: Regulă de validare
+          default_label:
+            default_metric_unit: Alegeți o unitate
+            group: Alegeți un grup de atribut
+            metric_family: Alegeți o familie
+            reference_data_name: Alege tipul datelor de referință
+        labels:
+          title: Traduceri de etichetă
+        choices:
+          title: Opțiuni
+        history:
+          title: Istoric
+    mass_edit:
+      family:
+        attributes:
+          label_label: Etichetă
+          toolbox:
+            select_attributes_by_groups: Adăugați pe grupuri
+            select_attributes: Adăugați atribute
+            add: Adaugă
+            attributes_groups_selected: '{{ itemsCount }} grup(uri) selectate'
+    basket:
+      title: Coş
+      empty_basket: Coșul este gol
+  export:
+    product:
+      data:
+        title: Filtrează produsele
+      structure:
+        title: Filtrează datele
+        attributes:
+          title: Atribute
+      filter:
+        channel:
+          title: Canal
+        locales:
+          title: Locale
+          help: "Localele definesc valoarilr de produs localizate pentru exportare. Ex: doar informații de produs în limba Franceză."
+        attributes:
+          title: Atribute
+          edit: Modifică
+          help: "Selecționează informațiile de produs de exportat. Ex: doar atribute tecnice."
+          empty: Toate atributele vor fi exportate
+          modal:
+            apply: Aplică
+            cancel: Anulează
+            title: Selectarea de atribute
+        attributes_selector:
+          attribute_group: Grupuri de atribute
+          selected: "Atributele selectate"
+          clear: Curăță
+          all_group: Toate grupurile
+          empty_selection: Toate atributele vor fi exportate
+          title: Atribute
+        family:
+          title: Familie
+          help: "Selectează produsele pentru exportare după familia lor. De exemplu: Exportă doar pantofii și rochiile."
+          operators:
+            IN: În listă
+            "NOT IN": Nu este în listă
+            EMPTY: Produsele care nu au o familie
+            "NOT EMPTY": Produsele care au o familie
+          empty_selection: Nici o condiție pe familii
+        updated:
+          title: Condiție de timp
+          operators:
+            ALL: Nici o condiție de dată
+            "SINCE LAST N DAYS": 'Produse actualizate în ultimele n zile (ex: 6)'
+            ">": Produse actualizate de la data de
+            "SINCE LAST JOB": Produse actualizate de la ultimul export
+        enabled:
+          title: Stare
+          help: "Seleczionează produsele de exportat după starea lor. Ex: Exportă produsele oricare ar fi starea lor."
+          value:
+            all: Tot
+            enabled: Activat
+            disabled: Dezactivat
+        completeness:
+          title: Completitudine
+          help: Seleczionează produsele de exportat după completitudinea lor.
+          operators:
+            ALL: Nici o condiție pe completitudine
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Completat măcar pe un locale selectat
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Completat pe toate localele selectate
+            LOWER THAN ON ALL LOCALES: Nu a fost completat pe toate localele selectate
+          empty_selection: Alegeți o familie
+        category:
+          title: Categorie
+          help: Foloseşte categoriile de produs în arbore (definit de canalul de mai sus) pentru a selecta produsele de exportat
+        identifier:
+          title: Identificator
+        metric:
+          operators:
+            "=": Este egal cu
+            "!=": Nu este egal cu
+            ">=": Mai mare sau egal cu
+            ">": Mai mare de
+            "<=": Mai mic sau egal cu
+            "<": Mai mic de
+            EMPTY: Este gol
+            NOT EMPTY: Nu este gol
+        string:
+          operators:
+            ALL: Tot
+            CONTAINS: Conține
+            DOES NOT CONTAIN: Nu conține
+            "=": Este egal cu
+            STARTS WITH: Începe cu
+            ENDS WITH: Se termină cu
+            EMPTY: Este gol
+            NOT EMPTY: Nu este gol
+        price-collection:
+          operators:
+            "=": Este egal cu
+            "!=": Nu este egal cu
+            ">=": Mai mare sau egal cu
+            ">": Mai mare decât
+            "<=": Mai mic sau egal cu
+            "<": Mai mic decât
+            EMPTY: Este gol
+            NOT EMPTY: Nu este gol
+        multi_select:
+          operators:
+            IN: În listă
+            EMPTY: Este gol
+            NOT EMPTY: Nu este gol
+        media:
+          operators:
+            CONTAINS: Conține
+            DOES NOT CONTAIN: Nu conține
+            "=": Este egal cu
+            STARTS WITH: Începe cu
+            ENDS WITH: Se termină cu
+            EMPTY: Este gol
+            NOT EMPTY: Nu este gol
+        date:
+          operators:
+            ">": Mai mare de
+            "<": Mai mic de
+            "=": Este egal cu
+            "!=": Nu este egal cu
+            BETWEEN: Între
+            NOT BETWEEN: Nu e între
+            EMPTY: Este gol
+            NOT EMPTY: Nu este gol
+        number:
+          operators:
+            "=": Este egal cu
+            "!=": Nu este egal cu
+            ">=": Mai mare sau egal cu
+            ">": Mai mare de
+            "<=": Mai mic sau egal cu
+            "<": Mai mic de
+            EMPTY: Este gol
+            NOT EMPTY: Nu este gol
+      properties:
+        title: Propietati
+      global_settings:
+        title: Setări globale
+  index:
+    import_profiles:
+      list: Selectează o sarcină
+      create_popin:
+        title: Creează
+    group:
+      create_btn: Creează grup
+    export_profiles:
+      create_popin:
+        title: Creează
+    user:
+      create_btn: Creează utilizator
+    user_role:
+      create_btn: Creează rol
+    user_group:
+      create_btn: Creează grup
+    attribute:
+      create_btn: Creează atribut
+      modal_title: Alegeți un tip de atribut
+    attribute_group:
+      title: Grupuri de atribute
+      create_btn: Creează
+    api_connection:
+      create_btn: Creează
+  mass_edit:
+    next: Următorul
+    previous: Înapoi
+    cancel: Anulare
+    confirm: Confirmă
+    product:
+      step:
+        select:
+          label: Alegeți produsele
+        choose:
+          label_count: "] 0, inf [selectați acțiune"
+        configure:
+          label: Configurați
+        confirm:
+          label: Confirmă
+      operation:
+        change_status:
+          label: Schimbă status
+          description: Produsele selectate vor bi activate sau dezactivate.
+          field: A activa
+        edit_common:
+          description: Doar atributele care aparțin de familiile produselor selectate vor fi editate cu următoarele date pentru localul {{ locale }} și canalul {{ scope }}.
+        change_family:
+          label: Schimbați familia
+          description: Familia produselor selectate va fi schimbată la familia aleasă
+          field: Familie
+        add_to_group:
+          label: Adăugați la grupe
+          description: Selectați grupurile în care să se adauge produsele selectate
+          field: Grupuri
+        add_to_category:
+          label: Adăugați la categorii
+          description: Produsele vor fi clasificate în următoarele categorii, clasificarea existentă se păstrează.
+        move_to_category:
+          label: Mută între categorii
+          description: Produsele vor fi clasificate în următoarele categorii, clasificarea existentă este pierdută.
+        remove_from_category:
+          label: Eliminați din categorii
+          description: Produsele vor fi eliminate din categoriile următoare.
+        add_to_existing_product_model:
+          label: Adăugați la un model de produs existent
+          description: Modelul produsului selectat va strânge produsele și permite îmbogățirea proprietăților lor comune.
+    family:
+      step:
+        select:
+          label: Alege familiile
+        choose:
+          label_count: "] 0, inf [selectați acțiune"
+        configure:
+          label: Configurare
+        confirm:
+          label: Confirmă
+      operation:
+        set_requirements:
+          label: Setează cerințele atributelor
+pim_enrich.error:
+  exception.title: Ohh nu! O eroare {{ status_code }} a apărut...
+  http:
+    403: Interzis. Nu sunteți permiși să accesați această pagină
+#Page titles
+page_title:
+  oro_default: Tablou de bord
+  pim_enrich_attributegroup_index: Grupuri de atribute
+  pim_enrich_attributegroup_create: Grupe de atribute | Creează
+  pim_enrich_categorytree_index: Mulțimea de categorii
+  pim_enrich_categorytree_create: Mulțimi de categorii | Creează
+  pim_enrich_categorytree_create_tree: Mulțimi de categorii | Creează
+  pim_enrich_attribute_index: Atribute
+  pim_enrich_attribute_create: Atribute | Creează
+  pim_enrich_product_index: Produse
+  pim_enrich_family_index: Familii
+  pim_enrich_channel_index: Canale
+  pim_enrich_channel_create: Canale | Creează
+  pim_enrich_channel_edit: Canlalul {{ channel.label }} | Editare
+  pim_enrich_currency_index: Valute
+  pim_enrich_locale_index: Locale
+  pim_enrich_group_index: Grupuri
+  pim_enrich_group_edit: Grupul {{ group.label }} | Editare
+  pim_enrich_associationtype_index: Tipuri de asociație
+  pim_enrich_associationtype_edit: Tip de asociație {{ association type.label }} | Editare
+  pim_enrich_grouptype_index: Tipuri de grup
+  pim_enrich_grouptype_edit: Tip de grup {{ group type.label }} | Editare
+  pim_enrich_mass_edit_action_choose: Editare în masă | Alege
+  pim_enrich_mass_edit_action_configure: Editare în masă | Configurează
+  pim_enrich_job_tracker_index: Monitorizare procese
+  pim_enrich_job_tracker_show: Monitorizare procese | Arată sarcină
+  pim_enrich_api_connection_index: Conexiunile API
+  pim_enrich_api_connection_create: Conexiunile API | Creare
+  pim_enrich_mass_edit_action: Editare în masă
+  pim_analytics_system_info_index: Informație sistem
+#Batch job labels
+batch_jobs:
+  add_product_value:
+    label: Adăugați valoarea produsului
+    perform:
+      label: Adăugați valoarea produsului
+  update_product_value:
+    label: Actualizați valoarea produsului
+    perform:
+      label: Actualizați valoarea produsului
+  edit_common_attributes:
+    label: Editați atributele
+    perform:
+      label: Modifică atribute
+    cleaner:
+      label: Curățați fișierele pentru atribute
+  add_to_category:
+    label: Adăugați la categorie
+    perform:
+      label: Adăugați la categorie
+  move_to_category:
+    label: Mutați la categorie
+    perform:
+      label: Mutați la categorie
+  remove_from_category:
+    label: Eliminați din categorie
+    perform:
+      label: Eliminați din categorie
+  add_to_existing_product_model:
+    label: Adăugați la un model al produsului existent
+    perform:
+      label: Adăugați la un model de produs existent
+  set_attribute_requirements:
+    label: Setează cerințele atributelor
+    perform:
+      label: Setează cerințele atributelor
+  csv_product_quick_export:
+    quick_export.label: CSV produs export rapid
+    quick_export_product_model.label: CSV model de produs export rapid
+    perform:
+      label: CSV produs export rapid
+  xlsx_product_quick_export:
+    quick_export.label: XSLX produs export rapid
+    quick_export_product_model.label: XSLX model de produs export rapid
+    perform:
+      label: XSLX produs export rapid
+  csv_product_export:
+    label: Export produs în CSV
+    export.label: Export produs
+  csv_product_model_export:
+    label: Export model de produs în CSV
+    export.label: Export produs
+  csv_category_export:
+    label: Export categorie în CSV
+    export.label: Export categorie
+  csv_attribute_export:
+    label: Export atribut în CSV
+    export.label: Export atribut
+  csv_attribute_option_export:
+    label: Export opziuni de atribut în CSV
+    export.label: Export opziuni de atribut
+  csv_association_type_export:
+    label: Export tip de atribut în CSV
+    export.label: Export tip de asociere
+  csv_group_export:
+    label: Export grup în CSV
+    export.label: Export grup
+  csv_family_export:
+    label: Export familie în CSV
+    export.label: Export familie
+  csv_family_variant_export:
+    label: Export variantă de familie în CSV
+    export.label: Export varianta de familie
+  csv_product_import:
+    label: Import de produs în CSV
+    validation.label: Validarea fișierului
+    import.label: Import produs
+    import_associations.label: Import asociație
+  csv_category_import:
+    validation.label: Validarea fișierului
+    import.label: Import categorie
+  csv_attribute_import:
+    validation.label: Validarea fișierului
+    import.label: Import atribut
+  csv_attribute_option_import:
+    label: Import de opțiune a atributului în CSV
+    validation.label: Validarea fișierului
+    import.label: Import de opțiune a atributului
+  csv_association_type_import:
+    label: Import de tipul asociației în CSV
+    validation.label: Validarea fișierului
+    import.label: Import tip de asociație
+  csv_family_import:
+    label: Import familie în CSV
+    validation.label: Validarea fișierului
+    import.label: Import familie
+    compute_data_related_to_family_variants.label: Calculează datele ale modelelor de produse
+  csv_family_variant_import:
+    label: Import varianta de familie în CSV
+    validation.label: Validarea fișierului
+    import.label: Export varianta de familie
+  csv_group_import:
+    label: Import de grup în CSV
+    validation.label: Validarea fișierului
+    import.label: Import grup
+  csv_channel_export:
+    label: Export canal în CSV
+    export.label: Export canal
+  csv_locale_export:
+    label: Export local în CSV
+    export.label: Export local
+  csv_attribute_group_export:
+    label: Export grup de atribut în CSV
+    export.label: Export grup de atribut
+  csv_currency_export:
+    label: Export valută în CSV
+    export.label: Export valută
+  csv_group_type_export:
+    label: Export tip de grup În CSV
+  csv_channel_import:
+    label: Import canal în CSV
+    validation.label: Validarea fișierului
+    import.label: Import canal
+  csv_locale_import:
+    label: Import local în CSV
+    validation.label: Validarea fișierului
+    import.label: Import local
+  csv_attribute_group_import:
+    label: Import grup de atribut în CSV
+    validation.label: Validarea fișierului
+    import.label: Import grup de atribut
+  csv_currency_import:
+    label: Import valută în CSV
+    validation.label: Validare fişier
+    import.label: Import valută
+  csv_group_type_import:
+    label: Import dip de grup în CSV
+    validation.label: Validare fişier
+    import.label: Import tip de grup
+  xlsx_category_import:
+    label: Import categorie în XLSX
+    validation.label: Validare fişier
+    import.label: Import categorie
+  xlsx_association_type_import:
+    label: Import tip de asociere în XLSX
+    validation.label: Validare fişier
+    import.label: Import tip de asociere
+  xlsx_attribute_import:
+    label: Import atribut în XLSX
+    validation.label: Validare fişier
+    import.label: Import atribut
+  xlsx_attribute_option_import:
+    label: Import opțiuni de atribut în XLSX
+    validation.label: Validare fişier
+    import.label: Import opțiuni de atribut
+  xlsx_family_import:
+    label: Import familie în XLSX
+    validation.label: Validare fişier
+    import.label: Import familie
+    compute_data_related_to_family_variants.label: Calculează datele ale modelelor de produse
+  xlsx_family_variant_import:
+    label: Import variantă familie în XLSX
+    validation.label: Validare fişier
+    import.label: Import variantă familie
+  xlsx_product_export:
+    label: Export produs în XLSX
+    export.label: Exportare produse
+  xlsx_product_model_export:
+    export.label: Export model de produs
+  xlsx_product_import:
+    validation.label: Validarea fișierului
+    import.label: Import produs
+    import_associations.label: Import asociație
+  xlsx_group_export:
+    label: Export grup în XLSX
+    export.label: Export grup
+  xlsx_group_import:
+    label: Import grup în XLSX
+    validation.label: Validarea fișierului
+    import.label: Import grup
+  xlsx_family_export:
+    export.label: Export familie
+  xlsx_family_variant_export:
+    export.label: Export varianta de familie
+  xlsx_category_export:
+    export.label: Export categorie
+  xlsx_channel_export:
+    export.label: Export canal
+  xlsx_locale_export:
+    export.label: Export local
+  xlsx_attribute_group_export:
+    export.label: Export grup de atribut
+  xlsx_currency_export:
+    export.label: Export valută
+  xlsx_channel_import:
+    validation.label: Validarea fișierului
+    import.label: Import canal
+  xlsx_locale_import:
+    label: Import local în XLSX
+    validation.label: Validarea fișierului
+    import.label: Import local
+  xlsx_attribute_group_import:
+    label: Import grup de atribut în XLSX
+    validation.label: Validarea fișierului
+    import.label: Import grup de atribut
+  xlsx_currency_import:
+    label: Import valută în XLSX
+    validation.label: Validarea fișierului
+    import.label: Import valută
+  xlsx_group_type_import:
+    label: Import tip de grup în XLSX
+    validation.label: Validarea fișierului
+    import.label: Import tip de grup
+job_tracker:
+  download_archive:
+    archive: Descarcă arhiva generată
+    output: Descarcă fișierele generate
+pim_menu:
+  tab:
+    activity: Activitate
+    imports: Importuri
+    products: Produse
+    exports: Exporturi
+    settings: Setări
+    system: Sistem
+    help:
+      title: Ajutor
+      helper: Centru de Ajutor Akeneo
+  item:
+    association_type: Tipuri de asociații
+    attribute: Atribute
+    attribute_group: Grupuri de atribute
+    category: Categorii
+    channel: Canale
+    currency: Valute
+    dashboard: Tablou de bord
+    family: Familii
+    group: Grupuri
+    group_type: Tipuri de grup
+    locale: Locale
+    product: Produse
+    product_model: Modele de Produse
+    published_product: Produse publicate
+    export_history: Istoricul exporturilor
+    export_profile: Exportă profile
+    import_history: Istoricul importurilor
+    import_profile: Importă profile
+    configuration: Configurație
+    user_management: Gestionarea Utilizatorilor
+    user: Utilizatori
+    user_group: Grupuri
+    user_role: Roluri
+    info: Informație despre sistem
+    job_tracker: Monitorizare procese
+    api_connection: Conexiuni API
+  user:
+    logout: Deconectează-te
+    user_account: Contul meu
+pim_notification:
+  mark_all_as_read: Marchează tot ca citit
+  loading: Se incarcă...
+catalog_volume:
+  axis:
+    count_products: Produse
+    count_channels: Canale
+    count_families: Familii
+    count_attributes: Atribute
+    count_categories: Categorii
+    count_category_trees: Mulțimea de categorii

@@ -1,0 +1,848 @@
+pim_enrich:
+  #Product
+  product:
+    tab:
+      attribute.title: Atribute
+      category.title: Categorii
+      association.title: Asocieri
+      completeness.title: Completitudine
+      history.title: Istoric
+    #Product comparison
+    no_comparison_locale_available: Nicio altă setare locală nu este disponibilă pentru comparație
+    no_compared_media: Niciun fișier media nu este disponibil pentru comparație
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parametri
+      value.title: Valori
+      history.title: Istoric
+  #Attribute group
+  attribute_group:
+    tab:
+      property.title: Proprietăți
+      attribute.title: Atribute
+      history.title: Istoric
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Nu se poate elimina acest atribut utilizat ca o varianta axin in o varianta familie
+    tab:
+      property.title: Proprietăți
+      attribute.title: Atribute
+      history.title: Istoric
+  #Association type
+  association_type:
+    tab:
+      property.title: Proprietăți
+      history.title: Istoric
+  #Group type
+  group_type:
+    tab:
+      property.title: Proprietăți
+  #Category
+  category:
+    tab:
+      property.title: Proprietăți
+      history.title: Istoric
+  #Locale
+  locale:
+    tab:
+      property.title: Proprietăți
+      permission.title: Permisiuni
+  #Product group
+  group:
+    axis.help: 'Axa definește atributele peste care produsele grupului ar trebui să varieze. Axa are atribute cu opțiuni, nu sunt localizabile și nu sunt integrate. Ele nu pot fi schimbate după creerea grupului de variante.'
+    type:
+      VARIANT: Variantă
+      X_SELL: Vinde X
+      ADDITIONAL: Adițional
+      RELATED: Relatat
+    tab:
+      product.title: Produse
+      property.title: Proprietăți
+      history.title: Istoric
+  #Product completeness
+  completeness:
+    progress_bar.title: '%ratio%% complet (o valoare necesară)|%ratio%% complet (%count% valori necesare)'
+    subtitle: '{0} Complete|{1} o valoare lipsă|]1,Inf] %count% valori lipsă'
+    missing_attributes: Valoare lipsa|Valori lipsă
+    legend:
+      locale_not_associated: Local nu este asociat cu acest canal
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Vă rugăm să alegeți mai puțin de %limit% elemente pentru a modifica
+    product:
+      page_title: Produse
+      page_subtitle: Editare în masă (1 produs)|Editare în masă (%count% produse)
+      title: Alege operație
+      subtitle: Alege operația pe care dorești să o efectuezi pe produsul selectat|Alege operația pe care dorești să o efectuezi pe %count% de produse selectate
+      confirm: Sunteți pe cale să actualizezi produsul cu următoarele informații, vă rugăm să confirmați.|Sunteți pe cale să acualizezi %count% produse cu următoarele informații, vă rugăm să confirmați.
+      steps:
+        first: Alege produse
+        second: Alege operațiune
+        third: Configurare
+        fourth: Confirmă
+    family:
+      page_title: Familii
+      page_subtitle: Editare in masa (1 familie)|Editare in masa (%count% familii)
+      title: Alege Operatiunea
+      subtitle: Alegeţi operația pe care doriţi să o efectuaţi pe familia selectata | Alegeţi operaţiunea pe care doriţi să o efectuaţi pe cele %count% familii selectate
+      confirm: Sunteți pe cale de a actualiza familia cu următoarele informații, vă rugăm să confirmați.|Sunteți pe cale de a actualiza %count% familii cu următoarele informații, vă rugăm să confirmați.
+      steps:
+        first: Alege familiile
+        second: Alege operațiune
+        third: Configurare
+        fourth: Confirmă
+    change-status:
+      label: Schimbă status
+      description: Produsele selectate vor fi activate sau dezactivate.
+      success_flash: Statusul produsului/produselor a fost schimbat
+      launched_flash: Acțiunea în masă "schimbă status" a fost lansată. Vei fi notificat când este gata.
+    edit-common-attributes:
+      label: Modifică atribute
+      empty: Selectează atributul/atributele pe care dorești să le modifici
+      success_flash: Sarcina de actualizare a produsului/produselor se execută
+      message:
+        warning: Nu există niciun atribut în comun pentru produsele selectate. Vă rugăm să vă schimbați selecția.
+        invalid_attribute: Atributul cu codul "attribute_code nu este comun produselor selectate, se sare peste atribut.
+        no_valid_attribute: Niciunul dintre atributele selectate nu poate fi aplicat acestui produs.
+    classify-add:
+      label: Adăugați la categorii
+      description: Produsele vor fi poziționate în următoarele categorii, poziționarea actuală este păstrată.
+      success_flash: Produsul/produsele au fost clasificate în categoriile selectate
+      launched_flash: Acțiunea în masă "adaugă la categorii" a fost lansată. Vei fi notificat când este gata.
+    classify-move:
+      label: Mută între categorii
+      description: Produsele vor fi poziționate în următoarele categorii, poziționarea actuală este pierdută.
+      success_flash: Produsul/produsele au fost mutate în categoriile selectate
+      launched_flash: Acțiunea în masă "mută la categorii" a fost lansată. Vei fi notificat când este gata.
+    classify-remove:
+      label: Eliminați din categorii
+      description: Produsele vor fi eliminate din categoriile următoare.
+      success_flash: Produsul/produsele au fost eliminate din categoriile selectate
+      launched_flash: Acțiunea în masă "elimină din categorii" a fost lansată. Vei fi notificat când este gata.
+    change-family:
+      label: Schimbați familia
+      description: Familia produselor selectate va fi schimbată în familia aleasă
+      success_flash: Familia produsului/produselor a fost schimbată cu succes
+      launched_flash: Acțiunea în masă "schimbă familia" a fost lansată. Vei fi notificat când este gata.
+    add-to-groups:
+      label: Adaugă la grupuri
+      description: Alege grupurile în care să adaugi produsele selectate
+      success_flash: Produsele au fost adăugate cu succes în grupurile selectate
+      launched_flash: Acțiunea în masă "adaugă la grupuri" a fost lansată. Vei fi notificat când este gata.
+      no_group: Niciun grup. Începeți prin a creea un grup.
+    set-attribute-requirements:
+      label: Setează cerințele atributelor
+      description: Următoarele cerințe de atribute vor fi aplicate familiilor selectate
+      success_flash: Cerințele de atribute au fost aplicate familiilor selectate
+      launched_flash: Acțiunea în masă "setează cerințe atribut" a fost lansată. Vei fi notificat când este gata.
+    mass_action:
+      quick_export:
+        launched_flash: Sarcina de exportare produse se execută
+  #Sequential edit operations
+  sequential_edit_action:
+    product:
+      previous: Sari înapoi la "%product%" fără salvare.
+      next: Sari la "%product%" fără salvare.
+  #ACLs
+  acl:
+    locale:
+      index: Listează locale
+    currency:
+      index: Listează valutele
+      toggle: Comută valuta
+    product:
+      index: Listează produsele
+      create: Creează un produs
+      edit_attributes: Modifică atributele unui produs
+      remove: Șterge un produs
+      add_attribute: Adaugă un atribut unui produs
+      remove_attribute: Șterge un atribut de la un produs
+      categories_view: Consultă categoriile unui produs
+      associations_view: Vezi asociaţiile unui produs
+      associations_edit: Adauga asociaţii la un produs
+      change_family: Schimbă familia produsului
+      add_to_groups: Adaugă produsul în grupuri
+      mass_edit: Acțiuni de modificare în masă a produsului
+      comment: Comentează produse
+      download: Descarcă produsul ca PDF
+      history: Vezi istoricul produsului
+    product_model:
+      create: Creati un model de produs
+      edit_attributes: Editaţi atributele unui model de produs
+      categories_view: Consultă categoriile unui model de produs
+      history: Vezi istoricul modelului de produs
+      remove: Sterge un model de produs
+    category:
+      list: Listează categoriile
+      create: Creează o categorie
+      edit: Modifică o categorie
+      remove: Șterge o categorie
+      move: Mută o categorie
+      children: Vizualizați subcategoriile
+      products: Vizualizați produsele categoriei
+      history: Vizualizați istoricul categoriei
+    channel:
+      index: Listează canalele
+      create: Creează un canal
+      edit: Modifică un canal
+      remove: Șterge un canal
+      history: Vezi istoricul canalului
+    family:
+      index: Listează familiile
+      create: Creează o familie
+      edit_properties: Modifică proprietățile unei familii
+      edit_attributes: Modifică atributele unei familii
+      remove: Șterge o familie
+      history: Vezi istoricul familiei
+    family_variant:
+      remove: Elimina o varianta a familiei
+    attribute_group:
+      index: Listeaza grupele de atribute
+      create: Creeaza un grup de atribute
+      edit: Modifică un grup de atribute
+      remove: Șterge un grup de atribute
+      sort: Sortează grupele de atribute
+      add_attribute: Adaugă un atribut la un grup
+      remove_attribute: Șterge un atribut de la un grup
+      history: Vezi istoricul grupului de atribut
+    attribute:
+      index: Listează atributele
+      create: Creeaza un atribut
+      edit: Modifică un atribut
+      remove: Șterge un atribut
+      sort: Sortează atributele din interiorul grupurilor de atribute
+      history: Vezi istoricul atributului
+    group:
+      index: Listează grupuri
+      create: Creează un grup
+      edit: Modifică un grup
+      remove: Șterge un grup
+      history: Vezi istoricul grupului
+    group_type:
+      index: Listează tipurile grupului
+      create: Creează un tip de grup
+      edit: Modifică tipul de grup
+      remove: Șterge un tip de grup
+    association_type:
+      index: Listează tipurile de asociere
+      create: Creează un tip de asociere
+      edit: Modifică un tip de asociație
+      remove: Șterge un tip de asociere
+      history: Vezi istoricul tipului de asociere
+    job_tracker:
+      index: Monitorizare procese
+  acl_group:
+    association_type: Tipuri de asociații
+    attribute: Atribute
+    attribute_group: Grupuri atribute
+    category: Categorii
+    channel: Canale
+    currency: Valute
+    family: Familii
+    group: Grupuri
+    group_type: Tipuri de grup
+    locale: Locale
+    product: Produse
+  reference_data:
+    empty_value:
+      reference_data_type:
+        label: Alege tipul datelor de referință
+#Entity and page header titles
+attribute:
+  title: atribut
+  edit: modifică atribut
+  create: creează atribut
+attribute group:
+  title: grup de atribut
+  overview: privirea de ansamblu a grupului de atribute
+  create: creează un grup de atribute
+  edit: modifică un tip de atribute
+  suggest creation: Vă rugăm selectați un grup de atribute din stânga
+  or: sau
+  create new: Creează un nou grup de atribut
+category:
+  title: categorie
+  overview: Categorii
+  create: creează categorie
+  edit: modifică categorie
+  suggest selection: Vă rugăm să selectați o categorie din stânga
+  or: sau
+tree:
+  title: arbore
+  edit: modifică arbore
+channel:
+  title: canal
+  overview: privirea de ansamblu a canalului
+  create: crează canal
+  edit: modifică canalul
+currency:
+  title: monedă
+  create: creează monedă
+  edit: modifică monedă
+family:
+  title: familie
+  edit: modifică familie
+locale:
+  title: local
+  create: creează local
+  edit: modifică local
+product:
+  title: produs
+  overview: privirea de ansamblu a produsului
+  create: creează produs
+  edit: modifică produs
+group:
+  title: grup
+  edit: modifică grup
+group type:
+  title: tipul grupului
+  edit: modifică tip de grup
+association type:
+  title: tip de asociere
+  create: creează tip de asociere
+  edit: modifică tipul de asociere
+#Custom titles
+products: produse
+#Buttons
+btn:
+  create:
+    attribute: creeaza atribut
+    attribute group: creează grup de atribute
+    category: creează categorie
+    channel: creează canal
+    currency: creează o monedă
+    family: creeaza familie
+    locale: creează local
+    product: creează produs
+    group: creează grup
+    association type: creează tip de asociere
+    group type: creează tip de grup
+    drag_or_upload: Trage și dă drumul aici pentru a încărca sau apasă aici
+  edit: modifică
+  save: salvează
+  save and create: salvează și creează unul nou
+  save and next: salvează si următorul
+  save and finish: salvează si termină
+  remove: elimină
+  delete: șterge
+  cancel: anulează
+  next: următorul
+  back: înapoi
+  confirm: confirmă
+  to grid: înapoi la grilă
+  to parent: înapoi la rădăcină
+  download_pdf: PDF
+  download: descarcă
+#Confirmation messages
+confirmation:
+  confirm: Confirmare
+  delete: Confirmă ștergerea
+  leave: Ești sigur că vrei să părăsești această pagină?
+  discard changes: Veți pierde modificările din %entity% dacă părăsești pagina.
+  remove:
+    item: Ești sigur că vrei să ștergi acest element?
+    attribute: Ești sigur că vrei să ștergi acest atribut %name%?
+    attribute group: Ești sigur că vrei să ștergi acest grup de atribute %name%?
+    category: Ești sigur că vrei să ștergi această categorie %name%?
+    family: Ești sigur că vrei să ștergi această familie %name%?
+    product: Ești sigur că vrei să ștergi acest produs %name%?
+    group: Ești sigur că vrei să ștergi acest grup %name%?
+    group type: Ești sigur că vrei să ștergi acest tip de grup %name%?
+    user: Ești sigur că vrei să ștergi acest utilizator %name%?
+  attribute group:
+    remove attribute: Ești sigur că vrei să ștergi acest atribut %name% din acest grup de atribute?
+  family:
+    remove attribute: Ești sigur că vrei să ștergi acest atribut %name% din această familie?
+  product:
+    remove attribute: Ești sigur că vrei să ștergi acest atribut %name% de la acest produs?
+#Flash messages
+flash:
+  entity:
+    removed: Elementul a fost şters
+  attribute:
+    created: Atributul a fost creeat cu succes
+    updated: Atributul a fost actualizat cu succes
+    removed: Atributul a fost şters
+    identifier_not_removable: Atributul de identificare nu poate fi eliminat
+  attribute group:
+    created: Grupul de atribute a fost creeat cu succes
+    updated: Grupul de atribute a fost actualizat cu succes
+    removed: Grupul de atribute a fost sters
+    attributes added: Atributele au fost adaugate la grupul de atribute
+    attribute removed: Atributele au fost șterse de la grupul de atribute
+    not removed attributes: Grupul de atribute nu poate fi șters deoarece conține atribute
+    not removed default: Grupul de atribute implicit nu poate fi șters
+    not removed default attributes: Atributele nu pot fi șterse din grupul de atribute implicit
+  category:
+    created: Categoria a fost creeată cu succes
+    updated: Categorie actualizată cu succes
+    removed: Categorie înlăturată cu succes
+  tree:
+    created: Arborele a fost creeat cu succes
+    updated: Arborele a fost actualizat cu succes
+    removed: Arborele a fost șters cu succes
+    not removable: Arborii asociați cu canalele nu pot fi șterse.
+  currency:
+    updated: Moneda a fost actualizată cu succes
+    error.linked_to_channel: Nu poți dezactiva o monedă legată la un canal.
+  family:
+    updated: Familia a fost actualizată cu succes
+    removed: Familia a fost ștearsă cu succes
+    identifier not removable: Atributul de identificare nu poate fi eliminat dintr-o familie
+    label attribute not removable: Acest atribut nu poate fi șters deoarece este folosit ca eticheta familiei
+    attribute not found: Atributul nu aparține acestei familii
+    attributes added: Atributele au fost adăugate familiei cu succes
+    attribute removed: Atributul a fost șters cu succes din familie
+  product:
+    created: Produsul a fost creeat cu succes
+    updated: Produsul a fost actualizat cu succes
+    removed: Produsul a fost şters cu succes
+    invalid: Vă rugăm să verificaţi intrarea și sa încercați din nou
+    attributes added: Atributele au fost adăugate la produs
+    attribute removed: Atributele au fost sterse de la produs
+    attribute not removable: Atributul nu poate fi șters de la acest produs
+    enabled: Produsul a fost activat
+    disabled: Produsul a fost dezactivat
+  group:
+    updated: Grup actualizat cu succes
+    removed: Grupul a fost şters cu succes
+  group type:
+    created: Tipul de grup a fost creat cu succes
+    updated: Tipul de grup a fost actualizat cu succes
+    removed: Tipul de grup a fost şters cu succes
+    cant remove used: Tipul de grup este folosit de unele grupe și nu poate fi șters
+  association type:
+    created: Tipul de asociație a fost creeat cu succes
+    updated: Tipul de asociație a fost actualizat cu succes
+    removed: Tipul de asociație a fost șters cu succes
+  user:
+    removed: Utilizatorul a fost șters cu succes
+  error ocurred: Operația a eșuat. Vă rugăm reîncercați.
+#Info messages
+info:
+  updated: Există schimbări nesalvate.
+  category:
+    remove children: Toate subcategoriile vor fi șterse.
+    keep products: Produsele în aceste categorii nu vor fi șterse.
+    products limit exceeded: Categoria conține mai multe produse decât este permis pentru această operație (limita maximă de produse este de %limit%)
+  product:
+    no available attributes: Nu mai există atribute de adăugat
+    no family defined: Nicio familie definită
+    change family: Schimbă familia de produs
+    change family to: Schimbă familia la
+    merge attributes: Atributele curente vor fi fuzionate cu cele din noua familie.
+    keep attributes: Niciun atribut nu va fi șters.
+    number of associations: '%productCount% produse și %groupCount% grupuri'
+    enable: Activează
+    enabled: Activat
+    disable: Dezactivează
+    disabled: Dezactivat
+  group:
+    axis: 'Axa de variație: %attributes%'
+    select products: Vă rugăm selectați produsele care ar trebui să aparțină acestui grup.
+    selectable products: Următoarele produse selectabile au o valoare definită pentru fiecare axă.
+    no group types: Nu există niciun tip de grup, apasă aici pentru a creea unul
+    more products: 'încă %count% produse...'
+  association type:
+    show products: Afișează produsele
+    show groups: Afişează grupurile
+    remove from products: Ștergerea tipul de asociație îl va elimina din %count% produse.
+    none exist: Niciun tip de asociație nu există.
+    create one: Apasă aici pentru a creea unul
+  attribute:
+    auto option sorting: Daca sunt abilitate, optiunile vor fi sortate in mod automat dupa etichetele de localizare
+  completeness:
+    not calculated: Nu a fost încă calculat
+#Form elements
+Options: Opţiuni
+Created at: Creat la
+Updated at: Actualizat pe
+Created: Creat
+Updated: Actualizat
+Last update: Ultima actualizare
+by: De
+N/A: Indisponibil
+Manage products: Gestionați produse
+Manage groups: Gestionați grupuri
+Code: Cod
+Name: Nume
+Type: Tip
+Scope: Canal
+Required: Necesar
+Unique: Unic
+Not required: Nu este necesar
+Translatable: Traductibil
+Localizable: Localizabil
+Unique value: Valoare unică
+Attribute group: Grup de atribut
+Other: Altul
+Edit: Modifică
+Remove: Elimină
+Delete: Şterge
+Parameters: Parametri
+System: Sistem
+Values: Valori
+General parameters: Parametrii generali
+Backend parameters: Parametrii backend
+Label: Etichetă
+Default label: Etichetă implicită
+Default value: Valoare implicită
+Attributetype: Tip de atribut
+Attribute type: Tip de atribut
+Defaultvalue: Valoare implicită
+Variant: Variantă
+Smart: Intelingent
+Useable as grid filter: Utilizabil în grilă
+Family: Familie
+Image: Imagine
+Available locales: Locale disponibile
+Locale specific: Specific local
+default: Prestabilit
+Axis: Axă
+Add attributes: Adaugă atribut
+Translate from: Tradu din
+switch_on: "Da"
+switch_off: "Nu"
+Close: Inchide
+Search: Cautare
+Choose the attribute type: Alegeți un tip de atribut
+Choose the attribute group: Alegeți un grup de atribut
+Drag and drop a file or click here: Trageți și lasăți un fișier sau apăsați aici
+Drop an image or click here: Plasați o imagine sau apăsați aici
+Automatic option sorting: Sortarea automată a opțiunilor
+save_attribute_before_manage_option: Pentru a administra opțiunile, vă rugăm să salvați atributul mai întâi
+Please select: Vă rugăm să selectați
+Active: Activ
+Inactive: Inactiv
+Do not convert: Nu converti
+Create: Creează
+Cancel: Anulează
+Choose a family: Alegeți o familie
+Choose a unit: Alegeți o unitate
+No matches found: Nicio potrivire găsită
+Category tree: Mulțimea de categorii
+Completeness: Completitudine
+Attribute used as label: Atribut folosit ca etichetă
+#Scopes
+Global: Global
+Channel: Canal
+Expand all channels: Extinde toate canalele
+Collapse all channels: Restrânge toate canalele
+#Variants
+Always override: Scrie peste întotdeauna
+Ask: Întreabă
+#Attribute group
+General Properties: Proprietăți generale
+New group: Grup nou
+Groups overview: Privirea de ansamblu a grupurilor
+'Y-m-d h:i:s': 'A-l-z o:m:s'
+#Attribute properties
+Max characters: Caractere maxime
+Validation rule: Regulă de validare
+Wysiwyg enabled: WYSIWYG activat
+Number min: Număr minim
+Number max: Număr maxim
+Decimals allowed: Permite zecimale
+Negative allowed: Permite valori negative
+Date min: Data min
+Date max: Data max
+Metric family: Familie metrică
+Default metric unit: Unitate metrică implicită
+Max file size: Mărimea maximă a fișierului (MB)
+Allowed extensions: Extensii permise
+None: Niciunul
+E-mail: Adresa de e-mail
+URL: URL
+Regular expression: Expresie regulară
+Minimum input length: Lungime minimă de intrare
+Default: Prestabilit
+#Family
+Attributes: Atribute
+#Category
+Title: Titlu
+#Page titles
+pim_title.attribute_group:
+  index: "Grupuri atribute"
+  create: "Grupe de atribute | Creează"
+  edit: "Grupe de atribute %group.label% | Modifică"
+pim_title.category:
+  index: "Mulțimea de categorii"
+  create: "Mulțimi de categorii | Creează"
+  edit: "Mulțimi de categorii %category.label% | Modifică"
+pim_title.attribute:
+  index: "Atribute"
+  create: "Atribute | Creează"
+  edit: "Atributele %attribute.label% | Modifică"
+pim_title.product:
+  index: "Produse"
+pim_title.family:
+  index: "Familii"
+  edit: "Familii %family.label% | Modifică"
+pim_title.channel:
+  index: "Canale"
+  create: "Canale | Creează"
+  edit: "Canale %channel.label% | Modifică"
+pim_title.currency:
+  index: "Valute"
+pim_title.locale:
+  index: "Locale"
+pim_title.group:
+  index: "Grupuri"
+  edit: "Grupuri %group.label% | Modifică"
+pim_title.association_type:
+  index: "Tipuri de asociație"
+  edit: "Tipuri de asociație %association type.label% | Modifică"
+pim_title.group_type:
+  index: "Tipuri de grup"
+  edit: "Tipuri de grup %group type.label% | Modifică"
+pim_title.mass_edit_product_action:
+  choose: "Editare în masă | Alege"
+  configure: "Editare în masă | Configurează"
+pim_title.mass_edit_family_action:
+  choose: "Editare în masă | Alege"
+  configure: "Editare în masă | Configurează"
+pim_title.job_tracker:
+  index: Monitorizare procese
+  show: "Monitorizare procese | Arată sarcină"
+pim_title.dashboard: "Tablou de bord"
+pim_catalog_identifier: Identificator
+pim_catalog_text: Text
+pim_catalog_textarea: Zonă text
+pim_catalog_number: Număr
+pim_catalog_price_collection: Preţ
+pim_catalog_multiselect: Selecție multiplă
+pim_catalog_simpleselect: Selectaţi simplu
+pim_catalog_file: Fișier
+pim_catalog_image: Imagine
+pim_catalog_boolean: "Da/Nu"
+pim_catalog_date: Data
+pim_catalog_metric: Metric
+pim_reference_data_simpleselect: Selectarea simplă a datei de referințe
+pim_reference_data_multiselect: Selectarea multi a datei de referință
+#Locales
+Activated: Activat
+Disable: Dezactivează
+#Sequential edit operations
+pim_enrich.sequential_edit_action:
+  product:
+    previous: Sari înapoi la "%product%" fără salvare.
+    next: Sari la "%product%" fără salvare.
+#Mass edit operations
+pim_enrich.mass_edit_action:
+  limit_exceeded: Vă rugăm să alegeți mai puțin de %limit% elemente pentru a modifica
+  product:
+    page_title: Produse
+    page_subtitle: Editare în masă (1 produs)|Editare în masă (%count% produse)
+    title: Alege operație
+    subtitle: Alege operația pe care dorești să o efectuezi pe produsul selectat|Alege operația pe care dorești să o efectuezi pe %count% de produse selectate
+    confirm: Sunteți pe cale să actualizezi produsul cu următoarele informații, vă rugăm să confirmați.|Sunteți pe cale să acualizezi %count% produse cu următoarele informații, vă rugăm să confirmați.
+    steps:
+      first: Alege produse
+      second: Alege operațiune
+      third: Configurare
+      fourth: Confirmă
+  family:
+    page_title: Familii
+    page_subtitle: Editare in masa (1 familie)|Editare in masa (%count% familii)
+    title: Alege operațiune
+    subtitle: Alegeţi operația pe care doriţi să o efectuaţi pe familia selectata | Alegeţi operaţiunea pe care doriţi să o efectuaţi pe cele %count% familii selectate
+    confirm: Sunteți pe cale de a actualiza familia cu următoarele informații, vă rugăm să confirmați.|Sunteți pe cale de a actualiza %count% familii cu următoarele informații, vă rugăm să confirmați.
+    steps:
+      first: Alege familiile
+      second: Alege operațiune
+      third: Configurare
+      fourth: Confirmă
+  change-status:
+    label: Schimbă status
+    description: Produsele selectate vor fi activate sau dezactivate.
+    success_flash: Statusul produsului/produselor a fost schimbat
+  edit-common-attributes:
+    label: Modifică atribute
+    empty: Selectează atributul/atributele pe care dorești să le modifici
+    success_flash: Atributul/atributele produselor/produsului au fost actualizate
+    message.warning: Nu există atribute în comun pentru produsele selectate. Vă rugăm să vă schimbați selecția.
+    no_attribute.warning: Nu există niciun atribut în comun pentru produsele selectate. Vă rugăm să vă schimbați selecția.
+  classify:
+    label: Adăugați la categorii
+    description: Produsele vor fi poziționate în următoarele categorii, poziționarea actuală este păstrată.
+    success_flash: Produsul/produsele au fost clasificate în categoriile selectate
+  change-family:
+    label: Schimbați familia
+    description: Familia produselor selectate va fi schimbată în familia aleasă
+    success_flash: Familia produsului/produselor a fost schimbată cu succes
+    no_family: Nicio familie
+  add-to-groups:
+    label: Adaugă la grupuri
+    description: Alege grupurile în care să adaugi produsele selectate
+    success_flash: Produsele au fost adăugate cu succes în grupurile selectate
+  set-attribute-requirements:
+    label: Setează cerințele atributelor
+    description: Următoarele cerințe de atribute vor fi aplicate familiilor selectate
+    success_flash: Cerințele de atribute au fost aplicate familiilor selectate
+To enable: A activa
+Select attributes: Selectează atributele
+Select: Selectează
+Remove this attribute: Elimină atributul
+Copy: Copiază
+Current tab: Fila curentă
+#Product view
+Group: Grup
+View group: Vezi grup
+Products: Produse
+#Tabs
+Properties: Propietati
+History: Istoric
+pane.accordion:
+  node_values: Valori de terminal
+  general_properties: Proprietăți generale
+  locale_values: Valori locale
+  backend_parameters: Parametrii backend
+  general_parameters: Parametrii generali
+  validation_parameters: Parametrii de validare
+  label_translations: Traduceri de etichetă
+  options: Opţiuni
+#Popin titles
+popin.create:
+  association_type.title: Creează un nou tip de asociere
+  group.title: Creează un grup nou
+  product.title: Creează un produs nou
+  option.title: Creează o opțiune nouă
+#Datagrid contents
+In group: În grup
+Attribute as label: Atribut ca etichetă
+Is associated: Este asociat
+Complete: Complet
+Created At: Creat la
+Updated At: Actualizat pe
+Enabled: Activat
+Disabled: Dezactivat
+Status: Stare
+Action: Acțiune
+Version: Versiune
+Data: Date
+Author: Autor
+Logged at: Conectat la
+Deleted: Șters
+Old values: Valorile vechi
+New values: Valorile noi
+#Configuration
+System configuration: Configurarea sistemului
+General setup: Setarea generală
+Localization: Localizare
+Locale: Local
+Location: Locație
+Format address by address country: Formatează adresele după țară
+Language: Limbă
+Timezone: Fus orar
+Currency: Monedă
+settings: Setări
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "cartier"
+      state: "stat"
+      island: "insulă"
+      county: "județ"
+      area: "zonă"
+      prefecture: "prefectură"
+      department: "departament"
+      district: "sector"
+      province: "provincie"
+  form:
+    tooltip:
+      location: " Locația va fi folosită pentru a formata adresele atunci când opțiunea 'Formatează adresele după țară' va fi dezactivată"
+      format_address_by_address_country: "Selectarea acestei opțiuni va activa ca adresele să fie formatate după țara în care se află. Dezactivarea acestei opțiuni va cauza ca adresele să fie formatate dupa formatul adresei locației tale"
+      language: "Selectează limba sistemului pe care dorești să o folosești"
+      timezone: "Selectează fusul orar pentru afișarea datei și timpului"
+      currency: "Selectează moneda implicită"
+#Datagrid
+Selected products successfully deleted: Produsele selectate au fost șterse cu succes
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: Editarea în masă <strong>%label%</strong> a eșuat
+      warning: Editarea în masă <strong>%label%</strong> s-a terminat cu unele avertismente
+      success: Editarea în masă <strong>%label%</strong> a fost efectuată
+    quick_export:
+      error: Exportarea rapidă <strong>%label%</strong> a eșuat
+      warning: Exportarea rapidă <strong>%label%</strong> s-a finalizat cu unele avertismente
+job_execution.summary:
+  mass_edited: Modificat în masă
+  skip: Sărit
+  skipped_products: Produse sărite
+  skipped_attributes: Atributele sărite
+  skipped_families: Familii sărite
+pim_mass_edit_execution_show: Executări de editări în masă | Detalii
+edit_common_attributes.steps.edit_common_attributes_processor.title: Modifică atribute
+update_product_value.steps.update_product_value_processor.title: Actualizează valoarea produsului
+remove_product_value.steps.update_product_value_processor.title: Şterge valoare produs
+edit_common_attributes: Modifică atribute
+edit_common_attributes_clean: Curățați fișierele pentru atribute
+perform.steps.duplicated.title: Axă duplicată
+perform.steps.excluded.title: Produs exclus
+#Background jobs & steps labels
+batch_jobs:
+  add_product_value:
+    label: Adăugați valoarea produsului
+    perform:
+      label: Adăugați valoarea produsului
+  update_product_value:
+    label: Actualizați valoarea produsului
+    perform:
+      label: Actualizați valoarea produsului
+  edit_common_attributes:
+    label: Modifică atribute
+    perform:
+      label: Modifică atribute
+    clean:
+      label: Curățați fișierele pentru atribute
+    cleaner:
+      label: Curățați fișierele pentru atribute
+  add_to_category:
+    label: Adăugați la categorie
+    perform:
+      label: Adăugați la categorie
+  move_to_category:
+    label: Mutați la categorie
+    perform:
+      label: Mutați la categorie
+  remove_from_category:
+    label: Eliminați din categorie
+    perform:
+      label: Eliminați din categorie
+  add_to_existing_product_model:
+    label: Adăugați la un model al produsului existent
+    perform:
+      label: Adăugați la un model de produs existent
+  set_attribute_requirements:
+    label: Setează cerințele atributelor
+    perform:
+      label: Setează cerințele atributelor
+  xlsx_product_quick_export:
+    quick_export.label: Xlsx produs export rapid
+    perform:
+      label: Xlsx produs export rapid
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Xlsx contextul grila produs export rapid
+    perform:
+      label: Xlsx contextul grila produs export rapid
+mass_edit report:
+  overview: Raporturi de editare in masă
+job_tracker:
+  tab:
+    title: Monitorizare proces
+  filter:
+    started_at: Început la
+pim_enrich_attribute_form:
+  code: Cod
+  type: Tip de atribut
+  reference_data_name: Referinţă data nume
+  scopable: Valoare pe canal
+  localizable: Valoare pe local
+  unique: Valoare unica
+  availableLocales: Locale disponibile
+  locale_specific: Specific local
+  group: Grup de atribute
+  useableAsGridFilter: Utilizabil în grilă

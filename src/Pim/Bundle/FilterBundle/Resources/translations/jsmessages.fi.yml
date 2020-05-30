@@ -9,4 +9,6 @@ after: jälkeen
 from: mistä
 to: mihin
 and: ja
+system_filter_group: Järjestelmä
 oro_filter.filters.manage: Suodattimet
+oro_filter.placeholder.all: Kaikki

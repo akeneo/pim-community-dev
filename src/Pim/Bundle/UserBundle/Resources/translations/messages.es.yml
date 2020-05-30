@@ -104,6 +104,7 @@ Save and close: Guardar y cerrar
 Has role: Tiene rol
 role:
   title: rol
+  overview: rol
   edit: Editar rol
   create: Crear rol
 btn.create.role: Crear rol
@@ -149,6 +150,7 @@ oro:
       NONE: Ninguna
 #User Group
 Create group: Crear grupo
+btn.create.user-group: Crear grupo
 Has group: Tiene grupo
 Save and Close: Guardar y cerrar
 user-group.overview: Grupos
