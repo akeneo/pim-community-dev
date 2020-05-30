@@ -8,15 +8,160 @@ pim_connector:
       selector:
         modal:
           title: 类别选择
-          cancel: 取消
-          confirm: 确认
-        label: "{0} 所有产品 |{1} 一类别选择 |]1，Inf [{{ count }} 类别选择"
-        edit: 编辑
         title: 选择类别
     locales:
       validation:
         not_blank: 必须选择一个本地化语言，请选择要导出的本地化语言。
-page_title:
+pim_import_export:
+  entity:
+    job_instance:
+      label: 工作配置文件
+      flash:
+        update:
+          success: 工作配置文件已成功更新。
+          fail: 工作配置文件不能更新。
+        delete:
+          success: 工作实例已成功删除
+    import_profile:
+      uppercase_label: 导入配置文件
+      flash:
+        create:
+          success: 导入配置文件已成功创建
+    export_profile:
+      uppercase_label: 导出配置文件
+      flash:
+        create:
+          success: 导出配置文件已成功创建
+      module:
+        create:
+          button: 创建导入配置文件
+  form:
+    job_execution:
+      refreshBtn.title: 刷新
+      button:
+        show_profile.title: 显示配置文件
+        download_log.title: 下载日志
+        download_file.title: 下载已生成的文件
+        download_archive.title: 下载已生成的存档文件
+      summary:
+        fetching: 正在收集有关作业执行的数据...
+        warning: 警告
+        header.step: 步
+        header.warnings: 警告
+        header.summary: 总结
+        header.start: 开始
+        header.end: 结束
+    job_instance:
+      fail:
+        launch: 无法启动工作配置文件。请确保其有效性以及你拥有启动权限。
+        save: 无法保存工作配置文件。请确保你有权限去编辑它。
+      button:
+        export.title: 现在导出
+        import.launch: 现在导入
+        import.upload: 现在上传并导入
+        import.upload_file: 上传一个文件
+      meta:
+        job: 任务
+        connector: 连接器
+      subsection:
+        last_executions: 上一次执行
+      tab:
+        content:
+          title: 内容
+        properties:
+          decimal_separator:
+            title: 十进制数分割符
+            help: 确定十进制数分割符
+          date_format:
+            title: 日期格式
+            help: 确定日期字段的格式
+          file_path:
+            title: 文件路径
+            help: 将生成的文件写到哪里
+          delimiter:
+            title: 分隔符
+            help: 作为字段分隔符的单个字符
+          enclosure:
+            title: 附件
+            help: 作为字段分隔符的单个字符
+          with_header:
+            title: 包含标题
+            help: 是否打印列名称
+          with_media:
+            title: 导出文件和图像
+            help: 是否要导出产品文件和图片
+          lines_per_file:
+            title: 每个文件的行数
+            help: 定义每个文件的限制行数
+          upload_allowed:
+            title: 允许文件上传
+            help: 是否允许直接文件上传
+          categories_column:
+            title: 大类列
+            help: 大类列名称
+          escape:
+            title: 退出
+            help: 作为字段空白的单个字符
+          family_column:
+            title: 分类列
+            help: 分类列的名称
+          groups_column:
+            title: 分组列
+            help: 分组类的名称
+          enabled:
+            title: 启用此商品
+            help: 是否启用导入的商品
+          enabled_comparison:
+            title: 比对值
+            help: 开启原始值与导入值的比较。如果导入值与原始值比较接近，可以加快导入速度。
+          real_time_versioning:
+            title: 实时历史记录更新
+            help: 关闭产品历史自动更新以提高性能
+      file_path: 文件路径
+  widget:
+    last_operations:
+      empty: 无操作
+      date: 日期
+      profile_name: 配置方案名称
+      details: 详细资料
+      warning_count: 警告
+      job_type:
+        import: 导入
+        export: 导出
+        mass_edit: 批量编辑
+        quick_export: 快速导出
+      header.view_all: 显示所有
+  batch_status:
+    1: 已完成
+    2: Starting
+    3: Started
+    4: Stopping
+    5: Stopped
+    6: Failed
+    7: Abandoned
+    8: Unknown
+confirmation:
+  remove:
+    import_profile: 确定要删除这个导入配置文件吗？
+    export_profile: 确定要删除这个导出配置文件吗？
+    job_instance: 确定要删除这个工作实例吗？
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: 确定要删除这个导入配置文件吗？
+      flash:
+        delete:
+          success: 成功删除的导入配置文件
+    export_profile:
+      module:
+        delete:
+          confirm: 确定要删除这个导出配置文件吗？
+      flash:
+        delete:
+          success: 导出配置文件已删除
+pim_title:
   pim_importexport_export_profile_index: 导出配置文件管理
   pim_importexport_export_execution_index: 导出处理记录
   pim_importexport_export_execution_show: 导出处理记录|详情

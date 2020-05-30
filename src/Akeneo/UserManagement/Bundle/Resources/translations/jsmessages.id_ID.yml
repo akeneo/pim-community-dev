@@ -1,0 +1,74 @@
+pim_title:
+  pim_user_index: Pengguna
+  pim_user_role_index: Peran
+  pim_user_group_index: Grup Pengguna
+  oro_config_configuration_system: Konfigurasi
+  pim_user_edit: 'Pengguna {{ username }} | Pemandangan'
+  pim_user_create: 'Pengguna Dibuat'
+  pim_user_role_update: 'Peran {{ role }} | Mengedit'
+  pim_user_role_create: 'Peran | Membuat'
+  pim_user_security_login: Masuk
+  pim_user_reset_reset: Kata sandi diubah
+  pim_user_reset_request: Lupa kata sandi
+  pim_user_reset_check_email: Password Reset | Periksa Email
+  pim_user_group_create: 'Kelompok | Membuat'
+  pim_user_group_update: '{{ group }} kelompok | Mengedit'
+confirmation:
+  remove:
+    user: Apakah kamu yakin kamu ingin menghapus pengguna kelompok ini?
+    group: Yakin ingin menghapus grup ini?
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: Apakah kamu yakin kamu ingin menghapus pengguna kelompok ini?
+pim_user_management:
+  entity:
+    user:
+      properties:
+        username: Nama pengguna
+        name_prefix: Nama awalan
+        first_name: Nama Awal
+        middle_name: Nama Tengah
+        last_name: Nama Akhir
+        name_suffix: Nama akhiran
+        avatar: Avatar
+        email: Surel
+        catalog_locale: Lokal katalog
+        catalog_scope: Ruang lingkup katalog
+        default_tree: Pohon standar
+        default_asset_tree: Pohon aset bawaan
+        product_grid_filters: Filter grid produk
+        current_password: Kata sandi saat ini
+        new_password: Kata sandi baru
+        new_password_repeat: Kata sandi baru (ulangi)
+        password: Password
+        ui_locale: UI lokal
+        timezone: Zona waktu
+        default_product_grid_view: Tampilan grid produk standar
+        default_published_product_grid_view: Default tampilan tampilan grid produk #EE Only
+        proposals_to_review_notification: Ketika proposal baru ditinjau #EE Only
+        proposals_state_notifications: Ketika proposal diterima dan ditolak #EE Only
+      module:
+        create:
+          button: Buat pengguna
+        delete:
+          confirm: Apakah kamu yakin kamu ingin menghapus pengguna kelompok ini?
+        update:
+          additional: Tambahan
+          password: Password
+          interfaces: Antarmuka
+          notifications: Pemberitahuan #TODO EE Only
+    role:
+      plural_label: Peran
+      module:
+        create:
+          button: Buat peran
+        delete:
+          confirm: Anda yakin ingin menghapus peran ini?
+    group:
+      plural_label: Grup Pengguna
+      module:
+        create:
+          button: Buat grup

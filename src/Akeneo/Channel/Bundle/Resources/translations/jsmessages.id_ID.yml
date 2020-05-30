@@ -1,0 +1,65 @@
+batch_jobs:
+  csv_currency_export:
+    label: Ekspor mata uang di CSV
+    export.label: Ekspor mata uang
+  csv_currency_import:
+    label: Impor mata uang di CSV
+    import.label: Masukkan mata uang
+  xlsx_currency_export:
+    label: Ekspor mata uang dalam XLSX
+    export.label: Ekspor mata uang
+  xlsx_currency_import:
+    label: Currency impor di XLSX
+    import.label: Currency impor
+  csv_locale_export:
+    label: Ekspor lokal di CSV
+    export.label: Ekspor lokal
+  csv_locale_import:
+    label: Masukkan lokal di CSV
+    import.label: Masukkan lokal
+  xlsx_locale_export:
+    label: Ekspor lokal dalam XLSX
+    export.label: Ekspor lokal
+  xlsx_locale_import:
+    label: Impor lokal dalam XLSX
+    import.label: Impor lokal
+  csv_channel_export:
+    label: Channel export in CSV
+    export.label: Channel export
+  csv_channel_import:
+    label: Masukkan saluran di CSV
+    import.label: Masukkan saluran
+  xlsx_channel_export:
+    label: Ekspor saluran dalam XLSX
+    export.label: Ekspor saluran
+  xlsx_channel_import:
+    label: Impor saluran dalam XLSX
+    import.label: Channel import
+pim_enrich.entity.channel:
+  label: saluran
+  uppercase_label: Saluran
+  flash:
+    update:
+      success: Saluran berhasil diperbarui.
+      fail: Saluran tidak dapat diperbarui.
+    create:
+      success: Saluran berhasil dibuat.
+      fail: Saluran tidak dapat dibuat.
+    delete:
+      success: Sakuran berhasil dihapus
+      fail: Tidak bisa menghapus saluran ini
+  property:
+    category_tree: Pohon kategori
+    do_not_convert: Jangan diubah
+    label_conversion_units: Pilih sebuah unit konversi untuk setiap atribut metrik yang akan digunakan selama ekspor produk
+  module:
+    create:
+      button: Buat saluran
+    delete:
+      confirm: Apakah kamu yakin kamu ingin menghapus saluran ini?
+pim_enrich.entity.locale:
+  label: lokal
+  uppercase_label: Lokal
+  plural_label: Lokal
+pim_enrich.entity.currency:
+  plural_label: Mata Uang

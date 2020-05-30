@@ -1,0 +1,209 @@
+pim_enrich.entity.family:
+  label: keluarga
+  uppercase_label: Keluarga
+  plural_label: Keluarga
+  flash:
+    update:
+      success: Keluarga berhasil diperbaharui.
+      cant_remove_attribute_as_label: Tidak dapat menghapus atribut yang di gunakan sebagai label
+      cant_remove_attribute_as_image: Tidak dapat menghapus perlengkapan yang digunakan sebagai gambar utama
+      cant_remove_attribute_used_as_axis: Tidak dapat menghapus perlengkapan yang digunakan sebagai sumbu varian dalam varian keluarga
+    create:
+      success: Keluarga berhasil dibuat
+    delete:
+      success: Keluarga berhasil dilepas
+      fail: Tidak bisa menghapus keluarga ini
+  property:
+    attribute_as_label: Atribut digunakan sebagai label
+    attribute_as_image: Atribut digunakan sebagai gambar utama
+    empty_attribute_as_image: Tidak ada yang terpilih
+  module:
+    attributes:
+      not_required_label: Tidak dibutuhkan
+      required_label: Wajib
+    create:
+      button: Buat keluarga
+    delete:
+      confirm: Apa anda yakin ingin menghapus keluarga ini?
+pim_enrich.entity.family_variant:
+  short_plural_label: Berbeda
+  short_label: Varian
+  flash:
+    update:
+      success: Keluarga varian berhasil diperbarui. Produk dengan varian yang akan diperbarui dengan perubahan anda.
+    create:
+      success: Keluarga yang berbeda berhasil dibuat
+  module:
+    edit:
+      common_attributes: Kelengkapan biasa
+      no_common_attributes: Tidak ada kelengkapan biasa
+      variant_axis_label: Sumbu varian
+      variant_attributes: Variasi Atribut
+      level_1: Varian atribut tingkat satu
+      level_2: Varian atribut tingkat dua
+      description: Seret & lepaskan perlengkapan ke tingkat variasi yang dipilih agar perlengkapan ini dikelola pada bagian variasi.
+      confirm_attribute_removal_title: Konfirmasi hapus atribut
+      confirm_attribute_removal_message: Dengan menghapus atribut ini anda akan meletakkannya kembali ke atribut umum varian keluarga dan menghapus nilainya dari produk varian
+    create:
+      label: Tambah variasi
+      title: Buat varian keluarga baru
+      description: Dalam varian keluarga, anda dapat menetapkan struktur produk dengan varian. Pilih jumlah tingkat varian yang dikelola, perlengkapan yang digunakan sebagai sumbu varian untuk setiap tingkat, dan kemudian tentukan bagaimana perlengkapan didistribusikan.
+      variant_levels: Varian tingkat
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Pilihan
+  flash:
+    create:
+      success: Pilihan atribut berhasil dibuat
+    update:
+      fail: Tidak dapat menyimpan opsi perlengkapan
+    delete:
+      fail: Kesalahan saat penghapusan pilihan perlengkapan
+  module:
+    edit:
+      cancel_title: Batalkan perubahan
+pim_enrich.entity.association_type:
+  label: tipe asosiasi
+  flash:
+    update:
+      success: Kumpulan jenis berhasil diperbarui.
+      fail: Asosiasi jenis tidak dapat diperbarui.
+      fields_not_ready: "Jenis kumpulan tidak dapat disimpan sekarang. Bidang berikut belum siap: {{ bidang}}"
+    create:
+      success: Tipe asosiasi berhasil dibuat
+    delete:
+      success: Jenis asosiasi berhasil dihapus
+      fail: Tidak dapat menghapus jenis asosiasi ini
+  module:
+    create:
+      button: Buat tipe asosiasi
+    delete:
+      confirm: Apakah anda yakin anda ingin menghapus jenis asosiasi ini?
+pim_enrich.entity.group_type:
+  label: jenis kelompok
+  flash:
+    update:
+      success: Jenis kelompok berhasil diperbaharui.
+      fail: Tipe kelompok tidak dapat diperbaharui.
+      fields_not_ready: "Tipe kelompok tidak dapat disimpan sekarang. Bidang berikut belum siap: {{ fields }}"
+    create:
+      success: kelompok baru berhasil dibuat
+    delete:
+      success: Jenis grup berhasil dihapus
+      fail: Tidak bisa menghapus tipe kelompok ini
+  module:
+    create:
+      button: Buat jenis grup
+    delete:
+      confirm: apakah kamu yakin ingin menghapus jenis grup ini?
+pim_enrich.entity.attribute:
+  label: perlengkapan
+  plural_label: Atribut
+  flash:
+    update:
+      success: Atribut berhasil diperbarui.
+      fail: Atribut tidak dapat diperbarui.
+      fields_not_ready: "Atribut tidak dapat disimpan sekarang. Bidang berikut belum siap: {{ fields }}"
+    delete:
+      success: Atribut berhasil dihapus
+      fail: Tidak dapat menghapus perlengkapan ini
+  property:
+    allowed_extensions: Ekstensi diizinkan
+    auto_option_sorting: Urutkan pilihan secara otomatis sesuai abjad
+    available_locales: Lokal yang tersedia
+    date_max: Tanggal maks
+    date_min: Tanggal min
+    decimals_allowed: Nilai desimal yang diizinkan
+    default_metric_unit:
+      label: Unit metrik bawaan
+      choose: Pilih satu unit
+    group:
+      label: Atribut grup
+      choose: Memilih perlengkapan grup
+    is_locale_specific: Lokal spesifik
+    localizable: Nilai untuk lokal
+    max_characters: Karakte maksimal
+    max_file_size: Maksimun ukuran berkas (MB)
+    metric_family:
+      label: Keluarga metrik
+      choose: Pilih keluarga
+    minimum_input_length: Panjang minimum untuk penyelesaian otomatis
+    name: Nama
+    negative_allowed: Nilai negatif yang dihasilkan
+    number_max: nilai maksimun
+    number_min: nilai minimum
+    reference_data_name:
+      label: Jenis data acuan
+      choose: Pilih tipe data referensi
+    scopable: Nilai per channel
+    type:
+      choose: Memilih jenis perlengkapan
+      pim_catalog_identifier: Pengenal
+      pim_catalog_text: Text
+      pim_catalog_textarea: Wilayah Teks
+      pim_catalog_number: Nomor
+      pim_catalog_price_collection: Harga
+      pim_catalog_multiselect: Pilihan ganda
+      pim_catalog_simpleselect: Pilihan sederhana
+      pim_catalog_file: Berkas
+      pim_catalog_image: Gambar
+      pim_catalog_boolean: "Ya/Tidak"
+      pim_catalog_date: Tanggal
+      pim_catalog_metric: Metrik
+      pim_reference_data_simpleselect: Data referensi pilihan sederhana
+      pim_reference_data_multiselect: Data referensi pilihan ganda
+    unique: Nilai unik
+    useable_as_grid_filter: Bisa digunakan di grid
+    validation_regexp: Ekspresi reguler
+    validation_rule:
+      label: Aturan validasi
+      email: Surel
+      regexp: Ekspresi reguler
+      url: URL
+    wysiwyg_enabled: Penyunting teks penuh diaktifkan
+  module:
+    add_attribute:
+      no_available_attributes: Tidak ada perlengkapan yang ditambahkan
+      attributes_selected: "{{ itemsCount }} atribut(s) dipilih"
+    create:
+      button: membuat perlengkapan
+    edit:
+      common: Parameter umum
+      type_specific: Jenis parameter tertentu
+      validation: Parameter validasi
+    delete:
+      confirm: apakah kamu yakin ingin menghapus perlengkapan ini?
+      confirm_from_group: Yakin ingin menghapus atribut {{ attribute }} dari grup atribut ini?
+      confirm_from_product: Apakah anda yakin anda ingin menghapus perlengkapan ini dari produk?
+pim_enrich.entity.attribute_group:
+  label: "perlengkapan kelompok\n\n"
+  uppercase_label: Atribut grup
+  plural_label: Grup atribut
+  flash:
+    update:
+      success: Perlengkapan kelompok telah berhasil diperbarui
+      fail: Grup atribut tidak dapat diperbarui
+    delete:
+      success: Perlengkapan kelompok berhasil dihapus
+  module:
+    add_attribute_group:
+      label: Ditambahkan oleh kelompok
+      attributes_groups_selected: '{{ jumlahitem }} kelompok(s) yang dipilih'
+    delete:
+      confirm: Yakin ingin menghapus atribut grup ini?
+pim_enrich.mass_edit.family:
+  title: Tindakan massal keluarga
+  step:
+    select:
+      label: Pilih keluarga
+    choose:
+      title: Tindakan massal keluarga
+    configure:
+      label: Mengkonfigurasi
+    confirm:
+      label: Menyetujui
+    launched:
+      label: Tindakan massal "{{operation}}" telah diluncurkan. Anda akan diberitahu saat hal itu dilakukan.
+  operation:
+    set_requirements:
+      label: Menerapkan persyaratan atribut
+      description: Persyaratan perlengkapan berikut akan diberlakukan pada keluarga terpilih

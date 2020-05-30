@@ -19,6 +19,7 @@ pim_analytics:
     registered_bundles: 已注册的包
     nb_channels: 渠道数量：
     nb_products: 产品数量
+    nb_product_models: 产品模型数量
     nb_attributes: 属性数量
     nb_locales: 语言数量
     nb_families: 品类数量

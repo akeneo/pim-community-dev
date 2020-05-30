@@ -1,0 +1,132 @@
+pim_user:
+  user:
+    title: Pengguna
+    fields:
+      name_prefix: Nama awalan
+      email: Surel
+      username: Nama pengguna
+      first_name: Nama Awal
+      middle_name: Nama Tengah
+      last_name: Nama Akhir
+      name_suffix: Nama akhiran
+      date_of_birth: Tanggal Lahir
+      avatar: Avatar
+      timezone: Zona waktu
+      roles: Peran
+      groups: Kelompok
+      password: Password
+      password_again: Masukkan kembali katasandi
+      product_grid_filters: Filter grid produk
+      catalog_locale: Lokal katalog
+      catalog_scope: Ruang lingkup katalog
+      default_tree: Pohon standar
+      current_password: Kata sandi saat ini
+      new_password: Kata sandi baru
+      new_password_again: Kata sandi baru (ulangi)
+      default_grid_view:
+        none: Tidak ada
+      default_product_grid_view:
+        label: Tampilan grid produk standar
+      ui_locale: UI lokal
+      last_logged_in: Terakhir masuk
+      login_count: Hitung login
+      user_salt: Pengguna garam
+      created: Dibuat
+      updated: Diperbarui
+      status: Status
+      capabilities: Kemampuan
+      has_role: Punya peran
+      has_group: Memiliki grup
+      active: Aktif
+      inactive: Tidak aktif
+    tabs:
+      general:
+        title: Umum
+        contact_information: Informasi Kontak
+      additional:
+        title: Tambahan
+      interfaces:
+        title: Antarmuka
+      group_and_role.title: Grup dan peran
+      password.title: Password
+      business_unit.title: Unit bisnis
+      email_synchronization.title: Setelan sinkronisasi surel
+    removed_user: Pengguan dihapus
+    login:
+      username_or_email: Nama pengguna atau Surel
+      remember_me: Ingat saya di komputer ini
+      password_forgotten: Lupa kata sandi anda?
+      log_in: Masuk
+      forgot_password: Lupa kata sandi
+      request: Permintaan
+      password_reset: Kata sandi diubah
+      reset: Setel ulang
+      password_reset_email_sent: Surel telah dikirim ke pengguna. Ini berisi link untuk mengatur ulang kata sandi.
+      homepage: Pergi ke beranda
+  group:
+    tab:
+      general.title: Umum
+      users.title: Pengguna
+  roles:
+    title: Peran
+    tab:
+      general: Umum
+      action: Izin
+      users: Pengguna
+  controller:
+    group:
+      message:
+        saved: "Kelompok yang disimpan"
+    role:
+      message:
+        saved: "Peran disimpan"
+    user:
+      message:
+        saved: "Pengguna disimpan"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Dibuat di"
+      updatedAt: "Diperbarui pada"
+    roles:
+      label: "Label"
+    groups:
+      name: "Nama"
+confirmation:
+  remove:
+    role: Anda yakin ingin menghapus peran ini?
+    user: Apakah kamu yakin kamu ingin menghapus pengguna kelompok ini?
+flash:
+  role:
+    removed: Peran berhasil dihapus
+  user:
+    removed: Pengguna berhasil di hapus
+oro_security:
+  acl_group:
+    user: Pengguna
+    role: Peran
+    group: Grup Pengguna
+  acl:
+    user:
+      view: Daftar pengguna
+      create: Buat pengguna
+      edit: Ubah pengguna
+      delete: Hapus pengguna
+    role:
+      view: Daftar peran
+      create: Buat peran
+      edit: Edit peran
+      delete: Remove a role
+    group:
+      view: List user groups
+      create: Create a user group
+      edit: Edit kelompok pengguna
+      delete: Menghapus kelompok pengguna
+#Security
+(default): Izin standar pada entitas
+VIEW: Melihat
+CREATE: Buat
+EDIT: Sunting
+DELETE: Hapus
+ASSIGN: Menetapkan
+SHARE: Bagikan

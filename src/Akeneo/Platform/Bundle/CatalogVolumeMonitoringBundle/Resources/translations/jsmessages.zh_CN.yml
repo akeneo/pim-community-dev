@@ -1,0 +1,9 @@
+pim_catalog_volume:
+  axis:
+    count_products: 商品
+    count_channels: 渠道
+    count_families: 品类
+    count_attributes: 属性
+    count_categories: 分类
+    count_category_trees: 目录树
+    count_product_models: 产品模型

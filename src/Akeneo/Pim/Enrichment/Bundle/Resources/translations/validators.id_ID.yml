@@ -1,0 +1,83 @@
+An identifier attribute already exists.: Perlengkapan pengenal sudah ada.
+Attribute code may contain only letters, numbers and underscore: Kode perlengkapan hanya boleh berisi huruf, angka, dan garis bawah
+Attribute code may contain only letters (at least one), numbers and underscores: Kode perlengkapan hanya boleh berisi huruf (paling sedikit satu), angka dan garis bawah
+This attribute type can't be used as a grid filter: Jenis perlengkapan ini tidak dapat digunakan sebagai jaringan penyaring
+This code is not available: Kode ini tidak tersedia
+This attribute type must be required: Jenis atribut ini harus dibutuhkan
+This attribute type can't be required: Jenis atribut ini tidak dapat diperlukan
+This attribute type can't have unique value: Jenis atribut ini tidak dapat memiliki nilai khusus
+No default value may be specified for this attribute type: Tidak ada nilai bawaan yang bisa ditentukan untuk jenis atribut ini
+This value should be Yes or No: Nilai ini seharusnya Ya atau Tidak
+This value should not be blank: Nilai tidak boleh kosong
+Option code may contain only letters, numbers and underscores: Kode pilihan hanya boleh mengandung huruf, angka dan garis bawah
+Option code may contain only letters (at least one), numbers and underscores: Kode pilihan hanya boleh berisi huruf (setidaknya satu), angka dan garis bawah
+This value should not be a decimal.: Nilai ini seharusnya tidak menjadi sebuah desimal.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Berkas ekstensi ini tidak diperbolehkan (ekstensi-ekstensi yang diperbolehkan: %extensions%).'
+"The value %value% is already set on another product for the unique attribute %attribute%": Nilai %value% telah ditetapkan pada produk lain untuk atribut yang unik %attribute%
+The same identifier is already set on another product: Pengenal yang sama sudah diatur pada produk lain
+regex.comma_or_semicolon.message: Bidang ini tidak boleh berisi koma atau titik koma.
+file.extensions.message: 'Ekstensi file tidak diijinkan (ekstensi yang diizinkan: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Tipe nilai ini yang diharapkan penggunaan {{ decimal_separator }} untuk memisahkan desimal.
+"This type of value expects the use of dot (.) to separate decimals.": Tipe nilai ini yang diharapkan penggunaan titik (.) untuk memisahkan desimal.
+"This type of value expects the use of comma (,) to separate decimals.": Tipe nilai ini yang diharapkan penggunaan koma (,) untuk memisahkan desimal.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Tipe nilai ini yang diharapkan penggunaan bahasa arab sebagai pemisah desimal (٫) untuk memisahkan desimal.
+"This type of value expects the use of the format {{ date_format }} for dates.": Tipe nilai ini yang diharapkan penggunaan format{{ date_format }} untuk tanggal.
+"The category \"%category%\" has to be a root category.": Kategori "%category%" telah menjadi akar kategori.
+"The attribute \"%attributeCode%\" does not exist.": Atribut "%atributCode%" tidak ada.
+"The attribute \"%attributeCode%\" is not a metric attribute.": Atribut "%attributeCode%" tidak metrik atribut.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Unit "%unitCode%" tidak ada atau tidak termasuk dalam keluarga metrik standar dari atribut yang diberikan "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": Mata uang "%currency%" harus diaktifkan.
+product_model.code.not_blank.message: Kode model produk tidak boleh kosong.
+product_model.code.unique.message: Kode yang sama sudah diatur pada model produk lain.
+product_model.family_variant.not_blank.message: Model produk keluarga varian tidak boleh kosong.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Perlengkapan"%attribute%" tidak boleh kosong, karena didefinisikan sebagai sumbu untuk entitas ini'
+    can_have_family_variant_unexpected_attribute: 'Tidak bisa mengatur properti "%attribute%" ke entitas ini karena tidak ada dalam penetapan atribut'
+    cannot_have_product_model_as_parent: 'Model produk "%product_model%" tidak bisa memiliki model produk "%parent_product_model%" sebagai orang tua'
+    cannot_have_parent: 'Model produk "%product_model%" tidak bisa memiliki orang tua'
+    attribute_does_not_belong_to_family: 'Perlengkapan "%attribute%" bukan termasuk milik keluarga "%family%"'
+    variant_product_invalid_family: 'Varian produk keluarga harus yang sama dari induknya'
+    not_null_family: Keluarga tidak dapat "membatalkan" dikarenakan produk anda dengan pengenal "%sku%" merupakan produk varian.
+    variant_product_has_parent: 'Produk variannya "%variant_product%" harus memiliki orang tua'
+    invalid_variant_product_parent: 'Varian produk "%variant_product%" tidak bisa memiliki model produk "%product_model%" Sebagai orang tua, (model produk ini hanya bisa memiliki model produk lain seperti anak-anak)'
+    modified_variant_axis_value: 'Sumbu varian "%variant_axis%" tidak dapat dimodifikasi, "%provided_value%" diberikan'
+    family_variant_attributes_unique: Atribut harus unik, "%attributes%" digunakan beberapa kali dalam varian atribut set
+    family_variant_axes_unique: Sumbu varian harus unik,"%attributes%" digunakan beberapa kali dalam varian atribut set
+    family_variant_axes_immutable: 'Sumbu varian tidak dapat dimodifikasi untuk tingkat "%level%"'
+    family_variant_axes_attribute_type_unique: Sumbu varian "%axis%" tidak bisa unik atau pengenal
+    family_variant_axes_attribute_type: Sumbu varian "%axis%" Harus berupa boolean, pilih sederhana, data referensi sederhana atau metrik
+    family_variant_axes_wrong_type: Sumbu varian "%axis%" tidak bisa dilokalkan, tidak scopable dan tidak lokal spesifik
+    family_variant_axes_number_of_axes: 'Kumpulan atribut varian tidak boleh lebih dari itu %max_axes_number% sumbu'
+    family_variant_no_axis: Setidaknya harus ada satu atribut yang didefinisikan sebagai sumbu untuk atribut yang ditetapkan untuk tingkat "%level%"
+    family_variant_axis_level: Atribut "%axis%" harus ditetapkan sebagai atribut dalam atribut varian yang sama mengaturnya ditetapkan sebagai sumbu
+    family_variant_has_family_attribute: '"%attribute%" atribut tidak dapat ditambahkan ke"%family_variant%" keluarga varian, karena bukan atribut dari "%family%" keluarga'
+    family_variant_level_do_not_exist: Tidak ada atribut varian yang ditetapkan untuk tingkat"%level%"
+    family_variant_no_level: Setidaknya harus ada satu tingkat yang didefinisikan dalam varian keluarga
+    family_variant_maximum_number_of_level: Keluarga varian tidak bisa lebih dari "%level%" tingkat
+    family_variant_unique_attributes_in_last_level: Atribut unik "%attribute%" harus di tetapkan pada tingkat produk
+    product_identifier: Pengidentifikasi ini "%s" jangan keluar.
+    0: Terjadi kesalahan yang tidak terduga.
+    100: Nilai tidak diharapkan
+    101: Bidang ini mengharapkan nilai boolean.
+    102: Bidang ini mengharapkan nilai mengapung.
+    103: Bidang ini mengharapkan nilai integer.
+    104: Bidang ini mengharapkan nilai numerik.
+    105: Bidang ini mengharapkan nilai string.
+    106: Bidang ini mengharapkan nilai array.
+    107: Bidang ini mengharapkan susunan pada susunan sebagai nilai.
+    200: Terjadi kesalahan internal
+    201: Terjadi kesalahan internal
+    202: Bidang ini mengharapkan nilai numerik.
+    203: Bidang ini mengharapkan nilai string.
+    204: Bidang ini mengharapkan nilai string.
+    205: Terjadi kesalahan internal
+    300: Bidang ini mengharapkan kode entitas yang sah.
+    301: Bidang ini mengharapkan jangkauan dan lokal yang sah.
+    302: Bidang ini mengharapkan jangkauan yang sah.
+    303: Bidang ini mengharapkan format asosiasi yang sah.
+    pim_immutable_product_validator: Pengenal yang sama sudah siap diatur pada produk yang lain
+    pim_immutable_product_model_validator: Kode yang sama sudah siap diatur pada model produk yang lain.
+mass_edit:
+  edit_common_attributes:
+    invalid_values: Terdapat kesalahan dalam bentuk atribut

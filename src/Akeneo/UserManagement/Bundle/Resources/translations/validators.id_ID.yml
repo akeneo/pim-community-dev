@@ -1,0 +1,3 @@
+pim_user:
+  min_role: "Anda harus memilih setidaknya {{ limit }} peran. | Anda harus memilih setidaknya {{ limit }} peran."
+  password_match: "Password field harus sesuai."

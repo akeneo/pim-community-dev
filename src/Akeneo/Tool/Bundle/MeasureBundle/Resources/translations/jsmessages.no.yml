@@ -1,0 +1,180 @@
+pim_measure:
+  families:
+    Area: Område
+    Binary: Binær
+    Decibel: Desibel
+    Frequency: Frekvens
+    Length: Lengde
+    Power: Kraft
+    Resistance: Motstand
+    Voltage: Spenning
+    Intensity: Intensitet
+    ElectricCharge: Elektrisk spenning
+    Duration: Periode
+    Speed: Hastighet
+    Temperature: Temperatur
+    Volume: Volum
+    Weight: Vekt
+    Pressure: Trykk
+    Energy: Energi
+    CaseBox: Emballasje
+  units:
+    #Area
+    ACRE: Mål
+    ARE: Er
+    ARPENT: Arpent
+    CENTIARE: Kvadratmeter
+    HECTARE: Hektar
+    SQUARE_CENTIMETER: Kvadratcentimeter
+    SQUARE_DECIMETER: Kvadratdecimeter
+    SQUARE_DEKAMETER: Kvadratdekameter
+    SQUARE_FOOT: Kvadratfot
+    SQUARE_FURLONG: Kvadratfurlong
+    SQUARE_HECTOMETER: Kvadrathektometer
+    SQUARE_INCH: Kvadrattomme
+    SQUARE_KILOMETER: Kvadratkilometer
+    SQUARE_METER: Kvadratmeter
+    SQUARE_MIL: Kvadratmil
+    SQUARE_MILE: Kvadratmile
+    SQUARE_MILLIMETER: Kvadratmillimeter
+    SQUARE_YARD: Kvadratyard
+    #Binary
+    BIT: Bit
+    BYTE: Byte
+    KILOBYTE: Kilobyte
+    MEGABYTE: Megabyte
+    GIGABYTE: Gigabyte
+    TERABYTE: Terabyte
+    #Decibel
+    DECIBEL: Desibel
+    #Frequency
+    GIGAHERTZ: Gigahertz
+    KILOHERTZ: Kilohertz
+    MEGAHERTZ: Megahertz
+    TERAHERTZ: Terahertz
+    HERTZ: Hertz
+    #Length
+    CENTIMETER: Centimeter
+    CHAIN: Kjede
+    DECIMETER: Decimeter
+    DEKAMETER: Dekameter
+    FEET: Fot
+    FURLONG: Furlong
+    INCH: Tomme
+    HECTOMETER: Hectometer
+    KILOMETER: Kilometer
+    METER: Meter
+    MIL: Mil
+    MILE: Mile
+    MILLIMETER: Millimeter
+    YARD: Yard
+    #Power
+    GIGAWATT: Gigawatt
+    KILOWATT: Kilowatt
+    MEGAWATT: Megawatt
+    TERAWATT: Terawatt
+    WATT: Watt
+    #Resistance
+    MILLIOHM: Milliohm
+    CENTIOHM: Centiohm
+    DECIOHM: Deciohm
+    OHM: Ohm
+    DEKAOHM: Dekaohm
+    HECTOHM: Hectohm
+    KILOHM: Kilohm
+    MEGOHM: Megohm
+    #Voltage
+    MILLIVOLT: Millivolt
+    CENTIVOLT: Centivolt
+    DECIVOLT: Decivolt
+    VOLT: Volt
+    DEKAVOLT: Dekavolt
+    HECTOVOLT: Hectovolt
+    KILOVOLT: Kilovolt
+    #Intensity
+    MILLIAMPERE: Milliampere
+    CENTIAMPERE: Centiampere
+    DECIAMPERE: Deciampere
+    AMPERE: Ampere
+    DEKAMPERE: Dekaampere
+    HECTOAMPERE: Hectoampere
+    KILOAMPERE: Kiloampere
+    MEGAAMPERE: Megaampere
+    #ElectricCharge
+    MILLIAMPEREHOUR: Milliamperetime
+    AMPEREHOUR: Amperetime
+    MILLICOULOMB: Millicoulomb
+    CENTICOULOMB: Centicoulomb
+    DECICOULOMB: Decicoulomb
+    COULOMB: Coulomb
+    DEKACOULOMB: Dekacoulomb
+    HECTOCOULOMB: Hectocoulomb
+    KILOCOULOMB: Kilocoulomb
+    #Duration
+    MILLISECOND: Millisekund
+    SECOND: Sekund
+    MINUTE: Minutt
+    HOUR: Time
+    DAY: Dag
+    WEEK: Uke
+    MONTH: Måned
+    YEAR: År
+    #Speed
+    FOOT_PER_SECOND: Fot per sekund
+    FOOT_PER_HOUR: Fot per time
+    KILOMETER_PER_HOUR: Kilometer per time
+    METER_PER_HOUR: Meter per time
+    METER_PER_MINUTE: Meter per minutt
+    METER_PER_SECOND: Meter per sekund
+    MILE_PER_HOUR: Mil per time
+    YARD_PER_HOUR: Yard per time
+    #Temperature
+    CELSIUS: Celsius
+    FAHRENHEIT: Fahrenheit
+    KELVIN: Kelvin
+    RANKINE: Rankine
+    REAUMUR: Reaumur
+    #Volume
+    BARREL: Fat
+    CENTILITER: Centiliter
+    CUBIC_CENTIMETER: Kubikkcentimeter
+    CUBIC_DECIMETER: Kubikk decimeter
+    CUBIC_FOOT: Kubikk fot
+    CUBIC_INCH: Kubikk tommer
+    CUBIC_METER: Kubikk decimeter
+    CUBIC_MILLIMETER: Kubikk decimeter
+    CUBIC_YARD: Kubikkyard
+    DECILITER: Desiliter
+    GALLON: Gallon
+    LITER: Liter
+    MILLILITER: Milliliter
+    OUNCE: Unse
+    PINT: Pint
+    #Weight
+    DENIER: Denier
+    GRAIN: Korn
+    GRAM: Gram
+    KILOGRAM: Kilo
+    LIVRE: Livre
+    MARC: Marc
+    MILLIGRAM: Mg
+    ONCE: Once
+    POUND: Pund
+    TON: Tonn
+    #Pressure
+    BAR: Bar
+    PASCAL: Pascal
+    HECTOPASCAL: hectopascal
+    MILLIBAR: millibar
+    ATM: Atmosfære
+    PSI: Pund per kvardrattomme
+    TORR: Torr
+    MMHG: millimeter kvikksølv
+    #Energy
+    CALORIE: Kalori
+    KILOCALORIE: kilokalori
+    JOULE: joule
+    KILOJOULE: kJ
+    #CaseBox
+    PIECE: Stykke
+    DOZEN: Dusin

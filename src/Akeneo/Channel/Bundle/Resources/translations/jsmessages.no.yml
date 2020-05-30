@@ -1,0 +1,76 @@
+batch_jobs:
+  csv_currency_export:
+    label: Valutaeksport til CSV
+    export.label: Eksportere valuta
+  csv_currency_import:
+    label: Valutaimport fra CSV
+    import.label: Importere valuta
+  xlsx_currency_export:
+    label: Valutaeksport til XLSX
+    export.label: Eksportere valuta
+  xlsx_currency_import:
+    label: Valutaimport fra XLSX
+    import.label: Importere valuta
+  csv_locale_export:
+    label: Eksporter språk til CSV
+    export.label: Eksportere språk
+  csv_locale_import:
+    label: Språkimport fra CSV
+    import.label: Importere språk
+  xlsx_locale_export:
+    label: Språkeksport i XLSX
+    export.label: Eksportere språk
+  xlsx_locale_import:
+    label: Språkimport i XLSX
+    import.label: Importere språk
+  csv_channel_export:
+    label: Kanaleksport i CSV
+    export.label: Eksportere kanaler
+  csv_channel_import:
+    label: Kanalimport i CSV
+    import.label: Importere kanaler
+  xlsx_channel_export:
+    label: Kanaleksport til XLSX
+    export.label: Eksportere kanaler
+  xlsx_channel_import:
+    label: Kanalimport fra XLSX
+    import.label: Importere kanaler
+pim_enrich.entity.channel:
+  label: kanal
+  uppercase_label: Kanal
+  flash:
+    update:
+      success: Kanalen ble oppdatert.
+      fail: Kanalen kunne ikke bli oppdatert.
+    create:
+      success: Kannlen ble opprettet.
+      fail: Kanalen kunne ikke bli opprettet.
+    delete:
+      success: Kanalen fjernet
+      fail: Kan ikke slette denne kanalen
+  page_title:
+    index: "] -Inf, 1] {{ count }} kanal |] 1, Inf [{{ count }} kanaler"
+  property:
+    category_tree: Kategoritre
+    do_not_convert: Ikke konverter
+    label_conversion_units: Plukke en konvertering enhet for hver metrisk attributt som skal brukes under produkteksport
+  module:
+    create:
+      button: Opprett kanal
+    delete:
+      confirm: Er du sikker på at du vil slette denne kanalen?
+pim_enrich.entity.locale:
+  label: språk
+  uppercase_label: Språk
+  plural_label: Språk
+  page_title:
+    index: "] -Inf, 1] {{ count }} land |] 1, Inf [{{ count }} språk"
+pim_enrich.entity.currency:
+  plural_label: Valutaer
+  page_title:
+    index: "] -Inf, 1] {{ count }} valuta |] 1, Inf [{{ count }} valutaer"
+flash:
+  currency:
+    error:
+      linked_to_channel: Du kan ikke deaktivere en valuta knyttet til en kanal.
+    updated: Valuta ble oppdatert

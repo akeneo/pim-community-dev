@@ -1,0 +1,356 @@
+pim_notification:
+  types:
+    settings: Pengaturan
+flash:
+  comment:
+    create:
+      success: Komentar anda telah berhasil dibuat.
+    delete:
+      success: Komentar anda telah berhasil dihapus.
+    reply:
+      success: Balasan komentar  anda telah berhasil dibuat.
+pim_enrich.entity.product:
+  label: produk
+  uppercase_label: Produk
+  plural_label: Banyak produk
+  flash:
+    update:
+      success: Produk berhasil diperbaharui.
+      fail: Produk tidak bisa diperbarui.
+      fields_not_ready: "Produk tidak dapat disimpan sekarang. Bidang berikut belum siap: {{ fields }}"
+      already_in_upload: Berkas sudah diunggah untuk perlengkapan di lokal ini "{{ locale }}" dan cakupan "{{ scope }}"
+    delete:
+      success: Produk berhasil di hapus
+      fail: Produk tidak bisa dihapus.
+    create:
+      success: Produk berhasil dibuat
+      fail: Tidak ada perlengkapan dikonfigurasi sebagai produk pengenalan atau anda tidak memiliki hak untuk menyunting.
+  module:
+    create:
+      subtitle: Buat Produk
+      title: Pilih aksi anda
+      choose_family: Pilih keluarga
+      choose_family_variant: Pilih variasi keluarga
+    variant_navigation:
+      common: Biasa
+    status:
+      enabled: Diaktifkan
+      disabled: Dinonaktifkan
+    download_pdf:
+      label: PDF
+    copy:
+      label: Membandingkan / Menerjemahkan
+      select: Pilih
+      all_visible: Semua terlihat
+      copy: Salin
+    history:
+      version: Versi
+      author: Penulis
+      logged_at: Logged di
+      from: Dari
+      modified: Mengubah
+      old_value: Nilai lama
+      new_value: Nilai baru
+    meta:
+      updated: Pembaruan terakhir
+      groups: Kelompok
+    show_group:
+      title: Kelompok {{ group }}
+      view_group: Lihat grup
+      more_products: '{{ count }} lebih banyak produk ...'
+    attribute:
+      remove_optional: Menghapus perlengkapan ini
+      locale_specific_unavailable: Bidang khusus lokasi ini tidak tersedia di lokasi ini
+      locale_unavailable: Bidang yang ingin dilokalkan ini tidak tersedia untuk lokal '{{locale}}' dan saluran '{{channel}}'
+      add_attribute_option: Tambahkan opsi atribut
+      add_option: Tambahkan sebuah pilihan
+    completeness:
+      title: Kelengkapan
+      complete: Berhasil
+      no_family: Tidak ada keluarga yang ditetapkan. Silahkan tetapkan keluarga untuk menghitung kelengkapan produk ini.
+      no_completeness: Anda baru saja mengubah keluarga produk. Mohon simpan terlebih dahulu untuk menghitung perlengkapan pada keluarga baru.
+    sequential_edit:
+      item_limit: Hanya 1000 hal pertama yang ditampilkan dalam pengubah berurutan ini ({{ count }} terpilih)
+      empty: Pilihan anda kosong, silahkan ubah kriteria untuk pencarian anda
+      save_and_next: Simpan dan selanjutnya
+      save_and_finish: Simpan dan selesai
+    associations:
+      title: Asosiasi
+      none_exist: Tidak ada tipe asosiasi yang ada.
+      show_products: Tampilan produk
+      show_groups: Tampilkan grup
+      number_of_associations: "{{ productCount }} produk(s), {{ productModelCount }} model produk(s) dan {{ groupCount }} kelompok(s)"
+      association_type_selector: Jenis kumpulan
+      target: Tujuan
+      manage: Tambahkan {{ associationType }} perkumpulan
+      manage_description: Pilih produk yang ingin anda sosiasikan dengan produk saat ini
+      add_associations: Tambahkan kumpulan
+    attribute_filter:
+      display: Tampilan
+      all: Semua kelengkapan
+      missing_required: Semua perlengkapan yang diperlukan hilang
+      at_this_level: Semua tingkat atribut tertentu
+    change_family:
+      title: Mengubah keluarga produk
+      merge_attributes: Atribut saat ini akan digabungkan dengan yang ada di keluarga baru.
+      keep_attributes: Tidak ada atribut yang akan dihapus.
+      change_family_to: Mengubah keluarga menjadi
+      empty_selection: Pilih keluarga
+    basket:
+      title: Keranjang
+      empty_basket: Keranjang kosong
+    delete:
+      confirm: Apakah kamu yakin kamu ingin menghapus produk ini?
+    comment:
+      post: Tambahkan sebuah komentar baru
+      reply: Balas
+      title: Komentar
+      empty: Tidak ada komentar untuk saat ini
+      header_comment: '{{ user }} komentari produk'
+      header_reply: '{{ user }} membalas komentar'
+      delete_confirm: Apakah anda yakin anda ingin menghapus komentar ini?
+      removed_author: Pengguan dihapus
+pim_enrich.entity.product_model:
+  uppercase_label: Model produk
+  plural_label: Model produk
+  flash:
+    create:
+      success: Model produk telah berhasil dibuat
+      product_model_added: Model produk telah berhasil ditambahkan ke model produk
+      variant_product_added: Variasi produk berhasil ditambahkan ke model produk
+    update:
+      success: Model produk telah berhasil diperbarui. Kelengkapan varian produknya akan dihitung ulang.
+      fail: Produk model ini  tidak dapat diperbarui.
+      fields_not_ready: "Model produk tidak dapat disimpan sekarang. Bidang berikut belum siap: {{ fields }}"
+    delete:
+      success: Model produk berhasil dihapus.
+  choose: Pilih model produk
+  property:
+    family_variant: Varian
+  module:
+    create:
+      title: Buat model produk
+      content: Sebuah model produk mengumpulkan produk varian dan memudahkan pengayaan properti umum mereka.
+    attribute:
+      read_only_parent_attribute_from_common: Perlengkapan ini dapat diperbarui dalam perlengkapan umum.
+      read_only_parent_attribute_from_model: "Perlengkapan ini dapat diperbarui dalam perlengkapan oleh {{ axes }}"
+    variant_axis:
+      create: Tambah baru
+      create_label: "Tambahkan yang baru {{ sumbu }}"
+      required_label: '(sumbu berbeda)'
+    delete:
+      confirm: Apakah anda yakin ingin menghapus produk model ini? Semua akarnya, model produk dan varian produk, juga akan dihapus.
+      confirm_for_products_and_product_models: Anda yakin ingin menghapus produk dan model produk yang dipilih? Semua sub model produk juga akan dihapus.
+pim_enrich.entity.group:
+  label: Grup
+  flash:
+    update:
+      success: Kelompok berhasil diperbarui.
+      fail: Kelompok tidak dapat diperbarui.
+      fields_not_ready: "Grup tidak dapat disimpan sekarang. Bidang berikut belum siap: {{ fields }}"
+    create:
+      success: Kelompok berhasil dibuat
+    delete:
+      success: Kelompok berhasil dihapus
+      fail: tidak dapat meghapus kelompok ini
+  module:
+    create:
+      button: Buat grup
+    delete:
+      confirm: Yakin ingin menghapus grup ini?
+pim_enrich.entity.category:
+  label: kategori
+  uppercase_label: Kategori
+  plural_label: Kategori
+pim_enrich.export.product:
+  data:
+    title: Saring produk
+  structure:
+    title: Saring data
+  filter:
+    channel:
+      help: Saluran mendefinisikan ruang lingkup untuk nilai produk, lokal digunakan untuk memilih data, dan pohon digunakan untuk memilih produk.
+    locales:
+      help: "Lokal mendefinisikan nilai-nilai produk lokal untuk ekspor. Contoh: hanya informasi produk dalam bahasa Prancis."
+    attributes:
+      label: "{0}Semua atribut|{1}Satu atribut yang dipilih|]1,Inf[{{ count }} atribut yang dipilih"
+      help: "Pilih informasi produk yang akan diekspor. Contoh: hanya perlengkapan teknis."
+      empty: Semua perlengkapan akan di ekspor
+      modal:
+        title: Pilihan perlengkapan
+    attributes_selector:
+      attributes: "Mencari {{ itemsCount }} perlengkapan"
+      selected: "Perlengkapan yang dipilih"
+      clear: Bersih
+      all_group: Semua kelompok
+      empty_selection: Semua perlengkapan akan di ekspor
+      description: Pilih informasi produk untuk di ekspor
+    family:
+      title: Keluarga
+      help: "Pilihlah produk yang akan diekspor oleh keluarga mereka. Contoh: Hanya ekspor sepatu dan pakaian."
+      operators:
+        IN: Dalam daftar
+        "NOT IN": Tidak dalam daftar
+        EMPTY: Produk tersebut tidak mempunyai keluarga
+        "NOT EMPTY": Produk yang memiliki keluarga
+      empty_selection: Tidak ada kondisi keluarga
+    updated:
+      title: Kondisi waktu
+      operators:
+        ALL: Tidak ada kondisi tanggal
+        "SINCE LAST N DAYS": Produk yang diperbarui selama n hari terakhir (misalnya 6)
+        ">": Produk diperbarui sejak tanggal ini
+        "SINCE LAST JOB": Produk diperbarui sejak ekspor terakhir
+    enabled:
+      title: Status
+      help: "Pilih produk yang akan diekspor menurut statusnya. Contoh: Ekspor produk apapun statusnya."
+      value:
+        enabled: Diaktifkan
+        disabled: Dinonaktifkan
+    completeness:
+      title: Kelengkapan
+      help: Pilih produk yang akan diekspor dengan kelengkapannya.
+      operators:
+        ALL: Tidak ada kondisi kelengkapan
+        ">=": Lengkapi setidaknya pilih satu lokal
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Lengkapilah pada semua lokasi yang dipilih
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Lengkapi setidaknya pilih satu lokal
+        LOWER THAN ON ALL LOCALES: Semua pilihan lokal tidak lengkap
+      empty_selection: Pilih keluarga
+    category:
+      title: Kategori
+      help: Gunakan kategori produk di pohon (ditentukan oleh saluran di atas) untuk memilih produk yang akan diekspor
+    identifier:
+      title: Pengenal
+      help: Gunakan pengenal produk untuk mengekspor pisahkan dengan koma, spasi atau jeda baris
+    string:
+      operators:
+        ALL: Semuanya
+    select:
+      operators:
+        IN: Dalam daftar
+    date:
+      operators:
+        BETWEEN: Antara
+        NOT BETWEEN: Tidak diantara
+  global_settings:
+    title: Pengaturan global
+pim_enrich.mass_edit.product:
+  title: Tindakan aset massal
+  step:
+    select:
+      label: Pilih produk
+    choose:
+      title: Tindakan aset massal
+    configure:
+      label: Mengkonfigurasi
+    confirm:
+      label: Menyetujui
+    launched:
+      label: Tindakan massal "{{operation}}" telah diluncurkan. Anda akan diberitahu saat hal itu dilakukan.
+  operation:
+    common:
+      select_attributes: Pilih perlengkapan
+    change_status:
+      label: Mengganti status
+      description: Produk yang dipilih akan diaktifkan atau dimatikan.
+      field: Untuk mengaktifkan
+    edit_common:
+      description: Hanya perlengkapan milik keluarga dari produk yang dipilih akan diterbitkan dengan data sebagai berikut untuk {{ locale }} lokal dan {{ scope }} saluran.
+    change_family:
+      label: Ubah keluarga
+      description: Keluarga dari produk yang terpilih akan diubah menjadi keluarga pilihan
+    add_to_group:
+      label: Tambahkan ke kelompok
+      description: Pilih kelompok untuk Tambahkan produk yang dipilih
+      field: Kelompok
+    add_to_category:
+      label: Tambahkan ke kategori
+      description: Produk tersebut akan digolongkan ke dalam kategori berikut, golongan yang terjaga kerahasiaanya.
+    move_to_category:
+      label: Pindah diantara kategori
+      description: Produk akan diklasifikasikan ke dalam kategori berikut, klasifikasi yang ada akan hilang.
+    remove_from_category:
+      label: Hapus dari kategori
+      description: Produk akan dihapus dari kategori berikut.
+    add_to_existing_product_model:
+      label: Tambahkan ke sebuah model produk yang ada
+      description: Model produk yang dipilih akan mengumpulkan produk dan memungkinkan pengayaan sifat umum mereka.
+    associate_to_product_and_product_model:
+      description: Produk yang dipilih dalam grid akan dikaitkan dengan produk dan model produk yang dipilih untuk jenis perkumpulan yang dipilih
+      validate: Tolong tambahkan perkumpulan sebelum pergi ke langkah selanjutnya
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Aksi besar
+    quick_export:
+      label: Ekspor cepat
+  mass_action:
+    delete:
+      confirm_content: Yakin ingin menghapus produk yang dipilih?
+      success: produk yang dipilih telah berhasil di hapus
+    quick_export:
+      csv_all: CSV (semua perlengkapan)
+      csv_grid_context: CSV (Konteks kisi)
+      xlsx_all: Excel (semua perlengkapan)
+      xlsx_grid_context: Unggul (Konteks kisi)
+    mass_edit: Tindakan massal
+    sequential_edit: Sunting berurutan
+    mass_delete: Hapus Massal
+    selected:
+      family: memilih keluarga
+      product: memilih hasil
+  view_selector:
+    view: tampilan
+  actions:
+    edit_product_attributes: Ubah kelengkapan produk
+    classify_product: Kelompokkan produk
+    delete_product: Hapus produk ini
+    change_status: Mengganti status
+    toggle_status: Toggle status
+    other: Aksi lain
+  empty_results:
+    associated_product:
+      hint: Ini bukan pengelompokkan produk
+      subHint: 'Klik pada tombol "Tambahkan asosiasi" untuk mengaitkan produk ini'
+  filters:
+    label: Filter
+    system: Sistem
+batch_jobs:
+  add_product_value:
+    label: Tambah nilai produk
+    perform.label: Tambah nilai produk
+  add_to_category:
+    label: Tambah ke kategori
+    perform.label: Tambah ke kategori
+  add_to_existing_product_model:
+    label: Tambahkan ke sebuah model produk yang ada
+    perform.label: Tambahkan ke sebuah model produk yang ada
+  csv_product_grid_context_quick_export:
+    quick_export.label: Csv product grid context quick export
+    quick_export_product_model.label: Model CSV produk grid konteks ekspor cepat
+    perform.label: Csv product grid context quick export
+  csv_product_quick_export:
+    quick_export.label: Ekspor cepat produk Csv
+    quick_export_product_model.label: Model produk CSV cepat diekspor
+    perform.label: Ekspor cepat produk Csv
+  edit_common_attributes:
+    label: Ubah perlengkapan
+    perform.label: Ubah perlengkapan
+    clean.label: Bersihkan file untuk atribut
+    cleaner.label: Bersihkan file untuk atribut
+  compute_completeness_of_products_family:
+    label: Menghitung kelengkapan
+    perform.label: Menghitung kelengkapan
+  move_to_category:
+    label: Pindah ke kategori
+    perform.label: Pindah ke kategori
+  update_product_value:
+    label: Memperbarui nilai produk
+    perform.label: Memperbarui nilai produk
+  remove_from_category:
+    label: Hapus dari kategori
+    perform.label: Hapus dari kategori
+  set_attribute_requirements:
+    label: Menerapkan persyaratan perlengkapan
+    perform.label: Menerapkan persyaratan atribut
