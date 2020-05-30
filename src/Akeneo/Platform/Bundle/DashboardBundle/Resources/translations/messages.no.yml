@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Dashboard
+  version: Versjon
+  widget:
+    completeness:
+      title: Fullstendigheten Over kanaler og steder
+    last_operations:
+      title: Siste operasjoner
+      status: Status
+      type: Type
