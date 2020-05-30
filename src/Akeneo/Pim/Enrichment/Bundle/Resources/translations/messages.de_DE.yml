@@ -80,3 +80,4 @@ tree:
   edit: Baumstruktur bearbeiten
   remove:
     error_linked: Dieser Kategoriebaum kann nicht gelöscht werden, er ist mit einem Kanal verknüpft
+  create: Kategoriebaum erstellen
