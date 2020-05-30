@@ -1,0 +1,96 @@
+pimee_enrich.acl.locale.edit_permissions: Kelola izin lokal
+pimee_enrich.acl.category.edit_permissions: Kelola kategori izin
+pimee_enrich.acl.attribute_group.edit_permissions: Kelola izin perlengkapan kelompok
+pimee_importexport.acl.export_profile.edit_permissions: Mengelola izin ekspor profil
+pimee_importexport.acl.import_profile.edit_permissions: Mengelola izin impor profil
+pimee_enrich.groups.label: Pemilik grup
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Ubah perlengkapan
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Tambahkan nilai produk dengan izin
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Memperbarui nilai produk dengan izin
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Hapus nilai produk dengan izin
+edit_common_attributes_with_permission: Ubah atribut dengan izin
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Edit atribut dengan izin
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Jumlah dari akses lokal khusus
+    nb_custom_category_accesses: Jumlah dari akses kategori khusus
+    nb_custom_attribute_group_accesses: Jumlah dari akses grup atribut khusus
+job_profile.permissions:
+  execute.label: Diizinkan untuk menjalankan profil pekerjaan
+  edit.label: Diperbolehkan untuk menyunting profil pekerjaan
+pim_title.locale:
+  edit: "Lokal %locale.code% | ubah"
+attribute group.permissions:
+  view.label: Diizinkan untuk melihat perlengkapan
+  view.help: Izinkan untuk melihat produk di perlengkapan kelompok ini
+  edit.label: Diizinkan untuk merubah perlengkapan
+  edit.help: Izinkan untuk mengubah produk dalam kelompok perlengkapan ini
+  no_access_to_attributes: Anda tidak memiliki akses ke perlengkapan produk ini. Silahkan hubungi administrator anda.
+category.permissions:
+  view.label: Diizinkan untuk melihat produk
+  view.help: Izinkan untuk melihat produk pada kategori ini
+  edit.label: Diizinkan untuk menyunting produk
+  edit.help: Izinkan untuk menyunting produk dalam kategori ini (memberikan izin melihat)
+  own.label: Diizinkan untuk mempunyai produk
+  own.help: Diizinkan untuk meninjau, menerbitkan, menerbitkan publikasi, mengklasifikasikan, menghubungkan produk dalam kategori ini (mengizinkan perubahan)
+  no_access_to_products: Anda tidak memiliki akses ke produk di pohon apa pun, hubungi pengurus anda
+  apply_on_children.label: Terapkan perubahan pada anak-anak
+  apply_on_children.help: Salin perubahan perizinan pada semua anak, izin yang ada pada anak-anak disimpan
+locale.permissions:
+  no_access_to_products: Anda tidak memiliki akses ke data produk di lokasi yang diaktifkan, hubungi administrator anda
+flash.locale.updated: Lokal dan izin telah diperbarui
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Anda tidak memiliki izin untuk merubah produk "%identifiers%".
+      page_title: Produk
+      page_subtitle: Massa Edit (1 produk) | Massa Edit (%count% produk)
+      title: "Pilih operasi\n \nKonteks | Permintaan Konteks"
+      subtitle: Memilih operasi ingin anda lakukan pada produk  yang dipilih | Memilih operasi yang ingin anda lakukan  pilih %count% Produk
+      confirm: Anda akan memperbarui produk dengan informasi berikut, mohon konfirmasi.|Anda akan memperbarui %count% produk dengan informasi berikut, mohon konfirmasi.
+      steps:
+        first: Pilih produk
+        second: Pilih operasi
+        third: Konfigurasikan
+        fourth: Memastikan
+    publish:
+      message:
+        error: Anda bukan pemilik produk, anda tidak dapat mempublikasikannya.
+        warning: Anda bukanlah pemilik semua produk yang terpilih. Anda tidak dapat mempublikasikan produk "%notGranted%".
+      not_editable: Anda tidak memiliki izin untuk merubah produk "%identifiers%".
+    unpublish:
+      message:
+        error: Anda bukan pemilik produk, anda tidak dapat membatalkan publikasi.
+        warning: Anda bukanlah pemilik dari semua produk terpilih. Anda tidak bisa membatalkan publikasi produk "%notGranted%".
+        info: Produk %nbProducts% terpilih tidak akan dipublikasikan.
+      not_editable: Anda tidak memiliki izin untuk mengubah produk "%identifiers%".
+    classify:
+      message:
+        error: Anda bukan pemilik produk, anda tidak bisa mengklasifikasikannya.
+        warning: Anda bukan pemilik dari semua produk yang dipilih. Anda tidak dapat mengklasifikasikan produk "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Anda bukan pemilik produk, anda tidak dapat merubahnya.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Izin
+  acl.product_ownership.title: Kepemilikan
+  attributes:
+    empty: tidak ada
+  category:
+    tab:
+      permission:
+        title: Izin
+  groups:
+    label: grup pemilik
+    empty: tidak ada
+add_product_value_with_permission_and_rules:
+  steps.perform: Tambahkan nilai produk
+update_product_value_with_permission_and_rules:
+  steps.perform: Memperbarui nilai produk
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Ubah perlengkapan
+  steps.edit_common_attributes_processor.title: Ubah perlengkapan
+pim_enrich_attribute_form:
+  isReadOnly: Hanya baca

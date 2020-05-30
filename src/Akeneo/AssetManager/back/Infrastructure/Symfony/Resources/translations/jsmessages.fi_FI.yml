@@ -35,6 +35,28 @@ pim_asset_manager:
       empty_title: Korisi on tyhjä
       remove_one_asset: Poista assetti {{ assetName }} assettivalikoimasta
       remove_all_assets: Poista kaikki
+  asset_preview:
+    previous: Edellinen assetti
+    next: Seuraava assetti
+    empty_main_image: Tällä assetilla ei ole kuvaa.
+    edit_asset: Muokkaa assettia
+    download: Lataa
+    copy_url: Kopioi URL-osoite
+  breadcrumb:
+    products: Tuotteet
+  #app:
+  #image:
+  #wide:
+  #remove: Remove the image
+  #download: Download the image
+  #upload: Drag and drop to upload or click here
+  #small:
+  #remove: Remove
+  #download: Download
+  #upload: Drag and drop to upload
+  grid:
+    counter: '{{ resultCount }} tulosta'
+    counter_empty: '0 tulosta'
   asset_family:
     #validation:
     #code:

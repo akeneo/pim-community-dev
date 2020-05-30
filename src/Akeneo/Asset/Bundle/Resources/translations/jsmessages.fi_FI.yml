@@ -85,6 +85,7 @@ pim_title:
   pimee_product_asset_view: Assetti {{ asset.label }} | Muokkaus
   pimee_asset_categorytree_index: Kategoriat
   pimee_asset_categorytree_edit: Kategoria {{ category.label }} | Muokkaa
+  pimee_asset_categorytree_create: Kategoria | Luo
 batch_jobs:
   apply_assets_mass_upload:
     label: Assettien massatuonti

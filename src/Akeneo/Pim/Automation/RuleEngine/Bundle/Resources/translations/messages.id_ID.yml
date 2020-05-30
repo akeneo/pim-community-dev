@@ -1,0 +1,90 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Hapus
+        execute: Menjalankan
+      title: Aturan
+      column:
+        code: Kode
+        conditions: Kondisi
+        actions: Tindakan
+        impacted_product_count:
+          label: Mempengaruhi produk
+          count: '{0,1}%count% produk terpengaruh|]1,Inf[%count% produk terpengaruh'
+          no_yet_calculated: Belum dihitung
+      mass_edit_action:
+        impacted_product_count: Kalkulasi produk yang terpengaruh
+        execute: Menjalankan
+        delete: Hapus
+  actions:
+    type:
+      "copy": Kemudian %from_field% disalin ke %to_field%
+      "copy_value": Kemudian %from_field% disalin ke %to_field%
+      "set": Kemudian %value% diatur ke %field%
+      "set_value": Kemudian %value% diatur ke %field%
+      "add": Kemudian %value% ditambahkan ke %field%
+      "remove": Kemudian %value% dihapus dari %field%
+    options:
+      include_children: dan anak - anak
+  condition:
+    label: Jika %field% %operator% %value%
+    operators:
+      "STARTS WITH": dimulai dengan
+      "ENDS WITH": akhiri dengan
+      "CONTAINS": mengandung
+      "DOES NOT CONTAIN": tidak mengandung
+      "EMPTY": kosong
+      "NOT EMPTY": tidak kosong
+      "IN": di
+      "NOT IN": tidak di
+      "IN CHILDREN": pada anak - anak
+      "NOT IN CHILDREN": tidak pada anak-anak
+      "UNCLASSIFIED": tidak dikelompokkan
+      "IN OR UNCLASSIFIED": tidak dikelompokkan atau di
+      "BETWEEN": antara
+      "NOT BETWEEN": tidak di antara
+      "=": menyamai
+      "!=": tidak sama
+      ">": lebih besar dari
+      ">=": sama atau lebih besar
+      "<": kurang dari
+      "<=": sama atau kurang dari
+  acl_group:
+    rule: Aturan
+  acl:
+    rule:
+      view_permissions: Lihat aturan
+      delete_permissions: Hapus aturan
+      impacted_product_count_permissions: Kalkulasi produk yang dipengaruhi oleh aturan
+      execute_permissions: Eksekusi aturan
+  attribute:
+    tab:
+      rule.title: Aturan
+    grid:
+      is_smart.label: Pintar
+    acl:
+      rule.view_permissions: Lihat aturan
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: Nilai dari atribut ini bisa datang dari aturan(s) <strong>%rule%</strong>. Itu berarti jika kondisi aturan yang berlaku, modifikasi anda akan diganti.
+      loading.title: Memuat...
+    history: Terapkan aturan "%aturan%"
+  product_value:
+    tooltip:
+      affected_by.title: 'Terkena aturan(s):'
+  steps:
+    product_rule_definition_reader.title: Aturan impor produk
+    rule_definition_processor.title: Aturan produk impor prosesor
+    product_rule_definition_writer.title: Aturan produk penulis impor
+    rules_execution.title: Eksekusi aturan
+  notification:
+    rule:
+      executed: Pelaksanaan aturan(s) telah selesai
+    mass_edit_rule:
+      success: Perhitungan produk yang terkena dampak untuk aturan selesai
+      error: Terjadi kesalahan saat menghitung produk yang terkena dampak untuk aturan
+btn:
+  Execute rules: Jalankan aturan
+mass_edit_rule: Aturan pengaturan
+job_execution.summary.rule_calculated: Jumlah aturan

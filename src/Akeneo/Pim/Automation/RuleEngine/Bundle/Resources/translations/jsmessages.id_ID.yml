@@ -1,0 +1,101 @@
+pimee_catalog_rule:
+  execution_button: Laksanakan aturan
+  selected: 'aturan dipilih'
+  popin:
+    execute_rules:
+      confirm_title: Konfirmasi eksekusi
+      confirm_content: Apakah anda yakin anda ingin menjalankan seluruh aturan? (ini dapat memakan waktu yang lama)
+  notification:
+    fail: Tindakan tidak bisa dilakukan
+    launched: Aturan pelaksanaan telah diluncurkan. Anda akan diberitahu ketika dilakukan.
+  attribute:
+    list:
+      code.label: Kode
+      condition.label: Kondisi
+      action.label: Tindakan
+      no_rule_yet.label: Tidak ada aturan untuk sekarang
+  rule:
+    condition:
+      if.label: jika
+    action:
+      then.label: kemudian
+      set_value.label: diatur ke
+      copy_value.label: disalin ke
+      set.label: diatur ke
+      copy.label: salin ke
+      add.label: ditambahkan ke
+      remove.label: dihapus dari
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Konfirmasi eksekusi
+          confirm_content: Apakah anda yakin anda ingin menjalankan aturan tersebut?
+      mass_edit_action:
+        confirm_title: Konfirmasikan perhitungan
+        confirm_content: Apakah anda yakin anda ingin menghitung produk yang terkena dampak untuk aturan tersebut?
+      mass_action:
+        execute:
+          confirm_title: Konfirmasi perhitungan
+          confirm_content: Apakah anda yakin anda ingin menjalankan aturan yang dipilih?
+          success: Sebagian besar tindakan untuk melaksanakan aturan terpilih telah diluncurkan. anda akan diberitahu bila hal itu dilakukan
+          empty_selection: Tidak ada aturan terpilih.
+        delete:
+          confirm_title: Konfirmasi eksekusi
+          confirm_content: Apakah anda yakin anda ingin menghapus aturan yang dipilih?
+          success: Anda telah berhasil menghapus aturan.
+          empty_selection: Tidak ada aturan yang dipilih.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Aturan
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Apakah anda yakin ingin menghapus aturan ini? Tidak dapat membatalkan tindakan ini
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Aturan berhasil dihapus
+flash:
+  rule:
+    impacted_product_count: Tindakan massal untuk menghitung produk yang terkena dampak untuk aturan yang telah diluncurkan. anda akan diberitahu saat sudah selesai.
+    executed: Aturan eksekusi telah diluncurkan. Anda akan diberitahu saat hal itu selesai.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Setelan aturan
+batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Eksekusi aturan
+  default_steps:
+    execute_rules: Eksekusi aturan
+  yml_rule_import:
+    label: Aturan impor di YAML
+    import.label: Peraturan ekspor
+  yml_rule_export:
+    label: Peraturan ekspor di YAML
+    export.label: Peraturan ekspor
+  rule_impacted_product_count:
+    label: Produk yang terkena dampak untuk peraturan
+    perform.label: Menghitung produk yang terkena dampak
+  csv_product_import_with_rules:
+    label: Impor produk di CSV dengan aturan
+    import.label: Impor produk
+  csv_product_model_import_with_rules:
+    label: Impor model produk dalam CSV dengan aturan
+  xlsx_product_import_with_rules:
+    label: Impor produk di XLSX dengan peraturan
+    import.label: Impor produk
+  xlsx_product_model_import_with_rules:
+    label: Impor model produk di CSV dengan aturan
+pim_notification:
+  types:
+    rule: Aturan pengaturan
+pim_menu:
+  item:
+    rule: Aturan
+pim_title:
+  pimee_catalog_rule_rule_index: Aturan

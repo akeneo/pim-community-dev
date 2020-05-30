@@ -1,0 +1,4 @@
+akeneo_referenceentity:
+  acl:
+    reference_entity:
+      manage_permission: Zarządzaj uprawnieniami obiektu referencyjnego

@@ -4,9 +4,12 @@ pim_asset_manager:
       code:
         pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
         should_be_unique: 'Asetti perhe "%asset_family_identifier%" on jo olemassa'
+      rule_template:
+        extrapolated_attribute_type_should_be_supported: 'Attribuutti "%attribute_code%", jonka tyyppi on "%attribute_type%", ei ole tuettu. Ainoastaan seuraavat attribuuttityypit on tuettuja tässä kentässä: %supported_attribute_type%'
   asset:
     validation:
       code:
+        pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
         should_be_unique: 'Assetti koodilla "%code%" on jo olemassa'
         should_exist: 'Assettia ei löydy'
       text:
@@ -29,6 +32,8 @@ pim_asset_manager:
       options:
         should_exist: 'Valintaa ei löydy.'
         duplicated: 'Valinta "%option_code%" on jo olemassa'
+        code:
+          pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
       max_length:
         should_be_an_integer: 'Arvon on oltava kokonaisluku.'
       max_file_size:

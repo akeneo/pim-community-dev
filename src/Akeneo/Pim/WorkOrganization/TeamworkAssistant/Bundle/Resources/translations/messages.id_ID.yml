@@ -1,0 +1,39 @@
+teamwork_assistant:
+  project:
+    required: Nilai ini tidak boleh kosong.
+    label_maxlength: Nilai tersebut terlalu panjang. Seharusnya memiliki {{ max }} karakter atau kurang.
+    project_identifier: Proyek {{ project }} tidak tersedia.
+    project_due_date: Anda tidak bisa memilih tanggal di masa lalu.
+  notification:
+    project_calculation:
+      error: Proyek perhitungan untuk <strong>%project_label%</strong> gagal
+      warning: Proyek perhitungan untuk <strong>%project_label%</strong> telah diselesaikan dengan beberapa peringatan
+      success: Proyek <strong>%project_label%</strong> ini telah siap dan akan diberitahukan kontributornya. Mari memulainya!
+      start: Mulai
+    message: Anda mempunyai produk baru untuk diperkayakan sebagai "%project_label%". Tanggal jatuh tempo "%due_date%".
+    project_finished:
+      contributor: Selamat! 100% produk anda telah selesai dikerjakan dengan %project_label%.
+      owner: '%project_label% Untuk %due_date% selesai.'
+      show: Tampilkan
+    due_date:
+      contributor: '%percent% anda dari produk yang dilakukan dengan %project_label%. Jangan lupa untuk mengisi produk terakhir sebagai %due_date%.'
+      owner: '%project_label% untu %due_date% tidak selesai 100%.'
+      start: Mulai
+  datagrid:
+    project_completeness: Kemajuan proyek
+    contributor_todo: Semua
+    contributor_in_progress: Dalam proses
+    contributor_done: Selesai
+    owner_todo: Todo (gambaran umum proyek)
+    owner_in_progress: Dalam proses (peninjauan proyek)
+    owner_done: Selesai (ikhtisar proyek)
+job_execution:
+  summary:
+    processed_products: Produk olahan
+pim_analytics:
+  info_type:
+    nb_projects: Jumlah beberapa proyek
+pim_datagrid:
+  cells:
+    type:
+      project_calculation: Perhitungan proyek
