@@ -1,0 +1,32 @@
+"oro_datagrid.no_data_hint %entityHint%": Nicio %entityHint% nu există.
+oro_datagrid.not_found_hint: Ne pare rău, nu există nici un rezultat pentru căutarea dvs.
+oro_datagrid.label_add_filter: Gestionare filtre
+oro_datagrid.label_loading_mask: Se încarcă . . .
+oro.grid.mass_action.selected_rows: Rânduri selectate
+oro.grid.mass_action.confirm_title: Confirmare acțiune în masă
+oro.grid.mass_action.confirm_content: Ești sigur că vrei să faci asta?
+oro.grid.mass_action.confirm_ok: Da, fă-o
+oro.grid.mass_action.error_title: Eroare acțiune în masă
+oro.grid.mass_action.error_content: Nu se poate efectua acțiunea în masă
+oro.grid.mass_action.delete.label: Șterge
+oro.grid.mass_action.delete.confirm_title: Confirmare ștergere în masă
+oro.grid.mass_action.delete.confirm_content: Ești sigur că vrei să ștergi elementele selectate?
+oro.grid.mass_action.delete.item_limit: Nu poti şterge în masă mai mult de %limit% produse (%count% selectate)
+oro.grid.datagrid.page_size.all: Tot
+oro.grid.mass_action.delete.success_message: "{0} Nicio entitate nu a fost ștearsă|{1} O entitate a fost ștearsă|]1,Inf[%count% entități au fost șterse"
+#Datagrid views constraints
+datagrid_view:
+  columns:
+    min_message: Trebuie să selectaţi cel puţin o grilă de date pentru a o afișa
+  label:
+    unique_message: Eticheta trebuie să fie unică
+    not_blank_message: Eticheta nu trebuie să fie goală
+#View selector flash messages
+grid.view_selector.flash:
+  created: Vizualizarea grila de date a fost creata cu succes
+  removed: Vizualizarea grila de date a fost stearsa cu succes
+  not_removable: Nu ai drepturile pentru a șterge această vizualizare
+quick_export: Export rapid
+import: Importă
+export: Exportă
+mass_edit: Editare în masă

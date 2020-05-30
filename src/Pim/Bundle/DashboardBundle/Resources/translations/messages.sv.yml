@@ -26,3 +26,4 @@ pim_dashboard:
         mass_edit: Massredigera
         quick_export: Snabbexport
         compute_product_models_descendants: Beräkna produktmodellers ättlingar
+        mass_delete: Massradera produkter

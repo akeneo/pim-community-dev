@@ -1,0 +1,49 @@
+User: Pengguna
+Run demo: Jalankan demo
+Product: Produk
+Attribute list: Daftar Perlengkapan
+Attribute Group list: Daftar Grup atribut
+Users: Pengguna
+Roles: Peran
+Groups: Kelompok
+Configuration: Konfigurasi
+Currency list: Daftar mata uang
+Locale list: Daftar lokal
+Logged in as: Masuk sebagai
+Logout: Keluar
+Login: Masuk
+Previous: Sebelumnya
+Next: Selanjutnya
+Channel list: Daftar saluran
+Select file: Memilih berkas
+Change file: Mengubah berkas
+Remove file: Menghapus berkas
+Delete: Hapus
+Save: Menyimpan
+Cancel: Batal
+Get help: Dapatkan bantuan
+My User: Akun Saya
+oro.form.choose_value: Pilih nilai...
+Read more: Baca lebih lanjut
+oro.form.click_here_to_select: Klik di sini untuk memilih...
+Add: Tambahkan
+"Learn how to use this space": "Pelajari cara menggunakan ruang ini"
+"How To Use Pinbar": "Bagaimana menggunakan Pinbar"
+Pinbar: Pinbar
+Favorites: Favorit
+Most Viewed: Paling banyak dilihat
+"Add this page to favorites": "Tambahkan halaman ini ke favorit"
+"Minimize the window to the pinbar": "Perkecil jendela ke pinbar"
+"Loading ...": "Sedang memuat ..."
+"Yes": "Ya"
+"No": "Tidak"
+required: (diharuskan)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Memungkinkan pemuatan pesan
+    loading_message_enabled.tooltip: Tampilkan pesan yang ramah pengguna sementara menunggu halaman untuk dimuat
+    loading_messages.label: Tersedia pesan pemuatan
+    loading_messages.tooltip: Semua pesan pemuatan yang tersedia dipisahkan oleh jeda baris
+  group:
+    loading_message.title: Memuat pesan
+other_actions: Tindakan lain

@@ -348,6 +348,7 @@ pim_enrich:
         update_failed: Jobbets profil kunde inte ändras.
         update_successful: Jobbets profil har ändrats.
     attribute:
+      scopable: Omfattningbar
       type:
         pim_catalog_identifier: Identifierare
         pim_catalog_text: Text
@@ -547,6 +548,7 @@ pim_enrich:
           table:
             name: Namn
             type: Typ
+            scopable: Omfattningbar
             localizable: Lokaliserbar
         history.title: Historik
     common:
@@ -593,6 +595,7 @@ pim_enrich:
         import.upload_file: Ladda upp en fil
       meta:
         job: Jobb
+        connector: Connector
       subsection:
         last_executions: Senaste körning
       tab:
@@ -685,12 +688,15 @@ pim_enrich:
             metric_family: Metrisk familj
             minimum_input_length: Minsta längd för autokomplettering
             negative_allowed: Negativa värden som är tillåtna
+            number_max: Max antal
+            number_min: Min antal
             reference_data_name: Referens datatyp
             scopable: Värde per kanal
             type: Typ
             unique: Unikt värde
             useable_as_grid_filter: Användbara i rutnät
             validation_regexp: Reguljära uttryck
+            validation_rule: Verifieringsuttryck
             wysiwyg_enabled: RTF-redigeraren aktiverad
           default_label:
             default_metric_unit: Välj en enhet
@@ -976,12 +982,31 @@ batch_jobs:
       label: Redigera Attribut
   csv_product_quick_export:
     quick_export.label: CSV-produkt snabb export
+    perform:
+      label: CSV-produkt snabb export
   csv_product_grid_context_quick_export:
     quick_export.label: CSV-produkt rutnät sammanhang snabb export
+    perform:
+      label: CSV-produkt rutnät sammanhang snabb export
   xlsx_product_quick_export:
     quick_export.label: XLSX produkt snabb export
+    perform:
+      label: XLSX produkt snabb export
   xlsx_product_grid_context_quick_export:
     quick_export.label: XLSX produkt rutnät sammanhang snabb export
+    perform:
+      label: XLSX produkt rutnät sammanhang snabb export
+  csv_product_export:
+    label: Exportera produkt till CSV
+    export.label: Exportera produkt
+  csv_product_model_export:
+    export.label: Exportera produkt
+  csv_category_export:
+    label: Exportera kategorier till CSV
+    export.label: Exportera kategorier
+  csv_attribute_export:
+    label: Exportera egenskaper till CSV
+    export.label: Exportera egenskaper
   csv_attribute_option_export:
     label: Exportera attributalternativ till CSV
     export.label: Exportera attributalternativ
@@ -995,18 +1020,36 @@ batch_jobs:
     label: Exportera familjer till CSV
     export.label: Exportera familjer
   csv_product_import:
+    label: Importera produkter från CSV
+    validation.label: Filvalidering
+    import.label: Importera produkter
     import_associations.label: Importera associationer
+  csv_category_import:
+    label: Importera kategorier från CSV
+    validation.label: Filvalidering
+    import.label: Importera produkt
+  csv_attribute_import:
+    label: Importera attribut från CSV
+    validation.label: Filvalidering
+    import.label: Importera attribut
   csv_attribute_option_import:
     label: Importera attributalternativ från CSV
+    validation.label: Filvalidering
     import.label: Importera attributalternativ
   csv_association_type_import:
     label: Importera associationstyp från CSV
+    validation.label: Filvalidering
     import.label: Importera associationer
   csv_family_import:
     label: Importera familjer från CSV
+    validation.label: Filvalidering
     import.label: Importera familjer
+  csv_family_variant_import:
+    validation.label: Filvalidering
   csv_group_import:
     label: Importera grupper från CSV
+    validation.label: Filvalidering
+    import.label: Importera grupper
   csv_channel_export:
     label: Exportera kanaler till CSV
     export.label: Exportera kanaler
@@ -1024,43 +1067,111 @@ batch_jobs:
     export.label: Exportera grupptyper
   csv_channel_import:
     label: Importera kanaler från CSV
+    validation.label: Filvalidering
     import.label: Importera kanaler
   csv_locale_import:
     label: Importera språk från CSV
+    validation.label: Filvalidering
     import.label: Importera språk
   csv_attribute_group_import:
     label: Importera attributgrupp från CSV
+    validation.label: Filvalidering
     import.label: Importera attributgrupp
   csv_currency_import:
     label: Importera valutor från CSV
+    validation.label: Filvalidering
     import.label: Importera valutor
   csv_group_type_import:
     label: Importera grupptyper från CSV
+    validation.label: Filvalidering
     import.label: Importera grupptyper
+  xlsx_category_import:
+    label: Importera kategorier från XLSX
+    validation.label: Filvalidering
+    import.label: Importera produkt
+  xlsx_association_type_import:
+    label: Importera associationstyp från XLSX
+    validation.label: Filvalidering
+    import.label: Importera associationer
+  xlsx_attribute_import:
+    label: Importera attribut i XLSX
+    validation.label: Filvalidering
+    import.label: Importera attribut
+  xlsx_attribute_option_import:
+    label: Importera attributalternativ från XLSX
+    validation.label: Filvalidering
+    import.label: Importera attributalternativ
   xlsx_family_import:
+    label: Importera familjer från XLSX
+    validation.label: Filvalidering
     import.label: Importera familj
+  xlsx_family_variant_import:
+    validation.label: Filvalidering
+  xlsx_product_export:
+    label: Exportera produkt till XLSX
+    export.label: Exportera produkt
+  xlsx_product_import:
+    label: Importera produkter från XLSX
+    validation.label: Filvalidering
+    import.label: Importera produkter
+    import_associations.label: Importera associationer
+  xlsx_group_export:
+    label: Exportera grupper till XLSX
+    export.label: Exportera grupper
+  xlsx_group_import:
+    label: Importera grupper från XLSX
+    validation.label: Filvalidering
+    import.label: Importera grupper
   xlsx_family_export:
+    label: Exportera familjer till XLSX
     export.label: Exportera familj
+  xlsx_category_export:
+    label: Exportera kategorier till XLSX
+    export.label: Exportera kategorier
+  xlsx_attribute_export:
+    label: Exportera attribut till XLSX
+    export.label: Exportera attribut till XLSX
+  xlsx_attribute_option_export:
+    label: Exportera attributalternativ till XLSX
+    export.label: Exportera attributalternativ till XLSX
+  xlsx_association_type_export:
+    label: Exportera associationstyp till XLSX
+    export.label: Exportera associationstyp till XLSX
   xlsx_channel_export:
     label: Exportera kanaler till XLSX
+    export.label: Exportera kanaler
   xlsx_locale_export:
     label: Exportera språk till XLSX
+    export.label: Exportera språk
   xlsx_attribute_group_export:
     label: Exportera attributgrupp till XLSX
+    export.label: Exportera attributgrupp
   xlsx_currency_export:
     label: Exportera valutor till XLSX
+    export.label: Exportera valutor
   xlsx_group_type_export:
     label: Exportera grupptyper till XLSX
+    export.label: Exportera grupptyper
   xlsx_channel_import:
     label: Importera kanaler från XLSX
+    validation.label: Filvalidering
+    import.label: Importera kanaler
   xlsx_locale_import:
     label: Importera språk från XLSX
+    validation.label: Filvalidering
+    import.label: Importera språk
   xlsx_attribute_group_import:
     label: Importera attributgrupp från XLSX
+    validation.label: Filvalidering
+    import.label: Importera attributgrupp
   xlsx_currency_import:
     label: Importera valutor från XLSX
+    validation.label: Filvalidering
+    import.label: Importera valutor
   xlsx_group_type_import:
     label: Importera grupptyper från XLSX
+    validation.label: Filvalidering
+    import.label: Importera grupptyper
 job_tracker:
   download_archive:
     archive: Ladda ner genererat arkiv
@@ -1085,24 +1196,39 @@ pim_menu:
     category: Kategorier
     channel: Kanaler
     currency: Valutor
+    dashboard: Instrumentpanel
     family: Familjer
     group: Grupper
     group_type: Grupptyper
     locale: Språk
     product: Products
+    published_product: Publicerade produkter
     export_history: Exporthistorik
     export_profile: Exportprofiler
     import_history: Importhistorik
     import_profile: Importprofiler
+    configuration: Inställningar
+    user_management: Hantering av användare
+    user: Användare
     user_group: Grupper
+    user_role: Roller
+    info: Systeminformation
     job_tracker: Process spårare
     api_connection: API-anslutning
   navigation:
     system: System navigering
+  user:
+    logout: Logga ut
+    user_account: Mitt konto
 pim_notification:
   mark_all_as_read: Markera alla som lästa
+  loading: Laddar...
 catalog_volume:
   axis:
     count_products: Products
+    count_channels: Kanaler
+    count_families: Familjer
     count_attributes: Attribut
     count_categories: Kategorier
+    count_category_trees: Kategoriträd
+    count_product_models: Produktmodeller

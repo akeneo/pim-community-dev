@@ -12,6 +12,7 @@ pim_user:
     tab:
       general.title: 一般信息
       users.title: 用户
+#user grids
 oro.user.controller:
   group.message.saved: "分组已保存"
   role.message.saved: "角色已保存"
@@ -32,11 +33,13 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: "名称"
+#Page titles
 pim_title:
   user.index: 用户
   user_role.index: 角色
   user_group.index: 分组
   system_configuration.index: 配置
+#User
 user.title: 用户
 user.overview: 用户
 Users Management: 用户管理
@@ -68,7 +71,7 @@ Ssl: SSL
 Last logged in: 上次登录
 Login count: 登录计数
 Additional Information: 更多信息
-Interfaces: 界面
+Interfaces: 接口
 Basic Information: 基本信息
 Contact Information: 联系方式
 User name: 用户名
@@ -90,6 +93,7 @@ user:
   default_grid_view:
     none: 无
   timezone: 时区
+#Role
 Role: 角色
 Owner: 所有者
 General: 一般信息
@@ -126,6 +130,7 @@ oro_security:
       create: 创建用户组
       edit: 编辑用户组
       delete: 删除用户组
+#Security
 (default): 实体上的默认权限
 VIEW: 视图
 CREATE: 创建
@@ -142,11 +147,13 @@ oro:
       GLOBAL: 组织
       SYSTEM: 系统
       NONE: 无
+#User Group
 Create group: 创建组
 btn.create.user-group: 创建组
 Has group: 有分组
 Save and Close: 保存并关闭
 user-group.overview: 分组
+#Login page
 Log in: 登录
 Remember me on this computer: 在这台计算机上记住我
 Forgot your password?: 忘记密码？

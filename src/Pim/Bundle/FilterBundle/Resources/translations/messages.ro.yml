@@ -1,0 +1,21 @@
+oro.filter.form.label_type_equal: '='
+oro.filter.form.label_type_greater_equal: '>='
+oro.filter.form.label_type_greater_than: '>'
+oro.filter.form.label_type_less_equal: '<='
+oro.filter.form.label_type_less_than: '<'
+oro.filter.form.label_type_yes: "da"
+oro.filter.form.label_type_no: "nu"
+oro.filter.form.label_type_contains: conţine
+oro.filter.form.label_type_not_contains: nu conţine
+oro.filter.form.label_type_equals: este egal cu
+oro.filter.form.label_type_start_with: începe cu
+oro.filter.form.label_type_end_with: se termină cu
+oro.filter.form.label_type_empty: este gol
+oro.filter.form.label_type_not_empty: nu este gol
+oro.filter.form.label_type_in_list: în listă
+oro.filter.form.label_date_type_between: între
+oro.filter.form.label_date_type_not_between: nu e între
+oro.filter.form.label_date_type_more_than: mai mult de
+oro.filter.form.label_date_type_less_than: mai puţin de
+oro.filter.form.label_not_selected: Neselectat
+oro.filter.form.label_selected: Selectat

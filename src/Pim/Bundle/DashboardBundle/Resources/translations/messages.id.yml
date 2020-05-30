@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: Dasbor
+  version: Versi
+  link.label:
+    product: Mengelola Produk
+    category: Mengelola Kategori
+    attribute: Mengelola Atribut
+    family: Mengelola Keluarga
+  widget:
+    error:
+      title: Kesalahan ketika memuat widget
+      message: Widget '%alias%' tidak ada
+    completeness:
+      title: Kelengkapan Atas Saluran dan Lokal
+    last_operations:
+      title: Operasi terakhir
+      empty: Tidak ditemukan operasi
+      status: Status
+      date: Tanggal
+      type: Tipe
+      "profile name": Nama profil
+      details: Rincian
+      job_type:
+        import: Impor
+        export: Ekspor
+        mass_edit: Sunting massa
+        quick_export: Ekspor cepat
+        compute_product_models_descendants: Hitunglah model produk keturunan

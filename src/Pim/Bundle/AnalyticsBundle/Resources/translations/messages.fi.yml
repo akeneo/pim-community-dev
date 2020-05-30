@@ -12,6 +12,7 @@ pim_analytics:
     download: TXT
   info_type:
     pim_edition: Painos
+    pim_version: Versio
     pim_storage_driver: Tallennus
     pim_environment: Ympäristö
     pim_install_time: Asennusaika
@@ -49,3 +50,9 @@ pim_analytics:
     mongodb_version: MongoDB-versio
     server_version: Palvelimen versio
     php_extensions: PHP-laajennukset
+  acl:
+    system_info:
+      index: Järjestelmätiedot
+pim_menu:
+  item:
+    system_info: Järjestelmätiedot

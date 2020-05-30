@@ -1,0 +1,4 @@
+"Sorry, page was not loaded correctly": "Ne pare rău, pagina nu a fost încărcată corect"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Schimbările locale vor fi pierdute. Sunteţi sigur că doriți să actualizați pagina?"
+"navigation.message.content.outdated": "Conținutul paginii {{ title }} este neactualizat, vă rugăm <a href='#' data-action='page-refresh'>reîmprospătați pagina</a>"
+"Content of pinned page is outdated": "Conținutului paginei fixată este expirat"

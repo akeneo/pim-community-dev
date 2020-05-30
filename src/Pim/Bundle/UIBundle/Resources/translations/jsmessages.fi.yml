@@ -1,8 +1,11 @@
+#ORO messages
+Close: Sulje
 Update: Päivitä
 Selected Rows: Valitut rivit
 "Yes": "Kyllä"
 "Yes, Delete": "Kyllä, poista"
 "Yes, I Agree": "Kyllä, hyväksyn"
+"Yes, do it": "Kyllä, tee se"
 "No": "Ei"
 "Ok, got it.": "OK."
 "Cancel": "Peruuta"
@@ -34,11 +37,16 @@ Localized value: Paikallinen arvo
 Columns: Sarakkeet
 Datagrid Configuration: Datagrid-kokoonpano
 Apply: Käytä
+#Filters
+Action: Toiminto
 Unit: Yksikkö
 Currency: Valuutta
 jstree:
   all: Kaikki tuotteet
   unclassified: Luokittelemattomat tuotteet
+  product:
+    all: Kaikki tuotteet
+    unclassified: Luokittelemattomat tuotteet
   no_tree: Ei puuta käytettävissä
   include_sub: Sisällytä alakategoriat
   loading: Ladataan ...
@@ -86,6 +94,7 @@ datetimepicker:
     Feb: Helmi
     Mar: Maalis
     Apr: Huhti
+    May: Touko
     Jun: Kesä
     Jul: Heinä
     Aug: Elo
@@ -97,7 +106,17 @@ datetimepicker:
 oro_config:
   form:
     config:
+      title: Järjestelmäasetukset
+      tab:
+        system:
+          title: Järjestelmä
       group:
+        localization:
+          title: Lokalisointi
+          system_locale: Kieli
+        notification:
+          title: Ilmoitukset
+          system_notification: Versiopäivitykset
         loading_message:
           title: Latausviestit
           label: Aktivoi latausviestit

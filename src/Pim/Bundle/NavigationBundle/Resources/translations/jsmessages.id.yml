@@ -1,0 +1,4 @@
+"Sorry, page was not loaded correctly": "Maaf, halaman tidak dimuat dengan benar"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Perubahan lokal anda akan hilang. Apakah anda yakin anda ingin menyegarkan halaman?"
+"navigation.message.content.outdated": "Isi {{ title }} di halaman ketinggalan jaman, silakan <a href='#' data-action='page-refresh'>menyegarkan halaman</a>"
+"Content of pinned page is outdated": "Konten halaman yang disematkan sudah ketinggalan zaman"

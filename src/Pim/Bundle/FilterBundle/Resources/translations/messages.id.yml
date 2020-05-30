@@ -1,0 +1,21 @@
+oro.filter.form.label_type_equal: '='
+oro.filter.form.label_type_greater_equal: '>='
+oro.filter.form.label_type_greater_than: '>'
+oro.filter.form.label_type_less_equal: '<='
+oro.filter.form.label_type_less_than: '<'
+oro.filter.form.label_type_yes: "ya"
+oro.filter.form.label_type_no: "tidak"
+oro.filter.form.label_type_contains: mengandung
+oro.filter.form.label_type_not_contains: tidak mengandung
+oro.filter.form.label_type_equals: adalah sama dengan
+oro.filter.form.label_type_start_with: diawali dengan
+oro.filter.form.label_type_end_with: diakhiri dengan
+oro.filter.form.label_type_empty: kosong
+oro.filter.form.label_type_not_empty: tidak kosong
+oro.filter.form.label_type_in_list: dalam daftar
+oro.filter.form.label_date_type_between: antara
+oro.filter.form.label_date_type_not_between: tidak diantara
+oro.filter.form.label_date_type_more_than: lebih dari
+oro.filter.form.label_date_type_less_than: kurang dari
+oro.filter.form.label_not_selected: Tidak terpilih
+oro.filter.form.label_selected: Terpilih

@@ -1,0 +1,221 @@
+pim_connector:
+  steps:
+    dummy_reader.title: Cititor de probă
+    product_reader.title: Extracție de produs
+    entity_reader.title: Extracție de entitate
+    csv_reader:
+      title: Cititor CSV
+    file_reader:
+      invalid_item_columns_count: 'Se aștepta la %totalColumnsCount% coloane, dar sunt doar %itemColumnsCount% în %filePath%'
+    csv_product_reader.title: Cititor de produs CSV
+    csv_category_reader.title: Cititor de categorie CSV
+    dummy_processor.title: Processor fictiv
+    product_processor.title: Creearea de produs
+    category_processor.title: Creearea de categorie
+    association_processor.title: Creearea de asociație
+    product_association_processor.title: Crearea asociației
+    group_processor.title: Creearea de grup
+    attribute_processor.title: Creearea de atribut
+    attribute_option_processor.title: Crearea opțiuni de atribute
+    heterogeneous_processor.title: Serializator de produs CSV
+    homogeneous_processor.title: Serializator de entitate CSV
+    transformer_processor.title: Transformare
+    dummy_writer.title: Scriitor fictiv
+    file_writer.title: Rezultat
+    product_writer.title: Depozitarea produsului
+    category_writer.title: Depozitarea categoriei
+    writer.title: Depozitarea entității
+    csv_writer.title: Scriitor Csv
+job_execution.summary:
+  read: citește
+  write: scris
+  skip: sărit
+  create: creat
+  process: procesat
+  update_products: produse actualizate
+  process_products: produse procesate
+  skip_products: produse sărite
+  displayed: primele avertismente afişate
+  charset_validator:
+    title: 'Codificarea fişierului:'
+    skipped: sărit, extensie în lista albă
+  product_skipped_no_diff: produs omis (nici o diferență)
+  product_skipped_no_associations: produs sărit (nu a fost găsită nicio asociație)
+  product_model_skipped_no_diff: model de produs omis (fără diferențe)
+  item_position: citeşte linii
+  skipped_in_root_product_model: model de produs cu mamă omis
+  skipped_in_sub_product_model: omis model de produs fără părinte
+#Job labels
+batch_jobs:
+  csv_product_export:
+    label: Export produs în CSV
+    export.label: Export produs
+  csv_product_model_export:
+    label: Export model de produs în CSV
+    export.label: Export model de produs
+  csv_category_export:
+    label: Export categorie în CSV
+    export.label: Export categorie
+  csv_attribute_export:
+    label: Export atribut în CSV
+    export.label: Export atribut
+  csv_attribute_option_export:
+    label: Export opziuni de atribut în CSV
+    export.label: Export opziuni de atribut
+  csv_association_type_export:
+    label: Export tip de atribut în CSV
+    export.label: Export tip de asociere
+  csv_group_export:
+    label: Export grup în CSV
+    export.label: Export grup
+  csv_family_export:
+    label: Export familie în CSV
+    export.label: Export familie
+  csv_family_variant_export:
+    label: Export variantă de familie în CSV
+    export.label: Export varianta de familie
+  csv_product_import:
+    label: Import de produs în CSV
+    validation.label: Validarea fișierului
+    import.label: Import produs
+    import_associations.label: Import asociație
+  csv_product_model_import:
+    validation.label: Validarea fișierului
+    import_sub_product_model.label: Impor model de subprodus
+  csv_category_import:
+    validation.label: Validarea fișierului
+    import.label: Import categorie
+  csv_attribute_import:
+    validation.label: Validarea fișierului
+    import.label: Import atribut
+  csv_attribute_option_import:
+    label: Import de opțiune a atributului în CSV
+    validation.label: Validarea fișierului
+    import.label: Import de opțiune a atributului
+  csv_association_type_import:
+    label: Import de tipul asociației în CSV
+    validation.label: Validarea fișierului
+    import.label: Import tip de asociație
+  csv_family_import:
+    label: Import familie în CSV
+    validation.label: Validarea fișierului
+    import.label: Import familie
+  csv_family_variant_import:
+    label: Import varianta de familie în CSV
+    validation.label: Validarea fișierului
+    import.label: Export varianta de familie
+  csv_group_import:
+    label: Import de grup în CSV
+    validation.label: Validarea fișierului
+    import.label: Import grup
+  csv_channel_export:
+    label: Export canal în CSV
+    export.label: Export canal
+  csv_locale_export:
+    label: Export local în CSV
+    export.label: Export local
+  csv_attribute_group_export:
+    label: Export grup de atribut în CSV
+    export.label: Export grup de atribut
+  csv_currency_export:
+    label: Export valută în CSV
+    export.label: Export valută
+  csv_group_type_export:
+    label: Export tip de grup În CSV
+  csv_channel_import:
+    label: Import canal în CSV
+    validation.label: Validarea fișierului
+    import.label: Import canal
+  csv_locale_import:
+    label: Import local în CSV
+    validation.label: Validarea fișierului
+    import.label: Import local
+  csv_attribute_group_import:
+    label: Import grup de atribut în CSV
+    validation.label: Validarea fișierului
+    import.label: Import grup de atribut
+  csv_currency_import:
+    label: Import valută în CSV
+    validation.label: Validare fişier
+    import.label: Import valută
+  csv_group_type_import:
+    label: Import dip de grup în CSV
+    validation.label: Validare fişier
+    import.label: Import tip de grup
+  xlsx_category_import:
+    label: Import categorie în XLSX
+    validation.label: Validare fişier
+    import.label: Import categorie
+  xlsx_association_type_import:
+    label: Import tip de asociere în XLSX
+    validation.label: Validare fişier
+    import.label: Import tip de asociere
+  xlsx_attribute_import:
+    label: Import atribut în XLSX
+    validation.label: Validare fişier
+    import.label: Import atribut
+  xlsx_attribute_option_import:
+    label: Import opțiuni de atribut în XLSX
+    validation.label: Validare fişier
+    import.label: Import opțiuni de atribut
+  xlsx_family_import:
+    label: Import familie în XLSX
+    validation.label: Validare fişier
+    import.label: Import familie
+  xlsx_family_variant_import:
+    label: Import variantă familie în XLSX
+    validation.label: Validare fişier
+    import.label: Import variantă familie
+  xlsx_product_export:
+    label: Export produs în XLSX
+    export.label: Exportare produse
+  xlsx_product_model_export:
+    export.label: Export model de produs
+  xlsx_product_import:
+    validation.label: Validarea fișierului
+    import.label: Import produs
+    import_associations.label: Import asociație
+  xlsx_product_model_import:
+    validation.label: Validarea fișierului
+    import_sub_product_model.label: Impor model de subprodus
+    import_associations.label: Import asociație
+  xlsx_group_export:
+    label: Export grup în XLSX
+    export.label: Export grup
+  xlsx_group_import:
+    label: Import grup în XLSX
+    validation.label: Validarea fișierului
+    import.label: Import grup
+  xlsx_family_export:
+    export.label: Export familie
+  xlsx_family_variant_export:
+    export.label: Export varianta de familie
+  xlsx_category_export:
+    export.label: Export categorie
+  xlsx_channel_export:
+    export.label: Export canal
+  xlsx_locale_export:
+    export.label: Export local
+  xlsx_attribute_group_export:
+    export.label: Export grup de atribut
+  xlsx_currency_export:
+    export.label: Export valută
+  xlsx_channel_import:
+    validation.label: Validarea fișierului
+    import.label: Import canal
+  xlsx_locale_import:
+    label: Import local în XLSX
+    validation.label: Validarea fișierului
+    import.label: Import local
+  xlsx_attribute_group_import:
+    label: Import grup de atribut în XLSX
+    validation.label: Validarea fișierului
+    import.label: Import grup de atribut
+  xlsx_currency_import:
+    label: Import valută în XLSX
+    validation.label: Validarea fișierului
+    import.label: Import valută
+  xlsx_group_type_import:
+    label: Import tip de grup în XLSX
+    validation.label: Validarea fișierului
+    import.label: Import tip de grup

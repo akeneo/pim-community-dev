@@ -1,0 +1,160 @@
+pim_user:
+  user:
+    tab:
+      general.title: General
+      additional.title: Adițional
+      group_and_role.title: Grupuri si roluri
+      password.title: Parolă
+      business_unit.title: Unități business
+      email_synchronization.title: Setări de sincronizare email
+      interfaces.title: Interfețe
+  group:
+    tab:
+      general.title: General
+      users.title: Utilizatori
+#user grids
+oro.user.controller:
+  group.message.saved: "Grup salvat"
+  role.message.saved: "Rol salvat"
+  user.message.saved: "Utilizator salvat"
+  status.message.saved: "Stare salvată"
+oro.user.grid.users:
+  columns:
+    username: "Nume de utilizator"
+    email: "E-mail"
+    firstName: "Prenume"
+    lastName: "Nume"
+    createdAt: "Creat pe"
+    updatedAt: "Actualizat pe"
+    enabled: "Stare"
+oro.user.grid.roles:
+  columns:
+    label: "Etichetă"
+oro.user.grid.groups:
+  columns:
+    name: "Nume"
+#Page titles
+pim_title:
+  user.index: Utilizatori
+  user_role.index: Roluri
+  user_group.index: Grupuri
+  system_configuration.index: Configurație
+#User
+user.title: Utilizator
+user.overview: Utilizator
+Users Management: Gestionare utilizatori
+Create user: Creează utilizator
+btn.create.user: Creează utilizator
+New user: Utilizator nou
+Additional: Adițional
+Groups and Roles: Grupuri si roluri
+Username: Nume de utilizator
+Password: Parolă
+Re-enter password: Reintroduceți parola
+Name prefix: Prefixul numelui
+First name: Prenume
+Middle name: Numele mijlociu
+Last name: Nume
+Name suffix: Sufixul numelui
+Date of birth: Data naşterii
+Avatar: Avatar
+Additional emails: E-mailuri adiționale
+Add another email: Adaugă un alt e-mail
+Catalog locale: Catalog local
+Default tree: Arbore implicit
+Business Units: Unități business
+Email synchronization settings: Setări de sincronizare email
+Host: Gazdă
+Port: Port
+Ssl: SSL
+Last logged in: Ultima autentificare
+Login count: Număr de autentificări
+Additional Information: Informații suplimentare
+Interfaces: Interfețe
+Basic Information: Informații de bază
+Contact Information: Informații de contact
+User name: Nume de utilizator
+Birthday: Ziua de naştere
+API key: Cheie API
+Ui locale: UI local
+UI locale: UI local
+Current password: Parola actuală
+New password: Parolă nouă
+Repeat new password: Repetă parola nouă
+Generate key: Generează cheie
+Primary: principală
+Removed user: Utilizator eliminat
+user:
+  product_grid_filters: Filtre grilă produse
+  default_grid_view:
+    none: Nici unul
+  timezone: Fus orar
+#Role
+Role: Rol
+Owner: Proprietar
+General: General
+Entity: Entitate
+Capabilities: Capacități
+Save and close: Salvează şi închide
+Has role: Are rol
+role:
+  title: rol
+  overview: rol
+  edit: Modifică rol
+  create: Creează rol
+btn.create.role: Creează rol
+rights:
+  action: Permisiuni
+oro_security:
+  acl_group:
+    user: Utilizatori
+    role: Roluri
+    group: Grupuri de utilizatori
+  acl:
+    user:
+      view: Listeazā utilizatorii
+      create: Creează utilizator
+      edit: Modifică utilizatori
+      delete: Elimină un utilizator
+    role:
+      view: Listează rolurile
+      create: Creează un rol
+      edit: Modifică rolurile
+      delete: Ștergeți un rol
+    group:
+      view: Listează grupuri de utilizatori
+      create: Creează un grup de utilizatori
+      edit: Modifică grupuri de utilizatori
+      delete: Șterge un grup de utilizator
+#Security
+(default): Permisiune implicită pe entități
+VIEW: Vizualizează
+CREATE: Creează
+EDIT: Editează
+DELETE: Şterge
+ASSIGN: Atribuie
+SHARE: Distribuie
+oro:
+  security:
+    access-level:
+      BASIC: Utilizator
+      LOCAL: Unitate business
+      DEEP: Divizie
+      GLOBAL: Organizație
+      SYSTEM: Sistem
+      NONE: Niciunul
+#User Group
+Create group: Creează grup
+btn.create.user-group: Creează grup
+Has group: Are grup
+Save and Close: Salvează si închide
+user-group.overview: Grupuri
+#Login page
+Log in: Autentificare
+Remember me on this computer: Ţine-mă minte pe acest computer
+Forgot your password?: Ți-ai uitat parola?
+Username or Email: Nume de utilizator sau E-mail
+Forgot Password: Ați uitat parola
+Request: Solicitare
+Check Email: Verificați E-mailul
+Go to homepage: Du-te la pagina principală

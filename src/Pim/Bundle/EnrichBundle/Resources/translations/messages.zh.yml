@@ -1,4 +1,5 @@
 pim_enrich:
+  #Product
   product:
     tab:
       attribute.title: 属性
@@ -6,38 +7,47 @@ pim_enrich:
       association.title: 关联
       completeness.title: 完整性
       history.title: 历史
+    #Product comparison
     no_comparison_locale_available: 没有可供比较的其它本地化语言
     no_compared_media: 可没有可供比较的媒体
+  #Attribute
   attribute:
     tab:
       parameter.title: 参数
       value.title: 值
       history.title: 历史
+  #Attribute group
   attribute_group:
     tab:
       property.title: 属性
       attribute.title: 属性
       history.title: 历史
+  #Family
   family:
     tab:
       property.title: 属性
       attribute.title: 属性
       history.title: 历史
+  #Association type
   association_type:
     tab:
       property.title: 属性
       history.title: 历史
+  #Group type
   group_type:
     tab:
       property.title: 属性
+  #Category
   category:
     tab:
       property.title: 属性
       history.title: 历史
+  #Locale
   locale:
     tab:
       property.title: 属性
       permission.title: 权限
+  #Product group
   group:
     axis.help: 'Axis定义了一组产品中可以不同的属性。Axis就是一组带选项的属性，不可以本地化也没有范围（全局）。在创建好款式组后，他们是不能被修改的。'
     type:
@@ -49,12 +59,14 @@ pim_enrich:
       product.title: 商品
       property.title: 属性
       history.title: 历史
+  #Product completeness
   completeness:
     progress_bar.title: '完成 %ratio%%（1 所需的值） | 完成 %ratio%%（所需的%count% 值）'
     subtitle: '{0} 完成 |{1} 1 缺少值 |]1，Inf] %count% 缺失值'
     missing_attributes: 缺少值 |缺少的值
     legend:
       locale_not_associated: 本地化语言与此渠道无关联
+  #Mass edit operations
   mass_edit_action:
     limit_exceeded: 请选择少于%limit%的项目编辑
     product:
@@ -94,18 +106,22 @@ pim_enrich:
         invalid_attribute: 具有代码"attribute_code"属性在选定的产品中并不共用，该属性略过。
         no_valid_attribute: 没有选定的属性可以应用于这种产品。
     classify-add:
+      label: 添加到类别
       description: 产品将被放入以下目录，现存的位置也会保留。
       success_flash: 产品已经被分类到所选的目录中了。
       launched_flash: 批量操作"加入到目录"已经启动。完成后会通知您。
     classify-move:
+      label: 更改类别
       description: 产品将被放入以下目录，现存的位置不会保留。
       success_flash: 产品已经被移动到所选的目录中了。
       launched_flash: 批量操作"移动到目录"已经启动。完成后会通知您。
     classify-remove:
+      label: 从类别里删除
       description: 产品将从以下目录中删除。
       success_flash: 产品已经从所选的目录中移除了。
       launched_flash: 批量操作"从目录中移除"已经启动。完成后会通知您。
     change-family:
+      label: 更改品类
       description: 选定产品的品类将更改为被选定的品类
       success_flash: 所选产品的品被已经被成功更改。
       launched_flash: 批量操作"更改品类"已经启动。完成后会通知您。
@@ -116,16 +132,19 @@ pim_enrich:
       launched_flash: 批量操作"加入到组"已经启动。完成后会通知您。
       no_group: 现在没有组。请首先创建一个组。
     set-attribute-requirements:
+      label: 设置属性要求
       description: 下列属性要求将应用于所选的品类中
       success_flash: 属性要求将应用于所选的品类中
       launched_flash: 批量操作"设置属性要求"已经启动。当完成时，我们会通知您。
     mass_action:
       quick_export:
         launched_flash: 导出产品的作业正在运行
+  #Sequential edit operations
   sequential_edit_action:
     product:
       previous: 向后跳到"%product%"而不进行保存。
       next: 跳到"%product%"而不进行保存。
+  #ACLs
   acl:
     locale:
       index: 列出本地化语言
@@ -141,12 +160,16 @@ pim_enrich:
       remove_attribute: 从产品中删除属性
       categories_view: 咨询产品的类别
       change_family: 更改产品品类
-      change_state: 更改产品状态
       add_to_groups: 将商品添加到组
       mass_edit: 产品批量编辑操作
       comment: 评论产品
       download: 下载PDF格式的产品
       history: 查看产品历史记录
+    product_model:
+      create: 创建产品型号
+      edit_attributes: 编辑产品模型的属性
+      history: 查看产品模型的历史记录
+      remove: 删除产品模型
     category:
       list: 列出目录
       create: 创建类别
@@ -204,6 +227,8 @@ pim_enrich:
       history: 查看关联类型历史记录
     job_tracker:
       index: 查看进程跟踪器
+    api_connection:
+      manage: 管理API连接
   acl_group:
     association_type: 关联类型
     attribute: 属性
@@ -216,10 +241,12 @@ pim_enrich:
     group_type: 分组类型
     locale: 本地化语言
     product: 商品
+    product_model: 产品模型
   reference_data:
     empty_value:
       reference_data_type:
         label: 选择引用的数据类型
+#Entity and page header titles
 attribute:
   title: 属性
   edit: 编辑属性
@@ -239,10 +266,8 @@ category:
   edit: 编辑类别
   suggest selection: 请选择左边的类别
   or: ' 或 '
-  create new: 创建新的类别
 tree:
   title: 目录
-  create: 创建目录
   edit: 编辑目录
 channel:
   title: 频道
@@ -275,16 +300,17 @@ association type:
   title: 关联类型
   create: 创建关联类型
   edit: 编辑关联类型
+#Custom titles
 products: 产品
+#Buttons
 btn:
   create:
     attribute: 创建属性
     attribute group: 创建属性组
-    category: 创建类别
-    tree: 创建目录
-    channel: 创建频道
+    category: 创建分类
+    channel: 创建通道
     currency: 创建货币
-    family: 创建分类
+    family: 创建产品族
     locale: 创建区域
     product: 创建产品
     group: 创建分组
@@ -306,13 +332,14 @@ btn:
   to parent: 返回到上级
   download_pdf: PDF
   download: 下载
+#Confirmation messages
 confirmation:
   confirm: 确认
   delete: 确定删除
   leave: 你确定你要离开此页面？
   discard changes: 如果你离开页面，你将丢失%entity%的更改。
   remove:
-    item: 确实要删除这个项目吗?
+    item: 确实要删除这个条目吗?
     attribute: 确定要删除属性%name%吗？
     attribute group: 确定要删除属性组%name%吗？
     category: 确定要删除目录%name%吗？
@@ -327,6 +354,7 @@ confirmation:
     remove attribute: 确定要从这个产品族删除属性%name%吗？
   product:
     remove attribute: 定要要从这个产品删除属性%name%吗？
+#Flash messages
 flash:
   entity:
     removed: 项目已被删除
@@ -389,6 +417,7 @@ flash:
   user:
     removed: 用户已删除
   error ocurred: 操作失败，请重试。
+#Info messages
 info:
   updated: 更新未保存。
   category:
@@ -423,14 +452,15 @@ info:
     auto option sorting: 如果启用，选项将自动按照区域标签排序
   completeness:
     not calculated: 尚未计算
+#Form elements
 Options: 选项
 Created at: 创建于
 Updated at: 更新于
-Created: 已创建
+Created: 创建
 Updated: 已更新
 Last update: 上次更新
 by: 由
-N/A: 不适用
+N/A: N/A
 Manage products: 管理产品
 Manage groups: 管理分组
 Code: 代码
@@ -471,7 +501,7 @@ Available locales: 可用区域
 Locale specific: 特定的区域
 default: 默认
 Axis: 轴
-Add attributes: 添加属性
+Add attributes: 增加属性
 Translate from: 翻译自
 switch_on: "是"
 switch_off: "否　"
@@ -495,17 +525,21 @@ No matches found: 未找到匹配项
 Category tree: 目录树
 Completeness: 完整性
 Attribute used as label: 属性作为标签
+#Scopes
 Global: 全局
 Channel: 通道
 Expand all channels: 展开所有渠道
 Collapse all channels: 折叠所有渠道
+#Variants
 Always override: 总是重写
 Ask: 询问
+#Attribute group
 General Properties: 常规属性
 Group values: 分组值
 New group: 新组
 Groups overview: 分组概述
 'Y-m-d h:i:s': 'Y-m-d h:i:s'
+#Attribute properties
 Max characters: 最大字符数
 Validation rule: 验证规则
 Validation regexp: 验证正则表达式
@@ -526,8 +560,11 @@ URL: 链接地址
 Regular expression: 正则表达式
 Minimum input length: 输入的最小长度
 Default: 默认
+#Family
 Attributes: 属性
+#Category
 Title: 名称
+#Page titles
 pim_title.attribute_group:
   index: "属性组"
   create: "属性组 |创建"
@@ -542,6 +579,7 @@ pim_title.attribute:
   edit: "属性%attribute.label%|编辑"
 pim_title.product:
   index: "商品"
+  edit: "产品%product.label% |编辑"
 pim_title.family:
   index: "品类"
   edit: "产品族%family.label%|编辑"
@@ -586,12 +624,15 @@ pim_catalog_date: 日期
 pim_catalog_metric: 公制
 pim_reference_data_simpleselect: 参考数据简单选择
 pim_reference_data_multiselect: 参考数据多项选择
+#Locales
 Activated: 已激活
 Disable: 禁用
+#Sequential edit operations
 pim_enrich.sequential_edit_action:
   product:
     previous: 向后跳到"%product%"而不进行保存。
     next: 跳到"%product%"而不进行保存。
+#Mass edit operations
 pim_enrich.mass_edit_action:
   limit_exceeded: 请选择少于%limit%的项目编辑
   product:
@@ -628,9 +669,11 @@ pim_enrich.mass_edit_action:
     message.warning: 所选定的产品中没有共同的产品属性。请更改您的选择。
     no_attribute.warning: 所选定的产品中没有共同的产品属性。请更改您的选择。
   classify:
+    label: 添加到类别
     description: 产品将被放入以下目录，现存的位置也会保留。
     success_flash: 产品已经被分类到所选的目录中了。
   change-family:
+    label: 更改品类
     description: 选定产品的品类将更改为被选定的品类
     success_flash: 所选产品的品被已经被成功更改。
     no_family: 没有品类
@@ -639,6 +682,7 @@ pim_enrich.mass_edit_action:
     description: 选择一个组，将所选定的产品加入其中
     success_flash: 产品已成功添加到所选的组
   set-attribute-requirements:
+    label: 设置属性要求
     description: 下列属性要求将应用于所选的品类中
     success_flash: 属性要求将应用于所选的品类中
 To enable: 启用
@@ -647,9 +691,11 @@ Select: 选择
 Remove this attribute: 删除此属性
 Copy: 复制
 Current tab: 当前选项卡
+#Product view
 Group: 分组
 View group: 查看组
 Products: 商品
+#Tabs
 Properties: 属性
 History: 历史
 pane.accordion:
@@ -662,11 +708,13 @@ pane.accordion:
   label_translations: 标签翻译
   options: 选项
   group_values: 分组值
+#Popin titles
 popin.create:
   association_type.title: 创建关联类型
   group.title: 创建新组
   product.title: 创建新商品
   option.title: 创建一个新的选项
+#Datagrid contents
 In group: 在组中
 Attribute as label: 属性作为标签
 Is associated: 关联
@@ -676,6 +724,7 @@ Updated At: 更新于
 Enabled: 已启用
 Disabled: 已禁用
 Status: 状态
+#Versioning / history
 Change History: 更改历史记录
 Data Audit: 数据审计
 Data Audit - System: '数据审计-系统'
@@ -690,6 +739,7 @@ Logged at: 登录
 Deleted: 删除
 Old values: 原值
 New values: 新值
+#Configuration
 System configuration: 系统配置
 General setup: 常规设置
 Localization: 本地化
@@ -721,6 +771,7 @@ oro.locale:
       language: "选择您想要使用的系统语言"
       timezone: "选择用于显示日期和时间的时区"
       currency: "选择默认货币"
+#Datagrid
 Selected products successfully deleted: 成功地删除所选的产品
 pim_mass_edit:
   notification:
@@ -737,6 +788,7 @@ job_execution.summary:
   skip: 跳过
   skipped_products: 跳过的产品
   skipped_attributes: 跳过的属性
+  skipped_families: 被略过的品类
 pim_mass_edit_execution_show: 批量编辑执行 |详细信息
 edit_common_attributes.steps.edit_common_attributes_processor.title: 编辑属性
 update_product_value.steps.update_product_value_processor.title: 更新商品值
@@ -744,6 +796,7 @@ remove_product_value.steps.update_product_value_processor.title: 移除商品值
 edit_common_attributes: 编辑属性
 perform.steps.duplicated.title: 重复的轴
 perform.steps.excluded.title: 被排除在外的产品
+#Background jobs & steps labels
 batch_jobs:
   add_product_value:
     label: 添加商品值
@@ -757,6 +810,10 @@ batch_jobs:
     label: 编辑属性
     perform:
       label: 编辑属性
+  set_attribute_requirements:
+    label: 设置属性要求
+    perform:
+      label: 设置属性要求
   csv_product_quick_export:
     quick_export.label: Csv 产品快速导出
     perform:
@@ -772,7 +829,7 @@ batch_jobs:
   xlsx_product_grid_context_quick_export:
     quick_export.label: XLSX产品界面内容下快速导出
     perform:
-      label: XLSX产品界面内容下快速导出
+      label: XLSX产品网格背景下快速导出
 mass_edit report:
   overview: 批量编辑报告
 job_tracker:
@@ -784,6 +841,8 @@ pim_enrich_attribute_form:
   code: 代码
   type: 属性类型
   reference_data_name: 引用数据名称
+  scopable: 每个渠道的值
+  localizable: 每项区域设置的值
   unique: 唯一性值
   availableLocales: 可用区域
   locale_specific: 特定的区域

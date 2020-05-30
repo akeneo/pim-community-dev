@@ -1,7 +1,7 @@
 Area: 区域
 ACRE: 英亩
 ARE: 公亩
-ARPENT: Arpent
+ARPENT: 英亩
 CENTIARE: 平方米
 HECTARE: 公顷
 SQUARE_CENTIMETER: 平方厘米
@@ -38,7 +38,7 @@ CHAIN: 链
 DECIMETER: 分米
 DEKAMETER: 十米
 FEET: 英尺
-FURLONG: Furlong
+FURLONG: 浪
 INCH: 英寸
 HECTOMETER: 百米
 KILOMETER: 千米
@@ -95,6 +95,9 @@ SECOND: 秒
 MINUTE: 分钟
 HOUR: 小时
 DAY: 天
+WEEK: 星期
+MONTH: 月份
+YEAR: 年份
 Speed: 速度
 FOOT_PER_SECOND: 英尺/秒
 FOOT_PER_HOUR: 英尺/小时
@@ -146,3 +149,9 @@ ATM: 大气压
 PSI: 磅 / 平方英寸
 TORR: 托尔
 MMHG: 毫米汞柱
+Energy: 能源
+KILOCALORIE: 千卡
+KILOJOULE: 千焦
+CaseBox: 包装
+PIECE: 个
+DOZEN: 打

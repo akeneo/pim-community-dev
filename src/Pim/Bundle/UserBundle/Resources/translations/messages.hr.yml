@@ -12,6 +12,7 @@ pim_user:
     tab:
       general.title: Općenito
       users.title: Korisnici
+#user grids
 oro.user.controller:
   group.message.saved: "Grupa je spremljena"
   role.message.saved: "Rola je spremljena"
@@ -32,11 +33,13 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: "Ime"
+#Page titles
 pim_title:
   user.index: Korisnici
   user_role.index: Role
   user_group.index: Grupe
   system_configuration.index: Konfiguracija
+#User
 user.title: Korisnik
 user.overview: Korisnik
 Users Management: Upravljanje korisnicima
@@ -90,6 +93,7 @@ user:
   default_grid_view:
     none: Niti jedan
   timezone: Vremenska zona
+#Role
 Role: Rola
 Owner: Vlasnik
 General: Općenito
@@ -126,11 +130,12 @@ oro_security:
       create: Kreiraj korisničku grupu
       edit: Uredi korisničke grupe
       delete: Ukloni korisničku grupu
+#Security
 (default): Zadane dozvole na entitete
 VIEW: Prikaz
 CREATE: Kreiraj
 EDIT: Uredi
-DELETE: Obriši
+DELETE: Brisanje
 ASSIGN: Dodijeli
 SHARE: Podijeli
 oro:
@@ -142,11 +147,13 @@ oro:
       GLOBAL: Organizacija
       SYSTEM: Sustav
       NONE: Niti jedan
+#User Group
 Create group: Kreiraj grupu
 btn.create.user-group: Kreiraj grupu
 Has group: Sadržava grupu
 Save and Close: Spremi i zatvori
 user-group.overview: Grupe
+#Login page
 Log in: Prijava
 Remember me on this computer: Zapamti me na ovom računalu
 Forgot your password?: Zaboravili ste svoju lozinku?

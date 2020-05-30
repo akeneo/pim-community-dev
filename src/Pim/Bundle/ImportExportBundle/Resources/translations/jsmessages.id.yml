@@ -1,0 +1,30 @@
+job_execution:
+  summary:
+    display_item: Tampilan item
+    hide_item: Sembunyikan item
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Pemilihan kategori
+          cancel: Batalkan
+          confirm: Konfirmasi
+        label: "{0} Semua produk|{1} Satu kategori dipilih|]1,Inf[ {{ count }} kategori terpilih"
+        edit: Sunting
+        title: Pilih kategori
+    locales:
+      validation:
+        not_blank: Satu lokasi harus dipilih, silahkan pilih satu lokasi untuk diekspor.
+#Page titles
+page_title:
+  pim_importexport_export_profile_index: Manajemen profil ekspor
+  pim_importexport_export_profile_edit: Ekspor profil {{ job.label }} | Sunting
+  pim_importexport_export_profile_show: Ekspor profil {{ job.label }} | Tampilkan
+  pim_importexport_export_execution_index: Riwayat eksekusi ekspor
+  pim_importexport_export_execution_show: Eksekusi ekspor | Rincian
+  pim_importexport_import_profile_index: Impor manajemen profil
+  pim_importexport_import_profile_edit: Impor profil {{ job.label }} | Sunting
+  pim_importexport_import_profile_show: Impor profil {{ job.label }} | Tampilkan
+  pim_importexport_import_execution_index: Impor riwayat eksekusi
+  pim_importexport_import_execution_show: Impor eksekusi | Rincian

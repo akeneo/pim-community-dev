@@ -10,6 +10,7 @@ oro.grid.mass_action.error_content: Kan inte utföra massåtgärd
 oro.grid.mass_action.delete.label: Ta bort
 oro.grid.mass_action.delete.confirm_title: Bekräfta massborttagning
 oro.grid.mass_action.delete.confirm_content: Är du säker du vill ta bort markerade objekt?
+oro.grid.mass_action.delete.item_limit: Du kan inte massradera fler än %limit% produkter (%count% vald)
 oro.grid.datagrid.page_size.all: Alla
 oro.grid.mass_action.delete.success_message: "{0} Inga entiteter togs bort|{1} En entitet togs bort|]1,Inf[ %count% entiteter togs bort"
 #Datagrid views constraints

@@ -5,13 +5,15 @@ pim_dashboard:
       status: 状态
       date: 日期
       type: 类型
-      profile_name: 方案名称
+      profile_name: 配置方案名称
       details: 详细资料
+      warning_count: 警告
       job_type:
         import: 导入
         export: 导出
         mass_edit: 批量编辑
         quick_export: 快速导出
+        mass_delete: 批量删除产品
     completeness:
       load_more: '加载更多...'
     header:

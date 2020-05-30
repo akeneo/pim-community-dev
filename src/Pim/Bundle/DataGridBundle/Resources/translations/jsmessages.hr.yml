@@ -60,6 +60,7 @@ pim:
       label: Valuta
     category_filter:
       done: Gotovo
+#Column configuration
 Available Columns: Dostupni stupci
 Displayed Columns: Odabrani stupci
 datagrid_view.columns.min_message: Odaberi barem jedan stupac u prikazu tablice
@@ -71,7 +72,7 @@ pim_datagrid:
     clear: Obriši
     displayed_columns: Odabrani stupci
     apply: Primijeni
-    cancel: Poništi
+    cancel: Odustani
     remove_column: Ukloni
     attribute_groups: Grupe atributa
   mass_action:
@@ -79,15 +80,19 @@ pim_datagrid:
       confirm_title: Potvrdi brisanje
       confirm_ok: OK
       empty_selection: Niti jedan proizvod nije odabran
+#Quick export
 pim.grid.mass_action.quick_export.title: Brzi izvoz
 pim.grid.mass_action.quick_export.launched: Pokrenut je brz izvoz
+#Custom actions
 pim.grid.action.launch.title: Pokreni
 pim.grid.action.show.title: Prikaži
 Please select view: Odaberite prikaz
 Loading...: Učitavanje...
 View: Prikaz
+#Datetimepicker
 from: od
 to: u
+#View selector
 grid.view_selector:
   default_view: Zadani prikaz
   save_changes: Spremi ovaj prikaz
@@ -100,4 +105,5 @@ grid.view_selector:
   choose_label: Odaberi oznaku za prikaz
   confirmation:
     delete: Potvrdi brisanje
+#View selector flash messages
 grid.view_selector.flash.updated: Prikaz tablice je uspješno ažuriran

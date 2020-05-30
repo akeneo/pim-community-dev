@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: Tablou de bord
+  version: Versiune
+  link.label:
+    product: Gestionează produse
+    category: Gestionează categorii
+    attribute: Gestionează atribute
+    family: Gestionează familii
+  widget:
+    error:
+      title: Eroare la încărcarea widgetului
+      message: Widgetul '%alias%' nu există
+    completeness:
+      title: Completitudine peste Canale si Locale
+    last_operations:
+      title: Ultimele operații
+      empty: Nu a fost găsită nicio operație
+      status: Stare
+      date: Data
+      type: Tip
+      "profile name": Nume de profil
+      details: Detalii
+      job_type:
+        import: Importă
+        export: Exportă
+        mass_edit: Modificare în masă
+        quick_export: Exportare rapidă
+        compute_product_models_descendants: Computează descendenții modelelor de produs

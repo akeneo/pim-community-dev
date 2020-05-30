@@ -1,4 +1,6 @@
 pim_dashboard:
+  title: Ohjauspaneeli
+  version: Versio
   link.label:
     product: Tuotteiden hallinta
     category: Kategorioiden hallinta
@@ -14,6 +16,8 @@ pim_dashboard:
       title: Viimeiset toiminnot
       empty: Toimintoja ei löytynyt
       status: Status
+      date: Päivämäärä
+      type: Tyyppi
       "profile name": Profiilinimi
       details: Lisätiedot
       job_type:

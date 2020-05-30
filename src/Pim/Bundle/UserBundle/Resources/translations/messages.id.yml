@@ -1,0 +1,166 @@
+pim_user:
+  user:
+    tab:
+      general.title: Umum
+      additional.title: Tambahan
+      group_and_role.title: Kelompok-kelompok dan Peran
+      password.title: Password
+      business_unit.title: Unit Bisnis
+      email_synchronization.title: Pengaturan sinkronisasi email
+      interfaces.title: Antarmuka
+  group:
+    tab:
+      general.title: Umum
+      users.title: Pengguna
+#user grids
+oro.user.controller:
+  group.message.saved: "Kelompok yang disimpan"
+  role.message.saved: "Peran disimpan"
+  user.message.saved: "Pengguna disimpan"
+  status.message.saved: "Status disimpan"
+oro.user.grid.users:
+  columns:
+    username: "Nama Pengguna"
+    email: "Surel"
+    firstName: "Nama Depan"
+    lastName: "Nama terakhir"
+    createdAt: "Dibuat di"
+    updatedAt: "Diperbarui pada"
+    enabled: "Status"
+oro.user.grid.roles:
+  columns:
+    label: "Label"
+oro.user.grid.groups:
+  columns:
+    name: "Nama"
+#Page titles
+pim_title:
+  user.index: Pengguna
+  user_role.index: Peran
+  user_group.index: Kelompok
+  system_configuration.index: Konfigurasi
+#User
+user.title: Pengguna
+user.overview: Pengguna
+Users Management: Manajemen Pengguna
+Create user: Buat pengguna
+btn.create.user: Buat pengguna
+New user: Pengguna baru
+Additional: Tambahan
+Groups and Roles: Kelompok-kelompok dan Peran
+Username: Nama pengguna
+Password: Password
+Password (again): Kata Sandi (ulangi)
+Re-enter password: Masukkan kembali katasandi
+Name prefix: Nama awalan
+First name: Nama Awal
+Middle name: Nama Tengah
+Last name: Nama Akhir
+Name suffix: Nama akhiran
+Date of birth: Tanggal Lahir
+Avatar: Avatar
+Additional emails: Surel tambahan
+Add another email: Tambahkan email lain
+Catalog locale: Katalog lokal
+Catalog scope: Katalog lingkup
+Default tree: Default pohon
+Business Units: Unit Bisnis
+Email synchronization settings: Email pengaturan sinkronisasi
+Host: Host
+Port: Port
+Ssl: SSL
+Last logged in: Terakhir masuk
+Login count: Jumlah Login
+Additional Information: Informasi Tambahan
+Interfaces: Antarmuka
+Basic Information: Informasi Dasar
+Contact Information: Informasi Kontak
+User name: Nama pengguna
+Birthday: Ulang tahun
+API key: API Kunci
+Ui locale: Lokal UI
+UI locale: UI lokal
+User salt: Garam pengguna
+Current password: Kata sandi saat ini
+New password: Kata sandi baru
+Repeat new password: Kata sandi baru (ulangi)
+Generate key: Buat kunci
+Primary: utama
+Removed user: Pengguan dihapus
+user:
+  product_grid_filters: Filter grid produk
+  default_product_grid_view:
+    label: Tampilan grid produk standar
+  default_grid_view:
+    none: Tidak ada
+  timezone: Zona waktu
+#Role
+Role: Peran
+Owner: Pemilik
+General: Umum
+Entity: Kesatuan
+Capabilities: Kemampuan
+Save and close: Simpan dan tutup
+Has role: Punya peran
+role:
+  title: peran
+  overview: peran
+  edit: Edit peran
+  create: Buat peran
+btn.create.role: Buat peran
+rights:
+  action: Izin
+oro_security:
+  acl_group:
+    user: Pengguna
+    role: Peran
+    group: Kelompok pengguna
+  acl:
+    user:
+      view: Daftar pengguna
+      create: Buat pengguna
+      edit: Edit pengguna
+      delete: Hapus pengguna
+    role:
+      view: Daftar peran
+      create: Buat peran
+      edit: Edit peran
+      delete: Hapus peran
+    group:
+      view: Daftar kelompok pengguna
+      create: Buat kelompok pengguna
+      edit: Edit kelompok pengguna
+      delete: Menghapus kelompok pengguna
+#Security
+(default): Izin standar pada entitas
+VIEW: Melihat
+CREATE: Buat
+EDIT: Sunting
+DELETE: Hapus
+ASSIGN: Menetapkan
+SHARE: Bagikan
+oro:
+  security:
+    access-level:
+      BASIC: Pengguna
+      LOCAL: Unit bisnis
+      DEEP: Divisi
+      GLOBAL: Organisasi
+      SYSTEM: Sistem
+      NONE: Kosong
+#User Group
+Create group: Membuat grup
+btn.create.user-group: Buat kelompok
+Has group: Memiliki kelompok
+Save and Close: Simpan dan keluar
+user-group.overview: Kelompok
+#Login page
+Log in: Masuk
+Remember me on this computer: Ingat saya di komputer ini
+Forgot your password?: Lupa kata sandi anda?
+Username or Email: Nama pengguna atau Surel
+Forgot Password: Lupa Kata Sandi
+Request: Permintaan
+Check Email: Cek Email
+password_reset_email_sent: Surel telah dikirim ke pengguna. Ini berisi link untuk mengatur ulang kata sandi.
+Go to homepage: Pergi ke beranda

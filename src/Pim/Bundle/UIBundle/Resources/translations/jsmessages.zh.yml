@@ -1,3 +1,4 @@
+#ORO messages
 Close: 关闭
 Update: 升级
 Selected Rows: 选定的行
@@ -29,10 +30,12 @@ Second: 秒
 Millisecond: 毫秒
 Microsecond: 微秒
 "Time Zone": "时区"
+#PIM messages
 Localized value: 本地化的值
 Columns: 列
 Datagrid Configuration: Datagrid 配置
 Apply: 应用
+#Filters
 Action: 操作
 Unit: 单位
 Currency: 货币
@@ -45,6 +48,7 @@ jstree:
   no_tree: 没有可用的树
   include_sub: 包括子类别
   loading: 正在加载
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: 星期天
@@ -96,6 +100,7 @@ datetimepicker:
     Oct: 十月
     Nov: 十一月
     Dec: 十二月
+#ORO
 oro_config:
   form:
     config:
@@ -110,3 +115,8 @@ oro_config:
         notification:
           title: 通知
           system_notification: 新版本提醒
+        loading_message:
+          title: 正在加载消息
+          label: 启用加载消息
+        loading_messages:
+          label: 可用的加载消息

@@ -16,6 +16,7 @@ pim_dashboard:
         compute_product_models_descendants: Beräkna produktmodellers ättlingar
         compute_family_variant_structure_changes: Beräkna variantfamiljers strukturförändringar
         compute_completeness_of_products_family: Beräkna fullständighet av produktfamilj
+        mass_delete: Massradera produkter
     completeness:
       load_more: 'Ladda fler...'
     header:

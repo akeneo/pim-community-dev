@@ -1,0 +1,49 @@
+User: Utilizator
+Run demo: Rulează demo-ul
+Product: Produs
+Attribute list: Lista de atribute
+Attribute Group list: Lista grupurilor de atribute
+Users: Utilizatori
+Roles: Roluri
+Groups: Grupuri
+Configuration: Configurație
+Currency list: Lista de valute
+Locale list: Listă locală
+Logged in as: Autentificat ca
+Logout: Deconectează-te
+Login: Autentifică-te
+Previous: Anterior
+Next: Următorul
+Channel list: Listă canale
+Select file: Selectează fișierul
+Change file: Schimbă fişierul
+Remove file: Şterge fişierul
+Delete: Şterge
+Save: Salvează
+Cancel: Anulează
+Get help: Obţine ajutor
+My User: Contul meu
+oro.form.choose_value: Alege o valoare...
+Read more: Citeşte mai mult
+oro.form.click_here_to_select: Apasă aici pentru a selecta...
+Add: Adaugă
+"Learn how to use this space": "Invață să foloseşti acest spaţiu"
+"How To Use Pinbar": "Cum se foloseşte Pinbar"
+Pinbar: Pinbar
+Favorites: Favorite
+Most Viewed: Cele mai vizualizate
+"Add this page to favorites": "Adaugă această pagină la lista paginelor favorite"
+"Minimize the window to the pinbar": "Minimizează fereastra pinbar-ului"
+"Loading ...": "Se încarcă..."
+"Yes": "Da"
+"No": "Nu"
+required: (necesar)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Abiliți mesaje de incărcare
+    loading_message_enabled.tooltip: Afisează mesaje prieteneoase în timp ce se aşteaptă ca o pagină să se încarce
+    loading_messages.label: Mesaje de încărcare disponibile
+    loading_messages.tooltip: Toate mesajele de încărcare disponibile separate de o linie de despărțire
+  group:
+    loading_message.title: Mesajele se incarcă
+other_actions: Alte acțiuni

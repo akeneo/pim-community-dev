@@ -12,6 +12,7 @@ This value should not be blank: Tämä arvo ei saa olla tyhjä
 Option code may contain only letters, numbers and underscores: Vaihtoehtokoodi voi sisältää vain kirjaimia, numeroita ja alaviivoja
 Option code may contain only letters (at least one), numbers and underscores: Vaihtoehto koodi voi sisältää vain kirjaimia (ainakin yksi), numeroita ja alaviivoja
 This value should not be a decimal.: Tämän arvon pitäisi olla desimaalimuodossa.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Tiedostotunnistetta ei sallita (sallitut: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": Arvo %value% on jo määritetty toiseen tuotteeseen ominaisuutena %attribute%
 The same identifier is already set on another product: Sama tunnus on jo toisen tuotteen käytössä
 regex.comma_or_semicolon.message: Tässä kentässä ei saa olla pilkkuja tai puolipisteitä.
@@ -61,13 +62,15 @@ pim_catalog:
     106: Tämä kenttä vaatii taulukkoarvon.
     107: Tämä kenttä vaatii arvon sisäkkäisinä taulukkoina.
     200: Tapahtui sisäinen virhe
-    201: An internal error occurred
-    202: This field expects a numeric value.
-    203: This field expects a string value.
-    204: This field expects a string value.
-    205: An internal error occurred
+    201: Tapahtui sisäinen virhe
+    202: Tämä kenttä vaatii numeerisen arvon.
+    203: Tämä kenttä vaatii merkkijonoarvon.
+    204: Tämä kenttä vaatii merkkijonoarvon.
+    205: Tapahtui sisäinen virhe
     300: Tämä kenttä vaatii kelvollisen entiteettikoodin.
     301: Tämä kenttä vaatii kelvollisen laajuuden ja lokaation.
     302: Tämä kenttä vaatii kelvollisen laajuuden.
     303: Tämä kenttä vaatii kelvollisen assosiaatiomuodon.
+    pim_immutable_product_validator: Sama tunnus on jo toisen tuotteen käytössä
+    pim_immutable_product_model_validator: Sama tunnus on jo toisen tuotemallin käytössä.
 

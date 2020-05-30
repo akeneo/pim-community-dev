@@ -1,5 +1,5 @@
 Item deleted: 条目已删除
-Are you sure you want to delete this item?: 确实要删除这个项目吗?
+Are you sure you want to delete this item?: 确实要删除这个条目吗?
 Delete Error: 删除错误
 Are you sure you want to do remove selected items?: 你确定你想要做移除选定的条目吗?
 Selected items were removed.: 选定的条目被移除。
@@ -13,7 +13,7 @@ Your local changes will be lost. Are you sure you want to reset grid?: 你本地
 Confirmation: 确认
 edit: 编辑
 copy: 复制
-remove: 删除
+remove: 移除
 Status: 状态
 All: 所有
 Per page: 每页
@@ -29,11 +29,13 @@ Please, select item to perform action.: 请选择条目，以进行处理。
 View per page: 查看每页
 Enabled: 已启用
 Disabled: 已禁用
-not_available: 不适用
+not_available: N/A
 Yes: true
 No: false
 oro.datagrid.entityHint: 实体
 oro.datagrid.noentities: 没有找到记录
+oro.datagrid.noresults: "抱歉，找不到与你的搜索相符的结果"
+oro.datagrid.noresults_subTitle: "请用新的搜索条件再进行搜索"
 oro.datagrid.nocolumns: 没有配置此网格的列
 oro.datagrid.pagination.label: "页"
 oro.datagrid.pagination.totalPages: "{{ totalPages }}"
@@ -49,6 +51,10 @@ pim.grid.ajax_choice_filter.label_not_empty: 不为空
 pim:
   grid:
     choice_filter:
+      label_contains: 包含
+      label_does_not_contain: 不包含
+      label_equal: 等于
+      label_start_with: 开始于
       label_empty: 为空
       label_not_empty: 不为空
       label_in_list: 在列表中
@@ -56,12 +62,14 @@ pim:
       label: 货币
     category_filter:
       done: 已完成
+#Column configuration
 Available Columns: 可用的列
 Displayed Columns: 选定的列
 datagrid_view.columns.min_message: 您必须选择至少一个要显示的 datagrid 列
 pim_datagrid:
   column_configurator:
     label: 列
+    title: 配置列
     all_groups: 所有群组
     search: 搜索
     clear: 清除
@@ -75,15 +83,19 @@ pim_datagrid:
       confirm_title: 确定删除
       confirm_ok: 好的
       empty_selection: 没有选定的产品
+#Quick export
 pim.grid.mass_action.quick_export.title: 快速导出
 pim.grid.mass_action.quick_export.launched: 快速导出已经执行
+#Custom actions
 pim.grid.action.launch.title: 启动
 pim.grid.action.show.title: 展示
 Please select view: 请选择一个视图。
 Loading...: 正在加载...
 View: 视图
+#Datetimepicker
 from: 从
 to: 到
+#View selector
 grid.view_selector:
   default_view: 默认视图
   save_changes: 保存此视图
@@ -95,5 +107,11 @@ grid.view_selector:
   placeholder: 新视图的名称
   choose_label: 选择视图的标签
   confirmation:
+    remove: 你确定要删除这个视图吗？
     delete: 确定删除
+#View selector flash messages
 grid.view_selector.flash.updated: 数据视图已更新
+#Display selector
+grid.display_selector:
+  label: 显示
+Secret: 密码

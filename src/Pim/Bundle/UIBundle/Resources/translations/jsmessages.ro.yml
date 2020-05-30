@@ -1,0 +1,123 @@
+#ORO messages
+Close: Inchide
+Update: Actualizează
+Selected Rows: Rânduri selectate
+"Yes": "Da"
+"Yes, Delete": "Da, Şterge"
+"Yes, I Agree": "Da, sunt de acord"
+"Yes, do it": "Da, fă acest lucru"
+"No": "Nu"
+"Ok, got it.": "Bine, am înțeles."
+"Cancel": "Anulează"
+"Delete Confirmation": "Șterge confirmarea"
+"Edit": "Modifică"
+"Unexpected error occured. Please contact system administrator.": "A avut loc o eroare neaşteptată. Va rugăm sa contactați administratorul de sistem."
+"Yes, revoke": "Da, revocă"
+"Revoke Confirmation": "Revocă confirmare"
+Now: Acum
+Prev: Înapoi
+Next: Următorul
+Today: Astăzi
+Wk: Sapt
+Done: Efectuat
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Alege data"
+Time: Timp
+Hour: Oră
+Minute: Minut
+Second: Secundă
+Millisecond: Milisecundă
+Microsecond: Microsecundă
+"Time Zone": "Fus orar"
+#PIM messages
+Localized value: Valoare localizată
+Columns: Coloane
+Apply: Aplică
+#Filters
+Action: Acțiune
+Unit: Unitate
+Currency: Monedă
+jstree:
+  all: Toate produsele
+  unclassified: Produse neclasificate
+  product:
+    all: Toate produsele
+    unclassified: Produse neclasificate
+  no_tree: Niciun arbore disponibil
+  include_sub: Include subcategorii
+  loading: Se încarcă...
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Duminică
+    Monday: Luni
+    Tuesday: Marți
+    Wednesday: Miercuri
+    Thursday: Joi
+    Friday: Vineri
+    Saturday: Sâmbătă
+  daysShort:
+    Sun: Dum
+    Mon: Lun
+    Tue: Mar
+    Wed: Mie
+    Thu: Joi
+    Fri: Vin
+    Sat: Sâm
+  daysMin:
+    Su: Du
+    Mo: Lu
+    Tu: Ma
+    We: Mi
+    Th: Jo
+    Fr: Vi
+    Sa: Sâ
+  months:
+    January: Ianuarie
+    February: Februarie
+    March: Martie
+    April: Aprilie
+    May: Mai
+    June: Iunie
+    July: Iulie
+    August: August
+    September: Septembrie
+    October: Octombrie
+    November: Noiembrie
+    December: Decembrie
+  monthsShort:
+    Jan: Ian
+    Feb: Feb
+    Mar: Mar
+    Apr: Apr
+    May: Mai
+    Jun: Iun
+    Jul: Iul
+    Aug: Aug
+    Sep: Sep
+    Oct: Oct
+    Nov: Noi
+    Dec: Dec
+#ORO
+oro_config:
+  form:
+    config:
+      title: Configurarea sistemului
+      tab:
+        system:
+          title: Sistem
+      group:
+        localization:
+          title: Localizare
+          system_locale: Limbă
+        notification:
+          title: Notificări
+          system_notification: Noi versiuni notificări
+        loading_message:
+          title: Mesajele se incarcă
+          label: Permite mesaje de incărcare
+        loading_messages:
+          label: Mesaje de incărcare disponibile

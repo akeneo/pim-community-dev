@@ -1,0 +1,24 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Nu a fost găsită nicio operație
+      status: Stare
+      date: Data
+      type: Tip
+      profile_name: Nume de profil
+      details: Detalii
+      warning_count: Avertismente
+      job_type:
+        import: Importă
+        export: Exportă
+        mass_edit: Modificare în masă
+        quick_export: Exportare rapidă
+        compute_product_models_descendants: Computează descendenții modelelor de produs
+        compute_family_variant_structure_changes: Calculează schimbarile structurii de variantă de familie
+        compute_completeness_of_products_family: Calculează completitudinea familiei de produse
+    completeness:
+      load_more: 'Încarcă mai multe...'
+    header:
+      view_all: Vezi tot
+page_title:
+  pim_dashboard_index: Tablou de bord

@@ -2,6 +2,8 @@
 Job: Työ
 Connector: Liitin
 pim_import_export:
+  job: Työ
+  connector: Liitin
   ## Job status
   status:
     0: Valmiina
@@ -32,6 +34,8 @@ pim_import_export:
   list: Valitse työ
   job_profile:
     tab:
+      property.title: Yleiset ominaisuudet
+      history.title: Historia
       job_content.title: Sisältö
 #Page titles:
 pim_title.export_profile.index: Vientiprofiilien hallinta
@@ -91,6 +95,7 @@ pim_importexport:
 btn:
   create:
     export profile: luo vientiprofiili
+    import profile: luo tuontiprofiili
 Upload and import now: Lataa ja tuo nyt
 import now: Tuo nyt
 export now: Vie nyt
@@ -111,14 +116,19 @@ flash:
     removed: Tuonti poistettu
     updated: Tuonti päivitetty
     running: Tuonti on käynnissä
+#Tabs
+General properties: Yleiset ominaisuudet
 History: Historia
 pane.accordion:
+  properties: Ominaisuudet
   global_settings: Yleiset asetukset
   filters: Suodattimet
 #Popin titles
 popin.create:
   export_profile.title: Luo uusi vientiprofiili
   import_profile.title: Luo uusi tuontiprofiili
+#Job execution
+'Display item': Näytä kohde
 'Hide item': Piilota kohde
 'Collecting data about job execution...': Kerää tietoja työsuorituksesta...
 'You must select a file to upload': Valitse ladattava tiedosto
@@ -138,8 +148,19 @@ job_execution.summary:
     title: 'Tiedoston koodaus:'
     skipped: ohitetaan, laajennus valkolistattu
 Step: Vaihe
+Status: Status
 Warnings: Varoitukset
 Summary: Yhteenveto
 Start: Aloitus
 End: Loppu
+#Process tracker
+set_attribute_requirements: Aseta vaaditut attribuutit
+COMPLETED: Valmis
+STARTING: Alkaa
+STARTED: Aloitettu
+STOPPING: Päättyy
+STOPPED: Päättynyt
+FAILED: Epäonnistunut
+ABANDONED: Hylätty
+UNKNOWN: Tuntematon
 warning.label: Varoitus

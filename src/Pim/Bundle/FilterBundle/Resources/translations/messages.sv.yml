@@ -10,6 +10,8 @@ oro.filter.form.label_type_not_contains: innehåller inte
 oro.filter.form.label_type_equals: är lika med
 oro.filter.form.label_type_start_with: börjar med
 oro.filter.form.label_type_end_with: slutar med
+oro.filter.form.label_type_empty: är tom
+oro.filter.form.label_type_not_empty: är inte tom
 oro.filter.form.label_type_in_list: i listan
 oro.filter.form.label_date_type_between: mellan
 oro.filter.form.label_date_type_not_between: inte mellan

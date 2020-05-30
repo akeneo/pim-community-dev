@@ -1,0 +1,892 @@
+pim_enrich:
+  #Product
+  product:
+    tab:
+      attribute.title: perlengkapan
+      category.title: Kategori
+      association.title: Asosiasi
+      completeness.title: Kelengkapan
+      history.title: Riwayat
+    #Product comparison
+    no_comparison_locale_available: Tidak ada lokasi lain yang tersedia untuk perbandingan
+    no_compared_media: Tidak ada media yang tersedia untuk perbandingan
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parameter
+      value.title: Nilai - nilai
+      history.title: Riwayat
+  #Attribute group
+  attribute_group:
+    tab:
+      property.title: Properti
+      attribute.title: Atribut
+      history.title: Riwayat
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Tidak dapat menghapus atribut ini yang digunakan sebagai sumbu varian dalam varian keluarga
+    tab:
+      property.title: Properti
+      attribute.title: Atribut
+      history.title: Riwayat
+  #Association type
+  association_type:
+    tab:
+      property.title: Properti
+      history.title: Riwayat
+  #Group type
+  group_type:
+    tab:
+      property.title: Properti
+  #Category
+  category:
+    tab:
+      property.title: Properti
+      history.title: Riwayat
+  #Locale
+  locale:
+    tab:
+      property.title: Properti
+      permission.title: Izin
+  #Product group
+  group:
+    axis.help: 'Axis menentukan atribut dimana produk dari kelompok harus bervariasi. Axis adalah atribut dengan pilihan, tidak dilokalisasi dan tidak scoped. Mereka tidak bisa diubah setelah penciptaan varian kelompok.'
+    type:
+      VARIANT: Varian
+      X_SELL: X-Jual
+      ADDITIONAL: Tambahan
+      RELATED: Terkait
+    tab:
+      product.title: Produk
+      property.title: Properti
+      history.title: Riwayat
+  #Product completeness
+  completeness:
+    progress_bar.title: '%ratio%% selesai (1 diperlukan nilai)|%ratio%% (%count% nilai-nilai yang diperlukan)'
+    subtitle: '{0} Lengkap|{1} 1 nilai yang hilang|]1,Inf] %count% nilai yang hilang'
+    missing_attributes: Nilai yang hilang | Nilai-nilai yang hilang
+    legend:
+      locale_not_associated: Lokal tidak terkait dengan saluran ini
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Harap memilih kurang dari %limit% produk untuk mengubah
+    product:
+      page_title: Produk
+      page_subtitle: Massa Edit (1 produk)|Massa Edit (%count% produk)
+      title: Pilih operasi
+      subtitle: Pilih operasi yang ingin Anda lakukan pada produk yang dipilih | Pilih operasi yang ingin Anda lakukan pada produk% count% produk yang dipilih
+      confirm: Anda akan memperbarui produk dengan mengikuti informasi berikut, silahkan konfirmasi.|Anda akan memperbarui %count% produk dengan mengikuti informasi berikut, silahkan konfirmasi.
+      steps:
+        first: Pilih produk
+        second: Pilih operasi
+        third: Konfigurasikan
+        fourth: Konfirmasi
+    family:
+      page_title: Keluarga
+      page_subtitle: Sunting Massa (1 keluarga)|Sunting Massa (%count% keluarga)
+      title: Pilih operasi
+      subtitle: Pilih operasi yang ingin Anda lakukan pada keluarga yang dipilih | Pilih operasi yang ingin Anda lakukan pada keluarga yang dipilih %count%
+      confirm: Anda akan memperbarui keluarga dengan mengikuti informasi berikut, silahkan konfirmasi.|Anda akan memperbarui %count% keluarga dengan mengikuti informasi berikut, silahkan konfirmasi.
+      steps:
+        first: Pilih keluarga
+        second: Pilih operasi
+        third: Konfigurasi
+        fourth: Konfirmasi
+    change-status:
+      label: Ganti status
+      description: Produk yang dipilih akan diaktifkan atau dimatikan.
+      success_flash: Status produk telah diubah
+      launched_flash: Sebagian besar tindakan "perubahan status" telah diluncurkan. anda akan diberitahu saat hal itu dilakukan.
+    edit-common-attributes:
+      label: Ubah perlengkapan
+      description: Perlengkapan produk yang dipilih akan diubah  dengan data sebagai berikut untuk pilihan lokal.
+      empty: Silahkan pilih perlengkapan(s) yang ingin anda ubah
+      success_flash: Memperbarui status  produk  pekerjaan yang sedang berjalan
+      launched_flash: Tindakan "sunting atribut" massal telah diluncurkan. Anda akan diberitahu ketika hal tersebut dilakukan.
+      message:
+        warning: Tidak ada perlengkapan  umum untuk produk tertentu. Silahkan ganti pilihan Anda.
+        invalid_attribute: Atribut dengan kode "attribute_code" tidak lazim untuk produk yang dipilih, atribut dilewati.
+        no_valid_attribute: Tidak ada satu pun dari perlengkapan dipilih dapat diterapkan pada produk ini.
+    classify-add:
+      label: Tambahkan ke kategori
+      description: Produk akan diposisikan mengikuti kategori berikut, penempatan yang akan disimpan.
+      success_flash: Produk(s) telah diklasifikasikan ke dalam kategori yang dipilih
+      launched_flash: Sebagian besar aksi "tambahkan ke kategori" telah diluncurkan. Anda akan diberitahu bila hal itu dilakukan.
+    classify-move:
+      label: Pindah diantara kategori
+      description: Produk akan diposisikan dalam kategori berikut, penempatan yang ada hilang.
+      success_flash: Produk(s) telah dipindahkan ke kategori yang dipilih
+      launched_flash: Sebagian besar aksi "pindah ke kategori" telah diluncurkan. Anda akan diberitahu bila hal itu dilakukan.
+    classify-remove:
+      label: Hapus dari kategori
+      description: Produk akan dihapus dari kategori berikut.
+      success_flash: Produk(s) telah dihapus dari kategori yang dipilih
+      launched_flash: Sebagian besar aksi "pindah ke kategori" telah diluncurkan. Anda akan diberitahu bila hal itu dilakukan.
+    change-family:
+      label: Ubah keluarga
+      description: Keluarga dari produk yang terpilih akan diubah menjadi keluarga pilihan
+      success_flash: Keluarga produk(s) terpilih telah berhasil diubah
+      launched_flash: Sebagian besar tindakan "perubahan" telah diluncurkan. Anda akan diberitahu bila hal itu dilakukan.
+    add-to-groups:
+      label: Tambahkan ke grup
+      description: Pilih kelompok  untuk menambahkan produk yang dipilih
+      success_flash: Produk telah berhasil ditambahkan kepada  kelompok yang dipilih
+      launched_flash: Sebagian besar tindakan "tambah untuk kelompok" telah diluncurkan. Anda akan diberitahu saat hal itu dilakukan.
+      no_group: Tidak ada kelompok  untuk sekarang. Mulailah dengan membuat kelompok.
+    set-attribute-requirements:
+      label: Menetapkan persyaratan atribut
+      description: Persyaratan perlengkapan berikut akan diterapkan pada keluarga terpilih
+      success_flash: Persyaratan perlengkapan diterapkan pada keluarga yang dipilih
+      launched_flash: Sebagian besar tindakan "menetapkan persyaratan atribut" diluncurkan. Anda akan diberi tahu kapan hal itu akan dilakukan.
+    mass_action:
+      quick_export:
+        launched_flash: Pekerjaan mengekspor produk saat ini sedang berjalan
+  #Sequential edit operations
+  sequential_edit_action:
+    product:
+      previous: Lompat kembali ke "%product%" tanpa menyimpan.
+      next: Lompat ke "%product%" tanpa menyimpan.
+  #ACLs
+  acl:
+    locale:
+      index: Daftar lokal
+    currency:
+      index: Daftar mata uang
+      toggle: Toggle mata uang
+    product:
+      index: Daftar produk
+      create: Membuat produk
+      edit_attributes: Sunting atribut produk
+      remove: Hapus produk
+      add_attribute: Tambahkan atribut ke suatu produk
+      remove_attribute: Hapus perlengkapan dari suatu produk
+      categories_view: Konsultasikan kategori produk
+      associations_view: Tampilkan asosiasi dari produk
+      associations_edit: Tambah asosiasi ke produk
+      change_family: Mengganti produk keluarga
+      add_to_groups: Tambahkan  produk ke kelompok
+      mass_edit: Ubah tindakan massal produk
+      comment: mengomentari produk
+      download: Unduh produknya sebagai PDF
+      history: melihat riwayat produk
+    product_model:
+      create: Buat sebuah model produk
+      edit_attributes: Sunting atribut dari sebuah model produk
+      categories_view: Konsultasikan kategori dari sebuah model produk
+      history: Lihat riwayat model produk
+      remove: Keluarkan model produk
+    category:
+      list: Daftar kategori
+      create: Buat kategori
+      edit: Mengubah katagori
+      remove: Hapus kategori
+      move: Pindah kategori
+      children: Lihat kategori anak-anak
+      products: Lihat produk kategori
+      history: Lihat riwayat kategori
+    channel:
+      index: Daftar saluran
+      create: Buat saluran
+      edit: Mengubah saluran
+      remove: Menghilangkan saluran
+      history: Lihat riwayat saluran
+    family:
+      index: Daftar keluarga
+      create: Buat keluarga
+      edit_properties: Sunting properti keluarga
+      edit_attributes: Sunting atribut keluarga
+      edit_variants: Edit variasi keluarga
+      remove: Menghapus sebuah keluarga
+      history: Lihat riwayat keluarga
+    family_variant:
+      remove: Hapus variasi keluarga
+    attribute_group:
+      index: Daftar grup atribut
+      create: Buat grup atribut
+      edit: Sunting grup atribut
+      remove: Hapus grup atribut
+      sort: Urutkan grup atribut
+      add_attribute: Tambahkan atribut ke grup
+      remove_attribute: Hapus atribut dari grup
+      history: Lihat sejarah grup atribut
+    attribute:
+      index: Daftar atribut
+      create: Buat sebuah atribut
+      edit: Sunting atribut
+      remove: Hapus atribut
+      sort: Urutkan perlengkapan di dalam kelompok perlengkapan
+      history: Lihat riwayat perlengkapan
+    group:
+      index: Daftar grup
+      create: Membuat kelompok
+      edit: Mengubah kelompok
+      remove: Menghapus kelompok
+      history: Lihat riwayat grup
+    group_type:
+      index: Daftar jenis kelompok
+      create: Buat jenis kelompok
+      edit: Ubah jenis kelompok
+      remove: Hapus jenis kelompok
+    association_type:
+      index: Daftar jenis asosiasi
+      create: Buat jenis asosiasi
+      edit: Sunting jenis asosiasi
+      remove: Hapus jenis asosiasi
+      history: Lihat riwayat jenis asosiasi
+    association:
+      remove: Hapus asosiasi produk
+    job_tracker:
+      index: Lihat pelacak proses
+    api_connection:
+      manage: Kelola koneksi API
+  acl_group:
+    association_type: Tipe asosiasi
+    attribute: Atribut
+    attribute_group: Atribut grup
+    category: Kategori
+    channel: Saluran
+    currency: Mata Uang
+    family: Keluarga
+    group: Kelompok
+    group_type: Jenis grup
+    locale: Lokal
+    product: Produk
+    product_model: Model produk
+  reference_data:
+    empty_value:
+      reference_data_type:
+        label: Pilih tipe data referensi
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Lokal telah dihapus dari saluran. Saat ini kami membersihkan kelengkapan yang terkait dengannya.
+        done: Penghapusan lokasi pada saluran selesai.
+#Entity and page header titles
+attribute:
+  title: perlengkapan
+  edit: mengubah perlengkapan
+  create: membuat perlengkapan
+attribute group:
+  title: "perlengkapan kelompok\n\n"
+  overview: Tampilan perlengkapan kelompok
+  create: buat atribut kelompok
+  edit: sunting atribut kelompok
+  suggest creation: Pilih kelompok perlengkapan di sebelah kiri
+  or: atau
+  create new: Buat grup atribut baru
+category:
+  title: kategori
+  overview: Kategori
+  create: buat kategori
+  edit: sunting kategori
+  suggest selection: Silahkan pilih kategori dibagian kiri
+  or: atau
+tree:
+  title: pohon
+  edit: sunting pohon
+channel:
+  title: saluran
+  overview: ikhtisar saluran
+  create: buat saluran
+  edit: sunting saluran
+currency:
+  title: mata uang
+  create: membuat mata uang
+  edit: sunting mata uang
+family:
+  title: keluarga
+  edit: sunting keluarga
+locale:
+  title: lokal
+  create: buat lokal
+  edit: sunting lokal
+product:
+  title: produk
+  overview: ikhtisar produk
+  create: buat produk
+  edit: sunting produk
+group:
+  title: kelompok
+  edit: sunting kelompok
+group type:
+  title: jenis kelompok
+  edit: sunting jenis grup
+association type:
+  title: tipe asosiasi
+  create: buat jenis asosiasi
+  edit: sunting jenis asosiasi
+#Custom titles
+products: produk
+#Buttons
+btn:
+  create:
+    attribute: membuat perlengkapan
+    attribute group: buat perlengkapan kelompok
+    category: buat kategori
+    channel: buat saluran
+    currency: membuat mata uang
+    family: buat keluarga
+    locale: buat lokal
+    product: buat produk
+    group: buat kelompok
+    association type: buat jenis asosiasi
+    group type: buat jenis grup
+    drag_or_upload: Seret dan letakkan untuk mengunggah atau klik disini
+  edit: sunting
+  save: simpan
+  save and create: simpan dan buat baru
+  save and next: simpan dan selanjutnya
+  save and finish: simpan dan selesai
+  remove: menghapus
+  delete: hapus
+  cancel: batal
+  next: selanjutnya
+  back: kembali
+  confirm: konfirmasi
+  to grid: kembali ke grid
+  to parent: kembali ke induk
+  download_pdf: PDF
+  download: unduh
+#Confirmation messages
+confirmation:
+  confirm: Komfirmasi
+  delete: Konfisrmasi penghapusan
+  leave: Anda yakin ingin meninggalkan halaman ini?
+  discard changes: Anda akan kehilangan perubahan pada %entity% jika anda meninggalkan halaman.
+  remove:
+    item: Apakah Anda yakin Anda ingin menghapus produk ini?
+    attribute: Apakah anda yakin ingin menghapus perlengkapan {name} ?
+    attribute group: Apakah anda yakin ingin menghapus kelompok atribut %name%?
+    category: Apakah anda yakin ingin menghapus katagori  %name%?
+    family: Apakah anda yakin ingin menghapus keluarga %name%?
+    family_variant: Apakah kamu yakin ingin menghapus variasi keluarga %name%?
+    product: Apakah anda yakin ingin menghapus produk {name} ?
+    group: Apakah anda yakin ingin menghapus grup %name%?
+    group type: Apakah anda yakin ingin menghapus jenis grup %name%?
+    user: Apakah anda yakin ingin menghapus pengguna %name%?
+  attribute group:
+    remove attribute: Apakah anda yakin ingin menghapus atribut %name% dari kelompok atribut ini?
+  family:
+    remove attribute: Apakah anda yakin ingin menghapus atribut %name% dari keluarga ini?
+  product:
+    remove attribute: Apakah anda takin ingin menghapus atribut %name% dari produk ini?
+#Flash messages
+flash:
+  entity:
+    removed: Item telah dihapus
+  attribute:
+    created: Perlengkapan berhasil dibuat
+    updated: Atribut berhasil diperbarui
+    removed: Atribut berhasil dihapus
+    identifier_not_removable: Identitas perlengkapan tidak dapat dihapus
+  attribute group:
+    created: Perlengkapan kelompok berhasil dibuat
+    updated: Kelompok atribut telah berhasil diperbarui
+    removed: Perlengkapan kelompok berhasil dihapus
+    attributes added: Perlengkapan berhasil ditambahkan ke kelompok perlengkapan
+    attribute removed: Perlengkapan berhasil dihapus dari kelompok perlengkapan
+    not removed attributes: Perlengkapan kelompok  tidak dapat dihapus karena mengandung perlengkapan 
+    not removed default: Grup atribut default tidak dapat dihapus
+    not removed default attributes: Atribut tidak dapat dihapus dari grup atribut default
+  category:
+    created: Kategori berhasil dibuat
+    updated: Kategori berhasil diperbarui
+    removed: Kategori berhasil dihapus
+  tree:
+    created: Pohon berhasil dibuat
+    updated: Pohon berhasil diperbarui
+    removed: Pohon berhasil dihapus
+    not removable: Pohon yang terkait dengan saluran tidak dapat dihapus.
+  currency:
+    updated: Mata uang berhasil diperbarui
+    error.linked_to_channel: Anda tidak dapat menonaktifkan mata uang yang terhubung ke saluran.
+  family:
+    updated: Keluarga berhasil diperbarui
+    removed: Keluarga berhasil dilepas
+    identifier not removable: identitas perlengkapan tidak dapat dihapus dari keluarga
+    label attribute not removable: Atribut ini tidak bisa dihapus karena digunakan sebagai label keluarga
+    attribute not found: Atribut bukan milik keluarga ini
+    attributes added: Perlengkapan yang berhasil ditambahkan ke keluarga
+    attribute removed: Atribut berhasil dihapus dari keluarga
+  product:
+    created: Produk berhasil dibuat
+    updated: Produk berhasil diperbarui
+    removed: Produk berhasil dihapus
+    invalid: Silakan periksa entri anda dan coba lagi
+    attributes added: Perlengkapan  berhasil ditambahkan ke produk
+    attribute removed: Perlengkapan berhasil dihapus dari produk
+    attribute not removable: Perlengkapan  tidak dapat dihapus dari produk ini
+    enabled: Produk telah diaktifkan
+    disabled: Produk telah dinonaktifkan
+  group:
+    updated: Kelompok berhasil diperbarui
+    removed: Kelompok berhasil dihapus
+  group type:
+    created: kelompok baru berhasil dibuat
+    updated: Jenis grup berhasil diperbarui
+    removed: Jenis kelompok berhasil dihapus
+    cant remove used: Jenis kelompok  digunakan oleh beberapa kelompok dan tidak bisa dihapus
+  association type:
+    created: Tipe asosiasi berhasil dibuat
+    updated: Jenis asosiasi berhasil diperbarui
+    removed: Jenis asosiasi berhasil dihapus
+  user:
+    removed: Pengguna berhasil di hapus
+  error ocurred: Aksi gagal.Silahkan mencoba lagi
+#Info messages
+info:
+  updated: Tidak ada perubahan tersimpan.
+  category:
+    remove children: Seluruh sub-kategori akan dihapus.
+    keep products: Produk dalam katagori ini tidak dapat di hapus
+    products limit exceeded: Kategori ini berisi lebih banyak produk dari pada yang diizinkan untuk melakukan  operasi ini (%limit% produk maksimum)
+  product:
+    no available attributes: Tidak ada perlengkapan yang ditambahkan
+    no family defined: Tidak ada keluarga yang didefinisikan
+    change family: Mengubah keluarga produk
+    change family to: Mengubah keluarga menjadi
+    merge attributes: Atribut saat ini akan digabungkan dengan yang ada di keluarga baru.
+    keep attributes: Tidak ada atribut yang akan dihapus.
+    number of associations: '%productCount% produk dan %groupCount% grup'
+    enable: Mengaktifkan
+    enabled: Diaktifkan
+    disable: Menonaktifkan
+    disabled: Dinonaktifkan
+  group:
+    axis: 'Variasi sumbu: %attributes%'
+    select products: Silahkan pilih produk yang seharusnya termasuk dalam grup ini.
+    selectable products: Produk terpilih berikut memiliki nilai yang ditetapkan untuk setiap sumbu.
+    no group types: Tidak ada jenis kelompok yang tersedia, klik di sini untuk membuatnya
+    more products: '%count% lebih banyak produk...'
+  association type:
+    show products: Tampilkan produk
+    show groups: Tampilkan grup
+    remove from products: Menghapus jenis asosiasi akan menghapusnya dari %count% produk.
+    none exist: Tidak ada tipe asosiasi yang ada.
+    create one: Klik di sini untuk membuatnya
+  attribute:
+    auto option sorting: Jika diaktifkan, pilihan akan diurutkan secara otomatis oleh label lokal mereka
+  completeness:
+    not calculated: Belum dihitung
+#Form elements
+Options: Pilihan
+Created at: Dibuat di
+Updated at: Diperbarui pada
+Created: Dibuat
+Updated: Diperbarui
+Last update: Pembaruan terakhir
+by: Oleh
+N/A: N/A
+Manage products: Kelola produk
+Manage groups: Kelola kelompok
+Code: Kode
+Name: Nama
+Type: Jenis
+Scope: Saluran
+Required: Wajib
+Unique: Unik
+Not required: Tidak dibutuhkan
+Translatable: Dapat diterjemahkan
+Scopable: Scopable
+Localizable: Terlokalisasi
+Unique value: Nilai unik
+Attribute group: Atribut grup
+Other: Lain
+Variants behavior when edited: Varian perilaku saat disunting
+Edit: Ubah
+Remove: Hapus
+Delete: Hapus
+Parameters: Parameter
+System: Sistem
+Values: Nilai - nilai
+General parameters: Parameter umum
+Backend parameters: Parameter ujung
+Label: Label
+Default label: Standar label
+Default value: Nilai bawaan
+Attributetype: Tipe atribut
+Attribute type: Tipe atribut
+Defaultvalue: Nilai bawaan
+Variant: Varian
+Smart: Pintar
+Useable as grid column: Bisa digunakan sebagai kolom grid
+Useable as grid filter: Bisa digunakan di grid
+Family: Keluarga
+Image: Gambar
+Variant products: Variasi Produk
+Available locales: Lokal yang tersedia
+Locale specific: Lokal spesifik
+default: Bawaan
+Axis: Sumbu
+Add attributes: Tambahkan atribut
+Translate from: Diterjemahkan dari
+switch_on: "Ya"
+switch_off: "Tidak"
+Close: Tutup
+Search: Pencarian
+Choose the attribute type: Memilih jenis perlengkapan
+Choose the attribute group: Memilih perlengkapan grup
+Drag and drop a file or click here: Seret dan lepaskan file atau klik di sini
+Drop an image or click here: Letakkan gambar atau klik disini
+Automatic option sorting: Pemilahan pilihan otomatis
+save_attribute_before_manage_option: Untuk mengelola opsi, silahkan simpan atributnya
+Please select: Silahkan pilih
+Active: Aktif
+Inactive: Tidak aktif
+Do not convert: Jangan diubah
+Create: Buat
+Cancel: Batal
+Choose a family: Pilih keluarga
+Choose a unit: Pilih satu unit
+No matches found: Tidak ditemukan kecocokan
+Category tree: Pohon kategori
+Completeness: Kelengkapan
+Attribute used as label: Atribut digunakan sebagai label
+Credentials: Kredensial
+#Scopes
+Global: Global
+Channel: Saluran
+Expand all channels: Perluas semua saluran
+Collapse all channels: Persempit semua saluran
+#Variants
+Always override: Selalu timpa
+Ask: Meminta
+#Attribute group
+General Properties: Properti Umum
+Group values: Nilai grup
+New group: Kelompok baru
+Groups overview: Ikhtisar grup
+'Y-m-d h:i:s': 'Y-m-d h: i: s'
+#Attribute properties
+Max characters: Karakte maksimal
+Validation rule: Aturan validasi
+Validation regexp: Validasi regex
+Wysiwyg enabled: WYSIWYG diaktifkan
+Number min: nilai minimum
+Number max: nilai maksimun
+Decimals allowed: Biarkan desimal
+Negative allowed: Biarkan nilai negatif
+Date min: Tanggal min
+Date max: Tanggal maks
+Metric family: Keluarga metrik
+Default metric unit: Unit metrik bawaan
+Max file size: Maksimun ukuran berkas (MB)
+Allowed extensions: Ekstensi diizinkan
+None: Tidak ada
+E-mail: Surel
+URL: URL
+Regular expression: Ekspresi reguler
+Minimum input length: Minimum Panjang masukkan
+Default: Bawaan
+#Family
+Attributes: Atribut
+#Category
+Title: Judul
+#Page titles
+pim_title.attribute_group:
+  index: "Perlengkapan kelompok"
+  create: "Perlengkapan kelompok | Membuat"
+  edit: "Atribut kelompok %group.label% | Sunting"
+pim_title.category:
+  index: "Pohon kategori"
+  create: "Kategori pohon | Membuat"
+  edit: "Kategori pohon %category.label% | Sunting"
+pim_title.attribute:
+  index: "Perlengkapan"
+  create: "Perlengkapan | Membuat"
+  edit: "Perlengkapan kelompok  %attribute.label% |Merubah"
+pim_title.product:
+  index: "Produk"
+  edit: "Produk %product.label% | Sunting"
+pim_title.family:
+  index: "Keluarga"
+  edit: "Keluarga %family.label% | Sunting"
+pim_title.channel:
+  index: "Saluran"
+  create: "Saluran | membuat"
+  edit: "Saluran %channel.label% | Sunting"
+pim_title.currency:
+  index: "Mata Uang"
+pim_title.locale:
+  index: "Lokal"
+pim_title.group:
+  index: "Kelompok"
+  edit: "Grup %group.label% | Sunting"
+pim_title.association_type:
+  index: "Tipe Asosiasi"
+  edit: "Tipe asosiasi %asosiasi jenis.label% | Sunting"
+pim_title.group_type:
+  index: "Jenis grup"
+  edit: "Tipe kelompok %group type.label% | Mengubah"
+pim_title.mass_edit_product_action:
+  choose: "Sunting massa | Pilih"
+  configure: "Sunting massa | Konfigurasi"
+pim_title.mass_edit_family_action:
+  choose: "Mass Edit | Choose"
+  configure: "Mass Edit | Configure"
+pim_title.job_tracker:
+  index: Proses pelacak
+  show: "Proses pelacak | Tampilkan pekerjaan"
+pim_title.dashboard: "Dasbor"
+pim_catalog_identifier: Pengenal
+pim_catalog_text: Teks
+pim_catalog_textarea: Wilayah Teks
+pim_catalog_number: Nomor
+pim_catalog_price_collection: Harga
+pim_catalog_multiselect: Pilihan ganda
+pim_catalog_simpleselect: Pilihan sederhana
+pim_catalog_file: Berkas
+pim_catalog_image: Gambar
+pim_catalog_boolean: "Ya/Tidak"
+pim_catalog_date: Tanggal
+pim_catalog_metric: Metrik
+pim_reference_data_simpleselect: Data referensi pilihan sederhana
+pim_reference_data_multiselect: Data referensi pilihan ganda
+#Locales
+Activated: Mengaktifkan
+Disable: Mematikan
+#Sequential edit operations
+pim_enrich.sequential_edit_action:
+  product:
+    previous: Lompat kembali ke "%product%" tanpa menyimpan.
+    next: Lompat ke "%product%" tanpa menyimpan.
+#Mass edit operations
+pim_enrich.mass_edit_action:
+  limit_exceeded: Harap memilih kurang dari %limit% produk untuk mengubah
+  product:
+    page_title: Produk
+    page_subtitle: Massa Edit (1 produk)|Massa Edit (%count% produk)
+    title: Pilih operasi
+    subtitle: Pilih operasi yang ingin Anda lakukan pada produk yang dipilih | Pilih operasi yang ingin Anda lakukan pada produk% count% produk yang dipilih
+    confirm: Anda akan memperbarui produk dengan informasi berikut, mohon konfirmasi. Anda akan mengupdate% count% produk dengan informasi berikut, mohon konfirmasi.
+    steps:
+      first: Pilih produk
+      second: Pilih operasi
+      third: Konfigurasikan
+      fourth: Konfirmasi
+  family:
+    page_title: Keluarga
+    page_subtitle: Sunting Massa (1 keluarga)|Sunting Massa (%count% keluarga)
+    title: Pilih operasi
+    subtitle: Pilih operasi yang ingin anda lakukan pada keluarga yang dipilih|Pilih operasi yang ingin anda lakukan pada %count% keluarga yang dipilih
+    confirm: Anda akan memperbarui keluarga dengan informasi berikut, silahkan konfirmasi.|Anda akan memperbarui %count% keluarga dengan informasi berikut, silahkan konfirmasi.
+    steps:
+      first: Pilih keluarga
+      second: Pilih operasi
+      third: Mengkonfigurasi
+      fourth: Menyetujui
+  change-status:
+    label: Ubah status
+    description: Produk yang dipilih akan diaktifkan atau dimatikan.
+    success_flash: Status produk telah diubah
+  edit-common-attributes:
+    label: Ubah perlengkapan
+    description: Perlengkapan produk yang dipilih akan diubah  dengan data sebagai berikut untuk pilihan lokal.
+    empty: Silahkan pilih perlengkapan(s) yang ingin anda ubah
+    success_flash: Perlengkapan produk telah diperbarui
+    message.warning: Tidak ada perlengkapan  umum untuk produk tertentu. Silahkan ganti pilihan Anda.
+    no_attribute.warning: Tidak ada perlengkapan  umum untuk produk tertentu. Silahkan ganti pilihan Anda.
+  classify:
+    label: Tambah ke kategori
+    description: Produk akan diposisikan mengikuti kategori berikut, penempatan yang akan disimpan.
+    success_flash: Produk telah dipindahkan ke dalam kategori yang dipilih
+  change-family:
+    label: Ganti keluarga
+    description: Keluarga dari produk yang dipilih akan diubah menjadi keluarga pilihan
+    success_flash: Keluarga produk(s) terpilih telah berhasil diubah
+    no_family: Tidak ada keluarga
+  add-to-groups:
+    label: Tambahkan ke kelompok
+    description: Pilih kelompok  untuk menambahkan produk yang dipilih
+    success_flash: Produk telah berhasil ditambahkan kepada  kelompok yang dipilih
+  set-attribute-requirements:
+    label: Menerapkan persyaratan atribut
+    description: Persyaratan perlengkapan berikut akan diterapkan pada keluarga terpilih
+    success_flash: Persyaratan perlengkapan diterapkan pada keluarga yang dipilih
+To enable: Untuk mengaktifkan
+Select attributes: Pilih perlengkapan
+Select: Pilih
+Remove this attribute: Menghapus perlengkapan ini
+Copy: Salin
+Current tab: Tab aktif
+#Product view
+Group: Grup
+View group: Lihat grup
+Products: Produk
+#Tabs
+Properties: Properti
+History: Riwayat
+pane.accordion:
+  node_values: Nilai node
+  general_properties: Properti Umum
+  locale_values: Nilai lokal
+  backend_parameters: Parameter backend
+  general_parameters: Parameter umum
+  validation_parameters: Parameter validasi
+  label_translations: Terjemahan label
+  options: Pilihan
+  group_values: Nilai grup
+#Popin titles
+popin.create:
+  association_type.title: Membuat jenis Asosiasi baru
+  group.title: Buat kelompok baru
+  product.title: Membuat produk baru
+  option.title: Membuat  pilihan baru
+#Datagrid contents
+In group: Dalam kelompok
+Attribute as label: Perlengkapan sebagai label
+Is associated: Terkait
+Complete: Berhasil
+Created At: Dibuat di
+Updated At: Diperbarui pada
+Enabled: Diaktifkan
+Disabled: Dinonaktifkan
+Status: Status
+#Versioning / history
+Change History: Ubah riwayat
+Data Audit: Audit data
+Data Audit - System: 'Audit data - sistem'
+Action: Tindakan
+Version: Versi
+Entity type: Jenis entitas
+Entity name: Nama entitas
+Entity id: Id entitas
+Data: Data
+Author: Penulis
+Logged at: Logged di
+Deleted: Dihapus
+Old values: Nilai lama
+New values: Nilai baru
+#Configuration
+System configuration: Konfigurasi sistem
+General setup: Pengaturan umum
+Localization: Lokalisasi
+Localization options: Pilihan lokalisasi
+Locale: Lokal
+Location: Lokasi
+Format address by address country: Format alamat menurut negara
+Language: Bahasa
+Timezone: Zona waktu
+Currency: Mata uang
+settings: Pengaturan
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "paroki"
+      state: "negara"
+      island: "pulau"
+      county: "daerah"
+      area: "area"
+      prefecture: "prefektur"
+      department: "departemen"
+      district: "distrik"
+      province: "Provinsi"
+  form:
+    tooltip:
+      locale: "Pilih opsi lokal yang digunakan dengan format angka, alamat, nama dan tanggal"
+      location: "Lokasi akan digunakan untuk membentuk  alamat ketika pilihan 'Membentuk alamat menurut  alamat negara' dimatikan"
+      format_address_by_address_country: "Memilih opsi ini akan mengaktifkan alamat yang akan diformat sesuai dengan negara tempat mereka berada. Mematikan opsi ini akan menyebabkan alamat  dalam format alamat lokasi Anda"
+      language: "Memilih bahasa sistem yang ingin Anda gunakan"
+      timezone: "Memilih zona waktu untuk menampilkan tanggal dan waktu"
+      currency: "Pilih mata uang bawaan"
+#Datagrid
+Selected products successfully deleted: produk yang dipilih berhasil di hapus
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: Edit massal <strong>%label%</strong> gagal
+      warning: Edit massal <strong>%label%</strong> selesai dengan beberapa peringatan
+      success: Edit massal <strong>%label%</strong> selesai
+    quick_export:
+      error: Ekspor cepat <strong>%label%</strong> gagal
+      warning: Ekspor cepat <strong>%label%</strong> selesai dengan beberapa peringatan
+      success: Ekspor cepat <strong>%label%</strong> selesai
+job_execution.summary:
+  mass_edited: Massa diedit
+  skip: Dilewati
+  skipped_products: Produk yang dilewati
+  skipped_attributes: Atribut yang dilewati
+  skipped_families: Keluarga yang dilewati
+pim_mass_edit_execution_show: Ubah eksekusi massal | Rincian
+edit_common_attributes.steps.edit_common_attributes_processor.title: Ubah perlengkapan
+update_product_value.steps.update_product_value_processor.title: Memperbarui nilai produk
+remove_product_value.steps.update_product_value_processor.title: Menghapus nilai produk
+edit_common_attributes: Ubah perlengkapan
+edit_common_attributes_clean: Bersihkan berkas untuk atribut
+perform.steps.duplicated.title: Sumbu duplikat
+perform.steps.excluded.title: Tidak termasuk produk
+#Background jobs & steps labels
+batch_jobs:
+  add_product_value:
+    label: Tambahkan nilai produk
+    perform:
+      label: Tambahkan nilai produk
+  update_product_value:
+    label: Memperbarui nilai produk
+    perform:
+      label: Memperbarui nilai produk
+  edit_common_attributes:
+    label: Ubah perlengkapan
+    perform:
+      label: Ubah perlengkapan
+    clean:
+      label: Bersihkan file untuk atribut
+    cleaner:
+      label: Bersihkan berkas untuk atribut
+  compute_completeness_of_products_family:
+    compute_completeness_of_products_family.label: Menghitung kelengkapan
+  add_to_category:
+    label: Tambah ke kategori
+    perform:
+      label: Tambah ke kategori
+  move_to_category:
+    label: Pindah ke kategori
+    perform:
+      label: Pindahkan ke kategori
+  remove_from_category:
+    label: Hapus dari kategori
+    perform:
+      label: Hapus dari kategori
+  add_to_existing_product_model:
+    label: Tambahkan ke sebuah model produk yang ada
+    perform:
+      label: Tambahkan ke sebuah model produk yang ada
+  set_attribute_requirements:
+    label: Menerapkan persyaratan perlengkapan
+    perform:
+      label: Menerapkan persyaratan perlengkapan
+  csv_product_quick_export:
+    quick_export.label: Ekspor produk cepat Csv
+    perform:
+      label: Ekspor cepat produk Csv
+  csv_product_grid_context_quick_export:
+    quick_export.label: Konteks konteks produk Csv cepat diekspor
+    perform:
+      label: Konteks konteks produk Csv cepat diekspor
+  xlsx_product_quick_export:
+    quick_export.label: Xlsx produk ekspor cepat
+    perform:
+      label: Xlsx produk ekspor cepat
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Konteks produk xlsx konteks ekspor cepat
+    perform:
+      label: Xlsx produk grid konteks ekspor cepat
+mass_edit report:
+  overview: Laporan ubah massal
+job_tracker:
+  tab:
+    title: Proses pelacak
+  filter:
+    started_at: Mulai di
+pim_enrich_attribute_form:
+  code: Kode
+  type: Tipe atribut
+  reference_data_name: Nama data referensi
+  scopable: Nilai per saluran
+  localizable: Nilai per lokal
+  unique: Nilai unik
+  availableLocales: Lokal yang tersedia
+  locale_specific: Lokal spesifik
+  group: Perlengkapan kelompok
+  useableAsGridFilter: Bisa digunakan di grid
