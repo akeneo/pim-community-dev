@@ -2,34 +2,84 @@ pim_title:
   akeneo_franklin_insights_connection_edit: 'Połączenie Franklin Insights'
   akeneo_franklin_insights_identifiers_mapping_edit: 'Ustawienia Franklin Insights'
   akeneo_franklin_insights_attributes_mapping_edit: 'Ustawienia Franklin Insights'
+pim_menu:
+  item:
+    franklin: Franklin Insights
 akeneo_franklin_insights:
   entity:
     data_provider:
+      ask_franklin_down: "Przepraszamy, coś poszło nie tak. Spróbuj ponownie później."
+      authentication_error: "Przepraszamy, nie udało się uwierzytelnić Franklin Insights, twój token jest nieprawidłowy. Wprowadź prawidłowy token lub skontaktuj się z nami, aby uzyskać pomoc."
       bad_request_error: "Przepraszamy, wystąpił problem z komunikacją z Franklin Insights. Skontaktuj się z administratorem."
     identifier_mapping:
+      plural_label: Identyfikatory
+      flash:
+        update:
+          first: 'Dziękujemy za mapowanie identyfikatorów produktów katalogowych. Teraz możesz subskrybować produkty do wzbogacenia za pomocą Franklin Insights.'
+          success: 'Mapowanie identyfikatorów zostało pomyślnie zapisane.'
+          fail: 'Nie zapisano identyfikatorów z powodu błędu.'
       fields:
+        identifier_label:
+          label: Identyfikator Franklin
+          values:
+            brand: Marka
+            asin: ASIN
+            mpn: MPN
+            upc: UPC
+        catalog_attribute: Atrybut katalogu
+        franklin_insights: Status identyfikatora Franklin
         status:
           active: Aktywne
           inactive: Nieaktywny
+      constraint:
+        duplicate_attribute_code: "Jedno mapowanie dozwolone dla atrybutu katalogu"
+        missing_or_invalid_identifiers: "Brakuje niektórych identyfikatorów kluczy mapowania lub są nieprawidłowe. Oczekiwano: \"{{ expected }}\", otrzymano \"{{ given }}\"."
+        mandatory_identifier_mapping: "Wymagane mapowanie marki i MPN"
+        attribute_type: "Typ tego atrybutu nie może być ustawiony jako identyfikator"
+        localizable_not_allowed: "Zlokalizowane atrybuty nie są dozwolone jako identyfikator"
+        scopable_not_allowed: "Atrybuty charakterystyczne dla kanału nie są dozwolone jako identyfikator"
+        locale_specific_not_allowed: "Atrybuty specyficzne dla lokalizacji nie są dozwolone jako identyfikator"
     attributes_mapping:
+      label: Mapowanie atrybutów
       fields:
+        franklin_attribute: 'Atrybut Franklin'
         franklin_insights:
+          label: Status atrybutu Franklin
+          pending: Oczekujący
           active: Aktywne
           inactive: Nieaktywny
         values_summary: "Podsumowanie wartości: {{ label }}"
       module:
+        subscribe:
+          subscribe: 'Subskrybuj rodzinę we Franklinie'
+          subscribed: 'Zasubskrybowane we Franklinie'
         index:
+          error: "Musisz utworzyć rodzinę w swoim katalogu, aby uzyskać dostęp do tej strony."
+          family_status:
+            pending: 'Nowe atrybuty Franklin do sprawdzenia'
+            full: 'Wszystkie atrybuty Franklin zamapowane'
           types_mismatch_warning: 'Uwaga: typy atrybutów nie pasują do siebie.'
     product_subscription:
       constraint:
         product_subscription_with_same_identifier_already_exist: 'Inny produkt z co najmniej jednym identycznym identyfikatorem został już zapisany.'
+      module:
+        product_edit_form:
+          family_required: 'Wymagana rodzina produktów.'
+          no_identifier_filled: 'Wymagane identyfikatory produktu.'
+          invalid_mapping: "Wymagane mapowanie identyfikatorów."
     attribute_options_mapping:
       module:
         edit:
           description: 'Aby pomóc w wzbogaceniu katalogu, Franklin będzie musiał znać opcje atrybutu katalogu, które się z nim zgadzają. <a href="#" target="_blank" class="AknDescriptionHeader-link">Czytaj więcej</a>'
+  product:
+    edit:
+      btn.push: Zaproponuj dane
   connection:
     flash:
       error: Przepraszamy, wystąpił błąd.
     module:
       activation:
         activated: 'Aktywowany'
+batch_jobs:
+  default_steps:
+    create_proposals: Utwórz propozycje

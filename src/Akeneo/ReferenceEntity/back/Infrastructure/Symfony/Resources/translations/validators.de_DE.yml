@@ -7,6 +7,8 @@ pim_reference_entity:
         limit_reached: 'Sie können die Referenz-Entität "{{ %reference_entity_label%}}" nicht anlegen, da Sie die Grenze von {{ %limit%}} Referenz-Entitäten erreicht haben'
       records:
         should_have_no_record: 'Sie können diese Entität nicht löschen, da die Assets für diese Entität existieren'
+      reference_entity_attributes:
+        should_not_be_linked: 'Um diese Referenz-Entität zu löschen, überprüfen Sie zuerst die Attribute in allen Ihren Referenz-Entitäten und löschen Sie dann die damit verknüpften Referenzen'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Mindestens eine Benutzergruppe sollte die Bearbeitungsberechtigung für diese Entität haben.'
       product_attributes:
