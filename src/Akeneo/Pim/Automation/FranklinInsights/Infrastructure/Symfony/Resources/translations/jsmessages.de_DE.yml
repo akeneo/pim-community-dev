@@ -232,6 +232,7 @@ batch_jobs:
   default_steps:
     fetch_products: Produktdaten abrufen
     create_proposals: Vorschläge erstellen
+    notify_if_pending_attributes: Benutzer für ausstehende Attribute zur Karte benachrichtigen
     validate_configuration: Überprüfung der Franklin Insights-Konfiguration
   franklin_insights_subscribe_products:
     label: Franklin Insights Massenabonnement
