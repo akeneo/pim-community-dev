@@ -1,0 +1,66 @@
+teamwork_assistant:
+  common:
+    required: Diperlukan
+    warning: Jangan khawatir, perhitungan proyek ini  mungkin memakan waktu cukup lama, jadi proyek Anda mungkin tidak langsung terlihat.
+  grid:
+    view_selector:
+      create: Membuat proyek
+      edit: Mengedit proyek
+      remove: Menghapus proyek
+      create_from_view: Membuat sebuah proyek dari pandangan ini
+      start_new_project: Memulai sebuah proyek baru
+      confirmation:
+        remove: Apakah kamu yakin ingin menghapus proyek ini?
+      projects: Proyek
+  project:
+    label: Nama
+    locale: Lokal
+    label_maxlength: Nilai tersebut terlalu panjang. Seharusnya memiliki {{ max }} karakter atau kurang.
+    description: Gambaran
+    due_date: Tanggal Jatuh tempo
+    due_date_past: Anda tidak dapat memilih tanggal yang sudah lewat.
+    leaving_scope: Anda meninggalkan ruang lingkup proyek.
+  edit_project_modal:
+    saved: Proyek telah tersimpan.
+    title: Mengedit proyek
+  create_project_modal:
+    saved: Proyek telah disimpan, Anda akan diberitahu bila perhitungan dilakukan.
+  widget:
+    no_project: Anda saat ini tidak memiliki proyek
+    no_project_create: buat proyek baru
+    description: Gambaran
+    due_date: Batas tanggal terakhir
+    todo: TODO
+    in_progress: SEDANG BERJALAN
+    done: DIKERJAKAN
+    all_contributors: Semua kontributor
+    display_products: Tampilan produk
+    placeholder:
+      contributor_selector: Cari kontributor
+      project_selector: Cari proyek
+    completeness:
+      to_start: MULAI PRODUK
+      in_progress: PRODUK DI KEMAJUAN
+      done: PRODUK DIBUAT
+pim_datagrid:
+  view_selector:
+    project: Proyek
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Asisten tim
+        project_calculation: Asisten tim
+batch_jobs:
+  project_calculation:
+    project_calculation.label: Perhitungan proyek
+    prepare_project_calculation.label: Siapkan perhitungan proyek
+    clean_contributor_group.label: Memeriksa izin pengguna pada lokasi proyek
+  refresh_project_completeness_calculation:
+    label: Menyegarkan perlengkapan proyek
+    refresh_project_completeness_calculation.label: Menyegarkan perlengkapan proyek
+pim_notification:
+  types:
+    project_created: Sebuah proyek baru untuk kamu
+    project_finished: Proyek telah selesai
+    project_calculation: Perhitungan proyek

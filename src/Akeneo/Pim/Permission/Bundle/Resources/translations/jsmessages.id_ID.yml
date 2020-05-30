@@ -1,0 +1,48 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Hanya baca
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Kelompok <strong>{{ group }}</strong> akan <strong>menjadi{{ permission }}</strong> dalam kategori ini
+      revoke: Kelompok <strong>{{ group }}</strong> akan <strong>tidak berada {{ permission }}</strong> dalam kategori ini
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Kelompok <strong>{{ group }}</strong> akan <strong>menjadi {{ permission }}</strong> dalam lokal ini
+      revoke: Kelompok <strong>{{ group }}</strong> akan <strong>tidak akan {{ permission }}</strong> pada lokal ini
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Kelompok <strong>{{ group }}</strong> akan <strong>menjadi {{ permission }}</strong> di atribut grup ini
+      revoke: Kelompok <strong>{{ group }}</strong> akan <strong>tidak menjadi {{ permission }}</strong> di atribut kelompok ini
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: Grup {{ grup }} akan diizinkan untuk {{ izin }} atribut grup
+      view: Diizinkan untuk melihat perlengkapan
+      edit: Diizinkan untuk merubah perlengkapan
+      removed: Grup {{ grup }} tidak akan diizinkan untuk {{ izin }} atribut grup
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: Grup {{ grup }} akan diizinkan untuk {{ izin }} profil pekerjaan
+      execute: Diizinkan untuk menjalankan profil pekerjaan
+      edit: Diperbolehkan untuk menyunting profil pekerjaan
+      removed: Grup {{ group }} tidak  diizinkan untuk {{ permission }} profil pekerjaan
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Tambahkanlah nilai produk dengan memeriksa izin & aturan aplikasi
+    perform.label: Tambah nilai produk
+  update_product_value_with_permission_and_rules:
+    label: Perbarui nilai produk dengan memeriksa izin & aturan aplikasi
+    perform.label: Memperbarui nilai produk
+  remove_product_value_with_permission_and_rules:
+    label: Hapus nilai produk dengan meberikan izin memeriksa & aturan aplikasi
+    perform.label: Menghapus nilai produk
+  edit_common_attributes_with_permission_and_rules:
+    label: Sunting perlengkapan dengan izin memeriksa & aturan aplikasi
+    perform.label: Ubah perlengkapan
+    cleaner.label: Bersihkan bekas sementara

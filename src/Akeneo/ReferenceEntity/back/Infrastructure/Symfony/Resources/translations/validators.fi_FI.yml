@@ -19,6 +19,8 @@ pim_reference_entity:
       options:
         code:
           pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
+      max_file_size:
+        should_be_a_number: 'Arvon on oltava numero.'
       min_value:
         should_be_a_number: 'Arvon on oltava numero, jossa on oikea desimaalierotin.'
         cannot_be_greater_than_max: 'Minimiarvo ei voi olla suurempi kuin maksimiarvo'

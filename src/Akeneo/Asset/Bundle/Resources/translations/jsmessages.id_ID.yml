@@ -1,0 +1,206 @@
+user:
+  asset_delay_reminder: Pengingat penundaan aset (dalam hari)
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Kelola aset
+        manage_asset:
+          title: Kelola aset
+          cancel: Batal
+          confirm: Konfirmasi
+        title: Kelola aset
+        description: Pilihlah aset yang anda inginkan untuk dilampirkan ke produk anda
+        download: Unduh
+        remove: Hapus
+        upload: Unggah
+    asset:
+      not_empty: Kode harus di isi, tidak boleh dikosongkan.
+      alpha_numeric_plus_underscore: Kode harusnya hanya alfanumerik atau garis bawah.
+      unique: Kode harus unik. Kami menghasilkan yang baru untuk anda.
+  enrich_asset:
+    grid:
+      edit: Mengubah properti dari aset
+  enrich_variation:
+    popin:
+      reset:
+        title: Mengatur ulang variasi
+  mass_upload:
+    menu: Mengunggah aset
+    btn:
+      remove_all_files: Hapus semua berkas
+      import: Impor
+      upload: Mengunggah aset
+    success:
+      new: Aset baru akan diciptakan
+      imported: Berkas diimpor untuk memproses aset
+      canceled: Pengunggahan telah berhasil dibatalkan
+      deleted: Pengunggahan berkas telah berhasil dihapus
+    error:
+      list: Tidak dapat membaca berkas yang telah diunggah
+      delete: Tidak dapat menghapus berkas dari server
+      filename: Nama berkas tidak sah untuk aset
+      code: Format kode aset tidak sah
+      locale: Aset yang ada tetapi tidak dilokalisasi
+      invalid_locale: Lokal di nonaktifkan atau tidak legal
+      exists: Sebuah berkas dengan nama yang sama telah siap diimpor
+      conflicts: Konflik nama berkas
+    status:
+      added: Ditambahkan
+      queued: Antri
+      uploading: Sedang mengunggah
+      error: Kesalahan
+      success: Berhasil
+    drag_and_drop: Tarik atau letakkan aset anda atau klik disini
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Apa anda yakin ingin menghapus aset yang dipilih?
+        success: Aset yang dipilih telah berhasil dihapus.
+        empty_selection: Tidak ada aset yang dipilh
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Koleksi aset
+pim_title:
+  pimee_product_asset_mass_upload: Mengunggah aset
+  pimee_product_asset_index: Aset
+  pimee_product_asset_edit: Aset {{ asset.label }} | ubah
+  pimee_asset_categorytree_index: Kategori
+  pimee_asset_categorytree_edit: Katagori {{ category.label }} | Sunting
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Pengunggahan aset massal
+    perform.label: Upload massal
+  yml_asset_channel_configuration_import:
+    import.label: Saluran impor Aset konfigurasi
+    label: Impor konfigurasi saluran aset di Yaml
+    import_asset.label: Aset konfigurasi saluran impor di Yaml
+  yml_asset_channel_configuration_export:
+    label: Aset konfigurasi saluran ekspor di Yaml
+    export.label: Ekspor konfigurasi saluran aset dalam Yaml
+  csv_asset_import:
+    label: Impor aset ke dalam
+    import_tags.label: Impor ke dalam CSV
+    import_asset.label: Impor aset pada CSV
+  csv_asset_export:
+    label: Ekspor asek ke dalam CSV
+    export.label: Ekspor aset pada CSV
+  csv_asset_variation_export:
+    label: Ekspor aset variasi ke dalam CSV
+    export.label: Ekspor variasi aset pada CSV
+  csv_tag_import:
+    label: Tag impor di CSV
+    import.label: Tag impor pada CSV
+  csv_asset_category_import:
+    label: Impor katagori aset ke dalam CSV
+    import_asset_category.label: Impor aset kategori pada CSV
+  csv_asset_configuration_import:
+    label: Aset saluran konfigurasi impor CSV
+    import_asset.label: Impor konfigurasi kanal aset dalam CSV
+  csv_asset_category_export:
+    label: Impor katagori aset ke dalam CSV
+    export.label: Ekspor aset kategori pada CSV
+  xlsx_tag_import:
+    label: Impor tandai pada XLSX
+    import.label: Impor tag ke dalam XLSX
+  xlsx_asset_import:
+    label: Impor aset ke dalam XLSX
+    import_tags.label: Impor tag ke dalam XLSX
+    import_asset.label: Impor aset di XLSX
+  xlsx_asset_category_import:
+    label: Impor kategori aset di XLSX
+    import_asset_category.label: Aset kategori impor di XLSX
+  xlsx_asset_export:
+    label: Ekspor aset di XLSX
+    export.label: Ekspor aset pada XLSX
+  xlsx_asset_category_export:
+    label: Ekspor kategori aset di XLSX
+    export.label: Ekspor kategori aset pada XLSX
+  xlsx_asset_variation_export:
+    label: Ekspor variasi aset pada XLSX
+    export.label: Ekspor variasi aset pada XLSX
+  classify_assets:
+    perform.label: Pindahkan aset pada kategori
+  add_tags_to_assets:
+    perform.label: Tambah tandai ke aset
+jstree:
+  asset:
+    all: Semua aset
+    unclassified: Aset yang tidak terklasifikasi
+asset_grid:
+  selected: aset terpilih
+  label: Produk aset
+create_asset:
+  title: Membuat sebuah aset
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Mengubah massal aset
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Transformasi aset
+      not_found: Tidak ditemukan transformasi
+      transformation: Transformation
+      options: Pilihan
+      colorspace:
+        title: Warna ruang
+        options:
+          colorspace: '%value% warna ruang'
+      resize:
+        title: Ubah ukuran
+        options:
+          width: '%value%px lebar'
+          height: '%value%px tinggi'
+      resolution:
+        title: Resolusi
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Skala
+        options:
+          width: '%value%px lebar'
+          height: '%value%px tinggi'
+          ratio: '%value%% rasio'
+      thumbnail:
+        title: Gambar kecil
+        options:
+          width: '%value%px lebar'
+          height: '%value%px tinggi'
+pimee_enrich.mass_edit.asset:
+  title: Tindakan massal aset
+  step:
+    select:
+      label: Pilih aset
+    choose:
+      title: Tindakan aset massal
+    configure:
+      label: Mengkonfigurasi
+    confirm:
+      label: Menyetujui
+  operation:
+    add_tag:
+      label: Tambahkan tandai ke aset
+      description: Tag akan ditambahkan ke aset.
+      field: Tandai
+      empty_selection: Silahkan pilih tag
+    add_to_category:
+      label: Klasifikasikan aset dalam kategori
+      description: Aset akan diposisikan ke dalam kategori berikut, penempatan yang ada akan hilang.
+pim_catalog_volume:
+  axis:
+    count_assets: Aset
+    count_asset_categories: Kategori aset
+pim_menu:
+  tab:
+    asset: Aset
+  item:
+    asset_category: Kategori aset
+    upload_asset: Unggah aset
+pim_notification:
+  types:
+    mass_upload: Pengunggahan massal

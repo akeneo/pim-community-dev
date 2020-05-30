@@ -1,0 +1,162 @@
+pimee_workflow:
+  product_draft:
+    author: Penulis
+    created: Usulan di
+    changes: Rubah
+    locale: Konteks lokal
+    product:
+      label: Nama produk
+    attribute:
+      label: Atribut
+    status:
+      label: Status
+      working_copy: Copy pekerjaan
+      in_progress: Sedang berlangsung
+      ready: Menunggu persetujuan
+      can_be_partially_reviewed: Bisa ditinjau sebagian
+      can_not_be_approved: Tidak dapat ditinjau
+      can_not_be_deleted: Tidak bisa dihapus
+    status_message:
+      can_be_partially_reviewed: Anda dapat meninjau proposal ini hanya sebagian dikarenakan beberapa perubahan berlaku pada nilai yang tidak dapat anda ubah. Hubungi pengelola anda untuk mengubah hak anda.
+      can_not_be_approved: Anda tidak bisa meninjau proposal ini karena semua perubahan berlaku pada nilai yang tidak dapat diubah. silahkan hubungi administrator untuk mengubah hak anda.
+      can_not_be_deleted: Anda tidak dapat menghapus proposal ini karena semua perubahan berlaku pada nilai yang tidak dapat anda ubah. Hubungi pengurus anda untuk mengubah hak anda.
+      in_progress: Proposal saat ini sedang dalam proses dan belum diserahkan.
+    action:
+      approve: Setujui semuanya
+      refuse: Tolak semua
+      remove: Hapus
+      partial_approve: Menyetujui perubahan pada atribut %attribute% dari produk %product%
+      partial_reject: Menolak perubahan pada perlengkapan %attribute% dari produk %product%
+    notification:
+      partial_approve: '%owner% telah menerima nilai(s) untuk %attributes% untuk produk %product%'
+      partial_approve_number: '%owner% telah menerima nilai untuk %attributes_count% perlengkapan untuk produk %product%'
+      partial_reject: '%owner% telah menolak nilai(s) untuk %attributes% untuk produk %product%'
+      partial_reject_number: '%owner% telah menolak nilai untuk %attributes_count% perlengkapan untuk produk %product%'
+      partial_remove: '%owner% telah dihapus nilai(s) untuk %attributes% untuk produk %product%'
+      partial_remove_number: '%owner% telah menghapus nilai untuk %attributes_count% perlengkapan untuk produk %product%'
+      approve: '%owner% telah menerima proposal anda untuk produk ini %product%'
+      refuse: '%owner% telah menolak proposal anda untuk produk ini %product%'
+      remove: '%owner% telah menghapus proposal anda untuk produk ini %product%'
+    mass_review_action:
+      approve: Menyetujui semua yang dipilih
+      refuse: Menolak semua yang dipilih
+      error:
+        draft_not_ready: Proposal tersebut belum siap untuk disetujui
+        not_product_owner: Anda tidak memiliki produk yang berkaitan dengan proposal ini
+        cannot_edit_attributes: Anda tidak dapat menyunting atribut yang dimodifikasi oleh proposal ini
+        invalid_draft: Proposal ini tidak dapat diterapkan karena kesalahan berikut. %error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% telah mengirimkan proposal untuk meninjau produk %product.label%'
+    individual_import: '%author.firstname% %author.lastname% telah mengirimkan proposal untuk ditinjau dari pekerjaan impor'
+    generic_import: Anda memiliki proposal untuk ditinjau dari impor pekerjaan
+    original_value: Asli
+    new_value: Baru
+    no_diff: Nilai "%value%" tersebut sama antara proposal dan salinan pekerjaan.
+    draft_in_progress: Konsep sedang di proses oleh %author% untuk produk ini.
+  published_product:
+    index: Produk Diterbitkan
+    title: Produk Diterbitkan
+  acl.published_product:
+    index: Kelola produk yang diterbitkan
+  product:
+    permission:
+      own: Tinjau / terbitkan
+      edit: Sunting
+      view: Melihat
+  steps:
+    product_draft_processor.title: Pengolah proposal
+    approve.title: Menyetujui proposal
+    refuse.title: Menolak Proposal
+  mass_edit_action:
+    published:
+      page_title: Produk diterbitkan
+      page_subtitle: Massa Edit (1 diterbitkan produk)|Massa Edit (%menghitung% menerbitkan produk)
+      title: Pilih operasi
+      subtitle: Pilih operasi yang ingin anda lakukan pada produk yang telah dipilih untuk dipublikasi|Pilih operasi yang ingin Anda lakukan pada produk% count% yang dipublikasi
+      confirm: Anda akan memperbarui produk yang dipublikasi dengan mengikuti informasi berikut, mohon konfirmasi.| Anda akan memperbarui% count% produk yang dipublikasi dengan mengikuti informasi berikut, mohon konfirmasi.
+      steps:
+        first: Pilih produk yang akan diterbitkan
+        second: Pilih operasi
+        third: Mengkonfigurasi
+        fourth: Konfirmasi
+btn:
+  publish: Menerbitkan
+  unpublish: Batal diterbitkan
+  save working copy: Simpan salinan pekerjaan
+  save working copy and next: Simpan salinan pekerjaan dan selanjutnya
+  save working copy and finish: Simpan salinan dan selesaikan pekerjaan
+  send for approval: Kirim untuk persetujuan
+  sent for approval: Kirim sebagai persetujuan
+  editworkingcopy: Edit copy pekerjaan
+flash:
+  product:
+    updated: Salin pekerjaan produk telah diperbarui
+    published: Produk ini telah berhasil dipublikasikan.
+    unpublished: Produk telah berhasil tidak dipublikasikan.
+  product_draft:
+    updated: Konsep sudah berhasil disimpan
+    approve:
+      success: Proposal telah berhasil diterapkan.
+      error: Proposal tidak bisa diterapkan karena kesalahan berikut. %error%
+    refuse:
+      success: Proposal telah ditolak.
+    remove:
+      success: Proposal telah dihapus.
+pim_menu:
+  item:
+    published_product: Produk diterbitkan
+    proposal: Proposal
+confirmation:
+  product:
+    publish: Apakah anda yakin anda ingin mempublikasikan produk ini?
+    unpublish: Apakah anda yakin ingin membatalkan publikasi produk ini?
+Attributes.title: Perlengkapan
+Completeness.title: Kelengkapan
+publish_product.steps.publish_product_tasklet.title: Publikasikan produk
+unpublish_product.steps.unpublish_product_tasklet.title: Batalkan publikasi produk
+approve_product_draft.steps.approve.title: Menyetujui proposal
+approve_product_draft.steps.refuse.title: Tolak proposal
+job_execution.summary:
+  approved: disetujui
+  refused: ditolak
+  mass_published: Produk telah diterbitkan
+  mass_unpublished: Produk tidak di terbitkan
+  proposal: Proposal dibuat
+  proposal_deleted: proposal yang dihapus
+  proposal_updated: proposal diperbarui
+  proposal_created: buat proposal
+  proposal_skipped: lewati proposal (tidak ada perbedaan)
+published products: Produk diterbitkan
+pim_analytics:
+  info_type:
+    nb_published_products: Jumlah produk yang dipublikasikan
+    nb_product_drafts: Jumlah draf produk
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Untuk meninjau proposal
+      date: Tanggal
+      author: Penulis
+      product: Produk
+      review: Tinjau
+      empty: Tidak ada konsep produk untuk ditinjau
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Menerbitkan
+      description: Publikasikan produk yang telah dipilih, data yang saat ini dipublikasikan akan dihapus oleh salinan pekerjaan saat ini.
+      success_flash: Produk yang dipilih telah berhasil dipublikasikan.
+      launched_flash: Pekerjaan mempublikasikan produk(s) sedang berjalan.
+      message:
+        info: '%nbProducts% Produk terpilih akan dipublikasikan.'
+    unpublish:
+      label: Batalkan publikasi
+      description: Batalkan publikasi produk yang dipilih, data yang akan dipublikasikan saat ini akan dihapus.
+      success_flash: Produk yang dipilih telah berhasil untuk tidak dipublikasikan.
+      launched_flash: Pekerjaan yang menerbitkan produk(s) baru sedang berjalan.
+      message:
+        info: Produk %nbProducts% terpilih tidak akan dipublikasikan.
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Proposal

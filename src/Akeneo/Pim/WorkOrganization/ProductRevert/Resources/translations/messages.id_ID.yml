@@ -1,0 +1,3 @@
+flash.version.revert.product: Berhasil memulihkan produk ke versi sebelumnya
+flash.error.revert.product: Versi ini tidak dapat dipulihkan. Beberapa kesalahan terjadi saat validasi.
+pimee_versioning.acl.product_version.revert: Memulihkan sebuah produk

@@ -1,0 +1,187 @@
+View the product: Lihat produknya
+Unpublish the product: Batalkan publikasi produk
+Approve: Menyetujui
+Refuse: Tolak
+Approve selected: Setujui yang dipilih
+Refuse selected: Tolak yang dipilih
+pim_datagrid:
+  no_entities:
+    proposal: Tidak ada usulan untuk ditinjau.
+  no_results:
+    proposal: Tidak ada proposal untuk ditinjau. Cobalah untuk mengubah kriteria pencarian anda.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Perluas
+      collapse_text: Persempit
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Edit kerja copy
+    proposal:
+      modal.title: Tinggalkan komentar (opsional - maks 255 karakter.)
+  proposal:
+    selected: proposal terpilih
+    mass_action_group:
+      review:
+        label: Tindakan Massal
+    partial_accept:
+      modal.title: Menyetujui sebagian informasi
+      modal.label: Tinggalkan komentar (opsional)
+      modal.success: Usulan telah berhasil divalidasi sebagian
+    partial_approve:
+      modal:
+        title: Sebagian menyetujui perubahan
+        label: Tinggalkan komentar (opsional)
+        success: Perubahan  telah berhasil disetujui
+    partial_reject:
+      modal:
+        title: Sebagian menolak perubahan
+        label: Tinggalkan komentar (opsional)
+        success: Perubahan telah berhasil ditolak
+batch_jobs:
+  csv_published_product_export:
+    label: Diterbitkan ekspor produk di CSV
+    export.label: Diterbitkan ekspor produk
+  csv_product_proposal_import:
+    label: Impor proposal produk di CSV
+    import.label: Impor proposal produk
+  approve_product_draft:
+    label: Menyetujui proposal
+    perform.label: Menyetujui proposal
+  refuse_product_draft:
+    label: Menolak proposal
+    perform.label: Menolak proposal
+  xlsx_published_product_export:
+    label: Produk ekspor diterbitkan di XLSX
+    export.label: Produk ekspor diterbitkan
+  xlsx_product_proposal_import:
+    label: Impor proposal produk di XLSX
+    import.label: Impor proposal produk pada XLSX
+  csv_published_product_quick_export:
+    export.label: Csv menerbitkan produk ekspor cepat
+    perform.label: Csv menerbitkan produk ekspor cepat
+  csv_published_product_grid_context_quick_export:
+    export.label: Csv mempublikasikan produk grid context quick export
+    perform.label: Csv mempublikasikan produk grid context quick export
+  xlsx_published_product_quick_export:
+    export.label: Xlsx menerbitkan produk ekspor cepat
+    perform.label: Xlsx menerbitkan produk ekspor cepat
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Xlsx mempublikasikan produk grid context quick export
+    perform.label: Xlsx mempublikasikan produk grid context quick export
+  publish_product:
+    perform.label: Publikasikan produk
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Proposal baru
+    pimee_workflow_import_notification_new_proposals: Proposal baru dari impor
+    pimee_workflow_product_draft_notification_partial_approve: Proposal disetujui sebagian
+    pimee_workflow_product_draft_notification_partial_reject: Proposal ditolak sebagian
+    pimee_workflow_product_draft_notification_partial_remove: Proposal dihapus sebagian
+    pimee_workflow_product_draft_notification_approve: Proposal disetujui
+    pimee_workflow_product_draft_notification_refuse: Proposal ditolak
+    pimee_workflow_product_draft_notification_remove: Proposal dihapus
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Tanggal
+      author: Penulis
+      product: Produk
+      review: Tinjau
+      empty: Tidak ada proposal untuk diperiksa
+    header.view_all: Lihat semua
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Diterbitkan
+      revert: Mengembalikan
+    meta:
+      published_version: Versi publikasi
+      owner_groups: Pemilik grup
+      draft_status: Status rancangan
+      draft:
+        in_progress: Sedang berlangsung
+        sent_for_approval: Menunggu persetujuan
+        working_copy: Copy pekerjaan
+    revert:
+      title: Kembalikan konfirmasi
+      content: Apakah anda yakin anda ingin memulihkan produk ke versi ini?
+    publish:
+      title: Publikasikan produk ini
+      content: Apakah anda yakin ingin mempublikasi produk ini?
+    unpublish:
+      title: Batalkan publikasi produk ini
+      content: Apakah anda yakin ingin membatalkan publikasi produk ini?
+    copy:
+      working_copy: Copy pekerjaan
+      draft: Draf saya
+      draft_of: "{{ author }}'s konsep"
+    approval:
+      send: Kirim untuk persetujuan
+      sent: Kirim sebagai persetujuan
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Produk berhasil dipublikasikan
+      fail: Gagal mempublikasikan produk ini
+    unpublish:
+      success: Produk berhasil tidak dipublikasikan
+      fail: Gagal membatalkan publikasi produk ini
+    revert:
+      success: Produk sukses dikembalikan
+  module:
+    publish:
+      label: Menerbitkan
+      publish_this_version: Publikasikan versi ini
+    unpublish:
+      label: Batal diterbitkan
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Proposal telah berhasil diterapkan.
+      fail: "Proposal tidak dapat diterapkan dikarenakan kesalahan berikut: {{ error }}"
+    reject:
+      success: Proposal telah ditolak.
+    remove:
+      success: Proposal telah dihapus.
+    update:
+      success: Draf produk telah berhasil disimpan
+      fail: Konsep produk tidak dapat diperbarukan
+    create:
+      success: Konsep  produk dikirim untuk mendapatkan persetujuan
+      fail: Anda tidak bisa mengirimkan rancangan ini untuk persetujuan
+  module:
+    proposal:
+      accept: Menerima proposal
+      accept_selected: Terima proposal terpilih
+      reject: Tolak proposal
+      reject_selected: Tolak proposal terpilih
+      remove: Menghapus proposal
+      comment_title: Komentar proposal Anda (opsional - 255 karakter Max.)
+      comment_chars: karakter.
+      confirm: Mengirim
+    edit:
+      discard_changes: Perubahan yang belum tersimpan akan hilang. Apa anda yakin ingin mengirimkan konsep untuk persetujuan anda tanpa perubahan yang belum tersimpan?
+      discard_changes_title: Apakah anda yakin anda ingin mengirim draf ini?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Menerbitkan
+      description: Produk akan diterbitkan
+      warning: '{{ itemsCount }} Produk terpilih akan diterbitkan.'
+    unpublish:
+      label: Batal diterbitkan
+      description: Produk tidak akan dipublikasikan
+      warning: '{{ itemsCount }} Produk yang terpilih tidak akan dipublikasikan.'
+pim_menu:
+  navigation:
+    published_products: Produk diterbitkan
+  item:
+    proposal: Proposal
+    published_product: Produk diterbitkan
+pim_title:
+  pimee_workflow_proposal_index: Proposal
+  pimee_workflow_published_product_index: Produk diterbitkan
+  pimee_workflow_published_product_view: Produk diterbitkan {{ product.label }} | Melihat

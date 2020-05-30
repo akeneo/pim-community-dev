@@ -1,0 +1,16 @@
+akeneo_franklin_insights:
+  entity:
+    identifier_mapping:
+      fields:
+        status:
+          active: Aktif
+          inactive: Tidak aktif
+    attributes_mapping:
+      fields:
+        franklin_insights:
+          active: Aktif
+          inactive: Tidak aktif
+  connection:
+    module:
+      activation:
+        activated: 'Mengaktifkan'

@@ -1,0 +1,226 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Memperkaya aset
+      create: Membuat aset
+      remove: Hapus aset
+      categories_view: Konsultasikan kategori dari aset
+      mass_upload: Unggah aset masal
+    category_asset_picker:
+      list: Daftar kategori aset pada pengambilan massa
+    category:
+      create: Buat kategori aset
+      edit: Sunting kategori aset
+      list: Daftar kategori aset
+      remove: Hapus kategori aset
+      manage: Kelola izin kategori aset
+      history: Lihat riwayat kategori aset
+  acl_group:
+    asset: Produk aset
+    category: Kategori aset
+  enrich_asset:
+    button:
+      upload: Unggah
+      delete: Hapus
+      download: Unduh
+      generate_from_reference: Hasilkan dari referensi
+      reset_variations: Atur ulang variasi
+    confirmation.remove: Apakah anda yakin ingin menghapus aset "%asset%"?
+    confirmation.subTitle: Aktiva
+    grid:
+      edit: Mengubah properti dari aset
+    view:
+      title: Produk aset
+      code: Kode
+      description: Keterangan
+      end_of_use: Akhir dari penggunaan di
+      reference: Referensi
+      filename: Nama berkas
+      width: Lebar
+      height: Tinggi
+      resolution: Resolusi
+      colors: Jarak warna
+      filesize: Ukuran berkas
+      filetype: Tipe berkas
+      actions: Aksi
+      download: Unduh
+      tag: Tandai
+      no_reference: Tidak ada berkas referensi yang telah diunggah.
+      no_variation: Tidak ada variasi berkas yang dihasilkan.
+    flash:
+      update:
+        success: Aset telah diperbarui.
+      create:
+        success: Aset berhasil diciptakan.
+      remove:
+        success: Aset telah dihapus.
+  enrich_reference:
+    flash:
+      delete:
+        success: Berkas referensi telah dihapus.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: Tidak mungkin menghasilkan variasi %channel% karena pilihan tidak sah.
+        image_width_error: Tidak mungkin untuk menghasilkan variasi %channel% karena gambar yang diunggah memiliki lebar lebih kecil dari yang diperlukan oleh transformasi.
+        image_height_error: Tidak mungkin untuk menghasilkan variasi %channel% karena gambar yang diunggah memiliki tinggi lebih kecil dari yang diperlukan oleh transformasi.
+        not_applicable: Tidak mungkin untuk menghasilkan variasi %channel%.
+        non_registered: Tidak ada %transformation% transformasi terdaftar untuk tipe Mime %mimeType%. tidak mungkin untuk menghasilkan variasi %channel%.
+        error: Tidak mungkin untuk menghasilkan variasi %channel%.
+        success: Variasi berkas telah berhasil dihasilkan.
+      update:
+        success: Variasi berkas telah diperbarui.
+      delete:
+        success: Variasi berkas telah dihapus.
+  popin.create:
+    title: Buat aset baru
+    is_localized: Terlokalisasi
+  menu: Aset
+  page_tab:
+    title:
+      view: Aset produk %asset.code% | Melihat
+      edit: Aset produk %asset.code% | ubah
+      index: Aset produk
+  code:
+    label: Kode
+  thumbnail:
+    label: Gambar kecil
+  status:
+    label: Status
+  description:
+    label: Deskripsi
+  endOfUse:
+    label: Akhir penggunaan
+  createdAt:
+    label: Dibuat di
+  updatedAt:
+    label: Terakhir diperbaharui pada
+  tags:
+    label: Tandai
+  tabs:
+    properties.title: Properti
+    variations.title: Beragam
+    categories.title: Kategori
+  validation:
+    code:
+      not_empty: Kode wajib diisi. Itu tidak boleh kosong.
+      unique: Kode harus unik.
+      new_generation: Kami hasilkan yang baru untuk anda.
+  notAvailable:
+    label: tidak tersedia
+  asset:
+    title: Aset
+  mass_upload:
+    menu: Mengunggah aset
+    new: Sebuah aset baru akan dibuat
+    add_files: tambahkan berkas
+    start: Mulai unggah
+    cancel: Batal unggah
+    import: Impor
+    executed: Upload massal dijalankan
+    error:
+      code: Format kode aset tidak sah
+      localizable: Aset tersedia namun tidak dapat dilokalkan
+      invalid_locale: Lokal di nonaktifkan atau tidak legal
+  category:
+    menu: Kategori aset
+    permissions:
+      view.label: Diizinkan untuk melihat aset
+      view.help: Mengizinkan untuk melihat aset dalam kategori ini
+      edit.label: Diizinkan untuk merubah aset
+      edit.help: Mengizinkan untuk merubah aset dalam kategori ini (memberikan izin tampilan)
+      no_access_to_products: Anda tidak memiliki akses ke aset pada pohon manapun, silahkan hubungi administrator anda
+      apply_on_children.label: Terapkan perubahan pada anak-anak
+      apply_on_children.help: Salin perubahan perizinan pada semua anak, izin yang ada pada anak-anak disimpan
+  mass_edit_action:
+    asset:
+      page_title: Aset
+      page_subtitle: Unah massa (1 aset)|ubah massa (%count% aset)
+      confirm: Anda akan memperbarui aset dengan mengikuti informasi berikut, silahkan konfirmasi.|Anda akan memperbarui %count% aset dengan mengikuti informasi berikut, silahkan konfirmasi.
+      steps:
+        first: Pilih aset
+        second: Konfigurasikan
+        third: Memastikan
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Pindah aset ke kategori
+      description: Aset akan diposisikan ke dalam kategori berikut, penempatan yang ada akan hilang
+      success_flash: Aset telah dipindahkan ke kategori terpilih
+      launched_flash: Tindakan massal "pindah ke kategori" telah diluncurkan. Anda akan diberitahu saat hal itu dilakukan.
+    add-tags-to-assets:
+      label: Tambahkan tandai ke aset
+      description: Tag akan ditambahkan ke aset. Jika beberapa tag tidak tersedia, maka akan dibuat.
+      success_flash: Tag(s) telah ditambahkan ke aset(s)
+      launched_flash: Tindakan massal "Tambah tag ke aset" telah diluncurkan. Anda akan diberitahu ketika hal tersebut dilakukan.
+      message.error: Tidak ada tag yang tersedia
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Pengelompokkan
+      add_tags_to_assets: Tambahkan tanda
+      delete_assets: Hapus aset
+btn.create.asset: Buat aset
+btn.drag_or_upload: Seret dan lepaskan berkas atau klik di sini
+job_execution.summary:
+  variations_not_generated: Variasi tidak dihasilkan
+  pimee_product_asset.mass_upload.new: Aset dibuat dari berkas
+  pimee_product_asset.mass_upload.updated: Aktiva diperbarui
+  error: Kesalahan pada proses file aset
+  skipped_assets: Lewatkan aset
+assets_mass_upload.steps:
+  asset_mass_upload.title: Unggah aset massa
+import_asset.steps.channel_configuration_processor.title: Proses konfigurasi saluran
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: Unggah aset massa
+pim_analytics:
+  info_type:
+    nb_assets: Jumlah aset
+pim_assets_collection: Koleksi aset
+pim_api:
+  acl:
+    asset_category:
+      edit: Buat dan perbarui kategori aset
+      list: Daftar kategori aset
+    asset:
+      edit: Sunting aset, serta unggah berkas referensi dan variasinya
+      list: Daftar aset, dan daftar dan unduh referensi dan variasinya
+  acl_group:
+    asset_category: Katagori aset
+    asset: Aset
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Transformasi aset
+  asset_transformation:
+    not_found: Tidak ditemukan transformasi
+    title:
+      transformation: Transformasi
+      options: "Pilihan\n"
+    colorspace:
+      title: Warna ruang
+      options:
+        colorspace: '%value% warna ruang'
+    resize:
+      title: Ubah ukuran
+      options:
+        width: '%value%px lebar'
+        height: '%value%px tinggi'
+    resolution:
+      title: Resolusi
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skala
+      options:
+        width: '%value%px lebar'
+        height: '%value%px tinggi'
+        ratio: '%value%% rasio'
+    thumbnail:
+      title: Gambar kecil
+      options:
+        width: '%value%px lebar'
+        height: '%value%px tinggi'

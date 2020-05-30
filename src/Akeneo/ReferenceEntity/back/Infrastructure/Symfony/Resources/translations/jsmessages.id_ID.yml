@@ -1,0 +1,130 @@
+pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Seret dan letakkan untuk mengunggah atau tekan disini
+      small:
+        remove: Hapus
+        download: Unduh
+  reference_entity:
+    button:
+      save: Menyimpan
+      save_permission: Menyimpan
+      create: Buat
+    tab:
+      attribute: Atribut
+      properties: Properti
+      permission: Izin
+    properties:
+      identifier: Kode
+      label: Label
+      image: Gambar
+    create:
+      header:
+        title: Buat
+      input:
+        label: Label
+      confirm: Menyimpan
+    delete:
+      title: Atribut
+  record:
+    no_result:
+      subtitle: Coba lagi dengan kriteria pencarian baru.
+    button:
+      save: Menyimpan
+      create: Tambah baru
+      delete: Hapus
+    product:
+      title: Banyak produk
+    enrich:
+      code: Kode
+      label: Label
+    create:
+      header:
+        title: Buat
+      input:
+        label: Label
+      confirm: Menyimpan
+    grid:
+      filter:
+        completeness:
+          label: Berhasil
+          all: Semuanya
+          'yes': 'Ya'
+          'no': 'Tidak'
+        option:
+          all: Semuanya
+          operator:
+            in: Dalam daftar
+      column:
+        code: Kode
+        image: Gambar
+        label: Label
+        complete: Berhasil
+        action: Aksi
+    tab:
+      enrich: Memperkaya
+      product: Banyak produk
+    completeness:
+      label: Berhasil
+  attribute:
+    default:
+      code: Kode
+      label: Label
+      image: Gambar
+    type:
+      text: Text
+      image: Gambar
+    create:
+      header:
+        title: Buat
+      input:
+        label: Label
+        type: Jenis atribut
+        value_per_locale: Nilai untuk lokal
+        value_per_channel: Nilai per channel
+      confirm: Menyimpan
+    edit:
+      save: Menyimpan
+      cancel: Batal
+      input:
+        label: Label
+        type: Jenis atribut
+        value_per_locale: Nilai untuk lokal
+        value_per_channel: Nilai per channel
+        max_length: Karakte maksimal
+        textarea: Wilayah Teks
+        max_file_size: Maksimun ukuran berkas (MB)
+        allowed_extensions: Ekstensi diizinkan
+        validation_rule: Aturan validasi
+        regular_expression: Ekspresi reguler
+        options:
+          validation_rule:
+            none: Tidak ada
+            email: Surel
+            regular_expression: Ekspresi reguler
+            url: URL
+    delete:
+      title: Atribut
+    notification:
+      save:
+        success: Atribut berhasil diperbarui.
+      create:
+        success: Atribut berhasil dibuat.
+      delete:
+        success: Atribut berhasil dihapus.
+    options:
+      helper:
+        title: Terjemahan label
+  modal:
+    delete:
+      subtitle: Konfirmasi penghapusan
+      button:
+        cancel: Batal
+        confirm: Hapus
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Jenis parameter tertentu
