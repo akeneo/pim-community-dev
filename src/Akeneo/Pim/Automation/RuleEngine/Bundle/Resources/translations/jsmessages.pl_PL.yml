@@ -78,7 +78,6 @@ pimee_catalog_rule:
         label: Priorytet
       add_to_category: Dodaj do kategorii
       add_conditions: Dodaj warunki
-      count_products: "{{ count }} produktów i modeli produktów"
       product_selection: Wybór produktu
       fields:
         family: Rodzina
