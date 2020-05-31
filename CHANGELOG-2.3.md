@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- GITHUB-APD-130: Update help menu link to redirect to the right version on the help center
+
 # 2.3.78 (2020-03-24)
 
 # 2.3.77 (2020-01-22)

@@ -44,11 +44,18 @@ define(
              * {@inheritdoc}
              */
             getUrl() {
-                return DataCollector.collect(this.analyticsUrl).then((data) => {
-                    const { pim_version, pim_edition } = data;
+              return DataCollector.collect(this.analyticsUrl).then(data => {
+                const {pim_version, pim_edition} = data;
+                let version = `v${pim_version.split('.')[0]}`;
+                let campaign = `${pim_edition}${pim_version}`;
 
-                    return `${pim_edition}${pim_version}`;
-                });
+                const url = new URL(`https://help.akeneo.com/pim/${version}/index.html`);
+                url.searchParams.append('utm_source', 'akeneo-app');
+                url.searchParams.append('utm_medium', 'interrogation-icon');
+                url.searchParams.append('utm_campaign', campaign);
+
+                return url.href;
+              });
             }
         });
     });
