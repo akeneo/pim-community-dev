@@ -51,6 +51,7 @@ class FieldConverter implements FieldConverterInterface
 
             return new ConvertedField('associations', [$associationTypeCode => [$associatedWith => $value]]);
         } else if (in_array($fieldName, $quantifiedAssociationFields)) {
+            var_dump($value); die;
             $value = $this->fieldSplitter->splitCollection($value);
             list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
 
@@ -78,8 +79,9 @@ class FieldConverter implements FieldConverterInterface
     public function supportsColumn($column): bool
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
+        $quantifiedAssociationFields = $this->assocFieldResolver->resolveQuantifiedAssociationColumns();
 
-        $fields = array_merge(['categories', 'groups', 'enabled', 'family', 'parent'], $associationFields);
+        $fields = array_merge(['categories', 'groups', 'enabled', 'family', 'parent'], $associationFields, $quantifiedAssociationFields);
 
         return in_array($column, $fields);
     }

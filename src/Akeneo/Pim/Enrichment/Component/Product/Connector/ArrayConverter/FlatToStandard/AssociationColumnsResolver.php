@@ -32,6 +32,15 @@ class AssociationColumnsResolver
     /** @var array */
     protected $assocFieldsCache;
 
+    /** @var array */
+    protected $associationTypesCache = null;
+
+    /** @var array */
+    protected $quantifiedAssocIdentifierFieldsCache;
+
+    /** @var array */
+    protected $quantifiedAssocQuantityFieldsCache;
+
     /**
      * @param AssociationTypeRepositoryInterface $repository
      */
@@ -47,7 +56,7 @@ class AssociationColumnsResolver
     {
         if (null === $this->assocFieldsCache) {
             $fieldNames = [];
-            $assocTypes = $this->assocTypeRepository->findAll();
+            $assocTypes = $this->getAllAssociationTypes();
             /** @var AssociationType $assocType */
             foreach ($assocTypes as $assocType) {
                 if (!$assocType->isQuantified()) {
@@ -63,25 +72,61 @@ class AssociationColumnsResolver
     }
 
     /**
-     * Get the association field names
+     * Get the quantified association field names
      */
     public function resolveQuantifiedAssociationColumns(): array
     {
-        if (null === $this->assocFieldsCache) {
+        return array_merge($this->resolveQuantifiedIdentifierAssociationColumns(), $this->resolveQuantifiedQuantityAssociationColumns());
+    }
+
+    /**
+     * Get the quantified association quantity field names
+     */
+    public function resolveQuantifiedQuantityAssociationColumns(): array
+    {
+        if (null === $this->quantifiedAssocQuantityFieldsCache) {
             $fieldNames = [];
-            $assocTypes = $this->assocTypeRepository->findAll();
+            $assocTypes = $this->getAllAssociationTypes();
+            /** @var AssociationType $assocType */
+            foreach ($assocTypes as $assocType) {
+                if ($assocType->isQuantified()) {
+                    $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX . self::QUANTITY_SUFFIX;
+                    $fieldNames[] = $assocType->getCode() . self::PRODUCT_MODEL_ASSOCIATION_SUFFIX . self::QUANTITY_SUFFIX;;
+                }
+            }
+            $this->quantifiedAssocQuantityFieldsCache = $fieldNames;
+        }
+
+        return $this->quantifiedAssocQuantityFieldsCache;
+    }
+
+    /**
+     * Get the quantified association identifier field names
+     */
+    public function resolveQuantifiedIdentifierAssociationColumns(): array
+    {
+        if (null === $this->quantifiedAssocIdentifierFieldsCache) {
+            $fieldNames = [];
+            $assocTypes = $this->getAllAssociationTypes();
             /** @var AssociationType $assocType */
             foreach ($assocTypes as $assocType) {
                 if ($assocType->isQuantified()) {
                     $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX;
-                    $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX . self::QUANTITY_SUFFIX;
-                    $fieldNames[] = $assocType->getCode() . self::PRODUCT_MODEL_ASSOCIATION_SUFFIX;
-                    $fieldNames[] = $assocType->getCode() . self::PRODUCT_MODEL_ASSOCIATION_SUFFIX . self::QUANTITY_SUFFIX;;
+                    $fieldNames[] = $assocType->getCode() . self::PRODUCT_MODEL_ASSOCIATION_SUFFIX;;
                 }
             }
-            $this->assocFieldsCache = $fieldNames;
+            $this->quantifiedAssocIdentifierFieldsCache = $fieldNames;
         }
 
-        return $this->assocFieldsCache;
+        return $this->quantifiedAssocIdentifierFieldsCache;
+    }
+
+    private function getAllAssociationTypes(): array
+    {
+        if (null === $this->associationTypesCache) {
+            $this->associationTypesCache = $this->assocTypeRepository->findAll();
+        }
+
+        return $this->associationTypesCache;
     }
 }

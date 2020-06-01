@@ -193,8 +193,6 @@ class Product implements ArrayConverterInterface
     protected function prepareOptions(array $options): array
     {
         $options['with_associations'] = isset($options['with_associations']) ? $options['with_associations'] : true;
-        $options['with_quantified_associations'] = 
-            isset($options['with_quantified_associations']) ? $options['with_quantified_associations'] : true;
         $options['default_values'] = isset($options['default_values']) ? $options['default_values'] : [];
 
         return $options;
@@ -227,11 +225,15 @@ class Product implements ArrayConverterInterface
             $isGroupAssPattern = '/^\w+' . AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX . '$/';
             $isProductAssPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX . '$/';
             $isProductModelAssPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX . '$/';
+            $isProductAssQuantityPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX . AssociationColumnsResolver::QUANTITY_SUFFIX . '$/';
+            $isProductModelAssQuantityPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX . AssociationColumnsResolver::QUANTITY_SUFFIX . '$/';
             foreach (array_keys($mappedItem) as $field) {
                 $isGroup = (1 === preg_match($isGroupAssPattern, $field));
                 $isProduct = (1 === preg_match($isProductAssPattern, $field));
                 $isProductModel = (1 === preg_match($isProductModelAssPattern, $field));
-                if ($isGroup || $isProduct || $isProductModel) {
+                $isProductQuantity = (1 === preg_match($isProductAssQuantityPattern, $field));
+                $isProductModelQuantity = (1 === preg_match($isProductModelAssQuantityPattern, $field));
+                if ($isGroup || $isProduct || $isProductModel || $isProductQuantity || $isProductModelQuantity) {
                     unset($mappedItem[$field]);
                 }
             }

@@ -31,12 +31,17 @@ class ColumnsMerger
     /** @var AttributeColumnInfoExtractor */
     protected $fieldExtractor;
 
+    /** @var AssociationColumnsResolver */
+    protected $associationColumnResolver;
+
     /**
      * @param AttributeColumnInfoExtractor $fieldExtractor
+     * @param AssociationColumnsResolver   $associationColumnResolver
      */
-    public function __construct(AttributeColumnInfoExtractor $fieldExtractor)
+    public function __construct(AttributeColumnInfoExtractor $fieldExtractor, AssociationColumnsResolver $associationColumnResolver)
     {
         $this->fieldExtractor = $fieldExtractor;
+        $this->associationColumnResolver = $associationColumnResolver;
     }
 
     /**
@@ -49,6 +54,7 @@ class ColumnsMerger
         $resultRow = [];
         $collectedMetrics = [];
         $collectedPrices = [];
+        $collectedQuantifiedAssociations = [];
         foreach ($row as $fieldName => $fieldValue) {
             $attributeInfos = $this->fieldExtractor->extractColumnInfo($fieldName);
             if (null !== $attributeInfos) {
@@ -61,12 +67,19 @@ class ColumnsMerger
                     $resultRow[$fieldName] = $fieldValue;
                 }
             } else {
+                if (in_array($fieldName, $this->associationColumnResolver->resolveQuantifiedQuantityAssociationColumns())) {
+                    $collectedQuantifiedAssociations = $this->collectQuantifiedQuantityAssociationData($collectedQuantifiedAssociations, $fieldName, $fieldValue);
+                } elseif (in_array($fieldName, $this->associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns())) {
+                    $collectedQuantifiedAssociations = $this->collectQuantifiedIdentifierAssociationData($collectedQuantifiedAssociations, $fieldName, $fieldValue);
+                }
+
                 $resultRow[$fieldName] = $fieldValue;
             }
         }
 
         $resultRow = $this->mergeMetricData($resultRow, $collectedMetrics);
         $resultRow = $this->mergePriceData($resultRow, $collectedPrices);
+        $resultRow = $this->mergeQuantifiedAssociationData($resultRow, $collectedQuantifiedAssociations);
 
         return $resultRow;
     }
@@ -169,6 +182,48 @@ class ColumnsMerger
         return $collectedPrices;
     }
 
+    private function collectQuantifiedQuantityAssociationData(array $collectedQuantifiedAssociations, string $fieldName, $fieldValue)
+    {
+        list($associationTypeCode, $productType) = explode('-', $fieldName);
+        if (!isset($collectedQuantifiedAssociations[$associationTypeCode])) {
+            $collectedQuantifiedAssociations[$associationTypeCode] = ['products' => [], 'product_models' => []];
+        }
+
+        $quantities = explode(ProductAssociation::QUANTITY_SEPARATOR, $fieldValue);
+        $collectedQuantifiedAssociations[$associationTypeCode][$productType] = array_reduce(
+            array_keys($quantities),
+            function ($result, $index) use ($quantities) {
+                $result[$index] = array_merge(isset($result[$index]) ? $result[$index] : [], ['quantity' => $quantities[$index]]);
+
+                return $result;
+            },
+            $collectedQuantifiedAssociations[$associationTypeCode][$productType]
+        );
+
+        return $collectedQuantifiedAssociations;
+    }
+
+    private function collectQuantifiedIdentifierAssociationData(array $collectedQuantifiedAssociations, string $fieldName, $fieldValue)
+    {
+        list($associationTypeCode, $productType) = explode('-', $fieldName);
+        if (!isset($collectedQuantifiedAssociations[$associationTypeCode])) {
+            $collectedQuantifiedAssociations[$associationTypeCode] = ['products' => [], 'product_models' => []];
+        }
+
+        $identifiers = explode(ProductAssociation::IDENTIFIER_SEPARATOR, $fieldValue);
+        $collectedQuantifiedAssociations[$associationTypeCode][$productType] = array_reduce(
+            array_keys($identifiers),
+            function ($result, $index) use ($identifiers) {
+                $result[$index] = array_merge(isset($result[$index]) ? $result[$index] : [], ['identifier' => $identifiers[$index]]);
+
+                return $result;
+            },
+            $collectedQuantifiedAssociations[$associationTypeCode][$productType]
+        );
+
+        return $collectedQuantifiedAssociations;
+    }
+
     /**
      * Merge collected price in result rows
      *
@@ -181,6 +236,23 @@ class ColumnsMerger
     {
         foreach ($collectedPrices as $fieldName => $prices) {
             $resultRow[$fieldName] = implode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $prices);
+        }
+
+        return $resultRow;
+    }
+
+    /**
+     * Merge quantified associations in result rows
+     *
+     * @param array $resultRow
+     * @param array $collectedQuantifiedAssociations
+     *
+     * @return array
+     */
+    protected function mergeQuantifiedAssociationData(array $resultRow, array $collectedQuantifiedAssociations)
+    {
+        foreach ($collectedQuantifiedAssociations as $fieldName => $quantifiedAssociation) {
+            $resultRow[$fieldName] = implode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $quantifiedAssociation);
         }
 
         return $resultRow;
