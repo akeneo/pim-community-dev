@@ -1,0 +1,5 @@
+extensions:
+    akeneo-communication-channel-panel:
+        module: akeneo/communication-channel/panel
+        parent: pim-app
+        targetZone: communication-channel-panel
