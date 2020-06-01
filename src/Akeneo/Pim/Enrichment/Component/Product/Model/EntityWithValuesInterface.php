@@ -47,7 +47,7 @@ interface EntityWithValuesInterface
      * @param string $localeCode
      * @param string $scopeCode
      *
-     * @return ValueInterface
+     * @return ValueInterface|null
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null);
 
