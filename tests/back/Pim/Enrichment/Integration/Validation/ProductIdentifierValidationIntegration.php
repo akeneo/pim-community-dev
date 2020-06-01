@@ -65,7 +65,7 @@ class ProductIdentifierValidationIntegration extends TestCase
         $this->assertCount(1, $violations);
         $this->assertSame(
             $violations->get(0)->getMessage(),
-            'This value is not valid.'
+            'This value is not valid due to regular expression defined in the attribute.'
         );
     }
 
