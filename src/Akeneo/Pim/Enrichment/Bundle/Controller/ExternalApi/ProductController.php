@@ -340,6 +340,8 @@ class ProductController
         try {
             $this->duplicateValueChecker->check($data);
         } catch (InvalidPropertyTypeException $e) {
+            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($e));
+
             throw new DocumentedHttpException(
                 Documentation::URL . 'patch_products__code_',
                 sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
@@ -384,7 +386,7 @@ class ProductController
 
             throw new DocumentedHttpException(
                 Documentation::URL . 'patch_products__code_',
-                sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }

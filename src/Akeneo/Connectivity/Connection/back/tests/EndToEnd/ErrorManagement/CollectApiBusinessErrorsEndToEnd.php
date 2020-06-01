@@ -23,8 +23,7 @@ class CollectApiBusinessErrorsEndToEnd extends ApiTestCase
     /** @var Client */
     private $esClient;
 
-    // test_it_collects_errors_from_a_product_delete
-    public function test_it_dos_not_collect_an_error_from_a_not_found_http_exception(): void
+    public function test_it_does_not_collect_an_error_from_a_not_found_http_exception(): void
     {
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
@@ -46,8 +45,7 @@ class CollectApiBusinessErrorsEndToEnd extends ApiTestCase
         Assert::assertCount(0, $result['hits']['hits']);
     }
 
-    // test_it_collects_errors_from_a_product_create
-    public function test_it_does_not_collect_an_error_from_a_unprocessable_entity_http_exception(): void
+    public function test_it_collects_an_error_from_a_unprocessable_entity_http_exception(): void
     {
         $this->createAttribute([
             'code' => 'name',
@@ -82,10 +80,46 @@ class CollectApiBusinessErrorsEndToEnd extends ApiTestCase
 }
 JSON;
 
+        $expectedContent = [
+            'type' => 'domain_error',
+            'domain_error_code' => '1',
+            'message' => 'Attribute "description" does not exist.',
+            'documentation' =>  [
+                [
+                    'message' => 'More information about attributes: %s %s.',
+                    'params' =>  [
+                        [
+                            'href' => 'https://help.akeneo.com/pim/serenity/articles/what-is-an-attribute.html',
+                            'title' => 'What is an attribute?',
+                            'type' => 'href',
+                        ],
+                        [
+                            'href' => 'https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html',
+                            'title' => 'Manage your attributes',
+                            'type' => 'href',
+                        ]
+                    ]
+                ],
+                [
+                    'message' => 'Please check your %s.',
+                    'params' => [
+                        [
+                            'route' => 'pim_enrich_attribute_index',
+                            'params' => [],
+                            'title' => 'Attributes settings',
+                            'type' => 'route',
+                        ]
+                    ]
+                ]
+            ],
+            'product' =>  [
+                'id' => null,
+                'identifier' => null
+            ]
+        ];
+
         $client->request('POST', '/api/rest/v1/products', [], [], [], $content);
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
-
-        $expectedContent = json_decode($client->getResponse()->getContent(), true);
 
         $this->esClient->refreshIndex();
         $result = $this->esClient->search([]);
@@ -97,7 +131,6 @@ JSON;
         Assert::assertEquals($expectedContent, $doc['content']);
     }
 
-    // test_it_collects_errors_from_a_product_partial_update
     public function test_it_collects_each_violation_error_from_a_violation_http_exception()
     {
         $this->createAttribute([
@@ -162,12 +195,16 @@ JSON;
                     'attribute' => 'name',
                     'locale' => null,
                     'scope' => null,
-                    'raw_message' => 'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.',
-                    'parameters' => [
+                    'type' => 'violation_error',
+                    'message_template' => 'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.',
+                    'message_parameters' => [
                         '{{ value }}' => '"This name is too long."',
-                        '{{ limit }}' => 5,
+                        '{{ limit }}' => 5
                     ],
-                    'type' => 'violation',
+                    'product' => [
+                        'id' => null,
+                        'identifier' => 'big_screen',
+                    ]
                 ],
                 [
                     'property' => 'values',
@@ -175,9 +212,13 @@ JSON;
                     'attribute' => 'length',
                     'locale' => null,
                     'scope' => null,
-                    'raw_message' => 'Please specify a valid metric unit',
-                    'parameters' => [],
-                    'type' => 'violation',
+                    'type' => 'violation_error',
+                    'message_template' => 'Please specify a valid metric unit',
+                    'message_parameters' => [],
+                    'product' => [
+                        'id' => null,
+                        'identifier' => 'big_screen'
+                    ]
                 ],
             ]
         ];
@@ -248,6 +289,44 @@ JSON;
             ]
         ]);
 
+        $expectedContent = [
+            'type' => 'domain_error',
+            'domain_error_code' => '1',
+            'message' => 'Attribute "description" does not exist.',
+            'documentation' => [
+                [
+                    'message' => 'More information about attributes: %s %s.',
+                    'params' => [
+                        [
+                            'href' => 'https://help.akeneo.com/pim/serenity/articles/what-is-an-attribute.html',
+                            'title' => 'What is an attribute?',
+                            'type' => 'href'
+                        ],
+                        [
+                            'href' => 'https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html',
+                            'title' => 'Manage your attributes',
+                            'type' => 'href'
+                        ]
+                    ]
+                ],
+                [
+                    'message' => 'Please check your %s.',
+                    'params' => [
+                        [
+                            'route' => 'pim_enrich_attribute_index',
+                            'params' => [],
+                            'title' => 'Attributes settings',
+                            'type' => 'route'
+                        ]
+                    ]
+                ]
+            ],
+            'product' => [
+                'id' => 1,
+                'identifier' => 'high-top_sneakers'
+            ]
+        ];
+
         $streamedContent = '';
         ob_start(function ($buffer) use (&$streamedContent) {
             $streamedContent .= $buffer;
@@ -265,10 +344,6 @@ JSON;
 
         Assert::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $expectedContent = array_map(function (string $result) {
-            return json_decode($result, true);
-        }, explode(PHP_EOL, $streamedContent));
-
         $this->esClient->refreshIndex();
         $result = $this->esClient->search([]);
 
@@ -276,8 +351,7 @@ JSON;
 
         $doc = $result['hits']['hits'][0]['_source'];
         Assert::assertEquals('erp', $doc['connection_code']);
-        Assert::assertArrayHasKey('message', $doc['content']);
-        Assert::assertSame($expectedContent[0]['message'], $doc['content']['message']);
+        Assert::assertSame($expectedContent, $doc['content']);
     }
 
     protected function setUp(): void
