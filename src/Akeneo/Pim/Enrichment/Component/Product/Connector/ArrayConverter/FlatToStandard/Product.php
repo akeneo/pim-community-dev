@@ -253,6 +253,7 @@ class Product implements ArrayConverterInterface
         $convertedValues = [];
 
         foreach ($item as $column => $value) {
+
             if ($this->fieldConverter->supportsColumn($column)) {
                 $convertedField = $this->fieldConverter->convert($column, $value);
                 $convertedItem = $convertedField->appendTo($convertedItem);
