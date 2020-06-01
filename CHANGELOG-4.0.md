@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.31 (2020-06-01)
+
 ## Improvement
 
 -PIM-9106: Improve error message when editing an attribute when it's due to a regular expression
