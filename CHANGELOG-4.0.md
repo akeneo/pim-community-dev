@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Improvement
+
+-PIM-9106: Improve error message when editing an attribute when it's due to a regular expression
+
 ## Bug fixes
 
 - PIM-9277: Fix product computing when moving an attribute in family variant
