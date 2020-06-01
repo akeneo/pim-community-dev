@@ -26,7 +26,7 @@ type Select2Ajax = {
   cache?: boolean;
   data: (
     term: string,
-    page: number
+    page: number,
   ) => {
     search: string;
     options?: any;

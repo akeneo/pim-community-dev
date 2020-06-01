@@ -22,6 +22,17 @@ type Props = {
   isActiveConditionField: (fieldCode: string) => boolean;
 };
 
+// Add here the fields handled by the rule conditions.
+// Be sure that the associated UI component exists to display it correctly.
+const SYSTEM_FIELDS = [
+  'family',
+];
+
+const ATTRIBUTE_TYPES = [
+  'pim_catalog_multiselect',
+  'pim_catalog_text',
+];
+
 const AddConditionButton: React.FC<Props> = ({
   router,
   handleAddCondition,
@@ -30,12 +41,17 @@ const AddConditionButton: React.FC<Props> = ({
 }) => {
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
 
-  const dataProvider = (term: string, page: number) => {
+  const dataProvider = (
+    term: string,
+    page: number,
+  ) => {
     return {
       search: term,
       options: {
+        page,
+        systemFields: SYSTEM_FIELDS,
+        attributeTypes: ATTRIBUTE_TYPES,
         limit: 20,
-        page: page,
       },
     };
   };
@@ -80,7 +96,7 @@ const AddConditionButton: React.FC<Props> = ({
       }}
       ajax={{
         url: router.generate(
-          'pimee_enrich_rule_definition_get_available_condition_fields'
+          'pimee_enrich_rule_definition_get_available_fields'
         ),
         quietMillis: 250,
         cache: true,

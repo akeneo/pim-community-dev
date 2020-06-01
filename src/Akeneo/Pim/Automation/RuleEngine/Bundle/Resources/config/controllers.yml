@@ -58,8 +58,8 @@ services:
             - '@pimee_catalog_rule.builder.product'
             - '@pimee_catalog_rule.selector.product'
 
-    pimee_enrich.controller.rule_definition.get_available_condition_fields:
-        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetAvailableConditionFieldsController'
+    pimee_enrich.controller.rule_definition.get_available_fields:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetAvailableFieldsController'
         public: true
         arguments:
             - '@pimee_catalog_rule.query.sql.get_grouped_attributes'

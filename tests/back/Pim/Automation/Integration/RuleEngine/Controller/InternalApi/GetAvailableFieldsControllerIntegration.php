@@ -23,9 +23,9 @@ use Symfony\Component\HttpFoundation\Response;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  */
-final class GetAvailableConditionFieldsControllerIntegration extends ControllerIntegrationTestCase
+final class GetAvailableFieldsControllerIntegration extends ControllerIntegrationTestCase
 {
-    private const ROUTE = 'pimee_enrich_rule_definition_get_available_condition_fields';
+    private const ROUTE = 'pimee_enrich_rule_definition_get_available_fields';
 
     /** @var WebClientHelper  */
     private $webClientHelper;
@@ -38,9 +38,9 @@ final class GetAvailableConditionFieldsControllerIntegration extends ControllerI
         $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
     }
 
-    public function test_it_returns_the_first_page_of_available_condition_fields(): void
+    public function test_it_returns_the_first_page_of_available_fields(): void
     {
-        $response = $this->assertCallSuccess(4, 1);
+        $response = $this->assertCallSuccess(4, 1, ['family']);
         $filters = \json_decode($response->getContent(), true);
 
         $this->assertNotEmpty($filters);
@@ -60,7 +60,7 @@ final class GetAvailableConditionFieldsControllerIntegration extends ControllerI
 
     public function test_it_returns_system_filters_and_attribute_filters(): void
     {
-        $response = $this->assertCallSuccess(100, 1);
+        $response = $this->assertCallSuccess(100, 1, ['family']);
         $filters = \json_decode($response->getContent(), true);
         $this->assertNotEmpty($filters);
         $this->assertGreaterThan(1, count($filters));
@@ -78,20 +78,20 @@ final class GetAvailableConditionFieldsControllerIntegration extends ControllerI
 
     public function test_it_paginates_the_results(): void
     {
-        $response = $this->assertCallSuccess(4, 2);
+        $response = $this->assertCallSuccess(4, 2, ['family']);
         $filters = \json_decode($response->getContent(), true);
         $this->assertNotEmpty($filters);
 
         $this->assertResultsDoNotContainFilter('system', 'family', $filters);
 
-        $response = $this->assertCallSuccess(10, 1000);
+        $response = $this->assertCallSuccess(10, 1000, ['family']);
         $filters = \json_decode($response->getContent(), true);
         $this->assertEmpty($filters);
     }
 
     public function test_it_can_search_by_text(): void
     {
-        $response = $this->assertCallSuccess(4, 1, 'name');
+        $response = $this->assertCallSuccess(4, 1, ['family'], null, 'name');
         $filters = \json_decode($response->getContent(), true);
         $this->assertNotEmpty($filters);
 
@@ -100,7 +100,7 @@ final class GetAvailableConditionFieldsControllerIntegration extends ControllerI
         $this->assertResultsContainFilter('marketing', 'name', $filters);
         $this->assertResultsContainFilter('marketing', 'variation_name', $filters);
 
-        $response = $this->assertCallSuccess(4, 1, 'erp name');
+        $response = $this->assertCallSuccess(4, 1, ['family'], null,'erp name');
         $filters = \json_decode($response->getContent(), true);
         $this->assertNotEmpty($filters);
 
@@ -111,7 +111,7 @@ final class GetAvailableConditionFieldsControllerIntegration extends ControllerI
 
     public function test_it_translates_the_labels(): void
     {
-        $response = $this->assertCallSuccess(4, 1);
+        $response = $this->assertCallSuccess(4, 1, ['family']);
         $filters = \json_decode($response->getContent(), true);
         $this->assertNotEmpty($filters);
 
@@ -128,9 +128,31 @@ final class GetAvailableConditionFieldsControllerIntegration extends ControllerI
         }
     }
 
-    private function assertCallSuccess(int $limit, int $page, string $search = null): Response
+    public function test_it_filters_by_attribute_types(): void
     {
-        $options = ['limit' => $limit, 'page' => $page];
+        $response = $this->assertCallSuccess(1000, 1, [], ['pim_catalog_text']);
+        $filters = \json_decode($response->getContent(), true);
+        $this->assertNotEmpty($filters);
+
+        foreach ($filters as $group) {
+            foreach($group['children'] as $filter) {
+                $attribute = $this->get('pim_catalog.repository.attribute')
+                                  ->findOneByIdentifier($filter['id']);
+                $this->assertNotNull($attribute);
+                $this->assertSame('pim_catalog_text', $attribute->getType());
+            }
+        }
+    }
+
+    private function assertCallSuccess(int $limit, int $page, array $systemFields = [], ?array $attributeTypes = null, string $search = null): Response
+    {
+        $options = [
+            'limit' => $limit,
+            'page' => $page,
+            'systemFields' => $systemFields,
+            'attributeTypes' => $attributeTypes,
+        ];
+
         $this->webClientHelper->callApiRoute(
             $this->client,
             static::ROUTE,

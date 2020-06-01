@@ -25,22 +25,11 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  */
-final class GetAvailableConditionFieldsController
+final class GetAvailableFieldsController
 {
     private const LIMIT_DEFAULT = 20;
     private const FIELD_TRANSLATION_BASE = 'pimee_catalog_rule.condition.fields.';
     private const SYSTEM_GROUP_TRANSLATION_KEY = 'pimee_catalog_rule.condition.field_groups.system';
-
-    // Add here the fields handled by the rule conditions.
-    // Be sure that the associated UI component exists to display it correctly.
-    private const AVAILABLE_SYSTEM_FIELDS = [
-        'family',
-        'categories',
-    ];
-    private const AVAILABLE_FIELD_ATTRIBUTE_TYPES = [
-        'pim_catalog_multiselect',
-        'pim_catalog_text',
-    ];
 
     /** @var GetGroupedAttributes */
     private $getGroupedAttributes;
@@ -73,20 +62,23 @@ final class GetAvailableConditionFieldsController
         $page = $options['page'] ?? 1;
         $offset = ($page - 1) * $limit;
 
-        $fields = $this->filterSystemFieldByText(static::AVAILABLE_SYSTEM_FIELDS, $search);
-        $paginatedFields = array_slice($fields, $offset, $limit);
+        $attributeTypes = $options['attributeTypes'] ?? null;
+
+        $fields = $options['systemFields'] ?? [];
+        $filteredFields = $this->filterSystemFieldByText($fields, $search);
+        $paginatedFields = array_slice($filteredFields, $offset, $limit);
 
         $paginatedAttributes = [];
         if ($limit > count($paginatedFields)) {
-            $offset -= count($fields);
+            $offset -= count($filteredFields);
             $limit -= count($paginatedFields);
             $localeCode = $this->userContext->getCurrentLocaleCode();
 
-            $paginatedAttributes = $this->getGroupedAttributes->getForAttributeTypes(
-                static::AVAILABLE_FIELD_ATTRIBUTE_TYPES,
+            $paginatedAttributes = $this->getGroupedAttributes->findAttributes(
                 $localeCode,
                 $limit,
                 $offset,
+                $attributeTypes,
                 $search
             );
         }
