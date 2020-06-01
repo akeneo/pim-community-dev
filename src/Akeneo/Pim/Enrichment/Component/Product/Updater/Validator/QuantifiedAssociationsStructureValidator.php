@@ -90,6 +90,6 @@ class QuantifiedAssociationsStructureValidator implements QuantifiedAssociations
 
     private function isArraySequential(array $data): bool
     {
-        return array_keys($data) === range(0, count($data) - 1);
+        return empty($data) || array_keys($data) === range(0, count($data) - 1);
     }
 }
