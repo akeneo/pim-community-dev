@@ -41,22 +41,22 @@ const familyConditionPredicate = (json: any): boolean => {
   );
 };
 
-const denormalizeFamilyCondition: ConditionDenormalizer = async (
+const denormalizeFamilyCondition: ConditionDenormalizer = (
   json: any
 ): Promise<FamilyCondition | null> => {
   if (!familyConditionPredicate(json)) {
-    return null;
+    return Promise.resolve<null>(null);
   }
 
-  return {
+  return Promise.resolve<FamilyCondition>({
     module: FamilyConditionLine,
     field: FIELD,
     operator: json.operator,
     value: json.value,
-  };
+  });
 };
 
-const createFamilyCondition: ConditionFactory = async (
+const createFamilyCondition: ConditionFactory = (
   fieldCode: any
 ): Promise<FamilyCondition | null> => {
   if (fieldCode !== FIELD) {
