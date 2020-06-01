@@ -20,13 +20,13 @@ type Props = {
   placeholder?: string;
 };
 
-const dataProvider = (term: string, page: number) => {
+const dataProvider = (term: string, page: number, locale: LocaleCode) => {
   return {
     search: term,
     options: {
       limit: 20,
       page: page,
-      locale: 'en_US',
+      locale: locale,
     },
   };
 };
@@ -88,7 +88,7 @@ const FamilySelector: React.FC<Props> = ({
         url: router.generate('pim_enrich_family_rest_index'),
         quietMillis: 250,
         cache: true,
-        data: dataProvider,
+        data: (term: string, page: number) => dataProvider(term, page, currentCatalogLocale),
         results: (families: IndexedFamilies) =>
           handleResults(families, currentCatalogLocale),
       }}

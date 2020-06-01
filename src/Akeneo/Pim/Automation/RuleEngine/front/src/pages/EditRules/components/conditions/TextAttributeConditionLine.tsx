@@ -4,10 +4,9 @@ import {
   TextAttributeCondition,
   TextAttributeOperators,
 } from '../../../../models/conditions';
-import { Operator } from '../../../../models/Operator';
 import { ConditionLineProps } from './ConditionLineProps';
 import { InputText } from '../../../../components/Inputs';
-import { DefaultConditionLine } from './DefaultConditionLine';
+import { AttributeConditionLine } from './AttributeConditionLine';
 
 type TextAttributeConditionLineProps = ConditionLineProps & {
   condition: TextAttributeCondition;
@@ -26,30 +25,24 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   const setValueFormValue = (value: string[] | null) =>
     setValue(`content.conditions[${lineNumber}].value`, value);
 
-  const shouldDisplayValue: (operator: Operator) => boolean = operator =>
-    !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
-      operator
-    );
-
   return (
-    <DefaultConditionLine
+    <AttributeConditionLine
       condition={condition}
       lineNumber={lineNumber}
       translate={translate}
       currentCatalogLocale={currentCatalogLocale}
       locales={locales}
       scopes={scopes}
-      shouldDisplayValue={shouldDisplayValue}
       availableOperators={TextAttributeOperators}
       setValueFormValue={setValueFormValue}>
       <InputText
         data-testid={`edit-rules-input-${lineNumber}-value`}
         name={`content.conditions[${lineNumber}].value`}
-        label={translate('pim_common.code')}
+        label={translate('pimee_catalog_rule.rule.value')}
         ref={register}
         hiddenLabel={true}
       />
-    </DefaultConditionLine>
+    </AttributeConditionLine>
   );
 };
 

@@ -4,9 +4,8 @@ import {
   MultiOptionsAttributeCondition,
   MultiOptionsAttributeOperators,
 } from '../../../../models/conditions';
-import { Operator } from '../../../../models/Operator';
 import { ConditionLineProps } from './ConditionLineProps';
-import { DefaultConditionLine } from './DefaultConditionLine';
+import { AttributeConditionLine } from './AttributeConditionLine';
 import { MultiOptionsSelector } from '../../../../components/Selectors/MultiOptionsSelector';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 import {
@@ -62,11 +61,6 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
     }
   }, []);
 
-  const shouldDisplayValue: (operator: Operator) => boolean = operator =>
-    !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
-      operator
-    );
-
   const getValueFormValue: () => AttributeOptionCode[] = () =>
     watch(`content.conditions[${lineNumber}].value`);
 
@@ -111,27 +105,26 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
   };
 
   return (
-    <DefaultConditionLine
+    <AttributeConditionLine
       condition={condition}
       lineNumber={lineNumber}
       translate={translate}
       currentCatalogLocale={currentCatalogLocale}
       locales={locales}
       scopes={scopes}
-      shouldDisplayValue={shouldDisplayValue}
       availableOperators={MultiOptionsAttributeOperators}
       setValueFormValue={setValueFormValue}>
       <MultiOptionsSelector
         value={getValueFormValue() || []}
         onValueChange={onValueChange}
         id={`edit-rules-input-${lineNumber}-value`}
-        currentCatalogLocale={'en_US'}
+        currentCatalogLocale={currentCatalogLocale}
         router={router}
         attributeId={condition.attribute.meta.id}
-        label={translate('pim_common.code')}
+        label={translate('pimee_catalog_rule.rule.value')}
         hiddenLabel={true}
       />
-    </DefaultConditionLine>
+    </AttributeConditionLine>
   );
 };
 

@@ -23,19 +23,23 @@ import { ConditionLineErrors } from './ConditionLineErrors';
 import { Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 
-type DefaultConditionLineProps = {
+const shouldDisplayValue: (operator: Operator) => boolean = operator =>
+  !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
+    operator
+  );
+
+type AttributeConditionLineProps = {
   condition: TextAttributeCondition | MultiOptionsAttributeCondition;
   lineNumber: number;
   translate: Translate;
   locales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
-  shouldDisplayValue: (operator: Operator) => boolean;
   availableOperators: Operator[];
   setValueFormValue: (value: any) => void;
 };
 
-const DefaultConditionLine: React.FC<DefaultConditionLineProps> = ({
+const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   condition,
   lineNumber,
   translate,
@@ -44,7 +48,6 @@ const DefaultConditionLine: React.FC<DefaultConditionLineProps> = ({
   currentCatalogLocale,
   availableOperators,
   children,
-  shouldDisplayValue,
   setValueFormValue,
 }) => {
   const { watch, setValue, triggerValidation } = useFormContext();
@@ -224,4 +227,4 @@ const DefaultConditionLine: React.FC<DefaultConditionLineProps> = ({
   );
 };
 
-export { DefaultConditionLine };
+export { AttributeConditionLine };
