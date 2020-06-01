@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 
 class AbstractProductModelTestCase extends AbstractProductTestCase
 {
@@ -123,6 +124,21 @@ JSON;
         }
 
         return $standardizedProductModels;
+    }
+
+    /**
+     * @param array  $expectedProductModel normalized data of the product model that should be created
+     * @param string $identifier           identifier of the product that should be created
+     */
+    protected function assertSameProductModels(array $expectedProductModel, $identifier)
+    {
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier($identifier);
+        $standardizedProductModel = $this->get('pim_standard_format_serializer')->normalize($productModel, 'standard');
+
+        NormalizedProductCleaner::clean($expectedProductModel);
+        NormalizedProductCleaner::clean($standardizedProductModel);
+
+        $this->assertSame($expectedProductModel, $standardizedProductModel);
     }
 
     /**

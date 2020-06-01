@@ -1,13 +1,13 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\QuantifiedAssociations;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi\QuantifiedAssociations;
 
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
-use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi\AbstractProductModelTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class DeleteQuantifiedAssociationsFromProductEndToEnd extends AbstractProductTestCase
+class AddQuantifiedAssociationsToProductModelEndToEnd extends AbstractProductModelTestCase
 {
     use QuantifiedAssociationsTestCaseTrait;
 
@@ -30,24 +30,27 @@ class DeleteQuantifiedAssociationsFromProductEndToEnd extends AbstractProductTes
     /**
      * @test
      */
-    public function it_delete_quantified_associations_from_a_product(): void
+    public function it_add_quantified_associations_to_a_product_model(): void
     {
         $client = $this->createAuthenticatedClient();
         $this->createQuantifiedAssociationType('PRODUCTSET');
+        $this->createProduct('chair', []);
         $this->createProduct('table', []);
         $this->createProductModel([
             'code' => 'umbrella',
             'family_variant' => 'familyVariantA1',
             'values' => [],
         ]);
-        $identifier = 'garden_table_set';
+        $code = 'garden_table_set';
 
         $data = <<<JSON
 {
-    "identifier": "$identifier",
+    "code": "$code",
+    "family_variant": "familyVariantA1",
     "quantified_associations": {
         "PRODUCTSET": {
             "products": [
+                {"identifier": "chair", "quantity": 4},
                 {"identifier": "table", "quantity": 1}
             ],
             "product_models": [
@@ -58,41 +61,26 @@ class DeleteQuantifiedAssociationsFromProductEndToEnd extends AbstractProductTes
 }
 JSON;
 
-        $client->request('POST', '/api/rest/v1/products', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/product-models', [], [], [], $data);
 
-        $data = <<<JSON
-{
-    "identifier": "$identifier",
-    "quantified_associations": {
-        "PRODUCTSET": {
-            "products": [],
-            "product_models": []
-        }
-    }
-}
-JSON;
-
-        $client->request('PATCH', sprintf('/api/rest/v1/products/%s', $identifier), [], [], [], $data);
-
-        $expectedProduct = [
-            'identifier' => $identifier,
-            'family' => null,
+        $expectedProductModel = [
+            'code' => $code,
+            'family_variant' => 'familyVariantA1',
             'parent' => null,
-            'groups' => [],
             'categories' => [],
-            'enabled' => true,
-            'values' => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => $identifier],
-                ],
-            ],
+            'values' => [],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [],
             'quantified_associations' => [
                 'PRODUCTSET' => [
-                    'products' => [],
-                    'product_models' => [],
+                    'products' => [
+                        ['identifier' => 'chair', 'quantity' => 4],
+                        ['identifier' => 'table', 'quantity' => 1],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'umbrella', 'quantity' => 1],
+                    ],
                 ],
             ],
         ];
@@ -100,7 +88,7 @@ JSON;
         $response = $client->getResponse();
 
         $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertSameProducts($expectedProduct, $identifier);
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSameProductModels($expectedProductModel, $code);
     }
 }
