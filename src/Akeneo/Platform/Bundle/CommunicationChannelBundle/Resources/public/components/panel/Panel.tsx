@@ -34,7 +34,7 @@ const Panel = () => {
     <>
       <Header>
         <Title>{__('akeneo_communication_channel.panel.title')}</Title>
-        <CloseButton onClick={closePanel} />
+        <CloseButton title={__('akeneo_communication_channel.panel.button.close')} onClick={closePanel} />
       </Header>
     </>
   );
