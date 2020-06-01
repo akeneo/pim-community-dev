@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.58 (2020-06-01)
+
 ## Improvements
 
 - Uses Google Chrome from Node Docker image
