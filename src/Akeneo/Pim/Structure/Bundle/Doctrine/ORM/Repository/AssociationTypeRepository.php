@@ -18,7 +18,7 @@ class AssociationTypeRepository extends EntityRepository implements AssociationT
     /**
      * {@inheritdoc}
      */
-    public function findMissingAssociationTypes(EntityWithAssociationsInterface $entity)
+    public function findMissingUnquantifiedAssociationTypes(EntityWithAssociationsInterface $entity)
     {
         $qb = $this->createQueryBuilder('a');
 
@@ -35,6 +35,7 @@ class AssociationTypeRepository extends EntityRepository implements AssociationT
                 );
             }
         }
+        $qb->andWhere('a.isQuantified = false');
 
         return $qb->getQuery()->getResult();
     }

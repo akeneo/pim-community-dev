@@ -65,7 +65,17 @@ class InMemoryAssociationTypeRepositorySpec extends ObjectBehavior
 
         $this->save($associationType);
 
-        $this->findMissingAssociationTypes($productAddedToRepo)->shouldReturn([]);
+        $this->findMissingUnquantifiedAssociationTypes($productAddedToRepo)->shouldReturn([]);
+    }
+
+    function it_does_not_return_quantified_association_types()
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode('code');
+        $associationType->setIsQuantified(true);
+        $this->save($associationType);
+
+        $this->findMissingUnquantifiedAssociationTypes(new Product())->shouldReturn([]);
     }
 
     function it_has_identifier_properties()

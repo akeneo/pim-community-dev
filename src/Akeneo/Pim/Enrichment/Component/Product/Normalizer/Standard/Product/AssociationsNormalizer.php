@@ -79,10 +79,6 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
 
         foreach ($associationAwareEntities as $associationAwareEntity) {
             foreach ($associationAwareEntity->getAssociations() as $association) {
-                if ($association->getAssociationType()->isQuantified()) {
-                    continue;
-                }
-
                 $code = $association->getAssociationType()->getCode();
 
                 $data[$code]['groups'] = $data[$code]['groups'] ?? [];

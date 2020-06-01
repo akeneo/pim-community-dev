@@ -31,7 +31,7 @@ class MissingAssociationAdderSpec extends ObjectBehavior
         AssociationTypeInterface $associationType2,
         EntityWithAssociationsInterface $entity
     ) {
-        $associationTypeRepository->findMissingAssociationTypes($entity)
+        $associationTypeRepository->findMissingUnquantifiedAssociationTypes($entity)
             ->willReturn([$associationType, $associationType2]);
 
         $associationClassResolver->resolveAssociationClass($entity)

@@ -265,10 +265,6 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
 
         foreach ($associations as $association) {
             $associationType = $association->getAssociationType();
-            if ($associationType->isQuantified()) {
-                continue;
-            }
-
             $meta[$associationType->getCode()]['groupIds'] = array_map(
                 function ($group) {
                     return $group->getId();
