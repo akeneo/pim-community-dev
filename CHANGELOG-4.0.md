@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.31 (2020-06-01)
+
 ## Bug fixes
 
 - PIM-9276: Fix API assets pagination
