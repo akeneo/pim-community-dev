@@ -11,7 +11,9 @@ export const getAttributeByIdentifier = async (
   attributeIdentifier: AttributeCode,
   router: Router
 ): Promise<Attribute | null> => {
-  if (!cacheAttributes[attributeIdentifier]) {
+  if (
+    !Object.prototype.hasOwnProperty.call(cacheAttributes, attributeIdentifier)
+  ) {
     cacheAttributes[attributeIdentifier] = await fetchAttributeByIdentifier(
       attributeIdentifier,
       router

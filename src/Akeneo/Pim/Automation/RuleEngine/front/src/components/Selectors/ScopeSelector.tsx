@@ -38,6 +38,13 @@ const ScopeSelector: React.FC<Props> = ({
     };
   });
 
+  if (value && !scopeChoices.some(scopeChoice => scopeChoice.id === value)) {
+    scopeChoices.push({
+      id: value,
+      text: `[${value}]`,
+    });
+  }
+
   return (
     <>
       <Select2SimpleSyncWrapper

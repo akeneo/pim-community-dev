@@ -36,6 +36,13 @@ const LocaleSelector: React.FC<Props> = ({
     };
   });
 
+  if (value && !localeChoices.some(localeChoice => localeChoice.id === value)) {
+    localeChoices.push({
+      id: value,
+      text: `[${value}]`,
+    });
+  }
+
   const formatLocale = (item: Select2Option | Select2OptionGroup): string => {
     const locale = availableLocales.find(
       (locale: Locale) => locale.code === item.id
