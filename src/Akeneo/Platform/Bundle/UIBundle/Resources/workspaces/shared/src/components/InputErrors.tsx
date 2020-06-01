@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import {ValidationError} from 'akeneomeasure/model/validation-error';
+import {ValidationError, formatParameters} from '@akeneo-pim-community/shared';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
   .AknFieldContainer-validationError {
@@ -13,13 +14,15 @@ type InputErrorsProps = {
 };
 
 const InputErrors = ({errors = []}: InputErrorsProps) => {
+  const translate = useTranslate();
+
   if (0 === errors.length) return null;
 
   return (
     <Container className="AknFieldContainer-footer AknFieldContainer-validationErrors">
-      {errors.map((error: ValidationError, key: number) => (
+      {formatParameters(errors).map((error, key) => (
         <span className="AknFieldContainer-validationError error-message" key={key}>
-          {error.message}
+          {translate(error.messageTemplate, error.parameters, error.plural)}
         </span>
       ))}
     </Container>

@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * Association tab extension
  *
@@ -17,7 +18,6 @@ define([
   'pim/template/product/tab/association-panes',
   'pim/template/common/modal-centered',
   'pim/fetcher-registry',
-  'pim/attribute-manager',
   'pim/user-context',
   'routing',
   'oro/mediator',
@@ -30,7 +30,8 @@ define([
   'pim/i18n',
   'react',
   'react-dom',
-  'pimui/js/product/form/quantified-associations/QuantifiedAssociationsTab'
+  'pimui/js/product/form/quantified-associations/QuantifiedAssociationsTab',
+  'shared/models/validation-error',
 ], function(
   $,
   _,
@@ -41,7 +42,6 @@ define([
   panesTemplate,
   modalTemplate,
   FetcherRegistry,
-  AttributeManager,
   UserContext,
   Routing,
   mediator,
@@ -54,7 +54,8 @@ define([
   {getLabel},
   React,
   ReactDOM,
-  {QuantifiedAssociationsTab}
+  {QuantifiedAssociationsTab},
+  {filterErrors}
 ) {
   let state = {};
 
@@ -77,6 +78,7 @@ define([
      */
     initialize: function(meta) {
       this.config = meta.config;
+      this.validationErrors = [];
 
       state = {
         associationTarget: 'products',
@@ -158,6 +160,10 @@ define([
       );
 
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.postUpdate.bind(this));
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () =>
+        this.setValidationErrors({response: {quantified_associations: []}})
+      );
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.setValidationErrors.bind(this));
 
       this.listenTo(
         this.getRoot(),
@@ -233,7 +239,7 @@ define([
       return this;
     },
 
-    updateAssociationCountInSidebar: function () {
+    updateAssociationCountInSidebar: function() {
       const newAssociationCount = this.getAssociationCount();
       if (this.associationCount !== newAssociationCount) {
         this.associationCount = newAssociationCount;
@@ -244,6 +250,17 @@ define([
           label: __('pim_enrich.entity.product.module.associations.title', {count: newAssociationCount}),
         });
       }
+    },
+
+    setValidationErrors: function({response}) {
+      this.validationErrors = response;
+      this.unmountQuantifiedAssociations();
+      this.renderQuantifiedAssociations();
+    },
+
+    unmountQuantifiedAssociations: function() {
+      const quantifiedAssociationsNode = document.getElementById('product-quantified-associations');
+      if (quantifiedAssociationsNode) ReactDOM.unmountComponentAtNode(quantifiedAssociationsNode);
     },
 
     /**
@@ -290,18 +307,27 @@ define([
         products: [],
         product_models: [],
       };
-      const parentQuantifiedAssociations = this.getFormData().meta.parent_quantified_associations[associationTypeCode] || {
+      const parentQuantifiedAssociations = this.getFormData().meta.parent_quantified_associations[
+        associationTypeCode
+      ] || {
         products: [],
         product_models: [],
       };
+      const errors = filterErrors(
+        this.validationErrors.quantified_associations || [],
+        `quantifiedAssociations.${associationTypeCode}`
+      );
 
       const Component = React.createElement(QuantifiedAssociationsTab, {
         quantifiedAssociations,
         parentQuantifiedAssociations,
-        associationTypeCode,
+        errors,
         onAssociationsChange: updatedAssociations => {
           const formData = this.getFormData();
-          formData.quantified_associations = {...formData.quantified_associations, [associationTypeCode]: updatedAssociations};
+          formData.quantified_associations = {
+            ...formData.quantified_associations,
+            [associationTypeCode]: updatedAssociations,
+          };
 
           this.setData(formData, {silent: true});
           this.getRoot().trigger('pim_enrich:form:entity:update_state');
@@ -316,7 +342,7 @@ define([
                   quantity: 1,
                 },
                 productType: matchProductModel ? 'product_model' : 'product',
-                associationTypeCode,
+                errors: [],
                 product: null,
               };
             })
@@ -427,7 +453,7 @@ define([
         .siblings('.AknTitleContainer.association-type:not(.AknTitleContainer--hidden)')
         .addClass('AknTitleContainer--hidden');
 
-      ReactDOM.unmountComponentAtNode(document.getElementById('product-quantified-associations'));
+      this.unmountQuantifiedAssociations();
       this.renderQuantifiedAssociations();
       this.renderPanes();
       this.updateListenerSelectors();
@@ -488,7 +514,7 @@ define([
     },
 
     isQuantifiedAssociation: function(associationTypes, associationTypeCode) {
-      if (0 === associationTypes.length) return false;
+      if (!associationTypes || 0 === associationTypes.length) return false;
 
       const associationType = associationTypes.find(associationType => associationType.code === associationTypeCode);
 

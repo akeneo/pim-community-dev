@@ -1,10 +1,9 @@
 import React, {ChangeEventHandler, InputHTMLAttributes, RefObject, useContext} from 'react';
 import styled, {css, ThemeContext} from 'styled-components';
-import {ValidationError} from 'akeneomeasure/model/validation-error';
-import {InputErrors} from 'akeneomeasure/shared/components/InputErrors';
 import {Flag} from 'akeneomeasure/shared/components/Flag';
 import {LockIcon} from 'akeneomeasure/shared/icons/LockIcon';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {ValidationError, InputErrors} from '@akeneo-pim-community/shared';
 
 const Input = styled.input`
   background-color: transparent;

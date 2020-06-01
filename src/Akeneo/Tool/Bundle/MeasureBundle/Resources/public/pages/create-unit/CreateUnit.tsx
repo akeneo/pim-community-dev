@@ -9,7 +9,6 @@ import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
 import {getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Unit} from 'akeneomeasure/model/unit';
-import {filterErrors, ValidationError} from 'akeneomeasure/model/validation-error';
 import {
   CreateUnitForm,
   createUnitFromForm,
@@ -22,7 +21,14 @@ import {Operation} from 'akeneomeasure/model/operation';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
-import {Button, useAutoFocus, HelperRibbon, HelperLevel} from '@akeneo-pim-community/shared';
+import {
+  Button,
+  useAutoFocus,
+  HelperRibbon,
+  HelperLevel,
+  filterErrors,
+  ValidationError,
+} from '@akeneo-pim-community/shared';
 
 type CreateUnitProps = {
   measurementFamily: MeasurementFamily;

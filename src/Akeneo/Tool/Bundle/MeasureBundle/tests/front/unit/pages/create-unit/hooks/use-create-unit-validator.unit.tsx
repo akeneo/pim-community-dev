@@ -6,8 +6,6 @@ import {renderHook} from '@testing-library/react-hooks';
 import {useCreateUnitValidator} from 'akeneomeasure/pages/create-unit/hooks/use-create-unit-validator';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
-jest.mock('legacy-bridge/provider/dependencies.ts');
-
 declare global {
   namespace NodeJS {
     interface Global {

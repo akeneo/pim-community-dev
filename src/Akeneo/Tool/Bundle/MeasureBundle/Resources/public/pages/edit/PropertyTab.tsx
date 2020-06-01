@@ -5,8 +5,7 @@ import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
-import {ValidationError, filterErrors} from 'akeneomeasure/model/validation-error';
-import {useAutoFocus} from '@akeneo-pim-community/shared';
+import {useAutoFocus, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
 import {useTranslate, useSecurity} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`

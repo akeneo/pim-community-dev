@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useNotify, NotificationLevel} from '@akeneo-pim-community/legacy-bridge';
 import {
   Button,
   SearchBar,
@@ -11,6 +11,9 @@ import {
   HelperLevel,
   UnlinkIcon,
   useAkeneoTheme,
+  ValidationError,
+  getErrorsForPath,
+  formatParameters,
 } from '@akeneo-pim-community/shared';
 import {
   Row,
@@ -27,11 +30,12 @@ import {
   newAndUpdatedQuantifiedAssociationsCount,
   hasUpdatedQuantifiedAssociations,
   isQuantifiedAssociationEmpty,
+  ProductsType,
 } from '../models';
 import {QuantifiedAssociationRow} from '../components';
 import {useProducts} from '../hooks';
 
-const MAX_LIMIT = 10;
+const MAX_LIMIT = 100;
 
 const HeaderCell = styled.th`
   text-align: left;
@@ -64,7 +68,7 @@ const Buttons = styled.div`
 type QuantifiedAssociationsProps = {
   quantifiedAssociations: QuantifiedAssociation;
   parentQuantifiedAssociations: QuantifiedAssociation;
-  associationTypeCode: string;
+  errors: ValidationError[];
   onAssociationsChange: (quantifiedAssociations: QuantifiedAssociation) => void;
   onOpenPicker: () => Promise<Row[]>;
 };
@@ -72,14 +76,15 @@ type QuantifiedAssociationsProps = {
 const QuantifiedAssociations = ({
   quantifiedAssociations,
   parentQuantifiedAssociations,
-  associationTypeCode,
+  errors,
   onOpenPicker,
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
+  const notify = useNotify();
   const theme = useAkeneoTheme();
   const [rowCollection, setRowCollection] = useState<Row[]>(
-    quantifiedAssociationToRowCollection(quantifiedAssociations)
+    quantifiedAssociationToRowCollection(quantifiedAssociations, errors)
   );
   const [searchValue, setSearchValue] = useState('');
   const products = useProducts(getAssociationIdentifiers(rowCollection));
@@ -92,12 +97,23 @@ const QuantifiedAssociations = ({
     parentQuantifiedAssociations,
     rowCollectionToQuantifiedAssociation(rowCollection)
   );
-
   const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
 
   useEffect(() => {
-    setRowCollection(quantifiedAssociationToRowCollection(quantifiedAssociations));
-  }, [associationTypeCode, quantifiedAssociations]);
+    formatParameters(getErrorsForPath(errors, '')).forEach(error =>
+      notify(NotificationLevel.ERROR, translate(error.messageTemplate, error.parameters, error.plural))
+    );
+    formatParameters(getErrorsForPath(errors, `.${ProductsType.Products}`)).forEach(error =>
+      notify(NotificationLevel.ERROR, translate(error.messageTemplate, error.parameters, error.plural))
+    );
+    formatParameters(getErrorsForPath(errors, `.${ProductsType.ProductModels}`)).forEach(error =>
+      notify(NotificationLevel.ERROR, translate(error.messageTemplate, error.parameters, error.plural))
+    );
+  }, [JSON.stringify(errors)]);
+
+  useEffect(() => {
+    setRowCollection(quantifiedAssociationToRowCollection(quantifiedAssociations, errors));
+  }, [quantifiedAssociations, JSON.stringify(errors)]);
 
   useEffect(() => {
     const updatedValue = rowCollectionToQuantifiedAssociation(rowCollection);

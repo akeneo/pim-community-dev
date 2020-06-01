@@ -1,13 +1,11 @@
 import {ProductType, QuantifiedLink, Product, ProductsType, getProductsType, AssociationIdentifiers} from '../models';
+import {ValidationError} from '@akeneo-pim-community/shared';
 
 type Row = {
   quantifiedLink: QuantifiedLink;
   productType: ProductType;
   product: null | Product;
-};
-
-type RowWithProduct = Row & {
-  product: Product;
+  errors: ValidationError[];
 };
 
 const addProductToRows = (rows: Row[], products: Product[]): Row[] =>
@@ -31,8 +29,6 @@ const getAssociationIdentifiers = (rows: Row[]): AssociationIdentifiers =>
       [ProductsType.ProductModels]: [],
     }
   );
-
-const isRowWithProduct = (row: Row): row is RowWithProduct => null !== row.product;
 
 const filterOnLabelOrIdentifier = (searchValue: string) => (row: Row): boolean =>
   (null !== row.product &&
@@ -75,8 +71,6 @@ const addRowsToCollection = (collection: Row[], addedRows: Row[]) =>
 
 export {
   Row,
-  RowWithProduct,
-  isRowWithProduct,
   filterOnLabelOrIdentifier,
   getAssociationIdentifiers,
   addProductToRows,
