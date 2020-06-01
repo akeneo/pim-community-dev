@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9277: Fix product computing when moving an attribute in family variant
+- CXP-306: Fix the collect of product events
 
 # 4.0.30 (2020-05-28)
 
