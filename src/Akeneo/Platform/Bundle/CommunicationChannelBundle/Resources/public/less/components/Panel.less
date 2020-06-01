@@ -1,0 +1,22 @@
+@import './public/bundles/pimui/less/base/variables';
+
+.AknPanel {
+  width: @AknPanelWidth;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  overflow-y: scroll;
+  background: @AknLightGray;
+  border-left: 1px solid #ccd1d8;
+  padding: 10px;
+  transition: right @AknColumnTiming @AknColumnTransition;
+
+  &:empty {
+    display: none;
+  }
+
+  &--collapsed {
+    right: -@AknPanelWidth;
+  }
+}
