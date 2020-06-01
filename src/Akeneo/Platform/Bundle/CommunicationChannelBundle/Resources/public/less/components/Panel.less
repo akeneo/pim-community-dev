@@ -1,0 +1,19 @@
+.AknCommunicationChannelPanel {
+  width: 400px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  overflow-y: scroll;
+  background: #F9F9FB;
+  border-left: 1px solid #ccd1d8;
+  padding: 10px;
+
+  &:empty {
+    display: none;
+  }
+
+  &--collapsed {
+    width: 0px;
+  }
+}
