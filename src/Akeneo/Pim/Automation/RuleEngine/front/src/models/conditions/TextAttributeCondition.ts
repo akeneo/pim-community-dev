@@ -1,12 +1,12 @@
 import React from 'react';
-import { Attribute } from './Attribute';
-import { Router } from '../dependenciesTools';
-import { getAttributeByIdentifier } from '../repositories/AttributeRepository';
+import { Attribute } from '../Attribute';
+import { Router } from '../../dependenciesTools';
+import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
 import {
   TextAttributeConditionLine,
   TextAttributeConditionLineProps,
-} from '../pages/EditRules/components/conditions/TextAttributeConditionLine';
-import { Operator } from './Operator';
+} from '../../pages/EditRules/components/conditions/TextAttributeConditionLine';
+import { Operator } from '../Operator';
 import { ConditionDenormalizer, ConditionFactory } from './Condition';
 
 const TYPE = 'pim_catalog_text';

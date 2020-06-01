@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import {
   TextAttributeCondition,
   TextAttributeOperators,
-} from '../../../../models/TextAttributeCondition';
+} from '../../../../models/conditions';
 import { Operator } from '../../../../models/Operator';
 import { ConditionLineProps } from './ConditionLineProps';
 import { InputText } from '../../../../components/Inputs';

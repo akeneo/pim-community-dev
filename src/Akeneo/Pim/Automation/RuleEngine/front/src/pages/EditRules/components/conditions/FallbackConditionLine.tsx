@@ -1,5 +1,5 @@
 import React from 'react';
-import { FallbackCondition } from '../../../../models/FallbackCondition';
+import { FallbackCondition } from '../../../../models/conditions';
 import { ConditionLineProps } from './ConditionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 

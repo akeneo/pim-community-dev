@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import {
   MultiOptionsAttributeCondition,
   MultiOptionsAttributeOperators,
-} from '../../../../models/MultiOptionsAttributeCondition';
+} from '../../../../models/conditions';
 import { Operator } from '../../../../models/Operator';
 import { ConditionLineProps } from './ConditionLineProps';
 import { DefaultConditionLine } from './DefaultConditionLine';

@@ -1,11 +1,6 @@
 import { RuleDefinition } from './RuleDefinition';
-import { Condition, ConditionDenormalizer } from './Condition';
-import { denormalizeFamilyCondition } from './FamilyCondition';
-import { denormalizeFallbackCondition } from './FallbackCondition';
 import { denormalizeFallbackAction, FallbackAction } from './FallbackAction';
 import { Action } from './Action';
-import { denormalizePimCondition } from './PimCondition';
-import { denormalizeTextAttributeCondition } from './TextAttributeCondition';
 import { Router } from '../dependenciesTools';
 import { getAttributesByIdentifiers } from '../repositories/AttributeRepository';
 import {
@@ -18,7 +13,14 @@ import {
   denormalizeSetAction,
   denormalizeSetFamilyAction,
 } from './actions';
-import { denormalizeMultiOptionsAttributeCondition } from './MultiOptionsAttributeCondition';
+import {
+  Condition,
+  ConditionDenormalizer, denormalizeFallbackCondition,
+  denormalizeFamilyCondition,
+  denormalizeMultiOptionsAttributeCondition,
+  denormalizePimCondition,
+  denormalizeTextAttributeCondition,
+} from "./conditions";
 
 function denormalizeAction(jsonAction: any): Action {
   const denormalizers: ((json: any) => Action | null)[] = [

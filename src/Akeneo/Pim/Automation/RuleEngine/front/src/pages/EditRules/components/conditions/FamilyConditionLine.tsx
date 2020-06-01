@@ -4,7 +4,7 @@ import { ConditionLineProps } from './ConditionLineProps';
 import {
   FamilyCondition,
   FamilyOperators,
-} from '../../../../models/FamilyCondition';
+} from '../../../../models/conditions';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { Operator } from '../../../../models/Operator';

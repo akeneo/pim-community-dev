@@ -1,9 +1,9 @@
 import React from 'react';
-import { Operator } from './Operator';
+import { Operator } from '../Operator';
 import {
   FamilyConditionLine,
   FamilyConditionLineProps,
-} from '../pages/EditRules/components/conditions/FamilyConditionLine';
+} from '../../pages/EditRules/components/conditions/FamilyConditionLine';
 import { ConditionDenormalizer, ConditionFactory } from './Condition';
 
 const FIELD = 'family';

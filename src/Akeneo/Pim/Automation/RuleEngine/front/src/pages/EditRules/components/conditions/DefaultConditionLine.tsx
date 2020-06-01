@@ -1,7 +1,13 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Operator } from '../../../../models/Operator';
-import { Locale, LocaleCode, ScopeCode } from '../../../../models';
+import {
+  Locale,
+  LocaleCode,
+  MultiOptionsAttributeCondition,
+  ScopeCode,
+  TextAttributeCondition
+} from '../../../../models';
 import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
 import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
@@ -16,8 +22,6 @@ import {
 import { ConditionLineErrors } from './ConditionLineErrors';
 import { Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
-import { TextAttributeCondition } from '../../../../models/TextAttributeCondition';
-import { MultiOptionsAttributeCondition } from '../../../../models/MultiOptionsAttributeCondition';
 
 type DefaultConditionLineProps = {
   condition: TextAttributeCondition | MultiOptionsAttributeCondition;

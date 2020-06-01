@@ -4,7 +4,7 @@ import { useFormContext, Control } from 'react-hook-form';
 import { SmallHelper } from '../../../../components';
 import {
   Condition,
-  ConditionFactory,
+  ConditionFactory, createMultiOptionsAttributeCondition,
   Locale,
   LocaleCode,
   RuleDefinition,
@@ -20,7 +20,6 @@ import { createFamilyCondition } from '../../../../models/FamilyCondition';
 import { createTextAttributeCondition } from '../../../../models/TextAttributeCondition';
 import { FormData } from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
-import { createMultiOptionsAttributeCondition } from '../../../../models/MultiOptionsAttributeCondition';
 
 const Header = styled.header`
   font-weight: normal;

@@ -1,13 +1,13 @@
 import React from 'react';
-import { Attribute } from './Attribute';
-import { Router } from '../dependenciesTools';
-import { getAttributeByIdentifier } from '../repositories/AttributeRepository';
-import { Operator } from './Operator';
+import { Attribute } from '../Attribute';
+import { Router } from '../../dependenciesTools';
+import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
+import { Operator } from '../Operator';
 import { ConditionDenormalizer, ConditionFactory } from './Condition';
 import {
   MultiOptionsAttributeConditionLine,
   MultiOptionsAttributeConditionLineProps,
-} from '../pages/EditRules/components/conditions/MultiOptionsAttributeConditionLine';
+} from '../../pages/EditRules/components/conditions/MultiOptionsAttributeConditionLine';
 
 const TYPE = 'pim_catalog_multiselect';
 

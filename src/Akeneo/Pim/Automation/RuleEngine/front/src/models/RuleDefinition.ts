@@ -1,4 +1,4 @@
-import { Condition } from './Condition';
+import { Condition } from './conditions';
 import { Action } from './Action';
 
 export type RuleDefinition = {
