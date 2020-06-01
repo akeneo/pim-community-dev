@@ -4,8 +4,8 @@ import {
   FamilyCondition,
   MultiOptionsAttributeCondition,
   PimCondition,
-  TextAttributeCondition
-} from "./";
+  TextAttributeCondition,
+} from './';
 
 export type Condition =
   | FallbackCondition

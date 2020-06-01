@@ -4,7 +4,10 @@ import { useFormContext, Control } from 'react-hook-form';
 import { SmallHelper } from '../../../../components';
 import {
   Condition,
-  ConditionFactory, createMultiOptionsAttributeCondition,
+  ConditionFactory,
+  createFamilyCondition,
+  createMultiOptionsAttributeCondition,
+  createTextAttributeCondition,
   Locale,
   LocaleCode,
   RuleDefinition,
@@ -16,8 +19,6 @@ import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { ConditionLine } from './ConditionLine';
 import { ProductsCount } from '../ProductsCount';
 import { AddConditionButton } from './AddConditionButton';
-import { createFamilyCondition } from '../../../../models/FamilyCondition';
-import { createTextAttributeCondition } from '../../../../models/TextAttributeCondition';
 import { FormData } from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
 

@@ -15,12 +15,13 @@ import {
 } from './actions';
 import {
   Condition,
-  ConditionDenormalizer, denormalizeFallbackCondition,
+  ConditionDenormalizer,
+  denormalizeFallbackCondition,
   denormalizeFamilyCondition,
   denormalizeMultiOptionsAttributeCondition,
   denormalizePimCondition,
   denormalizeTextAttributeCondition,
-} from "./conditions";
+} from './conditions';
 
 function denormalizeAction(jsonAction: any): Action {
   const denormalizers: ((json: any) => Action | null)[] = [

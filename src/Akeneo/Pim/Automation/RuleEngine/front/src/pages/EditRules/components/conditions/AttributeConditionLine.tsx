@@ -6,7 +6,7 @@ import {
   LocaleCode,
   MultiOptionsAttributeCondition,
   ScopeCode,
-  TextAttributeCondition
+  TextAttributeCondition,
 } from '../../../../models';
 import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
 import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';

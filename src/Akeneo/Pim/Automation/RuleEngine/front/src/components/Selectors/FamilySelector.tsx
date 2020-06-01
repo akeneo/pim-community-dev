@@ -88,7 +88,8 @@ const FamilySelector: React.FC<Props> = ({
         url: router.generate('pim_enrich_family_rest_index'),
         quietMillis: 250,
         cache: true,
-        data: (term: string, page: number) => dataProvider(term, page, currentCatalogLocale),
+        data: (term: string, page: number) =>
+          dataProvider(term, page, currentCatalogLocale),
         results: (families: IndexedFamilies) =>
           handleResults(families, currentCatalogLocale),
       }}
