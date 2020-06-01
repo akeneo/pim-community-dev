@@ -30,7 +30,7 @@ final class GetProductModelQuantifiedAssociationsByProductModelCodes
      */
     public function fromProductModelCodes(array $productModelCodes): array
     {
-        if ([] === $productModelCodes) {
+        if (empty($productModelCodes)) {
             return [];
         }
 
