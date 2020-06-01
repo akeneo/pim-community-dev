@@ -3,12 +3,14 @@ import { FamilyCondition } from './FamilyCondition';
 import { PimCondition } from './PimCondition';
 import { TextAttributeCondition } from './TextAttributeCondition';
 import { Router } from '../dependenciesTools';
+import { MultiOptionsAttributeCondition } from "./MultiOptionsAttributeCondition";
 
 export type Condition =
   | FallbackCondition
   | PimCondition
   | FamilyCondition
-  | TextAttributeCondition;
+  | TextAttributeCondition
+  | MultiOptionsAttributeCondition;
 
 export type ConditionDenormalizer = (
   json: any,

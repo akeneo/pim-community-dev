@@ -20,6 +20,7 @@ import { createFamilyCondition } from '../../../../models/FamilyCondition';
 import { createTextAttributeCondition } from '../../../../models/TextAttributeCondition';
 import { FormData } from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
+import { createMultiOptionsAttributeCondition } from "../../../../models/MultiOptionsAttributeCondition";
 
 const Header = styled.header`
   font-weight: normal;
@@ -119,6 +120,7 @@ const RuleProductSelection: React.FC<Props> = ({
     const factories: ConditionFactory[] = [
       createFamilyCondition,
       createTextAttributeCondition,
+      createMultiOptionsAttributeCondition,
     ];
 
     for (let i = 0; i < factories.length; i++) {

@@ -18,6 +18,7 @@ import {
   denormalizeSetAction,
   denormalizeSetFamilyAction,
 } from './actions';
+import { denormalizeMultiOptionsAttributeCondition } from "./MultiOptionsAttributeCondition";
 
 function denormalizeAction(jsonAction: any): Action {
   const denormalizers: ((json: any) => Action | null)[] = [
@@ -49,6 +50,7 @@ async function denormalizeCondition(
   const denormalizers: ConditionDenormalizer[] = [
     denormalizeFamilyCondition,
     denormalizeTextAttributeCondition,
+    denormalizeMultiOptionsAttributeCondition,
     denormalizePimCondition,
   ];
 

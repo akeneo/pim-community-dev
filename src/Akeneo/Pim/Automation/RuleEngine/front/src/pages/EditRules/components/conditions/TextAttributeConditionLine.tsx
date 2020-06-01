@@ -21,7 +21,10 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   scopes,
   currentCatalogLocale,
 }) => {
-  const { register } = useFormContext();
+  const { register, setValue } = useFormContext();
+
+  const setValueFormValue = (value: string[] | null) =>
+    setValue(`content.conditions[${lineNumber}].value`, value);
 
   const shouldDisplayValue: (operator: Operator) => boolean = operator =>
     !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
@@ -37,7 +40,9 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       locales={locales}
       scopes={scopes}
       shouldDisplayValue={shouldDisplayValue}
-      availableOperators={TextAttributeOperators}>
+      availableOperators={TextAttributeOperators}
+      setValueFormValue={setValueFormValue}
+    >
       <InputText
         data-testid={`edit-rules-input-${lineNumber}-value`}
         name={`content.conditions[${lineNumber}].value`}

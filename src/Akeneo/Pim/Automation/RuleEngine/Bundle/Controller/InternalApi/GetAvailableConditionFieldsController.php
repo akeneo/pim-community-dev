@@ -37,7 +37,7 @@ final class GetAvailableConditionFieldsController
         'family',
     ];
     private const AVAILABLE_FIELD_ATTRIBUTE_TYPES = [
-        'pim_catalog_text',
+        'pim_catalog_multiselect',
     ];
 
     /** @var GetGroupedAttributes */

@@ -17,9 +17,10 @@ import { ConditionLineErrors } from './ConditionLineErrors';
 import { Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { TextAttributeCondition } from '../../../../models/TextAttributeCondition';
+import { MultiOptionsAttributeCondition } from "../../../../models/MultiOptionsAttributeCondition";
 
 type DefaultConditionLineProps = {
-  condition: TextAttributeCondition;
+  condition: TextAttributeCondition | MultiOptionsAttributeCondition;
   lineNumber: number;
   translate: Translate;
   locales: Locale[];
@@ -27,6 +28,7 @@ type DefaultConditionLineProps = {
   currentCatalogLocale: LocaleCode;
   shouldDisplayValue: (operator: Operator) => boolean;
   availableOperators: Operator[];
+  setValueFormValue: (value: any) => void;
 };
 
 const DefaultConditionLine: React.FC<DefaultConditionLineProps> = ({
@@ -39,6 +41,7 @@ const DefaultConditionLine: React.FC<DefaultConditionLineProps> = ({
   availableOperators,
   children,
   shouldDisplayValue,
+  setValueFormValue,
 }) => {
   const { watch, setValue, triggerValidation } = useFormContext();
 
@@ -107,7 +110,6 @@ const DefaultConditionLine: React.FC<DefaultConditionLineProps> = ({
     {
       field: condition.field,
       operator: condition.operator,
-      value: condition.value,
       scope: condition.scope,
       locale: condition.locale,
     },
@@ -118,8 +120,6 @@ const DefaultConditionLine: React.FC<DefaultConditionLineProps> = ({
     [condition]
   );
 
-  const setValueFormValue = (value: string | null) =>
-    setValue(`content.conditions[${lineNumber}].value`, value);
   const setLocaleFormValue = (value: LocaleCode | null) => {
     setValue(`content.conditions[${lineNumber}].locale`, value);
     triggerValidation(`content.conditions[${lineNumber}].locale`);
