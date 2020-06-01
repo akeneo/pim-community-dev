@@ -3,3 +3,5 @@ akeneo_communication_channel:
         title: Akeneo Help Center Updates
     panel:
         title: What's new?
+        button:
+            close: 'Close'
