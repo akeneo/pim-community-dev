@@ -43,7 +43,9 @@ class FieldConverter implements FieldConverterInterface
     public function convert(string $fieldName, $value): ConvertedField
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
-        $quantifiedAssociationFields = $this->assocFieldResolver->resolveQuantifiedAssociationColumns();
+        $quantifiedAssociationFields = $this->assocFieldResolver->resolveQuantifiedIdentifierAssociationColumns();
+
+        //TODO skip -quantity
 
         if (in_array($fieldName, $associationFields)) {
             $value = $this->fieldSplitter->splitCollection($value);
@@ -51,8 +53,6 @@ class FieldConverter implements FieldConverterInterface
 
             return new ConvertedField('associations', [$associationTypeCode => [$associatedWith => $value]]);
         } else if (in_array($fieldName, $quantifiedAssociationFields)) {
-            var_dump($value); die;
-            $value = $this->fieldSplitter->splitCollection($value);
             list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
 
             return new ConvertedField('quantified_associations', [$associationTypeCode => [$associatedWith => $value]]);

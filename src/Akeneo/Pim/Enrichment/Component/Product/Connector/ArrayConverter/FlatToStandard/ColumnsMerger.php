@@ -251,8 +251,9 @@ class ColumnsMerger
      */
     protected function mergeQuantifiedAssociationData(array $resultRow, array $collectedQuantifiedAssociations)
     {
-        foreach ($collectedQuantifiedAssociations as $fieldName => $quantifiedAssociation) {
-            $resultRow[$fieldName] = implode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $quantifiedAssociation);
+        foreach ($collectedQuantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
+            $resultRow[sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, 'products')] = $quantifiedAssociation['products'];
+            $resultRow[sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, 'product_models')] = $quantifiedAssociation['product_models'];
         }
 
         return $resultRow;
