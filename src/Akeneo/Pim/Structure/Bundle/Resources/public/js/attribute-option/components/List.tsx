@@ -3,22 +3,24 @@ import {useAttributeOptions} from '../hooks';
 import {AttributeOption} from '../model';
 import ToggleButton from './ToggleButton';
 import AttributeOptionItem from './AttributeOptionItem';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const List = () => {
     const attributeOptions = useAttributeOptions();
+    const translate = useTranslate();
 
     return (
         <div className="AknSubsection AknAttributeOption-list">
             <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
-                <span>Option code</span>
-                <div className="AknButton AknButton--micro">Add option</div>
+                <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_codes')}</span>
+                <div className="AknButton AknButton--micro">{translate('pim_enrich.entity.product.module.attribute.add_option')}</div>
             </div>
 
-            <div>Sort automatically options by alphabetical order</div>
+            <div>{translate('pim_enrich.entity.attribute.property.auto_option_sorting')}</div>
             <ToggleButton />
 
-            <div>
-                {attributeOptions.map((attributeOption: AttributeOption) => {
+            <div role="attribute-options-list">
+                {attributeOptions !== null && attributeOptions.map((attributeOption: AttributeOption) => {
                     return (
                         <AttributeOptionItem key={attributeOption.code} data={attributeOption} />
                     );

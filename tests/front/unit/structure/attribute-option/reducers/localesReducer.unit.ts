@@ -1,7 +1,4 @@
-import {
-    initializeLocalesAction,
-    localesReducer
-} from '../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/reducers';
+import {initializeLocalesAction, localesReducer} from 'akeneopimstructure/js/attribute-option/reducers';
 
 describe('Locales reducer', () => {
     test('Default state is empty', () => {

@@ -1,7 +1,7 @@
 import {
-    initializeAttributeOptionsAction,
-    attributeOptionsReducer
-} from '../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/reducers';
+    attributeOptionsReducer,
+    initializeAttributeOptionsAction
+} from 'akeneopimstructure/js/attribute-option/reducers';
 
 const blackAndBlueOptions = [
     {

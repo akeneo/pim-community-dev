@@ -2,12 +2,22 @@ import React from 'react';
 import {Provider} from 'react-redux';
 import attributeOptionsStore from './store/store';
 import AttributeOptions from './components/AttributeOptions';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {AttributeContextProvider} from "./contexts";
 
-const Index = () => {
+interface IndexProps {
+  attributeId: number;
+}
+
+const Index = ({attributeId}: IndexProps) => {
     return (
-        <Provider store={attributeOptionsStore}>
-            <AttributeOptions/>
-        </Provider>
+        <DependenciesProvider>
+            <Provider store={attributeOptionsStore}>
+                <AttributeContextProvider attributeId={attributeId}>
+                    <AttributeOptions />
+                </AttributeContextProvider>
+            </Provider>
+        </DependenciesProvider>
     );
 };
 
