@@ -17,7 +17,7 @@ export const initializeAttributeOptionsAction: ActionCreator<InitializeAttribute
     };
 };
 
-const attributeOptionsReducer: Reducer<AttributeOption[]> = (previousState = [], {type, payload}) => {
+const attributeOptionsReducer: Reducer<AttributeOption[] | null> = (previousState = null, {type, payload}) => {
     switch (type) {
     case INITIALIZE_ATTRIBUTE_OPTIONS: {
         return [
