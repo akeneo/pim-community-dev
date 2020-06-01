@@ -84,6 +84,7 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
                 'family_variant_permission',
                 ['workflow_status' => 'working_copy'],
                 $emptyAssociations,
+                [],
                 ['own_category'],
                 new ReadValueCollection([
                     ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'en_US'),
@@ -102,6 +103,7 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
                 'family_variant_permission',
                 ['workflow_status' => 'working_copy'],
                 $emptyAssociations,
+                [],
                 ['own_category'],
                 new ReadValueCollection([
                     ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'en_US'),
