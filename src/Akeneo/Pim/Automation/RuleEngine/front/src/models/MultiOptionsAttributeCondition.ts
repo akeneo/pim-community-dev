@@ -6,8 +6,8 @@ import { Operator } from './Operator';
 import { ConditionDenormalizer, ConditionFactory } from './Condition';
 import {
   MultiOptionsAttributeConditionLine,
-  MultiOptionsAttributeConditionLineProps
-} from "../pages/EditRules/components/conditions/MultiOptionsAttributeConditionLine";
+  MultiOptionsAttributeConditionLineProps,
+} from '../pages/EditRules/components/conditions/MultiOptionsAttributeConditionLine';
 
 const TYPE = 'pim_catalog_multiselect';
 

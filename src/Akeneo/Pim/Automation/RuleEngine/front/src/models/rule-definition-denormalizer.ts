@@ -18,7 +18,7 @@ import {
   denormalizeSetAction,
   denormalizeSetFamilyAction,
 } from './actions';
-import { denormalizeMultiOptionsAttributeCondition } from "./MultiOptionsAttributeCondition";
+import { denormalizeMultiOptionsAttributeCondition } from './MultiOptionsAttributeCondition';
 
 function denormalizeAction(jsonAction: any): Action {
   const denormalizers: ((json: any) => Action | null)[] = [

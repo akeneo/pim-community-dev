@@ -41,8 +41,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       scopes={scopes}
       shouldDisplayValue={shouldDisplayValue}
       availableOperators={TextAttributeOperators}
-      setValueFormValue={setValueFormValue}
-    >
+      setValueFormValue={setValueFormValue}>
       <InputText
         data-testid={`edit-rules-input-${lineNumber}-value`}
         name={`content.conditions[${lineNumber}].value`}

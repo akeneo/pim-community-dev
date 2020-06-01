@@ -42,7 +42,7 @@ const familyConditionPredicate = (json: any): boolean => {
 };
 
 const denormalizeFamilyCondition: ConditionDenormalizer = async (
-  json: any,
+  json: any
 ): Promise<FamilyCondition | null> => {
   if (!familyConditionPredicate(json)) {
     return null;

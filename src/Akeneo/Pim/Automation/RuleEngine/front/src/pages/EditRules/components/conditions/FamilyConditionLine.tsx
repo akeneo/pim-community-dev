@@ -11,8 +11,8 @@ import { Operator } from '../../../../models/Operator';
 import { FamilyCode } from '../../../../models';
 import { FieldColumn, OperatorColumn, ValueColumn } from './style';
 import { FamiliesSelector } from '../../../../components/Selectors/FamiliesSelector';
-import { getFamiliesByIdentifiers } from "../../../../repositories/FamilyRepository";
-import { ConditionLineErrors } from "./ConditionLineErrors";
+import { getFamiliesByIdentifiers } from '../../../../repositories/FamilyRepository';
+import { ConditionLineErrors } from './ConditionLineErrors';
 
 type FamilyConditionLineProps = ConditionLineProps & {
   condition: FamilyCondition;
@@ -26,7 +26,9 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
   condition,
 }) => {
   const { watch, setValue } = useFormContext();
-  const [ unexistingFamilyCodes, setUnexistingFamilyCodes ] = React.useState<FamilyCode[]>([]);
+  const [unexistingFamilyCodes, setUnexistingFamilyCodes] = React.useState<
+    FamilyCode[]
+  >([]);
 
   React.useEffect(() => {
     // This method stores the unexisting families at the loading of the line.
@@ -35,9 +37,9 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
     if (!condition.value || condition.value.length === 0) {
       setUnexistingFamilyCodes([]);
     } else {
-      getFamiliesByIdentifiers(condition.value, router).then((families) => {
+      getFamiliesByIdentifiers(condition.value, router).then(families => {
         const unexistingFamilies: FamilyCode[] = [];
-        condition.value.forEach((familyCode) => {
+        condition.value.forEach(familyCode => {
           if (!families[familyCode]) {
             unexistingFamilies.push(familyCode);
           }
@@ -59,22 +61,26 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
   };
 
   const validateFamilyCodes = (familyCodes: FamilyCode[]) => {
-    if (shouldDisplayValue() && unexistingFamilyCodes.length) {
+    if (familyCodes && unexistingFamilyCodes.length) {
       const unknownFamilyCodes: FamilyCode[] = [];
-      familyCodes.forEach((familyCode) => {
+      familyCodes.forEach(familyCode => {
         if (unexistingFamilyCodes.includes(familyCode)) {
           unknownFamilyCodes.push(familyCode);
         }
       });
       if (unknownFamilyCodes.length) {
-        return translate('pimee_catalog_rule.exceptions.unknown_families', {
-          familyCodes: unknownFamilyCodes.join(', ')
-        }, unknownFamilyCodes.length);
+        return translate(
+          'pimee_catalog_rule.exceptions.unknown_families',
+          {
+            familyCodes: unknownFamilyCodes.join(', '),
+          },
+          unknownFamilyCodes.length
+        );
       }
     }
 
     return true;
-  }
+  };
 
   useValueInitialization(
     `content.conditions[${lineNumber}]`,
@@ -85,8 +91,8 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
     },
     {
       value: {
-        validate: validateFamilyCodes
-      }
+        validate: validateFamilyCodes,
+      },
     },
     [condition, unexistingFamilyCodes]
   );
@@ -132,7 +138,7 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
           />
         </ValueColumn>
       )}
-      <ConditionLineErrors lineNumber={lineNumber}/>
+      <ConditionLineErrors lineNumber={lineNumber} />
     </div>
   );
 };

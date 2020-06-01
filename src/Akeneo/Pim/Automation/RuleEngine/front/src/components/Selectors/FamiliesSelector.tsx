@@ -61,14 +61,18 @@ const initSelectedFamilies = async (
   );
 
   callback(
-    selectedFamilyCodes.map((familyCode) => {
-      return families[familyCode] ? {
-        id: familyCode,
-        text: families[familyCode].labels[currentCatalogLocale] || `[${familyCode}]`,
-      } : {
-        id: familyCode,
-        text: `[${familyCode}]`,
-      };
+    selectedFamilyCodes.map(familyCode => {
+      return families[familyCode]
+        ? {
+            id: familyCode,
+            text:
+              families[familyCode].labels[currentCatalogLocale] ||
+              `[${familyCode}]`,
+          }
+        : {
+            id: familyCode,
+            text: `[${familyCode}]`,
+          };
     })
   );
 };

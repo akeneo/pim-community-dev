@@ -139,6 +139,7 @@ pimee_catalog_rule:
         unknown_scope: The channel {{ scopeCode }} does not exist
         scope_on_unscopable_attribute: This attribute is not scopable. Please remove the scope before continue.
         unknown_families: "{1}The family {{ familyCodes }} does not exist|]1,+Inf[The families {{ familyCodes }} do not exist"
+        unknown_attribute_options: "{1}The option {{ attributeOptionCodes }} does not exist|]1,+Inf[The options {{ attributeOptionCodes }} do not exist"
 
 pim_enrich:
     entity:

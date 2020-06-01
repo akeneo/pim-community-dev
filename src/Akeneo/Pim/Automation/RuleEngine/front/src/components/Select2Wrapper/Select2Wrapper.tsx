@@ -30,7 +30,7 @@ type Select2Ajax = {
   ) => {
     search: string;
     options?: any;
-  };
+  } & { [key: string]: any };
   results: (
     values: any
   ) => {

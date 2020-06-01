@@ -38,6 +38,7 @@ final class GetAvailableConditionFieldsController
     ];
     private const AVAILABLE_FIELD_ATTRIBUTE_TYPES = [
         'pim_catalog_multiselect',
+        'pim_catalog_text',
     ];
 
     /** @var GetGroupedAttributes */
