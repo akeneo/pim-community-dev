@@ -7,7 +7,7 @@ use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi\AbstractProductModelTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateQuantifiedAssociationsInProductEndToEnd extends AbstractProductModelTestCase
+class DeleteQuantifiedAssociationsFromProductModelEndToEnd extends AbstractProductModelTestCase
 {
     use QuantifiedAssociationsTestCaseTrait;
 
@@ -30,12 +30,16 @@ class UpdateQuantifiedAssociationsInProductEndToEnd extends AbstractProductModel
     /**
      * @test
      */
-    public function it_can_partial_update_quantified_associations_in_a_product(): void
+    public function it_delete_quantified_associations_from_a_product_model(): void
     {
         $client = $this->createAuthenticatedClient();
-        $this->createQuantifiedAssociationType('PRODUCTSET_A');
-        $this->createQuantifiedAssociationType('PRODUCTSET_B');
-        $this->createProduct('chair', []);
+        $this->createQuantifiedAssociationType('PRODUCTSET');
+        $this->createProduct('table', []);
+        $this->createProductModel([
+            'code' => 'umbrella',
+            'family_variant' => 'familyVariantA1',
+            'values' => [],
+        ]);
         $code = 'garden_table_set';
 
         $data = <<<JSON
@@ -43,14 +47,12 @@ class UpdateQuantifiedAssociationsInProductEndToEnd extends AbstractProductModel
     "code": "$code",
     "family_variant": "familyVariantA1",
     "quantified_associations": {
-        "PRODUCTSET_A": {
+        "PRODUCTSET": {
             "products": [
-                {"identifier": "chair", "quantity": 4}
-            ]
-        },
-        "PRODUCTSET_B": {
-            "products": [
-                {"identifier": "chair", "quantity": 4}
+                {"identifier": "table", "quantity": 1}
+            ],
+            "product_models": [
+                {"identifier": "umbrella", "quantity": 1}
             ]
         }
     }
@@ -63,10 +65,9 @@ JSON;
 {
     "code": "$code",
     "quantified_associations": {
-        "PRODUCTSET_A": {
-            "products": [
-                {"identifier": "chair", "quantity": 6}
-            ]
+        "PRODUCTSET": {
+            "products": [],
+            "product_models": []
         }
     }
 }
@@ -84,16 +85,8 @@ JSON;
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [],
             'quantified_associations' => [
-                'PRODUCTSET_A' => [
-                    'products' => [
-                        ['identifier' => 'chair', 'quantity' => 6],
-                    ],
-                    'product_models' => [],
-                ],
-                'PRODUCTSET_B' => [
-                    'products' => [
-                        ['identifier' => 'chair', 'quantity' => 4],
-                    ],
+                'PRODUCTSET' => [
+                    'products' => [],
                     'product_models' => [],
                 ],
             ],
@@ -102,7 +95,7 @@ JSON;
         $response = $client->getResponse();
 
         $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertSameProductModels($expectedProductModel, $code);
     }
 }
