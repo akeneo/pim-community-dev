@@ -125,7 +125,13 @@ class Reader implements FileReaderInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('filePath');
-        $fileData = current(Yaml::parse(file_get_contents($filePath)));
+        $fileContent = file_get_contents($filePath);
+        if (false !== $fileContent) {
+            if (null !== $this->stepExecution) {
+                $this->stepExecution->setSummary(['item_position' => 0]);
+            }
+        }
+        $fileData = current(Yaml::parse($fileContent));
         if (null === $fileData) {
             return null;
         }
