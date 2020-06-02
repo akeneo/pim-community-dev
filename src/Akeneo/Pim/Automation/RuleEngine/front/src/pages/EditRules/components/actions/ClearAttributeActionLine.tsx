@@ -1,13 +1,13 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { AttributeCode } from '../../../../models';
+import { AttributeCode, LocaleCode, ScopeCode } from '../../../../models';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
-import { AttributeSelector } from '../../../../components/Selectors/AttributeSelector';
 import { ActionTitle } from './ActionLine';
 import { ClearAttributeAction } from '../../../../models/actions';
 import { ActionLineErrors } from './ActionLineErrors';
+import { AttributeLocaleScopeSelector } from './AttributeLocaleScopeSelector';
 
 type Props = {
   action: ClearAttributeAction;
@@ -54,6 +54,15 @@ const ClearAttributeActionLine: React.FC<Props> = ({
     triggerValidation(`content.actions[${lineNumber}].field`);
   };
 
+  const setLocaleFormValue = (value: LocaleCode | null) => {
+    setValue(`content.actions[${lineNumber}].locale`, value);
+    triggerValidation(`content.actions[${lineNumber}].locale`);
+  };
+  const setScopeFormValue = (value: ScopeCode | null) => {
+    setValue(`content.actions[${lineNumber}].scope`, value);
+    triggerValidation(`content.actions[${lineNumber}].scope`);
+  };
+
   return (
     <ActionTemplate
       translate={translate}
@@ -68,20 +77,27 @@ const ClearAttributeActionLine: React.FC<Props> = ({
           'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
         )}
       </ActionTitle>
-      <div className={'AknFormContainer'}>
-        <AttributeSelector
-          id={`edit-rules-action-${lineNumber}-field`}
-          label={`${translate(
-            'pimee_catalog_rule.form.edit.fields.attribute'
-          )} ${translate('pim_common.required_label')}`}
-          currentCatalogLocale={currentCatalogLocale}
-          value={getFieldFormValue()}
-          onChange={setFieldFormValue}
-          placeholder={translate(
-            'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
-          )}
-        />
-      </div>
+      <AttributeLocaleScopeSelector
+        attributeId={`edit-rules-action-${lineNumber}-field`}
+        scopeId={`edit-rules-action-${lineNumber}-scope`}
+        localeId={`edit-rules-action-${lineNumber}-locale`}
+        attributeLabel={`${translate(
+          'pimee_catalog_rule.form.edit.fields.attribute'
+        )} ${translate('pim_common.required_label')}`}
+        currentCatalogLocale={currentCatalogLocale}
+        attributeCode={getFieldFormValue()}
+        onAttributeChange={setFieldFormValue}
+        attributePlaceholder={translate(
+          'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
+        )}
+        onLocaleChange={setLocaleFormValue}
+        onScopeChange={setScopeFormValue}
+        translate={translate}
+        localeLabel={``}
+        localePlaceholder={``}
+        scopeLabel={``}
+        scopePlaceholder={``}
+      />
       <ActionLineErrors lineNumber={lineNumber} />
     </ActionTemplate>
   );
