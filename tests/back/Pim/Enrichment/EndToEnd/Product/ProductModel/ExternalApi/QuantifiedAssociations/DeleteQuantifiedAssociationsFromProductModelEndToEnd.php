@@ -95,7 +95,7 @@ JSON;
         $response = $client->getResponse();
 
         $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProductModels($expectedProductModel, $code);
     }
 }
