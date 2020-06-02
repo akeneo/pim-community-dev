@@ -2,7 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Exception;
 
-use Akeneo\Pim\Enrichment\Component\DocumentedExceptionInterface;
+use Akeneo\Pim\Enrichment\Component\Error\DocumentedErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use PhpSpec\ObjectBehavior;
@@ -29,9 +30,14 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
         $this->shouldHaveType(\Exception::class);
     }
 
-    function it_is_a_documented_exception()
+    function it_is_an_identifiable_domain_error()
     {
-        $this->shouldImplement(DocumentedExceptionInterface::class);
+        $this->shouldImplement(IdentifiableDomainErrorInterface::class);
+    }
+
+    function it_is_a_documented_error()
+    {
+        $this->shouldImplement(DocumentedErrorInterface::class);
     }
 
     function it_returns_an_exception_message()

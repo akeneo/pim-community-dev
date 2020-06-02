@@ -82,7 +82,7 @@ JSON;
 
         $expectedContent = [
             'type' => 'domain_error',
-            'domain_error_code' => '1',
+            'domain_error_identifier' => '1',
             'message' => 'Attribute "description" does not exist.',
             'documentation' =>  [
                 [
@@ -291,7 +291,7 @@ JSON;
 
         $expectedContent = [
             'type' => 'domain_error',
-            'domain_error_code' => '1',
+            'domain_error_identifier' => '1',
             'message' => 'Attribute "description" does not exist.',
             'documentation' => [
                 [

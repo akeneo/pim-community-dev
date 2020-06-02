@@ -18,12 +18,14 @@ class ProductDomainErrorNormalizer implements NormalizerInterface
 {
     /**
      * @param IdentifiableDomainErrorInterface $object
+     * @param string $format
+     * @param array $context
      */
     public function normalize($object, $format = null, array $context = []): array
     {
         $data = [
             'type' => 'domain_error',
-            'domain_error_code' => $object->getErrorIdentifier()
+            'domain_error_identifier' => $object->getErrorIdentifier()
         ];
 
         if ($object instanceof \Throwable) {

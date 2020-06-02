@@ -19,11 +19,13 @@ class ConstraintViolationNormalizer extends ViolationNormalizer
 {
     /**
      * @param ConstraintViolationInterface $object
+     * @param string $format
+     * @param array $context
      */
     public function normalize($object, $format = null, array $context = []): array
     {
-        $existingViolation = [];
-        $data = parent::normalizeViolation($object, $existingViolation);
+        $data = parent::normalizeViolation($object);
+        unset($data['_key']);
 
         $data['type'] = 'violation_error';
         $data['message_template'] = $object->getMessageTemplate();
