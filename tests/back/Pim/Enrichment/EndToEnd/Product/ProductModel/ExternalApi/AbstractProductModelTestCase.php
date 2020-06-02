@@ -127,12 +127,12 @@ JSON;
     }
 
     /**
-     * @param array  $expectedProductModel normalized data of the product model that should be created
-     * @param string $identifier           identifier of the product that should be created
+     * @param array $expectedProductModel normalized data of the product model that should be created
+     * @param string $code code of the product model that should be created
      */
-    protected function assertSameProductModels(array $expectedProductModel, $identifier)
+    protected function assertSameProductModels(array $expectedProductModel, $code)
     {
-        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier($identifier);
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier($code);
         $standardizedProductModel = $this->get('pim_standard_format_serializer')->normalize($productModel, 'standard');
 
         NormalizedProductCleaner::clean($expectedProductModel);
