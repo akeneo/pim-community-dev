@@ -5,6 +5,7 @@
 ## Improvement
 
 -PIM-9106: Improve error message when editing an attribute when it's due to a regular expression
+-PIM-9267: Add a service for SSO IdP in docker-compose.yml (as mentioned in the documentation page)
 
 ## Bug fixes
 
