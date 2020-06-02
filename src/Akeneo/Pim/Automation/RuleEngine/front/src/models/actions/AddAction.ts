@@ -9,17 +9,19 @@ export type AddAction = {
   items: string[];
 } & ProductField;
 
-export const denormalizeAddAction = (json: any): AddAction | null => {
+export const denormalizeAddAction = async (
+  json: any
+): Promise<AddAction | null> => {
   if (json.type !== 'add') {
     return null;
   }
 
-  return {
+  return Promise.resolve({
     module: AddActionLine,
     type: 'add',
     items: json.items,
     field: json.field,
     locale: json.locale || null,
     scope: json.scope || null,
-  };
+  });
 };

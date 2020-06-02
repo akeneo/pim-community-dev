@@ -1,12 +1,9 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 import { ClearAction } from '../../../../models/actions';
-import { AttributeCode } from '../../../../models';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
-import { AttributeSelector } from '../../../../components/Selectors/AttributeSelector';
-import { ActionTitle } from './ActionLine';
+import { FallbackField } from '../FallbackField';
 
 type Props = {
   action: ClearAction;
@@ -17,10 +14,7 @@ const ClearActionLine: React.FC<Props> = ({
   lineNumber,
   action,
   handleDelete,
-  currentCatalogLocale,
 }) => {
-  const { watch, setValue } = useFormContext();
-
   const values: any = {
     type: 'clear',
     field: action.field,
@@ -38,39 +32,25 @@ const ClearActionLine: React.FC<Props> = ({
     action,
   ]);
 
-  const getFieldFormValue: () => AttributeCode | null = () =>
-    watch(`content.actions[${lineNumber}].field`);
-
-  const setFieldFormValue = (value: AttributeCode | null) =>
-    setValue(`content.actions[${lineNumber}].field`, value);
-
   return (
     <ActionTemplate
       translate={translate}
-      title={translate(
-        'pimee_catalog_rule.form.edit.actions.clear_attribute.title'
-      )}
+      title='Clear Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
-      <ActionTitle>
-        {translate(
-          'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
-        )}
-      </ActionTitle>
-      <div className={'AknFormContainer'}>
-        <AttributeSelector
-          id={`edit-rules-action-${lineNumber}-field`}
-          label={`${translate(
-            'pimee_catalog_rule.form.edit.fields.attribute'
-          )} ${translate('pim_common.required_label')}`}
-          currentCatalogLocale={currentCatalogLocale}
-          value={getFieldFormValue()}
-          onChange={setFieldFormValue}
-          placeholder={translate(
-            'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
-          )}
-        />
+      <div className='AknGrid AknGrid--unclickable'>
+        <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
+          <div className='AknGrid-bodyCell'>
+            <FallbackField
+              field={action.field}
+              scope={action.scope}
+              locale={action.locale}
+            />
+            {/* It is not translated since it is temporary. */}
+            &nbsp;is cleared.
+          </div>
+        </div>
       </div>
     </ActionTemplate>
   );

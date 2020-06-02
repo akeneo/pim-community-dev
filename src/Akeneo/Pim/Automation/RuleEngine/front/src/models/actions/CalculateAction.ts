@@ -15,15 +15,15 @@ export type CalculateAction = {
   // round_precision: number | null;
 };
 
-export const denormalizeCalculateAction = (
+export const denormalizeCalculateAction = async (
   json: any
-): CalculateAction | null => {
+): Promise<CalculateAction | null> => {
   if (json.type !== 'calculate') {
     return null;
   }
 
   try {
-    return {
+    return Promise.resolve({
       module: CalculateActionLine,
       type: 'calculate',
       destination: json.destination,
@@ -33,7 +33,7 @@ export const denormalizeCalculateAction = (
       ),
       // TODO: uncomment when it will be ready
       // round_precision: json.round_precision || null,
-    };
+    });
   } catch (e) {
     console.error(e);
 

@@ -8,26 +8,18 @@ export type ClearAction = {
   type: 'clear';
 } & ProductField;
 
-export const denormalizeClearAction = (json: any): ClearAction | null => {
+export const denormalizeClearAction = async (
+  json: any
+): Promise<ClearAction | null> => {
   if (json.type !== 'clear') {
     return null;
   }
 
-  return {
+  return Promise.resolve({
     module: ClearActionLine,
     type: 'clear',
     field: json.field,
     locale: json.locale || null,
     scope: json.scope || null,
-  };
-};
-
-export const createClearAction: () => ClearAction = () => {
-  return {
-    module: ClearActionLine,
-    type: 'clear',
-    field: '',
-    locale: null,
-    scope: null,
-  };
+  });
 };

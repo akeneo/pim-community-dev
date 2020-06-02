@@ -1,12 +1,13 @@
 import { RuleDefinition } from './RuleDefinition';
-import { denormalizeFallbackAction, FallbackAction } from './FallbackAction';
-import { Action } from './Action';
+import { denormalizeFallbackAction } from './FallbackAction';
+import { Action, ActionDenormalizer } from './Action';
 import { Router } from '../dependenciesTools';
 import { getAttributesByIdentifiers } from '../repositories/AttributeRepository';
 import {
   denormalizeAddAction,
   denormalizeCalculateAction,
   denormalizeClearAction,
+  denormalizeClearAttributeAction,
   denormalizeConcatenateAction,
   denormalizeCopyAction,
   denormalizeRemoveAction,
@@ -24,9 +25,15 @@ import {
   denormalizeCategoryCondition,
 } from './conditions';
 
-function denormalizeAction(jsonAction: any): Action {
-  const denormalizers: ((json: any) => Action | null)[] = [
+async function denormalizeAction(
+  jsonAction: any,
+  router: Router
+): Promise<Action> {
+  const denormalizers: ActionDenormalizer[] = [
+    // Order is important: the first denormalizer that returns an Action is used.
     denormalizeSetFamilyAction,
+    denormalizeClearAttributeAction,
+    // Fallback actions
     denormalizeAddAction,
     denormalizeCalculateAction,
     denormalizeClearAction,
@@ -38,7 +45,7 @@ function denormalizeAction(jsonAction: any): Action {
 
   for (let i = 0; i < denormalizers.length; i++) {
     const denormalizer = denormalizers[i];
-    const action = denormalizer(jsonAction);
+    const action = await denormalizer(jsonAction, router);
     if (action !== null) {
       return action;
     }
@@ -104,15 +111,17 @@ export const denormalize = async function(
   const code = json.code;
   const labels = json.labels;
   const priority = json.priority;
-  let actions: FallbackAction[] = [];
+  let actions: Action[] = [];
   let conditions: Condition[] = [];
 
   await prepareCacheAttributes(json, router);
 
   if (Array.isArray(json.content.actions)) {
-    actions = json.content.actions.map((jsonAction: any) => {
-      return denormalizeAction(jsonAction);
-    });
+    actions = await Promise.all(
+      json.content.actions.map(async (jsonAction: any) => {
+        return await denormalizeAction(jsonAction, router);
+      })
+    );
   }
 
   if (Array.isArray(json.content.conditions)) {

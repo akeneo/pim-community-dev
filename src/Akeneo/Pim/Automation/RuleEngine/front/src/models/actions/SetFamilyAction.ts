@@ -10,9 +10,9 @@ export type SetFamilyAction = {
   value: FamilyCode | null;
 };
 
-export const denormalizeSetFamilyAction = (
+export const denormalizeSetFamilyAction = async (
   json: any
-): SetFamilyAction | null => {
+): Promise<SetFamilyAction | null> => {
   if (json.type !== 'set') {
     return null;
   }
@@ -20,12 +20,12 @@ export const denormalizeSetFamilyAction = (
     return null;
   }
 
-  return {
+  return Promise.resolve({
     module: SetFamilyActionLine,
     type: 'set',
     field: 'family',
     value: json.value || null,
-  };
+  });
 };
 
 export const createSetFamilyAction: () => SetFamilyAction = () => {

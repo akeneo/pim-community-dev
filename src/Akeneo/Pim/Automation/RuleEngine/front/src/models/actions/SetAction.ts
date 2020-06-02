@@ -9,17 +9,19 @@ export type SetAction = {
   value: any;
 } & ProductField;
 
-export const denormalizeSetAction = (json: any): SetAction | null => {
+export const denormalizeSetAction = async (
+  json: any
+): Promise<SetAction | null> => {
   if (json.type !== 'set') {
     return null;
   }
 
-  return {
+  return Promise.resolve({
     module: SetActionLine,
     type: 'set',
     field: json.field,
     locale: json.locale || null,
     scope: json.scope || null,
     value: json.value,
-  };
+  });
 };

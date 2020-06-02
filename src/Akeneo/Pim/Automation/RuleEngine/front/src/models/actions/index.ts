@@ -1,6 +1,7 @@
 export * from './AddAction';
 export * from './CalculateAction';
 export * from './ClearAction';
+export * from './ClearAttributeAction';
 export * from './ConcatenateAction';
 export * from './CopyAction';
 export * from './RemoveAction';

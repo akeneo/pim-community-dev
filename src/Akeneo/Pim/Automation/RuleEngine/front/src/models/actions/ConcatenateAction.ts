@@ -10,17 +10,17 @@ export type ConcatenateAction = {
   to: ProductField;
 };
 
-export const denormalizeConcatenateAction = (
+export const denormalizeConcatenateAction = async (
   json: any
-): ConcatenateAction | null => {
+): Promise<ConcatenateAction | null> => {
   if (json.type !== 'concatenate') {
     return null;
   }
 
-  return {
+  return Promise.resolve({
     module: ConcatenateActionLine,
     type: 'concatenate',
     from: json.from,
     to: json.to,
-  };
+  });
 };

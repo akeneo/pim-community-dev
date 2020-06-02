@@ -13,12 +13,14 @@ export type CopyAction = {
   to_scope: string | null;
 };
 
-export const denormalizeCopyAction = (json: any): CopyAction | null => {
+export const denormalizeCopyAction = async (
+  json: any
+): Promise<CopyAction | null> => {
   if (json.type !== 'copy') {
     return null;
   }
 
-  return {
+  return Promise.resolve({
     module: CopyActionLine,
     type: 'copy',
     from_field: json.from_field,
@@ -27,5 +29,5 @@ export const denormalizeCopyAction = (json: any): CopyAction | null => {
     to_field: json.to_field,
     to_locale: json.to_locale || null,
     to_scope: json.to_scope || null,
-  };
+  });
 };

@@ -10,12 +10,14 @@ export type RemoveAction = {
   include_children: boolean | null;
 } & ProductField;
 
-export const denormalizeRemoveAction = (json: any): RemoveAction | null => {
+export const denormalizeRemoveAction = async (
+  json: any
+): Promise<RemoveAction | null> => {
   if (json.type !== 'remove') {
     return null;
   }
 
-  return {
+  return Promise.resolve({
     module: RemoveActionLine,
     type: 'remove',
     items: json.items,
@@ -23,5 +25,5 @@ export const denormalizeRemoveAction = (json: any): RemoveAction | null => {
     locale: json.locale || null,
     scope: json.scope || null,
     include_children: json.include_children || null,
-  };
+  });
 };
