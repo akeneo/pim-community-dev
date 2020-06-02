@@ -422,7 +422,7 @@ jobs:
           - run:
               name: Remove env on kubernetes
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make delete
-              when: always
+              when: on_fail
 
   delete_pr_environments:
       environment:
