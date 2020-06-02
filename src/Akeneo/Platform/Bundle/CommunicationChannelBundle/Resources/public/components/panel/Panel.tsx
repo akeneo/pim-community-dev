@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import {useCards} from 'akeneocommunicationchannel/hooks/useCards';
+import {CardFetcherImplementation, CardFetcher} from 'akeneocommunicationchannel/fetcher/card';
 
 const mediator = require('oro/mediator');
 const __ = require('oro/translator');
@@ -25,7 +27,16 @@ const CloseButton = styled.div`
   height: 50px;
 `;
 
+type PanelDataProvider = {
+  cardFetcher: CardFetcher;
+};
+
+const dataProvider: PanelDataProvider = {
+  cardFetcher: CardFetcherImplementation
+};
+
 const Panel = () => {
+  useCards(dataProvider.cardFetcher);
   const closePanel = () => {
     mediator.trigger('communication-channel:panel:close');
   };
