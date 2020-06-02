@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
@@ -140,6 +141,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         AssociationTypeInterface $crossSell,
         ProductAssociation $myUpSell,
         AssociationTypeInterface $upSell,
+        AssociationTypeInterface $set,
+        QuantifiedAssociations $productQuantifiedAssociations,
         GroupInterface $associatedGroup1,
         GroupInterface $associatedGroup2,
         ProductInterface $associatedProduct1,
@@ -157,16 +160,21 @@ class ProductNormalizerSpec extends ObjectBehavior
         $sku->isScopable()->willReturn(false);
         $sku->getData()->willReturn('sku-001');
 
+        $crossSell->isQuantified()->willReturn(false);
         $crossSell->getCode()->willReturn('cross_sell');
         $myCrossSell->getAssociationType()->willReturn($crossSell);
         $myCrossSell->getGroups()->willReturn([]);
         $myCrossSell->getProducts()->willReturn([]);
         $myCrossSell->getProductModels()->willReturn(new ArrayCollection());
         $upSell->getCode()->willReturn('up_sell');
+        $upSell->isQuantified()->willReturn(false);
         $myUpSell->getAssociationType()->willReturn($upSell);
         $associatedGroup1->getCode()->willReturn('associated_group1');
         $associatedGroup2->getCode()->willReturn('associated_group2');
         $myUpSell->getGroups()->willReturn([$associatedGroup1, $associatedGroup2]);
+
+        $set->isQuantified()->willReturn(true);
+        $set->getCode()->willReturn('set');
 
         $skuAssocProduct1->getAttributeCode()->willReturn('sku');
         $skuAssocProduct2->getAttributeCode()->willReturn('sku');
@@ -213,6 +221,10 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'up_sell-groups' => 'associated_group1,associated_group2',
                 'up_sell-products' => 'sku_assoc_product1,sku_assoc_product2',
                 'up_sell-product_models' => 'obi,wan',
+                'set-products-sku_assoc_product1' => '14',
+                'set-products-sku_assoc_product2' => '2',
+                'set-product_models-obi' => '0',
+                'set-product_models-one' => '1',
                 'sku' => 'sku-001',
                 'enabled' => 1,
             ]

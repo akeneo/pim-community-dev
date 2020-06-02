@@ -75,6 +75,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         $results[self::FIELD_CATEGORY] = $this->normalizeCategories($object->getCategoryCodes());
         $results[self::FIELD_PARENT] = $this->normalizeParent($object->getParent());
         $results = array_merge($results, $this->normalizeAssociations($object->getAssociations()));
+        $results = array_merge($results, $this->normalizeQuantifiedAssociations($object));
         $results = array_replace($results, $this->normalizeValues($object, $format, $context));
         $results[self::FIELD_ENABLED] = (int) $object->isEnabled();
 
@@ -233,6 +234,48 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     {
         $results = [];
         foreach ($associations as $association) {
+            if ($association->getAssociationType()->isQuantified()) {
+                continue;
+            }
+            $columnPrefix = $association->getAssociationType()->getCode();
+
+            $groups = [];
+            foreach ($association->getGroups() as $group) {
+                $groups[] = $group->getCode();
+            }
+
+            $products = [];
+            foreach ($association->getProducts() as $product) {
+                $products[] = $product->getIdentifier();
+            }
+
+            $productModels = [];
+            foreach ($association->getProductModels() as $productModel) {
+                $productModels[] = $productModel->getCode();
+            }
+
+            $results[$columnPrefix . '-groups'] = implode(',', $groups);
+            $results[$columnPrefix . '-products'] = implode(',', $products);
+            $results[$columnPrefix . '-product_models'] = implode(',', $productModels);
+        }
+
+        return $results;
+    }
+
+    /**
+     * Normalize associations
+     *
+     * @param Collection|AssociationInterface[] $associations
+     *
+     * @return array
+     */
+    protected function normalizeQuantifiedAssociations($associations = []): array
+    {
+        $results = [];
+        foreach ($associations as $association) {
+            if (!$association->getAssociationType()->isQuantified()) {
+                continue;
+            }
             $columnPrefix = $association->getAssociationType()->getCode();
 
             $groups = [];
