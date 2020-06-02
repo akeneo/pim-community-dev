@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Error\DocumentedErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -39,7 +39,7 @@ class ProductDomainErrorNormalizer implements NormalizerInterface, CacheableSupp
         }
 
         if ($object instanceof DocumentedErrorInterface) {
-            $data['documentation'] = $object->getDocumentation();
+            $data['documentation'] = $object->getDocumentation()->normalize();
         }
 
         if (isset($context['product'])) {

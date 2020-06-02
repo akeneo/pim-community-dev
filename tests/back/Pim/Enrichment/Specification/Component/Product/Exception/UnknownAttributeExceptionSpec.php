@@ -2,7 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Exception;
 
-use Akeneo\Pim\Enrichment\Component\Error\DocumentedErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentationCollection;
+use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\Documented\MessageParameterTypes;
 use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\ProductDomainErrorIdentifiers;
@@ -69,33 +71,38 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
 
     function it_provides_documentation()
     {
-        $this->getDocumentation()->shouldReturn([
+        $collection = $this->getDocumentation();
+        $collection->shouldBeAnInstanceOf(DocumentationCollection::class);
+        $collection->normalize()->shouldReturn([
             [
-                'message' => 'More information about attributes: %s %s.',
-                'params' => [
-                    [
+                'message' => 'More information about attributes: {what_is_attribute} {manage_attribute}.',
+                'parameters' => [
+                    '{what_is_attribute}' => [
+                        'type' => MessageParameterTypes::HREF,
                         'href' => 'https://help.akeneo.com/pim/serenity/articles/what-is-an-attribute.html',
                         'title' => 'What is an attribute?',
-                        'type' => 'href'
+                        'needle' => '{what_is_attribute}',
                     ],
-                    [
+                    '{manage_attribute}' => [
+                        'type' => MessageParameterTypes::HREF,
                         'href' => 'https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html',
                         'title' => 'Manage your attributes',
-                        'type' => 'href'
+                        'needle' => '{manage_attribute}',
                     ],
-                ],
+                ]
             ],
             [
-                'message' => 'Please check your %s.',
-                'params' => [
-                    [
+                'message' => 'Please check your {attribute_settings}.',
+                'parameters' => [
+                    '{attribute_settings}' => [
+                        'type' => MessageParameterTypes::ROUTE,
                         'route' => 'pim_enrich_attribute_index',
-                        'params' => [],
+                        'routeParameters' => [],
                         'title' => 'Attributes settings',
-                        'type' => 'route',
+                        'needle' => '{attribute_settings}',
                     ],
-                ],
-            ],
+                ]
+            ]
         ]);
     }
 }

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Exception;
 
+use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentationCollection;
+use Akeneo\Pim\Enrichment\Component\Error\Documented\MessageParameterTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -22,17 +24,20 @@ class DocumentedExceptionRouteExistsIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function assertRoutesExist(array $documentation, string $fqcn): void
+    private function assertRoutesExist(DocumentationCollection $documentationCollection, string $fqcn): void
     {
         /** @var RouterInterface */
         $router = $this->get('router');
-        $collection = $router->getRouteCollection();
+        $routeCollection = $router->getRouteCollection();
 
         $routesNotFound = [];
-        foreach ($documentation as $document) {
-            foreach ($document['params'] as $param) {
-                if ('route' === $param['type'] && null === $collection->get($param['route'])) {
-                    $routesNotFound[] = $param['route'];
+        foreach ($documentationCollection->normalize() as $documentation) {
+            foreach ($documentation['parameters'] as $param) {
+                if (
+                    MessageParameterTypes::ROUTE === $param['type'] &&
+                    null === $routeCollection->get($param[MessageParameterTypes::ROUTE])
+                ) {
+                    $routesNotFound[] = $param[MessageParameterTypes::ROUTE];
                 }
             }
         }
