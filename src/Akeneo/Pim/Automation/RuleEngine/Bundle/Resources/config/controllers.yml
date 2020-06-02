@@ -53,6 +53,7 @@ services:
 
     pimee_enrich.controller.rule_definition.get_impacted_product_count:
         class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetImpactedProductCountController'
+        public: true
         arguments:
             - '@pimee_catalog_rule.builder.product'
             - '@pimee_catalog_rule.selector.product'

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { FormContext } from 'react-hook-form';
-
 import * as akeneoTheme from '../../theme';
 import {
   AkeneoSpinner,
@@ -21,6 +20,8 @@ import {
 import { Locale, RuleDefinition } from '../../models';
 import { useSubmitEditRuleForm } from './hooks';
 import { IndexedScopes } from '../../repositories/ScopeRepository';
+import { AddActionButton } from './components/actions/AddActionButton';
+import { Action } from '../../models/Action';
 
 type Props = {
   ruleDefinitionCode: string;
@@ -70,6 +71,30 @@ const EditRulesContent: React.FC<Props> = ({
     (formMethods.watch(`labels.${currentCatalogLocale}`) as string) ||
     `[${ruleDefinitionCode}]`;
 
+  const [actions, setActions] = React.useState<(Action | null)[]>(
+    ruleDefinition.actions
+  );
+  React.useEffect(() => {
+    setActions(ruleDefinition.actions);
+  }, [ruleDefinition]);
+
+  const handleDeleteAction = (lineNumber: number) => {
+    Object.keys(formMethods.getValues()).forEach((value: string) => {
+      if (value.startsWith(`content.actions[${lineNumber}]`)) {
+        formMethods.unregister(value);
+      }
+    });
+    setActions(
+      actions.map((action: Action | null, i: number) => {
+        return i === lineNumber ? null : action;
+      })
+    );
+  };
+
+  const handleAddAction = (action: Action) => {
+    setActions([...actions, action]);
+  };
+
   return (
     <ThemeProvider theme={akeneoTheme}>
       {pending && <AkeneoSpinner />}
@@ -78,7 +103,13 @@ const EditRulesContent: React.FC<Props> = ({
         formId='edit-rules-form'
         title={title}
         translate={translate}
-        unsavedChanges={formMethods.formState.dirtyFields.size > 0}>
+        unsavedChanges={formMethods.formState.dirtyFields.size > 0}
+        secondaryButton={
+          <AddActionButton
+            translate={translate}
+            handleAddAction={handleAddAction}
+          />
+        }>
         <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>
           {translate('pim_menu.tab.settings')}
         </BreadcrumbItem>
@@ -90,13 +121,15 @@ const EditRulesContent: React.FC<Props> = ({
       <Content>
         <FormContext {...formMethods}>
           <EditRulesForm
-            onSubmit={onSubmit}
-            locales={locales}
-            ruleDefinition={ruleDefinition}
-            translate={translate}
-            scopes={scopes}
             currentCatalogLocale={currentCatalogLocale}
+            locales={locales}
+            onSubmit={onSubmit}
             router={router}
+            ruleDefinition={ruleDefinition}
+            scopes={scopes}
+            translate={translate}
+            actions={actions}
+            handleDeleteAction={handleDeleteAction}
           />
         </FormContext>
       </Content>

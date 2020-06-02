@@ -34,13 +34,19 @@ const transformFormData = (formData: FormData): Payload => {
       })
     : [];
 
+  const filledActions = formData.content
+    ? formData.content.actions.filter((action: Action | null) => {
+        return action !== null;
+      })
+    : [];
+
   return {
     ...formData,
     priority: Number(formData.priority),
     content: {
       ...formData.content,
       conditions: filledConditions,
-      actions: (formData.content && formData.content.actions) || [],
+      actions: filledActions,
     },
   };
 };
@@ -121,7 +127,6 @@ const useSubmitEditRuleForm = (
   setRuleDefinition: (ruleDefinition: RuleDefinition) => void
 ) => {
   const defaultValues = createFormDefaultValues(ruleDefinition, locales);
-  console.log(defaultValues);
   const formMethods = useForm<FormData>({
     defaultValues,
   });
@@ -133,6 +138,7 @@ const useSubmitEditRuleForm = (
     formMethods.reset,
     setRuleDefinition
   );
+
   return {
     onSubmit: formMethods.handleSubmit(onSubmit),
     formMethods,

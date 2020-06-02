@@ -1,2 +1,9 @@
 user:
   email_notifications: E-Mail-Benachrichtigungen
+pimee_enrich.entity.product:
+  duplicate:
+    title: Produkt {{ product_identifier }} duplizieren
+    button: Duplizieren
+    flash:
+      success: Das Produkt {{ product_identifier }} wurde erfolgreich dupliziert.
+      success_with_attribute_codes: Das Produkt {{ product_identifier }} wurde erfolgreich dupliziert. Sie müssen {{ unique_attribute_codes }} mit einzigartigen Werten anreichern.

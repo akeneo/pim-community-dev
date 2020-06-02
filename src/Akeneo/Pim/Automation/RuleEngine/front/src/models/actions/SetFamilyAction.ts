@@ -27,3 +27,12 @@ export const denormalizeSetFamilyAction = (
     value: json.value || null,
   };
 };
+
+export const createSetFamilyAction: () => SetFamilyAction = () => {
+  return {
+    module: SetFamilyActionLine,
+    type: 'set',
+    field: 'family',
+    value: null,
+  };
+};

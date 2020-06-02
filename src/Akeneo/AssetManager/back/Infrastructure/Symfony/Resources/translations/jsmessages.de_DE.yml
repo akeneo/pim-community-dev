@@ -230,6 +230,8 @@ pim_asset_manager:
       link: Klicken Sie hier, um Ihre erste Benutzergruppe hinzuzufügen
   asset:
     img: Das Hauptmedium des Assets mit dem Namen "{{ label }}"
+    created_at: Erstellt
+    updated_at: Aktualisiert
     validation:
       limit_reached: 'Du kannst das Asset "{{ %asset_label% }}" nicht erstellen, da du die Grenze von {{ %limit% }} Assets für diese Asset-Familie erreicht hast'
       code:
@@ -479,9 +481,11 @@ pim_asset_manager:
     media_link:
       placeholder: Medienlink hier einfügen
       read_only: Dieser Medienlink kann nur gelesen werden
+      reload: Medien-Link-Thumbnail neu laden
     media_file:
       placeholder: Upload per Drag & Drop oder hier klicken
       read_only: Diese Mediendatei kann nur gelesen werden
+      uploading: Hochladen...
     used_as_transformation_target: Dieses Feld wird nur gelesen, da es als Ziel in einer Asset-Transformation verwendet wird.
   modal:
     delete:

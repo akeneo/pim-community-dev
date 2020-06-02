@@ -1,2 +1,6 @@
+akeneo_referenceentity:
+  acl:
+    reference_entity:
+      manage_permission: Zarządzaj uprawnieniami obiektu referencyjnego
 akeneo_reference_entity: Pojedynczy link do obiektu referencyjnego
 akeneo_reference_entity_collection: Wielokrotne linki do obiektu referencyjnego

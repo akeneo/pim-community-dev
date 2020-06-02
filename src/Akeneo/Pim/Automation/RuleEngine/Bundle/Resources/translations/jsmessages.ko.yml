@@ -78,7 +78,6 @@ pimee_catalog_rule:
         label: 우선순위
       add_to_category: 카테고리에 추가
       add_conditions: 조건 추가
-      count_products: "{{ count }}개 제품 및 제품 모델"
       product_selection: 제품 선택
       fields:
         family: 패밀리

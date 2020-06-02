@@ -10,4 +10,3 @@ catalog:
     onboarder:
       path: vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder
       class: PimOnboarderBundle:onboarder
-

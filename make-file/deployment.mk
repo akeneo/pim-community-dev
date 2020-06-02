@@ -104,9 +104,20 @@ delete: terraform-delete purge-release-all
 
 .PHONY: purge-release-all
 purge-release-all:
-	helm delete $(PFID) --purge || echo "WARNING: FAILED helm delete --purge $(PFID)"
-	@kubectl delete all,pvc --all -n $(PFID) --force --grace-period=0 && echo "kubectl delete all,pvc forced OK" || echo "WARNING: FAILED kubectl delete all,pvc --all -n $(PFID) --force --grace-period=0"
-	@kubectl delete ns $(PFID) && echo "kubectl delete ns OK"  || echo "WARNING: FAILED kubectl delete ns $(PFID)"
+	PV_NAME=$$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') ;\
+	PD_NAME=$$(kubectl get pv "$${PV_NAME}" -o jsonpath='{..spec.gcePersistentDisk.pdName}') ;\
+	echo "PV/PD $${PV_NAME} / $${PD_NAME} will be deleted" ;\
+	helm delete $(PFID) --purge || echo "WARNING: FAILED helm delete --purge $(PFID)" ;\
+	kubectl delete all,pvc --all -n $(PFID) --force --grace-period=0 && echo "kubectl delete all,pvc forced OK" || echo "WARNING: FAILED kubectl delete all,pvc --all -n $(PFID) --force --grace-period=0" ;\
+	kubectl delete ns $(PFID) && echo "SUCCEED to delete ns $(PFID)" || echo "FAILED to delete ns $(PFID)" ;\
+	if [ -n "$${PV_NAME}" ]; then kubectl delete pv $${PV_NAME}  && echo "SUCCEED to delete pv $${PV_NAME}" || echo "FAILED to delete pv $${PV_NAME}"; fi ;\
+	if [ -n "$${PD_NAME}" ]; then \
+		for i in {1..6}; do \
+			gcloud --quiet compute disks delete $${PD_NAME} --project=$(GOOGLE_PROJECT_ID) --zone=$(GOOGLE_CLUSTER_ZONE) \
+			&& break \
+			|| sleep 10 ;\
+		done ;\
+	fi
 
 .PHONY: terraform-plan-destroy
 terraform-plan-destroy: terraform-init
