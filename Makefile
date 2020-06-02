@@ -1,5 +1,5 @@
 DOCKER_COMPOSE = docker-compose
-NODE_RUN = $(DOCKER_COMPOSE) run -u node --rm -e YARN_REGISTRY node
+NODE_RUN = $(DOCKER_COMPOSE) run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
 YARN_RUN = $(NODE_RUN) yarn
 PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm php php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
@@ -27,8 +27,7 @@ yarn.lock: package.json
 	$(YARN_RUN) install
 
 node_modules: yarn.lock
-	$(YARN_RUN) install --frozen-lockfile
-	$(YARN_RUN) check --integrity
+	$(YARN_RUN) install --frozen-lockfile --check-files
 
 .PHONY: assets
 assets:
