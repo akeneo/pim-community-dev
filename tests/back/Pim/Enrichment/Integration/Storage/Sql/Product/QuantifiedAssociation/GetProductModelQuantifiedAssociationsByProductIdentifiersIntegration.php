@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product\Association;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductIdentifiers;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\AbstractQuantifiedAssociationIntegration;
 
 class GetProductModelQuantifiedAssociationsByProductIdentifiersIntegration extends AbstractQuantifiedAssociationIntegration
 {
+    use QuantifiedAssociationsTestCaseTrait;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $this->givenBooleanAttributes(['first_yes_no', 'second_yes_no']);
-        $this->givenAssociationType(['code' => 'PRODUCT_SET', 'is_quantified' => true]);
+        $this->createQuantifiedAssociationType('PRODUCT_SET');
         $this->givenFamily(['code' => 'aFamily', 'attribute_codes' => ['first_yes_no', 'second_yes_no']]);
         $this->getEntityBuilder()->createFamilyVariant(
             [

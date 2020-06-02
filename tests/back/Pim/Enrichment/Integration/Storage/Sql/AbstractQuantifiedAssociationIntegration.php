@@ -17,16 +17,6 @@ use Webmozart\Assert\Assert;
 
 abstract class AbstractQuantifiedAssociationIntegration extends TestCase
 {
-    protected function givenAssociationType(array $associationTypeNormalized): void
-    {
-        $associationType = $this->getAssociationTypeFactory()->create();
-        $this->getAssociationTypeUpdater()->update($associationType, $associationTypeNormalized);
-        $errors = $this->getValidator()->validate($associationType);
-        Assert::count($errors, 0);
-
-        $this->getAssociationTypeSaver()->save($associationType);
-    }
-
     protected function givenBooleanAttributes(array $codes): void
     {
         $attributes = array_map(function (string $code) {
@@ -91,21 +81,6 @@ abstract class AbstractQuantifiedAssociationIntegration extends TestCase
     private function getValidator(): ValidatorInterface
     {
         return $this->get('validator');
-    }
-
-    private function getAssociationTypeFactory(): SimpleFactoryInterface
-    {
-        return $this->get('pim_catalog.factory.association_type');
-    }
-
-    private function getAssociationTypeUpdater(): ObjectUpdaterInterface
-    {
-        return $this->get('pim_catalog.updater.association_type');
-    }
-
-    private function getAssociationTypeSaver(): SaverInterface
-    {
-        return $this->get('pim_catalog.saver.association_type');
     }
 
     private function getAttributeFactory(): SimpleFactoryInterface

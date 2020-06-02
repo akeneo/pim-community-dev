@@ -17,7 +17,8 @@ final class GetProductModelQuantifiedAssociationsByProductIdentifiers
     }
 
     /**
-     * @return array
+     * Executes SQL query to get product model quantified associations from a set of product identifiers.
+     * Returns an array like:
      * [
      *      'productA' => [
      *          'PACK' => [
@@ -33,10 +34,6 @@ final class GetProductModelQuantifiedAssociationsByProductIdentifiers
         if (empty($productIdentifiers)) {
             return [];
         }
-
-        $productIdentifiers = (function (string ...$identifiers) {
-            return $identifiers;
-        })(... $productIdentifiers);
 
         $query = <<<SQL
 select

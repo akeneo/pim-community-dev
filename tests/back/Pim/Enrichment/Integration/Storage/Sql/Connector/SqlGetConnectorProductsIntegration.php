@@ -18,10 +18,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use PHPUnit\Framework\Assert;
 
 class SqlGetConnectorProductsIntegration extends TestCase
 {
+    use QuantifiedAssociationsTestCaseTrait;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -527,19 +530,6 @@ class SqlGetConnectorProductsIntegration extends TestCase
     private function getQuery(): GetConnectorProducts
     {
         return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers');
-    }
-
-    private function createQuantifiedAssociationType(string $code)
-    {
-        $associationType = $this->get('pim_catalog.factory.association_type')->create();
-        $this->get('pim_catalog.updater.association_type')->update($associationType,
-            [
-                'code' => $code,
-                'is_quantified' => true
-            ]
-        );
-
-        $this->get('pim_catalog.saver.association_type')->save($associationType);
     }
 }
 
