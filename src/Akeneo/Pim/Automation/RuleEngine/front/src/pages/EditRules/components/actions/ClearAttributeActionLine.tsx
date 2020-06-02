@@ -7,6 +7,7 @@ import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { AttributeSelector } from '../../../../components/Selectors/AttributeSelector';
 import { ActionTitle } from './ActionLine';
 import { ClearAttributeAction } from '../../../../models/actions';
+import { ActionLineErrors } from './ActionLineErrors';
 
 type Props = {
   action: ClearAttributeAction;
@@ -19,7 +20,7 @@ const ClearAttributeActionLine: React.FC<Props> = ({
   handleDelete,
   currentCatalogLocale,
 }) => {
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, triggerValidation } = useFormContext();
 
   const values: any = {
     type: 'clear',
@@ -34,15 +35,24 @@ const ClearAttributeActionLine: React.FC<Props> = ({
     values.scope = action.scope;
   }
 
-  useValueInitialization(`content.actions[${lineNumber}]`, values, {}, [
-    action,
-  ]);
+  useValueInitialization(
+    `content.actions[${lineNumber}]`,
+    values,
+    {
+      field: {
+        required: translate('pimee_catalog_rule.exceptions.required_attribute'),
+      },
+    },
+    [action]
+  );
 
   const getFieldFormValue: () => AttributeCode | null = () =>
     watch(`content.actions[${lineNumber}].field`);
 
-  const setFieldFormValue = (value: AttributeCode | null) =>
+  const setFieldFormValue = (value: AttributeCode | null) => {
     setValue(`content.actions[${lineNumber}].field`, value);
+    triggerValidation(`content.actions[${lineNumber}].field`);
+  };
 
   return (
     <ActionTemplate
@@ -72,6 +82,7 @@ const ClearAttributeActionLine: React.FC<Props> = ({
           )}
         />
       </div>
+      <ActionLineErrors lineNumber={lineNumber} />
     </ActionTemplate>
   );
 };
