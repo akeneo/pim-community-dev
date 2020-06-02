@@ -189,11 +189,15 @@ class ColumnsMerger
             $collectedQuantifiedAssociations[$associationTypeCode] = ['products' => [], 'product_models' => []];
         }
 
+        if (empty($fieldValue)) {
+            return $collectedQuantifiedAssociations;
+        }
+
         $quantities = explode(ProductAssociation::QUANTITY_SEPARATOR, $fieldValue);
         $collectedQuantifiedAssociations[$associationTypeCode][$productType] = array_reduce(
             array_keys($quantities),
             function ($result, $index) use ($quantities) {
-                $result[$index] = array_merge(isset($result[$index]) ? $result[$index] : [], ['quantity' => $quantities[$index]]);
+                $result[$index] = array_merge(isset($result[$index]) ? $result[$index] : [], ['quantity' => (int) $quantities[$index]]);
 
                 return $result;
             },
@@ -208,6 +212,10 @@ class ColumnsMerger
         list($associationTypeCode, $productType) = explode('-', $fieldName);
         if (!isset($collectedQuantifiedAssociations[$associationTypeCode])) {
             $collectedQuantifiedAssociations[$associationTypeCode] = ['products' => [], 'product_models' => []];
+        }
+
+        if (empty($fieldValue)) {
+            return $collectedQuantifiedAssociations;
         }
 
         $identifiers = explode(ProductAssociation::IDENTIFIER_SEPARATOR, $fieldValue);

@@ -78,7 +78,10 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
         }
 
         $item = array_merge(
-            ['associations' => []],
+            [
+                'associations' => [],
+                'quantified_associations' => [],
+            ],
             $item
         );
 

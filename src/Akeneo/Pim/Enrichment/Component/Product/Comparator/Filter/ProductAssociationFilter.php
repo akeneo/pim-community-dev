@@ -39,8 +39,9 @@ class ProductAssociationFilter implements FilterInterface
     {
         $originalAssociations = $this->normalizer->normalize($product, 'standard');
         $hasAssociation = $this->hasNewAssociations($newValues);
+        $hasQuantifiedAssociation = $this->hasNewQuantifiedAssociations($newValues);
 
-        if (!$hasAssociation && empty($originalAssociations)) {
+        if (!$hasAssociation && !$hasQuantifiedAssociation && empty($originalAssociations)) {
             return [];
         }
 
@@ -55,16 +56,17 @@ class ProductAssociationFilter implements FilterInterface
             }
         }
 
+        foreach ($newValues[ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS] as $type => $field) {
+            foreach ($field as $key => $association) {
+                $data = $this->compareQuantifiedAssociation($originalAssociations, $association, $type, $key);
+                $result[ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS][$type][$key] = $data ?? [];
+            }
+        }
+
         return $result;
     }
 
-    /**
-     * Has association(s) in new values ?
-     *
-     * @param array $convertedItem
-     *
-     * @return bool
-     */
+    /* Has association(s) in new values? */
     protected function hasNewAssociations(array $convertedItem): bool
     {
         if (!isset($convertedItem['associations'])) {
@@ -80,19 +82,30 @@ class ProductAssociationFilter implements FilterInterface
         return false;
     }
 
+    /* Has quantified association(s) in new values? */
+    protected function hasNewQuantifiedAssociations(array $convertedItem): bool
+    {
+        if (!isset($convertedItem['quantified_associations'])) {
+            return false;
+        }
+
+        foreach ($convertedItem['quantified_associations'] as $association) {
+            if (!empty($association['products']) || !empty($association['product_models'])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Compare product's association
-     *
-     * @param array  $originalAssociations original associations
-     * @param array  $associations         product's associations
-     * @param string $type                 type of association (PACK, SUBSTITUTION, etc)
-     * @param string $key                  key of group (products or groups)
      *
      * @throws \LogicException
      *
      * @return array|null
      */
-    protected function compareAssociation(array $originalAssociations, array $associations, $type, $key): ?array
+    protected function compareAssociation(array $originalAssociations, array $associations, string $type, string $key): ?array
     {
         $comparator = $this->comparatorRegistry->getFieldComparator(ProductNormalizer::FIELD_ASSOCIATIONS);
         $diff = $comparator->compare($associations, $this->getOriginalAssociation($originalAssociations, $type, $key));
@@ -105,13 +118,25 @@ class ProductAssociationFilter implements FilterInterface
     }
 
     /**
-     * @param array  $originalAssociations original associations
-     * @param string $type                 type of association (PACK, SUBSTITUTION, etc)
-     * @param string $key                  key of group (products or groups)
+     * Compare product's quantified association
      *
-     * @return array
+     * @throws \LogicException
+     *
+     * @return array|null
      */
-    protected function getOriginalAssociation(array $originalAssociations, $type, $key): array
+    protected function compareQuantifiedAssociation(array $originalAssociations, array $associations, string $type, string $key): ?array
+    {
+        $comparator = $this->comparatorRegistry->getFieldComparator(ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS);
+        $diff = $comparator->compare($associations, $this->getOriginalAssociation($originalAssociations, $type, $key));
+
+        if (null !== $diff) {
+            return $diff;
+        }
+
+        return null;
+    }
+
+    protected function getOriginalAssociation(array $originalAssociations, string $type, string $key): array
     {
         return !isset($originalAssociations[$type][$key]) ? [] : $originalAssociations[$type][$key];
     }
