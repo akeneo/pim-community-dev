@@ -1,5 +1,5 @@
 import {useState, useCallback, useEffect} from 'react';
-import {Cards} from 'akeneocommunicationchannel/model/cards';
+import {Cards} from 'akeneocommunicationchannel/models/card';
 import {CardFetcher} from 'akeneocommunicationchannel/fetcher/cards';
 
 const useCards = (cardFetcher: CardFetcher): {cards: Cards[] | null; fetchCards: () => Promise<void>} => {
