@@ -40,7 +40,7 @@ class MissingAssociationAdder
      */
     public function addMissingAssociations(EntityWithAssociationsInterface $entity): void
     {
-        $missingAssocTypes = $this->associationTypeRepository->findMissingUnquantifiedAssociationTypes($entity);
+        $missingAssocTypes = $this->associationTypeRepository->findMissingAssociationTypes($entity);
 
         if (!empty($missingAssocTypes)) {
             foreach ($missingAssocTypes as $associationType) {

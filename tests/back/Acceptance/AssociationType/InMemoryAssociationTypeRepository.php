@@ -50,7 +50,7 @@ class InMemoryAssociationTypeRepository implements AssociationTypeRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function findMissingUnquantifiedAssociationTypes(EntityWithAssociationsInterface $entity)
+    public function findMissingAssociationTypes(EntityWithAssociationsInterface $entity)
     {
         $associations = $entity->getAssociations();
         $associationType = $this->associationType->filter(function (AssociationTypeInterface $associationType) use ($associations) {
