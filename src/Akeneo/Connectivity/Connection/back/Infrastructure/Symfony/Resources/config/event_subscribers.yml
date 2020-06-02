@@ -14,7 +14,6 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ApiErrorEventSubscriber:
         arguments:
-            - '@request_stack'
             - '@akeneo_connectivity.connection.error_management.service.collect_api_error'
         tags:
             - { name: kernel.event_subscriber }

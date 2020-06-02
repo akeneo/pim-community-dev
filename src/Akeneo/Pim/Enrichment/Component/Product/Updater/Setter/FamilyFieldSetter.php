@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownFamilyException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -53,13 +54,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
         if (null !== $data && '' !== $data) {
             $family = $this->getFamily($data);
             if (null === $family) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    $field,
-                    'family code',
-                    'The family does not exist',
-                    static::class,
-                    $data
-                );
+                throw UnknownFamilyException::unknownFamily($field, $data, static::class);
             }
             $product->setFamily($family);
         } else {

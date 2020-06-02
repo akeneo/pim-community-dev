@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Updater;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownFamilyException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
@@ -110,13 +111,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                 break;
             case 'family':
                 if (null === $family = $this->familyRepository->findOneByIdentifier($value)) {
-                    throw InvalidPropertyException::validEntityCodeExpected(
-                        'family',
-                        'family code',
-                        'The family does not exist',
-                        static::class,
-                        $value
-                    );
+                    throw UnknownFamilyException::unknownFamily('family', $value, static::class);
                 }
 
                 $familyVariant->setFamily($family);
