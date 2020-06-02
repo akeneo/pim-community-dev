@@ -1,4 +1,4 @@
-export * from './Condition';
+export * from './conditions';
 export * from './Locale';
 export * from './RuleDefinition';
 export * from './Scope';

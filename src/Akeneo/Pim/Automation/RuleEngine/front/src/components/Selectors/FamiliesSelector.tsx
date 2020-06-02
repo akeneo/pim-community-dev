@@ -7,7 +7,7 @@ import {
 import { Router } from '../../dependenciesTools';
 import { IndexedFamilies } from '../../fetch/FamilyFetcher';
 import { getFamiliesByIdentifiers } from '../../repositories/FamilyRepository';
-import { Family, FamilyCode, LocaleCode } from '../../models';
+import { FamilyCode, LocaleCode } from '../../models';
 
 type Props = {
   router: Router;
@@ -19,13 +19,17 @@ type Props = {
   onChange: (value: FamilyCode[]) => void;
 };
 
-const dataProvider = (term: string, page: number) => {
+const dataProvider = (
+  term: string,
+  page: number,
+  currentCatalogLocale: LocaleCode
+) => {
   return {
     search: term,
     options: {
       limit: 20,
       page: page,
-      locale: 'en_US',
+      locale: currentCatalogLocale,
     },
   };
 };
@@ -61,11 +65,18 @@ const initSelectedFamilies = async (
   );
 
   callback(
-    Object.values(families).map((family: Family) => {
-      return {
-        id: family.code,
-        text: family.labels[currentCatalogLocale] || `[${family.code}]`,
-      };
+    selectedFamilyCodes.map(familyCode => {
+      return families[familyCode]
+        ? {
+            id: familyCode,
+            text:
+              families[familyCode].labels[currentCatalogLocale] ||
+              `[${familyCode}]`,
+          }
+        : {
+            id: familyCode,
+            text: `[${familyCode}]`,
+          };
     })
   );
 };
@@ -90,7 +101,8 @@ const FamiliesSelector: React.FC<Props> = ({
         url: router.generate('pim_enrich_family_rest_index'),
         quietMillis: 250,
         cache: true,
-        data: dataProvider,
+        data: (term: string, page: number) =>
+          dataProvider(term, page, currentCatalogLocale),
         results: (families: IndexedFamilies) =>
           handleResults(families, currentCatalogLocale),
       }}

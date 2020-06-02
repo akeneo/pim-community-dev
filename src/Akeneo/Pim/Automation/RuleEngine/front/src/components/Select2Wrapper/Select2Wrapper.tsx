@@ -30,7 +30,7 @@ type Select2Ajax = {
   ) => {
     search: string;
     options?: any;
-  };
+  } & { [key: string]: any };
   results: (
     values: any
   ) => {
@@ -142,9 +142,6 @@ const Select2Wrapper: React.FC<Props> = ({
     return () => {
       getSelect2Input().off('change');
       getSelect2Input().select2('destroy');
-      getSelect2Input()
-        .select2('container')
-        .remove();
     };
   }, [select2ref]);
 

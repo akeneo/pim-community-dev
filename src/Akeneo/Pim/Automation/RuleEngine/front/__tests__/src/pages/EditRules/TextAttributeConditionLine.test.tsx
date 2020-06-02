@@ -1,7 +1,7 @@
 import { renderWithProviders } from '../../../../test-utils';
 import React from 'react';
 import { TextAttributeConditionLine } from '../../../../src/pages/EditRules/components/conditions/TextAttributeConditionLine';
-import { TextAttributeCondition } from '../../../../src/models/TextAttributeCondition';
+import { TextAttributeCondition } from '../../../../src/models/conditions';
 import { Attribute } from '../../../../src/models/Attribute';
 import { Operator } from '../../../../src/models/Operator';
 import { IndexedScopes } from '../../../../src/repositories/ScopeRepository';
@@ -43,7 +43,9 @@ const createAttribute = (data: { [key: string]: any }): Attribute => {
     field_type: 'text',
     filter_types: {},
     is_locale_specific: false,
-    meta: {},
+    meta: {
+      id: 42
+    },
     ...data
   };
 };
@@ -133,7 +135,7 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         router={router}
-      />, { reactHookForm: true }
+      />, { all: true }
     );
 
     expect(await findByText('Nom')).toBeInTheDocument();
@@ -156,7 +158,7 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         router={router}
-      />, { reactHookForm: true }
+      />, { all: true }
     );
 
     expect(await findByText('Nom')).toBeInTheDocument();
@@ -178,7 +180,7 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
         router={router}
-      />, { reactHookForm: true }
+      />, { all: true }
     );
     expect(await findByText('Name')).toBeInTheDocument();
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');
@@ -203,7 +205,7 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
         router={router}
-      />, { reactHookForm: true }
+      />, { all: true }
     );
     expect(await findByText('Name')).toBeInTheDocument();
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');

@@ -12,6 +12,7 @@ type Props = {
   value: ScopeCode;
   onChange: (value: ScopeCode) => void;
   translate: Translate;
+  allowClear: boolean;
 };
 
 const ScopeSelector: React.FC<Props> = ({
@@ -24,6 +25,7 @@ const ScopeSelector: React.FC<Props> = ({
   onChange,
   translate,
   children,
+  allowClear = false,
 }) => {
   const getScopeLabel = (scope: Scope): string => {
     return scope.labels[currentCatalogLocale] || `[${scope.code}]`;
@@ -36,6 +38,13 @@ const ScopeSelector: React.FC<Props> = ({
     };
   });
 
+  if (value && !scopeChoices.some(scopeChoice => scopeChoice.id === value)) {
+    scopeChoices.push({
+      id: value,
+      text: `[${value}]`,
+    });
+  }
+
   return (
     <>
       <Select2SimpleSyncWrapper
@@ -46,6 +55,7 @@ const ScopeSelector: React.FC<Props> = ({
         hideSearch={true}
         placeholder={translate('pim_enrich.entity.channel.uppercase_label')}
         value={value}
+        allowClear={allowClear}
         onValueChange={value => onChange(value as ScopeCode)}
       />
       {children}

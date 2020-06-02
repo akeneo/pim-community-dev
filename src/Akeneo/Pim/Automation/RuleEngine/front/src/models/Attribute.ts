@@ -1,5 +1,8 @@
+type AttributeId = number;
+type AttributeCode = string;
+
 type Attribute = {
-  code: string;
+  code: AttributeCode;
   type: string;
   group: string;
   unique: boolean;
@@ -31,7 +34,7 @@ type Attribute = {
   field_type: string;
   filter_types: { [type: string]: string };
   is_locale_specific: boolean;
-  meta: { [key: string]: any };
+  meta: { id: AttributeId } & { [key: string]: any };
 };
 
 const validateLocalizableScopableAttribute = (
@@ -71,4 +74,9 @@ const validateLocalizableScopableAttribute = (
   return isValidated;
 };
 
-export { Attribute, validateLocalizableScopableAttribute };
+export {
+  Attribute,
+  validateLocalizableScopableAttribute,
+  AttributeId,
+  AttributeCode,
+};

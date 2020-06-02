@@ -6,7 +6,7 @@
 import {
   PimConditionLine,
   PimConditionLineProps,
-} from '../pages/EditRules/components/conditions/PimConditionLine';
+} from '../../pages/EditRules/components/conditions/PimConditionLine';
 import React from 'react';
 import { ConditionDenormalizer } from './Condition';
 

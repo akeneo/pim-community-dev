@@ -15,6 +15,7 @@ type Props = {
   value: LocaleCode;
   onChange: (value: LocaleCode) => void;
   translate: Translate;
+  allowClear?: boolean;
 };
 
 const LocaleSelector: React.FC<Props> = ({
@@ -26,6 +27,7 @@ const LocaleSelector: React.FC<Props> = ({
   onChange,
   translate,
   children,
+  allowClear = false,
 }) => {
   const localeChoices = availableLocales.map((locale: Locale) => {
     return {
@@ -33,6 +35,13 @@ const LocaleSelector: React.FC<Props> = ({
       text: locale.language,
     };
   });
+
+  if (value && !localeChoices.some(localeChoice => localeChoice.id === value)) {
+    localeChoices.push({
+      id: value,
+      text: `[${value}]`,
+    });
+  }
 
   const formatLocale = (item: Select2Option | Select2OptionGroup): string => {
     const locale = availableLocales.find(
@@ -62,6 +71,7 @@ const LocaleSelector: React.FC<Props> = ({
         placeholder={translate('pim_enrich.entity.locale.uppercase_label')}
         value={value}
         onValueChange={value => onChange(value as LocaleCode)}
+        allowClear={allowClear}
       />
       {children}
     </>

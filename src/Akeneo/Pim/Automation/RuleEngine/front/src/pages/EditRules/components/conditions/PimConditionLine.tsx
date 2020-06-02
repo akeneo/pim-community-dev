@@ -1,5 +1,5 @@
 import React from 'react';
-import { PimCondition } from '../../../../models/PimCondition';
+import { PimCondition } from '../../../../models/conditions';
 import { ConditionLineProps } from './ConditionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { FallbackField } from '../FallbackField';

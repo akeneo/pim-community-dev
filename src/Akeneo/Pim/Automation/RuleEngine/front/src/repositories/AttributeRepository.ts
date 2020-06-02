@@ -1,4 +1,4 @@
-import { Attribute } from '../models/Attribute';
+import { Attribute, AttributeCode } from '../models/Attribute';
 import { Router } from '../dependenciesTools';
 import {
   fetchAttributeByIdentifier,
@@ -8,10 +8,12 @@ import {
 const cacheAttributes: { [identifier: string]: Attribute | null } = {};
 
 export const getAttributeByIdentifier = async (
-  attributeIdentifier: string,
+  attributeIdentifier: AttributeCode,
   router: Router
 ): Promise<Attribute | null> => {
-  if (!cacheAttributes[attributeIdentifier]) {
+  if (
+    !Object.prototype.hasOwnProperty.call(cacheAttributes, attributeIdentifier)
+  ) {
     cacheAttributes[attributeIdentifier] = await fetchAttributeByIdentifier(
       attributeIdentifier,
       router
@@ -22,7 +24,7 @@ export const getAttributeByIdentifier = async (
 };
 
 export const getAttributesByIdentifiers = async (
-  attributeIdentifiers: string[],
+  attributeIdentifiers: AttributeCode[],
   router: Router
 ): Promise<{ [identifier: string]: Attribute | null }> => {
   const attributeIdentifiersToGet = attributeIdentifiers.filter(
