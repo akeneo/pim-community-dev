@@ -1,4 +1,5 @@
-import {Card} from '../model/card';
+import {Card} from 'akeneocommunicationchannel/models/card';
+import {validateCard} from 'akeneocommunicationchannel/validator/card';
 
 type CardFetcher = {
   fetchAll: () => Promise<Card[]>;
@@ -10,7 +11,10 @@ class CardFetcherImplementation {
   static async fetchAll() {
     const response = await fetch(this.jsonFilePath);
 
-    return await response.json();
+    const jsonResponse = await response.json();
+    const cards = jsonResponse['data'];
+
+    return cards.map(validateCard);
   }
 }
 

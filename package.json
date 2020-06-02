@@ -24,7 +24,8 @@
     "acceptance-html-report": "yarn acceptance ./tests/features/ -f json:public/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
     "less": "node $npm_package_config_styles",
     "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,public/bundles}/**/*.{less,css}\" -c \"yarn run less --dev\"",
-    "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js"
+    "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
+    "generate-communication-channel-models": "node frontend/build/json-schema-to-typescript.js public/bundles/akeneocommunicationchannel/models/ public/bundles/akeneocommunicationchannel/models/"
   },
   "repository": {
     "type": "git",
@@ -103,11 +104,14 @@
     "yamljs": "0.3.0"
   },
   "dependencies": {
+    "ajv": "^6.10.2",
     "babel-polyfill": "6.26.0",
     "backbone": "0.9.10",
     "css-loader": "^3.3.0",
     "dep-diff": "1.0.1",
     "dropzone": "4.0.1",
+    "json-schema-ref-parser": "^7.1.2",
+    "json-schema-to-typescript": "^7.1.0",
     "formik": "^2.0.6",
     "jquery": "3.4.0",
     "less": "^3.9.0",
