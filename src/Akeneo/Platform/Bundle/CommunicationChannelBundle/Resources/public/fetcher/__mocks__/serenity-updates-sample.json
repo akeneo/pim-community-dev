@@ -1,31 +1,33 @@
-[
-    {
-        "title": "New: add your own measurement units",
-        "description": "In order to give you more flexibility, we have improved the way we manage metrics in the PIM.\nWe are very glad to introduce our new Measurements feature. Alongside standard measurement families (eg. weight, length, volume...), create your custom measurement families per your needs (eg. inductance, luminance...) and add the units you deem necessary (Henry, Lambert...).",
-        "img":"Settings_Measurement_Families-updates.png",
-        "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#new-add-your-own-measurement-units"
-    },
-    {
-        "title": "Product associations update",
-        "description": "We now display the total number of associations per product or product model nearby the Associations tab when you are on your product form.\nYou can now see the number of associations for your products at a glance.",
-        "img":"associations-number.png",
-        "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#product-associations-update"
-    },
-    {
-        "title": "Connection dashboard updates",
-        "description": "You can now easily track the number of products that were sent to your destinations in the Connection dashboard. You can consult this metric for each of the last 7 days. We also compute the sum of the last 7 days.",
-        "img":"number-of-products-sent.png",
-        "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#connection-dashboard-updates"
-    },
-    {
-        "title": "Rules engine new actions and improvements",
-        "description": "From complex to simple calculations, the Calculate rule action enables you to do mathematical operations to fill in attributes based on other attribute values. Multiply your length, width and height attributes to get a volume, or create a more complex calculation to forecast your margin.",
-        "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#rules-engine-new-actions-and-improvements"
-    },
-    {
-        "title": "Data Quality Insights on product models",
-        "description": "Following last month improvements on product variants, the data quality insights tab listing recommendations and grades is now also available for product models. You can now see the enrichment and consistency grading scores for all attributes and see at a glance on which level the attribute is (product variant or model level).",
-        "img": "data-quality-product-models.png",
-        "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#data-quality-improvements"
-    }
-]
+{
+    "data": [
+        {
+            "title": "New: add your own measurement units",
+            "description": "In order to give you more flexibility, we have improved the way we manage metrics in the PIM.\nWe are very glad to introduce our new Measurements feature. Alongside standard measurement families (eg. weight, length, volume...), create your custom measurement families per your needs (eg. inductance, luminance...) and add the units you deem necessary (Henry, Lambert...).",
+            "img": "Settings_Measurement_Families-updates.png",
+            "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#new-add-your-own-measurement-units"
+        },
+        {
+            "title": "Product associations update",
+            "description": "We now display the total number of associations per product or product model nearby the Associations tab when you are on your product form.\nYou can now see the number of associations for your products at a glance.",
+            "img": "associations-number.png",
+            "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#product-associations-update"
+        },
+        {
+            "title": "Connection dashboard updates",
+            "description": "You can now easily track the number of products that were sent to your destinations in the Connection dashboard. You can consult this metric for each of the last 7 days. We also compute the sum of the last 7 days.",
+            "img": "number-of-products-sent.png",
+            "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#connection-dashboard-updates"
+        },
+        {
+            "title": "Rules engine new actions and improvements",
+            "description": "From complex to simple calculations, the Calculate rule action enables you to do mathematical operations to fill in attributes based on other attribute values. Multiply your length, width and height attributes to get a volume, or create a more complex calculation to forecast your margin.",
+            "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#rules-engine-new-actions-and-improvements"
+        },
+        {
+            "title": "Data Quality Insights on product models",
+            "description": "Following last month improvements on product variants, the data quality insights tab listing recommendations and grades is now also available for product models. You can now see the enrichment and consistency grading scores for all attributes and see at a glance on which level the attribute is (product variant or model level).",
+            "img": "data-quality-product-models.png",
+            "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#data-quality-improvements"
+        }
+    ]
+}
