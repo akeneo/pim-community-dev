@@ -1,9 +1,11 @@
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import { ClearAction } from '../../../../models/actions/ClearAction';
+import { AttributeCode } from '../../../../models';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
-import { FallbackField } from '../FallbackField';
+import { AttributeSelector } from '../../../../components/Selectors/AttributeSelector';
 
 type Props = {
   action: ClearAction;
@@ -14,7 +16,10 @@ const ClearActionLine: React.FC<Props> = ({
   lineNumber,
   action,
   handleDelete,
+  currentCatalogLocale,
 }) => {
+  const { watch, setValue } = useFormContext();
+
   const values: any = {
     type: 'clear',
     field: action.field,
@@ -32,6 +37,12 @@ const ClearActionLine: React.FC<Props> = ({
     action,
   ]);
 
+  const getFieldFormValue: () => AttributeCode | null = () =>
+    watch(`content.actions[${lineNumber}].field`);
+
+  const setFieldFormValue = (value: AttributeCode | null) =>
+    setValue(`content.actions[${lineNumber}].field`, value);
+
   return (
     <ActionTemplate
       translate={translate}
@@ -42,13 +53,14 @@ const ClearActionLine: React.FC<Props> = ({
       <div className='AknGrid AknGrid--unclickable'>
         <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
           <div className='AknGrid-bodyCell'>
-            <FallbackField
-              field={action.field}
-              scope={action.scope}
-              locale={action.locale}
+            <AttributeSelector
+              id={`edit-rules-action-${lineNumber}-field`}
+              label='Attribute (required)'
+              currentCatalogLocale={currentCatalogLocale}
+              value={getFieldFormValue()}
+              onChange={setFieldFormValue}
+              placeholder='Attribute (required)'
             />
-            {/* It is not translated since it is temporary. */}
-            &nbsp;is cleared.
           </div>
         </div>
       </div>
