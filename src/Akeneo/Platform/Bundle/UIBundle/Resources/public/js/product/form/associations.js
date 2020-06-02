@@ -31,7 +31,7 @@ define([
   'react',
   'react-dom',
   'pimui/js/product/form/quantified-associations/QuantifiedAssociationsTab',
-  'shared/models/validation-error',
+  '@akeneo-pim-community/shared',
 ], function(
   $,
   _,
