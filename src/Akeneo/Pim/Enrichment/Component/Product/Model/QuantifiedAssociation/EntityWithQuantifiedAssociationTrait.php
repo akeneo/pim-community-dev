@@ -32,6 +32,14 @@ trait EntityWithQuantifiedAssociationTrait
     /**
      * @inheritDoc
      */
+    public function getQuantifiedAssociations(): QuantifiedAssociations
+    {
+        return $this->quantifiedAssociations;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getQuantifiedAssociationsProductIds(): array
     {
         if (null === $this->rawQuantifiedAssociations) {

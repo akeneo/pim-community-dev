@@ -13,6 +13,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -115,6 +116,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
         }
 
         $violations = $this->validateProductAssociations($product);
+        $violations->addAll($this->validateProductQuantifiedAssociations($product));
         if ($violations && $violations->count() > 0) {
             $this->detachProduct($product);
             $this->skipItemWithConstraintViolations($item, $violations);
@@ -163,23 +165,25 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
     }
 
     /**
-     * @param ProductInterface $product
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return ConstraintViolationListInterface|null
      */
-    protected function validateProductAssociations(ProductInterface $product)
+    protected function validateProductAssociations(ProductInterface $product): ConstraintViolationListInterface
     {
+        $violations = new ConstraintViolationList();
         $associations = $product->getAssociations();
         foreach ($associations as $association) {
-            $violations = $this->validator->validate($association);
-            if ($violations->count() > 0) {
-                return $violations;
-            }
+            $violations->addAll($this->validator->validate($association));
         }
 
-        return null;
+        return $violations;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    protected function validateProductQuantifiedAssociations(ProductInterface $product): ConstraintViolationListInterface
+    {
+        return $this->validator->validate($product->getQuantifiedAssociations());
     }
 
     /**
