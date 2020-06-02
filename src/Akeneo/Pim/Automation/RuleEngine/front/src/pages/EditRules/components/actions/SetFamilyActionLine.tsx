@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useFormContext } from 'react-hook-form';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
@@ -7,12 +6,7 @@ import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { FamilySelector } from '../../../../components/Selectors/FamilySelector';
 import { SetFamilyAction } from '../../../../models/actions';
 import { FamilyCode } from '../../../../models';
-
-const ActionTitle = styled.div`
-  color: ${({ theme }): string => theme.color.purple100};
-  font-size: 20px;
-  line-height: 40px;
-`;
+import { ActionTitle } from './ActionLine';
 
 type Props = {
   action: SetFamilyAction;

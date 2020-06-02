@@ -24,9 +24,7 @@ type Props = {
 
 // Add here the fields handled by the rule conditions.
 // Be sure that the associated UI component exists to display it correctly.
-const SYSTEM_FIELDS = [
-  'family',
-];
+const SYSTEM_FIELDS = ['family'];
 
 const ATTRIBUTE_TYPES = [
   'pim_catalog_multiselect',
@@ -41,10 +39,7 @@ const AddConditionButton: React.FC<Props> = ({
 }) => {
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
 
-  const dataProvider = (
-    term: string,
-    page: number,
-  ) => {
+  const dataProvider = (term: string, page: number) => {
     return {
       search: term,
       options: {

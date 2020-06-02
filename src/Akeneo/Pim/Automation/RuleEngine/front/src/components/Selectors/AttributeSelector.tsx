@@ -7,7 +7,7 @@ import {
 import { Attribute, AttributeCode, LocaleCode } from '../../models';
 import { Router } from '../../dependenciesTools';
 import { useBackboneRouter } from '../../dependenciesTools/hooks';
-import { getAttributeByIdentifier } from '../../repositories/AttributeRepository'
+import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
 
 type AttributeResult = {
   id: string;
@@ -30,6 +30,7 @@ type Props = {
   value: AttributeCode | null;
   onChange: (value: AttributeCode) => void;
   placeholder?: string;
+  filterAttributeTypes?: string[];
 };
 
 const initSelectedAttribute = async (
@@ -43,10 +44,11 @@ const initSelectedAttribute = async (
     router
   );
 
-  attribute && callback({
-    id: attribute.code,
-    text: attribute.labels[currentCatalogLocale] || `[${attribute.code}]`,
-  });
+  attribute &&
+    callback({
+      id: attribute.code,
+      text: attribute.labels[currentCatalogLocale] || `[${attribute.code}]`,
+    });
 };
 
 const AttributeSelector: React.FC<Props> = ({
@@ -57,21 +59,27 @@ const AttributeSelector: React.FC<Props> = ({
   value,
   onChange,
   placeholder,
+  filterAttributeTypes,
 }) => {
   const router: Router = useBackboneRouter();
 
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
 
   const dataProvider = (term: string, page: number) => {
-    return {
+    const data: any = {
       search: term,
       options: {
         limit: 20,
         page: page,
-        systemFields: [],
         locale: currentCatalogLocale,
+        systemFields: [],
       },
     };
+    if (filterAttributeTypes) {
+      data.options.attributeTypes = filterAttributeTypes;
+    }
+
+    return data;
   };
 
   let lastDisplayedGroupLabel: string;
@@ -107,12 +115,13 @@ const AttributeSelector: React.FC<Props> = ({
       value={value}
       onValueChange={value => onChange(value as string)}
       ajax={{
-        url: router.generate('pimee_enrich_rule_definition_get_available_fields'),
+        url: router.generate(
+          'pimee_enrich_rule_definition_get_available_fields'
+        ),
         quietMillis: 250,
         cache: true,
         data: dataProvider,
-        results: (attributes: Results) =>
-          handleResults(attributes),
+        results: (attributes: Results) => handleResults(attributes),
       }}
       onSelecting={(event: any) => {
         event.preventDefault();
@@ -128,11 +137,6 @@ const AttributeSelector: React.FC<Props> = ({
         }
       }}
       placeholder={placeholder}
-      formatResult={option => {
-
-        return `<span>${option.text}</span>`;
-      }}
-      allowClear={true}
     />
   );
 };

@@ -67,6 +67,9 @@ pimee_catalog_rule:
             "<=": equals or less than
         fields:
             family: Family
+            associations: Associations
+            groups: Groups
+            categories: Categories
         field_groups:
             system: System
     acl_group:

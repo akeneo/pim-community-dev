@@ -21,3 +21,13 @@ export const denormalizeClearAction = (json: any): ClearAction | null => {
     scope: json.scope || null,
   };
 };
+
+export const createClearAction: () => ClearAction = () => {
+  return {
+    module: ClearActionLine,
+    type: 'clear',
+    field: '',
+    locale: null,
+    scope: null,
+  };
+};

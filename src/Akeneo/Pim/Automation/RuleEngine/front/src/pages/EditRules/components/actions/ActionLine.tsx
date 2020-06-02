@@ -1,6 +1,13 @@
 import React from 'react';
 import { Action } from '../../../../models/Action';
 import { ActionLineProps } from './ActionLineProps';
+import styled from 'styled-components';
+
+const ActionTitle = styled.div`
+  color: ${({ theme }): string => theme.color.purple100};
+  font-size: 20px;
+  line-height: 40px;
+`;
 
 const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   action,
@@ -24,4 +31,4 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   );
 };
 
-export { ActionLine };
+export { ActionLine, ActionTitle };

@@ -102,11 +102,16 @@ pimee_catalog_rule:
             fields:
                 family: Family
                 category: Category
+                attribute: Attribute
             actions:
                 add_action: Add action
                 set_family:
                     title: SET Family
                     subtitle: Select your family
+                clear_attribute:
+                    title: CLEAR Attribute value
+                    subtitle: Select the attribute to clear
+                    attribute_label: Attribute
                 delete:
                     label: Remove action
                     description: Are you sure you want to remove this action?
