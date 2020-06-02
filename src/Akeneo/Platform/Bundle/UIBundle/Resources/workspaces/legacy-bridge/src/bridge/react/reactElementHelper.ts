@@ -6,4 +6,8 @@ const mountReactElementRef = (component: JSX.Element, container: Element) => {
   return container;
 };
 
-export {mountReactElementRef};
+const unmountReactElementRef = (container: Element) => {
+  ReactDOM.unmountComponentAtNode(container);
+};
+
+export {mountReactElementRef, unmountReactElementRef};
