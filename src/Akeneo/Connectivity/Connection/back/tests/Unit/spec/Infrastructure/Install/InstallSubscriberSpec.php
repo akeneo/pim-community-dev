@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Install;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Install\AssetsInstaller;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\InstallSubscriber;
 use Doctrine\DBAL\Driver\Connection as DbalConnection;
 use PhpSpec\ObjectBehavior;
@@ -16,9 +15,9 @@ use PhpSpec\ObjectBehavior;
  */
 class InstallSubscriberSpec extends ObjectBehavior
 {
-    public function let(AssetsInstaller $assetsInstaller, DbalConnection $dbalConnection)
+    public function let(DbalConnection $dbalConnection)
     {
-        $this->beConstructedWith($assetsInstaller, $dbalConnection);
+        $this->beConstructedWith($dbalConnection);
     }
 
     public function it_is_initializable()

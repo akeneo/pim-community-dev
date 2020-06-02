@@ -55,6 +55,7 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
             'startedAt' => $this->presenter->present($stepExecution->getStartTime(), $context),
             'endedAt'   => $this->presenter->present($stepExecution->getEndTime(), $context),
             'warnings'  => $normalizedWarnings,
+            'errors'    => $stepExecution->getErrors(),
             'failures'  => array_map(
                 function ($failure) {
                     return $this->translator->trans($failure['message'], $failure['messageParameters']);
