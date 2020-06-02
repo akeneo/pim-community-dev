@@ -12,6 +12,7 @@ define(
         'backbone',
         'pim/form',
         'oro/messenger',
+        'oro/mediator',
         'pim/fetcher-registry',
         'pim/init',
         'pim/init-translator',
@@ -29,6 +30,7 @@ define(
         Backbone,
         BaseForm,
         messenger,
+        mediator,
         FetcherRegistry,
         init,
         initTranslator,
@@ -45,6 +47,9 @@ define(
             className: 'app',
             template: _.template(template),
             flashTemplate: _.template(flashTemplate),
+            events: {
+                'click #overlay': 'hideOverlay',
+            },
 
             /**
              * {@inheritdoc}
@@ -60,6 +65,9 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
+                this.listenTo(mediator, 'pim-app:overlay:show', this.showOverlay);
+                this.listenTo(mediator, 'pim-app:overlay:hide', this.hideOverlay);
+
                 return $.when(
                     FetcherRegistry.initialize(),
                     DateContext.initialize(),
@@ -88,6 +96,14 @@ define(
                 }
 
                 return BaseForm.prototype.render.apply(this, arguments);
+            },
+
+            showOverlay: function() {
+                this.$('#overlay').addClass('AknOverlay--show');
+            },
+
+            hideOverlay: function() {
+                this.$('#overlay').removeClass('AknOverlay--show');
             }
         });
     });
