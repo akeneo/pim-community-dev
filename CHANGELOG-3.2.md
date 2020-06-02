@@ -1,5 +1,16 @@
 # 3.2.x
 
+# 3.2.57 (2020-05-28)
+
+## Improvement
+
+- PIM-9268: Add ko_KR to locales default list.
+
+## Bug fixes
+
+- PIM-9255: Refresh completeness of associated products in grid when channel is switched
+- PIM-9262: Keep image rotation on images and assets thumbnails
+
 # 3.2.56 (2020-05-25)
 
 ## Bug fixes

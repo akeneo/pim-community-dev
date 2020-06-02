@@ -2,6 +2,22 @@
 
 ## Bug fixes
 
+- AOB-968: Fix product label rendering on edit form
+
+# 4.0.31 (2020-06-01)
+
+## Improvement
+
+-PIM-9106: Improve error message when editing an attribute when it's due to a regular expression
+
+## Bug fixes
+
+- PIM-9277: Fix product computing when moving an attribute in family variant
+
+# 4.0.30 (2020-05-28)
+
+## Bug fixes
+
 -PIM-9264: Make "search on..." translatable on Crowdin
 -PIM-9269: Add the key "tree.create" and its associated message in the translation file for Crowdin
 
