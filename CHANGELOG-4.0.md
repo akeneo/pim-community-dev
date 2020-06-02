@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- AOB-968: Fix product label rendering on edit form
+
 # 4.0.31 (2020-06-01)
 
 ## Improvement
