@@ -1,5 +1,6 @@
 import React from 'react';
-import { renderWithProviders } from '../../../../test-utils';
+import 'jest-fetch-mock';
+import { renderWithProviders, act } from '../../../../test-utils';
 import { Operator } from '../../../../src/models/Operator';
 import { Router } from '../../../../src/dependenciesTools';
 import { FamilyCondition } from '../../../../src/models/conditions';
@@ -23,7 +24,7 @@ const familiesPayload = {
 
 const translate = jest.fn((key: string) => key);
 const router: Router = {
-  'generate': jest.fn(),
+  'generate': jest.fn((route: string, params?: { [param: string]: any }) => `${route}?${JSON.stringify(params)}`),
   'redirect': jest.fn(),
 };
 
@@ -33,6 +34,10 @@ describe('FamilyConditionLine', () => {
   });
 
   it('should display the family condition line', async () => {
+    fetchMock.mockResponses(
+      [JSON.stringify(familiesPayload), { status: 200 }],
+    );
+
     const { findByText, findByTestId } = renderWithProviders(
       <FamilyConditionLine
         condition={condition}
@@ -42,12 +47,9 @@ describe('FamilyConditionLine', () => {
         locales={[]}
         scopes={{}}
         translate={translate}
-      />, { reactHookForm: true }
+      />, { all: true }
     );
 
-    fetchMock.mockResponses(
-      [JSON.stringify(familiesPayload), { status: 200 }],
-    );
 
     expect(await findByText('pimee_catalog_rule.form.edit.fields.family')).toBeInTheDocument();
     expect(await findByTestId('edit-rules-input-1-operator')).toBeInTheDocument();
@@ -61,6 +63,10 @@ describe('FamilyConditionLine', () => {
   });
 
   it('handles values option appearance based on selected operator', async () => {
+    fetchMock.mockResponses(
+      [JSON.stringify(familiesPayload), { status: 200 }],
+    );
+
     const { findByTestId, queryByTestId } = renderWithProviders(
       <FamilyConditionLine
         condition={condition}
@@ -73,17 +79,13 @@ describe('FamilyConditionLine', () => {
       />, { all: true }
     );
 
-    fetchMock.mockResponses(
-      [JSON.stringify(familiesPayload), { status: 200 }],
-    );
-
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');
     expect(operatorSelector).toBeInTheDocument();
     expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
 
-    userEvent.selectOptions(operatorSelector, Operator.IS_NOT_EMPTY);
+    act(() => userEvent.selectOptions(operatorSelector, Operator.IS_NOT_EMPTY));
     expect(queryByTestId('edit-rules-input-1-value')).toBeNull();
-    userEvent.selectOptions(operatorSelector, Operator.NOT_IN_LIST);
+    act(() => userEvent.selectOptions(operatorSelector, Operator.NOT_IN_LIST));
     expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
   });
 });

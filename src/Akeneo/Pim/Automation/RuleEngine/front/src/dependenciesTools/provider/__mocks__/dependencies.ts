@@ -2,7 +2,13 @@ import { NotificationLevel } from '../applicationDependenciesProvider.type';
 
 export const dependencies = {
   router: {
-    generate: jest.fn((route: string) => route),
+    generate: jest.fn((route: string, params?: { [param: string]: any }) => {
+      let response = route;
+      if (params) {
+        response = `${response}?${JSON.stringify(params)}`;
+      }
+      return response;
+    }),
     redirect: jest.fn((url: string) => url),
   },
   translate: jest.fn((key: string) => key),

@@ -135,7 +135,7 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         router={router}
-      />, { reactHookForm: true }
+      />, { all: true }
     );
 
     expect(await findByText('Nom')).toBeInTheDocument();
@@ -158,7 +158,7 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         router={router}
-      />, { reactHookForm: true }
+      />, { all: true }
     );
 
     expect(await findByText('Nom')).toBeInTheDocument();
@@ -180,7 +180,7 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
         router={router}
-      />, { reactHookForm: true }
+      />, { all: true }
     );
     expect(await findByText('Name')).toBeInTheDocument();
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');
@@ -205,7 +205,7 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
         router={router}
-      />, { reactHookForm: true }
+      />, { all: true }
     );
     expect(await findByText('Name')).toBeInTheDocument();
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');
