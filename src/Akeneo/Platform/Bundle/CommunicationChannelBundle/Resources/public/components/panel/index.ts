@@ -1,3 +1,1 @@
-import {Panel} from 'akeneocommunicationchannel/components/panel/Panel';
-
-export {Panel};
+export * from 'akeneocommunicationchannel/components/panel/Panel';
