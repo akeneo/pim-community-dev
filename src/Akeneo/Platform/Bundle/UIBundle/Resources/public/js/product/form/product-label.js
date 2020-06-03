@@ -47,6 +47,10 @@ define(
 
                 var values = this.getFormData().values[attributeAsLabelIdentifier];
 
+                if (undefined === values) {
+                    return false;
+                }
+
                 return values.find(value => {
                     return (false === scopable || value.scope === scope)
                       && (false === localizable || value.locale === locale);

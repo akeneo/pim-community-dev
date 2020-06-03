@@ -21,6 +21,8 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     {
         parent::setUp();
 
+        $this->activateLocaleForChannel('fr_Fr', 'ecommerce');
+
         $this->createAttribute([
             'code'                => 'a_localizable_scopable_text_area',
             'type'                => AttributeTypes::TEXTAREA,

@@ -2,8 +2,19 @@
 
 ## Bug fixes
 
-- PIM-9277: Fix product computing when moving an attribute in family variant
+- AOB-968: Fix product label rendering on edit form
 - CXP-306: Fix the collect of product events
+
+# 4.0.31 (2020-06-01)
+
+## Improvement
+
+-PIM-9106: Improve error message when editing an attribute when it's due to a regular expression
+
+## Bug fixes
+
+- PIM-9277: Fix product computing when moving an attribute in family variant
+- PIM-9273: Add a filter to remove the product values of deleted channels and not activated locales
 
 # 4.0.30 (2020-05-28)
 
