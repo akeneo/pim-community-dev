@@ -45,6 +45,18 @@ class CustomActionValidator extends ConstraintValidator
                 ->atPath('type')
                 ->setInvalidValue($actionType)
                 ->addViolation();
+
+            return;
         }
+
+        try {
+            $customAction = $this->chainedDenormalizer->denormalize($value, $actionType);
+        } catch (\Exception $e) {
+            // do nothing
+            return;
+        }
+
+        $validator = $this->context->getValidator()->inContext($this->context);
+        $validator->validate($customAction);
     }
 }
