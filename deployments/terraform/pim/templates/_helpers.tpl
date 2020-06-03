@@ -39,11 +39,7 @@ Define the tag of the PIM Enterprise dev Docker image
 Can be with or without the Onboarder bundle activated
 */}}
 {{- define "pim.imageNameAndTag" -}}
-{{- if .Values.onboarder.enabled -}}
-{{- printf "%s:%s-onboarder" (include "pim.imageName" .) .Values.image.pim.tag -}}
-{{- else -}}
 {{- printf "%s:%s" (include "pim.imageName" .) .Values.image.pim.tag -}}
-{{- end -}}
 {{- end -}}
 
 {{/*
