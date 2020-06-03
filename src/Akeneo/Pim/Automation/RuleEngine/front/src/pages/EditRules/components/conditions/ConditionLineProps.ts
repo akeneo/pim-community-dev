@@ -1,4 +1,4 @@
-import { Router, Translate } from '../../../../dependenciesTools';
+import { Translate } from '../../../../dependenciesTools';
 import { Locale, LocaleCode } from '../../../../models';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 
@@ -8,5 +8,4 @@ export type ConditionLineProps = {
   locales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
-  router: Router;
 };

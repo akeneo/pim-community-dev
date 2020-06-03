@@ -13,19 +13,20 @@ import { FamiliesSelector } from '../../../../components/Selectors/FamiliesSelec
 import { getFamiliesByIdentifiers } from '../../../../repositories/FamilyRepository';
 import { useRegisterConst } from "../../hooks/useRegisterConst";
 import { LineErrors } from '../LineErrors';
+import { useBackboneRouter } from "../../../../dependenciesTools/hooks";
 
 type FamilyConditionLineProps = ConditionLineProps & {
   condition: FamilyCondition;
 };
 
 const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
-  router,
   lineNumber,
   translate,
   currentCatalogLocale,
   condition,
 }) => {
   const { watch } = useFormContext();
+  const router = useBackboneRouter();
   const [unexistingFamilyCodes, setUnexistingFamilyCodes] = React.useState<
     FamilyCode[]
   >([]);
@@ -101,7 +102,6 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
       {shouldDisplayValue() && (
         <ValueColumn>
           <FamiliesSelector
-            router={router}
             hiddenLabel={true}
             currentCatalogLocale={currentCatalogLocale}
             value={condition.value}

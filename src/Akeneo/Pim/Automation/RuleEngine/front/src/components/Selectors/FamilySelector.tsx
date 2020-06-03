@@ -8,9 +8,9 @@ import { Router } from '../../dependenciesTools';
 import { IndexedFamilies } from '../../fetch/FamilyFetcher';
 import { getFamilyByIdentifier } from '../../repositories/FamilyRepository';
 import { Family, FamilyCode, LocaleCode } from '../../models';
+import { useBackboneRouter } from "../../dependenciesTools/hooks";
 
 type Props = {
-  router: Router;
   label: string;
   hiddenLabel?: boolean;
   currentCatalogLocale: LocaleCode;
@@ -68,7 +68,6 @@ const initSelectedFamily = async (
 };
 
 const FamilySelector: React.FC<Props> = ({
-  router,
   label,
   hiddenLabel = false,
   currentCatalogLocale,
@@ -77,6 +76,7 @@ const FamilySelector: React.FC<Props> = ({
   placeholder,
   name
 }) => {
+  const router = useBackboneRouter();
   const handleChange = (value: Select2Value) => {
     if (onChange) {
       onChange(value as FamilyCode);

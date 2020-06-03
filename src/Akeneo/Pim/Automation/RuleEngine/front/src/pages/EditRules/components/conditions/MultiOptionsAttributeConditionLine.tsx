@@ -10,6 +10,7 @@ import {
   AttributeOptionCode,
   getAttributeOptionsByIdentifiers,
 } from '../../../../fetch/AttributeOptionFetcher';
+import { useBackboneRouter } from "../../../../dependenciesTools/hooks";
 
 type MultiOptionsAttributeConditionLineProps = ConditionLineProps & {
   condition: MultiOptionsAttributeCondition;
@@ -22,8 +23,8 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
   locales,
   scopes,
   currentCatalogLocale,
-  router,
 }) => {
+  const router = useBackboneRouter();
   const [unexistingOptionCodes, setUnexistingOptionCodes] = React.useState<
     AttributeOptionCode[]
   >([]);
@@ -93,7 +94,6 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
       <MultiOptionsSelector
         value={condition.value || []}
         currentCatalogLocale={currentCatalogLocale}
-        router={router}
         attributeId={condition.attribute.meta.id}
         label={translate('pimee_catalog_rule.rule.value')}
         hiddenLabel={true}

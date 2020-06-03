@@ -123,7 +123,6 @@ const EditRulesContent: React.FC<Props> = ({
             currentCatalogLocale={currentCatalogLocale}
             locales={locales}
             onSubmit={onSubmit}
-            router={router}
             ruleDefinition={ruleDefinition}
             scopes={scopes}
             translate={translate}

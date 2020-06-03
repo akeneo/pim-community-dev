@@ -4,18 +4,17 @@ import {
   Select2Option,
   Select2Value,
 } from '../Select2Wrapper';
-import { Router } from '../../dependenciesTools';
 import {
   AttributeOptionCode,
   AttributeOptionDataProvider,
   getAttributeOptionsByIdentifiers,
 } from '../../fetch/AttributeOptionFetcher';
 import { AttributeId } from '../../models/Attribute';
+import { useBackboneRouter } from "../../dependenciesTools/hooks";
 
 type Props = {
   label: string;
   hiddenLabel: boolean;
-  router: Router;
   currentCatalogLocale: string;
   attributeId: AttributeId;
   onChange?: (value: Select2Value[]) => void;
@@ -27,7 +26,6 @@ type Props = {
 const MultiOptionsSelector: React.FC<Props> = ({
   label,
   hiddenLabel = false,
-  router,
   currentCatalogLocale,
   attributeId,
   onChange,
@@ -35,6 +33,7 @@ const MultiOptionsSelector: React.FC<Props> = ({
   name,
   validation,
 }) => {
+  const router = useBackboneRouter();
   const handleResults = (response: { results: Select2Option[] }) => {
     return {
       more: 20 === response.results.length,

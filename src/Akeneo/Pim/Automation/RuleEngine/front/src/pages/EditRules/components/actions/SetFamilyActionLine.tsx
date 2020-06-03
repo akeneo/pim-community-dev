@@ -24,7 +24,6 @@ const SetFamilyActionLine: React.FC<Props> = ({
   lineNumber,
   action,
   handleDelete,
-  router,
   currentCatalogLocale,
 }) => {
   useRegisterConsts({
@@ -44,7 +43,6 @@ const SetFamilyActionLine: React.FC<Props> = ({
       </ActionTitle>
       <div className={'AknFormContainer'}>
         <FamilySelector
-          router={router}
           label={`${translate(
             'pim_enrich.entity.family.uppercase_label'
           )} ${translate('pim_common.required_label')}`}

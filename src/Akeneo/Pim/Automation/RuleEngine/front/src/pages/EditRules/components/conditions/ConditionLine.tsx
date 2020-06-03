@@ -5,7 +5,7 @@ import { PimConditionLine } from './PimConditionLine';
 import { FallbackConditionLine } from './FallbackConditionLine';
 import styled from 'styled-components';
 import { Condition, Locale, LocaleCode } from '../../../../models';
-import { Router, Translate } from '../../../../dependenciesTools';
+import { Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { ConditionLineProps } from './ConditionLineProps';
 
@@ -21,7 +21,6 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
-  router: Router;
   deleteCondition: (lineNumber: number) => void;
   condition: Condition;
 };
@@ -34,7 +33,6 @@ const ConditionLine: React.FC<Props> = ({
   scopes,
   currentCatalogLocale,
   deleteCondition,
-  router,
 }) => {
   const dialog = useDialogState();
 
@@ -57,7 +55,6 @@ const ConditionLine: React.FC<Props> = ({
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={currentCatalogLocale}
-        router={router}
       />
       <div className='AknGrid-bodyCell AknGrid-bodyCell--tight'>
         <DeleteButton {...dialog}>

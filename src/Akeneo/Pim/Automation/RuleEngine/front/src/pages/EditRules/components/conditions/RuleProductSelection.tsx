@@ -15,13 +15,14 @@ import {
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
-import { Router, Translate } from '../../../../dependenciesTools';
+import { Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { ConditionLine } from './ConditionLine';
 import { ProductsCount } from '../ProductsCount';
 import { AddConditionButton } from './AddConditionButton';
 import { FormData } from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
+import { useBackboneRouter } from "../../../../dependenciesTools/hooks";
 
 const Header = styled.header`
   font-weight: normal;
@@ -75,7 +76,6 @@ const RuleProductSelectionFieldset = styled.fieldset`
 type Props = {
   currentCatalogLocale: LocaleCode;
   locales: Locale[];
-  router: Router;
   ruleDefinition: RuleDefinition;
   scopes: IndexedScopes;
   translate: Translate;
@@ -84,11 +84,11 @@ type Props = {
 const RuleProductSelection: React.FC<Props> = ({
   currentCatalogLocale,
   locales,
-  router,
   ruleDefinition,
   scopes,
   translate,
 }) => {
+  const router = useBackboneRouter();
   const [conditions, setConditions] = React.useState<(Condition | null)[]>(
     ruleDefinition.conditions
   );
@@ -178,7 +178,6 @@ const RuleProductSelection: React.FC<Props> = ({
           />
           <AddConditionContainer>
             <AddConditionButton
-              router={router}
               handleAddCondition={handleAddCondition}
               translate={translate}
               isActiveConditionField={isActiveConditionField}
@@ -208,7 +207,6 @@ const RuleProductSelection: React.FC<Props> = ({
                   locales={locales}
                   scopes={scopes}
                   currentCatalogLocale={currentCatalogLocale}
-                  router={router}
                   deleteCondition={deleteCondition}
                 />
               )

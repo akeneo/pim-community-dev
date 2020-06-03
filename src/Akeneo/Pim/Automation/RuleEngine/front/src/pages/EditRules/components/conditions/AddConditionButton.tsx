@@ -1,6 +1,7 @@
 import React from 'react';
 import { Select2Wrapper } from '../../../../components/Select2Wrapper';
-import { Router, Translate } from '../../../../dependenciesTools';
+import { Translate } from '../../../../dependenciesTools';
+import { useBackboneRouter } from "../../../../dependenciesTools/hooks";
 
 type AddConditionAttribute = {
   id: string;
@@ -16,7 +17,6 @@ type AddConditionGroup = {
 type AddConditionResults = AddConditionGroup[];
 
 type Props = {
-  router: Router;
   handleAddCondition: (fieldCode: string) => void;
   translate: Translate;
   isActiveConditionField: (fieldCode: string) => boolean;
@@ -29,11 +29,11 @@ const SYSTEM_FIELDS = ['family'];
 const ATTRIBUTE_TYPES = ['pim_catalog_multiselect', 'pim_catalog_text'];
 
 const AddConditionButton: React.FC<Props> = ({
-  router,
   handleAddCondition,
   translate,
   isActiveConditionField,
 }) => {
+  const router = useBackboneRouter();
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
 
   const dataProvider = (term: string, page: number) => {

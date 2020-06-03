@@ -32,7 +32,6 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   translate,
   lineNumber,
   handleDelete,
-  router,
   currentCatalogLocale,
   locales,
   scopes,
@@ -45,7 +44,6 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
       translate={translate}
       lineNumber={lineNumber}
       handleDelete={handleDelete}
-      router={router}
       currentCatalogLocale={currentCatalogLocale}
       locales={locales}
       scopes={scopes}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Translate } from '../../../dependenciesTools';
+import { Translate } from '../../../dependenciesTools';
 import { RuleProductSelection } from './conditions/RuleProductSelection';
 import { RuleDefinition, Locale, LocaleCode } from '../../../models';
 import { Action } from '../../../models/Action';
@@ -30,7 +30,6 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
-  router: Router;
   actions: (Action | null)[];
   handleDeleteAction: (lineNumber: number) => void;
 };
@@ -41,7 +40,6 @@ const RulesBuilder: React.FC<Props> = ({
   locales,
   scopes,
   currentCatalogLocale,
-  router,
   actions,
   handleDeleteAction,
 }) => {
@@ -60,7 +58,6 @@ const RulesBuilder: React.FC<Props> = ({
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={currentCatalogLocale}
-        router={router}
       />
       <div data-testid={'action-list'}>
         {actions.map((action: Action | null, i) => {
@@ -77,7 +74,6 @@ const RulesBuilder: React.FC<Props> = ({
                   handleDelete={() => {
                     handleDeleteAction(i);
                   }}
-                  router={router}
                   currentCatalogLocale={currentCatalogLocale}
                   locales={locales}
                   scopes={scopes}

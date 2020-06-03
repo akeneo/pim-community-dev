@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTabState, Tab, TabList, TabPanel } from 'reakit/Tab';
-import { Router, Translate } from '../../../dependenciesTools';
+import { Translate } from '../../../dependenciesTools';
 import { LocaleCode, RuleDefinition } from '../../../models';
 import { RulesBuilder } from './RulesBuilder';
 import { RuleProperties } from './RuleProperties';
@@ -70,7 +70,6 @@ type Props = {
   ruleDefinition: RuleDefinition;
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
-  router: Router;
   translate: Translate;
   actions: (Action | null)[];
   handleDeleteAction: (lineNumber: number) => void;
@@ -83,7 +82,6 @@ const EditRulesForm: React.FC<Props> = ({
   scopes,
   translate,
   currentCatalogLocale,
-  router,
   actions,
   handleDeleteAction,
 }) => {
@@ -122,7 +120,6 @@ const EditRulesForm: React.FC<Props> = ({
           <RulesBuilder
             currentCatalogLocale={currentCatalogLocale}
             locales={locales}
-            router={router}
             ruleDefinition={ruleDefinition}
             scopes={scopes}
             translate={translate}
