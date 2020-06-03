@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Common\EntityWithValue\Builder;
 
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Common\EntityBuilder;
 use Akeneo\Test\Common\EntityWithValue\Code;
 use Akeneo\Test\Common\EntityWithValue\ListOfCodes;
 use Akeneo\Test\Common\EntityWithValue\ListOfValues;
 use Akeneo\Test\Common\EntityWithValue\Value;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Create a product model object with product factory, update its data with product model update and validate

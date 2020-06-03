@@ -8,8 +8,10 @@ const unitConfig = {
   },
   coveragePathIgnorePatterns: [
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge',
-    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/Button.tsx',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/NoData.tsx',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/icons',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/illustrations',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/components/',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/icons/',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/illustrations/',

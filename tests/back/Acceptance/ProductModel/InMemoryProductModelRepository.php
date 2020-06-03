@@ -53,7 +53,7 @@ class InMemoryProductModelRepository implements IdentifiableObjectRepositoryInte
 
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->productModels->toArray();
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)

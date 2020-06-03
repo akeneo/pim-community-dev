@@ -16,10 +16,9 @@ import {Operation} from 'akeneomeasure/model/operation';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
-import {filterErrors, ValidationError} from 'akeneomeasure/model/validation-error';
 import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 import {useTranslate, useUserContext, useSecurity} from '@akeneo-pim-community/legacy-bridge';
-import {Button} from '@akeneo-pim-community/shared';
+import {Button, filterErrors, ValidationError} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`
   margin-left: 40px;

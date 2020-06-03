@@ -60,6 +60,7 @@ const SearchBar = ({className, placeholder, count, searchValue, onSearchChange}:
       <SearchContainer>
         <SearchIcon />
         <SearchInput
+          title={translate('pim_common.search')}
           ref={searchFieldRef}
           placeholder={placeholder || translate('pim_common.search')}
           value={searchValue}

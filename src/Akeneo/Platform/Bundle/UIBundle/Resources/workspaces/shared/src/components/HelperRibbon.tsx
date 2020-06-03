@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import React, {PropsWithChildren} from 'react';
-import {WarningIcon} from 'akeneomeasure/shared/icons/WarningIcon';
-import {akeneoTheme} from '@akeneo-pim-community/shared';
+import React, {PropsWithChildren, ReactNode} from 'react';
+import {WarningIcon, InfoIcon} from '../icons';
+import {akeneoTheme} from '../theme';
 
 enum HelperLevel {
   HELPER_LEVEL_WARNING = 'warning',
@@ -24,7 +24,7 @@ const getBackgroundColor = (level: HelperLevel): string => {
 const getForegroundColor = (level: HelperLevel): string => {
   switch (level) {
     case HelperLevel.HELPER_LEVEL_INFO:
-      return akeneoTheme.color.blue100;
+      return akeneoTheme.color.grey120;
     case HelperLevel.HELPER_LEVEL_ERROR:
       return akeneoTheme.color.red100;
     case HelperLevel.HELPER_LEVEL_WARNING:
@@ -36,7 +36,7 @@ const getForegroundColor = (level: HelperLevel): string => {
 const getIcon = (level: HelperLevel): JSX.Element => {
   switch (level) {
     case HelperLevel.HELPER_LEVEL_INFO:
-      return <WarningIcon color={akeneoTheme.color.blue120} />;
+      return <InfoIcon color={akeneoTheme.color.blue120} />;
     case HelperLevel.HELPER_LEVEL_ERROR:
       return <WarningIcon color={akeneoTheme.color.red120} />;
     case HelperLevel.HELPER_LEVEL_WARNING:
@@ -74,17 +74,18 @@ const HelperRibbonIconContainer = styled.div<{level: HelperLevel}>`
   }
 `;
 
-const HelperRibbonIcon = ({level}: {level: HelperLevel}) => (
-  <HelperRibbonIconContainer level={level}>{getIcon(level)}</HelperRibbonIconContainer>
-);
-
 type HelperRibbonProps = {
   level: HelperLevel;
+  icon?: ReactNode;
 };
 
-const HelperRibbon = ({level, children}: PropsWithChildren<HelperRibbonProps>) => (
+const HelperRibbonIcon = ({level, icon}: HelperRibbonProps) => (
+  <HelperRibbonIconContainer level={level}>{icon || getIcon(level)}</HelperRibbonIconContainer>
+);
+
+const HelperRibbon = ({level, icon, children}: PropsWithChildren<HelperRibbonProps>) => (
   <HelperRibbonContainer level={level}>
-    <HelperRibbonIcon level={level} />
+    <HelperRibbonIcon level={level} icon={icon} />
     {children}
   </HelperRibbonContainer>
 );

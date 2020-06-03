@@ -89,6 +89,11 @@ services:
             - '@pim_catalog.doctrine.query.find_variant_product_completeness'
             - !tagged pim_axis_value_label_normalizer
 
+    pim_enrich.normalizer.linked_product_normalizer:
+        class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\LinkedProductsNormalizer
+        arguments:
+            - '@pim_enrich.normalizer.image'
+
     pim_enrich.normalizer.entity_with_family_variant.simple_select.label.normalizer:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\SimpleSelectOptionNormalizer'
         arguments:
@@ -137,6 +142,7 @@ services:
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.completeness.missing_required_attributes_calculator'
             - '@pim_enrich.normalizer.missing_required_attributes'
+            - '@pim_catalog.normalizer.standard.product.quantified_associations'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -199,5 +205,6 @@ services:
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.completeness.calculator'
             - '@pim_enrich.normalizer.missing_required_attributes'
+            - '@pim_catalog.normalizer.standard.product.quantified_associations'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 110 }

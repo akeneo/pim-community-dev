@@ -23,6 +23,17 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
     public function normalize($violation, $format = null, array $context = [])
     {
         $path = $this->getStandardPath($violation);
+        $translate = (bool)($context['translate'] ?? true);
+
+        if (!$translate) {
+            return [
+                'messageTemplate' => $violation->getMessageTemplate(),
+                'parameters' => $violation->getParameters(),
+                'message' => $violation->getMessage(),
+                'propertyPath' => $path,
+                'invalidValue' => $violation->getInvalidValue(),
+            ];
+        }
 
         if (null === $path || '' === $path) {
             return [
@@ -64,6 +75,11 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
     protected function getStandardPath(ConstraintViolationInterface $violation)
     {
         $constraint = $violation->getConstraint();
+
+        $shouldNormalizePropertyPath = (bool)($constraint->payload['normalize_property_path'] ?? true);
+        if (!$shouldNormalizePropertyPath) {
+            return $violation->getPropertyPath();
+        }
 
         if (null !== $constraint && isset($constraint->payload['standardPropertyName'])) {
             return $constraint->payload['standardPropertyName'];

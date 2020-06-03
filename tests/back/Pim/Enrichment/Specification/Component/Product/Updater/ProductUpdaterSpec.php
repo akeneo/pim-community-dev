@@ -2,28 +2,31 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater;
 
+use Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\QuantifiedAssociation\QuantifiedAssociationsFromAncestorsFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater;
 
 class ProductUpdaterSpec extends ObjectBehavior
 {
     function let(
         PropertySetterInterface $propertySetter,
         ObjectUpdaterInterface $valuesUpdater,
-        ParentAssociationsFilter $parentAssociationsFilter
+        ParentAssociationsFilter $parentAssociationsFilter,
+        QuantifiedAssociationsFromAncestorsFilter $quantifiedAssociationsFromAncestorsFilter
     ) {
         $this->beConstructedWith(
             $propertySetter,
             $valuesUpdater,
             $parentAssociationsFilter,
+            $quantifiedAssociationsFromAncestorsFilter,
             ['identifier', 'created', 'updated']
         );
     }
@@ -68,7 +71,7 @@ class ProductUpdaterSpec extends ObjectBehavior
 
         $updates = [
             'groups' => ['related1', 'related2'],
-            'values' => $values
+            'values' => $values,
         ];
 
         $this->update($product, $updates, []);
@@ -98,11 +101,11 @@ class ProductUpdaterSpec extends ObjectBehavior
             ->shouldNotBeCalled();
 
         $updates = [
-            'created'    => '2016-06-14T13:12:50+02:00',
-            'updated'    => '2016-06-14T13:12:50+02:00',
+            'created' => '2016-06-14T13:12:50+02:00',
+            'updated' => '2016-06-14T13:12:50+02:00',
             'identifier' => 'foo',
-            'groups'     => ['related1', 'related2'],
-            'values'     => $values,
+            'groups' => ['related1', 'related2'],
+            'values' => $values,
         ];
 
         $this->update($product, $updates, []);
@@ -124,7 +127,7 @@ class ProductUpdaterSpec extends ObjectBehavior
         $updates = [
             'values' => [
                 'unknown_attribute' => [],
-            ]
+            ],
         ];
 
         $valuesUpdater->update($product, $updates['values'], [])

@@ -39,12 +39,28 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    pim_catalog.event_subscriber.quantified_associations.compute_entity:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssociations\ComputeEntitySubscriber'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_identifiers_query'
+            - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_codes_query'
+        tags:
+            - { name: kernel.event_subscriber }
+
     pim_catalog.event_subscriber.load_product_values:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\LoadEntityWithValuesSubscriber'
         arguments:
             - '@akeneo.pim.enrichment.factory.write_value_collection'
         tags:
             - { name: doctrine.event_subscriber, priority: 50 }
+
+    pim_catalog.event_subscriber.load_product_quantified_associations:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssociations\LoadEntitySubscriber'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_ids_query'
+            - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_ids_query'
+        tags:
+            - { name: doctrine.event_subscriber, priority: 55 }
 
     pim_catalog.event_subscriber.product.delete.compute_products_and_ancestors:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete\ComputeProductsAndAncestorsSubscriber'

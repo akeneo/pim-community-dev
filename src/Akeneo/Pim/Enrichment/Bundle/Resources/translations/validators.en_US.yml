@@ -84,6 +84,14 @@ pim_catalog:
         303: This field expects a valid association format.
         pim_immutable_product_validator: The same identifier is already set on another product
         pim_immutable_product_model_validator: The same code is already set on another product model.
+        quantified_associations:
+            unexpected_link_type: The link type "{{ value }}" doesn't exist. You can only associate products or product models.
+            max_associations: You've reached the limit of {{ limit }} associations. Please, delete some existing associations before adding new ones.
+            invalid_quantity: '"{{ value }}" is an invalid quantity. Please, write a value between {{ min }} and {{ max }}.'
+            products_do_not_exist: "The following products don't exist: {{ values }}. Please make sure the products haven't been deleted in the meantime."
+            product_models_do_not_exist: "The following product models don't exist: {{ values }}. Please make sure the product models haven't been deleted in the meantime."
+            association_type_does_not_exist: This association type doesn't exist. Please make sure it hasn't been deleted in the meantime.
+            association_type_is_not_quantified: This association type isn't used to write quantities. Please, choose a different one before trying again.
 
 mass_edit:
     edit_common_attributes:

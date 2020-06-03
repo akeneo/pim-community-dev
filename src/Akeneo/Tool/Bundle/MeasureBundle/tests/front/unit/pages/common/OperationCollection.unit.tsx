@@ -288,7 +288,7 @@ test('It renders the given operations errors', async () => {
           <OperationCollection
             operations={operations}
             onOperationsChange={() => {}}
-            errors={[{propertyPath: '', message: 'message'}]}
+            errors={[{propertyPath: '', message: 'message', messageTemplate: 'message', parameters: {}}]}
           />
         </AkeneoThemeProvider>
       </DependenciesProvider>,

@@ -1,0 +1,9 @@
+parameters:
+  env(FLAG_QUANTIFIED_ASSOCIATION_ENABLED): 'false'
+
+services:
+  pim_structure.feature.quantified_association:
+    class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+    arguments:
+      - '%env(bool:FLAG_QUANTIFIED_ASSOCIATION_ENABLED)%'
+    public: true
