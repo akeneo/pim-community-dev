@@ -91,7 +91,7 @@ pim_catalog:
       product_models_do_not_exist: "Les modèles de produits suivants : {{ values }} n'existent pas. Merci de vérifier qu'ils n'ont pas été supprimés entre temps."
       association_type_does_not_exist: Ce type d'association n'existe pas. Merci de vérifier qu'il n'a pas été supprimé entre temps.
       association_type_is_not_quantified: '"{{ association_type }}" ne permet pas de renseigner des associations avec quantités. Merci d’utiliser un autre type d’association quantifiée ou d’utiliser la propriété "associations".'
-      association_type_should_not_be_quantified: '"{{ association_type }}" permet uniquement de renseigner uniquement des associations avec quantités. Merci d’utiliser un autre type d’association ou d’utiliser la propriété "quantified_associations".'
+      association_type_should_not_be_quantified: '"{{ association_type }}" permet uniquement de renseigner des associations avec quantités. Merci d’utiliser un autre type d’association ou d’utiliser la propriété "quantified_associations".'
 
 mass_edit:
   edit_common_attributes:
