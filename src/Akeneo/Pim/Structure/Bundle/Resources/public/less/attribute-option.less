@@ -12,12 +12,16 @@
     line-height: 54px;
     border-bottom: 1px @AknGrey60 solid;
 
+    &--selected {
+      background-color: @AknBlue20;
+    }
+
     &:first-child {
       margin-top: 20px;
     }
 
-    &:hover {
-    background-color: @AknLightGray;
+    &:hover:not(&--selected) {
+      background-color: @AknLightGray;
     }
 
     .AknAttributeOption-itemCode {
@@ -25,6 +29,7 @@
       font-weight: bold;
       text-transform: uppercase;
       color: @AknLightPurple;
+      cursor: pointer;
     }
   }
 

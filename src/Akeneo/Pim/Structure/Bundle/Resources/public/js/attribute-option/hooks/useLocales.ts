@@ -1,22 +1,19 @@
-import {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {AttributeOptionsState} from '../store/store';
-import {initializeLocalesAction} from '../reducers';
+import {useEffect, useState} from 'react';
 import baseFetcher from '../fetchers/baseFetcher';
 import {useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {Locale} from '../model';
 
 const useLocales = () => {
-    const dispatchAction = useDispatch();
+    const [locales, setLocales] = useState<Locale[]>([]);
     const route = useRoute('pim_enrich_locale_rest_index', {activated: 'true'});
 
     useEffect(() => {
         (async () => {
-            const locales = await baseFetcher(route);
-            dispatchAction(initializeLocalesAction(locales));
+            setLocales(await baseFetcher(route));
         })();
     }, []);
 
-    return useSelector((state: AttributeOptionsState) => state.locales);
+    return locales;
 };
 
 export default useLocales;

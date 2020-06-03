@@ -31,11 +31,9 @@ afterEach(() => {
 
 describe('Attribute options list', () => {
     test('it renders an empty attribute options list', async () => {
-        const mockFetch = jest.fn().mockImplementationOnce(route => {
+        global.fetch = jest.fn().mockImplementationOnce(route => {
             return {json: () => []};
         });
-
-        global.fetch = mockFetch;
 
         await act(async () => {
             ReactDOM.render(
@@ -54,7 +52,7 @@ describe('Attribute options list', () => {
     });
 
     test('it renders a list of 2 options', async () => {
-        const mockFetch = jest.fn().mockImplementationOnce(route => {
+        global.fetch = jest.fn().mockImplementationOnce(route => {
             return {
                 json: () => [
                     {
@@ -76,8 +74,6 @@ describe('Attribute options list', () => {
                 ]
             };
         });
-
-        global.fetch = mockFetch;
 
         await act(async () => {
             ReactDOM.render(

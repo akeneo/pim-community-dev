@@ -1,10 +1,9 @@
 import {applyMiddleware, combineReducers, createStore, Store} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
-import {attributeOptionsReducer, localesReducer} from '../reducers';
-import {AttributeOption, Locale} from '../model';
+import {attributeOptionsReducer} from '../reducers';
+import {AttributeOption} from '../model';
 
 export interface AttributeOptionsState {
-    locales: Locale[];
     attributeOptions: AttributeOption[] | null;
 }
 
@@ -14,7 +13,6 @@ const composeEnhancers = composeWithDevTools({
 
 export const createStoreWithInitialState = (initialState = {}) => createStore(
     combineReducers({
-        locales: localesReducer,
         attributeOptions: attributeOptionsReducer,
     }),
     initialState,
@@ -22,7 +20,6 @@ export const createStoreWithInitialState = (initialState = {}) => createStore(
 );
 
 const attributeOptionsStore: Store = createStoreWithInitialState({
-    locales: [],
     attributeOptions: null,
 });
 

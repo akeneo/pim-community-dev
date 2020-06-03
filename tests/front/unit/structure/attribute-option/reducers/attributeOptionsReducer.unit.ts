@@ -1,6 +1,7 @@
 import {
     attributeOptionsReducer,
-    initializeAttributeOptionsAction
+    initializeAttributeOptionsAction,
+    updateAttributeOptionAction,
 } from 'akeneopimstructure/js/attribute-option/reducers';
 
 const blackAndBlueOptions = [
@@ -47,5 +48,54 @@ describe('Attribute options reducer', () => {
             ],
             initializeAttributeOptionsAction(blackAndBlueOptions))
         ).toMatchObject(blackAndBlueOptions);
+    });
+
+    test('Update an attribute option', () => {
+        expect(
+            attributeOptionsReducer(
+                blackAndBlueOptions,
+                updateAttributeOptionAction({
+                    "id": 86,
+                    "code": "blue",
+                    "optionValues": {
+                        "en_US": {"id":255,"locale":"en_US","value":"Blue 2"},
+                        "fr_FR":{"id":256,"locale":"fr_FR","value":"Bleu 2"}
+                    }
+                })
+            )
+        ).toMatchObject([
+            {
+                "id": 85,
+                "code": "black",
+                "optionValues": {
+                    "en_US": {"id":252,"locale":"en_US","value":"Black"},
+                    "fr_FR":{"id":253,"locale":"fr_FR","value":"Noir"}
+                }
+            },
+            {
+                "id": 86,
+                "code": "blue",
+                "optionValues": {
+                    "en_US": {"id":255,"locale":"en_US","value":"Blue 2"},
+                    "fr_FR":{"id":256,"locale":"fr_FR","value":"Bleu 2"}
+                }
+            },
+        ]);
+    });
+
+    test('Update an attribute option with an empty state', () => {
+        expect(
+          attributeOptionsReducer(
+            null,
+            updateAttributeOptionAction({
+                "id": 86,
+                "code": "blue",
+                "optionValues": {
+                    "en_US": {"id":255,"locale":"en_US","value":"Blue 2"},
+                    "fr_FR":{"id":256,"locale":"fr_FR","value":"Bleu 2"}
+                }
+            })
+          )
+        ).toBeNull();
     });
 });
