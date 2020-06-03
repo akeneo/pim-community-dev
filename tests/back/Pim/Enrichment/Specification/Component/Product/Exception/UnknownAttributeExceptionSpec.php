@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Exception;
 use Akeneo\Pim\Enrichment\Component\Error\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\ProductDomainErrorIdentifiers;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use PhpSpec\ObjectBehavior;
 
@@ -59,6 +60,11 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
         $this->beConstructedThrough('unknownAttribute', ['attribute_code', $previous]);
 
         $this->getPrevious()->shouldReturn($previous);
+    }
+
+    function it_returns_an_error_identifier()
+    {
+        $this->getErrorIdentifier()->shouldReturn(ProductDomainErrorIdentifiers::UNKNOWN_ATTRIBUTE);
     }
 
     function it_provides_documentation()

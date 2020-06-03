@@ -10,15 +10,15 @@ namespace Akeneo\Pim\Enrichment\Bundle\Event;
  */
 final class TechnicalErrorEvent
 {
-    /** @var \Throwable $error */
+    /** @var \Exception $error */
     private $error;
 
-    public function __construct(\Throwable $error)
+    public function __construct(\Exception $error)
     {
         $this->error = $error;
     }
 
-    public function getError(): \Throwable
+    public function getError(): \Exception
     {
         return $this->error;
     }
