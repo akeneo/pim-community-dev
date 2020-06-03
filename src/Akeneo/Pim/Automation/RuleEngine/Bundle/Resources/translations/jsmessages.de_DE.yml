@@ -78,11 +78,17 @@ pimee_catalog_rule:
         label: Priorität
       add_to_category: Zu Kategorie hinzufügen
       add_conditions: Füge Bedingungen hinzu
+      products_count:
+        complete: "{{ count }} Produkte und Produktmodelle"
+        pending: Berechne Produkte und Produktmodelle
+        error: Berechnung unmöglich
       product_selection: Produktauswahl
       fields:
         family: Produktfamilie
       actions:
+        add_action: Aktion hinzufügen
         set_family:
+          title: Familie setzen
           subtitle: Familie wählen
         delete:
           label: Aktion entfernen
