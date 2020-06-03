@@ -155,11 +155,7 @@ const Select2Wrapper: React.FC<Props> = ({
 
   useEffect(() => {
     initSelect2(true);
-  }, [JSON.stringify(data)]);
-
-  useEffect(() => {
-    initSelect2(true);
-  }, [onSelecting]);
+  }, [onSelecting, allowClear, JSON.stringify(data)]);
 
   useEffect(() => {
     if (select2ref.current) {

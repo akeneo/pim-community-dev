@@ -169,7 +169,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   };
   formValidations[scopeFormName] = { validate: scopeValidate };
   formValidations[localeFormName] = { validate: localeValidate };
-  useValueInitialization('', formValues, formValidations);
+  useValueInitialization('', formValues, formValidations, [attributeCode, scopeCode, localeCode]);
 
   const setAttributeFormValue = (value: AttributeCode | null) => {
     setAttributeIsChanged(true);
@@ -207,6 +207,10 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
     }
   }, [attribute]);
 
+  React.useEffect(() => {
+    refreshAttribute(attributeCode);
+  }, []);
+
   return (
     <div className={'AknFormContainer'}>
       <SelectorBlock>
@@ -223,7 +227,9 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
         <SelectorBlock>
           <ScopeSelector
             id={scopeId}
-            label={scopeLabel || translate('Channel')}
+            label={scopeLabel || `${translate(
+              'Channel'
+            )} ${translate('pim_common.required_label')}`}
             availableScopes={Object.values(scopes)}
             currentCatalogLocale={currentCatalogLocale}
             value={getScopeFormValue()}
@@ -237,7 +243,9 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
         <SelectorBlock>
           <LocaleSelector
             id={localeId}
-            label={localeLabel || translate('Locale')}
+            label={localeLabel || `${translate(
+              'Locale'
+            )} ${translate('pim_common.required_label')}`}
             availableLocales={locales}
             value={getLocaleFormValue()}
             onChange={setLocaleFormValue}
