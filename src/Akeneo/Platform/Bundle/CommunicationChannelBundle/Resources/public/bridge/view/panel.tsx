@@ -21,7 +21,7 @@ class PanelView extends ReactView {
   }
   
   render() {
-    this.closePanel();
+    this.openPanel();
 
     return super.render();
   }

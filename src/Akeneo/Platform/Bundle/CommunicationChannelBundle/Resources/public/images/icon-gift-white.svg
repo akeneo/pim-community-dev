@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Icons / gift</title>
+    <g id="Icons-/-gift" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Group-6" transform="translate(2.000000, 2.000000)" stroke="#FFFFFF">
+            <rect id="Rectangle" x="1.5" y="9.5" width="17" height="10" rx="1"></rect>
+            <rect id="Rectangle-Copy" x="0.5" y="5.5" width="19" height="4" rx="1"></rect>
+            <path d="M10.1334408,5.66497515 C8.42867611,1.13497909 6.92712376,-0.316887328 5.62878374,1.30937591 C4.0118515,3.33469855 5.51340385,4.78656497 10.1334408,5.66497515 Z" id="Path-2"></path>
+            <path d="M15.1334408,5.66497515 C13.4286761,1.13497909 11.9271238,-0.316887328 10.6287837,1.30937591 C9.0118515,3.33469855 10.5134039,4.78656497 15.1334408,5.66497515 Z" id="Path-2-Copy" transform="translate(12.566720, 3.164975) scale(-1, 1) translate(-12.566720, -3.164975) "></path>
+            <line x1="10" y1="5.36142892" x2="10" y2="19.3342324" id="Path-3"></line>
+        </g>
+    </g>
+</svg>

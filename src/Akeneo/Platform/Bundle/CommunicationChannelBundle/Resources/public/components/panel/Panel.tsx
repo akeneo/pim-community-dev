@@ -2,29 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import {useCards} from 'akeneocommunicationchannel/hooks/useCards';
 import {CardFetcherImplementation, CardFetcher} from 'akeneocommunicationchannel/fetcher/card';
+import HeaderPanel from 'akeneocommunicationchannel/components/panel/Header';
+import CardComponent from 'akeneocommunicationchannel/components/panel/Card';
 
 const mediator = require('oro/mediator');
 const __ = require('oro/translator');
 
-const Header = styled.div`
-  margin-bottom: 50px;
-`;
-
-const Title = styled.div`
-  color: #9452BA;
-  font-size: 28px;
-  line-height: 41px;
-  float: left;
-`;
-
-const CloseButton = styled.div`
-  background: url(/bundles/pimui/images/icon-delete-slategrey.svg) no-repeat 50% 50%;
-  cursor: pointer;
-  border: none;
-  float: right;
-  margin-right: 10px;
-  width: 20px;
-  height: 50px;
+const ListCard = styled.div`
 `;
 
 type PanelDataProvider = {
@@ -36,17 +20,21 @@ const dataProvider: PanelDataProvider = {
 };
 
 const Panel = () => {
-  useCards(dataProvider.cardFetcher);
+  const {cards} = useCards(dataProvider.cardFetcher);
   const closePanel = () => {
     mediator.trigger('communication-channel:panel:close');
   };
 
   return (
     <>
-      <Header>
-        <Title>{__('akeneo_communication_channel.panel.title')}</Title>
-        <CloseButton title={__('akeneo_communication_channel.panel.button.close')} onClick={closePanel} />
-      </Header>
+      <HeaderPanel title={__('akeneo_communication_channel.panel.title')} onClickCloseButton={closePanel} />
+      <ListCard>
+        {null !== cards && 
+          cards.map((card, index) => {
+            return <CardComponent card={card} key={index} />
+          })
+        }
+      </ListCard>
     </>
   );
 };
