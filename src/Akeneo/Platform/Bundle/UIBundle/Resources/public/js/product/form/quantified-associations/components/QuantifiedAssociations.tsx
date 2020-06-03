@@ -69,6 +69,7 @@ type QuantifiedAssociationsProps = {
   quantifiedAssociations: QuantifiedAssociation;
   parentQuantifiedAssociations: QuantifiedAssociation;
   errors: ValidationError[];
+  isCompact: boolean;
   onAssociationsChange: (quantifiedAssociations: QuantifiedAssociation) => void;
   onOpenPicker: () => Promise<Row[]>;
 };
@@ -77,6 +78,7 @@ const QuantifiedAssociations = ({
   quantifiedAssociations,
   parentQuantifiedAssociations,
   errors,
+  isCompact,
   onOpenPicker,
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {
@@ -160,11 +162,13 @@ const QuantifiedAssociations = ({
         searchValue={searchValue}
         onSearchChange={setSearchValue}
       />
-      <Buttons>
-        <Button color="blue" outline={true} onClick={handleAdd}>
-          {translate('pim_enrich.entity.product.module.associations.add_associations')}
-        </Button>
-      </Buttons>
+      {!isCompact && (
+        <Buttons>
+          <Button color="blue" outline={true} onClick={handleAdd}>
+            {translate('pim_enrich.entity.product.module.associations.add_associations')}
+          </Button>
+        </Buttons>
+      )}
       {null === products ? null : 0 === filteredCollectionWithProducts.length ? (
         <NoDataSection>
           <AssociationTypeIllustration size={256} />
@@ -183,10 +187,12 @@ const QuantifiedAssociations = ({
               <HeaderCell>{translate('pim_common.image')}</HeaderCell>
               <HeaderCell>{translate('pim_common.label')}</HeaderCell>
               <HeaderCell>{translate('pim_common.identifier')}</HeaderCell>
-              <HeaderCell>{translate('pim_common.completeness')}</HeaderCell>
-              <HeaderCell>{translate('pim_enrich.entity.product.module.associations.variant_products')}</HeaderCell>
+              {!isCompact && <HeaderCell>{translate('pim_common.completeness')}</HeaderCell>}
+              {!isCompact && (
+                <HeaderCell>{translate('pim_enrich.entity.product.module.associations.variant_products')}</HeaderCell>
+              )}
               <HeaderCell>{translate('pim_enrich.entity.product.module.associations.quantified.quantity')}</HeaderCell>
-              <HeaderCell />
+              {!isCompact && <HeaderCell />}
             </tr>
           </thead>
           <tbody>
@@ -194,6 +200,7 @@ const QuantifiedAssociations = ({
               <QuantifiedAssociationRow
                 key={index}
                 row={row}
+                isCompact={isCompact}
                 parentQuantifiedLink={parentQuantifiedAssociations[getProductsType(row.productType)].find(
                   quantifiedAssociation => quantifiedAssociation.identifier === row.quantifiedLink.identifier
                 )}

@@ -108,11 +108,18 @@ const RowAction = styled(TransparentButton)`
 type QuantifiedAssociationRowProps = {
   row: Row;
   parentQuantifiedLink: QuantifiedLink | undefined;
+  isCompact: boolean;
   onChange: (row: Row) => void;
   onRemove: (row: Row) => void;
 };
 
-const QuantifiedAssociationRow = ({row, parentQuantifiedLink, onChange, onRemove}: QuantifiedAssociationRowProps) => {
+const QuantifiedAssociationRow = ({
+  row,
+  parentQuantifiedLink,
+  isCompact,
+  onChange,
+  onRemove,
+}: QuantifiedAssociationRowProps) => {
   const translate = useTranslate();
   const isProductModel = ProductType.ProductModel === row.productType;
   const productEditUrl = useRoute(`pim_enrich_${row.productType}_edit`, {id: row.product?.id.toString() || ''});
@@ -143,35 +150,39 @@ const QuantifiedAssociationRow = ({row, parentQuantifiedLink, onChange, onRemove
         <Cell>
           <CellContainer>{row.quantifiedLink.identifier}</CellContainer>
         </Cell>
-        <Cell>
-          {null === row.product ? (
-            <CellPlaceholder className="AknLoadingPlaceHolder" />
-          ) : (
-            <CellContainer>
-              {null === row.product.completeness ? (
-                translate('pim_common.not_available')
-              ) : (
-                <Badge>{row.product.completeness}%</Badge>
-              )}
-            </CellContainer>
-          )}
-        </Cell>
-        <Cell>
-          {null === row.product ? (
-            <CellPlaceholder className="AknLoadingPlaceHolder" />
-          ) : (
-            <CellContainer>
-              {null === row.product.variant_product_completenesses ? (
-                translate('pim_common.not_available')
-              ) : (
-                <Badge>
-                  {row.product.variant_product_completenesses.completeChildren} /{' '}
-                  {row.product.variant_product_completenesses.totalChildren}
-                </Badge>
-              )}
-            </CellContainer>
-          )}
-        </Cell>
+        {!isCompact && (
+          <Cell>
+            {null === row.product ? (
+              <CellPlaceholder className="AknLoadingPlaceHolder" />
+            ) : (
+              <CellContainer>
+                {null === row.product.completeness ? (
+                  translate('pim_common.not_available')
+                ) : (
+                  <Badge>{row.product.completeness}%</Badge>
+                )}
+              </CellContainer>
+            )}
+          </Cell>
+        )}
+        {!isCompact && (
+          <Cell>
+            {null === row.product ? (
+              <CellPlaceholder className="AknLoadingPlaceHolder" />
+            ) : (
+              <CellContainer>
+                {null === row.product.variant_product_completenesses ? (
+                  translate('pim_common.not_available')
+                ) : (
+                  <Badge>
+                    {row.product.variant_product_completenesses.completeChildren} /{' '}
+                    {row.product.variant_product_completenesses.totalChildren}
+                  </Badge>
+                )}
+              </CellContainer>
+            )}
+          </Cell>
+        )}
         <Cell>
           <InputCellContainer>
             <QuantityInput
@@ -190,31 +201,33 @@ const QuantifiedAssociationRow = ({row, parentQuantifiedLink, onChange, onRemove
           </InputCellContainer>
           <InputErrors errors={row.errors} />
         </Cell>
-        <Cell>
-          <ActionCellContainer>
-            <RowActions>
-              {undefined !== parentQuantifiedLink && parentQuantifiedLink.quantity !== row.quantifiedLink.quantity && (
-                <UnlinkIcon
-                  color={blueColor}
-                  title={translate('pim_enrich.entity.product.module.associations.quantified.unlinked')}
-                />
-              )}
-              {null !== row.product && (
-                <RowAction>
-                  <a href={`#${productEditUrl}`} target="_blank">
-                    <EditIcon title={translate('pim_enrich.entity.product.module.associations.edit')} size={20} />
-                  </a>
-                </RowAction>
-              )}
-
-              {undefined === parentQuantifiedLink && (
-                <RowAction onClick={() => onRemove(row)}>
-                  <CloseIcon title={translate('pim_enrich.entity.product.module.associations.remove')} size={20} />
-                </RowAction>
-              )}
-            </RowActions>
-          </ActionCellContainer>
-        </Cell>
+        {!isCompact && (
+          <Cell>
+            <ActionCellContainer>
+              <RowActions>
+                {undefined !== parentQuantifiedLink &&
+                  parentQuantifiedLink.quantity !== row.quantifiedLink.quantity && (
+                    <UnlinkIcon
+                      color={blueColor}
+                      title={translate('pim_enrich.entity.product.module.associations.quantified.unlinked')}
+                    />
+                  )}
+                {null !== row.product && (
+                  <RowAction>
+                    <a href={`#${productEditUrl}`} target="_blank">
+                      <EditIcon title={translate('pim_enrich.entity.product.module.associations.edit')} size={20} />
+                    </a>
+                  </RowAction>
+                )}
+                {undefined === parentQuantifiedLink && (
+                  <RowAction onClick={() => onRemove(row)}>
+                    <CloseIcon title={translate('pim_enrich.entity.product.module.associations.remove')} size={20} />
+                  </RowAction>
+                )}
+              </RowActions>
+            </ActionCellContainer>
+          </Cell>
+        )}
       </Container>
     </>
   );

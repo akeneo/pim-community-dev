@@ -23,7 +23,10 @@ define(
         'oro/messenger',
         'pim/template/mass-edit/product/associate/pick',
         'pim/template/mass-edit/product/associate/confirm',
-        'pim/template/common/modal-centered'
+        'pim/template/common/modal-centered',
+        'react',
+        'react-dom',
+        'pimui/js/product/form/quantified-associations/QuantifiedAssociationsTab',
     ],
     function (
         $,
@@ -41,7 +44,10 @@ define(
         messenger,
         pickTemplate,
         confirmTemplate,
-        modalTemplate
+        modalTemplate,
+        React,
+        ReactDOM,
+        {QuantifiedAssociationsTab}
     ) {
         return BaseOperation.extend({
             className: 'AknGridToolbar',
@@ -96,35 +102,69 @@ define(
                         this.delegateEvents();
                     });
                 } else {
-                    var loadingMask = new LoadingMask();
-                    this.$el.empty().append(loadingMask.render().$el.show());
-                    $.when(
-                        FetcherRegistry.getFetcher('product-model').fetchByIdentifiers(
-                            this.getValue()[this.getCurrentAssociationTypeCode()].product_models
-                        ),
-                        FetcherRegistry.getFetcher('product').fetchByIdentifiers(
-                            this.getValue()[this.getCurrentAssociationTypeCode()].products
-                        )
-                    ).then((productModels, products) => {
-                        const items = products.concat(productModels);
-                        this.$el.html(this.confirmTemplate({
-                            items: items,
-                            title: __('pim_enrich.entity.product.module.basket.title'),
-                            emptyLabel: __('pim_enrich.entity.product.module.basket.empty_basket'),
-                            confirmLabel: __(
-                                'pim_enrich.mass_edit.product.operation.associate_to_product_and_product_model.confirm'
-                            ),
-                            imagePathMethod: this.imagePathMethod.bind(this),
-                            labelMethod: this.labelMethod.bind(this),
-                            readOnly: this.readOnly
-                        }));
-                        this.delegateEvents();
+                    this.loadAssociationTypes().then((associationTypes) => {
+                        var loadingMask = new LoadingMask();
+                        this.$el.empty().append(loadingMask.render().$el.show());
+                        const currentAssociationTypeCode = this.getCurrentAssociationTypeCode();
+                        const value = this.getValue()[currentAssociationTypeCode];
+                        if (null !== currentAssociationTypeCode &&
+                            this.isQuantifiedAssociation(associationTypes, currentAssociationTypeCode)) {
+                            this.renderQuantifiedAssociations({
+                                products: value.products.map(identifier => ({identifier, quantity: 1})),
+                                product_models: value.product_models.map(identifier => ({identifier, quantity: 1})),
+                            });
+                        } else {
+                            $.when(
+                                FetcherRegistry.getFetcher('product-model').fetchByIdentifiers(value.product_models),
+                                FetcherRegistry.getFetcher('product').fetchByIdentifiers(value.products)
+                            ).then((productModels, products) => {
+                                const items = products.concat(productModels);
+                                this.$el.html(this.confirmTemplate({
+                                    items: items,
+                                    title: __('pim_enrich.entity.product.module.basket.title'),
+                                    emptyLabel: __('pim_enrich.entity.product.module.basket.empty_basket'),
+                                    confirmLabel: __(
+                                        'pim_enrich.mass_edit.product.operation.associate_to_product_and_product_model.confirm'
+                                    ),
+                                    imagePathMethod: this.imagePathMethod.bind(this),
+                                    labelMethod: this.labelMethod.bind(this),
+                                    readOnly: this.readOnly
+                                }));
+
+                                this.delegateEvents();
+                            }).always(() => {
+                                loadingMask.remove();
+                            });
+                        }
                     })
-                    .always(() => {
-                        loadingMask.remove();
-                    });
                 }
             },
+
+            isQuantifiedAssociation: function(associationTypes, associationTypeCode) {
+                if (!associationTypes || 0 === associationTypes.length) return false;
+
+                const associationType = associationTypes.find(associationType => associationType.code === associationTypeCode);
+
+                if (undefined === associationType) throw new Error(`Cannot find association type ${associationTypeCode}`);
+
+                return associationType.is_quantified;
+            },
+
+            renderQuantifiedAssociations: function(quantifiedAssociations) {
+                const Component = React.createElement(QuantifiedAssociationsTab, {
+                    quantifiedAssociations,
+                    parentQuantifiedAssociations: {products: [], product_models: []},
+                    errors: [],
+                    isCompact: true,
+                    onAssociationsChange: updatedAssociations => {
+                        const value = this.getValue();
+                        const currentAssociationTypeCode = this.getCurrentAssociationTypeCode();
+                        this.setValue({[currentAssociationTypeCode]: updatedAssociations}, true);
+                    },
+                    onOpenPicker: () => {},
+                });
+                ReactDOM.render(Component, this.el);
+              },
 
             /**
              * {@inheritdoc}
@@ -150,10 +190,10 @@ define(
              *
              * @param {string} group
              */
-            setValue: function (values) {
+            setValue: function (values, isQuantified = false) {
                 const data = this.getFormData();
                 data.actions = [{
-                    field: 'associations',
+                    field: isQuantified ? 'quantified_associations' : 'associations',
                     value: values
                 }];
 
