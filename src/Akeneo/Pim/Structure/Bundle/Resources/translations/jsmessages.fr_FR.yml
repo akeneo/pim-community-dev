@@ -80,6 +80,8 @@ pim_enrich.entity.attribute_option:
       cancel_description: Attention, vous allez perdre les données non sauvegardées. Êtes-vous sûr(e) de vouloir annuler les modifications sur cette nouvelle option ?
 pim_enrich.entity.association_type:
   label: type d'association
+  property:
+    is_two_way: Association bi-directionnelle
   flash:
     update:
       success: Le type d'association a été mis à jour avec succès.
@@ -94,9 +96,11 @@ pim_enrich.entity.association_type:
     index: "]-Inf, 1]{{ count }} type d'association|]1, Inf[{{ count }} types d'association"
   module:
     create:
+      title: Créer un nouveau type d'association
       button: Créer un type d'association
     delete:
       confirm: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
+  hint: <a href="{{link}}" target="_blank">Dans cet article</a>, vous trouverez tout ce dont vous avez besoin pour créer votre propre type d'association.
 pim_enrich.entity.group_type:
   label: type de groupe
   flash:

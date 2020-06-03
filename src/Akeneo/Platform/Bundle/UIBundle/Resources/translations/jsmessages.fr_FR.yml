@@ -170,6 +170,7 @@ pim_common:
   general_properties: Propriétés générales
   history: Historique
   identifier: Identifiant
+  image: Image
   label: Libellé
   label_translations: Traduction des libellés
   Label or identifier: libellé ou identifiant
