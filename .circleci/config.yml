@@ -549,6 +549,12 @@ jobs:
           - run:
                 name: Execute end-to-end tests
                 command: make test-end-to-end
+          - run:
+              name: Restart FPM with Onboarder feature turned off
+              command: make up APP_ENV=behat FLAG_ONBOARDER_ENABLED=0 C='fpm'
+          - run:
+              name: Execute end-to-end "Onboarder feature disabled" tests
+              command: make test-end-to-end-onboarder-disabled
           - store_test_results:
                 path: ~/project/pim/var/tests
           - store_artifacts:
