@@ -98,7 +98,7 @@ const recursiveLookup = async (source, target) => {
       let childPath = path.join(source, child);
 
       if (fs.lstatSync(childPath).isDirectory()) {
-        let childTarget = path.join(target, child)
+        let childTarget = path.join(target, child);
         if (!fs.existsSync(childTarget)) {
           fs.mkdirSync(childTarget);
         }
