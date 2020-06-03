@@ -13,7 +13,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStand
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMapper;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMerger;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldConverter;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
 
 class ProductSpec extends ObjectBehavior
@@ -59,7 +58,8 @@ class ProductSpec extends ObjectBehavior
         ConvertedField $enable,
         ConvertedField $xSellGroup,
         ConvertedField $xSellProduct,
-        ConvertedField $substitution
+        ConvertedField $substitution,
+        ConvertedField $packProducts
     ) {
         $item = [
             'sku'                    => '1069978',
@@ -73,7 +73,11 @@ class ProductSpec extends ObjectBehavior
             'price-USD'              => '10',
             'X_SELL-groups'          => 'group-A',
             'X_SELL-products'        => 'sku-A, sku-B',
-            'SUBSTITUTION-products'  => 'sku-C'
+            'SUBSTITUTION-products'  => 'sku-C',
+            'PACK-products'          => 'sku-A,sku-B',
+            'PACK-products-quantity' => '12|24',
+            'PACK-product_models'    => 'sku-C',
+            'PACK-product_models-quantity' => '14'
         ];
 
         $itemMerged = [
@@ -87,7 +91,14 @@ class ProductSpec extends ObjectBehavior
             'price'                  => '15 EUR, 10 USD',
             'X_SELL-groups'          => 'group-A',
             'X_SELL-products'        => 'sku-A, sku-B',
-            'SUBSTITUTION-products'  => 'sku-C'
+            'SUBSTITUTION-products'  => 'sku-C',
+            'PACK-products'          => [
+                ['identifier' => 'sku-A', 'quantity' => '12'],
+                ['identifier' => 'sku-B', 'quantity' => '24']
+            ],
+            'PACK-product_models'    => [
+                ['identifier' => 'sku-C', 'quantity' => '14']
+            ],
         ];
 
         $columnsMapper->map($item)->willReturn($item);
@@ -100,6 +111,14 @@ class ProductSpec extends ObjectBehavior
                 'X_SELL-groups',
                 'X_SELL-products',
                 'SUBSTITUTION-products'
+            ]
+        );
+        $assocColumnsResolver->resolveQuantifiedAssociationColumns()->willReturn(
+            [
+                'PACK-products',
+                'PACK-product_models',
+                'PACK-products-quantity',
+                'PACK-product_models-quantity',
             ]
         );
 
@@ -117,6 +136,10 @@ class ProductSpec extends ObjectBehavior
         $fieldConverter->supportsColumn('price')->willReturn(false);
         $fieldConverter->supportsColumn('X_SELL-groups')->willReturn(true);
         $fieldConverter->supportsColumn('X_SELL-products')->willReturn(true);
+        $fieldConverter->supportsColumn('PACK-products')->willReturn(true);
+        $fieldConverter->supportsColumn('PACK-product_models')->willReturn(true);
+        $fieldConverter->supportsColumn('PACK-products-quantity')->willReturn(true);
+        $fieldConverter->supportsColumn('PACK-product_models-quantity')->willReturn(true);
         $fieldConverter->supportsColumn('SUBSTITUTION-products')->willReturn(true);
 
         $fieldConverter->convert('categories', 'audio_video_sales,loudspeakers,sony')->willReturn($categories);
@@ -174,6 +197,86 @@ class ProductSpec extends ObjectBehavior
                     'products' => ['sku-A', 'sku-B'],
                 ],
                 'SUBSTITUTION' => ['products' => ['sku-C']]
+            ]
+        ]);
+
+        $fieldConverter->convert('PACK-products', [
+            ['identifier' => 'sku-A', 'quantity' => '12'],
+            ['identifier' => 'sku-B', 'quantity' => '24']
+        ])->willReturn($packProducts);
+        $packProducts->appendTo([
+            'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
+            'enabled' => true,
+            'associations' => [
+                'X_SELL' => [
+                    'groups' => ['group-A'],
+                    'products' => ['sku-A', 'sku-B'],
+                ],
+                'SUBSTITUTION' => ['products' => ['sku-C']]
+            ]
+        ])->willReturn([
+            'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
+            'enabled' => true,
+            'associations' => [
+                'X_SELL' => [
+                    'groups' => ['group-A'],
+                    'products' => ['sku-A', 'sku-B'],
+                ],
+                'SUBSTITUTION' => ['products' => ['sku-C']]
+            ],
+            'quantified_associations' => [
+                'PACK' => [
+                    'products' => [
+                        ['identifier' => 'sku-A', 'quantity' => '12'],
+                        ['identifier' => 'sku-B', 'quantity' => '24']
+                    ]
+                ]
+            ]
+        ]);
+
+
+
+        $fieldConverter->convert('PACK-product_models', [
+            ['identifier' => 'sku-C', 'quantity' => '14']
+        ])->willReturn($packProducts);
+        $packProducts->appendTo([
+            'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
+            'enabled' => true,
+            'associations' => [
+                'X_SELL' => [
+                    'groups' => ['group-A'],
+                    'products' => ['sku-A', 'sku-B'],
+                ],
+                'SUBSTITUTION' => ['products' => ['sku-C']]
+            ],
+            'quantified_associations' => [
+                'PACK' => [
+                    'products' => [
+                        ['identifier' => 'sku-A', 'quantity' => '12'],
+                        ['identifier' => 'sku-B', 'quantity' => '24']
+                    ]
+                ]
+            ]
+        ])->willReturn([
+            'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
+            'enabled' => true,
+            'associations' => [
+                'X_SELL' => [
+                    'groups' => ['group-A'],
+                    'products' => ['sku-A', 'sku-B'],
+                ],
+                'SUBSTITUTION' => ['products' => ['sku-C']]
+            ],
+            'quantified_associations' => [
+                'PACK' => [
+                    'products' => [
+                        ['identifier' => 'sku-A', 'quantity' => '12'],
+                        ['identifier' => 'sku-B', 'quantity' => '24']
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'sku-C', 'quantity' => '14'],
+                    ]
+                ]
             ]
         ]);
 
@@ -250,6 +353,17 @@ class ProductSpec extends ObjectBehavior
                     'products' => ['sku-C'],
                 ],
             ],
+            'quantified_associations' => [
+                'PACK' => [
+                    'products' => [
+                        ['identifier' => 'sku-A', 'quantity' => '12'],
+                        ['identifier' => 'sku-B', 'quantity' => '24']
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'sku-C', 'quantity' => '14'],
+                    ]
+                ]
+                    ],
             'values'       => [
                 'sku'          => [
                     [
@@ -314,6 +428,7 @@ class ProductSpec extends ObjectBehavior
 
         $attrColumnsResolver->resolveAttributeColumns()->willReturn(['sku']);
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
+        $assocColumnsResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
         $columnsMerger->merge($filteredItem)->willReturn($filteredItem);
 
@@ -374,6 +489,7 @@ class ProductSpec extends ObjectBehavior
 
         $attrColumnsResolver->resolveAttributeColumns()->willReturn(['sku']);
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
+        $assocColumnsResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
         $columnsMerger->merge($item)->willReturn($item);
 
@@ -405,6 +521,7 @@ class ProductSpec extends ObjectBehavior
 
         $attrColumnsResolver->resolveAttributeColumns()->willReturn(['sku']);
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
+        $assocColumnsResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
         $columnsMerger->merge($item)->willReturn($item);
 
@@ -438,6 +555,7 @@ class ProductSpec extends ObjectBehavior
 
         $attrColumnsResolver->resolveAttributeColumns()->willReturn(['sku', 'nonlocalized-fr_FR']);
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
+        $assocColumnsResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
         $columnsMerger->merge($item)->willReturn($item);
 

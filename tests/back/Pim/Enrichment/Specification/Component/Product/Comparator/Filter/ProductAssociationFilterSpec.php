@@ -27,14 +27,15 @@ class ProductAssociationFilterSpec extends ObjectBehavior
         ProductInterface $product,
         ComparatorInterface $arrayComparator
     ) {
-        $originalValues = ['associations' => []];
+        $originalValues = ['associations' => [], 'quantified_associations' => []];
         $newValues = [
             'associations' => [
                 'PACK' => [
                     'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
                     'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $normalizer->normalize($product, 'standard')
@@ -46,7 +47,12 @@ class ProductAssociationFilterSpec extends ObjectBehavior
         $arrayComparator->compare($newValues['associations']['PACK']['products'], [])
             ->willReturn($newValues['associations']['PACK']['products']);
 
-        $this->filter($product, $newValues)->shouldReturn($newValues);
+        $this->filter($product, $newValues)->shouldReturn(['associations' => [
+            'PACK' => [
+                'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
+                'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
+            ]
+        ]]);
     }
 
     function it_filters_not_updated_values(
@@ -67,7 +73,8 @@ class ProductAssociationFilterSpec extends ObjectBehavior
                     'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
                     'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $normalizer->normalize($product, 'standard')
@@ -111,7 +118,8 @@ class ProductAssociationFilterSpec extends ObjectBehavior
                     'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
                     'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $normalizer->normalize($product, 'standard')

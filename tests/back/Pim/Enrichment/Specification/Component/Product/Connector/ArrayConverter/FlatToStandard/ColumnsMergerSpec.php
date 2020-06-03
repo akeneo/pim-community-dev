@@ -2,19 +2,21 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 
 class ColumnsMergerSpec extends ObjectBehavior
 {
-    function let(AttributeColumnInfoExtractor $fieldExtractor)
+    function let(AttributeColumnInfoExtractor $fieldExtractor, AssociationColumnsResolver $associationColumnResolver)
     {
-        $this->beConstructedWith($fieldExtractor);
+        $this->beConstructedWith($fieldExtractor, $associationColumnResolver);
     }
 
     function it_does_not_merge_columns_which_does_not_represents_attribute_value(
-      $fieldExtractor
+      $fieldExtractor,
+      $associationColumnResolver
     ) {
         $row = [
             'enabled' => '1',
@@ -22,6 +24,9 @@ class ColumnsMergerSpec extends ObjectBehavior
         ];
         $fieldExtractor->extractColumnInfo('enabled')->willReturn(null);
         $fieldExtractor->extractColumnInfo('categories')->willReturn(null);
+
+        $associationColumnResolver->resolveQuantifiedQuantityAssociationColumns()->willReturn([]);
+        $associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn([]);
 
         $mergedRow = $row;
         $this->merge($row)->shouldReturn($mergedRow);
@@ -265,6 +270,28 @@ class ColumnsMergerSpec extends ObjectBehavior
         $price->getBackendType()->willReturn('prices');
 
         $mergedRow = ['price' => '10 EUR,12 USD,14 CHF'];
+        $this->merge($row)->shouldReturn($mergedRow);
+    }
+
+    function it_merges_columns_which_represents_quantified_associations_in_two_columns(
+        $fieldExtractor,
+        $associationColumnResolver
+    ) {
+        $row = [
+            'PACK-products-quantity' => '10|24',
+            'PACK-products' => 'my_sku,nice'
+        ];
+        $fieldExtractor->extractColumnInfo('PACK-products-quantity')->willReturn(null);
+        $fieldExtractor->extractColumnInfo('PACK-products')->willReturn(null);
+
+        $associationColumnResolver->resolveQuantifiedQuantityAssociationColumns()->willReturn(['PACK-products-quantity']);
+        $associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn(['PACK-products']);
+
+        $mergedRow = [
+            'PACK-products-quantity' => '10|24',
+            'PACK-products' => [['quantity' => 10, 'identifier' => 'my_sku'], ['quantity' => 24, 'identifier' => 'nice']],
+            'PACK-product_models' => []
+        ];
         $this->merge($row)->shouldReturn($mergedRow);
     }
 }
