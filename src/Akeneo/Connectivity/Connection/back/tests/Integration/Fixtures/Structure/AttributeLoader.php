@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure;
 
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
-use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
-use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -17,22 +17,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeLoader
 {
-    /** @var AttributeFactory */
+    /** @var SimpleFactoryInterface */
     private $factory;
 
-    /** @var AttributeUpdater */
+    /** @var ObjectUpdaterInterface */
     private $updater;
 
-    /** @var AttributeSaver */
+    /** @var SaverInterface */
     private $saver;
 
     /** @var ValidatorInterface */
     private $validator;
 
     public function __construct(
-        AttributeFactory $factory,
-        AttributeUpdater $updater,
-        AttributeSaver $saver,
+        SimpleFactoryInterface $factory,
+        ObjectUpdaterInterface $updater,
+        SaverInterface $saver,
         ValidatorInterface $validator
     ) {
         $this->factory = $factory;

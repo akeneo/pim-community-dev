@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure;
 
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
-use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
-use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -16,22 +16,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class FamilyLoader
 {
-    /** @var FamilyFactory */
+    /** @var SimpleFactoryInterface */
     private $factory;
 
-    /** @var FamilyUpdater */
+    /** @var ObjectUpdaterInterface */
     private $updater;
 
-    /** @var FamilySaver */
+    /** @var SaverInterface */
     private $saver;
 
     /** @var ValidatorInterface */
     private $validator;
 
     public function __construct(
-        FamilyFactory $factory,
-        FamilyUpdater $updater,
-        FamilySaver $saver,
+        SimpleFactoryInterface $factory,
+        ObjectUpdaterInterface $updater,
+        SaverInterface $saver,
         ValidatorInterface $validator
     ) {
         $this->factory = $factory;

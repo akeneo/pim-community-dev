@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater;
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
-use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -23,10 +21,10 @@ class ProductLoader
     /** @var ProductBuilderInterface */
     private $builder;
 
-    /** @var AttributeUpdater */
+    /** @var ObjectUpdaterInterface */
     private $updater;
 
-    /** @var AttributeSaver */
+    /** @var SaverInterface */
     private $saver;
 
     /** @var ValidatorInterface */
@@ -37,8 +35,8 @@ class ProductLoader
 
     public function __construct(
         ProductBuilderInterface $builder,
-        ProductUpdater $updater,
-        ProductSaver $saver,
+        ObjectUpdaterInterface $updater,
+        SaverInterface $saver,
         ValidatorInterface $validator,
         Client $client
     ) {

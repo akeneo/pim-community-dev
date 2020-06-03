@@ -157,6 +157,11 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
             ]
         ]);
 
+        $streamedContent = '';
+        ob_start(function ($buffer) use (&$streamedContent) {
+            $streamedContent .= $buffer;
+            return '';
+        });
         $client->request(
             'PATCH',
             '/api/rest/v1/products',
@@ -165,6 +170,8 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
             ['HTTP_content_type' => StreamResourceResponse::CONTENT_TYPE],
             $content
         );
+        ob_end_flush();
+
         Assert::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         $this->elasticsearch->refreshIndex();

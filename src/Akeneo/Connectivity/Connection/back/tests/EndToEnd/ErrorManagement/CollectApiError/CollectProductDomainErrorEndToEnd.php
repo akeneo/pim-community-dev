@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Connection;
 
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\AttributeLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\FamilyLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
@@ -26,9 +25,6 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
     /** @var FamilyLoader */
     private $familyLoader;
 
-    /** @var ProductLoader */
-    private $productLoader;
-
     /** @var Client */
     private $elasticsearch;
 
@@ -38,7 +34,6 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
         $this->attributeLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.attribute');
         $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
-        $this->productLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product');
 
         $this->elasticsearch = $this->get('akeneo_connectivity.client.connection_error');
     }
