@@ -35,7 +35,18 @@ class ProductAssociationFilterSpec extends ObjectBehavior
                     'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
                 ]
             ],
-            'quantified_associations' => []
+            'quantified_associations' => [
+                'PRODUCTSET' => [
+                    'products' => [
+                        ['identifier' => 'sku-A', 'quantity' => '12'],
+                        ['identifier' => 'sku-B', 'quantity' => '24']
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'sku_model-A', 'quantity' => '2'],
+                        ['identifier' => 'sku_model-B', 'quantity' => '4']
+                    ]
+                ]
+            ]
         ];
 
         $normalizer->normalize($product, 'standard')
@@ -47,12 +58,34 @@ class ProductAssociationFilterSpec extends ObjectBehavior
         $arrayComparator->compare($newValues['associations']['PACK']['products'], [])
             ->willReturn($newValues['associations']['PACK']['products']);
 
-        $this->filter($product, $newValues)->shouldReturn(['associations' => [
-            'PACK' => [
-                'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
-                'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
+        $comparatorRegistry->getFieldComparator('quantified_associations')->willReturn($arrayComparator);
+        $arrayComparator->compare($newValues['quantified_associations']['PRODUCTSET']['product_models'], [])
+            ->willReturn($newValues['quantified_associations']['PRODUCTSET']['product_models']);
+        $arrayComparator->compare($newValues['quantified_associations']['PRODUCTSET']['products'], [])
+            ->willReturn($newValues['quantified_associations']['PRODUCTSET']['products']);
+
+        $this->filter($product, $newValues)->shouldReturn(
+            [
+                'associations' => [
+                    'PACK' => [
+                        'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
+                        'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
+                    ]
+                ],
+                'quantified_associations' => [
+                    'PRODUCTSET' => [
+                        'products' => [
+                            ['identifier' => 'sku-A', 'quantity' => '12'],
+                            ['identifier' => 'sku-B', 'quantity' => '24']
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'sku_model-A', 'quantity' => '2'],
+                            ['identifier' => 'sku_model-B', 'quantity' => '4']
+                        ]
+                    ]
+                ]
             ]
-        ]]);
+        );
     }
 
     function it_filters_not_updated_values(
@@ -99,7 +132,7 @@ class ProductAssociationFilterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_returns_an_empty_array_when_new_and_original_products_are_equals(
+    function it_returns_an_empty_array_when_new_and_original_products_associations_are_equals(
         $normalizer,
         $comparatorRegistry,
         ProductInterface $product,
@@ -136,5 +169,61 @@ class ProductAssociationFilterSpec extends ObjectBehavior
         )->willReturn(null);
 
         $this->filter($product, $newValues)->shouldReturn([]);
+    }
+
+    function it_returns_an_empty_array_when_new_and_original_products_quantified_associations_are_equals(
+        $normalizer,
+        $comparatorRegistry,
+        ProductInterface $product,
+        ComparatorInterface $arrayComparator
+    ) {
+        $originalValues = [
+            'PRODUCTSET' => [
+                'products' => [
+                    ['identifier' => 'sku-A', 'quantity' => '12'],
+                    ['identifier' => 'sku-B', 'quantity' => '24']
+                ],
+                'product_models' => [
+                    ['identifier' => 'sku_model-A', 'quantity' => '2'],
+                    ['identifier' => 'sku_model-B', 'quantity' => '4']
+                ]
+            ]
+        ];
+
+        $newValues = [
+            'associations' => [],
+            'quantified_associations' => [
+                'PRODUCTSET' => [
+                    'products' => [
+                        ['identifier' => 'sku-A', 'quantity' => '12'],
+                        ['identifier' => 'sku-B', 'quantity' => '24']
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'sku_model-A', 'quantity' => '2'],
+                        ['identifier' => 'sku_model-B', 'quantity' => '4']
+                    ]
+                ]
+            ]
+        ];
+
+        $normalizer->normalize($product, 'standard')
+            ->willReturn($originalValues);
+
+        $comparatorRegistry->getFieldComparator('quantified_associations')->willReturn($arrayComparator);
+        $arrayComparator->compare(
+            $newValues['quantified_associations']['PRODUCTSET']['product_models'],
+            $originalValues['PRODUCTSET']['product_models']
+        )->willReturn(null);
+        $arrayComparator->compare(
+            $newValues['quantified_associations']['PRODUCTSET']['products'],
+            $originalValues['PRODUCTSET']['products']
+        )->willReturn(null);
+
+        $this->filter($product, $newValues)->shouldReturn(['quantified_associations' => [
+            'PRODUCTSET' => [
+                'products' => [],
+                'product_models' => [],
+            ],
+        ],]);
     }
 }
