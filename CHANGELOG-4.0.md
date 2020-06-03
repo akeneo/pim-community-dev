@@ -13,6 +13,7 @@
 ## Bug fixes
 
 - PIM-9277: Fix product computing when moving an attribute in family variant
+- PIM-9273: Add a filter to remove the product values of deleted channels and not activated locales
 
 # 4.0.30 (2020-05-28)
 
