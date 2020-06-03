@@ -10,6 +10,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection as DbalConnection;
+use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -45,7 +46,7 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         $product1 = $this->createProduct('product1', ['enabled' => false]);
         $product2 = $this->createProduct('product2', ['enabled' => false]);
         $product3 = $this->createProduct('product3', ['enabled' => false]);
-        $this->setVersioningAuthor($connection->username());
+        $this->setVersioningAuthorAndDate($connection->username());
 
         $commandTester = new CommandTester($this->command);
         $commandTester->execute([]);
@@ -56,7 +57,7 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         $this->updateProduct($product1, ['enabled' => true]);
         $this->updateProduct($product1, ['enabled' => false]);
         $this->updateProduct($product3, ['enabled' => true]);
-        $this->setVersioningAuthor($connection->username());
+        $this->setVersioningAuthorAndDate($connection->username());
 
         $commandTester = new CommandTester($this->command);
         $commandTester->execute([]);
@@ -82,17 +83,27 @@ SQL;
         return (int) $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchColumn();
     }
 
-    private function setVersioningAuthor(string $author): void
+    private function setVersioningAuthorAndDate(string $author, \DateTimeImmutable $dateTime = null): void
     {
+        if (null === $dateTime) {
+            $dateTime = new \DateTimeImmutable('1 hour ago', new \DateTimeZone('UTC'));
+        }
+
         $sqlQuery = <<<SQL
 UPDATE pim_versioning_version
-SET author = :author
+SET author = :author, logged_at = :logget_at
 SQL;
 
-        $stmt = $this->dbalConnection->prepare($sqlQuery);
-        $stmt->execute([
-            'author' => $author,
-        ]);
+        $this->dbalConnection->executeQuery(
+            $sqlQuery,
+            [
+                'author' => $author,
+                'logget_at' => $dateTime,
+            ],
+            [
+                'logget_at' => Types::DATETIME_IMMUTABLE,
+            ]
+        );
     }
 
     private function createProduct(string $identifier, array $data = []): ProductInterface
