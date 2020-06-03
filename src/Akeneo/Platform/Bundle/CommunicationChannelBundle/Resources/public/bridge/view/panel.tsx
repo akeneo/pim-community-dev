@@ -1,6 +1,6 @@
 import React from 'react';
 import {ReactView} from '@akeneo-pim-community/legacy-bridge';
-import {Panel} from 'akeneocommunicationchannel/components/panel';
+import {Index} from 'akeneocommunicationchannel/index';
 
 const mediator = require('oro/mediator');
 
@@ -17,7 +17,7 @@ class PanelView extends ReactView {
   }
 
   reactElementToMount(): JSX.Element {
-    return <Panel />;
+    return <Index />;
   }
   
   render() {

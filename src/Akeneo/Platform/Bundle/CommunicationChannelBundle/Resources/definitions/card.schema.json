@@ -5,12 +5,22 @@
     "title": {"type": "string"},
     "description": {"type": "string"},
     "img": {"type": "string"},
-    "link": {"type": "string"}
+    "altImg": {"type": "string"},
+    "link": {"type": "string"},
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "startDate": {"type": "string"}
   },
   "required": [
     "title",
     "description",
-    "link"
+    "link",
+    "tags",
+    "startDate"
   ],
   "additionalProperties": false
 }

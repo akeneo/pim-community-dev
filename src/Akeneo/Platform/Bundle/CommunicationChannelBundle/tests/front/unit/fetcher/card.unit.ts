@@ -8,12 +8,16 @@ const expectedCards = [
     description: 'Description card',
     img: '/path/img/card.png',
     link: 'http://link-card.com',
+    tags: ['new'],
+    date: '20-04-2020',
   },
   {
     title: 'Title card 2',
     description: 'Description card 2',
     img: '/path/img/card-2.png',
     link: 'http://link-card-2.com',
+    tags: ['new'],
+    date: '20-04-2020',
   },
 ];
 
