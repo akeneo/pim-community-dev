@@ -2,7 +2,7 @@ import React from 'react';
 import {
   InitSelectionCallback,
   Select2Option,
-  Select2SimpleAsyncWrapper,
+  Select2SimpleAsyncWrapper, Select2Value,
 } from '../Select2Wrapper';
 import { Router } from '../../dependenciesTools';
 import { IndexedFamilies } from '../../fetch/FamilyFetcher';
@@ -11,13 +11,13 @@ import { Family, FamilyCode, LocaleCode } from '../../models';
 
 type Props = {
   router: Router;
-  id: string;
   label: string;
   hiddenLabel?: boolean;
   currentCatalogLocale: LocaleCode;
   value: FamilyCode | null;
-  onChange: (value: FamilyCode) => void;
+  onChange?: (value: FamilyCode) => void;
   placeholder?: string;
+  name: string;
 };
 
 const dataProvider = (term: string, page: number, locale: LocaleCode) => {
@@ -69,21 +69,26 @@ const initSelectedFamily = async (
 
 const FamilySelector: React.FC<Props> = ({
   router,
-  id,
   label,
   hiddenLabel = false,
   currentCatalogLocale,
   value,
   onChange,
   placeholder,
+  name
 }) => {
+  const handleChange = (value: Select2Value) => {
+    if (onChange) {
+      onChange(value as FamilyCode);
+    }
+  }
+
   return (
     <Select2SimpleAsyncWrapper
-      id={id}
       label={label}
       hiddenLabel={hiddenLabel}
       value={value}
-      onValueChange={value => onChange(value as string)}
+      onChange={handleChange}
       ajax={{
         url: router.generate('pim_enrich_family_rest_index'),
         quietMillis: 250,
@@ -100,6 +105,7 @@ const FamilySelector: React.FC<Props> = ({
       }}
       placeholder={placeholder}
       allowClear={true}
+      name={name}
     />
   );
 };

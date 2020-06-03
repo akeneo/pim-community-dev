@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select2SimpleSyncWrapper } from '../../../../components/Select2Wrapper';
+import { Select2Wrapper } from '../../../../components/Select2Wrapper';
 import { Translate } from '../../../../dependenciesTools';
 import { Action, AvailableAddAction } from '../../../../models/Action';
 
@@ -27,7 +27,7 @@ const AddActionButton: React.FC<Props> = ({ translate, handleAddAction }) => {
   };
 
   return (
-    <Select2SimpleSyncWrapper
+    <Select2Wrapper
       data={actionsData}
       id={'add-action-button'}
       label={translate('pimee_catalog_rule.form.edit.actions.add_action')}
@@ -40,6 +40,7 @@ const AddActionButton: React.FC<Props> = ({ translate, handleAddAction }) => {
         handleAddActionFromKey(event.val);
       }}
       placeholder={translate('pimee_catalog_rule.form.edit.actions.add_action')}
+      multiple={false}
     />
   );
 };

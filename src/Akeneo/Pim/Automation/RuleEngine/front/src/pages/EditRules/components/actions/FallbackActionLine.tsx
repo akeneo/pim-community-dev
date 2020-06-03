@@ -2,7 +2,7 @@ import React from 'react';
 import { FallbackAction } from '../../../../models/FallbackAction';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
+import { useRegisterConsts } from "../../hooks/useRegisterConst";
 
 type Props = {
   action: FallbackAction;
@@ -14,9 +14,7 @@ const FallbackActionLine: React.FC<Props> = ({
   action,
   handleDelete,
 }) => {
-  useValueInitialization(`content.actions[${lineNumber}]`, action.json, {}, [
-    action,
-  ]);
+  useRegisterConsts(action.json, `content.actions[${lineNumber}]`);
 
   return (
     <ActionTemplate

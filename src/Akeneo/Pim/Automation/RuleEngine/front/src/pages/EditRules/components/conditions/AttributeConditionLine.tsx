@@ -11,7 +11,6 @@ import {
 import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
 import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import {
   FieldColumn,
   LocaleColumn,
@@ -22,6 +21,7 @@ import {
 import { Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { LineErrors } from '../LineErrors';
+import { useRegisterConst } from "../../hooks/useRegisterConst";
 
 const shouldDisplayValue: (operator: Operator) => boolean = operator =>
   !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
@@ -36,7 +36,6 @@ type AttributeConditionLineProps = {
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
   availableOperators: Operator[];
-  setValueFormValue: (value: any) => void;
 };
 
 const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
@@ -48,9 +47,8 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   currentCatalogLocale,
   availableOperators,
   children,
-  setValueFormValue,
 }) => {
-  const { watch, setValue, triggerValidation } = useFormContext();
+  const { watch, setValue } = useFormContext();
 
   const getOperatorFormValue: () => Operator = () =>
     watch(`content.conditions[${lineNumber}].operator`);
@@ -59,6 +57,9 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     watch(`content.conditions[${lineNumber}].scope`);
   const getLocaleFormValue: () => LocaleCode = () =>
     watch(`content.conditions[${lineNumber}].locale`);
+  const setLocaleFormValue = (locale: LocaleCode | null) => {
+    setValue(`content.conditions[${lineNumber}].locale`, locale);
+  }
 
   const getAvailableLocales = (): Locale[] => {
     if (!condition.attribute.scopable) {
@@ -131,42 +132,15 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     return true;
   };
 
-  useValueInitialization(
-    `content.conditions[${lineNumber}]`,
-    {
-      field: condition.field,
-      operator: condition.operator,
-      scope: condition.scope,
-      locale: condition.locale,
-    },
-    {
-      scope: scopeValidation,
-      locale: localeValidation,
-    },
-    [condition]
-  );
+  useRegisterConst(`content.conditions[${lineNumber}].field`, condition.field);
 
-  const setLocaleFormValue = (value: LocaleCode | null) => {
-    setValue(`content.conditions[${lineNumber}].locale`, value);
-    triggerValidation(`content.conditions[${lineNumber}].locale`);
-  };
-
-  const setScopeFormValue = (value: ScopeCode) => {
-    setValue(`content.conditions[${lineNumber}].scope`, value);
-    triggerValidation(`content.conditions[${lineNumber}].scope`);
+  const handleScopeChange = () => {
     if (
       !getAvailableLocales()
         .map(locale => locale.code)
         .includes(getLocaleFormValue())
     ) {
       setLocaleFormValue(null);
-    }
-  };
-
-  const setOperatorFormValue = (value: Operator) => {
-    setValue(`content.conditions[${lineNumber}].operator`, value);
-    if (!shouldDisplayValue(getOperatorFormValue())) {
-      setValueFormValue(null);
     }
   };
 
@@ -181,13 +155,11 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
       </FieldColumn>
       <OperatorColumn>
         <OperatorSelector
-          id={`edit-rules-input-${lineNumber}-operator`}
-          label='Operator'
           hiddenLabel={true}
           availableOperators={availableOperators}
           translate={translate}
-          value={getOperatorFormValue()}
-          onChange={setOperatorFormValue}
+          value={condition.operator}
+          name={`content.conditions[${lineNumber}].operator`}
         />
       </OperatorColumn>
       <ValueColumn>
@@ -196,29 +168,28 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
       <ScopeColumn>
         {(condition.attribute.scopable || getScopeFormValue()) && (
           <ScopeSelector
-            id={`edit-rules-input-${lineNumber}-scope`}
-            label='Scope'
             hiddenLabel={true}
             availableScopes={Object.values(scopes)}
             currentCatalogLocale={currentCatalogLocale}
-            value={getScopeFormValue()}
-            onChange={setScopeFormValue}
+            value={condition.scope}
+            onChange={handleScopeChange}
             translate={translate}
             allowClear={!condition.attribute.scopable}
+            name={`content.conditions[${lineNumber}].scope`}
+            validation={scopeValidation}
           />
         )}
       </ScopeColumn>
       <LocaleColumn>
         {(condition.attribute.localizable || getLocaleFormValue()) && (
           <LocaleSelector
-            id={`edit-rules-input-${lineNumber}-locale`}
-            label='Locale'
             hiddenLabel={true}
             availableLocales={getAvailableLocales()}
-            value={getLocaleFormValue()}
-            onChange={setLocaleFormValue}
+            value={condition.locale}
             translate={translate}
             allowClear={!condition.attribute.localizable}
+            name={`content.conditions[${lineNumber}].locale`}
+            validation={localeValidation}
           />
         )}
       </LocaleColumn>

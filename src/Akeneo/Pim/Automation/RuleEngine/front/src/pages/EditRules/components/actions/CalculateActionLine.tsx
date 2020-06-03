@@ -2,7 +2,6 @@ import React from 'react';
 import { CalculateAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { FallbackField } from '../FallbackField';
 import {
   normalizeOperation,
@@ -14,6 +13,7 @@ import {
   FieldOperand,
   Operand,
 } from '../../../../models/actions/Calculate/Operand';
+import { useRegisterConsts } from "../../hooks/useRegisterConst";
 
 const OperandView: React.FC<{ operand: Operand }> = ({ operand }) => {
   if (Object.keys(operand).includes('field')) {
@@ -119,8 +119,7 @@ const CalculateActionLine: React.FC<Props> = ({
   action,
   handleDelete,
 }) => {
-  useValueInitialization(
-    `content.actions[${lineNumber}]`,
+  useRegisterConsts(
     {
       type: 'calculate',
       destination: action.destination,
@@ -131,8 +130,7 @@ const CalculateActionLine: React.FC<Props> = ({
       // TODO: uncomment when it will be ready
       // round_precision: action.round_precision,
     },
-    {},
-    [action]
+    `content.actions[${lineNumber}]`
   );
 
   return (

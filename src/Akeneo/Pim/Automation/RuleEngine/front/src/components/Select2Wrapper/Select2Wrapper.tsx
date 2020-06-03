@@ -47,7 +47,7 @@ type Select2GlobalProps = {
   containerCssClass?: string;
   dropdownCssClass?: string;
   hiddenLabel?: boolean;
-  id: string;
+  id?: string;
   label: string;
   onSelecting?: (event: any) => void;
   placeholder?: string;
@@ -66,7 +66,7 @@ type Props = Select2GlobalProps & {
   data?: (Select2Option | Select2OptionGroup)[];
   multiple: boolean;
   ajax?: Select2Ajax;
-  onValueChange?: (value: Select2Value | Select2Value[]) => void;
+  onChange?: (value: Select2Value | Select2Value[]) => void;
   value?: Select2Value | Select2Value[];
 };
 
@@ -85,7 +85,7 @@ const Select2Wrapper: React.FC<Props> = ({
   dropdownCssClass,
   onSelecting,
   value,
-  onValueChange,
+  onChange,
   closeTick = false,
   hideSearch = false,
   allowClear = false,
@@ -127,10 +127,11 @@ const Select2Wrapper: React.FC<Props> = ({
         getSelect2Input().on('select2-selecting', onSelecting);
       }
 
-      if (onValueChange) {
+      if (onChange) {
+        getSelect2Input().off('change');
         getSelect2Input().on('change', (e: Select2Event) => {
           const val = e.val;
-          onValueChange(
+          onChange(
             Array.isArray(val) ? (val as Select2Value[]) : (val as Select2Value)
           );
         });

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import * as akeneoTheme from '../../theme';
 import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
-import { useInitEditRules } from '../EditRules';
+import { useInitEditRules } from '../';
 import { EditRulesContent } from './EditRulesContent';
 import { FullScreenError } from '../../components/FullScreenError';
 import { RuleDefinition } from '../../models';
@@ -39,7 +39,6 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode, setIsDirty }) => {
           locales={locales}
           scopes={scopes}
           setIsDirty={setIsDirty}
-          setRuleDefinition={setRuleDefinition}
         />
       )}
     </ThemeProvider>

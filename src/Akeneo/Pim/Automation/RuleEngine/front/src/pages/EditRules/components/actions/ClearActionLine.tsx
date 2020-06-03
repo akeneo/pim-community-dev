@@ -2,8 +2,8 @@ import React from 'react';
 import { ClearAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { FallbackField } from '../FallbackField';
+import { useRegisterConsts } from "../../hooks/useRegisterConst";
 
 type Props = {
   action: ClearAction;
@@ -28,9 +28,7 @@ const ClearActionLine: React.FC<Props> = ({
     values.scope = action.scope;
   }
 
-  useValueInitialization(`content.actions[${lineNumber}]`, values, {}, [
-    action,
-  ]);
+  useRegisterConsts(values, `content.actions[${lineNumber}]`);
 
   return (
     <ActionTemplate

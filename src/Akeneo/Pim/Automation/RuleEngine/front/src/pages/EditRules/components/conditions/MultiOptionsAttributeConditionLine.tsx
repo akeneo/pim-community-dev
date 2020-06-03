@@ -1,5 +1,4 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 import {
   MultiOptionsAttributeCondition,
   MultiOptionsAttributeOperators,
@@ -7,7 +6,6 @@ import {
 import { ConditionLineProps } from './ConditionLineProps';
 import { AttributeConditionLine } from './AttributeConditionLine';
 import { MultiOptionsSelector } from '../../../../components/Selectors/MultiOptionsSelector';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import {
   AttributeOptionCode,
   getAttributeOptionsByIdentifiers,
@@ -26,7 +24,6 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
   currentCatalogLocale,
   router,
 }) => {
-  const { setValue, watch } = useFormContext();
   const [unexistingOptionCodes, setUnexistingOptionCodes] = React.useState<
     AttributeOptionCode[]
   >([]);
@@ -61,10 +58,7 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
     }
   }, []);
 
-  const getValueFormValue: () => AttributeOptionCode[] = () =>
-    watch(`content.conditions[${lineNumber}].value`);
-
-  const validateOptionCodes = (optionCodes: AttributeOptionCode[]) => {
+  const validateOptionCodes = React.useCallback((optionCodes: AttributeOptionCode[]) => {
     if (optionCodes && unexistingOptionCodes.length) {
       const unknownOptionCodes: AttributeOptionCode[] = [];
       optionCodes.forEach(familyCode => {
@@ -84,25 +78,7 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
     }
 
     return true;
-  };
-
-  useValueInitialization(
-    `content.conditions[${lineNumber}]`,
-    { value: condition.value },
-    {
-      value: {
-        validate: validateOptionCodes,
-      },
-    },
-    [condition, unexistingOptionCodes]
-  );
-
-  const setValueFormValue = (value: AttributeOptionCode[] | null) =>
-    setValue(`content.conditions[${lineNumber}].value`, value);
-
-  const onValueChange = (value: any) => {
-    setValueFormValue(value);
-  };
+  }, [unexistingOptionCodes]);
 
   return (
     <AttributeConditionLine
@@ -113,16 +89,16 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
       locales={locales}
       scopes={scopes}
       availableOperators={MultiOptionsAttributeOperators}
-      setValueFormValue={setValueFormValue}>
+      >
       <MultiOptionsSelector
-        value={getValueFormValue() || []}
-        onValueChange={onValueChange}
-        id={`edit-rules-input-${lineNumber}-value`}
+        value={condition.value || []}
         currentCatalogLocale={currentCatalogLocale}
         router={router}
         attributeId={condition.attribute.meta.id}
         label={translate('pimee_catalog_rule.rule.value')}
         hiddenLabel={true}
+        name={`content.conditions[${lineNumber}].value`}
+        validation={validateOptionCodes}
       />
     </AttributeConditionLine>
   );

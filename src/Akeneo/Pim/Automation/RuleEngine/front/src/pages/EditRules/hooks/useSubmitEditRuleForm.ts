@@ -11,7 +11,6 @@ import {
   Notify,
   NotificationLevel,
 } from '../../../dependenciesTools';
-import { denormalize } from '../../../models/rule-definition-denormalizer';
 import { Action } from '../../../models/Action';
 
 type Reset = (
@@ -28,13 +27,14 @@ type Reset = (
 ) => void;
 
 const transformFormData = (formData: FormData): Payload => {
-  const filledConditions = formData.content
+  console.log(formData);
+  const filledConditions = formData?.content?.conditions
     ? formData.content.conditions.filter((condition: Condition | null) => {
         return condition !== null;
       })
     : [];
 
-  const filledActions = formData.content
+  const filledActions = formData?.content?.actions
     ? formData.content.actions.filter((action: Action | null) => {
         return action !== null;
       })
@@ -57,7 +57,6 @@ const submitEditRuleForm = (
   notify: Notify,
   router: Router,
   reset: Reset,
-  setRuleDefinition: (ruleDefinition: RuleDefinition) => void
 ) => {
   return async (formData: FormData, event?: React.BaseSyntheticEvent) => {
     if (event) {
@@ -77,16 +76,18 @@ const submitEditRuleForm = (
         NotificationLevel.SUCCESS,
         translate('pimee_catalog_rule.form.edit.notification.success')
       );
-      reset({ ...formData });
-      const json = await response.json();
+      /*const json = await response.json();
       const ruleDefinition = await denormalize(json, router);
-      setRuleDefinition(ruleDefinition);
+      setRuleDefinition(ruleDefinition);*/
     } else {
       notify(
         NotificationLevel.ERROR,
         translate('pimee_catalog_rule.form.edit.notification.failed')
       );
     }
+    console.log('RESET VALUES');
+    reset({ ...formData });
+    console.log('VALUES RESET');
   };
 };
 
@@ -124,7 +125,6 @@ const useSubmitEditRuleForm = (
   router: Router,
   ruleDefinition: RuleDefinition,
   locales: Locale[],
-  setRuleDefinition: (ruleDefinition: RuleDefinition) => void
 ) => {
   const defaultValues = createFormDefaultValues(ruleDefinition, locales);
   const formMethods = useForm<FormData>({
@@ -136,7 +136,6 @@ const useSubmitEditRuleForm = (
     notify,
     router,
     formMethods.reset,
-    setRuleDefinition
   );
 
   return {

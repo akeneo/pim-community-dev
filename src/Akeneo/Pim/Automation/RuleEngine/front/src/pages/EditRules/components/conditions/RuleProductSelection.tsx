@@ -59,6 +59,7 @@ const AddConditionContainer = styled.div`
 
 const getValuesFromFormData = (getValues: Control['getValues']): FormData =>
   getValues({ nest: true });
+
 const RuleProductSelectionFieldsetWithAction = styled.fieldset`
   background-image: url('${startImage}');
   padding-left: 12px;

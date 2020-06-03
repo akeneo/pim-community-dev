@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select2SimpleAsyncWrapper } from '../../../../components/Select2Wrapper';
+import { Select2Wrapper } from '../../../../components/Select2Wrapper';
 import { Router, Translate } from '../../../../dependenciesTools';
 
 type AddConditionAttribute = {
@@ -72,7 +72,7 @@ const AddConditionButton: React.FC<Props> = ({
   };
 
   return (
-    <Select2SimpleAsyncWrapper
+    <Select2Wrapper
       id={'add_conditions'}
       label={translate('pimee_catalog_rule.form.edit.add_conditions')}
       hiddenLabel={true}
@@ -104,6 +104,7 @@ const AddConditionButton: React.FC<Props> = ({
         }">${option.text}</span>`;
       }}
       closeTick={closeTick}
+      multiple={false}
     />
   );
 };

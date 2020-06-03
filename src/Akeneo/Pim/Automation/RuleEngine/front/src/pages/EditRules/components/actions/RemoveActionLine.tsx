@@ -1,9 +1,9 @@
 import React from 'react';
-import { RemoveAction } from '../../../../models/actions/RemoveAction';
+import { RemoveAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { FallbackField } from '../FallbackField';
+import { useRegisterConsts } from "../../hooks/useRegisterConst";
 
 type Props = {
   action: RemoveAction;
@@ -33,9 +33,7 @@ const RemoveActionLine: React.FC<Props> = ({
     values.includeChildren = action.include_children;
   }
 
-  useValueInitialization(`content.actions[${lineNumber}]`, values, {}, [
-    action,
-  ]);
+  useRegisterConsts(values, `content.actions[${lineNumber}]`);
 
   return (
     <ActionTemplate

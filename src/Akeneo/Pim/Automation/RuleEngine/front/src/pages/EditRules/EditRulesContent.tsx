@@ -29,7 +29,6 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   setIsDirty: (isDirty: boolean) => void;
-  setRuleDefinition: (ruleDefinition: RuleDefinition) => void;
 };
 
 const EditRulesContent: React.FC<Props> = ({
@@ -38,7 +37,6 @@ const EditRulesContent: React.FC<Props> = ({
   locales,
   scopes,
   setIsDirty,
-  setRuleDefinition,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -60,7 +58,6 @@ const EditRulesContent: React.FC<Props> = ({
     router,
     ruleDefinition,
     locales,
-    setRuleDefinition
   );
 
   useEffect(() => {
@@ -82,6 +79,8 @@ const EditRulesContent: React.FC<Props> = ({
     Object.keys(formMethods.getValues()).forEach((value: string) => {
       if (value.startsWith(`content.actions[${lineNumber}]`)) {
         formMethods.unregister(value);
+        console.log(formMethods.getValues());
+        console.log(formMethods.watch(value));
       }
     });
     setActions(

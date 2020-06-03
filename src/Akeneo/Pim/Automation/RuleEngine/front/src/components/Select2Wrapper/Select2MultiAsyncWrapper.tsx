@@ -3,27 +3,29 @@ import {
   Select2Ajax,
   Select2GlobalProps,
   Select2Value,
-  Select2Wrapper,
-} from './Select2Wrapper';
+  ReactHookFormSelect2Wrapper,
+} from './';
 
 type Props = Select2GlobalProps & {
-  onValueChange?: (value: Select2Value[]) => void;
+  onChange?: (value: Select2Value[]) => void;
   value?: Select2Value[];
   ajax: Select2Ajax;
+  name: string;
+  validation?: any;
 };
 
 const Select2MultiAsyncWrapper: React.FC<Props> = props => {
-  const { onValueChange, ...remainingProps } = props;
+  const { onChange, ...remainingProps } = props;
 
   const handleChange = (value: Select2Value | Select2Value[]) => {
-    if (onValueChange && Array.isArray(value)) {
-      return onValueChange(value);
+    if (onChange && Array.isArray(value)) {
+      return onChange(value);
     }
   };
 
   return (
-    <Select2Wrapper
-      onValueChange={handleChange}
+    <ReactHookFormSelect2Wrapper
+      onChange={handleChange}
       {...remainingProps}
       multiple={true}
     />

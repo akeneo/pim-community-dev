@@ -14,6 +14,8 @@ import { ActionLineErrors } from './ActionLineErrors';
 import { Attribute } from '../../../../models';
 import { InputText } from '../../../../components/Inputs';
 import { useFormContext } from 'react-hook-form';
+import { FallbackField } from '../FallbackField';
+import { useRegisterConsts } from "../../hooks/useRegisterConst";
 
 type Props = {
   action: SetAction;
@@ -44,6 +46,13 @@ const SetActionLine: React.FC<Props> = ({
   const validateValue = {
     required: translate('pimee_catalog_rule.exceptions.required_value'),
   };
+
+  useRegisterConsts(values, `content.actions[${lineNumber}]`);
+
+  const displayNull = (value: any): string | null => {
+    return null === value ? '' : null;
+  };
+
   useValueInitialization(
     `content.actions[${lineNumber}]`,
     values,

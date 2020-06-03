@@ -17,7 +17,7 @@ const Select2Wrapper: typeof BaseWrapper = ({
   multiple = false,
   placeholder,
   ajax,
-  onValueChange,
+  onChange,
   value,
   onSelecting,
 }: Select2Props) => {
@@ -62,8 +62,8 @@ const Select2Wrapper: typeof BaseWrapper = ({
   };
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    if (onValueChange) {
-      onValueChange(event.target.value);
+    if (onChange) {
+      onChange(event.target.value);
     }
     if (onSelecting) {
       onSelecting({

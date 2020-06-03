@@ -1,23 +1,23 @@
 import React from 'react';
-import { Select2SimpleSyncWrapper } from '../Select2Wrapper';
+import { Select2SimpleSyncWrapper, Select2Value } from '../Select2Wrapper';
 import { LocaleCode, Scope, ScopeCode } from '../../models';
 import { Translate } from '../../dependenciesTools';
 
 type Props = {
-  id: string;
-  label: string;
+  label?: string;
   hiddenLabel?: boolean;
   availableScopes: Scope[];
   currentCatalogLocale: LocaleCode;
-  value: ScopeCode;
-  onChange: (value: ScopeCode) => void;
+  value?: ScopeCode;
+  onChange?: (value: ScopeCode) => void;
   translate: Translate;
   allowClear: boolean;
   disabled?: boolean;
+  name: string;
+  validation: any;
 };
 
 const ScopeSelector: React.FC<Props> = ({
-  id,
   label,
   hiddenLabel = false,
   availableScopes,
@@ -28,6 +28,8 @@ const ScopeSelector: React.FC<Props> = ({
   children,
   allowClear = false,
   disabled = false,
+  name,
+  validation,
 }) => {
   const getScopeLabel = (scope: Scope): string => {
     return scope.labels[currentCatalogLocale] || `[${scope.code}]`;
@@ -47,19 +49,26 @@ const ScopeSelector: React.FC<Props> = ({
     });
   }
 
+  const handleChange = (value: Select2Value) => {
+    if (onChange) {
+      onChange(value as ScopeCode)
+    }
+  }
+
   return (
     <>
       <Select2SimpleSyncWrapper
-        id={id}
-        label={label}
+        label={label || translate('pim_enrich.entity.channel.uppercase_label')}
         hiddenLabel={hiddenLabel}
         data={scopeChoices}
         hideSearch={true}
         placeholder={translate('pim_enrich.entity.channel.uppercase_label')}
-        value={value}
+        value={value || null}
         allowClear={allowClear}
-        onValueChange={value => onChange(value as ScopeCode)}
+        onChange={handleChange}
         disabled={disabled}
+        name={name}
+        validation={validation}
       />
       {children}
     </>

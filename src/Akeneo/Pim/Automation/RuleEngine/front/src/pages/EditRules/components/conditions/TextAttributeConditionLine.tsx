@@ -20,10 +20,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   scopes,
   currentCatalogLocale,
 }) => {
-  const { register, setValue } = useFormContext();
-
-  const setValueFormValue = (value: string[] | null) =>
-    setValue(`content.conditions[${lineNumber}].value`, value);
+  const { register } = useFormContext();
 
   return (
     <AttributeConditionLine
@@ -34,9 +31,8 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       locales={locales}
       scopes={scopes}
       availableOperators={TextAttributeOperators}
-      setValueFormValue={setValueFormValue}>
+    >
       <InputText
-        data-testid={`edit-rules-input-${lineNumber}-value`}
         name={`content.conditions[${lineNumber}].value`}
         label={translate('pimee_catalog_rule.rule.value')}
         ref={register}
