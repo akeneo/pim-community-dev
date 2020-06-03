@@ -1,9 +1,9 @@
 import {useState, useCallback, useEffect} from 'react';
-import {Cards} from 'akeneocommunicationchannel/models/card';
-import {CardFetcher} from 'akeneocommunicationchannel/fetcher/cards';
+import {Card} from 'akeneocommunicationchannel/models/card';
+import {CardFetcher} from 'akeneocommunicationchannel/fetcher/card';
 
-const useCards = (cardFetcher: CardFetcher): {cards: Cards[] | null; fetchCards: () => Promise<void>} => {
-  const [cards, setCards] = useState<Cards[] | null>(null);
+const useCards = (cardFetcher: CardFetcher): {cards: Card[] | null; fetchCards: () => Promise<void>} => {
+  const [cards, setCards] = useState<Card[] | null>(null);
 
   const fetchCards = useCallback(async () => {
     setCards(await cardFetcher.fetchAll());
