@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -39,6 +40,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class PublishedProduct implements ReferableInterface, PublishedProductInterface
 {
+    use EntityWithQuantifiedAssociationTrait;
+
     /** @var ProductInterface */
     protected $originalProduct;
 

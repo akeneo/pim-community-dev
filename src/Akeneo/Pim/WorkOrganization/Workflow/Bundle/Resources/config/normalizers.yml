@@ -91,6 +91,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product.properties'
             - '@pimee_workflow.normalizer.standard.published_product.associations'
+            - '@pim_catalog.normalizer.standard.product.quantified_associations'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
