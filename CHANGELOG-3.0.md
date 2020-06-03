@@ -4,6 +4,7 @@
 
 ## Bug fixes
 
+- PIM-9282: Make calling attribute options via API case insensitive
 - GITHUB-APD-124: Update help menu link to redirect to the right version on the help center
 
 # 3.0.79 (2020-05-27)
