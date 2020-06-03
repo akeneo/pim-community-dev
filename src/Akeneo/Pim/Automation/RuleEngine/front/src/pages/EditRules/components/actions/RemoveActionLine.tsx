@@ -52,10 +52,10 @@ const RemoveActionLine: React.FC<Props> = ({
             <span className='AknRule-attribute'>
               {action.items.join(', ')}
               {action.include_children && ' and children'}
-            </span>
+            </span>&nbsp;
             {action.items.length > 1 || action.include_children
-              ? ' are'
-              : ' is'}
+              ? 'are'
+              : 'is'}
             &nbsp;removed from&nbsp;
             <FallbackField
               field={action.field}

@@ -94,10 +94,10 @@ const SetActionLine: React.FC<Props> = ({
             &nbsp;
             <span className='AknRule-attribute'>
               {displayValue(action.value)}
-            </span>
+            </span>&nbsp;
             {Array.isArray(action.value) && action.value.length > 1
-              ? ' are'
-              : ' is'}
+              ? 'are'
+              : 'is'}
             &nbsp;set into&nbsp;
             <FallbackField
               field={action.field}
