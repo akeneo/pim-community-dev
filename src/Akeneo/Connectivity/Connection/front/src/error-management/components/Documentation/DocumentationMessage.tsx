@@ -9,24 +9,24 @@ type Props = {
 };
 
 export const DocumentationMessage = ({documentation}: Props) => {
-    const constructedMessage = documentation.message.split(/(%s)/).map((messagePart, i) => {
-        if (messagePart !== '%s') {
+    const constructedMessage = documentation.message.split(/({[^{}]+})/).map((messagePart: string, i) => {
+        const isNeedle = new RegExp(/^{[^{}]+}$/);
+        if (
+            !isNeedle.test(messagePart) ||
+            !Object.prototype.hasOwnProperty.call(documentation.parameters, messagePart)
+        ) {
             return <Message key={i}>{messagePart}</Message>;
         }
-        const param = documentation.params.shift();
-        if (undefined === param) {
-            return;
-        }
-
-        switch (param.type) {
+        const messageParameter = documentation.parameters[messagePart];
+        switch (messageParameter.type) {
             case HrefType:
                 return (
-                    <Typography.Link key={i} href={param.href} target='_blank'>
-                        {param.title}
+                    <Typography.Link key={i} href={messageParameter.href} target='_blank'>
+                        {messageParameter.title}
                     </Typography.Link>
                 );
             case RouteType:
-                return <RouteDocumentationMessageParameter key={i} routeParam={param} />;
+                return <RouteDocumentationMessageParameter key={i} routeParam={messageParameter} />;
         }
     });
 
