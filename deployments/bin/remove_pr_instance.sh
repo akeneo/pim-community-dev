@@ -11,6 +11,9 @@ for namespace in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup' | awk '{print 
             AGE=$(echo ${NS_AGE//h/})
             if [[ ${AGE} -gt 23 ]]; then
                 echo "---[TODELETE] namespace ${namespace} with status ${NS_STATUS} since ${NS_AGE} (instance_name=${INSTANCE_NAME})"
+                if [ $(gsutil ls gs://akecld-terraform-dev/saas/akecld-saas-dev/europe-west3-a/srnt-${INSTANCE_NAME}/default.tflock 2>/dev/null) ]; then
+                        gsutil rm gs://akecld-terraform-dev/saas/akecld-saas-dev/europe-west3-a/srnt-${INSTANCE_NAME}/default.tflock
+                fi
                 INSTANCE_NAME=${INSTANCE_NAME} make create-ci-release-files delete
             fi
         fi
@@ -18,6 +21,9 @@ for namespace in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup' | awk '{print 
     if [[ ${NS_AGE} == *d* ]]; then
         #ex: 2d
         echo "---[TODELETE] namespace ${namespace} with status ${NS_STATUS} since ${NS_AGE} (instance_name=${INSTANCE_NAME})"
+        if [ $(gsutil ls gs://akecld-terraform-dev/saas/akecld-saas-dev/europe-west3-a/srnt-${INSTANCE_NAME}/default.tflock 2>/dev/null) ]; then
+                gsutil rm gs://akecld-terraform-dev/saas/akecld-saas-dev/europe-west3-a/srnt-${INSTANCE_NAME}/default.tflock
+        fi
         INSTANCE_NAME=${INSTANCE_NAME} make create-ci-release-files delete
     fi
 done
