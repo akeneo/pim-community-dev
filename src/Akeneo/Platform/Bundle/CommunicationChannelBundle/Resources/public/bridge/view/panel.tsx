@@ -6,7 +6,7 @@ const mediator = require('oro/mediator');
 
 class PanelView extends ReactView {
   constructor() {
-    super({className: 'AknCommunicationChannelPanel'});
+    super({className: 'AknPanel'});
   }
 
   configure() {
@@ -27,19 +27,19 @@ class PanelView extends ReactView {
   }
 
   openPanel() {
-    this.$el.removeClass('AknCommunicationChannelPanel--collapsed');
+    this.$el.removeClass('AknPanel--collapsed');
     mediator.trigger('pim-app:overlay:show');
   }
 
   closePanel() {
     if (!this.isColapsed()) {
-      this.$el.addClass('AknCommunicationChannelPanel--collapsed');
+      this.$el.addClass('AknPanel--collapsed');
       mediator.trigger('pim-app:overlay:hide');
     }
   }
 
   isColapsed() {
-    return this.$el.hasClass('AknCommunicationChannelPanel--collapsed');
+    return this.$el.hasClass('AknPanel--collapsed');
   }
 }
 
