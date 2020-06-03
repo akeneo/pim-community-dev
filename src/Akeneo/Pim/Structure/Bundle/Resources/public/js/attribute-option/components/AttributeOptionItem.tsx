@@ -7,7 +7,7 @@ interface AttributeOptionItemProps {
 
 const AttributeOptionItem = ({data}: AttributeOptionItemProps) => {
     return (
-        <div className="AknAttributeOption-listItem">
+        <div className="AknAttributeOption-listItem" role="attribute-option-item">
             <span className="AknAttributeOption-itemCode">{data.code}</span>
         </div>
     );

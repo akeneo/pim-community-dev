@@ -30,7 +30,7 @@ class Choices extends BaseView {
         }
 
         ReactDOM.render(
-            <Index />,
+            <Index attributeId={this.getFormData().meta.id}/>,
             this.el
         );
         return this;
