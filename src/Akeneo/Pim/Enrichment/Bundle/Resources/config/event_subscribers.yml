@@ -137,6 +137,7 @@ services:
             - '@pim_catalog.completeness.product.compute_and_persist'
             - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
             - '@akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers'
+            - '@akeneo.pim.enrichment.product_model.query.delete_duplicated_categories_in_children'
         tags:
             - { name: kernel.event_subscriber }
 

@@ -210,6 +210,11 @@ services:
             - '@database_connection'
             - '@akeneo.pim.enrichment.factory.write_value_collection'
 
+    akeneo.pim.enrichment.product_model.query.delete_duplicated_categories_in_children:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\SqlDeleteDuplicatedCategoriesInChildren'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.enrichment.channel.query.get_labels:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Channel\SqlGetChannelLabels'
         arguments:

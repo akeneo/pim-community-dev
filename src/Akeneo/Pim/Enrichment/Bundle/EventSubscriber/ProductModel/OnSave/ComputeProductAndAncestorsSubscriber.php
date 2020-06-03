@@ -8,12 +8,14 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAn
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\DeleteDuplicatedCategoriesInChildren;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Orchestrator for below jobs on update:
+ *  - Deletes duplicated categories in children.
  *  - Computes and saves the completenesses for the variant products of the given product models.
  *  - Indexes these variant products
  *  - Indexes the product models impacted by the new completeness (= ancestors and descendants of the given product models)
@@ -33,14 +35,19 @@ final class ComputeProductAndAncestorsSubscriber implements EventSubscriberInter
     /** @var GetDescendantVariantProductIdentifiers */
     private $getDescendantVariantProductIdentifiers;
 
+    /** @var DeleteDuplicatedCategoriesInChildren */
+    private $deleteDuplicatedCategoriesInChildren;
+
     public function __construct(
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
-        GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers
+        GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
+        DeleteDuplicatedCategoriesInChildren $deleteDuplicatedCategoriesInChildren
     ) {
         $this->computeAndPersistProductCompletenesses = $computeAndPersistProductCompletenesses;
         $this->productModelDescendantsAndAncestorsIndexer = $productModelDescendantsAndAncestorsIndexer;
         $this->getDescendantVariantProductIdentifiers = $getDescendantVariantProductIdentifiers;
+        $this->deleteDuplicatedCategoriesInChildren = $deleteDuplicatedCategoriesInChildren;
     }
 
     public static function getSubscribedEvents(): array
@@ -89,6 +96,8 @@ final class ComputeProductAndAncestorsSubscriber implements EventSubscriberInter
         if (empty($productModelCodes)) {
             return;
         }
+
+        $this->deleteDuplicatedCategoriesInChildren->forProductModelCodes($productModelCodes);
 
         $variantProductIdentifiers = $this->getDescendantVariantProductIdentifiers->fromProductModelCodes(
             $productModelCodes
