@@ -10,7 +10,7 @@ const useValueInitialization = (
   const { register, setValue, watch } = useFormContext();
 
   const initializeValue = (prefix: string, field: string, value: any): void => {
-    const name = `${prefix}.${field}`;
+    const name = '' === prefix ? field : `${prefix}.${field}`;
     const fieldValidation = validation ? validation[field] : {};
     register({ name }, fieldValidation);
     if (JSON.stringify(watch(name)) !== JSON.stringify(value)) {

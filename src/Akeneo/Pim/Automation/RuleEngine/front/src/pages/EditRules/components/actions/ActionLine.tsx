@@ -16,6 +16,8 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   handleDelete,
   router,
   currentCatalogLocale,
+  locales,
+  scopes,
 }) => {
   const Line = action.module as React.FC<ActionLineProps & { action: Action }>;
 
@@ -27,6 +29,8 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
       handleDelete={handleDelete}
       router={router}
       currentCatalogLocale={currentCatalogLocale}
+      locales={locales}
+      scopes={scopes}
     />
   );
 };

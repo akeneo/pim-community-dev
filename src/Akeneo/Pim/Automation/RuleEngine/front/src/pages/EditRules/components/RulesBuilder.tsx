@@ -79,6 +79,8 @@ const RulesBuilder: React.FC<Props> = ({
                   }}
                   router={router}
                   currentCatalogLocale={currentCatalogLocale}
+                  locales={locales}
+                  scopes={scopes}
                 />
               </Component>
             )

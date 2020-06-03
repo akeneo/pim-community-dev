@@ -1,13 +1,11 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
-import { AttributeCode, LocaleCode, ScopeCode } from '../../../../models';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { ActionTitle } from './ActionLine';
 import { ClearAttributeAction } from '../../../../models/actions';
 import { ActionLineErrors } from './ActionLineErrors';
 import { AttributeLocaleScopeSelector } from './AttributeLocaleScopeSelector';
+import { useValueInitialization } from '../../hooks/useValueInitialization';
 
 type Props = {
   action: ClearAttributeAction;
@@ -19,9 +17,9 @@ const ClearAttributeActionLine: React.FC<Props> = ({
   action,
   handleDelete,
   currentCatalogLocale,
+  locales,
+  scopes,
 }) => {
-  const { watch, setValue, triggerValidation } = useFormContext();
-
   const values: any = {
     type: 'clear',
     field: action.field,
@@ -37,31 +35,10 @@ const ClearAttributeActionLine: React.FC<Props> = ({
 
   useValueInitialization(
     `content.actions[${lineNumber}]`,
-    values,
-    {
-      field: {
-        required: translate('pimee_catalog_rule.exceptions.required_attribute'),
-      },
-    },
+    { type: action.type },
+    {},
     [action]
   );
-
-  const getFieldFormValue: () => AttributeCode | null = () =>
-    watch(`content.actions[${lineNumber}].field`);
-
-  const setFieldFormValue = (value: AttributeCode | null) => {
-    setValue(`content.actions[${lineNumber}].field`, value);
-    triggerValidation(`content.actions[${lineNumber}].field`);
-  };
-
-  const setLocaleFormValue = (value: LocaleCode | null) => {
-    setValue(`content.actions[${lineNumber}].locale`, value);
-    triggerValidation(`content.actions[${lineNumber}].locale`);
-  };
-  const setScopeFormValue = (value: ScopeCode | null) => {
-    setValue(`content.actions[${lineNumber}].scope`, value);
-    triggerValidation(`content.actions[${lineNumber}].scope`);
-  };
 
   return (
     <ActionTemplate
@@ -79,24 +56,24 @@ const ClearAttributeActionLine: React.FC<Props> = ({
       </ActionTitle>
       <AttributeLocaleScopeSelector
         attributeId={`edit-rules-action-${lineNumber}-field`}
-        scopeId={`edit-rules-action-${lineNumber}-scope`}
-        localeId={`edit-rules-action-${lineNumber}-locale`}
         attributeLabel={`${translate(
           'pimee_catalog_rule.form.edit.fields.attribute'
         )} ${translate('pim_common.required_label')}`}
-        currentCatalogLocale={currentCatalogLocale}
-        attributeCode={getFieldFormValue()}
-        onAttributeChange={setFieldFormValue}
         attributePlaceholder={translate(
           'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
         )}
-        onLocaleChange={setLocaleFormValue}
-        onScopeChange={setScopeFormValue}
+        attributeFormName={`content.actions[${lineNumber}].field`}
+        attributeCode={action.field}
+        scopeId={`edit-rules-action-${lineNumber}-scope`}
+        scopeFormName={`content.actions[${lineNumber}].scope`}
+        scopeCode={action.scope || null}
+        scopes={scopes}
+        localeId={`edit-rules-action-${lineNumber}-locale`}
+        localeFormName={`content.actions[${lineNumber}].locale`}
+        localeCode={action.locale || null}
+        locales={locales}
+        currentCatalogLocale={currentCatalogLocale}
         translate={translate}
-        localeLabel={``}
-        localePlaceholder={``}
-        scopeLabel={``}
-        scopePlaceholder={``}
       />
       <ActionLineErrors lineNumber={lineNumber} />
     </ActionTemplate>
