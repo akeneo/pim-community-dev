@@ -39,6 +39,12 @@ final class ConnectorProductModelListSpec extends ObjectBehavior
                         'groups' => ['group_code_3']
                     ]
                 ],
+                [
+                    'PRODUCT_SET' => [
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
+                        'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
+                    ],
+                ],
                 ['category_code_1', 'category_code_2'],
                 new ReadValueCollection()
             )

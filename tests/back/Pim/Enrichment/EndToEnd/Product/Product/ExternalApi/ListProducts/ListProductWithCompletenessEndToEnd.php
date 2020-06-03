@@ -128,7 +128,8 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
 		                "product_models": [],
 		                "groups": []
 		            }
-		        }
+		        },
+		        "quantified_associations": {}
 		    },
 		    {
 		        "_links": {
@@ -192,7 +193,8 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
                         "product_models": [],
                         "groups": []
                     }
-		        }
+		        },
+		        "quantified_associations": {}
 		    }
 		]
     }

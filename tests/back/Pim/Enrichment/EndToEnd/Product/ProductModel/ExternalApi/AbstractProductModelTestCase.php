@@ -118,7 +118,8 @@ class AbstractProductModelTestCase extends AbstractProductTestCase
             "product_models": [],
             "groups": []
         }
-    }
+    },
+    "quantified_associations": []
 }
 JSON;
         }

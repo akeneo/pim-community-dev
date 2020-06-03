@@ -10,6 +10,8 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetGroupAssociationsBy
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductAssociationsByProductModelCodes;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductModelsAssociationsByProductModelCodes;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetValuesAndPropertiesFromProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductModelCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
@@ -39,6 +41,12 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
     /** @var GetGroupAssociationsByProductModelCodes */
     private $getGroupAssociationsByProductModelCodes;
 
+    /** @var GetProductQuantifiedAssociationsByProductModelCodes */
+    private $getProductQuantifiedAssociationsByProductModelCodes;
+
+    /** @var GetProductModelQuantifiedAssociationsByProductModelCodes */
+    private $getProductModelQuantifiedAssociationsByProductModelCodes;
+
     /** @var ReadValueCollectionFactory */
     private $readValueCollectionFactory;
 
@@ -48,6 +56,8 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         GetProductAssociationsByProductModelCodes $getProductAssociationsByProductModelCodes,
         GetProductModelsAssociationsByProductModelCodes $getProductModelAssociationsByProductModelCodes,
         GetGroupAssociationsByProductModelCodes $getGroupAssociationsByProductModelCodes,
+        GetProductQuantifiedAssociationsByProductModelCodes $getProductQuantifiedAssociationsByProductModelCodes,
+        GetProductModelQuantifiedAssociationsByProductModelCodes $getProductModelQuantifiedAssociationsByProductModelCodes,
         ReadValueCollectionFactory $readValueCollectionFactory
     ) {
         $this->getValuesAndPropertiesFromProductModelCodes = $getValuesAndPropertiesFromProductModelCodes;
@@ -55,6 +65,8 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         $this->getProductAssociationsByProductModelCodes = $getProductAssociationsByProductModelCodes;
         $this->getProductModelAssociationsByProductModelCodes = $getProductModelAssociationsByProductModelCodes;
         $this->getGroupAssociationsByProductModelCodes = $getGroupAssociationsByProductModelCodes;
+        $this->getProductQuantifiedAssociationsByProductModelCodes = $getProductQuantifiedAssociationsByProductModelCodes;
+        $this->getProductModelQuantifiedAssociationsByProductModelCodes = $getProductModelQuantifiedAssociationsByProductModelCodes;
         $this->readValueCollectionFactory = $readValueCollectionFactory;
     }
 
@@ -109,6 +121,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         $rows = array_replace_recursive(
             $this->getValuesAndPropertiesFromProductModelCodes->fromProductModelCodes($productModelCodes),
             $this->fetchAssociationsIndexedByProductModelCode($productModelCodes),
+            $this->fetchQuantifiedAssociationsIndexedByProductModelCode($productModelCodes),
             $this->fetchCategoryCodesIndexedByProductModelCode($productModelCodes)
         );
 
@@ -154,6 +167,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
                 $row['family_variant'],
                 [],
                 $row['associations'] ?? [],
+                $row['quantified_associations'] ?? [],
                 $row['category_codes'],
                 $filteredValuesIndexedByProductModelCode[$productModelCode]
             );
@@ -188,6 +202,25 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         }
 
         return $associationsIndexedByCode;
+    }
+
+    private function fetchQuantifiedAssociationsIndexedByProductModelCode(array $productModelCodes): array
+    {
+        $quantifiedAssociations = array_replace_recursive(
+            $this->getProductQuantifiedAssociationsByProductModelCodes->fromProductModelCodes($productModelCodes),
+            $this->getProductModelQuantifiedAssociationsByProductModelCodes->fromProductModelCodes($productModelCodes),
+        );
+
+        $quantifiedAssociationsIndexedByCode = [];
+        foreach ($quantifiedAssociations as $productModelCode => $quantifiedAssociation) {
+            $associationTypes = array_keys($quantifiedAssociation);
+            $quantifiedAssociationsWithoutEntities = array_fill_keys($associationTypes, ['products' => [], 'product_models' => []]);
+            $quantifiedAssociation = array_merge_recursive($quantifiedAssociationsWithoutEntities, $quantifiedAssociation);
+
+            $quantifiedAssociationsIndexedByCode[$productModelCode]['quantified_associations'] = $quantifiedAssociation;
+        }
+
+        return $quantifiedAssociationsIndexedByCode;
     }
 
     private function filterOnAttributeCodes(array $rawValues, array $attributeCodes): array
