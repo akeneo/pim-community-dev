@@ -81,3 +81,15 @@ Feature: Validate the quantified associations of a product
   Scenario: Cannot save a product model with an invalid quantified association
     When a product model is associated with an invalid quantified association
     Then there is at least a validation error on this product model
+
+  @acceptance-back
+  Scenario: Cannot save a product with a quantified association type used in a normal association
+    Given a product without associations
+    When I add an association without quantity to this product using a quantified association type
+    Then this product has a validation error about association type should not be quantified
+
+  @acceptance-back
+  Scenario: Cannot save a product model with a quantified association type used in a normal association
+    Given a product model without associations
+    When I add an association without quantity to this product model using a quantified association type
+    Then this product model has a validation error about association type should not be quantified

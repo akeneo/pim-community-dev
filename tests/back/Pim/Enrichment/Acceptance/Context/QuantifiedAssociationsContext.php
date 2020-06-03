@@ -224,6 +224,24 @@ final class QuantifiedAssociationsContext implements Context
     }
 
     /**
+     * @Given /^a product without associations$/
+     */
+    public function aProductWithoutAssociations()
+    {
+        $this->product = $this->createProduct([
+            'values' => [
+                'sku' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => 'yellow_chair',
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    /**
      * @Given /^a product variant without quantified associations$/
      */
     public function aProductVariantWithoutQuantifiedAssociations()
@@ -285,6 +303,16 @@ final class QuantifiedAssociationsContext implements Context
      * @Given /^a product model without quantified associations$/
      */
     public function aProductModelWithoutQuantifiedAssociations()
+    {
+        $this->productModel = $this->createProductModel([
+            'code' => 'standard_chair',
+        ]);
+    }
+
+    /**
+     * @Given /^a product model without associations$/
+     */
+    public function aProductModelWithoutAssociations()
     {
         $this->productModel = $this->createProductModel([
             'code' => 'standard_chair',
@@ -678,10 +706,10 @@ final class QuantifiedAssociationsContext implements Context
         Assert::greaterThan(count($violations), 0);
     }
 
-    private function assertProductHasValidationError(string $message, string $propertyPath)
+    private function assertEntityHasValidationError($entity, string $message, string $propertyPath)
     {
         /** @var ConstraintViolationListInterface $violations */
-        $violations = $this->validator->validate($this->product);
+        $violations = $this->validator->validate($entity);
 
         /** @var ConstraintViolation $violation */
         foreach ($violations as $violation) {
@@ -702,7 +730,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function thisProductHasAValidationErrorAboutAssociationTypeDoesNotExist()
     {
-        $this->assertProductHasValidationError(
+        $this->assertEntityHasValidationError(
+            $this->product,
             'pim_catalog.constraint.quantified_associations.association_type_does_not_exist',
             'quantifiedAssociations.INVALID_ASSOCIATION_TYPE'
         );
@@ -713,7 +742,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function thisProductHasAValidationErrorAboutAssociationTypeIsNotQuantified()
     {
-        $this->assertProductHasValidationError(
+        $this->assertEntityHasValidationError(
+            $this->product,
             'pim_catalog.constraint.quantified_associations.association_type_is_not_quantified',
             'quantifiedAssociations.XSELL'
         );
@@ -724,7 +754,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function thisProductHasAValidationErrorAboutInvalidQuantity()
     {
-        $this->assertProductHasValidationError(
+        $this->assertEntityHasValidationError(
+            $this->product,
             'pim_catalog.constraint.quantified_associations.invalid_quantity',
             'quantifiedAssociations.PACK.products[0].quantity'
         );
@@ -735,7 +766,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function thisProductHasAValidationErrorAboutProductDoNotExist()
     {
-        $this->assertProductHasValidationError(
+        $this->assertEntityHasValidationError(
+            $this->product,
             'pim_catalog.constraint.quantified_associations.products_do_not_exist',
             'quantifiedAssociations.PACK.products'
         );
@@ -746,7 +778,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function thisProductHasAValidationAboutProductModelsDoNotExist()
     {
-        $this->assertProductHasValidationError(
+        $this->assertEntityHasValidationError(
+            $this->product,
             'pim_catalog.constraint.quantified_associations.product_models_do_not_exist',
             'quantifiedAssociations.PACK.product_models'
         );
@@ -757,7 +790,8 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function thisProductHasAValidationAboutMaximumNumberOfAssociations()
     {
-        $this->assertProductHasValidationError(
+        $this->assertEntityHasValidationError(
+            $this->product,
             'pim_catalog.constraint.quantified_associations.max_associations',
             'quantifiedAssociations.PACK'
         );
@@ -768,9 +802,72 @@ final class QuantifiedAssociationsContext implements Context
      */
     public function thisProductHasAValidationErrorAboutUnexpectedLinkType()
     {
-        $this->assertProductHasValidationError(
+        $this->assertEntityHasValidationError(
+            $this->product,
             'pim_catalog.constraint.quantified_associations.unexpected_link_type',
             'quantifiedAssociations.PACK'
+        );
+    }
+
+    /**
+     * @When /^I add an association without quantity to this product using a quantified association type$/
+     */
+    public function iAddAnAssociationWithoutQuantityToThisProductUsingAQuantifiedAssociationType()
+    {
+        $this->createAndPersistQuantifiedAssociationType('PACK');
+        $this->createAndPersistProductWithIdentifier('accessory');
+
+        $fields = [
+            'associations' => [
+                'PACK' => [
+                    'products' => ['accessory'],
+                ],
+            ],
+        ];
+
+        $this->updateProduct($this->product, $fields);
+    }
+
+    /**
+     * @Then /^this product has a validation error about association type should not be quantified$/
+     */
+    public function thisProductHasAValidationErrorAboutAssociationTypeShouldNotBeQuantified()
+    {
+        $this->assertEntityHasValidationError(
+            $this->product,
+            'pim_catalog.constraint.quantified_associations.association_type_should_not_be_quantified',
+            'associations[0]'
+        );
+    }
+
+    /**
+     * @When /^I add an association without quantity to this product model using a quantified association type$/
+     */
+    public function iAddAnAssociationWithoutQuantityToThisProductModelUsingAQuantifiedAssociationType()
+    {
+        $this->createAndPersistQuantifiedAssociationType('PACK');
+        $this->createAndPersistProductWithIdentifier('accessory');
+
+        $fields = [
+            'associations' => [
+                'PACK' => [
+                    'products' => ['accessory'],
+                ],
+            ],
+        ];
+
+        $this->updateProductModel($this->productModel, $fields);
+    }
+
+    /**
+     * @Then /^this product model has a validation error about association type should not be quantified$/
+     */
+    public function thisProductModelHasAValidationErrorAboutAssociationTypeShouldNotBeQuantified()
+    {
+        $this->assertEntityHasValidationError(
+            $this->productModel,
+            'pim_catalog.constraint.quantified_associations.association_type_should_not_be_quantified',
+            'associations[0]'
         );
     }
 }
