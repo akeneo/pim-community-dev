@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\QuantifiedAssociationsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -22,6 +23,11 @@ use Symfony\Component\Serializer\Serializer;
 
 class ProductModelNormalizerSpec extends ObjectBehavior
 {
+    function let(QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer)
+    {
+        $this->beConstructedWith($quantifiedAssociationsNormalizer);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(ProductModelNormalizer::class);
@@ -47,7 +53,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ValueInterface $sku,
         WriteValueCollection $values,
         \Iterator $iterator,
-        FamilyVariantInterface $familyVariant
+        FamilyVariantInterface $familyVariant,
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
         $this->setSerializer($serializer);
 
@@ -65,6 +72,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $iterator->current()->willReturn($sku);
         $iterator->next()->shouldBeCalled();
 
+        $quantifiedAssociationsNormalizer->normalize($productModel, 'flat', Argument::any())->shouldBeCalled()->willReturn([]);
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
         $this->normalize($productModel, 'flat', [])->shouldReturn(
@@ -85,7 +93,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ValueInterface $sku,
         WriteValueCollection $values,
         \Iterator $iterator,
-        FamilyVariantInterface $familyVariant
+        FamilyVariantInterface $familyVariant,
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
         $this->setSerializer($serializer);
 
@@ -104,6 +113,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $iterator->current()->willReturn($sku);
         $iterator->next()->shouldBeCalled();
 
+        $quantifiedAssociationsNormalizer->normalize($productModel, 'flat', Argument::any())->shouldBeCalled()->willReturn([]);
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
         $this->normalize($productModel, 'flat', [])->shouldReturn(
@@ -133,7 +143,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
         ProductModelInterface $associatedProductModel1,
-        ProductModelInterface $associatedProductModel2
+        ProductModelInterface $associatedProductModel2,
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
         $this->setSerializer($serializer);
 
@@ -150,6 +161,12 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $iterator->current()->willReturn($sku);
         $iterator->next()->shouldBeCalled();
 
+        $quantifiedAssociationsNormalizer->normalize($productModel, 'flat', Argument::any())->shouldBeCalled()->willReturn([
+            'set-products-sku_assoc_product1' => '14',
+            'set-products-sku_assoc_product2' => '2',
+            'set-product_models-obi' => '0',
+            'set-product_models-one' => '1',
+        ]);
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
         $crossSell->getCode()->willReturn('cross_sell');
@@ -187,6 +204,10 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'up_sell-groups' => 'associated_group1,associated_group2',
                 'up_sell-products' => 'sku_assoc_product1,sku_assoc_product2',
                 'up_sell-product_models' => '',
+                'set-products-sku_assoc_product1' => '14',
+                'set-products-sku_assoc_product2' => '2',
+                'set-product_models-obi' => '0',
+                'set-product_models-one' => '1',
                 'sku' => 'sku-001',
             ]
         );

@@ -22,6 +22,9 @@ services:
 
     pim_versioning.serializer.normalizer.flat.product:
         class: '%pim_serializer.normalizer.flat.product.class%'
+        arguments:
+            - ~
+            - '@pim_versioning.serializer.normalizer.flat.quantified_associations'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
@@ -36,6 +39,8 @@ services:
 
     pim_versioning.serializer.normalizer.flat.product_model:
         class: '%pim_serializer.normalizer.flat.product_model.class%'
+        arguments:
+            - '@pim_versioning.serializer.normalizer.flat.quantified_associations'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
@@ -79,5 +84,10 @@ services:
 
     pim_versioning.serializer.normalizer.flat.collection:
         class: '%pim_serializer.normalizer.flat.collection.class%'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.quantified_associations:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\QuantifiedAssociationsNormalizer'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }

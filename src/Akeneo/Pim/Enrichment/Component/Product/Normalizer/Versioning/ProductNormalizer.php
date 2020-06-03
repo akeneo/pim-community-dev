@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\QuantifiedAssociationsNormalizer;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -52,12 +53,16 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var CollectionFilterInterface */
     protected $filter;
 
+    private $quantifiedAssociationsNormalized;
     /**
      * @param CollectionFilterInterface $filter The collection filter
      */
-    public function __construct(CollectionFilterInterface $filter = null)
-    {
+    public function __construct(
+        CollectionFilterInterface $filter = null,
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalized
+    ) {
         $this->filter = $filter;
+        $this->quantifiedAssociationsNormalized = $quantifiedAssociationsNormalized;
     }
 
     /**
@@ -75,7 +80,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         $results[self::FIELD_CATEGORY] = $this->normalizeCategories($object->getCategoryCodes());
         $results[self::FIELD_PARENT] = $this->normalizeParent($object->getParent());
         $results = array_merge($results, $this->normalizeAssociations($object->getAssociations()));
-        $results = array_merge($results, $this->normalizeQuantifiedAssociations($object));
+        $results = array_merge($results, $this->quantifiedAssociationsNormalized->normalize($object, $format, $context));
         $results = array_replace($results, $this->normalizeValues($object, $format, $context));
         $results[self::FIELD_ENABLED] = (int) $object->isEnabled();
 
@@ -234,48 +239,6 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     {
         $results = [];
         foreach ($associations as $association) {
-            if ($association->getAssociationType()->isQuantified()) {
-                continue;
-            }
-            $columnPrefix = $association->getAssociationType()->getCode();
-
-            $groups = [];
-            foreach ($association->getGroups() as $group) {
-                $groups[] = $group->getCode();
-            }
-
-            $products = [];
-            foreach ($association->getProducts() as $product) {
-                $products[] = $product->getIdentifier();
-            }
-
-            $productModels = [];
-            foreach ($association->getProductModels() as $productModel) {
-                $productModels[] = $productModel->getCode();
-            }
-
-            $results[$columnPrefix . '-groups'] = implode(',', $groups);
-            $results[$columnPrefix . '-products'] = implode(',', $products);
-            $results[$columnPrefix . '-product_models'] = implode(',', $productModels);
-        }
-
-        return $results;
-    }
-
-    /**
-     * Normalize associations
-     *
-     * @param Collection|AssociationInterface[] $associations
-     *
-     * @return array
-     */
-    protected function normalizeQuantifiedAssociations($associations = []): array
-    {
-        $results = [];
-        foreach ($associations as $association) {
-            if (!$association->getAssociationType()->isQuantified()) {
-                continue;
-            }
             $columnPrefix = $association->getAssociationType()->getCode();
 
             $groups = [];

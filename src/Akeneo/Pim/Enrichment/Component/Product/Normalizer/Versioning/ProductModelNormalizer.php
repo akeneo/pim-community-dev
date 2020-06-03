@@ -6,6 +6,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\QuantifiedAssociationsNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -36,6 +38,13 @@ class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInte
     /** @staticvar string */
     private const ITEM_SEPARATOR = ',';
 
+    private $quantifiedAssociationsNormalizer;
+
+    public function __construct(QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer)
+    {
+        $this->quantifiedAssociationsNormalizer = $quantifiedAssociationsNormalizer;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -50,6 +59,7 @@ class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInte
         $results[self::FIELD_CATEGORY] = implode(self::ITEM_SEPARATOR, $object->getCategoryCodes());
         $results[self::FIELD_PARENT] = $this->normalizeParent($object->getParent());
         $results = array_merge($results, $this->normalizeAssociations($object->getAssociations()));
+        $results = array_merge($results, $this->quantifiedAssociationsNormalizer->normalize($object, $format, $context));
         $results = array_replace($results, $this->normalizeValues($object, $format, $context));
 
         return $results;
