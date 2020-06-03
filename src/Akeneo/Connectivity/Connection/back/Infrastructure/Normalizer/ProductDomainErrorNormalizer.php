@@ -8,13 +8,14 @@ use Akeneo\Pim\Enrichment\Component\Error\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductDomainErrorNormalizer implements NormalizerInterface
+class ProductDomainErrorNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
      * @param IdentifiableDomainErrorInterface $object
@@ -28,7 +29,7 @@ class ProductDomainErrorNormalizer implements NormalizerInterface
             'domain_error_identifier' => $object->getErrorIdentifier()
         ];
 
-        if ($object instanceof \Throwable) {
+        if ($object instanceof \Exception) {
             $data['message'] = $object->getMessage();
         }
 
@@ -61,5 +62,10 @@ class ProductDomainErrorNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof IdentifiableDomainErrorInterface;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

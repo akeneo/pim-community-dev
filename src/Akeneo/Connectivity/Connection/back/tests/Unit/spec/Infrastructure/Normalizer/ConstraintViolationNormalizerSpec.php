@@ -6,12 +6,10 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Normalizer;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Normalizer\ConstraintViolationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -20,7 +18,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
  */
 class ConstraintViolationNormalizerSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    public function let(IdentifiableObjectRepositoryInterface $attributeRepository): void
     {
         $this->beConstructedWith($attributeRepository);
     }
@@ -40,7 +38,7 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($constraintViolation)->shouldReturn(true);
     }
 
-    public function it_normalizes_a_constraint_violation(ProductInterface $product): void
+    public function it_normalizes_a_constraint_violation(): void
     {
         $constraintViolation = new ConstraintViolation(
             'Property "clothing_size" expects a valid code. The option "z" does not exist',
@@ -66,5 +64,25 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
                 ]
             ]
         );
+    }
+
+    public function it_normalizes_the_product_information(ProductInterface $product): void
+    {
+        $constraintViolation = new ConstraintViolation('', '', [], '', '', '');
+
+        $product->getId()->willReturn(1);
+        $product->getIdentifier()->willReturn('product_identifier');
+
+        $this->normalize($constraintViolation, 'json', ['product' => $product])->shouldReturn([
+            'property' => '',
+            'message' => '',
+            'type' => 'violation_error',
+            'message_template' => '',
+            'message_parameters' => [],
+            'product' => [
+                'id' => 1,
+                'identifier' => 'product_identifier'
+            ]
+        ]);
     }
 }
