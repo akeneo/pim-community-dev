@@ -36,6 +36,12 @@ class Choices extends BaseView {
         return this;
     }
 
+    remove() {
+        ReactDOM.unmountComponentAtNode(this.el);
+
+        return super.remove();
+    }
+
     private isActive() {
         return this.config.activeForTypes.includes((this.getRoot() as any).getType());
     }

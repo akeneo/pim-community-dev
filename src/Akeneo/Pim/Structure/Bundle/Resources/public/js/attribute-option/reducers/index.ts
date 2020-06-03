@@ -1,9 +1,10 @@
-import attributeOptionsReducer, {initializeAttributeOptionsAction} from './attributeOptionsReducer';
-import localesReducer, {initializeLocalesAction} from './localesReducer';
+import attributeOptionsReducer, {
+    initializeAttributeOptionsAction,
+    updateAttributeOptionAction
+} from './attributeOptionsReducer';
 
 export {
     initializeAttributeOptionsAction,
-    initializeLocalesAction,
+    updateAttributeOptionAction,
     attributeOptionsReducer,
-    localesReducer,
 };

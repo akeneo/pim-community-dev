@@ -17,6 +17,9 @@ const unitConfig = {
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/illustrations/',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-measurement-family/CreateMeasurementFamily.tsx',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-unit/CreateUnit.tsx',
+    'src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/contexts',
+    'src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/fetchers',
+    'src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/store',
   ],
   moduleNameMapper: {
     '^require-context$': `${__dirname}/../../../../frontend/webpack/require-context.js`,

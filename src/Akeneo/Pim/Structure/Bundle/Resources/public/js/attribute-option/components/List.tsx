@@ -1,11 +1,16 @@
 import React from 'react';
-import {useAttributeOptions} from '../hooks';
+import useAttributeOptions from '../hooks/useAttributeOptions';
 import {AttributeOption} from '../model';
 import ToggleButton from './ToggleButton';
-import AttributeOptionItem from './AttributeOptionItem';
+import ListItem from './ListItem';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
-const List = () => {
+interface ListProps {
+    onSelectAttributeOption: (selectedOptionId: number) => void;
+    selectedOptionId: number | null;
+}
+
+const List = ({onSelectAttributeOption, selectedOptionId}: ListProps) => {
     const attributeOptions = useAttributeOptions();
     const translate = useTranslate();
 
@@ -22,7 +27,12 @@ const List = () => {
             <div role="attribute-options-list">
                 {attributeOptions !== null && attributeOptions.map((attributeOption: AttributeOption) => {
                     return (
-                        <AttributeOptionItem key={attributeOption.code} data={attributeOption} />
+                        <ListItem
+                            key={attributeOption.code}
+                            data={attributeOption}
+                            onSelectAttributeOption={onSelectAttributeOption}
+                            isSelected={selectedOptionId === attributeOption.id}
+                        />
                     );
                 })}
             </div>
