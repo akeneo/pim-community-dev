@@ -3,10 +3,11 @@ import {Table, TableCell, TableHeaderCell, TableHeaderRow, TableRow} from '../..
 import styled from '../../../common/styled-with-theme';
 import {useDateFormatter} from '../../../shared/formatter/use-date-formatter';
 import {Translate} from '../../../shared/translate';
-import {ConnectionError} from '../../hooks/api/use-connection-errors';
 import {NoError} from './NoError';
 import {SearchFilter} from './SearchFilter';
 import {Order, SortButton} from './SortButton';
+import {ConnectionError} from '../../model/ConnectionError';
+import {DocumentationList} from '../Documentation/DocumentationList';
 
 const useFormatTimestamp = () => {
     const formatDateTime = useDateFormatter();
@@ -75,7 +76,7 @@ const ErrorList: FC<Props> = ({errors}) => {
                                     <table>
                                         <tbody>
                                             {Object.entries(error.content)
-                                                .filter(([key]) => 'message' !== key)
+                                                .filter(([key]) => 'message' !== key && 'documentation' !== key)
                                                 .map(([key, value], i) => {
                                                     return (
                                                         <ErrorContentRow key={i}>
@@ -86,6 +87,9 @@ const ErrorList: FC<Props> = ({errors}) => {
                                                 })}
                                         </tbody>
                                     </table>
+                                    {error.content.documentation !== undefined && (
+                                        <DocumentationList documentations={error.content.documentation} />
+                                    )}
                                 </ErrorMessageCell>
                             </TableRow>
                         ))}
@@ -103,7 +107,7 @@ const DateTimeCell = styled(TableCell)`
 `;
 
 const ErrorMessageCell = styled(TableCell)`
-    color: ${({theme}) => theme.color.red100};
+    color: ${({theme}) => theme.color.grey140};
     white-space: pre-wrap;
 `;
 
