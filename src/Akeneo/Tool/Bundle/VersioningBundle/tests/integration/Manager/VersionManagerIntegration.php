@@ -59,6 +59,7 @@ class VersionManagerIntegration extends TestCase
     {
         $product = $this->productRepository->findOneByIdentifier('bar');
         $this->productSaver->save($product);
+
         $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
         $this->assertEmpty($productVersions);
     }

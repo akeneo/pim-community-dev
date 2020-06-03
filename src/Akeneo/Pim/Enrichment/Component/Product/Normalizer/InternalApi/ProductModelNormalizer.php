@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFa
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\QuantifiedAssociationsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
@@ -93,6 +94,9 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
     /** @var MissingRequiredAttributesNormalizerInterface */
     private $missingRequiredAttributesNormalizer;
 
+    /** @var QuantifiedAssociationsNormalizer */
+    private $quantifiedAssociationsNormalizer;
+
     public function __construct(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
@@ -113,7 +117,8 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
-        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
         $this->normalizer = $normalizer;
         $this->versionNormalizer = $versionNormalizer;
@@ -135,6 +140,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
         $this->catalogContext = $catalogContext;
         $this->missingRequiredAttributesCalculator = $missingRequiredAttributesCalculator;
         $this->missingRequiredAttributesNormalizer = $missingRequiredAttributesNormalizer;
+        $this->quantifiedAssociationsNormalizer = $quantifiedAssociationsNormalizer;
     }
 
     /**
@@ -210,6 +216,8 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
                 'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
                 'required_missing_attributes' => $requiredMissingAttributes,
                 'level'                     => $productModel->getVariationLevel(),
+                'quantified_associations_for_this_level' => $this->quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations($productModel, 'standard', $context),
+                'parent_quantified_associations' => $this->quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations($productModel, 'standard', $context),
             ] + $this->getLabels($productModel, $scopeCode) + $this->getAssociationMeta($productModel);
 
         return $normalizedProductModel;

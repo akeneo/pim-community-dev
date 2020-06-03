@@ -9,8 +9,6 @@ import {
 } from 'akeneomeasure/hooks/use-measurement-family-remover';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
-jest.mock('legacy-bridge/provider/dependencies.ts');
-
 const wrapper = ({children}) => <DependenciesProvider>{children}</DependenciesProvider>;
 
 afterEach(() => {

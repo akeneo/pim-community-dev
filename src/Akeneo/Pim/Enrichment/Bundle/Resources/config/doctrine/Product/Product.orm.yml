@@ -24,6 +24,10 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             type: datetime
         updated:
             type: datetime
+        rawQuantifiedAssociations:
+            type: json
+            column: quantified_associations
+            nullable: true
     manyToOne:
         family:
             targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface

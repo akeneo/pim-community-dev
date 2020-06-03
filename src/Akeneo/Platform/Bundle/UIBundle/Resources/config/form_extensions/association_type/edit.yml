@@ -107,11 +107,22 @@ extensions:
           formRequired: pim_common.required_label
           inputField: pim_enrich_association_type_form_code
 
+    pim-association-type-edit-form-properties-is-quantified:
+        module: pim/form/common/fields/boolean
+        parent: pim-association-type-edit-form-properties
+        targetZone: accordion
+        position: 105
+        feature: quantified_associations
+        config:
+            fieldName: is_quantified
+            label: pim_enrich.entity.association_type.property.is_quantified
+            readOnly: true
+
     pim-association-type-edit-form-properties-is-two-way:
         module: pim/form/common/fields/boolean
         parent: pim-association-type-edit-form-properties
         targetZone: accordion
-        position: 110
+        position: 107
         config:
             fieldName: is_two_way
             label: pim_enrich.entity.association_type.property.is_two_way

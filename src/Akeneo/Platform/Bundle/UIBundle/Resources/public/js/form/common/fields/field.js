@@ -157,6 +157,7 @@ define([
                         warnings: this.warnings,
                         readOnly: this.isReadOnly(),
                         required: this.config.required || false,
+                        messageOnReadOnly: __(this.config.messageOnReadOnly) || '',
                         __: __
                     },
                     templateParams

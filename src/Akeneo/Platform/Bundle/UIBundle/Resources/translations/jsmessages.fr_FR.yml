@@ -169,6 +169,7 @@ pim_common:
   from: De
   general_properties: Propriétés générales
   history: Historique
+  identifier: Identifiant
   label: Libellé
   label_translations: Traduction des libellés
   Label or identifier: libellé ou identifiant
@@ -188,6 +189,7 @@ pim_common:
   properties: Propriétés
   remove: Supprimer
   required_label: (obligatoire)
+  result_count: "{0}0 résultats|{1}1 résultat|]1, Inf[{{ itemsCount }} résultats"
   save: Enregistrer
   search: Rechercher
   select2:

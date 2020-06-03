@@ -71,6 +71,8 @@ JSON;
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -143,6 +145,8 @@ JSON;
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -318,6 +322,8 @@ JSON;
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
         $response = $client->getResponse();
         $this->assertSame('', $response->getContent());
@@ -659,6 +665,8 @@ JSON;
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -822,6 +830,8 @@ JSON;
                     "product_models" => [],
                 ],
             ],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();

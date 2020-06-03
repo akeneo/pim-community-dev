@@ -95,6 +95,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $client->request('PATCH', 'api/rest/v1/products/product_create_with_identifier', [], [], [], $data);
@@ -132,6 +134,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $client->request('PATCH', 'api/rest/v1/products/product_create_without_identifier', [], [], [], $data);
@@ -295,6 +299,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
@@ -332,6 +338,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
@@ -374,6 +382,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
@@ -452,6 +462,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -490,6 +502,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -528,6 +542,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -567,6 +583,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -606,6 +624,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -645,6 +665,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -721,6 +743,8 @@ JSON;
                     'product_models' => [],
                 ],
             ],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -768,7 +792,9 @@ JSON;
                 'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
                 'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
                 'X_SELL'       => ['groups'   => [], 'products' => ['product_categories'], 'product_models' => []],
-           ],
+            ],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -822,6 +848,8 @@ JSON;
                 'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
                 'X_SELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
             ],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -861,6 +889,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -913,6 +943,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -964,6 +996,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -1012,6 +1046,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -1192,6 +1228,8 @@ JSON;
                 'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
                 'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'product_models' => []],
             ],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -1230,6 +1268,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
+            // @todo https://akeneo.atlassian.net/browse/MET-198
+            'quantified_associations' => [],
         ];
 
         $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);

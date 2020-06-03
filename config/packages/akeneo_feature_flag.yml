@@ -1,2 +1,3 @@
 akeneo_feature_flag:
-    feature_flags: []
+    feature_flags:
+        - { feature: 'quantified_associations', service: 'pim_structure.feature.quantified_association' }

@@ -29,6 +29,21 @@ class ReaderSpec extends ObjectBehavior
         $this->shouldImplement('\Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
+    function it_initializes_the_summary_info_if_the_yaml_file_is_not_correctly_formatted(
+        ArrayConverterInterface $converter,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->beConstructedWith($converter, false, false);
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $incorrectlyFormattedFilePath = realpath(__DIR__ . '/../../../fixtures/fake_incorrectly_formatted_yml_file.yml');
+        $jobParameters->get('filePath')->willReturn($incorrectlyFormattedFilePath);
+
+        $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
+        $this->read()->shouldReturn(null);
+    }
+
     function it_reads_entities_from_a_yml_file_one_by_one_incrementing_summary_info_for_each_one(
         ArrayConverterInterface $converter,
         StepExecution $stepExecution,
@@ -40,6 +55,7 @@ class ReaderSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
 
 
+        $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalledTimes(3);
 
         $converter->convert(['sku' => 'mug_akeneo'])->willReturn(['sku' => 'mug_akeneo']);
@@ -74,6 +90,7 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
 
+        $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
@@ -99,6 +116,7 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
 
+        $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalled();
 
         $converter->convert(['sku' => 'mug_akeneo'])->willReturn(['sku' => 'mug_akeneo']);
@@ -133,6 +151,7 @@ class ReaderSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
 
+        $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
         $result = [
@@ -164,6 +183,7 @@ class ReaderSpec extends ObjectBehavior
         $jobParameters->get('filePath')
             ->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_without_code.yml'));
 
+        $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
         $result = [
@@ -197,6 +217,7 @@ class ReaderSpec extends ObjectBehavior
         $jobParameters->get('filePath')
             ->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
 
+        $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
         $converter->convert(['sku' => 'mug_akeneo'])->willReturn(['sku' => 'mug_akeneo']);

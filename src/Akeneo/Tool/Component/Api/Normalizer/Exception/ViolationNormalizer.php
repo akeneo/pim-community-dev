@@ -158,6 +158,11 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
     {
         $constraint = $violation->getConstraint();
 
+        $shouldNormalizePropertyPath = (bool)($constraint->payload['normalize_property_path'] ?? true);
+        if (!$shouldNormalizePropertyPath) {
+            return $violation->getPropertyPath();
+        }
+
         if (null !== $constraint && isset($constraint->payload['standardPropertyName'])) {
             return $constraint->payload['standardPropertyName'];
         }

@@ -1,0 +1,20 @@
+rules:
+copy_description_befr:
+        priority: 0
+        conditions:
+            - field: description
+              locale: en_US
+              scope: ecommerce
+              operator: EMPTY
+            - field: description
+              locale: en_US
+              scope: print
+              operator: NOT EMPTY
+        actions:
+            - type: copy
+              from_field: description
+              to_field: description
+              from_locale: en_US
+              from_scope: print
+              to_locale: en_US
+              to_scope: ecommerce

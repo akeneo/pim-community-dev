@@ -3,3 +3,14 @@ services:
         public: true
         class: 'AkeneoTest\Pim\Enrichment\Acceptance\Context\EnrichmentFollowUpContext'
 
+    test.enrichment.quantified_associations_context:
+        class: AkeneoTest\Pim\Enrichment\Acceptance\Context\QuantifiedAssociationsContext
+        arguments:
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.normalizer.standard.product'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.association_type'
+        public: true

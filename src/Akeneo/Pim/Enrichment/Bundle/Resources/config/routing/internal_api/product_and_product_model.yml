@@ -1,0 +1,4 @@
+pim_enrich_product_and_product_model_by_identifiers_rest_list:
+    path: /
+    defaults: { _controller: pim_enrich.controller.rest.product_and_product_model.get_from_identifier }
+    methods: [POST]
