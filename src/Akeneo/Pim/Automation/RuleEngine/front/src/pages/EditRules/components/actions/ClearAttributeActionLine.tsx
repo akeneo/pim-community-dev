@@ -16,7 +16,6 @@ const ClearAttributeActionLine: React.FC<Props> = ({
   lineNumber,
   action,
   handleDelete,
-  currentCatalogLocale,
   locales,
   scopes,
 }) => {
@@ -72,8 +71,6 @@ const ClearAttributeActionLine: React.FC<Props> = ({
         localeFormName={`content.actions[${lineNumber}].locale`}
         localeCode={action.locale || null}
         locales={locales}
-        currentCatalogLocale={currentCatalogLocale}
-        translate={translate}
       />
       <ActionLineErrors lineNumber={lineNumber} />
     </ActionTemplate>
