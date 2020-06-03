@@ -2,7 +2,6 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi\QuantifiedAssociations;
 
-use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi\QuantifiedAssociations\AbstractProductWithQuantifiedAssociationsTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class RemoveQuantifiedAssociationsFromProductEndToEnd extends AbstractProductWithQuantifiedAssociationsTestCase
@@ -12,17 +11,19 @@ class RemoveQuantifiedAssociationsFromProductEndToEnd extends AbstractProductWit
      */
     public function it_remove_quantified_associations_from_a_product(): void
     {
-        $product = $this->createProduct([
-            'values' => [
-                'sku' => [
-                    [
-                        'scope' => null,
-                        'locale' => null,
-                        'data' => 'yellow_chair',
+        $product = $this->createProduct(
+            [
+                'values' => [
+                    'sku' => [
+                        [
+                            'scope' => null,
+                            'locale' => null,
+                            'data' => 'yellow_chair',
+                        ],
                     ],
                 ],
-            ],
-        ]);
+            ]
+        );
         $normalizedProduct = $this->getProductFromInternalApi($product->getId());
 
         $quantifiedAssociations = [
@@ -54,14 +55,30 @@ class RemoveQuantifiedAssociationsFromProductEndToEnd extends AbstractProductWit
         $normalizedProductWithoutQuantifiedAssociations = $this->updateNormalizedProduct(
             $normalizedProduct,
             [
-                'quantified_associations' => [],
+                'quantified_associations' => [
+                    'PRODUCTSET' => [
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                ],
             ]
         );
 
-        $response = $this->updateProductWithInternalApi($product->getId(), $normalizedProductWithoutQuantifiedAssociations);
+        $response = $this->updateProductWithInternalApi(
+            $product->getId(),
+            $normalizedProductWithoutQuantifiedAssociations
+        );
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $body = json_decode($response->getContent(), true);
-        $this->assertSame($body['quantified_associations'], []);
+        $this->assertSame(
+            [
+                'PRODUCTSET' => [
+                    'products' => [],
+                    'product_models' => [],
+                ],
+            ],
+            $body['quantified_associations']
+        );
     }
 }
