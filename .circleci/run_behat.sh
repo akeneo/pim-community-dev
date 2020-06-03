@@ -9,10 +9,10 @@ echo "TEST FILES ON THIS CONTAINER: $TEST_FILES"
 
 fail=0
 counter=1
-total=$(($(echo $TEST_FILES | grep -o ' ' | wc -l) + 1))
+total=$(echo $TEST_FILES | tr ' ' "\n" | wc -l)
 
 for TEST_FILE in $TEST_FILES; do
-    echo "\nLAUNCHING $TEST_FILE ($counter/$total):"
+    echo -e "\nLAUNCHING $TEST_FILE ($counter/$total):"
     output=$(basename $TEST_FILE)_$(uuidgen)
 
     set +e
