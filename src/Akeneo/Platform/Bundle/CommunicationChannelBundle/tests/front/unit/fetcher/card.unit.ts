@@ -1,9 +1,5 @@
 import {CardFetcherImplementation} from 'akeneocommunicationchannel/fetcher/card';
 
-// Needed as we import the validator from the shared workspace.
-// Otherwise, error thrown from the router,js ("ReferenceError: define is not defined")
-jest.mock('legacy-bridge/provider/dependencies.ts');
-
 console.error = jest.fn();
 
 const expectedCards = [
