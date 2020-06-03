@@ -189,6 +189,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException',
         'Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',

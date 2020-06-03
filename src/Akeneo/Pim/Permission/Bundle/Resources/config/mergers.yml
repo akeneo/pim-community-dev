@@ -21,6 +21,11 @@ services:
             - '@pimee_security.query.get_all_viewable_locales_for_user'
             - '@security.token_storage'
 
+    pimee_catalog.security.merger.not_granted_quantified_associations:
+        class: Akeneo\Pim\Permission\Component\Merger\NotGrantedQuantifiedAssociationsMerger
+        arguments:
+            - '@pim_catalog.updater.property_setter'
+
     pimee_catalog.security.merger.merge_data_on_product:
         class: 'Akeneo\Pim\Permission\Component\Merger\MergeDataOnProduct'
         arguments:
@@ -28,6 +33,7 @@ services:
                 - '@pimee_catalog.security.merger.not_granted_values'
                 - '@pimee_catalog.security.merger.not_granted_associated_product'
                 - '@pimee_catalog.security.merger.not_granted_category'
+                - '@pimee_catalog.security.merger.not_granted_quantified_associations'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
             - '@pim_catalog.repository.product_model_without_permission'
@@ -39,4 +45,5 @@ services:
                 - '@pimee_catalog.security.merger.not_granted_values'
                 - '@pimee_catalog.security.merger.not_granted_associated_product'
                 - '@pimee_catalog.security.merger.not_granted_category'
+                - '@pimee_catalog.security.merger.not_granted_quantified_associations'
             - '@pim_catalog.repository.product_model_without_permission'
