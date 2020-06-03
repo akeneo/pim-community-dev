@@ -64,7 +64,7 @@ describe('Edit an attribute option', () => {
                     <Provider store={createStoreWithInitialState({})}>
                         <AttributeContextProvider attributeId={8}>
                             <LocalesContextProvider>
-                                <Edit option={option} onSave={saveCallback} />
+                                <Edit option={option} saveAttributeOption={saveCallback} />
                             </LocalesContextProvider>
                         </AttributeContextProvider>
                     </Provider>
