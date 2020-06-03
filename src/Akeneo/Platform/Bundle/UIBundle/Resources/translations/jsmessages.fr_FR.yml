@@ -1,2 +1,5 @@
 user:
   email_notifications: Être notifié/e de l'expiration des ressources
+pimee_enrich.entity.product:
+  duplicate:
+    title: Dupliquer le produit {{ product_identifier }}
