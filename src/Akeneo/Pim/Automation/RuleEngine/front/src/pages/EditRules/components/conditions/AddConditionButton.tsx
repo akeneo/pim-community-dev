@@ -1,7 +1,6 @@
 import React from 'react';
 import { Select2Wrapper } from '../../../../components/Select2Wrapper';
-import { Translate } from '../../../../dependenciesTools';
-import { useBackboneRouter } from "../../../../dependenciesTools/hooks";
+import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
 
 type AddConditionAttribute = {
   id: string;
@@ -18,7 +17,6 @@ type AddConditionResults = AddConditionGroup[];
 
 type Props = {
   handleAddCondition: (fieldCode: string) => void;
-  translate: Translate;
   isActiveConditionField: (fieldCode: string) => boolean;
 };
 
@@ -30,9 +28,9 @@ const ATTRIBUTE_TYPES = ['pim_catalog_multiselect', 'pim_catalog_text'];
 
 const AddConditionButton: React.FC<Props> = ({
   handleAddCondition,
-  translate,
   isActiveConditionField,
 }) => {
+  const translate = useTranslate();
   const router = useBackboneRouter();
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
 

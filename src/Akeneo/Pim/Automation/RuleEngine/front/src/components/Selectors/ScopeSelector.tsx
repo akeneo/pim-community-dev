@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select2SimpleSyncWrapper, Select2Value } from '../Select2Wrapper';
 import { LocaleCode, Scope, ScopeCode } from '../../models';
-import { Translate } from '../../dependenciesTools';
+import { useTranslate } from "../../dependenciesTools/hooks";
 
 type Props = {
   label?: string;
@@ -10,7 +10,6 @@ type Props = {
   currentCatalogLocale: LocaleCode;
   value?: ScopeCode;
   onChange?: (value: ScopeCode) => void;
-  translate: Translate;
   allowClear: boolean;
   disabled?: boolean;
   name: string;
@@ -24,13 +23,13 @@ const ScopeSelector: React.FC<Props> = ({
   currentCatalogLocale,
   value,
   onChange,
-  translate,
   children,
   allowClear = false,
   disabled = false,
   name,
   validation,
 }) => {
+  const translate = useTranslate();
   const getScopeLabel = (scope: Scope): string => {
     return scope.labels[currentCatalogLocale] || `[${scope.code}]`;
   };

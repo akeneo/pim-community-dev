@@ -10,7 +10,7 @@ import {
   AttributeOptionCode,
   getAttributeOptionsByIdentifiers,
 } from '../../../../fetch/AttributeOptionFetcher';
-import { useBackboneRouter } from "../../../../dependenciesTools/hooks";
+import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
 
 type MultiOptionsAttributeConditionLineProps = ConditionLineProps & {
   condition: MultiOptionsAttributeCondition;
@@ -19,12 +19,12 @@ type MultiOptionsAttributeConditionLineProps = ConditionLineProps & {
 const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditionLineProps> = ({
   condition,
   lineNumber,
-  translate,
   locales,
   scopes,
   currentCatalogLocale,
 }) => {
   const router = useBackboneRouter();
+  const translate = useTranslate();
   const [unexistingOptionCodes, setUnexistingOptionCodes] = React.useState<
     AttributeOptionCode[]
   >([]);
@@ -85,7 +85,6 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
     <AttributeConditionLine
       condition={condition}
       lineNumber={lineNumber}
-      translate={translate}
       currentCatalogLocale={currentCatalogLocale}
       locales={locales}
       scopes={scopes}

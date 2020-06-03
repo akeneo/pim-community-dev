@@ -27,7 +27,6 @@ type Reset = (
 ) => void;
 
 const transformFormData = (formData: FormData): Payload => {
-  console.log(formData);
   const filledConditions = formData?.content?.conditions
     ? formData.content.conditions.filter((condition: Condition | null) => {
         return condition !== null;
@@ -85,9 +84,7 @@ const submitEditRuleForm = (
         translate('pimee_catalog_rule.form.edit.notification.failed')
       );
     }
-    console.log('RESET VALUES');
     reset({ ...formData });
-    console.log('VALUES RESET');
   };
 };
 

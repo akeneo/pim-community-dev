@@ -11,7 +11,6 @@ type Props = {
 } & ActionLineProps;
 
 const ConcatenateActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
   handleDelete,
@@ -25,7 +24,6 @@ const ConcatenateActionLine: React.FC<Props> = ({
 
   return (
     <ActionTemplate
-      translate={translate}
       title='Concatenate Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'

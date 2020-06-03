@@ -1,5 +1,4 @@
 import React from 'react';
-import { Translate } from '../../../dependenciesTools';
 import { RuleProductSelection } from './conditions/RuleProductSelection';
 import { RuleDefinition, Locale, LocaleCode } from '../../../models';
 import { Action } from '../../../models/Action';
@@ -25,7 +24,6 @@ const LastActionContainer = styled.div`
 `;
 
 type Props = {
-  translate: Translate;
   ruleDefinition: RuleDefinition;
   locales: Locale[];
   scopes: IndexedScopes;
@@ -35,7 +33,6 @@ type Props = {
 };
 
 const RulesBuilder: React.FC<Props> = ({
-  translate,
   ruleDefinition,
   locales,
   scopes,
@@ -54,7 +51,6 @@ const RulesBuilder: React.FC<Props> = ({
     <>
       <RuleProductSelection
         ruleDefinition={ruleDefinition}
-        translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={currentCatalogLocale}
@@ -69,7 +65,6 @@ const RulesBuilder: React.FC<Props> = ({
               <Component key={`action_${i}`}>
                 <ActionLine
                   action={action}
-                  translate={translate}
                   lineNumber={i}
                   handleDelete={() => {
                     handleDeleteAction(i);

@@ -5,7 +5,7 @@ import {
   Select2OptionGroup,
   Select2SimpleSyncWrapper, Select2Value,
 } from '../Select2Wrapper';
-import { Translate } from '../../dependenciesTools';
+import { useTranslate } from "../../dependenciesTools/hooks";
 
 type Props = {
   label?: string;
@@ -13,7 +13,6 @@ type Props = {
   availableLocales: Locale[];
   value?: LocaleCode;
   onChange?: (value: LocaleCode) => void;
-  translate: Translate;
   allowClear?: boolean;
   disabled?: boolean;
   name: string;
@@ -26,13 +25,13 @@ const LocaleSelector: React.FC<Props> = ({
   availableLocales,
   value,
   onChange,
-  translate,
   children,
   allowClear = false,
   disabled = false,
   name,
   validation,
 }) => {
+  const translate = useTranslate();
   const localeChoices = availableLocales.map((locale: Locale) => {
     return {
       id: locale.code,

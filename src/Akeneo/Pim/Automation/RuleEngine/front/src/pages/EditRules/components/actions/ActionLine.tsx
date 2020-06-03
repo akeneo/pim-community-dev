@@ -29,7 +29,6 @@ const ActionRightSide = styled(ActionLeftSide)`
 
 const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   action,
-  translate,
   lineNumber,
   handleDelete,
   currentCatalogLocale,
@@ -41,7 +40,6 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   return (
     <Line
       action={action}
-      translate={translate}
       lineNumber={lineNumber}
       handleDelete={handleDelete}
       currentCatalogLocale={currentCatalogLocale}

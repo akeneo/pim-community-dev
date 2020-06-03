@@ -1,12 +1,11 @@
 import React from 'react';
 import { Select2SimpleSyncWrapper, Select2Value } from '../Select2Wrapper';
 import { Operator } from '../../models/Operator';
-import { Translate } from '../../dependenciesTools';
+import { useTranslate } from "../../dependenciesTools/hooks";
 
 type Props = {
   label?: string;
   availableOperators: Operator[];
-  translate: Translate;
   value: Operator;
   name: string;
   onChange?: (value: Operator) => void;
@@ -17,11 +16,11 @@ const OperatorSelector: React.FC<Props> = ({
   label,
   hiddenLabel = false,
   availableOperators,
-  translate,
   value,
   onChange,
   name,
 }) => {
+  const translate = useTranslate();
   const translateOperator = (operator: Operator): string => {
     const label = translate(
       `pimee_catalog_rule.form.edit.conditions.operators.${operator}`

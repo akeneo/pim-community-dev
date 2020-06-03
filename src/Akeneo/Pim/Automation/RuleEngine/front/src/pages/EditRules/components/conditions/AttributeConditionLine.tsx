@@ -18,10 +18,10 @@ import {
   ScopeColumn,
   ValueColumn,
 } from './style';
-import { Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { LineErrors } from '../LineErrors';
 import { useRegisterConst } from "../../hooks/useRegisterConst";
+import { useTranslate } from "../../../../dependenciesTools/hooks";
 
 const shouldDisplayValue: (operator: Operator) => boolean = operator =>
   !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
@@ -31,7 +31,6 @@ const shouldDisplayValue: (operator: Operator) => boolean = operator =>
 type AttributeConditionLineProps = {
   condition: TextAttributeCondition | MultiOptionsAttributeCondition;
   lineNumber: number;
-  translate: Translate;
   locales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
@@ -41,13 +40,13 @@ type AttributeConditionLineProps = {
 const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   condition,
   lineNumber,
-  translate,
   locales,
   scopes,
   currentCatalogLocale,
   availableOperators,
   children,
 }) => {
+  const translate = useTranslate();
   const { watch, setValue } = useFormContext();
 
   const getOperatorFormValue: () => Operator = () =>
@@ -157,7 +156,6 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
         <OperatorSelector
           hiddenLabel={true}
           availableOperators={availableOperators}
-          translate={translate}
           value={condition.operator}
           name={`content.conditions[${lineNumber}].operator`}
         />
@@ -173,7 +171,6 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
             currentCatalogLocale={currentCatalogLocale}
             value={condition.scope}
             onChange={handleScopeChange}
-            translate={translate}
             allowClear={!condition.attribute.scopable}
             name={`content.conditions[${lineNumber}].scope`}
             validation={scopeValidation}
@@ -186,7 +183,6 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
             hiddenLabel={true}
             availableLocales={getAvailableLocales()}
             value={condition.locale}
-            translate={translate}
             allowClear={!condition.attribute.localizable}
             name={`content.conditions[${lineNumber}].locale`}
             validation={localeValidation}

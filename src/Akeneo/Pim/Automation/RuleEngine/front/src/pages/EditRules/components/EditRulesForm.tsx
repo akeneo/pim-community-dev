@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTabState, Tab, TabList, TabPanel } from 'reakit/Tab';
-import { Translate } from '../../../dependenciesTools';
 import { LocaleCode, RuleDefinition } from '../../../models';
 import { RulesBuilder } from './RulesBuilder';
 import { RuleProperties } from './RuleProperties';
@@ -9,6 +8,7 @@ import { Locale } from '../../../models';
 import { IndexedScopes } from '../../../repositories/ScopeRepository';
 import { useFormContext } from 'react-hook-form';
 import { Action } from '../../../models/Action';
+import { useTranslate } from "../../../dependenciesTools/hooks";
 
 const getTabBorder = ({ id, selectedId, theme }: any): string | number => {
   if (id === selectedId) {
@@ -70,7 +70,6 @@ type Props = {
   ruleDefinition: RuleDefinition;
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
-  translate: Translate;
   actions: (Action | null)[];
   handleDeleteAction: (lineNumber: number) => void;
 };
@@ -80,11 +79,11 @@ const EditRulesForm: React.FC<Props> = ({
   onSubmit,
   ruleDefinition,
   scopes,
-  translate,
   currentCatalogLocale,
   actions,
   handleDeleteAction,
 }) => {
+  const translate = useTranslate();
   const tab = useTabState({ selectedId: 'rulesBuilderTab' });
 
   const { formState } = useFormContext();
@@ -122,13 +121,12 @@ const EditRulesForm: React.FC<Props> = ({
             locales={locales}
             ruleDefinition={ruleDefinition}
             scopes={scopes}
-            translate={translate}
             actions={actions}
             handleDeleteAction={handleDeleteAction}
           />
         </StyledTabPanel>
         <StyledTabPanel {...tab} tabIndex={-1}>
-          <RuleProperties locales={locales} translate={translate} />
+          <RuleProperties locales={locales} />
         </StyledTabPanel>
       </StyledTabList>
     </form>

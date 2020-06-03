@@ -10,7 +10,6 @@ type Props = {
 } & ActionLineProps;
 
 const RemoveActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
   handleDelete,
@@ -37,7 +36,6 @@ const RemoveActionLine: React.FC<Props> = ({
 
   return (
     <ActionTemplate
-      translate={translate}
       title='Remove Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'

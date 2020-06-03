@@ -22,7 +22,6 @@ type Props = {
 } & ActionLineProps;
 
 const SetActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
   handleDelete,
@@ -78,7 +77,6 @@ const SetActionLine: React.FC<Props> = ({
 
   return (
     <ActionTemplate
-      translate={translate}
       title='Set Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'

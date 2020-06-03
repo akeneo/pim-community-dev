@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Translate } from '../../../../dependenciesTools';
 import { RedGhostButton, SmallHelper } from '../../../../components';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { VisuallyHidden } from 'reakit/VisuallyHidden';
 import { AlertDialog } from '../../../../components/AlertDialog/AlertDialog';
 import { createComponent } from 'reakit-system';
 import { useDialogDisclosure, useDialogState } from 'reakit';
+import { useTranslate } from "../../../../dependenciesTools/hooks";
 
 const StyledHeader = styled.header`
   font-weight: normal;
@@ -29,7 +29,6 @@ const DeleteButton = createComponent({
 });
 
 type Props = {
-  translate: Translate;
   title: string;
   helper: string;
   legend: string;
@@ -38,12 +37,12 @@ type Props = {
 
 const ActionTemplate: React.FC<Props> = ({
   legend,
-  translate,
   title,
   helper,
   children,
   handleDelete,
 }) => {
+  const translate = useTranslate();
   const dialog = useDialogState();
 
   return (

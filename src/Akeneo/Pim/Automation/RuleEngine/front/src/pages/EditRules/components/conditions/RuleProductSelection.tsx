@@ -15,14 +15,13 @@ import {
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
-import { Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { ConditionLine } from './ConditionLine';
 import { ProductsCount } from '../ProductsCount';
 import { AddConditionButton } from './AddConditionButton';
 import { FormData } from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
-import { useBackboneRouter } from "../../../../dependenciesTools/hooks";
+import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
 
 const Header = styled.header`
   font-weight: normal;
@@ -78,7 +77,6 @@ type Props = {
   locales: Locale[];
   ruleDefinition: RuleDefinition;
   scopes: IndexedScopes;
-  translate: Translate;
 };
 
 const RuleProductSelection: React.FC<Props> = ({
@@ -86,8 +84,8 @@ const RuleProductSelection: React.FC<Props> = ({
   locales,
   ruleDefinition,
   scopes,
-  translate,
 }) => {
+  const translate = useTranslate();
   const router = useBackboneRouter();
   const [conditions, setConditions] = React.useState<(Condition | null)[]>(
     ruleDefinition.conditions
@@ -174,12 +172,10 @@ const RuleProductSelection: React.FC<Props> = ({
           <ProductsCount
             count={productsCount.value}
             status={productsCount.status}
-            translate={translate}
           />
           <AddConditionContainer>
             <AddConditionButton
               handleAddCondition={handleAddCondition}
-              translate={translate}
               isActiveConditionField={isActiveConditionField}
             />
           </AddConditionContainer>
@@ -202,7 +198,6 @@ const RuleProductSelection: React.FC<Props> = ({
                 <ConditionLine
                   condition={condition}
                   lineNumber={i}
-                  translate={translate}
                   key={`condition_${i}`}
                   locales={locales}
                   scopes={scopes}

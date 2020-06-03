@@ -5,9 +5,9 @@ import { PimConditionLine } from './PimConditionLine';
 import { FallbackConditionLine } from './FallbackConditionLine';
 import styled from 'styled-components';
 import { Condition, Locale, LocaleCode } from '../../../../models';
-import { Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { ConditionLineProps } from './ConditionLineProps';
+import { useTranslate } from "../../../../dependenciesTools/hooks";
 
 const DeleteButton = styled(DialogDisclosure)`
   border: none;
@@ -17,7 +17,6 @@ const DeleteButton = styled(DialogDisclosure)`
 
 type Props = {
   lineNumber: number;
-  translate: Translate;
   locales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
@@ -26,7 +25,6 @@ type Props = {
 };
 
 const ConditionLine: React.FC<Props> = ({
-  translate,
   condition,
   lineNumber,
   locales,
@@ -34,6 +32,7 @@ const ConditionLine: React.FC<Props> = ({
   currentCatalogLocale,
   deleteCondition,
 }) => {
+  const translate = useTranslate();
   const dialog = useDialogState();
 
   const Line = condition.module as React.FC<
@@ -51,7 +50,6 @@ const ConditionLine: React.FC<Props> = ({
       <Line
         condition={condition}
         lineNumber={lineNumber}
-        translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={currentCatalogLocale}

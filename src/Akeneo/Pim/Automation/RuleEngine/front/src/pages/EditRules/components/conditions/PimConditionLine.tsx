@@ -5,16 +5,17 @@ import { FallbackField } from '../FallbackField';
 import { useFormContext } from 'react-hook-form';
 import { Operator } from "../../../../models/Operator";
 import { useRegisterConsts } from "../../hooks/useRegisterConst";
+import { useTranslate } from "../../../../dependenciesTools/hooks";
 
 type PimConditionLineProps = ConditionLineProps & {
   condition: PimCondition;
 };
 
 const PimConditionLine: React.FC<PimConditionLineProps> = ({
-  translate,
   condition,
   lineNumber,
 }) => {
+  const translate = useTranslate();
   const { watch } = useFormContext();
 
   const values: { [key: string]: any } = {

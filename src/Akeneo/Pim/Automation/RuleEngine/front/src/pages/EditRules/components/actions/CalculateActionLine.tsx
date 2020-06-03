@@ -114,7 +114,6 @@ type Props = {
 } & ActionLineProps;
 
 const CalculateActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
   handleDelete,
@@ -135,7 +134,6 @@ const CalculateActionLine: React.FC<Props> = ({
 
   return (
     <ActionTemplate
-      translate={translate}
       title='Calculate Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'

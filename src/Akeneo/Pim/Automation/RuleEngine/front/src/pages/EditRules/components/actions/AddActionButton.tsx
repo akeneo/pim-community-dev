@@ -1,14 +1,16 @@
 import React from 'react';
 import { Select2Wrapper } from '../../../../components/Select2Wrapper';
-import { Translate } from '../../../../dependenciesTools';
 import { Action, AvailableAddAction } from '../../../../models/Action';
+import { useTranslate } from "../../../../dependenciesTools/hooks";
 
 type Props = {
-  translate: Translate;
   handleAddAction: (action: Action) => void;
 };
 
-const AddActionButton: React.FC<Props> = ({ translate, handleAddAction }) => {
+const AddActionButton: React.FC<Props> = ({
+  handleAddAction
+}) => {
+  const translate = useTranslate();
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
 
   const actionsData = Object.keys(AvailableAddAction).map(actionKey => {

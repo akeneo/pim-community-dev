@@ -8,6 +8,7 @@ import { SetFamilyAction } from '../../../../models/actions';
 import { FamilyCode } from '../../../../models';
 import { ActionTitle } from './ActionLine';
 import { useRegisterConsts } from "../../hooks/useRegisterConst";
+import { useTranslate } from "../../../../dependenciesTools/hooks";
 
 const ActionTitle = styled.div`
   color: ${({ theme }): string => theme.color.purple100};
@@ -20,12 +21,13 @@ type Props = {
 } & ActionLineProps;
 
 const SetFamilyActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
   handleDelete,
   currentCatalogLocale,
 }) => {
+  const translate = useTranslate();
+
   useRegisterConsts({
     type: 'set',
     field: 'family',
@@ -33,7 +35,6 @@ const SetFamilyActionLine: React.FC<Props> = ({
 
   return (
     <ActionTemplate
-      translate={translate}
       title={translate('pimee_catalog_rule.form.edit.actions.set_family.title')}
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'

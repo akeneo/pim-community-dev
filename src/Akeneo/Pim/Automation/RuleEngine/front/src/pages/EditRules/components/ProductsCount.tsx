@@ -1,19 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Status } from '../../../rules.constants';
-import { Translate } from '../../../dependenciesTools';
+import { useTranslate } from "../../../dependenciesTools/hooks";
 
 type Props = {
   count: string;
   status: Status;
-  translate: Translate;
 };
 
 const CountPending = styled.span`
   opacity: 0.5;
 `;
 
-const ProductsCount: React.FC<Props> = ({ status, count, translate }) => {
+const ProductsCount: React.FC<Props> = ({
+  status,
+  count
+}) => {
+  const translate = useTranslate();
+
   return (
     <>
       {status === Status.ERROR && (

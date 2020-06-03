@@ -79,8 +79,6 @@ const EditRulesContent: React.FC<Props> = ({
     Object.keys(formMethods.getValues()).forEach((value: string) => {
       if (value.startsWith(`content.actions[${lineNumber}]`)) {
         formMethods.unregister(value);
-        console.log(formMethods.getValues());
-        console.log(formMethods.watch(value));
       }
     });
     setActions(
@@ -101,11 +99,9 @@ const EditRulesContent: React.FC<Props> = ({
         buttonLabel='pim_common.save'
         formId='edit-rules-form'
         title={title}
-        translate={translate}
         unsavedChanges={formMethods.formState.dirtyFields.size > 0}
         secondaryButton={
           <AddActionButton
-            translate={translate}
             handleAddAction={handleAddAction}
           />
         }>
@@ -125,7 +121,6 @@ const EditRulesContent: React.FC<Props> = ({
             onSubmit={onSubmit}
             ruleDefinition={ruleDefinition}
             scopes={scopes}
-            translate={translate}
             actions={actions}
             handleDeleteAction={handleDeleteAction}
           />

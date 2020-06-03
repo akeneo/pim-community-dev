@@ -7,6 +7,7 @@ import {
 import { ConditionLineProps } from './ConditionLineProps';
 import { InputText } from '../../../../components/Inputs';
 import { AttributeConditionLine } from './AttributeConditionLine';
+import { useTranslate } from "../../../../dependenciesTools/hooks";
 
 type TextAttributeConditionLineProps = ConditionLineProps & {
   condition: TextAttributeCondition;
@@ -15,18 +16,17 @@ type TextAttributeConditionLineProps = ConditionLineProps & {
 const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   condition,
   lineNumber,
-  translate,
   locales,
   scopes,
   currentCatalogLocale,
 }) => {
+  const translate = useTranslate();
   const { register } = useFormContext();
 
   return (
     <AttributeConditionLine
       condition={condition}
       lineNumber={lineNumber}
-      translate={translate}
       currentCatalogLocale={currentCatalogLocale}
       locales={locales}
       scopes={scopes}

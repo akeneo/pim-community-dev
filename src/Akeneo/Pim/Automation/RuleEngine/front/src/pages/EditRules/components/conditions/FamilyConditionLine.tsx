@@ -13,7 +13,7 @@ import { FamiliesSelector } from '../../../../components/Selectors/FamiliesSelec
 import { getFamiliesByIdentifiers } from '../../../../repositories/FamilyRepository';
 import { useRegisterConst } from "../../hooks/useRegisterConst";
 import { LineErrors } from '../LineErrors';
-import { useBackboneRouter } from "../../../../dependenciesTools/hooks";
+import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
 
 type FamilyConditionLineProps = ConditionLineProps & {
   condition: FamilyCondition;
@@ -21,10 +21,10 @@ type FamilyConditionLineProps = ConditionLineProps & {
 
 const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
   lineNumber,
-  translate,
   currentCatalogLocale,
   condition,
 }) => {
+  const translate = useTranslate();
   const { watch } = useFormContext();
   const router = useBackboneRouter();
   const [unexistingFamilyCodes, setUnexistingFamilyCodes] = React.useState<
@@ -94,7 +94,6 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
         <OperatorSelector
           hiddenLabel={true}
           availableOperators={FamilyOperators}
-          translate={translate}
           value={condition.operator}
           name={`content.conditions[${lineNumber}].operator`}
         />
@@ -107,7 +106,6 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
             value={condition.value}
             validation={validateFamilyCodes}
             name={`content.conditions[${lineNumber}].value`}
-            translate={translate}
           />
         </ValueColumn>
       )}

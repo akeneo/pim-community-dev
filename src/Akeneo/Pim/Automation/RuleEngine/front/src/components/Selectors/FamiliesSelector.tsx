@@ -4,11 +4,11 @@ import {
   Select2MultiAsyncWrapper,
   Select2Option, Select2Value,
 } from '../Select2Wrapper';
-import { Router, Translate } from '../../dependenciesTools';
+import { Router } from '../../dependenciesTools';
 import { IndexedFamilies } from '../../fetch/FamilyFetcher';
 import { getFamiliesByIdentifiers } from '../../repositories/FamilyRepository';
 import { FamilyCode, LocaleCode } from '../../models';
-import { useBackboneRouter } from "../../dependenciesTools/hooks";
+import { useBackboneRouter, useTranslate } from "../../dependenciesTools/hooks";
 
 type Props = {
   label?: string;
@@ -18,7 +18,6 @@ type Props = {
   onChange?: (value: FamilyCode[]) => void;
   validation: any;
   name: string;
-  translate: Translate;
 };
 
 const dataProvider = (
@@ -91,8 +90,8 @@ const FamiliesSelector: React.FC<Props> = ({
   onChange,
   validation,
   name,
-  translate,
 }) => {
+  const translate = useTranslate();
   const router = useBackboneRouter();
   const handleChange = (value: Select2Value[]) => {
     if (onChange) {

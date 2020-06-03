@@ -9,7 +9,6 @@ type Props = {
 } & ActionLineProps;
 
 const FallbackActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
   handleDelete,
@@ -18,7 +17,6 @@ const FallbackActionLine: React.FC<Props> = ({
 
   return (
     <ActionTemplate
-      translate={translate}
       title='Unknown Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
