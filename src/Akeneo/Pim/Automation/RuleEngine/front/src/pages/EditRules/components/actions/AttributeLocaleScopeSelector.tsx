@@ -18,6 +18,11 @@ import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepo
 import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { useFormContext } from 'react-hook-form';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
+import styled from 'styled-components';
+
+const SelectorBlock = styled.div`
+  margin-top: 15px;
+`;
 
 type Props = {
   attributeCode: AttributeCode | null;
@@ -204,36 +209,42 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
 
   return (
     <div className={'AknFormContainer'}>
-      <AttributeSelector
-        id={attributeId}
-        label={attributeLabel}
-        currentCatalogLocale={currentCatalogLocale}
-        value={getAttributeFormValue()}
-        onChange={setAttributeFormValue}
-        placeholder={attributePlaceholder}
-      />
-      {(attribute?.scopable || (!attributeIsChanged && scopeCode)) && (
-        <ScopeSelector
-          id={scopeId}
-          label={scopeLabel || translate('Channel')}
-          availableScopes={Object.values(scopes)}
+      <SelectorBlock>
+        <AttributeSelector
+          id={attributeId}
+          label={attributeLabel}
           currentCatalogLocale={currentCatalogLocale}
-          value={getScopeFormValue()}
-          onChange={setScopeFormValue}
-          translate={translate}
-          allowClear={!attribute?.scopable}
+          value={getAttributeFormValue()}
+          onChange={setAttributeFormValue}
+          placeholder={attributePlaceholder}
         />
+      </SelectorBlock>
+      {(attribute?.scopable || (!attributeIsChanged && scopeCode)) && (
+        <SelectorBlock>
+          <ScopeSelector
+            id={scopeId}
+            label={scopeLabel || translate('Channel')}
+            availableScopes={Object.values(scopes)}
+            currentCatalogLocale={currentCatalogLocale}
+            value={getScopeFormValue()}
+            onChange={setScopeFormValue}
+            translate={translate}
+            allowClear={!attribute?.scopable}
+          />
+        </SelectorBlock>
       )}
       {(attribute?.localizable || (!attributeIsChanged && localeCode)) && (
-        <LocaleSelector
-          id={localeId}
-          label={localeLabel || translate('Locale')}
-          availableLocales={locales}
-          value={getLocaleFormValue()}
-          onChange={setLocaleFormValue}
-          translate={translate}
-          allowClear={!attribute?.localizable}
-        />
+        <SelectorBlock>
+          <LocaleSelector
+            id={localeId}
+            label={localeLabel || translate('Locale')}
+            availableLocales={locales}
+            value={getLocaleFormValue()}
+            onChange={setLocaleFormValue}
+            translate={translate}
+            allowClear={!attribute?.localizable}
+          />
+        </SelectorBlock>
       )}
     </div>
   );
