@@ -164,6 +164,16 @@ services:
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@security.token_storage'
 
+    akeneo_assetmanager.infrastructure.action.asset.execute_naming_convention:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Asset\ExecuteNamingConventionAction
+        arguments:
+            - '@akeneo_assetmanager.application.asset.edit_asset_handler'
+            - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@validator'
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
+
     akeneo_assetmanager.infrastructure.action.asset.delete_all:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\DeleteAllAction
         arguments:

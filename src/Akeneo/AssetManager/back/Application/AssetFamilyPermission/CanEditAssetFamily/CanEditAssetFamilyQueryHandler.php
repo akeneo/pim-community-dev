@@ -10,7 +10,7 @@ use Akeneo\AssetManager\Domain\Query\UserGroup\FindUserGroupsForSecurityIdentifi
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterface;
 
 /**
- * Query handler that determines wether a editing the asset family for a principal id is authorized.
+ * Query handler that determines whether editing the asset family for a principal id is authorized.
  *
  * The checks of the ACL (Access Control List) is done separately (usually in the adapters).
  * The ACL check may be done in this service in the future.
