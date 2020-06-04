@@ -13,6 +13,8 @@ pimee_catalog_rule:
           label: Produit(s) affecté(s)
           count: '{0,1}%count% produit affecté|]1,Inf[%count% produits affectés'
           no_yet_calculated: Pas encore calculé
+        tags:
+          label: Actions
       mass_edit_action:
         impacted_product_count: Calculer les produits affectés
         execute: Exécuter
@@ -27,6 +29,17 @@ pimee_catalog_rule:
       "remove": Alors %value% est retiré de %field%
       "concatenate": Alors %fields% sont concaténés dans %to_field%
       clear: Alors %field% est effacé
+      calculate: Alors %field% est calculé %operation_details%
+      calculate_first_operation:
+        add: en ajoutant %operand% à %source%
+        subtract: en ajoutant %operand% à %source%
+        multiply: en multipliant %source% par %operand%
+        divide: en divisant %source% par %operand%
+      calculate_other_operation:
+        add: ', puis en ajoutant %operand%'
+        subtract: ', puis en soustrayant %operand%'
+        divide: ', puis en divisant par %operand%'
+        multiply: ', puis en multipliant par %operand%'
     options:
       include_children: et les enfants
   condition:

@@ -481,9 +481,11 @@ pim_asset_manager:
     media_link:
       placeholder: Insérer le lien du média ici
       read_only: Ce lien média est en lecture seule.
+      reload: Recharger la miniature du lien média
     media_file:
       placeholder: Glissez et déposez un fichier pour le charger ou cliquez ici
       read_only: Ce fichier est en lecture seule.
+      uploading: Chargement...
     used_as_transformation_target: Ce champ est en lecture seule car il est utilisé comme cible dans une transformation de ressources.
   modal:
     delete:

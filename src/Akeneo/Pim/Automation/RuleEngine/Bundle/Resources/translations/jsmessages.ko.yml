@@ -16,6 +16,7 @@ pimee_catalog_rule:
       action.label: 작업
       no_rule_yet.label: 현재는 규칙 없음
   rule:
+    value: Value
     condition:
       if.label: '조건:'
     action:
@@ -78,10 +79,18 @@ pimee_catalog_rule:
         label: 우선순위
       add_to_category: 카테고리에 추가
       add_conditions: 조건 추가
+      products_count:
+        complete: "{{ count }} products and product models"
+        pending: Calculating products and product models
+        error: Calculation impossible
       product_selection: 제품 선택
       fields:
         family: 패밀리
       actions:
+        add_action: Add action
+        set_family:
+          title: SET Family
+          subtitle: Select your family
         delete:
           label: 작업 제거
           description: 이 작업을 제거하시겠습니까?
@@ -123,6 +132,15 @@ pimee_catalog_rule:
       product_selection: 조건 만들기
   exceptions:
     loading: 규칙 정의 로드 중에 오류가 발생했습니다.
+    required_locale: A locale is required for this attribute
+    required_scope: A channel is required for this attribute
+    unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
+    unbound_locale: 'The "{{ localeCode }}" locale is not activated in the channel "{{ channelCode }}"'
+    locale_on_unlocalizable_attribute: This attribute is not localizable. Please remove the locale before continue.
+    unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
+    scope_on_unscopable_attribute: This attribute is not scopable. Please remove the scope before continue.
+    unknown_families: "{1}The family {{ familyCodes }} does not exist|]1,+Inf[The families {{ familyCodes }} do not exist"
+    unknown_attribute_options: "{1}The option {{ attributeOptionCodes }} does not exist|]1,+Inf[The options {{ attributeOptionCodes }} do not exist"
 pim_enrich:
   entity:
     rule:
