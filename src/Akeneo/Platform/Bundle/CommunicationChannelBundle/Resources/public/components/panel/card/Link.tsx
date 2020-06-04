@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
 
+const __ = require('oro/translator');
+
 const Link = styled.a`
   border-radius: 16px;
   border: 1px solid ${({theme}: AkeneoThemedProps) => theme.color.grey100};
@@ -29,11 +31,12 @@ const buildLinkCardUrl = (baseUrl: string, campaign: string | null): URL => {
 }
 
 const LinkComponent = ({baseUrl, campaign}: LinkProps): JSX.Element => {
+  const title = baseUrl.substring(baseUrl.indexOf("#")+1);
   const url = buildLinkCardUrl(baseUrl, campaign);
 
   return (
-    <Link href={url.href} target="_blank">
-      Read More
+    <Link href={url.href} title={title} target="_blank">
+      {__('pim_common.read_more')}
     </Link>
   );
 };

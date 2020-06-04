@@ -4,6 +4,7 @@ import {Card} from 'akeneocommunicationchannel/models/card';
 import Tag from 'akeneocommunicationchannel/components/panel/card/Tag';
 import Link from 'akeneocommunicationchannel/components/panel/card/Link';
 import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
+import {ellipsisText} from '../../../tools/ellipsis-text';
 
 const Container = styled.li`
   margin: 20px;
@@ -48,8 +49,12 @@ type CardProps = {
   campaign: string | null;
 };
 
+const getAltImage = (image: string): string  => {
+  return image.substring(image.lastIndexOf('/') + 1)
+}
+
 const CardComponent = ({card, campaign}: CardProps): JSX.Element => {
-  const descriptionEllipsed = card.description.split(/(?<=\.)/)[0];
+  const descriptionEllipsed = ellipsisText(card.description);
 
   return (
     <Container>
@@ -60,7 +65,7 @@ const CardComponent = ({card, campaign}: CardProps): JSX.Element => {
       <Title>{card.title}</Title>
       <Description>{descriptionEllipsed}</Description>
       {card.img && 
-        <Image src={card.img} />
+        <Image src={card.img} alt={getAltImage(card.img)} />
       }
       <LineContainer>
         <Link 
