@@ -32,7 +32,7 @@ export const saveAndExecuteNamingConvention = (assetFamilyIdentifier: AssetFamil
     await fetchUpdatedAsset(assetFamilyIdentifier, assetCode, dispatch);
 };
 
-async function executeNamingConvention(assetFamilyIdentifier: string, assetCode: string, dispatch: any) {
+async function executeNamingConvention(assetFamilyIdentifier: string, assetCode: string, dispatch: any): Promise<boolean> {
     try {
         dispatch(assetEditionSubmission());
 
