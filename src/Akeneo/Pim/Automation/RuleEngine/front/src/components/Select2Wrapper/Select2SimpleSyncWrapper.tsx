@@ -11,7 +11,7 @@ type Props = Select2GlobalProps & {
   onChange?: (value: Select2Value) => void;
   value: Select2Value;
   name: string;
-  validation?: any;
+  validation?: { required?: string; validate?: (value: any) => string | true };
 };
 
 const Select2SimpleSyncWrapper: React.FC<Props> = props => {

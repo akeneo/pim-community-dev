@@ -86,10 +86,10 @@ const EditRulesForm: React.FC<Props> = ({
   const translate = useTranslate();
   const tab = useTabState({ selectedId: 'rulesBuilderTab' });
 
-  const { formState } = useFormContext();
+  const { formState, getValues } = useFormContext();
   const beforeUnload = (event: Event) => {
     event = event || window.event;
-    if (formState.dirtyFields.size > 0) {
+    if (formState.dirty) {
       const message = translate('pimee_catalog_rule.form.edit.discard_changes');
       event.returnValue = true;
 
@@ -98,6 +98,15 @@ const EditRulesForm: React.FC<Props> = ({
     return;
   };
   window.onbeforeunload = beforeUnload;
+
+  // TODO Remove
+  React.useEffect(() => {
+    console.log('Dirty has changed');
+    console.log(formState.dirty);
+    console.log(JSON.stringify(formState.dirtyFields));
+    console.log(formState.dirtyFields.size);
+    console.log(JSON.stringify(getValues()));
+  }, [formState.dirtyFields, formState.dirty, formState.dirtyFields.size]);
 
   return (
     <form

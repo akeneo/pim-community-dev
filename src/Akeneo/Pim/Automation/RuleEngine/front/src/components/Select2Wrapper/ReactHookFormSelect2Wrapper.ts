@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 type Props = {
   name: string;
-  validation?: any;
+  validation?: { required?: string; validate?: (value: any) => string | true };
   value?: Select2Value | Select2Value[];
   onChange: (value: Select2Value) => void;
 } & Select2Props;
@@ -37,6 +37,12 @@ const ReactHookFormSelect2Wrapper: React.FC<Props> = (props) => {
     }
     console.log('value changed!', getValues());
   };
+
+  React.useEffect(() => {
+    console.log('Validation changed', name, validation);
+//    unregister(name);
+    register({ name }, validation);
+  }, [ validation ]);
 
   return Select2Wrapper({ ...remainingProps, onChange: handleValueChange, value: lastKnownValue });
 };

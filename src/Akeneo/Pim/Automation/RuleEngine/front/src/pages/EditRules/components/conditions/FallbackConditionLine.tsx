@@ -11,10 +11,10 @@ const FallbackConditionLine: React.FC<FallbackConditionLineProps> = ({
   condition,
   lineNumber,
 }) => {
-  useRegisterConsts(condition.json, `content.conditions[${lineNumber}]`);
+  useRegisterConsts(condition, `content.conditions[${lineNumber}]`);
 
   return (
-    <div className={'AknGrid-bodyCell'}>{JSON.stringify(condition.json)}</div>
+    <div className={'AknGrid-bodyCell'}>{JSON.stringify(condition)}</div>
   );
 };
 

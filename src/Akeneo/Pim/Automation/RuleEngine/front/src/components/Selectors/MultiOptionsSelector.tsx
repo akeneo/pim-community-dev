@@ -20,7 +20,7 @@ type Props = {
   onChange?: (value: Select2Value[]) => void;
   value: string[];
   name: string;
-  validation: any;
+  validation?: { required?: string; validate?: (value: any) => string | true };
 };
 
 const MultiOptionsSelector: React.FC<Props> = ({

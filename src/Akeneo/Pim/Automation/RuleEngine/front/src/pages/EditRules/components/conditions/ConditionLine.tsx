@@ -7,7 +7,8 @@ import styled from 'styled-components';
 import { Condition, Locale, LocaleCode } from '../../../../models';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { ConditionLineProps } from './ConditionLineProps';
-import { useTranslate } from "../../../../dependenciesTools/hooks";
+import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
+import { getConditionModule } from "../../../../models/rule-definition-denormalizer";
 
 const DeleteButton = styled(DialogDisclosure)`
   border: none;
@@ -34,13 +35,23 @@ const ConditionLine: React.FC<Props> = ({
 }) => {
   const translate = useTranslate();
   const dialog = useDialogState();
+  const router = useBackboneRouter();
+  const [ Line, setLine ] = React.useState<React.FC<ConditionLineProps & { condition: Condition }>>();
+  React.useEffect(() => {
+    if (!Line) {
+      getConditionModule(condition, router).then((module) => {
+        setLine(() => module);
+      });
+    }
+  }, []);
 
-  const Line = condition.module as React.FC<
-    ConditionLineProps & { condition: Condition }
-  >;
+  if (!Line) {
+    return <div>Loading</div>;
+  }
+
   const isFallback =
-    condition.module === PimConditionLine ||
-    condition.module === FallbackConditionLine;
+    Line === PimConditionLine ||
+    Line === FallbackConditionLine;
 
   return (
     <div

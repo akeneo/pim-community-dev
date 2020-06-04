@@ -1,12 +1,9 @@
-import React from 'react';
-import { Attribute } from '../Attribute';
 import { Router } from '../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
 import { Operator } from '../Operator';
-import { ConditionDenormalizer, ConditionFactory } from './Condition';
+import { ConditionFactory, ConditionModuleGuesser } from './Condition';
 import {
   MultiOptionsAttributeConditionLine,
-  MultiOptionsAttributeConditionLineProps,
 } from '../../pages/EditRules/components/conditions/MultiOptionsAttributeConditionLine';
 
 const TYPE = 'pim_catalog_multiselect';
@@ -19,8 +16,6 @@ const MultiOptionsAttributeOperators = [
 
 type MultiOptionsAttributeCondition = {
   scope?: string;
-  module: React.FC<MultiOptionsAttributeConditionLineProps>;
-  attribute: Attribute;
   field: string;
   operator: Operator;
   value?: string[];
@@ -37,17 +32,12 @@ const createMultiOptionsAttributeCondition: ConditionFactory = async (
   }
 
   return {
-    module: MultiOptionsAttributeConditionLine,
-    attribute,
     field: fieldCode,
     operator: Operator.IS_EMPTY,
   };
 };
 
-const denormalizeMultiOptionsAttributeCondition: ConditionDenormalizer = async (
-  json: any,
-  router: Router
-): Promise<MultiOptionsAttributeCondition | null> => {
+const getMultiOptionsAttributeConditionModule: ConditionModuleGuesser = async (json, router) => {
   if (typeof json.field !== 'string') {
     return null;
   }
@@ -59,26 +49,17 @@ const denormalizeMultiOptionsAttributeCondition: ConditionDenormalizer = async (
     return null;
   }
 
-  const multiOptionsAttributeCondition = await createMultiOptionsAttributeCondition(
-    json.field,
-    router
-  );
-  if (multiOptionsAttributeCondition === null) {
+  const attribute = await getAttributeByIdentifier(json.field, router);
+  if (null === attribute || attribute.type !== TYPE) {
     return null;
   }
 
-  return {
-    ...(multiOptionsAttributeCondition as MultiOptionsAttributeCondition),
-    operator: json.operator,
-    value: json.value,
-    locale: json.locale || null,
-    scope: json.scope || null,
-  };
+  return MultiOptionsAttributeConditionLine;
 };
 
 export {
   MultiOptionsAttributeOperators,
   MultiOptionsAttributeCondition,
-  denormalizeMultiOptionsAttributeCondition,
+  getMultiOptionsAttributeConditionModule,
   createMultiOptionsAttributeCondition,
 };

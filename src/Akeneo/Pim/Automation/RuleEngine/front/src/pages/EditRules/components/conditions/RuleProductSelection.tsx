@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useFormContext, Control } from 'react-hook-form';
+import { useFormContext, Control, useFieldArray } from 'react-hook-form';
 import { SmallHelper } from '../../../../components';
 import {
   Condition,
@@ -91,26 +91,13 @@ const RuleProductSelection: React.FC<Props> = ({
     ruleDefinition.conditions
   );
 
-  const { getValues, unregister, watch } = useFormContext();
-  const deleteCondition = (lineNumber: number) => {
-    Object.keys(getValues()).forEach((value: string) => {
-      if (value.startsWith(`content.conditions[${lineNumber}]`)) {
-        unregister(value);
-      }
-    });
-    setConditions(
-      conditions.map((condition: Condition | null, i: number) => {
-        return i === lineNumber ? null : condition;
-      })
-    );
-  };
+  const { getValues, control } = useFormContext();
+  const { fields, append, remove } = useFieldArray({ control, name: 'content.conditions' });
+
   const productsCount = useProductsCount(
     router,
     getValuesFromFormData(getValues)
   );
-  const watchCondition = (conditionIdentifier: string) => {
-    watch(conditionIdentifier);
-  };
 
   React.useEffect(() => {
     setConditions(ruleDefinition.conditions);
@@ -136,15 +123,13 @@ const RuleProductSelection: React.FC<Props> = ({
   }
 
   const handleAddCondition = (fieldCode: string) => {
-    createCondition(fieldCode).then(condition => {
-      const newConditions = [...conditions, condition];
-      setConditions(newConditions);
-    });
+    createCondition(fieldCode).then(condition => append(condition));
   };
 
   const isActiveConditionField: (fieldCode: string) => boolean = (
     fieldCode: string
   ) => {
+    // TODO This does not work anymore
     return conditions.some(condition => {
       return (
         condition !== null &&
@@ -191,20 +176,17 @@ const RuleProductSelection: React.FC<Props> = ({
       </SmallHelper>
       <div className='AknGrid AknGrid--unclickable'>
         <div className='AknGrid-body' data-testid={'condition-list'}>
-          {conditions.map((condition, i) => {
-            watchCondition(`content.conditions[${i}]`);
+          {fields.map((field, i) => {
             return (
-              condition && (
-                <ConditionLine
-                  condition={condition}
-                  lineNumber={i}
-                  key={`condition_${i}`}
-                  locales={locales}
-                  scopes={scopes}
-                  currentCatalogLocale={currentCatalogLocale}
-                  deleteCondition={deleteCondition}
-                />
-              )
+              <ConditionLine
+                condition={field as Condition}
+                lineNumber={i}
+                key={field.id}
+                locales={locales}
+                scopes={scopes}
+                currentCatalogLocale={currentCatalogLocale}
+                deleteCondition={remove}
+              />
             );
           })}
         </div>

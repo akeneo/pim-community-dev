@@ -13,7 +13,7 @@ type Props = {
   allowClear: boolean;
   disabled?: boolean;
   name: string;
-  validation: any;
+  validation?: { required?: string; validate?: (value: any) => string | true };
 };
 
 const ScopeSelector: React.FC<Props> = ({

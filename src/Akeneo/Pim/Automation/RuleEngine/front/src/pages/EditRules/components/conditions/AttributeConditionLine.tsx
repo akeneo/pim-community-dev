@@ -22,6 +22,7 @@ import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { LineErrors } from '../LineErrors';
 import { useRegisterConst } from "../../hooks/useRegisterConst";
 import { useTranslate } from "../../../../dependenciesTools/hooks";
+import { Attribute } from "../../../../models/Attribute";
 
 const shouldDisplayValue: (operator: Operator) => boolean = operator =>
   !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
@@ -35,6 +36,7 @@ type AttributeConditionLineProps = {
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
   availableOperators: Operator[];
+  attribute: Attribute;
 };
 
 const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
@@ -45,6 +47,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   currentCatalogLocale,
   availableOperators,
   children,
+  attribute,
 }) => {
   const translate = useTranslate();
   const { watch, setValue } = useFormContext();
@@ -61,7 +64,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   }
 
   const getAvailableLocales = (): Locale[] => {
-    if (!condition.attribute.scopable) {
+    if (!attribute.scopable) {
       return locales;
     }
 
@@ -73,79 +76,95 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     return [];
   };
 
-  const localeValidation: any = {};
-  if (condition.attribute.localizable) {
-    localeValidation['required'] = translate(
-      'pimee_catalog_rule.exceptions.required_locale'
-    );
-  }
-  localeValidation['validate'] = (localeCode: any) => {
-    if (condition.attribute.localizable) {
-      if (!locales.some(locale => locale.code === localeCode)) {
-        return translate(
-          'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
-          { localeCode }
-        );
-      }
-      if (!getAvailableLocales().some(locale => locale.code === localeCode)) {
-        return condition.attribute.scopable
-          ? translate('pimee_catalog_rule.exceptions.unbound_locale', {
+  const getLocaleValidation = () => {
+    const localeValidation: any = {};
+    if (attribute.localizable) {
+      localeValidation['required'] = translate(
+        'pimee_catalog_rule.exceptions.required_locale'
+      );
+    }
+    localeValidation['validate'] = (localeCode: any) => {
+      if (attribute.localizable) {
+        if (!locales.some(locale => locale.code === localeCode)) {
+          return translate(
+            'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
+            {localeCode}
+          );
+        }
+        if (!getAvailableLocales().some(locale => locale.code === localeCode)) {
+          return attribute.scopable
+            ? translate('pimee_catalog_rule.exceptions.unbound_locale', {
               localeCode,
               scopeCode: getScopeFormValue(),
             })
-          : translate(
+            : translate(
               'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
-              { localeCode }
+              {localeCode}
             );
+        }
+      } else {
+        if (localeCode) {
+          return translate(
+            'pimee_catalog_rule.exceptions.locale_on_unlocalizable_attribute'
+          );
+        }
       }
-    } else {
-      if (localeCode) {
-        return translate(
-          'pimee_catalog_rule.exceptions.locale_on_unlocalizable_attribute'
-        );
-      }
-    }
-    return true;
-  };
+      return true;
+    };
 
-  const scopeValidation: any = {};
-  if (condition.attribute.scopable) {
-    scopeValidation['required'] = translate(
-      'pimee_catalog_rule.exceptions.required_scope'
-    );
+    return localeValidation;
   }
-  scopeValidation['validate'] = (scopeCode: any) => {
-    if (condition.attribute.scopable) {
-      if (!scopes[scopeCode]) {
-        return translate('pimee_catalog_rule.exceptions.unknown_scope', {
-          scopeCode,
-        });
-      }
-    } else {
-      if (scopeCode) {
-        return translate(
-          'pimee_catalog_rule.exceptions.scope_on_unscopable_attribute'
-        );
-      }
+
+  const getScopeValidation = () => {
+    const scopeValidation: any = {};
+    if (attribute.scopable) {
+      scopeValidation['required'] = translate(
+        'pimee_catalog_rule.exceptions.required_scope'
+      );
     }
-    return true;
-  };
+    scopeValidation['validate'] = (scopeCode: any) => {
+      if (attribute.scopable) {
+        if (!scopes[scopeCode]) {
+          return translate('pimee_catalog_rule.exceptions.unknown_scope', {
+            scopeCode,
+          });
+        }
+      } else {
+        if (scopeCode) {
+          return translate(
+            'pimee_catalog_rule.exceptions.scope_on_unscopable_attribute'
+          );
+        }
+      }
+      return true;
+    };
+
+    return scopeValidation;
+  }
+  const [ localeValidation, setLocaleValidation ] = React.useState(getLocaleValidation());
+  const [ scopeValidation, setScopeValidation ] = React.useState(getScopeValidation());
+  React.useEffect(() => {
+    setLocaleValidation(getLocaleValidation());
+    setScopeValidation(getScopeValidation());
+  }, [JSON.stringify(getAvailableLocales())]);
 
   useRegisterConst(`content.conditions[${lineNumber}].field`, condition.field);
 
   const handleScopeChange = () => {
+    console.log('handle scope change', getAvailableLocales());
     if (
       !getAvailableLocales()
         .map(locale => locale.code)
         .includes(getLocaleFormValue())
     ) {
+      console.log('go');
       setLocaleFormValue(null);
     }
   };
 
   const title =
-    condition.attribute.labels[currentCatalogLocale] ||
-    '[' + condition.attribute.code + ']';
+    attribute.labels[currentCatalogLocale] ||
+    '[' + condition.field + ']';
 
   return (
     <div className={'AknGrid-bodyCell'}>
@@ -164,26 +183,26 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
         {shouldDisplayValue(getOperatorFormValue()) && children}
       </ValueColumn>
       <ScopeColumn>
-        {(condition.attribute.scopable || getScopeFormValue()) && (
+        {(attribute.scopable || getScopeFormValue()) && (
           <ScopeSelector
             hiddenLabel={true}
             availableScopes={Object.values(scopes)}
             currentCatalogLocale={currentCatalogLocale}
             value={condition.scope}
             onChange={handleScopeChange}
-            allowClear={!condition.attribute.scopable}
+            allowClear={!attribute.scopable}
             name={`content.conditions[${lineNumber}].scope`}
             validation={scopeValidation}
           />
         )}
       </ScopeColumn>
       <LocaleColumn>
-        {(condition.attribute.localizable || getLocaleFormValue()) && (
+        {(attribute.localizable || getLocaleFormValue()) && (
           <LocaleSelector
             hiddenLabel={true}
             availableLocales={getAvailableLocales()}
             value={condition.locale}
-            allowClear={!condition.attribute.localizable}
+            allowClear={!attribute.localizable}
             name={`content.conditions[${lineNumber}].locale`}
             validation={localeValidation}
           />

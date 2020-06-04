@@ -7,7 +7,9 @@ import {
 import { ConditionLineProps } from './ConditionLineProps';
 import { InputText } from '../../../../components/Inputs';
 import { AttributeConditionLine } from './AttributeConditionLine';
-import { useTranslate } from "../../../../dependenciesTools/hooks";
+import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
+import { Attribute } from "../../../../models/Attribute";
+import { getAttributeByIdentifier } from "../../../../repositories/AttributeRepository";
 
 type TextAttributeConditionLineProps = ConditionLineProps & {
   condition: TextAttributeCondition;
@@ -20,8 +22,20 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   scopes,
   currentCatalogLocale,
 }) => {
+  const router = useBackboneRouter();
   const translate = useTranslate();
   const { register } = useFormContext();
+  const [ attribute, setAttribute ] = React.useState<Attribute | null>();
+  React.useEffect(() => {
+    getAttributeByIdentifier(condition.field, router).then(attribute => setAttribute(attribute));
+  });
+
+  if (attribute === undefined) {
+    return <div>Loading!</div>;
+  }
+  if (attribute === null) {
+    return <div>Unexisting attribute</div>
+  }
 
   return (
     <AttributeConditionLine
@@ -31,6 +45,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       locales={locales}
       scopes={scopes}
       availableOperators={TextAttributeOperators}
+      attribute={attribute}
     >
       <InputText
         name={`content.conditions[${lineNumber}].value`}

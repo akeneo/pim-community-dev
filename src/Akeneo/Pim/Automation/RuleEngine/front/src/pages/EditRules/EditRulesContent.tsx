@@ -61,7 +61,7 @@ const EditRulesContent: React.FC<Props> = ({
   );
 
   useEffect(() => {
-    setIsDirty(formMethods.formState.dirtyFields.size > 0);
+    setIsDirty(formMethods.formState.dirty);
   }, [formMethods.formState.dirtyFields]);
 
   const title =
@@ -99,7 +99,7 @@ const EditRulesContent: React.FC<Props> = ({
         buttonLabel='pim_common.save'
         formId='edit-rules-form'
         title={title}
-        unsavedChanges={formMethods.formState.dirtyFields.size > 0}
+        unsavedChanges={formMethods.formState.dirty}
         secondaryButton={
           <AddActionButton
             handleAddAction={handleAddAction}

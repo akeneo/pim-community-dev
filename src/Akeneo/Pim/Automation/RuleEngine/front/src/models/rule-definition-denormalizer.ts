@@ -15,15 +15,15 @@ import {
   denormalizeSetFamilyAction,
 } from './actions';
 import {
-  Condition,
-  ConditionDenormalizer,
-  denormalizeFallbackCondition,
-  denormalizeFamilyCondition,
-  denormalizeMultiOptionsAttributeCondition,
-  denormalizePimCondition,
-  denormalizeTextAttributeCondition,
-  denormalizeCategoryCondition,
+  getFamilyConditionModule,
+  getMultiOptionsAttributeConditionModule,
+  getCategoryConditionModule,
+  getPimConditionModule,
+  getTextAttributeConditionModule
 } from './conditions';
+import React from "react";
+import { ConditionLineProps } from "../pages/EditRules/components/conditions/ConditionLineProps";
+import { FallbackConditionLine } from "../pages/EditRules/components/conditions/FallbackConditionLine";
 
 async function denormalizeAction(
   jsonAction: any,
@@ -54,13 +54,36 @@ async function denormalizeAction(
   return denormalizeFallbackAction(jsonAction);
 }
 
-async function denormalizeCondition(
+const getConditionModule: ((
+  json: any,
+  router: Router
+) => Promise<React.FC<ConditionLineProps>>) = async (json, router) => {
+  const getModuleFunctions: ((json: any, router: Router) => Promise<React.FC<ConditionLineProps> | null>)[] = [
+    getFamilyConditionModule,
+    getCategoryConditionModule,
+    getTextAttributeConditionModule,
+    getMultiOptionsAttributeConditionModule,
+    getPimConditionModule,
+  ];
+
+  for (let i = 0; i < getModuleFunctions.length; i++) {
+    const getModuleFunction = getModuleFunctions[i];
+    const condition = await getModuleFunction(json, router);
+    if (condition !== null) {
+      return condition;
+    }
+  }
+
+  return FallbackConditionLine;
+}
+
+/*
+export async function denormalizeCondition(
   jsonCondition: any,
   router: Router
 ): Promise<Condition> {
   const denormalizers: ConditionDenormalizer[] = [
     denormalizeFamilyCondition,
-    denormalizeCategoryCondition,
     denormalizeTextAttributeCondition,
     denormalizeMultiOptionsAttributeCondition,
     denormalizePimCondition,
@@ -76,6 +99,7 @@ async function denormalizeCondition(
 
   return denormalizeFallbackCondition(jsonCondition);
 }
+ */
 
 const extractFieldIdentifiers = (json: any): string[] => {
   if (
@@ -111,8 +135,7 @@ export const denormalize = async function(
   const code = json.code;
   const labels = json.labels;
   const priority = json.priority;
-  let actions: Action[] = [];
-  let conditions: Condition[] = [];
+  let actions: FallbackAction[] = [];
 
   await prepareCacheAttributes(json, router);
 
@@ -124,19 +147,13 @@ export const denormalize = async function(
     );
   }
 
-  if (Array.isArray(json.content.conditions)) {
-    conditions = (await Promise.all(
-      json.content.conditions.map(async (jsonCondition: any) => {
-        return await denormalizeCondition(jsonCondition, router);
-      })
-    )) as Condition[];
-  }
-
   return {
     code: code,
     labels: labels,
     priority: priority,
-    conditions: conditions,
+    conditions: json.content?.conditions || [],
     actions: actions,
   };
 };
+
+export { getConditionModule };

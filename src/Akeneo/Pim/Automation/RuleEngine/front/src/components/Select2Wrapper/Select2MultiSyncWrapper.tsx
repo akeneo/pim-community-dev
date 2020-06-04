@@ -11,7 +11,7 @@ type Props = Select2GlobalProps & {
   value?: Select2Value[];
   data: Select2Option[];
   name: string;
-  validation?: any;
+  validation?: { required?: string; validate?: (value: any) => string | true };
 };
 
 const Select2MultiSyncWrapper: React.FC<Props> = props => {

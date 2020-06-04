@@ -1,10 +1,6 @@
-import React from 'react';
 import { Operator } from '../Operator';
-import {
-  FamilyConditionLine,
-  FamilyConditionLineProps,
-} from '../../pages/EditRules/components/conditions/FamilyConditionLine';
-import { ConditionDenormalizer, ConditionFactory } from './Condition';
+import { FamilyConditionLine } from '../../pages/EditRules/components/conditions/FamilyConditionLine';
+import { ConditionFactory, ConditionModuleGuesser } from './Condition';
 
 const FIELD = 'family';
 
@@ -16,7 +12,6 @@ const FamilyOperators = [
 ];
 
 type FamilyCondition = {
-  module: React.FC<FamilyConditionLineProps>;
   field: string;
   operator: Operator;
   value: string[];
@@ -41,20 +36,13 @@ const familyConditionPredicate = (json: any): boolean => {
   );
 };
 
-const denormalizeFamilyCondition: ConditionDenormalizer = (
-  json: any
-): Promise<FamilyCondition | null> => {
+const getFamilyConditionModule: ConditionModuleGuesser = (json) => {
   if (!familyConditionPredicate(json)) {
     return Promise.resolve<null>(null);
   }
 
-  return Promise.resolve<FamilyCondition>({
-    module: FamilyConditionLine,
-    field: FIELD,
-    operator: json.operator,
-    value: json.value,
-  });
-};
+  return Promise.resolve(FamilyConditionLine);
+}
 
 const createFamilyCondition: ConditionFactory = (
   fieldCode: any
@@ -64,7 +52,6 @@ const createFamilyCondition: ConditionFactory = (
   }
 
   return Promise.resolve<FamilyCondition>({
-    module: FamilyConditionLine,
     field: FIELD,
     operator: FamilyOperators[0],
     value: [],
@@ -73,7 +60,7 @@ const createFamilyCondition: ConditionFactory = (
 
 export {
   FamilyCondition,
-  denormalizeFamilyCondition,
   createFamilyCondition,
   FamilyOperators,
+  getFamilyConditionModule
 };
