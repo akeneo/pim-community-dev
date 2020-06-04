@@ -83,6 +83,14 @@ pim_catalog:
     303: Dieses Feld erwartet ein valides Format für Verbindungen.
     pim_immutable_product_validator: Diese Kennung ist bereits für ein anderes Produkt in Verwendung
     pim_immutable_product_model_validator: Diese Kennung ist bereits für ein anderes Produktmodell in Verwendung.
+    quantified_associations:
+      unexpected_link_type: Der Linktyp "{{ value }}" existiert nicht. Sie können nur Produkte oder Produktmodelle verknüpfen.
+      max_associations: Sie haben das Limit von {{ limit }} Zuordnungen erreicht. Bitte löschen Sie einige bestehende Verknüpfungen, bevor Sie neue hinzufügen.
+      invalid_quantity: '"{{ value }}" ist eine ungültige Menge. Bitte geben Sie einen Wert zwischen {{ min }} und {{ max }} an.'
+      products_do_not_exist: "Folgende Produkte existieren nicht: {{ values }}. Bitte stellen Sie sicher, dass die Produkte in der Zwischenzeit nicht gelöscht wurden."
+      product_models_do_not_exist: "Die folgenden Produktmodelle existieren nicht: {{ values }}. Bitte stellen Sie sicher, dass die Produktmodelle in der Zwischenzeit nicht gelöscht wurden."
+      association_type_does_not_exist: Dieser Verbindungstyp existiert nicht. Bitte stellen Sie sicher, dass er in der Zwischenzeit nicht gelöscht wurde.
+      association_type_is_not_quantified: Dieser Verbindungstyp wird nicht verwendet, um Mengen zu schreiben. Bitte wählen Sie einen anderen aus, bevor Sie es erneut versuchen.
 mass_edit:
   edit_common_attributes:
     invalid_values: Es gibt Fehler in der Attribut-Maske
