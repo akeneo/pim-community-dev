@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Card} from 'akeneocommunicationchannel/models/card';
-import {Tag} from 'akeneocommunicationchannel/components/panel/Tag';
+import Tag from 'akeneocommunicationchannel/components/panel/Tag';
+import Link from 'akeneocommunicationchannel/components/panel/Link';
 
 const Container = styled.div`
   margin: 20px;
@@ -27,16 +28,6 @@ const Image = styled.img`
   margin: 20px 0;
 `;
 
-const Link = styled.a`
-  border-radius: 16px;
-  border: 1px solid #a1a9b7;
-  height: 24px;
-  padding: 4px 10px;
-  line-height: 14px;
-  margin-left: auto;
-  color: #768096;
-`;
-
 const LineContainer = styled.div`
   display: flex;
 `;
@@ -49,14 +40,15 @@ const Date = styled.div`
 `;
 
 type CardProps = {
-  card: Card
+  card: Card;
+  campaign: string | null;
 };
 
-const CardComponent = ({card}: CardProps) => {
+const CardComponent = ({card, campaign}: CardProps) => {
   return (
     <Container>
       <LineContainer>
-         {card.tags.map((tag, index) => {
+        {card.tags.map((tag, index) => {
           return <Tag key={index} tag={tag}>{tag}</Tag>
         })}
         <Date>{card.date}</Date>
@@ -67,7 +59,10 @@ const CardComponent = ({card}: CardProps) => {
         <Image src={card.img} />
       }
       <LineContainer>
-        <Link href={card.link} target="_blank">Read More</Link>
+        <Link 
+          baseUrl={card.link}
+          campaign={campaign}
+        />
       </LineContainer>
     </Container>
   );

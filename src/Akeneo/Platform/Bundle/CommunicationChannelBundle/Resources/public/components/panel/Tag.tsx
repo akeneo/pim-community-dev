@@ -5,7 +5,7 @@ type TagProps = {
   tag: 'new' | 'updates';
 };
 
-export const Tag = React.forwardRef((props: TagProps & any, ref) => (
+const Tag = React.forwardRef((props: TagProps & any, ref) => (
   <StyledTag ref={ref} {...props} />
 ));
 
@@ -37,3 +37,5 @@ const StyledTag = styled.div<TagProps>`
     }
   }}
 `;
+
+export = Tag;
