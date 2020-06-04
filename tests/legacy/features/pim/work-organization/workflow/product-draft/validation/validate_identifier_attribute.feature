@@ -39,5 +39,5 @@ Feature: Validate identifier attribute of a draft
     When I am on the "foo" product page
     And I change the SKU to "001"
     And I save the product
-    Then I should see validation error "This value is not valid."
+    Then I should see validation error "This value is not valid due to regular expression defined in the attribute"
     And there should be 1 error in the "Product information" tab
