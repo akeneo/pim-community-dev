@@ -21,18 +21,42 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
 
         $results = [];
         foreach ($quantifiedAssociationsNormalized as $associationTypeCode => $linkTypes) {
-            foreach ($linkTypes['products'] as $quantifiedLink) {
-                $flatAssociationKey = $associationTypeCode . '-products-' . $quantifiedLink['identifier'];
-                $results[$flatAssociationKey] = $quantifiedLink['quantity'];
-            }
-
-            foreach ($linkTypes['product_models'] as $quantifiedLink) {
-                $flatAssociationKey = $associationTypeCode . '-product_models-' . $quantifiedLink['identifier'];
-                $results[$flatAssociationKey] = $quantifiedLink['quantity'];
-            }
+            $results = array_merge(
+                $results,
+                $this->normalizeQuantifiedProductLinks($linkTypes['products'], $associationTypeCode),
+                $this->normalizeQuantifiedProductModelLinks($linkTypes['product_models'], $associationTypeCode),
+            );
         }
 
         return $results;
+    }
+
+    private function normalizeQuantifiedProductLinks(array $quantifiedProductLinks, string $associationTypeCode)
+    {
+        return array_reduce(
+            $quantifiedProductLinks,
+            function (array $quantifiedLinksNormalized, array $quantifiedLink) use ($associationTypeCode) {
+                $flatAssociationKey = sprintf('%s-products-%s', $associationTypeCode, $quantifiedLink['identifier']);
+                $quantifiedLinksNormalized[$flatAssociationKey] = $quantifiedLink['quantity'];
+
+                return $quantifiedLinksNormalized;
+            },
+            []
+        );
+    }
+
+    private function normalizeQuantifiedProductModelLinks(array $quantifiedProductModelLinks, string $associationTypeCode)
+    {
+        return array_reduce(
+            $quantifiedProductModelLinks,
+            function (array $quantifiedLinksNormalized, array $quantifiedLink) use ($associationTypeCode) {
+                $flatAssociationKey = sprintf('%s-product_models-%s', $associationTypeCode, $quantifiedLink['identifier']);
+                $quantifiedLinksNormalized[$flatAssociationKey] = $quantifiedLink['quantity'];
+
+                return $quantifiedLinksNormalized;
+            },
+            []
+        );
     }
 
     /**
