@@ -4,7 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\InternalApi\Qu
 
 use Symfony\Component\HttpFoundation\Response;
 
-class AddQuantifiedAssociationsToProductEndToEnd extends AbstractProductModelWithQuantifiedAssociationsTestCase
+class AddQuantifiedAssociationsToProductModelEndToEnd extends AbstractProductModelWithQuantifiedAssociationsTestCase
 {
     /**
      * @test
