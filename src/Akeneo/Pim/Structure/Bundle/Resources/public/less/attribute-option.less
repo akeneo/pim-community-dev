@@ -11,6 +11,9 @@
   &-listItem {
     line-height: 54px;
     border-bottom: 1px @AknGrey60 solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     &--selected {
       background-color: @AknBlue20;
@@ -20,8 +23,14 @@
       margin-top: 20px;
     }
 
-    &:hover:not(&--selected) {
-      background-color: @AknLightGray;
+    &:hover {
+      :not(&--selected) {
+        background-color: @AknLightGray;
+      }
+
+      .AknAttributeOption-delete-option-icon {
+        display: block;
+      }
     }
 
     .AknAttributeOption-itemCode {
@@ -30,6 +39,18 @@
       text-transform: uppercase;
       color: @AknLightPurple;
       cursor: pointer;
+    }
+
+    .AknAttributeOption-cancel-new-option-icon, .AknAttributeOption-delete-option-icon {
+      margin-right: 20px;
+      background: url("/bundles/pimui/images/icon-delete-slategrey.svg") no-repeat center;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      display: none;
+    }
+    .AknAttributeOption-cancel-new-option-icon {
+      display: block;
     }
   }
 
