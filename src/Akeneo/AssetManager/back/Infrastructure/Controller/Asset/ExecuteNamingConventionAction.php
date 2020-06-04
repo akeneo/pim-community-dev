@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -50,11 +51,15 @@ class ExecuteNamingConventionAction
     /** @var ValidatorInterface */
     private $validator;
 
+    /** @var NormalizerInterface */
+    private $violationNormalizer;
+
     public function __construct(
         EditAssetHandler $editAssetHandler,
         EditAssetCommandFactory $editAssetCommandFactory,
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         ValidatorInterface $validator,
+        NormalizerInterface $violationNormalizer,
         TokenStorageInterface $tokenStorage,
         SecurityFacade $securityFacade
     ) {
@@ -64,6 +69,7 @@ class ExecuteNamingConventionAction
         $this->editAssetCommandFactory = $editAssetCommandFactory;
         $this->validator = $validator;
         $this->securityFacade = $securityFacade;
+        $this->violationNormalizer = $violationNormalizer;
     }
 
     public function __invoke(string $assetFamilyIdentifier, string $assetCode): JsonResponse
@@ -77,7 +83,7 @@ class ExecuteNamingConventionAction
         );
         $violations = $this->validator->validate($editAssetCommand);
         if ($violations->count() > 0) {
-            return new JsonResponse('FIX ME', Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
         try {

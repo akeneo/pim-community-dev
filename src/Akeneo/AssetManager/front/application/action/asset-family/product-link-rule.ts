@@ -17,6 +17,7 @@ export const executeProductLinkRules = () => async (dispatch: any, getState: () 
             return;
         }
     } catch (error) {
+
         console.error(error);
         dispatch(notifyExecuteProductLinkRulesFailed());
 

@@ -171,6 +171,7 @@ services:
             - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory'
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@validator'
+            - '@asset_manager_serializer'
             - '@security.token_storage'
             - '@oro_security.security_facade'
 

@@ -249,6 +249,7 @@ pim_asset_manager:
       error:
         value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
     button:
+      save_and_execute_naming_convention: Save and execute naming convention
       save: Save
       create: Create an asset
       mass_upload: Mass upload
@@ -376,6 +377,9 @@ pim_asset_manager:
         fail: An error occurred during the deletion of all this asset family's assets
     completeness:
       label: Complete
+    execute_naming_convention:
+      success: The execution of the naming convention went well (#TODO validation camille)
+      failed: There was an error when execution the naming convention
   attribute:
     validation:
       limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this asset family'

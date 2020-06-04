@@ -29,6 +29,7 @@ import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/acti
 import {formatDateForUILocale} from 'akeneoassetmanager/tools/format-date';
 import {Label} from "akeneoassetmanager/application/component/app/label";
 import styled from "styled-components";
+import {saveAndExecuteNamingConvention} from "../../action/asset/save-and-execute-naming-convention";
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -45,6 +46,7 @@ interface StateProps {
     asset: {
       edit: boolean;
       delete: boolean;
+      executeNamingConventions: boolean;
     };
   };
   asset: EditionAsset;
@@ -64,6 +66,7 @@ interface DispatchProps {
     onDelete: (asset: EditionAsset) => void;
     backToAssetFamilyList: () => void;
     onRedirectToProductGrid: (selectedAttribute: AttributeCode, assetCode: AssetCode) => void;
+    onSaveAndExecuteNamingConvention: (asset: EditionAsset) => void;
   };
 }
 
@@ -85,24 +88,31 @@ class AssetEditView extends React.Component<EditProps> {
     this.setState({isDeleteModalOpen: false});
   };
 
-  private getSecondaryActions = (canDelete: boolean): JSX.Element | JSX.Element[] | null => {
-    if (canDelete) {
-      return (
+  private getSecondaryActions = (canDelete: boolean, canExecuteNamingConvention: boolean, onSaveAndExecuteNamingConvention: () => void ): JSX.Element | JSX.Element[] | null => {
+    if (!canDelete && !canExecuteNamingConvention) {
+      return null;
+    }
+
+    return (
         <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-          <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
+          <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"/>
           <div className="AknDropdown-menu AknDropdown-menu--right">
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
-              <button className="AknDropdown-menuLink" onClick={() => this.setState({isDeleteModalOpen: true})}>
-                {__('pim_asset_manager.asset.button.delete')}
-              </button>
+              {canExecuteNamingConvention && (
+                  <button className="AknDropdown-menuLink" onClick={() => onSaveAndExecuteNamingConvention()}>
+                    {__('pim_asset_manager.asset.button.save_and_execute_naming_convention')}
+                  </button>
+              )}
+              {canDelete && (
+                  <button className="AknDropdown-menuLink" onClick={() => this.setState({isDeleteModalOpen: true})}>
+                    {__('pim_asset_manager.asset.button.delete')}
+                  </button>
+              )}
             </div>
           </div>
         </div>
-      );
-    }
-
-    return null;
+    );
   };
 
   render(): JSX.Element | JSX.Element[] {
@@ -166,7 +176,11 @@ class AssetEditView extends React.Component<EditProps> {
                             />
                           </div>
                           <div className="AknTitleContainer-actionsContainer AknButtonList">
-                            {this.getSecondaryActions(this.props.rights.asset.delete)}
+                            {this.getSecondaryActions(
+                                this.props.rights.asset.delete,
+                                this.props.rights.asset.executeNamingConventions,
+                                () => {this.props.events.onSaveAndExecuteNamingConvention(this.props.asset)}
+                            )}
                             {this.props.rights.asset.edit ? (
                               <div className="AknTitleContainer-rightButton">
                                 <button
@@ -282,6 +296,10 @@ export default connect(
             securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
             securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.assetFamily.identifier),
+          executeNamingConventions:
+            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_asset_family_execute_naming_conventions') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.assetFamily.identifier),
         },
       },
       selectedAttribute: state.products.selectedAttribute,
@@ -302,6 +320,9 @@ export default connect(
         },
         onDelete: (asset: EditionAsset) => {
           dispatch(deleteAsset(asset.assetFamily.identifier, asset.code));
+        },
+        onSaveAndExecuteNamingConvention: (asset: EditionAsset) => {
+          dispatch(saveAndExecuteNamingConvention(asset.assetFamily.identifier, asset.code));
         },
         backToAssetFamilyList: () => {
           dispatch(redirectToAssetFamilyListItem());
