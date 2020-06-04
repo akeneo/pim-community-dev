@@ -16,6 +16,9 @@ $rules = [
         'Akeneo\Pim\Automation\RuleEngine\Component',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Webmozart\Assert\Assert',
+        'Oro\Bundle\SecurityBundle\SecurityFacade',
+        'Symfony\Bundle\FrameworkBundle\Controller\Controller',
+        'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
 
         // TODO: the rule feature uses the datagrid
         'Oro\Bundle\PimDataGridBundle',
@@ -41,6 +44,9 @@ $rules = [
 
         // TIP-1024: Drop UserContext
         'Akeneo\Pim\Permission\Bundle\User\UserContext',
+
+        // /srv/pim/src/Akeneo/Pim/Automation/RuleEngine/Bundle/Controller/InternalApi/GetCategoryTreeController.php
+        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
     ])->in('Akeneo\Pim\Automation\RuleEngine\Bundle'),
     $builder->only([
         'Symfony\Component',

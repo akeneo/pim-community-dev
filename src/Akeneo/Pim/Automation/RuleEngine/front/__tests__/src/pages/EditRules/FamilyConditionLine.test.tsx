@@ -7,6 +7,7 @@ import { FamilyCondition } from '../../../../src/models/conditions';
 import { FamilyConditionLine } from '../../../../src/pages/EditRules/components/conditions/FamilyConditionLine';
 import userEvent from '@testing-library/user-event';
 
+jest.mock('../../../../src/fetch/categoryTree.fetcher');
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
 

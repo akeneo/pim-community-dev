@@ -5,9 +5,11 @@ import {
   MultiOptionsAttributeCondition,
   PimCondition,
   TextAttributeCondition,
+  CategoryCondition,
 } from './';
 
 export type Condition =
+  | CategoryCondition
   | FallbackCondition
   | PimCondition
   | FamilyCondition

@@ -8,6 +8,7 @@ import {
   createFamilyCondition,
   createMultiOptionsAttributeCondition,
   createTextAttributeCondition,
+  createCategoryCondition,
   Locale,
   LocaleCode,
   RuleDefinition,
@@ -121,6 +122,7 @@ const RuleProductSelection: React.FC<Props> = ({
       createFamilyCondition,
       createTextAttributeCondition,
       createMultiOptionsAttributeCondition,
+      createCategoryCondition,
     ];
 
     for (let i = 0; i < factories.length; i++) {

@@ -35,6 +35,7 @@ final class GetAvailableConditionFieldsController
     // Be sure that the associated UI component exists to display it correctly.
     private const AVAILABLE_SYSTEM_FIELDS = [
         'family',
+        'categories',
     ];
     private const AVAILABLE_FIELD_ATTRIBUTE_TYPES = [
         'pim_catalog_multiselect',

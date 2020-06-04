@@ -4,10 +4,11 @@ import userEvent from '@testing-library/user-event';
 import { wait } from '@testing-library/dom';
 import { render, act } from '../../../../test-utils';
 import { IndexedScopes } from '../../../../src/repositories/ScopeRepository';
-import { RuleDefinition } from "../../../../src/models";
+import { RuleDefinition } from '../../../../src/models';
 
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
+jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
 
 const setIsDirty = (_isDirty: boolean) => {};
 const setRuleDefinition = (_ruleDefinition: RuleDefinition) => {};
@@ -122,7 +123,7 @@ describe('EditRulesContent', () => {
       }
     );
 
-    const titleDiv = (await findByTestId('rule-title'));
+    const titleDiv = await findByTestId('rule-title');
     expect(titleDiv).toBeInTheDocument();
     expect(titleDiv).toHaveTextContent('[my_code]');
 

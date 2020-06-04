@@ -47,6 +47,10 @@ export const getAttributesByIdentifiers = async (
   }
 
   return attributeIdentifiers.reduce((previousValue, currentValue) => {
-    return { ...previousValue, currentValue: cacheAttributes[currentValue] };
+    const result: { [identifier: string]: Attribute | null } = {
+      ...previousValue,
+    };
+    result[currentValue] = cacheAttributes[currentValue];
+    return result;
   }, {});
 };

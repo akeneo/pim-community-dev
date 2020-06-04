@@ -9,10 +9,10 @@ import { ConditionDenormalizer, ConditionFactory } from './Condition';
 const FIELD = 'family';
 
 const FamilyOperators = [
-  Operator.IS_EMPTY,
-  Operator.IS_NOT_EMPTY,
   Operator.IN_LIST,
   Operator.NOT_IN_LIST,
+  Operator.IS_EMPTY,
+  Operator.IS_NOT_EMPTY,
 ];
 
 type FamilyCondition = {
@@ -66,7 +66,7 @@ const createFamilyCondition: ConditionFactory = (
   return Promise.resolve<FamilyCondition>({
     module: FamilyConditionLine,
     field: FIELD,
-    operator: Operator.IN_LIST,
+    operator: FamilyOperators[0],
     value: [],
   });
 };

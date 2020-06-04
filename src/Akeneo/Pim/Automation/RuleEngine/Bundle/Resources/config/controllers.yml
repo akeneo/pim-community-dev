@@ -65,3 +65,19 @@ services:
             - '@pimee_catalog_rule.query.sql.get_grouped_attributes'
             - '@pim_user.context.user'
             - '@translator'
+
+    pimee_enrich.controller.rule_definition.get_categories:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetCategoriesController'
+        public: true
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.filter.chained'
+            - '@pim_internal_api_serializer'
+
+    pimee_enrich.controller.rule_definition.get_category_tree:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetCategoryTreeController'
+        public: true
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@oro_security.security_facade'
+            - '@@AkeneoPimEnrichment/Product/listCategories.json.twig'

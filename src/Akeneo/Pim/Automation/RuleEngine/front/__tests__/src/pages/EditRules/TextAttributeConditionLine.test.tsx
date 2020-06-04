@@ -9,6 +9,8 @@ import { Router } from '../../../../src/dependenciesTools';
 import userEvent from '@testing-library/user-event';
 import { wait } from '@testing-library/dom';
 
+jest.mock('../../../../src/fetch/categoryTree.fetcher');
+
 const createAttribute = (data: { [key: string]: any }): Attribute => {
   return {
     code: 'name',
@@ -36,7 +38,7 @@ const createAttribute = (data: { [key: string]: any }): Attribute => {
     sort_order: 1,
     localizable: true,
     scopable: true,
-    labels: {en_US: 'Name', fr_FR: 'Nom'},
+    labels: { en_US: 'Name', fr_FR: 'Nom' },
     auto_option_sorting: null,
     is_read_only: false,
     empty_value: null,
@@ -44,9 +46,9 @@ const createAttribute = (data: { [key: string]: any }): Attribute => {
     filter_types: {},
     is_locale_specific: false,
     meta: {
-      id: 42
+      id: 42,
     },
-    ...data
+    ...data,
   };
 };
 
@@ -62,7 +64,7 @@ const conditionWithLocalizableScopableAttribute: TextAttributeCondition = {
 
 const conditionWithNonLocalizableScopableAttribute: TextAttributeCondition = {
   module: TextAttributeConditionLine,
-  attribute: createAttribute({localizable: false, scopable: false}),
+  attribute: createAttribute({ localizable: false, scopable: false }),
   field: 'name',
   operator: Operator.NOT_EQUAL,
   value: 'Canon',
@@ -70,10 +72,10 @@ const conditionWithNonLocalizableScopableAttribute: TextAttributeCondition = {
 
 const defaultCondition: TextAttributeCondition = {
   module: TextAttributeConditionLine,
-  attribute: createAttribute({localizable: true, scopable: true}),
+  attribute: createAttribute({ localizable: true, scopable: true }),
   field: 'name',
   operator: Operator.IS_EMPTY,
-}
+};
 
 const locales = [
   {
@@ -95,6 +97,7 @@ const locales = [
     language: 'French',
   },
 ];
+
 const scopes: IndexedScopes = {
   ecommerce: {
     code: 'ecommerce',
@@ -118,15 +121,22 @@ const scopes: IndexedScopes = {
 
 const translate = jest.fn((key: string) => key);
 const router: Router = {
-  'generate': jest.fn(),
-  'redirect': jest.fn(),
+  generate: jest.fn(),
+  redirect: jest.fn(),
 };
 
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
 
 describe('TextAttributeConditionLine', () => {
+  beforeEach(() => {
+    fetchMock.resetMocks();
+  });
+
   it('should display the text attribute conditionWithLocalizableScopableAttribute with locale and scope selectors', async () => {
-    const { findByText, findByTestId } = renderWithProviders(
+    const {
+      findByText,
+      findByTestId,
+    } = renderWithProviders(
       <TextAttributeConditionLine
         condition={conditionWithLocalizableScopableAttribute}
         lineNumber={1}
@@ -135,7 +145,8 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         router={router}
-      />, { all: true }
+      />,
+      { all: true }
     );
 
     expect(await findByText('Nom')).toBeInTheDocument();
@@ -143,13 +154,21 @@ describe('TextAttributeConditionLine', () => {
     expect(operatorSelector).toBeInTheDocument();
     expect(operatorSelector).toHaveValue('!=');
     expect(await findByTestId('edit-rules-input-1-scope')).toBeInTheDocument();
-    expect(await findByTestId('edit-rules-input-1-scope')).toHaveValue('mobile');
+    expect(await findByTestId('edit-rules-input-1-scope')).toHaveValue(
+      'mobile'
+    );
     expect(await findByTestId('edit-rules-input-1-locale')).toBeInTheDocument();
-    expect(await findByTestId('edit-rules-input-1-locale')).toHaveValue('en_US');
+    expect(await findByTestId('edit-rules-input-1-locale')).toHaveValue(
+      'en_US'
+    );
   });
 
   it('should display the text attribute conditionWithLocalizableScopableAttribute without locale and scope selectors', async () => {
-    const { findByText, findByTestId, queryByTestId } = renderWithProviders(
+    const {
+      findByText,
+      findByTestId,
+      queryByTestId,
+    } = renderWithProviders(
       <TextAttributeConditionLine
         condition={conditionWithNonLocalizableScopableAttribute}
         lineNumber={1}
@@ -158,7 +177,8 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
         router={router}
-      />, { all: true }
+      />,
+      { all: true }
     );
 
     expect(await findByText('Nom')).toBeInTheDocument();
@@ -171,7 +191,11 @@ describe('TextAttributeConditionLine', () => {
 
   it('handles values option appearance based on selected operator', async () => {
     // Given
-    const { findByText, findByTestId, queryByTestId } = renderWithProviders(
+    const {
+      findByText,
+      findByTestId,
+      queryByTestId,
+    } = renderWithProviders(
       <TextAttributeConditionLine
         condition={conditionWithLocalizableScopableAttribute}
         lineNumber={1}
@@ -180,7 +204,8 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
         router={router}
-      />, { all: true }
+      />,
+      { all: true }
     );
     expect(await findByText('Name')).toBeInTheDocument();
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');
@@ -188,7 +213,9 @@ describe('TextAttributeConditionLine', () => {
     expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
 
     userEvent.selectOptions(operatorSelector, Operator.IS_NOT_EMPTY);
-    await wait(() => expect(queryByTestId('edit-rules-input-1-value')).toBeNull());
+    await wait(() =>
+      expect(queryByTestId('edit-rules-input-1-value')).toBeNull()
+    );
 
     userEvent.selectOptions(operatorSelector, Operator.NOT_EQUAL);
     expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
@@ -196,7 +223,12 @@ describe('TextAttributeConditionLine', () => {
 
   it('displays the matching locales regarding the scope', async () => {
     // Given
-    const { findByText, findByTestId, queryByTestId, queryByText } = renderWithProviders(
+    const {
+      findByText,
+      findByTestId,
+      queryByTestId,
+      queryByText,
+    } = renderWithProviders(
       <TextAttributeConditionLine
         condition={defaultCondition}
         lineNumber={1}
@@ -205,18 +237,25 @@ describe('TextAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
         router={router}
-      />, { all: true }
+      />,
+      { all: true }
     );
     expect(await findByText('Name')).toBeInTheDocument();
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');
     expect(operatorSelector).toBeInTheDocument();
     expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
 
-    userEvent.selectOptions(await findByTestId('edit-rules-input-1-scope'), 'ecommerce');
+    userEvent.selectOptions(
+      await findByTestId('edit-rules-input-1-scope'),
+      'ecommerce'
+    );
     expect(queryByText('German')).toBeInTheDocument();
     expect(queryByText('French')).toBeInTheDocument();
     expect(queryByText('English')).toBeInTheDocument();
-    userEvent.selectOptions(await findByTestId('edit-rules-input-1-scope'), 'mobile');
+    userEvent.selectOptions(
+      await findByTestId('edit-rules-input-1-scope'),
+      'mobile'
+    );
     expect(queryByText('German')).toBeInTheDocument();
     expect(queryByText('French')).not.toBeInTheDocument();
     expect(queryByText('English')).toBeInTheDocument();

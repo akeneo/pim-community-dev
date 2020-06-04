@@ -21,6 +21,7 @@ import {
   denormalizeMultiOptionsAttributeCondition,
   denormalizePimCondition,
   denormalizeTextAttributeCondition,
+  denormalizeCategoryCondition,
 } from './conditions';
 
 function denormalizeAction(jsonAction: any): Action {
@@ -52,6 +53,7 @@ async function denormalizeCondition(
 ): Promise<Condition> {
   const denormalizers: ConditionDenormalizer[] = [
     denormalizeFamilyCondition,
+    denormalizeCategoryCondition,
     denormalizeTextAttributeCondition,
     denormalizeMultiOptionsAttributeCondition,
     denormalizePimCondition,

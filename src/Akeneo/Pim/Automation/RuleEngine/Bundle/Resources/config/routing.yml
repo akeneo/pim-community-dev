@@ -61,3 +61,15 @@ pimee_enrich_rule_definition_get_available_condition_fields:
 
 pimee_catalog_rule_new:
     path: /configuration/rules/create
+
+pimee_enrich_rule_definition_get_category_tree:
+    path: /rest/rule_definition_get_category_tree/{categoryTreeId}
+    defaults: { _controller: pimee_enrich.controller.rule_definition.get_category_tree }
+    methods: [GET]
+    requirements:
+        categoryTreeId: '[a-z0-9_]+'
+
+pimee_enrich_rule_definition_get_categories:
+    path: /rest/rule_definition_get_categories
+    defaults: { _controller: pimee_enrich.controller.rule_definition.get_categories }
+    methods: [GET]
