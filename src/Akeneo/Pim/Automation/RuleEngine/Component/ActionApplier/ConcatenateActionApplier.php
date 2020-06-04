@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionExce
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSource;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
@@ -102,7 +103,7 @@ final class ConcatenateActionApplier implements ActionApplierInterface
     ): void {
         $field = $action->getTarget()->getField();
         $attribute = $this->getAttributes->forCode($field);
-        Assert::isInstanceOf($attribute, Attribute::class);
+        Assert::isInstanceOf($attribute, Attribute::class, \sprintf('The "%s" attribute does not exist', $field));
 
         $family = $entity->getFamily();
         if (null === $family) {
@@ -110,7 +111,11 @@ final class ConcatenateActionApplier implements ActionApplierInterface
         }
         if (!$family->hasAttributeCode($attribute->code())) {
             throw new NonApplicableActionException(
-                \sprintf('The "%s" attribute does not belong to the entity\'s family', $attribute->code())
+                \sprintf(
+                    'The "%s" attribute does not belong to the family of this %s',
+                    $attribute->code(),
+                    $entity instanceof ProductModelInterface ? 'product model' : 'product'
+                )
             );
         }
 
@@ -119,8 +124,9 @@ final class ConcatenateActionApplier implements ActionApplierInterface
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
             throw new NonApplicableActionException(
                 \sprintf(
-                    'Cannot set the "%s" property to this entity as it is not in the attribute set',
-                    $attribute->code()
+                    'The "%s" property cannot be modified for this %s, as it is not at the same variation level',
+                    $attribute->code(),
+                    $entity instanceof ProductModelInterface ? 'product model' : 'product'
                 )
             );
         }

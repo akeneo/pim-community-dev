@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionExce
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductClearActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
@@ -104,8 +105,9 @@ final class ClearerActionApplier implements ActionApplierInterface
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
             throw new NonApplicableActionException(
                 \sprintf(
-                    'Cannot set the "%s" property to this entity as it is not in the attribute set',
-                    $attribute->code()
+                    'The "%s" property cannot be updated for this %s, as it is not at the same variation level',
+                    $attribute->code(),
+                    $entity instanceof ProductModelInterface ? 'product model' : 'product'
                 )
             );
         }

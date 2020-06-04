@@ -22,6 +22,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateActionInter
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductTarget;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
@@ -106,7 +107,11 @@ class CalculateActionApplier implements ActionApplierInterface
         ProductCalculateActionInterface $action
     ): void {
         $destination = $this->getAttributes->forCode($action->getDestination()->getField());
-        Assert::isInstanceOf($destination, Attribute::class);
+        Assert::isInstanceOf(
+            $destination,
+            Attribute::class,
+            \sprintf('The "%s" attribute does not exist', $action->getDestination()->getField())
+        );
 
         $family = $entity->getFamily();
         if (null === $family) {
@@ -114,7 +119,11 @@ class CalculateActionApplier implements ActionApplierInterface
         }
         if (!$family->hasAttributeCode($destination->code())) {
             throw new NonApplicableActionException(
-                \sprintf('The "%s" attribute does not belong to the entity\'s family', $destination->code())
+                \sprintf(
+                    'The "%s" attribute does not belong to the family of this %s',
+                    $destination->code(),
+                    $entity instanceof ProductModelInterface ? 'product model' : 'product'
+                )
             );
         }
 
@@ -122,8 +131,9 @@ class CalculateActionApplier implements ActionApplierInterface
         if (null !== $familyVariant && $familyVariant->getLevelForAttributeCode($destination->code()) !== $entity->getVariationLevel()) {
             throw new NonApplicableActionException(
                 \sprintf(
-                    'Cannot set the "%s" property to this entity as it is not in the attribute set',
-                    $destination->code()
+                    'The "%s" property cannot be updated for this %s, as it is not at the same variation level',
+                    $destination->code(),
+                    $entity instanceof ProductModelInterface ? 'product model' : 'product'
                 )
             );
         }
