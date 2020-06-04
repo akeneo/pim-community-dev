@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\QuantifiedAssociationsNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\EntityWithQuantifiedAssociations\QuantifiedAssociationsNormalizer;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -50,19 +50,18 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var string[] */
     protected $supportedFormats = ['flat'];
 
-    /** @var CollectionFilterInterface */
+    /** @var CollectionFilterInterface | null */
     protected $filter;
 
+    /** @var QuantifiedAssociationsNormalizer */
     private $quantifiedAssociationsNormalized;
-    /**
-     * @param CollectionFilterInterface $filter The collection filter
-     */
+
     public function __construct(
-        CollectionFilterInterface $filter = null,
-        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalized
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalized,
+        CollectionFilterInterface $filter = null
     ) {
-        $this->filter = $filter;
         $this->quantifiedAssociationsNormalized = $quantifiedAssociationsNormalized;
+        $this->filter = $filter;
     }
 
     /**

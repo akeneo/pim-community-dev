@@ -6,8 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\QuantifiedAssociationsNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\EntityWithQuantifiedAssociations\QuantifiedAssociationsNormalizer;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;

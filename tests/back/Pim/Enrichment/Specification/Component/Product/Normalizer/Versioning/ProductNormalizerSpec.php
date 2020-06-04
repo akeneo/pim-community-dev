@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\QuantifiedAssociationsNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\EntityWithQuantifiedAssociations\QuantifiedAssociationsNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
@@ -34,7 +33,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     ) {
         $serializer->implement(NormalizerInterface::class);
 
-        $this->beConstructedWith($filter, $quantifiedAssociationsNormalizer);
+        $this->beConstructedWith($quantifiedAssociationsNormalizer, $filter);
         $this->setSerializer($serializer);
     }
 
