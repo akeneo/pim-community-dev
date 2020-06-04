@@ -7,8 +7,10 @@ import {AttributeOptionsState} from '../store/store';
 import {AttributeOption} from '../model';
 import {useSaveAttributeOption} from '../hooks/useSaveAttributeOption';
 import {useCreateAttributeOption} from '../hooks/useCreateAttributeOption';
-import {updateAttributeOptionAction, createAttributeOptionAction} from '../reducers';
+import {useDeleteAttributeOption} from '../hooks/useDeleteAttributeOption';
+import {createAttributeOptionAction, deleteAttributeOptionAction, updateAttributeOptionAction} from '../reducers';
 import {useAttributeContext} from '../contexts';
+import {NotificationLevel, useNotify} from '@akeneo-pim-community/legacy-bridge';
 
 const AttributeOptions = () => {
     const attributeOptions = useSelector((state: AttributeOptionsState) => state.attributeOptions);
@@ -17,8 +19,10 @@ const AttributeOptions = () => {
     const [showNewOptionForm, setShowNewOptionForm] = useState<boolean>(false);
     const attributeOptionSaver = useSaveAttributeOption();
     const attributeOptionCreate = useCreateAttributeOption();
+    const attributeOptionDelete = useDeleteAttributeOption();
     const dispatchAction = useDispatch();
     const attribute = useAttributeContext();
+    const notify = useNotify();
 
     useEffect(() => {
         if (attributeOptions !== null && attributeOptions.length > 0 && selectedOption === null) {
@@ -61,6 +65,20 @@ const AttributeOptions = () => {
         setSelectedOption(attributeOption);
     }, [attributeOptionCreate, setIsSaving, dispatchAction, setShowNewOptionForm, setSelectedOption]);
 
+    const deleteAttributeOption = useCallback(async (attributeOptionId: number) => {
+        setIsSaving(true);
+        try {
+            await attributeOptionDelete(attributeOptionId);
+            dispatchAction(deleteAttributeOptionAction(attributeOptionId));
+            if (attributeOptions && selectedOption && selectedOption.id === attributeOptionId) {
+                setSelectedOption(attributeOptions[0]);
+            }
+        } catch (error) {
+            notify(NotificationLevel.ERROR, error);
+        }
+        setIsSaving(false);
+    }, [attributeOptionDelete, setIsSaving, dispatchAction, notify, setSelectedOption, attributeOptions, selectedOption]);
+
     return (
         <div className="AknAttributeOption">
             {(attributeOptions === null || isSaving) && <div className="AknLoadingMask"/>}
@@ -69,6 +87,7 @@ const AttributeOptions = () => {
                 selectAttributeOption={selectAttributeOption}
                 selectedOptionId={selectedOption ? selectedOption.id : null}
                 showNewOptionForm={setShowNewOptionForm}
+                deleteAttributeOption={deleteAttributeOption}
             />
 
             {(selectedOption !== null && <Edit option={selectedOption} saveAttributeOption={saveAttributeOption}/>)}

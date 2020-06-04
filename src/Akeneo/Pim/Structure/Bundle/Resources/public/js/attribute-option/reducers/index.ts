@@ -2,6 +2,7 @@ import attributeOptionsReducer, {
     initializeAttributeOptionsAction,
     updateAttributeOptionAction,
     createAttributeOptionAction,
+    deleteAttributeOptionAction,
 } from './attributeOptionsReducer';
 
 export {
@@ -9,4 +10,5 @@ export {
     updateAttributeOptionAction,
     createAttributeOptionAction,
     attributeOptionsReducer,
+    deleteAttributeOptionAction,
 };
