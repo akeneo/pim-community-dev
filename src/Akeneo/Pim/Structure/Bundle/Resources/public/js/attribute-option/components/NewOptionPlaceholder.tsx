@@ -13,7 +13,7 @@ const NewOptionPlaceholder = ({cancelNewOption}: newOptionPlaceholderProps) => {
             <span className="AknAttributeOption-itemCode">
                 {translate('pim_enrich.entity.attribute_option.module.edit.new_option_code')}
             </span>
-            <span className="AknAttributeOption-cancel-new-option-icon" onClick={() => cancelNewOption()}/>
+            <span className="AknAttributeOption-cancel-new-option-icon" onClick={() => cancelNewOption()} role="new-option-cancel"/>
         </div>
     );
 };

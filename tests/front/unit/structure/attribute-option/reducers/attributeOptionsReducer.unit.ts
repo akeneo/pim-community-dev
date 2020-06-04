@@ -89,14 +89,7 @@ describe('Attribute options reducer', () => {
         expect(
           attributeOptionsReducer(
             null,
-            updateAttributeOptionAction({
-                "id": 86,
-                "code": "blue",
-                "optionValues": {
-                    "en_US": {"id":255,"locale":"en_US","value":"Blue 2"},
-                    "fr_FR":{"id":256,"locale":"fr_FR","value":"Bleu 2"}
-                }
-            })
+            updateAttributeOptionAction({})
           )
         ).toBeNull();
     });
@@ -146,14 +139,7 @@ describe('Attribute options reducer', () => {
         expect(
           attributeOptionsReducer(
             null,
-            createAttributeOptionAction({
-                "id": 86,
-                "code": "blue",
-                "optionValues": {
-                    "en_US": {"id":255,"locale":"en_US","value":"Blue 2"},
-                    "fr_FR":{"id":256,"locale":"fr_FR","value":"Bleu 2"}
-                }
-            })
+            createAttributeOptionAction({})
           )
         ).toBeNull();
     });
@@ -207,5 +193,14 @@ describe('Attribute options reducer', () => {
                 }
             },
         ]);
+    });
+
+    test('delete an attribute option with an empty state', () => {
+        expect(
+            attributeOptionsReducer(
+                null,
+                deleteAttributeOptionAction({})
+            )
+        ).toBeNull();
     });
 });

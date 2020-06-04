@@ -62,7 +62,7 @@ const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm, delet
                         <ListItem
                             key={attributeOption.code}
                             data={attributeOption}
-                            onSelectAttributeOption={onSelectItem}
+                            selectAttributeOption={onSelectItem}
                             isSelected={selectedOptionId === attributeOption.id}
                             deleteAttributeOption={deleteAttributeOption}
                         />
