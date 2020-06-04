@@ -29,33 +29,7 @@ final class UnknownAttributeException extends PropertyException implements
         parent::__construct($message, $code, $previous);
 
         $this->propertyName = $attributeName;
-        $this->documentation = new DocumentationCollection([
-            new Documentation(
-                'More information about attributes: {what_is_attribute} {manage_attribute}.',
-                [
-                    new HrefMessageParameter(
-                        'What is an attribute?',
-                        'https://help.akeneo.com/pim/serenity/articles/what-is-an-attribute.html',
-                        '{what_is_attribute}'
-                    ),
-                    new HrefMessageParameter(
-                        'Manage your attributes',
-                        'https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html',
-                        '{manage_attribute}'
-                    )
-                ]
-            ),
-            new Documentation(
-                'Please check your {attribute_settings}.',
-                [
-                    new RouteMessageParameter(
-                        'Attributes settings',
-                        'pim_enrich_attribute_index',
-                        '{attribute_settings}'
-                    )
-                ]
-            )
-        ]);
+        $this->documentation = $this->buildDocumentation();
     }
 
     public static function unknownAttribute(string $attributeCode, \Exception $previous = null): self
@@ -79,5 +53,33 @@ final class UnknownAttributeException extends PropertyException implements
     public function getDocumentation(): DocumentationCollection
     {
         return $this->documentation;
+    }
+
+    private function buildDocumentation(): DocumentationCollection
+    {
+        return new DocumentationCollection([
+            new Documentation(
+                'More information about attributes: {what_is_attribute} {manage_attribute}.',
+                [
+                    'what_is_attribute' => new HrefMessageParameter(
+                        'What is an attribute?',
+                        'https://help.akeneo.com/pim/serenity/articles/what-is-an-attribute.html'
+                    ),
+                    'manage_attribute' => new HrefMessageParameter(
+                        'Manage your attributes',
+                        'https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html'
+                    )
+                ]
+            ),
+            new Documentation(
+                'Please check your {attribute_settings}.',
+                [
+                    'attribute_settings' => new RouteMessageParameter(
+                        'Attributes settings',
+                        'pim_enrich_attribute_index'
+                    )
+                ]
+            )
+        ]);
     }
 }

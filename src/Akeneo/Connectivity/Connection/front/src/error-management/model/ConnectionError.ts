@@ -5,7 +5,6 @@ export type HrefParameter = {
     type: typeof HrefType;
     title: string;
     href: string;
-    needle: string;
 };
 
 export type RouteParameter = {
@@ -15,7 +14,6 @@ export type RouteParameter = {
     routeParameters: {
         [parameterName: string]: string;
     };
-    needle: string;
 };
 
 export type MessageParameters = {

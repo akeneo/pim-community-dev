@@ -18,25 +18,22 @@ class DocumentationCollectionSpec extends ObjectBehavior
             new Documentation(
                 'More information about attributes: {what_is_attribute} {manage_attribute}.',
                 [
-                    new HrefMessageParameter(
+                    'what_is_attribute' => new HrefMessageParameter(
                         'What is an attribute?',
-                        'https://help.akeneo.com/what-is-an-attribute.html',
-                        '{what_is_attribute}'
+                        'https://help.akeneo.com/what-is-an-attribute.html'
                     ),
-                    new HrefMessageParameter(
+                    'manage_attribute' => new HrefMessageParameter(
                         'Manage your attributes',
-                        'https://help.akeneo.com/manage-your-attributes.html',
-                        '{manage_attribute}'
+                        'https://help.akeneo.com/manage-your-attributes.html'
                     )
                 ]
             ),
             new Documentation(
                 'Please check your {attribute_settings}.',
                 [
-                    new RouteMessageParameter(
+                    'attribute_settings' => new RouteMessageParameter(
                         'Attributes settings',
                         'pim_enrich_attribute_index',
-                        '{attribute_settings}'
                     )
                 ]
             )
@@ -45,29 +42,26 @@ class DocumentationCollectionSpec extends ObjectBehavior
             [
                 'message' => 'More information about attributes: {what_is_attribute} {manage_attribute}.',
                 'parameters' => [
-                    '{what_is_attribute}' => [
+                    'what_is_attribute' => [
                         'type' => MessageParameterTypes::HREF,
                         'href' => 'https://help.akeneo.com/what-is-an-attribute.html',
                         'title' => 'What is an attribute?',
-                        'needle' => '{what_is_attribute}',
                     ],
-                    '{manage_attribute}' => [
+                    'manage_attribute' => [
                         'type' => MessageParameterTypes::HREF,
                         'href' => 'https://help.akeneo.com/manage-your-attributes.html',
                         'title' => 'Manage your attributes',
-                        'needle' => '{manage_attribute}',
                     ],
                 ]
             ],
             [
                 'message' => 'Please check your {attribute_settings}.',
                 'parameters' => [
-                    '{attribute_settings}' => [
+                    'attribute_settings' => [
                         'type' => MessageParameterTypes::ROUTE,
                         'route' => 'pim_enrich_attribute_index',
                         'routeParameters' => [],
                         'title' => 'Attributes settings',
-                        'needle' => '{attribute_settings}',
                     ],
                 ]
             ]

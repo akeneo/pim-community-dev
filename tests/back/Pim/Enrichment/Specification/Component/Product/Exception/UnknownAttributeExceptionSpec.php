@@ -77,29 +77,26 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
             [
                 'message' => 'More information about attributes: {what_is_attribute} {manage_attribute}.',
                 'parameters' => [
-                    '{what_is_attribute}' => [
+                    'what_is_attribute' => [
                         'type' => MessageParameterTypes::HREF,
                         'href' => 'https://help.akeneo.com/pim/serenity/articles/what-is-an-attribute.html',
                         'title' => 'What is an attribute?',
-                        'needle' => '{what_is_attribute}',
                     ],
-                    '{manage_attribute}' => [
+                    'manage_attribute' => [
                         'type' => MessageParameterTypes::HREF,
                         'href' => 'https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html',
                         'title' => 'Manage your attributes',
-                        'needle' => '{manage_attribute}',
                     ],
                 ]
             ],
             [
                 'message' => 'Please check your {attribute_settings}.',
                 'parameters' => [
-                    '{attribute_settings}' => [
+                    'attribute_settings' => [
                         'type' => MessageParameterTypes::ROUTE,
                         'route' => 'pim_enrich_attribute_index',
                         'routeParameters' => [],
                         'title' => 'Attributes settings',
-                        'needle' => '{attribute_settings}',
                     ],
                 ]
             ]

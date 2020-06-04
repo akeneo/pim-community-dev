@@ -16,13 +16,10 @@ class RouteMessageParameter implements MessageParameterInterface
     /** @var string */
     private $route;
 
-    /** @var string */
-    private $needle;
-
     /** @var array */
     private $routeParameters;
 
-    public function __construct(string $title, string $route, string $needle, array $routeParameters = [])
+    public function __construct(string $title, string $route, array $routeParameters = [])
     {
         $this->title = $title;
         if (1 !== preg_match('/^[a-z_]+$/', $route)) {
@@ -32,13 +29,6 @@ class RouteMessageParameter implements MessageParameterInterface
             ));
         }
         $this->route = $route;
-        if (1 !== preg_match('/^{[^{}]+}$/', $needle)) {
-            throw new \InvalidArgumentException(sprintf(
-                '$needle must be a string surrounded by "{needle}", "%s" given.',
-                $needle
-            ));
-        }
-        $this->needle = $needle;
         foreach ($routeParameters as $key => $parameter) {
             if (!is_string($key) || !(is_string($parameter) || is_numeric($parameter))) {
                 throw new \InvalidArgumentException(sprintf(
@@ -50,6 +40,9 @@ class RouteMessageParameter implements MessageParameterInterface
         $this->routeParameters = $routeParameters;
     }
 
+    /**
+     * @return array{type: MessageParameterTypes::ROUTE, route: string, routeParameters: array<string, string>, title: string}
+     */
     public function normalize(): array
     {
         return [
@@ -57,12 +50,6 @@ class RouteMessageParameter implements MessageParameterInterface
             'route' => $this->route,
             'routeParameters' => $this->routeParameters,
             'title' => $this->title,
-            'needle' => $this->needle,
         ];
-    }
-
-    public function needle(): string
-    {
-        return $this->needle;
     }
 }

@@ -10,10 +10,5 @@ namespace Akeneo\Pim\Enrichment\Component\Error\Documented;
  */
 interface MessageParameterInterface
 {
-    /**
-     * @return string String to be replaced. Must be a string surrounded by "{needle}".
-     */
-    public function needle(): string;
-
     public function normalize(): array;
 }

@@ -13,29 +13,29 @@ class Documentation
     /** @var string */
     private $message;
 
-    /** @var MessageParameterInterface[] */
+    /** @var array<string, MessageParameterInterface> */
     private $messageParameters;
 
     /**
      * @param string $message Could include parameters with the pattern {needle}.
-     * @param MessageParameterInterface[] $messageParameters Must have as many parameters as {needle} in message.
+     * @param array<string, MessageParameterInterface> $messageParameters Must have as many parameters as {needle} in message.
      */
     public function __construct(string $message, array $messageParameters)
     {
         $this->message = $message;
-        foreach ($messageParameters as $messageParameter) {
+        foreach ($messageParameters as $needle => $messageParameter) {
             if (!$messageParameter instanceof MessageParameterInterface) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Class "%s" accepts only array of "%s" as $messageParameters.',
+                    'Class "%s" accepts only associative array of "%s" as $messageParameters.',
                         self::class,
                         MessageParameterInterface::class
                     )
                 );
             }
-            if (1 !== substr_count($message, sprintf('%s', $messageParameter->needle()))) {
+            if (1 !== substr_count($message, sprintf('{%s}', $needle))) {
                 throw new \InvalidArgumentException(sprintf(
                         '$messageParameters "%s" not found in $message "%s".',
-                        $messageParameter->needle(),
+                        $needle,
                         $message
                     )
                 );
@@ -44,11 +44,14 @@ class Documentation
         $this->messageParameters = $messageParameters;
     }
 
+    /**
+     * @return array{message: string, parameters: array<string, array<string, string|array>>}
+     */
     public function normalize(): array
     {
         $normalizedParams = [];
-        foreach ($this->messageParameters as $messageParameter) {
-            $normalizedParams[$messageParameter->needle()] = $messageParameter->normalize();
+        foreach ($this->messageParameters as $needle => $messageParameter) {
+            $normalizedParams[$needle] = $messageParameter->normalize();
         }
 
         return [

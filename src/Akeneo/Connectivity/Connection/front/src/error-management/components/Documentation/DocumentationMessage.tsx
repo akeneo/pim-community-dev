@@ -10,14 +10,20 @@ type Props = {
 
 export const DocumentationMessage = ({documentation}: Props) => {
     const constructedMessage = documentation.message.split(/({[^{}]+})/).map((messagePart: string, i) => {
-        const isNeedle = new RegExp(/^{[^{}]+}$/);
+        const isNeedle = new RegExp(/^{([^{}]+)}$/);
+        if (!isNeedle.test(messagePart)) {
+            return <Message key={i}>{messagePart}</Message>;
+        }
+        const needle = isNeedle.exec(messagePart);
         if (
-            !isNeedle.test(messagePart) ||
-            !Object.prototype.hasOwnProperty.call(documentation.parameters, messagePart)
+            null === needle ||
+            2 !== needle.length ||
+            !Object.prototype.hasOwnProperty.call(documentation.parameters, needle[1])
         ) {
             return <Message key={i}>{messagePart}</Message>;
         }
-        const messageParameter = documentation.parameters[messagePart];
+
+        const messageParameter = documentation.parameters[needle[1]];
         switch (messageParameter.type) {
             case HrefType:
                 return (

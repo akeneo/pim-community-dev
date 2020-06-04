@@ -29,17 +29,17 @@ class DocumentationCollection
     }
 
     /**
-     * @return array like
+     * @return array{array{message: string, parameters: array<string, array<string, string|array>>}}
+     * Example:
      * [
      *     [
      *         'message' => 'Please check your {attribute_settings}.',
-     *         'params' => [
-     *             '{attribute_settings}' => [
+     *         'parameters' => [
+     *             'attribute_settings' => [
      *                 'route' => 'pim_enrich_attribute_index',
-     *                 'params' => [],
+     *                 'routeParameters' => [],
      *                 'title' => 'Attributes settings',
      *                 'type' => 'route',
-     *                 'needle' => '{attribute_settings}'
      *             ],
      *         ],
      *     ],

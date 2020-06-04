@@ -16,21 +16,9 @@ class HrefMessageParameter implements MessageParameterInterface
     /** @var string */
     private $href;
 
-    /** @var string */
-    private $needle;
-
-    public function __construct(string $title, string $href, string $needle)
+    public function __construct(string $title, string $href)
     {
         $this->title = $title;
-        if (1 !== preg_match('/^{[^{}]+}$/', $needle)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    '$needle must be a string surrounded by "{needle}", "%s" given.',
-                    $needle
-                )
-            );
-        }
-        $this->needle = $needle;
         if (false === filter_var($href, FILTER_VALIDATE_URL)) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -43,18 +31,15 @@ class HrefMessageParameter implements MessageParameterInterface
         $this->href = $href;
     }
 
+    /**
+     * @return array{type: MessageParameterTypes::HREF, href: string, title: string}
+     */
     public function normalize(): array
     {
         return [
             'type' => MessageParameterTypes::HREF,
             'href' => $this->href,
             'title' => $this->title,
-            'needle' => $this->needle,
         ];
-    }
-
-    public function needle(): string
-    {
-        return $this->needle;
     }
 }

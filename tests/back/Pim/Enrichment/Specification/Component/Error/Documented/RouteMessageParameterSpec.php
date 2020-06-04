@@ -14,8 +14,7 @@ class RouteMessageParameterSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'Attributes settings',
-            'pim_enrich_attribute_index',
-            '{attribute_settings}'
+            'pim_enrich_attribute_index'
         );
     }
 
@@ -25,11 +24,6 @@ class RouteMessageParameterSpec extends ObjectBehavior
         $this->shouldImplement(MessageParameterInterface::class);
     }
 
-    public function it_provides_a_needle(): void
-    {
-        $this->needle()->shouldReturn('{attribute_settings}');
-    }
-
     public function it_normalizes_information(): void
     {
         $this->normalize()->shouldReturn([
@@ -37,35 +31,7 @@ class RouteMessageParameterSpec extends ObjectBehavior
             'route' => 'pim_enrich_attribute_index',
             'routeParameters' => [],
             'title' => 'Attributes settings',
-            'needle' => '{attribute_settings}',
         ]);
-    }
-
-    public function it_validates_that_the_needle_has_the_good_format(): void
-    {
-        $wrongMatches = [
-            '{}',
-            'attribute_settings',
-            '{attribute_settings',
-            'attribute_settings}',
-            '{attribute{_settings}',
-            '{attribute_se}ttings}',
-        ];
-        foreach ($wrongMatches as $wrongMatch) {
-            $this->beConstructedWith(
-                'Attributes settings',
-                'pim_enrich_attribute_index',
-                $wrongMatch
-            );
-            $this
-                ->shouldThrow(
-                    new \InvalidArgumentException(sprintf(
-                        '$needle must be a string surrounded by "{needle}", "%s" given.',
-                        $wrongMatch
-                    ))
-                )
-                ->duringInstantiation();
-        }
     }
 
     public function it_validates_that_the_route_has_the_good_format(): void
@@ -79,8 +45,7 @@ class RouteMessageParameterSpec extends ObjectBehavior
         foreach ($wrongMatches as $wrongMatch) {
             $this->beConstructedWith(
                 'Attributes settings',
-                $wrongMatch,
-                '{attribute_settings}'
+                $wrongMatch
             );
             $this
                 ->shouldThrow(
@@ -97,7 +62,6 @@ class RouteMessageParameterSpec extends ObjectBehavior
     {
         $wrongMatches = [
             ['12'],
-            12,
             ['code' => 'pastel', 'zero'],
             ['code' => 'pastel', 'zero' => []],
         ];
@@ -105,8 +69,7 @@ class RouteMessageParameterSpec extends ObjectBehavior
             $this->beConstructedWith(
                 'Attributes settings',
                 'pim_enrich_attribute_index',
-                '{attribute_settings}',
-                $wrongMatches
+                $wrongMatch
             );
             $this
                 ->shouldThrow(

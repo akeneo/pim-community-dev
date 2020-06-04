@@ -17,15 +17,13 @@ class DocumentationSpec extends ObjectBehavior
         $this->beConstructedWith(
             'More information about attributes: {what_is_attribute} {attribute_settings}.',
             [
-                new HrefMessageParameter(
+                'what_is_attribute' => new HrefMessageParameter(
                     'What is an attribute?',
-                    'https://help.akeneo.com/what-is-an-attribute.html',
-                    '{what_is_attribute}'
+                    'https://help.akeneo.com/what-is-an-attribute.html'
                 ),
-                new RouteMessageParameter(
+                'attribute_settings' => new RouteMessageParameter(
                     'Attributes settings',
-                    'pim_enrich_attribute_index',
-                    '{attribute_settings}'
+                    'pim_enrich_attribute_index'
                 )
             ]
         );
@@ -33,18 +31,16 @@ class DocumentationSpec extends ObjectBehavior
         $this->normalize()->shouldReturn([
             'message' => 'More information about attributes: {what_is_attribute} {attribute_settings}.',
             'parameters' => [
-                '{what_is_attribute}' => [
+                'what_is_attribute' => [
                     'type' => MessageParameterTypes::HREF,
                     'href' => 'https://help.akeneo.com/what-is-an-attribute.html',
                     'title' => 'What is an attribute?',
-                    'needle' => '{what_is_attribute}',
                 ],
-                '{attribute_settings}' => [
+                'attribute_settings' => [
                     'type' => MessageParameterTypes::ROUTE,
                     'route' => 'pim_enrich_attribute_index',
                     'routeParameters' => [],
                     'title' => 'Attributes settings',
-                    'needle' => '{attribute_settings}',
                 ],
             ]
         ]);
@@ -55,19 +51,18 @@ class DocumentationSpec extends ObjectBehavior
         $this->beConstructedWith(
             'More information about attributes: {what_is_attribute} {attribute_settings}.',
             [
-                new HrefMessageParameter(
+                'what_is_attribute' => new HrefMessageParameter(
                     'What is an attribute?',
-                    'https://help.akeneo.com/what-is-an-attribute.html',
-                    '{what_is_attribute}'
+                    'https://help.akeneo.com/what-is-an-attribute.html'
                 ),
-                new class() {},
+                'anything' => new class() {},
             ]
         );
 
         $this
             ->shouldThrow(
                 new \InvalidArgumentException(sprintf(
-                        'Class "%s" accepts only array of "%s" as $messageParameters.',
+                        'Class "%s" accepts only associative array of "%s" as $messageParameters.',
                         Documentation::class,
                         MessageParameterInterface::class
                     )
@@ -78,22 +73,47 @@ class DocumentationSpec extends ObjectBehavior
 
     public function it_validates_that_message_parameters_provided_match_parameters_from_message(): void
     {
+        $message = 'More information about attributes: {what_is_attribute} {attribute_settings}.';
+        foreach (['what_attribute', '{what_is_attribute}'] as $wrongMatch) {
+            $this->beConstructedWith(
+                $message,
+                [
+                    $wrongMatch => new HrefMessageParameter(
+                        'What is an attribute?',
+                        'https://help.akeneo.com/what-is-an-attribute.html'
+                    ),
+                ]
+            );
+
+            $this
+                ->shouldThrow(
+                    new \InvalidArgumentException(sprintf(
+                            '$messageParameters "%s" not found in $message "%s".',
+                            $wrongMatch,
+                            $message
+                        )
+                    )
+                )
+                ->duringInstantiation();
+        }
+
         $this->beConstructedWith(
-            'More information about attributes: {what_is_attribute} {attribute_settings}.',
+            $message,
             [
                 new HrefMessageParameter(
                     'What is an attribute?',
-                    'https://help.akeneo.com/what-is-an-attribute.html',
-                    '{what_attribute}'
+                    'https://help.akeneo.com/what-is-an-attribute.html'
                 ),
             ]
         );
 
         $this
             ->shouldThrow(
-                new \InvalidArgumentException(
-                    '$messageParameters "{what_attribute}" not found in $message "More information ' .
-                    'about attributes: {what_is_attribute} {attribute_settings}.".',
+                new \InvalidArgumentException(sprintf(
+                        '$messageParameters "%s" not found in $message "%s".',
+                        0,
+                        $message
+                    )
                 )
             )
             ->duringInstantiation();
