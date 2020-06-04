@@ -222,17 +222,17 @@ class Product implements ArrayConverterInterface
     protected function filterFields(array $mappedItem, $withAssociations): array
     {
         if (false === $withAssociations) {
-            $isGroupAssPattern = '/^\w+' . AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX . '$/';
-            $isProductAssPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX . '$/';
-            $isProductModelAssPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX . '$/';
-            $isProductAssQuantityPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX . AssociationColumnsResolver::QUANTITY_SUFFIX . '$/';
-            $isProductModelAssQuantityPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX . AssociationColumnsResolver::QUANTITY_SUFFIX . '$/';
+            $isGroupAssociationPattern = '/^\w+' . AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX . '$/';
+            $isProductAssociationPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX . '$/';
+            $isProductModelAssociationPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX . '$/';
+            $isProductAssociationQuantityPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX . AssociationColumnsResolver::QUANTITY_SUFFIX . '$/';
+            $isProductModelAssociationQuantityPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX . AssociationColumnsResolver::QUANTITY_SUFFIX . '$/';
             foreach (array_keys($mappedItem) as $field) {
-                $isGroup = (1 === preg_match($isGroupAssPattern, $field));
-                $isProduct = (1 === preg_match($isProductAssPattern, $field));
-                $isProductModel = (1 === preg_match($isProductModelAssPattern, $field));
-                $isProductQuantity = (1 === preg_match($isProductAssQuantityPattern, $field));
-                $isProductModelQuantity = (1 === preg_match($isProductModelAssQuantityPattern, $field));
+                $isGroup = (1 === preg_match($isGroupAssociationPattern, $field));
+                $isProduct = (1 === preg_match($isProductAssociationPattern, $field));
+                $isProductModel = (1 === preg_match($isProductModelAssociationPattern, $field));
+                $isProductQuantity = (1 === preg_match($isProductAssociationQuantityPattern, $field));
+                $isProductModelQuantity = (1 === preg_match($isProductModelAssociationQuantityPattern, $field));
                 if ($isGroup || $isProduct || $isProductModel || $isProductQuantity || $isProductModelQuantity) {
                     unset($mappedItem[$field]);
                 }
