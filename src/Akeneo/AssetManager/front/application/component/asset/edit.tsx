@@ -29,7 +29,7 @@ import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/acti
 import {formatDateForUILocale} from 'akeneoassetmanager/tools/format-date';
 import {Label} from "akeneoassetmanager/application/component/app/label";
 import styled from "styled-components";
-import {saveAndExecuteNamingConvention} from "../../action/asset/save-and-execute-naming-convention";
+import {saveAndExecuteNamingConvention} from "akeneoassetmanager/application/action/asset/save-and-execute-naming-convention";
 const securityContext = require('pim/security-context');
 
 interface StateProps {
