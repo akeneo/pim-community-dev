@@ -25,14 +25,20 @@ const AttributeOptions = () => {
     const notify = useNotify();
 
     useEffect(() => {
-        if (attributeOptions !== null && attributeOptions.length > 0 && selectedOption === null) {
+        if (attributeOptions !== null && attributeOptions.length > 0 && (selectedOption === null || !selectedOptionExists())) {
             setSelectedOption(attributeOptions[0]);
+        } else if (attributeOptions === null || attributeOptions.length === 0) {
+            setSelectedOption(null);
         }
     }, [attributeOptions]);
 
     useEffect(() => {
         setSelectedOption(null);
     }, [attribute.attributeId]);
+
+    const selectedOptionExists = () => {
+        return attributeOptions && selectedOption && attributeOptions.filter((option: AttributeOption) => option.id === selectedOption.id).length === 1;
+    };
 
     const selectAttributeOption = useCallback(async (optionId: number | null) => {
         if (attributeOptions !== null) {
