@@ -97,7 +97,7 @@ pimee_catalog_rule:
             products_count:
                 complete: "{{ count }} products and product models"
                 pending: Calculating products and product models
-                error: Calculation impossible 
+                error: Calculation impossible
             product_selection: Product selection
             fields:
                 family: Family
@@ -220,3 +220,9 @@ pim_menu:
 
 pim_title:
     pimee_catalog_rule_rule_index: Rules
+
+pim_import_export:
+    widget:
+        last_operations:
+            job_type:
+                execute_rules: Rules execution
