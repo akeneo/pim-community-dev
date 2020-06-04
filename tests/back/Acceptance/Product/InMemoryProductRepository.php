@@ -123,7 +123,7 @@ class InMemoryProductRepository implements
     {
         $items = [];
 
-        foreach($identifiers as $identifier){
+        foreach ($identifiers as $identifier) {
             $items[] = $this->findOneByIdentifier($identifier);
         }
 
