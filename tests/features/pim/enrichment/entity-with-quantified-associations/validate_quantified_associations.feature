@@ -5,6 +5,7 @@ Feature: Validate the quantified associations of a product
 
   Background:
     Given a catalog with the attribute "sku" as product identifier
+    And an authentified administrator
 
   @acceptance-back
   Scenario: Cannot save a product with a nonexistent quantified association type
