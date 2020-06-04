@@ -100,7 +100,7 @@ class AssetEditView extends React.Component<EditProps> {
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
               {canExecuteNamingConvention && (
-                  <button className="AknDropdown-menuLink" onClick={() => onSaveAndExecuteNamingConvention()}>
+                  <button className="AknDropdown-menuLink" onClick={onSaveAndExecuteNamingConvention}>
                     {__('pim_asset_manager.asset.button.save_and_execute_naming_convention')}
                   </button>
               )}
