@@ -336,6 +336,7 @@ define([
           this.launchProductPicker().then(identifiers =>
             identifiers.map(item => {
               const matchProductModel = item.match(/^product_model;(.*)$/);
+
               return {
                 quantifiedLink: {
                   identifier: matchProductModel ? matchProductModel[1] : item.match(/^product;(.*)$/)[1],
