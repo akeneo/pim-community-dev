@@ -46,11 +46,12 @@ INSERT INTO `akeneo_file_storage_file_info` VALUES (35,'8/b/5/c/8b5cf9bfd2e7e472
 
 /*!40000 ALTER TABLE `pim_catalog_association_type` DISABLE KEYS */;
 DELETE FROM `pim_catalog_association_type`;
-INSERT INTO `pim_catalog_association_type` (`id`, `code`, `created`, `updated`) VALUES
-(865, 'X_SELL', '2016-10-04 16:14:44', '2016-10-04 16:14:44'),
-(866, 'UPSELL', '2016-10-04 16:14:44', '2016-10-04 16:14:44'),
-(867, 'SUBSTITUTION', '2016-10-04 16:14:44', '2016-10-04 16:14:44'),
-(868, 'PACK', '2016-10-04 16:14:44', '2016-10-04 16:14:44');
+INSERT INTO `pim_catalog_association_type` (`id`, `code`, `created`, `updated`, `is_quantified`) VALUES
+(865, 'X_SELL', '2016-10-04 16:14:44', '2016-10-04 16:14:44', false),
+(866, 'UPSELL', '2016-10-04 16:14:44', '2016-10-04 16:14:44', false),
+(867, 'SUBSTITUTION', '2016-10-04 16:14:44', '2016-10-04 16:14:44', false),
+(868, 'PACK', '2016-10-04 16:14:44', '2016-10-04 16:14:44', false),
+(869, 'PRODUCT_SET', '2016-10-04 16:14:44', '2016-10-04 16:14:44', true);
 /*!40000 ALTER TABLE `pim_catalog_association_type` ENABLE KEYS */;
 
 
