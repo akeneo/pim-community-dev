@@ -62,7 +62,6 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   const router = useBackboneRouter();
   const translate = useTranslate();
   const currentCatalogLocale = useUserCatalogLocale();
-  // const { watch, setValue, register, unregister, triggerValidation } = useFormContext();
   const { watch, setValue, register } = useFormContext();
   const [attribute, setAttribute] = React.useState<Attribute | null>(null);
   const [attributeIsChanged, setAttributeIsChanged] = React.useState<boolean>(
