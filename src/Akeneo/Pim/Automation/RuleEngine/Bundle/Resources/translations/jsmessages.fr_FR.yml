@@ -16,6 +16,7 @@ pimee_catalog_rule:
       action.label: Action
       no_rule_yet.label: Il n'y a aucune règle pour l'instant
   rule:
+    value: Value
     condition:
       if.label: Si
     action:
@@ -49,6 +50,9 @@ pimee_catalog_rule:
           error: Une erreur s'est produite lors de la suppression des règles.
           empty_selection: Aucune règle n'a été sélectionnée.
   form:
+    tab:
+      list: Constructeur de règle et onglets de propriétés
+      rule_builder: Générateur de règles
     attribute:
       tab:
         rules:
@@ -65,6 +69,7 @@ pimee_catalog_rule:
           required: Le code de la règle est requis.
           too_short: "Le code de la règle est trop court. Il doit comporter {{ characterLimit }} caractères ou plus."
           allowed_characters: Le code de la règle ne peut être composé que de caractères alphanumériques et de tirets bas.
+      cross_link: Quitter le formulaire de création de règle
     edit:
       properties:
         section:
@@ -76,8 +81,23 @@ pimee_catalog_rule:
       add_conditions: Ajouter des conditions
       products_count:
         complete: "{{ count }} produits et modèles de produits"
+        pending: Calculating products and product models
+        error: Calculation impossible
       product_selection: Sélection de produits
+      fields:
+        family: Famille
+      actions:
+        add_action: Ajouter une action
+        set_family:
+          title: SET Family
+          subtitle: Sélectionnez votre famille
+        delete:
+          label: Supprimer l'action
+          description: Êtes-vous sûr de vouloir supprimer cette action ?
       conditions:
+        delete:
+          label: Supprimer la condition
+          description: Êtes-vous sur de vouloir supprimer cette condition ?
         operators:
           "STARTS WITH": commence par
           "ENDS WITH": finit par
@@ -99,15 +119,28 @@ pimee_catalog_rule:
           ">=": égal ou supérieur à
           "<": inférieur à
           "<=": inférieur ou égal à
+      notification:
+        success: La règle a été mise à jour avec succès
+        failed: La mise à jour de la règle a échoué
       discard_changes: Vous perdrez les modifications de la règle si vous quittez la page.
     helper:
+      add_to_category: Pour ajouter votre sélection de produits à une ou plusieurs catégories, veuillez commencer par sélectionner vos arbres de catégories et ensuite vos catégories.
+      product_selection: "Vous devez définir votre sélection de produits pour créer votre règle. Si vous ne savez pas comment, "
       product_selection_doc_link: jetez un coup d'oeil à cet article.
     legend:
       add_to_category: Créer une action
       product_selection: Créer une condition
   exceptions:
     loading: Une erreur s'est produite lors du chargement de la définition de règle.
-    required: Ce champ est obligatoire
+    required_locale: A locale is required for this attribute
+    required_scope: A channel is required for this attribute
+    unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
+    unbound_locale: 'The "{{ localeCode }}" locale is not activated in the channel "{{ channelCode }}"'
+    locale_on_unlocalizable_attribute: This attribute is not localizable. Please remove the locale before continue.
+    unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
+    scope_on_unscopable_attribute: This attribute is not scopable. Please remove the scope before continue.
+    unknown_families: "{1}The family {{ familyCodes }} does not exist|]1,+Inf[The families {{ familyCodes }} do not exist"
+    unknown_attribute_options: "{1}The option {{ attributeOptionCodes }} does not exist|]1,+Inf[The options {{ attributeOptionCodes }} do not exist"
 pim_enrich:
   entity:
     rule:

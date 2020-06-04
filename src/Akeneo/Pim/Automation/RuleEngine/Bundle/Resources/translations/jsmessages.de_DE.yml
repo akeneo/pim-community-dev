@@ -16,6 +16,7 @@ pimee_catalog_rule:
       action.label: Aktion
       no_rule_yet.label: Bisher keine Regel vorhanden
   rule:
+    value: Wert
     condition:
       if.label: wenn
     action:
@@ -131,7 +132,15 @@ pimee_catalog_rule:
       product_selection: Bedingung erstellen
   exceptions:
     loading: Beim Laden der Regeldefinition ist ein Fehler aufgetreten.
-    required: Dieses Feld ist erforderlich
+    required_locale: Für dieses Attribut ist eine Gebietsschema erforderlich
+    required_scope: Für diesen Ausgabekanal ist eine Gebietsschema erforderlich
+    unknown_or_inactive_locale: 'Die "{{ localeCode }}" Gebietsschema existiert nicht oder ist nicht aktiviert'
+    unbound_locale: 'Die "{{ localeCode }}" Gebietsschema ist im Ausgabekanal "{{ channelCode }} " nicht aktiviert'
+    locale_on_unlocalizable_attribute: Dieses Attribut ist nicht lokalisierbar. Bitte entfernen Sie das Gebietsschema, bevor Sie fortfahren.
+    unknown_scope: 'Der "{{ scopeCode }}" Ausgabekanal existiert nicht'
+    scope_on_unscopable_attribute: Dieses Attribut ist nicht skopierbar. Bitte entfernen Sie das Gebietsschema, bevor Sie fortfahren.
+    unknown_families: "{1}Die Familie {{ familyCodes }} existiert nicht|]1,+Inf[Die Familien {{ familyCodes }} existieren nicht"
+    unknown_attribute_options: "{1}Die Option {{ attributeOptionCodes }} existiert nicht|]1,+Inf[Die Optionen {{ attributeOptionCodes }} existieren nicht"
 pim_enrich:
   entity:
     rule:
