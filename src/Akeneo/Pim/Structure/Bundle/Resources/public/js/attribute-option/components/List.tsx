@@ -1,24 +1,47 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import useAttributeOptions from '../hooks/useAttributeOptions';
 import {AttributeOption} from '../model';
 import ToggleButton from './ToggleButton';
 import ListItem from './ListItem';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import NewOptionPlaceholder from './NewOptionPlaceholder';
 
 interface ListProps {
-    onSelectAttributeOption: (selectedOptionId: number) => void;
+    selectAttributeOption: (selectedOptionId: number | null) => void;
+    showNewOptionForm: (isDisplayed: boolean) => void;
     selectedOptionId: number | null;
 }
 
-const List = ({onSelectAttributeOption, selectedOptionId}: ListProps) => {
+const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm}: ListProps) => {
     const attributeOptions = useAttributeOptions();
     const translate = useTranslate();
+    const [showNewOptionPlaceholder, setShowNewOptionPlaceholder] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (selectedOptionId !== null) {
+            setShowNewOptionPlaceholder(false);
+        }
+    }, [selectedOptionId]);
+
+    const onSelectItem = (optionId: number) => {
+        setShowNewOptionPlaceholder(false);
+        selectAttributeOption(optionId);
+        showNewOptionForm(false);
+    };
+
+    const displayNewOptionPlaceholder = () => {
+        setShowNewOptionPlaceholder(true);
+        selectAttributeOption(null);
+        showNewOptionForm(true);
+    };
 
     return (
         <div className="AknSubsection AknAttributeOption-list">
             <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
                 <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_codes')}</span>
-                <div className="AknButton AknButton--micro">{translate('pim_enrich.entity.product.module.attribute.add_option')}</div>
+                <div className="AknButton AknButton--micro" onClick={() => displayNewOptionPlaceholder()} role="add-new-attribute-option-button">
+                    {translate('pim_enrich.entity.product.module.attribute.add_option')}
+                </div>
             </div>
 
             <div>{translate('pim_enrich.entity.attribute.property.auto_option_sorting')}</div>
@@ -30,11 +53,12 @@ const List = ({onSelectAttributeOption, selectedOptionId}: ListProps) => {
                         <ListItem
                             key={attributeOption.code}
                             data={attributeOption}
-                            onSelectAttributeOption={onSelectAttributeOption}
+                            onSelectAttributeOption={onSelectItem}
                             isSelected={selectedOptionId === attributeOption.id}
                         />
                     );
                 })}
+                {showNewOptionPlaceholder === true && (<NewOptionPlaceholder/>)}
             </div>
         </div>
     );

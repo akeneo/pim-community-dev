@@ -5,10 +5,10 @@ import {useLocalesContext} from '../contexts';
 
 interface EditProps {
     option: AttributeOption;
-    onSave: (attributeOption: AttributeOption) => void;
+    saveAttributeOption: (attributeOption: AttributeOption) => void;
 }
 
-const Edit = ({option, onSave}: EditProps) => {
+const Edit = ({option, saveAttributeOption}: EditProps) => {
     const translate = useTranslate();
     const locales = useLocalesContext();
     const [updatedOption, setUpdatedOption] = useState<AttributeOption | null>(null);
@@ -22,6 +22,13 @@ const Edit = ({option, onSave}: EditProps) => {
         let updatedOption: AttributeOption = {...option};
         updatedOption.optionValues[localeCode].value = event.target.value;
         setUpdatedOption(updatedOption);
+    };
+
+    const saveOption = () => {
+        if (updatedOption !== null) {
+            saveAttributeOption(updatedOption);
+            setUpdatedOption(null);
+        }
     };
 
     return (
@@ -50,11 +57,7 @@ const Edit = ({option, onSave}: EditProps) => {
                         </div>
                     );
                 })}
-                <button className="AknButton AknButton--apply save" role="save-options-translations" onClick={() => {
-                    if (updatedOption !== null) {
-                        onSave(updatedOption);
-                    }
-                }}>
+                <button className="AknButton AknButton--apply save" role="save-options-translations" onClick={() => saveOption()}>
                     {translate('pim_common.done')}
                 </button>
 
