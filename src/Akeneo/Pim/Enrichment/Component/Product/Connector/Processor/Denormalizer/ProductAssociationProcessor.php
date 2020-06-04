@@ -207,17 +207,26 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
      */
     protected function hasAssociationToImport(array $item)
     {
-        if (!isset($item['associations'])) {
-            return false;
+        if (isset($item['associations'])) {
+            foreach ($item['associations'] as $association) {
+                $hasProductAssoc = isset($association['products']);
+                $hasGroupAssoc = isset($association['groups']);
+                $hasProductModelAssoc = isset($association['product_models']);
+
+                if ($hasProductAssoc || $hasGroupAssoc || $hasProductModelAssoc) {
+                    return true;
+                }
+            }
         }
 
-        foreach ($item['associations'] as $association) {
-            $hasProductAssoc = isset($association['products']);
-            $hasGroupAssoc = isset($association['groups']);
-            $hasProductModelAssoc = isset($association['product_models']);
+        if (isset($item['quantified_associations'])) {
+            foreach ($item['quantified_associations'] as $quantifiedAssociation) {
+                $hasProductAssoc = isset($quantifiedAssociation['products']);
+                $hasProductModelAssoc = isset($quantifiedAssociation['product_models']);
 
-            if ($hasProductAssoc || $hasGroupAssoc || $hasProductModelAssoc) {
-                return true;
+                if ($hasProductAssoc || $hasProductModelAssoc) {
+                    return true;
+                }
             }
         }
 
