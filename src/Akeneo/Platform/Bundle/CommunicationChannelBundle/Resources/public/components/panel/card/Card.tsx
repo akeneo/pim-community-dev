@@ -1,19 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Card} from 'akeneocommunicationchannel/models/card';
-import Tag from 'akeneocommunicationchannel/components/panel/Tag';
-import Link from 'akeneocommunicationchannel/components/panel/Link';
+import Tag from 'akeneocommunicationchannel/components/panel/card/Tag';
+import Link from 'akeneocommunicationchannel/components/panel/card/Link';
+import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
 
-const Container = styled.div`
+const Container = styled.li`
   margin: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #c7cbd4;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #c7cbd4;
+  }
 `;
 
 const Title = styled.div`
-  font-size: 17px;
+  font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.bigger};
   height: 21px;
-  color: #a974c7;
+  color: ${({theme}: AkeneoThemedProps) => theme.color.purple80};
   margin: 10px 0;
 `;
 
@@ -34,7 +38,7 @@ const LineContainer = styled.div`
 
 const Date = styled.div`
   color: #adb2c0;
-  font-size: 13px;
+  font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.default};
   text-align: right;
   flex-grow: 1;
 `;
@@ -44,17 +48,17 @@ type CardProps = {
   campaign: string | null;
 };
 
-const CardComponent = ({card, campaign}: CardProps) => {
+const CardComponent = ({card, campaign}: CardProps): JSX.Element => {
+  const descriptionEllipsed = card.description.split(/(?<=\.)/)[0];
+
   return (
     <Container>
       <LineContainer>
-        {card.tags.map((tag, index) => {
-          return <Tag key={index} tag={tag}>{tag}</Tag>
-        })}
+        {card.tags.map((tag: string, index: number): JSX.Element => <Tag key={index} tag={tag} />)}
         <Date>{card.date}</Date>
       </LineContainer>
       <Title>{card.title}</Title>
-      <Description>{card.description.split('.')[0]}.</Description>
+      <Description>{descriptionEllipsed}</Description>
       {card.img && 
         <Image src={card.img} />
       }
@@ -68,4 +72,4 @@ const CardComponent = ({card, campaign}: CardProps) => {
   );
 };
 
-export = CardComponent;
+export {CardComponent};

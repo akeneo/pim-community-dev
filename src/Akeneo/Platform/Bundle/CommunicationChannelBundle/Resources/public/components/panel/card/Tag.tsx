@@ -1,24 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
+import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
 
 type TagProps = {
   tag: 'new' | 'updates';
 };
 
-const Tag = React.forwardRef((props: TagProps & any, ref) => (
-  <StyledTag ref={ref} {...props} />
+const Tag = React.forwardRef((props: TagProps & any, ref): JSX.Element => (
+  <StyledTag ref={ref} {...props}>{props.tag}</StyledTag>
 ));
 
-const StyledTag = styled.div<TagProps>`
+const StyledTag = styled.div`
   text-align: center;
   text-transform: uppercase;
-  font-size: 11px;
+  font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.small};
   border-radius: 2px;
   margin-right: 10px;
   padding: 2px 5px;
   max-height: 24px;
 
-  ${(props: TagProps) => {
+  ${(props: TagProps & AkeneoThemedProps) => {
     switch (props.tag) {
       case 'new':
         return `

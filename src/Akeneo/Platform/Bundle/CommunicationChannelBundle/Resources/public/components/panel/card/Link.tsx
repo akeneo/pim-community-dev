@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
 
 const Link = styled.a`
   border-radius: 16px;
-  border: 1px solid #a1a9b7;
+  border: 1px solid ${({theme}: AkeneoThemedProps) => theme.color.grey100};
   height: 24px;
   padding: 4px 10px;
   line-height: 14px;
@@ -27,7 +28,7 @@ const buildLinkCardUrl = (baseUrl: string, campaign: string | null): URL => {
   return url;
 }
 
-const LinkComponent = ({baseUrl, campaign}: LinkProps) => {
+const LinkComponent = ({baseUrl, campaign}: LinkProps): JSX.Element => {
   const url = buildLinkCardUrl(baseUrl, campaign);
 
   return (

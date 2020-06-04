@@ -5,6 +5,12 @@ import {Panel} from 'akeneocommunicationchannel/components/panel/Panel';
 
 const mediator = require('oro/mediator');
 
+afterEach(() => {
+  global.fetch && global.fetch.mockClear();
+  delete global.fetch;
+  console.error.mockClear();
+});
+
 test('it shows the panel', () => {
   render(<Panel />);
 

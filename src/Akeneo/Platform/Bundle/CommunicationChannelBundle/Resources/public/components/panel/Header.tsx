@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
 
 const __ = require('oro/translator');
 
 const Header = styled.div`
   margin-bottom: 20px;
-  background-color: #9452ba;
+  background-color: ${({theme}: AkeneoThemedProps) => theme.color.purple100};
   height: 67px;
 `;
 
@@ -18,7 +19,7 @@ const Icon = styled.div`
 `;
 
 const Title = styled.div`
-  color: #ffffff;
+  color: ${({theme}: AkeneoThemedProps) => theme.color.white};
   font-size: 22px;
   height: 27px;
   float: left;
@@ -41,7 +42,7 @@ type HeaderPanelProps = {
   onClickCloseButton: () => void;
 };
 
-const HeaderPanelComponent = ({title, onClickCloseButton}: HeaderPanelProps) => {
+const HeaderPanelComponent = ({title, onClickCloseButton}: HeaderPanelProps): JSX.Element => {
   return (
     <Header>
       <Icon />

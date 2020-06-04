@@ -1,29 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useCards} from 'akeneocommunicationchannel/hooks/useCards';
-import {CardFetcherImplementation, CardFetcher} from 'akeneocommunicationchannel/fetcher/card';
+import {CardFetcher} from 'akeneocommunicationchannel/fetcher/card';
 import {useCampaign} from 'akeneocommunicationchannel/hooks/useCampaign';
-import {CampaignFetcherImplementation, CampaignFetcher} from 'akeneocommunicationchannel/fetcher/campaign';
+import {CampaignFetcher} from 'akeneocommunicationchannel/fetcher/campaign';
 import HeaderPanel from 'akeneocommunicationchannel/components/panel/Header';
-import CardComponent from 'akeneocommunicationchannel/components/panel/Card';
+import {CardComponent} from 'akeneocommunicationchannel/components/panel/card';
+import {Card} from 'akeneocommunicationchannel/models/card';
 
 const mediator = require('oro/mediator');
 const __ = require('oro/translator');
 
-const ListCard = styled.div`
-`;
+const ListCard = styled.ul``;
 
 type PanelDataProvider = {
   cardFetcher: CardFetcher;
   campaignFetcher: CampaignFetcher;
 };
 
-const dataProvider: PanelDataProvider = {
-  cardFetcher: CardFetcherImplementation,
-  campaignFetcher: CampaignFetcherImplementation
+type PanelProps = {
+  dataProvider: PanelDataProvider
 };
 
-const Panel = () => {
+const Panel = ({dataProvider}: PanelProps): JSX.Element => {
   const {cards} = useCards(dataProvider.cardFetcher);
   const {campaign} = useCampaign(dataProvider.campaignFetcher);
   const closePanel = () => {
@@ -33,15 +32,13 @@ const Panel = () => {
   return (
     <>
       <HeaderPanel title={__('akeneo_communication_channel.panel.title')} onClickCloseButton={closePanel} />
-      <ListCard>
-        {null !== cards && 
-          cards.map((card, index) => {
-            return <CardComponent card={card} key={index} campaign={campaign} />
-          })
-        }
-      </ListCard>
+      {null !== cards && (
+        <ListCard>
+          {cards.map((card: Card, index: number): JSX.Element => <CardComponent card={card} key={index} campaign={campaign} />)}
+        </ListCard>
+      )}
     </>
   );
 };
 
-export {Panel};
+export {Panel, PanelDataProvider};
