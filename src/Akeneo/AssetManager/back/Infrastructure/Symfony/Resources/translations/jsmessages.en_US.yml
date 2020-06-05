@@ -376,8 +376,8 @@ pim_asset_manager:
         success: All "{{ entityIdentifier }}" assets successfully deleted.
         fail: An error occurred during the deletion of all this asset family's assets
       execute_naming_convention:
-        success: The execution of the naming convention went well (#TODO validation camille)
-        fail: There was an error when execution the naming convention
+        success: Naming convention successfully executed
+        fail: An error occurred during the execution of the naming convention
     completeness:
       label: Complete
   attribute:

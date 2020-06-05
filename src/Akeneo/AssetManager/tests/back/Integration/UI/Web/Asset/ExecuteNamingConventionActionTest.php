@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
-use Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy;
 use Akeneo\AssetManager\Common\Fake\SecurityFacadeStub;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
@@ -44,12 +43,8 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
-
-use const false;
-use const null;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -61,7 +56,7 @@ class ExecuteNamingConventionActionTest extends ControllerIntegrationTestCase
     private const EXECUTE_NAMING_CONVETIONS_ACL = 'akeneo_assetmanager_asset_family_execute_naming_conventions';
     private const EDIT_ASSET_FAMILY_ACL = 'akeneo_assetmanager_asset_family_edit';
     private const ASSET_FAMILY_IDENTIFIER = 'singer';
-    private const ATTRIBUTE_IDENTIFIER = 'year_of_first_album';
+    private const ATTRIBUTE_CODE = 'year_of_first_album';
 
     /** @var WebClientHelper */
     private $webClientHelper;
@@ -122,10 +117,36 @@ class ExecuteNamingConventionActionTest extends ControllerIntegrationTestCase
     }
 
     /** @test */
-    // public function it_sends_an_error_message_when_the_execution_of_the_naming_convention_is_not_possible(): void
-//{
-//  // MaxLengthOfAttribute is 4 but naming convention tries to set 5 to it
-//}
+    public function it_sends_an_error_message_when_the_execution_of_the_naming_convention_is_not_possible(): void
+    {
+        $this->createAssetFamilyWithNamingConvention(
+            [
+                'source' => [
+                    'property' => 'code',
+                    'channel' => null,
+                    'locale' => null
+                ],
+                'pattern' => '/.*\\_(?<year_of_first_album>.*)$/',
+                'abort_asset_creation_on_error' => false,
+            ]
+        );
+        $this->setMaxLengthOfYearAttribute(1);
+        $assetCodeToExecuteNamingConventionsOn = 'celine_dion_1975'; // 1975 is the year_of_first_album
+        $this->createAssetWithCode($assetCodeToExecuteNamingConventionsOn);
+        $this->assertYearOfFirstAlbumIsEmpty($assetCodeToExecuteNamingConventionsOn);
+
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::EXECUTE_NAMING_CONVENTION_ROUTE,
+            ['assetFamilyIdentifier' => self::ASSET_FAMILY_IDENTIFIER, 'assetCode' => $assetCodeToExecuteNamingConventionsOn],
+            'POST'
+        );
+
+        $response = $this->client->getResponse();
+        Assert::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertViolationOnMaxLengthNotCorrect($response);
+        $this->assertYearOfFirstAlbumIsEmpty($assetCodeToExecuteNamingConventionsOn);
+    }
 
     /** @test */
     public function it_forbids_to_execute_naming_conventions_when_user_does_not_have_the_right_to_execute_naming_conventions(): void
@@ -251,7 +272,7 @@ class ExecuteNamingConventionActionTest extends ControllerIntegrationTestCase
             AssetCode::fromString($assetCode)
         );
         $value = $asset->findValue(ValueKey::create(
-            AttributeIdentifier::fromString(self::ATTRIBUTE_IDENTIFIER),
+            AttributeIdentifier::fromString(self::ATTRIBUTE_CODE),
             ChannelReference::noReference(),
             LocaleReference::noReference()
         ));
@@ -265,11 +286,11 @@ class ExecuteNamingConventionActionTest extends ControllerIntegrationTestCase
             AssetCode::fromString($assetCode)
         );
         $value = $asset->findValue(ValueKey::create(
-            AttributeIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_IDENTIFIER, 'fingerprint'),
+            AttributeIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE, 'fingerprint'),
             ChannelReference::noReference(),
             LocaleReference::noReference()
         ));
-        self::assertNotNull($value, sprintf('Expected to have value "%s" for attribute "%s"', $expectedValue, self::ATTRIBUTE_IDENTIFIER));
+        self::assertNotNull($value, sprintf('Expected to have value "%s" for attribute "%s"', $expectedValue, self::ATTRIBUTE_CODE));
         $actualValue = $value->getData()->normalize();
         self::assertEquals($actualValue, $expectedValue);
     }
@@ -285,9 +306,9 @@ class ExecuteNamingConventionActionTest extends ControllerIntegrationTestCase
         $this->assetFamilyRepository->create($singer);
 
         $yearOfFirstAlbum = TextAttribute::createText(
-            AttributeIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_IDENTIFIER, 'fingerprint'),
+            AttributeIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE, 'fingerprint'),
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
-            AttributeCode::fromString(self::ATTRIBUTE_IDENTIFIER),
+            AttributeCode::fromString(self::ATTRIBUTE_CODE),
             LabelCollection::fromArray(['en_US' => 'Year Of First Album']),
             AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(false),
@@ -299,5 +320,28 @@ class ExecuteNamingConventionActionTest extends ControllerIntegrationTestCase
             AttributeRegularExpression::createEmpty()
         );
         $this->attributeRepository->create($yearOfFirstAlbum);
+    }
+
+    private function setMaxLengthOfYearAttribute(int $maxLength): void
+    {
+        /** @var TextAttribute $attribute */
+        $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+            AttributeCode::fromString(self::ATTRIBUTE_CODE),
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER)
+        );
+        $attribute->setMaxLength(AttributeMaxLength::fromInteger($maxLength));
+        $this->attributeRepository->update($attribute);
+    }
+
+    /**
+     * @param Response $response
+     *
+     */
+    private function assertViolationOnMaxLengthNotCorrect(Response $response): void
+    {
+        self::assertEquals(
+            '[{"messageTemplate":"This value is too long. It should have 1 character or less.","parameters":{"{{ value }}":"\u00221975\u0022","{{ limit }}":1},"message":"This value is too long. It should have 1 character or less.","propertyPath":"values.year_of_first_album","invalidValue":{"text":"1975","attribute":{"regularExpression":{"empty":true},"maxLength":[],"textarea":false,"validationRuleSetToRegularExpression":false,"validationRuleSetToEmail":false,"validationRuleSetToUrl":false,"validationRule":true,"type":"text","identifier":[],"assetFamilyIdentifier":[],"code":[],"labelCodes":["en_US"],"order":[],"valuePerChannel":false,"valuePerLocale":false},"channel":null,"locale":null}}]',
+            $response->getContent()
+        );
     }
 }
