@@ -278,3 +278,61 @@ test('It notifies when a root error is detected', async () => {
 
   expect(dependencies.notify).toBeCalledWith('error', 'an.error.occured');
 });
+
+test('It notifies when a product error is detected', async () => {
+  await act(async () => {
+    ReactDOM.render(
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <QuantifiedAssociations
+            quantifiedAssociations={quantifiedAssociationCollection}
+            errors={[
+              {
+                propertyPath: '.products',
+                message: 'a product error occured',
+                messageTemplate: 'a.product.error.occured',
+                invalidValue: '',
+                parameters: {},
+              },
+            ]}
+            parentQuantifiedAssociations={{products: [], product_models: []}}
+            onAssociationsChange={jest.fn()}
+            onOpenPicker={jest.fn()}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
+      container
+    );
+  });
+
+  expect(dependencies.notify).toBeCalledWith('error', 'a.product.error.occured');
+});
+
+test('It notifies when a product model error is detected', async () => {
+  await act(async () => {
+    ReactDOM.render(
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <QuantifiedAssociations
+            quantifiedAssociations={quantifiedAssociationCollection}
+            errors={[
+              {
+                propertyPath: '.product_models',
+                message: 'a product model error occured',
+                messageTemplate: 'a.product.model.error.occured',
+                invalidValue: '',
+                parameters: {},
+              },
+            ]}
+            parentQuantifiedAssociations={{products: [], product_models: []}}
+            onAssociationsChange={jest.fn()}
+            onOpenPicker={jest.fn()}
+          />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
+      container
+    );
+  });
+
+  expect(dependencies.notify).toBeCalledWith('error', 'a.product.model.error.occured');
+});
