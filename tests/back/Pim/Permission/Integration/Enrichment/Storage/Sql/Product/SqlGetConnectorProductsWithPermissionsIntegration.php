@@ -88,6 +88,7 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
                     'groups' => []
                 ]
             ],
+            [],
             ['workflow_status' => 'working_copy'],
             new ReadValueCollection([
                 ScalarValue::value('variant_product_axis_attribute', true),
