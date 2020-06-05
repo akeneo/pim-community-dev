@@ -35,6 +35,12 @@ class ConnectorProductSpec extends ObjectBehavior
                     'groups' => ['group_code_3']
                 ]
             ],
+            [
+                'PRODUCT_SET' => [
+                    'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
+                    'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
+                ],
+            ],
             [],
             new ReadValueCollection([
                 ScalarValue::value('attribute_code_1', 'data'),
@@ -168,6 +174,7 @@ class ConnectorProductSpec extends ObjectBehavior
             [],
             [],
             null,
+            [],
             [],
             [],
             new ReadValueCollection()

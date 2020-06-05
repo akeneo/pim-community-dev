@@ -41,6 +41,7 @@ class QuantifiedAssociations
                 }
 
                 foreach ($quantifiedLinks as $association) {
+                    Assert::isArray($association);
                     Assert::keyExists($association, 'identifier');
                     Assert::keyExists($association, 'quantity');
 

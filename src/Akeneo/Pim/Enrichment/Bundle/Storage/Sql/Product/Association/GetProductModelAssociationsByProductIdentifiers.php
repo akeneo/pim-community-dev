@@ -55,6 +55,7 @@ FROM (
                            LEFT JOIN pim_catalog_association_product_model product_model_association ON association.id = product_model_association.association_id
                            LEFT JOIN pim_catalog_product_model associated_product_model ON product_model_association.product_model_id = associated_product_model.id
                   WHERE product.identifier IN (:productIdentifiers)
+                  AND association_type.is_quantified = false
                   UNION ALL
                   SELECT product.identifier    as product_identifier,
                          association_type.code as association_type_code,
@@ -66,6 +67,7 @@ FROM (
                            INNER JOIN pim_catalog_association_product_model_to_product_model product_model_to_product_model ON product_model_association.id = product_model_to_product_model.association_id
                            INNER JOIN pim_catalog_product_model associated_product_model ON product_model_to_product_model.product_model_id = associated_product_model.id
                   WHERE product.identifier IN (:productIdentifiers)
+                  AND association_type.is_quantified = false
                   UNION ALL
                   SELECT product.identifier    as product_identifier,
                          association_type.code as association_type_code,
@@ -78,6 +80,7 @@ FROM (
                            INNER JOIN pim_catalog_association_product_model_to_product_model product_model_to_product_model ON product_model_association.id = product_model_to_product_model.association_id
                            INNER JOIN pim_catalog_product_model associated_product_model ON product_model_to_product_model.product_model_id = associated_product_model.id
                   WHERE product.identifier IN (:productIdentifiers)
+                  AND association_type.is_quantified = false
               ) all_product_model_associations
          GROUP BY all_product_model_associations.product_identifier, association_type_code
      ) result_by_identifier_and_type

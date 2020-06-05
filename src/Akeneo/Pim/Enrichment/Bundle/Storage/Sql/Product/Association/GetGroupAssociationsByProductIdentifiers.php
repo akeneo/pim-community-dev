@@ -57,6 +57,7 @@ FROM (
                            LEFT JOIN pim_catalog_association_group group_association ON association.id = group_association.association_id
                            LEFT JOIN pim_catalog_group associated_group ON group_association.group_id = associated_group.id
                   WHERE product.identifier IN (?)
+                  AND association_type.is_quantified = false
                   UNION ALL
                   SELECT product.identifier    as product_identifier,
                          association_type.code as association_type_code,
@@ -68,6 +69,7 @@ FROM (
                            INNER JOIN pim_catalog_association_product_model_to_group product_model_to_group ON product_model_association.id = product_model_to_group.association_id
                            INNER JOIN pim_catalog_group associated_group ON product_model_to_group.group_id = associated_group.id
                   WHERE product.identifier IN (?)
+                  AND association_type.is_quantified = false
                   UNION ALL
                   SELECT product.identifier    as product_identifier,
                          association_type.code as association_type_code,
@@ -80,6 +82,7 @@ FROM (
                            INNER JOIN pim_catalog_association_product_model_to_group product_model_to_group ON product_model_association.id = product_model_to_group.association_id
                            INNER JOIN pim_catalog_group associated_group ON product_model_to_group.group_id = associated_group.id
                   WHERE product.identifier IN (?)
+                  AND association_type.is_quantified = false
               ) all_group_associations
          GROUP BY all_group_associations.product_identifier, association_type_code
      ) result_by_identifier_and_type

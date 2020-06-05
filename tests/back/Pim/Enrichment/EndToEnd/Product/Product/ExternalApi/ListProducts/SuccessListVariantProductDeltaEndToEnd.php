@@ -144,7 +144,8 @@ JSON;
 		                "product_models": [],
 		                "groups": []
                     }
-		        }
+		        },
+		        "quantified_associations": {}
             },
             {
                 "_links":{
@@ -234,7 +235,8 @@ JSON;
 		                "product_models": [],
 		                "groups": []
                     }
-		        }
+		        },
+		        "quantified_associations": {}
             }
         ]
     }

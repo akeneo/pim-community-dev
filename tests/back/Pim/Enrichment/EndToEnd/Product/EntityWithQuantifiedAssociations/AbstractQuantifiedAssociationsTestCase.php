@@ -7,6 +7,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractQuantifiedAssociationsTestCase extends InternalApiTestCase
 {
+    use QuantifiedAssociationsTestCaseTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -24,27 +26,6 @@ abstract class AbstractQuantifiedAssociationsTestCase extends InternalApiTestCas
     protected function getConfiguration()
     {
         return $this->catalog->useFunctionalCatalog('catalog_modeling');
-    }
-
-    protected function createQuantifiedAssociationType(string $code): void
-    {
-        $data =
-            <<<JSON
-    {
-        "code": "$code",
-        "is_quantified": true
-    }
-JSON;
-        $this->client->request(
-            'POST',
-            '/configuration/association-type/rest',
-            [],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ],
-            $data
-        );
     }
 
     protected function getAdminUser(): UserInterface

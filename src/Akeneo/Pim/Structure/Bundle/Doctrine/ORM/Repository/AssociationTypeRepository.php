@@ -35,6 +35,7 @@ class AssociationTypeRepository extends EntityRepository implements AssociationT
                 );
             }
         }
+        $qb->andWhere('a.isQuantified = false');
 
         return $qb->getQuery()->getResult();
     }

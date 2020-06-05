@@ -30,6 +30,7 @@ class ConnectorProductListSpec extends ObjectBehavior
                 'parent_product_model_code',
                 [],
                 [],
+                [],
                 new ReadValueCollection()
             )
         ]);
