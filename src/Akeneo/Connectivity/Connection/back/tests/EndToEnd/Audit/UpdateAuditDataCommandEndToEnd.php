@@ -10,6 +10,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection as DbalConnection;
+use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -49,7 +50,7 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         $product1 = $this->createProduct('product1', ['enabled' => false]);
         $this->createProduct('product2', ['enabled' => false]);
         $product3 = $this->createProduct('product3', ['enabled' => false]);
-        $this->setVersioningAuthor($connection->username());
+        $this->setVersioningAuthorAndDate($connection->username());
 
         $commandTester = new CommandTester($this->command);
         $commandTester->execute([]);
@@ -60,7 +61,7 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         $this->updateProduct($product1, ['enabled' => true]);
         $this->updateProduct($product1, ['enabled' => false]);
         $this->updateProduct($product3, ['enabled' => true]);
-        $this->setVersioningAuthor($connection->username());
+        $this->setVersioningAuthorAndDate($connection->username());
 
         $commandTester = new CommandTester($this->command);
         $commandTester->execute([]);
@@ -81,8 +82,8 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
 
         $product1 = $this->createProduct('product1', ['enabled' => false]);
         $product2 = $this->createProduct('product2', ['enabled' => false]);
-        $this->setVersioningAuthor($erpConnection->username(), $product1);
-        $this->setVersioningAuthor($otherConnection->username(), $product2);
+        $this->setVersioningAuthorAndDate($erpConnection->username(), $product1);
+        $this->setVersioningAuthorAndDate($otherConnection->username(), $product2);
 
         $commandTester = new CommandTester($this->command);
         $commandTester->execute([]);
@@ -94,8 +95,8 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
 
         $this->updateProduct($product1, ['enabled' => true]);
         $this->updateProduct($product2, ['enabled' => true]);
-        $this->setVersioningAuthor($erpConnection->username(), $product1);
-        $this->setVersioningAuthor($otherConnection->username(), $product2);
+        $this->setVersioningAuthorAndDate($erpConnection->username(), $product1);
+        $this->setVersioningAuthorAndDate($otherConnection->username(), $product2);
 
         $commandTester = new CommandTester($this->command);
         $commandTester->execute([]);
@@ -118,8 +119,8 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
 
         $product1 = $this->createProduct('product1', ['enabled' => false]);
         $product2 = $this->createProduct('product2', ['enabled' => false]);
-        $this->setVersioningAuthor($sourceConnection->username(), $product1);
-        $this->setVersioningAuthor($destinationConnection->username(), $product2);
+        $this->setVersioningAuthorAndDate($sourceConnection->username(), $product1);
+        $this->setVersioningAuthorAndDate($destinationConnection->username(), $product2);
 
         $commandTester = new CommandTester($this->command);
         $commandTester->execute([]);
@@ -131,8 +132,8 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
 
         $this->updateProduct($product1, ['enabled' => true]);
         $this->updateProduct($product2, ['enabled' => true]);
-        $this->setVersioningAuthor($sourceConnection->username(), $product1);
-        $this->setVersioningAuthor($destinationConnection->username(), $product2);
+        $this->setVersioningAuthorAndDate($sourceConnection->username(), $product1);
+        $this->setVersioningAuthorAndDate($destinationConnection->username(), $product2);
 
         $commandTester = new CommandTester($this->command);
         $commandTester->execute([]);
@@ -160,17 +161,26 @@ SQL;
         return (int) $this->dbalConnection->executeQuery($sqlQuery, $sqlParams)->fetchColumn();
     }
 
-    private function setVersioningAuthor(string $author, ?ProductInterface $product = null): void
-    {
+    private function setVersioningAuthorAndDate(
+        string $author,
+        ?ProductInterface $product = null,
+        ?\DateTimeImmutable $dateTime = null
+    ): void {
+        if (null === $dateTime) {
+            $dateTime = new \DateTimeImmutable('1 hour ago', new \DateTimeZone('UTC'));
+        }
+
         $sqlQuery = <<<SQL
 UPDATE pim_versioning_version
-SET author = :author
+SET author = :author, logged_at = :logged_at
 WHERE resource_name = :resource_name
 SQL;
         $parameters = [
             'author' => $author,
             'resource_name' => $this->productClass,
+            'logged_at' => $dateTime,
         ];
+
         if (null !== $product) {
             $sqlQuery .= <<<SQL
  AND resource_id = :product_id
@@ -178,8 +188,13 @@ SQL;
             $parameters['product_id'] = $product->getId();
         }
 
-        $stmt = $this->dbalConnection->prepare($sqlQuery);
-        $stmt->execute($parameters);
+        $this->dbalConnection->executeQuery(
+            $sqlQuery,
+            $parameters,
+            [
+                'logged_at' => Types::DATETIME_IMMUTABLE,
+            ]
+        );
     }
 
     private function createProduct(string $identifier, array $data = []): ProductInterface

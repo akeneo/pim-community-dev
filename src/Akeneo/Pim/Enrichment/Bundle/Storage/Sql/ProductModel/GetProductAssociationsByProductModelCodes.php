@@ -51,6 +51,7 @@ JSON_ARRAYAGG(associated_product_identifier) as associations_by_type
                            LEFT JOIN pim_catalog_association_product_model_to_product association_to_product_model ON association_to_product_model.association_id = product_model_association.id
                            LEFT JOIN pim_catalog_product associated_product ON associated_product.id = association_to_product_model.product_id
                   WHERE product_model.code IN (:productModelCodes)
+                  AND association_type.is_quantified = false
                   UNION ALL
                   SELECT
                       child_product_model.code as product_model_code,
@@ -63,6 +64,7 @@ JSON_ARRAYAGG(associated_product_identifier) as associations_by_type
                        INNER JOIN pim_catalog_association_product_model_to_product product_model_to_product ON product_model_association.id = product_model_to_product.association_id
                        INNER JOIN pim_catalog_product associated_product ON product_model_to_product.product_id= associated_product.id
                   WHERE child_product_model.code IN (:productModelCodes)
+                  AND association_type.is_quantified = false
               ) all_associations
          GROUP BY all_associations.product_model_code, association_type_code
      ) result_by_identifier_and_type

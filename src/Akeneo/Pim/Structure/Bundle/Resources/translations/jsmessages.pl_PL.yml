@@ -82,6 +82,7 @@ pim_enrich.entity.association_type:
   label: typ powiązania
   property:
     is_two_way: Powiązanie dwukierunkowe
+    is_quantified: Association with quantity
   flash:
     update:
       success: Typ powiązania został pomyślnie zaktualizowany.
@@ -98,6 +99,10 @@ pim_enrich.entity.association_type:
     create:
       title: Utwórz nowy typ powiązania
       button: Utwórz typ powiązania
+      is_two_way:
+        message_on_read_only: Association type can be either quantified or two-way, to select this one, uncheck the other
+      is_quantified:
+        message_on_read_only: Association type can be either quantified or two-way, to select this one, uncheck the other
     delete:
       confirm: Czy na pewno chcesz usunąć ten typ powiązania?
   hint: <a href="{{link}}" target="_blank">W tym artykule</a>znajdziesz wszystko, czego potrzebujesz, aby utworzyć własny typ powiązania.

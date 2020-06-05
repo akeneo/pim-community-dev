@@ -168,6 +168,12 @@ akeneo_connectivity.connection:
         during_the_last_seven_days: 'Total sur les 7 derniers jours :'
         today: Aujourd'hui
     error_management:
+      data_source_error_chart:
+        section:
+          title: Erreurs sur les connexions sources
+          helper: Here you can see the total number of errors, including business errors.
+        chart:
+          title: Nombre d'erreurs par jour
       widget:
         title: Erreurs métier par connexion source
         over_the_last_seven_days: Au cours des 7 derniers jours
@@ -199,10 +205,13 @@ akeneo_connectivity.connection:
       no_error:
         title: Génial ! Aucune erreur trouvée !
       not_auditable:
+        title: Unmonitored connection
         description:
-          1: To track errors on this connection,
-          2: activate monitoring
-          3: in the settings.
+          1: Pour suivre les erreurs de cette connexion,
+          2: activer la surveillance
+          3: dans les paramètres.
+      not_data_source:
+        title: Pour l'instant, la page de suivi n'est disponible que pour la connexion source.
   runtime_error:
     error_message: Oups ! Une erreur s'est produite...
     reload_helper: Merci de rafraîchir la page et de réessayer.

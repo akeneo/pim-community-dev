@@ -11,10 +11,12 @@ class RemoveQuantifiedAssociationsFromProductModelEndToEnd extends AbstractProdu
      */
     public function it_remove_quantified_associations_from_a_product_model(): void
     {
-        $productModel = $this->createProductModel([
-            'code' => 'standard_chair',
-            'family_variant' => 'accessories_size',
-        ]);
+        $productModel = $this->createProductModel(
+            [
+                'code' => 'standard_chair',
+                'family_variant' => 'accessories_size',
+            ]
+        );
         $normalizedProductModel = $this->getProductModelFromInternalApi($productModel->getId());
 
         $quantifiedAssociations = [
@@ -49,7 +51,12 @@ class RemoveQuantifiedAssociationsFromProductModelEndToEnd extends AbstractProdu
         $normalizedProductModelWithoutQuantifiedAssociations = $this->updateNormalizedProductModel(
             $normalizedProductModel,
             [
-                'quantified_associations' => [],
+                'quantified_associations' => [
+                    'PRODUCTSET' => [
+                        'products' => [],
+                        'product_models' => [],
+                    ],
+                ],
             ]
         );
 
@@ -60,6 +67,14 @@ class RemoveQuantifiedAssociationsFromProductModelEndToEnd extends AbstractProdu
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $body = json_decode($response->getContent(), true);
-        $this->assertSame($body['quantified_associations'], []);
+        $this->assertSame(
+            [
+                'PRODUCTSET' => [
+                    'products' => [],
+                    'product_models' => [],
+                ],
+            ],
+            $body['quantified_associations']
+        );
     }
 }

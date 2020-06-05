@@ -72,6 +72,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
             'my_family_variant',
             ['workflow_status' => 'working_copy'],
             [],
+            [],
             ['category_code_1'],
             new ReadValueCollection()
         );
@@ -85,6 +86,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
             'my_family',
             'my_family_variant',
             ['workflow_status' => 'in_progress'],
+            [],
             [],
             ['category_code_4'],
             new ReadValueCollection()
@@ -133,6 +135,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
             'my_family_variant',
             ['workflow_status' => 'working_copy'],
             [],
+            [],
             ['category_code_1'],
             new ReadValueCollection()
         );
@@ -146,6 +149,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
             'my_family',
             'my_family_variant',
             ['workflow_status' => 'in_progress'],
+            [],
             [],
             ['category_code_4'],
             new ReadValueCollection()

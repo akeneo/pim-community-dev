@@ -50,6 +50,7 @@ services:
             - '@pim_catalog.updater.entity_with_values'
             - '@pim_catalog.association.filter.parent_associations'
             - '@pim_catalog.quantified_associations.quantified_associations_from_ancestors_filter'
+            - '@pim_catalog.updater.validator.quantified_associations_structure_validator'
             - ['identifier', 'created', 'updated', 'parent_associations', 'metadata']
 
     pim_catalog.updater.product_model:
@@ -61,6 +62,7 @@ services:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.association.filter.parent_associations'
             - '@pim_catalog.quantified_associations.quantified_associations_from_ancestors_filter'
+            - '@pim_catalog.updater.validator.quantified_associations_structure_validator'
             - ['identifier', 'created', 'updated', 'parent_associations', 'metadata']
 
     pim_catalog.updater.entity_with_values:
@@ -591,3 +593,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\GroupFieldClearer'
         tags:
             - { name: 'pim_catalog.updater.clearer' }
+
+    # Validators
+    pim_catalog.updater.validator.quantified_associations_structure_validator:
+        class: Akeneo\Pim\Enrichment\Component\Product\Updater\Validator\QuantifiedAssociationsStructureValidator

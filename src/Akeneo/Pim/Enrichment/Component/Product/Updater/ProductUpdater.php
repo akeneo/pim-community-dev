@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\QuantifiedAssociation\QuantifiedAssociationsFromAncestorsFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Validator\QuantifiedAssociationsStructureValidatorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
@@ -39,18 +40,23 @@ class ProductUpdater implements ObjectUpdaterInterface
     /** @var QuantifiedAssociationsFromAncestorsFilter */
     private $quantifiedAssociationsFromAncestorsFilter;
 
+    /** @var QuantifiedAssociationsStructureValidatorInterface */
+    private $quantifiedAssociationsStructureValidator;
+
     /**
-     * @param PropertySetterInterface  $propertySetter
-     * @param ObjectUpdaterInterface   $valuesUpdater
+     * @param PropertySetterInterface $propertySetter
+     * @param ObjectUpdaterInterface $valuesUpdater
      * @param ParentAssociationsFilter $parentAssociationsFilter
      * @param QuantifiedAssociationsFromAncestorsFilter $quantifiedAssociationsFromAncestorsFilter
-     * @param array                    $ignoredFields
+     * @param QuantifiedAssociationsStructureValidatorInterface $quantifiedAssociationsStructureValidator
+     * @param array $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ObjectUpdaterInterface $valuesUpdater,
         ParentAssociationsFilter $parentAssociationsFilter,
         QuantifiedAssociationsFromAncestorsFilter $quantifiedAssociationsFromAncestorsFilter,
+        QuantifiedAssociationsStructureValidatorInterface $quantifiedAssociationsStructureValidator,
         array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
@@ -58,6 +64,7 @@ class ProductUpdater implements ObjectUpdaterInterface
         $this->ignoredFields = $ignoredFields;
         $this->parentAssociationsFilter = $parentAssociationsFilter;
         $this->quantifiedAssociationsFromAncestorsFilter = $quantifiedAssociationsFromAncestorsFilter;
+        $this->quantifiedAssociationsStructureValidator = $quantifiedAssociationsStructureValidator;
     }
 
     /**
@@ -174,6 +181,7 @@ class ProductUpdater implements ObjectUpdaterInterface
                 }
                 break;
             case 'quantified_associations':
+                $this->quantifiedAssociationsStructureValidator->validate('quantified_associations', $data);
                 $data = $this->filterQuantifiedAssociationsFromAncestors($product, $data);
                 break;
         }

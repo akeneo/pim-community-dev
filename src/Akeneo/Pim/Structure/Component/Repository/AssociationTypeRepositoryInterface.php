@@ -17,7 +17,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 interface AssociationTypeRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
-     * Build all association entities not yet linked to a product
+     * Build all unquantified association type not yet linked to a product
      *
      * @param EntityWithAssociationsInterface $entity
      *

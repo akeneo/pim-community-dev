@@ -82,6 +82,7 @@ pim_enrich.entity.association_type:
   label: Verbindungstyp
   property:
     is_two_way: 2-Wege-Verbindung
+    is_quantified: Verbindung mit Menge
   flash:
     update:
       success: Verbindungstyp erfolgreich aktualisiert.
@@ -98,6 +99,10 @@ pim_enrich.entity.association_type:
     create:
       title: Einen neuen Verbindungstyp anlegen
       button: Verbindungstyp anlegen
+      is_two_way:
+        message_on_read_only: Verbindungstyp kann entweder quantifiziert oder zweiseitig gewählt werden, um diesen auszuwählen, deaktivieren Sie den anderen
+      is_quantified:
+        message_on_read_only: Verbindungstyp kann entweder quantifiziert oder zweiseitig gewählt werden, um diesen auszuwählen, deaktivieren Sie den anderen
     delete:
       confirm: Möchten Sie diesen Verbindungstyp wirklich löschen?
   hint: <a href="{{link}}" target="_blank">In diesem Artikel</a>findest du alles, was du brauchst, um deinen eigenen Verbindungstyp zu erstellen.
