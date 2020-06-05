@@ -22,7 +22,7 @@ const useDeleteAttributeOption = () => {
         switch (response.status) {
         case 400:
             const responseContent = await response.json();
-            throw Error(responseContent.message);
+            throw responseContent.message;
         }
     };
 };

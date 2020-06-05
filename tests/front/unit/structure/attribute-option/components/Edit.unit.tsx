@@ -78,8 +78,6 @@ describe('Edit an attribute option', () => {
 
         const saveButton = getByRole(container, 'save-options-translations');
         expect(saveButton).toBeInTheDocument();
-        await fireEvent.click(saveButton);
-        expect(saveCallback).toHaveBeenCalledTimes(0);
 
         await fireEvent.change(translations[0], {target: {value: 'Black 2'}});
         await fireEvent.click(saveButton);

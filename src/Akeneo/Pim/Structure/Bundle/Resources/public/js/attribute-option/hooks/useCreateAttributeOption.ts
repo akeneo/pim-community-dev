@@ -22,6 +22,12 @@ const useCreateAttributeOption = () => {
             }
         );
 
+        switch (response.status) {
+        case 400:
+            const responseContent = await response.json();
+            throw responseContent.code;
+        }
+
         return await response.json();
     };
 };

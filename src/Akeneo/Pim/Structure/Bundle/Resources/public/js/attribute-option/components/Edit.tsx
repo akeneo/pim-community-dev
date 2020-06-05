@@ -11,10 +11,10 @@ interface EditProps {
 const Edit = ({option, saveAttributeOption}: EditProps) => {
     const translate = useTranslate();
     const locales = useLocalesContext();
-    const [updatedOption, setUpdatedOption] = useState<AttributeOption | null>(null);
+    const [updatedOption, setUpdatedOption] = useState<AttributeOption>(option);
 
     useEffect(() => {
-        setUpdatedOption(null);
+        setUpdatedOption(option);
     }, [option]);
 
     const onUpdateOptionLabel = (event: ChangeEvent<HTMLInputElement>, localeCode: string) => {
@@ -22,13 +22,6 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
         let updatedOption: AttributeOption = {...option};
         updatedOption.optionValues[localeCode].value = event.target.value;
         setUpdatedOption(updatedOption);
-    };
-
-    const saveOption = () => {
-        if (updatedOption !== null) {
-            saveAttributeOption(updatedOption);
-            setUpdatedOption(null);
-        }
     };
 
     return (
@@ -57,7 +50,7 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
                         </div>
                     );
                 })}
-                <button className="AknButton AknButton--apply save" role="save-options-translations" onClick={() => saveOption()}>
+                <button className="AknButton AknButton--apply save" role="save-options-translations" onClick={() => saveAttributeOption(updatedOption)}>
                     {translate('pim_common.done')}
                 </button>
 
