@@ -7,7 +7,7 @@ const useSaveAttributeOption = () => {
     const attribute = useAttributeContext();
 
     return async (attributeOption: AttributeOption) => {
-        await fetch(
+        const response = await fetch(
             router.generate('pim_enrich_attributeoption_update', {
                 attributeId: attribute.attributeId,
                 attributeOptionId: attributeOption.id,
@@ -21,6 +21,16 @@ const useSaveAttributeOption = () => {
                 body: JSON.stringify(attributeOption),
             }
         );
+        switch (response.status) {
+        case 400:
+            const responseContent = await response.json();
+            if (responseContent.hasOwnProperty('code')) {
+                throw responseContent.code;
+            }
+            if (responseContent.hasOwnProperty('optionValues')) {
+                throw responseContent.optionValues;
+            }
+        }
     };
 };
 
