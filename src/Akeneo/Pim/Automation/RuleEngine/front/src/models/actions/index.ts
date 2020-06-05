@@ -1,4 +1,5 @@
 export * from './AddAction';
+export * from './AddToCategoryAction';
 export * from './CalculateAction';
 export * from './ClearAction';
 export * from './ClearAttributeAction';

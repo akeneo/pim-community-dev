@@ -13,12 +13,18 @@ const AddToCategoryActionLine: React.FC<Props> = ({ action, handleDelete }) => {
 
   return (
     <ActionTemplate
+      translate={translate}
       title={translate('pimee_catalog_rule.form.edit.add_to_category')}
       helper={translate('pimee_catalog_rule.form.helper.add_to_category')}
       legend={translate('pimee_catalog_rule.form.legend.add_to_category')}
       handleDelete={handleDelete}>
-      {/* Not coded yet */}
-      {JSON.stringify(action)}
+      <div className='AknGrid AknGrid--unclickable'>
+        <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
+          <div className='AknGrid-bodyCell'>
+            <div>Loading</div>
+          </div>
+        </div>
+      </div>
     </ActionTemplate>
   );
 };
