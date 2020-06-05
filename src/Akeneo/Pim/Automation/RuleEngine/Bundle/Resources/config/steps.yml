@@ -74,7 +74,7 @@ services:
     pimee_catalog_rule.step.yml_rule.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'execute_rules'
+            - 'import_rules'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_catalog_rule.reader.file.yaml_rule'
@@ -85,7 +85,7 @@ services:
     pimee_catalog_rule.step.yml_rule.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'execute_rules'
+            - 'export_rules'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_catalog_rule.reader.database.rule_definition'
@@ -96,7 +96,7 @@ services:
     pimee_catalog_rule.step.rule_impacted_product_count:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
-            - 'execute_rules'
+            - 'calculate_affected_products'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_catalog_rule.tasklet.impacted_product_count'

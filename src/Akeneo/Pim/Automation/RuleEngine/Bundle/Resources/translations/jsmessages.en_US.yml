@@ -59,7 +59,7 @@ pimee_catalog_rule:
             folder:
                 selected: Folder selected
                 not_selected: Folder
-            folders: 
+            folders:
                 selected: Folders selected
                 not_selected: Folders
             arrow:
@@ -187,6 +187,9 @@ batch_jobs:
     add_attribute_value:
         execute_rules.label: Rules execution
     default_steps:
+        export_rules: Rule export
+        import_rules: Rule import
+        calculate_affected_products: Calculate affected products
         execute_rules: Rules execution
     yml_rule_import:
         label:        Rule import in YAML

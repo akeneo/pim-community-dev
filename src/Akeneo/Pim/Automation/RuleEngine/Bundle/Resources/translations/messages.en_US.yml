@@ -118,7 +118,7 @@ job_execution:
         skipped_invalid: skipped products / product models (invalid)
         updated_entities: updated products / product models
         executed_rules: successfully executed rules
-        errored_rules: errored rules
+        errored_rules: skipped rules (invalid)
 
 pim_datagrid:
     cells:
