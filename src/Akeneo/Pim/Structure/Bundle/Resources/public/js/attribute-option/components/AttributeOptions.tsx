@@ -57,18 +57,26 @@ const AttributeOptions = () => {
 
     const saveAttributeOption = useCallback(async (attributeOption: AttributeOption) => {
         setIsSaving(true);
-        await attributeOptionSaver(attributeOption);
+        try {
+            await attributeOptionSaver(attributeOption);
+            dispatchAction(updateAttributeOptionAction(attributeOption));
+        } catch (error) {
+            notify(NotificationLevel.ERROR, error);
+        }
         setIsSaving(false);
-        dispatchAction(updateAttributeOptionAction(attributeOption));
     }, [dispatchAction, setIsSaving]);
 
     const createAttributeOption = useCallback(async (optionCode: string) => {
         setIsSaving(true);
-        const attributeOption = await attributeOptionCreate(optionCode);
+        try {
+            const attributeOption = await attributeOptionCreate(optionCode);
+            dispatchAction(createAttributeOptionAction(attributeOption));
+            setShowNewOptionForm(false);
+            setSelectedOption(attributeOption);
+        } catch (error) {
+            notify(NotificationLevel.ERROR, error);
+        }
         setIsSaving(false);
-        dispatchAction(createAttributeOptionAction(attributeOption));
-        setShowNewOptionForm(false);
-        setSelectedOption(attributeOption);
     }, [attributeOptionCreate, setIsSaving, dispatchAction, setShowNewOptionForm, setSelectedOption]);
 
     const deleteAttributeOption = useCallback(async (attributeOptionId: number) => {
