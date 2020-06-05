@@ -1,4 +1,5 @@
 import React from 'react';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {Panel} from 'akeneocommunicationchannel/components/panel';
 import {CardFetcherImplementation} from 'akeneocommunicationchannel/fetcher/card';
@@ -11,9 +12,11 @@ const dataProvider: PanelDataProvider = {
 };
 
 const Index = () => (
-  <AkeneoThemeProvider>
-    <Panel dataProvider={dataProvider} />
-  </AkeneoThemeProvider>
+  <DependenciesProvider>
+    <AkeneoThemeProvider>
+      <Panel dataProvider={dataProvider} />
+    </AkeneoThemeProvider>
+  </DependenciesProvider>
 );
 
 export {Index};

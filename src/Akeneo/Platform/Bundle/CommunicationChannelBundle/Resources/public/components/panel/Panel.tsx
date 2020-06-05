@@ -4,14 +4,17 @@ import {useCards} from 'akeneocommunicationchannel/hooks/useCards';
 import {CardFetcher} from 'akeneocommunicationchannel/fetcher/card';
 import {useCampaign} from 'akeneocommunicationchannel/hooks/useCampaign';
 import {CampaignFetcher} from 'akeneocommunicationchannel/fetcher/campaign';
-import HeaderPanel from 'akeneocommunicationchannel/components/panel/Header';
+import {HeaderPanel} from 'akeneocommunicationchannel/components/panel/Header';
 import {CardComponent} from 'akeneocommunicationchannel/components/panel/card';
 import {Card} from 'akeneocommunicationchannel/models/card';
 
 const mediator = require('oro/mediator');
 const __ = require('oro/translator');
 
-const ListCard = styled.ul``;
+const ListCard = styled.ul`
+  margin-top: 88px;
+  margin-left: 30px;
+`;
 
 type PanelDataProvider = {
   cardFetcher: CardFetcher;

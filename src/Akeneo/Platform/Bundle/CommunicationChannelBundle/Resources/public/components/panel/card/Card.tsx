@@ -1,36 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Card} from 'akeneocommunicationchannel/models/card';
-import Tag from 'akeneocommunicationchannel/components/panel/card/Tag';
-import Link from 'akeneocommunicationchannel/components/panel/card/Link';
+import {TagComponent} from 'akeneocommunicationchannel/components/panel/card/Tag';
+import {Title} from 'akeneocommunicationchannel/components/panel/card/Title';
+import {Description} from 'akeneocommunicationchannel/components/panel/card/Description';
+import {LinkComponent} from 'akeneocommunicationchannel/components/panel/card/Link';
 import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
-import {ellipsisText} from '../../../tools/ellipsis-text';
 
 const Container = styled.li`
-  margin: 20px;
+  margin: 20px 0;
   padding-bottom: 20px;
+  width: 340px;
 
   &:not(:last-child) {
-    border-bottom: 1px solid #c7cbd4;
+    border-bottom: 1px solid ${({theme}: AkeneoThemedProps) => theme.color.grey80};
   }
-`;
-
-const Title = styled.div`
-  font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.bigger};
-  height: 21px;
-  color: ${({theme}: AkeneoThemedProps) => theme.color.purple80};
-  margin: 10px 0;
-`;
-
-const Description = styled.p`
 `;
 
 const Image = styled.img`
   width: 340px;
-  height: 200px;
-  object-fit: cover;
-  object-position: 20% 10px;
-  margin: 20px 0;
+  object-fit: contain;
+  min-height: 200px;
 `;
 
 const LineContainer = styled.div`
@@ -38,7 +28,7 @@ const LineContainer = styled.div`
 `;
 
 const Date = styled.div`
-  color: #adb2c0;
+  color: ${({theme}: AkeneoThemedProps) => theme.color.grey100};
   font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.default};
   text-align: right;
   flex-grow: 1;
@@ -49,26 +39,20 @@ type CardProps = {
   campaign: string | null;
 };
 
-const getAltImage = (image: string): string  => {
-  return image.substring(image.lastIndexOf('/') + 1)
-}
-
 const CardComponent = ({card, campaign}: CardProps): JSX.Element => {
-  const descriptionEllipsed = ellipsisText(card.description);
-
   return (
     <Container>
       <LineContainer>
-        {card.tags.map((tag: string, index: number): JSX.Element => <Tag key={index} tag={tag} />)}
-        <Date>{card.date}</Date>
+        {card.tags.map((tag: string, index: number): JSX.Element => <TagComponent key={index} tag={tag} />)}
+        <Date>{card.startDate}</Date>
       </LineContainer>
-      <Title>{card.title}</Title>
-      <Description>{descriptionEllipsed}</Description>
+      <Title tags={card.tags} title={card.title} />
+      <Description tags={card.tags} description={card.description} />
       {card.img && 
-        <Image src={card.img} alt={getAltImage(card.img)} />
+        <Image src={card.img} alt={card.altImg} />
       }
       <LineContainer>
-        <Link 
+        <LinkComponent 
           baseUrl={card.link}
           campaign={campaign}
         />

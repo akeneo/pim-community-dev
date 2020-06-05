@@ -3,10 +3,12 @@ import {CampaignFetcherImplementation} from 'akeneocommunicationchannel/fetcher/
 const DataCollector = require('pim/data-collector');
 
 jest.mock('pim/data-collector');
+console.error = jest.fn();
 
 afterEach(() => {
   DataCollector.collect.mockClear();
   CampaignFetcherImplementation.campaign = null;
+  console.error.mockClear();
 });
 
 test('It gets the campaign from the Data Collector', async () => {
@@ -40,4 +42,12 @@ test('It does not call twice the DataCollector when it already fetch the campaig
   await CampaignFetcherImplementation.fetch();
 
   expect(DataCollector.collect).toHaveBeenCalledTimes(1);
+});
+
+test('It can validate the campaign data needed from the data collector', async () => {
+  const expectedData = {pim_version: '1384859', pim_edition: true};
+  DataCollector.collect.mockReturnValueOnce(expectedData);
+
+  await expect(CampaignFetcherImplementation.fetch()).rejects.toThrowError(Error);
+  expect(console.error).toHaveBeenCalledTimes(1);
 });

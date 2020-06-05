@@ -1,3 +1,5 @@
+import {validateCampaignData} from 'akeneocommunicationchannel/validator/campaignData';
+
 const DataCollector = require('pim/data-collector');
 
 type CampaignFetcher = {
@@ -14,6 +16,8 @@ class CampaignFetcherImplementation {
   static async fetch(): Promise<string> {
     if (null === this.campaign) {
       const data = await DataCollector.collect(this.analyticsUrl);
+
+      validateCampaignData(data);
 
       if (this.cloudVersion === data.pim_edition.toLowerCase()) {
         this.campaign = data.pim_edition as string;

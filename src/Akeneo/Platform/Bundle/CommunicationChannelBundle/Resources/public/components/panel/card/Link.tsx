@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
-
-const __ = require('oro/translator');
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Link = styled.a`
   border-radius: 16px;
@@ -11,7 +10,9 @@ const Link = styled.a`
   padding: 4px 10px;
   line-height: 14px;
   margin-left: auto;
-  color: #768096;
+  color: ${({theme}: AkeneoThemedProps) => theme.color.grey120};
+  text-transform: uppercase;
+  margin-top: 20px;
 `;
 
 type LinkProps = {
@@ -31,6 +32,7 @@ const buildLinkCardUrl = (baseUrl: string, campaign: string | null): URL => {
 }
 
 const LinkComponent = ({baseUrl, campaign}: LinkProps): JSX.Element => {
+  const __ = useTranslate();
   const title = baseUrl.substring(baseUrl.indexOf("#")+1);
   const url = buildLinkCardUrl(baseUrl, campaign);
 
@@ -41,4 +43,4 @@ const LinkComponent = ({baseUrl, campaign}: LinkProps): JSX.Element => {
   );
 };
 
-export = LinkComponent;
+export {LinkComponent};

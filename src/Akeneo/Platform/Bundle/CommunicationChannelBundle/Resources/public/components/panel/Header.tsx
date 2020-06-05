@@ -1,40 +1,39 @@
 import React from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
+import {AkeneoThemedProps, CloseIcon, useAkeneoTheme} from '@akeneo-pim-community/shared';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {MegaphoneIcon} from 'akeneocommunicationchannel/components/icons/Megaphone';
 
-const __ = require('oro/translator');
-
-const Header = styled.div`
-  margin-bottom: 20px;
-  background-color: ${({theme}: AkeneoThemedProps) => theme.color.purple100};
-  height: 67px;
+const Container = styled.div`
+  margin-left: 30px;
+  background-color: ${({theme}: AkeneoThemedProps) => theme.color.white};
+  width: 340px;
+  height: 44px;
+  border-bottom: 1px solid ${({theme}: AkeneoThemedProps) => theme.color.purple100};
+  display: flex;
+  position: fixed;
+  top: 0px;
+  padding-bottom: 47px;
 `;
 
-const Icon = styled.div`
-  background: url(/bundles/akeneocommunicationchannel/images/icon-gift-white.svg) no-repeat 50% 50%;
-  width: 20px;
-  height: 20px;
-  float: left;
-  margin: 20px 0 0 20px;
+const IconContainer = styled.div`
+  margin: 20px 0 0 0px;
 `;
 
 const Title = styled.div`
-  color: ${({theme}: AkeneoThemedProps) => theme.color.white};
-  font-size: 22px;
-  height: 27px;
-  float: left;
-  margin: 20px 0 0 10px;
-  letter-spacing: 0.92px;
+  color: ${({theme}: AkeneoThemedProps) => theme.color.purple100};
+  font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.big};
+  height: 18px;
+  margin: 20px 0 0 8px;
+  text-transform: uppercase;
 `;
 
 const CloseButton = styled.div`
-  background: url(/bundles/pimui/images/icon-delete-white.svg) no-repeat 50% 50%;
   cursor: pointer;
   border: none;
-  float: right;
-  margin: 24px 24px 0 0;
-  width: 16px;
-  height: 16px;
+  margin: 24px 0 0 0;
+  position: absolute;
+  right: 0px;
 `;
 
 type HeaderPanelProps = {
@@ -42,14 +41,19 @@ type HeaderPanelProps = {
   onClickCloseButton: () => void;
 };
 
-const HeaderPanelComponent = ({title, onClickCloseButton}: HeaderPanelProps): JSX.Element => {
+const HeaderPanel = ({title, onClickCloseButton}: HeaderPanelProps): JSX.Element => {
+  const __ = useTranslate();
+  const akeneoTheme = useAkeneoTheme();
+
   return (
-    <Header>
-      <Icon />
+    <Container>
+      <IconContainer><MegaphoneIcon color={akeneoTheme.color.purple100} size={20} /></IconContainer>
       <Title>{title}</Title>
-      <CloseButton title={__('pim_common.close')} onClick={onClickCloseButton} />
-    </Header>
+      <CloseButton  onClick={onClickCloseButton}>
+        <CloseIcon color={akeneoTheme.color.purple100} title={__('pim_common.close')} size={15} />
+      </CloseButton>
+    </Container>
   );
 };
 
-export = HeaderPanelComponent;
+export {HeaderPanel};

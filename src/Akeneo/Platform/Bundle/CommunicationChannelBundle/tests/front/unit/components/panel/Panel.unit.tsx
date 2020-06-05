@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, act, getByText, getAllByText, getByAltText, getByTitle} from '@testing-library/react';
 import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {Panel} from 'akeneocommunicationchannel/components/panel/Panel';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const mediator = require('oro/mediator');
 
@@ -48,9 +49,11 @@ afterEach(() => {
 test('it shows the panel with the cards', async () => {
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <Panel dataProvider={dataProvider} />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <Panel dataProvider={dataProvider} />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -62,9 +65,11 @@ test('it shows the panel with the cards', async () => {
 test('it can show for each card the information from the json', async () => {
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <Panel dataProvider={dataProvider} />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <Panel dataProvider={dataProvider} />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -80,9 +85,11 @@ test('it can show for each card the information from the json', async () => {
 test('it can open the read more link in a new tab', async () => {
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <Panel dataProvider={dataProvider} />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <Panel dataProvider={dataProvider} />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });
@@ -94,9 +101,11 @@ test('it can open the read more link in a new tab', async () => {
 test('it can close the panel', async () => {
   await act(async () => {
     ReactDOM.render(
-      <AkeneoThemeProvider>
-        <Panel dataProvider={dataProvider} />
-      </AkeneoThemeProvider>,
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <Panel dataProvider={dataProvider} />
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
       container
     );
   });

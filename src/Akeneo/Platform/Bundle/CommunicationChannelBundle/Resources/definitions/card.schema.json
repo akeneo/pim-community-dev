@@ -5,6 +5,7 @@
     "title": {"type": "string"},
     "description": {"type": "string"},
     "img": {"type": "string"},
+    "altImg": {"type": "string"},
     "link": {"type": "string"},
     "tags": {
       "type": "array",
@@ -12,14 +13,14 @@
         "type": "string"
       }
     },
-    "date": {"type": "string"}
+    "startDate": {"type": "string"}
   },
   "required": [
     "title",
     "description",
     "link",
     "tags",
-    "date"
+    "startDate"
   ],
   "additionalProperties": false
 }
