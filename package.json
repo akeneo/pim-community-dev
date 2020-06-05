@@ -9,9 +9,9 @@
   },
   "scripts": {
     "requirements": "node $npm_package_config_source/frontend/build/check-requirements.js",
-    "webpack": "yarn requirements && yarn generate-communication-channel-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
-    "webpack-dev": "yarn requirements && yarn generate-communication-channel-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
-    "webpack-watch": "yarn requirements && yarn generate-communication-channel-models && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch --strict",
+    "webpack": "yarn requirements && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
+    "webpack-dev": "yarn requirements && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
+    "webpack-watch": "yarn requirements && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch --strict",
     "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
     "before-commit": "yarn prettier && yarn lint && yarn test",
     "test": "yarn unit && yarn webpack-test --env=prod && yarn integration && yarn acceptance tests/features",
@@ -24,8 +24,7 @@
     "acceptance-html-report": "yarn acceptance ./tests/features/ -f json:public/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
     "less": "node $npm_package_config_styles",
     "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,public/bundles}/**/*.{less,css}\" -c \"yarn run less --dev\"",
-    "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
-    "generate-communication-channel-models": "node $npm_package_config_source/frontend/build/json-schema-to-typescript.js src/Akeneo/Platform/Bundle/CommunicationChannelBundle/Resources/definitions/ public/bundles/akeneocommunicationchannel/models/"
+    "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js"
   },
   "repository": {
     "type": "git",
@@ -134,6 +133,7 @@
   "workspaces": [
     "src/Akeneo/Connectivity/Connection/front",
     "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
-    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared"
+    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared",
+    "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/Resources/workspaces/communication-channel"
   ]
 }
