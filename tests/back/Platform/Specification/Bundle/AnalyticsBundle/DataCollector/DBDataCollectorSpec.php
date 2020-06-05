@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\ApiConnectionCount;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
 use PhpSpec\ObjectBehavior;
@@ -29,7 +31,8 @@ class DBDataCollectorSpec extends ObjectBehavior
         CountQuery $productValueCountQuery,
         AverageMaxQuery $productValueAverageMaxQuery,
         AverageMaxQuery $productValuePerFamilyAverageMaxQuery,
-        EmailDomainsQuery $emailDomains
+        EmailDomainsQuery $emailDomains,
+        ApiConnectionCount $apiConnectionCount
     ) {
         $this->beConstructedWith(
             $channelCountQuery,
@@ -47,7 +50,8 @@ class DBDataCollectorSpec extends ObjectBehavior
             $productValueCountQuery,
             $productValueAverageMaxQuery,
             $productValuePerFamilyAverageMaxQuery,
-            $emailDomains
+            $emailDomains,
+            $apiConnectionCount
         );
     }
 
@@ -73,7 +77,8 @@ class DBDataCollectorSpec extends ObjectBehavior
         $productValueCountQuery,
         $productValueAverageMaxQuery,
         $productValuePerFamilyAverageMaxQuery,
-        $emailDomains
+        $emailDomains,
+        $apiConnectionCount
     ) {
         $channelCountQuery->fetch()->willReturn(new CountVolume(3, -1, 'count_channels'));
         $productCountQuery->fetch()->willReturn(new CountVolume(1121, -1, 'count_products'));
@@ -91,26 +96,36 @@ class DBDataCollectorSpec extends ObjectBehavior
         $productValueAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(8,7, -1, 'average_max_product_values'));
         $productValuePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(12,10, -1, 'average_max_product_values_per_family'));
         $emailDomains->fetch()->willReturn('example.com,other-example.com');
+        $apiConnectionCount->fetch()->willReturn([
+            FlowType::DATA_SOURCE => ['tracked' => 0, 'untracked' => 0],
+            FlowType::DATA_DESTINATION => ['tracked' => 0, 'untracked' => 0],
+            FlowType::OTHER => ['tracked' => 0, 'untracked' => 0],
+        ]);
 
         $this->collect()->shouldReturn(
             [
-                "nb_channels"           => 3,
-                "nb_locales"            => 3,
-                "nb_products"           => 1121,
-                'nb_product_models'     => 123,
-                'nb_variant_products'   => 89,
-                "nb_families"           => 14,
-                "nb_attributes"         => 110,
-                "nb_users"              => 5,
-                'nb_categories'         => 250,
-                'nb_category_trees'     => 3,
-                'max_category_in_one_category'   => 25,
-                'max_category_levels'   => 6,
-                'nb_product_values'     => 254897,
+                'nb_channels' => 3,
+                'nb_locales' => 3,
+                'nb_products' => 1121,
+                'nb_product_models' => 123,
+                'nb_variant_products' => 89,
+                'nb_families' => 14,
+                'nb_attributes' => 110,
+                'nb_users' => 5,
+                'nb_categories' => 250,
+                'nb_category_trees' => 3,
+                'max_category_in_one_category' => 25,
+                'max_category_levels' => 6,
+                'nb_product_values' => 254897,
                 'avg_product_values_by_product' => 7,
                 'avg_product_values_by_family' => 10,
                 'max_product_values_by_family' => 12,
-                'email_domains' => 'example.com,other-example.com'
+                'email_domains' => 'example.com,other-example.com',
+                'api_connection' => [
+                    FlowType::DATA_SOURCE => ['tracked' => 0, 'untracked' => 0],
+                    FlowType::DATA_DESTINATION => ['tracked' => 0, 'untracked' => 0],
+                    FlowType::OTHER => ['tracked' => 0, 'untracked' => 0],
+                ],
             ]
         );
     }
