@@ -4,6 +4,10 @@ set -e
 cd "$(dirname "$0")"
 cd ./../../
 
+if [ ! -f ./.env ]; then
+    cp ./.env.dist ./.env
+fi
+
 if [ ! -f ./behat.yml ]; then
     cp ./behat.yml.dist ./behat.yml
     sed -i "s/127.0.0.1\//httpd-behat\//g" ./behat.yml
