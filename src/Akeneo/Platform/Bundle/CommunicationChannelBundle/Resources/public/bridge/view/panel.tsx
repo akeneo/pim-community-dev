@@ -1,6 +1,6 @@
 import React from 'react';
 import {ReactView} from '@akeneo-pim-community/legacy-bridge';
-import {Index} from 'akeneocommunicationchannel/index';
+import {Index} from '@akeneo-pim-community/communication-channel';
 
 const mediator = require('oro/mediator');
 
