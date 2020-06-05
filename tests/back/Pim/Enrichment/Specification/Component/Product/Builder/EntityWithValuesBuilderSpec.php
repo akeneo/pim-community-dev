@@ -62,6 +62,23 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         $this->addOrReplaceValue($product, $color, 'en_US', 'ecommerce', null);
     }
 
+    function it_considers_a_value_made_of_spaces_only_as_empty(
+        $productValueFactory,
+        ProductInterface $product,
+        AttributeInterface $label,
+        ValueInterface $labelValue
+    ) {
+        $label->getCode()->willReturn('label');
+        $product->getValue('label', null, null)->willReturn($labelValue);
+
+        $product->removeValue($labelValue)->willReturn($product);
+
+        $productValueFactory->createByCheckingData(Argument::cetera())->shouldNotBeCalled();
+        $product->addValue(Argument::any())->shouldNotBecalled();
+
+        $this->addOrReplaceValue($product, $label, null, null, ' ');
+    }
+
     function it_adds_a_non_empty_product_value(
         $productValueFactory,
         ProductInterface $product,

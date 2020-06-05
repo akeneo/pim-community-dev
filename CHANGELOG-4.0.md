@@ -6,6 +6,7 @@
 - CXP-306: Fix the collect of product events
 - PIM-9282: Make calling attribute options via API case insensitive
 - PIM-9290: Fix product categories loading
+- PIM-9291: Fix product updated with a text value made of spaces only
 
 # 4.0.31 (2020-06-01)
 
