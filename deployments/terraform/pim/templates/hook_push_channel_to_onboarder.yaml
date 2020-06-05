@@ -12,7 +12,7 @@ metadata:
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
-    "helm.sh/hook": {{ .Values.onboarder.hook.pushChannelToOnboarder.hook | quote }}
+    "helm.sh/hook": "post-install"
     "helm.sh/hook-weight": "15"
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:

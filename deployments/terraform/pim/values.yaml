@@ -194,13 +194,10 @@ onboarder:
   hook:
     setupOnboarderDatabase:
       enabled: true
-      hook: "post-install"
     pushChannelToOnboarder:
       enabled: true
-      hook: "post-install"
     importAdditionalOnboarderFixtures:
-      enabled: true
-      hook: "post-install"
+      enabled: false
   pubsub:
     topicPubMiddleware: null
     topicPubOnboarder: null

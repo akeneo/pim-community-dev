@@ -152,7 +152,8 @@ RUN mkdir var && \
     EDITION=cloud yarnpkg run webpack && \
     find . -type d -name node_modules | xargs rm -rf && \
     rm -rf public/test_dist && \
-    cp vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema/
+    cp vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema/ && \
+    cp vendor/akeneo/pim-onboarder/upgrades/schema/* upgrades/schema/
 
 #
 # Image used for production
