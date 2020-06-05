@@ -7,6 +7,7 @@ import { NetworkLifeCycle } from '../../../../components/CategoryTree/hooks/Netw
 import { CategoryTreeModel } from '../../../../components/CategoryTree/category-tree.types';
 import { Select2SimpleSyncWrapper } from '../../../../components/Select2Wrapper';
 import { AkeneoSpinner } from '../../../../components/AkeneoSpinner';
+import { AddToCategoryTree } from './AddToCategoryTree';
 
 type Props = {
   action: AddToCategoryAction;
@@ -33,7 +34,7 @@ const AddToCategoryActionLine: React.FC<Props> = ({
   });
 
   const [categoryTreesSelected, setCategoryTreesSelected] = useState<
-    Map<string, string[]>
+    Map<number, string[]>
   >(new Map());
 
   useEffect(() => {
@@ -45,12 +46,25 @@ const AddToCategoryActionLine: React.FC<Props> = ({
 
   const handleAddCategoryTree = (event: any) => {
     const tmpCategoryTreesSelected = new Map(categoryTreesSelected);
-    const key: string = event.val;
+    const key = Number(event.val);
     if (!tmpCategoryTreesSelected.has(key)) {
       tmpCategoryTreesSelected.set(key, []);
     }
     setCategoryTreesSelected(tmpCategoryTreesSelected);
   };
+
+  const handleClickCategory = (categoryId: number, value: string) => {
+    const tmpCategoryTreesSelected = new Map(categoryTreesSelected);
+    const values = tmpCategoryTreesSelected.get(categoryId);
+    if (values) {
+      tmpCategoryTreesSelected.set(categoryId, [...values, value]);
+    } else {
+      tmpCategoryTreesSelected.set(categoryId, [value]);
+    }
+    setCategoryTreesSelected(tmpCategoryTreesSelected);
+  };
+
+  console.log({ categoryTreesSelected });
 
   return (
     <ActionTemplate
@@ -73,14 +87,20 @@ const AddToCategoryActionLine: React.FC<Props> = ({
           <label htmlFor='add_category_select_tree'>
             Category tree (required)
           </label>
-          {Array.from(categoryTreesSelected.keys()).map(code => {
-            console.log({ code });
-            return (
-              <button key={code} type='button'>
-                {code}
-              </button>
-            );
-          })}
+          {Array.from(categoryTreesSelected.entries()).map(
+            ([categoryTreeId, selectedCategories]) => {
+              return (
+                <AddToCategoryTree
+                  key={`${categoryTreeId}-category-tree`}
+                  categoryTree={categoriesTrees.data?.find(
+                    c => c.id === categoryTreeId
+                  )}
+                  onClickCategory={handleClickCategory}
+                  selectedCategoriesLength={selectedCategories.length}
+                />
+              );
+            }
+          )}
           {categoriesTrees.status === 'PENDING' ? (
             // Replace with a proper select loader component
             <AkeneoSpinner />
@@ -92,7 +112,7 @@ const AddToCategoryActionLine: React.FC<Props> = ({
               onSelecting={handleAddCategoryTree}
               data={
                 categoriesTrees.data?.map(categoryTree => ({
-                  id: categoryTree.code,
+                  id: categoryTree.id,
                   text: categoryTree.code,
                 })) || []
               }
