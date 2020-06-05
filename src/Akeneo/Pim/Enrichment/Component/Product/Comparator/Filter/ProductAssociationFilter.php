@@ -114,11 +114,7 @@ class ProductAssociationFilter implements FilterInterface
         $comparator = $this->comparatorRegistry->getFieldComparator(ProductNormalizer::FIELD_ASSOCIATIONS);
         $diff = $comparator->compare($associations, $this->getOriginalAssociation($originalAssociations, $type, $key));
 
-        if (null !== $diff) {
-            return $diff;
-        }
-
-        return null;
+        return $diff;
     }
 
     /**
@@ -133,11 +129,7 @@ class ProductAssociationFilter implements FilterInterface
         $comparator = $this->comparatorRegistry->getFieldComparator(ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS);
         $diff = $comparator->compare($associations, $this->getOriginalAssociation($originalAssociations, $type, $key));
 
-        if (null !== $diff) {
-            return $diff;
-        }
-
-        return null;
+        return $diff;
     }
 
     protected function getOriginalAssociation(array $originalAssociations, string $type, string $key): array
