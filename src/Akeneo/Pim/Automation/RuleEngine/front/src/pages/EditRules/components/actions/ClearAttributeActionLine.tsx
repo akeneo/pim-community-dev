@@ -32,12 +32,9 @@ const ClearAttributeActionLine: React.FC<Props> = ({
     values.scope = action.scope;
   }
 
-  useValueInitialization(
-    `content.actions[${lineNumber}]`,
-    { type: action.type },
-    {},
-    [action]
-  );
+  useValueInitialization(`content.actions[${lineNumber}]`, values, {}, [
+    action,
+  ]);
 
   return (
     <ActionTemplate
