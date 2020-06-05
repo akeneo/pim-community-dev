@@ -1,15 +1,24 @@
 import React from 'react';
-import { FallbackAction } from '../../../../models/actions/FallbackAction';
+import { AddToCategoryAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
 
 type Props = {
-  action: FallbackAction;
+  action: AddToCategoryAction;
 } & ActionLineProps;
 
-const AddToCategoryActionLine: React.FC<Props> = ({ action, handleDelete }) => {
-  const translate = useTranslate();
+const AddToCategoryActionLine: React.FC<Props> = ({
+  translate,
+  lineNumber,
+  action,
+  handleDelete,
+  router,
+  currentCatalogLocale,
+}) => {
+  console.log('lineNumber', lineNumber);
+  console.log('action', action);
+  console.log('router', router);
+  console.log('currentCatalogLocale', currentCatalogLocale);
 
   return (
     <ActionTemplate

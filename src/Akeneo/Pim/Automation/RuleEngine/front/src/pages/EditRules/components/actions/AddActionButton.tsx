@@ -21,18 +21,14 @@ const AddActionButton: React.FC<Props> = ({ handleAddAction }) => {
   });
 
   const handleAddActionFromKey = (actionKey: string) => {
-    console.log({ actionKey });
     const createActionFunction = AvailableAddAction[actionKey];
     const action = createActionFunction();
-    console.log({ action });
     handleAddAction(action);
   };
 
-  console.log({ actionsData });
-
   const addCategoryAction = {
-    id: 'add_categories',
-    text: 'Add categories',
+    id: 'set_categories',
+    text: 'Set categories',
   };
 
   return (

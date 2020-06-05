@@ -1,28 +1,35 @@
 import React from 'react';
 import { AddToCategoryActionLine } from '../../pages/EditRules/components/actions/AddToCategoryActionLine';
-// import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
-import { ProductField } from './ProductField';
-// import { AddAction } from '.';
+import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
 
-export type AddToCategoryActionLine = {
-  module: React.FC<any>;
-  type: 'add';
-  items: string[];
-} & ProductField;
+export type AddToCategoryAction = {
+  module: React.FC<{ action: AddToCategoryAction } & ActionLineProps>;
+  type: 'set';
+  field: 'categories';
+  value: string[] | null;
+};
 
-export const denormalizeAddToCategoryActionLine = (json: any): any | null => {
-  console.log({ json });
-
-  if (json.type !== 'add') {
+export const denormalizeAddToCategoryAction = (json: any): AddToCategoryAction | null => {
+  if (json.type !== 'set') {
+    return null;
+  }
+  if (json.field !== 'categories') {
     return null;
   }
 
   return {
     module: AddToCategoryActionLine,
-    type: 'add',
-    items: json.items,
-    field: json.field,
-    // locale: json.locale || null,
-    // scope: json.scope || null,
+    type: 'set',
+    field: 'categories',
+    value: json.value,
+  };
+};
+
+export const createAddToCategoryAction: () => AddToCategoryAction = () => {
+  return {
+    module: AddToCategoryActionLine,
+    type: 'set',
+    field: 'categories',
+    value: null,
   };
 };
