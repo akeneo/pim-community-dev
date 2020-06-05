@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -78,8 +79,21 @@ final class ExecuteRulesTasklet implements TaskletInterface
                     $this->ruleRunner->run($ruleDefinition);
                 }
             } catch (\LogicException $e) {
-                $error = \sprintf('Rule "%s": %s', $ruleDefinition->getCode(), $e->getMessage());
-                $this->stepExecution->addError($error);
+                $error = 'The "{{ ruleCode }}" could not be executed: {{ error }}';
+                $rule = [
+                    'code' => $ruleDefinition->getCode(),
+                    'content' => $ruleDefinition->getContent(),
+                ];
+                $this->stepExecution->addWarning(
+                    $error,
+                    [
+                        '{{ ruleCode }}' => $ruleDefinition->getCode(),
+                        '{{ error }}' => $e->getMessage(),
+                    ],
+                    new DataInvalidItem($rule)
+                );
+                $this->stepExecution->addError(\sprintf('Rule "%s": %s', $ruleDefinition->getCode(), $e->getMessage()));
+
                 $this->stepExecution->incrementSummaryInfo('errored_rules');
                 if ($this->stepExecution->getJobParameters()->get('stop_on_error')) {
                     throw $e;
