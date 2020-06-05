@@ -75,7 +75,7 @@ class ProductModel implements ArrayConverterInterface
     public function convert(array $flatProductModel, array $options = []): array
     {
         $mappedFlatProductModel = $this->mapFields($flatProductModel, $options);
-        $filteredItem = $this->filterFields($mappedFlatProductModel, true);
+        $filteredItem = $this->filterFields($mappedFlatProductModel, $options['with_associations']);
         $this->validateItem($filteredItem);
 
         $mergedFlatProductModel = $this->columnsMerger->merge($filteredItem);
@@ -84,23 +84,21 @@ class ProductModel implements ArrayConverterInterface
         return $convertedProductModel;
     }
 
-    /**
-     * @param array $mappedItem
-     * @param bool  $withAssociations
-     *
-     * @return array
-     */
-    protected function filterFields(array $mappedItem, $withAssociations): array
+    protected function filterFields(array $mappedItem, bool $withAssociations): array
     {
         if (false === $withAssociations) {
-            $isGroupAssPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
-            $isProductAssPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
-            $isProductModelAssPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
+            $isGroupAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
+            $isProductAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
+            $isProductModelAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
+            $isProductAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
+            $isProductModelAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
             foreach (array_keys($mappedItem) as $field) {
-                $isGroup = (1 === preg_match($isGroupAssPattern, $field));
-                $isProduct = (1 === preg_match($isProductAssPattern, $field));
-                $isProductModel = (1 === preg_match($isProductModelAssPattern, $field));
-                if ($isGroup || $isProduct || $isProductModel) {
+                $isGroup = (1 === preg_match($isGroupAssociationPattern, $field));
+                $isProduct = (1 === preg_match($isProductAssociationPattern, $field));
+                $isProductModel = (1 === preg_match($isProductModelAssociationPattern, $field));
+                $isProductQuantity = (1 === preg_match($isProductAssociationQuantityPattern, $field));
+                $isProductModelQuantity = (1 === preg_match($isProductModelAssociationQuantityPattern, $field));
+                if ($isGroup || $isProduct || $isProductModel || $isProductQuantity || $isProductModelQuantity) {
                     unset($mappedItem[$field]);
                 }
             }
@@ -165,14 +163,15 @@ class ProductModel implements ArrayConverterInterface
     }
 
     /**
-     * Returns associations fields (resolves once)
-     *
-     * @return array
+     * Returns associations and quantified associations fields (resolves once)
      */
     protected function getOptionalAssociationFields(): array
     {
         if (empty($this->optionalAssocFields)) {
-            $this->optionalAssocFields = $this->assocColumnsResolver->resolveAssociationColumns();
+            $this->optionalAssocFields = array_merge(
+                $this->assocColumnsResolver->resolveAssociationColumns(),
+                $this->assocColumnsResolver->resolveQuantifiedAssociationColumns()
+            );
         }
 
         return $this->optionalAssocFields;

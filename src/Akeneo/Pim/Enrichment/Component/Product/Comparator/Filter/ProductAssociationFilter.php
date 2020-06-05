@@ -66,7 +66,9 @@ class ProductAssociationFilter implements FilterInterface
         return $result;
     }
 
-    /* Has association(s) in new values? */
+    /**
+     * Has association(s) in new values?
+     */
     protected function hasNewAssociations(array $convertedItem): bool
     {
         if (!isset($convertedItem['associations'])) {
@@ -82,7 +84,9 @@ class ProductAssociationFilter implements FilterInterface
         return false;
     }
 
-    /* Has quantified association(s) in new values? */
+    /**
+     * Has quantified association(s) in new values?
+     */
     protected function hasNewQuantifiedAssociations(array $convertedItem): bool
     {
         if (!isset($convertedItem['quantified_associations'])) {

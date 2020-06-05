@@ -34,10 +34,6 @@ class ColumnsMerger
     /** @var AssociationColumnsResolver */
     protected $associationColumnResolver;
 
-    /**
-     * @param AttributeColumnInfoExtractor $fieldExtractor
-     * @param AssociationColumnsResolver   $associationColumnResolver
-     */
     public function __construct(AttributeColumnInfoExtractor $fieldExtractor, AssociationColumnsResolver $associationColumnResolver)
     {
         $this->fieldExtractor = $fieldExtractor;

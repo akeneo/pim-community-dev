@@ -213,20 +213,14 @@ class Product implements ArrayConverterInterface
         return $item;
     }
 
-    /**
-     * @param array $mappedItem
-     * @param bool  $withAssociations
-     *
-     * @return array
-     */
-    protected function filterFields(array $mappedItem, $withAssociations): array
+    protected function filterFields(array $mappedItem, bool $withAssociations): array
     {
         if (false === $withAssociations) {
-            $isGroupAssociationPattern = '/^\w+' . AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX . '$/';
-            $isProductAssociationPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX . '$/';
-            $isProductModelAssociationPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX . '$/';
-            $isProductAssociationQuantityPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX . AssociationColumnsResolver::QUANTITY_SUFFIX . '$/';
-            $isProductModelAssociationQuantityPattern = '/^\w+' . AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX . AssociationColumnsResolver::QUANTITY_SUFFIX . '$/';
+            $isGroupAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
+            $isProductAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
+            $isProductModelAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
+            $isProductAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
+            $isProductModelAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
             foreach (array_keys($mappedItem) as $field) {
                 $isGroup = (1 === preg_match($isGroupAssociationPattern, $field));
                 $isProduct = (1 === preg_match($isProductAssociationPattern, $field));
@@ -356,7 +350,7 @@ class Product implements ArrayConverterInterface
     }
 
     /**
-     * Returns associations fields (resolves once)
+     * Returns associations and quantified associations fields (resolves once)
      */
     protected function getOptionalAssociationFields(): array
     {

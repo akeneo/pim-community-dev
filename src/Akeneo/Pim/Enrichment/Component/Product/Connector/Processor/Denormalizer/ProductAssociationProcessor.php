@@ -199,13 +199,9 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
     }
 
     /**
-     * It there association(s) in new values ?
-     *
-     * @param array $item
-     *
-     * @return bool
+     * Is there association(s) in new values?
      */
-    protected function hasAssociationToImport(array $item)
+    protected function hasAssociationToImport(array $item): bool
     {
         if (isset($item['associations'])) {
             foreach ($item['associations'] as $association) {
