@@ -5,6 +5,7 @@
 - AOB-968: Fix product label rendering on edit form
 - CXP-306: Fix the collect of product events
 - PIM-9282: Make calling attribute options via API case insensitive
+- PIM-9290: Fix product categories loading
 
 # 4.0.31 (2020-06-01)
 
