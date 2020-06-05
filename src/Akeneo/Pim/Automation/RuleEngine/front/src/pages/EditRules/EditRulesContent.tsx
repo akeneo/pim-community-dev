@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
-import { FormContext } from 'react-hook-form';
+import { FormContext, useFieldArray } from 'react-hook-form';
 import * as akeneoTheme from '../../theme';
 import {
   AkeneoSpinner,
@@ -21,7 +21,6 @@ import { Locale, RuleDefinition } from '../../models';
 import { useSubmitEditRuleForm } from './hooks';
 import { IndexedScopes } from '../../repositories/ScopeRepository';
 import { AddActionButton } from './components/actions/AddActionButton';
-import { Action } from '../../models/Action';
 
 type Props = {
   ruleDefinitionCode: string;
@@ -68,28 +67,10 @@ const EditRulesContent: React.FC<Props> = ({
     (formMethods.watch(`labels.${currentCatalogLocale}`) as string) ||
     `[${ruleDefinitionCode}]`;
 
-  const [actions, setActions] = React.useState<(Action | null)[]>(
-    ruleDefinition.actions
-  );
-  React.useEffect(() => {
-    setActions(ruleDefinition.actions);
-  }, [ruleDefinition]);
+  const { fields, append, remove } = useFieldArray({ control: formMethods.control, name: 'content.actions' });
 
-  const handleDeleteAction = (lineNumber: number) => {
-    Object.keys(formMethods.getValues()).forEach((value: string) => {
-      if (value.startsWith(`content.actions[${lineNumber}]`)) {
-        formMethods.unregister(value);
-      }
-    });
-    setActions(
-      actions.map((action: Action | null, i: number) => {
-        return i === lineNumber ? null : action;
-      })
-    );
-  };
-
-  const handleAddAction = (action: Action) => {
-    setActions([...actions, action]);
+  const handleAddAction = (action: any) => {
+    append(action);
   };
 
   return (
@@ -119,10 +100,9 @@ const EditRulesContent: React.FC<Props> = ({
             currentCatalogLocale={currentCatalogLocale}
             locales={locales}
             onSubmit={onSubmit}
-            ruleDefinition={ruleDefinition}
             scopes={scopes}
-            actions={actions}
-            handleDeleteAction={handleDeleteAction}
+            actions={fields}
+            handleDeleteAction={remove}
           />
         </FormContext>
       </Content>

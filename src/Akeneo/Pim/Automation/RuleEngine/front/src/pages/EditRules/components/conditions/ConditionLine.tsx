@@ -38,11 +38,7 @@ const ConditionLine: React.FC<Props> = ({
   const router = useBackboneRouter();
   const [ Line, setLine ] = React.useState<React.FC<ConditionLineProps & { condition: Condition }>>();
   React.useEffect(() => {
-    if (!Line) {
-      getConditionModule(condition, router).then((module) => {
-        setLine(() => module);
-      });
-    }
+    getConditionModule(condition, router).then((module) => setLine(() => module));
   }, []);
 
   if (!Line) {

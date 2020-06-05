@@ -11,7 +11,6 @@ import {
   createCategoryCondition,
   Locale,
   LocaleCode,
-  RuleDefinition,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
@@ -75,21 +74,16 @@ const RuleProductSelectionFieldset = styled.fieldset`
 type Props = {
   currentCatalogLocale: LocaleCode;
   locales: Locale[];
-  ruleDefinition: RuleDefinition;
   scopes: IndexedScopes;
 };
 
 const RuleProductSelection: React.FC<Props> = ({
   currentCatalogLocale,
   locales,
-  ruleDefinition,
   scopes,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-  const [conditions, setConditions] = React.useState<(Condition | null)[]>(
-    ruleDefinition.conditions
-  );
 
   const { getValues, control } = useFormContext();
   const { fields, append, remove } = useFieldArray({ control, name: 'content.conditions' });
@@ -99,11 +93,7 @@ const RuleProductSelection: React.FC<Props> = ({
     getValuesFromFormData(getValues)
   );
 
-  React.useEffect(() => {
-    setConditions(ruleDefinition.conditions);
-  }, [ruleDefinition]);
-
-  async function createCondition(fieldCode: string): Promise<Condition> {
+  const createCondition: ((fieldCode: string) => Promise<Condition>) = async (fieldCode) => {
     const factories: ConditionFactory[] = [
       createFamilyCondition,
       createTextAttributeCondition,
@@ -129,17 +119,19 @@ const RuleProductSelection: React.FC<Props> = ({
   const isActiveConditionField: (fieldCode: string) => boolean = (
     fieldCode: string
   ) => {
-    // TODO This does not work anymore
-    return conditions.some(condition => {
+    return (getValues({ nest: true })?.content?.conditions || []).some((condition: Condition) => {
       return (
-        condition !== null &&
         condition.hasOwnProperty('field') &&
         (condition as { field: string }).field === fieldCode
       );
     });
   };
 
-  const Component = ruleDefinition.actions.length
+  const hasActions: () => boolean = () => {
+    return (getValues({ nest: true })?.content?.actions || []).length > 0;
+  }
+
+  const Component = hasActions()
     ? RuleProductSelectionFieldsetWithAction
     : RuleProductSelectionFieldset;
   return (

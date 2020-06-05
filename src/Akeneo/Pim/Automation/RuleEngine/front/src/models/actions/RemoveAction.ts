@@ -1,29 +1,17 @@
-import React from 'react';
 import { RemoveActionLine } from '../../pages/EditRules/components/actions/RemoveActionLine';
-import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
 import { ProductField } from './ProductField';
+import { ActionModuleGuesser } from "../Action";
 
 export type RemoveAction = {
-  module: React.FC<{ action: RemoveAction } & ActionLineProps>;
   type: 'remove';
   items: string[];
   include_children: boolean | null;
 } & ProductField;
 
-export const denormalizeRemoveAction = async (
-  json: any
-): Promise<RemoveAction | null> => {
+export const getRemoveActionModule: ActionModuleGuesser = (json) => {
   if (json.type !== 'remove') {
-    return null;
+    return Promise.resolve(null);
   }
 
-  return Promise.resolve({
-    module: RemoveActionLine,
-    type: 'remove',
-    items: json.items,
-    field: json.field,
-    locale: json.locale || null,
-    scope: json.scope || null,
-    include_children: json.include_children || null,
-  });
+  return Promise.resolve(RemoveActionLine);
 };

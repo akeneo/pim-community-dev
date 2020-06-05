@@ -50,18 +50,14 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   attribute,
 }) => {
   const translate = useTranslate();
-  const { watch, setValue } = useFormContext();
+  const { watch } = useFormContext();
 
   const getOperatorFormValue: () => Operator = () =>
     watch(`content.conditions[${lineNumber}].operator`);
-
   const getScopeFormValue: () => ScopeCode = () =>
     watch(`content.conditions[${lineNumber}].scope`);
   const getLocaleFormValue: () => LocaleCode = () =>
     watch(`content.conditions[${lineNumber}].locale`);
-  const setLocaleFormValue = (locale: LocaleCode | null) => {
-    setValue(`content.conditions[${lineNumber}].locale`, locale);
-  }
 
   const getAvailableLocales = (): Locale[] => {
     if (!attribute.scopable) {
@@ -151,14 +147,12 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   useRegisterConst(`content.conditions[${lineNumber}].field`, condition.field);
 
   const handleScopeChange = () => {
-    console.log('handle scope change', getAvailableLocales());
     if (
       !getAvailableLocales()
         .map(locale => locale.code)
         .includes(getLocaleFormValue())
     ) {
-      console.log('go');
-      setLocaleFormValue(null);
+      condition.locale = undefined;
     }
   };
 

@@ -13,11 +13,14 @@ import {
   SetFamilyAction,
 } from './actions';
 import { Router } from '../dependenciesTools';
+import { ActionLineProps } from "../pages/EditRules/components/actions/ActionLineProps";
 
 export const AvailableAddAction: { [key: string]: () => Action } = {
   set_family: createSetFamilyAction,
   clear_attribute: createClearAttributeAction,
 };
+
+export type ActionModuleGuesser = (json: any) => React.FC<ActionLineProps> | null;
 
 export type Action =
   | AddAction

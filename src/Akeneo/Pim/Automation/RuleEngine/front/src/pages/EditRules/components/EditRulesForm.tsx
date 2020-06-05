@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTabState, Tab, TabList, TabPanel } from 'reakit/Tab';
-import { LocaleCode, RuleDefinition } from '../../../models';
+import { LocaleCode } from '../../../models';
 import { RulesBuilder } from './RulesBuilder';
 import { RuleProperties } from './RuleProperties';
 import { Locale } from '../../../models';
 import { IndexedScopes } from '../../../repositories/ScopeRepository';
 import { useFormContext } from 'react-hook-form';
-import { Action } from '../../../models/Action';
 import { useTranslate } from "../../../dependenciesTools/hooks";
 
 const getTabBorder = ({ id, selectedId, theme }: any): string | number => {
@@ -67,17 +66,15 @@ type FormData = {
 type Props = {
   locales: Locale[];
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  ruleDefinition: RuleDefinition;
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
-  actions: (Action | null)[];
+  actions: ({[key: string]: any} & { id?: string })[];
   handleDeleteAction: (lineNumber: number) => void;
 };
 
 const EditRulesForm: React.FC<Props> = ({
   locales,
   onSubmit,
-  ruleDefinition,
   scopes,
   currentCatalogLocale,
   actions,
@@ -86,7 +83,7 @@ const EditRulesForm: React.FC<Props> = ({
   const translate = useTranslate();
   const tab = useTabState({ selectedId: 'rulesBuilderTab' });
 
-  const { formState, getValues } = useFormContext();
+  const { formState } = useFormContext();
   const beforeUnload = (event: Event) => {
     event = event || window.event;
     if (formState.dirty) {
@@ -98,15 +95,6 @@ const EditRulesForm: React.FC<Props> = ({
     return;
   };
   window.onbeforeunload = beforeUnload;
-
-  // TODO Remove
-  React.useEffect(() => {
-    console.log('Dirty has changed');
-    console.log(formState.dirty);
-    console.log(JSON.stringify(formState.dirtyFields));
-    console.log(formState.dirtyFields.size);
-    console.log(JSON.stringify(getValues()));
-  }, [formState.dirtyFields, formState.dirty, formState.dirtyFields.size]);
 
   return (
     <form
@@ -128,7 +116,6 @@ const EditRulesForm: React.FC<Props> = ({
           <RulesBuilder
             currentCatalogLocale={currentCatalogLocale}
             locales={locales}
-            ruleDefinition={ruleDefinition}
             scopes={scopes}
             actions={actions}
             handleDeleteAction={handleDeleteAction}

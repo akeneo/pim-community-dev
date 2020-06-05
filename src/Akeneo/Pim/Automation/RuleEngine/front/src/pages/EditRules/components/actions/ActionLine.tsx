@@ -2,6 +2,7 @@ import React from 'react';
 import { Action } from '../../../../models/Action';
 import { ActionLineProps } from './ActionLineProps';
 import styled from 'styled-components';
+import { getActionModule } from "../../../../models/rule-definition-denormalizer";
 
 const ActionTitle = styled.div`
   color: ${({ theme }): string => theme.color.purple100};
@@ -35,7 +36,7 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   locales,
   scopes,
 }) => {
-  const Line = action.module as React.FC<ActionLineProps & { action: Action }>;
+  const Line = getActionModule(action) as React.FC<ActionLineProps & { action: Action }>;
 
   return (
     <Line
