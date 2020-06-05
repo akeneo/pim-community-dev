@@ -378,8 +378,8 @@ pim_asset_manager:
       execute_naming_convention:
         success: The execution of the naming convention went well (#TODO validation camille)
         fail: There was an error when execution the naming convention
-      completeness:
-        label: Complete
+    completeness:
+      label: Complete
   attribute:
     validation:
       limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this asset family'

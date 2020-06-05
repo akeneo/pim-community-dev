@@ -21,8 +21,10 @@ async function fetchUpdatedAsset(assetFamilyIdentifier: string, assetCode: strin
 export const saveAndExecuteNamingConvention = (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => async (
     dispatch: any
 ): Promise<void> => {
-    const isSaved = await saveAsset();
+    const isSaved = await dispatch(saveAsset());
     if (!isSaved) {
+        dispatch(notifyExecuteNamingConventionFailed());
+
         return;
     }
     const isExecuted = await executeNamingConvention(assetFamilyIdentifier, assetCode, dispatch);
