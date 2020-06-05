@@ -22,33 +22,38 @@ Background:
         And the rule list contains the imported calculate_with_round rule
 
     @acceptance-back
+    Scenario: Import a calculate rule with invalid round_precision parameter
+        When I import a calculate rule with invalid round_precision parameter
+        Then an exception with message "actions[0].roundPrecision: This value should be of type int" has been thrown
+
+    @acceptance-back
     Scenario: Import a calculate rule with invalid channels
         When I import a calculate rule with invalid channels
-        Then an exception with message "actions[0].destination.scope: The \"print\" channel does not exist" has been thrown
-        And an exception with message "actions[0].source.field: The \"item_weight\" attribute code is scopable and no channel is provided" has been thrown
-        And an exception with message "actions[0].operation_list[0].field: The \"in_stock\" attribute code is not scopable and a channel is provided" has been thrown
+        Then an exception with message "actions[0].destination: Attribute \"item_weight\" expects an existing scope, \"print\" given" has been thrown
+        And an exception with message "actions[0].source: Attribute \"item_weight\" expects a scope, none given." has been thrown
+        And an exception with message "actions[0].operationList[0]: Attribute \"in_stock\" does not expect a scope, \"ecommerce\" given" has been thrown
 
     @acceptance-back
     Scenario: Import a calculate rule with invalid locales
         When I import a calculate rule with invalid locales
-        Then an exception with message "actions[0].destination.locale: The \"es_ES\" locale does not exist or is not activate" has been thrown
-        And an exception with message "actions[0].source.field: The \"item_weight\" attribute code is localizable and no locale is provided" has been thrown
-        And an exception with message "actions[0].operation_list[0].field: The \"in_stock\" attribute code is not localizable and a locale is provided" has been thrown
+        Then an exception with message "actions[0].destination: Attribute \"item_weight\" expects an existing and activated locale, \"es_ES\" given" has been thrown
+        And an exception with message "actions[0].source: Attribute \"item_weight\" expects a locale, none given." has been thrown
+        And an exception with message "actions[0].operationList[0]: Attribute \"in_stock\" does not expect a locale, \"en_US\" given" has been thrown
 
     @acceptance-back
     Scenario: Import a calculate rule with non numeric attribute types
         When I import a calculate rule with invalid attribute types
-        Then an exception with message "actions[0].destination.field: Invalid attribute type for \"name\", expected a number, measurement or price collection attribute" has been thrown
-        And an exception with message "actions[0].source.field: Invalid attribute type for \"description\", expected a number, measurement or price collection attribute" has been thrown
-        And an exception with message "actions[0].operation_list[0].field: Invalid attribute type for \"color\", expected a number, measurement or price collection attribute" has been thrown
+        Then an exception with message "actions[0].source.field: The \"description\" attribute has an invalid \"pim_catalog_textarea\" attribute type. Expected an attribute of type pim_catalog_number | pim_catalog_price_collection | pim_catalog_metric" has been thrown
+        And an exception with message "actions[0].operationList[0].field: The \"color\" attribute has an invalid \"pim_catalog_simpleselect\" attribute type. Expected an attribute of type pim_catalog_number | pim_catalog_price_collection | pim_catalog_metric" has been thrown
+        And an exception with message "actions[0].destination.field: The \"name\" attribute has an invalid \"pim_catalog_text\" attribute type. Expected an attribute of type pim_catalog_number | pim_catalog_price_collection | pim_catalog_metric" has been thrown
 
     @acceptance-back
     Scenario: Import a calculate rule with invalid currencies
         When I import a calculate rule with invalid currencies
-        Then an exception with message "actions[0].destination.currency: Expected a valid currency, but got none" has been thrown
+        Then an exception with message "actions[0].destination.currency: The \"currency\" key is missing or empty" has been thrown
         And an exception with message "actions[0].source.currency: Expected a valid currency, the \"USD\" currency does not exist or is not activated" has been thrown
 
     @acceptance-back
     Scenario: Import a calculate rule with invalid measurement unit
         When I import a calculate rule with an invalid measurement unit in destination
-        Then an exception with message "actions[0].destination.unit: The unit \"GIGAHERTZ\" does not exist or does not belong to the default measurement family of the given attribute \"processor\"" has been thrown
+        Then an exception with message "actions[0].destination.unit: The \"GIGAHERTZ\" unit code does not exist or does not belong to the measurement family of the \"processor\" attribute" has been thrown

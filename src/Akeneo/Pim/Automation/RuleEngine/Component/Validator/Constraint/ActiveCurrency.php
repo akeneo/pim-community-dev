@@ -18,16 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 class ActiveCurrency extends Constraint
 {
-    public $currencyExpectedMessage = 'Expected a valid currency, but got none';
-    public $invalidCurrencyMessage = 'Expected a valid currency, the "%currency%" currency does not exist or is not activated';
-
-    /** @var string|null */
-    protected $attributeCode;
-
-    public function getAttributeCode(): ?string
-    {
-        return $this->attributeCode;
-    }
+    public $message = 'Expected a valid currency, the "%currency%" currency does not exist or is not activated';
 
     public function validatedBy()
     {

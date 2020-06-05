@@ -1,0 +1,30 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductDestination:
+    constraints:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
+              attributeProperty: field
+              channelProperty: scope
+              localeProperty: locale
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\CurrencyKey:
+              attributeProperty: field
+              currencyProperty: currency
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\MeasurementUnit:
+              attributeProperty: field
+              unitProperty: unit
+    properties:
+        field:
+            - Type: string
+            - NotBlank: ~
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsAttribute: ~
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AttributeTypes:
+                - pim_catalog_number
+                - pim_catalog_price_collection
+                - pim_catalog_metric
+        scope:
+            - Type: string
+        locale:
+            - Type: string
+        currency:
+            - Type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ActiveCurrency: ~
+        unit:
+            - Type: string

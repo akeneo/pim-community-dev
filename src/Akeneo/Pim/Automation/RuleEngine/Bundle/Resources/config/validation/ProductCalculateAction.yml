@@ -1,3 +1,0 @@
-Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateAction:
-    constraints:
-        - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\CalculateActionFields: ~

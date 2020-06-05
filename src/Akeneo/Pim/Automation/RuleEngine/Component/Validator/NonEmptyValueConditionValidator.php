@@ -11,10 +11,12 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\NonEmptyValueCondition;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Webmozart\Assert\Assert;
 
 /**
  * Validates that a value is not empty (except if operator is EMPTY or NOT EMPTY)
@@ -26,22 +28,19 @@ class NonEmptyValueConditionValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($productCondition, Constraint $constraint)
+    public function validate($condition, Constraint $constraint)
     {
-        if (!($productCondition instanceof ProductConditionInterface)) {
-            throw new \LogicException(sprintf(
-                'Condition of type "%s" can not be validated.',
-                gettype($productCondition)
-            ));
-        }
+        Assert::isInstanceOf($constraint, NonEmptyValueCondition::class);
+        Assert::isInstanceOf($condition, Condition::class);
 
-        $value = $productCondition->getValue();
+        $value = $condition->value;
 
-        if (Operators::IS_EMPTY !== $productCondition->getOperator() &&
-            Operators::IS_NOT_EMPTY !== $productCondition->getOperator() &&
+        if (Operators::IS_EMPTY !== $condition->operator &&
+            Operators::IS_NOT_EMPTY !== $condition->operator &&
             null === $value
         ) {
             $this->context->buildViolation($constraint->message)
+                ->setInvalidValue(null)
                 ->addViolation();
         }
     }

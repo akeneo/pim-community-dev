@@ -55,8 +55,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
-    And I should see the text "Rule content \"canon_beautiful_description\" should have a \"actions\" key."
-    And I should see the text "Rule content \"sony_beautiful_description\" should have a \"actions\" key."
+    And I should see the text "actions: The \"actions\" key is missing or empty"
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see the text "sony_beautiful_description"

@@ -11,11 +11,12 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\RemoveAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IncludeChildrenOption;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Webmozart\Assert\Assert;
 
 /**
  * Checks the validity of an 'include_children' option
@@ -32,32 +33,17 @@ class IncludeChildrenOptionValidator extends ConstraintValidator
         if (!$constraint instanceof IncludeChildrenOption) {
             throw new UnexpectedTypeException($constraint, IncludeChildrenOption::class);
         }
+        Assert::isInstanceOf($action, RemoveAction::class);
 
-        if (!$action instanceof ProductRemoveActionInterface) {
-            throw new \LogicException(sprintf('Action of type "%s" can not be validated.', gettype($action)));
-        }
-
-        $options = $action->getOptions();
-        if (!isset($options['include_children'])) {
+        if (null === $action->includeChildren || !is_bool($action->includeChildren)) {
             return;
         }
 
-        if ('categories' !== $action->getField()) {
+        if ('categories' !== $action->field) {
             $this->context->buildViolation(
                 $constraint->invalidFieldMessage,
                 [
-                    '%field%' => $action->getField(),
-                ]
-            )->addViolation();
-
-            return;
-        }
-
-        if (!is_bool($options['include_children'])) {
-            $this->context->buildViolation(
-                $constraint->invalidTypeMessage,
-                [
-                    '%type%' => gettype($options['include_children']),
+                    '%field%' => $action->field,
                 ]
             )->addViolation();
         }

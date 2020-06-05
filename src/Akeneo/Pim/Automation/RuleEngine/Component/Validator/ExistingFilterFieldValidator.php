@@ -11,9 +11,12 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingFilterField;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Webmozart\Assert\Assert;
 
 /**
  * Validates that a field can be filtered or not.
@@ -36,15 +39,22 @@ class ExistingFilterFieldValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($productCondition, Constraint $constraint)
+    public function validate($condition, Constraint $constraint)
     {
-        $filter = $this->registry->getFilter($productCondition->getField(), $productCondition->getOperator());
+        Assert::isInstanceOf($constraint, ExistingFilterField::class);
+        Assert::isInstanceOf($condition, Condition::class);
+
+        if (!is_string($condition->field) || !is_string($condition->operator)) {
+            return;
+        }
+
+        $filter = $this->registry->getFilter($condition->field, $condition->operator);
 
         if (null === $filter) {
             $this->context
                 ->buildViolation(
                     $constraint->message,
-                    ['%field%' => $productCondition->getField(), '%operator%' => $productCondition->getOperator()]
+                    ['%field%' => $condition->field, '%operator%' => $condition->operator]
                 )
                 ->addViolation();
         }

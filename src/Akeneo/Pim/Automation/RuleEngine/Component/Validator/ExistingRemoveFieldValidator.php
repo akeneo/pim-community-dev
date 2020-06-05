@@ -11,9 +11,11 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingRemoveField;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Webmozart\Assert\Assert;
 
 /**
  * Validates if you can remove items from a field.
@@ -38,7 +40,8 @@ class ExistingRemoveFieldValidator extends ConstraintValidator
      */
     public function validate($fieldName, Constraint $constraint)
     {
-        if (null === $fieldName) {
+        Assert::isInstanceOf($constraint, ExistingRemoveField::class);
+        if (!is_string($fieldName)) {
             return;
         }
 

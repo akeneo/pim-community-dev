@@ -37,6 +37,6 @@ final class LocaleShouldBeActive extends Constraint
      */
     public function getTargets()
     {
-        return static::CLASS_CONSTRAINT;
+        return static::PROPERTY_CONSTRAINT;
     }
 }

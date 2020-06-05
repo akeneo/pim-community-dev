@@ -1,4 +1,0 @@
-Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateAction:
-    constraints:
-        - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\PropertyAction: ~
-        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingConcatenateFields: ~

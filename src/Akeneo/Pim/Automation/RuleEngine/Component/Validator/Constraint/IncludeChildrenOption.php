@@ -22,7 +22,6 @@ class IncludeChildrenOption extends Constraint
 {
     public $invalidFieldMessage = 'The "include_children" option can only be applied with field "categories", ' .
         '"%field%" given';
-    public $invalidTypeMessage = 'The "include_children" option is expected to be of type "bool", "%type%" given.';
 
     /**
      * {@inheritdoc}

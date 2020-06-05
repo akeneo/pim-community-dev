@@ -1,0 +1,18 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductTarget:
+    constraints:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
+            attributeProperty: field
+            channelProperty: scope
+            localeProperty: locale
+    properties:
+        field:
+            - Type: string
+            - NotBlank: ~
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsAttribute: ~
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AttributeTypes:
+                - pim_catalog_text
+                - pim_catalog_textarea
+        scope:
+            - Type: string
+        locale:
+            - Type: string

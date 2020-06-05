@@ -1,0 +1,20 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition:
+    constraints:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\NonEmptyValueCondition: ~
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ValueCondition: ~
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingFilterField: ~
+    properties:
+        field:
+            - Type: string
+            - NotBlank:
+                  message: The "field" key is missing or empty
+        operator:
+            - Type: string
+            - NotBlank:
+                  message: The "operator" key is missing or empty
+        value:
+            - Type: [scalar, array]
+        scope:
+            - Type: string
+        locale:
+            - Type: string

@@ -48,8 +48,7 @@ Feature: Import rules
                   value: The new Sony description
 
     """
-    Then an exception with message "Rule content \"canon_beautiful_description\" should have a \"actions\" key." has been thrown
-    And an exception with message "Rule content \"sony_beautiful_description\" should have a \"actions\" key." has been thrown
+    Then an exception with message "The \"actions\" key is missing or empty" has been thrown
     And the rule list contains the rules:
     """
     sony_beautiful_description:
@@ -111,7 +110,7 @@ Feature: Import rules
                   to_field: name
 
     """
-    Then an exception with message "actions[0].fromField: The key \"from_field\" is missing or empty." has been thrown
+    Then an exception with message "actions[0].fromField: The \"from_field\" key is missing or empty" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -175,7 +174,7 @@ Feature: Import rules
                   from_field: camera_model_name
 
     """
-    Then an exception with message "actions[0].toField: The key \"to_field\" is missing or empty." has been thrown
+    Then an exception with message "actions[0].toField: The \"to_field\" key is missing or empty" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -243,7 +242,7 @@ Feature: Import rules
                   scope:  mobile
 
     """
-    Then an exception with message "actions[0].value: The key \"value\" is missing or empty." has been thrown
+    Then an exception with message "actions[0].value: The \"value\" key is missing or empty" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -305,7 +304,7 @@ Feature: Import rules
                   scope:  tablet
     """
     Then an exception with message "conditions[0]: Attribute \"name\" expects a locale, none given." has been thrown
-    And an exception with message "actions[0]: Attribute \"description\" expects a channel code and a locale code, \"tablet\" channel code and \"\" locale code given." has been thrown
+    And an exception with message "actions[0]: Attribute \"description\" expects a locale, none given." has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -372,8 +371,8 @@ Feature: Import rules
                   locale: kj_KL
                   scope:  tablet
     """
-    Then an exception with message "conditions[0]: Attribute \"name\" expects an existing and activated locale, \"kj_KL\" given." has been thrown
-    And an exception with message "actions[0]: Attribute \"description\" expects an existing and activated locale, \"kj_KL\" given." has been thrown
+    Then an exception with message "conditions[0]: Attribute \"name\" expects an existing and activated locale, \"kj_KL\" given" has been thrown
+    And an exception with message "actions[0]: Attribute \"description\" expects an existing and activated locale, \"kj_KL\" given" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -437,7 +436,7 @@ Feature: Import rules
                   locale: en_US
     """
     Then an exception with message "conditions[0]: Attribute \"description\" expects a scope, none given." has been thrown
-    And an exception with message "actions[0]: Attribute \"description\" expects a channel code and a locale code, \"\" channel code and \"en_US\" locale code given." has been thrown
+    And an exception with message "actions[0]: Attribute \"description\" expects a scope, none given" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -525,7 +524,7 @@ Feature: Import rules
     And the rule list does not contain the "canon_beautiful_description" rule
 
   @integration-back
-  Scenario: Skip rules with missing type key for copy or set action
+  Scenario: Skip rules with missing action type key
     Given the following product rule definitions:
       """
       sony_beautiful_description:
@@ -566,8 +565,7 @@ Feature: Import rules
                   value: The new Sony description
 
     """
-    Then an exception with message "Rule content \"{\"conditions\":[{\"field\":\"name\",\"operator\":\"CONTAINS\",\"value\":\"Canon\",\"locale\":\"en_US\"}],\"actions\":[{\"wrong\":\"set\",\"field\":\"description\",\"value\":\"A beautiful description\"}]}\" has an action with no type." has been thrown
-    And an exception with message "Rule content \"{\"conditions\":[{\"field\":\"name\",\"operator\":\"CONTAINS\",\"value\":\"Canon\"}],\"actions\":[{\"wrong\":\"set\",\"field\":\"description\",\"value\":\"The new Sony description\"}]}\" has an action with no type." has been thrown
+    Then an exception with message "actions[0].type: The \"type\" key is missing or empty" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -587,7 +585,7 @@ Feature: Import rules
     And the rule list does not contain the "canon_beautiful_description" rule
 
   @integration-back
-  Scenario: Skip rules with invalid type for copy or set action
+  Scenario: Skip rules with invalid action type
     Given the following product rule definitions:
       """
       sony_beautiful_description:
@@ -629,8 +627,8 @@ Feature: Import rules
                   value: The new Sony description
 
     """
-    Then an exception with message "Rule content \"{\"conditions\":[{\"field\":\"name\",\"operator\":\"CONTAINS\",\"value\":\"Canon\",\"locale\":\"en_US\"}],\"actions\":[{\"type\":\"wrong\",\"field\":\"description\",\"value\":\"A beautiful description\"}]}\" has an unknown type of action \"wrong\"." has been thrown
-    And an exception with message "Rule content \"{\"conditions\":[{\"field\":\"name\",\"operator\":\"CONTAINS\",\"value\":\"Canon\",\"locale\":\"en_US\"}],\"actions\":[{\"type\":\"another wrong\",\"field\":\"description\",\"value\":\"The new Sony description\"}]}\" has an unknown type of action \"another wrong\"." has been thrown
+    Then an exception with message "actions[0].type: Unknown action type: wrong" has been thrown
+    Then an exception with message "actions[0].type: Unknown action type: another wrong" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -757,8 +755,8 @@ Feature: Import rules
                   to_field:   description
 
     """
-    Then an exception with message "actions[0]: You cannot copy data from \"wrong\" field to the \"description\" field." has been thrown
-    And an exception with message "actions[0]: You cannot copy data from \"another wrong\" field to the \"description\" field." has been thrown
+    Then an exception with message "actions[0]: You cannot copy data from the \"wrong\" field to the \"description\" field." has been thrown
+    And an exception with message "actions[0]: You cannot copy data from the \"another wrong\" field to the \"description\" field." has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -824,8 +822,8 @@ Feature: Import rules
                   to_field:   another wrong
 
     """
-    Then an exception with message "actions[0]: You cannot copy data from \"description\" field to the \"wrong\" field." has been thrown
-    And an exception with message "actions[0]: You cannot copy data from \"description\" field to the \"another wrong\" field." has been thrown
+    Then an exception with message "actions[0]: You cannot copy data from the \"description\" field to the \"wrong\" field." has been thrown
+    And an exception with message "actions[0]: You cannot copy data from the \"description\" field to the \"another wrong\" field." has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -891,7 +889,7 @@ Feature: Import rules
                   to_field:   side_view
 
     """
-    Then an exception with message "actions[0]: No copier found for fields \"description\" and \"side_view\"" has been thrown
+    Then an exception with message "actions[0]: You cannot copy data from the \"description\" field to the \"side_view\" field" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -960,7 +958,7 @@ Feature: Import rules
                   from_locale: wrong
                   to_locale:   wrong
     """
-    Then an exception with message "actions[0]: Attribute \"name\" expects an existing and activated locale, \"wrong\" given." has been thrown
+    Then an exception with message "actions[0]: Attribute \"name\" expects an existing and activated locale, \"wrong\" given" has been thrown
     And the rule list contains the rule:
       """
       sony_beautiful_description:
@@ -1156,7 +1154,7 @@ Feature: Import rules
                     - 2014_collection
                   include_children: yolo
     """
-    Then an exception with message "actions[0]: The \"include_children\" option is expected to be of type \"bool\", \"string\" given." has been thrown
+    Then an exception with message "actions[0].includeChildren: This value should be of type bool." has been thrown
     And the rule list contains the rule:
       """
       remove_categories_for_disabled_jackets:
@@ -1206,9 +1204,9 @@ Feature: Import rules
                       scope: tablet
                       locale: en_US
     """
-    Then an exception with message "actions[0].from[0].field: The \"sku\" attribute code is not localizable and a locale is provided" has been thrown
-    And an exception with message "actions[0].from[1].field: The \"sku\" attribute code is not scopable and a channel is provided" has been thrown
-    And an exception with message "actions[0].from[2].locale: The \"unknown\" locale does not exist or is not activated" has been thrown
-    And an exception with message "actions[0].from[3].field: The \"rear_view\" attribute code is localizable and no locale is provided" has been thrown
-    And an exception with message "actions[0].from[3].field: The \"rear_view\" attribute code is scopable and no channel is provided" has been thrown
+    Then an exception with message "actions[0].from[0]: Attribute \"sku\" does not expect a locale, \"en_US\" given" has been thrown
+    And an exception with message "actions[0].from[1]: Attribute \"sku\" does not expect a scope, \"mobile\" given" has been thrown
+    And an exception with message "actions[0].from[2]: Attribute \"name\" expects an existing and activated locale, \"unknown\" given" has been thrown
+    And an exception with message "actions[0].from[3]: Attribute \"rear_view\" expects a scope, none given" has been thrown
+    And an exception with message "actions[0].from[3]: Attribute \"rear_view\" expects a locale, none given." has been thrown
     And the rule list does not contain the "bad_locale_and_scope" rule

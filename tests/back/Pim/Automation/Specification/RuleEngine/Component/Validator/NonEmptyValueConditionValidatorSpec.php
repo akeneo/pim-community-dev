@@ -2,11 +2,12 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Validator\NonEmptyValueConditionValidator;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\NonEmptyValueCondition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\NonEmptyValueCondition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\NonEmptyValueConditionValidator;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -35,31 +36,38 @@ class NonEmptyValueConditionValidatorSpec extends ObjectBehavior
         NonEmptyValueCondition $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $condition->getOperator()->willReturn('foo');
-        $condition->getValue()->willReturn(null);
+        $condition = new Condition([
+            'operator' => 'foo',
+        ]);
 
         $context->buildViolation(Argument::any(), Argument::any())->willReturn($violation);
+        $violation->setInvalidValue(null)->shouldBeCalled()->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate($condition, $constraint);
     }
 
     function it_does_not_add_a_violation_if_the_operator_is_empty_and_the_value_is_empty(
-        ProductConditionInterface $condition,
+        ExecutionContextInterface $context,
         NonEmptyValueCondition $constraint
     ) {
-        $condition->getOperator()->willReturn(Operators::IS_EMPTY);
-        $condition->getValue()->willReturn(null);
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+        $condition = new Condition([
+            'operator' => Operators::IS_EMPTY,
+        ]);
 
         $this->validate($condition, $constraint);
     }
 
     function it_does_not_add_a_violation_if_the_operator_is_not_empty_and_the_value_is_empty(
-        ProductConditionInterface $condition,
+        ExecutionContextInterface $context,
         NonEmptyValueCondition $constraint
     ) {
-        $condition->getOperator()->willReturn(Operators::IS_NOT_EMPTY);
-        $condition->getValue()->willReturn(null);
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $condition = new Condition([
+            'operator' => Operators::IS_NOT_EMPTY,
+        ]);
 
         $this->validate($condition, $constraint);
     }

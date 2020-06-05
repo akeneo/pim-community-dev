@@ -11,9 +11,11 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingSetField;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Webmozart\Assert\Assert;
 
 /**
  * Validates that you can add items to a field.
@@ -38,7 +40,8 @@ class ExistingSetFieldValidator extends ConstraintValidator
      */
     public function validate($fieldName, Constraint $constraint)
     {
-        if (null === $fieldName) {
+        Assert::isInstanceOf($constraint, ExistingSetField::class);
+        if (!is_string($fieldName)) {
             return;
         }
 

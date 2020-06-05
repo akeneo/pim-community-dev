@@ -22,13 +22,9 @@ use Symfony\Component\Validator\Constraint;
  */
 final class IsValidAttribute extends Constraint
 {
-    public $messageAttributeNotFound = 'The "%field%" attribute code does not exist';
-
-    /** @var null|string */
-    protected $locale = null;
-
-    /** @var null|string */
-    protected $scope = null;
+    public $attributeProperty;
+    public $channelProperty;
+    public $localeProperty;
 
     /**
      * {@inheritdoc}
@@ -38,13 +34,13 @@ final class IsValidAttribute extends Constraint
         return IsValidAttributeValidator::class;
     }
 
-    public function getLocale(): ?string
+    public function getTargets()
     {
-        return $this->locale;
+        return [static::CLASS_CONSTRAINT];
     }
 
-    public function getScope(): ?string
+    public function getRequiredOptions()
     {
-        return $this->scope;
+        return ['attributeProperty', 'channelProperty', 'localeProperty'];
     }
 }

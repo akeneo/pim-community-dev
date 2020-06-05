@@ -1,0 +1,28 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CopyAction:
+    constraints:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
+              attributeProperty: fromField
+              channelProperty: fromScope
+              localeProperty: fromLocale
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
+              attributeProperty: toField
+              channelProperty: toScope
+              localeProperty: toLocale
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingCopyFields: ~
+    properties:
+        fromField:
+            - Type: string
+            - NotBlank:
+                  message: The "from_field" key is missing or empty
+        fromScope:
+            - Type: string
+        fromLocale:
+            - Type: string
+        toField:
+            - Type: string
+            - NotBlank:
+                  message: The "to_field" key is missing or empty
+        toScope:
+            - Type: string
+        toLocale:
+            - Type: string

@@ -1,0 +1,15 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ClearAction:
+    constraints:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
+              attributeProperty: field
+              channelProperty: scope
+              localeProperty: locale
+    properties:
+        field:
+            - Type: string
+            - NotBlank: ~
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingClearField: ~
+        scope:
+            - Type: string
+        locale:
+            - Type: string

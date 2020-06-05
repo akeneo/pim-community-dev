@@ -1,0 +1,25 @@
+Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\RemoveAction:
+    constraints:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\PropertyAction: ~
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
+              attributeProperty: field
+              channelProperty: scope
+              localeProperty: locale
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IncludeChildrenOption: ~
+    properties:
+        field:
+            - Type: string
+            - NotBlank: ~
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingRemoveField: ~
+        scope:
+            - Type: string
+        locale:
+            - Type: string
+        items:
+            - Type: array
+            - Count:
+                min: 1
+            - All:
+                - NotBlank: ~
+        includeChildren:
+            - Type: bool
