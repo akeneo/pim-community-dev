@@ -17,8 +17,11 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,7 +57,11 @@ class ExecuteNamingConventionAction
     /** @var NormalizerInterface */
     private $violationNormalizer;
 
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
+
     public function __construct(
+        AssetRepositoryInterface $assetRepository,
         EditAssetHandler $editAssetHandler,
         EditAssetCommandFactory $editAssetCommandFactory,
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
@@ -70,6 +77,7 @@ class ExecuteNamingConventionAction
         $this->validator = $validator;
         $this->securityFacade = $securityFacade;
         $this->violationNormalizer = $violationNormalizer;
+        $this->assetRepository = $assetRepository;
     }
 
     public function __invoke(string $assetFamilyIdentifier, string $assetCode): JsonResponse
@@ -78,8 +86,22 @@ class ExecuteNamingConventionAction
             throw new AccessDeniedHttpException();
         }
 
+        try {
+            $asset = $this->assetRepository->getByAssetFamilyAndCode(
+                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+                AssetCode::fromString($assetCode)
+            );
+        } catch (\Exception $e) {
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+        }
+
+        $normalizedAsset = $asset->normalize();
         $editAssetCommand = $this->editAssetCommandFactory->create(
-            ['asset_family_identifier' => $assetFamilyIdentifier, 'code' => $assetCode]
+            [
+                'asset_family_identifier' => $assetFamilyIdentifier,
+                'code' => $assetCode,
+                'values' => $normalizedAsset['values'],
+            ]
         );
         $violations = $this->validator->validate($editAssetCommand);
         if ($violations->count() > 0) {

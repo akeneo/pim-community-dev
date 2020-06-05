@@ -167,6 +167,7 @@ services:
     akeneo_assetmanager.infrastructure.action.asset.execute_naming_convention:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\ExecuteNamingConventionAction
         arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
             - '@akeneo_assetmanager.application.asset.edit_asset_handler'
             - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory'
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
