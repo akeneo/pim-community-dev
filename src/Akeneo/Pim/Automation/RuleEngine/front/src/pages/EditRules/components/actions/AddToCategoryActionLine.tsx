@@ -27,12 +27,26 @@ const AddToCategoryActionLine: React.FC<Props> = ({
       helper={translate('pimee_catalog_rule.form.helper.add_to_category')}
       legend={translate('pimee_catalog_rule.form.legend.add_to_category')}
       handleDelete={handleDelete}>
-      <div className='AknGrid AknGrid--unclickable'>
-        <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
-          <div className='AknGrid-bodyCell'>
-            <div>Loading</div>
-          </div>
-        </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: '5px',
+        }}>
+        <fieldset style={{ width: '50%' }}>
+          <legend
+            style={{ color: '#9452BA', fontSize: '15px', padding: '10px 0' }}>
+            Select your category trees
+          </legend>
+          <div>Category tree (required)</div>
+        </fieldset>
+        <fieldset style={{ width: '50%' }}>
+          <legend
+            style={{ color: '#9452BA', fontSize: '15px', padding: '10px 0' }}>
+            Select your categories for master catalog
+          </legend>
+          <div>Categories (required)</div>
+        </fieldset>
       </div>
     </ActionTemplate>
   );
