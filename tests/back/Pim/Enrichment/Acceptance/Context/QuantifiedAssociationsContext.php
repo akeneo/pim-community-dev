@@ -15,6 +15,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Test\Acceptance\AssociationType\InMemoryAssociationTypeRepository;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository;
@@ -42,6 +43,9 @@ final class QuantifiedAssociationsContext implements Context
 
     /** @var AttributeInterface|null */
     private $attribute;
+
+    /** @var \Exception|null */
+    private $exception;
 
     /* --- */
 
@@ -825,19 +829,34 @@ final class QuantifiedAssociationsContext implements Context
             ],
         ];
 
-        $this->updateProduct($this->product, $fields);
+        try {
+            $this->updateProduct($this->product, $fields);
+        } catch (\Exception $exception) {
+            $this->exception = $exception;
+        }
     }
 
     /**
      * @Then /^this product has a validation error about association type should not be quantified$/
+     *
+     * The AssociationFieldSetter throw an exception when the association type does not exist.
+     * It think the association type does not exists because the sql query exclude quantified association types by default.
+     * InvalidPropertyException SHOULD be used for structure, not data.
+     * This SHOULD NOT happen in the updater but in the validator.
+     * To be future-proof, this test accept one of those two errors.
      */
     public function thisProductHasAValidationErrorAboutAssociationTypeShouldNotBeQuantified()
     {
-        $this->assertEntityHasValidationError(
-            $this->product,
-            'pim_catalog.constraint.quantified_associations.association_type_should_not_be_quantified',
-            'associations[0]'
-        );
+        if ($this->exception) {
+            Assert::isInstanceOf($this->exception, InvalidPropertyException::class);
+            Assert::same($this->exception->getMessage(), 'Property "associations" expects a valid association type code. The association type does not exist, "PACK" given.');
+        } else {
+            $this->assertEntityHasValidationError(
+                $this->product,
+                'pim_catalog.constraint.quantified_associations.association_type_should_not_be_quantified',
+                'associations[0]'
+            );
+        }
     }
 
     /**
@@ -856,18 +875,33 @@ final class QuantifiedAssociationsContext implements Context
             ],
         ];
 
-        $this->updateProductModel($this->productModel, $fields);
+        try {
+            $this->updateProductModel($this->productModel, $fields);
+        } catch (\Exception $exception) {
+            $this->exception = $exception;
+        }
     }
 
     /**
      * @Then /^this product model has a validation error about association type should not be quantified$/
+     *
+     * The AssociationFieldSetter throw an exception when the association type does not exist.
+     * It think the association type does not exists because the sql query exclude quantified association types by default.
+     * InvalidPropertyException SHOULD be used for structure, not data.
+     * This SHOULD NOT happen in the updater but in the validator.
+     * To be future-proof, this test accept one of those two errors.
      */
     public function thisProductModelHasAValidationErrorAboutAssociationTypeShouldNotBeQuantified()
     {
-        $this->assertEntityHasValidationError(
-            $this->productModel,
-            'pim_catalog.constraint.quantified_associations.association_type_should_not_be_quantified',
-            'associations[0]'
-        );
+        if ($this->exception) {
+            Assert::isInstanceOf($this->exception, InvalidPropertyException::class);
+            Assert::same($this->exception->getMessage(), 'Property "associations" expects a valid association type code. The association type does not exist, "PACK" given.');
+        } else {
+            $this->assertEntityHasValidationError(
+                $this->productModel,
+                'pim_catalog.constraint.quantified_associations.association_type_should_not_be_quantified',
+                'associations[0]'
+            );
+        }
     }
 }
