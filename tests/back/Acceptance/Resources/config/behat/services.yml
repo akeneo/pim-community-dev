@@ -83,6 +83,13 @@ services:
             - '@test.channel.builder'
             - '@test.currency.builder'
 
+    test.user.context:
+        class: 'Akeneo\Test\Acceptance\User\UserContext'
+        arguments:
+            - '@pim_user.factory.user'
+            - '@security.token_storage'
+        public: true
+
     test.attribute.context:
         public: true
         class: 'Akeneo\Test\Acceptance\Attribute\AttributeContext'

@@ -104,7 +104,10 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 
         if (!$associationType->isQuantified()) {
             $this->context->buildViolation(
-                QuantifiedAssociationsConstraint::ASSOCIATION_TYPE_IS_NOT_QUANTIFIED_MESSAGE
+                QuantifiedAssociationsConstraint::ASSOCIATION_TYPE_IS_NOT_QUANTIFIED_MESSAGE,
+                [
+                    '{{ association_type }}' => $associationType->getCode(),
+                ]
             )
                 ->atPath($propertyPath)
                 ->addViolation();

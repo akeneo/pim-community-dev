@@ -84,13 +84,15 @@ pim_catalog:
     pim_immutable_product_validator: Le même identifiant est déjà défini sur un autre produit
     pim_immutable_product_model_validator: Le même code est déjà défini sur un autre modèle de produit.
     quantified_associations:
-      unexpected_link_type: The link type "{{ value }}" doesn't exist. You can only associate products or product models.
-      max_associations: You've reached the limit of {{ limit }} associations. Please, delete some existing associations before adding new ones.
-      invalid_quantity: '"{{ value }}" is an invalid quantity. Please, write a value between {{ min }} and {{ max }}.'
-      products_do_not_exist: "The following products don't exist: {{ values }}. Please make sure the products haven't been deleted in the meantime."
-      product_models_do_not_exist: "The following product models don't exist: {{ values }}. Please make sure the product models haven't been deleted in the meantime."
-      association_type_does_not_exist: This association type doesn't exist. Please make sure it hasn't been deleted in the meantime.
-      association_type_is_not_quantified: This association type isn't used to write quantities. Please, choose a different one before trying again.
+      unexpected_link_type: Le type de lien "{{ value }}" n'existe pas. Seuls des produits ou des modèles de produits peuvent être associés entre eux.
+      max_associations: Vous avez atteint la limite de {{ limit }} associations. Merci de supprimer des associations existantes si vous souhaitez en rajouter de nouvelles.
+      invalid_quantity: La quantité "{{ value }}" est invalide. Merci d'entrer une valeur comprise entre {{ min }} et {{ max }} inclus.
+      products_do_not_exist: "Les produits suivants : {{ values }} n'existent pas. Merci de vérifier qu'ils n'ont pas été supprimés entre temps."
+      product_models_do_not_exist: "Les modèles de produits suivants : {{ values }} n'existent pas. Merci de vérifier qu'ils n'ont pas été supprimés entre temps."
+      association_type_does_not_exist: Ce type d'association n'existe pas. Merci de vérifier qu'il n'a pas été supprimé entre temps.
+      association_type_is_not_quantified: '"{{ association_type }}" ne permet pas de renseigner des associations avec quantités. Merci d’utiliser un autre type d’association quantifiée ou d’utiliser la propriété "associations".'
+      association_type_should_not_be_quantified: '"{{ association_type }}" permet uniquement de renseigner des associations avec quantités. Merci d’utiliser un autre type d’association ou d’utiliser la propriété "quantified_associations".'
+
 mass_edit:
   edit_common_attributes:
     invalid_values: Il y a des erreurs dans le formulaire d'attributs

@@ -23,6 +23,9 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
         familyVariant:
             - NotBlank:
                 message: 'product_model.family_variant.not_blank.message'
+        associations:
+            - Symfony\Component\Validator\Constraints\All:
+                - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AssociationTypeIsNotQuantified: ~
         quantifiedAssociations:
             - Symfony\Component\Validator\Constraints\Valid: ~
     getters:
