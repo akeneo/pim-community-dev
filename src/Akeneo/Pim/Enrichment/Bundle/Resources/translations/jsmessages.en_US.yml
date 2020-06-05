@@ -458,4 +458,4 @@ batch_jobs:
 error:
     removing:
         group: Impossible to remove group
-        attribute_type: Impossible to remove association type
+        attribute type: Impossible to remove association type
