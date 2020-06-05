@@ -104,7 +104,7 @@ pim_enrich.entity.product:
       no_data: Es gibt keine verbundenen Produkte
       remove: Verbindung entfernen
       limit_reached: Sie können nicht mehr als {{ maxLimit }} Verbindungen zu diesem Produkt hinzufügen.
-      variant_updated: You have updated a quantity on a variant, the quantities will no longer be synchronized.
+      variant_updated: Sie haben eine Menge auf eine Variante aktualisiert, die Mengen werden nicht mehr synchronisiert.
     attribute_filter:
       display: Anzeige
       all: Alle Attribute
