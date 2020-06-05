@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Normalizer;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Normalizer\ProductDomainErrorNormalizer;
-use Akeneo\Pim\Enrichment\Component\Error\DocumentedErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\Documented\Documentation;
+use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentationCollection;
+use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -104,16 +106,21 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
                 return 'identifier';
             }
 
-            public function getDocumentation(): array
+            public function getDocumentation(): DocumentationCollection
             {
-                return ['Some documentation.'];
+                return new DocumentationCollection([new Documentation('any message', [])]);
             }
         };
 
         $this->normalize($error, 'json', [])->shouldReturn([
             'type' => 'domain_error',
             'domain_error_identifier' => 'identifier',
-            'documentation' => ['Some documentation.']
+            'documentation' => [
+                [
+                    'message' => 'any message',
+                    'parameters' => [],
+                ],
+            ]
         ]);
     }
 

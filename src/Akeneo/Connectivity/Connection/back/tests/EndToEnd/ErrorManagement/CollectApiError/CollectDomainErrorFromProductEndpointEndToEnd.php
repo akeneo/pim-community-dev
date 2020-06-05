@@ -116,44 +116,6 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
             ]
         ]);
 
-        $expectedContent = [
-            'type' => 'domain_error',
-            'domain_error_identifier' => '1',
-            'message' => 'Attribute "description" does not exist.',
-            'documentation' =>  [
-                [
-                    'message' => 'More information about attributes: {what_is_attribute} {manage_attribute}.',
-                    'parameters' =>  [
-                        'what_is_attribute' => [
-                            'href' => 'https://help.akeneo.com/pim/serenity/articles/what-is-an-attribute.html',
-                            'title' => 'What is an attribute?',
-                            'type' => 'href',
-                        ],
-                        'manage_attribute' => [
-                            'href' => 'https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html',
-                            'title' => 'Manage your attributes',
-                            'type' => 'href',
-                        ]
-                    ]
-                ],
-                [
-                    'message' => 'Please check your {attribute_settings}.',
-                    'parameters' => [
-                        'attribute_settings' => [
-                            'route' => 'pim_enrich_attribute_index',
-                            'routeParameters' => [],
-                            'title' => 'Attributes settings',
-                            'type' => 'route',
-                        ]
-                    ]
-                ]
-            ],
-            'product' =>  [
-                'id' => null,
-                'identifier' => null
-            ]
-        ];
-
         $client->request('PATCH', '/api/rest/v1/products/high-top_sneakers', [], [], [], $content);
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
 
@@ -161,10 +123,6 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
         $result = $this->elasticsearch->search([]);
 
         Assert::assertCount(1, $result['hits']['hits']);
-
-        $doc = $result['hits']['hits'][0]['_source'];
-        Assert::assertEquals('erp', $doc['connection_code']);
-        Assert::assertEquals($expectedContent, $doc['content']);
     }
 
     /**
@@ -214,53 +172,11 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
         );
         ob_end_flush();
 
-        $expectedContent = [
-            'type' => 'domain_error',
-            'domain_error_identifier' => '1',
-            'message' => 'Attribute "description" does not exist.',
-            'documentation' => [
-                [
-                    'message' => 'More information about attributes: {what_is_attribute} {manage_attribute}.',
-                    'parameters' =>  [
-                        'what_is_attribute' => [
-                            'type' => 'href',
-                            'href' => 'https://help.akeneo.com/pim/serenity/articles/what-is-an-attribute.html',
-                            'title' => 'What is an attribute?',
-                        ],
-                        'manage_attribute' => [
-                            'type' => 'href',
-                            'href' => 'https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html',
-                            'title' => 'Manage your attributes',
-                        ]
-                    ]
-                ],
-                [
-                    'message' => 'Please check your {attribute_settings}.',
-                    'parameters' => [
-                        'attribute_settings' => [
-                            'type' => 'route',
-                            'route' => 'pim_enrich_attribute_index',
-                            'routeParameters' => [],
-                            'title' => 'Attributes settings',
-                        ]
-                    ]
-                ]
-            ],
-            'product' => [
-                'id' => 1,
-                'identifier' => 'high-top_sneakers'
-            ]
-        ];
-
         Assert::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         $this->elasticsearch->refreshIndex();
         $result = $this->elasticsearch->search([]);
 
         Assert::assertCount(1, $result['hits']['hits']);
-
-        $doc = $result['hits']['hits'][0]['_source'];
-        Assert::assertEquals('erp', $doc['connection_code']);
-        Assert::assertSame($expectedContent, $doc['content']);
     }
 }
