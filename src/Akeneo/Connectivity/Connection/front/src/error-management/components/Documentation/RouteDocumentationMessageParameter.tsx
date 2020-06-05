@@ -11,7 +11,7 @@ export const RouteDocumentationMessageParameter: FC<Props> = ({routeParam}) => {
     const router = useContext(RouterContext);
 
     return (
-        <InternalLink onClick={() => router.redirect(router.generate(routeParam.route, routeParam.params))}>
+        <InternalLink onClick={() => router.redirect(router.generate(routeParam.route, routeParam.routeParameters))}>
             {routeParam.title}
         </InternalLink>
     );

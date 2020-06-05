@@ -11,14 +11,18 @@ export type RouteParameter = {
     type: typeof RouteType;
     title: string;
     route: string;
-    params: {
+    routeParameters: {
         [parameterName: string]: string;
     };
 };
 
+export type MessageParameters = {
+    [needle: string]: HrefParameter | RouteParameter;
+};
+
 export type Documentation = {
     message: string;
-    params: Array<HrefParameter | RouteParameter>;
+    parameters: MessageParameters;
 };
 
 export type ConnectionError = {

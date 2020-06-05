@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Error;
+namespace Akeneo\Pim\Enrichment\Component\Error\Documented;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -11,5 +11,5 @@ namespace Akeneo\Pim\Enrichment\Component\Error;
  */
 interface DocumentedErrorInterface
 {
-    public function getDocumentation(): array;
+    public function getDocumentation(): DocumentationCollection;
 }
