@@ -114,13 +114,16 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
         $product = new Product();
         $product->setIdentifier('super_shoes');
 
+        $stepExecution->incrementSummaryInfo('read_rules')->shouldBeCalled();
         $stepExecution->addWarning(
-            'Cannot apply this action to product "super_shoes": Invalid product data',
+            'Rule "my_rule": Could not apply "set" action to product "super_shoes": Invalid product data',
             [],
             Argument::type(DataInvalidItem::class)
         )->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_invalid')->shouldBeCalled();
 
+        $rule = (new RuleDefinition())->setCode('my_rule');
+        $this->preExecute(new GenericEvent($rule));
         $this->skipAction(new SkippedActionForSubjectEvent(new ProductSetAction([]), $product, 'Invalid product data'));
     }
 }

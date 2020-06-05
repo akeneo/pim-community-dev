@@ -20,6 +20,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SavedSubjectsEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -29,6 +30,9 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
 {
     /** @var StepExecution */
     private $stepExecution;
+
+    /** @var RuleDefinitionInterface */
+    private $currentRule;
 
     public function __construct(StepExecution $stepExecution)
     {
@@ -50,6 +54,7 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
     public function preExecute(GenericEvent $event): void
     {
         $this->stepExecution->incrementSummaryInfo('read_rules');
+        $this->currentRule = $event->getSubject();
     }
 
     public function postSelect(SelectedRuleEvent $event): void
@@ -70,15 +75,18 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
 
     public function skipAction(SkippedActionForSubjectEvent $event): void
     {
-        $subject = $event->getSubject();
-        // TODO: better error message; we do not have access to the rule here,
-        // and there is no normalizer for the action yet
+        $message = \sprintf(
+            'Rule "%s": Could not apply "%s" action to %s: %s',
+            $this->currentRule->getCode(),
+            $event->getAction()->getType(),
+            $this->getEntityIdentifier($event->getSubject()),
+            $event->getReason()
+        );
+
         $this->stepExecution->addWarning(
-            \sprintf(
-                'Cannot apply this action to %s: %s', $this->getEntityIdentifier($subject), $event->getReason()
-            ),
+            $message,
             [],
-            new DataInvalidItem($subject)
+            new DataInvalidItem($event->getSubject())
         );
         $this->stepExecution->incrementSummaryInfo('skipped_invalid');
     }

@@ -70,4 +70,12 @@ class ProductRemoveAction implements ProductRemoveActionInterface
     {
         return [$this->getField()];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType(): string
+    {
+        return 'remove';
+    }
 }
