@@ -252,6 +252,8 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: 모두
+    price-collection:
+      operators:
     select:
       operators:
         IN: 목록에 있음
@@ -370,6 +372,7 @@ pim_datagrid:
   filters:
     label: 필터
     system: 시스템
+  search: Search on {{ label }}
 batch_jobs:
   add_association:
     label: 연결
