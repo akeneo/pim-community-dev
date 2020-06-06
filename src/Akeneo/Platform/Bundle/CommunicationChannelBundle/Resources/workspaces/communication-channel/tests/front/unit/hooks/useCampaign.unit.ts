@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import {renderHook, act} from '@testing-library/react-hooks';
-import {useCampaign} from '@src/hooks/useCampaign';
+import {useCampaign} from '@akeneo-pim-community/communication-channel/src/hooks/useCampaign';
 
 const expectedCampaign = 'Serenity';
 const campaignFetcher = {

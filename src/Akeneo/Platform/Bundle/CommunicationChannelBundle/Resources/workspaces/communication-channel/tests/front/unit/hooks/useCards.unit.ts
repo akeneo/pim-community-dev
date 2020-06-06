@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import {renderHook, act} from '@testing-library/react-hooks';
-import {useCards} from '@src/hooks/useCards';
+import {useCards} from '@akeneo-pim-community/communication-channel/src/hooks/useCards';
 
 const expectedCards = [
   {

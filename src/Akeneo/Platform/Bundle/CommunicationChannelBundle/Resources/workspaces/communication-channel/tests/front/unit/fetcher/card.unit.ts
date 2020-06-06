@@ -1,4 +1,4 @@
-import {CardFetcherImplementation} from '@src/fetcher/card';
+import {CardFetcherImplementation} from '@akeneo-pim-community/communication-channel/src/fetcher/card';
 
 console.error = jest.fn();
 
@@ -38,7 +38,7 @@ test('It can fetch cards from the json', async () => {
 
   expect(global.fetch).toHaveBeenCalledTimes(1);
   expect(global.fetch).toHaveBeenCalledWith(
-    './bundles/akeneocommunicationchannel/fetcher/__mocks__/serenity-updates-sample.json'
+    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates-sample.json'
   );
 });
 

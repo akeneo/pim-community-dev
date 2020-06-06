@@ -1,4 +1,4 @@
-import {CampaignFetcherImplementation} from '@src/fetcher/campaign';
+import {CampaignFetcherImplementation} from '@akeneo-pim-community/communication-channel/src/fetcher/campaign';
 
 const DataCollector = require('pim/data-collector');
 

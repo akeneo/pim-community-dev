@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, act, getByText, getAllByText, getByTitle} from '@testing-library/react';
 import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
-import {Index} from '@akeneo-pim-community/communication-channel';
+import {Panel} from '@akeneo-pim-community/communication-channel/src/components/panel';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const mediator = require('oro/mediator');
