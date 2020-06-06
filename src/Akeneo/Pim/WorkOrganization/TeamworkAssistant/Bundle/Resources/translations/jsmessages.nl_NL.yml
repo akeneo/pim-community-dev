@@ -1,6 +1,7 @@
 teamwork_assistant:
   common:
     required: Verplicht
+    warning: Don't worry, project calculation may take a while, so your project may not be visible right away.
   grid:
     view_selector:
       create: Project aanmaken
@@ -18,13 +19,16 @@ teamwork_assistant:
     description: Beschrijving
     due_date: Inleverdatum
     due_date_past: Je kan geen datum in het verleden selecteren.
+    leaving_scope: You're leaving project scope.
   edit_project_modal:
     saved: Het project werd opgeslagen.
     title: Project bewerken
   create_project_modal:
     saved: Het project werd opgeslagen, je wordt gewaarschuwd wanneer de berekening is uitgevoerd.
+    title: Project
   widget:
     no_project: Je hebt geen huidig project
+    no_project_create: create a new project
     description: Beschrijving
     due_date: Inleverdatum
     todo: TE DOEN
@@ -36,15 +40,23 @@ teamwork_assistant:
       contributor_selector: Zoek medewerker
       project_selector: Zoek project
     completeness:
+      to_start: PRODUCTS TO START
       in_progress: PRODUCTEN IN UITVOERING
       done: PRODUCTEN GEDAAN
 pim_datagrid:
   view_selector:
     project: Projecten
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Teamwork Assistant
+        project_calculation: Teamwork Assistant
 batch_jobs:
   project_calculation:
     project_calculation.label: Projectberekening
     prepare_project_calculation.label: Bereid de projectberekening voor
+    clean_contributor_group.label: Check users permission on project's locale
   refresh_project_completeness_calculation:
     label: Vernieuw projectvolledigheid
     refresh_project_completeness_calculation.label: Vernieuw projectvolledigheid

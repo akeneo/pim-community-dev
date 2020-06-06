@@ -236,3 +236,6 @@ pimee_enrich:
       options:
         width: 'Ancho px %value%'
         height: 'Alto px %value%'
+asset_tree:
+  remove:
+    error_linked: This category tree cannot be deleted, it is set as the default asset category tree of a user.

@@ -187,6 +187,10 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}Fjern offentliggørelse <span class=\"AknFullPage-title--highlight\">1 produkt</span>|]1, Inf[Fjern offentliggørelse <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
       description: Produkterne vil blive afpubliseret
       warning: '{{ itemsCount }} udvalgte produkter vil blive afpubliseret.'
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: Cannot delete a category linked to a published product.
 pim_menu:
   navigation:
     published_products: Publicerede produkter

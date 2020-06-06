@@ -1,3 +1,8 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Read only
 pimee_enrich.entity.category:
   module:
     permissions:
@@ -16,19 +21,30 @@ pimee_enrich.entity.attribute group:
 pimee_enrich.entity.attribute_group:
   module:
     permissions:
+      added: The group {{ group }} will be allowed to {{ permission }} attribute group
       view: Toegestaan om kenmerken te bekijken
       edit: Toegestaan om attributen bewerken
+      removed: The group {{ group }} will not be allowed to {{ permission }} attribute group
 pimee_enrich.entity.job_instance:
   module:
     permissions:
+      added: The group {{ group }} will be allowed to {{ permission }} job profile
       execute: Toegestaan om profiel uit te voeren
       edit: Toegestaan om profiel te wijzigen
+      removed: The group {{ group }} will not be allowed to {{ permission }} job profile
 batch_jobs:
   add_product_value_with_permission_and_rules:
+    label: Add product value with permission check & rules application
     perform.label: Voeg productwaarde toe
   update_product_value_with_permission_and_rules:
+    label: Update product value with permission check & rules application
     perform.label: Update productwaarde
   remove_product_value_with_permission_and_rules:
+    label: Remove product value with permission check & rules application
     perform.label: Verwijder productwaarde
   edit_common_attributes_with_permission_and_rules:
+    label: Edit attributes with permission check & rules application
     perform.label: Bewerk attributen
+    cleaner.label: Clean temporary files
+pim_title:
+  pimee_enrich_locale_edit: Locale | Edit
