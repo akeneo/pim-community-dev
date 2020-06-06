@@ -7,8 +7,10 @@ Refuse selected: Tolak yang dipilih
 pim_datagrid:
   no_entities:
     proposal: Tidak ada usulan untuk ditinjau.
+    product_draft: There is no product draft to review.
   no_results:
     proposal: Tidak ada proposal untuk ditinjau. Cobalah untuk mengubah kriteria pencarian anda.
+    product_draft: There is no product draft to review. Try to change your search criteria.
 pimee_datagrid:
   cells:
     expand:
@@ -22,6 +24,7 @@ pimee_workflow:
     proposal:
       modal.title: Tinggalkan komentar (opsional - maks 255 karakter.)
   proposal:
+    overview: "]-Inf, 1]{{ count }} proposal|]1, Inf[{{ count }} proposals"
     selected: proposal terpilih
     mass_action_group:
       review:
@@ -29,16 +32,19 @@ pimee_workflow:
     partial_accept:
       modal.title: Menyetujui sebagian informasi
       modal.label: Tinggalkan komentar (opsional)
+      modal.error: An error occurred, the proposal has not been partially approved
       modal.success: Usulan telah berhasil divalidasi sebagian
     partial_approve:
       modal:
         title: Sebagian menyetujui perubahan
         label: Tinggalkan komentar (opsional)
+        error: An error occurred, the proposal has not been partially approved
         success: Perubahan  telah berhasil disetujui
     partial_reject:
       modal:
         title: Sebagian menolak perubahan
         label: Tinggalkan komentar (opsional)
+        error: An error occurred, the proposal has not been partially rejected
         success: Perubahan telah berhasil ditolak
 batch_jobs:
   csv_published_product_export:
@@ -47,6 +53,9 @@ batch_jobs:
   csv_product_proposal_import:
     label: Impor proposal produk di CSV
     import.label: Impor proposal produk
+  csv_product_model_proposal_import:
+    label: Product model proposal import in CSV
+    import.label: Product model proposal import in CSV
   approve_product_draft:
     label: Menyetujui proposal
     perform.label: Menyetujui proposal
@@ -59,6 +68,9 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Impor proposal produk di XLSX
     import.label: Impor proposal produk pada XLSX
+  xlsx_product_model_proposal_import:
+    label: Product model proposal import in XLSX
+    import.label: Product model proposal import in XLSX
   csv_published_product_quick_export:
     export.label: Csv menerbitkan produk ekspor cepat
     perform.label: Csv menerbitkan produk ekspor cepat
@@ -83,6 +95,7 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Proposal disetujui
     pimee_workflow_product_draft_notification_refuse: Proposal ditolak
     pimee_workflow_product_draft_notification_remove: Proposal dihapus
+    pimee_workflow_product_draft_notification_sent: Proposals sent
 pimee_dashboard:
   widget:
     product_drafts:
@@ -97,6 +110,9 @@ pimee_enrich.entity.product:
     history:
       published: Diterbitkan
       revert: Mengembalikan
+    attribute:
+      can_be_updated_by_a_rule: "This attribute can be updated by a rule: {{ rule }}"
+      value_updated: This value is updated by the current draft
     meta:
       published_version: Versi publikasi
       owner_groups: Pemilik grup
@@ -121,6 +137,8 @@ pimee_enrich.entity.product:
     approval:
       send: Kirim untuk persetujuan
       sent: Kirim sebagai persetujuan
+      send_and_next: Send and next
+      send_and_finish: Send and finish
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -131,6 +149,8 @@ pimee_enrich.entity.published_product:
       fail: Gagal membatalkan publikasi produk ini
     revert:
       success: Produk sukses dikembalikan
+  page_title:
+    index: "]-Inf, 1]{{ count }} published product|]1, Inf[{{ count }} published products"
   module:
     publish:
       label: Menerbitkan
@@ -152,6 +172,7 @@ pimee_enrich.entity.product_draft:
     create:
       success: Konsep  produk dikirim untuk mendapatkan persetujuan
       fail: Anda tidak bisa mengirimkan rancangan ini untuk persetujuan
+      skip: Product draft hasn't been sent for approval as no value has been edited
   module:
     proposal:
       accept: Menerima proposal
@@ -169,12 +190,18 @@ pimee_enrich.mass_edit.product:
   operation:
     publish:
       label: Menerbitkan
+      label_count: "{1}Publish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: Produk akan diterbitkan
       warning: '{{ itemsCount }} Produk terpilih akan diterbitkan.'
     unpublish:
       label: Batal diterbitkan
+      label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: Produk tidak akan dipublikasikan
       warning: '{{ itemsCount }} Produk yang terpilih tidak akan dipublikasikan.'
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: Cannot delete a category linked to a published product.
 pim_menu:
   navigation:
     published_products: Produk diterbitkan

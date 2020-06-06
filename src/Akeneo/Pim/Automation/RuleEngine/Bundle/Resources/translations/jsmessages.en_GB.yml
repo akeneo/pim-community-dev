@@ -1,6 +1,6 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} rule|]1, Inf[{{ count }} rules"
-  execution_button: Vykonať pravidlá
+  execution_button: Execute rules
   selected: 'rules selected'
   popin:
     execute_rules:

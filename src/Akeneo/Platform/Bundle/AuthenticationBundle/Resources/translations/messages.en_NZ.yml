@@ -1,0 +1,6 @@
+akeneo_authentication:
+  acl:
+    sso:
+      title: Manage the Single Sign-On (SSO)
+  sso:
+    unknown_user_error: You are not allowed to access this application. Please contact your administrator.

@@ -11,9 +11,11 @@ pimee_product_asset:
           confirm: Konfirmasi
         title: Kelola aset
         description: Pilihlah aset yang anda inginkan untuk dilampirkan ke produk anda
+        preview_title: Asset collection preview
         download: Unduh
         remove: Hapus
         upload: Unggah
+        assetRemoveConfirmationLabel: Are you sure you want to remove this asset?
     asset:
       not_empty: Kode harus di isi, tidak boleh dikosongkan.
       alpha_numeric_plus_underscore: Kode harusnya hanya alfanumerik atau garis bawah.
@@ -25,6 +27,7 @@ pimee_product_asset:
     popin:
       reset:
         title: Mengatur ulang variasi
+        message: Are you sure you want to reset all the variations?
   mass_upload:
     menu: Mengunggah aset
     btn:
@@ -36,9 +39,12 @@ pimee_product_asset:
       imported: Berkas diimpor untuk memproses aset
       canceled: Pengunggahan telah berhasil dibatalkan
       deleted: Pengunggahan berkas telah berhasil dihapus
+      need_refresh: <b>Asset import has been launched</b><br> To see imported assets in the product form, please refresh the product page as soon as you receive the import notification.
     error:
       list: Tidak dapat membaca berkas yang telah diunggah
+      upload: An error occurred while uploading
       delete: Tidak dapat menghapus berkas dari server
+      import: An error occurred during import
       filename: Nama berkas tidak sah untuk aset
       code: Format kode aset tidak sah
       locale: Aset yang ada tetapi tidak dilokalisasi
@@ -52,11 +58,13 @@ pimee_product_asset:
       error: Kesalahan
       success: Berhasil
     drag_and_drop: Tarik atau letakkan aset anda atau klik disini
+    tabsection_title: Assets uploaded
   datagrid:
     mass_action:
       delete:
         confirm_content: Apa anda yakin ingin menghapus aset yang dipilih?
         success: Aset yang dipilih telah berhasil dihapus.
+        error: Error occurred when trying to delete selected assets, please try again.
         empty_selection: Tidak ada aset yang dipilh
 pim_enrich:
   entity:
@@ -64,16 +72,27 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Koleksi aset
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Mass upload
+        compute_completeness_of_products_linked_to_assets: Compute completeness of products linked to assets
 pim_title:
   pimee_product_asset_mass_upload: Mengunggah aset
   pimee_product_asset_index: Aset
   pimee_product_asset_edit: Aset {{ asset.label }} | ubah
+  pimee_product_asset_view: Asset {{ asset.label }} | View
   pimee_asset_categorytree_index: Kategori
   pimee_asset_categorytree_edit: Katagori {{ category.label }} | Sunting
+  pimee_asset_categorytree_create: Category | Create
 batch_jobs:
   apply_assets_mass_upload:
     label: Pengunggahan aset massal
     perform.label: Upload massal
+  apply_assets_mass_upload_into_asset_collection:
+    label: Assets mass upload and add to product
+    perform.label: Mass upload assets and add to product
   yml_asset_channel_configuration_import:
     import.label: Saluran impor Aset konfigurasi
     label: Impor konfigurasi saluran aset di Yaml
@@ -126,11 +145,14 @@ batch_jobs:
     perform.label: Pindahkan aset pada kategori
   add_tags_to_assets:
     perform.label: Tambah tandai ke aset
+  compute_completeness_of_products_linked_to_assets:
+    compute_completeness_of_products_linked_to_assets.label: Compute completeness of products linked to assets
 jstree:
   asset:
     all: Semua aset
     unclassified: Aset yang tidak terklasifikasi
 asset_grid:
+  title: "]-Inf, 1]{{ count }} Product asset|]1, Inf[{{ count }} Product assets"
   selected: aset terpilih
   label: Produk aset
 create_asset:
@@ -173,11 +195,13 @@ pimee_enrich.entity.channel:
           height: '%value%px tinggi'
 pimee_enrich.mass_edit.asset:
   title: Tindakan massal aset
+  confirm: "{1}You are about to update an asset with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} assets with the following information, please confirm."
   step:
     select:
       label: Pilih aset
     choose:
       title: Tindakan aset massal
+      label_count: "]0, Inf[Select your action"
     configure:
       label: Mengkonfigurasi
     confirm:
@@ -186,15 +210,22 @@ pimee_enrich.mass_edit.asset:
     add_tag:
       label: Tambahkan tandai ke aset
       description: Tag akan ditambahkan ke aset.
+      label_count: "{1}Add tags to <span class=\"AknFullPage-title--highlight\">1 asset</span>|]1, Inf[Add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span>"
       field: Tandai
       empty_selection: Silahkan pilih tag
     add_to_category:
       label: Klasifikasikan aset dalam kategori
       description: Aset akan diposisikan ke dalam kategori berikut, penempatan yang ada akan hilang.
+      label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|]1, Inf[Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
 pim_catalog_volume:
+  section:
+    assets:
+      title: Axes on assets
+      hint: You can follow the volume regarding the assets right here.
   axis:
     count_assets: Aset
     count_asset_categories: Kategori aset
+    count_asset_category_trees: Asset category trees
 pim_menu:
   tab:
     asset: Aset

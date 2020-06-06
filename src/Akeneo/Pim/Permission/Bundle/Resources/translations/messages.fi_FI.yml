@@ -7,6 +7,9 @@ pimee_enrich.groups.label: Omistajaryhmät
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Muokkaa attribuutteja
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lisää käyttöoikeudellinen tuotearvo
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Päivitä käyttöoikeudellinen tuotearvo
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Remove product value with permission
+edit_common_attributes_with_permission: Edit attributes with permission
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Edit attributes with permission
 pim_analytics:
   info_type:
     nb_custom_locale_accesses: Käyttöoikeudeltaan mukautettujen lokaalien määrä

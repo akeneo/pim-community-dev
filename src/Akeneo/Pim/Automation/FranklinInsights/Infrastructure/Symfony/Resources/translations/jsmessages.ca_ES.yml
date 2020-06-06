@@ -41,13 +41,16 @@ akeneo_franklin_insights:
         mandatory_identifier_mapping: "Mapatge de Marca i MPN requerits"
         attribute_type: "No es pot definir el tipus d'aquest atribut com a identificador"
         localizable_not_allowed: "Els atributs localitzables no s'admeten com a identificadors"
+        scopable_not_allowed: "Scopable attributes are not allowed as identifier"
         locale_specific_not_allowed: "Els atributs localitzables específics no s'admeten com a identificadors"
     attributes_mapping:
       label: Mapatge dels atributs
       flash:
         do_not_map_attribute_success: 'Atribut actualitzat correctament.'
+        create_attribute_success: '{0} Sorry, none of the {{ requestCount }} attributes have been created. |{1} Attribute successfully created and attached to the family "{{ family }}". |[2,Inf[ {{ successCount }} attributes out of {{ requestCount }} have been successfully created and attached to the family "{{ family }}".'
         create_attribute_error: 'Ho sentim, s''ha produït un error al crear o adjuntar l''atribut a la família.'
         suggest_attribute_mapping_error: 'L''atribut del catàleg "[{{ catalogAttributeCode }}]" ja està mapat a l''atribut Franklin "{{ franklinAttributeLabel }}".'
+        add_attribute_to_family_success: '{1} Attribute successfully attached to the family "{{ family }}". |[2,Inf[ Attributes successfully attached to the family "{{ family }}".'
         add_attribute_to_family_error: 'Ho sentim, s''ha produït un error al adjuntar l''atribut a la família.'
       fields:
         search_bar.placeholder: 'Cerca en l''atribut Franklin'
@@ -93,11 +96,14 @@ akeneo_franklin_insights:
         bulk_create_attribute:
           title: '{1} Crear 1 atribut |[2,Inf[ Crear {{ count }} atributs'
           subtitle: 'Estadístiques de Franklin'
+          description: '{1} The selected attribute will be created and added to the family |[2,Inf[ The selected attributes will be created and added to the family'
           warning: '{1} Si us plau, confirma la creació d''un nou atribut. |[2,Inf[ Si us plau, confirma la creació de {{ count }} nous atributs.'
           ok: Confirmar
         bulk_add_to_family:
+          title: '{1} Add 1 attribute to the family |[2,Inf[ Add {{ count }} attributes to the family'
           subtitle: 'Estadístiques de Franklin'
           description: '{1} L''atribut seleccionat s''afegirà a la família |[2,Inf[ Els atributs seleccionats s''afegiran a la família'
+          warning: '{1} Please confirm the addition of a new attribute to the family. |[2,Inf[ Please confirm the addition of {{ count }} new attributes to the family.'
           ok: Confirmar
       constraint:
         missing_target_key: 'Falta l''objectiu clau pel mapatge'
@@ -105,9 +111,13 @@ akeneo_franklin_insights:
         invalid_attribute_type_mapping: 'No s''han pogut mapar els atributs Franklin al tipus d''atributs PIM "{{ pimType }}"'
         empty_mapping: 'No s''han pogut mapar els atributs Franklin amb un mapat buit'
         localizable_not_allowed: 'No s''han pogut mapar els atributs Franklin a atributs localitzables PIM'
+        scopable_not_allowed: 'Franklin attributes cannot be mapped to a PIM scopable attribute'
+        locale_specific_not_allowed: 'Franklin attributes cannot be mapped to a PIM locale specific attribute'
+        duplicated_pim_attribute: "Mapping can't be saved as you mapped several Franklin attributes to the same PIM attribute"
         attribute_not_in_family_not_allowed: 'L''atribut PIM ha de ser de la família seleccionada.'
         only_unknown_mapped_attributes: 'No s''han trobat atributs en el mapatge d''atributs'
       search:
+        no_result_title: Sorry, there is no Franklin attribute for your search.
         no_result_subtitle: Provi amb nous criteris de cerca.
     product_subscription:
       flash:
@@ -135,6 +145,8 @@ akeneo_franklin_insights:
           invalid_mapping: "Identificadors de mapatge requerits."
     attribute_options_mapping:
       label: 'Mapatge d''opcions d''atributs'
+      constraint:
+        no_attribute_options_mapped: 'Franklin attribute options cannot be mapped with an empty mapping'
       fields:
         franklin_attribute_option: Opció d'atribut de Franklin
         catalog_attribute_option: Opcions d'atribut del catàleg
@@ -143,6 +155,7 @@ akeneo_franklin_insights:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opcions d''atribut'
           sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
+          description: 'In order to help enrich your catalog, Franklin will need to know your catalog attribute options that match his. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">Read more</a>'
   product:
     edit:
       btn.push: Suggerència de dades
@@ -174,6 +187,7 @@ akeneo_franklin_insights:
         sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
         description:
           first_step: 'Per tal d''ajudar a enriquir el ser catàleg, Franklin haurà de saber els identificadors del seu catàleg.'
+          second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="https://help.akeneo.com/articles/franklin-insights-mappings.html" class="AknDescriptionHeader-link" target="_blank">Read more</a>'
       inactive_connection:
         title: 'Ho sentim, no hi ha res que mostrar ara mateix'
         sub_title: 'Si us plau, activa el compte en el Sistema > Connexió Franklin i torna de nou.'
@@ -196,8 +210,10 @@ akeneo_franklin_insights:
             franklin_activation: "Si us plau <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">activar</a> Franklin Insights abans de subscriure's als productes."
             invalid_mapping: "Si us plau, mapa els teus identificadors de productes a Configuració > Abans de subscriure's productes a Franklin Insights."
   key_figures:
+    menu: Franklin key figures
     section_title:
       credits: Crèdits Franklin
+      key_figures: Franklin key figures
     axis:
       franklin_attribute_created: Nombre d'atributs creats per Franklin
       franklin_attribute_added_to_family: Nombre d'atributs afegits a la família per Franklin
@@ -211,6 +227,7 @@ batch_jobs:
   franklin_insights_subscribe_products:
     label: Subscripció en massa a Franklin Insights
     validate_configuration.label: Validar la configuració de les estadístiques de Franklin
+    validate_identifiers_mapping.label: Validate identifiers mapping
     subscribe_products.label: Subscriu-te a productes
   franklin_insights_unsubscribe_products:
     label: Cancel·lada subscripció en massa a Franklin Insights
@@ -230,6 +247,10 @@ pim_enrich.entity.attribute:
       warning: '{1}Suprimir un atribut pot afectar 1 subscripció de Franklin. Esteu segur? |]1,+Inf[Suprimir un atribut pot afectar {{ count }} subscripcions de Franklin. Esteu segur?'
 pim_title:
   akeneo_franklin_insights_connection_edit: Connexió de les estadístiques de Franklin
+  akeneo_franklin_insights_mapping_index: Franklin Insights Mapping
+  akeneo_franklin_insights_identifiers_mapping_edit: Franklin Insights Edit Identifiers Mapping
+  akeneo_franklin_insights_attributes_mapping_edit: Franklin Insights Edit Attributes Mapping
+  akeneo_franklin_insights_key_figure_index: Franklin Insights Key Figures
 pim_notification:
   types:
     franklin_insights: Estadístiques de Franklin

@@ -11,9 +11,11 @@ pimee_product_asset:
           confirm: Doğrula
         title: Varlıkları yönet
         description: Ürününüze eklemek istediğiniz varlıkları seçiniz
+        preview_title: Asset collection preview
         download: İndir
         remove: Kaldır
         upload: Yükle
+        assetRemoveConfirmationLabel: Are you sure you want to remove this asset?
     asset:
       not_empty: Kod gereklidir. Boş olamaz.
       alpha_numeric_plus_underscore: Kod yalnızca karakter, rakam veya altçizgi içermelidir.
@@ -25,6 +27,7 @@ pimee_product_asset:
     popin:
       reset:
         title: Değişimleri sıfırla
+        message: Are you sure you want to reset all the variations?
   mass_upload:
     menu: Varlıkları yükle
     btn:
@@ -36,9 +39,12 @@ pimee_product_asset:
       imported: Varlık işlemesi için içe aktarılan dosyalar
       canceled: Yükleme başarılı bir şekilde iptal edildi
       deleted: Yüklenen dosyalar başarıyla silindi
+      need_refresh: <b>Asset import has been launched</b><br> To see imported assets in the product form, please refresh the product page as soon as you receive the import notification.
     error:
       list: Yüklenmiş dosyalar okunamıyor
+      upload: An error occurred while uploading
       delete: Dosya sunucudan silinemiyor
+      import: An error occurred during import
       filename: Varlık için geçersiz dosya adı
       code: Öğe için geçersiz kod biçimi
       locale: Varlık var fakat yerelleştirilemiyor
@@ -52,11 +58,13 @@ pimee_product_asset:
       error: Hata
       success: Başarılı
     drag_and_drop: Varlığı sürükleyip bırakın veya buraya tıklayın
+    tabsection_title: Assets uploaded
   datagrid:
     mass_action:
       delete:
         confirm_content: Seçili varlıkları silmek istediğinizden emin misiniz?
         success: Seçilen varlıklar başarıyla silindi.
+        error: Error occurred when trying to delete selected assets, please try again.
         empty_selection: Hiç bir varlık bulunamadı
 pim_enrich:
   entity:
@@ -64,16 +72,27 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Varlıklar kolesiyonu
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Mass upload
+        compute_completeness_of_products_linked_to_assets: Compute completeness of products linked to assets
 pim_title:
   pimee_product_asset_mass_upload: Varlıkları yükle
   pimee_product_asset_index: Varlıklar
   pimee_product_asset_edit: Varlık {{ asset.label }} | Düzenle
+  pimee_product_asset_view: Asset {{ asset.label }} | View
   pimee_asset_categorytree_index: Kategoriler
   pimee_asset_categorytree_edit: Kategori {{ category.label }} | Düzenle
+  pimee_asset_categorytree_create: Category | Create
 batch_jobs:
   apply_assets_mass_upload:
     label: Varlıkları toplu yükle
     perform.label: Toplu yükleme
+  apply_assets_mass_upload_into_asset_collection:
+    label: Assets mass upload and add to product
+    perform.label: Mass upload assets and add to product
   yml_asset_channel_configuration_import:
     import.label: Varlık kanalı yapılandırmasını içe aktar
     label: Varlık kanalı yapılandırmasını Yaml'de içe aktar
@@ -126,11 +145,14 @@ batch_jobs:
     perform.label: Varlıkları kategorilere taşı
   add_tags_to_assets:
     perform.label: Varlıklara etiket ekle
+  compute_completeness_of_products_linked_to_assets:
+    compute_completeness_of_products_linked_to_assets.label: Compute completeness of products linked to assets
 jstree:
   asset:
     all: Tüm assetler
     unclassified: Sınıflandırılmamış assetler
 asset_grid:
+  title: "]-Inf, 1]{{ count }} Product asset|]1, Inf[{{ count }} Product assets"
   selected: seçili varlıklar
   label: Ürün varlıkları
 create_asset:
@@ -172,11 +194,14 @@ pimee_enrich.entity.channel:
           width: '%value%px genişlik'
           height: '%value%px yükseklik'
 pimee_enrich.mass_edit.asset:
+  title: Assets bulk action
+  confirm: "{1}You are about to update an asset with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} assets with the following information, please confirm."
   step:
     select:
       label: Varlıkları seçin
     choose:
       title: Toplu varlık eylemleri
+      label_count: "]0, Inf[Select your action"
     configure:
       label: Yapılandırma
     confirm:
@@ -185,15 +210,22 @@ pimee_enrich.mass_edit.asset:
     add_tag:
       label: Varlıklara etiketler ekle
       description: Etiketler varlıklara eklenecek.
+      label_count: "{1}Add tags to <span class=\"AknFullPage-title--highlight\">1 asset</span>|]1, Inf[Add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span>"
       field: Etiketler
       empty_selection: Lütfen etiketleri seçin
     add_to_category:
       label: Varlıkları kategorilerde sınıflandır
       description: Varlıklar aşağıdaki kategorilere yerleştirilecek, mevcut yerleşim kaybedilecek.
+      label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|]1, Inf[Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
 pim_catalog_volume:
+  section:
+    assets:
+      title: Axes on assets
+      hint: You can follow the volume regarding the assets right here.
   axis:
     count_assets: Varlıklar
     count_asset_categories: Varlık kategorileri
+    count_asset_category_trees: Asset category trees
 pim_menu:
   tab:
     asset: Varlıklar

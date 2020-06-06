@@ -37,6 +37,10 @@ category.permissions:
   apply_on_children.label: Çocuklar üzerindeki değişiklikleri uygula
   apply_on_children.help: Çocuklardaki tüm izin değişikliklerini kopyalayın, çocuklard üzerindeki geçerli izinler korunmakta
 locale.permissions:
+  view.label: Allowed to view information
+  view.help: Allow to view the information in this locale
+  edit.label: Allowed to edit information
+  edit.help: Allow to edit the information in this locale (implies the view permission)
   no_access_to_products: Aktifleştirilen yerel ayarların her hangi birinde ürünün verilerine erişemiyorsunuz, lütfen yöneticinizle iletişime geçin.
 flash.locale.updated: Yerel ayarlar ve izinler güncellendi
 pim_enrich:

@@ -25,6 +25,7 @@ teamwork_assistant:
     title: Mengedit proyek
   create_project_modal:
     saved: Proyek telah disimpan, Anda akan diberitahu bila perhitungan dilakukan.
+    title: Project
   widget:
     no_project: Anda saat ini tidak memiliki proyek
     no_project_create: buat proyek baru
@@ -34,6 +35,7 @@ teamwork_assistant:
     in_progress: SEDANG BERJALAN
     done: DIKERJAKAN
     all_contributors: Semua kontributor
+    you: You
     display_products: Tampilan produk
     placeholder:
       contributor_selector: Cari kontributor

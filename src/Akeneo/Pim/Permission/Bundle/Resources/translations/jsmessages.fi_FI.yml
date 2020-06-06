@@ -34,12 +34,16 @@ pimee_enrich.entity.job_instance:
       removed: Käyttäjäryhmä {{ group }} ei ole oikeutettu {{ permission }} työprofiilia
 batch_jobs:
   add_product_value_with_permission_and_rules:
+    label: Add product value with permission check & rules application
     perform.label: Lisää tuotteen arvo
   update_product_value_with_permission_and_rules:
+    label: Update product value with permission check & rules application
     perform.label: Päivitä tuotteen arvo
   remove_product_value_with_permission_and_rules:
+    label: Remove product value with permission check & rules application
     perform.label: Poista tuotteen arvo
   edit_common_attributes_with_permission_and_rules:
+    label: Edit attributes with permission check & rules application
     perform.label: Muokkaa attribuutteja
     cleaner.label: Poista väliaikaiset tiedostot
   default_steps:

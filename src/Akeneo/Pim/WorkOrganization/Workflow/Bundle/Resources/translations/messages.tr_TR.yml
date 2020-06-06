@@ -37,6 +37,7 @@ pimee_workflow:
       approve: '%owner%, %product% ürünü için teklifinizi kabul etti'
       refuse: '%owner% ürününüz için yapılan teklifi reddetti %product%'
       remove: '%owner%, %product% ürünü için teklifinizi sildi'
+      mass_edit_sent_for_approval: 'Mass edit <strong>%jobLabel%</strong> finished: %sentForApprovalCount% proposals generated out of %readProductsCount% products'
     mass_review_action:
       approve: Tüm seçilenleri onayla
       refuse: Tüm seçilenleri reddet
