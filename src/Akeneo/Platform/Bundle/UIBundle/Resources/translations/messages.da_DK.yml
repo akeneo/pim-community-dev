@@ -202,6 +202,7 @@ flash:
     removed: Elementet blev slettet
   attribute:
     identifier_not_removable: Id attribut kan ikke fjernes
+    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   category:
     removed: Kategori fjernet
   tree:
