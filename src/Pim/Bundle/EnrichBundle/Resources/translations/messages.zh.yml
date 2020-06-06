@@ -24,6 +24,8 @@ pim_enrich:
       history.title: 历史
   #Family
   family:
+    info:
+      cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
     tab:
       property.title: 属性
       attribute.title: 属性
@@ -101,6 +103,7 @@ pim_enrich:
       description: 使用被选择的本地化语言对应的数据来编缉所选定的产品属性。
       empty: 请选择你要编辑的属性
       success_flash: 更新产品状态的作业正在运行
+      launched_flash: The bulk action "edit attributes" has been launched. You will be notified when it is done.
       message:
         warning: 所选定的产品中没有共同的产品属性。请更改您的选择。
         invalid_attribute: 具有代码"attribute_code"属性在选定的产品中并不共用，该属性略过。
@@ -159,7 +162,10 @@ pim_enrich:
       add_attribute: 将属性添加到产品
       remove_attribute: 从产品中删除属性
       categories_view: 咨询产品的类别
+      associations_view: View the associations of a product
+      associations_edit: Add associations to a product
       change_family: 更改产品品类
+      change_state: Change the status of a product
       add_to_groups: 将商品添加到组
       mass_edit: 产品批量编辑操作
       comment: 评论产品
@@ -168,6 +174,7 @@ pim_enrich:
     product_model:
       create: 创建产品型号
       edit_attributes: 编辑产品模型的属性
+      categories_view: Consult the categories of a product model
       history: 查看产品模型的历史记录
       remove: 删除产品模型
     category:
@@ -190,8 +197,11 @@ pim_enrich:
       create: 创建品类
       edit_properties: 编辑一个品类的特征
       edit_attributes: 编辑一个品类包括的属性
+      edit_variants: Edit a family variant
       remove: 删除一个品类
       history: 查看品类历史
+    family_variant:
+      remove: Remove a family variant
     attribute_group:
       index: 列出属性组
       create: 创建属性组
@@ -225,8 +235,10 @@ pim_enrich:
       edit: 编辑关联类型
       remove: 删除关联类型
       history: 查看关联类型历史记录
+    association:
+      remove: Remove associations to a product
     job_tracker:
-      index: 查看进程跟踪器
+      index: 查看过程跟踪器
     api_connection:
       manage: 管理API连接
   acl_group:
@@ -246,6 +258,11 @@ pim_enrich:
     empty_value:
       reference_data_type:
         label: 选择引用的数据类型
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
+        done: Removal of a locale on a channel finished.
 #Entity and page header titles
 attribute:
   title: 属性
@@ -266,8 +283,10 @@ category:
   edit: 编辑类别
   suggest selection: 请选择左边的类别
   or: ' 或 '
+  create new: Create a new category tree
 tree:
   title: 目录
+  create: create category tree
   edit: 编辑目录
 channel:
   title: 频道
@@ -308,6 +327,7 @@ btn:
     attribute: 创建属性
     attribute group: 创建属性组
     category: 创建分类
+    tree: create category tree
     channel: 创建通道
     currency: 创建货币
     family: 创建产品族
@@ -344,6 +364,7 @@ confirmation:
     attribute group: 确定要删除属性组%name%吗？
     category: 确定要删除目录%name%吗？
     family: 确定要删除产品族%name%吗？
+    family_variant: Are you sure you want to delete the family variant %name%?
     product: 确定要删除产品%name%吗？
     group: 确定要删除分组%name%吗？
     group type: 确定要删除分组类型%name%吗？
@@ -363,6 +384,7 @@ flash:
     updated: 属性已更新
     removed: 属性已删除
     identifier_not_removable: 标识属性不能被删除
+    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   attribute group:
     created: 属性组已创建
     updated: 属性组已更新
@@ -497,6 +519,7 @@ Useable as grid column: 可作为表格列
 Useable as grid filter: 在表格中可用
 Family: 产品族
 Image: 图片
+Variant products: Variant products
 Available locales: 可用区域
 Locale specific: 特定的区域
 default: 默认
@@ -525,6 +548,7 @@ No matches found: 未找到匹配项
 Category tree: 目录树
 Completeness: 完整性
 Attribute used as label: 属性作为标签
+Credentials: Credentials
 #Scopes
 Global: 全局
 Channel: 通道
@@ -783,17 +807,24 @@ pim_mass_edit:
       error: 快速导出 <strong>%label%</strong>失败
       warning: 快速导出<strong>%label%</strong> 成功，但有一些警告
       success: 快速导出 <strong>%label%</strong>成功
+    mass_delete:
+      error: Mass delete <strong>%label%</strong> failed
+      warning: Mass delete <strong>%label%</strong> finished with some warnings
+      success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
   mass_edited: 批量编辑
   skip: 跳过
   skipped_products: 跳过的产品
   skipped_attributes: 跳过的属性
   skipped_families: 被略过的品类
+  deleted_products: Deleted products
+  deleted_product_models: Deleted product models
 pim_mass_edit_execution_show: 批量编辑执行 |详细信息
 edit_common_attributes.steps.edit_common_attributes_processor.title: 编辑属性
 update_product_value.steps.update_product_value_processor.title: 更新商品值
 remove_product_value.steps.update_product_value_processor.title: 移除商品值
 edit_common_attributes: 编辑属性
+edit_common_attributes_clean: Clean files for attributes
 perform.steps.duplicated.title: 重复的轴
 perform.steps.excluded.title: 被排除在外的产品
 #Background jobs & steps labels
@@ -806,10 +837,40 @@ batch_jobs:
     label: 更新商品值
     perform:
       label: 更新商品值
+  add_attribute_value:
+    label: Add attributes value
+    perform:
+      label: Add attributes value
   edit_common_attributes:
     label: 编辑属性
     perform:
       label: 编辑属性
+    clean:
+      label: Clean files for attributes
+    cleaner:
+      label: Clean files for attributes
+  compute_completeness_of_products_family:
+    compute_completeness_of_products_family.label: Compute completeness
+  add_to_category:
+    label: Add to category
+    perform:
+      label: Add to category
+  move_to_category:
+    label: Move to category
+    perform:
+      label: Move to category
+  remove_from_category:
+    label: Remove from category
+    perform:
+      label: Remove from category
+  add_association:
+    label: Associate
+    perform:
+      label: Associate
+  add_to_existing_product_model:
+    label: Add to an existing product model
+    perform:
+      label: Add to an existing product model
   set_attribute_requirements:
     label: 设置属性要求
     perform:
@@ -830,6 +891,11 @@ batch_jobs:
     quick_export.label: XLSX产品界面内容下快速导出
     perform:
       label: XLSX产品网格背景下快速导出
+  delete_products_and_product_models:
+    delete_products_and_product_models.label: Mass delete products
+  change_parent_product:
+    perform:
+      label: Change parent product model
 mass_edit report:
   overview: 批量编辑报告
 job_tracker:

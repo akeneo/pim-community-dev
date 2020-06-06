@@ -165,6 +165,7 @@ pim_enrich:
       associations_view: Просмотр связей продукта
       associations_edit: Добавление связей продукту
       change_family: Изменить семейство продуктов
+      change_state: Change the status of a product
       add_to_groups: Добавление продукта в группы
       mass_edit: Операции массового редактирования продуктов 
       comment: Комментировать продукты
@@ -282,8 +283,10 @@ category:
   edit: изменить категорию
   suggest selection: Пожалуйста, выберите категорию слева
   or: или
+  create new: Create a new category tree
 tree:
   title: дерево
+  create: create category tree
   edit: редактировать дерево категорий
 channel:
   title: канал
@@ -324,6 +327,7 @@ btn:
     attribute: создать атрибут
     attribute group: создать группу атрибутов
     category: создать категорию
+    tree: create category tree
     channel: создать канал
     currency: создать валюту
     family: создать семейство
@@ -380,6 +384,7 @@ flash:
     updated: Атрибут успешно обновлен
     removed: Атрибут успешно удален
     identifier_not_removable: Идентификатор атрибута не может быть удален
+    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   attribute group:
     created: Группа атрибутов успешно создана
     updated: Группа атрибутов успешно обновлена

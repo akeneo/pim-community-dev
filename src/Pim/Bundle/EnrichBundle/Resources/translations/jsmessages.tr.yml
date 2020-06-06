@@ -19,6 +19,7 @@ confirmation:
     role: Bu rolü silmek istediğinizden emin misiniz?
     job_instance: Bu iş durumunu silmek istediğinize emin misiniz?
     api_connection: Bu API bağlantısını iptal etmek istediğinize emin misiniz? Bu bağlantı üzerinden yapılan tüm API çağrıları artık hata verecek.
+    products_and_product_models: Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -114,6 +115,7 @@ Classify the product: Ürün sınıflandır
 Delete the product: Ürünü sil
 Change status: Değişim durumu
 Toggle status: Geçiş durumu
+mass_delete: Mass delete
 #Quick export labels
 pim:
   grid:
@@ -355,6 +357,7 @@ pim_enrich:
         create_label: Yeni bir aile biçimi oluştur
         create_description: Bir aile değişkenindei değişkenler ile ürünler için bir yapı tanımlayabilirsiniz. Yönetilen değişkenlerinin seviyelerinin sayısını ve her seviye için değişken ekseni olan özellikleri seçiniz, ve sonra özelliklerin nasıl dağıtıldığını tanımlayınız.
         update_description: Bu özelliklerin değişken seviyesinde yönetilmesi için özellikleri seçilmiş değişkenleri sürükleyip bırakın.
+        update_translation: Translate family variant label
         create: Oluştur
         cancel: İptal
         code: Kod
@@ -499,6 +502,7 @@ pim_enrich:
             display: Görüntüle
             all: Bütün özellikler
             missing_required: Eksik olan tüm gerekli özellikler
+            at_this_level: All level specific attributes
         categories:
           title: Kategoriler
       panel:
@@ -594,6 +598,8 @@ pim_enrich:
           title: Geçmiş
     family_variant:
       tab:
+        attributes:
+          title: Variant attributes
         labels:
           title: Etiket çevirileri
     attribute_option:
@@ -874,6 +880,8 @@ pim_enrich:
             "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Seçilen en az bir bölgede tamamla
             "GREATER OR EQUALS THAN ON ALL LOCALES": Tüm seçilmiş bölgelerde tamamla
             LOWER THAN ON ALL LOCALES: Bütün seçilmiş bölgeleri tamamlama
+            AT LEAST COMPLETE: At least one child product complete on one selected locale
+            ALL COMPLETE: All children products complete on all selected locales
           empty_selection: Bir aile seçin
         category:
           title: Kategori
@@ -1041,7 +1049,13 @@ pim_enrich:
           description: Seçilen ürünler etkinleştirilecek veya devre dışı bırakılacak.
           field: Etkinleştirmek için
         edit_common:
+          label: Edit attributes values
+          label_count: "{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: Yalnızca seçili ürünlerin ailelerine ait öznitelikleri {{ yerel}} yerel ayar ve {{ kapsama }} kanal için aşağıdaki verilerle düzenlenecektir.
+        add_attribute_value:
+          label: Add attributes values
+          label_count: "{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
         change_family:
           label: Aileyi değiştir
           label_count: "{1}-başlık--vurgu\">ürün 1 </span>|<span sınıf=\"AknFullPage ailesi 1, Inf [{{öğeler sayısı}} <span sınıf=\"AknFullPage-başlık--vurgu\"> ailesi Değiştirin ürünleri</span>Değiştir]"
@@ -1069,9 +1083,14 @@ pim_enrich:
           label_count: "{1}Ekle <span sınıf=\"AknFullPage-başlık--vurgu\">1 ürün</span> varolan bir ürün modeli için 1, Inf [Ekle<span sınıf=\"aknfullpage-başlık--vurgu\"> {öğelerin sayısı}} ürünler<| span> varolan bir ürün modeli için 1, Inf [Ekle< span sınıf= \"aknfullpage-başlık-- vurgu\" > {öğelerin sayısı}} ürünler < /span >"
           description: Seçilen ürün modeli ürünleri toplar ve ortak özellikleri zenginleştirilmesine olanak sağlar.
         associate_to_product_and_product_model:
+          label: Associate
           label_count: "{1}<span class=\"AknFullPage-title--highlight\">1 ürünü</span> ürünler veya ürün modelleri ile ilişkilendir|] 1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}ürünleri </span>ürünler veya ürün modelleri ile ilişkilendir"
           description: Kılavuzdan seçilen ürünler, seçilen ürünler veya ürün modellerinden seçilen ilişkinin türünü oluşturur
           validate: Lütfen bir sonraki aşamaya geçmeden önce ilişkilendirmeyi ekleyiniz
+        change_parent_product_model:
+          label: Change the parent product model
+          label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
     family:
       title: Toplu aile işlemleri
       confirm: "{1}aşağıdaki bilgileri içeren bir aile güncellemek üzeresiniz, lütfen onaylayın.|] 1, Inf [{öğelerin sayısı}} aileleri aşağıdaki bilgilerle güncelleştirmek üzere olduğunuz, lütfen onaylayın."
@@ -1102,6 +1121,7 @@ page_title:
   pim_enrich_attributegroup_index: Özellik grupları
   pim_enrich_attributegroup_create: Özellik grupları | Oluştur
   pim_enrich_attributegroup_edit: Özellik grubu {{ group.label }} | Düzenle
+  pim_enrich_catalog_volume_index: Catalog volume monitoring
   pim_enrich_categorytree_index: Kategori ağaçları
   pim_enrich_categorytree_create: Kategori ağaçları | Oluştur
   pim_enrich_categorytree_edit: Ağaç kategorisi {{ category.label }} | Düzenle
@@ -1144,6 +1164,10 @@ batch_jobs:
     label: Ürün değerini güncelleme
     perform:
       label: Ürün değerini güncelleme
+  add_to_group:
+    label: Add to group
+    perform:
+      label: Add to group
   edit_common_attributes:
     label: Özellikleri düzenle
     perform:
@@ -1162,6 +1186,10 @@ batch_jobs:
     label: Kategorilerden kaldır
     perform:
       label: Kategorilerden kaldır
+  add_association:
+    label: Associate
+    perform:
+      label: Associate
   add_to_existing_product_model:
     label: Varolan bir ürün modeline ekle
     perform:
@@ -1245,6 +1273,9 @@ batch_jobs:
     validation.label: Dosya doğrulaması
     import.label: Aileyi içe aktar
     compute_data_related_to_family_variants.label: Ürün verilerini hesaplama
+    compute_data_related_to_family_root_product_models.label: Compute root product models data
+    compute_data_related_to_family_sub_product_models.label: Compute sub product models data
+    compute_data_related_to_family_products.label: Compute products data
   csv_family_variant_import:
     label: Aile biçimini CSV olarak içe aktar
     validation.label: Dosya onaylama
@@ -1309,6 +1340,9 @@ batch_jobs:
     validation.label: Dosya validasyonu
     import.label: Aileyi içe aktar
     compute_data_related_to_family_variants.label: Ürün verilerini hesaplama
+    compute_data_related_to_family_root_product_models.label: Compute root product models data
+    compute_data_related_to_family_sub_product_models.label: Compute sub product models data
+    compute_data_related_to_family_products.label: Compute products data
   xlsx_family_variant_import:
     label: Aile biçimini XLSX olarak içe aktar
     validation.label: Dosya validasyonu
@@ -1424,6 +1458,7 @@ pim_menu:
     import_history: İçe aktarma geçmişi
     import_profile: Profilleri içe aktar
     configuration: Yapılandırma
+    catalog_volume: Catalog volume monitoring
     user_management: Kullanıcı Yönetimi
     user: Kullanıcılar
     user_group: Gruplar
@@ -1444,11 +1479,33 @@ pim_notification:
   no_notifications: Bildirim yok
   loading: Yükleniyor...
 catalog_volume:
+  product_values: "You have <span>{{values}}</span> product values in your PIM! On average, it's <span>{{average}}</span> product values per product!&nbsp;💪"
+  product_values_description: 'The more product values you have, the more valuable your PIM is, the higher your ROI is! More details <a href="{{link}}" target="_blank">here</a>'
+  section:
+    product_values:
+      hint: 'Did you know that the total number of product values in your PIM is directly linked to the following axes?<br/>To have more details, we invite you to <a href="{{link}}" target="_blank">browse this article</a>.'
+      title: Axes that leverage the number of product values
+    catalog_structure:
+      hint: You may know that a good catalog structure is really important and is a condition to efficient enrichment. Below are the various axes to monitor your catalog structure.
+      title: Axes related to the catalog structure
+    variant_modelling:
+      hint: If you are using the variant modeling, here are the axes to help you monitor your volume.
+      title: Axes regarding the variant modeling
   axis:
     count_products: Ürünler
+    average_max_attributes_per_family: Attributes per family
     count_channels: Kanallar
+    count_locales: Locales (activated)
+    count_scopable_attributes: Scopable attributes
+    count_localizable_and_scopable_attributes: Localizable and scopable attributes
+    count_localizable_attributes: Localizable attributes
     count_families: Aileler
     count_attributes: Özellikler
+    average_max_options_per_attribute: Options by attribute
     count_categories: Kategoriler
     count_category_trees: Kategori ağaçları
+    count_variant_products: Variant products
     count_product_models: Ürün modelleri
+    warning: Wow! You hit a record with this axis! Don't hesitate to contact us if you need any help with this kind of volume.
+  mean: 'Mean:'
+  max: 'Max:'

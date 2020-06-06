@@ -5,6 +5,8 @@ pim_connector:
     entity_reader.title: Izvlačenje entiteta
     csv_reader:
       title: CSV čitač
+    file_reader:
+      invalid_item_columns_count: 'Expecting to have %totalColumnsCount% columns, actually have %itemColumnsCount% in %filePath%:%lineno%'
     csv_product_reader.title: CSV čitač proizvoda
     csv_category_reader.title: CSV čitač kategorija
     dummy_processor.title: Pseudo procesor
@@ -38,12 +40,20 @@ job_execution.summary:
     title: 'Kod datoteke:'
     skipped: preskočeno, ekstenzija u bijeloj listi
   product_skipped_no_diff: preskočeni proizvodi (bez razlike)
+  product_skipped_no_associations: skipped product (no associations detected)
+  product_model_skipped_no_associations: skipped product model (no associations detected)
+  product_model_skipped_no_diff: skipped product model (no differences)
   item_position: čitanje redaka
+  skipped_in_root_product_model: skipped product model with parent
+  skipped_in_sub_product_model: skipped product model without parent
 #Job labels
 batch_jobs:
   csv_product_export:
     label: Izvoz proizvoda u CSV
     export.label: Izvoz proizvoda
+  csv_product_model_export:
+    label: Product model export in CSV
+    export.label: Product model export
   csv_category_export:
     label: Izvoz kategorije u CSV
     export.label: Izvoz kategorije
@@ -62,13 +72,20 @@ batch_jobs:
   csv_family_export:
     label: Izvoz porodice u CSV
     export.label: Izvoz porodice
+  csv_family_variant_export:
+    label: Family variant export in CSV
+    export.label: Family variant export
   csv_product_import:
     label: Uvoz proizvoda iz CSV
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz proizvoda
     import_associations.label: Uvoz pridruživanja
   csv_product_model_import:
+    label: Product model import in CSV
     validation.label: Provjera valjanosti datoteke
+    import_root_product_model.label: Root product model import
+    import_sub_product_model.label: Sub product model import
+    import_product_model_descendants.label: Compute product model descendants
   csv_category_import:
     label: Uvoz kategorije iz CSV
     validation.label: Provjera valjanosti datoteke
@@ -90,7 +107,9 @@ batch_jobs:
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz porodice
   csv_family_variant_import:
+    label: Family variant import in CSV
     validation.label: Provjera valjanosti datoteke
+    import.label: Family variant import
   csv_group_import:
     label: Uvoz grupa iz CSV
     validation.label: Provjera valjanosti datoteke
@@ -151,17 +170,26 @@ batch_jobs:
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz porodice
   xlsx_family_variant_import:
+    label: Family variant import in XLSX
     validation.label: Provjera valjanosti datoteke
+    import.label: Family variant import
   xlsx_product_export:
     label: Izvoz proizvoda u XLSX
     export.label: Izvoz proizvoda
+  xlsx_product_model_export:
+    label: Product model export in XLSX
+    export.label: Product model export
   xlsx_product_import:
     label: Uvoz proizvoda iz XLSX
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz proizvoda
     import_associations.label: Uvoz pridruživanja
   xlsx_product_model_import:
+    label: Product model import in XSLX
     validation.label: Provjera valjanosti datoteke
+    import_root_product_model.label: Root product model import
+    import_sub_product_model.label: Sub product model import
+    import_product_model_descendants.label: Compute product model descendants
     import_associations.label: Uvoz pridruživanja
   xlsx_group_export:
     label: Izvoz grupe u XLSX
@@ -173,6 +201,9 @@ batch_jobs:
   xlsx_family_export:
     label: Izvoz obitelji u XLSX
     export.label: Izvoz porodice
+  xlsx_family_variant_export:
+    label: Family variant export in XLSX
+    export.label: Family variant export
   xlsx_category_export:
     label: Izvoz kategorije u XLSX
     export.label: Izvoz kategorije

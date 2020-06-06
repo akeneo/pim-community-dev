@@ -639,6 +639,7 @@ pim_enrich:
             name: Имя
             type: Тип
             scopable: Видимый
+            localizable: Localizable
         history.title: Журнал
     common:
       tab:
@@ -906,6 +907,7 @@ pim_enrich:
             "=": Равно
             STARTS WITH: Начинается с
             ENDS WITH: Заканчивается на
+            EMPTY: Is empty
             NOT EMPTY: Не является пустым
         price-collection:
           operators:
@@ -915,10 +917,12 @@ pim_enrich:
             ">": Больше
             "<=": Меньше или равно
             "<": Меньше
+            EMPTY: Is empty
             NOT EMPTY: Не является пустым
         multi_select:
           operators:
             IN: В списке
+            EMPTY: Is empty
             NOT EMPTY: Не является пустым
         media:
           operators:
@@ -927,6 +931,7 @@ pim_enrich:
             "=": Равно
             STARTS WITH: Начинается с
             ENDS WITH: Заканчивается на
+            EMPTY: Is empty
             NOT EMPTY: Не является пустым
         date:
           operators:
@@ -936,6 +941,7 @@ pim_enrich:
             "!=": Не равно
             BETWEEN: Между
             NOT BETWEEN: Не между
+            EMPTY: Is empty
             NOT EMPTY: Не является пустым
         number:
           operators:
@@ -945,6 +951,7 @@ pim_enrich:
             ">": Больше
             "<=": Меньше или равно
             "<": Меньше
+            EMPTY: Is empty
             NOT EMPTY: Не является пустым
       properties:
         title: Свойства
@@ -1500,3 +1507,5 @@ catalog_volume:
     count_variant_products: Разновидность продуктов
     count_product_models: Модели продуктов
     warning: Ух ты! Вы побили рекорд по этому измерению! Не стесняйтесь обращаться к нам, если вам нужна помощь.
+  mean: 'Mean:'
+  max: 'Max:'

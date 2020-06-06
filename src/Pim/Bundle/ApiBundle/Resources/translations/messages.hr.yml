@@ -1,25 +1,42 @@
 pim_api:
   acl:
+    rights: Web API permissions
     attribute:
+      edit: Create and update attributes
       list: Popis atributa
+    attribute_option:
+      edit: Create and update attribute options
+      list: List attribute options
     attribute_group:
+      edit: Create and update attribute groups
       list: Popis atributa grupa
     category:
+      edit: Create and update categories
       list: Popis kategorija
     family:
+      edit: Create and update families
       list: Popis obitelji
+    family_variant:
+      edit: Create and update family variants
+      list: List family variants
     channel:
+      edit: Create and update channels
       list: Popis kanala
     locale.list: Popis lokalizacija
     currency.list: Popis valuta
     association_type:
+      edit: Create and update association types
       list: Prikaži tipove pridruživanja
   acl_group:
+    overall_access: Overall Web API access
     attribute: Atributi
+    attribute_option: Attribute options
     attribute_group: Grupe atributa
     category: Kategorije
     family: Obitelji
+    family_variant: Family variants
     channel: Kanali
     locale: Lokalizacija
     currency: Valute
     association_type: Tipovi pridruživanja
+rights.api: Web API permissions

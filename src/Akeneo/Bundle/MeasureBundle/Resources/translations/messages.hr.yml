@@ -95,6 +95,9 @@ SECOND: Sekunda
 MINUTE: Minuta
 HOUR: Sat
 DAY: Dan
+WEEK: Week
+MONTH: Month
+YEAR: Year
 Speed: Brzina
 FOOT_PER_SECOND: Stopa u sekundi
 FOOT_PER_HOUR: Stopa po satu
@@ -146,3 +149,9 @@ ATM: Atmosfera
 PSI: Funta po kvadratnom inču
 TORR: Torima
 MMHG: milimetar živina stupca
+Energy: Energy
+KILOCALORIE: kilocalorie
+KILOJOULE: kilojoule
+CaseBox: Packaging
+PIECE: Piece
+DOZEN: Dozen

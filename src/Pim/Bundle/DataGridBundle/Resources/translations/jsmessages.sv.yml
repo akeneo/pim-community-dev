@@ -34,10 +34,14 @@ Yes: true
 No: false
 oro.datagrid.entityHint: Enhet
 oro.datagrid.noentities: Inga resultat hittades
+oro.datagrid.noresults: "Sorry, there is no result for your search."
+oro.datagrid.noresults_subTitle: "Try again with new search criteria."
 oro.datagrid.nocolumns: Inga kolumner konfigurerade för denna tabell
 oro.datagrid.pagination.label: "Sida"
 oro.datagrid.pagination.totalPages: "av {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} poster"
+#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
+oro.datagrid.pagination.limit_warning: "The grid cannot display more than {{ limit }} results, try to filter on additional search criteria."
 oro.datagrid.action.reset: "Återställ"
 oro.datagrid.action.refresh: "Uppdatera"
 oro_datagrid.select.all: "Alla"
@@ -56,6 +60,7 @@ pim:
       label_empty: är tom
       label_not_empty: är inte tom
       label_in_list: i listan
+      operator: Operator
     price_filter:
       label: Valuta
     category_filter:
@@ -67,6 +72,7 @@ datagrid_view.columns.min_message: Du måste välja minst en tabellkolumn att vi
 pim_datagrid:
   column_configurator:
     label: Kolumner
+    title: Configure columns
     all_groups: Alla grupper
     search: Sök
     clear: Rensa
@@ -74,6 +80,7 @@ pim_datagrid:
     apply: Tillämpa
     cancel: Avbryt
     remove_column: Ta bort
+    description: Select the information you want to display as column
     attribute_groups: Attributgrupper
   mass_action:
     delete:
@@ -104,12 +111,19 @@ grid.view_selector:
   placeholder: Namnge ny vy
   choose_label: Välj en etikett för vyn
   confirmation:
+    remove: Are you sure you want to delete this view?
     delete: Bekräfta radering
 #View selector flash messages
 grid.view_selector.flash.updated: Vy har uppdaterats
 #Display selector
 grid.display_selector:
+  label: Display
   gallery: Galleri
   list: Lista
 #Credentials cell
 Client ID: Klient-ID
+Secret: Secret
+grid.empty_results:
+  associated_product:
+    hint: There are no associated products
+    subHint: 'Click on the button "Add associations" to associate this product'

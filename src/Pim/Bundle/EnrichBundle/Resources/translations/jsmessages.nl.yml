@@ -1484,14 +1484,28 @@ catalog_volume:
   section:
     product_values:
       hint: 'Wist u dat het totaalaantal productwaarden in uw PIM direct gekoppeld is aan de volgende assen?<br/>Om meer details te hebben, nodigen we u uit om <a href="{{link}}" target="_blank">dit artikel</a> te lezen.'
+      title: Axes that leverage the number of product values
+    catalog_structure:
+      hint: You may know that a good catalog structure is really important and is a condition to efficient enrichment. Below are the various axes to monitor your catalog structure.
+      title: Axes related to the catalog structure
+    variant_modelling:
+      hint: If you are using the variant modeling, here are the axes to help you monitor your volume.
+      title: Axes regarding the variant modeling
   axis:
     count_products: Producten
     average_max_attributes_per_family: Attributen per familie
     count_channels: Kanalen
+    count_locales: Locales (activated)
+    count_scopable_attributes: Scopable attributes
+    count_localizable_and_scopable_attributes: Localizable and scopable attributes
+    count_localizable_attributes: Localizable attributes
     count_families: Families
     count_attributes: Attributen
+    average_max_options_per_attribute: Options by attribute
     count_categories: Categorieën
     count_category_trees: Categorie boomstructuren
     count_variant_products: Variant products
     count_product_models: Productmodels
+    warning: Wow! You hit a record with this axis! Don't hesitate to contact us if you need any help with this kind of volume.
+  mean: 'Mean:'
   max: 'Max:'

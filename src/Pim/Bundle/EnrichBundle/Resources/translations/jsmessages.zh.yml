@@ -7,7 +7,9 @@ confirmation:
     attribute: 确定要删除这个属性吗？
     attribute_group: 确定要删除这个属性组吗？
     family: 确定要删除这个分类吗？
+    family_variant: Are you sure you want to delete this family variant ?
     product: 确定要删除这个产品吗？
+    product_model: Are you sure you want to delete this product model? All its children, product models and variant products, will be also deleted.
     channel: 确定要删除这个频道吗？
     group: 确定要删除这个组吗？
     group_type: 确定要删除这个组类型吗？
@@ -16,6 +18,8 @@ confirmation:
     user: 确定要删除这个用户吗？
     role: 确定要删除这个角色吗？
     job_instance: 确定要删除这个工作实例吗？
+    api_connection: Are you sure you want to revoke this API connection? All API calls made through this connection will now throw an error.
+    products_and_product_models: Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -45,6 +49,8 @@ flash:
     removed: 属性组已删除
   family:
     removed: 产品族已删除
+  family_variant:
+    removed: Family variant successfully removed
   product:
     removed: 产品已删除
   product_model:
@@ -65,8 +71,12 @@ flash:
     removed: 角色已删除
   job_instance:
     removed: 工作实例已成功删除
+  api_connection:
+    removed: API connection successfully revoked
 error:
   common: 出现了错误
+  creating:
+    product: No attribute is configured as a product identifier or you don't have the rights to edit it.
   removing:
     item: 不能删除此项目
     association_type: 不能删除此关联类型
@@ -105,6 +115,7 @@ Classify the product: 产品分类
 Delete the product: 删除产品
 Change status: 更改状态
 Toggle status: 切换状态
+mass_delete: Mass delete
 #Quick export labels
 pim:
   grid:
@@ -117,6 +128,7 @@ pim:
       delete: 删除
       mass_edit: 批量操作
       category_edit: 在类别中移动产品
+      sequential_edit: "順序編輯\n"
 #Jstree context menu actions
 jstree.create: 创建
 jstree.done: 已完成
@@ -149,6 +161,7 @@ pim_enrich:
     product:
       navigation: 产品导航
       infos: 产品信息
+      index_title: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
       title: 产品
       locale: 本地化语言
       category: 分类
@@ -157,6 +170,7 @@ pim_enrich:
       modalTitle: 选择操作
       filters: 过滤器
       selected: 选定的结果
+      common: Common
       btn:
         enabled: 已启用
         disabled: 已禁用
@@ -178,6 +192,7 @@ pim_enrich:
         deletion_failed: 产品不能被删除。
         update_successful: 产品更新成功。
         update_failed: 产品不能更新。
+        field_not_ready: "The product cannot be saved right now. The following fields are not ready: {{ fields }}"
         already_in_upload: 在针对本地化语言"{{ locale }}"和"{{ scope }}"范围中的这个属性中，一个文件已经在上传。
       error:
         upload: 上传文件时发生错误
@@ -222,6 +237,7 @@ pim_enrich:
         title: 创建
         labels:
           family: 选择一个品类
+          family_variant: Choose a family variant
           save: 保存
           cancel: 取消
       message:
@@ -234,16 +250,24 @@ pim_enrich:
       create_popin:
         type: 产品型号
         title: 创建产品型号
+        content: A product model gathers variant products and eases the enrichment of their common properties.
       info:
         create_successful: 产品型号已经成功创建
+        update_successful: Product model successfully updated. The completeness of its variant products will be recalculated.
         deletion_successful: 产品型号已经成功删除。
         update_failed: 产品型号无法更新
+        field_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
+      read_only_parent_attribute_from_common: This attribute can be updated in the common attributes.
+      read_only_parent_attribute_from_model: "This attribute can be updated in the attributes by {{ axes }}"
+      variant_axis: Variant axis
       title: 产品型号
       add_child:
+        create: Add new
         cancel: 取消
         confirm: 确认
         create_label: "添加新的{{ axes }}"
         fields:
+          required_label: (variant axis)
           code: 代码
     association_type:
       info:
@@ -251,6 +275,7 @@ pim_enrich:
         deletion_failed: 关联类型无法删除。
         update_successful: 关联类型已成功更新。
         update_failed: 关联类型无法更新。
+        field_not_ready: "The association type cannot be saved right now. The following fields are not ready: {{ fields }}"
       meta:
         created: 创建
         created_by: '创建者:'
@@ -269,6 +294,7 @@ pim_enrich:
         deletion_failed: 分组类型无法删除。
         update_successful: 分组类型已成功更新。
         update_failed: 分组类型无法更新。
+        field_not_ready: "The group type cannot be saved right now. The following fields are not ready: {{ fields }}"
       meta:
         created: 已创建
         created_by: '创建者:'
@@ -290,6 +316,7 @@ pim_enrich:
         update_failed: 渠道不能更新。
         create_successful: 渠道已成功创建。
         create_failed: 渠道不能创建。
+        field_not_ready: "The channel cannot be saved right now. The following fields are not ready: {{ fields }}"
       meta:
         created: 创建
         created_by: '创建者:'
@@ -307,6 +334,7 @@ pim_enrich:
         cant_remove_attribute_as_label: 不能删除用作标签的属性
         cant_remove_attribute_as_image: 不能删除用作主图片的属性
         attribute_edit_permission_is_not_granted: 你没有编辑品类属性的权限
+        cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
       meta:
         created: 创建
         created_by: '创建者:'
@@ -319,12 +347,30 @@ pim_enrich:
       message:
         created: 产品族已创建
       variant:
+        common:
+          title: Common attributes
+          empty: There is no common attributes
+        axis.label: Variant axis
+        level_1.label: Variant attributes level one
+        level_2.label: Variant attributes level two
+        add_variant: Add variant
+        create_label: Create a new family variant
+        create_description: In a family variant, you can define a structure for products with variants. Choose the number of managed variant levels, the attributes used as variant axes for each level, and then define how the attributes are distributed.
+        update_description: Drag & drop attributes to the selected variant level to have these attributes managed at the variant level.
+        update_translation: Translate family variant label
         create: 创建
         cancel: 取消
         code: 代码
         label: 标签
+        levels: Variant levels
+        axis_level: Variant axis level
+        required: required
         confirm_attribute_removal:
           title: 确认属性删除
+          message: By removing these attributes you will put them back in the common attributes of the family variant and remove the values from the variant products
+    family_variant:
+      info:
+        update_successful: Family variant successfully updated. The products with variants will be updated with your changes.
     attribute_option:
       code: 代码
       label: 标签
@@ -336,6 +382,7 @@ pim_enrich:
         deletion_failed: 分组不能删除。
         update_successful: 分组已成功更新。
         update_failed: 分组不能更新。
+        field_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
       btn:
         save: 保存
       meta:
@@ -361,6 +408,7 @@ pim_enrich:
         update_failed: 属性无法更新。
         create_successful: 属性已成功更新。
         create_failed: 属性无法创建。
+        field_not_ready: "The attribute cannot be saved right now. The following fields are not ready: {{ fields }}"
       scopable: 范围允许
       type:
         pim_catalog_identifier: 标识
@@ -414,8 +462,14 @@ pim_enrich:
     required: '（必填）'
     product_model:
       choose_product_model: 选择产品型号
+      choose_variant: Choose a variant
+      complete_variant_product: variant product
+      complete_variant_products: variant products
       family_variant: 变量
       product_model: 产品型号
+      flash:
+        product_model_added: Product model successfully added to the product model
+        variant_product_added: Variant product successfully added to the product model
     product:
       tab:
         associations:
@@ -424,8 +478,12 @@ pim_enrich:
             none_exist: 没有关联的类型存在。
             show_products: 显示产品
             show_groups: 显示分组
+            number_of_associations: "{{ productCount }} product(s), {{ productModelCount }} product model(s) and {{ groupCount }} group(s)"
           association_type_selector: 关联类型
           target: 目标
+          manage: Add {{ associationType }} associations
+          manage_description: Select the products you want to associate with the current product
+          add_associations: Add associations
         attributes:
           title: 属性
           btn:
@@ -439,10 +497,12 @@ pim_enrich:
             load_more: 正在加载更多的结果...
           attribute_group_selector: 属性组
           attribute_group_all: 所有
+          attribute_group.to_fill_count: "{1}1 missing required attribute|]1, Inf [{{ count }} missing required attributes"
           attribute_filter:
             display: 显示
             all: 全部属性
             missing_required: 全部缺少的必要属性
+            at_this_level: All level specific attributes
         categories:
           title: 分类
       panel:
@@ -451,6 +511,7 @@ pim_enrich:
           info:
             no_family: 没有定义品类。请定义一个品类来计算这个产品的完成度。
             no_completeness: 你只是改变了产品的品类。请先保存来计算在该品类下的数据完整性。
+          missing_values: "{1}1 missing value|] 1, Inf [{{ count }} missing values"
         history:
           title: 历史
       switch:
@@ -516,6 +577,7 @@ pim_enrich:
           general: 一般信息
           code: 代码
           attribute_as_label: 属性作为标签
+          attribute_as_image: Attribute used as the main picture
           empty_attribute_as_image: 未选择
           label_translations: 标签翻译
         attributes:
@@ -528,10 +590,16 @@ pim_enrich:
             attributes_groups_selected: '{{ itemsCount }}个分组已选定'
           not_required_label: 不需要
           required_label: 必填
+        variant:
+          title: Variants
+          flash:
+            family_variant_created: Family variant successfully created
         history:
           title: 历史
     family_variant:
       tab:
+        attributes:
+          title: Variant attributes
         labels:
           title: 标签翻译
     attribute_option:
@@ -584,6 +652,7 @@ pim_enrich:
             no_available_attributes: 没有需要添加的属性
     job_execution:
       loading: 正在加载...
+      title.details: Execution details
       refreshBtn.title: 刷新
       meta:
         status.title: 状态
@@ -676,21 +745,27 @@ pim_enrich:
           real_time_versioning:
             title: 实时历史记录更新
             help: 关闭产品历史自动更新以提高性能
+          family_variant_column:
+            title: Family variant column
         history:
           title: 历史
       file_path: 文件路径
     attribute:
       meta:
         created: 已创建
+        created_by: by
         updated: 上次更新
+        updated_by: by
       tab:
         properties:
           title: 属性
           section:
             common: 一般参数
+            type_specific: Type specific parameters
             validation: 验证参数
           label:
             allowed_extensions: 允许的扩展
+            auto_option_sorting: Sort automatically options by alphabetical order
             available_locales: 可用区域
             code: 代码
             date_max: 最大日期
@@ -707,12 +782,14 @@ pim_enrich:
             negative_allowed: 允许的负值
             number_max: 最大编号
             number_min: 最小编号
+            reference_data_name: Reference data type
             scopable: 每个渠道的值
             type: 类型
             unique: 唯一性值
             useable_as_grid_filter: 在表格中可用
             validation_regexp: 正则表达式
             validation_rule: 验证规则
+            wysiwyg_enabled: Rich text editor enabled
           default_label:
             default_metric_unit: 选择一个单位
             group: 选择属性组
@@ -736,6 +813,8 @@ pim_enrich:
     basket:
       title: 购物篮
       empty_basket: 购物车是空的
+  job:
+    upload: Drop your {{ type }} file here, or click to browse disk
   export:
     product:
       data:
@@ -754,6 +833,7 @@ pim_enrich:
         attributes:
           title: 属性
           edit: 编辑
+          label: "{0}All attributes|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
           help: "选择要导出的产品信息。例如︰ 仅导出有技术类的属性。"
           empty: 将导出所有属性
           modal:
@@ -768,6 +848,7 @@ pim_enrich:
           all_group: 所有群组
           empty_selection: 将导出所有属性
           title: 属性
+          description: Select the product information to export
         family:
           title: 产品族
           help: "按品类选中产品进行导出。例如︰ 只导出鞋和衣服。"
@@ -799,12 +880,15 @@ pim_enrich:
             "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": 完成至少一个选定的本地化语言
             "GREATER OR EQUALS THAN ON ALL LOCALES": 在所有选择的本地化语言中是完整的
             LOWER THAN ON ALL LOCALES: 在所有选择的本地化语言中是不完整的
+            AT LEAST COMPLETE: At least one child product complete on one selected locale
+            ALL COMPLETE: All children products complete on all selected locales
           empty_selection: 选择一个品类
         category:
           title: 分类
           help: 使用在目录树上 （由渠道中定义） 的产品类别来选择要导出的产品
         identifier:
           title: 标识
+          help: Use the product identifiers to export separated by commas, spaces or line breaks
         metric:
           operators:
             "=": 等于
@@ -873,8 +957,16 @@ pim_enrich:
         title: 属性
       global_settings:
         title: 全局设置
+  mass_edit_action:
+    edit_common_attributes:
+      description: Only the attributes belonging to the families of the selected products will be edited with the following data for the <span class="highlight">{{ locale }}</span> locale and the <span class="highlight">{{ channel }}</span> channel.
   index:
+    association_type:
+      title: "] -Inf, 1] {{ count }} association type|] 1, Inf [{{ count }} association types"
+      create_btn: Create association type
     import_profiles:
+      title: "] -Inf, 1] {{ count }} import profile|] 1, Inf [{{ count }} import profiles"
+      create_btn: Create import profile
       list: 选择一份作业
       create_popin:
         title: 创建
@@ -886,6 +978,7 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }}个分组|] 1, Inf [{{ count }}个分组"
       create_btn: 创建组
     export_profiles:
+      title: "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} export profiles"
       create_btn: 创建导入配置文件
       create_popin:
         title: 创建
@@ -912,6 +1005,8 @@ pim_enrich:
     user_group:
       title: "] -Inf, 1] {{ count }}个分组|] 1, Inf [{{ count }}个分组"
       create_btn: 创建组
+    process_tracker:
+      title: "] -Inf, 1] {{ count }} operation|] 1, Inf [{{ count }} operations"
     channel:
       title: "] -Inf, 1] {{ count }}个渠道|] 1, Inf [{{ count }}个渠道"
       create_btn: 创建渠道
@@ -927,10 +1022,12 @@ pim_enrich:
       create_btn: 创建
   mass_edit:
     next: 下一页
+    previous: Back
     cancel: 取消
     confirm: 确认
     product:
       title: 产品批量操作
+      confirm: "{1}You are about to update a product with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} products with the following information, please confirm."
       step:
         select:
           label: 选择产品
@@ -941,30 +1038,62 @@ pim_enrich:
           label: 配置
         confirm:
           label: 确认
+        launch_error:
+          label: An error occured during the launching of the mass edit operation
         launched:
           label: 批量操作“{{ operation }}”已启动。完成后你会收到通知。
       operation:
         change_status:
           label: 更改状态
+          label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: 将启用或禁用选定的产品。
           field: 启用
+        edit_common:
+          label: Edit attributes values
+          label_count: "{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
+        add_attribute_value:
+          label: Add attributes values
+          label_count: "{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
         change_family:
           label: 更改品类
+          label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: 选定产品的品类将更改为被选定的品类
           field: 产品族
         add_to_group:
           label: 加入到组
+          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
           description: 选择一个组，将所选定的产品加入其中
           field: 分组
         add_to_category:
           label: 添加到类别
+          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
+          description: The products will be classified into following categories, the existing classification is kept.
         move_to_category:
           label: 更改类别
+          label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|] 1, Inf [Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
+          description: The products will be classified into following categories, the existing classification is lost.
         remove_from_category:
           label: 从类别里删除
+          label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|] 1, Inf [Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
           description: 产品将从以下目录中删除。
+        add_to_existing_product_model:
+          label: Add to an existing product model
+          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
+          description: The product model selected will gather the products and allows the enrichment of their common properties.
+        associate_to_product_and_product_model:
+          label: Associate
+          label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|] 1, Inf [Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
+          description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
+          validate: Please add association before going to the next step
+        change_parent_product_model:
+          label: Change the parent product model
+          label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
     family:
       title: 品类批量操作
+      confirm: "{1}You are about to update a family with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} families with the following information, please confirm."
       step:
         select:
           label: 选择品类
@@ -980,6 +1109,8 @@ pim_enrich:
       operation:
         set_requirements:
           label: 设置属性要求
+          description: The following attributes requirements will be applied to the selected families
+          label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
 pim_enrich.error:
   exception.title: 我靠 ！{{ status_code }} 出错了...
   http:
@@ -989,25 +1120,38 @@ page_title:
   oro_default: 主界面
   pim_enrich_attributegroup_index: 属性组
   pim_enrich_attributegroup_create: 属性组 |创建
+  pim_enrich_attributegroup_edit: Attribute group {{ group.label }} | Edit
+  pim_enrich_catalog_volume_index: Catalog volume monitoring
   pim_enrich_categorytree_index: 目录树
   pim_enrich_categorytree_create: 目录树|创建
+  pim_enrich_categorytree_edit: Category tree {{ category.label }} | Edit
   pim_enrich_categorytree_create_tree: 目录树|创建
   pim_enrich_attribute_index: 属性
   pim_enrich_attribute_create: 属性|创建
+  pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Edit
   pim_enrich_product_index: 商品
+  pim_enrich_product_edit: Product {{ product.label }} | Edit
+  pim_enrich_product_model_edit: Product model {{ product.label }} | Edit
   pim_enrich_family_index: 品类
+  pim_enrich_family_edit: Family {{ family.label }} | Edit
   pim_enrich_channel_index: 渠道
   pim_enrich_channel_create: 通道|创建
+  pim_enrich_channel_edit: Channel {{ channel.label }} | Edit
   pim_enrich_currency_index: 货币
   pim_enrich_locale_index: 本地化语言
   pim_enrich_group_index: 分组
+  pim_enrich_group_edit: Group {{ group.label }} | Edit
   pim_enrich_associationtype_index: 关联类型
+  pim_enrich_associationtype_edit: Association type {{ association type.label }} | Edit
   pim_enrich_grouptype_index: 分组类型
+  pim_enrich_grouptype_edit: Group type {{ group type.label }} | Edit
   pim_enrich_mass_edit_action_choose: 批量编辑|选择
   pim_enrich_mass_edit_action_configure: 批量编辑|配置
+  pim_enrich_mass_edit_action_perform: Mass Edit | Perform
   pim_enrich_job_tracker_index: 过程跟踪器
   pim_enrich_job_tracker_show: 过程跟踪器 |显示作业
   pim_enrich_api_connection_index: API连接
+  pim_enrich_api_connection_create: API connections | Create
   pim_enrich_mass_edit_action: 批量编辑
   pim_analytics_system_info_index: 系统信息
 #Batch job labels
@@ -1020,14 +1164,60 @@ batch_jobs:
     label: 更新商品值
     perform:
       label: 更新商品值
+  add_to_group:
+    label: Add to group
+    perform:
+      label: Add to group
   edit_common_attributes:
     label: 编辑属性
     perform:
       label: 编辑属性
+    cleaner:
+      label: Clean files for attributes
+  add_to_category:
+    label: Add to category
+    perform:
+      label: Add to category
+  move_to_category:
+    label: Move to category
+    perform:
+      label: Move to category
+  remove_from_category:
+    label: Remove from category
+    perform:
+      label: Remove from category
+  add_association:
+    label: Associate
+    perform:
+      label: Associate
+  add_to_existing_product_model:
+    label: Add to an existing product model
+    perform:
+      label: Add to an existing product model
   set_attribute_requirements:
     label: 设置属性要求
     perform:
       label: 设置属性要求
+  csv_product_quick_export:
+    quick_export.label: CSV product quick export
+    quick_export_product_model.label: CSV product model quick export
+    perform:
+      label: CSV product quick export
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV product grid context quick export
+    quick_export_product_model.label: CSV product model grid context quick export
+    perform:
+      label: CSV product grid context quick export
+  xlsx_product_quick_export:
+    quick_export.label: XSLX product quick export
+    quick_export_product_model.label: XSLX product model quick export
+    perform:
+      label: XSLX product quick export
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XSLX product grid context quick export
+    quick_export_product_model.label: XSLX product model grid context quick export
+    perform:
+      label: XSLX product grid context quick export
   csv_product_export:
     label: 产品导出到CSV
     export.label: 产品导出
@@ -1052,6 +1242,9 @@ batch_jobs:
   csv_family_export:
     label: 在CSV导入品类
     export.label: 品类导出
+  csv_family_variant_export:
+    label: Family variant export in CSV
+    export.label: Family variant export
   csv_product_import:
     label: 从CSV导入产品
     validation.label: 文件验证
@@ -1079,8 +1272,14 @@ batch_jobs:
     label: 从CSV导入品类
     validation.label: 文件验证
     import.label: 品类导入
+    compute_data_related_to_family_variants.label: Compute product models data
+    compute_data_related_to_family_root_product_models.label: Compute root product models data
+    compute_data_related_to_family_sub_product_models.label: Compute sub product models data
+    compute_data_related_to_family_products.label: Compute products data
   csv_family_variant_import:
+    label: Family variant import in CSV
     validation.label: 文件验证
+    import.label: Family variant import
   csv_group_import:
     label: 从CSV导入分组
     validation.label: 文件验证
@@ -1140,8 +1339,14 @@ batch_jobs:
     label: 在XLSX导入品类
     validation.label: 文件验证
     import.label: 品类导入
+    compute_data_related_to_family_variants.label: Compute product models data
+    compute_data_related_to_family_root_product_models.label: Compute root product models data
+    compute_data_related_to_family_sub_product_models.label: Compute sub product models data
+    compute_data_related_to_family_products.label: Compute products data
   xlsx_family_variant_import:
+    label: Family variant import in XLSX
     validation.label: 文件验证
+    import.label: Family variant import
   xlsx_product_export:
     label: 产品导出到 XLSX
     export.label: 产品导出
@@ -1165,6 +1370,9 @@ batch_jobs:
   xlsx_family_export:
     label: 在XLSX导入品类
     export.label: 品类导出
+  xlsx_family_variant_export:
+    label: Family variant export in XLSX
+    export.label: Family variant export
   xlsx_category_export:
     label: 在XLSX中导出分类
     export.label: 分类导出
@@ -1250,6 +1458,7 @@ pim_menu:
     import_history: 导入历史
     import_profile: 导入方案
     configuration: 配置
+    catalog_volume: Catalog volume monitoring
     user_management: 用户管理
     user: 用户
     user_group: 分组
@@ -1270,11 +1479,33 @@ pim_notification:
   no_notifications: 没有通知
   loading: 正在加载...
 catalog_volume:
+  product_values: "You have <span>{{values}}</span> product values in your PIM! On average, it's <span>{{average}}</span> product values per product!&nbsp;💪"
+  product_values_description: 'The more product values you have, the more valuable your PIM is, the higher your ROI is! More details <a href="{{link}}" target="_blank">here</a>'
+  section:
+    product_values:
+      hint: 'Did you know that the total number of product values in your PIM is directly linked to the following axes?<br/>To have more details, we invite you to <a href="{{link}}" target="_blank">browse this article</a>.'
+      title: Axes that leverage the number of product values
+    catalog_structure:
+      hint: You may know that a good catalog structure is really important and is a condition to efficient enrichment. Below are the various axes to monitor your catalog structure.
+      title: Axes related to the catalog structure
+    variant_modelling:
+      hint: If you are using the variant modeling, here are the axes to help you monitor your volume.
+      title: Axes regarding the variant modeling
   axis:
     count_products: 商品
+    average_max_attributes_per_family: Attributes per family
     count_channels: 渠道
+    count_locales: Locales (activated)
+    count_scopable_attributes: Scopable attributes
+    count_localizable_and_scopable_attributes: Localizable and scopable attributes
+    count_localizable_attributes: Localizable attributes
     count_families: 品类
     count_attributes: 属性
+    average_max_options_per_attribute: Options by attribute
     count_categories: 分类
     count_category_trees: 目录树
+    count_variant_products: Variant products
     count_product_models: 产品模型
+    warning: Wow! You hit a record with this axis! Don't hesitate to contact us if you need any help with this kind of volume.
+  mean: 'Mean:'
+  max: 'Max:'

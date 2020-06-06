@@ -26,3 +26,4 @@ pim_dashboard:
         mass_edit: Sunting massa
         quick_export: Ekspor cepat
         compute_product_models_descendants: Hitunglah model produk keturunan
+        mass_delete: Mass delete products

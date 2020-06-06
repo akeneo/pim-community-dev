@@ -41,6 +41,7 @@ job_execution.summary:
     skipped: skipped, extension in white list
   product_skipped_no_diff: skipped product (no differences)
   product_skipped_no_associations: skipped product (no associations detected)
+  product_model_skipped_no_associations: skipped product model (no associations detected)
   product_model_skipped_no_diff: skipped product model (no differences)
   item_position: read lines
   skipped_in_root_product_model: skipped product model with parent

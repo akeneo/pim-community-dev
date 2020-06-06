@@ -165,6 +165,7 @@ pim_enrich:
       associations_view: Ürün ilişkilerini göster
       associations_edit: Ürüne ilişki ekle
       change_family: Ürün ailesini değiştir
+      change_state: Change the status of a product
       add_to_groups: Gruplara ürün ekle
       mass_edit: Toplu ürün düzenleme işlemleri
       comment: Ürünlere gelen yorum
@@ -196,6 +197,7 @@ pim_enrich:
       create: Aile oluştur
       edit_properties: Ailenin mal varlıklarını düzenle
       edit_attributes: Ailenin Özelliklerini Düzenle
+      edit_variants: Edit a family variant
       remove: Bir sınıfı sil
       history: Aile geçmişini Görüntüle
     family_variant:
@@ -281,8 +283,10 @@ category:
   edit: kategoriyi düzenle
   suggest selection: Sol taraftan bir kategori seçin
   or: ya da
+  create new: Create a new category tree
 tree:
   title: ağaç
+  create: create category tree
   edit: ağaç düzenle
 channel:
   title: kanal
@@ -323,6 +327,7 @@ btn:
     attribute: özellik oluştur
     attribute group: özellik grubu oluştur
     category: kategoriyi oluştur
+    tree: create category tree
     channel: kanal oluştur
     currency: para birimi oluştur
     family: aile oluştur
@@ -379,6 +384,7 @@ flash:
     updated: Özellik başarılı bir şekilde güncellendi
     removed: Özellik başarı ile silindi
     identifier_not_removable: Tanımlayıcı özellik silinemez
+    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   attribute group:
     created: Özellik grubu başarı ile yaratıldı
     updated: Özellik grubu başarı ile güncellendi
@@ -513,6 +519,7 @@ Useable as grid column: Kılavuz filtre olarak kullanılabilir
 Useable as grid filter: Kılavuzda kullanılabilir
 Family: Aile
 Image: Resim
+Variant products: Variant products
 Available locales: Kullanılabilir yerel ayarlar
 Locale specific: Özel yerel ayar
 default: Varsayılan
@@ -800,12 +807,18 @@ pim_mass_edit:
       error: Hızlı dışa aktarma<strong>%label%</strong>başarısız
       warning: Hızlı dışa aktarma<strong>%label%</strong>bağzı hatalar ile tamamlandı.
       success: Hızlı dışa aktarma<strong>%label%</strong>bitti
+    mass_delete:
+      error: Mass delete <strong>%label%</strong> failed
+      warning: Mass delete <strong>%label%</strong> finished with some warnings
+      success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
   mass_edited: Toplu düzendi
   skip: Atlandı
   skipped_products: Atlanan ürünler
   skipped_attributes: Atlanan özellikler
   skipped_families: Atlanan aileler
+  deleted_products: Deleted products
+  deleted_product_models: Deleted product models
 pim_mass_edit_execution_show: Toplu düzenleme uygulaması | Detaylar
 edit_common_attributes.steps.edit_common_attributes_processor.title: Özellikleri düzenle
 update_product_value.steps.update_product_value_processor.title: Ürün değerini güncelleme
@@ -824,6 +837,10 @@ batch_jobs:
     label: Ürün değerini güncelle
     perform:
       label: Ürün değerini güncelle
+  add_attribute_value:
+    label: Add attributes value
+    perform:
+      label: Add attributes value
   edit_common_attributes:
     label: Özellikleri düzenle
     perform:
@@ -832,6 +849,8 @@ batch_jobs:
       label: Özellikler için temiz dosyalar
     cleaner:
       label: Özellikler için temiz dosyalar
+  compute_completeness_of_products_family:
+    compute_completeness_of_products_family.label: Compute completeness
   add_to_category:
     label: Kategorilere ekle
     perform:
@@ -844,6 +863,10 @@ batch_jobs:
     label: Kategorilerden kaldır
     perform:
       label: Kategorilerden kaldır
+  add_association:
+    label: Associate
+    perform:
+      label: Associate
   add_to_existing_product_model:
     label: Varolan bir ürün modeline ekle
     perform:
@@ -868,6 +891,11 @@ batch_jobs:
     quick_export.label: Xlsx ürün kılavuzu içeriğini hızlı dışa aktarma
     perform:
       label: Xlsx ürün kılavuzu içeriğini hızlı dışa aktarma
+  delete_products_and_product_models:
+    delete_products_and_product_models.label: Mass delete products
+  change_parent_product:
+    perform:
+      label: Change parent product model
 mass_edit report:
   overview: Toplu düzenleme raporları
 job_tracker:

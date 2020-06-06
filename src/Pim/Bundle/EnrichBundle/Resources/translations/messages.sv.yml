@@ -24,6 +24,8 @@ pim_enrich:
       history.title: Historik
   #Family
   family:
+    info:
+      cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
     tab:
       property.title: Egenskaper
       attribute.title: Attribut
@@ -101,19 +103,23 @@ pim_enrich:
       description: Valda produktens attribut kommer att redigeras med följande uppgifter för det valda språket.
       empty: Välj de attribut(er) som du vill redigera
       success_flash: De jobb som uppdaterar produkt(er) status körs
+      launched_flash: The bulk action "edit attributes" has been launched. You will be notified when it is done.
       message:
         warning: Det finns inga attribut gemensamt för de valda produkterna. Vänligen ändra ditt val.
         invalid_attribute: Attribut med koden "attribute_code" är inte vanligt för de utvalda produkter, attribut hoppas över.
         no_valid_attribute: Ingen av valda attribut kan tillämpas på denna produkt.
     classify-add:
+      label: Add to categories
       description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen hålls.
       success_flash: Produkten har klassificerats i valda kategorier
       launched_flash: Massåtgärd "Lägg till kategorier" har inletts. Du meddelas när det är gjort.
     classify-move:
+      label: Move between categories
       description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen är förlorad.
       success_flash: Produkterna har flyttats till valda kategorier
       launched_flash: Massåtgärd "flytta till kategorier" har inletts. Du meddelas när det är klart.
     classify-remove:
+      label: Remove from categories
       description: Produkterna kommer att tas bort från följande kategorier.
       success_flash: Produkterna har tagits bort från de valda kategorierna
       launched_flash: Massåtgärd "ta bort från kategorier" har inletts. Du meddelas när det är klart.
@@ -129,6 +135,7 @@ pim_enrich:
       launched_flash: Massåtgärd "Lägg till grupper" har inletts. Du meddelas när det är gjort.
       no_group: Ingen grupp just nu. Börja med att skapa en grupp.
     set-attribute-requirements:
+      label: Set attributes requirements
       description: Följande attributkrav kommer att tillämpas på de valda familjerna
       success_flash: Attributkrav tillämpades på de valda familjerna
       launched_flash: Bulk åtgärder "ange attributet kraven" lanseras. Du kommer att meddelas när det är klart.
@@ -155,12 +162,21 @@ pim_enrich:
       add_attribute: Lägga till ett attribut till en produkt
       remove_attribute: Ta bort ett attribut från en produkt
       categories_view: Rådfråga kategorierna av en produkt
+      associations_view: View the associations of a product
+      associations_edit: Add associations to a product
       change_family: Ändra produktfamilj
+      change_state: Change the status of a product
       add_to_groups: Lägga till produkten i grupper
       mass_edit: Produkt mass redigera
       comment: Kommentera produkter
       download: Ladda ner produkten som PDF
       history: Visa produkten historik
+    product_model:
+      create: Create a product model
+      edit_attributes: Edit attributes of a product model
+      categories_view: Consult the categories of a product model
+      history: View product model history
+      remove: Remove a product model
     category:
       list: Visa kategorier
       create: Skapa en kategori
@@ -181,8 +197,11 @@ pim_enrich:
       create: Skapa en familj
       edit_properties: Redigera egenskaper för en familj
       edit_attributes: Redigera attribut för en familj
+      edit_variants: Edit a family variant
       remove: Ta bort en familj
       history: Visa familjehistorik
+    family_variant:
+      remove: Remove a family variant
     attribute_group:
       index: Visa attributgrupper
       create: Skapa en attributgrupp
@@ -216,6 +235,8 @@ pim_enrich:
       edit: Redigera en associationstyp
       remove: Ta bort en associationstyp
       history: Visa associationstypen(s) historik
+    association:
+      remove: Remove associations to a product
     job_tracker:
       index: Visa process spårare
     api_connection:
@@ -237,6 +258,11 @@ pim_enrich:
     empty_value:
       reference_data_type:
         label: Välj referens datatyp
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
+        done: Removal of a locale on a channel finished.
 #Entity and page header titles
 attribute:
   title: attributet
@@ -257,8 +283,10 @@ category:
   edit: redigera kategori
   suggest selection: Vänligen välj en kategori till vänster
   or: eller
+  create new: Create a new category tree
 tree:
   title: träd
+  create: create category tree
   edit: redigera träd
 channel:
   title: kanal
@@ -299,6 +327,7 @@ btn:
     attribute: skapa attribut
     attribute group: skapa attributgrupp
     category: skapa kategori
+    tree: create category tree
     channel: skapa kanal
     currency: skapa valuta
     family: skapa familj
@@ -335,6 +364,7 @@ confirmation:
     attribute group: Är du säker du vill ta bort attribut gruppen %name%?
     category: Är du säker på att du vill ta bort kategoriträdet %name%?
     family: Är du säker på att du vill ta bort familjen %name%?
+    family_variant: Are you sure you want to delete the family variant %name%?
     product: Är du säker på att du vill ta bort produkten %name%?
     group: Är du säker på att du vill ta bort gruppen %name%?
     group type: Är du säker på att du vill ta bort gruppen %name%?
@@ -354,6 +384,7 @@ flash:
     updated: Attributet har uppdaterats
     removed: Attributet har tagits bort
     identifier_not_removable: ID-attributet kan inte tas bort
+    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   attribute group:
     created: Attributgruppen har skapats
     updated: Attributgruppen uppdaterades
@@ -488,6 +519,7 @@ Useable as grid column: Kan användas som rutnätskolumn
 Useable as grid filter: Användbara i rutnät
 Family: Familj
 Image: Bild
+Variant products: Variant products
 Available locales: Tillgängliga språk
 Locale specific: Specifik språk
 default: Standard
@@ -516,6 +548,7 @@ No matches found: Inga träffar hittades
 Category tree: Kategoriträd
 Completeness: Fullständighet
 Attribute used as label: Attribut används som etikett
+Credentials: Credentials
 #Scopes
 Global: Global
 Channel: Kanal
@@ -570,6 +603,7 @@ pim_title.attribute:
   edit: "Attributen %attribute.label% | Redigera"
 pim_title.product:
   index: "Produkter"
+  edit: "Products %product.label% | Edit"
 pim_title.family:
   index: "Familjer"
   edit: "Familjer %family.label% | Redigera"
@@ -659,6 +693,7 @@ pim_enrich.mass_edit_action:
     message.warning: Det finns inga gemensamma attribut för de valda produkterna. Vänligen ändra ditt val.
     no_attribute.warning: Det finns inga gemensamma attribut för de valda produkterna. Vänligen ändra ditt val.
   classify:
+    label: Add to categories
     description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen hålls.
     success_flash: Produkten har klassificerats i valda kategorier
   change-family:
@@ -671,6 +706,7 @@ pim_enrich.mass_edit_action:
     description: Markera de grupper som du vill lägga till de valda produkter
     success_flash: Produkter har lagts till de valda grupperna
   set-attribute-requirements:
+    label: Set attributes requirements
     description: Följande attributkrav kommer att tillämpas på de valda familjerna
     success_flash: Attributkrav tillämpades på de valda familjerna
 To enable: Aktivera
@@ -771,17 +807,24 @@ pim_mass_edit:
       error: Snabb export <strong>%label%</strong> misslyckades
       warning: Snabb export <strong>%label%</strong> klar med några varningar
       success: Snabb export <strong>%label%</strong> färdiga
+    mass_delete:
+      error: Mass delete <strong>%label%</strong> failed
+      warning: Mass delete <strong>%label%</strong> finished with some warnings
+      success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
   mass_edited: Massa redigera
   skip: Hoppade över
   skipped_products: Överhoppade produkter
   skipped_attributes: Överhoppade attribut
   skipped_families: Överhoppade familjer
+  deleted_products: Deleted products
+  deleted_product_models: Deleted product models
 pim_mass_edit_execution_show: Massa redigera utförande | Detaljer
 edit_common_attributes.steps.edit_common_attributes_processor.title: Redigera Attribut
 update_product_value.steps.update_product_value_processor.title: Uppdatera produktens värde
 remove_product_value.steps.update_product_value_processor.title: Ta bort produktvärde
 edit_common_attributes: Redigera Attribut
+edit_common_attributes_clean: Clean files for attributes
 perform.steps.duplicated.title: Duplicerade Axlar
 perform.steps.excluded.title: Uteslutna produkt
 #Background jobs & steps labels
@@ -794,10 +837,44 @@ batch_jobs:
     label: Uppdatera produktens värde
     perform:
       label: Uppdatera produktens värde
+  add_attribute_value:
+    label: Add attributes value
+    perform:
+      label: Add attributes value
   edit_common_attributes:
     label: Redigera Attribut
     perform:
       label: Redigera Attribut
+    clean:
+      label: Clean files for attributes
+    cleaner:
+      label: Clean files for attributes
+  compute_completeness_of_products_family:
+    compute_completeness_of_products_family.label: Compute completeness
+  add_to_category:
+    label: Add to category
+    perform:
+      label: Add to category
+  move_to_category:
+    label: Move to category
+    perform:
+      label: Move to category
+  remove_from_category:
+    label: Remove from category
+    perform:
+      label: Remove from category
+  add_association:
+    label: Associate
+    perform:
+      label: Associate
+  add_to_existing_product_model:
+    label: Add to an existing product model
+    perform:
+      label: Add to an existing product model
+  set_attribute_requirements:
+    label: Set attributes requirements
+    perform:
+      label: Set attributes requirements
   csv_product_quick_export:
     quick_export.label: CSV-produkt snabb export
     perform:
@@ -814,6 +891,11 @@ batch_jobs:
     quick_export.label: XLSX produkt rutnät sammanhang snabb export
     perform:
       label: XLSX produkt rutnät sammanhang snabb export
+  delete_products_and_product_models:
+    delete_products_and_product_models.label: Mass delete products
+  change_parent_product:
+    perform:
+      label: Change parent product model
 mass_edit report:
   overview: Massa redigera rapporter
 job_tracker:

@@ -165,6 +165,7 @@ pim_enrich:
       associations_view: Tampilkan asosiasi dari produk
       associations_edit: Tambah asosiasi ke produk
       change_family: Mengganti produk keluarga
+      change_state: Change the status of a product
       add_to_groups: Tambahkan  produk ke kelompok
       mass_edit: Ubah tindakan massal produk
       comment: mengomentari produk
@@ -282,8 +283,10 @@ category:
   edit: sunting kategori
   suggest selection: Silahkan pilih kategori dibagian kiri
   or: atau
+  create new: Create a new category tree
 tree:
   title: pohon
+  create: create category tree
   edit: sunting pohon
 channel:
   title: saluran
@@ -324,6 +327,7 @@ btn:
     attribute: membuat perlengkapan
     attribute group: buat perlengkapan kelompok
     category: buat kategori
+    tree: create category tree
     channel: buat saluran
     currency: membuat mata uang
     family: buat keluarga
@@ -380,6 +384,7 @@ flash:
     updated: Atribut berhasil diperbarui
     removed: Atribut berhasil dihapus
     identifier_not_removable: Identitas perlengkapan tidak dapat dihapus
+    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   attribute group:
     created: Perlengkapan kelompok berhasil dibuat
     updated: Kelompok atribut telah berhasil diperbarui
@@ -802,12 +807,18 @@ pim_mass_edit:
       error: Ekspor cepat <strong>%label%</strong> gagal
       warning: Ekspor cepat <strong>%label%</strong> selesai dengan beberapa peringatan
       success: Ekspor cepat <strong>%label%</strong> selesai
+    mass_delete:
+      error: Mass delete <strong>%label%</strong> failed
+      warning: Mass delete <strong>%label%</strong> finished with some warnings
+      success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
   mass_edited: Massa diedit
   skip: Dilewati
   skipped_products: Produk yang dilewati
   skipped_attributes: Atribut yang dilewati
   skipped_families: Keluarga yang dilewati
+  deleted_products: Deleted products
+  deleted_product_models: Deleted product models
 pim_mass_edit_execution_show: Ubah eksekusi massal | Rincian
 edit_common_attributes.steps.edit_common_attributes_processor.title: Ubah perlengkapan
 update_product_value.steps.update_product_value_processor.title: Memperbarui nilai produk
@@ -826,6 +837,10 @@ batch_jobs:
     label: Memperbarui nilai produk
     perform:
       label: Memperbarui nilai produk
+  add_attribute_value:
+    label: Add attributes value
+    perform:
+      label: Add attributes value
   edit_common_attributes:
     label: Ubah perlengkapan
     perform:
@@ -848,6 +863,10 @@ batch_jobs:
     label: Hapus dari kategori
     perform:
       label: Hapus dari kategori
+  add_association:
+    label: Associate
+    perform:
+      label: Associate
   add_to_existing_product_model:
     label: Tambahkan ke sebuah model produk yang ada
     perform:
@@ -872,6 +891,11 @@ batch_jobs:
     quick_export.label: Konteks produk xlsx konteks ekspor cepat
     perform:
       label: Xlsx produk grid konteks ekspor cepat
+  delete_products_and_product_models:
+    delete_products_and_product_models.label: Mass delete products
+  change_parent_product:
+    perform:
+      label: Change parent product model
 mass_edit report:
   overview: Laporan ubah massal
 job_tracker:
