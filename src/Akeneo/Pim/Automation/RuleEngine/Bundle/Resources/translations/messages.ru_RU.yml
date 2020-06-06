@@ -88,3 +88,7 @@ btn:
   Execute rules: Выполнить привила
 mass_edit_rule: Настройки правил
 job_execution.summary.rule_calculated: Количество привил
+pim_datagrid:
+  cells:
+    type:
+      mass_edit_rule: Rules Settings
