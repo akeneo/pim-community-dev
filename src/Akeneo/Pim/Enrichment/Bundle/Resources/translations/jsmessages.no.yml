@@ -252,6 +252,8 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: Alle
+    price-collection:
+      operators:
     select:
       operators:
         IN: I listen
@@ -274,6 +276,8 @@ pim_enrich.mass_edit.product:
       label: Konfigurer
     confirm:
       label: Bekreft
+    launch_error:
+      label: An error occurred during the launching of the mass edit operation
     launched:
       label: Massehandlingen "{{ operation }}" er igangsatt. Du får beskjed, når den er ferdigstilt.
   operation:
@@ -315,6 +319,7 @@ pim_enrich.mass_edit.product:
       label: Fjern fra kategorier
       label_count: "{1}Fjern <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> fra kategorier |] 1, Inf [Fjern <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> fra kategorier"
       description: Produktene vil fjernes fra følgende kategorier.
+      no_update: There is no category checked to remove the selected products from.
     add_to_existing_product_model:
       label: Legg til i en eksisterende produktmodell
       label_count: "{1}Legg til <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til i en eksisterende produktmodell |] 1, Inf [Legg til <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> i en eksisterende produktmodell"

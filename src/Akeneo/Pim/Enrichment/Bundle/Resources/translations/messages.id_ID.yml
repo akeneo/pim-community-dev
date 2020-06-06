@@ -74,4 +74,9 @@ pim_enrich:
       quick_export:
         launched_flash: Pekerjaan mengekspor produk saat ini sedang berjalan
 category:
+  edit: Edit category
   overview: Kategori
+tree:
+  edit: Edit tree
+  remove:
+    error_linked: This category tree cannot be deleted, it is linked to a channel

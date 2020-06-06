@@ -143,6 +143,7 @@ pim_import_export:
         import: Importación
         export: Export
         mass_edit: Edición en masa
+        mass_edit_rule: Rules Settings
         quick_export: Exportación rápida
         compute_product_models_descendants: Calcular modelos de productos descendientes
         compute_family_variant_structure_changes: Calcular los cambios de estructura de las variantes de la familia

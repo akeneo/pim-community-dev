@@ -3,8 +3,16 @@ pim_title:
   pim_user_role_index: Роли
   pim_user_group_index: Группы пользователя
   oro_config_configuration_system: Настройки
+  pim_user_edit: 'User {{ username }} | Edit'
+  pim_user_create: 'Users | Create'
+  pim_user_role_update: 'Role {{ role }} | Edit'
+  pim_user_role_create: 'Role | Create'
   pim_user_security_login: Войти
+  pim_user_reset_reset: Password Reset
   pim_user_reset_request: Восстановить пароль
+  pim_user_reset_check_email: Password Reset | Check Email
+  pim_user_group_create: 'Groups | Create'
+  pim_user_group_update: 'Group {{ group }} | Edit'
 confirmation:
   remove:
     user: Вы действительно хотите удалить этого пользователя?
@@ -12,12 +20,26 @@ confirmation:
 pim_enrich:
   entity:
     user:
+      flash:
+        delete:
+          fail: The user can not be deleted
+          success: The user has been deleted
       module:
         delete:
           confirm: Вы действительно хотите удалить этого пользователя?
 pim_user_management:
   entity:
     user:
+      label: user
+      flash:
+        update:
+          success: User successfully updated.
+          fail: The user could not be updated.
+          fields_not_ready: "The user cannot be saved right now. The following fields are not ready: {{ fields }}"
+        create:
+          success: User successfully created.
+      page_title:
+        index: "]-Inf, 1] {{ count }} user|]1, Inf [{{ count }} users"
       properties:
         username: Имя пользователя
         name_prefix: Префикс имени
@@ -25,6 +47,7 @@ pim_user_management:
         middle_name: Отчество
         last_name: Фамилия
         name_suffix: Суффикс имени
+        phone: Phone
         avatar: Аватар
         email: Эл. почта
         catalog_locale: Локаль каталога
@@ -36,12 +59,18 @@ pim_user_management:
         new_password: Новый пароль
         new_password_repeat: Новый пароль (повтор)
         password: Пароль
+        password_repeat: Password (repeat)
+        last_logged_in: Last logged in
+        login_count: Login count
         ui_locale: Локаль пользовательского интерфейса
         timezone: Часовой пояс
         default_product_grid_view: Представление сетки продуктов по умолчанию
         default_published_product_grid_view: Представление данных опубликованных товаров в таблице по умолчанию #EE Only
         proposals_to_review_notification: При появлении нового предложения для рассмотрения #EE Only
         proposals_state_notifications: При принятии или отклонении предложения #EE Only
+      meta:
+        created: Created
+        updated: Updated
       module:
         create:
           button: Создать пользователя
@@ -49,11 +78,14 @@ pim_user_management:
           confirm: Вы действительно хотите удалить этого пользователя?
         update:
           additional: Дополнительные
+          groups_and_roles: Groups and roles
           password: Пароль
           interfaces: Интерфейсы
           notifications: Уведомления #TODO EE Only
     role:
       plural_label: Роли
+      page_title:
+        index: "]-Inf, 1] {{ count }} role|]1, Inf [{{ count }} roles"
       module:
         create:
           button: Создать роль
@@ -61,6 +93,8 @@ pim_user_management:
           confirm: Вы действительно хотите удалить эту роль?
     group:
       plural_label: Группы пользователя
+      page_title:
+        index: "]-Inf, 1] {{ count }} group|]1, Inf [{{ count }} groups"
       module:
         create:
           button: Создать группу

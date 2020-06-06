@@ -48,6 +48,8 @@ pim_enrich.entity.channel:
     delete:
       success: Sakuran berhasil dihapus
       fail: Tidak bisa menghapus saluran ini
+  page_title:
+    index: "]-Inf, 1]{{ count }} channel|]1, Inf[{{ count }} channels"
   property:
     category_tree: Pohon kategori
     do_not_convert: Jangan diubah
@@ -61,5 +63,14 @@ pim_enrich.entity.locale:
   label: lokal
   uppercase_label: Lokal
   plural_label: Lokal
+  page_title:
+    index: "]-Inf, 1]{{ count }} locale|]1, Inf[{{ count }} locales"
 pim_enrich.entity.currency:
   plural_label: Mata Uang
+  page_title:
+    index: "]-Inf, 1]{{ count }} currency|]1, Inf[{{ count }} currencies"
+flash:
+  currency:
+    error:
+      linked_to_channel: You cannot disable a currency linked to a channel
+    updated: Currency successfully updated

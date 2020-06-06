@@ -5,6 +5,10 @@ pim_enrich:
       parameter.title: 参数
       value.title: 值
       history.title: 历史
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
   #Group type
   group_type:
     tab:

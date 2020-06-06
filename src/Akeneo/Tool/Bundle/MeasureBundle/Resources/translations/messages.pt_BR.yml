@@ -170,7 +170,10 @@ pim_measure:
     PSI: Libra por polegada quadrada
     TORR: Torr
     MMHG: milímetro de mercúrio
+    #Energy
+    CALORIE: calorie
     KILOCALORIE: quilocaloria
+    JOULE: joule
     KILOJOULE: kilojoule
     #CaseBox
     PIECE: Peça

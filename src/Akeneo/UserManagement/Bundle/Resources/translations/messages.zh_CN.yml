@@ -9,6 +9,7 @@ pim_user:
       middle_name: 中间名
       last_name: 姓
       name_suffix: 名称后缀
+      phone: Phone
       date_of_birth: 出生日期
       avatar: 头像
       timezone: 时区
@@ -39,12 +40,22 @@ pim_user:
       has_group: 有分组
       active: 活跃的
       inactive: 非活跃的
+    fields_errors:
+      new_password:
+        minimum_length: Password must contains at least 2 characters
+      new_password_repeat:
+        not_match: Password does not match
+      current_password:
+        wrong: Wrong password
     tabs:
       general:
         title: 一般信息
+        basic_information: Basic information
         contact_information: 联系方式
       additional:
         title: 附加
+      additional_data:
+        title: Additional data
       interfaces:
         title: 接口
       group_and_role.title: 分组和角色
@@ -59,7 +70,9 @@ pim_user:
       log_in: 登录
       forgot_password: 忘记密码
       request: 请求
+      password_reset: Password Reset
       reset: 重置
+      password_reset_email_sent: An email has been sent to the user. It contains a link to reset the password.
       homepage: 转到主页
   group:
     tab:

@@ -170,7 +170,10 @@ pim_measure:
     PSI: Pound per square inch
     TORR: Torr
     MMHG: millimetre of Mercury
+    #Energy
+    CALORIE: calorie
     KILOCALORIE: kilocalorie
+    JOULE: joule
     KILOJOULE: kilojoule
     #CaseBox
     PIECE: Piece

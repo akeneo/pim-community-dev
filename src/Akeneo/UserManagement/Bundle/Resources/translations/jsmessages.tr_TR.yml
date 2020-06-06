@@ -3,8 +3,16 @@ pim_title:
   pim_user_role_index: Roller
   pim_user_group_index: Kullanıcı Grupları
   oro_config_configuration_system: Yapılandırma
+  pim_user_edit: 'User {{ username }} | Edit'
+  pim_user_create: 'Users | Create'
+  pim_user_role_update: 'Role {{ role }} | Edit'
+  pim_user_role_create: 'Role | Create'
   pim_user_security_login: Oturum aç
+  pim_user_reset_reset: Password Reset
   pim_user_reset_request: Parolamı unuttum
+  pim_user_reset_check_email: Password Reset | Check Email
+  pim_user_group_create: 'Groups | Create'
+  pim_user_group_update: 'Group {{ group }} | Edit'
 confirmation:
   remove:
     user: Bu kullanıcıyı silmek istediğinizden emin misiniz?
@@ -12,12 +20,26 @@ confirmation:
 pim_enrich:
   entity:
     user:
+      flash:
+        delete:
+          fail: The user can not be deleted
+          success: The user has been deleted
       module:
         delete:
           confirm: Bu kullanıcıyı silmek istediğinizden emin misiniz?
 pim_user_management:
   entity:
     user:
+      label: user
+      flash:
+        update:
+          success: User successfully updated.
+          fail: The user could not be updated.
+          fields_not_ready: "The user cannot be saved right now. The following fields are not ready: {{ fields }}"
+        create:
+          success: User successfully created.
+      page_title:
+        index: "]-Inf, 1] {{ count }} user|]1, Inf [{{ count }} users"
       properties:
         username: Kullanıcı adı
         name_prefix: Ad ön eki
@@ -25,6 +47,7 @@ pim_user_management:
         middle_name: Göbek Adı
         last_name: Soyisim
         name_suffix: Ad son eki
+        phone: Phone
         avatar: Profil resmi
         email: E-posta
         catalog_locale: Yerel ayarlar kataloğu
@@ -36,12 +59,18 @@ pim_user_management:
         new_password: Yeni Şifre
         new_password_repeat: Yeni Şifre ( Tekrar)
         password: Parola
+        password_repeat: Password (repeat)
+        last_logged_in: Last logged in
+        login_count: Login count
         ui_locale: Kullanıcı arayüz ayarları
         timezone: Zaman dilimi
         default_product_grid_view: varsayılan ürün kılavuzu görünümü
         default_published_product_grid_view: Varsayılan yayınlanmış ürün kılavuzu görünümü #EE Only
         proposals_to_review_notification: Yeni inceleme tavsiyesi geldiğinde #EE Only
         proposals_state_notifications: Teklif kabul edildiğinde veya reddedildiğinde #EE Only
+      meta:
+        created: Created
+        updated: Updated
       module:
         create:
           button: Kullanıcı oluştur
@@ -49,11 +78,14 @@ pim_user_management:
           confirm: Bu kullanıcıyı silmek istediğinizden emin misiniz?
         update:
           additional: Ek Bilgiler
+          groups_and_roles: Groups and roles
           password: Parola
           interfaces: Arayüzler
           notifications: Bildirimler #TODO EE Only
     role:
       plural_label: Roller
+      page_title:
+        index: "]-Inf, 1] {{ count }} role|]1, Inf [{{ count }} roles"
       module:
         create:
           button: Rol yarat
@@ -61,6 +93,8 @@ pim_user_management:
           confirm: Bu rolü silmek istediğinizden emin misiniz?
     group:
       plural_label: Kullanıcı Grupları
+      page_title:
+        index: "]-Inf, 1] {{ count }} group|]1, Inf [{{ count }} groups"
       module:
         create:
           button: Grup oluştur

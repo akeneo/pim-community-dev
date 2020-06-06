@@ -173,6 +173,7 @@ pim_measure:
     #Energy
     CALORIE: calories
     KILOCALORIE: quilocalories
+    JOULE: joule
     KILOJOULE: kilojoule
     #CaseBox
     PIECE: Peça

@@ -5,10 +5,13 @@ flash:
   comment:
     create:
       success: Seu comentário foi criado com sucesso.
+      error: An error occurred during the creation of your comment.
     delete:
       success: Seu comentário foi deletado com sucesso.
+      error: An error occurred during the deletion of your comment.
     reply:
       success: Sua resposta foi criada com sucesso.
+      error: An error occurred during the creation of your reply.
 pim_enrich.entity.product:
   label: produto
   uppercase_label: Produto
@@ -19,6 +22,7 @@ pim_enrich.entity.product:
       fail: O produto não pode ser atualizado.
       fields_not_ready: "O produto não pode ser salvo agora. Os seguintes campos não estão prontos: {{ fields }}"
       already_in_upload: Um arquivo ja está sendo enviado para esse atributo no local "{{ locale }}" e no escopo "{{ scope }}"
+      file_upload: An error occurred during the file upload
     delete:
       success: Produto deletado com sucesso.
       fail: O produto não pode ser deletado.
@@ -114,6 +118,8 @@ pim_enrich.entity.product:
       header_reply: '{{ user }} respondeu ao comentário'
       delete_confirm: Tem certeza que deseja deletar este comentário?
       removed_author: Usuário removido
+    asset:
+      title: Assets
 pim_enrich.entity.product_model:
   label: modelo do produto
   uppercase_label: Modelo do produto
@@ -169,6 +175,13 @@ pim_enrich.entity.group:
       button: Criar Grupo
     delete:
       confirm: Tem certeza de que deseja excluir este produto?
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: Are you sure you want to delete this role?
+  flash:
+    delete:
+      success: Role successfully removed
 pim_enrich.entity.category:
   label: categoria
   uppercase_label: Categoria
@@ -239,6 +252,8 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: Todos
+    price-collection:
+      operators:
     select:
       operators:
         IN: Na lista
@@ -261,6 +276,8 @@ pim_enrich.mass_edit.product:
       label: Configurar
     confirm:
       label: Confirmar
+    launch_error:
+      label: An error occurred during the launching of the mass edit operation
     launched:
       label: A ação em massa "{{ operation }}" foi lançada. Você será notificado quando estiver pronto.
   operation:
@@ -302,6 +319,7 @@ pim_enrich.mass_edit.product:
       label: Retirar produtos de categorias
       label_count: "{1}Remover <span class=\"AknFullPage-title--highlight\">produto</span> de categorias|]1, Inf[Remover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span> de categorias"
       description: Os produtos serão retirados das seguintes categorias.
+      no_update: There is no category checked to remove the selected products from.
     add_to_existing_product_model:
       label: Adicionar a um modelo de produto existente
       label_count: "{1}Adicionar <span class=\"AknFullPage-title--highlight\">produto</span> a um modelo de produto existente|]1, Inf[Adicionar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span> a um modelo de produto existente"
@@ -326,6 +344,7 @@ pim_datagrid:
     delete:
       confirm_content: Você tem certeza que deseja remover os produtos selecionados?
       success: Produtos selecionados deletados com sucesso.
+      error: Error occurred when trying to delete selected products, please try again.
     quick_export:
       csv_all: CSV (Todos atributos)
       csv_grid_context: CSV (Contexto de grelha)

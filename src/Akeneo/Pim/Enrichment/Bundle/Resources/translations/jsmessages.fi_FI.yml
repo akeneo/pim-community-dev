@@ -252,6 +252,8 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: Kaikki
+    price-collection:
+      operators:
     select:
       operators:
         IN: Luettelossa

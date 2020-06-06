@@ -1,6 +1,8 @@
 An identifier attribute already exists.: Атрибут-идентификатор уже существует.
 Attribute code may contain only letters, numbers and underscore: Код атрибута может содержать только буквы, цифры и символ подчеркивания
 Attribute code may contain only letters (at least one), numbers and underscores: Код атрибута может содержать только буквы (минимум одну), цифры и символ подчеркивания
+Attribute code may not contain line-feed characters: Attribute code may not contain line-feed characters
+Attribute group code may contain only letters, numbers and underscores: Attribute group code may contain only letters, numbers and underscores
 This attribute type can't be used as a grid filter: Этот тип атрибута не может использоваться как фильтр
 This code is not available: Этот код недоступен
 This attribute type must be required: Этот тип атрибута должен быть обязательным
@@ -40,6 +42,7 @@ pim_catalog:
     cannot_have_parent: 'Модель продукта "%product_model%" не может иметь родительскую'
     attribute_does_not_belong_to_family: 'Атрибут "%attribute%" не принадлежит семейству "%family%"'
     variant_product_invalid_family: 'Семейство у варианта продукта должно быть таким же, как у его родителя'
+    php_int_max_reached: 'The maximum number must be lower than %php_int_max%.'
     not_null_family: Семейство не может быть «нулевым», потому что ваш продукт с идентификатором "%sku%" является вариантом продукта.
     variant_product_has_parent: 'Вариант продукта "%variant_product%" должен иметь родителя'
     invalid_variant_product_parent: 'Данная разновидность продукта "%variant_product%" не может иметь в качестве родительской модель продукта "%product_model%" (она может иметь другие модели продуктов только в качестве дочерних)'

@@ -31,8 +31,10 @@ pim_enrich:
       launched_flash: Acțiunea în masă "schimbă status" a fost lansată. Vei fi notificat când este gata.
     edit-common-attributes:
       label: Modifică atribute
+      description: The selected product's attributes will be edited with the following data for the chosen locale.
       empty: Selectează atributul/atributele pe care dorești să le modifici
       success_flash: Sarcina de actualizare a produsului/produselor se execută
+      launched_flash: The bulk action "edit attributes" has been launched. You will be notified when it is done.
       message:
         warning: Nu există atribute în comun pentru produsele selectate. Vă rugăm să vă schimbați selecția.
         invalid_attribute: Atributul cu codul "attribute_code nu este comun produselor selectate, se sare peste atribut.
@@ -72,4 +74,9 @@ pim_enrich:
       quick_export:
         launched_flash: Sarcina de exportare produse se execută
 category:
+  edit: Edit category
   overview: Categorii
+tree:
+  edit: Edit tree
+  remove:
+    error_linked: This category tree cannot be deleted, it is linked to a channel

@@ -5,6 +5,7 @@ pim_enrich.entity.family:
   flash:
     update:
       success: Família atualizada com sucesso.
+      fail: An error occurred during family update.
       cant_remove_attribute_as_label: O atributo usado como rótulo não pode ser excluído
       cant_remove_attribute_as_image: Não é possível remover o atributo usado como a imagem principal
       cant_remove_attribute_used_as_axis: Não é possível remover este atributo usado como um eixo de variante em uma variante de família
@@ -38,6 +39,8 @@ pim_enrich.entity.family_variant:
       fail: A variante da família não pôde ser atualizada.
     create:
       success: A variante de família criada com sucesso
+    delete:
+      success: Family variant successfully deleted
   module:
     edit:
       common_attributes: Atributos comuns
@@ -66,6 +69,7 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: Opção de atributo criada com sucesso
+      fail: An error occurred when trying to create the attribute option
     update:
       fail: Opções de Atributos não pode ser salva
     delete:
@@ -198,6 +202,10 @@ pim_enrich.entity.attribute_group:
   label: grupo de atributo
   uppercase_label: Grupo de atributos
   plural_label: Grupos de Atributos
+  show_more_attribute:
+    title: It's a bit crowded around here, we show you {{ attributeCount }}/{{ totalAttributeCount }} attributes.
+    subtitle: To discover all the attributes of this group, just click below!
+    button: View all attributes
   flash:
     update:
       success: Grupo de atributos atualizado com sucesso
