@@ -1,8 +1,11 @@
+#ORO messages
+Close: Закрити
 Update: Оновити
 Selected Rows: Виділені рядки
 "Yes": "Так"
 "Yes, Delete": "Так, видалити"
 "Yes, I Agree": "Так, я згоден"
+"Yes, do it": "Так, зробити це"
 "No": "Ні"
 "Ok, got it.": "Гаразд, зрозуміло."
 "Cancel": "Відмінити"
@@ -34,11 +37,16 @@ Localized value: Локалізоване значення
 Columns: Стовпці
 Datagrid Configuration: Конфігурація сітки
 Apply: Застосувати
+#Filters
+Action: Дія
 Unit: Одиниця
 Currency: Валюта
 jstree:
   all: Всі продукти
   unclassified: Некласифіковані продукти
+  product:
+    all: Всі продукти
+    unclassified: Некласифіковані продукти
   no_tree: Немає доступного дерева
   include_sub: Включати підкатегорії
   loading: Завантаження ...
@@ -86,6 +94,7 @@ datetimepicker:
     Feb: Лют
     Mar: Бер
     Apr: Квіт
+    May: Травень
     Jun: Черв
     Jul: Лип
     Aug: Сер
@@ -97,7 +106,17 @@ datetimepicker:
 oro_config:
   form:
     config:
+      title: Конфігурація системи
+      tab:
+        system:
+          title: Система
       group:
+        localization:
+          title: Локалізація
+          system_locale: Мова
+        notification:
+          title: Сповіщення
+          system_notification: Сповіщення про нові версії
         loading_message:
           title: Завантаження повідомлень
           label: Включити завантаження повідомлень

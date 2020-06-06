@@ -33,11 +33,14 @@ product_model.family_variant.not_blank.message: Model produk keluarga varian tid
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'Perlengkapan"%attribute%" tidak boleh kosong, karena didefinisikan sebagai sumbu untuk entitas ini'
+    product_model_with_same_axis_value_already_exists: 'Cannot set value "%values%" for the attribute axis "%attributes%" on product model "%validated_entity%", as the product model "%sibling_with_same_value%" already has this value'
+    variant_product_with_same_axis_value_already_exists: 'Cannot set value "%values%" for the attribute axis "%attributes%" on variant product "%validated_entity%", as the variant product "%sibling_with_same_value%" already has this value'
     can_have_family_variant_unexpected_attribute: 'Tidak bisa mengatur properti "%attribute%" ke entitas ini karena tidak ada dalam penetapan atribut'
     cannot_have_product_model_as_parent: 'Model produk "%product_model%" tidak bisa memiliki model produk "%parent_product_model%" sebagai orang tua'
     cannot_have_parent: 'Model produk "%product_model%" tidak bisa memiliki orang tua'
     attribute_does_not_belong_to_family: 'Perlengkapan "%attribute%" bukan termasuk milik keluarga "%family%"'
     variant_product_invalid_family: 'Varian produk keluarga harus yang sama dari induknya'
+    php_int_max_reached: 'The maximum number must be lower than %php_int_max%.'
     not_null_family: Keluarga tidak bisa "batal" karena produk anda dengan pengenal "%sku%" adalah produk varian.
     variant_product_has_parent: 'Produk variannya "%variant_product%" harus memiliki orang tua'
     invalid_variant_product_parent: 'Varian produk "%variant_product%" tidak bisa memiliki model produk "%product_model%" Sebagai orang tua, (model produk ini hanya bisa memiliki model produk lain seperti anak-anak)'

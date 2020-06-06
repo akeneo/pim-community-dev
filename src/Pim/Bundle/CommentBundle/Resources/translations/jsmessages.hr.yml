@@ -19,6 +19,8 @@ flash:
 comment:
   index:
     empty: Trenutno bez komentara
+    header_comment: '{{ user }} comments the product'
+    header_reply: '{{ user }} replies to the comment'
   placeholder:
     new: Napiši novi komentar...
     reply: Odgovor na ovaj komentar...

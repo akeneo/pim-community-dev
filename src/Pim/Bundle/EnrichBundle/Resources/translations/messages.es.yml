@@ -384,6 +384,7 @@ flash:
     updated: Atributo actualizado correctamente
     removed: Atributo eliminado correctamente
     identifier_not_removable: El identificador de atributo no puede ser eliminado
+    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   attribute group:
     created: Grupo de atributos creado correctamente
     updated: Grupo de atributos actualizado correctamente

@@ -41,6 +41,7 @@ job_execution.summary:
     skipped: pulado, extensão na lista branca
   product_skipped_no_diff: produto pulado (nenhuma diferença)
   product_skipped_no_associations: produto ignorado (associações não detectadas)
+  product_model_skipped_no_associations: skipped product model (no associations detected)
   product_model_skipped_no_diff: modelo de produto ignorado (sem diferenças)
   item_position: ler linhas
   skipped_in_root_product_model: modelo de produto ignorado com pai

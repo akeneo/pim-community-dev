@@ -2,6 +2,7 @@ pim_user:
   user:
     tab:
       general.title: Загальне
+      additional.title: Додаткові
       group_and_role.title: Групи та ролі
       password.title: Пароль
       business_unit.title: Бізнес-підрозділи
@@ -23,16 +24,29 @@ oro.user.grid.users:
     email: "Email"
     firstName: "Ім'я"
     lastName: "Прізвище"
+    createdAt: "Створено в"
+    updatedAt: "Оновлено в"
+    enabled: "Статус"
+oro.user.grid.roles:
+  columns:
+    label: "Мітка"
+oro.user.grid.groups:
+  columns:
+    name: "Ім’я"
 #Page titles
 pim_title:
   user.index: Користувачі
   user_role.index: Ролі
+  user_group.index: Групи
   system_configuration.index: Конфігурація
 #User
 user.title: Користувач
+user.overview: Користувач
 Users Management: Керування користувачами
 Create user: Створити користувача
+btn.create.user: Створити користувача
 New user: Новий користувач
+Additional: Додаткові
 Groups and Roles: Групи та ролі
 Username: Ім'я користувача
 Password: Пароль
@@ -77,10 +91,14 @@ user:
   product_grid_filters: Фільтри товарів
   default_product_grid_view:
     label: Усталене представлення сітки продуктів
+  default_grid_view:
+    none: Жоден
+  timezone: Часовий пояс
 #Role
 Role: Роль
 Owner: Власник
 General: Загальне
+Entity: Сутність
 Capabilities: Можливості
 Save and close: Зберегти та закрити
 Has role: Має роль
@@ -94,6 +112,8 @@ rights:
   action: Права доступу
 oro_security:
   acl_group:
+    user: Користувачі
+    role: Ролі
     group: Групи користувачів
   acl:
     user:
@@ -114,17 +134,26 @@ oro_security:
 #Security
 (default): Дозволи на сутності за промовчанням
 VIEW: Вид
+CREATE: Створити
+EDIT: Редагувати
+DELETE: Видалити
 ASSIGN: Призначити
 SHARE: Поділитися
 oro:
   security:
     access-level:
+      BASIC: Користувач
       LOCAL: Бізнес-підрозділ
       DEEP: Ділення
       GLOBAL: Організація
+      SYSTEM: Система
+      NONE: Жоден
 #User Group
 Create group: Створити групу
+btn.create.user-group: Створити групу
 Has group: Має групу
+Save and Close: Зберегти та закрити
+user-group.overview: Групи
 #Login page
 Log in: Увійти
 Remember me on this computer: Запам'ятати мене на цьому комп'ютері

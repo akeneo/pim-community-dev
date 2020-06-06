@@ -26,3 +26,4 @@ pim_dashboard:
         mass_edit: Toplu düzenle
         quick_export: Hızlı dışa aktar
         compute_product_models_descendants: Ürün modellerinin kökenlerini hesapla
+        mass_delete: Mass delete products

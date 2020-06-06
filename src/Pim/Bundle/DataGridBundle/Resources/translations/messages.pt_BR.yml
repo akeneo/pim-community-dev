@@ -1,4 +1,5 @@
 "oro_datagrid.no_data_hint %entityHint%": A %entityHint% não existe.
+oro_datagrid.not_found_hint: Sorry, there is no result for your search.
 oro_datagrid.label_add_filter: Gerenciar filtros
 oro_datagrid.label_loading_mask: Carregando . . .
 oro.grid.mass_action.selected_rows: Linhas selecionadas
@@ -10,6 +11,7 @@ oro.grid.mass_action.error_content: Não é possível executar a ação em massa
 oro.grid.mass_action.delete.label: Deletar
 oro.grid.mass_action.delete.confirm_title: Confirmação de exclusão em massa
 oro.grid.mass_action.delete.confirm_content: Tem certeza de que deseja excluir os itens selecionados?
+oro.grid.mass_action.delete.item_limit: You cannot mass delete more than %limit% products (%count% selected)
 oro.grid.datagrid.page_size.all: Todos
 oro.grid.mass_action.delete.success_message: "{0} as entidades não foram removidas|{1} uma entidade foi removida|]1,Inf[ %count% entidades foram removidas"
 #Datagrid views constraints
@@ -28,3 +30,4 @@ quick_export: Exportação Rápida
 import: Importar
 export: Exportar
 mass_edit: Edição em Massa
+mass_delete: Mass Delete

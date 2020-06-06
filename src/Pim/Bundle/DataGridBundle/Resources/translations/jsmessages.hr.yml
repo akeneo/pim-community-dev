@@ -34,10 +34,14 @@ Yes: true
 No: false
 oro.datagrid.entityHint: Entitet
 oro.datagrid.noentities: Nisu pronađeni rezultati
+oro.datagrid.noresults: "Sorry, there is no result for your search."
+oro.datagrid.noresults_subTitle: "Try again with new search criteria."
 oro.datagrid.nocolumns: Stupci za prikaz tablice nisu konfigurirani
 oro.datagrid.pagination.label: "Stranica"
 oro.datagrid.pagination.totalPages: "od {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} zapisa"
+#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
+oro.datagrid.pagination.limit_warning: "The grid cannot display more than {{ limit }} results, try to filter on additional search criteria."
 oro.datagrid.action.reset: "Poništi"
 oro.datagrid.action.refresh: "Osvježi"
 oro_datagrid.select.all: "Sve"
@@ -56,6 +60,7 @@ pim:
       label_empty: je prazan
       label_not_empty: nije prazan
       label_in_list: na popisu
+      operator: Operator
     price_filter:
       label: Valuta
     category_filter:
@@ -67,6 +72,7 @@ datagrid_view.columns.min_message: Odaberi barem jedan stupac u prikazu tablice
 pim_datagrid:
   column_configurator:
     label: Stupci
+    title: Configure columns
     all_groups: Sve grupe
     search: Pretraživanje
     clear: Obriši
@@ -74,6 +80,7 @@ pim_datagrid:
     apply: Primijeni
     cancel: Odustani
     remove_column: Ukloni
+    description: Select the information you want to display as column
     attribute_groups: Grupe atributa
   mass_action:
     delete:
@@ -104,6 +111,19 @@ grid.view_selector:
   placeholder: Naziv novog prikaza
   choose_label: Odaberi oznaku za prikaz
   confirmation:
+    remove: Are you sure you want to delete this view?
     delete: Potvrdi brisanje
 #View selector flash messages
 grid.view_selector.flash.updated: Prikaz tablice je uspješno ažuriran
+#Display selector
+grid.display_selector:
+  label: Display
+  gallery: Gallery
+  list: List
+#Credentials cell
+Client ID: Client ID
+Secret: Secret
+grid.empty_results:
+  associated_product:
+    hint: There are no associated products
+    subHint: 'Click on the button "Add associations" to associate this product'

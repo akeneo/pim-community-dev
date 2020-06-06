@@ -25,3 +25,5 @@ pim_dashboard:
         export: 导出
         mass_edit: 批量编辑
         quick_export: 快速导出
+        compute_product_models_descendants: Compute product models descendants
+        mass_delete: Mass delete products

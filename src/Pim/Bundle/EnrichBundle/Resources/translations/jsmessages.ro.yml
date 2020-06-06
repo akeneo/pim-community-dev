@@ -19,6 +19,7 @@ confirmation:
     role: Sunteți sigur că vreți să ștergeți acest rol?
     job_instance: Sunteți sigur că doriți să ştergeți această instanță de muncă?
     api_connection: Sunteți sigur că doriți să revocați această conexiune API? Toate chemările API efectuate prin această conexiune vor returna o eroare.
+    products_and_product_models: Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -113,6 +114,8 @@ Edit attributes of the product: Modifică atributele produsului
 Classify the product: Clasificați produsul
 Delete the product: Șterge produsul
 Change status: Schimbă status
+Toggle status: Toggle status
+mass_delete: Mass delete
 #Quick export labels
 pim:
   grid:
@@ -123,6 +126,7 @@ pim:
         xlsx_all: Excel (Toate atributele)
         xlsx_grid_context: Excel (context grilă)
       delete: Şterge
+      mass_edit: Bulk actions
       category_edit: Mută produsul în categorii
       sequential_edit: Editare secvențială
 #Jstree context menu actions
@@ -353,6 +357,7 @@ pim_enrich:
         create_label: Creează o nouă variantă de familie
         create_description: Intr-o varianta familie, poti defini o structura pentru produse cu variante. Alege numarul de niveluri de varianta gestionate, atributele folosite ca varaianta axa pentru fiecare nivel, si apoi definiti modul in care v-or fi distribuite atributele.
         update_description: Trageti si lasati atributele pe nivelul de varianta selectat pentru a gestiona aceste atribute la nivel de varianta.
+        update_translation: Translate family variant label
         create: Creează
         cancel: Anuleaza
         code: Cod
@@ -404,6 +409,7 @@ pim_enrich:
         create_successful: Atributul a fost creat cu succes.
         create_failed: Atributul nu s-a putut crea.
         field_not_ready: "Atributul nu s-a putut salva acum. Următoarele câmpuri nu sunt gata: {{ fields }}"
+      scopable: Scopable
       type:
         pim_catalog_identifier: Identificator
         pim_catalog_text: Text
@@ -474,6 +480,7 @@ pim_enrich:
             show_groups: Afișează grupurile
             number_of_associations: "{{ productCount }} produs(e), {{ productModelCount }} model(e) de produs și {{ groupCount }} grup(uri)"
           association_type_selector: Tip de asociație
+          target: Target
           manage: Adaugă {{ associationType }} asociații
           manage_description: Selectați produsele pe care vreți să le asociați cu produsele actuale
           add_associations: Adaugă asociații
@@ -490,10 +497,12 @@ pim_enrich:
             load_more: Se încarcă mai multe rezultate...
           attribute_group_selector: Grup de atribut
           attribute_group_all: Tot
+          attribute_group.to_fill_count: "{1}1 missing required attribute|]1, Inf [{{ count }} missing required attributes"
           attribute_filter:
             display: Afișează
             all: Toate atribute
             missing_required: Toate atributele necesare care lipsesc
+            at_this_level: All level specific attributes
         categories:
           title: Categorii
       panel:
@@ -502,6 +511,7 @@ pim_enrich:
           info:
             no_family: Nicio familie definită. Vă rugăm să definiți o familie pentru a calcula completitudinea acestui produs.
             no_completeness: Tocmai ați schimbat familia produsului. Vă rugăm salvați-o înainte de a calcula completitudinea pentru noua familie.
+          missing_values: "{1}1 missing value|] 1, Inf [{{ count }} missing values"
         history:
           title: Istoric
       switch:
@@ -567,6 +577,7 @@ pim_enrich:
           general: General
           code: Cod
           attribute_as_label: Atribut folosit ca etichetă
+          attribute_as_image: Attribute used as the main picture
           empty_attribute_as_image: Neselectat
           label_translations: Traduceri de etichetă
         attributes:
@@ -587,6 +598,8 @@ pim_enrich:
           title: Istorie
     family_variant:
       tab:
+        attributes:
+          title: Variant attributes
         labels:
           title: Traduceri de etichetă
     attribute_option:
@@ -625,6 +638,7 @@ pim_enrich:
           table:
             name: Nume
             type: Tip
+            scopable: Scopable
             localizable: Localizabil
         history.title: Istoric
     common:
@@ -657,6 +671,9 @@ pim_enrich:
         header.start: Începe
         header.end: Sfârșit
     job_instance:
+      fail:
+        launch: Failed to launch the job profile. Make sure it is valid and that you have right to launch it.
+        save: Failed to save the job profile. Make sure that you have right to edit it.
       title:
         import: Importă profil
         export: Exportă profil
@@ -691,9 +708,12 @@ pim_enrich:
             help: Unde să se scrie fișierul generat pe sistemul de fișier
           delimiter:
             title: Delimitator
+            help: One character used to set the field delimiter
           enclosure:
             title: Împrejmuire
+            help: One character used to set the field enclosure
           with_header:
+            title: With header
             help: Dacă să printeze sau nu numele coloanei
           with_media:
             title: Exportă fișierele și imaginile
@@ -707,6 +727,9 @@ pim_enrich:
           categories_column:
             title: Coloană de categorii
             help: Numele coloanei de categorii
+          escape:
+            title: Escape
+            help: One character used to set the field escape
           family_column:
             title: Coloană de familie
             help: Numele coloanei de familie
@@ -722,6 +745,8 @@ pim_enrich:
           real_time_versioning:
             title: Actualizarea istoria timpului real
             help: Înseamnă că istoria produsului este actualizată automat, poate fi oprită pentru a îmbunătăți performanțele
+          family_variant_column:
+            title: Family variant column
         history:
           title: Istoric
       file_path: Calea fișierului
@@ -736,6 +761,7 @@ pim_enrich:
           title: Proprietăți
           section:
             common: Parametrii generali
+            type_specific: Type specific parameters
             validation: Parametrii de validare
           label:
             allowed_extensions: Extensii permise
@@ -756,12 +782,14 @@ pim_enrich:
             negative_allowed: Valorile negative permise
             number_max: Max număr
             number_min: Min număr
+            reference_data_name: Reference data type
             scopable: Valoare pe canal
             type: Tip
             unique: Valoare unică
             useable_as_grid_filter: Utilizabil în grilă
             validation_regexp: Expresie regulară
             validation_rule: Regulă de validare
+            wysiwyg_enabled: Rich text editor enabled
           default_label:
             default_metric_unit: Alegeți o unitate
             group: Alegeți un grup de atribut
@@ -785,6 +813,8 @@ pim_enrich:
     basket:
       title: Coş
       empty_basket: Coșul este gol
+  job:
+    upload: Drop your {{ type }} file here, or click to browse disk
   export:
     product:
       data:
@@ -796,12 +826,14 @@ pim_enrich:
       filter:
         channel:
           title: Canal
+          help: The channel defines the scope for product values, the locales used to select data, and the tree used to select products.
         locales:
           title: Locale
           help: "Localele definesc valoarilr de produs localizate pentru exportare. Ex: doar informații de produs în limba Franceză."
         attributes:
           title: Atribute
           edit: Modifică
+          label: "{0}All attributes|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
           help: "Selecționează informațiile de produs de exportat. Ex: doar atribute tecnice."
           empty: Toate atributele vor fi exportate
           modal:
@@ -810,11 +842,13 @@ pim_enrich:
             title: Selectarea de atribute
         attributes_selector:
           attribute_group: Grupuri de atribute
+          attributes: "Search in {{ itemsCount }} attributes"
           selected: "Atributele selectate"
           clear: Curăță
           all_group: Toate grupurile
           empty_selection: Toate atributele vor fi exportate
           title: Atribute
+          description: Select the product information to export
         family:
           title: Familie
           help: "Selectează produsele pentru exportare după familia lor. De exemplu: Exportă doar pantofii și rochiile."
@@ -846,12 +880,15 @@ pim_enrich:
             "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Completat măcar pe un locale selectat
             "GREATER OR EQUALS THAN ON ALL LOCALES": Completat pe toate localele selectate
             LOWER THAN ON ALL LOCALES: Nu a fost completat pe toate localele selectate
+            AT LEAST COMPLETE: At least one child product complete on one selected locale
+            ALL COMPLETE: All children products complete on all selected locales
           empty_selection: Alegeți o familie
         category:
           title: Categorie
           help: Foloseşte categoriile de produs în arbore (definit de canalul de mai sus) pentru a selecta produsele de exportat
         identifier:
           title: Identificator
+          help: Use the product identifiers to export separated by commas, spaces or line breaks
         metric:
           operators:
             "=": Este egal cu
@@ -920,29 +957,68 @@ pim_enrich:
         title: Propietati
       global_settings:
         title: Setări globale
+  mass_edit_action:
+    edit_common_attributes:
+      description: Only the attributes belonging to the families of the selected products will be edited with the following data for the <span class="highlight">{{ locale }}</span> locale and the <span class="highlight">{{ channel }}</span> channel.
   index:
+    association_type:
+      title: "] -Inf, 1] {{ count }} association type|] 1, Inf [{{ count }} association types"
+      create_btn: Create association type
     import_profiles:
+      title: "] -Inf, 1] {{ count }} import profile|] 1, Inf [{{ count }} import profiles"
+      create_btn: Create import profile
       list: Selectează o sarcină
       create_popin:
         title: Creează
+      message:
+        created: Import profile successfully created
+    import_history:
+      title: Import reports
     group:
+      title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
       create_btn: Creează grup
     export_profiles:
+      title: "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} export profiles"
+      create_btn: Create export profile
       create_popin:
         title: Creează
+      message:
+        created: Export profile successfully created
+    export_history:
+      title: Export reports
+    family:
+      title: "] -Inf, 1] {{ count }} family|] 1, Inf [{{ count }} families"
+      create_btn: Create family
+    grouptype:
+      title: "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} group types"
+      create_btn: Create group type
+    currency:
+      title: "] -Inf, 1] {{ count }} currency|] 1, Inf [{{ count }} currencies"
+    locale:
+      title: "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
     user:
+      title: "] -Inf, 1] {{ count }} user|] 1, Inf [{{ count }} users"
       create_btn: Creează utilizator
     user_role:
+      title: "] -Inf, 1] {{ count }} role|] 1, Inf [{{ count }} roles"
       create_btn: Creează rol
     user_group:
+      title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
       create_btn: Creează grup
+    process_tracker:
+      title: "] -Inf, 1] {{ count }} operation|] 1, Inf [{{ count }} operations"
+    channel:
+      title: "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} channels"
+      create_btn: Create channel
     attribute:
+      title: "] -Inf, 1] {{ count }} attribute|] 1, Inf [{{ count }} attributes"
       create_btn: Creează atribut
       modal_title: Alegeți un tip de atribut
     attribute_group:
       title: Grupuri de atribute
       create_btn: Creează
     api_connection:
+      title: "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API connections"
       create_btn: Creează
   mass_edit:
     next: Următorul
@@ -950,55 +1026,91 @@ pim_enrich:
     cancel: Anulare
     confirm: Confirmă
     product:
+      title: Products bulk action
+      confirm: "{1}You are about to update a product with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} products with the following information, please confirm."
       step:
         select:
           label: Alegeți produsele
         choose:
+          title: Products bulk actions
           label_count: "] 0, inf [selectați acțiune"
         configure:
           label: Configurați
         confirm:
           label: Confirmă
+        launch_error:
+          label: An error occured during the launching of the mass edit operation
+        launched:
+          label: The bulk action "{{ operation }}" has been launched. You will be notified when it is done.
       operation:
         change_status:
           label: Schimbă status
+          label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: Produsele selectate vor bi activate sau dezactivate.
           field: A activa
         edit_common:
+          label: Edit attributes values
+          label_count: "{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: Doar atributele care aparțin de familiile produselor selectate vor fi editate cu următoarele date pentru localul {{ locale }} și canalul {{ scope }}.
+        add_attribute_value:
+          label: Add attributes values
+          label_count: "{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
         change_family:
           label: Schimbați familia
+          label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: Familia produselor selectate va fi schimbată la familia aleasă
           field: Familie
         add_to_group:
           label: Adăugați la grupe
+          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
           description: Selectați grupurile în care să se adauge produsele selectate
           field: Grupuri
         add_to_category:
           label: Adăugați la categorii
+          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
           description: Produsele vor fi clasificate în următoarele categorii, clasificarea existentă se păstrează.
         move_to_category:
           label: Mută între categorii
+          label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|] 1, Inf [Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
           description: Produsele vor fi clasificate în următoarele categorii, clasificarea existentă este pierdută.
         remove_from_category:
           label: Eliminați din categorii
+          label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|] 1, Inf [Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
           description: Produsele vor fi eliminate din categoriile următoare.
         add_to_existing_product_model:
           label: Adăugați la un model de produs existent
+          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
           description: Modelul produsului selectat va strânge produsele și permite îmbogățirea proprietăților lor comune.
+        associate_to_product_and_product_model:
+          label: Associate
+          label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|] 1, Inf [Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
+          description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
+          validate: Please add association before going to the next step
+        change_parent_product_model:
+          label: Change the parent product model
+          label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
     family:
+      title: Families bulk action
+      confirm: "{1}You are about to update a family with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} families with the following information, please confirm."
       step:
         select:
           label: Alege familiile
         choose:
+          title: Families bulk actions
           label_count: "] 0, inf [selectați acțiune"
         configure:
           label: Configurare
         confirm:
           label: Confirmă
+        launched:
+          label: The bulk action "{{ operation }}" has been launched. You will be notified when it is done.
       operation:
         set_requirements:
           label: Setează cerințele atributelor
+          description: The following attributes requirements will be applied to the selected families
+          label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
 pim_enrich.error:
   exception.title: Ohh nu! O eroare {{ status_code }} a apărut...
   http:
@@ -1008,13 +1120,20 @@ page_title:
   oro_default: Tablou de bord
   pim_enrich_attributegroup_index: Grupuri de atribute
   pim_enrich_attributegroup_create: Grupe de atribute | Creează
+  pim_enrich_attributegroup_edit: Attribute group {{ group.label }} | Edit
+  pim_enrich_catalog_volume_index: Catalog volume monitoring
   pim_enrich_categorytree_index: Mulțimea de categorii
   pim_enrich_categorytree_create: Mulțimi de categorii | Creează
+  pim_enrich_categorytree_edit: Category tree {{ category.label }} | Edit
   pim_enrich_categorytree_create_tree: Mulțimi de categorii | Creează
   pim_enrich_attribute_index: Atribute
   pim_enrich_attribute_create: Atribute | Creează
+  pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Edit
   pim_enrich_product_index: Produse
+  pim_enrich_product_edit: Product {{ product.label }} | Edit
+  pim_enrich_product_model_edit: Product model {{ product.label }} | Edit
   pim_enrich_family_index: Familii
+  pim_enrich_family_edit: Family {{ family.label }} | Edit
   pim_enrich_channel_index: Canale
   pim_enrich_channel_create: Canale | Creează
   pim_enrich_channel_edit: Canlalul {{ channel.label }} | Editare
@@ -1028,6 +1147,7 @@ page_title:
   pim_enrich_grouptype_edit: Tip de grup {{ group type.label }} | Editare
   pim_enrich_mass_edit_action_choose: Editare în masă | Alege
   pim_enrich_mass_edit_action_configure: Editare în masă | Configurează
+  pim_enrich_mass_edit_action_perform: Mass Edit | Perform
   pim_enrich_job_tracker_index: Monitorizare procese
   pim_enrich_job_tracker_show: Monitorizare procese | Arată sarcină
   pim_enrich_api_connection_index: Conexiunile API
@@ -1044,6 +1164,10 @@ batch_jobs:
     label: Actualizați valoarea produsului
     perform:
       label: Actualizați valoarea produsului
+  add_to_group:
+    label: Add to group
+    perform:
+      label: Add to group
   edit_common_attributes:
     label: Editați atributele
     perform:
@@ -1062,6 +1186,10 @@ batch_jobs:
     label: Eliminați din categorie
     perform:
       label: Eliminați din categorie
+  add_association:
+    label: Associate
+    perform:
+      label: Associate
   add_to_existing_product_model:
     label: Adăugați la un model al produsului existent
     perform:
@@ -1075,11 +1203,21 @@ batch_jobs:
     quick_export_product_model.label: CSV model de produs export rapid
     perform:
       label: CSV produs export rapid
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV product grid context quick export
+    quick_export_product_model.label: CSV product model grid context quick export
+    perform:
+      label: CSV product grid context quick export
   xlsx_product_quick_export:
     quick_export.label: XSLX produs export rapid
     quick_export_product_model.label: XSLX model de produs export rapid
     perform:
       label: XSLX produs export rapid
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XSLX product grid context quick export
+    quick_export_product_model.label: XSLX product model grid context quick export
+    perform:
+      label: XSLX product grid context quick export
   csv_product_export:
     label: Export produs în CSV
     export.label: Export produs
@@ -1112,10 +1250,14 @@ batch_jobs:
     validation.label: Validarea fișierului
     import.label: Import produs
     import_associations.label: Import asociație
+  csv_product_model_import:
+    label: Product model import in CSV
   csv_category_import:
+    label: Category import in CSV
     validation.label: Validarea fișierului
     import.label: Import categorie
   csv_attribute_import:
+    label: Attribute import in CSV
     validation.label: Validarea fișierului
     import.label: Import atribut
   csv_attribute_option_import:
@@ -1131,6 +1273,9 @@ batch_jobs:
     validation.label: Validarea fișierului
     import.label: Import familie
     compute_data_related_to_family_variants.label: Calculează datele ale modelelor de produse
+    compute_data_related_to_family_root_product_models.label: Compute root product models data
+    compute_data_related_to_family_sub_product_models.label: Compute sub product models data
+    compute_data_related_to_family_products.label: Compute products data
   csv_family_variant_import:
     label: Import varianta de familie în CSV
     validation.label: Validarea fișierului
@@ -1153,6 +1298,7 @@ batch_jobs:
     export.label: Export valută
   csv_group_type_export:
     label: Export tip de grup În CSV
+    export.label: Group type export
   csv_channel_import:
     label: Import canal în CSV
     validation.label: Validarea fișierului
@@ -1194,6 +1340,9 @@ batch_jobs:
     validation.label: Validare fişier
     import.label: Import familie
     compute_data_related_to_family_variants.label: Calculează datele ale modelelor de produse
+    compute_data_related_to_family_root_product_models.label: Compute root product models data
+    compute_data_related_to_family_sub_product_models.label: Compute sub product models data
+    compute_data_related_to_family_products.label: Compute products data
   xlsx_family_variant_import:
     label: Import variantă familie în XLSX
     validation.label: Validare fişier
@@ -1202,11 +1351,15 @@ batch_jobs:
     label: Export produs în XLSX
     export.label: Exportare produse
   xlsx_product_model_export:
+    label: Product model export in XLSX
     export.label: Export model de produs
   xlsx_product_import:
+    label: Product import in XLSX
     validation.label: Validarea fișierului
     import.label: Import produs
     import_associations.label: Import asociație
+  xlsx_product_model_import:
+    label: Product model import in XSLX
   xlsx_group_export:
     label: Export grup în XLSX
     export.label: Export grup
@@ -1215,20 +1368,40 @@ batch_jobs:
     validation.label: Validarea fișierului
     import.label: Import grup
   xlsx_family_export:
+    label: Family export in XLSX
     export.label: Export familie
   xlsx_family_variant_export:
+    label: Family variant export in XLSX
     export.label: Export varianta de familie
   xlsx_category_export:
+    label: Category export in XLSX
     export.label: Export categorie
+  xlsx_attribute_export:
+    label: Attribute export in XLSX
+    export.label: Attribute export in XLSX
+  xlsx_attribute_option_export:
+    label: Attribute option export in XLSX
+    export.label: Attribute option export in XLSX
+  xlsx_association_type_export:
+    label: Association type export in XLSX
+    export.label: Association type export in XLSX
   xlsx_channel_export:
+    label: Channel export in XLSX
     export.label: Export canal
   xlsx_locale_export:
+    label: Locale export in XLSX
     export.label: Export local
   xlsx_attribute_group_export:
+    label: Attribute group export in XLSX
     export.label: Export grup de atribut
   xlsx_currency_export:
+    label: Currency export in XLSX
     export.label: Export valută
+  xlsx_group_type_export:
+    label: Group type export in XLSX
+    export.label: Group type export
   xlsx_channel_import:
+    label: Channel import in XLSX
     validation.label: Validarea fișierului
     import.label: Import canal
   xlsx_locale_import:
@@ -1251,6 +1424,9 @@ job_tracker:
   download_archive:
     archive: Descarcă arhiva generată
     output: Descarcă fișierele generate
+    input: Download read files
+    invalid_xlsx: Download invalid data
+    invalid_csv: Download invalid data
 pim_menu:
   tab:
     activity: Activitate
@@ -1282,6 +1458,7 @@ pim_menu:
     import_history: Istoricul importurilor
     import_profile: Importă profile
     configuration: Configurație
+    catalog_volume: Catalog volume monitoring
     user_management: Gestionarea Utilizatorilor
     user: Utilizatori
     user_group: Grupuri
@@ -1289,17 +1466,46 @@ pim_menu:
     info: Informație despre sistem
     job_tracker: Monitorizare procese
     api_connection: Conexiuni API
+  navigation:
+    activity: Activity navigation
+    system: System navigation
+    user: Users management navigation
+    settings: Settings navigation
   user:
     logout: Deconectează-te
     user_account: Contul meu
 pim_notification:
   mark_all_as_read: Marchează tot ca citit
+  no_notifications: No notifications
   loading: Se incarcă...
 catalog_volume:
+  product_values: "You have <span>{{values}}</span> product values in your PIM! On average, it's <span>{{average}}</span> product values per product!&nbsp;💪"
+  product_values_description: 'The more product values you have, the more valuable your PIM is, the higher your ROI is! More details <a href="{{link}}" target="_blank">here</a>'
+  section:
+    product_values:
+      hint: 'Did you know that the total number of product values in your PIM is directly linked to the following axes?<br/>To have more details, we invite you to <a href="{{link}}" target="_blank">browse this article</a>.'
+      title: Axes that leverage the number of product values
+    catalog_structure:
+      hint: You may know that a good catalog structure is really important and is a condition to efficient enrichment. Below are the various axes to monitor your catalog structure.
+      title: Axes related to the catalog structure
+    variant_modelling:
+      hint: If you are using the variant modeling, here are the axes to help you monitor your volume.
+      title: Axes regarding the variant modeling
   axis:
     count_products: Produse
+    average_max_attributes_per_family: Attributes per family
     count_channels: Canale
+    count_locales: Locales (activated)
+    count_scopable_attributes: Scopable attributes
+    count_localizable_and_scopable_attributes: Localizable and scopable attributes
+    count_localizable_attributes: Localizable attributes
     count_families: Familii
     count_attributes: Atribute
+    average_max_options_per_attribute: Options by attribute
     count_categories: Categorii
     count_category_trees: Mulțimea de categorii
+    count_variant_products: Variant products
+    count_product_models: Product models
+    warning: Wow! You hit a record with this axis! Don't hesitate to contact us if you need any help with this kind of volume.
+  mean: 'Mean:'
+  max: 'Max:'

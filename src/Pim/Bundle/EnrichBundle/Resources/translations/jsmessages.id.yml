@@ -880,6 +880,8 @@ pim_enrich:
             "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Lengkapi setidaknya pilih satu lokal
             "GREATER OR EQUALS THAN ON ALL LOCALES": Lengkapi pada semua lokasi yang dipilih
             LOWER THAN ON ALL LOCALES: Tidak ada kondisi keluarga
+            AT LEAST COMPLETE: At least one child product complete on one selected locale
+            ALL COMPLETE: All children products complete on all selected locales
           empty_selection: Pilih keluarga
         category:
           title: Kategori
@@ -1047,7 +1049,13 @@ pim_enrich:
           description: Produk yang dipilih akan diaktifkan atau dimatikan.
           field: Untuk mengaktifkan
         edit_common:
+          label: Edit attributes values
+          label_count: "{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: Hanya atribut milik keluarga dari produk yang dipilih akan diedit dengan data sebagai berikut untuk {{ lokal }} lokal dan {{ lingkup }} saluran.
+        add_attribute_value:
+          label: Add attributes values
+          label_count: "{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
         change_family:
           label: Ubah keluarga
           label_count: "{1}Perubahan keluarga dari <span class=\"AknFullPage-title--highlight\">1 produk</span>|] 1, Inf [Perubahan keluarga <span class=\"AknFullPage-title--highlight\">{{ menghitungItem }} produk</span>"
@@ -1075,9 +1083,14 @@ pim_enrich:
           label_count: "{1}Tambahkan <span class=\"AknFullPage-title--highlight\">1 produk</span> untuk produk yang sudah ada model|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ menghitungItem }} produk</span> untuk produk yang sudah ada model"
           description: Model produk yang dipilih akan mengumpulkan produk dan memungkinkan pengayaan sifat umum mereka.
         associate_to_product_and_product_model:
+          label: Associate
           label_count: "{1}Mengasosiasikan <span class=\"AknFullPage-title--highlight\">1 produk</span> untuk produk atau model produk|] 1, Inf [Mengasosiasikan <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produk</span> untuk produk atau model produk"
           description: Produk yang dipilih di grid akan dihubungkan dengan produk yang terpilih dan model-model produk untuk jenis asosiasi yang akan dipilih
           validate: Silahkan tambahkan asosiasi sebelum pergi ke langkah selanjutnya
+        change_parent_product_model:
+          label: Change the parent product model
+          label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
     family:
       title: Tindakan massal keluarga
       confirm: "{1}Anda akan memperbarui aset dengan informasi berikut, mohon konfirmasi.|] 1, Inf [Anda akan memperbarui {{ itemsCount }} keluarga dengan informasi berikut, mohon konfirmasi."
@@ -1108,6 +1121,7 @@ page_title:
   pim_enrich_attributegroup_index: Kelompok atribut
   pim_enrich_attributegroup_create: Perlengkapan kelompok | Membuat
   pim_enrich_attributegroup_edit: Grup atribut {{ group.label }} | Sunting
+  pim_enrich_catalog_volume_index: Catalog volume monitoring
   pim_enrich_categorytree_index: Pohon kategori
   pim_enrich_categorytree_create: Kategori pohon | Membuat
   pim_enrich_categorytree_edit: Kategori pohon %kategori.label% | ubah
@@ -1150,6 +1164,10 @@ batch_jobs:
     label: Memperbarui nilai produk
     perform:
       label: Memperbarui nilai produk
+  add_to_group:
+    label: Add to group
+    perform:
+      label: Add to group
   edit_common_attributes:
     label: Ubah perlengkapan
     perform:
@@ -1168,6 +1186,10 @@ batch_jobs:
     label: Hapus dari kategori
     perform:
       label: Hapus dari kategori
+  add_association:
+    label: Associate
+    perform:
+      label: Associate
   add_to_existing_product_model:
     label: Tambahkan ke sebuah model produk yang ada
     perform:
@@ -1436,6 +1458,7 @@ pim_menu:
     import_history: Sejarah impor
     import_profile: Impor profil
     configuration: Konfigurasi
+    catalog_volume: Catalog volume monitoring
     user_management: Manajemen Pengguna
     user: Pengguna
     user_group: Kelompok
@@ -1456,12 +1479,33 @@ pim_notification:
   no_notifications: Tidak ada pemberitahuan
   loading: Pemuatan...
 catalog_volume:
+  product_values: "You have <span>{{values}}</span> product values in your PIM! On average, it's <span>{{average}}</span> product values per product!&nbsp;💪"
+  product_values_description: 'The more product values you have, the more valuable your PIM is, the higher your ROI is! More details <a href="{{link}}" target="_blank">here</a>'
+  section:
+    product_values:
+      hint: 'Did you know that the total number of product values in your PIM is directly linked to the following axes?<br/>To have more details, we invite you to <a href="{{link}}" target="_blank">browse this article</a>.'
+      title: Axes that leverage the number of product values
+    catalog_structure:
+      hint: You may know that a good catalog structure is really important and is a condition to efficient enrichment. Below are the various axes to monitor your catalog structure.
+      title: Axes related to the catalog structure
+    variant_modelling:
+      hint: If you are using the variant modeling, here are the axes to help you monitor your volume.
+      title: Axes regarding the variant modeling
   axis:
     count_products: Produk
+    average_max_attributes_per_family: Attributes per family
     count_channels: Saluran
+    count_locales: Locales (activated)
+    count_scopable_attributes: Scopable attributes
+    count_localizable_and_scopable_attributes: Localizable and scopable attributes
+    count_localizable_attributes: Localizable attributes
     count_families: Keluarga
     count_attributes: Atribut
+    average_max_options_per_attribute: Options by attribute
     count_categories: Kategori
     count_category_trees: Pohon kategori
     count_variant_products: Variasi Produk
     count_product_models: Model produk
+    warning: Wow! You hit a record with this axis! Don't hesitate to contact us if you need any help with this kind of volume.
+  mean: 'Mean:'
+  max: 'Max:'

@@ -50,6 +50,7 @@ Additional: Adițional
 Groups and Roles: Grupuri si roluri
 Username: Nume de utilizator
 Password: Parolă
+Password (again): Password (again)
 Re-enter password: Reintroduceți parola
 Name prefix: Prefixul numelui
 First name: Prenume
@@ -61,6 +62,7 @@ Avatar: Avatar
 Additional emails: E-mailuri adiționale
 Add another email: Adaugă un alt e-mail
 Catalog locale: Catalog local
+Catalog scope: Catalog scope
 Default tree: Arbore implicit
 Business Units: Unități business
 Email synchronization settings: Setări de sincronizare email
@@ -78,6 +80,7 @@ Birthday: Ziua de naştere
 API key: Cheie API
 Ui locale: UI local
 UI locale: UI local
+User salt: User salt
 Current password: Parola actuală
 New password: Parolă nouă
 Repeat new password: Repetă parola nouă
@@ -86,6 +89,8 @@ Primary: principală
 Removed user: Utilizator eliminat
 user:
   product_grid_filters: Filtre grilă produse
+  default_product_grid_view:
+    label: Default product grid view
   default_grid_view:
     none: Nici unul
   timezone: Fus orar
@@ -157,4 +162,5 @@ Username or Email: Nume de utilizator sau E-mail
 Forgot Password: Ați uitat parola
 Request: Solicitare
 Check Email: Verificați E-mailul
+password_reset_email_sent: An email has been sent to the user. It contains a link to reset the password.
 Go to homepage: Du-te la pagina principală

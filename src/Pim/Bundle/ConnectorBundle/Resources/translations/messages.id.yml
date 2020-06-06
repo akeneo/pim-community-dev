@@ -41,6 +41,7 @@ job_execution.summary:
     skipped: dilewati, lanjutan dalam daftar putih
   product_skipped_no_diff: Produk yang dilewati (tidak ada perbedaan)
   product_skipped_no_associations: produk yang dilewati (tidak ada asosiasi yang terdeteksi)
+  product_model_skipped_no_associations: skipped product model (no associations detected)
   product_model_skipped_no_diff: model produk yang dilewati (tidak ada perbedaan)
   item_position: membaca baris
   skipped_in_root_product_model: melewatkan model produk dengan orang tua

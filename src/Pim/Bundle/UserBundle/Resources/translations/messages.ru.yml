@@ -104,6 +104,7 @@ Save and close: Сохранить и закрыть
 Has role: Имеет роль
 role:
   title: роль
+  overview: role
   edit: Изменить роль
   create: Создать роль
 btn.create.role: Создать роль

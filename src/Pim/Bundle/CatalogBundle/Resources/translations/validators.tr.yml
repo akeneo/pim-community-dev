@@ -33,11 +33,14 @@ product_model.family_variant.not_blank.message: Ürün modeli tür değişkeni b
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'Bu varlık için eksen olarak tanımlanan %attribute% özelliği boş olamaz'
+    product_model_with_same_axis_value_already_exists: 'Cannot set value "%values%" for the attribute axis "%attributes%" on product model "%validated_entity%", as the product model "%sibling_with_same_value%" already has this value'
+    variant_product_with_same_axis_value_already_exists: 'Cannot set value "%values%" for the attribute axis "%attributes%" on variant product "%validated_entity%", as the variant product "%sibling_with_same_value%" already has this value'
     can_have_family_variant_unexpected_attribute: 'Özellik kümesinde olmadığı için %attribute% özelliği bu varlığa ayarlanamıyor'
     cannot_have_product_model_as_parent: '%product_model% ürün modeli üst model olarak %parent_product_model% ürün modeline sahip olamaz'
     cannot_have_parent: '%product_model% ürün modeli üst modele sahip olamaz'
     attribute_does_not_belong_to_family: '%attribute% özelliği %family% türüne ait değil'
     variant_product_invalid_family: 'Varyant ürün ailesi ebeveyninden farklı olmalıdır'
+    php_int_max_reached: 'The maximum number must be lower than %php_int_max%.'
     not_null_family: Aile, "%sku%" tanımlayıcısı ile ürününüz varyant ürün olduğundan "null" olamaz.
     variant_product_has_parent: 'Varyant ürün "%varıant_product%" bir üst olmalıdır'
     invalid_variant_product_parent: 'Varyant ürün "%varıant_product%" ürün modeli olamaz "%product_model%" üst olarak, (bu ürün modeli yalnızca çocuk olarak diğer ürün modelleri olabilir)'

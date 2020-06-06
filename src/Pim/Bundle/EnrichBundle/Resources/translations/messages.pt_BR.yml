@@ -165,6 +165,7 @@ pim_enrich:
       associations_view: Ver as associações de um produto
       associations_edit: Adicionar associações a um produto
       change_family: Alterar a família de um produto
+      change_state: Change the status of a product
       add_to_groups: Adicionar produto aos grupos
       mass_edit: Ações de edição em massa de produtos
       comment: Comentar produtos
@@ -282,8 +283,10 @@ category:
   edit: editar categoria
   suggest selection: Por favor, selecione uma categoria à esquerda
   or: ou
+  create new: Create a new category tree
 tree:
   title: árvore
+  create: create category tree
   edit: editar a árvore de classificação
 channel:
   title: canal
@@ -324,6 +327,7 @@ btn:
     attribute: criar atributo
     attribute group: criar grupo de atributos
     category: criar categoria
+    tree: create category tree
     channel: criar canal
     currency: criar moeda
     family: criar família
@@ -360,6 +364,7 @@ confirmation:
     attribute group: Tem certeza de que deseja excluir o grupo de atributos %name%?
     category: Tem certeza de que deseja excluir a categoria %name%?
     family: Tem certeza de que deseja excluir a família %name%?
+    family_variant: Are you sure you want to delete the family variant %name%?
     product: Tem certeza de que deseja excluir o produto %name%?
     group: Tem certeza de que deseja excluir o grupo %name%?
     group type: Tem certeza de que deseja excluir o tipo de grupo %name%?
@@ -379,6 +384,7 @@ flash:
     updated: Atributo atualizado com sucesso
     removed: Atributo removido com sucesso
     identifier_not_removable: O identificador do atributo não pode ser removido
+    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   attribute group:
     created: Grupo de atributos criado com sucesso
     updated: Grupo de atributos atualizado com sucesso
@@ -597,6 +603,7 @@ pim_title.attribute:
   edit: "Atributos %attribute.label% | Editar"
 pim_title.product:
   index: "Produtos"
+  edit: "Products %product.label% | Edit"
 pim_title.family:
   index: "Famílias"
   edit: "Famílias %family.label% | Editar"
@@ -880,6 +887,10 @@ batch_jobs:
     quick_export.label: Xlsx exportação rápida de produtos
     perform:
       label: Xlsx exportação rápida de produtos
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Xlsx product grid context quick export
+    perform:
+      label: Xlsx product grid context quick export
   delete_products_and_product_models:
     delete_products_and_product_models.label: Exclusão em massa de produtos
   change_parent_product:

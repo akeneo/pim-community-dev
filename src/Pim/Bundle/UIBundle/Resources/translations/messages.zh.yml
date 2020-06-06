@@ -41,6 +41,7 @@ required: '（必需）'
 pim_ui.system_config:
   form:
     loading_message_enabled.label: 启用加载消息
+    loading_message_enabled.tooltip: Display user friendly messages while waiting for a page to load
     loading_messages.label: 可用的加载消息
     loading_messages.tooltip: 全部可用的加载消息以换行符分隔
   group:

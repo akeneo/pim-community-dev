@@ -41,6 +41,7 @@ job_execution.summary:
     skipped: 跳过，在白名单中扩展
   product_skipped_no_diff: 跳过的产品 （无差异）
   product_skipped_no_associations: 跳过产品（没有检测到任何关联）
+  product_model_skipped_no_associations: skipped product model (no associations detected)
   product_model_skipped_no_diff: 跳过产品模型（如无差异）
   item_position: 读行
   skipped_in_root_product_model: 跳过有父级产品模型的产品模型
@@ -71,6 +72,9 @@ batch_jobs:
   csv_family_export:
     label: 在CSV导入品类
     export.label: 品类导出
+  csv_family_variant_export:
+    label: Family variant export in CSV
+    export.label: Family variant export
   csv_product_import:
     label: 从CSV导入产品
     validation.label: 文件验证
@@ -103,7 +107,9 @@ batch_jobs:
     validation.label: 文件验证
     import.label: 品类导入
   csv_family_variant_import:
+    label: Family variant import in CSV
     validation.label: 文件验证
+    import.label: Family variant import
   csv_group_import:
     label: 从CSV导入分组
     validation.label: 文件验证
@@ -164,7 +170,9 @@ batch_jobs:
     validation.label: 文件验证
     import.label: 品类导入
   xlsx_family_variant_import:
+    label: Family variant import in XLSX
     validation.label: 文件验证
+    import.label: Family variant import
   xlsx_product_export:
     label: 产品导出到 XLSX
     export.label: 产品导出
@@ -193,6 +201,9 @@ batch_jobs:
   xlsx_family_export:
     label: 在XLSX导入品类
     export.label: 品类导出
+  xlsx_family_variant_export:
+    label: Family variant export in XLSX
+    export.label: Family variant export
   xlsx_category_export:
     label: 在XLSX中导出分类
     export.label: 分类导出

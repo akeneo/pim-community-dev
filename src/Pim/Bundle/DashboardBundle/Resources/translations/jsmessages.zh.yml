@@ -13,6 +13,9 @@ pim_dashboard:
         export: 导出
         mass_edit: 批量编辑
         quick_export: 快速导出
+        compute_product_models_descendants: Compute product models descendants
+        compute_family_variant_structure_changes: Compute family variant structure changes
+        compute_completeness_of_products_family: Compute completeness of products family
         mass_delete: 批量删除产品
     completeness:
       load_more: '加载更多...'
