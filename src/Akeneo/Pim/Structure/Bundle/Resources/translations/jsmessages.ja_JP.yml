@@ -202,6 +202,10 @@ pim_enrich.entity.attribute_group:
   label: 属性グループ
   uppercase_label: 属性グループ
   plural_label: 属性グループ
+  show_more_attribute:
+    title: It's a bit crowded around here, we show you {{ attributeCount }}/{{ totalAttributeCount }} attributes.
+    subtitle: To discover all the attributes of this group, just click below!
+    button: View all attributes
   flash:
     update:
       success: 属性グループは正常に更新されました

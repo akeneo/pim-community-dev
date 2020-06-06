@@ -80,3 +80,4 @@ tree:
   edit: Modifier l'arborescence
   remove:
     error_linked: Cet arbre de catégorie ne peut pas être supprimé, il est lié à un canal
+  create: Créer un arbre de catégories

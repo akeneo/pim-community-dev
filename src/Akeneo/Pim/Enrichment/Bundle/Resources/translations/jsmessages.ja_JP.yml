@@ -252,6 +252,8 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: すべて
+    price-collection:
+      operators:
     select:
       operators:
         IN: 一覧にある
@@ -370,6 +372,7 @@ pim_datagrid:
   filters:
     label: フィルタ
     system: システム
+  search: Search on {{ label }}
 batch_jobs:
   add_association:
     label: 関連付ける
