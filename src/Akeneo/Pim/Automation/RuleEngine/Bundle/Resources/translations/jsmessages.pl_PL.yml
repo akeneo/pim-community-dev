@@ -50,6 +50,21 @@ pimee_catalog_rule:
           error: Wystąpił błąd podczas usuwania reguł.
           empty_selection: Nie wybrano reguł.
   form:
+    category:
+      catalog: Catalog
+      select: Select a category
+      open_tree: Open category tree
+      tree: Category Tree
+      menu: Select a category tree
+      folder:
+        selected: Folder selected
+        not_selected: Folder
+      folders:
+        selected: Folders selected
+        not_selected: Folders
+      arrow:
+        open: Open branch category
+        close: Close branch category
     tab:
       list: Zakładki konstruktora reguł i właściwości
       rule_builder: Konstruktor reguł
@@ -86,6 +101,7 @@ pimee_catalog_rule:
       product_selection: Wybór produktu
       fields:
         family: Rodzina
+        category: Category
       actions:
         add_action: Add action
         set_family:
@@ -130,8 +146,13 @@ pimee_catalog_rule:
     legend:
       add_to_category: Utwórz akcję
       product_selection: Utwórz warunek
+    tree:
+      item:
+        selected: Item selected
+        not_selected: Select item
   exceptions:
     loading: Wystąpił błąd podczas ładowania definicji reguły.
+    required: This field is required
     required_locale: A locale is required for this attribute
     required_scope: A channel is required for this attribute
     unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'

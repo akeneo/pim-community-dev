@@ -50,6 +50,21 @@ pimee_catalog_rule:
           error: Beim Löschen der Regeln ist ein Fehler aufgetreten.
           empty_selection: Keine Regeln ausgewählt.
   form:
+    category:
+      catalog: Katalog
+      select: Wähle eine Kategorie
+      open_tree: Kategoriebaum öffnen
+      tree: Kategoriebaum
+      menu: Kategoriebaum wählen
+      folder:
+        selected: Ordner gewählt
+        not_selected: Ordner
+      folders:
+        selected: Ordner gewählt
+        not_selected: Ordner
+      arrow:
+        open: Branchenkategorie öffnen
+        close: Branchenkategorie schließen
     tab:
       list: Regelersteller und Eigenschaften-Tabs
       rule_builder: Rule Builder
@@ -86,6 +101,7 @@ pimee_catalog_rule:
       product_selection: Produktauswahl
       fields:
         family: Produktfamilie
+        category: Kategorie
       actions:
         add_action: Aktion hinzufügen
         set_family:
@@ -130,8 +146,13 @@ pimee_catalog_rule:
     legend:
       add_to_category: Neue Aktion erstellen
       product_selection: Bedingung erstellen
+    tree:
+      item:
+        selected: Element ausgewählt
+        not_selected: Element auswählen
   exceptions:
     loading: Beim Laden der Regeldefinition ist ein Fehler aufgetreten.
+    required: Dieses Feld ist erforderlich
     required_locale: Für dieses Attribut ist eine Gebietsschema erforderlich
     required_scope: Für diesen Ausgabekanal ist eine Gebietsschema erforderlich
     unknown_or_inactive_locale: 'Die "{{ localeCode }}" Gebietsschema existiert nicht oder ist nicht aktiviert'
