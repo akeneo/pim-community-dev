@@ -90,7 +90,8 @@ pim_catalog:
       products_do_not_exist: "Folgende Produkte existieren nicht: {{ values }}. Bitte stellen Sie sicher, dass die Produkte in der Zwischenzeit nicht gelöscht wurden."
       product_models_do_not_exist: "Die folgenden Produktmodelle existieren nicht: {{ values }}. Bitte stellen Sie sicher, dass die Produktmodelle in der Zwischenzeit nicht gelöscht wurden."
       association_type_does_not_exist: Dieser Verbindungstyp existiert nicht. Bitte stellen Sie sicher, dass er in der Zwischenzeit nicht gelöscht wurde.
-      association_type_is_not_quantified: Dieser Verbindungstyp wird nicht verwendet, um Mengen zu schreiben. Bitte wählen Sie einen anderen aus, bevor Sie es erneut versuchen.
+      association_type_is_not_quantified: '"{{ association_type }}" kann nicht für Verbindungen mit Mengen verwendet werden. Bitte wählen Sie einen anderen Verbindungstyp mit Mengen oder verwenden Sie die Eigenschaft "Assoziationen".'
+      association_type_should_not_be_quantified: '"{{ association_type }}" kann nur für Verbindungen mit Mengen verwendet werden. Bitte wählen Sie einen anderen Verbindungstyp oder verwenden Sie die Eigenschaft "quantified_associations".'
 mass_edit:
   edit_common_attributes:
     invalid_values: Es gibt Fehler in der Attribut-Maske
