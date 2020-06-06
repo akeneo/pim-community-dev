@@ -47,9 +47,11 @@ pimee_workflow:
         invalid_draft: 'Het voorstel kan niet worden toegepast wegens de volgende fout: %error%'
   proposal:
     to_review: '%author.firstname% %author.lastname% heeft voorgesteld om product %product.label% na te kijken'
+    individual_import: '%author.firstname% %author.lastname% has sent proposals to review from job import'
     generic_import: U heeft voorstellen om te bekijken uit job import
     original_value: Origineel
     new_value: Nieuw
+    no_diff: The value "%value%" is the same between the proposal and the working copy.
     draft_in_progress: Een concept is bezig voor dit product door %author%.
   published_product:
     index: Gepubliceerde producten
@@ -68,7 +70,9 @@ pimee_workflow:
   mass_edit_action:
     published:
       page_title: Gepubliceerde producten
+      page_subtitle: Mass Edit (1 published product)|Mass Edit (%count% published products)
       title: Kies operatie
+      subtitle: Choose the operation you wish to perform on the selected published product|Choose the operation you wish to perform on the selected %count% published products
       confirm: U staat op het punt een gepubliceerd product bij te werken met de volgende informatie. Alstublieft bevestigen. |U staat op het punt %count% gepubliceerde producten bij te werken met de volgende informatie. Alstublieft bevestigen.
       steps:
         first: Kies gepubliceerde producten
@@ -86,6 +90,7 @@ btn:
   editworkingcopy: Wijzig werkkopie
 flash:
   product:
+    updated: Product working copy has been updated
     published: Het product is succesvol gepubliceerd.
     unpublished: Het product is successful gedepubliceerd.
   product_draft:

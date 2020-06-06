@@ -7,6 +7,8 @@ pim_reference_entity:
         limit_reached: 'Du kan ikke oprette referenceenheden "%reference_entity_label%", da du har nået grænsen for %limit% referenceenheder'
       records:
         should_have_no_record: 'Du kan ikke slette denne enhed, da der allerede findes arkiver for den'
+      reference_entity_attributes:
+        should_not_be_linked: 'To delete this reference entity, first check the attributes in all your reference entities and then delete the ones linked to this'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Mindst én brugergruppe skal have tilladelse til at redigere på denne enhed'
       product_attributes:
@@ -18,6 +20,10 @@ pim_reference_entity:
         pattern: 'Dette felt må kun indeholde bogstaver, tal og underscores.'
         should_be_unique: 'Arkivkoden eksisterer allerede for referenceenhed "%reference_entity_identifier%" og arkivkode "%code%"'
         should_exist: 'Arkivet blev ikke fundet'
+      text:
+        incompatible_with_regular_expression: 'Please enter a text that satisfies the regular expression: "%regular_expression%"'
+        invalid_email: 'Please enter an email address: xxxxx@xx.xx'
+        invalid_url: 'Please enter a URL: http(s)://xxxx.XXX'
       file:
         extension_not_allowed: '"%file_extension%"-filer er ikke tilladt for denne attribut. Tilladte udvidelser er: %allowed_file_extensions%'
         file_size_exceeded: 'Filen overskrider den maksimale filstørrelse tilladt for denne attribut.'

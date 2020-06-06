@@ -95,6 +95,10 @@ pim_reference_entity:
       code:
         pattern: 'Dette felt må kun indeholde bogstaver, tal og underscores.'
         should_be_unique: 'Denne kode eksisterer allerede for denne enhed.'
+      text:
+        incompatible_with_regular_expression: 'Please enter a text that satisfies the regular expression: "{{ %regular_expression% }}"'
+        invalid_email: 'Please enter an email address: xxxxx@xx.xx'
+        invalid_url: 'Please enter a URL: http(s)://xxxx.XXX'
     no_data:
       title: Der er intet arkiv for {{ entityLabel }}
       subtitle: Klik på knappen "Tilføj ny" for at oprette det første arkiv
