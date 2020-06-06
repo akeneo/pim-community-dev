@@ -59,7 +59,3 @@ _COMMUNICATION_CHANNEL_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Platform/Bund
 communication-channel-generate-models:
 	$(_COMMUNICATION_CHANNEL_YARN_RUN) generate-models-ce
 
-# Tests Front
-
-communication-channel-unit-front:
-	$(_COMMUNICATION_CHANNEL_YARN_RUN) jest
