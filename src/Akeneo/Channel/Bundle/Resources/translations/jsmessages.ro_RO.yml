@@ -6,6 +6,7 @@ batch_jobs:
     label: Import valută în CSV
     import.label: Import valută
   xlsx_currency_export:
+    label: Currency export in XLSX
     export.label: Export valută
   xlsx_currency_import:
     label: Import valută în XLSX
@@ -17,6 +18,7 @@ batch_jobs:
     label: Import local în CSV
     import.label: Import local
   xlsx_locale_export:
+    label: Locale export in XLSX
     export.label: Export local
   xlsx_locale_import:
     label: Import local în XLSX
@@ -28,8 +30,10 @@ batch_jobs:
     label: Import canal în CSV
     import.label: Import canal
   xlsx_channel_export:
+    label: Channel export in XLSX
     export.label: Export canal
   xlsx_channel_import:
+    label: Channel import in XLSX
     import.label: Import canal
 pim_enrich.entity.channel:
   label: canal
@@ -44,16 +48,29 @@ pim_enrich.entity.channel:
     delete:
       success: Canalul a fost șters cu succes
       fail: Nu puteți şterge acest canal
+  page_title:
+    index: "]-Inf, 1]{{ count }} channel|]1, Inf[{{ count }} channels"
   property:
     category_tree: Mulțimea de categorii
     do_not_convert: Nu converti
     label_conversion_units: Alege o unitate de conversie pentru fiecare atribut metric care va fi folosit în timpul exportării produsului
   module:
+    create:
+      button: Create channel
     delete:
       confirm: Sunteți sigur că vreți să ștergeți acest canal?
 pim_enrich.entity.locale:
   label: local
   uppercase_label: Local
   plural_label: Locale
+  page_title:
+    index: "]-Inf, 1]{{ count }} locale|]1, Inf[{{ count }} locales"
 pim_enrich.entity.currency:
   plural_label: Valute
+  page_title:
+    index: "]-Inf, 1]{{ count }} currency|]1, Inf[{{ count }} currencies"
+flash:
+  currency:
+    error:
+      linked_to_channel: You cannot disable a currency linked to a channel
+    updated: Currency successfully updated

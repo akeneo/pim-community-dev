@@ -39,6 +39,8 @@ pim_enrich.entity.family_variant:
       fail: La variant de família no s'ha pogut actualitzar.
     create:
       success: Variant de família creada correctament
+    delete:
+      success: Family variant successfully deleted
   module:
     edit:
       common_attributes: Atributs comuns
@@ -200,6 +202,10 @@ pim_enrich.entity.attribute_group:
   label: grup d'atributs
   uppercase_label: Grup d'atributs
   plural_label: Grups d'atribut
+  show_more_attribute:
+    title: It's a bit crowded around here, we show you {{ attributeCount }}/{{ totalAttributeCount }} attributes.
+    subtitle: To discover all the attributes of this group, just click below!
+    button: View all attributes
   flash:
     update:
       success: Grup d'atributs actualitzat correctament

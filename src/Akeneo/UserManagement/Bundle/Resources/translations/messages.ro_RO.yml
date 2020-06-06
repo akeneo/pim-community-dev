@@ -9,6 +9,7 @@ pim_user:
       middle_name: Numele mijlociu
       last_name: Nume
       name_suffix: Sufixul numelui
+      phone: Phone
       date_of_birth: Data naşterii
       avatar: Avatar
       timezone: Fus orar
@@ -18,15 +19,19 @@ pim_user:
       password_again: Reintroduceți parola
       product_grid_filters: Filtre grilă produse
       catalog_locale: Catalog local
+      catalog_scope: Catalog scope
       default_tree: Arbore implicit
       current_password: Parola actuală
       new_password: Parolă nouă
       new_password_again: Repetă parola nouă
       default_grid_view:
         none: Niciunul
+      default_product_grid_view:
+        label: Default product grid view
       ui_locale: UI local
       last_logged_in: Ultima autentificare
       login_count: Număr de autentificări
+      user_salt: User salt
       created: Creat
       updated: Actualizat
       status: Stare
@@ -35,12 +40,22 @@ pim_user:
       has_group: Are grup
       active: Activ
       inactive: Inactiv
+    fields_errors:
+      new_password:
+        minimum_length: Password must contains at least 2 characters
+      new_password_repeat:
+        not_match: Password does not match
+      current_password:
+        wrong: Wrong password
     tabs:
       general:
         title: General
+        basic_information: Basic information
         contact_information: Informații de contact
       additional:
         title: Adițional
+      additional_data:
+        title: Additional data
       interfaces:
         title: Interfețe
       group_and_role.title: Grupuri si roluri
@@ -55,7 +70,9 @@ pim_user:
       log_in: Autentificare
       forgot_password: Ați uitat parola
       request: Solicitare
+      password_reset: Password Reset
       reset: Resetează
+      password_reset_email_sent: An email has been sent to the user. It contains a link to reset the password.
       homepage: Du-te la pagina principală
   group:
     tab:

@@ -5,6 +5,7 @@ pim_enrich.entity.family:
   flash:
     update:
       success: Family successfully updated.
+      fail: An error occurred during family update.
       cant_remove_attribute_as_label: Cannot remove attribute used as label
       cant_remove_attribute_as_image: Cannot remove attribute used as the main picture
       cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
@@ -38,6 +39,8 @@ pim_enrich.entity.family_variant:
       fail: The family variant could not be updated.
     create:
       success: Family variant successfully created
+    delete:
+      success: Family variant successfully deleted
   module:
     edit:
       common_attributes: Common attributes
@@ -59,11 +62,14 @@ pim_enrich.entity.family_variant:
       axis_level: "Variant axis level {{ level }}"
     update_translations:
       title: Update translations
+    delete:
+      confirm: Are you sure you want to delete this family variant?
 pim_enrich.entity.attribute_option:
   short_uppercase_label: Options
   flash:
     create:
       success: Attribute option successfully created
+      fail: An error occurred when trying to create the attribute option
     update:
       fail: Cannot save attribute option
     delete:
@@ -196,6 +202,10 @@ pim_enrich.entity.attribute_group:
   label: attribute group
   uppercase_label: Attribute group
   plural_label: Attribute groups
+  show_more_attribute:
+    title: It's a bit crowded around here, we show you {{ attributeCount }}/{{ totalAttributeCount }} attributes.
+    subtitle: To discover all the attributes of this group, just click below!
+    button: View all attributes
   flash:
     update:
       success: Attribute group successfully updated

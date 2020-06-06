@@ -78,3 +78,5 @@ category:
   overview: Categorias
 tree:
   edit: Editar árvore
+  remove:
+    error_linked: This category tree cannot be deleted, it is linked to a channel

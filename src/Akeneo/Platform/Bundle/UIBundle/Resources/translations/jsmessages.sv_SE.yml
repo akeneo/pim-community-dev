@@ -3,6 +3,9 @@
 "Yes, do it": "Ja, gör det"
 "Ok, got it.": "Ok, jag förstår."
 "Edit": "Ändra"
+"Unexpected error occurred. Please contact system administrator.": "Unexpected error occurred. Please contact system administrator."
+"Yes, revoke": "Yes, Revoke"
+"Revoke Confirmation": "Revoke Confirmation"
 Prev: Föregående
 Today: Idag
 Wk: V.
@@ -106,6 +109,9 @@ oro_config:
           label: Aktivera hämtning av meddelanden
         loading_messages:
           label: Tillgängliga meddelanden att hämta
+pim_ui:
+  flash:
+    unsaved_changes: 'You have unsaved changes, are you sure that you want to leave?'
 "Sorry, page was not loaded correctly": "Tyvärr, sidan laddades inte korrekt"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Dina lokala ändringar går förlorade. Är du säker på att du vill uppdatera sidan?"
 "navigation.message.content.outdated": "Innehållet på sidan {{ title }} är föråldrad. Vänligen <a href='#' data-action='page-refresh'>uppdatera sidan</a>"
@@ -151,6 +157,7 @@ pim_common:
   code: Kod
   confirm: Bekräfta
   confirm_deletion: Bekräfta radering
+  confirm_revocation: Confirm revocation
   create: Skapa
   created: Skapad
   delete: Radera
@@ -162,6 +169,7 @@ pim_common:
   history: Historik
   label: Etikett
   label_translations: Etikettsöversättningar
+  Label or identifier: label or identifier
   less_than: Mindre än
   loading: Laddar...
   media_upload: Dra och släpp för att ladda upp eller klicka här
@@ -188,6 +196,7 @@ pim_common:
   type: Typ
   update: Uppdatera
   "yes": "Ja"
+  operator: Operator
   operators:
     "=": Är lika med
     "!=": Är inte lika med
@@ -201,13 +210,18 @@ pim_common:
     DOES NOT CONTAIN: Innehåller inte
     STARTS WITH: Börjar med
     ENDS WITH: Slutar med
+error:
+  exception: Oh snap! A {{ status_code }} error occurred...
+  forbidden: Forbidden. You are not allowed to access this page
 alert:
   attribute_option:
+    error_occurred_during_submission: An error occurred during the form submission on the server
     save_before_edit_other: Vänligen registrera dina ändringar på andra rader innan du redigerar denna
   session_storage:
     not_available: Din webbläsare inte verkar kompatibel med 'sessionStorage'. Vänligen kontakta administratören
 pim_enrich.entity.fallback:
   flash:
+    generic_error: An error occurred
     update:
       fail: Uppdateringen misslyckades
       success: Uppdatering gick bra
@@ -217,6 +231,7 @@ pim_enrich.entity.fallback:
   module:
     delete:
       title: Ta bort {{ itemName }}
+      alternative_title: Confirm removal
       item: Är du säker på att du vill radera det här objektet?
       item_placeholder: Är du säker på att du vill ta bort {{ itemName }}? Det går inte att ångra denna åtgärd.
     edit:
@@ -225,10 +240,22 @@ pim_enrich.entity.fallback:
       discard_changes_title: Är du säker?
 pim_enrich.entity.api_connection:
   flash:
+    create:
+      success: API connection successfully created
     delete:
       success: API-anslutningen har återkallas
-pim_enrich.entity.job_execution:
+      fail: Cannot revoke this API connection
+  page_title:
+    index: "]-Inf, 1]{{ count }} API connection|]1, Inf[{{ count }} API connections"
   module:
+    revoke:
+      confirm: Are you sure you want to revoke this API connection?
+pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
+  module:
+    create:
+      upload: Drop your {{ type }} file here, or click to browse disk
     download:
       archive: Ladda ner genererat arkiv
       output: Ladda ner genererade filer
@@ -282,6 +309,7 @@ pim_menu:
     system: System
     help:
       title: Hjälp
+      helper: Akeneo Help center
   item:
     association_type: Associationstyper
     attribute_group: Attributgrupper

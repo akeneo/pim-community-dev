@@ -170,7 +170,10 @@ pim_measure:
     PSI: Pon per inci persegi
     TORR: Torr
     MMHG: millimeter dari Merkurius
+    #Energy
+    CALORIE: calorie
     KILOCALORIE: kilokalori
+    JOULE: joule
     KILOJOULE: kilojoule
     #CaseBox
     PIECE: Potongan

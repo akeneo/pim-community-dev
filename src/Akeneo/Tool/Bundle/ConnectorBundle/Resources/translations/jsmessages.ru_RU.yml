@@ -106,6 +106,7 @@ batch_jobs:
     label: Импорт продуктов из XLSX
     import.label: Импорт продуктов
   xlsx_product_model_import:
+    label: Product model import in XLSX
     import_product_model_descendants.label: Расчет дочерней модели продукта
   xlsx_group_export:
     label: Экспорт групп в XLSX

@@ -3,6 +3,7 @@
 "Yes, do it": "Evet, yap"
 "Ok, got it.": "Tamam, anladım."
 "Edit": "Düzenle"
+"Unexpected error occurred. Please contact system administrator.": "Unexpected error occurred. Please contact system administrator."
 "Yes, revoke": "Evet, iptal et"
 "Revoke Confirmation": "Onayı iptal et"
 Prev: Önceki
@@ -168,6 +169,7 @@ pim_common:
   history: Geçmiş
   label: Etiket
   label_translations: Katman çevirileri
+  Label or identifier: label or identifier
   less_than: Daha az
   loading: Yükleniyor...
   media_upload: Yüklemek için sürükle ve bırak veya buraya tıkla
@@ -209,14 +211,17 @@ pim_common:
     STARTS WITH: Ile başlar
     ENDS WITH: İle biter
 error:
+  exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Yasak. Bu sayfaya erişim izniniz yok
 alert:
   attribute_option:
+    error_occurred_during_submission: An error occurred during the form submission on the server
     save_before_edit_other: Lütfen bunu düzenlemeden önce farklı satırlardaki modifikasyonlarınızı giriniz
   session_storage:
     not_available: Web tarayıcınız Anlık Depolama ile uyumlu görünmüyor. Lütfen yöneticiniz ile iletişime geçiniz
 pim_enrich.entity.fallback:
   flash:
+    generic_error: An error occurred
     update:
       fail: Güncelleme başarısız oldu
       success: Güncelleme başarılı
@@ -240,10 +245,14 @@ pim_enrich.entity.api_connection:
     delete:
       success: API bağlantısı başarıyla iptal edildi
       fail: Bu API bağlantısı geri alınamaz
+  page_title:
+    index: "]-Inf, 1]{{ count }} API connection|]1, Inf[{{ count }} API connections"
   module:
     revoke:
       confirm: Bu API bağlantısını geri almak istediğinize eminmisiniz?
 pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
   module:
     create:
       upload: '{{ type }} dosyasını buraya bırak veya diske göz atmak için tıkla'

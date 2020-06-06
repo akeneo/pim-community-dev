@@ -60,12 +60,17 @@ pim_user_management:
         new_password_repeat: 新密码 (重复)
         password: 密码
         password_repeat: 密码 （重复输入）
+        last_logged_in: Last logged in
+        login_count: Login count
         ui_locale: 界面语言
         timezone: 时区
         default_product_grid_view: 默认产品网格视图
         default_published_product_grid_view: 默认的已发布产品网格视图 #EE Only
         proposals_to_review_notification: 当有新的提案待审查 #EE Only
         proposals_state_notifications: 当提案被接受或拒绝 #EE Only
+      meta:
+        created: Created
+        updated: Updated
       module:
         create:
           button: 创建用户

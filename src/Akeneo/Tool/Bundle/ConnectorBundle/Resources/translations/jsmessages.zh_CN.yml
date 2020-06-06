@@ -59,6 +59,10 @@ batch_jobs:
   csv_family_import:
     label: 从CSV导入品类
     import.label: 品类导入
+    compute_data_related_to_family_variants.label: Compute product models data
+  csv_family_variant_import:
+    label: Family variant import in CSV
+    import.label: Family variant import
   csv_group_import:
     label: 从CSV导入分组
     import.label: 分组导入
@@ -89,6 +93,9 @@ batch_jobs:
   xlsx_family_import:
     label: 在XLSX导入品类
     import.label: 品类导入
+  xlsx_family_variant_import:
+    label: Family variant import in XLSX
+    import.label: Family variant import
   xlsx_product_export:
     label: 产品导出到 XLSX
     export.label: 产品导出
@@ -99,6 +106,7 @@ batch_jobs:
     label: 从 XLSX导入产品
     import.label: 产品导入
   xlsx_product_model_import:
+    label: Product model import in XLSX
     import_product_model_descendants.label: 计算下级产品模型
   xlsx_group_export:
     label: 分组导出到 XLSX
@@ -109,6 +117,9 @@ batch_jobs:
   xlsx_family_export:
     label: 在XLSX导入品类
     export.label: 品类导出
+  xlsx_family_variant_export:
+    label: Family variant export in XLSX
+    export.label: Family variant export
   xlsx_category_export:
     label: 在XLSX中导出分类
     export.label: 分类导出

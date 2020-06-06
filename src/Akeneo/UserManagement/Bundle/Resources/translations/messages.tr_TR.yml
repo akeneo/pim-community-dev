@@ -9,6 +9,7 @@ pim_user:
       middle_name: Göbek Adı
       last_name: Soyisim
       name_suffix: Ad son eki
+      phone: Phone
       date_of_birth: Doğum tarihi
       avatar: Profil resmi
       timezone: Zaman dilimi
@@ -39,12 +40,22 @@ pim_user:
       has_group: Grubu var
       active: Etkin
       inactive: Aktif Değil
+    fields_errors:
+      new_password:
+        minimum_length: Password must contains at least 2 characters
+      new_password_repeat:
+        not_match: Password does not match
+      current_password:
+        wrong: Wrong password
     tabs:
       general:
         title: Genel
+        basic_information: Basic information
         contact_information: İletişim Bilgileri
       additional:
         title: Ek Bilgiler
+      additional_data:
+        title: Additional data
       interfaces:
         title: Arayüzler
       group_and_role.title: Gruplar ve Yetkiler
@@ -59,7 +70,9 @@ pim_user:
       log_in: Giriş
       forgot_password: Parolamı unuttum
       request: İstekler
+      password_reset: Password Reset
       reset: Sıfırlama
+      password_reset_email_sent: An email has been sent to the user. It contains a link to reset the password.
       homepage: Ana sayfaya git
   group:
     tab:

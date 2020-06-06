@@ -34,19 +34,23 @@ pim_enrich:
       description: Den valda produktens attribut kommer att redigeras med följande uppgifter för det valda språket.
       empty: Välj de attribut(er) som du vill redigera
       success_flash: De jobb som uppdaterar produkt(er) status körs
+      launched_flash: The bulk action "edit attributes" has been launched. You will be notified when it is done.
       message:
         warning: Det finns inga gemensamma attribut för de valda produkterna. Vänligen ändra ditt val.
         invalid_attribute: Attribut med koden "attribute_code" är inte vanligt för de utvalda produkter, attribut hoppas över.
         no_valid_attribute: Ingen av valda attribut kan tillämpas på denna produkt.
     classify-add:
+      label: Add to categories
       description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen hålls.
       success_flash: Produkten har klassificerats i valda kategorier
       launched_flash: Massåtgärd "Lägg till kategorier" har inletts. Du meddelas när det är gjort.
     classify-move:
+      label: Move between categories
       description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen är förlorad.
       success_flash: Produkterna har flyttats till valda kategorier
       launched_flash: Massåtgärd "flytta till kategorier" har inletts. Du meddelas när det är klart.
     classify-remove:
+      label: Remove from categories
       description: Produkterna kommer att tas bort från följande kategorier.
       success_flash: Produkterna har tagits bort från de valda kategorierna
       launched_flash: Massåtgärd "ta bort från kategorier" har inletts. Du meddelas när det är klart.
@@ -62,6 +66,7 @@ pim_enrich:
       launched_flash: Massåtgärd "Lägg till grupper" har inletts. Du meddelas när det är gjort.
       no_group: Ingen grupp just nu. Börja med att skapa en grupp.
     set-attribute-requirements:
+      label: Set attributes requirements
       description: Följande attributkrav kommer att tillämpas på de valda familjerna
       success_flash: Attributkrav tillämpades på de valda familjerna
       launched_flash: Bulk åtgärder "ange attributet kraven" lanseras. Du kommer att meddelas när det är klart.
@@ -69,4 +74,9 @@ pim_enrich:
       quick_export:
         launched_flash: Kör jobbet exportera produkter
 category:
+  edit: Edit category
   overview: Kategorier
+tree:
+  edit: Edit tree
+  remove:
+    error_linked: This category tree cannot be deleted, it is linked to a channel

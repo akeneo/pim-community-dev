@@ -8,6 +8,7 @@ pim_connector:
       selector:
         modal:
           title: Selecție categorii
+        label: "{0}All products|{1}One selected category|]1,Inf[{{ count }} selected categories"
         title: Selectaţi categoriile
     locales:
       validation:
@@ -24,8 +25,26 @@ pim_import_export:
           success: Instanța de muncă a fost ştearsă
     import_profile:
       uppercase_label: Importă profil
+      flash:
+        create:
+          success: Import profile successfully created
+        upload:
+          error: Unable to upload the file. Its size may exceed the configured maximum upload size on your PHP or HTTP server configuration
+      page_title:
+        index: "]-Inf, 1] {{ count }} import profile|]1, Inf [{{ count }} import profiles"
+      module:
+        create:
+          button: Create import profile
     export_profile:
       uppercase_label: Exportă profil
+      flash:
+        create:
+          success: Export profile successfully created
+      page_title:
+        index: "]-Inf, 1] {{ count }} export profile|]1, Inf [{{ count }} export profiles"
+      module:
+        create:
+          button: Create export profile
   form:
     job_execution:
       title.details: Detalii de execuție
@@ -44,6 +63,9 @@ pim_import_export:
         header.start: Începe
         header.end: Termină
     job_instance:
+      fail:
+        launch: Failed to launch the job profile. Make sure it is valid and that you have right to launch it.
+        save: Failed to save the job profile. Make sure that you have right to edit it.
       button:
         export.title: Exportă acum
         import.launch: Importă acum
@@ -67,11 +89,15 @@ pim_import_export:
           file_path:
             title: Calea fișierului
             help: Unde să se scrie fișierul generat pe sistemul de fișier
+            help_import: The directory of the file to be used for the import
           delimiter:
             title: Delimitator
+            help: One character used to set the field delimiter
           enclosure:
             title: Împrejmuire
+            help: One character used to set the field enclosure
           with_header:
+            title: With header
             help: Imprimați sau nu numele coloanei
           with_media:
             title: Exportă fișierele și imaginile
@@ -85,6 +111,9 @@ pim_import_export:
           categories_column:
             title: Coloană de categorii
             help: Numele coloanei de categorii
+          escape:
+            title: Escape
+            help: One character used to set the field escape
           family_column:
             title: Coloană de familie
             help: Numele coloanei de familie
@@ -100,6 +129,8 @@ pim_import_export:
           real_time_versioning:
             title: Actualizarea istoria timpului real
             help: Înseamnă că istoria produsului este actualizată automat, poate fi oprită pentru a îmbunătăți performanțele
+          family_variant_column:
+            title: Family variant column
       file_path: Calea fișierului
   widget:
     last_operations:
@@ -112,10 +143,12 @@ pim_import_export:
         import: Importă
         export: Exportă
         mass_edit: Modificare în masă
+        mass_edit_rule: Rules Settings
         quick_export: Exportare rapidă
         compute_product_models_descendants: Computează descendenții modelelor de produs
         compute_family_variant_structure_changes: Calculează schimbarile structurii de variantă de familie
         compute_completeness_of_products_family: Calculează completitudinea familiei de produse
+        mass_delete: Mass delete products
       header.view_all: Vezi toate
   batch_status:
     1: Finalizat
@@ -149,8 +182,12 @@ pim_enrich:
           success: Profilul de export a fost şters
 pim_title:
   pim_importexport_export_profile_index: Exportă profilele de management
+  pim_importexport_export_profile_edit: Export profile {{ job.label }} | Edit
+  pim_importexport_export_profile_show: Export profile {{ job.label }} | Show
   pim_importexport_export_execution_index: Exportă istoricul executărilor
   pim_importexport_export_execution_show: Exportă executările | Detalii
   pim_importexport_import_profile_index: Importă profilele de management
+  pim_importexport_import_profile_edit: Import profile {{ job.label }} | Edit
+  pim_importexport_import_profile_show: Import profile {{ job.label }} | Show
   pim_importexport_import_execution_index: Importă istoricul executărilor
   pim_importexport_import_execution_show: Importă executările | Detalii

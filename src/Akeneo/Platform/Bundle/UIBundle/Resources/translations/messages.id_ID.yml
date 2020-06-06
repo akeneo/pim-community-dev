@@ -37,6 +37,7 @@ Most Viewed: Paling banyak dilihat
 "Yes": "Ya"
 "No": "Tidak"
 required: (diharuskan)
+The element could not be deleted: The element could not be deleted
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Memungkinkan pemuatan pesan
@@ -79,6 +80,7 @@ pim_enrich:
       associations_view: Lihat asosiasi dari sebuah produk
       associations_edit: Tambahkan asosiasi ke produk
       change_family: Mengganti produk keluarga
+      change_state: Change the status of a product
       add_to_groups: Tambahkan  produk ke kelompok
       mass_edit: Tindakan edit massal produk
       comment: mengomentari produk
@@ -200,6 +202,7 @@ flash:
     removed: Item telah dihapus
   attribute:
     identifier_not_removable: Identitas perlengkapan tidak dapat dihapus
+    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   category:
     removed: Kategori berhasil dihapus
   tree:
@@ -475,12 +478,18 @@ pim_mass_edit:
       error: Quick export <strong>%label%</strong> failed
       warning: Ekspor cepat <strong>%label%</strong> selesai dengan beberapa peringatan
       success: Ekspor cepat <strong>%label%</strong> selesai
+    mass_delete:
+      error: Mass delete <strong>%label%</strong> failed
+      warning: Mass delete <strong>%label%</strong> finished with some warnings
+      success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
   mass_edited: Massa diedit
   skip: Dilewati
   skipped_products: Produk dilewati
   skipped_attributes: Atribut dilewati
   skipped_families: Keluarga yang dilewati
+  deleted_products: Deleted products
+  deleted_product_models: Deleted product models
 pim_mass_edit_execution_show: Ubah eksekusi massal | Rincian
 edit_common_attributes.steps.edit_common_attributes_processor.title: Ubah perlengkapan
 update_product_value.steps.update_product_value_processor.title: Memperbarui nilai produk

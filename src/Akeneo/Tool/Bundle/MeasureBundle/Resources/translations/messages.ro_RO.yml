@@ -170,7 +170,10 @@ pim_measure:
     PSI: Libre pe inci pătrat
     TORR: Torrul
     MMHG: Milimetri de mercur
+    #Energy
+    CALORIE: calorie
     KILOCALORIE: Kilocalorii
+    JOULE: joule
     KILOJOULE: Kilojoule
     #CaseBox
     PIECE: Bucata
