@@ -82,8 +82,10 @@ pim_title:
   pimee_product_asset_mass_upload: Aktiver
   pimee_product_asset_index: Aktiver
   pimee_product_asset_edit: Aktiv {{ asset.label }} | Rediger
+  pimee_product_asset_view: Asset {{ asset.label }} | View
   pimee_asset_categorytree_index: Kategorier
   pimee_asset_categorytree_edit: Kategori {{ category.label }} | Rediger
+  pimee_asset_categorytree_create: Category | Create
 batch_jobs:
   apply_assets_mass_upload:
     label: Masse indlæs aktiver

@@ -13,6 +13,11 @@ pim_reference_entity:
         remove: Poista
         download: Lataa
         upload: Vedä ja pudota tuodaksesi
+  editor:
+    embedded:
+      invalid_link:
+        title: Suspicious embedded link
+        message: Sorry, we do not display this embed item but it will be correctly saved
   grid:
     counter: '{{ count }} tulos|{{ count }} tulosta'
   reference_entity:
@@ -42,6 +47,10 @@ pim_reference_entity:
       image: Kuva
     attribute:
       title: Tietueen attribuutit
+      attribute:
+        error:
+          render_list: 'An error occurred during the rendering of the "{{ %attribute_code% }}" attribute'
+          render_edit: 'An error occurred during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
     module:
       delete:
         button: Poista viitetieto
@@ -71,10 +80,13 @@ pim_reference_entity:
     notification:
       save:
         success: Viitetieto päivitetty onnistuneesti.
+        fail: An error occurred during the save of the reference entity
       create:
         success: Viitetieto luotu onnistuneesti.
+        fail: An error occurred during the creation of the reference entity
       delete:
         success: Viitetieto poistettu onnistuneesti.
+        fail: An error occurred during the deletion of the reference entity
   permission:
     notification:
       save:
@@ -90,6 +102,10 @@ pim_reference_entity:
       code:
         pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
         should_be_unique: 'Koodi on jo käytössä.'
+      text:
+        incompatible_with_regular_expression: 'Please enter a text that satisfies the regular expression: "{{ %regular_expression% }}"'
+        invalid_email: 'Please enter an email address: xxxxx@xx.xx'
+        invalid_url: 'Please enter a URL: http(s)://xxxx.XXX'
     no_data:
       title: Tietueita ei ole viitetiedolle {{ entityLabel }}
       subtitle: Valitse "luo uusi" lisätäksesi ensimmäisen tietueen
@@ -165,6 +181,7 @@ pim_reference_entity:
         complete: Valmis
         action: Toiminnot
       more_result:
+        title: That's not it!
         description: Selasit 500 ensimmäistä tietuetta {{ total }}:sta tietueesta. Nähdäksesi enemmän, yritä tarkentaa hakukriteereitä.
       completeness:
         title_no_required: Attribuuttia ei vaadita
@@ -177,13 +194,17 @@ pim_reference_entity:
     notification:
       save:
         success: Tietue päivitetty onnistuneesti.
+        fail: An error occurred during the save of the record
         validation_error: Tietuetta ei voitu päivittää
       create:
         success: Tietue luotu onnistuneesti.
+        fail: An error occurred during the creation of the record
       delete:
         success: Tietue ”{{ code }}” poistettu.
+        fail: An error occurred during the deletion of the record
       delete_all:
         success: Kaikki viitetiedon "{{ entityIdentifier }}" tietueet poistettu onnistuneesti.
+        fail: An error occurred during the deletion of all this reference entity's records
     completeness:
       label: Valmis
   attribute:
@@ -217,8 +238,11 @@ pim_reference_entity:
         code: Koodi (pakollinen)
         label: Nimike
         type: Attribuuttityyppi
+        record_type: Reference entity to link (required)
         value_per_locale: Lokalisoitavissa
         value_per_channel: Kanavakohtainen
+      placeholder:
+        record_type: Select your linked reference entity
       confirm: Tallenna
     edit:
       delete: Poista attribuutti
@@ -261,14 +285,19 @@ pim_reference_entity:
       message: Oletko varma, että haluat poistaa attribuutin "{{ attributeLabel }}"?
       title: Attribuutti
     notification:
+      list:
+        fail: An error occurred during the update of the attribute list
       save:
         success: Attribuutin päivittäminen onnistui.
+        fail: An error occurred during the save of the attribute
         validation_error: Attribuuttia ei voitu päivittää
       create:
         success: Attribuutin luominen onnistui.
+        fail: An error occurred during the creation of the attribute
         validation_error: Attribuuttia ei voitu luoda
       delete:
         success: Attribuutin poistaminen onnistui.
+        fail: An error occurred during the deletion of the attribute
     options:
       no_value: Klikkaa tästä tehdäksesi valinnan.
       sub_title: Viitetiedot
@@ -294,8 +323,14 @@ pim_enrich:
         reference_entity:
           identifier: Liittyvä viittaustieto (vaadittu)
           default_label: Valitse viittaustieto
+permission:
+  mass_action: Apply {{ rightLevel }} right on all groups
 #Analytics
 pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Axes on reference entities
+      hint: If you are using the reference entities, here are the axes to help you monitor your volume.
   axis:
     count_reference_entity: Viitetiedot
     average_max_records_per_reference_entity: Tietuetta viittaustietoa kohden

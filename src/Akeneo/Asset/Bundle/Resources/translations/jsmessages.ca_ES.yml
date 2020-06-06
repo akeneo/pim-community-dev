@@ -85,6 +85,7 @@ pim_title:
   pimee_product_asset_view: Recurs {{ asset.label }} | Vista
   pimee_asset_categorytree_index: Categories
   pimee_asset_categorytree_edit: Categoria {{ category.label }} | Editar
+  pimee_asset_categorytree_create: Category | Create
 batch_jobs:
   apply_assets_mass_upload:
     label: Carregar recursos en massa

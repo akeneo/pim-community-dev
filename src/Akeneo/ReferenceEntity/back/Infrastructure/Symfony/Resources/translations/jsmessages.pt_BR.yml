@@ -13,6 +13,13 @@ pim_reference_entity:
         remove: Remover
         download: Baixar
         upload: Arraste e solte para carregar
+  editor:
+    embedded:
+      invalid_link:
+        title: Suspicious embedded link
+        message: Sorry, we do not display this embed item but it will be correctly saved
+  grid:
+    counter: '{{ count }} result|{{ count }} results'
   reference_entity:
     validation:
       code:
@@ -40,6 +47,10 @@ pim_reference_entity:
       image: Imagem
     attribute:
       title: Atributos do registro
+      attribute:
+        error:
+          render_list: 'An error occurred during the rendering of the "{{ %attribute_code% }}" attribute'
+          render_edit: 'An error occurred during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
     module:
       delete:
         button: Apagar o entidade
@@ -69,10 +80,13 @@ pim_reference_entity:
     notification:
       save:
         success: Entidade de referência atualizada com sucesso.
+        fail: An error occurred during the save of the reference entity
       create:
         success: Entidade de referência criada com sucesso.
+        fail: An error occurred during the creation of the reference entity
       delete:
         success: Entidade de referência excluída com sucesso.
+        fail: An error occurred during the deletion of the reference entity
   permission:
     notification:
       save:
@@ -88,6 +102,10 @@ pim_reference_entity:
       code:
         pattern: 'Este campo só pode conter letras, números e sublinhados.'
         should_be_unique: 'Este código já existe para esta entidade.'
+      text:
+        incompatible_with_regular_expression: 'Please enter a text that satisfies the regular expression: "{{ %regular_expression% }}"'
+        invalid_email: 'Please enter an email address: xxxxx@xx.xx'
+        invalid_url: 'Please enter a URL: http(s)://xxxx.XXX'
     no_data:
       title: Não há registro para {{ entityLabel }}
       subtitle: Clique no botão "Adicionar novo" para criar o primeiro registro
@@ -105,12 +123,23 @@ pim_reference_entity:
       delete_all: Excluir todos os registros
       back: Voltar à lista
     product:
+      attribute: Product attribute
+      counter: '{{ totalCount }} result|{{ totalCount }} results'
+      dropdown:
+        attribute: Product attribute
       title: Produtos
       no_attribute:
         title: Não há nenhum atributo de produto vinculado à entidade de referência "{{ entityLabel }}"
         subtitle: "Para começar a vincular produtos a esta entidade de referência, você deve criar uma nova: "
         link: Criar um novo atributo de produto
+      not_enough_items:
+        title: It's a bit crowded around here, we show you {{ productCount }}/{{ totalCount }} products.
+        subtitle:
+          usable_in_grid: To discover all the products linked, just click below!
+          not_usable_in_grid: To discover all the products linked, the product attribute must be set as "usable in grid".
+        button: View all products
       no_product:
+        title: There are no products linked for the product attribute "{{ entityLabel }}"
         subtitle: "Comece a vincular produtos a este atributo para vê-los aqui"
     enrich:
       title: Atributos do registro
@@ -165,13 +194,17 @@ pim_reference_entity:
     notification:
       save:
         success: Registro atualizado com sucesso.
+        fail: An error occurred during the save of the record
         validation_error: O registro não pôde ser atualizado
       create:
         success: Registro criado com sucesso.
+        fail: An error occurred during the creation of the record
       delete:
         success: Registro "{{ code }}" excluído com sucesso.
+        fail: An error occurred during the deletion of the record
       delete_all:
         success: Todos os "{{ entityIdentifier }}" registros foram excluídos com sucesso.
+        fail: An error occurred during the deletion of all this reference entity's records
     completeness:
       label: Completo
   attribute:
@@ -188,6 +221,7 @@ pim_reference_entity:
       record_collection: Vínculos múltiplos da entidade de referência
       option: Opção única
       option_collection: Múltiplas opções
+      number: Number
     is_required: necessário para completar
     no_data:
       title: Não há atributos personalizados para {{ entityLabel }}
@@ -230,6 +264,8 @@ pim_reference_entity:
         allowed_extensions: Extensões permitidas
         validation_rule: Regra de validação
         regular_expression: Expressão Regular
+        min_value: Min value
+        max_value: Max value
         manage_options:
           confirmation:
             discard_changes: Você perderá as alterações feitas na lista de opções se você sair da página
@@ -244,18 +280,24 @@ pim_reference_entity:
             email: E-mail
             regular_expression: Expressão Regular
             url: URL
+        decimals_allowed: Decimal values allowed
     delete:
       message: Tem certeza que deseja excluir o atributo "{{ attributeLabel }}"?
       title: Atributo
     notification:
+      list:
+        fail: An error occurred during the update of the attribute list
       save:
         success: Atributo atualizado com sucesso.
+        fail: An error occurred during the save of the attribute
         validation_error: O atributo não pôde ser atualizado
       create:
         success: Atributo criado com sucesso.
+        fail: An error occurred during the creation of the attribute
         validation_error: O atributo não pôde ser criado
       delete:
         success: Atributo excluído com sucesso.
+        fail: An error occurred during the deletion of the attribute
     options:
       no_value: Clique aqui para selecionar uma opção.
       sub_title: Entidades de referência

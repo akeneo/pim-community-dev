@@ -14,6 +14,7 @@ akeneo_franklin_insights:
     data_provider:
       ask_franklin_down: "Beklager, noget gik galt. Prøv igen senere."
       authentication_error: "Beklager, ikke godkendt til Franklin Insights, din token er ugyldig. Indtast venligst en gyldig token eller kontakt os for hjælp."
+      bad_request_error: "Sorry, a problem occurred communicating with Franklin Insights. Please contact your administrator."
     identifier_mapping:
       plural_label: Identifikatorer
       flash:
@@ -49,8 +50,10 @@ akeneo_franklin_insights:
         create_attribute_success: '{0} Beklager, ingen af {{ requestCount }} attributterne blev oprettet. |{1} Attribut blev oprettet og tilknyttet familien "{{ family }}". |[2,Inf[ {{ successCount }} attributter ud af {{ requestCount }} blev oprettet og tilknyttet familien "{{ family }}".'
         create_attribute_error: 'Beklager, der opstod en fejl under oprettelsen eller tilknytning af attributten til familien.'
         suggest_attribute_mapping_error: 'Katalog-attribut "[{{ catalogAttributeCode }}]" er allerede kortlagt på Franklin-attribut "{{ franklinAttributeLabel }}".'
+        add_attribute_to_family_success: '{1} Attribute successfully attached to the family "{{ family }}". |[2,Inf[ Attributes successfully attached to the family "{{ family }}".'
         add_attribute_to_family_error: 'Beklager, der opstod en fejl under tilknytningen af attributten til familien.'
       fields:
+        search_bar.placeholder: 'Search on Franklin attribute'
         franklin_attribute: 'Franklin-attribut'
         franklin_attribute_type: '{{ type }}-attribut'
         franklin_value_sample: 'Værdieksempel:'
@@ -76,6 +79,7 @@ akeneo_franklin_insights:
           family_status:
             pending: 'Nye Franklin-attributter til gennemgang'
             full: 'Alle Franklin-attributter er kortlagt'
+          types_mismatch_warning: 'Warning : attributes types mismatch.'
           family_progress:
             title: 'Antal kortlagte attributter'
             description: "Brug denne bjælke til at se din arbejdsstatus"
@@ -112,6 +116,9 @@ akeneo_franklin_insights:
         duplicated_pim_attribute: "Kortlægningen kan ikke gemmes, da du har kortlagt adskillige Franklin-attributter til den samme PIM-attribut"
         attribute_not_in_family_not_allowed: 'PIM-attribut skal være i den valgte familie.'
         only_unknown_mapped_attributes: 'Der findes ingen attribut i attribut-kortlægningen'
+      search:
+        no_result_title: Sorry, there is no Franklin attribute for your search.
+        no_result_subtitle: Try again with new search criteria.
     product_subscription:
       flash:
         create:
@@ -148,6 +155,7 @@ akeneo_franklin_insights:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} attribut-options'
           sub_title: 'Mød Franklin, din <span class="AknDescriptionHeader-title--highlight">Produktinformation AI-assistent</span>!'
+          description: 'In order to help enrich your catalog, Franklin will need to know your catalog attribute options that match his. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">Read more</a>'
   product:
     edit:
       btn.push: Foreslå data

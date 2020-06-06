@@ -20,6 +20,10 @@ pim_reference_entity:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
         should_be_unique: 'El código de registro ya existe para la entidad de referencia "%reference_entity_identifier%" y el código de registro "%code%"'
         should_exist: 'No se encontró el registro'
+      text:
+        incompatible_with_regular_expression: 'Please enter a text that satisfies the regular expression: "%regular_expression%"'
+        invalid_email: 'Please enter an email address: xxxxx@xx.xx'
+        invalid_url: 'Please enter a URL: http(s)://xxxx.XXX'
       file:
         extension_not_allowed: 'Los archivos "%file_extension%" no están permitidos para este atributo. Las extensiones permitidas son: %allowed_file_extensions%'
         file_size_exceeded: 'El archivo excede el tamaño máximo del archivo establecido para el atributo.'
@@ -43,6 +47,7 @@ pim_reference_entity:
         is_not_activated: 'El local "%locale_identifier%" no está activado.'
         is_not_activated_for_channel: 'El local "%locale_identifier%" no está activado para el canal "%channel_identifier%".'
       number:
+        should_be_string: 'This field should be a string'
         should_be_integer: 'Este campo debe ser un entero'
         integer_too_long: 'Este entero es demasiado grande'
         should_be_numeric: 'Este campo debe ser un valor numérico con el separador decimal correcto'
@@ -81,3 +86,13 @@ pim_reference_entity:
       record_type:
         is_required: 'Necesita especificar el tipo de entidad de referencia para crear un atributo de enlace de Entidad de Referencia'
         reference_entity_should_exist: 'No se encontró la entidad de referencia "%reference_entity_code%".'
+      prefix:
+        should_not_be_empty: 'The prefix cannot be an empty string.'
+      suffix:
+        should_not_be_empty: 'The suffix cannot be an empty string.'
+      media_type:
+        not_expected: 'The media type given is not corresponding to the expected ones (%supported_media_types%).'
+  product_value:
+    validation:
+      record_should_exist: 'Property "%attribute_code%" expects a valid record code. The record "%invalid_record%" does not exist'
+      records_should_exist: 'Property "%attribute_code%" expects valid record codes. The following records do not exist: "%invalid_records%"'

@@ -3,9 +3,18 @@ pim_menu:
     franklin: Intuições do Franklin
 akeneo_franklin_insights:
   entity:
+    franklin_attribute:
+      type:
+        boolean: Boolean
+        metric: Metric
+        multiselect: 'Multi select'
+        number: Number
+        select: Select
+        text: Text
     data_provider:
       ask_franklin_down: "Desculpe, algo deu errado. Por favor, tente novamente mais tarde."
       authentication_error: "Desculpe, falha ao autenticar às Intuições do Franklin, seu token é inválido. Por favor, insira um token válido ou entre em contato conosco para ajuda."
+      bad_request_error: "Sorry, a problem occurred communicating with Franklin Insights. Please contact your administrator."
     identifier_mapping:
       plural_label: Identificadores
       flash:
@@ -36,22 +45,66 @@ akeneo_franklin_insights:
         locale_specific_not_allowed: "Atributos específico por localidade não são permitidos como identificador"
     attributes_mapping:
       label: Mapeamento de atributos
+      flash:
+        do_not_map_attribute_success: 'Attribute successfully updated.'
+        create_attribute_success: '{0} Sorry, none of the {{ requestCount }} attributes have been created. |{1} Attribute successfully created and attached to the family "{{ family }}". |[2,Inf[ {{ successCount }} attributes out of {{ requestCount }} have been successfully created and attached to the family "{{ family }}".'
+        create_attribute_error: 'Sorry, an error occurred while creating or attaching the attribute to the family.'
+        suggest_attribute_mapping_error: 'Catalog attribute "[{{ catalogAttributeCode }}]" is already mapped on the Franklin attribute "{{ franklinAttributeLabel }}".'
+        add_attribute_to_family_success: '{1} Attribute successfully attached to the family "{{ family }}". |[2,Inf[ Attributes successfully attached to the family "{{ family }}".'
+        add_attribute_to_family_error: 'Sorry, an error occurred while attaching the attribute to the family.'
       fields:
+        search_bar.placeholder: 'Search on Franklin attribute'
         franklin_attribute: 'Atributo do Franklin'
+        franklin_attribute_type: '{{ type }} attribute'
+        franklin_value_sample: 'Value sample:'
         franklin_insights:
           label: Status de atributo do Franklin
           pending: Pendente
           active: Ativo
           inactive: Inativo
+        create_attribute:
+          btn: Create attribute
+        add_attribute_to_family:
+          btn: Add to family
+        secondary_actions:
+          deactivate_franklin_attribute: "Don't map"
       module:
         subscribe:
           subscribe: 'Inscrever família no Franklin'
           subscribed: 'Inscrito no Franklin'
         index:
+          family_selector:
+            title: 'Choose a family to map'
           error: "Você precisa criar uma família em seu catálogo para acessar esta página."
           family_status:
             pending: 'Novos atributos do Franklin para revisar'
             full: 'Todos os atributos do Franklin foram mapeados'
+          types_mismatch_warning: 'Warning : attributes types mismatch.'
+          family_progress:
+            title: 'Number of mapped attributes'
+            description: "Use this bar to see at a glance your work status"
+            mapped_attribute_count: '{{ count }} mapped attributes'
+        toolbar:
+          bulk_create_attribute: Create attribute
+          bulk_add_to_family: Add to family
+          selection_count: '{{ count }} item selected | {{ count }} items selected'
+      modal:
+        deactivate_franklin_attribute:
+          title: "Are you sure you don't want to map this attribute?"
+          subtitle: 'Franklin Insights'
+          ok: "Don't map"
+        bulk_create_attribute:
+          title: '{1} Create 1 attribute |[2,Inf[ Create {{ count }} attributes'
+          subtitle: 'Franklin Insights'
+          description: '{1} The selected attribute will be created and added to the family |[2,Inf[ The selected attributes will be created and added to the family'
+          warning: '{1} Please confirm the creation of a new attribute. |[2,Inf[ Please confirm the creation of {{ count }} new attributes.'
+          ok: Confirm
+        bulk_add_to_family:
+          title: '{1} Add 1 attribute to the family |[2,Inf[ Add {{ count }} attributes to the family'
+          subtitle: 'Franklin Insights'
+          description: '{1} The selected attribute will be added to the family |[2,Inf[ The selected attributes will be added to the family'
+          warning: '{1} Please confirm the addition of a new attribute to the family. |[2,Inf[ Please confirm the addition of {{ count }} new attributes to the family.'
+          ok: Confirm
       constraint:
         missing_target_key: 'Faltando a chave destino para mapeamento'
         missing_attribute_key: 'A chave {{ expectedKey }} está faltando para mapear com a chave de destino "{{ targetKey }}"'
@@ -63,6 +116,9 @@ akeneo_franklin_insights:
         duplicated_pim_attribute: "O mapeamento não pode ser salvo, pois você mapeou vários atributos do Franklin para o mesmo atributo PIM"
         attribute_not_in_family_not_allowed: 'O atributo do PIM tem que estar na família selecionada.'
         only_unknown_mapped_attributes: 'Nenhum atributo no mapeamento de atributos pode ser encontrado'
+      search:
+        no_result_title: Sorry, there is no Franklin attribute for your search.
+        no_result_subtitle: Try again with new search criteria.
     product_subscription:
       flash:
         create:
@@ -81,6 +137,7 @@ akeneo_franklin_insights:
         already_subscribed_product: 'O produto já está inscrito.'
         variant_product: 'As variantes de produtos não podem ser inscritas nas Intuições do Franklin.'
         inactive_connection: 'Não foi possível inscrever o produto nas Intuições do Franklin. Por favor, configure sua conexão com as Intuições do Franklin.'
+        product_subscription_with_same_identifier_already_exist: 'Another product with at least one identical identifier has already been subscribed.'
       module:
         product_edit_form:
           family_required: 'A família de produtos é obrigatória.'
@@ -98,6 +155,7 @@ akeneo_franklin_insights:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opções de atributo'
           sub_title: 'Conheça o Franklin, seu <span class="AknDescriptionHeader-title--highlight">assistente de informações de produtos com inteligência artificial</span>!'
+          description: 'In order to help enrich your catalog, Franklin will need to know your catalog attribute options that match his. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">Read more</a>'
   product:
     edit:
       btn.push: Sugerir dados
@@ -107,6 +165,7 @@ akeneo_franklin_insights:
     flash:
       success: Código de ativação das Intuições do Franklin foi salvo com sucesso.
       invalid: O código de ativação é inválido. Por favor, tente novamente com um código válido.
+      error: Sorry, an error occurred.
     module:
       title:
         sub_title: 'Bem-vindo ao <span class="AknDescriptionHeader-title--highlight">assistente de informações de produtos com inteligência artificial</span>!'
@@ -150,6 +209,17 @@ akeneo_franklin_insights:
           constraint:
             franklin_activation: "Por favor, <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">ative</a> as Intuições do Franklin antes de inscrever os produtos."
             invalid_mapping: "Por favor, mapeie os identificadores do produto em Configurações > Intuições do Franklin antes de inscrever os produtos."
+  key_figures:
+    menu: Franklin key figures
+    section_title:
+      credits: Franklin credits
+      key_figures: Franklin key figures
+    axis:
+      franklin_attribute_created: Number of attributes created by Franklin
+      franklin_attribute_added_to_family: Number of attributes added to a family by Franklin
+      credits_total: Credits total
+      credits_consumed: Credits consummed
+      credits_left: Credits left
 batch_jobs:
   default_steps:
     fetch_products: Obter dados do produto
@@ -180,6 +250,7 @@ pim_title:
   akeneo_franklin_insights_mapping_index: Mapeamento das Intuições do Franklin
   akeneo_franklin_insights_identifiers_mapping_edit: Editar o mapeamento de identificadores das Intuições do Franklin
   akeneo_franklin_insights_attributes_mapping_edit: Editar o mapeamento de atributos das Intuições do Franklin
+  akeneo_franklin_insights_key_figure_index: Franklin Insights Key Figures
 pim_notification:
   types:
     franklin_insights: Intuições do Franklin

@@ -3,6 +3,7 @@ teamwork_assistant:
     required: Denne værdi må ikke være tom.
     label_maxlength: Denne værdi er for lang. Det skal have {{ max }} tegn eller mindre.
     project_identifier: Projekt {{ project }} findes ikke.
+    project_locale: The locale {{ locale }} is not supported by the channel {{ channel }}.
     project_due_date: Du kan ikke vælge en dato i fortiden.
   notification:
     project_calculation:
@@ -27,6 +28,10 @@ teamwork_assistant:
     owner_todo: Todo (projektoversigt)
     owner_in_progress: Igangværende (projektoversigt)
     owner_done: Gennemført (Projekt oversigt)
+  user:
+    deletion:
+      user_linked_to_project: This user is still linked to one or more project(s). Please remove the groups he is linked to in his user account.
+      user_is_project_owner: This user is still owner of one or more projects. Please delete all this user's projects.
 job_execution:
   summary:
     processed_products: bearbejdede produkter

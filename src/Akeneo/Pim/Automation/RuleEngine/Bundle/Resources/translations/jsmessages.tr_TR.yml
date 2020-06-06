@@ -1,4 +1,5 @@
 pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} rule|]1, Inf[{{ count }} rules"
   execution_button: Kuralları gerçekleştir
   selected: 'kurallar seçildi'
   popin:
@@ -39,11 +40,13 @@ pimee_catalog_rule:
           confirm_title: Yürütmeyi onayla
           confirm_content: Seçili kuralları uygulamak istediğinizden emin misiniz?
           success: Seçilen kuralları yürütmek için toplu işlem başlatıldı. İşlem bitince size haber verilecektir
+          error: An error occurred during the execution of the rules.
           empty_selection: Seçili kural yok.
         delete:
           confirm_title: Yürütmeyi onayla
           confirm_content: Seçilen kuralları silmek istediğinize emin misiniz?
           success: Kurallar başarı ile silindi.
+          error: An error occurred during the deletion of the rules.
           empty_selection: Hiç bir kural seçilmedi.
   form:
     attribute:
@@ -84,12 +87,17 @@ batch_jobs:
   csv_product_import_with_rules:
     label: Kurallar dahilinde CVS'de ürünü içe aktarma
     import.label: Ürünleri içe aktar
+  csv_product_model_import_with_rules:
+    label: Product model import in CSV with rules
   xlsx_product_import_with_rules:
     label: Kurallar dahilinde XLSX'de ürünü içe aktarma
     import.label: Ürünleri içe aktar
+  xlsx_product_model_import_with_rules:
+    label: Product model import in XLSX with rules
 pim_notification:
   types:
     rule: Kural Ayarları
+    mass_edit_rule: Mass edit rule
 pim_menu:
   item:
     rule: Kurallar

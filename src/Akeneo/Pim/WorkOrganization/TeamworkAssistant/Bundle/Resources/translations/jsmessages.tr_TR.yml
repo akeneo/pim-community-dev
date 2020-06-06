@@ -25,6 +25,7 @@ teamwork_assistant:
     title: Projeyi düzenle
   create_project_modal:
     saved: Bu proje kaydedildi, hesaplamalar tamamlandığında size bildirilecek.
+    title: Project
   widget:
     no_project: Geçerli bir projeniz yok
     no_project_create: yeni proje oluştur
@@ -34,6 +35,7 @@ teamwork_assistant:
     in_progress: DEVAM ETMEKTE
     done: TAMAM
     all_contributors: Tüm katkıda bulunanlar
+    you: You
     display_products: Görüntü ürünleri
     placeholder:
       contributor_selector: Katkıda bulunanları aramak

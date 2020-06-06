@@ -3,6 +3,7 @@ teamwork_assistant:
     required: Este valor no debe estar vacío.
     label_maxlength: Este valor es demasiado largo. Debe tener {{ max }} caracteres o menos.
     project_identifier: El proyecto {{ project }} no existe.
+    project_locale: The locale {{ locale }} is not supported by the channel {{ channel }}.
     project_due_date: No puede seleccionar una fecha en el pasado.
   notification:
     project_calculation:
@@ -27,6 +28,10 @@ teamwork_assistant:
     owner_todo: Pendientes (resumen del proyecto)
     owner_in_progress: En progreso (resumen del proyecto)
     owner_done: Hecho (resumen del proyecto)
+  user:
+    deletion:
+      user_linked_to_project: This user is still linked to one or more project(s). Please remove the groups he is linked to in his user account.
+      user_is_project_owner: This user is still owner of one or more projects. Please delete all this user's projects.
 job_execution:
   summary:
     processed_products: Productos procesados

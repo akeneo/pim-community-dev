@@ -13,6 +13,11 @@ pim_reference_entity:
         remove: Eliminar
         download: Baixar
         upload: Arrossegar i deixar anar per carregar
+  editor:
+    embedded:
+      invalid_link:
+        title: Suspicious embedded link
+        message: Sorry, we do not display this embed item but it will be correctly saved
   grid:
     counter: '{{ count }} resultat|{{ count }} resultats'
   reference_entity:
@@ -97,6 +102,10 @@ pim_reference_entity:
       code:
         pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
         should_be_unique: 'Aquest codi ja existeix per a aquesta entitat.'
+      text:
+        incompatible_with_regular_expression: 'Please enter a text that satisfies the regular expression: "{{ %regular_expression% }}"'
+        invalid_email: 'Please enter an email address: xxxxx@xx.xx'
+        invalid_url: 'Please enter a URL: http(s)://xxxx.XXX'
     no_data:
       title: No hi ha cap registre per {{ entityLabel }}
       subtitle: Feu clic al botó "Afegir nou" per crear el primer registre
@@ -124,6 +133,7 @@ pim_reference_entity:
         subtitle: "Per comença a vincular productes a aquesta entitat de referència, pot crear una nova: "
         link: Crear un nou atribut de producte
       not_enough_items:
+        title: It's a bit crowded around here, we show you {{ productCount }}/{{ totalCount }} products.
         subtitle:
           usable_in_grid: Per descobrir tots els productes enllaçats, feu clic a sota!
           not_usable_in_grid: Per descobrir tots els productes enllaçats, l'atribut del producte té que ser configurat com "utilitzable a la grilla".

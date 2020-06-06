@@ -46,3 +46,7 @@ batch_jobs:
     label: Özellikleri izin kontrolü ve kurallar uygulamasıyla düzenleyin
     perform.label: Özellikleri düzenle
     cleaner.label: Geçici dosyaları temizle
+  default_steps:
+    send_for_approval: Send for approval
+pim_title:
+  pimee_enrich_locale_edit: Locale | Edit
