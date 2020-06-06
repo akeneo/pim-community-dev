@@ -1,6 +1,7 @@
 An identifier attribute already exists.: Det finnes allerede et ID-attributt.
 Attribute code may contain only letters, numbers and underscore: Attributtet kode kan inneholde bare bokstaver, tall og understrekingstegn
 Attribute code may contain only letters (at least one), numbers and underscores: Attributtet kode kan inneholde bare bokstaver (minst en), tall og understrekingstegn
+Attribute code may not contain line-feed characters: Attribute code may not contain line-feed characters
 This attribute type can't be used as a grid filter: Denne attributtypen kan ikke brukes som et rutenett filter
 This code is not available: Denne koden er ikke tilgjengelig
 This attribute type must be required: Denne attributtypen må være påbudt

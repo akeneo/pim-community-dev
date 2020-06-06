@@ -67,6 +67,7 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: Attributtvalg opprettet
+      fail: An error occurred when trying to create the attribute option
     update:
       fail: Kan ikke lagre attributtet alternativet
     delete:
