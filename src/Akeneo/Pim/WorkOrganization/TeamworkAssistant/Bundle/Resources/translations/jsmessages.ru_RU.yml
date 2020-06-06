@@ -25,6 +25,7 @@ teamwork_assistant:
     title: Редактировать проект
   create_project_modal:
     saved: Проект был сохранен, и вы будете уведомлены, когда расчет будет завершен.
+    title: Project
   widget:
     no_project: У вас нет текущего проекта
     no_project_create: создать новый проект
@@ -34,6 +35,7 @@ teamwork_assistant:
     in_progress: ВЫПОЛНЯЕТСЯ
     done: ГОТОВО
     all_contributors: Все участники
+    you: You
     display_products: Показать продукты
     placeholder:
       contributor_selector: Поиск участника

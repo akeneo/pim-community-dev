@@ -7,8 +7,10 @@ Refuse selected: Отклонить выбраннoе
 pim_datagrid:
   no_entities:
     proposal: Нет никаких предложений для рассмотрения.
+    product_draft: There is no product draft to review.
   no_results:
     proposal: Нет никаких предложений для рассмотрения. Попробуйте изменить критерии поиска.
+    product_draft: There is no product draft to review. Try to change your search criteria.
 pimee_datagrid:
   cells:
     expand:
@@ -22,6 +24,7 @@ pimee_workflow:
     proposal:
       modal.title: Оставить комментарий (255 символов макс.)
   proposal:
+    overview: "]-Inf, 1]{{ count }} proposal|]1, Inf[{{ count }} proposals"
     selected: предложения выбраны
     mass_action_group:
       review:
@@ -29,16 +32,19 @@ pimee_workflow:
     partial_accept:
       modal.title: Частичнo oдобрить информацию
       modal.label: Оставить комментарий (необязательно)
+      modal.error: An error occurred, the proposal has not been partially approved
       modal.success: Это предложение было успешно частично одобренo
     partial_approve:
       modal:
         title: Частично утвердить изменения
         label: Оставить комментарий (необязательно)
+        error: An error occurred, the proposal has not been partially approved
         success: Изменения были успешно утверждены
     partial_reject:
       modal:
         title: Частично отклонить изменения
         label: Оставить комментарий (необязательно)
+        error: An error occurred, the proposal has not been partially rejected
         success: Изменения были успешно отклонены
 batch_jobs:
   csv_published_product_export:
@@ -47,6 +53,9 @@ batch_jobs:
   csv_product_proposal_import:
     label: Импорт предложений из CSV
     import.label: Импорт предложений
+  csv_product_model_proposal_import:
+    label: Product model proposal import in CSV
+    import.label: Product model proposal import in CSV
   approve_product_draft:
     label: Принять предложение
     perform.label: Принять предложение
@@ -59,6 +68,9 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Импорт предложений из XLSX
     import.label: Импорт предложений из XLSX
+  xlsx_product_model_proposal_import:
+    label: Product model proposal import in XLSX
+    import.label: Product model proposal import in XLSX
   csv_published_product_quick_export:
     export.label: Быстрый экспорт опубликованных товаров в CSV
     perform.label: Быстрый экспорт опубликованных товаров в CSV
@@ -83,6 +95,7 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Предложение одобрено
     pimee_workflow_product_draft_notification_refuse: Предложение отклонено
     pimee_workflow_product_draft_notification_remove: Предложение удаленo
+    pimee_workflow_product_draft_notification_sent: Proposals sent
 pimee_dashboard:
   widget:
     product_drafts:
@@ -97,6 +110,9 @@ pimee_enrich.entity.product:
     history:
       published: Опубликован
       revert: Восстановить
+    attribute:
+      can_be_updated_by_a_rule: "This attribute can be updated by a rule: {{ rule }}"
+      value_updated: This value is updated by the current draft
     meta:
       published_version: Опубликованная версия
       owner_groups: Владельцы группы
@@ -121,6 +137,8 @@ pimee_enrich.entity.product:
     approval:
       send: Отправить на утверждение
       sent: Отправить на утверждение
+      send_and_next: Send and next
+      send_and_finish: Send and finish
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -131,6 +149,8 @@ pimee_enrich.entity.published_product:
       fail: Не удалось снять с публикации этот продукт
     revert:
       success: Продукт успешно восстановлен
+  page_title:
+    index: "]-Inf, 1]{{ count }} published product|]1, Inf[{{ count }} published products"
   module:
     publish:
       label: Опубликовать
@@ -152,6 +172,7 @@ pimee_enrich.entity.product_draft:
     create:
       success: Черновик продукта отправлен на утверждение
       fail: Невозможно отправить черновик на утверждение
+      skip: Product draft hasn't been sent for approval as no value has been edited
   module:
     proposal:
       accept: Принять предложение
@@ -169,12 +190,18 @@ pimee_enrich.mass_edit.product:
   operation:
     publish:
       label: Опубликовать
+      label_count: "{1}Publish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: Продукты будут опубликованы
       warning: '{{ itemsCount }} выбранных продуктов будут опубликованы.'
     unpublish:
       label: Отменить публикацию
+      label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: Продукты будут сняты с публикации
       warning: Выбранные продукты {{ itemsCount }} будет сняты с публикации.
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: Cannot delete a category linked to a published product.
 pim_menu:
   navigation:
     published_products: Опубликованные товары

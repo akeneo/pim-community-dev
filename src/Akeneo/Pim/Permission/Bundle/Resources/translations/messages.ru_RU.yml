@@ -37,6 +37,10 @@ category.permissions:
   apply_on_children.label: Применить изменения на дочерние элементы
   apply_on_children.help: Копирование изменений прав доступа на все дочерние элементы, при этом существующие права на дочерние элементы сохраняются
 locale.permissions:
+  view.label: Allowed to view information
+  view.help: Allow to view the information in this locale
+  edit.label: Allowed to edit information
+  edit.help: Allow to edit the information in this locale (implies the view permission)
   no_access_to_products: Вы не имеете прав доступа к данным продукта ни в одной локали. Пожалуйста, обратитесь к вашему администратору
 flash.locale.updated: Локаль и права доступа были обновлены
 pim_enrich:
