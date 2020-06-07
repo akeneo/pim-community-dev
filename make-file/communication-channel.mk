@@ -52,10 +52,10 @@
 # Make sure the tests run by the targets defined here does not run by the main targets too
 #
 
-_COMMUNICATION_CHANNEL_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Platform/Bundle/CommunicationChannelBundle/Resources/workspaces/communication-channel/
+_COMMUNICATION_CHANNEL_YARN_RUN = $(YARN_RUN) run --cwd=node_modules/@akeneo-pim-community/communication-channel
 
 # Generate Models
 
 communication-channel-generate-models:
-	$(_COMMUNICATION_CHANNEL_YARN_RUN) generate-models-ce
+	$(_COMMUNICATION_CHANNEL_YARN_RUN) generate-models
 

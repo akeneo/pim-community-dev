@@ -4,13 +4,8 @@
   "private": true,
   "main": "src/index.ts",
   "config": {
-    "generate_models": {
-      "ce": "./../../../../../../../../frontend/build/json-schema-to-typescript.js",
-      "ee": "./../../../../../../../../vendor/akeneo/pim-community-dev/frontend/build/json-schema-to-typescript.js"
-    }
+    "generate_models_script": "./../../../../../../../../frontend/build/json-schema-to-typescript.js"
   },
   "scripts": {
-    "generate-models-ce": "node $npm_package_config_generate_models_ce src/definitions/ src/models/",
-    "generate-models-ee": "node $npm_package_config_generate_models_ee src/definitions/ src/models/"
-  }
+    "generate-models": "node $npm_package_config_generate_models_script src/definitions/ src/models/"  }
 }
