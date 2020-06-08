@@ -78,7 +78,7 @@ class DBDataCollectorSpec extends ObjectBehavior
         $productValueAverageMaxQuery,
         $productValuePerFamilyAverageMaxQuery,
         $emailDomains,
-        $apiConnectionCount
+        ApiConnectionCount $apiConnectionCount
     ) {
         $channelCountQuery->fetch()->willReturn(new CountVolume(3, -1, 'count_channels'));
         $productCountQuery->fetch()->willReturn(new CountVolume(1121, -1, 'count_products'));
@@ -97,9 +97,9 @@ class DBDataCollectorSpec extends ObjectBehavior
         $productValuePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(12,10, -1, 'average_max_product_values_per_family'));
         $emailDomains->fetch()->willReturn('example.com,other-example.com');
         $apiConnectionCount->fetch()->willReturn([
-            FlowType::DATA_SOURCE => ['tracked' => 0, 'untracked' => 0],
-            FlowType::DATA_DESTINATION => ['tracked' => 0, 'untracked' => 0],
-            FlowType::OTHER => ['tracked' => 0, 'untracked' => 0],
+            'data_source' => ['tracked' => 0, 'untracked' => 0],
+            'data_destination' => ['tracked' => 0, 'untracked' => 0],
+            'other' => ['tracked' => 0, 'untracked' => 0],
         ]);
 
         $this->collect()->shouldReturn(

@@ -38,9 +38,9 @@ class ApiConnectionCountIntegration extends TestCase
         $result = $this->apiConnectionCountQuery->fetch();
 
         $expectedResult = [
-            FlowType::DATA_SOURCE => ['tracked' => 2, 'untracked' => 0],
-            FlowType::DATA_DESTINATION => ['tracked' => 1, 'untracked' => 2],
-            FlowType::OTHER => ['tracked' => 0, 'untracked' => 1],
+            'data_source' => ['tracked' => 2, 'untracked' => 0],
+            'data_destination' => ['tracked' => 1, 'untracked' => 2],
+            'other' => ['tracked' => 0, 'untracked' => 1],
         ];
 
         Assert::assertEquals($expectedResult, $result);
