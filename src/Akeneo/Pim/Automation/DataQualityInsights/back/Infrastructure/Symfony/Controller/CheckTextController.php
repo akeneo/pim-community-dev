@@ -37,8 +37,12 @@ class CheckTextController
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(FeatureFlag $featureFlag, TextChecker $textChecker, SupportedLocaleValidator $supportedLocaleValidator, LoggerInterface $logger)
-    {
+    public function __construct(
+        FeatureFlag $featureFlag,
+        TextChecker $textChecker,
+        SupportedLocaleValidator $supportedLocaleValidator,
+        LoggerInterface $logger
+    ) {
         $this->featureFlag = $featureFlag;
         $this->textChecker = $textChecker;
         $this->supportedLocaleValidator = $supportedLocaleValidator;
@@ -61,12 +65,12 @@ class CheckTextController
 
         try {
             $this->logger->info('spelling evaluation', [
-            'source' => 'pef',
-            'value' => $text,
-            'localeCode' => strval($localeCode)
-        ]);
+                'source' => 'pef',
+                'value' => $text,
+                'localeCode' => strval($localeCode),
+            ]);
 
-        $analysis = $this->textChecker->check($text, $localeCode);
+            $analysis = $this->textChecker->check($text, $localeCode);
         } catch (TextCheckFailedException $e) {
             return new Response(null, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
