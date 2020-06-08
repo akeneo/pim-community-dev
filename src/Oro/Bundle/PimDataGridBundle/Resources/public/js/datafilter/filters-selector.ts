@@ -185,6 +185,12 @@ class FiltersSelector extends BaseView {
     const currentState: FilterState = this.datagridCollection.state.filters;
     const updatedState: FilterState = Object.assign(this.getState(), categoryFilter);
 
+    // currentState === [] means there is no defined filter during the user session (backend api), fallback on the default init one
+    if (Array.isArray(currentState)) {
+      this.datagridCollection.state.filters = updatedState;
+      return;
+    }
+
     const stateHasChanged = !_.isEqual(currentState, updatedState);
     const currentStateIsEmpty = _.isEmpty(currentState);
     const shouldReloadState = (stateHasChanged || currentStateIsEmpty) && false === this.silent;
