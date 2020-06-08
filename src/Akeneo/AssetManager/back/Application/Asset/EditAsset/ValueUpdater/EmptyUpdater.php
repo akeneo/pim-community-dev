@@ -118,7 +118,6 @@ class EmptyUpdater implements ValueUpdaterInterface
         ChannelReference $channelReference,
         LocaleReference $localeReference
     ): array {
-
         return $this->getTransformationsSource->forAttribute(
             $attribute,
             $channelReference,

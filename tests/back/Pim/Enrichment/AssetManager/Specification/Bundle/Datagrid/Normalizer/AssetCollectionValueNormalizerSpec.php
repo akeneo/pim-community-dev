@@ -20,7 +20,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetDetails;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetDetailsInterface;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Query\GetAssetInformationQueryInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -31,7 +30,6 @@ class AssetCollectionValueNormalizerSpec extends ObjectBehavior
 {
     public function let(
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        GetAssetInformationQueryInterface $getAssetInformationQuery,
         FindAssetDetailsInterface $findAssetDetailsQuery,
         AssetCollectionValueInterface $assetCollectionValue,
         AssetCode $assetCode
@@ -41,7 +39,7 @@ class AssetCollectionValueNormalizerSpec extends ObjectBehavior
         $assetCollectionValue->getLocaleCode()->willReturn('fr_FR');
         $assetCollectionValue->getScopeCode()->willReturn('mobile');
 
-        $this->beConstructedWith($attributeRepository, $getAssetInformationQuery, $findAssetDetailsQuery);
+        $this->beConstructedWith($attributeRepository, $findAssetDetailsQuery);
     }
 
     function it_normalize_only_datagrid_asset_collection_value(AssetCollectionValueInterface $assetCollectionValue)
@@ -75,8 +73,7 @@ class AssetCollectionValueNormalizerSpec extends ObjectBehavior
 
     function it_returns_empty_data_when_attribute_is_not_found(
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        AssetCollectionValueInterface $assetCollectionValue,
-        AssetCode $assetCode
+        AssetCollectionValueInterface $assetCollectionValue
     ) {
         $assetCollectionValue->getAttributeCode()->willReturn('unknown');
 
@@ -124,6 +121,8 @@ class AssetCollectionValueNormalizerSpec extends ObjectBehavior
             AttributeIdentifier::fromString('reference_atmosphere_249bf90c-0176-4895-9eed-486fce0fbbe4'),
             AssetCode::fromString('index'),
             LabelCollection::fromArray([]),
+            new \DateTimeImmutable(),
+            new \DateTimeImmutable(),
             [],
             [],
             false
@@ -157,6 +156,8 @@ class AssetCollectionValueNormalizerSpec extends ObjectBehavior
             AttributeIdentifier::fromString('reference_atmosphere_249bf90c-0176-4895-9eed-486fce0fbbe4'),
             AssetCode::fromString('index'),
             LabelCollection::fromArray([]),
+            new \DateTimeImmutable(),
+            new \DateTimeImmutable(),
             $images,
             [],
             false
@@ -191,6 +192,8 @@ class AssetCollectionValueNormalizerSpec extends ObjectBehavior
             AttributeIdentifier::fromString('reference_atmosphere_249bf90c-0176-4895-9eed-486fce0fbbe4'),
             AssetCode::fromString('index'),
             LabelCollection::fromArray([]),
+            new \DateTimeImmutable(),
+            new \DateTimeImmutable(),
             $images,
             [],
             false
@@ -225,6 +228,8 @@ class AssetCollectionValueNormalizerSpec extends ObjectBehavior
             AttributeIdentifier::fromString('reference_atmosphere_249bf90c-0176-4895-9eed-486fce0fbbe4'),
             AssetCode::fromString('index'),
             LabelCollection::fromArray([]),
+            new \DateTimeImmutable(),
+            new \DateTimeImmutable(),
             $images,
             [],
             false
@@ -259,6 +264,8 @@ class AssetCollectionValueNormalizerSpec extends ObjectBehavior
             AttributeIdentifier::fromString('reference_atmosphere_249bf90c-0176-4895-9eed-486fce0fbbe4'),
             AssetCode::fromString('index'),
             LabelCollection::fromArray([]),
+            new \DateTimeImmutable(),
+            new \DateTimeImmutable(),
             $images,
             [],
             false
