@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9282: Make calling attribute options via API case insensitive
+
 # 3.2.58 (2020-06-01)
 
 # 3.2.57 (2020-05-28)
