@@ -116,16 +116,14 @@ const RuleProductSelection: React.FC<Props> = ({
     createCondition(fieldCode).then(condition => append(condition));
   };
 
-  const isActiveConditionField: (fieldCode: string) => boolean = (
-    fieldCode: string
-  ) => {
+  const isActiveConditionField = React.useCallback((fieldCode: string) => {
     return (getValues({ nest: true })?.content?.conditions || []).some((condition: Condition) => {
       return (
         condition.hasOwnProperty('field') &&
         (condition as { field: string }).field === fieldCode
       );
     });
-  };
+  }, [getValues({ nest: true })?.content?.conditions ]);
 
   const hasActions: () => boolean = () => {
     return (getValues({ nest: true })?.content?.actions || []).length > 0;

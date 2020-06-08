@@ -47,7 +47,6 @@ const getProductsCountUrl = async (url: string, fn: CountFn) => {
 const getProductsCountUrlWithDebounce = debounceFn(getProductsCountUrl, 400);
 
 const createProductsCountUrl = (router: Router, form: FormData) => {
-  // TODO Fix this
   if (form?.content?.conditions) {
     const noNullConditions = form.content.conditions.filter(x => x != null);
     if (noNullConditions.length) {

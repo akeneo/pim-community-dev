@@ -24,18 +24,41 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
-  const { register } = useFormContext();
+  const { register, getValues } = useFormContext();
   const [ attribute, setAttribute ] = React.useState<Attribute | null>();
   React.useEffect(() => {
     getAttributeByIdentifier(condition.field, router).then(attribute => setAttribute(attribute));
   });
 
-  if (attribute === undefined) {
-    return <div>Loading!</div>;
-  }
-  if (attribute === null) {
-    return <div>Unexisting attribute</div>
-  }
+  React.useEffect(() => {
+    console.log('Condition', JSON.stringify(condition));
+  }, [ JSON.stringify(condition) ]);
+
+  React.useEffect(() => {
+    console.log('GetValues', JSON.stringify(getValues()));
+  }, [ JSON.stringify(getValues()) ]);
+
+  //React.useEffect(() => {
+    /* Theorically, adding a ref={register} the <Input> should be sufficient. As the AttributeConditionLine is
+     * loaded before the input, it custom registers the form values and loose the condition.value. We have to register
+     * it here to avoid loosing it. */
+  /*  console.log('Register value', condition.value);
+    register({ name: `content.conditions[${lineNumber}].value` });
+    setValue(`content.conditions[${lineNumber}].value`, condition.value);
+  }, []);
+*/
+/*  const setValuez = (val: any) => {
+    console.log('setValue', val.target.value);
+    setValue(`content.conditions[${lineNumber}].value`, val.target.value);
+  }*/
+
+  /*
+  const getDef = () => {
+    const x = ;
+    const y = watch(`content.conditions[${lineNumber}].value`, condition.value);
+    console.log('GetDef', x, y);
+    return x;
+  }*/
 
   return (
     <AttributeConditionLine
@@ -50,8 +73,9 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       <InputText
         name={`content.conditions[${lineNumber}].value`}
         label={translate('pimee_catalog_rule.rule.value')}
-        ref={register}
+        ref={register()}
         hiddenLabel={true}
+        defaultValue={condition.value}
       />
     </AttributeConditionLine>
   );

@@ -12,6 +12,7 @@ import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
 import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import {
+  ConditionErrorLine,
   FieldColumn,
   LocaleColumn,
   OperatorColumn,
@@ -36,7 +37,7 @@ type AttributeConditionLineProps = {
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
   availableOperators: Operator[];
-  attribute: Attribute;
+  attribute?: Attribute | null;
 };
 
 const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
@@ -60,7 +61,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     watch(`content.conditions[${lineNumber}].locale`);
 
   const getAvailableLocales = (): Locale[] => {
-    if (!attribute.scopable) {
+    if (!attribute || !attribute.scopable) {
       return locales;
     }
 
@@ -74,13 +75,13 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
 
   const getLocaleValidation = () => {
     const localeValidation: any = {};
-    if (attribute.localizable) {
+    if (attribute && attribute.localizable) {
       localeValidation['required'] = translate(
         'pimee_catalog_rule.exceptions.required_locale'
       );
     }
     localeValidation['validate'] = (localeCode: any) => {
-      if (attribute.localizable) {
+      if (attribute && attribute.localizable) {
         if (!locales.some(locale => locale.code === localeCode)) {
           return translate(
             'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
@@ -91,7 +92,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
           return attribute.scopable
             ? translate('pimee_catalog_rule.exceptions.unbound_locale', {
               localeCode,
-              scopeCode: getScopeFormValue(),
+              channelCode: getScopeFormValue(),
             })
             : translate(
               'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
@@ -113,13 +114,13 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
 
   const getScopeValidation = () => {
     const scopeValidation: any = {};
-    if (attribute.scopable) {
+    if (attribute && attribute.scopable) {
       scopeValidation['required'] = translate(
         'pimee_catalog_rule.exceptions.required_scope'
       );
     }
     scopeValidation['validate'] = (scopeCode: any) => {
-      if (attribute.scopable) {
+      if (attribute && attribute.scopable) {
         if (!scopes[scopeCode]) {
           return translate('pimee_catalog_rule.exceptions.unknown_scope', {
             scopeCode,
@@ -156,9 +157,21 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     }
   };
 
-  const title =
-    attribute.labels[currentCatalogLocale] ||
-    '[' + condition.field + ']';
+  const title = (attribute && attribute.labels[currentCatalogLocale]) ? attribute.labels[currentCatalogLocale] : '[' + condition.field + ']';
+
+  if (attribute === undefined) {
+    return <div className='AknGrid-bodyCell'>
+      <img src="/bundles/pimui/images//loader-V2.svg" alt={translate('pim_common.loading')}/>
+    </div>;
+  }
+
+  if (attribute === null) {
+    return <div className='AknGrid-bodyCell'>
+      <ConditionErrorLine>
+        {translate('pimee_catalog_rule.exceptions.unknown_attribute', { attributeCode: condition.field })}
+      </ConditionErrorLine>
+    </div>;
+  }
 
   return (
     <div className={'AknGrid-bodyCell'}>

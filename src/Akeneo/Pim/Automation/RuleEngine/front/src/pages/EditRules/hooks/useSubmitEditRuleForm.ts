@@ -84,7 +84,8 @@ const submitEditRuleForm = (
         translate('pimee_catalog_rule.form.edit.notification.failed')
       );
     }
-    reset({ ...formData });
+    console.log('Reset', formData)
+    reset(formData);
   };
 };
 

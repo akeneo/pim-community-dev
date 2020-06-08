@@ -29,7 +29,7 @@ import { FallbackActionLine } from "../pages/EditRules/components/actions/Fallba
 const getActionModule: ((
   json: any,
 ) => Promise<React.FC<ActionLineProps>>) = async (json) => {
-  const getModuleFunctions: ActionModuleGuesser[] = [
+  const getActionModuleFunctions: ActionModuleGuesser[] = [
     getSetFamilyActionModule,
     getAddActionModule,
     getCalculateActionModule,
@@ -40,8 +40,8 @@ const getActionModule: ((
     getSetActionModule,
   ];
 
-  for (let i = 0; i < getModuleFunctions.length; i++) {
-    const getModuleFunction = getModuleFunctions[i];
+  for (let i = 0; i < getActionModuleFunctions.length; i++) {
+    const getModuleFunction = getActionModuleFunctions[i];
     const module = await getModuleFunction(json);
     if (module !== null) {
       return module;
@@ -55,7 +55,7 @@ const getConditionModule: ((
   json: any,
   router: Router
 ) => Promise<React.FC<ConditionLineProps>>) = async (json, router) => {
-  const getModuleFunctions: ConditionModuleGuesser[] = [
+  const getConditionModuleFunctions: ConditionModuleGuesser[] = [
     getFamilyConditionModule,
     getCategoryConditionModule,
     getTextAttributeConditionModule,
@@ -63,8 +63,8 @@ const getConditionModule: ((
     getPimConditionModule,
   ];
 
-  for (let i = 0; i < getModuleFunctions.length; i++) {
-    const getModuleFunction = getModuleFunctions[i];
+  for (let i = 0; i < getConditionModuleFunctions.length; i++) {
+    const getModuleFunction = getConditionModuleFunctions[i];
     const module = await getModuleFunction(json, router);
     if (module !== null) {
       return module;
@@ -75,22 +75,25 @@ const getConditionModule: ((
 }
 
 const extractFieldIdentifiers = (json: any): string[] => {
-  if (
-    'undefined' === typeof json.content ||
-    'undefined' === typeof json.content.conditions ||
-    !Array.isArray(json.content.conditions)
-  ) {
-    return [];
+  const indexedFieldIdentifiers: { [identifier: string]: boolean } = {};
+
+  const conditions = json.content?.conditions || [];
+  if (Array.isArray(conditions)) {
+    conditions.forEach((condition: any) => {
+      if ('string' === typeof condition.field) {
+        indexedFieldIdentifiers[condition.field] = true;
+      }
+    });
   }
 
-  // TODO Extract from actions too
-
-  const indexedFieldIdentifiers: { [identifier: string]: boolean } = {};
-  json.content.conditions.forEach((condition: any) => {
-    if ('string' === typeof condition.field) {
-      indexedFieldIdentifiers[condition.field] = true;
-    }
-  });
+  const actions = json.content?.actions || [];
+  if (Array.isArray(actions)) {
+    actions.forEach((action: any) => {
+      if ('string' === typeof action.field) {
+        indexedFieldIdentifiers[action.field] = true;
+      }
+    });
+  }
 
   return Object.keys(indexedFieldIdentifiers);
 };

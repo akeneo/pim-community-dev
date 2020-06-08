@@ -38,7 +38,6 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
     // As there is no way to add unexisting families, the only solution for the user to validate is
     // to remove manually unexisting families.
     if (!condition.value || condition.value.length === 0) {
-      console.log('unex');
       setUnexistingFamilyCodes([]);
     } else {
       getFamiliesByIdentifiers(condition.value, router).then(families => {
@@ -48,7 +47,6 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
             unexistingFamilies.push(familyCode);
           }
         });
-        console.log('Unexisting', unexistingFamilies);
         setUnexistingFamilyCodes(unexistingFamilies);
       });
     }
@@ -64,7 +62,6 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
   };
 
   const validateFamilyCodes = (familyCodes: FamilyCode[]) => {
-    console.log('Validate', unexistingFamilyCodes);
     if (familyCodes && unexistingFamilyCodes.length) {
       const unknownFamilyCodes: FamilyCode[] = [];
       familyCodes.forEach(familyCode => {

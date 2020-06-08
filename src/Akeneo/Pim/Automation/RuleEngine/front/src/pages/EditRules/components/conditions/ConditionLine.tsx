@@ -72,6 +72,7 @@ const ConditionLine: React.FC<Props> = ({
           dialog={dialog}
           onValidate={() => {
             deleteCondition(lineNumber);
+            console.log('Deleted');
           }}
           cancelLabel={translate('pim_common.cancel')}
           confirmLabel={translate('pim_common.confirm')}

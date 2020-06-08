@@ -30,10 +30,11 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
   const [unexistingOptionCodes, setUnexistingOptionCodes] = React.useState<
     AttributeOptionCode[]
   >([]);
+
   const [ attribute, setAttribute ] = React.useState<Attribute | null>();
   React.useEffect(() => {
     getAttributeByIdentifier(condition.field, router).then(attribute => setAttribute(attribute));
-  });
+  }, []);
 
   React.useEffect(() => {
     if (!attribute) {
@@ -94,13 +95,6 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
     setValidateOptionCodes({ validate: validation });
   }, [JSON.stringify(unexistingOptionCodes)]);
 
-  if (attribute === undefined) {
-    return <div>Loading!</div>;
-  }
-  if (attribute === null) {
-    return <div>Unexisting attribute</div>
-  }
-
   return (
     <AttributeConditionLine
       condition={condition}
@@ -111,7 +105,7 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
       availableOperators={MultiOptionsAttributeOperators}
       attribute={attribute}
       >
-      <MultiOptionsSelector
+      { attribute && <MultiOptionsSelector
         value={condition.value || []}
         currentCatalogLocale={currentCatalogLocale}
         attributeId={attribute.meta.id}
@@ -119,7 +113,7 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
         hiddenLabel={true}
         name={`content.conditions[${lineNumber}].value`}
         validation={validateOptionCodes}
-      />
+      />}
     </AttributeConditionLine>
   );
 };
