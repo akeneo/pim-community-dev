@@ -32,7 +32,8 @@ The currency "%currency%" has to be activated.: The currency "%currency%" has to
 product_model.code.not_blank.message: The product model code must not be empty.
 product_model.code.unique.message: The same code is already set on another product model.
 product_model.family_variant.not_blank.message: The product model family variant must not be empty.
-
+The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.: The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.
+The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.: The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.
 pim_catalog:
     constraint:
         can_have_family_variant_empty_axis_value: 'Attribute "%attribute%" cannot be empty, as it is defined as an axis for this entity'
