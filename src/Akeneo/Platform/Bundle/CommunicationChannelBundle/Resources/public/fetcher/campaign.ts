@@ -1,15 +1,23 @@
+import {validateCampaignData} from 'akeneocommunicationchannel/validator/campaignData';
+
 const DataCollector = require('pim/data-collector');
 
-class CampaignFetcher {
-  private analyticsUrl: string = 'pim_analytics_data_collect';
+type CampaignFetcher = {
+  fetch: () => Promise<string>;
+};
 
-  private cloudVersion: string = 'serenity';
+class CampaignFetcherImplementation {
+  static analyticsUrl: string = 'pim_analytics_data_collect';
 
-  private campaign: string | null = null;
+  static cloudVersion: string = 'serenity';
 
-  public async fetch() {
+  static campaign: string | null = null;
+
+  static async fetch(): Promise<string> {
     if (null === this.campaign) {
       const data = await DataCollector.collect(this.analyticsUrl);
+
+      validateCampaignData(data);
 
       if (this.cloudVersion === data.pim_edition.toLowerCase()) {
         this.campaign = data.pim_edition as string;
@@ -22,4 +30,4 @@ class CampaignFetcher {
   }
 }
 
-export = new CampaignFetcher();
+export {CampaignFetcher, CampaignFetcherImplementation};

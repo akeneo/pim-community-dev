@@ -1,54 +1,47 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useCards} from 'akeneocommunicationchannel/hooks/useCards';
-import {CardFetcherImplementation, CardFetcher} from 'akeneocommunicationchannel/fetcher/card';
+import {CardFetcher} from 'akeneocommunicationchannel/fetcher/card';
+import {useCampaign} from 'akeneocommunicationchannel/hooks/useCampaign';
+import {CampaignFetcher} from 'akeneocommunicationchannel/fetcher/campaign';
+import {HeaderPanel} from 'akeneocommunicationchannel/components/panel/Header';
+import {CardComponent} from 'akeneocommunicationchannel/components/panel/card';
+import {Card} from 'akeneocommunicationchannel/models/card';
 
 const mediator = require('oro/mediator');
 const __ = require('oro/translator');
 
-const Header = styled.div`
-  margin-bottom: 50px;
-`;
-
-const Title = styled.div`
-  color: #9452BA;
-  font-size: 28px;
-  line-height: 41px;
-  float: left;
-`;
-
-const CloseButton = styled.div`
-  background: url(/bundles/pimui/images/icon-delete-slategrey.svg) no-repeat 50% 50%;
-  cursor: pointer;
-  border: none;
-  float: right;
-  margin-right: 10px;
-  width: 20px;
-  height: 50px;
+const ListCard = styled.ul`
+  margin-top: 107px;
+  margin-left: 30px;
 `;
 
 type PanelDataProvider = {
   cardFetcher: CardFetcher;
+  campaignFetcher: CampaignFetcher;
 };
 
-const dataProvider: PanelDataProvider = {
-  cardFetcher: CardFetcherImplementation
+type PanelProps = {
+  dataProvider: PanelDataProvider
 };
 
-const Panel = () => {
-  useCards(dataProvider.cardFetcher);
+const Panel = ({dataProvider}: PanelProps): JSX.Element => {
+  const {cards} = useCards(dataProvider.cardFetcher);
+  const {campaign} = useCampaign(dataProvider.campaignFetcher);
   const closePanel = () => {
     mediator.trigger('communication-channel:panel:close');
   };
 
   return (
     <>
-      <Header>
-        <Title>{__('akeneo_communication_channel.panel.title')}</Title>
-        <CloseButton title={__('akeneo_communication_channel.panel.button.close')} onClick={closePanel} />
-      </Header>
+      <HeaderPanel title={__('akeneo_communication_channel.panel.title')} onClickCloseButton={closePanel} />
+      {null !== cards && (
+        <ListCard>
+          {cards.map((card: Card, index: number): JSX.Element => <CardComponent card={card} key={index} campaign={campaign} />)}
+        </ListCard>
+      )}
     </>
   );
 };
 
-export {Panel};
+export {Panel, PanelDataProvider};
