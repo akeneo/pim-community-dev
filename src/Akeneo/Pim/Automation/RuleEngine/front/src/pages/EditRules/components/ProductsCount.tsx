@@ -4,7 +4,7 @@ import { Status } from '../../../rules.constants';
 import { useTranslate } from "../../../dependenciesTools/hooks";
 
 type Props = {
-  count: string;
+  count: number;
   status: Status;
 };
 
@@ -34,7 +34,7 @@ const ProductsCount: React.FC<Props> = ({
         <span className='AknSubsection-comment AknSubsection-comment--clickable'>
           {translate('pimee_catalog_rule.form.edit.products_count.complete', {
             count,
-          })}
+          }, count)}
         </span>
       )}
     </>

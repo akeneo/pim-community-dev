@@ -7,7 +7,7 @@ import { ProductsCount } from '../../../../../src/pages/EditRules/components/Pro
 describe('ProductsCount', () => {
   test('it should render in complete mode', () => {
     // Given
-    const count = '10';
+    const count = 10;
     const status = Status.COMPLETE;
     const translate: Translate = (
       str: string,
@@ -24,7 +24,7 @@ describe('ProductsCount', () => {
   });
   test('it should render in error mode', () => {
     // Given
-    const count = '-1';
+    const count = -1;
     const status = Status.ERROR;
     const translate: Translate = (str: string) => str;
     // When
