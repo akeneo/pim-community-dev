@@ -54,7 +54,6 @@ final class CreateConnectionHandler
     {
         $violations = $this->validator->validate($command);
         if ($violations->count() > 0) {
-            dump($violations);
             throw new ConstraintViolationListException($violations);
         }
 
