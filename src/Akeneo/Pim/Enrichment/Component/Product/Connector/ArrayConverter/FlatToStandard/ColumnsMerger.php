@@ -189,15 +189,9 @@ class ColumnsMerger
             return $collectedQuantifiedAssociations;
         }
 
-        $quantities = explode(ProductAssociation::QUANTITY_SEPARATOR, $fieldValue);
-        $collectedQuantifiedAssociations[$associationTypeCode][$productType] = array_reduce(
-            array_keys($quantities),
-            function ($result, $index) use ($quantities) {
-                $result[$index] = array_merge(isset($result[$index]) ? $result[$index] : [], ['quantity' => (int) $quantities[$index]]);
-
-                return $result;
-            },
-            $collectedQuantifiedAssociations[$associationTypeCode][$productType]
+        $collectedQuantifiedAssociations[$associationTypeCode][$productType] = array_merge(
+            $collectedQuantifiedAssociations[$associationTypeCode][$productType] ?? [],
+            ['quantities' => explode(ProductAssociation::QUANTITY_SEPARATOR, $fieldValue)]
         );
 
         return $collectedQuantifiedAssociations;
@@ -214,15 +208,9 @@ class ColumnsMerger
             return $collectedQuantifiedAssociations;
         }
 
-        $identifiers = explode(ProductAssociation::IDENTIFIER_SEPARATOR, $fieldValue);
-        $collectedQuantifiedAssociations[$associationTypeCode][$productType] = array_reduce(
-            array_keys($identifiers),
-            function ($result, $index) use ($identifiers) {
-                $result[$index] = array_merge(isset($result[$index]) ? $result[$index] : [], ['identifier' => $identifiers[$index]]);
-
-                return $result;
-            },
-            $collectedQuantifiedAssociations[$associationTypeCode][$productType]
+        $collectedQuantifiedAssociations[$associationTypeCode][$productType] = array_merge(
+            $collectedQuantifiedAssociations[$associationTypeCode][$productType] ?? [],
+            ['identifiers' => explode(ProductAssociation::IDENTIFIER_SEPARATOR, $fieldValue)]
         );
 
         return $collectedQuantifiedAssociations;
@@ -248,8 +236,19 @@ class ColumnsMerger
     private function mergeQuantifiedAssociationData(array $resultRow, array $collectedQuantifiedAssociations): array
     {
         foreach ($collectedQuantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
-            $resultRow[sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, 'products')] = $quantifiedAssociation['products'];
-            $resultRow[sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, 'product_models')] = $quantifiedAssociation['product_models'];
+            foreach (['products', 'product_models'] as $entityType) {
+                if (
+                    count($quantifiedAssociation[$entityType]['identifiers']) ===
+                    count($quantifiedAssociation[$entityType]['quantities'])
+                ) {
+                    $resultRow[sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, $entityType)] =
+                    array_map(function ($identifier, $quantity) {
+                        return ['identifier' => $identifier, 'quantity' => (int) $quantity];
+                    }, $quantifiedAssociation[$entityType]['identifiers'], $quantifiedAssociation[$entityType]['quantities']);
+                } else {
+                    throw new \LogicException('Inconsistency detected: the count of identifiers and quantities is not the same');
+                }
+            }
         }
 
         return $resultRow;
