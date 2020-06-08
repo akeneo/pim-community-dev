@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Builder;
 
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -38,6 +40,8 @@ class VariantProductBuilderIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->activateLocaleForChannel('fr_FR', 'ecommerce');
 
         // create product model
         $productModel = $this->get('pim_catalog.factory.product_model')->create();
@@ -88,5 +92,17 @@ class VariantProductBuilderIntegration extends TestCase
         );
 
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
+    }
+
+    private function activateLocaleForChannel(string $localeCode, string $channelCode)
+    {
+        /** @var Locale $locale */
+        $locale = $this->get('pim_catalog.repository.locale')->findOneByIdentifier($localeCode);
+
+        /** @var Channel $channel */
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($channelCode);
+        $channel->addLocale($locale);
+
+        $this->get('pim_catalog.saver.channel')->save($channel);
     }
 }
