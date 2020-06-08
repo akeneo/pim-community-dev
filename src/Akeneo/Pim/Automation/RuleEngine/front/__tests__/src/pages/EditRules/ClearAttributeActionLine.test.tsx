@@ -1,4 +1,4 @@
-import { renderWithProviders, act, waitFor } from '../../../../test-utils';
+import {renderWithProviders, act, fireEvent} from '../../../../test-utils';
 import React from 'react';
 import 'jest-fetch-mock';
 import { ClearAttributeAction } from '../../../../src/models/actions';
@@ -166,7 +166,7 @@ describe('ClearAttributeActionLine', () => {
   it('should remove/add the scope and label when switching from a scopable attribute to a non-scopable one', async () => {
     fetchMock.mockResponse((request: Request) => {
       // attribute values
-      if (request.url.includes('pim_enrich_attribute_rest_get')) {  
+      if (request.url.includes('pim_enrich_attribute_rest_get')) {
         if (request.url.includes('name')) {
           return Promise.resolve(JSON.stringify(createAttribute({
             code: 'name',
@@ -205,7 +205,7 @@ describe('ClearAttributeActionLine', () => {
       throw new Error(`The "${request.url}" url is not mocked.`);
     });
 
-    const { findByTestId, findByText, queryByText } = renderWithProviders(
+    const { findByText, findByTestId, queryByText } = renderWithProviders(
       <ClearAttributeActionLine
         translate={translate}
         router={router}
@@ -224,21 +224,26 @@ describe('ClearAttributeActionLine', () => {
     expect(await findByText('Locale pim_common.required_label')).toBeInTheDocument();
     expect(await findByText('Channel pim_common.required_label')).toBeInTheDocument();
 
-    act(() => {
-      userEvent.selectOptions(attributeSelector, 'description');
+    await act(async () => {
+      userEvent.click(await findByTestId('edit-rules-action-1-field'));
+      expect((await findByTestId('edit-rules-action-1-field')).children.length).toBeGreaterThan(1);
+      fireEvent.change(await findByTestId('edit-rules-action-1-field'), {
+        target: { value: 'description' },
+      });
     });
 
-    await waitFor(() => expect(queryByText('Channel pim_common.required_label')).not.toBeInTheDocument());
-    await waitFor(() => expect(queryByText('Locale pim_common.required_label')).not.toBeInTheDocument());
+    expect(queryByText('Channel pim_common.required_label')).not.toBeInTheDocument();
+    expect(queryByText('Locale pim_common.required_label')).not.toBeInTheDocument();
 
-    act(() => {
-      userEvent.selectOptions(attributeSelector, 'name');
+    await act(async () => {
+      userEvent.click(await findByTestId('edit-rules-action-1-field'));
+      expect((await findByTestId('edit-rules-action-1-field')).children.length).toBeGreaterThan(1);
+      fireEvent.change(await findByTestId('edit-rules-action-1-field'), {
+        target: { value: 'name' },
+      });
     });
 
-    await wait(() => {
-      expect(attributeSelector).toHaveValue('name');
-      expect(queryByText('Channel pim_common.required_label')).toBeInTheDocument();
-      expect(queryByText('Locale pim_common.required_label')).toBeInTheDocument();
-    });
+    expect(queryByText('Channel pim_common.required_label')).toBeInTheDocument();
+    expect(queryByText('Locale pim_common.required_label')).toBeInTheDocument();
   });
 });
