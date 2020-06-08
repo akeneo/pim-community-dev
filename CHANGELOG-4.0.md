@@ -4,6 +4,48 @@
 
 - PIM-9243: Creation and update dates are not displayed on the asset page 
 
+# 4.0.32 (2020-06-08)
+
+# 4.0.31 (2020-06-01)
+
+## Bug fixes
+
+- PIM-9276: Fix API assets pagination
+
+# 4.0.30 (2020-05-28)
+
+## Technical Improvements
+
+- PIM-9259: Add an optimize jpeg operation on asset's transformations
+
+## Bug fixes
+
+- PIM-9258: Fix linked products view in reference entities when an asset is set as main image.
+- PIM-9263: Fix a bad refresh of select value on reference entity edit page
+
+# 4.0.29 (2020-05-26)
+
+# 4.0.28 (2020-05-20)
+
+## Bug fixes
+
+- PIM-9252: The asset manager is now accessible when the "Create asset family" ACL is disabled.
+
+# 4.0.27 (2020-05-18)
+
+# 4.0.26 (2020-05-15)
+
+## Bug fixes
+
+- PIM-9252: Fix TWA project unwanted deletion when a category not used as a filter was deleted
+
+# 4.0.25 (2020-05-14)
+
+## Bug fixes
+
+- PIM-9241 - Target transformation was not empty when source attribute value was empty
+- PIM-9233: Add missing preview of asset collection attribute in product grid
+
 # 4.0.24 (2020-05-07)
 
 ## Bug fixes
