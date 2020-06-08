@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Job\JobParameters\ConstraintCo
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -35,7 +36,7 @@ class ComputeFamilyVariantStructureChanges implements ConstraintCollectionProvid
         return new Collection(
             [
                 'fields' => [
-                    'family_variant_codes' => new Collection(['fields' => [new NotBlank()]]),
+                    'family_variant_codes' => new All(new NotBlank()),
                 ],
             ]
         );

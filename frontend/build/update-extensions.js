@@ -28,7 +28,7 @@ const EXTENSION_DEFAULTS = {
  * @param {string} path
  */
 function getRelativeBundlePath(path) {
-    return path.replace(/(^.+)((?<=src).*[^vendor])(?=\/src)\//gm, '')
+    return path.replace(/^(.+?(?=vendor\/)|.+(?=src\/))\//gm, '')
 }
 
 /**
@@ -56,7 +56,6 @@ function getExtensionsFromRequiredBundles() {
     )
 
     const formExtensions = []
-
     bundleDirectories.forEach(dir => {
         formExtensions.push(glob.sync(`${dir}/Resources/config/{form_extensions/**/*.yml,form_extensions.yml}`))
     })

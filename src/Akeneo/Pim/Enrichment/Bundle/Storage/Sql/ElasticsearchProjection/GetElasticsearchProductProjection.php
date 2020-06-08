@@ -133,7 +133,7 @@ WITH
             product.created AS created_date,
             GREATEST(product.updated, COALESCE(sub_product_model.updated, 0), COALESCE(root_product_model.updated, 0)) AS updated_date,
             JSON_KEYS(product.raw_values) AS attribute_codes_in_product_raw_values,
-            JSON_MERGE_PRESERVE(
+            JSON_MERGE_PATCH(
                 product.raw_values,
                 COALESCE(sub_product_model.raw_values, JSON_OBJECT()), 
                 COALESCE(root_product_model.raw_values, JSON_OBJECT())

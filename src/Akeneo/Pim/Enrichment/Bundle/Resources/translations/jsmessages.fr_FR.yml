@@ -384,6 +384,7 @@ pim_datagrid:
   filters:
     label: Filtres
     system: Système
+  search: Search on {{ label }}
 batch_jobs:
   add_association:
     label: Associer
