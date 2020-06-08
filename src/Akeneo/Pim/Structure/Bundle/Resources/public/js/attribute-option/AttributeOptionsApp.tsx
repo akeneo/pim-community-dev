@@ -3,17 +3,18 @@ import {Provider} from 'react-redux';
 import attributeOptionsStore from './store/store';
 import AttributeOptions from './components/AttributeOptions';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {AttributeContextProvider, LocalesContextProvider} from "./contexts";
+import {AttributeContextProvider, LocalesContextProvider} from './contexts';
 
 interface IndexProps {
   attributeId: number;
+  autoSortOptions: boolean;
 }
 
-const Index = ({attributeId}: IndexProps) => {
+const AttributeOptionsApp = ({attributeId, autoSortOptions}: IndexProps) => {
     return (
         <DependenciesProvider>
             <Provider store={attributeOptionsStore}>
-                <AttributeContextProvider attributeId={attributeId}>
+                <AttributeContextProvider attributeId={attributeId} autoSortOptions={autoSortOptions}>
                     <LocalesContextProvider>
                         <AttributeOptions />
                     </LocalesContextProvider>
@@ -23,4 +24,4 @@ const Index = ({attributeId}: IndexProps) => {
     );
 };
 
-export default Index;
+export default AttributeOptionsApp;

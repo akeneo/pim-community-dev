@@ -21,7 +21,7 @@ const AttributeOptions = () => {
     const attributeOptionCreate = useCreateAttributeOption();
     const attributeOptionDelete = useDeleteAttributeOption();
     const dispatchAction = useDispatch();
-    const attribute = useAttributeContext();
+    const attributeContext = useAttributeContext();
     const notify = useNotify();
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const AttributeOptions = () => {
 
     useEffect(() => {
         setSelectedOption(null);
-    }, [attribute.attributeId]);
+    }, [attributeContext.attributeId]);
 
     const selectedOptionExists = () => {
         return attributeOptions && selectedOption && attributeOptions.filter((option: AttributeOption) => option.id === selectedOption.id).length === 1;
