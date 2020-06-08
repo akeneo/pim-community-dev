@@ -3,6 +3,7 @@ import {
     initializeAttributeOptionsAction,
     updateAttributeOptionAction,
     createAttributeOptionAction,
+    deleteAttributeOptionAction,
 } from 'akeneopimstructure/js/attribute-option/reducers';
 
 const blackAndBlueOptions = [
@@ -88,14 +89,7 @@ describe('Attribute options reducer', () => {
         expect(
           attributeOptionsReducer(
             null,
-            updateAttributeOptionAction({
-                "id": 86,
-                "code": "blue",
-                "optionValues": {
-                    "en_US": {"id":255,"locale":"en_US","value":"Blue 2"},
-                    "fr_FR":{"id":256,"locale":"fr_FR","value":"Bleu 2"}
-                }
-            })
+            updateAttributeOptionAction({})
           )
         ).toBeNull();
     });
@@ -145,15 +139,68 @@ describe('Attribute options reducer', () => {
         expect(
           attributeOptionsReducer(
             null,
-            createAttributeOptionAction({
+            createAttributeOptionAction({})
+          )
+        ).toBeNull();
+    });
+
+    test('delete an attribute option', () => {
+        expect(
+          attributeOptionsReducer(
+            [
+                {
+                    "id": 85,
+                    "code": "black",
+                    "optionValues": {
+                        "en_US": {"id":252,"locale":"en_US","value":"Black"},
+                        "fr_FR":{"id":253,"locale":"fr_FR","value":"Noir"}
+                    }
+                },
+                {
+                    "id": 86,
+                    "code": "blue",
+                    "optionValues": {
+                        "en_US": {"id":255,"locale":"en_US","value":"Blue"},
+                        "fr_FR":{"id":256,"locale":"fr_FR","value":"Bleu"}
+                    }
+                },
+                {
+                    "id": 115,
+                    "code": "yellow",
+                    "optionValues": {
+                        "en_US": {"id":350,"locale":"en_US","value":"Yellow"},
+                        "fr_FR":{"id":351,"locale":"fr_FR","value":"Jaune"}
+                    }
+                }
+            ],
+            deleteAttributeOptionAction(115)
+          )
+        ).toMatchObject([
+            {
+                "id": 85,
+                "code": "black",
+                "optionValues": {
+                    "en_US": {"id":252,"locale":"en_US","value":"Black"},
+                    "fr_FR":{"id":253,"locale":"fr_FR","value":"Noir"}
+                }
+            },
+            {
                 "id": 86,
                 "code": "blue",
                 "optionValues": {
-                    "en_US": {"id":255,"locale":"en_US","value":"Blue 2"},
-                    "fr_FR":{"id":256,"locale":"fr_FR","value":"Bleu 2"}
+                    "en_US": {"id":255,"locale":"en_US","value":"Blue"},
+                    "fr_FR":{"id":256,"locale":"fr_FR","value":"Bleu"}
                 }
-            })
-          )
+            },
+        ]);
+    });
+
+    test('delete an attribute option with an empty state', () => {
+        expect(
+            attributeOptionsReducer(
+                null,
+                deleteAttributeOptionAction({})
+            )
         ).toBeNull();
     });
 });

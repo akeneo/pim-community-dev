@@ -90,6 +90,10 @@ describe('Attribute options list', () => {
 
         expect(newOptionPlaceholder).toBeInTheDocument();
         expect(showNewOptionFormCallback).toHaveBeenNthCalledWith(1, true);
+
+        const cancelNewOptionButton = getByRole(container, 'new-option-cancel');
+        fireEvent.click(cancelNewOptionButton);
+        expect(newOptionPlaceholder).not.toBeInTheDocument();
     });
 
     test('it allows option selection', async () => {
@@ -121,14 +125,19 @@ describe('Attribute options list', () => {
 async function renderComponent(selectOptionCallback, showNewOptionFormCallback, selectedOptionId = null) {
     await act(async () => {
         ReactDOM.render(
-          <DependenciesProvider>
-              <Provider store={createStoreWithInitialState({})}>
-                  <AttributeContextProvider attributeId={8}>
-                      <List selectAttributeOption={selectOptionCallback} showNewOptionForm={showNewOptionFormCallback} selectedOptionId={selectedOptionId}/>
-                  </AttributeContextProvider>
-              </Provider>
-          </DependenciesProvider>,
-          container
+            <DependenciesProvider>
+                <Provider store={createStoreWithInitialState({})}>
+                    <AttributeContextProvider attributeId={8}>
+                        <List
+                            selectAttributeOption={selectOptionCallback}
+                            showNewOptionForm={showNewOptionFormCallback}
+                            selectedOptionId={selectedOptionId}
+                            deleteAttributeOption={jest.fn()}
+                        />
+                    </AttributeContextProvider>
+                </Provider>
+            </DependenciesProvider>,
+            container
         );
     });
 }

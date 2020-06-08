@@ -49,6 +49,22 @@ export const createAttributeOptionAction: ActionCreator<CreateAttributeOptionAct
     };
 };
 
+interface DeleteAttributeOptionAction extends Action {
+    payload: {
+        optionId: number;
+    };
+}
+
+const DELETE_ATTRIBUTE_OPTION = 'DELETE_ATTRIBUTE_OPTION';
+export const deleteAttributeOptionAction: ActionCreator<DeleteAttributeOptionAction> = (optionId: number) => {
+    return {
+        type: DELETE_ATTRIBUTE_OPTION,
+        payload: {
+            optionId: optionId,
+        }
+    };
+};
+
 const attributeOptionsReducer: Reducer<AttributeOption[] | null> = (previousState = null, {type, payload}) => {
     switch (type) {
     case INITIALIZE_ATTRIBUTE_OPTIONS: {
@@ -74,6 +90,17 @@ const attributeOptionsReducer: Reducer<AttributeOption[] | null> = (previousStat
         }
 
         return [...previousState, payload.option];
+    }
+    case DELETE_ATTRIBUTE_OPTION: {
+        if (previousState === null) {
+            return previousState;
+        }
+
+        const index = previousState.findIndex((attributeOption: AttributeOption) => attributeOption.id === payload.optionId);
+        let newState = [...previousState];
+        newState.splice(index, 1);
+
+        return newState;
     }
     default:
         return previousState;

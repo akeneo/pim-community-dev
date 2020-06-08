@@ -10,9 +10,10 @@ interface ListProps {
     selectAttributeOption: (selectedOptionId: number | null) => void;
     showNewOptionForm: (isDisplayed: boolean) => void;
     selectedOptionId: number | null;
+    deleteAttributeOption: (attributeOptionId: number) => void;
 }
 
-const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm}: ListProps) => {
+const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm, deleteAttributeOption}: ListProps) => {
     const attributeOptions = useAttributeOptions();
     const translate = useTranslate();
     const [showNewOptionPlaceholder, setShowNewOptionPlaceholder] = useState<boolean>(false);
@@ -35,6 +36,14 @@ const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm}: List
         showNewOptionForm(true);
     };
 
+    const cancelNewOption = () => {
+        showNewOptionForm(false);
+        setShowNewOptionPlaceholder(false);
+        if (attributeOptions !== null && attributeOptions.length > 0) {
+            selectAttributeOption(attributeOptions[0].id);
+        }
+    };
+
     return (
         <div className="AknSubsection AknAttributeOption-list">
             <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
@@ -53,12 +62,14 @@ const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm}: List
                         <ListItem
                             key={attributeOption.code}
                             data={attributeOption}
-                            onSelectAttributeOption={onSelectItem}
+                            selectAttributeOption={onSelectItem}
                             isSelected={selectedOptionId === attributeOption.id}
+                            deleteAttributeOption={deleteAttributeOption}
                         />
                     );
                 })}
-                {showNewOptionPlaceholder === true && (<NewOptionPlaceholder/>)}
+
+                {showNewOptionPlaceholder === true && (<NewOptionPlaceholder cancelNewOption={cancelNewOption}/>)}
             </div>
         </div>
     );
