@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditErrorLoader;
+use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write;
@@ -22,6 +24,9 @@ use PHPUnit\Framework\Assert;
  */
 class DbalSelectErrorCountPerConnectionQueryIntegration extends TestCase
 {
+    /** @var ConnectionLoader */
+    private $connectionLoader;
+
     /** @var AuditErrorLoader */
     private $auditErrorLoader;
 
@@ -32,12 +37,18 @@ class DbalSelectErrorCountPerConnectionQueryIntegration extends TestCase
     {
         parent::setUp();
 
+        $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
         $this->auditErrorLoader = $this->get('akeneo_connectivity.connection.fixtures.audit_error_loader');
         $this->selectErrorCountPerConnectionQuery = $this->get('akeneo_connectivity_connection.persistence.query.select_error_count_per_connection');
     }
 
     public function test_it_gets_error_count_per_connection()
     {
+        $this->connectionLoader->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
+        $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE, true);
+        $this->connectionLoader->createConnection('no_error', 'No error', FlowType::OTHER, true);
+        $this->connectionLoader->createConnection('not_auditable', 'Not auditable', FlowType::OTHER, false);
+
         $this->createHourlyErrorCounts([
             ['bynder', ErrorTypes::BUSINESS, '2020-01-01 23:00:00', 12], // ignored
             ['sap', ErrorTypes::BUSINESS, '2020-01-02 00:00:00', 10],
@@ -58,6 +69,7 @@ class DbalSelectErrorCountPerConnectionQueryIntegration extends TestCase
         $expectedResult = new ErrorCountPerConnection([
             new ErrorCount('sap', 14),
             new ErrorCount('bynder', 8),
+            new ErrorCount('no_error', 0),
         ]);
 
         Assert::assertEquals($expectedResult, $result);
