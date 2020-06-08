@@ -2,9 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttribute;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolation;
 
 class ViolationNormalizerSpec extends ObjectBehavior
@@ -49,6 +49,26 @@ class ViolationNormalizerSpec extends ObjectBehavior
         $this->normalize($violation, 'internal_api')->shouldReturn([
             'message' => 'An identifier attribute already exists.',
             'global'  => true,
+        ]);
+    }
+
+    public function it_normalizes_violation_without_translating(
+        ConstraintViolation $violation,
+        SingleIdentifierAttribute $constraint
+    ) {
+        $violation->getPropertyPath()->willReturn('foo');
+        $violation->getMessage()->willReturn('An identifier attribute already exists.');
+        $violation->getMessageTemplate()->willReturn('identifier_attribute_already_exists');
+        $violation->getParameters()->willReturn([]);
+        $violation->getInvalidValue()->willReturn('');
+        $violation->getConstraint()->willReturn($constraint);
+
+        $this->normalize($violation, 'internal_api', ['translate' => false])->shouldReturn([
+            'messageTemplate' => 'identifier_attribute_already_exists',
+            'parameters' => [],
+            'message' => 'An identifier attribute already exists.',
+            'propertyPath' => 'foo',
+            'invalidValue' => '',
         ]);
     }
 }

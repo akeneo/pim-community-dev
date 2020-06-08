@@ -52,6 +52,11 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         $status->getValue()->willReturn(9);
         $translator->trans('pim_import_export.batch_status.9')->willReturn('PENDING');
 
+        $stepExecution->getErrors()->willReturn([
+            'first error message',
+            'second error message',
+        ]);
+
         $date = new \DateTime();
         $stepExecution->getStartTime()->willReturn($date);
         $stepExecution->getEndTime()->willReturn(null);
@@ -100,6 +105,10 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
                         'reason' => 'WARNING!',
                         'item'   => ['a' => 'A', 'b' => 'B', 'c' => 'C'],
                     ]
+                ],
+                'errors' => [
+                    'first error message',
+                    'second error message',
                 ],
                 'failures'  => ['FAIL!'],
             ]

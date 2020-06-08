@@ -24,7 +24,7 @@ class Version_4_0_20200117080512_remove_product_model_empty_raw_values_Integrati
         $familySearch = $this->getConnection()->fetchArray('SELECT id FROM pim_catalog_family_variant LIMIT 1');
         $familyId = $familySearch[0];
         $sql = <<<SQL
-INSERT INTO pim_catalog_product_model VALUES
+INSERT INTO pim_catalog_product_model (id, parent_id, family_variant_id, code, raw_values, created, updated) VALUES
     (NULL, NULL, :familyId, 'pm1', '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW()),
     (NULL, NULL, :familyId, 'pm2', '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW()),
     (NULL, NULL, :familyId, 'pm3', '{"name": {"<all_channels>": {"<all_locales>": [""]}}}', NOW(), NOW()),

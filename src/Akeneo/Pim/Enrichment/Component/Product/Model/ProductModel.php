@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -16,6 +17,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class ProductModel implements ProductModelInterface
 {
+    use EntityWithQuantifiedAssociationTrait;
+
     /** @var int */
     protected $id;
 

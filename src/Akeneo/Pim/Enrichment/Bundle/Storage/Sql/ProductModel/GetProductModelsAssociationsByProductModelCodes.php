@@ -57,6 +57,7 @@ FROM (
                   LEFT JOIN pim_catalog_association_product_model_to_product_model product_model_to_product_model ON product_model_association.id = product_model_to_product_model.association_id
                   LEFT JOIN pim_catalog_product_model associated_product_model ON product_model_to_product_model.product_model_id = associated_product_model.id
                   WHERE product_model.code IN (:productModelCodes)
+                  AND association_type.is_quantified = false
                   UNION ALL
                   SELECT child_product_model.code    as product_model_code,
                          association_type.code as association_type_code,
@@ -68,6 +69,7 @@ FROM (
                   INNER JOIN pim_catalog_association_product_model_to_product_model product_model_to_product_model ON product_model_association.id = product_model_to_product_model.association_id
                   INNER JOIN pim_catalog_product_model associated_product_model ON product_model_to_product_model.product_model_id = associated_product_model.id
                   WHERE child_product_model.code IN (:productModelCodes)
+                  AND association_type.is_quantified = false
               ) all_product_model_associations
          GROUP BY all_product_model_associations.product_model_code, association_type_code
      ) result_by_identifier_and_type

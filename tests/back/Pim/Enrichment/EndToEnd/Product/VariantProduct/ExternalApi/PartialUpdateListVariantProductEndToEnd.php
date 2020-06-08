@@ -138,6 +138,8 @@ JSON;
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
                 'associations'  => [],
+                // @todo https://akeneo.atlassian.net/browse/MET-198
+                'quantified_associations' => [],
             ],
             'apollon_optionb_false' => [
                 'identifier'    => 'apollon_optionb_false',
@@ -190,6 +192,8 @@ JSON;
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
                 'associations'  => [],
+                // @todo https://akeneo.atlassian.net/browse/MET-198
+                'quantified_associations' => [],
             ],
         ];
 

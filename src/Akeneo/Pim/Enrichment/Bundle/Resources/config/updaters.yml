@@ -17,6 +17,7 @@ parameters:
     pim_catalog.updater.setter.association_field.class:       Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter
     pim_catalog.updater.setter.enabled_field.class:           Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\EnabledFieldSetter
     pim_catalog.updater.setter.media_value.class:             Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\MediaAttributeSetter
+    pim_catalog.updater.setter.quantified_associations_field.class: Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\QuantifiedAssociationsFieldSetter
 
     pim_catalog.updater.copier.registry.class:                Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistry
     pim_catalog.updater.copier.abstract.class:                Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier
@@ -48,6 +49,8 @@ services:
             - '@pim_catalog.updater.property_setter'
             - '@pim_catalog.updater.entity_with_values'
             - '@pim_catalog.association.filter.parent_associations'
+            - '@pim_catalog.quantified_associations.quantified_associations_from_ancestors_filter'
+            - '@pim_catalog.updater.validator.quantified_associations_structure_validator'
             - ['identifier', 'created', 'updated', 'parent_associations', 'metadata']
 
     pim_catalog.updater.product_model:
@@ -58,6 +61,8 @@ services:
             - '@pim_catalog.repository.family_variant'
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.association.filter.parent_associations'
+            - '@pim_catalog.quantified_associations.quantified_associations_from_ancestors_filter'
+            - '@pim_catalog.updater.validator.quantified_associations_structure_validator'
             - ['identifier', 'created', 'updated', 'parent_associations', 'metadata']
 
     pim_catalog.updater.entity_with_values:
@@ -172,6 +177,11 @@ services:
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - ['pim_catalog_number']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.quantified_associations_field:
+        class: '%pim_catalog.updater.setter.quantified_associations_field.class%'
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
@@ -583,3 +593,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\GroupFieldClearer'
         tags:
             - { name: 'pim_catalog.updater.clearer' }
+
+    # Validators
+    pim_catalog.updater.validator.quantified_associations_structure_validator:
+        class: Akeneo\Pim\Enrichment\Component\Product\Updater\Validator\QuantifiedAssociationsStructureValidator

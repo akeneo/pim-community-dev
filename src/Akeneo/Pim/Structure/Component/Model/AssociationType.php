@@ -40,6 +40,9 @@ class AssociationType implements AssociationTypeInterface
     /** @var bool */
     protected $isTwoWay = false;
 
+    /** @var bool */
+    private $isQuantified = false;
+
     /**
      * Constructor
      */
@@ -242,5 +245,21 @@ class AssociationType implements AssociationTypeInterface
     public function setIsTwoWay(bool $isTwoWay): void
     {
         $this->isTwoWay = $isTwoWay;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setIsQuantified(bool $isQuantified): void
+    {
+        $this->isQuantified = $isQuantified;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isQuantified(): bool
+    {
+        return $this->isQuantified;
     }
 }

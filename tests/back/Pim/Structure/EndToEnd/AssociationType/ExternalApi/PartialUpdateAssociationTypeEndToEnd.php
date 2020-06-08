@@ -55,7 +55,8 @@ JSON;
         $associationTypeStandard = [
             'code'             => 'YOLO_SELL',
             'labels'           => [],
-            'is_two_way' => false
+            'is_two_way' => false,
+            'is_quantified' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -85,6 +86,7 @@ JSON;
                 'fr_FR' => 'Vente cadeau',
             ],
             'is_two_way' => true,
+            'is_quantified' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -135,6 +137,7 @@ JSON;
                 'fr_FR' => 'Vente croisée',
             ],
             'is_two_way' => false,
+            'is_quantified' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
@@ -161,11 +164,27 @@ JSON;
                 'fr_FR' => 'Vente croisée',
             ],
             'is_two_way' => false,
+            'is_quantified' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.association_type');
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSame($associationTypeStandard, $normalizer->normalize($associationType));
+    }
+
+    public function testIsQuantifiedCannotBeChanged()
+    {
+        $client = $this->createAuthenticatedClient();
+        $data = <<<JSON
+{
+    "is_quantified": true
+}
+JSON;
+
+        $client->request('PATCH', '/api/rest/v1/association-types/X_SELL', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame('{"code":422,"message":"Validation failed.","errors":[{"property":"is_quantified","message":"This property cannot be changed."}]}', $response->getContent());
     }
 
     public function testResponseWhenContentIsEmpty()

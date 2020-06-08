@@ -25,16 +25,17 @@ class ProductNormalizerIntegration extends TestCase
     public function testEmptyDisabledProduct()
     {
         $expected = [
-            'identifier'    => 'bar',
-            'family'        => null,
-            'parent'        => null,
-            'groups'        => [],
-            'categories'    => [],
-            'enabled'       => false,
-            'values'        => new \StdClass(),
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => new \StdClass(),
+            'identifier'              => 'bar',
+            'family'                  => null,
+            'parent'                  => null,
+            'groups'                  => [],
+            'categories'              => [],
+            'enabled'                 => false,
+            'values'                  => new \StdClass(),
+            'created'                 => '2016-06-14T13:12:50+02:00',
+            'updated'                 => '2016-06-14T13:12:50+02:00',
+            'associations'            => new \StdClass(),
+            'quantified_associations' => [],
         ];
 
         $this->assertProduct('bar', $expected, []);
@@ -43,16 +44,17 @@ class ProductNormalizerIntegration extends TestCase
     public function testEmptyEnabledProduct()
     {
         $expected = [
-            'identifier'    => 'baz',
-            'family'        => null,
-            'parent'        => null,
-            'groups'        => [],
-            'categories'    => [],
-            'enabled'       => true,
-            'values'        => new \StdClass(),
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => new \StdClass(),
+            'identifier'              => 'baz',
+            'family'                  => null,
+            'parent'                  => null,
+            'groups'                  => [],
+            'categories'              => [],
+            'enabled'                 => true,
+            'values'                  => new \StdClass(),
+            'created'                 => '2016-06-14T13:12:50+02:00',
+            'updated'                 => '2016-06-14T13:12:50+02:00',
+            'associations'            => new \StdClass(),
+            'quantified_associations' => [],
         ];
 
         $this->assertProduct('baz', $expected, []);
@@ -255,6 +257,7 @@ class ProductNormalizerIntegration extends TestCase
                 'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
             ],
+            'quantified_associations' => [],
         ];
 
         $this->assertProduct('foo', $expected, []);
@@ -340,6 +343,7 @@ class ProductNormalizerIntegration extends TestCase
                 'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
             ],
+            'quantified_associations' => [],
         ];
 
         $this->assertProduct('foo', $expected, ['attributes' => [

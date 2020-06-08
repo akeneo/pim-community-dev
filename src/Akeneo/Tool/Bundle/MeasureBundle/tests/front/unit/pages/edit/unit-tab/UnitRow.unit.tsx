@@ -6,8 +6,6 @@ import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {UnitRow} from 'akeneomeasure/pages/edit/unit-tab/UnitRow';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
-jest.mock('legacy-bridge/provider/dependencies.ts');
-
 const unit = {
   code: 'SQUARE_METER',
   labels: {

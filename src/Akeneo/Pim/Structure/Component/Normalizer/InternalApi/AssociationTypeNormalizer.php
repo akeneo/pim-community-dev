@@ -42,6 +42,7 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
     }
 
     /**
+     * @var AssociationTypeInterface $object
      * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = [])

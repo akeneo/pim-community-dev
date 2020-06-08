@@ -81,7 +81,8 @@ class ListProductModelWithCompletenessEndToEnd extends AbstractProductModelTestC
                         "product_models": [],
                         "groups": []
                     }
-                }
+                },
+                "quantified_associations": {}
 		    }
 		]
     }

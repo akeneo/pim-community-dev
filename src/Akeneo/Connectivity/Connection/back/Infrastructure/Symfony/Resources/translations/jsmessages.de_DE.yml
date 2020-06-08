@@ -1,12 +1,21 @@
 pim_menu:
+  navigation_back:
+    connection: Zurück zu Verbindungen
+  navigation_block:
+    connection: Verbindungs-Navigation
   item:
     connection_audit: Verbindungs-Dashboard
     connection_settings: Verbindungen
+    connection_settings_edit: Verbindungseinstellungen
+    connection_monitoring: Überwachung
 pim_title:
   akeneo_connectivity_connection_settings_index: Verbindungen
+  akeneo_connectivity_connection_settings_edit: Verbindungseinstellungen
+  akeneo_connectivity_connection_settings_any: Verbindungseinstellungen
   akeneo_connectivity_connection_audit_index: Verbindungs-Dashboard
   akeneo_connectivity_connection_audit_any: Verbindungs-Dashboard
   akeneo_connectivity_connection_error_management_dashboard: Verbindungs-Dashboard
+  akeneo_connectivity_connection_error_management_connection_monitoring: Verbindungsüberwachung
 akeneo_connectivity.connection:
   connections: Verbindungen
   secondary_actions:
@@ -158,6 +167,17 @@ akeneo_connectivity.connection:
       legend:
         during_the_last_seven_days: 'Gesamtsumme in den letzten 7 Tagen:'
         today: Heute
+    error_management:
+      data_source_error_chart:
+        section:
+          title: Fehler bei Quellverbindungen
+          helper: Hier sehen Sie die Gesamtzahl der Fehler, einschließlich der Geschäftsfehler.
+        chart:
+          title: Fehleranzahl pro Tag
+      widget:
+        title: Geschäftsfehler pro Verbindung
+        over_the_last_seven_days: In den letzten 7 Tagen
+        business_errors: Geschäftsfehler
     no_connection:
       title:
         default: Möchten Sie einige schöne Diagramme über Ihre Verbindungen sehen?
@@ -171,11 +191,27 @@ akeneo_connectivity.connection:
         link: Erfahren Sie hier mehr über Verbindungen...
   error_management:
     connection_monitoring:
+      title: Überwachung
+      helper:
+        title: '{0} Sie haben {{ count }} Fehler|[1,Inf] Sie haben {{ count }} Fehler'
+        description: Hier sehen Sie die Details jedes Fehlers für diese Verbindung in den letzten 7 Tagen. Die Fehlernummer ist auf 100 Fehler beschränkt.
+        link: Um zu verstehen, wie man dieses Problem löst, besuchen Sie bitte das API-Hilfe-Center.
+      search_filter:
+        placeholder: Suche in Fehlermeldungen
+        result_count: '{0} Kein Ergebnis |[1,Inf] {{ count }} Ergebnisse'
+      error_list:
+        date_time_column: Tag und Zeit
+        content_column: Fehlermeldung
+      no_error:
+        title: Großartig! Kein Fehler gefunden!
       not_auditable:
+        title: Unüberwachte Verbindung
         description:
-          1: To track errors on this connection,
-          2: activate monitoring
-          3: in the settings.
+          1: Um Fehler bei dieser Verbindung zu verfolgen,
+          2: aktiviere Überwachung
+          3: in den Einstellungen.
+      not_data_source:
+        title: Im Moment ist die Überwachungsseite nur für die Quellverbindung verfügbar.
   runtime_error:
     error_message: Oh verdammt! Ein Fehler ist aufgetreten...
     reload_helper: Bitte laden Sie die Seite neu und versuchen Sie es erneut.

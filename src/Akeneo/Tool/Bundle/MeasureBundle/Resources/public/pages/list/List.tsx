@@ -6,7 +6,6 @@ import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
 import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
 import {HelperTitle, HelperText, Helper} from 'akeneomeasure/shared/components/Helper';
 import {Link} from 'akeneomeasure/shared/components/Link';
-import {NoDataSection, NoDataTitle, NoDataText} from 'akeneomeasure/shared/components/NoData';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {
   sortMeasurementFamily,
@@ -19,7 +18,7 @@ import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
 import {Direction} from 'akeneomeasure/model/direction';
-import {Button, SearchBar} from '@akeneo-pim-community/shared';
+import {Button, SearchBar, NoDataSection, NoDataTitle, NoDataText} from '@akeneo-pim-community/shared';
 import {useTranslate, useUserContext, useSecurity, PimView} from '@akeneo-pim-community/legacy-bridge';
 
 const useSorting = (

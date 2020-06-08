@@ -202,7 +202,8 @@ JSON;
         "en_US": "Cross sell",
         "fr_FR": "Vente croisée"
     },
-    "is_two_way": false
+    "is_two_way": false,
+    "is_quantified": false
 }
 JSON;
 
@@ -218,7 +219,8 @@ JSON;
         "en_US": "Upsell",
         "fr_FR": "Vente incitative"
     },
-    "is_two_way": false
+    "is_two_way": false,
+    "is_quantified": false
 }
 JSON;
 
@@ -234,7 +236,8 @@ JSON;
         "en_US": "Substitution",
         "fr_FR": "Remplacement"
     },
-    "is_two_way": false
+    "is_two_way": false,
+    "is_quantified": false
 }
 JSON;
 
@@ -250,7 +253,8 @@ JSON;
         "en_US": "Pack",
         "fr_FR": "Pack"
     },
-    "is_two_way": false
+    "is_two_way": false,
+    "is_quantified": false
 }
 JSON;
 

@@ -52,6 +52,22 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                     'groups' => ['group_code_3']
                 ]
             ],
+            [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        [
+                            'identifier' => 'product_identifier_1',
+                            'quantity' => 8,
+                        ],
+                    ],
+                    'product_models' => [
+                        [
+                            'identifier' => 'product_model_5',
+                            'quantity' => 2,
+                        ],
+                    ],
+                ],
+            ],
             [],
             new ReadValueCollection()
         );
@@ -66,6 +82,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             [],
             [],
             null,
+            [],
             [],
             ['a_metadata' => 'viande'],
             new ReadValueCollection()
@@ -93,7 +110,23 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                         'product_models' => ['product_model_5'],
                         'groups' => ['group_code_3']
                     ]
-                ]
+                ],
+                'quantified_associations' => [
+                    'PRODUCT_SET' => [
+                        'products' => [
+                            [
+                                'identifier' => 'product_identifier_1',
+                                'quantity' => 8,
+                            ],
+                        ],
+                        'product_models' => [
+                            [
+                                'identifier' => 'product_model_5',
+                                'quantity' => 2,
+                            ],
+                        ],
+                    ],
+                ],
             ],
             [
                 'identifier' => 'identifier_2',
@@ -106,7 +139,83 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'parent' => null,
                 'values' => (object) [],
                 'associations' => (object) [],
+                'quantified_associations' => (object) [],
                 'metadata' => ['a_metadata' => 'viande'],
+            ],
+        ]);
+    }
+
+    function it_normalize_a_single_connection_product()
+    {
+        $connector = new ConnectorProduct(
+            1,
+            'identifier_1',
+            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            'family_code',
+            ['category_code_1', 'category_code_2'],
+            ['group_code_1', 'group_code_2'],
+            'parent_product_model_code',
+            [
+                'X_SELL' => [
+                    'products' => ['product_code_1'],
+                    'product_models' => [],
+                    'groups' => ['group_code_2']
+                ],
+            ],
+            [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        [
+                            'identifier' => 'product_identifier_1',
+                            'quantity' => 8,
+                        ],
+                    ],
+                    'product_models' => [
+                        [
+                            'identifier' => 'product_model_5',
+                            'quantity' => 2,
+                        ],
+                    ],
+                ],
+            ],
+            [],
+            new ReadValueCollection()
+        );
+
+        $this->normalizeConnectorProduct($connector)->shouldBeLike([
+            'identifier' => 'identifier_1',
+            'created' => '2019-04-23T15:55:50+00:00',
+            'updated' => '2019-04-25T15:55:50+00:00',
+            'enabled' => true,
+            'family' => 'family_code',
+            'categories' => ['category_code_1', 'category_code_2'],
+            'groups' => ['group_code_1', 'group_code_2'],
+            'parent' => 'parent_product_model_code',
+            'values' => (object) [],
+            'associations' => [
+                'X_SELL' => [
+                    'products' => ['product_code_1'],
+                    'product_models' => [],
+                    'groups' => ['group_code_2']
+                ],
+            ],
+            'quantified_associations' => [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        [
+                            'identifier' => 'product_identifier_1',
+                            'quantity' => 8,
+                        ],
+                    ],
+                    'product_models' => [
+                        [
+                            'identifier' => 'product_model_5',
+                            'quantity' => 2,
+                        ],
+                    ],
+                ],
             ],
         ]);
     }

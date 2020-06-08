@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
@@ -27,6 +28,10 @@ class PurgeConnectionErrorsQuery
      */
     public function execute(array $connectionCodes, int $nbOfErrorsToKeep = 100, int $nbOfDaysToKeep = 8): void
     {
+        if (0 === count($connectionCodes)) {
+            return;
+        }
+
         $msearch = [];
         foreach ($connectionCodes as $code) {
             $msearch[] = [];

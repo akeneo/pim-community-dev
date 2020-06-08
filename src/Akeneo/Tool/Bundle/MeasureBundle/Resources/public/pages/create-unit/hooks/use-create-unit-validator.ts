@@ -1,7 +1,7 @@
 import {MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
 import {Unit} from 'akeneomeasure/model/unit';
-import {ValidationError} from 'akeneomeasure/model/validation-error';
 import {useRouter} from '@akeneo-pim-community/legacy-bridge';
+import {ValidationError} from '@akeneo-pim-community/shared';
 
 type ValidatorResult = {
   valid: boolean;

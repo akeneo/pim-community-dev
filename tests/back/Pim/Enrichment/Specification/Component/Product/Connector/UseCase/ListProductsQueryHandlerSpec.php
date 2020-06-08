@@ -78,6 +78,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             'parent_product_model_code',
             [],
             [],
+            [],
             new ReadValueCollection()
         );
 
@@ -91,6 +92,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             ['category_code_3', 'category_code_2'],
             ['group_code_1', 'group_code_2'],
             'parent_product_model_code',
+            [],
             [],
             [],
             new ReadValueCollection()
@@ -140,6 +142,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             'parent_product_model_code',
             [],
             [],
+            [],
             new ReadValueCollection()
         );
 
@@ -153,6 +156,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             ['category_code_3', 'category_code_2'],
             ['group_code_1', 'group_code_2'],
             'parent_product_model_code',
+            [],
             [],
             [],
             new ReadValueCollection()
@@ -295,6 +299,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             ['category_code_1', 'category_code_2'],
             ['group_code_1', 'group_code_2'],
             'parent_product_model_code',
+            [],
             [],
             [],
             new ReadValueCollection()

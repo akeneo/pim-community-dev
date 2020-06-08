@@ -84,4 +84,8 @@ interface AssociationTypeInterface extends
      * @return string
      */
     public function __toString();
+
+    public function isQuantified(): bool;
+
+    public function setIsQuantified(bool $quantified): void;
 }

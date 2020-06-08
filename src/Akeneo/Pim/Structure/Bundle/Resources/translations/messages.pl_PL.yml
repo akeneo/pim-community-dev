@@ -30,6 +30,7 @@ pim_enrich:
     association_type:
       property:
         is_two_way: Powiązanie dwukierunkowe
+        is_quantified: Quantified association
 pim_enrich_attribute_form:
   code: Pod Produktu
   type: Typ atrybutu

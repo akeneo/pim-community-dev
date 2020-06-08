@@ -190,10 +190,12 @@ acceptance:
                 - test.catalog.product_creation.context
                 - test.catalog.product_validation.context
                 - test.enrichment.enrichment_follow_up_context
+                - test.enrichment.quantified_associations_context
                 - test.attribute.context
                 - test.attribute_option.context
                 - test.locale.context
                 - test.channel.context
+                - test.user.context
             filters:
                 tags: '@acceptance-back'
         channel:

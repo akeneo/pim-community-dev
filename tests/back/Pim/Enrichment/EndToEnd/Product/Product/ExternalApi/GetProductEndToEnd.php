@@ -53,7 +53,8 @@ class GetProductEndToEnd extends AbstractProductTestCase
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'X_SELL' => ['groups' => [], 'products' => [], 'product_models' => []],
-            ]
+            ],
+            'quantified_associations' => [],
         ];
 
         $response = $client->getResponse();

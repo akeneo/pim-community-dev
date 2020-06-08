@@ -26,6 +26,11 @@ pim_enrich:
         second: Choisissez une opération
         third: Configurez l'opération à effectuer
         fourth: Confirmation
+  entity:
+    association_type:
+      property:
+        is_two_way: Association bi-directionnelle
+        is_quantified: Quantified association
 pim_enrich_attribute_form:
   code: Code
   type: Type d'attribut

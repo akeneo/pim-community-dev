@@ -29,6 +29,8 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -242,16 +244,9 @@ class ProductController
             ));
         }
 
-        $normalizedViolations = [];
-        foreach ($violations as $violation) {
-            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                $violation,
-                'internal_api',
-                ['product' => $product]
-            );
-        }
+        $normalizedViolations = $this->normalizeViolations($violations, $product);
 
-        return new JsonResponse(['values' => $normalizedViolations], 400);
+        return new JsonResponse($normalizedViolations, 400);
     }
 
     /**
@@ -296,16 +291,9 @@ class ProductController
             return new JsonResponse($normalizedProduct);
         }
 
-        $normalizedViolations = [];
-        foreach ($violations as $violation) {
-            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                $violation,
-                'internal_api',
-                ['product' => $product]
-            );
-        }
+        $normalizedViolations = $this->normalizeViolations($violations, $product);
 
-        return new JsonResponse(['values' => $normalizedViolations], 400);
+        return new JsonResponse($normalizedViolations, 400);
     }
 
     /**
@@ -458,5 +446,34 @@ class ProductController
     protected function getNormalizationContext(): array
     {
         return $this->userContext->toArray() + ['filter_types' => []];
+    }
+
+    protected function normalizeViolations(ConstraintViolationListInterface $violations, ProductInterface $product): array
+    {
+        $normalizedViolations = [
+            'values' => [],
+        ];
+
+        /** @var ConstraintViolation $violation */
+        foreach ($violations as $violation) {
+            $propertyPath = $violation->getPropertyPath();
+
+            if (0 === strpos($propertyPath, 'quantifiedAssociations.')) {
+                $normalizedViolations['quantified_associations'][] = $this->normalizer->normalize(
+                    $violation,
+                    'internal_api',
+                    ['translate' => false]
+                );
+                continue;
+            }
+
+            $normalizedViolations['values'][] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['product' => $product]
+            );
+        }
+
+        return $normalizedViolations;
     }
 }

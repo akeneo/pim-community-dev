@@ -14,12 +14,10 @@ import {
   DropdownLink,
   SecondaryActionsDropdownButton,
 } from 'akeneomeasure/shared/components/SecondaryActionsDropdownButton';
-import {filterErrors, ValidationError, partitionErrors} from 'akeneomeasure/model/validation-error';
 import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family-saver';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
-import {HelperRibbon, HelperLevel} from 'akeneomeasure/shared/components/HelperRibbon';
 import {useUnsavedChanges} from 'akeneomeasure/shared/hooks/use-unsaved-changes';
 import {UnsavedChanges} from 'akeneomeasure/shared/components/UnsavedChanges';
 import {UnsavedChangesContext} from 'akeneomeasure/context/unsaved-changes-context';
@@ -38,7 +36,14 @@ import {
   PimView,
   useSecurity,
 } from '@akeneo-pim-community/legacy-bridge';
-import {Button} from '@akeneo-pim-community/shared';
+import {
+  Button,
+  HelperRibbon,
+  HelperLevel,
+  filterErrors,
+  ValidationError,
+  partitionErrors,
+} from '@akeneo-pim-community/shared';
 
 enum Tab {
   Units = 'units',

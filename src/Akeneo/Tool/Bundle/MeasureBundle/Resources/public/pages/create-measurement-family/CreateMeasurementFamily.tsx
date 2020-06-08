@@ -2,7 +2,6 @@ import React, {FormEvent, useCallback, useState} from 'react';
 import {Modal, ModalBodyWithIllustration, ModalCloseButton, ModalTitle} from 'akeneomeasure/shared/components/Modal';
 import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
 import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
-import {HelperLevel, HelperRibbon} from 'akeneomeasure/shared/components/HelperRibbon';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {useCreateMeasurementFamilySaver} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
@@ -11,13 +10,12 @@ import {
   initializeCreateMeasurementFamilyForm,
   createMeasurementFamilyFromForm,
 } from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
-import {ValidationError, getErrorsForPath} from 'akeneomeasure/model/validation-error';
 import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
 import {Key} from 'akeneomeasure/shared/key';
 import {useForm} from 'akeneomeasure/hooks/use-form';
 import {MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
 import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
-import {Button} from '@akeneo-pim-community/shared';
+import {Button, HelperRibbon, HelperLevel, ValidationError, getErrorsForPath} from '@akeneo-pim-community/shared';
 
 type CreateMeasurementFamilyProps = {
   onClose: (createdMeasurementFamilyCode?: MeasurementFamilyCode) => void;

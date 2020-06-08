@@ -16,9 +16,6 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
     /** @var NormalizerInterface */
     protected $translationNormalizer;
 
-    /**
-     * @param NormalizerInterface $translationNormalizer
-     */
     public function __construct(NormalizerInterface $translationNormalizer)
     {
         $this->translationNormalizer = $translationNormalizer;
@@ -33,7 +30,8 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
         return [
             'code'   => $associationType->getCode(),
             'labels' => $this->translationNormalizer->normalize($associationType, 'standard', $context),
-            'is_two_way' => $associationType->isTwoWay()
+            'is_two_way' => $associationType->isTwoWay(),
+            'is_quantified' => $associationType->isQuantified(),
         ];
     }
 

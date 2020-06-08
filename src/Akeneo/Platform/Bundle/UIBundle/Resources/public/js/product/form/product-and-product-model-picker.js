@@ -29,14 +29,14 @@ define(
              * {@inheritdoc}
              */
             selectModel: function (model) {
-                this.addItem(`${model.attributes.document_type}_${model.get(this.config.columnName)}`);
+                this.addItem(`${model.attributes.document_type};${model.get(this.config.columnName)}`);
             },
 
             /**
              * {@inheritdoc}
              */
             unselectModel: function (model) {
-                this.removeItem(`${model.attributes.document_type}_${model.get(this.config.columnName)}`);
+                this.removeItem(`${model.attributes.document_type};${model.get(this.config.columnName)}`);
             },
 
             /**
@@ -46,11 +46,11 @@ define(
                 let productIds = [];
                 let productModelIds = [];
                 this.getItems().forEach((item) => {
-                    const matchProductModel = item.match(/^product_model_(.*)$/);
+                    const matchProductModel = item.match(/^product_model;(.*)$/);
                     if (matchProductModel) {
                         productModelIds.push(matchProductModel[1]);
                     } else {
-                        const matchProduct = item.match(/^product_(.*)$/);
+                        const matchProduct = item.match(/^product;(.*)$/);
                         productIds.push(matchProduct[1]);
                     }
                 });
@@ -88,9 +88,9 @@ define(
              */
             itemCodeMethod: function (item) {
                 if (item.code) {
-                    return `product_model_${item.code}`;
+                    return `product_model;${item.code}`;
                 } else {
-                    return `product_${item[this.config.columnName]}`;
+                    return `product;${item[this.config.columnName]}`;
                 }
             }
         });

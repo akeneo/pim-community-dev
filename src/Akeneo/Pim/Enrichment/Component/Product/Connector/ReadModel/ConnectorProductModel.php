@@ -43,6 +43,9 @@ final class ConnectorProductModel
     private $associations;
 
     /** @var array */
+    private $quantifiedAssociations;
+
+    /** @var array */
     private $categoryCodes;
 
     /** @var ReadValueCollection */
@@ -58,6 +61,7 @@ final class ConnectorProductModel
         string $familyVariantCode,
         array $metadata,
         array $associations,
+        array $quantifiedAssociations,
         array $categoryCodes,
         ReadValueCollection $values
     ) {
@@ -70,6 +74,7 @@ final class ConnectorProductModel
         $this->familyVariantCode = $familyVariantCode;
         $this->metadata = $metadata;
         $this->associations = $associations;
+        $this->quantifiedAssociations = $quantifiedAssociations;
         $this->categoryCodes = $categoryCodes;
         $this->values = $values;
     }
@@ -119,6 +124,11 @@ final class ConnectorProductModel
         return $this->associations;
     }
 
+    public function quantifiedAssociations(): array
+    {
+        return $this->quantifiedAssociations;
+    }
+
     public function categoryCodes(): array
     {
         return $this->categoryCodes;
@@ -166,6 +176,7 @@ final class ConnectorProductModel
             $this->familyVariantCode,
             $this->metadata,
             $this->associations,
+            $this->quantifiedAssociations,
             array_values(array_intersect($this->categoryCodes, $categoryCodesToKeep)),
             $this->values
         );
@@ -194,6 +205,7 @@ final class ConnectorProductModel
             $this->familyVariantCode,
             $this->metadata,
             $this->associations,
+            $this->quantifiedAssociations,
             $this->categoryCodes,
             $values
         );
@@ -223,6 +235,7 @@ final class ConnectorProductModel
             $this->familyVariantCode,
             $this->metadata,
             $filteredAssociations,
+            $this->quantifiedAssociations,
             $this->categoryCodes,
             $this->values
         );
@@ -253,6 +266,7 @@ final class ConnectorProductModel
             $this->familyVariantCode,
             $this->metadata,
             $filteredAssociations,
+            $this->quantifiedAssociations,
             $this->categoryCodes,
             $this->values
         );
@@ -270,6 +284,7 @@ final class ConnectorProductModel
             $this->familyVariantCode,
             array_merge($this->metadata, [$key => $value]),
             $this->associations,
+            $this->quantifiedAssociations,
             $this->categoryCodes,
             $this->values
         );

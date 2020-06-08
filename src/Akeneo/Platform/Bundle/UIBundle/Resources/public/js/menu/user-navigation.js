@@ -18,6 +18,7 @@ define(
         'pim/router',
         'pim/user-context',
         'pim/notifications',
+        'akeneo/communication-channel',
         'pim/media-url-generator',
         'pim/template/menu/user-navigation'
     ],
@@ -28,6 +29,7 @@ define(
         router,
         UserContext,
         Notifications,
+        CommunicationChannel,
         MediaUrlGenerator,
         template
     ) {
@@ -69,6 +71,9 @@ define(
                 notificationView.setElement(this.$('.notification')).render();
                 notificationView.refresh();
 
+                const communicationChannelView = new CommunicationChannel();
+                communicationChannelView.setElement(this.$('.communication-channel')).render();
+
                 this.delegateEvents();
 
                 return BaseForm.prototype.render.apply(this, arguments);
@@ -86,8 +91,9 @@ define(
              */
             userAccount: function () {
                 router.redirectToRoute(
-                    'pim_user_edit',
-                    {identifier: UserContext.get('meta').id}
+                    'pim_user_edit', {
+                        identifier: UserContext.get('meta').id
+                    }
                 );
             },
 

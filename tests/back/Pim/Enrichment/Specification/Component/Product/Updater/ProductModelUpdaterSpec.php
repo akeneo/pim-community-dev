@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater;
 
+use Akeneo\Pim\Enrichment\Component\Product\QuantifiedAssociation\QuantifiedAssociationsFromAncestorsFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Validator\QuantifiedAssociationsStructureValidatorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -24,7 +26,9 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         ObjectUpdaterInterface $valuesUpdater,
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
-        ParentAssociationsFilter $parentAssociationsFilter
+        ParentAssociationsFilter $parentAssociationsFilter,
+        QuantifiedAssociationsFromAncestorsFilter $quantifiedAssociationsFromAncestorsFilter,
+        QuantifiedAssociationsStructureValidatorInterface $quantifiedAssociationsStructureValidator
     ) {
         $this->beConstructedWith(
             $propertySetter,
@@ -32,6 +36,8 @@ class ProductModelUpdaterSpec extends ObjectBehavior
             $familyVariantRepository,
             $productModelRepository,
             $parentAssociationsFilter,
+            $quantifiedAssociationsFromAncestorsFilter,
+            $quantifiedAssociationsStructureValidator,
             ['categories'],
             ['code']
         );
