@@ -3,7 +3,6 @@ services:
         class: Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Normalizer\AssetCollectionValueNormalizer
         arguments:
             - '@pim_catalog.repository.cached_attribute'
-            - '@pimee.asset_manager.datagrid.query.get_asset_information'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_details'
         tags:
             - { name: pim_datagrid_serializer.normalizer }

@@ -39,8 +39,8 @@ class EmptyUpdater implements ValueUpdaterInterface
     private $attributeRepository;
 
     public function __construct(
-        GetTransformationsSource $getTransformationsSource = null, // TODO : remove default null value when pull-up on master (added to avoid BC break)
-        AttributeRepositoryInterface $attributeRepository = null // TODO : remove default null value when pull-up on master (added to avoid BC break)
+        GetTransformationsSource $getTransformationsSource,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->getTransformationsSource = $getTransformationsSource;
         $this->attributeRepository = $attributeRepository;
@@ -97,10 +97,6 @@ class EmptyUpdater implements ValueUpdaterInterface
 
     private function createEmptyValueCommand(Asset $asset, Target $target): ?EmptyValueCommand
     {
-        if ($this->attributeRepository === null) { // TODO : remove this check when pull-up on master
-            return null;
-        }
-
         try {
             $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
                 $target->getAttributeCode(),
@@ -122,9 +118,6 @@ class EmptyUpdater implements ValueUpdaterInterface
         ChannelReference $channelReference,
         LocaleReference $localeReference
     ): array {
-        if ($this->getTransformationsSource === null) { // TODO : remove this check when pull-up on master
-            return [];
-        }
 
         return $this->getTransformationsSource->forAttribute(
             $attribute,

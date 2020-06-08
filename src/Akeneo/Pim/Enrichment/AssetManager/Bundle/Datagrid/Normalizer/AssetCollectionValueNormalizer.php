@@ -25,19 +25,14 @@ class AssetCollectionValueNormalizer implements NormalizerInterface, CacheableSu
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
 
-    /** @var GetAssetInformationQueryInterface */
-    private $getAssetInformationQuery;
-
     /** @var FindAssetDetailsInterface */
     private $findAssetDetailsQuery;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        GetAssetInformationQueryInterface $getAssetInformationQuery, // TODO: This value is never used, it should be remove when pull-up on master
-        FindAssetDetailsInterface $findAssetDetailsQuery = null // TODO : remove default null value when pull-up on master (added to avoid BC break)
+        FindAssetDetailsInterface $findAssetDetailsQuery
     ) {
         $this->attributeRepository = $attributeRepository;
-        $this->getAssetInformationQuery = $getAssetInformationQuery;
         $this->findAssetDetailsQuery = $findAssetDetailsQuery;
     }
 
@@ -83,11 +78,6 @@ class AssetCollectionValueNormalizer implements NormalizerInterface, CacheableSu
         string $catalogLocaleCode,
         string $catalogChannelCode
     ): ?array {
-        // TODO : remove this check when pull-up on master
-        if (null === $this->findAssetDetailsQuery) {
-            return null;
-        }
-
         $assetCodes = $value->getData();
         $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
         if (!$attribute instanceof AttributeInterface) {
