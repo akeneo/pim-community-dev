@@ -7,6 +7,12 @@ import {
 
 const cacheAttributes: { [identifier: string]: Attribute | null } = {};
 
+export const clearCache = () => {
+  for (const key in cacheAttributes) {
+    delete cacheAttributes[key];
+  }
+}
+
 export const getAttributeByIdentifier = async (
   attributeIdentifier: AttributeCode,
   router: Router
