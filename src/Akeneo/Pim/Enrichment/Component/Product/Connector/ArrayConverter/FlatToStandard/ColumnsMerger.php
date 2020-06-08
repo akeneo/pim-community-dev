@@ -237,16 +237,18 @@ class ColumnsMerger
     {
         foreach ($collectedQuantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
             foreach (['products', 'product_models'] as $entityType) {
-                if (
-                    count($quantifiedAssociation[$entityType]['identifiers']) ===
-                    count($quantifiedAssociation[$entityType]['quantities'])
-                ) {
-                    $resultRow[sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, $entityType)] =
-                    array_map(function ($identifier, $quantity) {
-                        return ['identifier' => $identifier, 'quantity' => (int) $quantity];
-                    }, $quantifiedAssociation[$entityType]['identifiers'], $quantifiedAssociation[$entityType]['quantities']);
-                } else {
-                    throw new \LogicException('Inconsistency detected: the count of identifiers and quantities is not the same');
+                if (!empty($quantifiedAssociation[$entityType])) {
+                    if (
+                        count($quantifiedAssociation[$entityType]['identifiers']) ===
+                        count($quantifiedAssociation[$entityType]['quantities'])
+                    ) {
+                        $resultRow[sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, $entityType)] =
+                        array_map(function ($identifier, $quantity) {
+                            return ['identifier' => $identifier, 'quantity' => (int) $quantity];
+                        }, $quantifiedAssociation[$entityType]['identifiers'], $quantifiedAssociation[$entityType]['quantities']);
+                    } else {
+                        throw new \LogicException('Inconsistency detected: the count of identifiers and quantities is not the same');
+                    }
                 }
             }
         }

@@ -289,8 +289,16 @@ class ColumnsMergerSpec extends ObjectBehavior
 
         $mergedRow = [
             'PACK-products-quantity' => '10|24',
-            'PACK-products' => [['quantity' => 10, 'identifier' => 'my_sku'], ['quantity' => 24, 'identifier' => 'nice']],
-            'PACK-product_models' => []
+            'PACK-products' => [
+                [
+                    'identifier' => 'my_sku',
+                    'quantity' => 10
+                ],
+                [
+                    'identifier' => 'nice',
+                    'quantity' => 24
+                ]
+            ],
         ];
         $this->merge($row)->shouldReturn($mergedRow);
     }
