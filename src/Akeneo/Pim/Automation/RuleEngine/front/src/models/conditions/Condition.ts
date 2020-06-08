@@ -20,7 +20,7 @@ export type Condition =
 export type ConditionModuleGuesser = (
   json: any,
   router: Router
-) => Promise<React.FC<ConditionLineProps> | null>;
+) => Promise<React.FC<ConditionLineProps & { condition: Condition }> | null>;
 
 export type ConditionFactory = (
   fieldCode: string,

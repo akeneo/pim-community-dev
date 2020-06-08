@@ -91,6 +91,7 @@ const FamiliesSelector: React.FC<Props> = ({
   onChange,
   validation,
   name,
+  ...remainingProps
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
@@ -102,6 +103,7 @@ const FamiliesSelector: React.FC<Props> = ({
 
   return (
     <Select2MultiAsyncWrapper
+      {...remainingProps}
       name={name}
       label={label || translate('pim_enrich.entity.family.plural_label')}
       hiddenLabel={hiddenLabel}

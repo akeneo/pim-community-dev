@@ -90,6 +90,7 @@ const Select2Wrapper: React.FC<Props> = ({
   hideSearch = false,
   allowClear = false,
   disabled = false,
+  ...remainingProps
 }) => {
   const select2ref = useRef<HTMLInputElement | null>(null);
 
@@ -169,7 +170,7 @@ const Select2Wrapper: React.FC<Props> = ({
   return (
     <>
       <Label label={label} hiddenLabel={hiddenLabel} htmlFor={id} />
-      <input id={id} type='hidden' ref={select2ref} disabled={disabled} />
+      <input id={id} type='hidden' ref={select2ref} disabled={disabled} {...remainingProps} />
     </>
   );
 };

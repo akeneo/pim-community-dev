@@ -19,6 +19,7 @@ const OperatorSelector: React.FC<Props> = ({
   value,
   onChange,
   name,
+  ...remainingProps
 }) => {
   const translate = useTranslate();
   const translateOperator = (operator: Operator): string => {
@@ -44,6 +45,7 @@ const OperatorSelector: React.FC<Props> = ({
 
   return (
     <Select2SimpleSyncWrapper
+      {...remainingProps}
       label={label || translate('pim_common.operator')}
       hiddenLabel={hiddenLabel}
       data={operatorChoices}

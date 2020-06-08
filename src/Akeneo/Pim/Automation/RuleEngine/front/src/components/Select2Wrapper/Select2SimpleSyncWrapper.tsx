@@ -25,8 +25,8 @@ const Select2SimpleSyncWrapper: React.FC<Props> = props => {
 
   return (
     <ReactHookFormSelect2Wrapper
-      onChange={handleChange}
       {...remainingProps}
+      onChange={handleChange}
       multiple={false}
     />
   );

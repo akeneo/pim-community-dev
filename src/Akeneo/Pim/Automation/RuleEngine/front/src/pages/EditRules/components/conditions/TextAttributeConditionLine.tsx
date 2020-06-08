@@ -45,6 +45,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       availableOperators={TextAttributeOperators}
       attribute={attribute}>
       <InputText
+        data-testid={`edit-rules-input-${lineNumber}-value`}
         name={`content.conditions[${lineNumber}].value`}
         label={translate('pimee_catalog_rule.rule.value')}
         ref={register()}

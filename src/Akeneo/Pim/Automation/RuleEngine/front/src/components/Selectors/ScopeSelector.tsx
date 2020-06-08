@@ -28,6 +28,7 @@ const ScopeSelector: React.FC<Props> = ({
   disabled = false,
   name,
   validation,
+  ...remainingProps
 }) => {
   const translate = useTranslate();
   const getScopeLabel = (scope: Scope): string => {
@@ -57,6 +58,7 @@ const ScopeSelector: React.FC<Props> = ({
   return (
     <>
       <Select2SimpleSyncWrapper
+        {...remainingProps}
         label={label || translate('pim_enrich.entity.channel.uppercase_label')}
         hiddenLabel={hiddenLabel}
         data={scopeChoices}

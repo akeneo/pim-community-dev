@@ -20,6 +20,7 @@ const Select2Wrapper: typeof BaseWrapper = ({
   onChange,
   value,
   onSelecting,
+  ...remainingProps
 }: Select2Props) => {
   const [stateOptions, setOptions] = React.useState<
     (Select2Option | Select2OptionGroup)[]
@@ -78,7 +79,7 @@ const Select2Wrapper: typeof BaseWrapper = ({
       <Label label={label} hiddenLabel={hiddenLabel} htmlFor={id} />
       <select
         id={id}
-        data-testid={id}
+        data-testid={(remainingProps as any)['data-testid']}
         onChange={handleChange}
         onClick={handleClick}
         multiple={multiple}

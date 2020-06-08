@@ -2,7 +2,6 @@ import React from 'react';
 import 'jest-fetch-mock';
 import { renderWithProviders, act } from '../../../../test-utils';
 import { Operator } from '../../../../src/models/Operator';
-import { Router } from '../../../../src/dependenciesTools';
 import { FamilyCondition } from '../../../../src/models/conditions';
 import { FamilyConditionLine } from '../../../../src/pages/EditRules/components/conditions/FamilyConditionLine';
 import userEvent from '@testing-library/user-event';
@@ -12,7 +11,6 @@ jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
 
 const condition: FamilyCondition = {
-  module: FamilyConditionLine,
   field: 'family',
   operator: Operator.IN_LIST,
   value: ['accessories', 'mugs'],
@@ -24,15 +22,6 @@ const familiesPayload = {
     labels: { en_US: 'Accessories', fr_FR: 'Accessoires' },
   },
   mugs: { code: 'mugs', labels: { en_US: 'Mugs', fr_FR: 'Tasses' } },
-};
-
-const translate = jest.fn((key: string) => key);
-const router: Router = {
-  generate: jest.fn(
-    (route: string, params?: { [param: string]: any }) =>
-      `${route}?${JSON.stringify(params)}`
-  ),
-  redirect: jest.fn(),
 };
 
 describe('FamilyConditionLine', () => {
@@ -51,12 +40,9 @@ describe('FamilyConditionLine', () => {
         condition={condition}
         lineNumber={1}
         currentCatalogLocale={'fr_FR'}
-        router={router}
         locales={[]}
         scopes={{}}
-        translate={translate}
-      />,
-      { all: true }
+      />, { all: true }
     );
 
     expect(
@@ -104,12 +90,9 @@ describe('FamilyConditionLine', () => {
         condition={condition}
         lineNumber={1}
         currentCatalogLocale={'fr_FR'}
-        router={router}
         locales={[]}
         scopes={{}}
-        translate={translate}
-      />,
-      { all: true }
+      />, { all: true }
     );
 
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');

@@ -102,6 +102,7 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
       </FieldColumn>
       <OperatorColumn>
         <OperatorSelector
+          data-testid={`edit-rules-input-${lineNumber}-operator`}
           hiddenLabel={true}
           availableOperators={FamilyOperators}
           value={condition.operator}
@@ -111,6 +112,7 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
       {shouldDisplayValue() && (
         <ValueColumn>
           <FamiliesSelector
+            data-testid={`edit-rules-input-${lineNumber}-value`}
             hiddenLabel={true}
             currentCatalogLocale={currentCatalogLocale}
             value={condition.value}

@@ -196,6 +196,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
       </FieldColumn>
       <OperatorColumn>
         <OperatorSelector
+          data-testid={`edit-rules-input-${lineNumber}-operator`}
           hiddenLabel={true}
           availableOperators={availableOperators}
           value={condition.operator}
@@ -208,6 +209,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
       <ScopeColumn>
         {(attribute.scopable || getScopeFormValue()) && (
           <ScopeSelector
+            data-testid={`edit-rules-input-${lineNumber}-scope`}
             hiddenLabel={true}
             availableScopes={Object.values(scopes)}
             currentCatalogLocale={currentCatalogLocale}
@@ -222,6 +224,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
       <LocaleColumn>
         {(attribute.localizable || getLocaleFormValue()) && (
           <LocaleSelector
+            data-testid={`edit-rules-input-${lineNumber}-locale`}
             hiddenLabel={true}
             availableLocales={getAvailableLocales()}
             value={condition.locale}

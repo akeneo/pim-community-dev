@@ -1,5 +1,5 @@
 import { RuleDefinition } from './RuleDefinition';
-import { ActionModuleGuesser } from './Action';
+import { Action, ActionModuleGuesser } from './Action';
 import { Router } from '../dependenciesTools';
 import { getAttributesByIdentifiers } from '../repositories/AttributeRepository';
 import {
@@ -13,6 +13,7 @@ import {
   getSetFamilyActionModule,
 } from './actions';
 import {
+  Condition,
   ConditionModuleGuesser,
   getFamilyConditionModule,
   getMultiOptionsAttributeConditionModule,
@@ -54,7 +55,10 @@ const getActionModule: ((
 const getConditionModule: (
   json: any,
   router: Router
-) => Promise<React.FC<ConditionLineProps>> = async (json, router) => {
+) => Promise<React.FC<ConditionLineProps & { condition: Condition }>> = async (
+  json,
+  router
+) => {
   const getConditionModuleFunctions: ConditionModuleGuesser[] = [
     getFamilyConditionModule,
     getCategoryConditionModule,
@@ -110,9 +114,16 @@ export const denormalize = async function(
   json: any,
   router: Router
 ): Promise<RuleDefinition> {
+  if (
+    typeof json.code !== 'string' ||
+    (typeof json.labels !== 'undefined' && typeof json.labels !== 'object') ||
+    (typeof json.priority !== 'undefined' && typeof json.priority !== 'number')
+  ) {
+    throw new Error('Unable to parse rule definition ' + JSON.stringify(json));
+  }
   const code = json.code;
-  const labels = json.labels;
-  const priority = json.priority;
+  const labels = json.labels || {};
+  const priority = json.priority || 0;
 
   await prepareCacheAttributes(json, router);
 

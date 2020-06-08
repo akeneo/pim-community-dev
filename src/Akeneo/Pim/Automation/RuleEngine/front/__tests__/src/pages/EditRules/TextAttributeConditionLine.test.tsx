@@ -1,67 +1,43 @@
-import { renderWithProviders } from '../../../../test-utils';
 import React from 'react';
+import { renderWithProviders } from '../../../../test-utils';
+import 'jest-fetch-mock';
 import { TextAttributeConditionLine } from '../../../../src/pages/EditRules/components/conditions/TextAttributeConditionLine';
+import { Attribute } from '../../../../src/models/Attribute';
 import { TextAttributeCondition } from '../../../../src/models/conditions';
 import { Operator } from '../../../../src/models/Operator';
+import { IndexedScopes } from '../../../../src/repositories/ScopeRepository';
 import { Router } from '../../../../src/dependenciesTools';
 import userEvent from '@testing-library/user-event';
 import { wait } from '@testing-library/dom';
 import { createAttribute, locales, scopes } from '../../factories';
 
-const conditionWithLocalizableScopableAttribute: TextAttributeCondition = {
-  scope: 'mobile',
-  module: TextAttributeConditionLine,
-  locale: 'en_US',
-  attribute: createAttribute({}),
-  field: 'name',
-  operator: Operator.NOT_EQUAL,
-  value: 'Canon',
-};
-
-const conditionWithNonLocalizableScopableAttribute: TextAttributeCondition = {
-  module: TextAttributeConditionLine,
-  attribute: createAttribute({ localizable: false, scopable: false }),
-  field: 'name',
-  operator: Operator.NOT_EQUAL,
-  value: 'Canon',
-};
-
-const defaultCondition: TextAttributeCondition = {
-  module: TextAttributeConditionLine,
-  attribute: createAttribute({ localizable: true, scopable: true }),
-  field: 'name',
-  operator: Operator.IS_EMPTY,
-};
-
-const translate = jest.fn((key: string) => key);
-const router: Router = {
-  generate: jest.fn(),
-  redirect: jest.fn(),
-};
-
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
+jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 
 describe('TextAttributeConditionLine', () => {
-  beforeEach(() => {
+  afterEach(() => {
     fetchMock.resetMocks();
   });
 
-  it('should display the text attribute conditionWithLocalizableScopableAttribute with locale and scope selectors', async () => {
-    const {
-      findByText,
-      findByTestId,
-    } = renderWithProviders(
+  it('should display the locale and scope selectors', async () => {
+    fetchMock.mockResponses(
+      [JSON.stringify(createAttribute({ localizable: true, scopable: true })), { status: 200 }],
+    );
+
+    const { findByText, findByTestId } = renderWithProviders(
       <TextAttributeConditionLine
-        condition={conditionWithLocalizableScopableAttribute}
+        condition={{
+          field: 'localizableScopableAttribute',
+          operator: Operator.NOT_EQUAL,
+          value: 'Canon',
+          scope: 'mobile',
+          locale: 'en_US',
+        }}
         lineNumber={1}
-        translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
-        router={router}
-      />,
-      { all: true }
+      />, { all: true }
     );
 
     expect(await findByText('Nom')).toBeInTheDocument();
@@ -78,22 +54,23 @@ describe('TextAttributeConditionLine', () => {
     );
   });
 
-  it('should display the text attribute conditionWithLocalizableScopableAttribute without locale and scope selectors', async () => {
-    const {
-      findByText,
-      findByTestId,
-      queryByTestId,
-    } = renderWithProviders(
+  it('should not display the locale and scope selectors', async () => {
+    fetchMock.mockResponses(
+      [JSON.stringify(createAttribute({ localizable: false, scopable: false })), { status: 200 }],
+    );
+
+    const { findByText, findByTestId, queryByTestId } = renderWithProviders(
       <TextAttributeConditionLine
-        condition={conditionWithNonLocalizableScopableAttribute}
+        condition={{
+          field: 'conditionWithNonLocalizableScopableAttribute',
+          operator: Operator.NOT_EQUAL,
+          value: 'Canon',
+        }}
         lineNumber={1}
-        translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
-        router={router}
-      />,
-      { all: true }
+      />, { all: true }
     );
 
     expect(await findByText('Nom')).toBeInTheDocument();
@@ -105,22 +82,22 @@ describe('TextAttributeConditionLine', () => {
   });
 
   it('handles values option appearance based on selected operator', async () => {
-    // Given
-    const {
-      findByText,
-      findByTestId,
-      queryByTestId,
-    } = renderWithProviders(
+    fetchMock.mockResponses(
+      [JSON.stringify(createAttribute({ localizable: false, scopable: false })), { status: 200 }],
+    );
+
+    const { findByText, findByTestId, queryByTestId } = renderWithProviders(
       <TextAttributeConditionLine
-        condition={conditionWithLocalizableScopableAttribute}
+        condition={{
+          field: 'localizableScopableAttribute',
+          operator: Operator.NOT_EQUAL,
+          value: 'Canon',
+        }}
         lineNumber={1}
-        translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'en_US'}
-        router={router}
-      />,
-      { all: true }
+      />, { all: true }
     );
     expect(await findByText('Name')).toBeInTheDocument();
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');
@@ -137,23 +114,23 @@ describe('TextAttributeConditionLine', () => {
   });
 
   it('displays the matching locales regarding the scope', async () => {
-    // Given
-    const {
-      findByText,
-      findByTestId,
-      queryByTestId,
-      queryByText,
-    } = renderWithProviders(
+    fetchMock.mockResponses(
+      [JSON.stringify(createAttribute({ localizable: true, scopable: true })), { status: 200 }],
+    );
+
+    const { findByText, findByTestId, queryByTestId, queryByText } = renderWithProviders(
       <TextAttributeConditionLine
-        condition={defaultCondition}
-        lineNumber={1}
-        translate={translate}
+        condition={{
+          field: 'localizableScopableAttribute',
+          operator: Operator.NOT_EQUAL,
+          value: 'Canon',
+          scope: 'mobile',
+          locale: 'en_US',
+        }}        lineNumber={1}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'en_US'}
-        router={router}
-      />,
-      { all: true }
+      />, { all: true }
     );
     expect(await findByText('Name')).toBeInTheDocument();
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');

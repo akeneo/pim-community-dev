@@ -31,6 +31,7 @@ const LocaleSelector: React.FC<Props> = ({
   disabled = false,
   name,
   validation,
+  ...remainingProps
 }) => {
   const translate = useTranslate();
   const localeChoices = availableLocales.map((locale: Locale) => {
@@ -71,6 +72,7 @@ const LocaleSelector: React.FC<Props> = ({
   return (
     <>
       <Select2SimpleSyncWrapper
+        {...remainingProps}
         label={label || translate('pim_enrich.entity.locale.uppercase_label')}
         hiddenLabel={hiddenLabel}
         data={localeChoices}

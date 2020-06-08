@@ -22,7 +22,7 @@ export const AvailableAddAction: { [key: string]: () => Action } = {
 
 export type ActionModuleGuesser = (
   json: any
-) => React.FC<ActionLineProps> | null;
+) => React.FC<ActionLineProps & { action: Action }> | null;
 
 export type Action =
   | AddAction
