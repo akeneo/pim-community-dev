@@ -1,9 +1,13 @@
 import BaseView = require('pimui/js/view/base');
 import React from "react";
 import ReactDOM from "react-dom";
-import Index from 'akeneopimstructure/js/attribute-option/Index';
+import {
+    ATTRIBUTE_OPTIONS_AUTO_SORT,
+    AttributeOptionsApp
+} from 'akeneopimstructure/js/attribute-option';
 
 const __ = require('oro/translator');
+const propertyAccessor = require('pim/common/property');
 
 class Choices extends BaseView {
     private config: any;
@@ -21,6 +25,12 @@ class Choices extends BaseView {
             });
         }
 
+        window.addEventListener(ATTRIBUTE_OPTIONS_AUTO_SORT, ((event: CustomEvent) => {
+            const data = this.getFormData();
+            propertyAccessor.updateProperty(data, 'auto_option_sorting', event.detail.autoSortOptions);
+            this.setData(data);
+        }) as EventListener);
+
         return super.configure();
     }
 
@@ -30,7 +40,7 @@ class Choices extends BaseView {
         }
 
         ReactDOM.render(
-            <Index attributeId={this.getFormData().meta.id}/>,
+            <AttributeOptionsApp attributeId={this.getFormData().meta.id} autoSortOptions={this.getFormData().auto_option_sorting}/>,
             this.el
         );
         return this;
