@@ -37,8 +37,8 @@ SELECT conn.code as connection_code, IFNULL(SUM(error.error_count), 0) as error_
 
 FROM akeneo_connectivity_connection AS conn
 LEFT JOIN akeneo_connectivity_connection_audit_error AS error
-	ON conn.code = error.connection_code
-	AND error.error_type = :error_type
+    ON conn.code = error.connection_code
+    AND error.error_type = :error_type
     AND error_datetime >= :from_datetime AND error_datetime < :up_to_datetime
 	
 WHERE conn.auditable = 1
