@@ -35,20 +35,35 @@ class CategoryProjectRemoverSpec extends ObjectBehavior
         $detacher,
         CategoryInterface $category,
         ProjectInterface $firstProject,
-        ProjectInterface $secondProject
+        ProjectInterface $secondProject,
+        ProjectInterface $thirdProject
     ) {
         $category->getCode()->willReturn('clothing');
 
-        $projectRepository->findAll()->willReturn([$firstProject, $secondProject]);
+        $projectRepository->findAll()->willReturn([$firstProject, $secondProject, $thirdProject]);
 
-        $firstProject->getProductFilters()->willReturn([['field' => 'categories', 'value' => ['clothing']]]);
-        $secondProject->getProductFilters()->willReturn([['field' => 'categories', 'value' => ['camera']]]);
+        $firstProject->getProductFilters()->willReturn([[
+            'field' => 'categories',
+            'value' => ['clothing'],
+            'operator' => 'IN',
+        ]]);
+        $secondProject->getProductFilters()->willReturn([[
+            'field' => 'categories',
+            'value' => ['camera']
+        ]]);
+        $thirdProject->getProductFilters()->willReturn([[
+            'field' => 'categories',
+            'value' => ['clothing'],
+            'operator' => 'IN OR UNCLASSIFIED',
+        ]]);
 
         $projectRemover->remove($firstProject)->shouldBeCalled();
         $projectRemover->remove($secondProject)->shouldNotBeCalled();
+        $projectRemover->remove($thirdProject)->shouldNotBeCalled();
 
         $detacher->detach($firstProject)->shouldNotBeCalled();
         $detacher->detach($secondProject)->shouldBeCalled();
+        $detacher->detach($thirdProject)->shouldBeCalled();
 
         $this->removeProjectsImpactedBy($category);
     }

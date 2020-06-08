@@ -156,6 +156,8 @@ type MultipleButtonProps = {
 
 export const MultipleButton = ({items, children, ...props}: MultipleButtonProps) => {
   const [isOpen, setOpen] = React.useState(false);
+  useShortcut(Key.Escape, () => setOpen(false));
+
   if (0 === items.length) return null;
 
   const onItemClick = (item: Item) => {
@@ -164,8 +166,6 @@ export const MultipleButton = ({items, children, ...props}: MultipleButtonProps)
       item.action();
     }
   };
-
-  useShortcut(Key.Escape, () => setOpen(false));
 
   return (
     <Container>

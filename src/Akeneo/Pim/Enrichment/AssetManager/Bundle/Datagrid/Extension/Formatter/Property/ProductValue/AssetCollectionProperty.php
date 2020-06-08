@@ -52,8 +52,7 @@ class AssetCollectionProperty extends TwigProperty
     protected function format($value)
     {
         if (isset($value['data']) && !empty($value['data'])) {
-            $data = $value['data'];
-            return is_array($data) ? implode(', ', $data) : $data;
+            return $value['data'];
         }
 
         return null;

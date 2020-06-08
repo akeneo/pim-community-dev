@@ -32,8 +32,10 @@ job_execution.summary:
   subscribed: abonné
   unsubscribed: non abonné
   unsubscription_skipped_not_subscribed: ignoré (non abonné)
+  identifiers_mapping_validation: Identifiers mapping validation
 pim_datagrid:
   cells:
     type:
       franklin_insights_fetch_products: Franklin Insights
+      franklin_insights: Franklin Insights
 Franklin subscription: Abonnement Franklin
