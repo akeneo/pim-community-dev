@@ -28,6 +28,10 @@ const transformFormData = (formData: FormData): Payload => {
   return {
     ...formData,
     priority: Number(formData.priority),
+    content: {
+      conditions: formData?.content?.conditions || [],
+      actions: formData?.content?.actions || [],
+    },
   };
 };
 

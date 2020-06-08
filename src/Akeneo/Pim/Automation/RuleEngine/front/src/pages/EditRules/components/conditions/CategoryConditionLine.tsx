@@ -4,12 +4,11 @@ import { ConditionLineProps } from './ConditionLineProps';
 import {
   CategoryCondition,
   CategoryOperators,
-} from '../../../../models/conditions/CategoryCondition';
+} from '../../../../models/conditions';
 import { Operator } from '../../../../models/Operator';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { FieldColumn, OperatorColumn } from './style';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
-import { Category, CategoryCode } from '../../../../models/Category';
+import { Category, CategoryCode } from '../../../../models';
 import { getCategoriesByIdentifiers } from '../../../../repositories/CategoryRepository';
 import { CategoryTreeFilterCondition } from './CategoryTreeFilterCondition';
 import {
@@ -21,6 +20,11 @@ import {
   CategoryTreeModel,
 } from '../../../../components/CategoryTree/category-tree.types';
 import { NetworkLifeCycle } from '../../../../components/CategoryTree/hooks/NetworkLifeCycle.types';
+import { useRegisterConst } from '../../hooks/useRegisterConst';
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
 
 type CategoryConditionLineProps = ConditionLineProps & {
   condition: CategoryCondition;
@@ -30,9 +34,9 @@ const CategoryConditionLine: React.FC<CategoryConditionLineProps> = ({
   condition,
   currentCatalogLocale,
   lineNumber,
-  router,
-  translate,
 }) => {
+  const translate = useTranslate();
+  const router = useBackboneRouter();
   const { watch, setValue } = useFormContext();
   const [initCategoryTreeOpenBranch, setInitCategoryTreeOpenBranch] = useState<
     NetworkLifeCycle<CategoryTreeModelWithOpenBranch[]>
@@ -51,30 +55,33 @@ const CategoryConditionLine: React.FC<CategoryConditionLineProps> = ({
   });
 
   const [categories, setCategories] = React.useState<Category[]>([]);
-  useValueInitialization(`content.conditions[${lineNumber}]`, {
-    field: condition.field,
-    operator: condition.operator,
-    value: condition.value,
-  });
+
+  useRegisterConst(`content.conditions[${lineNumber}].field`, condition.field);
+  // TODO Fix this: this field get back to condition.value if you delete another condition
+  useRegisterConst(`content.conditions[${lineNumber}].value`, condition.value);
 
   const getOperatorFormValue: () => Operator = () =>
     watch(`content.conditions[${lineNumber}].operator`);
   const getValueFormValue: () => CategoryCode[] = () =>
     watch(`content.conditions[${lineNumber}].value`);
+  const setValueFormValue = (value: CategoryCode[] | null) =>
+    setValue(`content.conditions[${lineNumber}].value`, value);
 
   useEffect(() => {
-    getCategoriesByIdentifiers(getValueFormValue(), router).then(results => {
-      const categories = Object.values(results).filter(category => {
-        return category !== null;
-      }) as Category[];
-      setCategories(categories);
-    });
-  }, [getValueFormValue()]);
+    getCategoriesByIdentifiers(getValueFormValue() || [], router).then(
+      results => {
+        const categories = Object.values(results).filter(category => {
+          return category !== null;
+        }) as Category[];
+        setCategories(categories);
+      }
+    );
+  }, [JSON.stringify(getValueFormValue())]);
 
   useEffect(() => {
     const updateTree = async () => {
       const results = await getCategoriesByIdentifiers(
-        getValueFormValue(),
+        getValueFormValue() || [],
         router
       );
       const categories = Object.values(results).filter(category => {
@@ -98,30 +105,21 @@ const CategoryConditionLine: React.FC<CategoryConditionLineProps> = ({
   const shouldDisplayValue: () => boolean = () =>
     Operator.UNCLASSIFIED !== getOperatorFormValue();
 
-  const setValueFormValue = (value: CategoryCode[] | null) =>
-    setValue(`content.conditions[${lineNumber}].value`, value);
-  const setOperatorFormValue = (value: Operator) => {
-    setValue(`content.conditions[${lineNumber}].operator`, value);
-    if (!shouldDisplayValue()) {
-      setValueFormValue(null);
-    }
-  };
-
   const handleCategoryDelete = (categoryCodeToDelete: CategoryCode) => {
     setValueFormValue(
-      getValueFormValue().filter(
+      (getValueFormValue() || []).filter(
         categoryCode => categoryCode !== categoryCodeToDelete
       )
     );
   };
 
   const handlerCategorySelect = (categoryCode: string) => {
-    if (getValueFormValue().includes(categoryCode)) {
+    if ((getValueFormValue() || []).includes(categoryCode)) {
       setValueFormValue(
-        getValueFormValue().filter(code => !(code === categoryCode))
+        (getValueFormValue() || []).filter(code => !(code === categoryCode))
       );
     } else {
-      setValueFormValue([...getValueFormValue(), categoryCode]);
+      setValueFormValue([...(getValueFormValue() || []), categoryCode]);
     }
   };
 
@@ -132,13 +130,11 @@ const CategoryConditionLine: React.FC<CategoryConditionLineProps> = ({
       </FieldColumn>
       <OperatorColumn>
         <OperatorSelector
-          id={`edit-rules-input-${lineNumber}-operator`}
-          label='Operator'
+          data-testid={`edit-rules-input-${lineNumber}-operator`}
           hiddenLabel={true}
           availableOperators={CategoryOperators}
-          translate={translate}
-          value={getOperatorFormValue()}
-          onChange={setOperatorFormValue}
+          value={condition.operator}
+          name={`content.conditions[${lineNumber}].operator`}
         />
       </OperatorColumn>
       {shouldDisplayValue() && (
@@ -151,7 +147,6 @@ const CategoryConditionLine: React.FC<CategoryConditionLineProps> = ({
           onDelete={handleCategoryDelete}
           onSelectCategory={handlerCategorySelect}
           selectedCategories={categories}
-          translate={translate}
         />
       )}
     </div>

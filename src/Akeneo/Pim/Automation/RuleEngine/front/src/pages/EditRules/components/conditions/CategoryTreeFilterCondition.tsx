@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { VisuallyHidden } from 'reakit/VisuallyHidden';
 import { usePopoverState, Popover, PopoverDisclosure } from 'reakit/Popover';
-import { Translate } from '../../../../dependenciesTools';
 import { ValueColumn } from './style';
 import { CategoryTreeFilter } from '../../../../components/CategoryTree/CategoryTreeFilter';
 import { Category, CategoryCode, LocaleCode } from '../../../../models';
@@ -11,6 +10,7 @@ import {
   CategoryTreeModelWithOpenBranch,
   CategoryTreeModel,
 } from '../../../../components/CategoryTree/category-tree.types';
+import { useTranslate } from '../../../../dependenciesTools/hooks';
 
 const InputCategory = styled(ValueColumn)`
   position: relative;
@@ -43,7 +43,6 @@ type Props = {
   onDelete: (categoryCode: CategoryCode) => void;
   onSelectCategory: (categoryCode: CategoryCode) => void;
   selectedCategories: Category[];
-  translate: Translate;
   initCategoryTreeOpenBranch: NetworkLifeCycle<
     CategoryTreeModelWithOpenBranch[]
   >;
@@ -57,12 +56,12 @@ const CategoryTreeFilterCondition: React.FC<Props> = ({
   selectedCategories,
   onSelectCategory,
   locale,
-  translate,
   initCategoryTreeOpenBranch,
   categoriesTrees,
   categoryTreeSelected,
   setCategoryTreeSelected,
 }) => {
+  const translate = useTranslate();
   const popover = usePopoverState({
     gutter: 0,
     placement: 'auto-start',

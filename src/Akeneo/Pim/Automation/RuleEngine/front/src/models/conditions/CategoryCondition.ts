@@ -25,7 +25,7 @@ type CategoryCondition = {
   value?: CategoryCode[];
 };
 
-const getCategoryConditionModule: ConditionModuleGuesser = async (json) => {
+const getCategoryConditionModule: ConditionModuleGuesser = async json => {
   if (json.field !== FIELD) {
     return Promise.resolve<null>(null);
   }

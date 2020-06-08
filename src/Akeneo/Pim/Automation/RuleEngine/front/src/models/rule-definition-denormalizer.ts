@@ -19,7 +19,7 @@ import {
   getMultiOptionsAttributeConditionModule,
   getCategoryConditionModule,
   getPimConditionModule,
-  getTextAttributeConditionModule
+  getTextAttributeConditionModule,
 } from './conditions';
 import React from 'react';
 import { ConditionLineProps } from '../pages/EditRules/components/conditions/ConditionLineProps';
