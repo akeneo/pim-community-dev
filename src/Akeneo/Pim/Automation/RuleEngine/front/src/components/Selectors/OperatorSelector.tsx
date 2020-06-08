@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select2SimpleSyncWrapper, Select2Value } from '../Select2Wrapper';
 import { Operator } from '../../models/Operator';
-import { useTranslate } from "../../dependenciesTools/hooks";
+import { useTranslate } from '../../dependenciesTools/hooks';
 
 type Props = {
   label?: string;
@@ -40,7 +40,7 @@ const OperatorSelector: React.FC<Props> = ({
     if (onChange) {
       onChange(value as Operator);
     }
-  }
+  };
 
   return (
     <Select2SimpleSyncWrapper

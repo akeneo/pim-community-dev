@@ -6,7 +6,7 @@ import { VisuallyHidden } from 'reakit/VisuallyHidden';
 import { AlertDialog } from '../../../../components/AlertDialog/AlertDialog';
 import { createComponent } from 'reakit-system';
 import { useDialogDisclosure, useDialogState } from 'reakit';
-import { useTranslate } from "../../../../dependenciesTools/hooks";
+import { useTranslate } from '../../../../dependenciesTools/hooks';
 
 const StyledHeader = styled.header`
   font-weight: normal;

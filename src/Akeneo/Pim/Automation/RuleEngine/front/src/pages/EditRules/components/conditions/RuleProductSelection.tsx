@@ -20,7 +20,10 @@ import { ProductsCount } from '../ProductsCount';
 import { AddConditionButton } from './AddConditionButton';
 import { FormData } from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
-import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
 
 const Header = styled.header`
   font-weight: normal;
@@ -86,14 +89,19 @@ const RuleProductSelection: React.FC<Props> = ({
   const router = useBackboneRouter();
 
   const { getValues, control } = useFormContext();
-  const { fields, append, remove } = useFieldArray({ control, name: 'content.conditions' });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'content.conditions',
+  });
 
   const productsCount = useProductsCount(
     router,
     getValuesFromFormData(getValues)
   );
 
-  const createCondition: ((fieldCode: string) => Promise<Condition>) = async (fieldCode) => {
+  const createCondition: (
+    fieldCode: string
+  ) => Promise<Condition> = async fieldCode => {
     const factories: ConditionFactory[] = [
       createFamilyCondition,
       createTextAttributeCondition,
@@ -110,24 +118,29 @@ const RuleProductSelection: React.FC<Props> = ({
     }
 
     throw new Error(`Unknown factory for field ${fieldCode}`);
-  }
+  };
 
   const handleAddCondition = (fieldCode: string) => {
     createCondition(fieldCode).then(condition => append(condition));
   };
 
-  const isActiveConditionField = React.useCallback((fieldCode: string) => {
-    return (getValues({ nest: true })?.content?.conditions || []).some((condition: Condition) => {
-      return (
-        condition.hasOwnProperty('field') &&
-        (condition as { field: string }).field === fieldCode
+  const isActiveConditionField = React.useCallback(
+    (fieldCode: string) => {
+      return (getValues({ nest: true })?.content?.conditions || []).some(
+        (condition: Condition) => {
+          return (
+            condition.hasOwnProperty('field') &&
+            (condition as { field: string }).field === fieldCode
+          );
+        }
       );
-    });
-  }, [getValues({ nest: true })?.content?.conditions ]);
+    },
+    [getValues({ nest: true })?.content?.conditions]
+  );
 
   const hasActions: () => boolean = () => {
     return (getValues({ nest: true })?.content?.actions || []).length > 0;
-  }
+  };
 
   const Component = hasActions()
     ? RuleProductSelectionFieldsetWithAction

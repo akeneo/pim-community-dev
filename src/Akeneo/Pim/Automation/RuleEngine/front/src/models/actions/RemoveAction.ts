@@ -1,6 +1,6 @@
 import { RemoveActionLine } from '../../pages/EditRules/components/actions/RemoveActionLine';
 import { ProductField } from './ProductField';
-import { ActionModuleGuesser } from "../Action";
+import { ActionModuleGuesser } from '../Action';
 
 export type RemoveAction = {
   type: 'remove';
@@ -8,7 +8,7 @@ export type RemoveAction = {
   include_children: boolean | null;
 } & ProductField;
 
-export const getRemoveActionModule: ActionModuleGuesser = (json) => {
+export const getRemoveActionModule: ActionModuleGuesser = json => {
   if (json.type !== 'remove') {
     return Promise.resolve(null);
   }

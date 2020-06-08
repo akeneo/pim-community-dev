@@ -1,17 +1,15 @@
-import { omit } from 'lodash';
 import { Payload } from '../../../rules.types';
 import { httpPut } from '../../../fetch';
 import { generateUrl } from '../../../dependenciesTools/hooks';
 import { FormData } from '../edit-rules.types';
 import { useForm, DeepPartial } from 'react-hook-form';
-import { Condition, Locale, RuleDefinition } from '../../../models';
+import { Locale, RuleDefinition } from '../../../models';
 import {
   Router,
   Translate,
   Notify,
   NotificationLevel,
 } from '../../../dependenciesTools';
-import { Action } from '../../../models/Action';
 
 type Reset = (
   values?: DeepPartial<FormData>,
@@ -27,26 +25,9 @@ type Reset = (
 ) => void;
 
 const transformFormData = (formData: FormData): Payload => {
-  const filledConditions = formData?.content?.conditions
-    ? formData.content.conditions.filter((condition: Condition | null) => {
-        return condition !== null;
-      })
-    : [];
-
-  const filledActions = formData?.content?.actions
-    ? formData.content.actions.filter((action: Action | null) => {
-        return action !== null;
-      })
-    : [];
-
   return {
     ...formData,
     priority: Number(formData.priority),
-    content: {
-      ...formData.content,
-      conditions: filledConditions,
-      actions: filledActions,
-    },
   };
 };
 
@@ -55,7 +36,7 @@ const submitEditRuleForm = (
   translate: Translate,
   notify: Notify,
   router: Router,
-  reset: Reset,
+  reset: Reset
 ) => {
   return async (formData: FormData, event?: React.BaseSyntheticEvent) => {
     if (event) {
@@ -75,17 +56,13 @@ const submitEditRuleForm = (
         NotificationLevel.SUCCESS,
         translate('pimee_catalog_rule.form.edit.notification.success')
       );
-      /*const json = await response.json();
-      const ruleDefinition = await denormalize(json, router);
-      setRuleDefinition(ruleDefinition);*/
+      reset(formData);
     } else {
       notify(
         NotificationLevel.ERROR,
         translate('pimee_catalog_rule.form.edit.notification.failed')
       );
     }
-    console.log('Reset', formData)
-    reset(formData);
   };
 };
 
@@ -106,13 +83,7 @@ const createFormDefaultValues = (
   labels: locales.reduce(createLocalesLabels(ruleDefinition), {}),
   content: {
     conditions: ruleDefinition.conditions || [],
-    actions: ruleDefinition.actions.map((action: Action) => {
-      if (Object.prototype.hasOwnProperty.call(action, 'json')) {
-        // It's a FallbackAction
-        return (action as { json: any }).json;
-      }
-      return omit(action, 'module');
-    }),
+    actions: ruleDefinition.actions || [],
   },
 });
 
@@ -122,7 +93,7 @@ const useSubmitEditRuleForm = (
   notify: Notify,
   router: Router,
   ruleDefinition: RuleDefinition,
-  locales: Locale[],
+  locales: Locale[]
 ) => {
   const defaultValues = createFormDefaultValues(ruleDefinition, locales);
   const formMethods = useForm<FormData>({
@@ -133,7 +104,7 @@ const useSubmitEditRuleForm = (
     translate,
     notify,
     router,
-    formMethods.reset,
+    formMethods.reset
   );
 
   return {

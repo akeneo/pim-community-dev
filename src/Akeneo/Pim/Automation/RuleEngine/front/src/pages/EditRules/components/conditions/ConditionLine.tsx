@@ -7,8 +7,11 @@ import styled from 'styled-components';
 import { Condition, Locale, LocaleCode } from '../../../../models';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { ConditionLineProps } from './ConditionLineProps';
-import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
-import { getConditionModule } from "../../../../models/rule-definition-denormalizer";
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
+import { getConditionModule } from '../../../../models/rule-definition-denormalizer';
 
 const DeleteButton = styled(DialogDisclosure)`
   border: none;
@@ -36,18 +39,26 @@ const ConditionLine: React.FC<Props> = ({
   const translate = useTranslate();
   const dialog = useDialogState();
   const router = useBackboneRouter();
-  const [ Line, setLine ] = React.useState<React.FC<ConditionLineProps & { condition: Condition }>>();
+  const [Line, setLine] = React.useState<
+    React.FC<ConditionLineProps & { condition: Condition }>
+  >();
   React.useEffect(() => {
-    getConditionModule(condition, router).then((module) => setLine(() => module));
+    getConditionModule(condition, router).then(module => setLine(() => module));
   }, []);
 
   if (!Line) {
-    return <div>Loading</div>;
+    return (
+      <div className='AknGrid-bodyCell'>
+        <img
+          src='/bundles/pimui/images//loader-V2.svg'
+          alt={translate('pim_common.loading')}
+        />
+      </div>
+    );
   }
 
   const isFallback =
-    Line === PimConditionLine ||
-    Line === FallbackConditionLine;
+    Line === PimConditionLine || Line === FallbackConditionLine;
 
   return (
     <div
@@ -72,7 +83,6 @@ const ConditionLine: React.FC<Props> = ({
           dialog={dialog}
           onValidate={() => {
             deleteCondition(lineNumber);
-            console.log('Deleted');
           }}
           cancelLabel={translate('pim_common.cancel')}
           confirmLabel={translate('pim_common.confirm')}

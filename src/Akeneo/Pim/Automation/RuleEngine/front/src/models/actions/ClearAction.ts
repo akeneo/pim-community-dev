@@ -1,12 +1,12 @@
 import { ClearActionLine } from '../../pages/EditRules/components/actions/ClearActionLine';
 import { ProductField } from './ProductField';
-import { ActionModuleGuesser } from "../Action";
+import { ActionModuleGuesser } from '../Action';
 
 export type ClearAction = {
   type: 'clear';
 } & ProductField;
 
-export const getClearActionModule: ActionModuleGuesser = (json) => {
+export const getClearActionModule: ActionModuleGuesser = json => {
   if (json.type !== 'clear') {
     return Promise.resolve(null);
   }

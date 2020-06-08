@@ -56,7 +56,7 @@ const EditRulesContent: React.FC<Props> = ({
     notify,
     router,
     ruleDefinition,
-    locales,
+    locales
   );
 
   useEffect(() => {
@@ -67,7 +67,10 @@ const EditRulesContent: React.FC<Props> = ({
     (formMethods.watch(`labels.${currentCatalogLocale}`) as string) ||
     `[${ruleDefinitionCode}]`;
 
-  const { fields, append, remove } = useFieldArray({ control: formMethods.control, name: 'content.actions' });
+  const { fields, append, remove } = useFieldArray({
+    control: formMethods.control,
+    name: 'content.actions',
+  });
 
   const handleAddAction = (action: any) => {
     append(action);
@@ -81,11 +84,7 @@ const EditRulesContent: React.FC<Props> = ({
         formId='edit-rules-form'
         title={title}
         unsavedChanges={formMethods.formState.dirty}
-        secondaryButton={
-          <AddActionButton
-            handleAddAction={handleAddAction}
-          />
-        }>
+        secondaryButton={<AddActionButton handleAddAction={handleAddAction} />}>
         <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>
           {translate('pim_menu.tab.settings')}
         </BreadcrumbItem>

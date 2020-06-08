@@ -15,7 +15,7 @@ import { Attribute } from '../../../../models';
 import { InputText } from '../../../../components/Inputs';
 import { useFormContext } from 'react-hook-form';
 import { FallbackField } from '../FallbackField';
-import { useRegisterConsts } from "../../hooks/useRegisterConst";
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
 
 type Props = {
   action: SetAction;

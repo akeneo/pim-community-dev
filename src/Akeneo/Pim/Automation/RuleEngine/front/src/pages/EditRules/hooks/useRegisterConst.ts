@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 const useRegisterConst = (name: string, value: any, prefix?: string) => {
@@ -17,17 +17,17 @@ const useRegisterConst = (name: string, value: any, prefix?: string) => {
       register({ name: fullName });
       setValue(fullName, value);
     }
-  }, [ currentFormValue ]);
-}
+  }, [currentFormValue]);
+};
 
 const useRegisterConsts = (
-  consts: {[name: string]: any},
+  consts: { [name: string]: any },
   prefix?: string
 ) => {
-  Object.keys(consts).forEach((name) => {
+  Object.keys(consts).forEach(name => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useRegisterConst(name, consts[name], prefix);
   });
-}
+};
 
-export { useRegisterConst, useRegisterConsts }
+export { useRegisterConst, useRegisterConsts };

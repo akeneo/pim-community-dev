@@ -1,5 +1,5 @@
 import { CopyActionLine } from '../../pages/EditRules/components/actions/CopyActionLine';
-import { ActionModuleGuesser } from "../Action";
+import { ActionModuleGuesser } from '../Action';
 
 export type CopyAction = {
   type: 'copy';
@@ -11,7 +11,7 @@ export type CopyAction = {
   to_scope: string | null;
 };
 
-export const getCopyActionModule: ActionModuleGuesser = (json) => {
+export const getCopyActionModule: ActionModuleGuesser = json => {
   if (json.type !== 'copy') {
     return Promise.resolve(null);
   }

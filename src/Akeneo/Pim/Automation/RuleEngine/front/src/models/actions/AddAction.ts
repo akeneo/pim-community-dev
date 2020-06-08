@@ -1,13 +1,13 @@
 import { AddActionLine } from '../../pages/EditRules/components/actions/AddActionLine';
 import { ProductField } from './ProductField';
-import { ActionModuleGuesser } from "../Action";
+import { ActionModuleGuesser } from '../Action';
 
 export type AddAction = {
   type: 'add';
   items: string[];
 } & ProductField;
 
-export const getAddActionModule: ActionModuleGuesser = (json) => {
+export const getAddActionModule: ActionModuleGuesser = json => {
   if (json.type !== 'add') {
     return Promise.resolve(null);
   }

@@ -14,11 +14,8 @@ type PimCondition = {
   scope: string | null;
 };
 
-export const getPimConditionModule: ConditionModuleGuesser = async (json) => {
-  if (
-    typeof json.field === 'string' &&
-    typeof json.operator === 'string'
-  ) {
+export const getPimConditionModule: ConditionModuleGuesser = async json => {
+  if (typeof json.field === 'string' && typeof json.operator === 'string') {
     return Promise.resolve(PimConditionLine);
   }
 

@@ -2,13 +2,14 @@ import React from 'react';
 import {
   InitSelectionCallback,
   Select2Option,
-  Select2SimpleAsyncWrapper, Select2Value,
+  Select2SimpleAsyncWrapper,
+  Select2Value,
 } from '../Select2Wrapper';
 import { Router } from '../../dependenciesTools';
 import { IndexedFamilies } from '../../fetch/FamilyFetcher';
 import { getFamilyByIdentifier } from '../../repositories/FamilyRepository';
 import { Family, FamilyCode, LocaleCode } from '../../models';
-import { useBackboneRouter } from "../../dependenciesTools/hooks";
+import { useBackboneRouter } from '../../dependenciesTools/hooks';
 
 type Props = {
   label: string;
@@ -74,14 +75,14 @@ const FamilySelector: React.FC<Props> = ({
   value,
   onChange,
   placeholder,
-  name
+  name,
 }) => {
   const router = useBackboneRouter();
   const handleChange = (value: Select2Value) => {
     if (onChange) {
       onChange(value as FamilyCode);
     }
-  }
+  };
 
   return (
     <Select2SimpleAsyncWrapper

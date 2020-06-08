@@ -11,9 +11,12 @@ import { FamilyCode } from '../../../../models';
 import { FieldColumn, OperatorColumn, ValueColumn } from './style';
 import { FamiliesSelector } from '../../../../components/Selectors/FamiliesSelector';
 import { getFamiliesByIdentifiers } from '../../../../repositories/FamilyRepository';
-import { useRegisterConst } from "../../hooks/useRegisterConst";
 import { LineErrors } from '../LineErrors';
-import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
+import { useRegisterConst } from '../../hooks/useRegisterConst';
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
 
 type FamilyConditionLineProps = ConditionLineProps & {
   condition: FamilyCondition;
@@ -83,7 +86,9 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
     return true;
   };
 
-  const [ familyValidation, setValidate ] = React.useState({ validate: validateFamilyCodes });
+  const [familyValidation, setValidate] = React.useState({
+    validate: validateFamilyCodes,
+  });
   React.useEffect(() => {
     setValidate({ validate: validateFamilyCodes });
   }, [JSON.stringify(unexistingFamilyCodes)]);

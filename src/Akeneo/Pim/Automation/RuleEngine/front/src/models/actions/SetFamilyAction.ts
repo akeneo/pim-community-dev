@@ -1,6 +1,6 @@
 import { SetFamilyActionLine } from '../../pages/EditRules/components/actions/SetFamilyActionLine';
 import { FamilyCode } from '../Family';
-import { ActionModuleGuesser } from "../Action";
+import { ActionModuleGuesser } from '../Action';
 
 export type SetFamilyAction = {
   type: 'set';
@@ -8,7 +8,7 @@ export type SetFamilyAction = {
   value: FamilyCode | null;
 };
 
-export const getSetFamilyActionModule: ActionModuleGuesser = (json) => {
+export const getSetFamilyActionModule: ActionModuleGuesser = json => {
   if (json.type !== 'set') {
     return Promise.resolve(null);
   }

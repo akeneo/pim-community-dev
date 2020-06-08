@@ -1,5 +1,5 @@
-import React from "react";
-import { Select2Props, Select2Value, Select2Wrapper } from "./Select2Wrapper";
+import React from 'react';
+import { Select2Props, Select2Value, Select2Wrapper } from './Select2Wrapper';
 import { useFormContext } from 'react-hook-form';
 
 type Props = {
@@ -9,10 +9,10 @@ type Props = {
   onChange: (value: Select2Value) => void;
 } & Select2Props;
 
-const ReactHookFormSelect2Wrapper: React.FC<Props> = (props) => {
+const ReactHookFormSelect2Wrapper: React.FC<Props> = props => {
   const { register, setValue, unregister, getValues } = useFormContext();
   const { name, validation, value, onChange, ...remainingProps } = props;
-  const [ lastKnownValue, setLastKnownValue ] = React.useState<any>(value);
+  const [lastKnownValue, setLastKnownValue] = React.useState<any>(value);
   const currentFormValue = getValues()[name];
 
   React.useEffect(() => {
@@ -27,9 +27,11 @@ const ReactHookFormSelect2Wrapper: React.FC<Props> = (props) => {
       register({ name }, validation);
       setValue(name, lastKnownValue);
     }
-  }, [ currentFormValue ]);
+  }, [currentFormValue]);
 
-  const handleValueChange: (value: Select2Value | Select2Value[]) => void = (value) => {
+  const handleValueChange: (
+    value: Select2Value | Select2Value[]
+  ) => void = value => {
     setLastKnownValue(value);
     setValue(name, value);
     if (onChange) {
@@ -38,15 +40,14 @@ const ReactHookFormSelect2Wrapper: React.FC<Props> = (props) => {
   };
 
   React.useEffect(() => {
-//    unregister(name);
     register({ name }, validation);
-  }, [ validation ]);
+  }, [validation]);
 
-  React.useEffect(() => {
-    //setLastKnownValue(value);
-  }, [ value ]);
-
-  return Select2Wrapper({ ...remainingProps, onChange: handleValueChange, value: lastKnownValue });
+  return Select2Wrapper({
+    ...remainingProps,
+    onChange: handleValueChange,
+    value: lastKnownValue,
+  });
 };
 
 export { ReactHookFormSelect2Wrapper };

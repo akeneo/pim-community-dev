@@ -47,17 +47,11 @@ const getProductsCountUrl = async (url: string, fn: CountFn) => {
 const getProductsCountUrlWithDebounce = debounceFn(getProductsCountUrl, 400);
 
 const createProductsCountUrl = (router: Router, form: FormData) => {
-  if (form?.content?.conditions) {
-    const noNullConditions = form.content.conditions.filter(x => x != null);
-    if (noNullConditions.length) {
-      return generateUrl(
-        router,
-        'pimee_enrich_rule_definition_get_impacted_product_count',
-        { conditions: JSON.stringify(noNullConditions) }
-      );
-    }
-  }
-  return '';
+  return generateUrl(
+    router,
+    'pimee_enrich_rule_definition_get_impacted_product_count',
+    { conditions: JSON.stringify(form?.content?.conditions || []) }
+  );
 };
 
 const useProductsCount = (router: Router, formValues: FormData) => {

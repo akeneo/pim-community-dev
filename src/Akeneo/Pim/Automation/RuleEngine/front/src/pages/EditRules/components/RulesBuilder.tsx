@@ -6,7 +6,7 @@ import { ActionLine } from './actions/ActionLine';
 import styled from 'styled-components';
 import middleImage from '../../../assets/illustrations/middle.svg';
 import endImage from '../../../assets/illustrations/end.svg';
-import { Action } from "../../../models/Action";
+import { Action } from '../../../models/Action';
 
 const ActionContainer = styled.div`
   background-image: url('${middleImage}');
@@ -27,7 +27,7 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
-  actions: ({[key: string]: any} & { id?: string })[];
+  actions: ({ [key: string]: any } & { id?: string })[];
   handleDeleteAction: (lineNumber: number) => void;
 };
 

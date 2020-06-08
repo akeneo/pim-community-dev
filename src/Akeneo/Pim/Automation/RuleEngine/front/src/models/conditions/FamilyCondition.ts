@@ -36,13 +36,13 @@ const familyConditionPredicate = (json: any): boolean => {
   );
 };
 
-const getFamilyConditionModule: ConditionModuleGuesser = (json) => {
+const getFamilyConditionModule: ConditionModuleGuesser = json => {
   if (!familyConditionPredicate(json)) {
     return Promise.resolve<null>(null);
   }
 
   return Promise.resolve(FamilyConditionLine);
-}
+};
 
 const createFamilyCondition: ConditionFactory = (
   fieldCode: any
@@ -62,5 +62,5 @@ export {
   FamilyCondition,
   createFamilyCondition,
   FamilyOperators,
-  getFamilyConditionModule
+  getFamilyConditionModule,
 };

@@ -7,7 +7,7 @@ import { RuleProperties } from './RuleProperties';
 import { Locale } from '../../../models';
 import { IndexedScopes } from '../../../repositories/ScopeRepository';
 import { useFormContext } from 'react-hook-form';
-import { useTranslate } from "../../../dependenciesTools/hooks";
+import { useTranslate } from '../../../dependenciesTools/hooks';
 
 const getTabBorder = ({ id, selectedId, theme }: any): string | number => {
   if (id === selectedId) {
@@ -68,7 +68,7 @@ type Props = {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
-  actions: ({[key: string]: any} & { id?: string })[];
+  actions: ({ [key: string]: any } & { id?: string })[];
   handleDeleteAction: (lineNumber: number) => void;
 };
 

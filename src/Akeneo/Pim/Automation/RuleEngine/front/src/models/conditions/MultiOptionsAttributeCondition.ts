@@ -2,9 +2,7 @@ import { Router } from '../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
 import { Operator } from '../Operator';
 import { ConditionFactory, ConditionModuleGuesser } from './Condition';
-import {
-  MultiOptionsAttributeConditionLine,
-} from '../../pages/EditRules/components/conditions/MultiOptionsAttributeConditionLine';
+import { MultiOptionsAttributeConditionLine } from '../../pages/EditRules/components/conditions/MultiOptionsAttributeConditionLine';
 
 const TYPE = 'pim_catalog_multiselect';
 
@@ -37,7 +35,10 @@ const createMultiOptionsAttributeCondition: ConditionFactory = async (
   };
 };
 
-const getMultiOptionsAttributeConditionModule: ConditionModuleGuesser = async (json, router) => {
+const getMultiOptionsAttributeConditionModule: ConditionModuleGuesser = async (
+  json,
+  router
+) => {
   if (typeof json.field !== 'string') {
     return null;
   }

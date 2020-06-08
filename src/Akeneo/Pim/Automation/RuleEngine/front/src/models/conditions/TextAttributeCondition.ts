@@ -1,8 +1,6 @@
 import { Router } from '../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
-import {
-  TextAttributeConditionLine,
-} from '../../pages/EditRules/components/conditions/TextAttributeConditionLine';
+import { TextAttributeConditionLine } from '../../pages/EditRules/components/conditions/TextAttributeConditionLine';
 import { Operator } from '../Operator';
 import { ConditionFactory, ConditionModuleGuesser } from './Condition';
 
@@ -41,7 +39,10 @@ const createTextAttributeCondition: ConditionFactory = async (
   };
 };
 
-const getTextAttributeConditionModule: ConditionModuleGuesser = async (json, router) => {
+const getTextAttributeConditionModule: ConditionModuleGuesser = async (
+  json,
+  router
+) => {
   if (typeof json.field !== 'string') {
     return null;
   }

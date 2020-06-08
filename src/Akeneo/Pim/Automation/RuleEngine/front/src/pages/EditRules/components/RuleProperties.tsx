@@ -7,15 +7,13 @@ import {
   SmallHelper,
   FormSubsection,
 } from '../../../components';
-import { useTranslate } from "../../../dependenciesTools/hooks";
+import { useTranslate } from '../../../dependenciesTools/hooks';
 
 type Props = {
   locales?: Locale[];
 };
 
-const RuleProperties: React.FC<Props> = ({
-  locales
-}) => {
+const RuleProperties: React.FC<Props> = ({ locales }) => {
   const translate = useTranslate();
   const { register } = useFormContext();
 

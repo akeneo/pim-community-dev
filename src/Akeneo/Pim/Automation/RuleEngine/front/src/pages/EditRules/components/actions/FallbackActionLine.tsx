@@ -1,8 +1,8 @@
 import React from 'react';
-import { FallbackAction } from '../../../../models/FallbackAction';
+import { FallbackAction } from '../../../../models/actions/FallbackAction';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useRegisterConsts } from "../../hooks/useRegisterConst";
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
 
 type Props = {
   action: FallbackAction;
@@ -13,7 +13,7 @@ const FallbackActionLine: React.FC<Props> = ({
   action,
   handleDelete,
 }) => {
-  useRegisterConsts(action.json, `content.actions[${lineNumber}]`);
+  useRegisterConsts(action, `content.actions[${lineNumber}]`);
 
   return (
     <ActionTemplate
@@ -29,7 +29,7 @@ const FallbackActionLine: React.FC<Props> = ({
                 fontFamily:
                   'Courier, "MS Courier New", Prestige, "Everson Mono"',
               }}>
-              {JSON.stringify(action.json)}
+              {JSON.stringify(action)}
             </div>
           </div>
         </div>

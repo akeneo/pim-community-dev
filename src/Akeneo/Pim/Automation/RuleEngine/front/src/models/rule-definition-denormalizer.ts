@@ -20,11 +20,11 @@ import {
   getPimConditionModule,
   getTextAttributeConditionModule
 } from './conditions';
-import React from "react";
-import { ConditionLineProps } from "../pages/EditRules/components/conditions/ConditionLineProps";
-import { FallbackConditionLine } from "../pages/EditRules/components/conditions/FallbackConditionLine";
-import { ActionLineProps } from "../pages/EditRules/components/actions/ActionLineProps";
-import { FallbackActionLine } from "../pages/EditRules/components/actions/FallbackActionLine";
+import React from 'react';
+import { ConditionLineProps } from '../pages/EditRules/components/conditions/ConditionLineProps';
+import { FallbackConditionLine } from '../pages/EditRules/components/conditions/FallbackConditionLine';
+import { ActionLineProps } from '../pages/EditRules/components/actions/ActionLineProps';
+import { FallbackActionLine } from '../pages/EditRules/components/actions/FallbackActionLine';
 
 const getActionModule: ((
   json: any,
@@ -49,12 +49,12 @@ const getActionModule: ((
   }
 
   return FallbackActionLine;
-}
+};
 
-const getConditionModule: ((
+const getConditionModule: (
   json: any,
   router: Router
-) => Promise<React.FC<ConditionLineProps>>) = async (json, router) => {
+) => Promise<React.FC<ConditionLineProps>> = async (json, router) => {
   const getConditionModuleFunctions: ConditionModuleGuesser[] = [
     getFamilyConditionModule,
     getCategoryConditionModule,
@@ -72,7 +72,7 @@ const getConditionModule: ((
   }
 
   return FallbackConditionLine;
-}
+};
 
 const extractFieldIdentifiers = (json: any): string[] => {
   const indexedFieldIdentifiers: { [identifier: string]: boolean } = {};

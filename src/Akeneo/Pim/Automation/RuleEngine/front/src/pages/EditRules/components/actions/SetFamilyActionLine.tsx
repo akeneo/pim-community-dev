@@ -28,10 +28,13 @@ const SetFamilyActionLine: React.FC<Props> = ({
 }) => {
   const translate = useTranslate();
 
-  useRegisterConsts({
-    type: 'set',
-    field: 'family',
-  }, `content.actions[${lineNumber}]`);
+  useRegisterConsts(
+    {
+      type: 'set',
+      field: 'family',
+    },
+    `content.actions[${lineNumber}]`
+  );
 
   return (
     <ActionTemplate

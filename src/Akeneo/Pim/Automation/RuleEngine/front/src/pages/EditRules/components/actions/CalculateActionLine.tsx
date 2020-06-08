@@ -13,7 +13,7 @@ import {
   FieldOperand,
   Operand,
 } from '../../../../models/actions/Calculate/Operand';
-import { useRegisterConsts } from "../../hooks/useRegisterConst";
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
 
 const OperandView: React.FC<{ operand: Operand }> = ({ operand }) => {
   if (Object.keys(operand).includes('field')) {

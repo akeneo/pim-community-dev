@@ -3,9 +3,10 @@ import { Locale, LocaleCode } from '../../models';
 import {
   Select2Option,
   Select2OptionGroup,
-  Select2SimpleSyncWrapper, Select2Value,
+  Select2SimpleSyncWrapper,
+  Select2Value,
 } from '../Select2Wrapper';
-import { useTranslate } from "../../dependenciesTools/hooks";
+import { useTranslate } from '../../dependenciesTools/hooks';
 
 type Props = {
   label?: string;
@@ -65,7 +66,7 @@ const LocaleSelector: React.FC<Props> = ({
     if (onChange) {
       onChange(value as LocaleCode);
     }
-  }
+  };
 
   return (
     <>

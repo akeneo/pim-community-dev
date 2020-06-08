@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select2SimpleSyncWrapper, Select2Value } from '../Select2Wrapper';
 import { LocaleCode, Scope, ScopeCode } from '../../models';
-import { useTranslate } from "../../dependenciesTools/hooks";
+import { useTranslate } from '../../dependenciesTools/hooks';
 
 type Props = {
   label?: string;
@@ -50,9 +50,9 @@ const ScopeSelector: React.FC<Props> = ({
 
   const handleChange = (value: Select2Value) => {
     if (onChange) {
-      onChange(value as ScopeCode)
+      onChange(value as ScopeCode);
     }
-  }
+  };
 
   return (
     <>

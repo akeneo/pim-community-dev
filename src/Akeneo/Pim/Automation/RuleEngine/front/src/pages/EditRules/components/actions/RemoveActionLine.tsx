@@ -3,7 +3,7 @@ import { RemoveAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { FallbackField } from '../FallbackField';
-import { useRegisterConsts } from "../../hooks/useRegisterConst";
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
 
 type Props = {
   action: RemoveAction;

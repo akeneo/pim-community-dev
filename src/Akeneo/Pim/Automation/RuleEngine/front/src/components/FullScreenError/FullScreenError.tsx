@@ -1,15 +1,12 @@
 import React from 'react';
-import { useTranslate } from "../../dependenciesTools/hooks";
+import { useTranslate } from '../../dependenciesTools/hooks';
 
 type Props = {
   statusCode: number;
   message: string;
 };
 
-const FullScreenError: React.FC<Props> = ({
-  statusCode,
-  message,
-}) => {
+const FullScreenError: React.FC<Props> = ({ statusCode, message }) => {
   const translate = useTranslate();
 
   return (

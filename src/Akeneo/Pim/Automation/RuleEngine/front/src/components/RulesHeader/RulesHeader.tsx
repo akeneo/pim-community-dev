@@ -5,7 +5,7 @@ import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { PimView } from '../../dependenciesTools/components/PimView';
 import { Breadcrumb } from '../Breadcrumb';
 import { UnsavedChangesWarning } from '../UnsavedChangesWarning';
-import { useTranslate } from "../../dependenciesTools/hooks";
+import { useTranslate } from '../../dependenciesTools/hooks';
 
 const BreadcrumbAndButtons = styled.div`
   display: inline-flex;
@@ -52,7 +52,7 @@ const RulesHeader: React.FC<Props> = ({
         <div className='AknTitleContainer-title' data-testid='rule-title'>
           {title}
         </div>
-        {unsavedChanges && <UnsavedChangesWarning/>}
+        {unsavedChanges && <UnsavedChangesWarning />}
       </div>
     </Header>
   );

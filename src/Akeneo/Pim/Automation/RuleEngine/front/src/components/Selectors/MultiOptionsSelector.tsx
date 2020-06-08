@@ -10,7 +10,7 @@ import {
   getAttributeOptionsByIdentifiers,
 } from '../../fetch/AttributeOptionFetcher';
 import { AttributeId } from '../../models/Attribute';
-import { useBackboneRouter } from "../../dependenciesTools/hooks";
+import { useBackboneRouter } from '../../dependenciesTools/hooks';
 
 type Props = {
   label: string;

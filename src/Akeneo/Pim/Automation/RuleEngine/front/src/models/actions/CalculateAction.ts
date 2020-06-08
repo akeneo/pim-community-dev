@@ -2,7 +2,7 @@ import { CalculateActionLine } from '../../pages/EditRules/components/actions/Ca
 import { ProductField } from './ProductField';
 import { Operand, denormalizeOperand } from './Calculate/Operand';
 import { denormalizeOperation, Operation } from './Calculate/Operation';
-import { ActionModuleGuesser } from "../Action";
+import { ActionModuleGuesser } from '../Action';
 
 export type CalculateAction = {
   type: 'calculate';
@@ -13,7 +13,7 @@ export type CalculateAction = {
   // round_precision: number | null;
 };
 
-export const getCalculateActionModule: ActionModuleGuesser = (json) => {
+export const getCalculateActionModule: ActionModuleGuesser = json => {
   if (json.type !== 'calculate') {
     return Promise.resolve(null);
   }

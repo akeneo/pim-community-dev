@@ -7,7 +7,7 @@ import {
   TextAttributeCondition,
   CategoryCondition,
 } from './';
-import { ConditionLineProps } from "../../pages/EditRules/components/conditions/ConditionLineProps";
+import { ConditionLineProps } from '../../pages/EditRules/components/conditions/ConditionLineProps';
 
 export type Condition =
   | CategoryCondition
@@ -17,12 +17,10 @@ export type Condition =
   | TextAttributeCondition
   | MultiOptionsAttributeCondition;
 
-export type ConditionModuleGuesser = (json: any, router: Router) => Promise<React.FC<ConditionLineProps> | null>;
-
-export type ConditionDenormalizer = (
+export type ConditionModuleGuesser = (
   json: any,
   router: Router
-) => Promise<Condition | null>;
+) => Promise<React.FC<ConditionLineProps> | null>;
 
 export type ConditionFactory = (
   fieldCode: string,

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Status } from '../../../rules.constants';
-import { useTranslate } from "../../../dependenciesTools/hooks";
+import { useTranslate } from '../../../dependenciesTools/hooks';
 
 type Props = {
   count: number;
@@ -12,10 +12,7 @@ const CountPending = styled.span`
   opacity: 0.5;
 `;
 
-const ProductsCount: React.FC<Props> = ({
-  status,
-  count
-}) => {
+const ProductsCount: React.FC<Props> = ({ status, count }) => {
   const translate = useTranslate();
 
   return (
@@ -32,9 +29,13 @@ const ProductsCount: React.FC<Props> = ({
       )}
       {status === Status.COMPLETE && (
         <span className='AknSubsection-comment AknSubsection-comment--clickable'>
-          {translate('pimee_catalog_rule.form.edit.products_count.complete', {
-            count,
-          }, count)}
+          {translate(
+            'pimee_catalog_rule.form.edit.products_count.complete',
+            {
+              count,
+            },
+            count
+          )}
         </span>
       )}
     </>

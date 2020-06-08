@@ -3,9 +3,9 @@ import { PimCondition } from '../../../../models/conditions';
 import { ConditionLineProps } from './ConditionLineProps';
 import { FallbackField } from '../FallbackField';
 import { useFormContext } from 'react-hook-form';
-import { Operator } from "../../../../models/Operator";
-import { useRegisterConsts } from "../../hooks/useRegisterConst";
-import { useTranslate } from "../../../../dependenciesTools/hooks";
+import { Operator } from '../../../../models/Operator';
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
+import { useTranslate } from '../../../../dependenciesTools/hooks';
 
 type PimConditionLineProps = ConditionLineProps & {
   condition: PimCondition;
@@ -45,7 +45,7 @@ const PimConditionLine: React.FC<PimConditionLineProps> = ({
     return (
       typeof value === 'object' &&
       Object.hasOwnProperty.call(value, 'amount') &&
-      Object.hasOwnProperty.call(value,  'currency')
+      Object.hasOwnProperty.call(value, 'currency')
     );
   };
 
@@ -93,7 +93,9 @@ const PimConditionLine: React.FC<PimConditionLineProps> = ({
       {` ${translate(
         `pimee_catalog_rule.form.edit.conditions.operators.${getOperatorFormValue()}`
       )} `}
-      <span className='AknRule-attribute'>{displayValue(getValueFormValue())}</span>
+      <span className='AknRule-attribute'>
+        {displayValue(getValueFormValue())}
+      </span>
     </div>
   );
 };

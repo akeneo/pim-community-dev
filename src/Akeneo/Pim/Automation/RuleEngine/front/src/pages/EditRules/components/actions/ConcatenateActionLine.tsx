@@ -4,7 +4,7 @@ import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { FallbackField } from '../FallbackField';
 import { ProductField } from '../../../../models/actions';
-import { useRegisterConsts } from "../../hooks/useRegisterConst";
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
 
 type Props = {
   action: ConcatenateAction;

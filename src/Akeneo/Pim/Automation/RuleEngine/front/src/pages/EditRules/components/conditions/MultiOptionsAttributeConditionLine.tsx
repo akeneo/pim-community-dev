@@ -10,9 +10,12 @@ import {
   AttributeOptionCode,
   getAttributeOptionsByIdentifiers,
 } from '../../../../fetch/AttributeOptionFetcher';
-import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
-import { Attribute } from "../../../../models/Attribute";
-import { getAttributeByIdentifier } from "../../../../repositories/AttributeRepository";
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
+import { Attribute } from '../../../../models/Attribute';
+import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
 
 type MultiOptionsAttributeConditionLineProps = ConditionLineProps & {
   condition: MultiOptionsAttributeCondition;
@@ -31,9 +34,11 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
     AttributeOptionCode[]
   >([]);
 
-  const [ attribute, setAttribute ] = React.useState<Attribute | null>();
+  const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
-    getAttributeByIdentifier(condition.field, router).then(attribute => setAttribute(attribute));
+    getAttributeByIdentifier(condition.field, router).then(attribute =>
+      setAttribute(attribute)
+    );
   }, []);
 
   React.useEffect(() => {
@@ -89,8 +94,10 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
     }
 
     return true;
-  }
-  const [ validateOptionCodes, setValidateOptionCodes ] = React.useState({ validate: validation });
+  };
+  const [validateOptionCodes, setValidateOptionCodes] = React.useState({
+    validate: validation,
+  });
   React.useEffect(() => {
     setValidateOptionCodes({ validate: validation });
   }, [JSON.stringify(unexistingOptionCodes)]);
@@ -103,17 +110,18 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
       locales={locales}
       scopes={scopes}
       availableOperators={MultiOptionsAttributeOperators}
-      attribute={attribute}
-      >
-      { attribute && <MultiOptionsSelector
-        value={condition.value || []}
-        currentCatalogLocale={currentCatalogLocale}
-        attributeId={attribute.meta.id}
-        label={translate('pimee_catalog_rule.rule.value')}
-        hiddenLabel={true}
-        name={`content.conditions[${lineNumber}].value`}
-        validation={validateOptionCodes}
-      />}
+      attribute={attribute}>
+      {attribute && (
+        <MultiOptionsSelector
+          value={condition.value || []}
+          currentCatalogLocale={currentCatalogLocale}
+          attributeId={attribute.meta.id}
+          label={translate('pimee_catalog_rule.rule.value')}
+          hiddenLabel={true}
+          name={`content.conditions[${lineNumber}].value`}
+          validation={validateOptionCodes}
+        />
+      )}
     </AttributeConditionLine>
   );
 };

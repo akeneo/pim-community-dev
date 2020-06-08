@@ -1,4 +1,4 @@
-import { FallbackAction } from './FallbackAction';
+import { FallbackAction } from './actions/FallbackAction';
 import {
   AddAction,
   CalculateAction,
@@ -20,7 +20,9 @@ export const AvailableAddAction: { [key: string]: () => Action } = {
   clear_attribute: createClearAttributeAction,
 };
 
-export type ActionModuleGuesser = (json: any) => React.FC<ActionLineProps> | null;
+export type ActionModuleGuesser = (
+  json: any
+) => React.FC<ActionLineProps> | null;
 
 export type Action =
   | AddAction
