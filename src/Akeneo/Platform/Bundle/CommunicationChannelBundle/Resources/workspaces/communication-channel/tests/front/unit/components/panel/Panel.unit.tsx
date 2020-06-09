@@ -2,11 +2,17 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, act, getByText, getAllByText, getByTitle, waitForDomChange} from '@testing-library/react';
 import {Panel} from '@akeneo-pim-community/communication-channel/src/components/panel';
+import {formatCampaign} from '@akeneo-pim-community/communication-channel/src/tools/formatCampaign';
 import {dependencies} from '@akeneo-pim-community/legacy-bridge';
-import {renderWithProviders, getMockDataProvider, getExpectedAnnouncements, getExpectedCampaign} from '../../../../test-utils';
+import {renderWithProviders, getMockDataProvider, getExpectedAnnouncements, getExpectedPimAnalyticsData} from '../../../../test-utils';
+import {GlobalWithFetchMock} from 'jest-fetch-mock';
+
+const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock;
+customGlobal.fetch = require('jest-fetch-mock');
+customGlobal.fetchMock = customGlobal.fetch;
 
 const expectedAnnouncements = getExpectedAnnouncements();
-const expectedCampaign = getExpectedCampaign();
+const expectedPimAnalyticsData = getExpectedPimAnalyticsData();
 
 let container: HTMLElement;
 beforeEach(() => {
@@ -19,7 +25,9 @@ afterEach(() => {
 });
 
 test('it shows the panel with the announcements', async () => {
-  const mockDataProvider = getMockDataProvider(expectedAnnouncements, expectedCampaign);
+  const mockJsonPromise = JSON.stringify(expectedPimAnalyticsData);
+  fetchMock.mockResponseOnce(() => Promise.resolve(mockJsonPromise));
+
   await act(async () => renderWithProviders(
     <Panel dataProvider={mockDataProvider} />,
     container as HTMLElement
@@ -34,7 +42,9 @@ test('it shows the panel with the announcements', async () => {
 });
 
 test('it can show for each announcement the information from the json', async () => {
-  const mockDataProvider = getMockDataProvider(expectedAnnouncements, expectedCampaign);
+  const mockJsonPromise = JSON.stringify(expectedPimAnalyticsData);
+  fetchMock.mockResponseOnce(() => Promise.resolve(mockJsonPromise));
+
   await act(async () => renderWithProviders(
     <Panel dataProvider={mockDataProvider} />,
     container as HTMLElement
@@ -53,7 +63,10 @@ test('it can show for each announcement the information from the json', async ()
 });
 
 test('it can open the read more link in a new tab', async () => {
-  const mockDataProvider = getMockDataProvider(expectedAnnouncements, expectedCampaign);
+  const campaign = formatCampaign(expectedPimAnalyticsData.pim_edition, expectedPimAnalyticsData.pim_version);
+  const mockJsonPromise = JSON.stringify(expectedPimAnalyticsData);
+  fetchMock.mockResponseOnce(() => Promise.resolve(mockJsonPromise));
+
   await act(async () => renderWithProviders(
     <Panel dataProvider={mockDataProvider} />,
     container as HTMLElement
@@ -61,7 +74,7 @@ test('it can open the read more link in a new tab', async () => {
 
   await waitForDomChange({container});
 
-  expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).href).toEqual(`http://external.com/?utm_source=akeneo-app&utm_medium=communication-panel&utm_campaign=${expectedCampaign}`);
+  expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).href).toEqual(`http://external.com/?utm_source=akeneo-app&utm_medium=communication-panel&utm_campaign=${campaign}`);
   expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).target).toEqual('_blank');
 });
 
@@ -77,7 +90,9 @@ test('it can display an empty panel when it is not a serenity version', async ()
 });
 
 test('it can close the panel', async () => {
-  const mockDataProvider = getMockDataProvider([], expectedCampaign);
+  const mockJsonPromise = JSON.stringify(expectedPimAnalyticsData);
+  fetchMock.mockResponseOnce(() => Promise.resolve(mockJsonPromise));
+
   await act(async () => renderWithProviders(
     <Panel dataProvider={mockDataProvider} />,
     container as HTMLElement

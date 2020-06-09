@@ -12,7 +12,7 @@ afterEach(() => {
 
 test('It can fetch announcements from the json', async () => {
   const mockJsonPromise = JSON.stringify({data: getExpectedAnnouncements()});
-  fetchMock.mockResponseOnce(request => Promise.resolve(mockJsonPromise));
+  fetchMock.mockResponseOnce(() => Promise.resolve(mockJsonPromise));
 
   await AnnouncementFetcher.fetchAll();
 
@@ -24,7 +24,7 @@ test('It can fetch announcements from the json', async () => {
 
 test('It can validate the announcements from the json', async () => {
   const mockJsonPromise = JSON.stringify({data: [{invalidProperty: 'invalid_property'}]});
-  fetchMock.mockResponseOnce(request => Promise.resolve(mockJsonPromise));
+  fetchMock.mockResponseOnce(() => Promise.resolve(mockJsonPromise));
   console.error = jest.fn();
 
   await expect(AnnouncementFetcher.fetchAll()).rejects.toThrowError(Error);

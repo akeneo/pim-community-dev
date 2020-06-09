@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import React, {FC} from 'react';
-import {act} from '@testing-library/react-hooks';
+import {act, renderHook} from '@testing-library/react-hooks';
 import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {Announcement} from '@akeneo-pim-community/communication-channel/src/models/announcement';
@@ -18,6 +18,8 @@ const DefaultProviders: FC = ({children}) => {
 export const createWithProviders = (nextElement: React.ReactElement) => <DefaultProviders>{nextElement}</DefaultProviders>;
 
 export const renderWithProviders = (ui: React.ReactElement, container: HTMLElement) => ReactDOM.render(createWithProviders(ui), container);
+
+export const renderHookWithProviders = (hook: () => any) => renderHook(() => hook(), {wrapper: ({children}) => <DefaultProviders>{children}</DefaultProviders>});
 
 export const getExpectedAnnouncements = () => {
   return [
@@ -44,8 +46,8 @@ export const getExpectedAnnouncements = () => {
   ];
 }
 
-export const getExpectedCampaign = () => {
-  return 'Serenity';
+export const getExpectedPimAnalyticsData = () => {
+  return {pim_edition: 'Serenity', pim_version: '129923839'};
 }
 
 export const getMockDataProvider = (announcement: Announcement[], campaign: string) => {
@@ -58,15 +60,6 @@ export const getMockDataProvider = (announcement: Announcement[], campaign: stri
           });
         })
       }
-    },
-    campaignFetcher: {
-      fetch: (): Promise<string> => {
-        return new Promise(resolve => {
-          act(() => {
-            setTimeout(() => resolve(campaign), 100);
-          });
-        });
-      } 
     }
   };
 }

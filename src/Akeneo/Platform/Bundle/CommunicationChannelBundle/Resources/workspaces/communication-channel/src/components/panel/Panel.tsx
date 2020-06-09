@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import {useTranslate, useMediator} from '@akeneo-pim-community/legacy-bridge';
 import {useAnnouncements} from './../../hooks/useAnnouncements';
 import {AnnouncementFetcher} from './../../fetcher/announcement.type';
-import {useCampaign} from './../../hooks/useCampaign';
-import {CampaignFetcher} from './../../fetcher/campaign.type';
+import {usePimVersion} from '../../hooks/usePimVersion';
 import {HeaderPanel} from './../../components/panel/Header';
 import {AnnouncementComponent, EmptyAnnouncementList} from './announcement';
 import {Announcement} from './../../models/announcement';
+import {formatCampaign} from '../../tools/formatCampaign';
 
 const ListAnnouncement = styled.ul`
   margin: 74px 30px 0 30px;
@@ -15,18 +15,19 @@ const ListAnnouncement = styled.ul`
 
 type PanelDataProvider = {
   announcementFetcher: AnnouncementFetcher;
-  campaignFetcher: CampaignFetcher;
 };
 
 type PanelProps = {
-  dataProvider: PanelDataProvider
+  dataProvider: PanelDataProvider;
 };
 
 const Panel = ({dataProvider}: PanelProps): JSX.Element => {
   const __ = useTranslate();
   const mediator = useMediator();
+  const {pimVersion} = usePimVersion();
   const {announcements} = useAnnouncements(dataProvider.announcementFetcher);
-  const {campaign} = useCampaign(dataProvider.campaignFetcher);
+  const campaign = (null !== pimVersion) ? formatCampaign(pimVersion.edition, pimVersion.version) : '';
+
   const closePanel = () => {
     mediator.trigger('communication-channel:panel:close');
   };
