@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentationCollection;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\MessageParameterTypes;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use PhpSpec\ObjectBehavior;
@@ -14,7 +15,7 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedThrough('unknownAttribute', ['attribute_code']);
+        $this->beConstructedWith('attribute_code');
     }
 
     function it_is_initializable()
@@ -32,9 +33,14 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
         $this->shouldHaveType(\Exception::class);
     }
 
-    function it_is_an_identifiable_domain_error()
+    function it_is_a_domain_error()
     {
         $this->shouldImplement(DomainErrorInterface::class);
+    }
+
+    function it_is_has_a_templated_error_message()
+    {
+        $this->shouldImplement(TemplatedErrorMessageInterface::class);
     }
 
     function it_is_a_documented_error()
@@ -44,10 +50,7 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
 
     function it_returns_an_exception_message()
     {
-        $this->getMessage()->shouldReturn(sprintf(
-            'Attribute "%s" does not exist.',
-            'attribute_code'
-        ));
+        $this->getMessage()->shouldReturn('The attribute_code attribute does not exist in your PIM.');
     }
 
     function it_returns_a_property_name()
@@ -58,9 +61,19 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
     function it_returns_the_previous_exception()
     {
         $previous = new \Exception();
-        $this->beConstructedThrough('unknownAttribute', ['attribute_code', $previous]);
+        $this->beConstructedWith('attribute_code', $previous);
 
         $this->getPrevious()->shouldReturn($previous);
+    }
+
+    function it_returns_a_message_template()
+    {
+        $this->getMessageTemplate()->shouldReturn('The %s attribute does not exist in your PIM.');
+    }
+
+    function it_returns_message_parameters()
+    {
+        $this->getMessageParameters()->shouldReturn(['attribute_code']);
     }
 
     function it_provides_documentation()

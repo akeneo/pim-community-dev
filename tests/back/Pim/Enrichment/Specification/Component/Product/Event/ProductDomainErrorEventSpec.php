@@ -29,7 +29,7 @@ class ProductDomainErrorEventSpec extends ObjectBehavior
         $this->getProduct()->shouldReturn($product);
     }
 
-    public function it_returns_null_if_there_is_no_product(IdentifiableDomainErrorInterface $error): void
+    public function it_works_without_product(DomainErrorInterface $error): void
     {
         $this->beConstructedWith($error, null);
         $this->getProduct()->shouldReturn(null);

@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\HrefMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\RouteMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 
 /**
@@ -18,30 +19,31 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
  */
 final class UnknownAttributeException extends PropertyException implements
     DomainErrorInterface,
+    TemplatedErrorMessageInterface,
     DocumentedErrorInterface
 {
     /** @var DocumentationCollection */
     private $documentation;
 
-    public function __construct(string $attributeName, string $message = '', int $code = 0, \Exception $previous = null)
+    public function __construct(string $attributeCode, \Exception $previous = null)
     {
-        parent::__construct($message, $code, $previous);
+        $this->messageTemplate = 'The %s attribute does not exist in your PIM.';
+        $this->messageParameters = [$attributeCode];
 
-        $this->propertyName = $attributeName;
+        parent::__construct(sprintf($this->messageTemplate, ...$this->messageParameters), 0, $previous);
+        $this->propertyName = $attributeCode;
+
         $this->documentation = $this->buildDocumentation();
     }
 
-    public static function unknownAttribute(string $attributeCode, \Exception $previous = null): self
+    public function getMessageTemplate(): string
     {
-        return new static(
-            $attributeCode,
-            sprintf(
-                'Attribute "%s" does not exist.',
-                $attributeCode
-            ),
-            0,
-            $previous
-        );
+        return $this->messageTemplate;
+    }
+
+    public function getMessageParameters(): array
+    {
+        return $this->messageParameters;
     }
 
     public function getDocumentation(): DocumentationCollection

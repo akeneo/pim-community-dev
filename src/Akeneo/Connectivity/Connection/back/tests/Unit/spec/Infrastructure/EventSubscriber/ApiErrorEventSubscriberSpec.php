@@ -50,7 +50,7 @@ class ApiErrorEventSubscriberSpec extends ObjectBehavior
 
     public function it_collects_a_product_domain_error($collectApiError): void
     {
-        $error = UnknownAttributeException::unknownAttribute('attribute_code');
+        $error = new UnknownAttributeException('attribute_code');
         $product = new Product();
         $event = new ProductDomainErrorEvent($error, $product);
 
