@@ -57,7 +57,7 @@ class CollectApiError
     }
 
     public function collectFromProductDomainError(
-        ProductInterface $product,
+        ?ProductInterface $product,
         DomainErrorInterface $error
     ): void {
         if (false === $this->isConnectionCollectable()) {
