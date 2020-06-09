@@ -4,6 +4,7 @@
     "jsx": "react",
     "noEmit": true,
     "esModuleInterop": true,
+    "resolveJsonModule": true
   },
   "include": ["src", "tests"]
 }

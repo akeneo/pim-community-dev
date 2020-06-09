@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ReactMarkdown from 'react-markdown';
 import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
-import {Tag} from './../../../components/panel/card/Tag';
+import {Tag} from './Tag';
 
 type DesciptionProps = {
   description: string;
