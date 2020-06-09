@@ -28,7 +28,7 @@ type Props = {
   hiddenLabel?: boolean;
   currentCatalogLocale: LocaleCode;
   value: AttributeCode | null;
-  onChange: (value: AttributeCode) => void;
+  onChange: (value: AttributeCode | null) => void;
   placeholder?: string;
   filterAttributeTypes?: string[];
   disabled?: boolean;
@@ -130,7 +130,7 @@ const AttributeSelector: React.FC<Props> = ({
       hiddenLabel={hiddenLabel}
       dropdownCssClass={'fields-selector-dropdown'}
       value={value}
-      onChange={onChange}
+      onChange={value => onChange(value as string)}
       ajax={{
         url: router.generate(
           'pimee_enrich_rule_definition_get_available_fields'

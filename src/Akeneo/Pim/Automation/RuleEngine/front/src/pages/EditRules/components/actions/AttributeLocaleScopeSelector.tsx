@@ -44,6 +44,8 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   onAttributeChange?: (attribute: Attribute | null) => void;
+  scopeValue?: ScopeCode;
+  localeValue?: LocaleCode;
 };
 
 export const AttributeLocaleScopeSelector: React.FC<Props> = ({
@@ -61,6 +63,8 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   locales,
   scopes,
   onAttributeChange,
+  scopeValue,
+  localeValue,
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
@@ -86,8 +90,6 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
     setFirstRefresh(false);
   };
 
-  const getAttributeFormValue: () => AttributeCode = () =>
-    watch(attributeFormName);
   const getScopeFormValue: () => ScopeCode = () => watch(scopeFormName);
   const getLocaleFormValue: () => LocaleCode = () => watch(localeFormName);
 
@@ -136,6 +138,8 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   }, [JSON.stringify(getAvailableLocales())]);
 
   const setAttributeFormValue = (value: AttributeCode | null) => {
+    console.log('Set value', attributeFormName, value);
+    setValue(attributeFormName, value);
     refreshAttribute(value);
     setAttributeIsChanged(true);
   };
@@ -162,7 +166,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           name={attributeFormName}
           label={attributeLabel}
           currentCatalogLocale={currentCatalogLocale}
-          value={getAttributeFormValue()}
+          value={attributeCode}
           onChange={setAttributeFormValue}
           placeholder={attributePlaceholder}
           disabled={!firstRefresh && null === attribute}
@@ -174,7 +178,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
         />
       </SelectorBlock>
       {(attribute?.scopable ||
-        (!attributeIsChanged && getScopeFormValue())) && (
+        (!attributeIsChanged && scopeValue)) && (
         <SelectorBlock>
           <ScopeSelector
             data-testid={scopeId}
@@ -187,7 +191,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
             }
             availableScopes={Object.values(scopes)}
             currentCatalogLocale={currentCatalogLocale}
-            value={getScopeFormValue()}
+            value={scopeValue}
             onChange={setScopeFormValue}
             allowClear={!attribute?.scopable}
             disabled={!firstRefresh && null === attribute}
@@ -196,7 +200,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
         </SelectorBlock>
       )}
       {(attribute?.localizable ||
-        (!attributeIsChanged && getLocaleFormValue())) && (
+        (!attributeIsChanged && localeValue)) && (
         <SelectorBlock>
           <LocaleSelector
             data-testid={localeId}
@@ -208,7 +212,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
               )} ${translate('pim_common.required_label')}`
             }
             availableLocales={getAvailableLocales()}
-            value={getLocaleFormValue()}
+            value={localeValue}
             allowClear={!attribute?.localizable}
             disabled={!firstRefresh && null === attribute}
             validation={localeValidation}

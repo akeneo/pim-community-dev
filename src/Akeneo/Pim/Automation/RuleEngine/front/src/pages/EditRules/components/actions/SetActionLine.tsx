@@ -9,12 +9,12 @@ import {
   ActionTitle,
 } from './ActionLine';
 import { AttributeLocaleScopeSelector } from './AttributeLocaleScopeSelector';
-import { ActionLineErrors } from './ActionLineErrors';
 import { Attribute } from '../../../../models';
 import { InputText } from '../../../../components/Inputs';
 import { useFormContext } from 'react-hook-form';
 import { useRegisterConst } from '../../hooks/useRegisterConst';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
+import { LineErrors } from "../LineErrors";
 
 type Props = {
   action: SetAction;
@@ -76,9 +76,11 @@ const SetActionLine: React.FC<Props> = ({
             scopeId={`edit-rules-action-${lineNumber}-scope`}
             scopeFormName={`content.actions[${lineNumber}].scope`}
             scopes={scopes}
+            scopeValue={action.scope || undefined}
             localeId={`edit-rules-action-${lineNumber}-locale`}
             localeFormName={`content.actions[${lineNumber}].locale`}
             locales={locales}
+            localeValue={action.locale || undefined}
             onAttributeChange={onAttributeChange}
           />
         </ActionLeftSide>
@@ -111,7 +113,7 @@ const SetActionLine: React.FC<Props> = ({
           )}
         </ActionRightSide>
       </ActionGrid>
-      <ActionLineErrors lineNumber={lineNumber} />
+      <LineErrors lineNumber={lineNumber} type='actions' />
     </ActionTemplate>
   );
 };

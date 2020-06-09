@@ -7,6 +7,7 @@ import { AttributeLocaleScopeSelector } from './AttributeLocaleScopeSelector';
 import { LineErrors } from '../LineErrors';
 import { useRegisterConst } from '../../hooks/useRegisterConst';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
+import { useFormContext } from 'react-hook-form';
 
 type Props = {
   action: ClearAttributeAction;
@@ -19,8 +20,14 @@ const ClearAttributeActionLine: React.FC<Props> = ({
   locales,
   scopes,
 }) => {
+  const { getValues } = useFormContext();
+
   const translate = useTranslate();
   useRegisterConst('type', 'clear', `content.actions[${lineNumber}]`);
+
+  React.useEffect(() => {
+    console.log(JSON.stringify(getValues()));
+  }, [JSON.stringify(getValues())]);
 
   return (
     <ActionTemplate
@@ -51,6 +58,8 @@ const ClearAttributeActionLine: React.FC<Props> = ({
         localeId={`edit-rules-action-${lineNumber}-locale`}
         localeFormName={`content.actions[${lineNumber}].locale`}
         locales={locales}
+        localeValue={action.locale || undefined}
+        scopeValue={action.scope || undefined}
       />
       <LineErrors lineNumber={lineNumber} type='actions' />
     </ActionTemplate>

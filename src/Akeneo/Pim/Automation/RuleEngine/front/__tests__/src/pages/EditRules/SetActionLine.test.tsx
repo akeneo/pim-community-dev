@@ -1,13 +1,11 @@
 import React from 'react';
 import 'jest-fetch-mock';
 import { renderWithProviders } from '../../../../test-utils';
-import { Router } from '../../../../src/dependenciesTools';
 import { SetActionLine } from '../../../../src/pages/EditRules/components/actions/SetActionLine';
 import { SetAction } from '../../../../src/models/actions';
 import { attributeSelect2Response, locales, scopes } from '../../factories';
 
 const actionWithLocalizableScopableAttribute: SetAction = {
-  module: SetActionLine,
   type: 'set',
   field: 'description',
   locale: 'en_US',
@@ -15,13 +13,8 @@ const actionWithLocalizableScopableAttribute: SetAction = {
   value: 'This is the description',
 };
 
-const translate = jest.fn((key: string) => key);
-const router: Router = {
-  generate: jest.fn(),
-  redirect: jest.fn(),
-};
-
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
+jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 
 describe('SetActionLine', () => {
   beforeEach(() => {
@@ -47,11 +40,9 @@ describe('SetActionLine', () => {
       <SetActionLine
         action={actionWithLocalizableScopableAttribute}
         lineNumber={1}
-        translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
-        router={router}
         handleDelete={() => {}}
       />,
       { all: true }
@@ -68,15 +59,11 @@ describe('SetActionLine', () => {
       )
     ).toBeInTheDocument();
     expect(
-      await findByText('Channel pim_common.required_label')
+      await findByText('pim_enrich.entity.channel.uppercase_label pim_common.required_label')
     ).toBeInTheDocument();
     expect(
-      await findByText('Locale pim_common.required_label')
+      await findByText('pim_enrich.entity.locale.uppercase_label pim_common.required_label')
     ).toBeInTheDocument();
-    expect(
-      await findByText('Locale pim_common.required_label')
-    ).toBeInTheDocument();
-
     expect(
       await findByText(
         'pimee_catalog_rule.form.edit.actions.set_attribute.value_subtitle'

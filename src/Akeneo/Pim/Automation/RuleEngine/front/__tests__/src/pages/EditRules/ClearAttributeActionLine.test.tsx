@@ -1,9 +1,7 @@
 import { renderWithProviders, act, fireEvent } from '../../../../test-utils';
 import React from 'react';
 import 'jest-fetch-mock';
-import { ClearAttributeAction } from '../../../../src/models/actions';
 import { ClearAttributeActionLine } from '../../../../src/pages/EditRules/components/actions/ClearAttributeActionLine';
-import { Router } from '../../../../src/dependenciesTools';
 import { clearCache } from '../../../../src/repositories/AttributeRepository';
 import userEvent from '@testing-library/user-event';
 import {
@@ -12,20 +10,15 @@ import {
   locales,
   scopes,
 } from '../../factories';
+import { ClearAttributeAction } from "../../../../src/models/actions";
 
-const router: Router = {
-  generate: jest.fn(),
-  redirect: jest.fn(),
-};
+jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
+jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 
-const translate = jest.fn((key: string) => key);
 const action: ClearAttributeAction = {
-  module: ClearAttributeActionLine,
   type: 'clear',
   field: 'name',
 };
-
-jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
 
 describe('ClearAttributeActionLine', () => {
   beforeEach(() => {
@@ -50,9 +43,7 @@ describe('ClearAttributeActionLine', () => {
       findByTestId,
     } = renderWithProviders(
       <ClearAttributeActionLine
-        translate={translate}
-        router={router}
-        currentCatalogLocale={'en-US'}
+        currentCatalogLocale={'en_US'}
         lineNumber={1}
         action={action}
         handleDelete={() => {}}
@@ -69,10 +60,10 @@ describe('ClearAttributeActionLine', () => {
     ).toBeInTheDocument();
     expect(await findByTestId('edit-rules-action-1-field')).toHaveValue('name');
     expect(
-      queryByText('Channel pim_common.required_label')
+      queryByText('pim_enrich.entity.channel.uppercase_label pim_common.required_label')
     ).not.toBeInTheDocument();
     expect(
-      queryByText('Locale pim_common.required_label')
+      queryByText('pim_enrich.entity.locale.uppercase_label pim_common.required_label')
     ).not.toBeInTheDocument();
   });
 
@@ -87,8 +78,6 @@ describe('ClearAttributeActionLine', () => {
       queryByText,
     } = renderWithProviders(
       <ClearAttributeActionLine
-        translate={translate}
-        router={router}
         currentCatalogLocale={'en-US'}
         lineNumber={1}
         action={action}
@@ -105,9 +94,9 @@ describe('ClearAttributeActionLine', () => {
       )
     ).toBeInTheDocument();
     expect(await findByTestId('edit-rules-action-1-field')).toHaveValue('name');
-    expect(queryByText('Locale pim_common.required_label')).toBeInTheDocument();
+    expect(queryByText('pim_enrich.entity.locale.uppercase_label pim_common.required_label')).toBeInTheDocument();
     expect(
-      queryByText('Channel pim_common.required_label')
+      queryByText('pim_enrich.entity.channel.uppercase_label pim_common.required_label')
     ).toBeInTheDocument();
   });
 
@@ -156,8 +145,6 @@ describe('ClearAttributeActionLine', () => {
       queryByText,
     } = renderWithProviders(
       <ClearAttributeActionLine
-        translate={translate}
-        router={router}
         currentCatalogLocale={'en-US'}
         lineNumber={1}
         action={action}
@@ -172,10 +159,10 @@ describe('ClearAttributeActionLine', () => {
     expect(attributeSelector).toBeInTheDocument();
     expect(attributeSelector).toHaveValue('name');
     expect(
-      await findByText('Locale pim_common.required_label')
+      await findByText('pim_enrich.entity.locale.uppercase_label pim_common.required_label')
     ).toBeInTheDocument();
     expect(
-      await findByText('Channel pim_common.required_label')
+      await findByText('pim_enrich.entity.channel.uppercase_label pim_common.required_label')
     ).toBeInTheDocument();
 
     await act(async () => {
@@ -189,10 +176,10 @@ describe('ClearAttributeActionLine', () => {
     });
 
     expect(
-      queryByText('Channel pim_common.required_label')
+      queryByText('pim_enrich.entity.channel.uppercase_label pim_common.required_label')
     ).not.toBeInTheDocument();
     expect(
-      queryByText('Locale pim_common.required_label')
+      queryByText('pim_enrich.entity.locale.uppercase_label pim_common.required_label')
     ).not.toBeInTheDocument();
 
     await act(async () => {
@@ -206,8 +193,8 @@ describe('ClearAttributeActionLine', () => {
     });
 
     expect(
-      queryByText('Channel pim_common.required_label')
+      queryByText('pim_enrich.entity.channel.uppercase_label pim_common.required_label')
     ).toBeInTheDocument();
-    expect(queryByText('Locale pim_common.required_label')).toBeInTheDocument();
+    expect(queryByText('pim_enrich.entity.locale.uppercase_label pim_common.required_label')).toBeInTheDocument();
   });
 });
