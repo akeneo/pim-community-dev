@@ -68,6 +68,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
             'attributes' => ['sku', 'name', 'length']
         ]);
 
+        $this->productLoader->create("high-top_sneakers", ['family'=>"shoes"]);
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
         $client = $this->createAuthenticatedClient(
             [],
@@ -126,8 +127,10 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                 '{{ limit }}' => 5
             ],
             'product' => [
-                'id' => null,
-                'identifier' => 'high-top_sneakers'
+                'id' => 1,
+                'identifier' => 'high-top_sneakers',
+                'label' => 'high-top_sneakers',
+                'family' => 'shoes'
             ]
         ];
         Assert::assertEquals($expectedContent, $doc['content']);
@@ -145,8 +148,10 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
             'message_template' => 'Please specify a valid metric unit',
             'message_parameters' => [],
             'product' => [
-                'id' => null,
-                'identifier' => 'high-top_sneakers'
+                'id' => 1,
+                'identifier' => 'high-top_sneakers',
+                'label' => 'high-top_sneakers',
+                'family' => 'shoes'
             ]
         ];
         Assert::assertEquals($expectedContent, $doc['content']);
@@ -154,6 +159,18 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
     public function test_it_collects_the_unknown_family_error(): void
     {
+        $this->attributeLoader->create([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+        ]);
+
+        $this->familyLoader->create([
+            'code' => 'shoes',
+            'attributes' => ['sku','name']
+        ]);
+
+        $this->productLoader->create("high-top_sneakers", ['family'=>"shoes"]);
+
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
         $client = $this->createAuthenticatedClient(
@@ -195,8 +212,10 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
             'domain_error_identifier' => '2',
             'message' => 'Property "family" expects a valid family code. The family does not exist, "unknown_family_code" given.',
             'product' => [
-                'id' => null,
-                'identifier' => 'high-top_sneakers'
+                'id' => 1,
+                'identifier' => 'high-top_sneakers',
+                'label' => 'high-top_sneakers',
+                'family' => 'shoes'
             ]
         ];
         Assert::assertEquals($expectedContent, $doc['content']);
@@ -205,6 +224,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
     public function test_it_collects_an_unknown_attribute_error(): void
     {
         $this->familyLoader->create(['code' => 'shoes', 'attributes' => ['sku']]);
+        $this->productLoader->create('high-top_sneakers', ['family' => 'shoes']);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
@@ -264,8 +284,10 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                 ]
             ],
             'product' =>  [
-                'id' => null,
-                'identifier' => 'high-top_sneakers'
+                'id' => 1,
+                'identifier' => 'high-top_sneakers',
+                'label' => 'high-top_sneakers',
+                'family' => 'shoes'
             ]
         ];
 

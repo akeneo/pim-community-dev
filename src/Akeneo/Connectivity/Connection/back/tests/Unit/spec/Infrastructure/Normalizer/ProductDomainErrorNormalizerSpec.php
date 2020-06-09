@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 
@@ -97,6 +98,54 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
         ]);
     }
 
+    public function it_does_not_normalize_the_product_without_product_id(ProductInterface $product, FamilyInterface $family): void
+    {
+        $error = new class () implements IdentifiableDomainErrorInterface
+        {
+            public function getErrorIdentifier(): string
+            {
+                return 'identifier';
+            }
+        };
+
+        $product->getId()->willReturn(null);
+        $product->getIdentifier()->willReturn('product_identifier');
+        $product->getFamily()->willReturn($family);
+        $product->getLabel()->willReturn('Akeneo T-Shirt black and purple with short sleeve');
+
+        $this->normalize($error, 'json', ['product' => $product])->shouldReturn([
+            'type' => 'domain_error',
+            'domain_error_identifier' => 'identifier',
+        ]);
+    }
+
+    public function it_normalizes_the_product_without_family(ProductInterface $product): void
+    {
+        $error = new class () implements IdentifiableDomainErrorInterface
+        {
+            public function getErrorIdentifier(): string
+            {
+                return 'identifier';
+            }
+        };
+
+        $product->getId()->willReturn(1);
+        $product->getIdentifier()->willReturn('product_identifier');
+        $product->getFamily()->willReturn(null);
+        $product->getLabel()->willReturn('Akeneo T-Shirt black and purple with short sleeve');
+
+        $this->normalize($error, 'json', ['product' => $product])->shouldReturn([
+            'type' => 'domain_error',
+            'domain_error_identifier' => 'identifier',
+            'product' => [
+                'id' => 1,
+                'identifier' => 'product_identifier',
+                'label' => 'Akeneo T-Shirt black and purple with short sleeve',
+                'family' => null,
+            ]
+        ]);
+    }
+
     public function it_normalizes_a_documented_error(): void
     {
         $error = new class () implements IdentifiableDomainErrorInterface, DocumentedErrorInterface
@@ -124,7 +173,7 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_normalizes_the_product_information(ProductInterface $product): void
+    public function it_normalizes_the_product_information(ProductInterface $product, FamilyInterface $family): void
     {
         $error = new class () implements IdentifiableDomainErrorInterface
         {
@@ -136,13 +185,18 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
         $product->getId()->willReturn(1);
         $product->getIdentifier()->willReturn('product_identifier');
+        $product->getFamily()->willReturn($family);
+        $family->getCode()->willReturn('tshirts');
+        $product->getLabel()->willReturn('Akeneo T-Shirt black and purple with short sleeve');
 
         $this->normalize($error, 'json', ['product' => $product])->shouldReturn([
             'type' => 'domain_error',
             'domain_error_identifier' => 'identifier',
             'product' => [
                 'id' => 1,
-                'identifier' => 'product_identifier'
+                'identifier' => 'product_identifier',
+                'label' => 'Akeneo T-Shirt black and purple with short sleeve',
+                'family' => 'tshirts',
             ]
         ]);
     }

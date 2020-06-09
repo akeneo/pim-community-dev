@@ -93,6 +93,7 @@ class CollectApiErrorsCountEndToEnd extends ApiTestCase
         $content = <<<JSON
 {
     "identifier": "teferi_time_raveler",
+    "family": "planeswalker",
     "values": {
         "description": [{
             "locale": null,
@@ -109,7 +110,7 @@ JSON;
         $this->errorCountMustBe('erp', 1, ErrorTypes::BUSINESS);
     }
 
-    // test_it_collects_the_error_count_from_a_product_partial_update
+// test_it_collects_the_error_count_from_a_product_partial_update
     public function test_it_collects_the_error_count_from_a_violation_http_exception()
     {
         $this->attributeLoader->create([
@@ -143,6 +144,7 @@ JSON;
         $content = <<<JSON
 {
     "identifier": "big_screen",
+    "family": "screen",
     "values": {
         "name": [{
             "locale": null,
@@ -198,6 +200,7 @@ JSON;
         // Error: unknown attribute "description"
         $content .= json_encode([
             'identifier' => 'high-top_sneakers',
+            'family' => 'shoes',
             'values' => [
                 'description' => [[
                     'locale' => null,
