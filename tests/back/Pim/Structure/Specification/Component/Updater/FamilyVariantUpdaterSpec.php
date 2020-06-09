@@ -3,7 +3,6 @@
 namespace Specification\Akeneo\Pim\Structure\Component\Updater;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownFamilyException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\CommonAttributeCollection;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -244,7 +243,7 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
     ) {
         $familyRepository->findOneByIdentifier('t-shirt')->willReturn(null);
 
-        $this->shouldThrow(UnknownFamilyException::class)->during('update', [
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [
             $familyVariant,
             [
                 'family' => 't-shirt',
