@@ -36,22 +36,27 @@ export default class Select2 extends React.Component<Select2Props & any> {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: Select2Props & any) {
     if (null === this.select.current) {
       return;
     }
 
     const {value} = this.props;
     const $el = $(this.select.current) as any;
-
-    if (value.length === 0) {
+    if (!$el.select2) {
       return;
     }
 
-    if (undefined !== $el.select2) {
-      $('#select2-drop-mask, #select2-drop').remove();
-      $el.val(value).select2(this.props.configuration);
+    if (prevProps.value !== value && value.length === 0) {
+      // The re-render can bring some problem when the value becomes empty (see PIM-8479)
+      // but we need to set the value in any case (see PIM-9263).
+      $el.val(null).trigger('change');
+
+      return;
     }
+
+    $('#select2-drop-mask, #select2-drop').remove();
+    $el.val(value).select2(this.props.configuration);
   }
 
   componentWillUnmount() {

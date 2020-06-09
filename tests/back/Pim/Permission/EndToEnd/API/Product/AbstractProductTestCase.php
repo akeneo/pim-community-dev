@@ -2,6 +2,8 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product;
 
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -426,5 +428,17 @@ JSON;
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+    }
+
+    protected function activateLocaleForChannel(string $localeCode, string $channelCode)
+    {
+        /** @var Locale $locale */
+        $locale = $this->get('pim_catalog.repository.locale')->findOneByIdentifier($localeCode);
+
+        /** @var Channel $channel */
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($channelCode);
+        $channel->addLocale($locale);
+
+        $this->get('pim_catalog.saver.channel')->save($channel);
     }
 }

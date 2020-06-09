@@ -92,6 +92,7 @@ config:
         pim/export/asset-family-field: akeneoassetmanager/infrastructure/export/asset-family-field.ts
 
         oro/datafilter/asset-family-collection-filter: akeneoassetmanager/infrastructure/product-grid/filter/attribute/asset-family-collection
+        oro/datagrid/asset-multiple-link-cell: akeneoassetmanager/infrastructure/product-grid/cell/attribute/asset-multiple-link-cell
 
         pim/form/common/fields/values/asset: akeneoassetmanager/infrastructure/product/axis/asset.js
 
@@ -100,3 +101,4 @@ config:
 
         # Needed by onboarder for hooking into the asset code creation
         akeneoassetmanager/application/asset-upload/utils/line-factory: akeneoassetmanager/application/asset-upload/utils/line-factory
+        akeneoassetmanager/application/component/app/theme: akeneoassetmanager/application/component/app/theme

@@ -516,6 +516,10 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
 
+    Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformationsSource:
+        arguments:
+            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations'
+
     # Reference entities permissions queries
     akeneoassetmanager.infrastructure.persistence.query.find_asset_family_permissions_details:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamilyPermission\SqlFindAssetFamilyPermissionsDetails

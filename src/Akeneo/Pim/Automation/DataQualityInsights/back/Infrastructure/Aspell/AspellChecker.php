@@ -63,7 +63,11 @@ class AspellChecker implements TextChecker
      */
     public function check(string $text, LocaleCode $localeCode): TextCheckResultCollection
     {
-        $source = new TextSource($text);
+        try {
+            $source = new TextSource($text);
+        } catch (\Throwable $e) {
+            throw new TextCheckFailedException($e->getMessage());
+        }
 
         try {
             $speller = $this->spellerProvider->getByLocale($localeCode);

@@ -96,7 +96,7 @@ const RemoveAction = (props: any) => (
 );
 
 const EditAction = (props: any) => (
-  <Action {...props} target="_blank">
+  <Action {...props} className={'edit-asset-from-thumbnail'} target="_blank">
     <Edit size={14} color="white" />
     <Label>{__('pim_asset_manager.asset_collection.edit_asset')}</Label>
   </Action>

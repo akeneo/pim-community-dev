@@ -11,6 +11,8 @@ class UpdateUncategorizedProductEndToEnd extends AbstractProductTestCase
 
     public function testSuccessfullyUpdateAGrantedLocalizedValueOnUncategorizedProductEvenIfANotGrantedLocaleIsFilled()
     {
+        $this->activateLocaleForChannel('de_DE', 'ecommerce');
+
         $updatedData = [
             'values' => [
                 'a_localized_and_scopable_text_area' => [

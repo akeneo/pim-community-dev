@@ -68,7 +68,7 @@ final class ValueCollectionFactoryIntegration extends TestCase
         ]);
 
         PhpUnitAssert::assertEquals($valueCollection->count(), 2);
-        PhpUnitAssert::assertEquals($valueCollection->getByKey('multipleColor-<all_channels>-<all_locales>')->getData(), ['Blue', 'Black']);
+        PhpUnitAssert::assertEquals($valueCollection->getByKey('multipleColor-<all_channels>-<all_locales>')->getData(), ['Blue', 'Black', 'Green']);
     }
 
     protected function getConfiguration()

@@ -13,16 +13,19 @@ namespace Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
  */
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
-use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EmptyValueCommand;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\EmptyData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformationsSource;
+use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 
 /**
  * Empty the value of asset
@@ -32,6 +35,17 @@ use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
  */
 class EmptyUpdater implements ValueUpdaterInterface
 {
+    private $getTransformationsSource;
+    private $attributeRepository;
+
+    public function __construct(
+        GetTransformationsSource $getTransformationsSource,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
+        $this->getTransformationsSource = $getTransformationsSource;
+        $this->attributeRepository = $attributeRepository;
+    }
+
     public function supports(AbstractEditValueCommand $command): bool
     {
         return $command instanceof EmptyValueCommand;
@@ -43,7 +57,8 @@ class EmptyUpdater implements ValueUpdaterInterface
             throw new \RuntimeException('Impossible to update the value of the asset with the given command.');
         }
 
-        $attribute = $command->attribute->getIdentifier();
+        $attribute = $command->attribute;
+        $attributeIdentifier = $attribute->getIdentifier();
         $channelReference = (null !== $command->channel) ?
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode($command->channel)) :
             ChannelReference::noReference();
@@ -52,7 +67,61 @@ class EmptyUpdater implements ValueUpdaterInterface
             LocaleReference::noReference();
         $emptyData = EmptyData::create();
 
-        $value = Value::create($attribute, $channelReference, $localeReference, $emptyData);
+        $value = Value::create($attributeIdentifier, $channelReference, $localeReference, $emptyData);
         $asset->setValue($value);
+
+        $this->emptyAttributesTargetedByAttribute($asset, $attribute, $channelReference, $localeReference);
+    }
+
+    private function emptyAttributesTargetedByAttribute(
+        Asset $asset,
+        AbstractAttribute $attribute,
+        ChannelReference $channelReference,
+        LocaleReference $localeReference
+    ): void {
+        $transformations = $this->getTransformationsSourceForAttribute(
+            $attribute,
+            $channelReference,
+            $localeReference
+        );
+
+        foreach ($transformations as $transformation) {
+            $command = $this->createEmptyValueCommand($asset, $transformation->getTarget());
+            if (! $command instanceof EmptyValueCommand) {
+                continue;
+            }
+
+            $this->__invoke($asset, $command);
+        }
+    }
+
+    private function createEmptyValueCommand(Asset $asset, Target $target): ?EmptyValueCommand
+    {
+        try {
+            $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+                $target->getAttributeCode(),
+                $asset->getAssetFamilyIdentifier()
+            );
+
+            return new EmptyValueCommand(
+                $attribute,
+                $target->getChannelReference()->normalize(),
+                $target->getLocaleReference()->normalize()
+            );
+        } catch (AttributeNotFoundException $exception) {
+            return null;
+        }
+    }
+
+    private function getTransformationsSourceForAttribute(
+        AbstractAttribute $attribute,
+        ChannelReference $channelReference,
+        LocaleReference $localeReference
+    ): array {
+        return $this->getTransformationsSource->forAttribute(
+            $attribute,
+            $channelReference,
+            $localeReference
+        );
     }
 }

@@ -78,7 +78,7 @@ type AssetPreviewProps = {
 };
 
 const EditAction = ({url, label}: {url: string; label: string}) => (
-  <Action title={label} href={url} target="_blank">
+  <Action className={'edit-asset-from-preview'} title={label} href={url} target="_blank">
     <Edit />
     <ActionLabel title={label}>{label}</ActionLabel>
   </Action>

@@ -28,7 +28,7 @@ describe('akeneo > reference entity > domain > model --- file', () => {
     }).toThrow('File expects a non empty string as filePath to be created');
     expect(() => {
       createFile('my/path.png');
-    }).toThrow('File expects a non empty string as originalFilename to be created');
+    }).toThrow('File expects a string as originalFilename to be created');
   });
 
   test('I can get the filepath or original filename for an uploaded file', () => {

@@ -127,7 +127,7 @@ const LineList = ({
           <ListColumnHeader width={ColumnWidths.filename}>
             {__('pim_asset_manager.asset.upload.list.filename')}
           </ListColumnHeader>
-          <ListColumnHeader width={ColumnWidths.code}>
+          <ListColumnHeader className={'edit-asset-code-label'} width={ColumnWidths.code}>
             {__('pim_asset_manager.asset.upload.list.code')}
           </ListColumnHeader>
           {valuePerChannel && (
