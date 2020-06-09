@@ -1,4 +1,4 @@
-import { ConditionFactory, ConditionModuleGuesser } from './Condition';
+import { ConditionFactory } from './Condition';
 import React from 'react';
 import { Operator } from '../Operator';
 import { CategoryCode } from '../Category';
@@ -6,6 +6,7 @@ import {
   CategoryConditionLine,
   CategoryConditionLineProps,
 } from '../../pages/EditRules/components/conditions/CategoryConditionLine';
+import { ConditionModuleGuesser } from './ConditionModuleGuesser';
 
 const FIELD = 'categories';
 

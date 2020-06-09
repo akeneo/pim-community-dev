@@ -20,10 +20,6 @@ export const AvailableAddAction: { [key: string]: () => Action } = {
   clear_attribute: createClearAttributeAction,
 };
 
-export type ActionModuleGuesser = (
-  json: any
-) => React.FC<ActionLineProps & { action: Action }> | null;
-
 export type Action =
   | AddAction
   | CalculateAction

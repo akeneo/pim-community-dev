@@ -64,8 +64,10 @@ const CategoryConditionLine: React.FC<CategoryConditionLineProps> = ({
     watch(`content.conditions[${lineNumber}].operator`);
   const getValueFormValue: () => CategoryCode[] = () =>
     watch(`content.conditions[${lineNumber}].value`);
-  const setValueFormValue = (value: CategoryCode[] | null) =>
+  const setValueFormValue = (value: CategoryCode[] | null) => {
+    condition.value = value ?? undefined;
     setValue(`content.conditions[${lineNumber}].value`, value);
+  };
 
   useEffect(() => {
     getCategoriesByIdentifiers(getValueFormValue() || [], router).then(

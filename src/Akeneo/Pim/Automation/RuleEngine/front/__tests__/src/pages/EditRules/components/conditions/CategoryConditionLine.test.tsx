@@ -2,9 +2,8 @@ import 'jest-fetch-mock';
 import React from 'react';
 import { render } from '../../../../../../test-utils';
 import { CategoryConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/CategoryConditionLine';
-import { CategoryCondition } from '../../../../../../src/models/conditions/CategoryCondition';
+import { CategoryCondition } from '../../../../../../src/models/conditions';
 import { Operator } from '../../../../../../src/models/Operator';
-import { Router } from '../../../../../../src/dependenciesTools';
 
 jest.mock('../../../../../../src/fetch/categoryTree.fetcher');
 jest.mock('../../../../../../src/dependenciesTools/provider/dependencies.ts');
@@ -15,14 +14,6 @@ const condition: CategoryCondition = {
   field: 'categories',
   operator: Operator.NOT_IN_CHILDREN_LIST,
   value: ['shoes', 'tshirts'],
-};
-
-const translate = jest.fn((key: string) => key);
-const router: Router = {
-  generate: jest.fn().mockImplementation((route, params) => {
-    return route + JSON.stringify(params);
-  }),
-  redirect: jest.fn(),
 };
 
 describe('CategoryConditionLine', () => {
@@ -54,11 +45,9 @@ describe('CategoryConditionLine', () => {
       <CategoryConditionLine
         condition={condition}
         lineNumber={2}
-        translate={translate}
         locales={[]}
         scopes={{}}
         currentCatalogLocale={'fr_FR'}
-        router={router}
       />,
       { all: true }
     );

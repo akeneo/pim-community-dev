@@ -51,7 +51,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   attribute,
 }) => {
   const translate = useTranslate();
-  const { watch } = useFormContext();
+  const { watch, setValue } = useFormContext();
 
   const getOperatorFormValue: () => Operator = () =>
     watch(`content.conditions[${lineNumber}].operator`);
@@ -157,7 +157,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
         .map(locale => locale.code)
         .includes(getLocaleFormValue())
     ) {
-      condition.locale = undefined;
+      setValue(`content.conditions[${lineNumber}].locale`, undefined);
     }
   };
 

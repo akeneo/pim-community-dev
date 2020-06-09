@@ -1,6 +1,6 @@
 import { ClearActionLine } from '../../pages/EditRules/components/actions/ClearActionLine';
 import { ProductField } from './ProductField';
-import { ActionModuleGuesser } from '../Action';
+import { ActionModuleGuesser } from './ActionModuleGuesser';
 
 export type ClearAction = {
   type: 'clear';

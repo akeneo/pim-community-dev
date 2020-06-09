@@ -1,87 +1,11 @@
 import { RuleDefinition } from './RuleDefinition';
-import { Action, ActionModuleGuesser } from './Action';
 import { Router } from '../dependenciesTools';
 import { getAttributesByIdentifiers } from '../repositories/AttributeRepository';
-import {
-  getAddActionModule,
-  getCalculateActionModule,
-  getClearActionModule,
-  getConcatenateActionModule,
-  getCopyActionModule,
-  getRemoveActionModule,
-  getSetActionModule,
-  getSetFamilyActionModule,
-} from './actions';
-import {
-  Condition,
-  ConditionModuleGuesser,
-  getFamilyConditionModule,
-  getMultiOptionsAttributeConditionModule,
-  getCategoryConditionModule,
-  getPimConditionModule,
-  getTextAttributeConditionModule,
-} from './conditions';
-import React from 'react';
-import { ConditionLineProps } from '../pages/EditRules/components/conditions/ConditionLineProps';
-import { FallbackConditionLine } from '../pages/EditRules/components/conditions/FallbackConditionLine';
-import { ActionLineProps } from '../pages/EditRules/components/actions/ActionLineProps';
-import { FallbackActionLine } from '../pages/EditRules/components/actions/FallbackActionLine';
-
-const getActionModule: ((
-  json: any,
-) => Promise<React.FC<ActionLineProps>>) = async (json) => {
-  const getActionModuleFunctions: ActionModuleGuesser[] = [
-    getSetFamilyActionModule,
-    getAddActionModule,
-    getCalculateActionModule,
-    getClearActionModule,
-    getConcatenateActionModule,
-    getCopyActionModule,
-    getRemoveActionModule,
-    getSetActionModule,
-  ];
-
-  for (let i = 0; i < getActionModuleFunctions.length; i++) {
-    const getModuleFunction = getActionModuleFunctions[i];
-    const module = await getModuleFunction(json);
-    if (module !== null) {
-      return module;
-    }
-  }
-
-  return FallbackActionLine;
-};
-
-const getConditionModule: (
-  json: any,
-  router: Router
-) => Promise<React.FC<ConditionLineProps & { condition: Condition }>> = async (
-  json,
-  router
-) => {
-  const getConditionModuleFunctions: ConditionModuleGuesser[] = [
-    getFamilyConditionModule,
-    getCategoryConditionModule,
-    getTextAttributeConditionModule,
-    getMultiOptionsAttributeConditionModule,
-    getPimConditionModule,
-  ];
-
-  for (let i = 0; i < getConditionModuleFunctions.length; i++) {
-    const getModuleFunction = getConditionModuleFunctions[i];
-    const module = await getModuleFunction(json, router);
-    if (module !== null) {
-      return module;
-    }
-  }
-
-  return FallbackConditionLine;
-};
 
 const extractFieldIdentifiers = (json: any): string[] => {
   const indexedFieldIdentifiers: { [identifier: string]: boolean } = {};
 
-  const conditions = json.content?.conditions || [];
+  const conditions = json.content?.conditions ?? [];
   if (Array.isArray(conditions)) {
     conditions.forEach((condition: any) => {
       if ('string' === typeof condition.field) {
@@ -110,7 +34,7 @@ const prepareCacheAttributes = async (
   await getAttributesByIdentifiers(fieldIdentifiers, router);
 };
 
-export const denormalize = async function(
+const denormalize = async function(
   json: any,
   router: Router
 ): Promise<RuleDefinition> {
@@ -136,4 +60,4 @@ export const denormalize = async function(
   };
 };
 
-export { getConditionModule, getActionModule };
+export { denormalize };

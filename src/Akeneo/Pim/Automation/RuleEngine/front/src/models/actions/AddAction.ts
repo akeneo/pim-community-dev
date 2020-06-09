@@ -1,6 +1,6 @@
 import { AddActionLine } from '../../pages/EditRules/components/actions/AddActionLine';
 import { ProductField } from './ProductField';
-import { ActionModuleGuesser } from '../Action';
+import { ActionModuleGuesser } from './ActionModuleGuesser';
 
 export type AddAction = {
   type: 'add';

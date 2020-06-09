@@ -13,6 +13,7 @@ import { createAttribute, locales, scopes } from '../../factories';
 
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
+jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
 
 describe('TextAttributeConditionLine', () => {
   afterEach(() => {
@@ -20,9 +21,10 @@ describe('TextAttributeConditionLine', () => {
   });
 
   it('should display the locale and scope selectors', async () => {
-    fetchMock.mockResponses(
-      [JSON.stringify(createAttribute({ localizable: true, scopable: true })), { status: 200 }],
-    );
+    fetchMock.mockResponses([
+      JSON.stringify(createAttribute({ localizable: true, scopable: true })),
+      { status: 200 },
+    ]);
 
     const { findByText, findByTestId } = renderWithProviders(
       <TextAttributeConditionLine
@@ -37,7 +39,8 @@ describe('TextAttributeConditionLine', () => {
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
-      />, { all: true }
+      />,
+      { all: true }
     );
 
     expect(await findByText('Nom')).toBeInTheDocument();
@@ -55,9 +58,10 @@ describe('TextAttributeConditionLine', () => {
   });
 
   it('should not display the locale and scope selectors', async () => {
-    fetchMock.mockResponses(
-      [JSON.stringify(createAttribute({ localizable: false, scopable: false })), { status: 200 }],
-    );
+    fetchMock.mockResponses([
+      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
+      { status: 200 },
+    ]);
 
     const { findByText, findByTestId, queryByTestId } = renderWithProviders(
       <TextAttributeConditionLine
@@ -70,7 +74,8 @@ describe('TextAttributeConditionLine', () => {
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
-      />, { all: true }
+      />,
+      { all: true }
     );
 
     expect(await findByText('Nom')).toBeInTheDocument();
@@ -82,9 +87,10 @@ describe('TextAttributeConditionLine', () => {
   });
 
   it('handles values option appearance based on selected operator', async () => {
-    fetchMock.mockResponses(
-      [JSON.stringify(createAttribute({ localizable: false, scopable: false })), { status: 200 }],
-    );
+    fetchMock.mockResponses([
+      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
+      { status: 200 },
+    ]);
 
     const { findByText, findByTestId, queryByTestId } = renderWithProviders(
       <TextAttributeConditionLine
@@ -97,7 +103,8 @@ describe('TextAttributeConditionLine', () => {
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'en_US'}
-      />, { all: true }
+      />,
+      { all: true }
     );
     expect(await findByText('Name')).toBeInTheDocument();
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');
@@ -114,11 +121,17 @@ describe('TextAttributeConditionLine', () => {
   });
 
   it('displays the matching locales regarding the scope', async () => {
-    fetchMock.mockResponses(
-      [JSON.stringify(createAttribute({ localizable: true, scopable: true })), { status: 200 }],
-    );
+    fetchMock.mockResponses([
+      JSON.stringify(createAttribute({ localizable: true, scopable: true })),
+      { status: 200 },
+    ]);
 
-    const { findByText, findByTestId, queryByTestId, queryByText } = renderWithProviders(
+    const {
+      findByText,
+      findByTestId,
+      queryByTestId,
+      queryByText,
+    } = renderWithProviders(
       <TextAttributeConditionLine
         condition={{
           field: 'localizableScopableAttribute',
@@ -126,11 +139,13 @@ describe('TextAttributeConditionLine', () => {
           value: 'Canon',
           scope: 'mobile',
           locale: 'en_US',
-        }}        lineNumber={1}
+        }}
+        lineNumber={1}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'en_US'}
-      />, { all: true }
+      />,
+      { all: true }
     );
     expect(await findByText('Name')).toBeInTheDocument();
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');

@@ -88,7 +88,7 @@ const RuleProductSelection: React.FC<Props> = ({
   const translate = useTranslate();
   const router = useBackboneRouter();
 
-  const { getValues, control } = useFormContext();
+  const { getValues, watch, control } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'content.conditions',
@@ -129,7 +129,7 @@ const RuleProductSelection: React.FC<Props> = ({
       return (getValues({ nest: true })?.content?.conditions || []).some(
         (condition: Condition) => {
           return (
-            condition.hasOwnProperty('field') &&
+            Object.hasOwnProperty.call(condition, 'field') &&
             (condition as { field: string }).field === fieldCode
           );
         }
@@ -139,14 +139,14 @@ const RuleProductSelection: React.FC<Props> = ({
   );
 
   const hasActions: () => boolean = () => {
-    return (getValues({ nest: true })?.content?.actions || []).length > 0;
+    return (watch(`content.actions`) ?? []).length > 0;
   };
 
   const Component = hasActions()
     ? RuleProductSelectionFieldsetWithAction
     : RuleProductSelectionFieldset;
   return (
-    <Component>
+    <Component tabIndex={-1}>
       <Header className='AknSubsection-title'>
         <HeaderPartContainer>
           <TextBoxBlue>

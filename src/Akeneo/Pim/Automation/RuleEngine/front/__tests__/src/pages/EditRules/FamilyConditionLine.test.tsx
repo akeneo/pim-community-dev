@@ -42,7 +42,8 @@ describe('FamilyConditionLine', () => {
         currentCatalogLocale={'fr_FR'}
         locales={[]}
         scopes={{}}
-      />, { all: true }
+      />,
+      { all: true }
     );
 
     expect(
@@ -92,7 +93,8 @@ describe('FamilyConditionLine', () => {
         currentCatalogLocale={'fr_FR'}
         locales={[]}
         scopes={{}}
-      />, { all: true }
+      />,
+      { all: true }
     );
 
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');

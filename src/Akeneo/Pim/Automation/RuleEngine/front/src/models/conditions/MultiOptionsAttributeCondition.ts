@@ -1,8 +1,9 @@
 import { Router } from '../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
 import { Operator } from '../Operator';
-import { ConditionFactory, ConditionModuleGuesser } from './Condition';
+import { ConditionFactory } from './Condition';
 import { MultiOptionsAttributeConditionLine } from '../../pages/EditRules/components/conditions/MultiOptionsAttributeConditionLine';
+import { ConditionModuleGuesser } from './ConditionModuleGuesser';
 
 const TYPE = 'pim_catalog_multiselect';
 

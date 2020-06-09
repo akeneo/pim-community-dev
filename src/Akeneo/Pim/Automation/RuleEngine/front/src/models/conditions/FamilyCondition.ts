@@ -1,6 +1,7 @@
 import { Operator } from '../Operator';
 import { FamilyConditionLine } from '../../pages/EditRules/components/conditions/FamilyConditionLine';
-import { ConditionFactory, ConditionModuleGuesser } from './Condition';
+import { ConditionFactory } from './Condition';
+import { ConditionModuleGuesser } from './ConditionModuleGuesser';
 
 const FIELD = 'family';
 

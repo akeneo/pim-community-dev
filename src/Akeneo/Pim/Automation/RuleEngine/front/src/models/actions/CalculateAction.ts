@@ -2,7 +2,7 @@ import { CalculateActionLine } from '../../pages/EditRules/components/actions/Ca
 import { ProductField } from './ProductField';
 import { Operand, denormalizeOperand } from './Calculate/Operand';
 import { denormalizeOperation, Operation } from './Calculate/Operation';
-import { ActionModuleGuesser } from '../Action';
+import { ActionModuleGuesser } from './ActionModuleGuesser';
 
 export type CalculateAction = {
   type: 'calculate';

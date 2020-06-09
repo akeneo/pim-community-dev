@@ -2,7 +2,8 @@ import { Router } from '../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
 import { TextAttributeConditionLine } from '../../pages/EditRules/components/conditions/TextAttributeConditionLine';
 import { Operator } from '../Operator';
-import { ConditionFactory, ConditionModuleGuesser } from './Condition';
+import { ConditionFactory } from './Condition';
+import { ConditionModuleGuesser } from './ConditionModuleGuesser';
 
 const TYPE = 'pim_catalog_text';
 

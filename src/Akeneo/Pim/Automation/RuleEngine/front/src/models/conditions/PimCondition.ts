@@ -4,7 +4,7 @@
  * Each native condition coming from the PIM has the same fields.
  */
 import { PimConditionLine } from '../../pages/EditRules/components/conditions/PimConditionLine';
-import { ConditionModuleGuesser } from './Condition';
+import { ConditionModuleGuesser } from './ConditionModuleGuesser';
 
 type PimCondition = {
   field: string;

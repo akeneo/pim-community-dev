@@ -1,6 +1,6 @@
 import { ConcatenateActionLine } from '../../pages/EditRules/components/actions/ConcatenateActionLine';
 import { ProductField } from './ProductField';
-import { ActionModuleGuesser } from '../Action';
+import { ActionModuleGuesser } from './ActionModuleGuesser';
 
 export type ConcatenateAction = {
   type: 'concatenate';

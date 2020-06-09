@@ -1,6 +1,6 @@
 import { RemoveActionLine } from '../../pages/EditRules/components/actions/RemoveActionLine';
 import { ProductField } from './ProductField';
-import { ActionModuleGuesser } from '../Action';
+import { ActionModuleGuesser } from './ActionModuleGuesser';
 
 export type RemoveAction = {
   type: 'remove';

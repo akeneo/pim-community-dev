@@ -11,7 +11,7 @@ import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { getConditionModule } from '../../../../models/rule-definition-denormalizer';
+import { getConditionModule } from '../../../../models/conditions/ConditionModuleGuesser';
 
 const DeleteButton = styled(DialogDisclosure)`
   border: none;
