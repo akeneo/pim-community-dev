@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import useAttributeOptions from '../hooks/useAttributeOptions';
 import {AttributeOption} from '../model';
 import ToggleButton from './ToggleButton';
-import ListItem from './ListItem';
+import ListItem, {DragItem} from './ListItem';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
 import {useAttributeContext} from '../contexts';
@@ -12,14 +12,16 @@ interface ListProps {
     showNewOptionForm: (isDisplayed: boolean) => void;
     selectedOptionId: number | null;
     deleteAttributeOption: (attributeOptionId: number) => void;
+    manuallySortAttributeOptions: (attributeOptions: AttributeOption[]) => void;
 }
 
-const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm, deleteAttributeOption}: ListProps) => {
+const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm, deleteAttributeOption, manuallySortAttributeOptions}: ListProps) => {
     const attributeOptions = useAttributeOptions();
     const translate = useTranslate();
     const attributeContext = useAttributeContext();
     const [showNewOptionPlaceholder, setShowNewOptionPlaceholder] = useState<boolean>(false);
     const [sortedAttributeOptions, setSortedAttributeOptions] = useState<AttributeOption[] | null>(attributeOptions);
+    const [dragItem, setDragItem] = useState<DragItem | null>(null);
 
     useEffect(() => {
         if (selectedOptionId !== null) {
@@ -33,7 +35,7 @@ const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm, delet
             if (attributeContext.autoSortOptions) {
                 // /!\ sort() does not return another reference, it sorts directly on the original variable.
                 sortedOptions.sort((option1: AttributeOption, option2: AttributeOption) => {
-                    return option1.code.localeCompare(option2.code, undefined , {sensitivity: 'base'});
+                    return option1.code.localeCompare(option2.code, undefined, {sensitivity: 'base'});
                 });
             }
             setSortedAttributeOptions(sortedOptions);
@@ -60,6 +62,26 @@ const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm, delet
         }
     };
 
+    const moveAttributeOption = (sourceOptionCode: string, targetOptionCode: string) => {
+        if (sortedAttributeOptions !== null && sourceOptionCode !== targetOptionCode) {
+            const sourceIndex = sortedAttributeOptions.findIndex((attributeOption: AttributeOption) => attributeOption.code === sourceOptionCode);
+            const targetIndex = sortedAttributeOptions.findIndex((attributeOption: AttributeOption) => attributeOption.code === targetOptionCode);
+            const sourceOption = sortedAttributeOptions[sourceIndex];
+
+            let newSortedAttributeOptions = [...sortedAttributeOptions];
+            newSortedAttributeOptions.splice(sourceIndex, 1);
+            newSortedAttributeOptions.splice(targetIndex, 0, sourceOption);
+
+            setSortedAttributeOptions(newSortedAttributeOptions);
+        }
+    };
+
+    const validateMoveAttributeOption = () => {
+        if (sortedAttributeOptions !== null && JSON.stringify(sortedAttributeOptions) != JSON.stringify(attributeOptions)) {
+            manuallySortAttributeOptions(sortedAttributeOptions);
+        }
+    };
+
     return (
         <div className="AknSubsection AknAttributeOption-list">
             <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
@@ -75,7 +97,7 @@ const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm, delet
             <ToggleButton />
 
             <div role="attribute-options-list">
-                {sortedAttributeOptions !== null && sortedAttributeOptions.map((attributeOption: AttributeOption) => {
+                {sortedAttributeOptions !== null && sortedAttributeOptions.map((attributeOption: AttributeOption, index: number) => {
                     return (
                         <ListItem
                             key={attributeOption.code}
@@ -83,6 +105,11 @@ const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm, delet
                             selectAttributeOption={onSelectItem}
                             isSelected={selectedOptionId === attributeOption.id}
                             deleteAttributeOption={deleteAttributeOption}
+                            moveAttributeOption={moveAttributeOption}
+                            validateMoveAttributeOption={validateMoveAttributeOption}
+                            dragItem={dragItem}
+                            setDragItem={setDragItem}
+                            index={index}
                         />
                     );
                 })}

@@ -1,5 +1,5 @@
 import React, {createContext, FC, useContext} from 'react';
-import {useLocales} from '../hooks';
+import useLocales from '../hooks/useLocales';
 import {Locale} from '../model';
 
 export const LocalesContext = createContext<Locale[]>([]);

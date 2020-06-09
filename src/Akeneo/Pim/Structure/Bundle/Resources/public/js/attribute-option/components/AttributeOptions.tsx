@@ -8,7 +8,13 @@ import {AttributeOption} from '../model';
 import {useSaveAttributeOption} from '../hooks/useSaveAttributeOption';
 import {useCreateAttributeOption} from '../hooks/useCreateAttributeOption';
 import {useDeleteAttributeOption} from '../hooks/useDeleteAttributeOption';
-import {createAttributeOptionAction, deleteAttributeOptionAction, updateAttributeOptionAction} from '../reducers';
+import {useManualSortAttributeOptions} from '../hooks/useManualSortAttributeOptions';
+import {
+    createAttributeOptionAction,
+    deleteAttributeOptionAction,
+    initializeAttributeOptionsAction,
+    updateAttributeOptionAction
+} from '../reducers';
 import {useAttributeContext} from '../contexts';
 import {NotificationLevel, useNotify} from '@akeneo-pim-community/legacy-bridge';
 
@@ -20,6 +26,7 @@ const AttributeOptions = () => {
     const attributeOptionSaver = useSaveAttributeOption();
     const attributeOptionCreate = useCreateAttributeOption();
     const attributeOptionDelete = useDeleteAttributeOption();
+    const attributeOptionManualSort = useManualSortAttributeOptions();
     const dispatchAction = useDispatch();
     const attributeContext = useAttributeContext();
     const notify = useNotify();
@@ -93,6 +100,13 @@ const AttributeOptions = () => {
         setIsSaving(false);
     }, [attributeOptionDelete, setIsSaving, dispatchAction, notify, setSelectedOption, attributeOptions, selectedOption]);
 
+    const manuallySortAttributeOptions = useCallback(async (sortedAttributeOptions: AttributeOption[]) => {
+        setIsSaving(true);
+        await attributeOptionManualSort(sortedAttributeOptions);
+        dispatchAction(initializeAttributeOptionsAction(sortedAttributeOptions));
+        setIsSaving(false);
+    }, [setIsSaving, attributeOptionManualSort, dispatchAction]);
+
     return (
         <div className="AknAttributeOption">
             {(attributeOptions === null || isSaving) && <div className="AknLoadingMask"/>}
@@ -102,6 +116,7 @@ const AttributeOptions = () => {
                 selectedOptionId={selectedOption ? selectedOption.id : null}
                 showNewOptionForm={setShowNewOptionForm}
                 deleteAttributeOption={deleteAttributeOption}
+                manuallySortAttributeOptions={manuallySortAttributeOptions}
             />
 
             {(selectedOption !== null && <Edit option={selectedOption} saveAttributeOption={saveAttributeOption}/>)}

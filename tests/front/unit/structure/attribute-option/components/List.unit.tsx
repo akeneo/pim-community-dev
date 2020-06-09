@@ -2,11 +2,20 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Provider} from "react-redux";
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent, getAllByRole, getByRole, queryByRole, queryAllByRole} from '@testing-library/react';
+import {
+    act,
+    fireEvent,
+    getAllByRole,
+    getByRole,
+    queryByRole,
+    queryAllByRole,
+    createEvent
+} from '@testing-library/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
 import List from 'akeneopimstructure/js/attribute-option/components/List';
 import {AttributeContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
+import {AttributeOption} from "../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/model";
 
 declare global {
     namespace NodeJS {
@@ -54,7 +63,7 @@ describe('Attribute options list', () => {
             return {json: () => []};
         });
 
-        await renderComponent(false, jest.fn(), jest.fn());
+        await renderComponent(false, jest.fn(), jest.fn(), jest.fn());
 
         expect(getByRole(container, 'attribute-options-list')).toBeEmpty();
     });
@@ -64,7 +73,7 @@ describe('Attribute options list', () => {
             return {json: () => options};
         });
 
-        await renderComponent(false, jest.fn(), jest.fn());
+        await renderComponent(false, jest.fn(), jest.fn(), jest.fn());
 
         const attributeOptions = getAllByRole(container, 'attribute-option-item');
         expect(attributeOptions.length).toBe(2);
@@ -79,7 +88,7 @@ describe('Attribute options list', () => {
             return {json: () => options};
         });
 
-        await renderComponent(true, jest.fn(), jest.fn());
+        await renderComponent(true, jest.fn(), jest.fn(), jest.fn());
 
         const attributeOptions = getAllByRole(container, 'attribute-option-item');
         expect(attributeOptions.length).toBe(2);
@@ -92,7 +101,7 @@ describe('Attribute options list', () => {
             return {json: () => options};
         });
 
-        await renderComponent(false, jest.fn(), jest.fn());
+        await renderComponent(false, jest.fn(), jest.fn(), jest.fn());
 
         let attributeOptions = getAllByRole(container, 'attribute-option-item');
         expect(attributeOptions.length).toBe(2);
@@ -114,7 +123,7 @@ describe('Attribute options list', () => {
         });
 
         const showNewOptionFormCallback = jest.fn();
-        await renderComponent(false, jest.fn(), showNewOptionFormCallback);
+        await renderComponent(false, jest.fn(), showNewOptionFormCallback, jest.fn());
 
         expect(queryByRole(container, 'new-option-placeholder')).toBeNull();
 
@@ -137,7 +146,7 @@ describe('Attribute options list', () => {
 
         const selectOptionCallback = jest.fn();
         const blueOptionId = 86;
-        await renderComponent(false, selectOptionCallback, jest.fn(), blueOptionId);
+        await renderComponent(false, selectOptionCallback, jest.fn(), jest.fn(), blueOptionId);
 
         expect(queryByRole(container, 'new-option-placeholder')).toBeNull();
 
@@ -154,9 +163,73 @@ describe('Attribute options list', () => {
         const blackOptionId = 18;
         expect(selectOptionCallback).toHaveBeenNthCalledWith(1, blackOptionId)
     });
+
+    test('it handles option reorder', async () => {
+        global.fetch = jest.fn().mockImplementationOnce(route => {
+            return {json: () => options};
+        });
+
+        const reorderAttributeOptions = jest.fn();
+        await renderComponent(false, jest.fn(), jest.fn(), reorderAttributeOptions);
+
+        const attributeOptionMoveHandle = getAllByRole(container, 'attribute-option-move-handle').shift();
+        const attributeOptions = getAllByRole(container, 'attribute-option-item');
+
+        expect(attributeOptions.length).toBe(2);
+        expect(attributeOptions[0].textContent).toBe('blue');
+        expect(attributeOptions[1].textContent).toBe('black');
+
+        await moveBlueOptionToBackOption(attributeOptionMoveHandle, attributeOptions);
+
+        const sortedAttributeOptions = getAllByRole(container, 'attribute-option-item');
+        expect(sortedAttributeOptions.length).toBe(2);
+        expect(sortedAttributeOptions[0].textContent).toBe('black');
+        expect(sortedAttributeOptions[1].textContent).toBe('blue');
+
+        expect(reorderAttributeOptions).toHaveBeenNthCalledWith(1, [
+            {
+                "id": 18,
+                "code": "black",
+                "optionValues": {
+                    "en_US": {"id":252,"locale":"en_US","value":"Black"},
+                    "fr_FR":{"id":253,"locale":"fr_FR","value":"Noir"}
+                }
+            },
+            {
+                "id": 86,
+                "code": "blue",
+                "optionValues": {
+                    "en_US": {"id":255,"locale":"en_US","value":"Blue"},
+                    "fr_FR":{"id":256,"locale":"fr_FR","value":"Bleu"}
+                }
+            },
+        ]);
+    });
 });
 
-async function renderComponent(autoSortOptions, selectOptionCallback, showNewOptionFormCallback, selectedOptionId = null) {
+async function moveBlueOptionToBackOption(attributeOptionMoveHandle, attributeOptions) {
+    const dragStartEvent = createEvent.dragStart(attributeOptionMoveHandle);
+    const setData = jest.fn();
+    const setDragImage = jest.fn();
+    Object.assign(dragStartEvent, {
+        dataTransfer: {
+            setData,
+            setDragImage,
+        },
+    });
+    await fireEvent(attributeOptionMoveHandle, dragStartEvent);
+    await fireEvent.dragOver(attributeOptions[1], {
+        target: {
+            getBoundingClientRect: jest.fn().mockImplementation(() => {
+                return {bottom: 10, top: 0};
+            }),
+            clientY: 6
+        },
+    });
+    await fireEvent.drop(attributeOptionMoveHandle);
+}
+
+async function renderComponent(autoSortOptions, selectOptionCallback, showNewOptionFormCallback, reorderAttributeOptions, selectedOptionId = null) {
     await act(async () => {
         ReactDOM.render(
             <DependenciesProvider>
@@ -167,6 +240,7 @@ async function renderComponent(autoSortOptions, selectOptionCallback, showNewOpt
                             showNewOptionForm={showNewOptionFormCallback}
                             selectedOptionId={selectedOptionId}
                             deleteAttributeOption={jest.fn()}
+                            reorderAttributeOptions={reorderAttributeOptions}
                         />
                     </AttributeContextProvider>
                 </Provider>

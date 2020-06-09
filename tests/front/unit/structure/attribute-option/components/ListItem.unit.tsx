@@ -1,10 +1,11 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent, getByRole, queryByRole, queryAllByRole} from '@testing-library/react';
+import {act, fireEvent, getByRole, queryByRole, queryAllByRole, createEvent} from '@testing-library/react';
 import ListItem from 'akeneopimstructure/js/attribute-option/components/ListItem';
 import {AttributeOption} from 'akeneopimstructure/js/attribute-option/model';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {AttributeContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
 
 let container: HTMLElement;
 
@@ -17,7 +18,7 @@ afterEach(() => {
     document.body.removeChild(container);
 });
 
-const option: AttributeOption = {
+const blackOption: AttributeOption = {
     id: 80,
     code: 'black',
     optionValues: {
@@ -26,10 +27,17 @@ const option: AttributeOption = {
             value: 'Black',
             locale: 'en_US',
         },
-        fr_FR: {
-            id: 2,
-            value: 'Noir',
-            locale: 'fr_FR',
+    },
+};
+
+const blueOption: AttributeOption = {
+    id: 14,
+    code: 'blue',
+    optionValues: {
+        en_US: {
+            id: 3,
+            value: 'Blue',
+            locale: 'en_US',
         },
     },
 };
@@ -38,7 +46,7 @@ describe('Attribute options list item', () => {
     test('it renders a list item', async () => {
         const onSelectCallback = jest.fn();
 
-        await renderComponent(onSelectCallback, jest.fn());
+        await renderComponent(blackOption, onSelectCallback, jest.fn(), jest.fn(), jest.fn(), false, null, jest.fn());
 
         const attributeOption = getByRole(container, 'attribute-option-item');
         expect(attributeOption).toHaveClass('AknAttributeOption-listItem--selected');
@@ -51,7 +59,7 @@ describe('Attribute options list item', () => {
     test('it allows attribute option to be deleted', async () => {
         const deleteAttributeOptionCallback = jest.fn();
 
-        await renderComponent(jest.fn(), deleteAttributeOptionCallback);
+        await renderComponent(blackOption, jest.fn(), deleteAttributeOptionCallback, jest.fn(), jest.fn(), false, null, jest.fn());
 
         const deleteButton = getByRole(container, 'attribute-option-delete-button');
         let deleteConfirmationModal = queryByRole(container, 'attribute-option-delete-confirmation-modal');
@@ -74,7 +82,7 @@ describe('Attribute options list item', () => {
     test('the attribute option deletion can be cancelled with the 2 cancel buttons', async () => {
         const deleteAttributeOptionCallback = jest.fn();
 
-        await renderComponent(jest.fn(), deleteAttributeOptionCallback);
+        await renderComponent(blackOption, jest.fn(), deleteAttributeOptionCallback, jest.fn(), jest.fn(), false, null, jest.fn());
 
         const deleteButton = getByRole(container, 'attribute-option-delete-button');
         await fireEvent.click(deleteButton);
@@ -93,18 +101,81 @@ describe('Attribute options list item', () => {
         expect(deleteAttributeOptionCallback).not.toHaveBeenCalled();
         expect(deleteConfirmationModal).not.toBeInTheDocument();
     });
+
+    test('an attribute option will not be moved upwards if the treshold is not met', async () => {
+        const moveOptionCallback = jest.fn();
+        await renderComponent(blueOption, jest.fn(), jest.fn(), moveOptionCallback, jest.fn(), false, {code: 'black', index: 0}, jest.fn());
+        const attributeOptionMoveHandle = getByRole(container, 'attribute-option-move-handle');
+
+        fireEvent.dragOver(attributeOptionMoveHandle, {
+            target: {
+                getBoundingClientRect: jest.fn().mockImplementation(() => {
+                    return {bottom: 10, top: 0};
+                }),
+                clientY: 4
+            },
+        });
+
+        expect(moveOptionCallback).not.toHaveBeenCalled();
+    });
+
+    test('an attribute option will not be moved downwards if the treshold is not met', async () => {
+        const moveOptionCallback = jest.fn();
+        await renderComponent(blueOption, jest.fn(), jest.fn(), moveOptionCallback, jest.fn(), false, {code: 'black', index: 2}, jest.fn());
+        const attributeOptionMoveHandle = getByRole(container, 'attribute-option-move-handle');
+
+        fireEvent.dragOver(attributeOptionMoveHandle, {
+            target: {
+                getBoundingClientRect: jest.fn().mockImplementation(() => {
+                    return {bottom: 10, top: 0};
+                }),
+                clientY: 6
+            },
+        });
+
+        expect(moveOptionCallback).not.toHaveBeenCalled();
+    });
+
+    test('an attribute option cannot replace itself', async () => {
+        const moveOptionCallback = jest.fn();
+        await renderComponent(blackOption, jest.fn(), jest.fn(), moveOptionCallback, jest.fn(), false, {code: 'black', index: 2}, jest.fn());
+        const attributeOptionMoveHandle = getByRole(container, 'attribute-option-move-handle');
+
+        fireEvent.dragOver(attributeOptionMoveHandle);
+
+        expect(moveOptionCallback).not.toHaveBeenCalled();
+    });
+
+    test('an attribute option cannot be moved if the options are sorted alphabetically', async () => {
+        const setDragItem = jest.fn();
+        await renderComponent(blackOption, jest.fn(), jest.fn(), jest.fn(), jest.fn(), true, setDragItem);
+        const attributeOptionMoveHandle = getByRole(container, 'attribute-option-move-handle');
+
+        fireEvent.dragStart(attributeOptionMoveHandle);
+        expect(setDragItem).not.toHaveBeenCalled();
+
+        fireEvent.dragEnd(attributeOptionMoveHandle);
+        expect(setDragItem).not.toHaveBeenCalled();
+    });
 });
 
-async function renderComponent(selectAttributeOptionCallback, deleteAttributeOptionCallback) {
+async function renderComponent(option, selectAttributeOptionCallback, deleteAttributeOptionCallback, moveAttributeOptionCallback, validateMoveAttributeOption, autoSort, dragItem, setDragItem) {
     await act(async () => {
         ReactDOM.render(
             <DependenciesProvider>
-                <ListItem
-                    data={option}
-                    selectAttributeOption={selectAttributeOptionCallback}
-                    isSelected={true}
-                    deleteAttributeOption={deleteAttributeOptionCallback}
-                />
+                <AttributeContextProvider attributeId={8} autoSortOptions={autoSort}>
+                    <ListItem
+                        data={option}
+                        selectAttributeOption={selectAttributeOptionCallback}
+                        isSelected={true}
+                        deleteAttributeOption={deleteAttributeOptionCallback}
+                        moveAttributeOption={moveAttributeOptionCallback}
+                        validateMoveAttributeOption={validateMoveAttributeOption}
+                        dragItem={dragItem}
+                        setDragItem={setDragItem}
+                        index={1}
+                    />
+                </AttributeContextProvider>
             </DependenciesProvider>,
             container
         );
