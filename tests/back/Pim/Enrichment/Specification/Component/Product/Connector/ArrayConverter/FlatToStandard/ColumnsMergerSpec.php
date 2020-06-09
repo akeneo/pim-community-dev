@@ -299,6 +299,7 @@ class ColumnsMergerSpec extends ObjectBehavior
                     'quantity' => 24
                 ]
             ],
+            'PACK-product_models' => []
         ];
         $this->merge($row)->shouldReturn($mergedRow);
     }
