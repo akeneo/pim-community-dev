@@ -138,7 +138,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $attributeOptions
         );
 
-        $unexistingValues = array_diff($values, $optionCodes);
+        $unexistingValues = array_udiff($values, $optionCodes, 'strcasecmp');
         if (count($unexistingValues) > 0) {
             throw new ObjectNotFoundException(
                 sprintf(
