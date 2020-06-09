@@ -84,7 +84,7 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
     public function it_does_not_normalize_the_product_without_product_id(ProductInterface $product, FamilyInterface $family): void
     {
-        $error = new class () implements IdentifiableDomainErrorInterface
+        $error = new class () implements DomainErrorInterface
         {
             public function getErrorIdentifier(): string
             {
@@ -99,13 +99,12 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
         $this->normalize($error, 'json', ['product' => $product])->shouldReturn([
             'type' => 'domain_error',
-            'domain_error_identifier' => 'identifier',
         ]);
     }
 
     public function it_normalizes_the_product_without_family(ProductInterface $product): void
     {
-        $error = new class () implements IdentifiableDomainErrorInterface
+        $error = new class () implements DomainErrorInterface
         {
             public function getErrorIdentifier(): string
             {
@@ -120,7 +119,6 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
         $this->normalize($error, 'json', ['product' => $product])->shouldReturn([
             'type' => 'domain_error',
-            'domain_error_identifier' => 'identifier',
             'product' => [
                 'id' => 1,
                 'identifier' => 'product_identifier',
