@@ -64,6 +64,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
 
         $content = json_encode([
             'identifier' => 'high-top_sneakers',
+            'family' => 'shoes',
             'values' => [
                 'name' => [
                     [
@@ -90,7 +91,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
     public function test_it_collects_a_domain_error_from_the_partial_update_endpoint(): void
     {
         $this->familyLoader->create(['code' => 'shoes', 'attributes' => ['sku']]);
-        $this->productLoader->create('high-top_sneakers', []);
+        $this->productLoader->create('high-top_sneakers', ['family' => 'shoes']);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
@@ -105,6 +106,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
 
         $content = json_encode([
             'identifier' => 'high-top_sneakers',
+            'family' => 'shoes',
             'values' => [
                 'name' => [
                     [
@@ -131,7 +133,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
     public function test_it_collects_a_domain_error_from_the_partial_update_list_endpoint(): void
     {
         $this->familyLoader->create(['code' => 'shoes', 'attributes' => ['sku']]);
-        $this->productLoader->create('high-top_sneakers', []);
+        $this->productLoader->create('high-top_sneakers', ['family' => 'shoes']);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 

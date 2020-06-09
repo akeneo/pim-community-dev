@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -39,10 +40,16 @@ class ConstraintViolationNormalizer extends ViolationNormalizer
                 );
             }
 
-            $data['product'] = [
-                'id' => $product->getId(),
-                'identifier' => $product->getIdentifier(),
-            ];
+            if (null !== $product->getId()) {
+                $data['product'] = [
+                    'id' => $product->getId(),
+                    'identifier' => $product->getIdentifier(),
+                    'label' => $product->getLabel(),
+                    'family' => null !== $product->getFamily() ? $product->getFamily()->getCode() : null,
+                ];
+            }
+
+
         }
 
         return $data;
