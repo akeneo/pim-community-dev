@@ -26,12 +26,12 @@ const StyledDescription = styled.div`
   ${(props: DesciptionProps & AkeneoThemedProps) => {
     if (props.tags.includes('new')) {
       return `
-        color: #2b3d66;
+        color: ${props.theme.color.grey140};
       `;
     }
 
     return `
-      color: ${props.theme.color.grey120}
+      color: ${props.theme.color.grey120};
     `;
   }}
 `;
