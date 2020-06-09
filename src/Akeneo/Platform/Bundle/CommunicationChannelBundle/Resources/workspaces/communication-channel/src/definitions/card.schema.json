@@ -14,7 +14,7 @@
       }
     },
     "startDate": {"type": "string"},
-    "notification_duration": {"type": "integer"}
+    "notificationDuration": {"type": "integer"}
   },
   "required": [
     "title",
@@ -22,7 +22,7 @@
     "link",
     "tags",
     "startDate",
-    "notification_duration"
+    "notificationDuration"
   ],
   "additionalProperties": false
 }

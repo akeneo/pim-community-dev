@@ -2,7 +2,7 @@
     "data": [
         {
             "startDate": "June, 4th 2020",
-            "notification_duration": 14, 
+            "notificationDuration": 14, 
             "tags": ["new","updates"],
             "title": "Easily monitor errors on your connections",
             "description": "For each of your connections, a new `Monitoring` page now lists the last integration errors that may have occurred.",
@@ -12,7 +12,7 @@
         },
         {
             "startDate": "June, 4th 2020",
-            "notification_duration": 14, 
+            "notificationDuration": 14, 
             "tags": ["new","updates"],
             "title": "New metrics on the Connection dashboard",
             "description": "The Connection dashboard now displays additional information to ease error monitoring and allow you to see at a glance how your source connections are performing.",
@@ -22,7 +22,7 @@
         },
         {
             "startDate": "June, 4th 2020",
-            "notification_duration": 14, 
+            "notificationDuration": 14, 
             "tags": ["new","updates"],
             "title": "New association type: the two-way association",
             "description": "Easily handle products compatibility in your PIM thanks to our **brand new two-way association type**! This new association type is now available under `Settings`/`Association types`.",
@@ -32,7 +32,7 @@
         },
         {
             "startDate": "June, 4th 2020",
-            "notification_duration": 14, 
+            "notificationDuration": 14, 
             "tags": ["new","updates"],
             "title": "More visibility on all the jobs",
             "description": "To give you more visibility and control on all PIM jobs, we added a new permission: `View all jobs in the Process Tracker` to see all jobs of any status under the Process Tracker.",
@@ -40,7 +40,7 @@
         },
         {
             "startDate": "June, 4th 2020",
-            "notification_duration": 14, 
+            "notificationDuration": 14, 
             "tags": ["new","updates"],
             "title": "Rules engine improvements",
             "description": "Small UI enhancements and a new parameter for your calculation action, check out the last improvements of the rules engine!",
@@ -48,7 +48,7 @@
         },
         {
             "startDate": "May, 7th 2020",
-            "notification_duration": 7, 
+            "notificationDuration": 7, 
             "tags": ["updates"],
             "title": "A new screen to add your own measurement units",
             "description": "In order to give you more flexibility, we have improved the way we manage metrics in the PIM. Discover our new Measurements feature now!",
@@ -58,7 +58,7 @@
         },
         {
             "startDate": "May, 7th 2020",
-            "notification_duration": 7, 
+            "notificationDuration": 7, 
             "tags": ["updates"],
             "title": "New endpoints to manage measurements",
             "description": "We introduced two new API endpoints to create, update and list your measurement families.",
@@ -68,7 +68,7 @@
         },
         {
             "startDate": "May, 7th 2020",
-            "notification_duration": 7, 
+            "notificationDuration": 7, 
             "tags": ["updates"],
             "title": "Product associations update",
             "description": "Starting now, enjoy some small improvements to make your life easier when you work with product associations.",
@@ -78,7 +78,7 @@
         },
         {
             "startDate": "May, 7th 2020",
-            "notification_duration": 7, 
+            "notificationDuration": 7, 
             "tags": ["updates"],
             "title": "Track your destination connections",
             "description": "You can now easily track the number of products that are sent to your destinations in the Connection dashboard.",
@@ -88,7 +88,7 @@
         },
         {
             "startDate": "May, 7th 2020",
-            "notification_duration": 7, 
+            "notificationDuration": 7, 
             "tags": ["updates"],
             "title": "Connection dashboard updates",
             "description": "The Connection dashboard has been improved with a new layout as well as the possibility to choose which connection you want to track.",
@@ -96,7 +96,7 @@
         },
         {
             "startDate": "May, 7th 2020",
-            "notification_duration": 7, 
+            "notificationDuration": 7, 
             "tags": ["updates"],
             "title": "Rules engine new actions and improvements",
             "description": "Discover the latest enhancements on the rules engine: we added two new actions, the possibility to name your rules and we also improved the rules format for associations.",
@@ -104,7 +104,7 @@
         },
         {
             "startDate": "May, 7th 2020",
-            "notification_duration": 7, 
+            "notificationDuration": 7, 
             "tags": ["updates"],
             "title": "Data quality improvements",
             "description": "Data Quality Insights recommendations and grades are now also available for product models to help you ensure that all your products have enriched and consistent content. Also, our spell-check feature now supports additional languages.",
@@ -112,7 +112,7 @@
         },
         {
             "startDate": "April, 2nd 2020",
-            "notification_duration": 7, 
+            "notificationDuration": 7, 
             "tags": ["updates"],
             "title": "Data quality improvements",
             "description": "To help you craft the best product information ever, Data quality insights recommendations and grades are now available for variant products and our spell-check feature supports additional languages!",
@@ -120,7 +120,7 @@
         },
         {
             "startDate": "April, 2nd 2020",
-            "notification_duration": 7, 
+            "notificationDuration": 7, 
             "tags": ["updates"],
             "title": "New measurement units and families",
             "description": "We added four new measurement families: `Force`, `Angle`,`Capacitance` and `Volume Flow` to better fit your needs in terms of product modeling.",
@@ -128,7 +128,7 @@
         },
         {
             "startDate": "April, 2nd 2020",
-            "notification_duration": 7, 
+            "notificationDuration": 7, 
             "tags": ["updates"],
             "title": "Rules engine extended capabilities",
             "description": "A new action and enhancements made on the copy action: easily and automatically concatenate your attributes, and now copy values from an attribute type to another attribute type.",
@@ -136,7 +136,7 @@
         },
         {
             "startDate": "March, 5th 2020",
-            "notification_duration": 7, 
+            "notificationDuration": 7, 
             "tags": ["updates"],
             "title": "Optimize the weight of your assets",
             "description": "If you need to reduce the size of your images, you can now use our new operation: `optimize_jpeg`. This transformation operation will compress your file to a jpeg.",
@@ -146,7 +146,7 @@
         },
         {
             "startDate": "March, 5th 2020",
-            "notification_duration": 7, 
+            "notificationDuration": 7, 
             "tags": ["updates"],
             "title": "New warning message on connection usernames",
             "description": "Whenever one of your connectors is not using the dedicated connection username, we now display a warning message in the main Connections screen as well as in the Connection form.",

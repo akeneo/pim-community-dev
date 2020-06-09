@@ -1,25 +1,5 @@
 import {CardFetcherImplementation} from '@akeneo-pim-community/communication-channel/src/fetcher/card';
-
-console.error = jest.fn();
-
-const expectedCards = [
-  {
-    title: 'Title card',
-    description: 'Description card',
-    img: '/path/img/card.png',
-    link: 'http://link-card.com',
-    tags: ['new'],
-    date: '20-04-2020',
-  },
-  {
-    title: 'Title card 2',
-    description: 'Description card 2',
-    img: '/path/img/card-2.png',
-    link: 'http://link-card-2.com',
-    tags: ['new'],
-    date: '20-04-2020',
-  },
-];
+import {getExpectedCards} from '../../../test-utils';
 
 afterEach(() => {
   global.fetch && global.fetch.mockClear();
@@ -27,7 +7,7 @@ afterEach(() => {
 });
 
 test('It can fetch cards from the json', async () => {
-  const mockJsonPromise = Promise.resolve({data: expectedCards});
+  const mockJsonPromise = Promise.resolve({data: getExpectedCards()});
   const mockFetchPromise = Promise.resolve({
     json: () => mockJsonPromise,
   });
@@ -49,6 +29,7 @@ test('It can validate the cards from the json', async () => {
   });
   const fetchMock = jest.fn().mockImplementation(() => mockFetchPromise);
   global.fetch = fetchMock;
+  console.error = jest.fn();
 
   await expect(CardFetcherImplementation.fetchAll()).rejects.toThrowError(Error);
   expect(console.error).toHaveBeenCalledTimes(1);
