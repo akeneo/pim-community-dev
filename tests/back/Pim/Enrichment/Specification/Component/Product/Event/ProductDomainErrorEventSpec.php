@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Event;
 
-use Akeneo\Pim\Enrichment\Component\Error\Event\DomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -20,9 +19,9 @@ class ProductDomainErrorEventSpec extends ObjectBehavior
         $this->shouldHaveType(ProductDomainErrorEvent::class);
     }
 
-    public function it_is_a_domain_error_event(): void
+    public function it_returns_the_error($error): void
     {
-        $this->shouldHaveType(DomainErrorEvent::class);
+        $this->getError()->shouldReturn($error);
     }
 
     public function it_returns_the_product($product): void
