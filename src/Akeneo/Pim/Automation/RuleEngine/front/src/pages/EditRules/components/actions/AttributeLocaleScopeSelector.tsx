@@ -40,7 +40,7 @@ type Props = {
   localeFormName: string;
   locales: Locale[];
   scopes: IndexedScopes;
-  onAttributeUpdate?: (attribute: Attribute | null) => void;
+  onAttributeChange?: (attribute: Attribute | null) => void;
 };
 
 export const AttributeLocaleScopeSelector: React.FC<Props> = ({
@@ -59,7 +59,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   localeFormName,
   locales,
   scopes,
-  onAttributeUpdate,
+  onAttributeChange,
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
@@ -79,8 +79,8 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
         ? await getAttributeByIdentifier(attributeCode, router)
         : null;
     setAttribute(attribute);
-    if (onAttributeUpdate) {
-      onAttributeUpdate(attribute);
+    if (onAttributeChange) {
+      onAttributeChange(attribute);
     }
     setFirstRefresh(false);
   };

@@ -58,7 +58,7 @@ const SetActionLine: React.FC<Props> = ({
     setValue(`content.actions[${lineNumber}].value`, value);
   };
 
-  const onAttributeUpdate = (newAttribute: Attribute | null) => {
+  const onAttributeChange = (newAttribute: Attribute | null) => {
     const oldAttributeCode = attribute?.code;
     const newAttributeCode = newAttribute?.code;
     setAttribute(newAttribute);
@@ -99,7 +99,7 @@ const SetActionLine: React.FC<Props> = ({
             localeFormName={`content.actions[${lineNumber}].locale`}
             localeCode={action.locale || null}
             locales={locales}
-            onAttributeUpdate={onAttributeUpdate}
+            onAttributeChange={onAttributeChange}
           />
         </ActionLeftSide>
         <ActionRightSide>
