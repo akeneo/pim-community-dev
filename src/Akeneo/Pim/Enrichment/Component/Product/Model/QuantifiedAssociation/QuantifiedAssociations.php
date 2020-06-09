@@ -152,7 +152,8 @@ class QuantifiedAssociations
                         continue;
                     }
 
-                    $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][] = $quantifiedLink;
+                    //TODO 
+                    $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][] = new QuantifiedLink($quantifiedLink['identifier'], $quantifiedLink['quantity']);
                 }
             }
         }
@@ -204,8 +205,7 @@ class QuantifiedAssociations
                 }
                 /** @var QuantifiedLink $quantifiedLink */
                 foreach ($quantifiedLinks as $quantifiedLink) {
-                    var_dump($quantifiedLink);
-                    $result[$associationType][$quantifiedLinksType][] = $quantifiedLink;
+                    $result[$associationType][$quantifiedLinksType][] = $quantifiedLink->normalize();
                 }
             }
         }
@@ -238,7 +238,7 @@ class QuantifiedAssociations
         $matchingSourceQuantifiedAssociations = array_filter(
             $source[$associationTypeCode][$associationEntityType] ?? [],
             function ($sourceQuantifiedAssociation) use ($quantifiedLink) {
-                return $sourceQuantifiedAssociation['identifier'] === $quantifiedLink['identifier'];
+                return $sourceQuantifiedAssociation->identifier() === $quantifiedLink['identifier'];
             }
         );
 
