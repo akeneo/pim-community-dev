@@ -97,14 +97,14 @@ pim_enrich.entity.product:
       add_associations: Ajouter des associations
       variant_products: Variant products
       quantified:
-        quantity: Quantity
+        quantity: Quantité
       search:
         placeholder: Search on label or identifier
-      no_result: Sorry, there is no result for your search.
-      no_data: There are no associated products.
-      remove: Remove association
-      limit_reached: You cannot add more than {{ maxLimit }} associations to this product.
-      variant_updated: You have updated a quantity on a variant, the quantities will no longer be synchronized.
+      no_result: Désolé, il n’y a aucun résultat pour votre recherche.
+      no_data: Il n’y a aucun produit associé.
+      remove: Supprimer l'association
+      limit_reached: Vous ne pouvez pas ajouter plus de {{ maxLimit }} associations à ce produit.
+      variant_updated: Vous avez mis à jour une quantité sur une variante, les quantités ne seront plus synchronisées.
     attribute_filter:
       display: Affichage
       all: Tous les attributs
@@ -384,7 +384,6 @@ pim_datagrid:
   filters:
     label: Filtres
     system: Système
-  search: Search on {{ label }}
 batch_jobs:
   add_association:
     label: Associer
