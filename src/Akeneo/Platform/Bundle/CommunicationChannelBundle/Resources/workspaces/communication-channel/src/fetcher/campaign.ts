@@ -2,11 +2,7 @@ import {validateCampaignData} from './../validator/campaignData';
 
 const DataCollector = require('pim/data-collector');
 
-type CampaignFetcher = {
-  fetch: () => Promise<string>;
-};
-
-class CampaignFetcherImplementation {
+class CampaignFetcher {
   static analyticsUrl: string = 'pim_analytics_data_collect';
 
   static cloudVersion: string = 'serenity';
@@ -30,4 +26,4 @@ class CampaignFetcherImplementation {
   }
 }
 
-export {CampaignFetcher, CampaignFetcherImplementation};
+export {CampaignFetcher};

@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useTranslate, useMediator} from '@akeneo-pim-community/legacy-bridge';
-import {useCards} from './../../hooks/useCards';
-import {CardFetcher} from './../../fetcher/card';
+import {useAnnouncements} from './../../hooks/useAnnouncements';
+import {AnnouncementFetcher} from './../../fetcher/announcement.type';
 import {useCampaign} from './../../hooks/useCampaign';
-import {CampaignFetcher} from './../../fetcher/campaign';
+import {CampaignFetcher} from './../../fetcher/campaign.type';
 import {HeaderPanel} from './../../components/panel/Header';
-import {CardComponent} from './../../components/panel/card';
-import {Card} from './../../models/card';
+import {AnnouncementComponent} from './announcement';
+import {Announcement} from './../../models/announcement';
 
 const ListCard = styled.ul`
   margin-top: 88px;
@@ -15,7 +15,7 @@ const ListCard = styled.ul`
 `;
 
 type PanelDataProvider = {
-  cardFetcher: CardFetcher;
+  announcementFetcher: AnnouncementFetcher;
   campaignFetcher: CampaignFetcher;
 };
 
@@ -26,7 +26,7 @@ type PanelProps = {
 const Panel = ({dataProvider}: PanelProps): JSX.Element => {
   const __ = useTranslate();
   const mediator = useMediator();
-  const {cards} = useCards(dataProvider.cardFetcher);
+  const {announcements} = useAnnouncements(dataProvider.announcementFetcher);
   const {campaign} = useCampaign(dataProvider.campaignFetcher);
   const closePanel = () => {
     mediator.trigger('communication-channel:panel:close');
@@ -35,9 +35,11 @@ const Panel = ({dataProvider}: PanelProps): JSX.Element => {
   return (
     <>
       <HeaderPanel title={__('akeneo_communication_channel.panel.title')} onClickCloseButton={closePanel} />
-      {null !== cards && (
+      {null !== announcements && (
         <ListCard>
-          {cards.map((card: Card, index: number): JSX.Element => <CardComponent card={card} key={index} campaign={campaign} />)}
+          {announcements.map((announcement: Announcement, index: number): JSX.Element =>
+            <AnnouncementComponent announcement={announcement} key={index} campaign={campaign} />)
+          }
         </ListCard>
       )}
     </>
