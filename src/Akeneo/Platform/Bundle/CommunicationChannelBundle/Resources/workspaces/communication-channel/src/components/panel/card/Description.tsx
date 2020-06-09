@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import ReactMarkdown from 'react-markdown';
 import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
 import {Tag} from './../../../components/panel/card/Tag';
 
@@ -9,7 +10,9 @@ type DesciptionProps = {
 };
 
 const Description = (props: DesciptionProps & any): JSX.Element => (
-  <StyledDescription {...props}>{props.description}</StyledDescription>
+  <StyledDescription {...props}>
+    <ReactMarkdown source={props.description} />
+  </StyledDescription>
 );
 
 const StyledDescription = styled.div`
@@ -23,12 +26,12 @@ const StyledDescription = styled.div`
   ${(props: DesciptionProps & AkeneoThemedProps) => {
     if (props.tags.includes('new')) {
       return `
-        color: #2b3d66;
+        color: ${props.theme.color.grey140};
       `;
     }
 
     return `
-      color: ${props.theme.color.grey120}
+      color: ${props.theme.color.grey120};
     `;
   }}
 `;
