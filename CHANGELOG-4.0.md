@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9203: Box shadow appearing on category selector in product grid
 - AOB-968: Fix product label rendering on edit form
 - CXP-306: Fix the collect of product events
 - PIM-9282: Make calling attribute options via API case insensitive
