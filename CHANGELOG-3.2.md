@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9203: Box shadow appearing on category selector in product grid
+
 # 3.2.58 (2020-06-01)
 
 # 3.2.57 (2020-05-28)
