@@ -19,7 +19,7 @@ $rules = [
             // Dependency on Symfony Validator to ease validation
             'Symfony\Component\Validator',
 
-            'Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface',
+            'Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
 
             'FOS\RestBundle\Context\Context',

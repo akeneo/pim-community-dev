@@ -9,7 +9,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\MonitoredRoute
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ApiErrorEventSubscriber;
 use Akeneo\Pim\Enrichment\Bundle\Event\ProductValidationErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
-use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;

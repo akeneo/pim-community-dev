@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Normalizer\ProductDomainErrorN
 use Akeneo\Pim\Enrichment\Component\Error\Documented\Documentation;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentationCollection;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
@@ -31,53 +31,38 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
         $this->hasCacheableSupportsMethod()->shouldReturn(true);
     }
 
-    public function it_supports_an_identifiable_domain_error(IdentifiableDomainErrorInterface $error): void
+    public function it_supports_an_identifiable_domain_error(DomainErrorInterface $error): void
     {
         $this->supportsNormalization($error)->shouldReturn(true);
     }
 
     public function it_normalizes_an_identifiable_domain_error(): void
     {
-        $error = new class () implements IdentifiableDomainErrorInterface
+        $error = new class () implements DomainErrorInterface
         {
-            public function getErrorIdentifier(): string
-            {
-                return 'identifier';
-            }
         };
 
         $this->normalize($error, 'json', [])->shouldReturn([
-            'type' => 'domain_error',
-            'domain_error_identifier' => 'identifier'
+            'type' => 'domain_error'
         ]);
     }
 
     public function it_normalizes_an_exception(): void
     {
-        $error = new class ('My message.') extends \Exception implements IdentifiableDomainErrorInterface
+        $error = new class ('My message.') extends \Exception implements DomainErrorInterface
         {
-            public function getErrorIdentifier(): string
-            {
-                return 'identifier';
-            }
         };
 
         $this->normalize($error, 'json', [])->shouldReturn([
             'type' => 'domain_error',
-            'domain_error_identifier' => 'identifier',
             'message' => 'My message.'
         ]);
     }
 
     public function it_normalizes_a_templated_error_message(): void
     {
-        $error = new class () implements IdentifiableDomainErrorInterface, TemplatedErrorMessageInterface
+        $error = new class () implements DomainErrorInterface, TemplatedErrorMessageInterface
         {
-            public function getErrorIdentifier(): string
-            {
-                return 'identifier';
-            }
-
             public function getMessageTemplate(): string
             {
                 return 'My message template with %param%.';
@@ -91,7 +76,6 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
         $this->normalize($error, 'json', [])->shouldReturn([
             'type' => 'domain_error',
-            'domain_error_identifier' => 'identifier',
             'message_template' => 'My message template with %param%.',
             'message_parameters' => ['%param%' => 'a param']
         ]);
@@ -99,13 +83,8 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_a_documented_error(): void
     {
-        $error = new class () implements IdentifiableDomainErrorInterface, DocumentedErrorInterface
+        $error = new class () implements DomainErrorInterface, DocumentedErrorInterface
         {
-            public function getErrorIdentifier(): string
-            {
-                return 'identifier';
-            }
-
             public function getDocumentation(): DocumentationCollection
             {
                 return new DocumentationCollection([new Documentation('any message', [])]);
@@ -114,7 +93,6 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
         $this->normalize($error, 'json', [])->shouldReturn([
             'type' => 'domain_error',
-            'domain_error_identifier' => 'identifier',
             'documentation' => [
                 [
                     'message' => 'any message',
@@ -126,12 +104,8 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_the_product_information(ProductInterface $product): void
     {
-        $error = new class () implements IdentifiableDomainErrorInterface
+        $error = new class () implements DomainErrorInterface
         {
-            public function getErrorIdentifier(): string
-            {
-                return 'identifier';
-            }
         };
 
         $product->getId()->willReturn(1);
@@ -139,7 +113,6 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
         $this->normalize($error, 'json', ['product' => $product])->shouldReturn([
             'type' => 'domain_error',
-            'domain_error_identifier' => 'identifier',
             'product' => [
                 'id' => 1,
                 'identifier' => 'product_identifier'

@@ -17,7 +17,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionC
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\ExtractErrorsFromHttpException;
-use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use FOS\RestBundle\Serializer\Serializer;
 use PhpSpec\ObjectBehavior;
@@ -48,7 +48,7 @@ class CollectApiErrorSpec extends ObjectBehavior
         $serializer,
         Connection $connection,
         ProductInterface $product,
-        IdentifiableDomainErrorInterface $error
+        DomainErrorInterface $error
     ): void {
         $connectionContext->getConnection()->willReturn($connection);
         $connectionContext->isCollectable()->willReturn(true);
