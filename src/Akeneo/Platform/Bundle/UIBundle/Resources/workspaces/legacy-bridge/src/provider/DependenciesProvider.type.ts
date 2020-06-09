@@ -29,4 +29,8 @@ type ViewBuilder = {
   build(viewName: string): Promise<View>;
 };
 
-export {NotificationLevel, Notify, RouteParams, Router, Security, Translate, UserContext, ViewBuilder};
+type Mediator = {
+  trigger(event: string): void;
+};
+
+export {NotificationLevel, Notify, RouteParams, Router, Security, Translate, UserContext, ViewBuilder, Mediator};
