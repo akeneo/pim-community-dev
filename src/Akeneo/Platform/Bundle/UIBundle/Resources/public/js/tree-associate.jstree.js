@@ -3,7 +3,7 @@ define(
     function ($, _, Routing, mediator) {
         'use strict';
 
-        return function (elementId, hiddenCategoryId, routes) {
+        return function (elementId, hiddenCategoryId, routes, fetchingDataMethod = 'GET') {
             var $el = $(elementId);
             if (!$el || !$el.length || !_.isObject($el)) {
                 return;
@@ -42,13 +42,11 @@ define(
                 },
                 json_data: {
                     ajax: {
+                        method: fetchingDataMethod,
                         url: function (node) {
                             var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item');
 
                             if ((!node || (node === -1)) && treeHasItem) {
-                                // First load of the tree: get the checked categories
-                                var selected = this.parseHiddenCategories();
-
                                 return Routing.generate(
                                     routes.list_categories,
                                     {
@@ -56,8 +54,7 @@ define(
                                         categoryId: currentTree,
                                         _format: 'json',
                                         dataLocale: dataLocale,
-                                        context: 'associate',
-                                        selected: selected
+                                        context: 'associate'
                                     }
                                 );
                             }
@@ -70,10 +67,15 @@ define(
                                     context: 'associate'
                                 }
                             );
-                        }.bind(this),
+                        },
                         data: function (node) {
                             var data           = {};
                             var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item');
+
+                            // First load of the tree: get the checked categories
+                            if ((!node || (node === -1)) && treeHasItem) {
+                                data.selected = this.parseHiddenCategories();
+                            }
 
                             if (node && node !== -1 && node.attr) {
                                 data.id = node.attr('id').replace('node_', '');
@@ -85,7 +87,7 @@ define(
                             }
 
                             return data;
-                        },
+                        }.bind(this),
                         complete: function () {
                             // Disable the root checkbox
                             $('.jstree-root>input.jstree-real-checkbox').attr('disabled', 'disabled');

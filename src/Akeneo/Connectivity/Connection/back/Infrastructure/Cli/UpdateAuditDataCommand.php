@@ -53,6 +53,12 @@ class UpdateAuditDataCommand extends Command
         );
         $this->updateProductEventCount($previousHourlyInterval);
 
+        // Create a Command for the previous hour.
+        $previousHourlyInterval = HourlyInterval::createFromDateTime(
+            new \DateTimeImmutable('now -1 hour', new \DateTimeZone('UTC'))
+        );
+        $this->updateProductEventCount($previousHourlyInterval);
+
         // Create a Command for the current hour.
         $currentHourlyInterval = HourlyInterval::createFromDateTime(
             new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
