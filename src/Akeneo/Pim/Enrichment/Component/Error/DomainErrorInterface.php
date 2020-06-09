@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product;
+namespace Akeneo\Pim\Enrichment\Component\Error;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ProductDomainErrorIdentifiers
+interface DomainErrorInterface
 {
-    const UNKNOWN_ATTRIBUTE = '1';
-    const UNKNOWN_FAMILY = '2';
 }

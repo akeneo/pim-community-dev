@@ -7,8 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentationCollection;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\HrefMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\RouteMessageParameter;
-use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ProductDomainErrorIdentifiers;
+use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 
 /**
@@ -18,7 +17,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class UnknownAttributeException extends PropertyException implements
-    IdentifiableDomainErrorInterface,
+    DomainErrorInterface,
     DocumentedErrorInterface
 {
     /** @var DocumentationCollection */
@@ -43,11 +42,6 @@ final class UnknownAttributeException extends PropertyException implements
             0,
             $previous
         );
-    }
-
-    public function getErrorIdentifier(): string
-    {
-        return ProductDomainErrorIdentifiers::UNKNOWN_ATTRIBUTE;
     }
 
     public function getDocumentation(): DocumentationCollection

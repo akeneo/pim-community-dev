@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Event\ProductValidationErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ApiAggregatorForProductPostSaveEventSubscriber;
-use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
@@ -504,7 +504,7 @@ class ProductController
 
             $this->updater->update($product, $data);
         } catch (\Exception $exception) {
-            if ($exception instanceof IdentifiableDomainErrorInterface) {
+            if ($exception instanceof DomainErrorInterface) {
                 $this->eventDispatcher->dispatch(new ProductDomainErrorEvent($exception, $product));
             } else {
                 $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
@@ -550,7 +550,7 @@ class ProductController
                 $data['values'] = [];
             }
         } catch (PropertyException $exception) {
-            if ($exception instanceof IdentifiableDomainErrorInterface) {
+            if ($exception instanceof DomainErrorInterface) {
                 $this->eventDispatcher->dispatch(new ProductDomainErrorEvent($exception, $product));
             } else {
                 $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));

@@ -2,15 +2,14 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Exception;
 
-use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ProductDomainErrorIdentifiers;
+use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class UnknownFamilyException extends InvalidPropertyException implements IdentifiableDomainErrorInterface
+final class UnknownFamilyException extends InvalidPropertyException implements DomainErrorInterface
 {
     public static function unknownFamily($propertyName, $propertyValue, $className)
     {
@@ -23,10 +22,5 @@ final class UnknownFamilyException extends InvalidPropertyException implements I
             sprintf($message, $propertyName, $propertyValue),
             self::VALID_ENTITY_CODE_EXPECTED_CODE
         );
-    }
-
-    public function getErrorIdentifier(): string
-    {
-        return ProductDomainErrorIdentifiers::UNKNOWN_FAMILY;
     }
 }

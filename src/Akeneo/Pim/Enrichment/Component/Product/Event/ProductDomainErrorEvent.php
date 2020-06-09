@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Event;
 
 use Akeneo\Pim\Enrichment\Component\Error\Event\DomainErrorEvent;
-use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
@@ -17,7 +17,7 @@ final class ProductDomainErrorEvent extends DomainErrorEvent
     /** @var ProductInterface */
     private $product;
 
-    public function __construct(IdentifiableDomainErrorInterface $error, ProductInterface $product)
+    public function __construct(DomainErrorInterface $error, ProductInterface $product)
     {
         parent::__construct($error);
 

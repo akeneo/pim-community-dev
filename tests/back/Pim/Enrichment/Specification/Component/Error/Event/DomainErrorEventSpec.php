@@ -3,12 +3,12 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Error\Event;
 
 use Akeneo\Pim\Enrichment\Component\Error\Event\DomainErrorEvent;
-use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use PhpSpec\ObjectBehavior;
 
 class DomainErrorEventSpec extends ObjectBehavior
 {
-    public function let(IdentifiableDomainErrorInterface $error): void
+    public function let(DomainErrorInterface $error): void
     {
         $this->beConstructedWith($error);
     }

@@ -3,14 +3,14 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Event;
 
 use Akeneo\Pim\Enrichment\Component\Error\Event\DomainErrorEvent;
-use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
 
 class ProductDomainErrorEventSpec extends ObjectBehavior
 {
-    public function let(IdentifiableDomainErrorInterface $error, ProductInterface $product): void
+    public function let(DomainErrorInterface $error, ProductInterface $product): void
     {
         $this->beConstructedWith($error, $product);
     }

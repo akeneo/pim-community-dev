@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Error\Event;
 
-use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -12,15 +12,15 @@ use Akeneo\Pim\Enrichment\Component\Error\IdentifiableDomainErrorInterface;
  */
 class DomainErrorEvent
 {
-    /** @var IdentifiableDomainErrorInterface */
+    /** @var DomainErrorInterface */
     private $error;
 
-    public function __construct(IdentifiableDomainErrorInterface $error)
+    public function __construct(DomainErrorInterface $error)
     {
         $this->error = $error;
     }
 
-    public function getError(): IdentifiableDomainErrorInterface
+    public function getError(): DomainErrorInterface
     {
         return $this->error;
     }

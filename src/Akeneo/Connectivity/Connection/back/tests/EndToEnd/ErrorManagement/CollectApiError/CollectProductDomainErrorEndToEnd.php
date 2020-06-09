@@ -192,7 +192,6 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
         $expectedContent = [
             'type' => 'domain_error',
-            'domain_error_identifier' => '2',
             'message' => 'Property "family" expects a valid family code. The family does not exist, "unknown_family_code" given.',
             'product' => [
                 'id' => null,
@@ -233,7 +232,6 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
         $expectedContent = [
             'type' => 'domain_error',
-            'domain_error_identifier' => '1',
             'message' => 'Attribute "name" does not exist.',
             'documentation' =>  [
                 [
