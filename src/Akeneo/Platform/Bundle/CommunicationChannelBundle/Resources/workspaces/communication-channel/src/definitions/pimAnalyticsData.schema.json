@@ -1,5 +1,5 @@
 {
-  "title": "CampaignData",
+  "title": "PimAnalyticsData",
   "type": "object",
   "properties": {
     "pim_edition": {"type": "string"},
