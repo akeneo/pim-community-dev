@@ -14,7 +14,6 @@ const Title = (props: TitleProps & any): JSX.Element => (
 
 const StyledTitle = styled.div`
   font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.bigger};
-  height: 21px;
   margin-top: 15px;
   margin-bottom: 10px;
 

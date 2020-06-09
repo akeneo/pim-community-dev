@@ -13,14 +13,16 @@
         "type": "string"
       }
     },
-    "startDate": {"type": "string"}
+    "startDate": {"type": "string"},
+    "notification_duration": {"type": "integer"}
   },
   "required": [
     "title",
     "description",
     "link",
     "tags",
-    "startDate"
+    "startDate",
+    "notification_duration"
   ],
   "additionalProperties": false
 }
