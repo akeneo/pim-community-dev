@@ -7,15 +7,20 @@ import {
   ScopeCode,
 } from '../../../../models';
 import { AttributeSelector } from '../../../../components/Selectors/AttributeSelector';
-import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
-import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';
+import {
+  getScopeValidation,
+  ScopeSelector,
+} from '../../../../components/Selectors/ScopeSelector';
+import {
+  getLocaleValidation,
+  LocaleSelector,
+} from '../../../../components/Selectors/LocaleSelector';
 import {
   useBackboneRouter,
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../dependenciesTools/hooks';
 import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { useFormContext } from 'react-hook-form';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import styled from 'styled-components';
@@ -27,8 +32,6 @@ const SelectorBlock = styled.div`
 type Props = {
   attributeCode: AttributeCode | null;
   attributeFormName: string;
-  localeCode: LocaleCode | null;
-  scopeCode: ScopeCode | null;
   attributeId: string;
   attributeLabel: string;
   attributePlaceholder: string;
@@ -49,8 +52,6 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   attributeLabel,
   attributePlaceholder,
   attributeFormName,
-  scopeCode,
-  localeCode,
   scopeId,
   scopeLabel,
   scopeFormName,
@@ -64,7 +65,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   const router = useBackboneRouter();
   const translate = useTranslate();
   const currentCatalogLocale = useUserCatalogLocale();
-  const { watch, setValue, register } = useFormContext();
+  const { watch, setValue } = useFormContext();
   const [attribute, setAttribute] = React.useState<Attribute | null>(null);
   const [attributeIsChanged, setAttributeIsChanged] = React.useState<boolean>(
     false
@@ -103,119 +104,51 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
     return [];
   };
 
-  const localeValidate = (localeCode: any) => {
-    if (!attribute) {
-      return true;
-    }
-
-    if (attribute.localizable) {
-      if (!localeCode) {
-        return translate('pimee_catalog_rule.exceptions.required_locale');
-      }
-
-      if (!locales.some(locale => locale.code === localeCode)) {
-        return translate(
-          'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
-          { localeCode }
-        );
-      }
-      if (!getAvailableLocales().some(locale => locale.code === localeCode)) {
-        return attribute.scopable
-          ? translate('pimee_catalog_rule.exceptions.unbound_locale', {
-              localeCode,
-              scopeCode: getScopeFormValue(),
-            })
-          : translate(
-              'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
-              { localeCode }
-            );
-      }
-    } else {
-      if (localeCode) {
-        return translate(
-          'pimee_catalog_rule.exceptions.locale_on_unlocalizable_attribute'
-        );
-      }
-    }
-    return true;
-  };
-
-  const scopeValidate = (scopeCode: any) => {
-    if (!attribute) {
-      return true;
-    }
-
-    if (attribute.scopable) {
-      if (!scopeCode) {
-        return translate('pimee_catalog_rule.exceptions.required_scope');
-      }
-      if (!scopes[scopeCode]) {
-        return translate('pimee_catalog_rule.exceptions.unknown_scope', {
-          scopeCode,
-        });
-      }
-    } else {
-      if (scopeCode) {
-        return translate(
-          'pimee_catalog_rule.exceptions.scope_on_unscopable_attribute'
-        );
-      }
-    }
-    return true;
-  };
-
-  const formValues: { [key: string]: any } = {};
-  formValues[attributeFormName] = attributeCode;
-  formValues[scopeFormName] = scopeCode;
-  formValues[localeFormName] = localeCode;
-
-  const formValidations: { [key: string]: any } = {};
-  formValidations[attributeFormName] = {
-    required: translate('pimee_catalog_rule.exceptions.required_attribute'),
-  };
-  formValidations[scopeFormName] = { validate: scopeValidate };
-  formValidations[localeFormName] = { validate: localeValidate };
-  useValueInitialization('', formValues, formValidations, [
-    attributeCode,
-    scopeCode,
-    localeCode,
-  ]);
+  const [localeValidation, setLocaleValidation] = React.useState(
+    attribute
+      ? getLocaleValidation(
+          attribute,
+          locales,
+          getAvailableLocales(),
+          getScopeFormValue(),
+          translate
+        )
+      : {}
+  );
+  const [scopeValidation, setScopeValidation] = React.useState(
+    attribute ? getScopeValidation(attribute, scopes, translate) : {}
+  );
+  React.useEffect(() => {
+    setLocaleValidation(
+      attribute
+        ? getLocaleValidation(
+            attribute,
+            locales,
+            getAvailableLocales(),
+            getScopeFormValue(),
+            translate
+          )
+        : {}
+    );
+    setScopeValidation(
+      attribute ? getScopeValidation(attribute, scopes, translate) : {}
+    );
+  }, [JSON.stringify(getAvailableLocales())]);
 
   const setAttributeFormValue = (value: AttributeCode | null) => {
-    setAttributeIsChanged(true);
-    setValue(attributeFormName, value, true);
     refreshAttribute(value);
+    setAttributeIsChanged(true);
   };
 
-  const setLocaleFormValue = (value: LocaleCode | null) => {
-    setValue(localeFormName, value, true);
-  };
-
-  const setScopeFormValue = (value: ScopeCode | null) => {
-    setValue(scopeFormName, value, true);
+  const setScopeFormValue = () => {
     if (
       !getAvailableLocales()
         .map(locale => locale.code)
         .includes(getLocaleFormValue())
     ) {
-      setLocaleFormValue(null);
+      setValue(localeFormName, undefined);
     }
   };
-
-  React.useEffect(() => {
-    // Refresh the validation with the new attribute
-    register({ name: localeFormName }, { validate: localeValidate });
-    register({ name: scopeFormName }, { validate: scopeValidate });
-
-    if (attributeIsChanged && attribute) {
-      if (!attribute.localizable) {
-        setLocaleFormValue(null);
-      }
-      if (!attribute.scopable) {
-        setScopeFormValue(null);
-      }
-    }
-  }, [attribute]);
 
   React.useEffect(() => {
     refreshAttribute(attributeCode);
@@ -225,49 +158,60 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
     <div className={'AknFormContainer'}>
       <SelectorBlock>
         <AttributeSelector
-          id={attributeId}
+          data-testid={attributeId}
+          name={attributeFormName}
           label={attributeLabel}
           currentCatalogLocale={currentCatalogLocale}
           value={getAttributeFormValue()}
           onChange={setAttributeFormValue}
           placeholder={attributePlaceholder}
           disabled={!firstRefresh && null === attribute}
+          validation={{
+            required: translate(
+              'pimee_catalog_rule.exceptions.required_attribute'
+            ),
+          }}
         />
       </SelectorBlock>
-      {(attribute?.scopable || (!attributeIsChanged && scopeCode)) && (
+      {(attribute?.scopable ||
+        (!attributeIsChanged && getScopeFormValue())) && (
         <SelectorBlock>
           <ScopeSelector
-            id={scopeId}
+            data-testid={scopeId}
+            name={scopeFormName}
             label={
               scopeLabel ||
-              `${translate('Channel')} ${translate(
-                'pim_common.required_label'
-              )}`
+              `${translate(
+                'pim_enrich.entity.channel.uppercase_label'
+              )} ${translate('pim_common.required_label')}`
             }
             availableScopes={Object.values(scopes)}
             currentCatalogLocale={currentCatalogLocale}
             value={getScopeFormValue()}
             onChange={setScopeFormValue}
-            translate={translate}
             allowClear={!attribute?.scopable}
             disabled={!firstRefresh && null === attribute}
+            validation={scopeValidation}
           />
         </SelectorBlock>
       )}
-      {(attribute?.localizable || (!attributeIsChanged && localeCode)) && (
+      {(attribute?.localizable ||
+        (!attributeIsChanged && getLocaleFormValue())) && (
         <SelectorBlock>
           <LocaleSelector
-            id={localeId}
+            data-testid={localeId}
+            name={localeFormName}
             label={
               localeLabel ||
-              `${translate('Locale')} ${translate('pim_common.required_label')}`
+              `${translate(
+                'pim_enrich.entity.locale.uppercase_label'
+              )} ${translate('pim_common.required_label')}`
             }
-            availableLocales={locales}
+            availableLocales={getAvailableLocales()}
             value={getLocaleFormValue()}
-            onChange={setLocaleFormValue}
-            translate={translate}
             allowClear={!attribute?.localizable}
             disabled={!firstRefresh && null === attribute}
+            validation={localeValidation}
           />
         </SelectorBlock>
       )}

@@ -1,7 +1,40 @@
 import React from 'react';
 import { Select2SimpleSyncWrapper, Select2Value } from '../Select2Wrapper';
-import { LocaleCode, Scope, ScopeCode } from '../../models';
+import { Attribute, LocaleCode, Scope, ScopeCode } from '../../models';
 import { useTranslate } from '../../dependenciesTools/hooks';
+import { Translate } from '../../dependenciesTools';
+import { IndexedScopes } from '../../repositories/ScopeRepository';
+
+const getScopeValidation = (
+  attribute: Attribute,
+  scopes: IndexedScopes,
+  translate: Translate
+) => {
+  const scopeValidation: any = {};
+  if (attribute && attribute.scopable) {
+    scopeValidation['required'] = translate(
+      'pimee_catalog_rule.exceptions.required_scope'
+    );
+  }
+  scopeValidation['validate'] = (scopeCode: any) => {
+    if (attribute && attribute.scopable) {
+      if (!scopes[scopeCode]) {
+        return translate('pimee_catalog_rule.exceptions.unknown_scope', {
+          scopeCode,
+        });
+      }
+    } else {
+      if (scopeCode) {
+        return translate(
+          'pimee_catalog_rule.exceptions.scope_on_unscopable_attribute'
+        );
+      }
+    }
+    return true;
+  };
+
+  return scopeValidation;
+};
 
 type Props = {
   label?: string;
@@ -76,4 +109,4 @@ const ScopeSelector: React.FC<Props> = ({
   );
 };
 
-export { ScopeSelector };
+export { getScopeValidation, ScopeSelector };

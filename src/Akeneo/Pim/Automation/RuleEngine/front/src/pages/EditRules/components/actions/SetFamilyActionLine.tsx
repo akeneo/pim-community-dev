@@ -1,20 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
-import { useFormContext } from 'react-hook-form';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { FamilySelector } from '../../../../components/Selectors/FamilySelector';
 import { SetFamilyAction } from '../../../../models/actions';
-import { FamilyCode } from '../../../../models';
 import { ActionTitle } from './ActionLine';
-import { useRegisterConsts } from "../../hooks/useRegisterConst";
-import { useTranslate } from "../../../../dependenciesTools/hooks";
-
-const ActionTitle = styled.div`
-  color: ${({ theme }): string => theme.color.purple100};
-  font-size: 20px;
-  line-height: 40px;
-`;
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
+import { useTranslate } from '../../../../dependenciesTools/hooks';
 
 type Props = {
   action: SetFamilyAction;

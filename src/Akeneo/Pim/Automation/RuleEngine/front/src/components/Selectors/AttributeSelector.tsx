@@ -24,7 +24,6 @@ type AttributeGroupResult = {
 type Results = AttributeGroupResult[];
 
 type Props = {
-  id: string;
   label: string;
   hiddenLabel?: boolean;
   currentCatalogLocale: LocaleCode;
@@ -33,6 +32,8 @@ type Props = {
   placeholder?: string;
   filterAttributeTypes?: string[];
   disabled?: boolean;
+  name: string;
+  validation?: { required?: string; validate?: (value: any) => string | true };
 };
 
 const initSelectedAttribute = async (
@@ -54,7 +55,6 @@ const initSelectedAttribute = async (
 };
 
 const AttributeSelector: React.FC<Props> = ({
-  id,
   label,
   hiddenLabel = false,
   currentCatalogLocale,
@@ -63,10 +63,11 @@ const AttributeSelector: React.FC<Props> = ({
   placeholder,
   filterAttributeTypes,
   disabled = false,
+  name,
+  validation,
+  ...remainingProps
 }) => {
   const router: Router = useBackboneRouter();
-
-  const [closeTick, setCloseTick] = React.useState<boolean>(false);
 
   const dataProvider = (term: string, page: number) => {
     const data: any = {
@@ -112,7 +113,7 @@ const AttributeSelector: React.FC<Props> = ({
   if (disabled) {
     return (
       <InputText
-        id={id}
+        {...remainingProps}
         label={label}
         hiddenLabel={hiddenLabel}
         value={value as string}
@@ -123,12 +124,13 @@ const AttributeSelector: React.FC<Props> = ({
 
   return (
     <Select2SimpleAsyncWrapper
-      id={id}
+      {...remainingProps}
+      name={name}
       label={label}
       hiddenLabel={hiddenLabel}
       dropdownCssClass={'fields-selector-dropdown'}
       value={value}
-      onValueChange={value => onChange(value as string)}
+      onChange={onChange}
       ajax={{
         url: router.generate(
           'pimee_enrich_rule_definition_get_available_fields'
@@ -138,20 +140,13 @@ const AttributeSelector: React.FC<Props> = ({
         data: dataProvider,
         results: (attributes: Results) => handleResults(attributes),
       }}
-      onSelecting={(event: any) => {
-        event.preventDefault();
-        if (event.val !== null) {
-          // User has not clicked on a group
-          setCloseTick(!closeTick);
-          onChange(event.val);
-        }
-      }}
       initSelection={(_element, callback) => {
         if (value) {
           initSelectedAttribute(router, value, currentCatalogLocale, callback);
         }
       }}
       placeholder={placeholder}
+      validation={validation}
     />
   );
 };

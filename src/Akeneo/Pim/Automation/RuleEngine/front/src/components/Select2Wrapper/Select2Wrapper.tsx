@@ -170,7 +170,13 @@ const Select2Wrapper: React.FC<Props> = ({
   return (
     <>
       <Label label={label} hiddenLabel={hiddenLabel} htmlFor={id} />
-      <input id={id} type='hidden' ref={select2ref} disabled={disabled} {...remainingProps} />
+      <input
+        id={id}
+        type='hidden'
+        ref={select2ref}
+        disabled={disabled}
+        {...remainingProps}
+      />
     </>
   );
 };

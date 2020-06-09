@@ -4,41 +4,26 @@ import { ActionLineProps } from './ActionLineProps';
 import { ActionTitle } from './ActionLine';
 import { ClearAttributeAction } from '../../../../models/actions';
 import { AttributeLocaleScopeSelector } from './AttributeLocaleScopeSelector';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { LineErrors } from '../LineErrors';
+import { useRegisterConst } from '../../hooks/useRegisterConst';
+import { useTranslate } from '../../../../dependenciesTools/hooks';
 
 type Props = {
   action: ClearAttributeAction;
 } & ActionLineProps;
 
 const ClearAttributeActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
   handleDelete,
   locales,
   scopes,
 }) => {
-  const values: any = {
-    type: 'clear',
-    field: action.field,
-  };
-
-  if (action.locale) {
-    values.locale = action.locale;
-  }
-
-  if (action.scope) {
-    values.scope = action.scope;
-  }
-
-  useValueInitialization(`content.actions[${lineNumber}]`, values, {}, [
-    action,
-  ]);
+  const translate = useTranslate();
+  useRegisterConst('type', 'clear', `content.actions[${lineNumber}]`);
 
   return (
     <ActionTemplate
-      translate={translate}
       title={translate(
         'pimee_catalog_rule.form.edit.actions.clear_attribute.title'
       )}
@@ -62,11 +47,9 @@ const ClearAttributeActionLine: React.FC<Props> = ({
         attributeCode={action.field}
         scopeId={`edit-rules-action-${lineNumber}-scope`}
         scopeFormName={`content.actions[${lineNumber}].scope`}
-        scopeCode={action.scope || null}
         scopes={scopes}
         localeId={`edit-rules-action-${lineNumber}-locale`}
         localeFormName={`content.actions[${lineNumber}].locale`}
-        localeCode={action.locale || null}
         locales={locales}
       />
       <LineErrors lineNumber={lineNumber} type='actions' />

@@ -2,7 +2,6 @@ import React from 'react';
 import { SetAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import {
   ActionGrid,
   ActionLeftSide,
@@ -14,8 +13,8 @@ import { ActionLineErrors } from './ActionLineErrors';
 import { Attribute } from '../../../../models';
 import { InputText } from '../../../../components/Inputs';
 import { useFormContext } from 'react-hook-form';
-import { FallbackField } from '../FallbackField';
-import { useRegisterConsts } from '../../hooks/useRegisterConst';
+import { useRegisterConst } from '../../hooks/useRegisterConst';
+import { useTranslate } from '../../../../dependenciesTools/hooks';
 
 type Props = {
   action: SetAction;
@@ -28,39 +27,15 @@ const SetActionLine: React.FC<Props> = ({
   locales,
   scopes,
 }) => {
+  const translate = useTranslate();
   const [attribute, setAttribute] = React.useState<Attribute | null>(null);
-  const { watch, setValue } = useFormContext();
+  const { register, setValue } = useFormContext();
 
-  const values: any = {
-    type: 'set',
-    value: action.value,
-    field: action.field,
-  };
-  if (action.locale) {
-    values['locale'] = action.locale;
-  }
-  if (action.scope) {
-    values['scope'] = action.scope;
-  }
   const validateValue = {
     required: translate('pimee_catalog_rule.exceptions.required_value'),
   };
 
-  useRegisterConsts(values, `content.actions[${lineNumber}]`);
-
-  const displayNull = (value: any): string | null => {
-    return null === value ? '' : null;
-  };
-
-  useValueInitialization(
-    `content.actions[${lineNumber}]`,
-    values,
-    { value: validateValue },
-    [action]
-  );
-
-  const getValueFormValue: () => any = () =>
-    watch(`content.actions[${lineNumber}].value`);
+  useRegisterConst('type', 'set', `content.actions[${lineNumber}]`);
 
   const setValueFormValue = (value: any) => {
     setValue(`content.actions[${lineNumber}].value`, value);
@@ -100,11 +75,9 @@ const SetActionLine: React.FC<Props> = ({
             attributeCode={action.field}
             scopeId={`edit-rules-action-${lineNumber}-scope`}
             scopeFormName={`content.actions[${lineNumber}].scope`}
-            scopeCode={action.scope || null}
             scopes={scopes}
             localeId={`edit-rules-action-${lineNumber}-locale`}
             localeFormName={`content.actions[${lineNumber}].locale`}
-            localeCode={action.locale || null}
             locales={locales}
             onAttributeChange={onAttributeChange}
           />
@@ -124,17 +97,16 @@ const SetActionLine: React.FC<Props> = ({
           )}
           {null !== attribute && (
             <InputText
-              disabled
-              name='value'
+              data-testid={`edit-rules-input-${lineNumber}-value`}
+              name={`content.conditions[${lineNumber}].value`}
               label={`${translate('pimee_catalog_rule.rule.value')} ${translate(
                 'pim_common.required_label'
-              )} (under development)`}
+              )}`}
+              ref={register(validateValue)}
+              hiddenLabel={true}
+              defaultValue={action.value}
+              disabled
               readOnly
-              value={
-                'string' === typeof getValueFormValue()
-                  ? getValueFormValue()
-                  : JSON.stringify(getValueFormValue())
-              }
             />
           )}
         </ActionRightSide>

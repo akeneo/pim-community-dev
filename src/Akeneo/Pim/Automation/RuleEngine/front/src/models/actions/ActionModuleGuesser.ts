@@ -10,16 +10,25 @@ import { getCopyActionModule } from './CopyAction';
 import { getRemoveActionModule } from './RemoveAction';
 import { getSetActionModule } from './SetAction';
 import { FallbackActionLine } from '../../pages/EditRules/components/actions/FallbackActionLine';
+import { Router } from '../../dependenciesTools';
+import { getClearAttributeActionModule } from './ClearAttributeAction';
 
 export type ActionModuleGuesser = (
-  json: any
-) => React.FC<ActionLineProps & { action: Action }> | null;
+  json: any,
+  router: Router
+) => Promise<React.FC<ActionLineProps & { action: Action }> | null>;
 
 const getActionModule: (
-  json: any
-) => React.FC<ActionLineProps & { action: Action }> = json => {
+  json: any,
+  router: Router
+) => Promise<React.FC<ActionLineProps & { action: Action }>> = async (
+  json,
+  router
+) => {
   const getActionModuleFunctions: ActionModuleGuesser[] = [
     getSetFamilyActionModule,
+    getClearAttributeActionModule,
+    // Fallbacks
     getAddActionModule,
     getCalculateActionModule,
     getClearActionModule,
@@ -31,7 +40,7 @@ const getActionModule: (
 
   for (let i = 0; i < getActionModuleFunctions.length; i++) {
     const getModuleFunction = getActionModuleFunctions[i];
-    const module = getModuleFunction(json);
+    const module = await getModuleFunction(json, router);
     if (module !== null) {
       return module;
     }

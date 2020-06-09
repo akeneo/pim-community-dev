@@ -2,7 +2,11 @@ import React from 'react';
 import { Action } from '../../../../models/Action';
 import { ActionLineProps } from './ActionLineProps';
 import styled from 'styled-components';
-import { getActionModule } from '../../../../models/rule-definition-denormalizer';
+import { getActionModule } from '../../../../models/actions/ActionModuleGuesser';
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
 
 const ActionTitle = styled.div`
   color: ${({ theme }): string => theme.color.purple100};
@@ -36,9 +40,25 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   locales,
   scopes,
 }) => {
-  const Line = getActionModule(action) as React.FC<
-    ActionLineProps & { action: Action }
-  >;
+  const router = useBackboneRouter();
+  const translate = useTranslate();
+  const [Line, setLine] = React.useState<
+    React.FC<ActionLineProps & { action: Action }>
+  >();
+  React.useEffect(() => {
+    getActionModule(action, router).then(module => setLine(() => module));
+  }, []);
+
+  if (!Line) {
+    return (
+      <div className='AknGrid-bodyCell'>
+        <img
+          src='/bundles/pimui/images//loader-V2.svg'
+          alt={translate('pim_common.loading')}
+        />
+      </div>
+    );
+  }
 
   return (
     <Line

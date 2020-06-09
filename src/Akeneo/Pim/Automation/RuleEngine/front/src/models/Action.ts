@@ -12,8 +12,6 @@ import {
   SetAction,
   SetFamilyAction,
 } from './actions';
-import { Router } from '../dependenciesTools';
-import { ActionLineProps } from "../pages/EditRules/components/actions/ActionLineProps";
 
 export const AvailableAddAction: { [key: string]: () => Action } = {
   set_family: createSetFamilyAction,
@@ -31,8 +29,3 @@ export type Action =
   | RemoveAction
   | SetAction
   | SetFamilyAction;
-
-export type ActionDenormalizer = (
-  json: any,
-  router: Router
-) => Promise<Action | null>;

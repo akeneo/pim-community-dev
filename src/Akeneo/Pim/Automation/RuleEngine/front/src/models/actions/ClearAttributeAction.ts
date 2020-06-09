@@ -1,40 +1,21 @@
-import React from 'react';
-import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
 import { ProductField } from './ProductField';
-import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
-import { Router } from '../../dependenciesTools';
 import { ClearAttributeActionLine } from '../../pages/EditRules/components/actions/ClearAttributeActionLine';
+import { ActionModuleGuesser } from './ActionModuleGuesser';
 
 export type ClearAttributeAction = {
-  module: React.FC<{ action: ClearAttributeAction } & ActionLineProps>;
   type: 'clear';
 } & ProductField;
 
-export const denormalizeClearAttributeAction = async (
-  json: any,
-  router: Router
-): Promise<ClearAttributeAction | null> => {
+export const getClearAttributeActionModule: ActionModuleGuesser = async json => {
   if (json.type !== 'clear') {
-    return null;
+    return Promise.resolve(null);
   }
 
-  const attribute = await getAttributeByIdentifier(json.field, router);
-  if (null === attribute) {
-    return null;
-  }
-
-  return {
-    module: ClearAttributeActionLine,
-    type: 'clear',
-    field: json.field,
-    locale: json.locale || null,
-    scope: json.scope || null,
-  };
+  return Promise.resolve(ClearAttributeActionLine);
 };
 
 export const createClearAttributeAction: () => ClearAttributeAction = () => {
   return {
-    module: ClearAttributeActionLine,
     type: 'clear',
     field: '',
     locale: null,
