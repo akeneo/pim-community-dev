@@ -129,6 +129,35 @@ class QuantifiedAssociations
         return $result;
     }
 
+    public function merge(QuantifiedAssociations $quantifiedAssociations): void
+    {
+        $normalizedQuantifiedAssociationsToMerge = $quantifiedAssociations->normalize();
+
+        foreach ($normalizedQuantifiedAssociationsToMerge as $associationTypeCode => $association) {
+            foreach ($association as $associationEntityType => $quantifiedLinks) {
+                if (!isset($this->quantifiedAssociations[$associationTypeCode][$associationEntityType])) {
+                    $this->quantifiedAssociations[$associationTypeCode][$associationEntityType] = [];
+                }
+
+                foreach ($quantifiedLinks as $quantifiedLink) {
+                    $key = $this->searchKeyOfDuplicatedQuantifiedAssociation(
+                        $this->quantifiedAssociations,
+                        $associationTypeCode,
+                        $associationEntityType,
+                        $quantifiedLink
+                    );
+
+                    if (null !== $key) {
+                        $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][$key]['quantity'] = $quantifiedLink['quantity'];
+                        continue;
+                    }
+
+                    $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][] = $quantifiedLink;
+                }
+            }
+        }
+    }
+
     public function normalizeWithMapping(IdMapping $mappedProductIdentifiers, IdMapping $mappedProductModelIdentifiers)
     {
         $result = [];
@@ -173,14 +202,50 @@ class QuantifiedAssociations
                 if (!isset($result[$associationType][$quantifiedLinksType])) {
                     $result[$associationType][$quantifiedLinksType] = [];
                 }
-
                 /** @var QuantifiedLink $quantifiedLink */
                 foreach ($quantifiedLinks as $quantifiedLink) {
-                    $result[$associationType][$quantifiedLinksType][] = $quantifiedLink->normalize();
+                    var_dump($quantifiedLink);
+                    $result[$associationType][$quantifiedLinksType][] = $quantifiedLink;
                 }
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Since we are using an unindexed array for the quantified associations,
+     * we need to find if there is a row with the same identifier as the one we have.
+     * With its key, we will be able to overwrite the quantity.
+     *
+     * For context, this is the structure:
+     * [
+     *      'PACK' => [
+     *          'products' => [
+     *              ['identifier' => 'foo', 'quantity' => 2],
+     *              ['identifier' => 'bar', 'quantity' => 4],
+     *          ]
+     *      ]
+     * ]
+     *
+     */
+    private function searchKeyOfDuplicatedQuantifiedAssociation(
+        array $source,
+        string $associationTypeCode,
+        string $associationEntityType,
+        array $quantifiedLink
+    ): ?int {
+        $matchingSourceQuantifiedAssociations = array_filter(
+            $source[$associationTypeCode][$associationEntityType] ?? [],
+            function ($sourceQuantifiedAssociation) use ($quantifiedLink) {
+                return $sourceQuantifiedAssociation['identifier'] === $quantifiedLink['identifier'];
+            }
+        );
+
+        if (empty($matchingSourceQuantifiedAssociations)) {
+            return null;
+        }
+
+        return array_keys($matchingSourceQuantifiedAssociations)[0];
     }
 }
