@@ -138,7 +138,6 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   }, [JSON.stringify(getAvailableLocales())]);
 
   const setAttributeFormValue = (value: AttributeCode | null) => {
-    console.log('Set value', attributeFormName, value);
     setValue(attributeFormName, value);
     refreshAttribute(value);
     setAttributeIsChanged(true);

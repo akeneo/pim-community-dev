@@ -28,7 +28,8 @@ const SetActionLine: React.FC<Props> = ({
   scopes,
 }) => {
   const translate = useTranslate();
-  const [attribute, setAttribute] = React.useState<Attribute | null>(null);
+  const [attribute, setAttribute] = React.useState<Attribute | null | undefined>(undefined);
+  const previousAttribute = React.useRef<Attribute | null | undefined>();
   const { register, setValue } = useFormContext();
 
   const validateValue = {
@@ -43,14 +44,18 @@ const SetActionLine: React.FC<Props> = ({
     setValue(`content.actions[${lineNumber}].value`, value);
   };
 
+  // console.log('attribute', attribute);
   const onAttributeChange = (newAttribute: Attribute | null) => {
-    const oldAttributeCode = attribute?.code;
-    const newAttributeCode = newAttribute?.code;
     setAttribute(newAttribute);
-    if (oldAttributeCode && oldAttributeCode !== newAttributeCode) {
+  };
+
+  React.useEffect(() => {
+    if (undefined !== previousAttribute.current) {
       setValueFormValue(null);
     }
-  };
+
+    previousAttribute.current = attribute;
+  }, [attribute]);
 
   return (
     <ActionTemplate
@@ -102,7 +107,7 @@ const SetActionLine: React.FC<Props> = ({
           {null !== attribute && (
             <InputText
               data-testid={`edit-rules-input-${lineNumber}-value`}
-              name={`content.conditions[${lineNumber}].value`}
+              name={`content.actions[${lineNumber}].value`}
               label={`${translate('pimee_catalog_rule.rule.value')} ${translate(
                 'pim_common.required_label'
               )}`}
