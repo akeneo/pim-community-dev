@@ -8,6 +8,7 @@ import { Attribute, AttributeCode, LocaleCode } from '../../models';
 import { Router } from '../../dependenciesTools';
 import { useBackboneRouter } from '../../dependenciesTools/hooks';
 import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
+import { InputText } from '../Inputs';
 
 type AttributeResult = {
   id: string;
@@ -31,6 +32,7 @@ type Props = {
   onChange: (value: AttributeCode) => void;
   placeholder?: string;
   filterAttributeTypes?: string[];
+  disabled?: boolean;
 };
 
 const initSelectedAttribute = async (
@@ -60,6 +62,7 @@ const AttributeSelector: React.FC<Props> = ({
   onChange,
   placeholder,
   filterAttributeTypes,
+  disabled = false,
 }) => {
   const router: Router = useBackboneRouter();
 
@@ -105,6 +108,18 @@ const AttributeSelector: React.FC<Props> = ({
       }),
     };
   };
+
+  if (disabled) {
+    return (
+      <InputText
+        id={id}
+        label={label}
+        hiddenLabel={hiddenLabel}
+        value={value as string}
+        readOnly={true}
+      />
+    );
+  }
 
   return (
     <Select2SimpleAsyncWrapper

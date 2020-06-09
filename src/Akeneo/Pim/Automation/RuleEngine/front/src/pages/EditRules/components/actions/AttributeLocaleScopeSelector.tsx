@@ -21,7 +21,7 @@ import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import styled from 'styled-components';
 
 const SelectorBlock = styled.div`
-  margin-top: 15px;
+  margin-bottom: 15px;
 `;
 
 type Props = {
@@ -40,6 +40,7 @@ type Props = {
   localeFormName: string;
   locales: Locale[];
   scopes: IndexedScopes;
+  onAttributeUpdate?: (attribute: Attribute | null) => void;
 };
 
 export const AttributeLocaleScopeSelector: React.FC<Props> = ({
@@ -58,6 +59,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   localeFormName,
   locales,
   scopes,
+  onAttributeUpdate,
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
@@ -67,15 +69,20 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   const [attributeIsChanged, setAttributeIsChanged] = React.useState<boolean>(
     false
   );
+  const [firstRefresh, setFirstRefresh] = React.useState<boolean>(true);
 
   const refreshAttribute: (
     attributeCode: AttributeCode | null
   ) => void = async (attributeCode: AttributeCode | null) => {
-    setAttribute(
+    const attribute =
       attributeCode !== null
         ? await getAttributeByIdentifier(attributeCode, router)
-        : null
-    );
+        : null;
+    setAttribute(attribute);
+    if (onAttributeUpdate) {
+      onAttributeUpdate(attribute);
+    }
+    setFirstRefresh(false);
   };
 
   const getAttributeFormValue: () => AttributeCode = () =>
@@ -224,6 +231,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           value={getAttributeFormValue()}
           onChange={setAttributeFormValue}
           placeholder={attributePlaceholder}
+          disabled={!firstRefresh && null === attribute}
         />
       </SelectorBlock>
       {(attribute?.scopable || (!attributeIsChanged && scopeCode)) && (
@@ -242,6 +250,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
             onChange={setScopeFormValue}
             translate={translate}
             allowClear={!attribute?.scopable}
+            disabled={!firstRefresh && null === attribute}
           />
         </SelectorBlock>
       )}
@@ -258,6 +267,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
             onChange={setLocaleFormValue}
             translate={translate}
             allowClear={!attribute?.localizable}
+            disabled={!firstRefresh && null === attribute}
           />
         </SelectorBlock>
       )}

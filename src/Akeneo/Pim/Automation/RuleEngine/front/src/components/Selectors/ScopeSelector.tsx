@@ -13,6 +13,7 @@ type Props = {
   onChange: (value: ScopeCode) => void;
   translate: Translate;
   allowClear: boolean;
+  disabled?: boolean;
 };
 
 const ScopeSelector: React.FC<Props> = ({
@@ -26,6 +27,7 @@ const ScopeSelector: React.FC<Props> = ({
   translate,
   children,
   allowClear = false,
+  disabled = false,
 }) => {
   const getScopeLabel = (scope: Scope): string => {
     return scope.labels[currentCatalogLocale] || `[${scope.code}]`;
@@ -57,6 +59,7 @@ const ScopeSelector: React.FC<Props> = ({
         value={value}
         allowClear={allowClear}
         onValueChange={value => onChange(value as ScopeCode)}
+        disabled={disabled}
       />
       {children}
     </>

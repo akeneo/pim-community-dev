@@ -2,55 +2,11 @@ import { renderWithProviders } from '../../../../test-utils';
 import React from 'react';
 import { TextAttributeConditionLine } from '../../../../src/pages/EditRules/components/conditions/TextAttributeConditionLine';
 import { TextAttributeCondition } from '../../../../src/models/conditions';
-import { Attribute } from '../../../../src/models/Attribute';
 import { Operator } from '../../../../src/models/Operator';
-import { IndexedScopes } from '../../../../src/repositories/ScopeRepository';
 import { Router } from '../../../../src/dependenciesTools';
 import userEvent from '@testing-library/user-event';
 import { wait } from '@testing-library/dom';
-
-jest.mock('../../../../src/fetch/categoryTree.fetcher');
-
-const createAttribute = (data: { [key: string]: any }): Attribute => {
-  return {
-    code: 'name',
-    type: 'pim_catalog_text',
-    group: 'marketing',
-    unique: false,
-    useable_as_grid_filter: true,
-    allowed_extensions: [],
-    metric_family: null,
-    default_metric_unit: null,
-    reference_data_name: null,
-    available_locales: [],
-    max_characters: null,
-    validation_rule: null,
-    validation_regexp: null,
-    wysiwyg_enabled: null,
-    number_min: null,
-    number_max: null,
-    decimals_allowed: null,
-    negative_allowed: null,
-    date_min: null,
-    date_max: null,
-    max_file_size: null,
-    minimum_input_length: null,
-    sort_order: 1,
-    localizable: true,
-    scopable: true,
-    labels: { en_US: 'Name', fr_FR: 'Nom' },
-    auto_option_sorting: null,
-    is_read_only: false,
-    empty_value: null,
-    field_type: 'text',
-    filter_types: {},
-    is_locale_specific: false,
-    meta: {
-      id: 42,
-    },
-    ...data,
-  };
-};
+import { createAttribute, locales, scopes } from '../../factories';
 
 const conditionWithLocalizableScopableAttribute: TextAttributeCondition = {
   scope: 'mobile',
@@ -77,48 +33,6 @@ const defaultCondition: TextAttributeCondition = {
   operator: Operator.IS_EMPTY,
 };
 
-const locales = [
-  {
-    code: 'de_DE',
-    label: 'German (Germany)',
-    region: 'Germany',
-    language: 'German',
-  },
-  {
-    code: 'en_US',
-    label: 'English (United States)',
-    region: 'United States',
-    language: 'English',
-  },
-  {
-    code: 'fr_FR',
-    label: 'French (France)',
-    region: 'France',
-    language: 'French',
-  },
-];
-
-const scopes: IndexedScopes = {
-  ecommerce: {
-    code: 'ecommerce',
-    currencies: ['EUR', 'USD'],
-    locales: locales,
-    category_tree: 'master',
-    conversion_units: [],
-    labels: { en_US: 'e-commerce' },
-    meta: {},
-  },
-  mobile: {
-    code: 'mobile',
-    currencies: ['EUR', 'USD'],
-    locales: [locales[0], locales[1]],
-    category_tree: 'master',
-    conversion_units: [],
-    labels: { en_US: 'Mobile' },
-    meta: {},
-  },
-};
-
 const translate = jest.fn((key: string) => key);
 const router: Router = {
   generate: jest.fn(),
@@ -126,6 +40,7 @@ const router: Router = {
 };
 
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
+jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
 
 describe('TextAttributeConditionLine', () => {
   beforeEach(() => {

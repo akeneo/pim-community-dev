@@ -59,6 +59,7 @@ type Select2GlobalProps = {
   formatSelection?: (item: Select2Option | Select2OptionGroup) => string;
   hideSearch?: boolean;
   closeTick?: boolean;
+  disabled?: boolean;
 };
 
 type Props = Select2GlobalProps & {
@@ -88,6 +89,7 @@ const Select2Wrapper: React.FC<Props> = ({
   closeTick = false,
   hideSearch = false,
   allowClear = false,
+  disabled = false,
 }) => {
   const select2ref = useRef<HTMLInputElement | null>(null);
 
@@ -155,7 +157,7 @@ const Select2Wrapper: React.FC<Props> = ({
 
   useEffect(() => {
     initSelect2(true);
-  }, [onSelecting, allowClear, JSON.stringify(data)]);
+  }, [onSelecting, allowClear, disabled, JSON.stringify(data)]);
 
   useEffect(() => {
     if (select2ref.current) {
@@ -166,7 +168,7 @@ const Select2Wrapper: React.FC<Props> = ({
   return (
     <>
       <Label label={label} hiddenLabel={hiddenLabel} htmlFor={id} />
-      <input id={id} type='hidden' ref={select2ref} />
+      <input id={id} type='hidden' ref={select2ref} disabled={disabled} />
     </>
   );
 };

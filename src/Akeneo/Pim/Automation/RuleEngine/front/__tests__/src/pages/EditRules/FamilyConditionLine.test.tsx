@@ -19,14 +19,20 @@ const condition: FamilyCondition = {
 };
 
 const familiesPayload = {
-  'accessories': { 'code': 'accessories', 'labels': {'en_US': 'Accessories', 'fr_FR': 'Accessoires' } },
-  'mugs': { 'code': 'mugs', 'labels': { 'en_US': 'Mugs', 'fr_FR': 'Tasses' } },
+  accessories: {
+    code: 'accessories',
+    labels: { en_US: 'Accessories', fr_FR: 'Accessoires' },
+  },
+  mugs: { code: 'mugs', labels: { en_US: 'Mugs', fr_FR: 'Tasses' } },
 };
 
 const translate = jest.fn((key: string) => key);
 const router: Router = {
-  'generate': jest.fn((route: string, params?: { [param: string]: any }) => `${route}?${JSON.stringify(params)}`),
-  'redirect': jest.fn(),
+  generate: jest.fn(
+    (route: string, params?: { [param: string]: any }) =>
+      `${route}?${JSON.stringify(params)}`
+  ),
+  redirect: jest.fn(),
 };
 
 describe('FamilyConditionLine', () => {
@@ -35,11 +41,12 @@ describe('FamilyConditionLine', () => {
   });
 
   it('should display the family condition line', async () => {
-    fetchMock.mockResponses(
-      [JSON.stringify(familiesPayload), { status: 200 }],
-    );
+    fetchMock.mockResponses([JSON.stringify(familiesPayload), { status: 200 }]);
 
-    const { findByText, findByTestId } = renderWithProviders(
+    const {
+      findByText,
+      findByTestId,
+    } = renderWithProviders(
       <FamilyConditionLine
         condition={condition}
         lineNumber={1}
@@ -48,27 +55,51 @@ describe('FamilyConditionLine', () => {
         locales={[]}
         scopes={{}}
         translate={translate}
-      />, { all: true }
+      />,
+      { all: true }
     );
 
-
-    expect(await findByText('pimee_catalog_rule.form.edit.fields.family')).toBeInTheDocument();
-    expect(await findByTestId('edit-rules-input-1-operator')).toBeInTheDocument();
-    expect(await findByTestId('edit-rules-input-1-operator')).toHaveValue(Operator.IN_LIST);
+    expect(
+      await findByText('pimee_catalog_rule.form.edit.fields.family')
+    ).toBeInTheDocument();
+    expect(
+      await findByTestId('edit-rules-input-1-operator')
+    ).toBeInTheDocument();
+    expect(await findByTestId('edit-rules-input-1-operator')).toHaveValue(
+      Operator.IN_LIST
+    );
     expect(await findByTestId('edit-rules-input-1-value')).toBeInTheDocument();
-    expect(await findByTestId('edit-rules-input-1-value')).toHaveValue(['accessories', 'mugs']);
-    expect(await findByText('Pimee_catalog_rule.form.edit.conditions.operators.EMPTY')).toBeInTheDocument();
-    expect(await findByText('Pimee_catalog_rule.form.edit.conditions.operators.NOT EMPTY')).toBeInTheDocument();
-    expect(await findByText('Pimee_catalog_rule.form.edit.conditions.operators.IN')).toBeInTheDocument();
-    expect(await findByText('Pimee_catalog_rule.form.edit.conditions.operators.NOT IN')).toBeInTheDocument();
+    expect(await findByTestId('edit-rules-input-1-value')).toHaveValue([
+      'accessories',
+      'mugs',
+    ]);
+    expect(
+      await findByText(
+        'Pimee_catalog_rule.form.edit.conditions.operators.EMPTY'
+      )
+    ).toBeInTheDocument();
+    expect(
+      await findByText(
+        'Pimee_catalog_rule.form.edit.conditions.operators.NOT EMPTY'
+      )
+    ).toBeInTheDocument();
+    expect(
+      await findByText('Pimee_catalog_rule.form.edit.conditions.operators.IN')
+    ).toBeInTheDocument();
+    expect(
+      await findByText(
+        'Pimee_catalog_rule.form.edit.conditions.operators.NOT IN'
+      )
+    ).toBeInTheDocument();
   });
 
   it('handles values option appearance based on selected operator', async () => {
-    fetchMock.mockResponses(
-      [JSON.stringify(familiesPayload), { status: 200 }],
-    );
+    fetchMock.mockResponses([JSON.stringify(familiesPayload), { status: 200 }]);
 
-    const { findByTestId, queryByTestId } = renderWithProviders(
+    const {
+      findByTestId,
+      queryByTestId,
+    } = renderWithProviders(
       <FamilyConditionLine
         condition={condition}
         lineNumber={1}
@@ -77,7 +108,8 @@ describe('FamilyConditionLine', () => {
         locales={[]}
         scopes={{}}
         translate={translate}
-      />, { all: true }
+      />,
+      { all: true }
     );
 
     const operatorSelector = await findByTestId('edit-rules-input-1-operator');

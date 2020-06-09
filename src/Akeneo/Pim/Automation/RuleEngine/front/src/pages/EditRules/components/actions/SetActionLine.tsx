@@ -3,7 +3,17 @@ import { SetAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
-import { FallbackField } from '../FallbackField';
+import {
+  ActionGrid,
+  ActionLeftSide,
+  ActionRightSide,
+  ActionTitle,
+} from './ActionLine';
+import { AttributeLocaleScopeSelector } from './AttributeLocaleScopeSelector';
+import { ActionLineErrors } from './ActionLineErrors';
+import { Attribute } from '../../../../models';
+import { InputText } from '../../../../components/Inputs';
+import { useFormContext } from 'react-hook-form';
 
 type Props = {
   action: SetAction;
@@ -14,68 +24,47 @@ const SetActionLine: React.FC<Props> = ({
   lineNumber,
   action,
   handleDelete,
+  locales,
+  scopes,
 }) => {
+  const [attribute, setAttribute] = React.useState<Attribute | null>(null);
+  const { watch, setValue } = useFormContext();
+
   const values: any = {
     type: 'set',
-    field: action.field,
     value: action.value,
+    field: action.field,
   };
   if (action.locale) {
-    values.locale = action.locale;
+    values['locale'] = action.locale;
   }
   if (action.scope) {
-    values.scope = action.scope;
+    values['scope'] = action.scope;
   }
-  useValueInitialization(`content.actions[${lineNumber}]`, values, {}, [
-    action,
-  ]);
-
-  const displayNull = (value: any): string | null => {
-    return null === value ? '' : null;
+  const validateValue = {
+    required: translate('pimee_catalog_rule.exceptions.required_value'),
   };
-  const displayPrice = (price: any): string | null => {
-    if (
-      Object.keys(price).includes('amount') &&
-      Object.keys(price).includes('currency')
-    ) {
-      return `${price.amount} ${price.currency}`;
-    }
+  useValueInitialization(
+    `content.actions[${lineNumber}]`,
+    values,
+    { value: validateValue },
+    [action]
+  );
 
-    return null;
-  };
-  const displayMetric = (metric: any): string | null => {
-    if (
-      Object.keys(metric).includes('amount') &&
-      Object.keys(metric).includes('unit')
-    ) {
-      return `${metric.amount} ${metric.unit}`;
-    }
+  const getValueFormValue: () => any = () =>
+    watch(`content.actions[${lineNumber}].value`);
 
-    return null;
+  const setValueFormValue = (value: any) => {
+    setValue(`content.actions[${lineNumber}].value`, value);
   };
 
-  const displaySingleValue = (value: any): string => {
-    switch (typeof value) {
-      case 'boolean':
-        return value ? 'true' : 'false';
-      case 'object':
-        return (
-          displayNull(value) ||
-          displayPrice(value) ||
-          displayMetric(value) ||
-          JSON.stringify(value)
-        );
-      default:
-        return value as string;
+  const onAttributeUpdate = (newAttribute: Attribute | null) => {
+    const oldAttributeCode = attribute?.code;
+    const newAttributeCode = newAttribute?.code;
+    setAttribute(newAttribute);
+    if (oldAttributeCode && oldAttributeCode !== newAttributeCode) {
+      setValueFormValue(null);
     }
-  };
-
-  const displayValue = (values: any): string => {
-    if (Array.isArray(values)) {
-      return values.map((value: any) => displaySingleValue(value)).join(', ');
-    }
-
-    return displaySingleValue(values);
   };
 
   return (
@@ -85,30 +74,65 @@ const SetActionLine: React.FC<Props> = ({
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
-      <div className='AknGrid AknGrid--unclickable'>
-        <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
-          <div className='AknGrid-bodyCell'>
-            {/* It is not translated since it is temporary. */}
-            The value
-            {Array.isArray(action.value) && action.value.length > 1 && 's'}
-            &nbsp;
-            <span className='AknRule-attribute'>
-              {displayValue(action.value)}
-            </span>
-            &nbsp;
-            {Array.isArray(action.value) && action.value.length > 1
-              ? 'are'
-              : 'is'}
-            &nbsp;set into&nbsp;
-            <FallbackField
-              field={action.field}
-              scope={action.scope}
-              locale={action.locale}
+      <ActionGrid>
+        <ActionLeftSide>
+          <ActionTitle>
+            {translate(
+              'pimee_catalog_rule.form.edit.actions.set_attribute.target_subtitle'
+            )}
+          </ActionTitle>
+          <AttributeLocaleScopeSelector
+            attributeId={`edit-rules-action-${lineNumber}-field`}
+            attributeLabel={`${translate(
+              'pimee_catalog_rule.form.edit.fields.attribute'
+            )} ${translate('pim_common.required_label')}`}
+            attributePlaceholder={translate(
+              'pimee_catalog_rule.form.edit.actions.set_attribute.attribute_placeholder'
+            )}
+            attributeFormName={`content.actions[${lineNumber}].field`}
+            attributeCode={action.field}
+            scopeId={`edit-rules-action-${lineNumber}-scope`}
+            scopeFormName={`content.actions[${lineNumber}].scope`}
+            scopeCode={action.scope || null}
+            scopes={scopes}
+            localeId={`edit-rules-action-${lineNumber}-locale`}
+            localeFormName={`content.actions[${lineNumber}].locale`}
+            localeCode={action.locale || null}
+            locales={locales}
+            onAttributeUpdate={onAttributeUpdate}
+          />
+        </ActionLeftSide>
+        <ActionRightSide>
+          <ActionTitle>
+            {translate(
+              'pimee_catalog_rule.form.edit.actions.set_attribute.value_subtitle'
+            )}
+          </ActionTitle>
+          {null === attribute && (
+            <div>
+              {translate(
+                'pimee_catalog_rule.form.edit.actions.set_attribute.unknown_attribute'
+              )}
+            </div>
+          )}
+          {null !== attribute && (
+            <InputText
+              disabled
+              name='value'
+              label={`${translate('pimee_catalog_rule.rule.value')} ${translate(
+                'pim_common.required_label'
+              )} (under development)`}
+              readOnly
+              value={
+                'string' === typeof getValueFormValue()
+                  ? getValueFormValue()
+                  : JSON.stringify(getValueFormValue())
+              }
             />
-            .
-          </div>
-        </div>
-      </div>
+          )}
+        </ActionRightSide>
+      </ActionGrid>
+      <ActionLineErrors lineNumber={lineNumber} />
     </ActionTemplate>
   );
 };

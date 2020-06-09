@@ -16,6 +16,7 @@ type Props = {
   onChange: (value: LocaleCode) => void;
   translate: Translate;
   allowClear?: boolean;
+  disabled?: boolean;
 };
 
 const LocaleSelector: React.FC<Props> = ({
@@ -28,6 +29,7 @@ const LocaleSelector: React.FC<Props> = ({
   translate,
   children,
   allowClear = false,
+  disabled = false,
 }) => {
   const localeChoices = availableLocales.map((locale: Locale) => {
     return {
@@ -72,6 +74,7 @@ const LocaleSelector: React.FC<Props> = ({
         value={value}
         onValueChange={value => onChange(value as LocaleCode)}
         allowClear={allowClear}
+        disabled={disabled}
       />
       {children}
     </>
