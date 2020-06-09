@@ -3,9 +3,9 @@ import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { ActionTitle } from './ActionLine';
 import { ClearAttributeAction } from '../../../../models/actions';
-import { ActionLineErrors } from './ActionLineErrors';
 import { AttributeLocaleScopeSelector } from './AttributeLocaleScopeSelector';
 import { useValueInitialization } from '../../hooks/useValueInitialization';
+import { LineErrors } from '../LineErrors';
 
 type Props = {
   action: ClearAttributeAction;
@@ -69,7 +69,7 @@ const ClearAttributeActionLine: React.FC<Props> = ({
         localeCode={action.locale || null}
         locales={locales}
       />
-      <ActionLineErrors lineNumber={lineNumber} />
+      <LineErrors lineNumber={lineNumber} type='actions' />
     </ActionTemplate>
   );
 };

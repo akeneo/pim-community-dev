@@ -12,7 +12,7 @@ import { FamilyCode } from '../../../../models';
 import { FieldColumn, OperatorColumn, ValueColumn } from './style';
 import { FamiliesSelector } from '../../../../components/Selectors/FamiliesSelector';
 import { getFamiliesByIdentifiers } from '../../../../repositories/FamilyRepository';
-import { ConditionLineErrors } from './ConditionLineErrors';
+import { LineErrors } from '../LineErrors';
 
 type FamilyConditionLineProps = ConditionLineProps & {
   condition: FamilyCondition;
@@ -138,7 +138,7 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
           />
         </ValueColumn>
       )}
-      <ConditionLineErrors lineNumber={lineNumber} />
+      <LineErrors lineNumber={lineNumber} type='conditions' />
     </div>
   );
 };

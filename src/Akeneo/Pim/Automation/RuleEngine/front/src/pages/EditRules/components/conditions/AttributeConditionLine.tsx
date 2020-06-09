@@ -19,9 +19,9 @@ import {
   ScopeColumn,
   ValueColumn,
 } from './style';
-import { ConditionLineErrors } from './ConditionLineErrors';
 import { Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
+import { LineErrors } from '../LineErrors';
 
 const shouldDisplayValue: (operator: Operator) => boolean = operator =>
   !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
@@ -222,7 +222,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
           />
         )}
       </LocaleColumn>
-      <ConditionLineErrors lineNumber={lineNumber} />
+      <LineErrors lineNumber={lineNumber} type='conditions' />
     </div>
   );
 };

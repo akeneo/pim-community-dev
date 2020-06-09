@@ -1,8 +1,6 @@
-import React from 'react';
-import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 
-const ActionErrorLine = styled.ul`
+const ErrorLine = styled.ul`
   &:not(:empty) {
     margin-left: 10%;
     margin-top: 15px;
@@ -29,26 +27,4 @@ const ActionErrorLine = styled.ul`
   }
 `;
 
-type Props = {
-  lineNumber: number;
-};
-
-const ActionLineErrors: React.FC<Props> = ({ lineNumber }) => {
-  const { errors } = useFormContext();
-  const actionErrors: {
-    [fieldName: string]: { type: string; message: string };
-  } = errors?.content?.actions?.[lineNumber] || {};
-  const messages = Object.values(actionErrors).map(
-    fieldError => fieldError.message
-  );
-
-  return (
-    <ActionErrorLine>
-      {messages.map((message, i) => {
-        return <li key={i}>{message}</li>;
-      })}
-    </ActionErrorLine>
-  );
-};
-
-export { ActionLineErrors };
+export { ErrorLine };

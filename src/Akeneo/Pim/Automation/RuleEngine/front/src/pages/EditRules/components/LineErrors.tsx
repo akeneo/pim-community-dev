@@ -1,27 +1,28 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { ConditionErrorLine } from './style';
+import { ErrorLine } from './style';
 
 type Props = {
   lineNumber: number;
+  type: string;
 };
 
-const ConditionLineErrors: React.FC<Props> = ({ lineNumber }) => {
+const LineErrors: React.FC<Props> = ({ lineNumber, type }) => {
   const { errors } = useFormContext();
-  const conditionErrors: {
+  const currentErrors: {
     [fieldName: string]: { type: string; message: string };
-  } = errors?.content?.conditions?.[lineNumber] || {};
-  const messages = Object.values(conditionErrors).map(
+  } = errors?.content?.[type]?.[lineNumber] || {};
+  const messages = Object.values(currentErrors).map(
     fieldError => fieldError.message
   );
 
   return (
-    <ConditionErrorLine>
+    <ErrorLine>
       {messages.map((message, i) => {
         return <li key={i}>{message}</li>;
       })}
-    </ConditionErrorLine>
+    </ErrorLine>
   );
 };
 
-export { ConditionLineErrors };
+export { LineErrors };
