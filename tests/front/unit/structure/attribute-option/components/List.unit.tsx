@@ -31,19 +31,19 @@ afterEach(() => {
 
 const options = [
     {
-        "id": 18,
-        "code": "black",
-        "optionValues": {
-            "en_US": {"id":252,"locale":"en_US","value":"Black"},
-            "fr_FR":{"id":253,"locale":"fr_FR","value":"Noir"}
-        }
-    },
-    {
         "id": 86,
         "code": "blue",
         "optionValues": {
             "en_US": {"id":255,"locale":"en_US","value":"Blue"},
             "fr_FR":{"id":256,"locale":"fr_FR","value":"Bleu"}
+        }
+    },
+    {
+        "id": 18,
+        "code": "black",
+        "optionValues": {
+            "en_US": {"id":252,"locale":"en_US","value":"Black"},
+            "fr_FR":{"id":253,"locale":"fr_FR","value":"Noir"}
         }
     },
 ];
@@ -54,24 +54,58 @@ describe('Attribute options list', () => {
             return {json: () => []};
         });
 
-        await renderComponent(jest.fn(), jest.fn());
+        await renderComponent(false, jest.fn(), jest.fn());
 
         expect(getByRole(container, 'attribute-options-list')).toBeEmpty();
     });
 
-    test('it renders a list of 2 options', async () => {
+    test('it renders a list of 2 options not sorted alphabetically by default', async () => {
         global.fetch = jest.fn().mockImplementationOnce(route => {
             return {json: () => options};
         });
 
-        await renderComponent(jest.fn(), jest.fn());
+        await renderComponent(false, jest.fn(), jest.fn());
+
+        const attributeOptions = getAllByRole(container, 'attribute-option-item');
+        expect(attributeOptions.length).toBe(2);
+        expect(attributeOptions[0].textContent).toBe('blue');
+        expect(attributeOptions[1].textContent).toBe('black');
+
+        expect(queryByRole(container, 'new-option-placeholder')).toBeNull();
+    });
+
+    test('it renders a list of 2 options sorted alphabetically by default', async () => {
+        global.fetch = jest.fn().mockImplementationOnce(route => {
+            return {json: () => options};
+        });
+
+        await renderComponent(true, jest.fn(), jest.fn());
 
         const attributeOptions = getAllByRole(container, 'attribute-option-item');
         expect(attributeOptions.length).toBe(2);
         expect(attributeOptions[0].textContent).toBe('black');
         expect(attributeOptions[1].textContent).toBe('blue');
+    });
 
-        expect(queryByRole(container, 'new-option-placeholder')).toBeNull();
+    test('the list order can be toggled', async () => {
+        global.fetch = jest.fn().mockImplementationOnce(route => {
+            return {json: () => options};
+        });
+
+        await renderComponent(false, jest.fn(), jest.fn());
+
+        let attributeOptions = getAllByRole(container, 'attribute-option-item');
+        expect(attributeOptions.length).toBe(2);
+        expect(attributeOptions[0].textContent).toBe('blue');
+        expect(attributeOptions[1].textContent).toBe('black');
+
+        const toggleButton = getByRole(container, 'toggle-sort-attribute-option');
+        await fireEvent.click(toggleButton);
+
+        attributeOptions = getAllByRole(container, 'attribute-option-item');
+        expect(attributeOptions.length).toBe(2);
+        expect(attributeOptions[0].textContent).toBe('black');
+        expect(attributeOptions[1].textContent).toBe('blue');
     });
 
     test('it displays a fake new option at the end when adding a new option', async () => {
@@ -80,7 +114,7 @@ describe('Attribute options list', () => {
         });
 
         const showNewOptionFormCallback = jest.fn();
-        await renderComponent(jest.fn(), showNewOptionFormCallback);
+        await renderComponent(false, jest.fn(), showNewOptionFormCallback);
 
         expect(queryByRole(container, 'new-option-placeholder')).toBeNull();
 
@@ -103,18 +137,18 @@ describe('Attribute options list', () => {
 
         const selectOptionCallback = jest.fn();
         const blueOptionId = 86;
-        await renderComponent(selectOptionCallback, jest.fn(), blueOptionId);
+        await renderComponent(false, selectOptionCallback, jest.fn(), blueOptionId);
 
         expect(queryByRole(container, 'new-option-placeholder')).toBeNull();
 
         const optionItems = queryAllByRole(container, 'attribute-option-item');
-        const blackOption = optionItems[0];
-        const blueOption = optionItems[1];
+        const blueOption = optionItems[0];
+        const blackOption = optionItems[1];
         expect(blueOption).toHaveClass('AknAttributeOption-listItem--selected');
         expect(blackOption).not.toHaveClass('AknAttributeOption-listItem--selected');
 
         const optionLabels = queryAllByRole(container, 'attribute-option-item-label');
-        const blackOptionLabel = optionLabels[0];
+        const blackOptionLabel = optionLabels[1];
         await fireEvent.click(blackOptionLabel);
 
         const blackOptionId = 18;
@@ -122,12 +156,12 @@ describe('Attribute options list', () => {
     });
 });
 
-async function renderComponent(selectOptionCallback, showNewOptionFormCallback, selectedOptionId = null) {
+async function renderComponent(autoSortOptions, selectOptionCallback, showNewOptionFormCallback, selectedOptionId = null) {
     await act(async () => {
         ReactDOM.render(
             <DependenciesProvider>
                 <Provider store={createStoreWithInitialState({})}>
-                    <AttributeContextProvider attributeId={8}>
+                    <AttributeContextProvider attributeId={8} autoSortOptions={autoSortOptions}>
                         <List
                             selectAttributeOption={selectOptionCallback}
                             showNewOptionForm={showNewOptionFormCallback}
