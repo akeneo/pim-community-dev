@@ -4,7 +4,6 @@ import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { FallbackField } from '../FallbackField';
 import {
-  normalizeOperation,
   Operation,
   Operator,
 } from '../../../../models/actions/Calculate/Operation';
@@ -118,19 +117,17 @@ const CalculateActionLine: React.FC<Props> = ({
   action,
   handleDelete,
 }) => {
-  useRegisterConsts(
-    {
-      type: 'calculate',
-      destination: action.destination,
-      source: action.source,
-      operation_list: action.operation_list.map((operation: Operation) =>
-        normalizeOperation(operation)
-      ),
-      // TODO: uncomment when it will be ready
-      // round_precision: action.round_precision,
-    },
-    `content.actions[${lineNumber}]`
-  );
+  const values: any = {
+    type: 'calculate',
+    source: action.source,
+    destination: action.destination,
+    operation_list: action.operation_list,
+  };
+  if (action.round_precision) {
+    values['round_precision'] = action.round_precision;
+  }
+
+  useRegisterConsts(values, `content.actions[${lineNumber}]`);
 
   return (
     <ActionTemplate
@@ -151,25 +148,25 @@ const CalculateActionLine: React.FC<Props> = ({
               <React.Fragment key={key}>
                 {Operator.ADD === operation.operator && (
                   <AddView
-                    operand={operation.operand}
+                    operand={operation}
                     source={key === 0 ? action.source : null}
                   />
                 )}
                 {Operator.SUBSTRACT === operation.operator && (
                   <SubstractView
-                    operand={operation.operand}
+                    operand={operation}
                     source={key === 0 ? action.source : null}
                   />
                 )}
                 {Operator.MULTIPLY === operation.operator && (
                   <MultiplyView
-                    operand={operation.operand}
+                    operand={operation}
                     source={key === 0 ? action.source : null}
                   />
                 )}
                 {Operator.DIVIDE === operation.operator && (
                   <DivideView
-                    operand={operation.operand}
+                    operand={operation}
                     source={key === 0 ? action.source : null}
                   />
                 )}

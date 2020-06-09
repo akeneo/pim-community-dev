@@ -9,8 +9,7 @@ export type CalculateAction = {
   destination: ProductField;
   source: Operand;
   operation_list: Operation[];
-  // TODO: uncomment when it will be ready
-  // round_precision: number | null;
+  round_precision?: number | null;
 };
 
 export const getCalculateActionModule: ActionModuleGuesser = json => {
