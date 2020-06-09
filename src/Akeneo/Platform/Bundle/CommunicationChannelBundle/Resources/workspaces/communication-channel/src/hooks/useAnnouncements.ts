@@ -1,6 +1,6 @@
 import {useState, useCallback, useEffect} from 'react';
 import {Announcement} from './../models/announcement';
-import {AnnouncementFetcher} from './../fetcher/announcement';
+import {AnnouncementFetcher} from './../fetcher/announcement.type';
 
 const useAnnouncements = (
   announcementFetcher: AnnouncementFetcher

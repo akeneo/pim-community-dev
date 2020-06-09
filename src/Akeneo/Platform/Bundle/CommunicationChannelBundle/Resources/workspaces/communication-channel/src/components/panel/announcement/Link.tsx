@@ -33,7 +33,7 @@ const buildLinkCardUrl = (baseUrl: string, campaign: string | null): URL => {
 
 const LinkComponent = ({baseUrl, campaign}: LinkProps): JSX.Element => {
   const __ = useTranslate();
-  const title = baseUrl.substring(baseUrl.indexOf("#")+1);
+  const title = baseUrl.substring(baseUrl.indexOf('#') + 1);
   const url = buildLinkCardUrl(baseUrl, campaign);
 
   return (
