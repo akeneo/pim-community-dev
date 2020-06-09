@@ -3,7 +3,7 @@ import React, {FC} from 'react';
 import {act} from '@testing-library/react-hooks';
 import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {Card} from '@akeneo-pim-community/communication-channel/src/models/card';
+import {Announcement} from '@akeneo-pim-community/communication-channel/src/models/announcement';
 
 const DefaultProviders: FC = ({children}) => {
   return (
@@ -19,22 +19,22 @@ export const createWithProviders = (nextElement: React.ReactElement) => <Default
 
 export const renderWithProviders = (ui: React.ReactElement, container: HTMLElement) => ReactDOM.render(createWithProviders(ui), container);
 
-export const getExpectedCards = () => {
+export const getExpectedAnnouncements = () => {
   return [
     {
-      title: 'Title card',
-      description: 'Description card',
-      img: '/path/img/card.png',
-      altImg: 'alt card img',
-      link: 'http://external.com#link-card',
+      title: 'Title announcement',
+      description: 'Description announcement',
+      img: '/path/img/announcement.png',
+      altImg: 'alt announcement img',
+      link: 'http://external.com',
       tags: ['new', 'updates'],
       startDate: '20-04-2020',
       notificationDuration: 7
     },
     {
-      title: 'Title card 2',
-      description: 'Description card 2',
-      link: 'http://external.com#link-card-2',
+      title: 'Title announcement 2',
+      description: 'Description announcement 2',
+      link: 'http://external-2.com',
       tags: ['tag'],
       startDate: '20-04-2020',
       notificationDuration: 14
@@ -48,11 +48,11 @@ export const getExpectedCampaign = () => {
 
 export const getMockDataProvider = () => {
   return {
-    cardFetcher:  {
-      fetchAll: (): Promise<Card[]> => {
+    announcementFetcher:  {
+      fetchAll: (): Promise<Announcement[]> => {
         return new Promise(resolve => {
           act(() => {
-            setTimeout(() => resolve(getExpectedCards()), 100);
+            setTimeout(() => resolve(getExpectedAnnouncements()), 100);
           });
         })
       }

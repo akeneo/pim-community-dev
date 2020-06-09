@@ -54,6 +54,7 @@ const AnnouncementComponent = ({announcement, campaign}: AnnouncementProps): JSX
       <LineContainer>
         <LinkComponent 
           baseUrl={announcement.link}
+          title={announcement.title}
           campaign={campaign}
         />
       </LineContainer>

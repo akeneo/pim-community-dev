@@ -7,9 +7,9 @@ class AnnouncementFetcher {
     const response = await fetch(this.jsonFilePath);
 
     const jsonResponse = await response.json();
-    const cards = jsonResponse.data;
+    const announcements = jsonResponse.data;
 
-    return cards.map(validateAnnouncement);
+    return announcements.map(validateAnnouncement);
   }
 }
 

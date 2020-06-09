@@ -17,6 +17,7 @@ const Link = styled.a`
 
 type LinkProps = {
   baseUrl: string;
+  title: string;
   campaign: string | null;
 }
 
@@ -31,9 +32,8 @@ const buildLinkCardUrl = (baseUrl: string, campaign: string | null): URL => {
   return url;
 }
 
-const LinkComponent = ({baseUrl, campaign}: LinkProps): JSX.Element => {
+const LinkComponent = ({baseUrl, title, campaign}: LinkProps): JSX.Element => {
   const __ = useTranslate();
-  const title = baseUrl.substring(baseUrl.indexOf('#') + 1);
   const url = buildLinkCardUrl(baseUrl, campaign);
 
   return (
