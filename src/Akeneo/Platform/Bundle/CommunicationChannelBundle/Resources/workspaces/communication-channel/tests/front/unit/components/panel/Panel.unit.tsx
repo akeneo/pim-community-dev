@@ -3,9 +3,12 @@ import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, act, getByText, getAllByText, getByTitle, waitForDomChange} from '@testing-library/react';
 import {Panel} from '@akeneo-pim-community/communication-channel/src/components/panel';
 import {dependencies} from '@akeneo-pim-community/legacy-bridge';
-import {renderWithProviders, getMockDataProvider} from '../../../../test-utils';
+import {renderWithProviders, getMockDataProvider, getExpectedAnnouncements, getExpectedCampaign} from '../../../../test-utils';
 
 const mockDataProvider = getMockDataProvider();
+const expectedAnnouncements = getExpectedAnnouncements();
+const expectedCampaign = getExpectedCampaign();
+
 let container: HTMLElement;
 beforeEach(() => {
   container = document.createElement('div');
@@ -38,12 +41,14 @@ test('it can show for each card the information from the json', async () => {
 
   await waitForDomChange({container});
 
-  expect(getByText(container, 'Title card')).toBeInTheDocument();
-  expect(getByText(container, 'Description card')).toBeInTheDocument();
-  expect(getByText(container, 'new')).toBeInTheDocument();
-  expect(getAllByText(container, '20-04-2020').length).toEqual(2);
-  expect(container.querySelector('img[alt="alt card img"]')).toBeInTheDocument();
-  expect(container.querySelector('a[title="link-card"]')).toBeInTheDocument();
+  expect(getByText(container, expectedAnnouncements[0].title)).toBeInTheDocument();
+  expect(getByText(container, expectedAnnouncements[0].description)).toBeInTheDocument();
+  expectedAnnouncements[0].tags.map((tag) => {
+    expect(getByText(container, tag)).toBeInTheDocument();
+  });
+  expect(getAllByText(container, expectedAnnouncements[0].startDate).length).toEqual(2);
+  expect(container.querySelector(`img[alt="${expectedAnnouncements[0].altImg}"]`)).toBeInTheDocument();
+  expect(container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`)).toBeInTheDocument();
 });
 
 test('it can open the read more link in a new tab', async () => {
@@ -54,8 +59,8 @@ test('it can open the read more link in a new tab', async () => {
 
   await waitForDomChange({container});
 
-  expect(container.querySelector('a[title="link-card"]').href).toEqual('http://external.com/?utm_source=akeneo-app&utm_medium=communication-panel&utm_campaign=Serenity#link-card');
-  expect(container.querySelector('a[title="link-card"]').target).toEqual('_blank');
+  expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).href).toEqual(`http://external.com/?utm_source=akeneo-app&utm_medium=communication-panel&utm_campaign=${expectedCampaign}`);
+  expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).target).toEqual('_blank');
 });
 
 test('it can close the panel', async () => {

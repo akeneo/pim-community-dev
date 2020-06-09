@@ -1,5 +1,5 @@
 {
-  "title": "Card",
+  "title": "Announcement",
   "type": "object",
   "properties": {
     "title": {"type": "string"},

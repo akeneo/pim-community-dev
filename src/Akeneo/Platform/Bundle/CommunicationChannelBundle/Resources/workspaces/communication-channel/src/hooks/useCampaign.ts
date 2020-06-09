@@ -1,5 +1,5 @@
 import {useState, useCallback, useEffect} from 'react';
-import {CampaignFetcher} from './../fetcher/campaign';
+import {CampaignFetcher} from './../fetcher/campaign.type';
 
 const useCampaign = (
   campaignFetcher: CampaignFetcher

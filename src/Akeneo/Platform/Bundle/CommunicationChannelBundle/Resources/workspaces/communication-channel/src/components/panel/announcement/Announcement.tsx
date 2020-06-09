@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Card} from './../../../models/card';
+import {Announcement} from '../../../models/announcement';
 import {TagComponent} from './Tag';
 import {Title} from './Title';
 import {Description} from './Description';
@@ -34,26 +34,27 @@ const Date = styled.div`
   flex-grow: 1;
 `;
 
-type CardProps = {
-  card: Card;
+type AnnouncementProps = {
+  announcement: Announcement;
   campaign: string | null;
 };
 
-const CardComponent = ({card, campaign}: CardProps): JSX.Element => {
+const AnnouncementComponent = ({announcement, campaign}: AnnouncementProps): JSX.Element => {
   return (
     <Container>
       <LineContainer>
-        {card.tags.map((tag: string, index: number): JSX.Element => <TagComponent key={index} tag={tag} />)}
-        <Date>{card.startDate}</Date>
+        {announcement.tags.map((tag: string, index: number): JSX.Element => <TagComponent key={index} tag={tag} />)}
+        <Date>{announcement.startDate}</Date>
       </LineContainer>
-      <Title tags={card.tags} title={card.title} />
-      <Description tags={card.tags} description={card.description} />
-      {card.img && 
-        <Image src={card.img} alt={card.altImg} />
+      <Title tags={announcement.tags} title={announcement.title} />
+      <Description tags={announcement.tags} description={announcement.description} />
+      {announcement.img &&
+        <Image src={announcement.img} alt={announcement.altImg} />
       }
       <LineContainer>
         <LinkComponent 
-          baseUrl={card.link}
+          baseUrl={announcement.link}
+          title={announcement.title}
           campaign={campaign}
         />
       </LineContainer>
@@ -61,4 +62,4 @@ const CardComponent = ({card, campaign}: CardProps): JSX.Element => {
   );
 };
 
-export {CardComponent};
+export {AnnouncementComponent};
