@@ -112,7 +112,7 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         $ruleRunner->run($ruleDefinition1)->willThrow($exception);
 
         $stepExecution->addWarning(
-            'The "{{ ruleCode }}" could not be executed: {{ error }}',
+            'The "{{ ruleCode }}" rule could not be executed: {{ error }}',
             [
                 '{{ ruleCode }}' => 'my_rule_code',
                 '{{ error }}' => 'error message',
@@ -154,7 +154,7 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         $ruleRunner->run($ruleDefinition1)->willThrow($exception);
 
         $stepExecution->addWarning(
-            'The "{{ ruleCode }}" could not be executed: {{ error }}',
+            'The "{{ ruleCode }}" rule could not be executed: {{ error }}',
             [
                 '{{ ruleCode }}' => 'my_rule_code',
                 '{{ error }}' => 'error message',

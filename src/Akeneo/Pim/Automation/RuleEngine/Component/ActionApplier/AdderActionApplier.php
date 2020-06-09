@@ -89,8 +89,11 @@ class AdderActionApplier implements ActionApplierInterface
         ProductAddActionInterface $action
     ): void {
         $field = $action->getField();
+        if (!is_string($field)) {
+            return;
+        }
 
-        $attribute = $this->getAttributes->forCode($field ?? '');
+        $attribute = $this->getAttributes->forCode($field);
         if (null === $attribute) {
             return;
         }

@@ -87,7 +87,11 @@ class CopierActionApplier implements ActionApplierInterface
         ProductCopyActionInterface $action
     ): void {
         $toField = $action->getToField();
-        $attribute = $this->getAttributes->forCode($toField ?? '');
+        if (!is_string($toField)) {
+            return;
+        }
+
+        $attribute = $this->getAttributes->forCode($toField);
         if (null === $attribute) {
             return;
         }

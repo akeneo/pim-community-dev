@@ -79,7 +79,7 @@ final class ExecuteRulesTasklet implements TaskletInterface
                     $this->ruleRunner->run($ruleDefinition);
                 }
             } catch (\LogicException $e) {
-                $error = 'The "{{ ruleCode }}" could not be executed: {{ error }}';
+                $error = 'The "{{ ruleCode }}" rule could not be executed: {{ error }}';
                 $rule = [
                     'code' => $ruleDefinition->getCode(),
                     'content' => $ruleDefinition->getContent(),

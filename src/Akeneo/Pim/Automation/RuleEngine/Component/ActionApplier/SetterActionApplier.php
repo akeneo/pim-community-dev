@@ -91,6 +91,9 @@ class SetterActionApplier implements ActionApplierInterface
         ProductSetActionInterface $action
     ): void {
         $field = $action->getField();
+        if (!is_string($field)) {
+            return;
+        }
 
         // TODO: Do we really need this check ??
         if ('categories' === $field) {
@@ -104,7 +107,7 @@ class SetterActionApplier implements ActionApplierInterface
             }
         }
 
-        $attribute = $this->getAttributes->forCode($field ?? '');
+        $attribute = $this->getAttributes->forCode($field);
         if (null === $attribute) {
             return;
         }

@@ -101,7 +101,10 @@ class RemoverActionApplier implements ActionApplierInterface
         ProductRemoveActionInterface $action
     ): void {
         $field = $action->getField();
-        $attribute = $this->getAttributes->forCode($field ?? '');
+        if (!is_string($field)) {
+            return;
+        }
+        $attribute = $this->getAttributes->forCode($field);
         if (null === $attribute) {
             return;
         }
