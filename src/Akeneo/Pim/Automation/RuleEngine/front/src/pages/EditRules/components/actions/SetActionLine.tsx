@@ -36,6 +36,8 @@ const SetActionLine: React.FC<Props> = ({
   };
 
   useRegisterConst('type', 'set', `content.actions[${lineNumber}]`);
+  // Remove this line when the value input will be done.
+  useRegisterConst('value', action.value, `content.actions[${lineNumber}]`);
 
   const setValueFormValue = (value: any) => {
     setValue(`content.actions[${lineNumber}].value`, value);
