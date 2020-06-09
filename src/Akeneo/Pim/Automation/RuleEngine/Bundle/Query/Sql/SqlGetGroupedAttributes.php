@@ -77,26 +77,29 @@ SQL;
         }
 
         if (null !== $search) {
-            $searchFilters[] = sprintf(
-                "(translation.label LIKE '%%%s%%' OR attribute.code LIKE '%%%s%%')",
-                $search,
-                $search
-            );
+            $search = sprintf('%%%s%%', $search);
+            $searchFilters[] = "(translation.label LIKE :search OR attribute.code LIKE :search)";
         }
 
-        $query = strtr($query, ['{searchFilters}' => 0 === count($searchFilters)
-            ? 'TRUE'
-            : implode(' AND ', $searchFilters)
+        $query = strtr($query, [
+            '{searchFilters}' => 0 === count($searchFilters) ? 'TRUE' : implode(' AND ', $searchFilters),
         ]);
 
         return $this->connection->executeQuery(
             $query,
-            ['attributeTypes' => $attributeTypes, 'limit' => $limit, 'offset' => $offset, 'localeCode' => $localeCode],
+            [
+                'attributeTypes' => $attributeTypes,
+                'limit' => $limit,
+                'offset' => $offset,
+                'localeCode' => $localeCode,
+                'search' => $search,
+            ],
             [
                 'attributeTypes' => Connection::PARAM_STR_ARRAY,
                 'limit' => \PDO::PARAM_INT,
                 'offset' => \PDO::PARAM_INT,
                 'localeCode' => \PDO::PARAM_STR,
+                'search' => \PDO::PARAM_STR,
             ]
         )->fetchAll();
     }
