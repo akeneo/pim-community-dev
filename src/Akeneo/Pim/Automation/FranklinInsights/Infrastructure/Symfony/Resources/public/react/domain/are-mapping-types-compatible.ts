@@ -18,7 +18,8 @@ const PERFECT_MAPPINGS: {
     AttributeType.SIMPLESELECT
   ],
   [FranklinAttributeType.NUMBER]: [AttributeType.TEXT, AttributeType.TEXTAREA, AttributeType.NUMBER],
-  [FranklinAttributeType.TEXT]: [AttributeType.TEXT, AttributeType.TEXTAREA]
+  [FranklinAttributeType.TEXT]: [AttributeType.TEXT, AttributeType.TEXTAREA],
+  [FranklinAttributeType.BOOLEAN]: [AttributeType.BOOLEAN]
 };
 
 export function areMappingTypesCompatible(
