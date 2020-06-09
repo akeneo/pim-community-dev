@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
@@ -41,6 +42,7 @@ LEFT JOIN akeneo_connectivity_connection_audit_error AS error
     AND error_datetime >= :from_datetime AND error_datetime < :up_to_datetime
 	
 WHERE conn.auditable = 1
+AND conn.flow_type = :flow_type
 
 GROUP BY conn.code
 SQL;
@@ -51,6 +53,7 @@ SQL;
                 'error_type' => $errorType,
                 'from_datetime' => $fromDateTime,
                 'up_to_datetime' => $upToDateTime,
+                'flow_type' => FlowType::DATA_SOURCE
             ],
             [
                 'from_datetime' => Types::DATETIME_IMMUTABLE,

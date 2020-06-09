@@ -12,7 +12,6 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Erro
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -46,8 +45,9 @@ class DbalSelectErrorCountPerConnectionQueryIntegration extends TestCase
     {
         $this->connectionLoader->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
         $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE, true);
-        $this->connectionLoader->createConnection('no_error', 'No error', FlowType::OTHER, true);
-        $this->connectionLoader->createConnection('not_auditable', 'Not auditable', FlowType::OTHER, false);
+        $this->connectionLoader->createConnection('ecommerce', 'Ecommerce', FlowType::DATA_DESTINATION, true);
+        $this->connectionLoader->createConnection('no_error', 'No error', FlowType::DATA_SOURCE, true);
+        $this->connectionLoader->createConnection('not_auditable', 'Not auditable', FlowType::DATA_SOURCE, false);
 
         $this->createHourlyErrorCounts([
             ['bynder', ErrorTypes::BUSINESS, '2020-01-01 23:00:00', 12], // ignored
