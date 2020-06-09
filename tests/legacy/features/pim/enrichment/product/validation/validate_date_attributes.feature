@@ -26,7 +26,7 @@ Feature: Validate date attributes of a product
     When I am on the "bar" product page
     And I change the Release to "01/01/2013"
     And I save the product
-    Then I should see validation tooltip "The value 2013-01-01 is already set on another product for the unique attribute release"
+    Then I should see validation tooltip "The release attribute can not have the same value more than once. The 2013-01-01 value is already set on another product."
     And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-4216

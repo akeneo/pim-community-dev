@@ -87,7 +87,7 @@ class UniqueValueValidator extends ConstraintValidator
                 if (null !== $valueData && '' !== $valueData) {
                     $this->context->buildViolation(
                         $constraint->message,
-                        ['%value%' => $valueData, '%attribute%' => $attributeCode]
+                        ['{{ value }}' => $valueData, '{{ attribute_code }}' => $attributeCode]
                     )->addViolation();
                 }
             }

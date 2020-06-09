@@ -13,9 +13,16 @@ use Symfony\Component\Validator\Constraints\Range as BaseRange;
  */
 class Range extends BaseRange
 {
+    /** @var string */
     public $minDateMessage = 'The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.';
+
+    /** @var string */
     public $maxDateMessage = 'The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.';
+
+    /** @var string */
     public $invalidDateMessage = 'This value is not a valid date.';
+
+    /** @var string */
     public $attributeCode = '';
 
     /**
