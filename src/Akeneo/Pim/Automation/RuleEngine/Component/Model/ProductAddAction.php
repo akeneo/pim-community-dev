@@ -71,4 +71,12 @@ class ProductAddAction implements ProductAddActionInterface
     {
         return [$this->getField()];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType(): string
+    {
+        return 'add';
+    }
 }

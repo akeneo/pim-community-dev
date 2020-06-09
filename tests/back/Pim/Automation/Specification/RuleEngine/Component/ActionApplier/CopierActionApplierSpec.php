@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -13,14 +14,16 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyCopierInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CopierActionApplierSpec extends ObjectBehavior
 {
     function let(
         PropertyCopierInterface $propertyCopier,
-        GetAttributes $getAttributes
+        GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($propertyCopier, $getAttributes);
+        $this->beConstructedWith($propertyCopier, $getAttributes, $eventDispatcher);
     }
 
     function it_supports_copy_action(ProductCopyActionInterface $action)
@@ -53,7 +56,7 @@ class CopierActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_copy_action_on_variant_product(
@@ -86,7 +89,7 @@ class CopierActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$variantProduct]);
+        $this->applyAction($action, [$variantProduct])->shouldReturn([$variantProduct]);
     }
 
     function it_applies_copy_action_on_product_model(
@@ -129,12 +132,13 @@ class CopierActionApplierSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$productModel]);
+        $this->applyAction($action, [$productModel])->shouldReturn([$productModel]);
     }
 
     function it_does_not_apply_copy_action_on_entity_with_family_variant_if_variation_level_is_not_right(
         PropertyCopierInterface $propertyCopier,
         GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher,
         ProductCopyActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         FamilyVariantInterface $familyVariant,
@@ -155,8 +159,9 @@ class CopierActionApplierSpec extends ObjectBehavior
         $entityWithFamilyVariant->getVariationLevel()->willReturn(1);
 
         $propertyCopier->copyData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
 
     function it_applies_copy_action_if_the_field_is_not_an_attribute(
@@ -179,12 +184,13 @@ class CopierActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([$entityWithFamilyVariant]);
     }
 
     function it_does_not_apply_copy_action_if_the_field_is_not_an_attribute_of_the_family(
         PropertyCopierInterface $propertyCopier,
         GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher,
         ProductCopyActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         FamilyInterface $family
@@ -200,8 +206,9 @@ class CopierActionApplierSpec extends ObjectBehavior
 
         $entityWithFamilyVariant->getFamilyVariant()->shouldNotBeCalled();
         $propertyCopier->copyData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
 
     private function buildAttribute(string $code): Attribute

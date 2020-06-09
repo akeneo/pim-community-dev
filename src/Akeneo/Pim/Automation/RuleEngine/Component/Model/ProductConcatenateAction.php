@@ -60,4 +60,12 @@ final class ProductConcatenateAction implements ProductConcatenateActionInterfac
     {
         return [$this->target->getField()];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType(): string
+    {
+        return 'concatenate';
+    }
 }

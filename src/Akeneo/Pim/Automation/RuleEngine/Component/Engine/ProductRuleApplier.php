@@ -16,6 +16,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\Product
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsValidator;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SavedSubjectsEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
@@ -76,7 +77,7 @@ class ProductRuleApplier implements ApplierInterface
      */
     public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet)
     {
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_APPLY, new SelectedRuleEvent($rule, $subjectSet));
+        $this->eventDispatcher->dispatch(new SelectedRuleEvent($rule, $subjectSet), RuleEvents::PRE_APPLY);
 
         $productsPage = [];
         foreach ($subjectSet->getSubjectsCursor() as $product) {
@@ -91,7 +92,7 @@ class ProductRuleApplier implements ApplierInterface
             $this->updateProducts($rule, $productsPage);
         }
 
-        $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
+        $this->eventDispatcher->dispatch(new SelectedRuleEvent($rule, $subjectSet), RuleEvents::POST_APPLY);
     }
 
     protected function clearCache()
@@ -105,9 +106,11 @@ class ProductRuleApplier implements ApplierInterface
      */
     protected function updateProducts(RuleInterface $rule, array $products)
     {
-        $this->productsUpdater->update($rule, $products);
-        $validProducts = $this->productsValidator->validate($rule, $products);
+        $updatedProducts = $this->productsUpdater->update($rule, $products);
+        $validProducts = $this->productsValidator->validate($rule, $updatedProducts);
+        $this->eventDispatcher->dispatch(new SavedSubjectsEvent($rule, $validProducts), RuleEvents::PRE_SAVE_SUBJECTS);
         $this->productsSaver->save($rule, $validProducts);
+        $this->eventDispatcher->dispatch(new SavedSubjectsEvent($rule, $validProducts), RuleEvents::POST_SAVE_SUBJECTS);
         $this->clearCache();
     }
 }

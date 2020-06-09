@@ -13,13 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
+use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Adder action applier
@@ -34,22 +38,37 @@ class AdderActionApplier implements ActionApplierInterface
     /** @var GetAttributes */
     private $getAttributes;
 
-    public function __construct(PropertyAdderInterface $propertyAdder, GetAttributes $getAttributes)
-    {
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    public function __construct(
+        PropertyAdderInterface $propertyAdder,
+        GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->propertyAdder = $propertyAdder;
         $this->getAttributes = $getAttributes;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
+    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): array
     {
-        foreach ($entitiesWithValues as $entityWithValues) {
-            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
+        foreach ($entitiesWithValues as $index => $entityWithValues) {
+            try {
+                $this->actionCanBeAppliedToEntity($entityWithValues, $action);
                 $this->addDataOnEntityWithValues($entityWithValues, $action);
+            } catch (NonApplicableActionException $e) {
+                unset($entitiesWithValues[$index]);
+                $this->eventDispatcher->dispatch(
+                    new SkippedActionForSubjectEvent($action, $entityWithValues, $e->getMessage())
+                );
             }
         }
+
+        return $entitiesWithValues;
     }
 
     /**
@@ -68,29 +87,42 @@ class AdderActionApplier implements ActionApplierInterface
     private function actionCanBeAppliedToEntity(
         EntityWithFamilyVariantInterface $entity,
         ProductAddActionInterface $action
-    ): bool {
+    ): void {
         $field = $action->getField();
-        // TODO: RUL-170: remove "?? ''" in the next line
-        $attribute = $this->getAttributes->forCode($field ?? '');
+        if (!is_string($field)) {
+            return;
+        }
+
+        $attribute = $this->getAttributes->forCode($field);
         if (null === $attribute) {
-            return true;
+            return;
         }
 
         $family = $entity->getFamily();
         if (null === $family) {
-            return true;
+            return;
         }
         if (!$family->hasAttributeCode($attribute->code())) {
-            return false;
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'The "%s" attribute does not belong to the family of this %s',
+                    $attribute->code(),
+                    $entity instanceof ProductModelInterface ? 'product model' : 'product'
+                )
+            );
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
-            return false;
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'The "%s" property cannot be updated for this %s, as it is not at the same variation level',
+                    $attribute->code(),
+                    $entity instanceof ProductModelInterface ? 'product model' : 'product'
+                )
+            );
         }
-
-        return true;
     }
 
     /**

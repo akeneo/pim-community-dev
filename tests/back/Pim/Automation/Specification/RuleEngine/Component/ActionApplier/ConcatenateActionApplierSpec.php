@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierRegistry;
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\ConcatenateActionApplier;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSourceCollection;
@@ -35,6 +36,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -45,9 +47,10 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
     function let(
         PropertySetterInterface $propertySetter,
         ValueStringifierRegistry $valueStringifierRegistry,
-        GetAttributes $getAttributes
+        GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($propertySetter, $valueStringifierRegistry, $getAttributes);
+        $this->beConstructedWith($propertySetter, $valueStringifierRegistry, $getAttributes, $eventDispatcher);
     }
 
     function it_is_initializable()
@@ -119,7 +122,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
             ['locale' => 'en_US', 'scope' => 'print']
         )->shouldBeCalled();
 
-        $this->applyAction($concatenateAction, [$product]);
+        $this->applyAction($concatenateAction, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_a_concatenate_action_on_product_model(
@@ -172,13 +175,14 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
             ['locale' => 'en_US', 'scope' => 'print']
         )->shouldBeCalled();
 
-        $this->applyAction($concatenateAction, [$productModel]);
+        $this->applyAction($concatenateAction, [$productModel])->shouldReturn([$productModel]);
     }
 
-    function it_throws_an_exception_when_a_value_is_not_found(
+    function it_skips_the_entity_if_a_value_is_not_found(
         PropertySetterInterface $propertySetter,
         ValueStringifierRegistry $valueStringifierRegistry,
         GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher,
         ProductConcatenateActionInterface $concatenateAction,
         EntityWithFamilyVariantInterface $entity,
         ValueStringifierInterface $valueStringifier,
@@ -210,14 +214,10 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
         $getAttributes->forCode('title')->willReturn($this->buildAttribute('title', 'type'));
         $entity->getValue('title', 'en_US', 'ecommerce')->willReturn(null);
 
-        $propertySetter->setData(
-            Argument::any(),
-            Argument::any(),
-            Argument::any(),
-            Argument::any()
-        )->shouldNotBeCalled();
+        $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
-        $this->applyAction($concatenateAction, [$entity]);
+        $this->applyAction($concatenateAction, [$entity])->shouldReturn([]);;
     }
 
     function it_throws_an_exception_when_a_stringifier_is_not_found(
@@ -257,12 +257,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
         $getAttributes->forCode('title')->willReturn($this->buildAttribute('title', 'type2'));
         $valueStringifierRegistry->getStringifier('type2')->willReturn(null);
 
-        $propertySetter->setData(
-            Argument::any(),
-            Argument::any(),
-            Argument::any(),
-            Argument::any()
-        )->shouldNotBeCalled();
+        $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('applyAction', [$concatenateAction, [$entity]]);
     }
@@ -270,6 +265,7 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
     function it_does_not_apply_concatenate_action_on_entity_with_family_variant_if_variation_level_is_not_right(
         PropertySetterInterface $propertySetter,
         GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher,
         ProductConcatenateActionInterface $concatenateAction,
         ProductModelInterface $productModel,
         FamilyInterface $family,
@@ -295,14 +291,10 @@ class ConcatenateActionApplierSpec extends ObjectBehavior
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getLevelForAttributeCode('description')->willReturn(2);
 
-        $propertySetter->setData(
-            Argument::any(),
-            Argument::any(),
-            Argument::any(),
-            Argument::any()
-        )->shouldNotBeCalled();
+        $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
-        $this->applyAction($concatenateAction, [$productModel]);
+        $this->applyAction($concatenateAction, [$productModel])->shouldReturn([]);
     }
 
     private function buildAttribute(string $code, string $type): ConnectorAttribute

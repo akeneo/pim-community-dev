@@ -73,4 +73,12 @@ final class ProductClearAction implements ProductClearActionInterface
     {
         return [$this->field];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType(): string
+    {
+        return 'clear';
+    }
 }

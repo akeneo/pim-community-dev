@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\GetOperandValue;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operand;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operation;
@@ -21,12 +22,14 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateActionInter
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductTarget;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
@@ -44,33 +47,33 @@ class CalculateActionApplier implements ActionApplierInterface
     /** @var PropertySetterInterface */
     private $propertySetter;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         GetAttributes $getAttributes,
         GetOperandValue $getOperandValue,
         NormalizerInterface $priceNormalizer,
-        PropertySetterInterface $propertySetter
+        PropertySetterInterface $propertySetter,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->getAttributes = $getAttributes;
         $this->getOperandValue = $getOperandValue;
         $this->priceNormalizer = $priceNormalizer;
         $this->propertySetter = $propertySetter;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function applyAction(ActionInterface $action, array $items = [])
+    public function applyAction(ActionInterface $action, array $items = []): array
     {
         Assert::isInstanceOf($action, ProductCalculateActionInterface::class);
-        foreach ($items as $item) {
-            if ($this->actionCanBeAppliedToEntity($item, $action)) {
-                try {
-                    $result = $this->calculateDataForEntity($item, $action);
-                    $data = $this->getStandardData($item, $action->getDestination(), $result);
-                } catch (NonApplicableActionException $e) {
-                    // TODO RUL-90 throw exception when the runner will be executed in a job.
-                    continue;
-                }
-
+        foreach ($items as $index => $entityWithValues) {
+            try {
+                $this->actionCanBeAppliedToEntity($entityWithValues, $action);
+                $result = $this->calculateDataForEntity($entityWithValues, $action);
+                $data = $this->getStandardData($entityWithValues, $action->getDestination(), $result);
                 $this->propertySetter->setData(
-                    $item,
+                    $entityWithValues,
                     $action->getDestination()->getField(),
                     $data,
                     [
@@ -78,8 +81,15 @@ class CalculateActionApplier implements ActionApplierInterface
                         'locale' => $action->getDestination()->getLocale(),
                     ]
                 );
+            } catch (NonApplicableActionException $e) {
+                unset($items[$index]);
+                $this->eventDispatcher->dispatch(
+                    new SkippedActionForSubjectEvent($action, $entityWithValues, $e->getMessage())
+                );
             }
         }
+
+        return $items;
     }
 
     public function supports(ActionInterface $action)
@@ -89,28 +99,44 @@ class CalculateActionApplier implements ActionApplierInterface
 
     /**
      * We do not apply the action if:
-     *  - entity has no family
      *  - destination attribute does not belong to the family
      *  - entity is variant (variant product or product model) and destination attribute is not on the entity's variation level
      */
     private function actionCanBeAppliedToEntity(
         EntityWithFamilyVariantInterface $entity,
         ProductCalculateActionInterface $action
-    ): bool {
+    ): void {
         $destination = $this->getAttributes->forCode($action->getDestination()->getField());
-        Assert::isInstanceOf($destination, Attribute::class);
+        Assert::isInstanceOf(
+            $destination,
+            Attribute::class,
+            \sprintf('The "%s" attribute does not exist', $action->getDestination()->getField())
+        );
 
         $family = $entity->getFamily();
-        if (null === $family || !$family->hasAttributeCode($destination->code())) {
-            return false;
+        if (null === $family) {
+            return;
+        }
+        if (!$family->hasAttributeCode($destination->code())) {
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'The "%s" attribute does not belong to the family of this %s',
+                    $destination->code(),
+                    $entity instanceof ProductModelInterface ? 'product model' : 'product'
+                )
+            );
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant && $familyVariant->getLevelForAttributeCode($destination->code()) !== $entity->getVariationLevel()) {
-            return false;
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'The "%s" property cannot be updated for this %s, as it is not at the same variation level',
+                    $destination->code(),
+                    $entity instanceof ProductModelInterface ? 'product model' : 'product'
+                )
+            );
         }
-
-        return true;
     }
 
     private function calculateDataForEntity(EntityWithValuesInterface $entity, ProductCalculateActionInterface $action): float

@@ -59,7 +59,7 @@ pimee_catalog_rule:
             folder:
                 selected: Folder selected
                 not_selected: Folder
-            folders: 
+            folders:
                 selected: Folders selected
                 not_selected: Folders
             arrow:
@@ -97,7 +97,7 @@ pimee_catalog_rule:
             products_count:
                 complete: "{{ count }} products and product models"
                 pending: Calculating products and product models
-                error: Calculation impossible 
+                error: Calculation impossible
             product_selection: Product selection
             fields:
                 family: Family
@@ -187,6 +187,9 @@ batch_jobs:
     add_attribute_value:
         execute_rules.label: Rules execution
     default_steps:
+        export_rules: Rule export
+        import_rules: Rule import
+        calculate_affected_products: Calculate affected products
         execute_rules: Rules execution
     yml_rule_import:
         label:        Rule import in YAML
@@ -212,6 +215,7 @@ pim_notification:
     types:
         rule: Rules Settings
         mass_edit_rule: Mass edit rule
+        execute_rules: Rules execution
 
 pim_menu:
     item:
@@ -219,3 +223,9 @@ pim_menu:
 
 pim_title:
     pimee_catalog_rule_rule_index: Rules
+
+pim_import_export:
+    widget:
+        last_operations:
+            job_type:
+                execute_rules: Rules execution

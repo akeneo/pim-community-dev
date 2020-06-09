@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\GetOperandValue;
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\CalculateActionApplier;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operand;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCalculateActionInterface;
@@ -24,6 +25,7 @@ use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CalculateActionApplierSpec extends ObjectBehavior
@@ -32,7 +34,8 @@ class CalculateActionApplierSpec extends ObjectBehavior
         GetAttributes $getAttributes,
         GetOperandValue $getOperandValue,
         NormalizerInterface $priceNormalizer,
-        PropertySetterInterface $propertySetter
+        PropertySetterInterface $propertySetter,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $priceNormalizer->normalize(Argument::type(ProductPriceInterface::class), 'standard')
             ->will(function (array $arguments): array {
@@ -43,7 +46,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
                     'currency' => $price->getCurrency(),
                 ];
             });
-        $this->beConstructedWith($getAttributes, $getOperandValue, $priceNormalizer, $propertySetter);
+        $this->beConstructedWith($getAttributes, $getOperandValue, $priceNormalizer, $propertySetter, $eventDispatcher);
     }
 
     function it_is_an_action_applier()
@@ -66,31 +69,36 @@ class CalculateActionApplierSpec extends ObjectBehavior
 
     function it_does_nothing_on_products_without_family(
         GetAttributes $getAttributes,
-        PropertySetter $propertySetter
+        PropertySetter $propertySetter,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $product = new Product();
         $getAttributes->forCode('ratio_fr_en')->willReturn($this->getDestinationAttribute());
         $propertySetter->setData($product, Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
-        $this->applyAction($this->productCalculateAction(), [$product]);
+        $this->applyAction($this->productCalculateAction(), [$product])->shouldReturn([]);
     }
 
     function it_does_nothing_if_destination_field_does_not_belong_to_family(
         GetAttributes $getAttributes,
-        PropertySetter $propertySetter
+        PropertySetter $propertySetter,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $family = new Family();
         $product = (new Product())->setFamily($family);
         $getAttributes->forCode('ratio_fr_en')->willReturn($this->getDestinationAttribute());
 
         $propertySetter->setData($product, Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
-        $this->applyAction($this->productCalculateAction(), [$product]);
+        $this->applyAction($this->productCalculateAction(), [$product])->shouldReturn([]);
     }
 
     function it_does_nothing_if_attribute_is_not_on_same_variation_level_as_entity(
         GetAttributes $getAttributes,
         PropertySetter $propertySetter,
+        EventDispatcherInterface $eventDispatcher,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant,
         EntityWithFamilyVariantInterface $product
@@ -104,14 +112,16 @@ class CalculateActionApplierSpec extends ObjectBehavior
         $product->getVariationLevel()->willReturn(2);
 
         $propertySetter->setData($product, Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
-        $this->applyAction($this->productCalculateAction(), [$product]);
+        $this->applyAction($this->productCalculateAction(), [$product])->shouldReturn([]);
     }
 
     function it_skips_the_entity_if_one_of_the_operation_values_is_null(
         GetAttributes $getAttributes,
         GetOperandValue $getOperandValue,
         PropertySetterInterface $propertySetter,
+        EventDispatcherInterface $eventDispatcher,
         FamilyInterface $family,
         EntityWithFamilyVariantInterface $product
     ) {
@@ -123,14 +133,16 @@ class CalculateActionApplierSpec extends ObjectBehavior
         $getOperandValue->fromEntity($product, $action->getSource())->willReturn(null);
 
         $propertySetter->setData($product, Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([]);
     }
 
     function it_skips_the_entity_if_there_is_a_division_by_zero_operation(
         GetAttributes $getAttributes,
         GetOperandValue $getOperandValue,
         PropertySetterInterface $propertySetter,
+        EventDispatcherInterface$eventDispatcher,
         FamilyInterface $family,
         EntityWithFamilyVariantInterface $product
     ) {
@@ -145,8 +157,9 @@ class CalculateActionApplierSpec extends ObjectBehavior
         $getOperandValue->fromEntity($product, $divideOperation->getOperand())->willReturn(0.0);
 
         $propertySetter->setData($product, Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([]);
     }
 
     function it_calculates_a_number_value(
@@ -168,7 +181,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
 
         $propertySetter->setData($product, 'ratio_fr_en', 260.0, ['scope' => null, 'locale' => null])->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_calculates_a_metric_value_with_the_default_metric_unit(
@@ -195,7 +208,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
             ['scope' => null, 'locale' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_calculates_a_metric_value_with_the_specified_unit(
@@ -224,7 +237,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
             ['scope' => null, 'locale' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_calculates_a_new_price_collection_value(
@@ -254,7 +267,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
             ['scope' => null, 'locale' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_updates_an_existing_price_collection_value(
@@ -292,7 +305,7 @@ class CalculateActionApplierSpec extends ObjectBehavior
             ['scope' => null, 'locale' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     private function productCalculateAction(array $additionalOptions = []): ProductCalculateActionInterface

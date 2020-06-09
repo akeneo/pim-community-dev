@@ -16,4 +16,5 @@ namespace Akeneo\Tool\Bundle\RuleEngineBundle\Model;
  */
 interface ActionInterface
 {
+    public function getType(): string;
 }

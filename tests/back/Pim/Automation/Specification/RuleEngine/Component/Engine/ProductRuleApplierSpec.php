@@ -6,9 +6,12 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsSaver;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsUpdater;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsValidator;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SavedSubjectsEvent;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
@@ -47,16 +50,16 @@ class ProductRuleApplierSpec extends ObjectBehavior
     }
 
     function it_applies_a_rule_which_does_not_select_products(
-        $eventDispatcher,
-        $productsUpdater,
-        $productsValidator,
-        $productsSaver,
-        $cacheClearer,
+        ProductsUpdater $productsUpdater,
+        ProductsValidator $productsValidator,
+        ProductsSaver $productsSaver,
+        EventDispatcherInterface $eventDispatcher,
+        EntityManagerClearerInterface $cacheClearer,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         CursorInterface $cursor
     ) {
-        $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SelectedRuleEvent::class), RuleEvents::PRE_APPLY)->shouldBeCalled();
 
         $cursor->rewind()->shouldBeCalled();
         $cursor->valid()->willReturn(false);
@@ -66,17 +69,18 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productsValidator->validate(Argument::any(), Argument::any())->shouldNotBeCalled();
         $productsSaver->save(Argument::any(), Argument::any())->shouldNotBeCalled();
         $cacheClearer->clear()->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SavedSubjectsEvent::class), Argument::any())->shouldNotBeCalled();
 
-        $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SelectedRuleEvent::class), RuleEvents::POST_APPLY)->shouldBeCalled();
         $this->apply($rule, $subjectSet);
     }
 
     function it_applies_a_rule_on_valid_products(
-        $eventDispatcher,
-        $productsUpdater,
-        $productsValidator,
-        $productsSaver,
-        $cacheClearer,
+        ProductsUpdater $productsUpdater,
+        ProductsValidator $productsValidator,
+        ProductsSaver $productsSaver,
+        EventDispatcherInterface $eventDispatcher,
+        EntityManagerClearerInterface $cacheClearer,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         ProductInterface $selectedProduct,
@@ -86,7 +90,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
     ) {
         $indexPage = 0;
 
-        $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SelectedRuleEvent::class), RuleEvents::PRE_APPLY)->shouldBeCalled();
 
         $cursor->rewind()->will(
             function () use (&$indexPage) {
@@ -105,21 +109,23 @@ class ProductRuleApplierSpec extends ObjectBehavior
             }
         );
         $subjectSet->getSubjectsCursor()->willReturn($cursor);
-        $productsUpdater->update($rule, Argument::any())->shouldBeCalled();
+        $productsUpdater->update($rule, Argument::any())->shouldBeCalled()->willReturn([$validProduct1, $validProduct2]);
+        $eventDispatcher->dispatch(Argument::type(SavedSubjectsEvent::class), RuleEvents::PRE_SAVE_SUBJECTS)->shouldBeCalled();
         $productsValidator->validate($rule, Argument::any())->willReturn([$validProduct1, $validProduct2]);
         $productsSaver->save($rule, [$validProduct1, $validProduct2])->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SavedSubjectsEvent::class), RuleEvents::POST_SAVE_SUBJECTS)->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SelectedRuleEvent::class), RuleEvents::POST_APPLY)->shouldBeCalled();
 
         $this->apply($rule, $subjectSet);
     }
 
     function it_applies_a_rule_on_every_product_in_the_subject_set(
-        $productsUpdater,
-        $productsValidator,
-        $productsSaver,
-        $cacheClearer,
+        ProductsUpdater $productsUpdater,
+        ProductsValidator $productsValidator,
+        ProductsSaver $productsSaver,
+        EntityManagerClearerInterface $cacheClearer,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         ProductInterface $selectedProduct,
@@ -144,7 +150,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         );
         $subjectSet->getSubjectsCursor()->willReturn($cursor);
 
-        $productsUpdater->update($rule, Argument::type('array'))->shouldBeCalledTimes(5);
+        $productsUpdater->update($rule, Argument::type('array'))->shouldBeCalledTimes(5)->willReturn([new Product()]);
         $productsValidator->validate($rule, Argument::type('array'))->shouldBeCalledTimes(5)->willReturnArgument(1);
         $productsSaver->save($rule, Argument::type('array'))->shouldBeCalledTimes(5);
         $cacheClearer->clear()->shouldBeCalledTimes(5);

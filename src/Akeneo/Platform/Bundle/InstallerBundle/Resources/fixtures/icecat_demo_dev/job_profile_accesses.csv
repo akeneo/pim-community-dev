@@ -48,6 +48,7 @@ xlsx_product_grid_context_quick_export;All
 xlsx_published_product_quick_export;All;
 xlsx_published_product_grid_context_quick_export;All;
 rule_impacted_product_count;All;
+rule_engine_execute_rules;All;
 xlsx_product_model_import;All;IT support,Manager
 xlsx_product_import;All;IT support,Manager
 xlsx_product_import_with_rules;All;IT support,Manager

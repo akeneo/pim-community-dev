@@ -15,8 +15,5 @@ services:
     Akeneo\Tool\Bundle\RuleEngineBundle\Command\RunCommand:
         arguments:
             - '@event_dispatcher'
-            - '@akeneo_rule_engine.repository.rule_definition'
-            - '@akeneo_rule_engine.runner.strict_chained'
-            - '@akeneo_rule_engine.runner.chained'
         tags:
             - { name: console.command }
