@@ -31,5 +31,6 @@ services:
         arguments:
             - '@form.factory'
             - '@pimee_product_asset.product_asset_utility'
+            - '@pimee_product_asset.repository.tag'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_asset_tag }

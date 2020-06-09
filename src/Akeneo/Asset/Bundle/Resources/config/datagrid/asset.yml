@@ -84,7 +84,6 @@ datagrid:
                             attr:
                                 empty_choice: true
                             multiple: true
-                            choices:  '@pimee_product_asset.repository.tag->findAllCodes'
                 endOfUseAt:
                     type:      date
                     data_name: asset.endOfUseAt
