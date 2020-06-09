@@ -1,21 +1,38 @@
 import {useState, useCallback, useEffect} from 'react';
+import {baseFetcher} from '@akeneo-pim-community/shared';
 import {Announcement} from './../models/announcement';
-import {AnnouncementFetcher} from './../fetcher/announcement.type';
+import {validateAnnouncement} from '../validator/announcement';
 
-const useAnnouncements = (
-  announcementFetcher: AnnouncementFetcher
-): {announcements: Announcement[] | null; fetchAnnouncements: () => Promise<void>} => {
-  const [announcements, setAnnouncements] = useState<Announcement[] | null>(null);
+const useAnnouncements = (): {
+  data: Announcement[];
+  hasError: boolean;
+} => {
+  const [announcements, setAnnouncements] = useState<{
+    data: Announcement[];
+    hasError: boolean;
+  }>({
+    data: [],
+    hasError: false,
+  });
+  const route = './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json';
 
-  const fetchAnnouncements = useCallback(async () => {
-    setAnnouncements(await announcementFetcher.fetchAll());
-  }, [setAnnouncements]);
+  const updateAnnouncements = useCallback(async () => {
+    try {
+      const jsonResponse = await baseFetcher(route);
+      const announcements = jsonResponse.data;
+      announcements.map(validateAnnouncement);
+
+      setAnnouncements({data: announcements, hasError: false});
+    } catch (error) {
+      setAnnouncements({data: [], hasError: true});
+    }
+  }, [route, setAnnouncements]);
 
   useEffect(() => {
-    fetchAnnouncements();
+    updateAnnouncements();
   }, []);
 
-  return {announcements, fetchAnnouncements};
+  return announcements;
 };
 
 export {useAnnouncements};
