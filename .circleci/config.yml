@@ -248,7 +248,7 @@ jobs:
             when: always
         - run:
             name: Front acceptance tests
-            command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
+            command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node yarn run acceptance ./tests/features
             when: always
         - run:
             name: Front integration tests
