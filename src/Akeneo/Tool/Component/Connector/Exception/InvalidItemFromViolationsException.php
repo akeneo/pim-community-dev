@@ -3,7 +3,6 @@
 namespace Akeneo\Tool\Component\Connector\Exception;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException as BaseInvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -43,21 +42,11 @@ class InvalidItemFromViolationsException extends BaseInvalidItemException
         foreach ($violations as $violation) {
             // TODO: re-format the message, property path doesn't exist for class constraint
             // TODO: for instance cf VariantGroupAxis
-            $invalidValue = $violation->getInvalidValue();
-            if ($invalidValue instanceof ProductPriceInterface) {
-                $invalidValue = sprintf('%s %s', $invalidValue->getData(), $invalidValue->getCurrency());
-            } elseif (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
-                $invalidValue = (string)$invalidValue;
-            } elseif (is_object($invalidValue)) {
-                $invalidValue = get_class($invalidValue);
-            } elseif (is_array($invalidValue)) {
-                $invalidValue = implode(', ', $invalidValue);
-            }
-
+            $invalidValue = $this->formatInvalidValue($violation->getInvalidValue());
             $propertyPath = str_replace('-<all_channels>', '', $violation->getPropertyPath());
             $propertyPath = str_replace('-<all_locales>', '', $propertyPath);
 
-            if ($violation->getInvalidValue() instanceof WriteValueCollection) {
+            if (null === $invalidValue) {
                 $error = sprintf('%s: %s', $propertyPath, $violation->getMessage());
             } else {
                 $error = sprintf('%s: %s: %s', $propertyPath, $violation->getMessage(), $invalidValue);
@@ -67,5 +56,31 @@ class InvalidItemFromViolationsException extends BaseInvalidItemException
         }
 
         parent::__construct(implode("\n", $errors), $item, $messageParameters, $code, $previous);
+    }
+
+    private function formatInvalidValue($invalidValue): ?string
+    {
+        if (is_scalar($invalidValue)) {
+            return (string)$invalidValue;
+        }
+        if ($invalidValue instanceof ProductPriceInterface) {
+            return sprintf('%s %s', $invalidValue->getData(), $invalidValue->getCurrency());
+        }
+        if (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
+            return (string) $invalidValue;
+        }
+        if (is_iterable($invalidValue)) {
+            $formatted = [];
+            foreach ($invalidValue as $item) {
+                $formattedItem = $this->formatInvalidValue($item);
+                if (null !== $formattedItem) {
+                    $formatted[] = $formattedItem;
+                }
+            }
+
+            return [] === $formatted ? null : '[' . implode(', ', $formatted) . ']';
+        }
+
+        return null;
     }
 }

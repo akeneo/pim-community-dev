@@ -26,6 +26,9 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
                 message: 'regex.comma_or_semicolon_or_surrounding_space.message'
             - Length:
                 max: 255
+        associations:
+            - Symfony\Component\Validator\Constraints\All:
+                - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AssociationTypeIsNotQuantified: ~
         quantifiedAssociations:
             - Symfony\Component\Validator\Constraints\Valid: ~
     getters:

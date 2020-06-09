@@ -91,7 +91,8 @@ pim_catalog:
             products_do_not_exist: "The following products don't exist: {{ values }}. Please make sure the products haven't been deleted in the meantime."
             product_models_do_not_exist: "The following product models don't exist: {{ values }}. Please make sure the product models haven't been deleted in the meantime."
             association_type_does_not_exist: This association type doesn't exist. Please make sure it hasn't been deleted in the meantime.
-            association_type_is_not_quantified: This association type isn't used to write quantities. Please, choose a different one before trying again.
+            association_type_is_not_quantified: '"{{ association_type }}" can’t be used for associations with quantities. Please, choose a different association type with quantities or use the "associations" property.'
+            association_type_should_not_be_quantified: '"{{ association_type }}" can only be used for associations with quantities. Please, choose a different association type or use the "quantified_associations" property.'
 
 mass_edit:
     edit_common_attributes:

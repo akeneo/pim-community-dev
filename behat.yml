@@ -195,6 +195,7 @@ acceptance:
                 - test.attribute_option.context
                 - test.locale.context
                 - test.channel.context
+                - test.user.context
             filters:
                 tags: '@acceptance-back'
         channel:

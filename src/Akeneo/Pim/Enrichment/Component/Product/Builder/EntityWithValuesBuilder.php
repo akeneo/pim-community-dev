@@ -56,7 +56,7 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
 
         $formerValue = $entityWithValues->getValue($attribute->code(), $localeCode, $channelCode);
         $isFormerValueFilled = null !== $formerValue && '' !== $formerValue && [] !== $formerValue;
-        $isNewValueFilled = null !== $data && '' !== $data && [] !== $data;
+        $isNewValueFilled = null !== $data && !$this->isEmptyStringValue($data) && [] !== $data;
 
         if (!$isFormerValueFilled && $isNewValueFilled) {
             return $this->createValue($entityWithValues, $attribute, $localeCode, $channelCode, $data);
@@ -71,6 +71,11 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         }
 
         return null;
+    }
+
+    private function isEmptyStringValue($value): bool
+    {
+        return is_string($value) && '' === trim($value);
     }
 
     private function createValue(

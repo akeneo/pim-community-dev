@@ -30,3 +30,8 @@ services:
             - '@pim_catalog.repository.cached_locale'
         tags:
             - { name: validator.constraint_validator, alias: pim_locale_validator }
+
+    pim_catalog.validator.constraints.locale.locale_code_validator:
+        class: Akeneo\Channel\Component\Validator\Constraint\LocaleCodeValidator
+        tags:
+            - { name: validator.constraint_validator, alias: pim_locale_code_validator }

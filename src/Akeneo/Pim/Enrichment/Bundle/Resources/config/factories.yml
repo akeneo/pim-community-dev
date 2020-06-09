@@ -116,6 +116,13 @@ services:
         tags:
             - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
 
+    akeneo.pim.enrichment.factory.non_existent_values_filter.channel_locale:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentChannelLocaleValuesFilter'
+        arguments:
+            - '@pim_channel.query.cache.channel_exists_with_locale'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
     akeneo.pim.enrichment.factory.empty_values_cleaner:
         public: true
         class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner'

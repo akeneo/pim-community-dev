@@ -93,6 +93,7 @@ define([
             };
             params[this.datagrids.products.paramName] = this.datagrids.products.getParamValue(associationType);
             params.dataLocale = UserContext.get('catalogLocale');
+            params.dataScope = UserContext.get('catalogScope');
 
             return params;
           }.bind(this),
@@ -167,7 +168,7 @@ define([
 
       this.listenTo(
         this.getRoot(),
-        'pim_enrich:form:locale_switcher:change',
+        'pim_enrich:form:locale_switcher:change pim_enrich:form:scope_switcher:change',
         function(localeEvent) {
           if ('base_product' === localeEvent.context) {
             this.render();
@@ -534,6 +535,7 @@ define([
       let urlParams = params;
       urlParams.alias = gridName;
       urlParams.params = _.clone(params);
+      urlParams.filters = {scope: {value: params.dataScope}};
 
       const datagridState = DatagridState.get(gridName, ['filters']);
       if (null !== datagridState.filters) {
