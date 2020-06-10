@@ -59,10 +59,14 @@ describe('SetActionLine', () => {
       )
     ).toBeInTheDocument();
     expect(
-      await findByText('pim_enrich.entity.channel.uppercase_label pim_common.required_label')
+      await findByText(
+        'pim_enrich.entity.channel.uppercase_label pim_common.required_label'
+      )
     ).toBeInTheDocument();
     expect(
-      await findByText('pim_enrich.entity.locale.uppercase_label pim_common.required_label')
+      await findByText(
+        'pim_enrich.entity.locale.uppercase_label pim_common.required_label'
+      )
     ).toBeInTheDocument();
     expect(
       await findByText(

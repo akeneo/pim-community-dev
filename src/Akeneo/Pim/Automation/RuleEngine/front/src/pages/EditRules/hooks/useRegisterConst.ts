@@ -21,7 +21,7 @@ const useRegisterConst = (name: string, value: any) => {
   React.useEffect(() => {
     register({ name });
     setValue(name, value);
-  }, [ name ]);
+  }, [name]);
 };
 
 const useRegisterConsts = (

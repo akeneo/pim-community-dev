@@ -1,6 +1,6 @@
 import { Router } from '../dependenciesTools';
 import { httpGet } from './fetch';
-import { Attribute } from '../models/Attribute';
+import { Attribute } from '../models';
 
 export const fetchAttributeByIdentifier = async (
   attributeIdentifier: string,

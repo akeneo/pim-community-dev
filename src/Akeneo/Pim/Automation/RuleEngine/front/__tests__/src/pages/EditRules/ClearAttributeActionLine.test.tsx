@@ -10,7 +10,7 @@ import {
   locales,
   scopes,
 } from '../../factories';
-import { ClearAttributeAction } from "../../../../src/models/actions";
+import { ClearAttributeAction } from '../../../../src/models/actions';
 
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
@@ -60,10 +60,14 @@ describe('ClearAttributeActionLine', () => {
     ).toBeInTheDocument();
     expect(await findByTestId('edit-rules-action-1-field')).toHaveValue('name');
     expect(
-      queryByText('pim_enrich.entity.channel.uppercase_label pim_common.required_label')
+      queryByText(
+        'pim_enrich.entity.channel.uppercase_label pim_common.required_label'
+      )
     ).not.toBeInTheDocument();
     expect(
-      queryByText('pim_enrich.entity.locale.uppercase_label pim_common.required_label')
+      queryByText(
+        'pim_enrich.entity.locale.uppercase_label pim_common.required_label'
+      )
     ).not.toBeInTheDocument();
   });
 
@@ -94,9 +98,15 @@ describe('ClearAttributeActionLine', () => {
       )
     ).toBeInTheDocument();
     expect(await findByTestId('edit-rules-action-1-field')).toHaveValue('name');
-    expect(queryByText('pim_enrich.entity.locale.uppercase_label pim_common.required_label')).toBeInTheDocument();
     expect(
-      queryByText('pim_enrich.entity.channel.uppercase_label pim_common.required_label')
+      queryByText(
+        'pim_enrich.entity.locale.uppercase_label pim_common.required_label'
+      )
+    ).toBeInTheDocument();
+    expect(
+      queryByText(
+        'pim_enrich.entity.channel.uppercase_label pim_common.required_label'
+      )
     ).toBeInTheDocument();
   });
 
@@ -159,10 +169,14 @@ describe('ClearAttributeActionLine', () => {
     expect(attributeSelector).toBeInTheDocument();
     expect(attributeSelector).toHaveValue('name');
     expect(
-      await findByText('pim_enrich.entity.locale.uppercase_label pim_common.required_label')
+      await findByText(
+        'pim_enrich.entity.locale.uppercase_label pim_common.required_label'
+      )
     ).toBeInTheDocument();
     expect(
-      await findByText('pim_enrich.entity.channel.uppercase_label pim_common.required_label')
+      await findByText(
+        'pim_enrich.entity.channel.uppercase_label pim_common.required_label'
+      )
     ).toBeInTheDocument();
 
     await act(async () => {
@@ -176,10 +190,14 @@ describe('ClearAttributeActionLine', () => {
     });
 
     expect(
-      queryByText('pim_enrich.entity.channel.uppercase_label pim_common.required_label')
+      queryByText(
+        'pim_enrich.entity.channel.uppercase_label pim_common.required_label'
+      )
     ).not.toBeInTheDocument();
     expect(
-      queryByText('pim_enrich.entity.locale.uppercase_label pim_common.required_label')
+      queryByText(
+        'pim_enrich.entity.locale.uppercase_label pim_common.required_label'
+      )
     ).not.toBeInTheDocument();
 
     await act(async () => {
@@ -193,8 +211,14 @@ describe('ClearAttributeActionLine', () => {
     });
 
     expect(
-      queryByText('pim_enrich.entity.channel.uppercase_label pim_common.required_label')
+      queryByText(
+        'pim_enrich.entity.channel.uppercase_label pim_common.required_label'
+      )
     ).toBeInTheDocument();
-    expect(queryByText('pim_enrich.entity.locale.uppercase_label pim_common.required_label')).toBeInTheDocument();
+    expect(
+      queryByText(
+        'pim_enrich.entity.locale.uppercase_label pim_common.required_label'
+      )
+    ).toBeInTheDocument();
   });
 });

@@ -105,7 +105,7 @@ const AttributeSelector: React.FC<Props> = ({
     return {
       more: fieldCount >= 20,
       results: result.map(group => {
-        return { ...group, disabled: true};
+        return { ...group, disabled: true };
       }),
     };
   };
@@ -142,7 +142,12 @@ const AttributeSelector: React.FC<Props> = ({
       }}
       initSelection={(_element, callback) => {
         if (value) {
-          initSelectedAttribute(router, _element.val(), currentCatalogLocale, callback);
+          initSelectedAttribute(
+            router,
+            _element.val(),
+            currentCatalogLocale,
+            callback
+          );
         }
       }}
       placeholder={placeholder}

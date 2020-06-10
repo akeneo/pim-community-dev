@@ -4,7 +4,7 @@ import { ErrorLine } from './style';
 
 type Props = {
   lineNumber: number;
-  type: 'actions'|'conditions';
+  type: 'actions' | 'conditions';
 };
 
 const LineErrors: React.FC<Props> = ({ lineNumber, type }) => {

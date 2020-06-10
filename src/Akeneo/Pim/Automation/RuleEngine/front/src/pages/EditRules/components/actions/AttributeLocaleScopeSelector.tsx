@@ -79,10 +79,9 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   const refreshAttribute: (
     attributeCode: AttributeCode | null
   ) => void = async (attributeCode: AttributeCode | null) => {
-    const attribute =
-      attributeCode !== null
-        ? await getAttributeByIdentifier(attributeCode, router)
-        : null;
+    const attribute = attributeCode
+      ? await getAttributeByIdentifier(attributeCode, router)
+      : null;
     setAttribute(attribute);
     if (onAttributeChange) {
       onAttributeChange(attribute);
@@ -176,8 +175,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           }}
         />
       </SelectorBlock>
-      {(attribute?.scopable ||
-        (!attributeIsChanged && scopeValue)) && (
+      {(attribute?.scopable || (!attributeIsChanged && scopeValue)) && (
         <SelectorBlock>
           <ScopeSelector
             data-testid={scopeId}
@@ -198,8 +196,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           />
         </SelectorBlock>
       )}
-      {(attribute?.localizable ||
-        (!attributeIsChanged && localeValue)) && (
+      {(attribute?.localizable || (!attributeIsChanged && localeValue)) && (
         <SelectorBlock>
           <LocaleSelector
             data-testid={localeId}

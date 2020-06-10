@@ -24,11 +24,12 @@ type Reset = (
   }>
 ) => void;
 
-const removeIds = (array: any[]): any[] => array.map((elt) => {
-  const { id, ...newElt } = elt;
+const removeIds = (array: any[]): any[] =>
+  array.map(elt => {
+    const { id, ...newElt } = elt;
 
-  return newElt;
-});
+    return newElt;
+  });
 
 const transformFormData = (formData: FormData): Payload => {
   return {

@@ -14,7 +14,7 @@ import { InputText } from '../../../../components/Inputs';
 import { useFormContext } from 'react-hook-form';
 import { useRegisterConst } from '../../hooks/useRegisterConst';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
-import { LineErrors } from "../LineErrors";
+import { LineErrors } from '../LineErrors';
 
 type Props = {
   action: SetAction;
@@ -28,7 +28,9 @@ const SetActionLine: React.FC<Props> = ({
   scopes,
 }) => {
   const translate = useTranslate();
-  const [attribute, setAttribute] = React.useState<Attribute | null | undefined>(undefined);
+  const [attribute, setAttribute] = React.useState<
+    Attribute | null | undefined
+  >(undefined);
   const previousAttribute = React.useRef<Attribute | null | undefined>();
   const { register, setValue } = useFormContext();
 
@@ -38,7 +40,7 @@ const SetActionLine: React.FC<Props> = ({
 
   useRegisterConst(`content.actions[${lineNumber}].type`, 'set');
   // Remove this line when the value input will be done.
-  useRegisterConst(`content.actions[${lineNumber}].value`, action.value, );
+  useRegisterConst(`content.actions[${lineNumber}].value`, action.value);
 
   const setValueFormValue = (value: any) => {
     setValue(`content.actions[${lineNumber}].value`, value);
