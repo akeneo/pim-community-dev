@@ -1,21 +1,20 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-const useRegisterConst = (name: string, value: any, prefix?: string) => {
+const useRegisterConst = (name: string, value: any) => {
   const { register, setValue, unregister, getValues } = useFormContext();
-  const fullName = prefix ? `${prefix}.${name}` : name;
-  const currentFormValue = getValues()[fullName];
+  const currentFormValue = getValues()[name];
 
   React.useEffect(() => {
     return () => {
-      unregister(fullName);
+      unregister(name);
     };
   }, []);
 
   React.useEffect(() => {
     if (currentFormValue === undefined) {
-      register({ name: fullName });
-      setValue(fullName, value);
+      register({ name });
+      setValue(name, value);
     }
   }, [currentFormValue]);
 };
@@ -25,8 +24,9 @@ const useRegisterConsts = (
   prefix?: string
 ) => {
   Object.keys(consts).forEach(name => {
+    const fullName = prefix ? `${prefix}.${name}` : name;
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    useRegisterConst(name, consts[name], prefix);
+    useRegisterConst(fullName, consts[name]);
   });
 };
 

@@ -36,9 +36,9 @@ const SetActionLine: React.FC<Props> = ({
     required: translate('pimee_catalog_rule.exceptions.required_value'),
   };
 
-  useRegisterConst('type', 'set', `content.actions[${lineNumber}]`);
+  useRegisterConst(`content.actions[${lineNumber}].type`, 'set');
   // Remove this line when the value input will be done.
-  useRegisterConst('value', action.value, `content.actions[${lineNumber}]`);
+  useRegisterConst(`content.actions[${lineNumber}].value`, action.value, );
 
   const setValueFormValue = (value: any) => {
     setValue(`content.actions[${lineNumber}].value`, value);

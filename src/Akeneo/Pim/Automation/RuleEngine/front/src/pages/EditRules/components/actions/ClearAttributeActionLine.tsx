@@ -20,7 +20,7 @@ const ClearAttributeActionLine: React.FC<Props> = ({
   scopes,
 }) => {
   const translate = useTranslate();
-  useRegisterConst('type', 'clear', `content.actions[${lineNumber}]`);
+  useRegisterConst(`content.actions[${lineNumber}].type`, 'clear');
 
   return (
     <ActionTemplate
