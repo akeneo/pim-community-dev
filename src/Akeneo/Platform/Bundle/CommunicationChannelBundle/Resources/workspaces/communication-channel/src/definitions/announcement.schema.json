@@ -14,7 +14,13 @@
       }
     },
     "startDate": {"type": "string"},
-    "notificationDuration": {"type": "integer"}
+    "notificationDuration": {"type": "integer"},
+    "editions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
   },
   "required": [
     "title",
@@ -22,7 +28,8 @@
     "link",
     "tags",
     "startDate",
-    "notificationDuration"
+    "notificationDuration",
+    "editions"
   ],
   "additionalProperties": false
 }
