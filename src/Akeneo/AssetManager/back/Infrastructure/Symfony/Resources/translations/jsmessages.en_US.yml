@@ -249,6 +249,7 @@ pim_asset_manager:
       error:
         value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
     button:
+      save_and_execute_naming_convention: Save and execute naming convention
       save: Save
       create: Create an asset
       mass_upload: Mass upload
@@ -374,6 +375,9 @@ pim_asset_manager:
       delete_all:
         success: All "{{ entityIdentifier }}" assets successfully deleted.
         fail: An error occurred during the deletion of all this asset family's assets
+      execute_naming_convention:
+        success: Naming convention successfully executed
+        fail: An error occurred during the execution of the naming convention
     completeness:
       label: Complete
   attribute:

@@ -10,12 +10,14 @@ akeneo_assetmanager:
            manage_transformation: Manage asset family transformations
            manage_product_link_rule: Manage asset family product link rules
            execute_product_link_rule: Execute product link rules on all assets of an asset family
+           execute_naming_conventions: Execute naming conventions on assets
        asset:
            create: Create an asset
            edit: Edit the assets
            delete: Delete an asset
            delete_all: Delete all assets
            list_product: List linked products to asset
+           execute_naming_conventions: Execute naming conventions
        attribute:
            create: Add an attribute to an asset family
            edit: Edit an attribute of an asset family

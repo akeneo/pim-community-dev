@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamily;
 
+use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsCommand;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;

@@ -16,7 +16,7 @@ import assetFetcher, {AssetResult} from 'akeneoassetmanager/infrastructure/fetch
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 
-export const saveAsset = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+export const saveAsset = () => async (dispatch: any, getState: () => EditState): Promise<boolean> => {
   const asset = getState().form.data;
 
   dispatch(assetEditionSubmission());
@@ -30,12 +30,12 @@ export const saveAsset = () => async (dispatch: any, getState: () => EditState):
       }
       dispatch(notifyAssetSaveValidationError());
 
-      return;
+      return false;
     }
   } catch (error) {
     dispatch(notifyAssetSaveFailed());
 
-    return;
+    return false;
   }
 
   dispatch(assetEditionSucceeded());
@@ -43,6 +43,8 @@ export const saveAsset = () => async (dispatch: any, getState: () => EditState):
   const savedAsset: AssetResult = await assetFetcher.fetch(asset.assetFamily.identifier, asset.code);
 
   dispatch(assetEditionReceived(savedAsset.asset));
+
+  return true;
 };
 
 export const assetValueUpdated = (value: EditionValue) => (dispatch: any, getState: any) => {
