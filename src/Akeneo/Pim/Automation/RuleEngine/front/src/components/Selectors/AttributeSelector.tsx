@@ -105,7 +105,7 @@ const AttributeSelector: React.FC<Props> = ({
     return {
       more: fieldCount >= 20,
       results: result.map(group => {
-        return { ...group, id: null };
+        return { ...group, disabled: true};
       }),
     };
   };

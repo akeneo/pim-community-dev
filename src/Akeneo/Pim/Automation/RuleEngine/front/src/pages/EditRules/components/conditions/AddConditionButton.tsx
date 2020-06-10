@@ -67,7 +67,7 @@ const AddConditionButton: React.FC<Props> = ({
     return {
       more: fieldCount >= 20,
       results: result.map(group => {
-        return { ...group, id: null };
+        return { ...group, disabled: true };
       }),
     };
   };
@@ -81,11 +81,8 @@ const AddConditionButton: React.FC<Props> = ({
       dropdownCssClass={'add-conditions-dropdown'}
       onSelecting={(event: any) => {
         event.preventDefault();
-        if (event.val !== null) {
-          // Use has not clicked on a group
-          setCloseTick(!closeTick);
-          handleAddCondition(event.val);
-        }
+        setCloseTick(!closeTick);
+        handleAddCondition(event.val);
       }}
       ajax={{
         url: router.generate(
