@@ -15,6 +15,7 @@
 ## Bug fixes
 
 - PIM-9276: Fix API assets pagination
+- PIM-9281: Add title to asset navigation left menu
 
 # 4.0.30 (2020-05-28)
 
