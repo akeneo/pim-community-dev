@@ -18,7 +18,7 @@ test('It can fetch announcements from the json', async () => {
 
   expect(customGlobal.fetch).toHaveBeenCalledTimes(1);
   expect(customGlobal.fetch).toHaveBeenCalledWith(
-    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates-sample.json'
+    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json'
   );
 });
 

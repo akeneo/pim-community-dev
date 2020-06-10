@@ -9,7 +9,7 @@ import {HeaderPanel} from './../../components/panel/Header';
 import {AnnouncementComponent} from './announcement';
 import {Announcement} from './../../models/announcement';
 
-const ListCard = styled.ul`
+const ListAnnouncement = styled.ul`
   margin-top: 88px;
   margin-left: 30px;
 `;
@@ -36,11 +36,11 @@ const Panel = ({dataProvider}: PanelProps): JSX.Element => {
     <>
       <HeaderPanel title={__('akeneo_communication_channel.panel.title')} onClickCloseButton={closePanel} />
       {null !== announcements && (
-        <ListCard>
+        <ListAnnouncement>
           {announcements.map((announcement: Announcement, index: number): JSX.Element =>
             <AnnouncementComponent announcement={announcement} key={index} campaign={campaign} />)
           }
-        </ListCard>
+        </ListAnnouncement>
       )}
     </>
   );

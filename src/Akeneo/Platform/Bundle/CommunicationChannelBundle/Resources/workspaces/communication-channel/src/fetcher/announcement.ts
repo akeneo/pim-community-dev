@@ -1,7 +1,7 @@
 import {validateAnnouncement} from '../validator/announcement';
 
 class AnnouncementFetcher {
-  static jsonFilePath: string = './bundles/akeneocommunicationchannel/__mocks__/serenity-updates-sample.json';
+  static jsonFilePath: string = './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json';
 
   static async fetchAll() {
     const response = await fetch(this.jsonFilePath);

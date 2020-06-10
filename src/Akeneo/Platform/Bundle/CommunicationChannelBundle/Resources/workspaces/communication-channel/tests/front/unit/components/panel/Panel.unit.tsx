@@ -19,7 +19,7 @@ afterEach(() => {
   container = null;
 });
 
-test('it shows the panel with the cards', async () => {
+test('it shows the panel with the announcements', async () => {
   await act(async () => renderWithProviders(
     <Panel dataProvider={mockDataProvider} />,
     container as HTMLElement
@@ -33,7 +33,7 @@ test('it shows the panel with the cards', async () => {
   expect(container.querySelectorAll('ul li').length).toEqual(2);
 });
 
-test('it can show for each card the information from the json', async () => {
+test('it can show for each announcement the information from the json', async () => {
   await act(async () => renderWithProviders(
     <Panel dataProvider={mockDataProvider} />,
     container as HTMLElement
