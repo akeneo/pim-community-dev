@@ -76,7 +76,7 @@ const EditRulesContent: React.FC<Props> = ({
       formMethods.register('content.actions');
       formMethods.setValue('content.actions', fields);
     }
-  }, []);
+  }, [formMethods.formState.submitCount]);
 
   const handleAddAction = (action: any) => {
     append(action);
