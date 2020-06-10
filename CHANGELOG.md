@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9274: Fix Yaml reader to display the number of lines read for incorrectly formatted files
 - TIP-1406: Add a tag to configure a DIC service based on a feature flag
 - PIM-9133: Fix product save when the user has no permission on some attribute groups
 - Fixes memory leak when indexing product models with a lot of product models in the same family
