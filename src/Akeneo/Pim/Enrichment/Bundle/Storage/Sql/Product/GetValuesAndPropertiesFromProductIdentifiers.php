@@ -32,7 +32,6 @@ SELECT
     p.id,
     p.identifier,
     p.is_enabled,
-    p.product_model_id,
     IF (p.product_model_id IS NOT NULL, pm1.code, NULL) AS product_model_code,
     p.created,
     p.updated,
