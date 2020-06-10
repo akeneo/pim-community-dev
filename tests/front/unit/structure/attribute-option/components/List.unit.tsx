@@ -15,15 +15,6 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
 import List from 'akeneopimstructure/js/attribute-option/components/List';
 import {AttributeContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
-import {AttributeOption} from "../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/model";
-
-declare global {
-    namespace NodeJS {
-        interface Global {
-            fetch: any;
-        }
-    }
-}
 
 let container: HTMLElement;
 
@@ -34,8 +25,6 @@ beforeEach(() => {
 
 afterEach(() => {
     document.body.removeChild(container);
-    global.fetch && global.fetch.mockClear();
-    delete global.fetch;
 });
 
 const options = [
@@ -59,12 +48,7 @@ const options = [
 
 describe('Attribute options list', () => {
     test('it renders an empty attribute options list', async () => {
-        global.fetch = jest.fn().mockImplementationOnce(route => {
-            return {json: () => []};
-        });
-
-        await renderComponent(false, jest.fn(), jest.fn(), jest.fn());
-
+        await renderComponent([], false, jest.fn(), jest.fn(), jest.fn());
         expect(getByRole(container, 'attribute-options-list')).toBeEmpty();
     });
 
@@ -73,7 +57,7 @@ describe('Attribute options list', () => {
             return {json: () => options};
         });
 
-        await renderComponent(false, jest.fn(), jest.fn(), jest.fn());
+        await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn());
 
         const attributeOptions = getAllByRole(container, 'attribute-option-item');
         expect(attributeOptions.length).toBe(2);
@@ -84,11 +68,7 @@ describe('Attribute options list', () => {
     });
 
     test('it renders a list of 2 options sorted alphabetically by default', async () => {
-        global.fetch = jest.fn().mockImplementationOnce(route => {
-            return {json: () => options};
-        });
-
-        await renderComponent(true, jest.fn(), jest.fn(), jest.fn());
+        await renderComponent(options, true, jest.fn(), jest.fn(), jest.fn());
 
         const attributeOptions = getAllByRole(container, 'attribute-option-item');
         expect(attributeOptions.length).toBe(2);
@@ -97,11 +77,7 @@ describe('Attribute options list', () => {
     });
 
     test('the list order can be toggled', async () => {
-        global.fetch = jest.fn().mockImplementationOnce(route => {
-            return {json: () => options};
-        });
-
-        await renderComponent(false, jest.fn(), jest.fn(), jest.fn());
+        await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn());
 
         let attributeOptions = getAllByRole(container, 'attribute-option-item');
         expect(attributeOptions.length).toBe(2);
@@ -118,12 +94,8 @@ describe('Attribute options list', () => {
     });
 
     test('it displays a fake new option at the end when adding a new option', async () => {
-        global.fetch = jest.fn().mockImplementationOnce(route => {
-            return {json: () => options};
-        });
-
         const showNewOptionFormCallback = jest.fn();
-        await renderComponent(false, jest.fn(), showNewOptionFormCallback, jest.fn());
+        await renderComponent(options, false, jest.fn(), showNewOptionFormCallback, jest.fn());
 
         expect(queryByRole(container, 'new-option-placeholder')).toBeNull();
 
@@ -140,13 +112,9 @@ describe('Attribute options list', () => {
     });
 
     test('it allows option selection', async () => {
-        global.fetch = jest.fn().mockImplementationOnce(route => {
-            return {json: () => options};
-        });
-
         const selectOptionCallback = jest.fn();
         const blueOptionId = 86;
-        await renderComponent(false, selectOptionCallback, jest.fn(), jest.fn(), blueOptionId);
+        await renderComponent(options, false, selectOptionCallback, jest.fn(), jest.fn(), blueOptionId);
 
         expect(queryByRole(container, 'new-option-placeholder')).toBeNull();
 
@@ -165,12 +133,8 @@ describe('Attribute options list', () => {
     });
 
     test('it handles option reorder', async () => {
-        global.fetch = jest.fn().mockImplementationOnce(route => {
-            return {json: () => options};
-        });
-
         const reorderAttributeOptions = jest.fn();
-        await renderComponent(false, jest.fn(), jest.fn(), reorderAttributeOptions);
+        await renderComponent(options, false, jest.fn(), jest.fn(), reorderAttributeOptions);
 
         const attributeOptionMoveHandle = getAllByRole(container, 'attribute-option-move-handle').shift();
         const attributeOptions = getAllByRole(container, 'attribute-option-item');
@@ -229,14 +193,15 @@ async function moveBlueOptionToBackOption(attributeOptionMoveHandle, attributeOp
     await fireEvent.drop(attributeOptionMoveHandle);
 }
 
-async function renderComponent(autoSortOptions, selectOptionCallback, showNewOptionFormCallback, reorderAttributeOptions, selectedOptionId = null) {
+async function renderComponent(options, autoSortOptions, selectOptionCallback, showNewOptionFormCallback, reorderAttributeOptions, selectedOptionId = null) {
     await act(async () => {
         ReactDOM.render(
             <DependenciesProvider>
-                <Provider store={createStoreWithInitialState({})}>
+                <Provider store={createStoreWithInitialState({attributeOptions: options})}>
                     <AttributeContextProvider attributeId={8} autoSortOptions={autoSortOptions}>
                         <List
                             selectAttributeOption={selectOptionCallback}
+                            isNewOptionFormDisplayed={false}
                             showNewOptionForm={showNewOptionFormCallback}
                             selectedOptionId={selectedOptionId}
                             deleteAttributeOption={jest.fn()}

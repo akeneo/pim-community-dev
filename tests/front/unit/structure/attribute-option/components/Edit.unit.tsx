@@ -1,10 +1,8 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Provider} from "react-redux";
 import '@testing-library/jest-dom/extend-expect';
 import {act, fireEvent, getByRole, queryAllByRole} from '@testing-library/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
 import Edit from 'akeneopimstructure/js/attribute-option/components/Edit';
 import {AttributeContextProvider, LocalesContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
 import {AttributeOption} from "../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/model";
@@ -61,13 +59,11 @@ describe('Edit an attribute option', () => {
         await act(async () => {
             ReactDOM.render(
                 <DependenciesProvider>
-                    <Provider store={createStoreWithInitialState({})}>
-                        <AttributeContextProvider attributeId={8}>
-                            <LocalesContextProvider>
-                                <Edit option={option} saveAttributeOption={saveCallback} />
-                            </LocalesContextProvider>
-                        </AttributeContextProvider>
-                    </Provider>
+                    <AttributeContextProvider attributeId={8}>
+                        <LocalesContextProvider>
+                            <Edit option={option} saveAttributeOption={saveCallback} />
+                        </LocalesContextProvider>
+                    </AttributeContextProvider>
                 </DependenciesProvider>,
                 container
             );

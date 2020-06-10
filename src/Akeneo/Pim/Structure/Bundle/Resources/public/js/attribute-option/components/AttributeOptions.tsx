@@ -2,13 +2,14 @@ import React, {useCallback, useEffect, useState} from 'react';
 import List from './List';
 import Edit from './Edit';
 import New from './New';
-import {useDispatch, useSelector} from 'react-redux';
-import {AttributeOptionsState} from '../store/store';
+import {useDispatch} from 'react-redux';
 import {AttributeOption} from '../model';
-import {useSaveAttributeOption} from '../hooks/useSaveAttributeOption';
-import {useCreateAttributeOption} from '../hooks/useCreateAttributeOption';
-import {useDeleteAttributeOption} from '../hooks/useDeleteAttributeOption';
-import {useManualSortAttributeOptions} from '../hooks/useManualSortAttributeOptions';
+import {
+    useCreateAttributeOption,
+    useDeleteAttributeOption,
+    useManualSortAttributeOptions,
+    useSaveAttributeOption
+} from '../hooks/';
 import {
     createAttributeOptionAction,
     deleteAttributeOptionAction,
@@ -17,9 +18,11 @@ import {
 } from '../reducers';
 import {useAttributeContext} from '../contexts';
 import {NotificationLevel, useNotify} from '@akeneo-pim-community/legacy-bridge';
+import EmptyAttributeOptionsList from './EmptyAttributeOptionsList';
+import useAttributeOptions from '../hooks/useAttributeOptions';
 
 const AttributeOptions = () => {
-    const attributeOptions = useSelector((state: AttributeOptionsState) => state.attributeOptions);
+    const attributeOptions = useAttributeOptions();
     const [selectedOption, setSelectedOption] = useState<AttributeOption | null>(null);
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [showNewOptionForm, setShowNewOptionForm] = useState<boolean>(false);
@@ -111,15 +114,26 @@ const AttributeOptions = () => {
         <div className="AknAttributeOption">
             {(attributeOptions === null || isSaving) && <div className="AknLoadingMask"/>}
 
-            <List
-                selectAttributeOption={selectAttributeOption}
-                selectedOptionId={selectedOption ? selectedOption.id : null}
-                showNewOptionForm={setShowNewOptionForm}
-                deleteAttributeOption={deleteAttributeOption}
-                manuallySortAttributeOptions={manuallySortAttributeOptions}
-            />
+            {
+                attributeOptions !== null &&
+                attributeOptions.length === 0 &&
+                !showNewOptionForm &&
+                <EmptyAttributeOptionsList showNewOptionForm={setShowNewOptionForm}/>
+            }
 
-            {(selectedOption !== null && <Edit option={selectedOption} saveAttributeOption={saveAttributeOption}/>)}
+            {
+                (attributeOptions !== null && attributeOptions.length === 0 && !showNewOptionForm) ||
+                <List
+                    selectAttributeOption={selectAttributeOption}
+                    selectedOptionId={selectedOption ? selectedOption.id : null}
+                    isNewOptionFormDisplayed={showNewOptionForm}
+                    showNewOptionForm={setShowNewOptionForm}
+                    deleteAttributeOption={deleteAttributeOption}
+                    manuallySortAttributeOptions={manuallySortAttributeOptions}
+                />
+            }
+
+            {(selectedOption !== null && !showNewOptionForm && <Edit option={selectedOption} saveAttributeOption={saveAttributeOption}/>)}
 
             {(selectedOption === null && showNewOptionForm && <New createAttributeOption={createAttributeOption}/>)}
         </div>

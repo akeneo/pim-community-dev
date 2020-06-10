@@ -1,25 +1,27 @@
 import React, {useEffect, useState} from 'react';
-import useAttributeOptions from '../hooks/useAttributeOptions';
 import {AttributeOption} from '../model';
 import ToggleButton from './ToggleButton';
 import ListItem, {DragItem} from './ListItem';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
 import {useAttributeContext} from '../contexts';
+import {useSelector} from 'react-redux';
+import {AttributeOptionsState} from '../store/store';
 
 interface ListProps {
     selectAttributeOption: (selectedOptionId: number | null) => void;
+    isNewOptionFormDisplayed: boolean,
     showNewOptionForm: (isDisplayed: boolean) => void;
     selectedOptionId: number | null;
     deleteAttributeOption: (attributeOptionId: number) => void;
     manuallySortAttributeOptions: (attributeOptions: AttributeOption[]) => void;
 }
 
-const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm, deleteAttributeOption, manuallySortAttributeOptions}: ListProps) => {
-    const attributeOptions = useAttributeOptions();
+const List = ({selectAttributeOption, selectedOptionId, isNewOptionFormDisplayed, showNewOptionForm, deleteAttributeOption, manuallySortAttributeOptions}: ListProps) => {
+    const attributeOptions = useSelector((state: AttributeOptionsState) => state.attributeOptions);
     const translate = useTranslate();
     const attributeContext = useAttributeContext();
-    const [showNewOptionPlaceholder, setShowNewOptionPlaceholder] = useState<boolean>(false);
+    const [showNewOptionPlaceholder, setShowNewOptionPlaceholder] = useState<boolean>(isNewOptionFormDisplayed);
     const [sortedAttributeOptions, setSortedAttributeOptions] = useState<AttributeOption[] | null>(attributeOptions);
     const [dragItem, setDragItem] = useState<DragItem | null>(null);
 
@@ -114,7 +116,7 @@ const List = ({selectAttributeOption, selectedOptionId, showNewOptionForm, delet
                     );
                 })}
 
-                {showNewOptionPlaceholder === true && (<NewOptionPlaceholder cancelNewOption={cancelNewOption}/>)}
+                {showNewOptionPlaceholder && (<NewOptionPlaceholder cancelNewOption={cancelNewOption}/>)}
             </div>
         </div>
     );
