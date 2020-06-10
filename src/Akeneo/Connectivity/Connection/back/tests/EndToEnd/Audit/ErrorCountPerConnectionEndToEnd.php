@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Audit;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditErrorLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditLoader;
+use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
@@ -25,6 +26,9 @@ class ErrorCountPerConnectionEndToEnd extends WebTestCase
 {
     public function test_it_get_error_count_per_connection()
     {
+        $this->getConnectionLoader()->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
+        $this->getConnectionLoader()->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE, true);
+
         $this->createHourlyErrorCounts([
             ['bynder', 'business', '2019-12-31 23:00:00', 1], // ignored date
             ['bynder', 'technical', '2020-01-01 12:00:00', 1], // ignored technical
@@ -65,6 +69,11 @@ class ErrorCountPerConnectionEndToEnd extends WebTestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function getConnectionLoader(): ConnectionLoader
+    {
+        return $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
     }
 
     private function getAuditErrorLoader(): AuditErrorLoader
