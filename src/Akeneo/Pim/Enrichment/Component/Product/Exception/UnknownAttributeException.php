@@ -22,6 +22,12 @@ final class UnknownAttributeException extends PropertyException implements
     TemplatedErrorMessageInterface,
     DocumentedErrorInterface
 {
+    /** @var string */
+    private $messageTemplate;
+
+    /** @var array */
+    private $messageParameters;
+
     /** @var DocumentationCollection */
     private $documentation;
 
