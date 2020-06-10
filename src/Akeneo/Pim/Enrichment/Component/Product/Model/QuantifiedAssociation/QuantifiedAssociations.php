@@ -139,6 +139,7 @@ class QuantifiedAssociations
                     $this->quantifiedAssociations[$associationTypeCode][$associationEntityType] = [];
                 }
 
+                $entityQuantifiedLinks = $this->quantifiedAssociations[$associationTypeCode][$associationEntityType];
                 foreach ($quantifiedLinks as $quantifiedLink) {
                     $key = $this->searchKeyOfDuplicatedQuantifiedAssociation(
                         $this->quantifiedAssociations,
@@ -148,12 +149,14 @@ class QuantifiedAssociations
                     );
 
                     if (null !== $key) {
-                        $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][$key]['quantity'] = $quantifiedLink['quantity'];
-                        continue;
+                        $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][$key] = new QuantifiedLink(
+                            $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][$key]->identifier(),
+                            $quantifiedLink['quantity']
+                        );
+                    } else {
+                        //TODO
+                        $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][] = new QuantifiedLink($quantifiedLink['identifier'], $quantifiedLink['quantity']);
                     }
-
-                    //TODO 
-                    $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][] = new QuantifiedLink($quantifiedLink['identifier'], $quantifiedLink['quantity']);
                 }
             }
         }
