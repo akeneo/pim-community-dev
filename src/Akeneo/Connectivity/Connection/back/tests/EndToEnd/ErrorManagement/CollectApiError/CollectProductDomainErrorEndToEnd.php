@@ -68,7 +68,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
             'attributes' => ['sku', 'name', 'length']
         ]);
 
-        $this->productLoader->create("high-top_sneakers", ['family'=>"shoes"]);
+        $this->productLoader->create("high-top_sneakers", ["family" => "shoes"]);
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
         $client = $this->createAuthenticatedClient(
             [],
@@ -169,7 +169,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
             'attributes' => ['sku','name']
         ]);
 
-        $this->productLoader->create("high-top_sneakers", ['family'=>"shoes"]);
+        $this->productLoader->create("high-top_sneakers", ["family" => "shoes"]);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
