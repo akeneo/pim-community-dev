@@ -2,6 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\DateTimeFilter;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -9,11 +14,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\DateTimeFilter;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * DateTime filter spec for an Elasticsearch query
@@ -294,6 +294,65 @@ class DateTimeFilterSpec extends ObjectBehavior
         $this->setQueryBuilder($sqb);
 
         $this->addFieldFilter('updated', Operators::SINCE_LAST_JOB, 'csv_product_export');
+    }
+
+    function it_adds_a_filter_with_a_relative_datetime(SearchQueryBuilder $sqb)
+    {
+        $relativeDate = new \DateTime('-1 week', new \DateTimeZone('UTC'));
+
+        $sqb->addFilter(
+            [
+                'range' => [
+                    'updated' => [
+                        'gt' => $relativeDate->format('c'),
+                    ],
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addFieldFilter('updated', '>', '-1 week');
+    }
+
+    function it_thrwws_an_exception_for_relative_dates_on_unsupported_operators(SearchQueryBuilder $sqb)
+    {
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyException::dateExpected(
+                'updated',
+                'yyyy-mm-dd H:i:s',
+                DateTimeFilter::class,
+                '-1 week'
+            )
+        )->during('addFieldFilter', ['updated', Operators::BETWEEN, ['-1 week', 'now']]);
+
+        $this->shouldThrow(
+            InvalidPropertyException::dateExpected(
+                'created',
+                'yyyy-mm-dd H:i:s',
+                DateTimeFilter::class,
+                'now'
+            )
+        )->during('addFieldFilter', ['created', Operators::NOT_BETWEEN, ['2018-01-01 00:00:00', 'now']]);
+    }
+
+    function it_adds_a_filter_with_the_current_datetime(SearchQueryBuilder $sqb)
+    {
+        $currentDate = new \DateTime('now', new \DateTimeZone('UTC'));
+
+        $sqb->addFilter(
+            [
+                'range' => [
+                    'updated' => [
+                        'lt' => $currentDate->format('c'),
+                    ],
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addFieldFilter('updated', '<', 'now');
     }
 
     function it_throws_an_exception_with_operator_since_last_job_with_not_existing_job_instance(

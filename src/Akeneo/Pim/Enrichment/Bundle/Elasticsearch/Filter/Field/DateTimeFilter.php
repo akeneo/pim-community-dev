@@ -22,6 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
     const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    const RELATIVE_DATETIME_FORMAT = '/^now|([+-])([0-9]+)\s?(second|minute|hour|day|week|month|year)s?$/';
 
     /** @var IdentifiableObjectRepositoryInterface */
     protected $jobInstanceRepository;
@@ -55,7 +56,9 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
-
+        // For now, we only allow relative dates for "simple" operators (excluding BETWEEN, NOT BETWEEN, and obviously
+        // SINCE LAST N DAYS and SINCE LAST JOB)
+        $value = $this->convertRelativeDate($value);
         $this->checkValue($operator, $field, $value);
 
         switch ($operator) {
@@ -285,5 +288,21 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
         $dateTime->setTimezone($utcTimeZone);
 
         return $dateTime->format('c');
+    }
+
+    /**
+     * Converts a "relative date" string ("now" | "+/- {amount} {unit}") to an actual DateTime object
+     */
+    protected function convertRelativeDate($value)
+    {
+        if (is_string($value) && 1 === preg_match(self::RELATIVE_DATETIME_FORMAT, trim($value))) {
+            try {
+                return new \DateTime(trim($value), new \DateTimeZone('UTC'));
+            } catch (\Exception $e) {
+                return $value;
+            }
+        }
+
+        return $value;
     }
 }

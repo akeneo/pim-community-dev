@@ -128,6 +128,63 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['bar', 'baz', 'foo']);
     }
 
+    public function testFilterWithRelativeDates()
+    {
+        $this->createProductWithFollowingUpdatedDate('test', new \DateTime('3 minutes ago', new \DateTimeZone('UTC')));
+        $this->setUpdateDate('foo', new \DateTime('3 hours ago', new \DateTimeZone('UTC')));
+        $this->setUpdateDate('bar', new \DateTime('3 days ago', new \DateTimeZone('UTC')));
+        $this->setUpdateDate('baz', new \DateTime('3 months ago', new \DateTimeZone('UTC')));
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        $result = $this->executeFilter([['updated', Operators::LOWER_THAN, 'now']]);
+        $this->assert($result, ['test', 'foo', 'bar', 'baz']);
+
+        $result = $this->executeFilter([['updated', Operators::GREATER_THAN, 'now']]);
+        $this->assert($result, []);
+
+        $result = $this->executeFilter([['updated', Operators::LOWER_THAN, '-30 seconds']]);
+        $this->assert($result, ['test', 'foo', 'bar', 'baz']);
+
+        $result = $this->executeFilter([['updated', Operators::GREATER_THAN, '-30 seconds']]);
+        $this->assert($result, []);
+
+        $result = $this->executeFilter([['updated', Operators::LOWER_THAN, '-30 minutes']]);
+        $this->assert($result, ['foo', 'bar', 'baz']);
+
+        $result = $this->executeFilter([['updated', Operators::GREATER_THAN, '-30 minutes']]);
+        $this->assert($result, ['test']);
+
+        $result = $this->executeFilter([['updated', Operators::LOWER_THAN, '-12 hours']]);
+        $this->assert($result, ['bar', 'baz']);
+
+        $result = $this->executeFilter([['updated', Operators::GREATER_THAN, '-12 hours']]);
+        $this->assert($result, ['test', 'foo']);
+
+        $result = $this->executeFilter([['updated', Operators::LOWER_THAN, '-2 days']]);
+        $this->assert($result, ['bar', 'baz']);
+
+        $result = $this->executeFilter([['updated', Operators::GREATER_THAN, '-2 days']]);
+        $this->assert($result, ['test', 'foo']);
+
+        $result = $this->executeFilter([['updated', Operators::LOWER_THAN, '-2 weeks']]);
+        $this->assert($result, ['baz']);
+
+        $result = $this->executeFilter([['updated', Operators::GREATER_THAN, '-2 weeks']]);
+        $this->assert($result, ['test', 'foo', 'bar']);
+
+        $result = $this->executeFilter([['updated', Operators::LOWER_THAN, '-2 months']]);
+        $this->assert($result, ['baz']);
+
+        $result = $this->executeFilter([['updated', Operators::GREATER_THAN, '-2 months']]);
+        $this->assert($result, ['test', 'foo', 'bar']);
+
+        $result = $this->executeFilter([['updated', Operators::LOWER_THAN, '-1 year']]);
+        $this->assert($result, []);
+
+        $result = $this->executeFilter([['updated', Operators::GREATER_THAN, '-1 year']]);
+        $this->assert($result, ['test', 'foo', 'bar', 'baz']);
+    }
+
     public function testErrorDataIsMalformedWithEmptyArray()
     {
         $this->expectException(InvalidPropertyTypeException::class);
@@ -158,7 +215,11 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
     private function createProductWithFollowingUpdatedDate(string $identifier, \DateTimeInterface $updatedDate): void
     {
         $this->createProduct($identifier, []);
+        $this->setUpdateDate($identifier, $updatedDate);
+    }
 
+    private function setUpdateDate(string $identifier, \DateTimeInterface $updatedDate)
+    {
         $sql = <<<SQL
 UPDATE pim_catalog_product
 SET updated = :updated_date
