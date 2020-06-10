@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import {useTranslate, useMediator} from '@akeneo-pim-community/legacy-bridge';
 import {useAnnouncements} from './../../hooks/useAnnouncements';
-import {AnnouncementFetcher} from './../../fetcher/announcement.type';
 import {usePimVersion} from '../../hooks/usePimVersion';
 import {HeaderPanel} from './../../components/panel/Header';
 import {AnnouncementComponent, EmptyAnnouncementList} from './announcement';
@@ -13,19 +12,11 @@ const ListAnnouncement = styled.ul`
   margin: 74px 30px 0 30px;
 `;
 
-type PanelDataProvider = {
-  announcementFetcher: AnnouncementFetcher;
-};
-
-type PanelProps = {
-  dataProvider: PanelDataProvider;
-};
-
-const Panel = ({dataProvider}: PanelProps): JSX.Element => {
+const Panel = (): JSX.Element => {
   const __ = useTranslate();
   const mediator = useMediator();
   const {pimVersion} = usePimVersion();
-  const {announcements} = useAnnouncements(dataProvider.announcementFetcher);
+  const {announcements} = useAnnouncements();
   const campaign = (null !== pimVersion) ? formatCampaign(pimVersion.edition, pimVersion.version) : '';
 
   const closePanel = () => {

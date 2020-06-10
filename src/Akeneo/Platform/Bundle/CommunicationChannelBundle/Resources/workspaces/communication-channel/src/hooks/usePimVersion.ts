@@ -14,6 +14,7 @@ const usePimVersion = (): {pimVersion: PimVersion | null; updatePimVersion: () =
 
   const updatePimVersion = useCallback(async () => {
     const data = await baseFetcher(route);
+
     try {
       validatePimAnalyticsData(data);
     } catch (error) {

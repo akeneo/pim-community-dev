@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import {usePimVersion} from '@akeneo-pim-community/communication-channel/src/hooks/usePimVersion';
 import {GlobalWithFetchMock} from 'jest-fetch-mock';
-import {renderHookWithProviders} from '../../../test-utils';
+import {renderHookWithProviders, fetchMockResponseOnce} from '../../../test-utils';
 
 const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock;
 customGlobal.fetch = require('jest-fetch-mock');
@@ -12,13 +12,12 @@ afterEach(() => {
 });
 
 test('It gets the PimVersion from the pim analytics data', async () => {
-  const expectedData = {pim_version: '4.0', pim_edition: 'CE', other_properties: 'other_value'};
+  const expectedPimAnalyticsData = {pim_version: '4.0', pim_edition: 'CE', other_properties: 'other_value'};
   const expectedPimVersion = {
     edition: 'CE',
     version: '4.0',
   };
-  const mockJsonPromise = JSON.stringify(expectedData);
-  fetchMock.mockResponseOnce(() => Promise.resolve(mockJsonPromise));
+  fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
 
   const {result, waitForNextUpdate} = renderHookWithProviders(usePimVersion);
 
@@ -32,9 +31,8 @@ test('It gets the PimVersion from the pim analytics data', async () => {
 });
 
 test('It can validate the pim analytics data', async () => {
-  const expectedData = {pim_version: '1384859', pim_edition: true};
-  const mockJsonPromise = JSON.stringify(expectedData);
-  fetchMock.mockResponseOnce(() => Promise.resolve(mockJsonPromise));
+  const expectedPimAnalyticsData = {pim_version: '1384859', pim_edition: true};
+  fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
   console.error = jest.fn();
 
   const {result, waitForNextUpdate} = renderHookWithProviders(usePimVersion);
