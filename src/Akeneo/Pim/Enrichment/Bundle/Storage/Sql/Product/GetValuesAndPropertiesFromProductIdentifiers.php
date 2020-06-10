@@ -45,7 +45,7 @@ LEFT JOIN pim_catalog_group g ON pg.group_id = g.id
 LEFT JOIN pim_catalog_product_model pm1 ON p.product_model_id = pm1.id
 LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
 WHERE p.identifier IN (?)
-GROUP BY p.id
+GROUP BY p.id, p.identifier
 SQL;
 
         $rows = $this->connection->fetchAll(
