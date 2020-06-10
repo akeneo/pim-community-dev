@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9296: Fix validation of product link rules format
+
 # 4.0.32 (2020-06-08)
 
 # 4.0.31 (2020-06-01)
