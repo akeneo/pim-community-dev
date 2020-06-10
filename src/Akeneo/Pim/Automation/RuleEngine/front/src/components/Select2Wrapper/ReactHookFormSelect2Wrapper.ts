@@ -46,6 +46,11 @@ const ReactHookFormSelect2Wrapper: React.FC<Props> = props => {
     register({ name }, validation);
   }, [validation]);
 
+  React.useEffect(() => {
+    register({ name }, validation);
+    setValue(name, lastKnownValue);
+  }, [name]);
+
   return Select2Wrapper({
     ...remainingProps,
     onChange: handleValueChange,

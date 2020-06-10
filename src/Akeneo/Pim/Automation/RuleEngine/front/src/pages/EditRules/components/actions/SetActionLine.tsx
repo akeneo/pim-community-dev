@@ -44,7 +44,6 @@ const SetActionLine: React.FC<Props> = ({
     setValue(`content.actions[${lineNumber}].value`, value);
   };
 
-  // console.log('attribute', attribute);
   const onAttributeChange = (newAttribute: Attribute | null) => {
     setAttribute(newAttribute);
   };

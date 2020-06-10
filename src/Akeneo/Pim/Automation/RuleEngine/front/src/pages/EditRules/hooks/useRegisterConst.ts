@@ -17,6 +17,11 @@ const useRegisterConst = (name: string, value: any) => {
       setValue(name, value);
     }
   }, [currentFormValue]);
+
+  React.useEffect(() => {
+    register({ name });
+    setValue(name, value);
+  }, [ name ]);
 };
 
 const useRegisterConsts = (

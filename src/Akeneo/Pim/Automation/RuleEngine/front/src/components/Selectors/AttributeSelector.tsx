@@ -142,7 +142,7 @@ const AttributeSelector: React.FC<Props> = ({
       }}
       initSelection={(_element, callback) => {
         if (value) {
-          initSelectedAttribute(router, value, currentCatalogLocale, callback);
+          initSelectedAttribute(router, _element.val(), currentCatalogLocale, callback);
         }
       }}
       placeholder={placeholder}

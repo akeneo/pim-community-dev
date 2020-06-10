@@ -163,6 +163,20 @@ const Select2Wrapper: React.FC<Props> = ({
 
   useEffect(() => {
     if (select2ref.current) {
+      getSelect2Input().off('change');
+      if (onChange) {
+        getSelect2Input().on('change', (e: Select2Event) => {
+          const val = e.val;
+          onChange(
+            Array.isArray(val) ? (val as Select2Value[]) : (val as Select2Value)
+          );
+        });
+      }
+    }
+  }, [onChange]);
+
+  useEffect(() => {
+    if (select2ref.current) {
       getSelect2Input().select2('close');
     }
   }, [closeTick]);
