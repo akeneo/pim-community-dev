@@ -16,7 +16,7 @@ pimee_catalog_rule:
       action.label: Action
       no_rule_yet.label: Il n'y a aucune règle pour l'instant
   rule:
-    value: Value
+    value: Valeur
     condition:
       if.label: Si
     action:
@@ -51,20 +51,20 @@ pimee_catalog_rule:
           empty_selection: Aucune règle n'a été sélectionnée.
   form:
     category:
-      catalog: Catalog
-      select: Select a category
-      open_tree: Open category tree
-      tree: Category Tree
-      menu: Select a category tree
+      catalog: Catalogue
+      select: Sélectionnez une catégorie
+      open_tree: Ouvrir l'arbre des catégories
+      tree: Arborescence des catégories
+      menu: Sélectionner un arbre de catégories
       folder:
-        selected: Folder selected
-        not_selected: Folder
+        selected: Répertoire sélectionné
+        not_selected: Répertoire
       folders:
-        selected: Folders selected
-        not_selected: Folders
+        selected: Dossiers sélectionnés
+        not_selected: Répertoires
       arrow:
-        open: Open branch category
-        close: Close branch category
+        open: Ouvrir la branche de catégories
+        close: Fermer la branche de catégories
     tab:
       list: Constructeur de règle et onglets de propriétés
       rule_builder: Générateur de règles
@@ -96,8 +96,8 @@ pimee_catalog_rule:
       add_conditions: Ajouter des conditions
       products_count:
         complete: "{{ count }} produits et modèles de produits"
-        pending: Calculating products and product models
-        error: Calculation impossible
+        pending: Calcul des produits et des modèles de produits
+        error: Calcul impossible
       product_selection: Sélection de produits
       fields:
         family: Famille
@@ -113,7 +113,7 @@ pimee_catalog_rule:
       conditions:
         delete:
           label: Supprimer la condition
-          description: Êtes-vous sur de vouloir supprimer cette condition ?
+          description: Êtes-vous sûr de vouloir supprimer cette condition ?
         operators:
           "STARTS WITH": commence par
           "ENDS WITH": finit par

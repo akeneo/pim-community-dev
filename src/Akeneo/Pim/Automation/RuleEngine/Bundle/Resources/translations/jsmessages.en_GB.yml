@@ -54,7 +54,7 @@ pimee_catalog_rule:
       catalog: Catalog
       select: Select a category
       open_tree: Open category tree
-      tree: Category Tree
+      tree: Category tree
       menu: Select a category tree
       folder:
         selected: Folder selected
