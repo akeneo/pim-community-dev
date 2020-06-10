@@ -80,3 +80,4 @@ tree:
   edit: 트리 편집
   remove:
     error_linked: 이 카테고리 트리를 삭제할 수 없습니다. 이 트리는 채널에 링크되어 있습니다.
+  create: Create a category tree
