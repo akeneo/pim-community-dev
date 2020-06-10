@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Technical Improvements
+
+- PIM-9299: Temporary increase memory peak limit test to 55mb
+
 ## Bug fixes
 
 - PIM-9296: Fix validation of product link rules format
