@@ -32,7 +32,7 @@ SELECT
     p.id,
     p.identifier,
     p.is_enabled,
-    IF (p.product_model_id IS NOT NULL, pm1.code, NULL) AS product_model_code,
+    pm1.code AS product_model_code,
     p.created,
     p.updated,
     f.code AS family_code,
@@ -45,7 +45,7 @@ LEFT JOIN pim_catalog_group g ON pg.group_id = g.id
 LEFT JOIN pim_catalog_product_model pm1 ON p.product_model_id = pm1.id
 LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
 WHERE p.identifier IN (?)
-GROUP BY p.identifier
+GROUP BY p.id
 SQL;
 
         $rows = $this->connection->fetchAll(
