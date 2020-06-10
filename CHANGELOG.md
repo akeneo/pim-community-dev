@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9274: Fix Yaml reader to display the number of lines read for incorrectly formatted files
 - TIP-1406: Add a tag to configure a DIC service based on a feature flag
 - PIM-9133: Fix product save when the user has no permission on some attribute groups
 - Fixes memory leak when indexing product models with a lot of product models in the same family
@@ -14,6 +15,7 @@
 - PIM-9197: Make queries in InMemoryGetAttributes case insensitive
 - PIM-9213: Fix tooltip hover on Ellipsis for Family Name on creating product
 - PIM-9184: API - Fix dbal query group by part for saas instance
+- PIM-9289: Display a correct error message when deleting a group or an association
 
 ## New features
 
