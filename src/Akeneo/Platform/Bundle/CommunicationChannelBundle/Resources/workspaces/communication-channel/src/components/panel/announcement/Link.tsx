@@ -21,7 +21,7 @@ type LinkProps = {
   campaign: string | null;
 }
 
-const buildLinkCardUrl = (baseUrl: string, campaign: string | null): URL => {
+const buildLinkAnnouncementUrl = (baseUrl: string, campaign: string | null): URL => {
   const url = new URL(baseUrl);
   url.searchParams.append('utm_source', 'akeneo-app');
   url.searchParams.append('utm_medium', 'communication-panel');
@@ -34,7 +34,7 @@ const buildLinkCardUrl = (baseUrl: string, campaign: string | null): URL => {
 
 const LinkComponent = ({baseUrl, title, campaign}: LinkProps): JSX.Element => {
   const __ = useTranslate();
-  const url = buildLinkCardUrl(baseUrl, campaign);
+  const url = buildLinkAnnouncementUrl(baseUrl, campaign);
 
   return (
     <Link href={url.href} title={title} target="_blank">

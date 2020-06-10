@@ -29,7 +29,8 @@ export const getExpectedAnnouncements = () => {
       link: 'http://external.com',
       tags: ['new', 'updates'],
       startDate: '20-04-2020',
-      notificationDuration: 7
+      notificationDuration: 7,
+      editions: ['CE', 'EE']
     },
     {
       title: 'Title announcement 2',
@@ -37,7 +38,8 @@ export const getExpectedAnnouncements = () => {
       link: 'http://external-2.com',
       tags: ['tag'],
       startDate: '20-04-2020',
-      notificationDuration: 14
+      notificationDuration: 14,
+      editions: ['CE']
     }
   ];
 }
