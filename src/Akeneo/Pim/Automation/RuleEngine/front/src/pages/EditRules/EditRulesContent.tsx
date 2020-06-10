@@ -71,6 +71,12 @@ const EditRulesContent: React.FC<Props> = ({
     control: formMethods.control,
     name: 'content.actions',
   });
+  React.useEffect(() => {
+    if (fields.length) {
+      formMethods.register('content.actions');
+      formMethods.setValue('content.actions', fields);
+    }
+  }, []);
 
   const handleAddAction = (action: any) => {
     append(action);
