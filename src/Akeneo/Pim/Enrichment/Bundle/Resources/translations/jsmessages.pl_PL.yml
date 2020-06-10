@@ -384,6 +384,7 @@ pim_datagrid:
   filters:
     label: Filtry
     system: System
+  search: Search on {{ label }}
 batch_jobs:
   add_association:
     label: Powiąż

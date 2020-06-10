@@ -80,3 +80,4 @@ tree:
   edit: Edytuj drzewo
   remove:
     error_linked: Drzewo tej kategorii nie może zostać usunięte, jest połączone z kanałem
+  create: Utwórz drzewo kategorii

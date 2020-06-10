@@ -384,6 +384,7 @@ pim_datagrid:
   filters:
     label: 필터
     system: 시스템
+  search: Search on {{ label }}
 batch_jobs:
   add_association:
     label: 연결
