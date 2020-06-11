@@ -124,7 +124,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
 
         if (isset($filters['structure']['attributes'])
             && !empty($filters['structure']['attributes'])
-            && $this->hasItems === true) {
+            && $this->hasItems === true ) {
             $attributeCodes = $filters['structure']['attributes'];
         } elseif ($parameters->has('selected_properties')) {
             $attributeCodes = $parameters->get('selected_properties');
@@ -141,7 +141,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
 
         $headerStrings = [];
         foreach ($headers as $header) {
-            if ($withMedia || !$header->isMedia()) {
+            if (($localeCodes[1] === $header['specificToLocales'][1]) && ($withMedia || !$header->isMedia())) {
                 $headerStrings = array_merge(
                     $headerStrings,
                     $header->generateHeaderStrings()
