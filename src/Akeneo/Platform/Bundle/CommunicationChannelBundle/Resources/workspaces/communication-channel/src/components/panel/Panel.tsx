@@ -15,30 +15,29 @@ const ListAnnouncement = styled.ul`
 const Panel = (): JSX.Element => {
   const __ = useTranslate();
   const mediator = useMediator();
-  const {pimVersion} = usePimVersion();
-  const {announcements} = useAnnouncements();
-  const campaign = (null !== pimVersion) ? formatCampaign(pimVersion.edition, pimVersion.version) : '';
+  const pimVersion = usePimVersion();
+  const announcements = useAnnouncements();
+  const campaign = null !== pimVersion.data ? formatCampaign(pimVersion.data.edition, pimVersion.data.version) : '';
+  const isSerenity = null !== pimVersion.data && 'serenity' === pimVersion.data.edition.toLowerCase();
 
   const closePanel = () => {
     mediator.trigger('communication-channel:panel:close');
   };
-  const isSerenity = null !== campaign && 'serenity' === campaign.toLowerCase();
 
   return (
     <>
       <HeaderPanel title={__('akeneo_communication_channel.panel.title')} onClickCloseButton={closePanel} />
-      {null !== announcements && isSerenity && (
+      {isSerenity ? (
         <ListAnnouncement>
-          {announcements.map((announcement: Announcement, index: number): JSX.Element =>
+          {announcements.data.map((announcement: Announcement, index: number): JSX.Element =>
             <AnnouncementComponent announcement={announcement} key={index} campaign={campaign} />)
           }
         </ListAnnouncement>
-      )}
-      {!isSerenity && (
+      ) : (
         <EmptyAnnouncementList text={__('akeneo_communication_channel.panel.list.empty')} />
       )}
     </>
   );
 };
 
-export {Panel, PanelDataProvider};
+export {Panel};

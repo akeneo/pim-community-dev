@@ -25,13 +25,14 @@ afterEach(() => {
 });
 
 test('it shows the panel with the announcements', async () => {
-<<<<<<< HEAD
-  const mockJsonPromise = JSON.stringify(expectedPimAnalyticsData);
-  fetchMock.mockResponseOnce(() => Promise.resolve(mockJsonPromise));
-=======
-  fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
-  fetchMockResponseOnce('./bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json', JSON.stringify({data: expectedAnnouncements}));
->>>>>>> GITHUB-APD-162: Refacto announcements fetch
+  fetchMockResponseOnce(
+    'pim_analytics_data_collect',
+    JSON.stringify(expectedPimAnalyticsData)
+  );
+  fetchMockResponseOnce(
+    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json',
+    JSON.stringify({data: expectedAnnouncements})
+  );
 
   await act(async () => renderWithProviders(
     <Panel />,
@@ -43,8 +44,14 @@ test('it shows the panel with the announcements', async () => {
 });
 
 test('it can show for each announcement the information from the json', async () => {
-  fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
-  fetchMockResponseOnce('./bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json', JSON.stringify({data: expectedAnnouncements}));
+  fetchMockResponseOnce(
+    'pim_analytics_data_collect',
+    JSON.stringify(expectedPimAnalyticsData)
+  );
+  fetchMockResponseOnce(
+    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json',
+    JSON.stringify({data: expectedAnnouncements})
+  );
 
   await act(async () => renderWithProviders(
     <Panel />,
@@ -63,8 +70,14 @@ test('it can show for each announcement the information from the json', async ()
 
 test('it can open the read more link in a new tab', async () => {
   const campaign = formatCampaign(expectedPimAnalyticsData.pim_edition, expectedPimAnalyticsData.pim_version);
-  fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
-  fetchMockResponseOnce('./bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json', JSON.stringify({data: expectedAnnouncements}));
+  fetchMockResponseOnce(
+    'pim_analytics_data_collect',
+    JSON.stringify(expectedPimAnalyticsData)
+  );
+  fetchMockResponseOnce(
+    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json',
+    JSON.stringify({data: expectedAnnouncements})
+  );
 
   await act(async () => renderWithProviders(
     <Panel />,
@@ -76,9 +89,17 @@ test('it can open the read more link in a new tab', async () => {
 });
 
 test('it can display an empty panel when it is not a serenity version', async () => {
-  const mockDataProvider = getMockDataProvider(expectedAnnouncements, 'CE4.0');
+  fetchMockResponseOnce(
+    'pim_analytics_data_collect',
+    JSON.stringify({pim_edition: 'CE', pim_version: '4.0'})
+  );
+  fetchMockResponseOnce(
+    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json',
+    JSON.stringify({data: expectedAnnouncements})
+  );
+
   await act(async () => renderWithProviders(
-    <Panel dataProvider={mockDataProvider} />,
+    <Panel />,
     container as HTMLElement
   ));
 
@@ -87,8 +108,14 @@ test('it can display an empty panel when it is not a serenity version', async ()
 });
 
 test('it can close the panel', async () => {
-  fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
-  fetchMockResponseOnce('./bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json', JSON.stringify({data: expectedAnnouncements}));
+  fetchMockResponseOnce(
+    'pim_analytics_data_collect',
+    JSON.stringify(expectedPimAnalyticsData)
+  );
+  fetchMockResponseOnce(
+    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json',
+    JSON.stringify({data: []})
+  );
 
   await act(async () => renderWithProviders(
     <Panel />,

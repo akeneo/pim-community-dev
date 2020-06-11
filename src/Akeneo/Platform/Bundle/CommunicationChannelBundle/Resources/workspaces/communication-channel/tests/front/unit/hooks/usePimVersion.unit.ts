@@ -21,12 +21,12 @@ test('It gets the PimVersion from the pim analytics data', async () => {
 
   const {result, waitForNextUpdate} = renderHookWithProviders(usePimVersion);
 
-  expect(result.current.pimVersion).toEqual(null);
+  expect(result.current.data).toEqual(null);
 
   await waitForNextUpdate();
 
-  expect(result.current.pimVersion).toEqual(expectedPimVersion);
-  expect(typeof result.current.updatePimVersion).toBe('function');
+  expect(result.current.data).toEqual(expectedPimVersion);
+  expect(result.current.hasError).toEqual(false);
   expect(fetchMock).toHaveBeenCalledWith('pim_analytics_data_collect');
 });
 
@@ -39,6 +39,7 @@ test('It can validate the pim analytics data', async () => {
 
   await waitForNextUpdate();
 
-  expect(result.current.pimVersion).toEqual(null);
+  expect(result.current.data).toEqual(null);
+  expect(result.current.hasError).toEqual(true);
   expect(console.error).toHaveBeenCalledTimes(1);
 });

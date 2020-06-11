@@ -8,27 +8,38 @@ type PimVersion = {
   version: string;
 };
 
-const usePimVersion = (): {pimVersion: PimVersion | null; updatePimVersion: () => Promise<void>} => {
-  const [pimVersion, setPimVersion] = useState<PimVersion | null>(null);
+const usePimVersion = (): {
+  data: PimVersion | null;
+  hasError: boolean;
+} => {
+  const [pimVersion, setPimVersion] = useState<{
+    data: PimVersion | null;
+    hasError: boolean;
+  }>({
+    data: null,
+    hasError: false,
+  });
   const route = useRoute('pim_analytics_data_collect');
 
   const updatePimVersion = useCallback(async () => {
-    const data = await baseFetcher(route);
-
     try {
+      const data = await baseFetcher(route);
       validatePimAnalyticsData(data);
-    } catch (error) {
-      setPimVersion(null);
-    }
 
-    setPimVersion({edition: data.pim_edition, version: data.pim_version});
+      setPimVersion({
+        data: {edition: data.pim_edition, version: data.pim_version},
+        hasError: false,
+      });
+    } catch (error) {
+      setPimVersion({data: null, hasError: true});
+    }
   }, [setPimVersion, route]);
 
   useEffect(() => {
     updatePimVersion();
   }, []);
 
-  return {pimVersion, updatePimVersion};
+  return pimVersion;
 };
 
 export {usePimVersion};

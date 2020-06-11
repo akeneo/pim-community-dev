@@ -21,12 +21,13 @@ test('It can get all the announcements', async () => {
 
   const {result, waitForNextUpdate} = renderHookWithProviders(useAnnouncements);
 
-  expect(result.current.announcements).toEqual(null);
+  expect(result.current.data).toEqual([]);
 
   await waitForNextUpdate();
 
-  expect(result.current.announcements).toEqual(expectedAnnouncements);
-  expect(typeof result.current.updateAnnouncements).toBe('function');
+  expect(result.current.data).toEqual(expectedAnnouncements);
+  expect(result.current.hasError).toEqual(false);
+  expect(fetchMock).toHaveBeenCalledWith('./bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json');
 });
 
 test('It can validate the announcements from the json', async () => {
@@ -40,6 +41,7 @@ test('It can validate the announcements from the json', async () => {
 
   await waitForNextUpdate();
 
-  expect(result.current.announcements).toEqual(null);
+  expect(result.current.data).toEqual([]);
+  expect(result.current.hasError).toEqual(true);
   expect(console.error).toHaveBeenCalledTimes(1);
 });
