@@ -2,10 +2,8 @@ import React from 'react';
 import { CalculateAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { FallbackField } from '../FallbackField';
 import {
-  normalizeOperation,
   Operation,
   Operator,
 } from '../../../../models/actions/Calculate/Operation';
@@ -14,6 +12,7 @@ import {
   FieldOperand,
   Operand,
 } from '../../../../models/actions/Calculate/Operand';
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
 
 const OperandView: React.FC<{ operand: Operand }> = ({ operand }) => {
   if (Object.keys(operand).includes('field')) {
@@ -114,30 +113,24 @@ type Props = {
 } & ActionLineProps;
 
 const CalculateActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
   handleDelete,
 }) => {
-  useValueInitialization(
-    `content.actions[${lineNumber}]`,
-    {
-      type: 'calculate',
-      destination: action.destination,
-      source: action.source,
-      operation_list: action.operation_list.map((operation: Operation) =>
-        normalizeOperation(operation)
-      ),
-      // TODO: uncomment when it will be ready
-      // round_precision: action.round_precision,
-    },
-    {},
-    [action]
-  );
+  const values: any = {
+    type: 'calculate',
+    source: action.source,
+    destination: action.destination,
+    operation_list: action.operation_list,
+  };
+  if (action.round_precision) {
+    values['round_precision'] = action.round_precision;
+  }
+
+  useRegisterConsts(values, `content.actions[${lineNumber}]`);
 
   return (
     <ActionTemplate
-      translate={translate}
       title='Calculate Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
@@ -155,25 +148,25 @@ const CalculateActionLine: React.FC<Props> = ({
               <React.Fragment key={key}>
                 {Operator.ADD === operation.operator && (
                   <AddView
-                    operand={operation.operand}
+                    operand={operation}
                     source={key === 0 ? action.source : null}
                   />
                 )}
                 {Operator.SUBSTRACT === operation.operator && (
                   <SubstractView
-                    operand={operation.operand}
+                    operand={operation}
                     source={key === 0 ? action.source : null}
                   />
                 )}
                 {Operator.MULTIPLY === operation.operator && (
                   <MultiplyView
-                    operand={operation.operand}
+                    operand={operation}
                     source={key === 0 ? action.source : null}
                   />
                 )}
                 {Operator.DIVIDE === operation.operator && (
                   <DivideView
-                    operand={operation.operand}
+                    operand={operation}
                     source={key === 0 ? action.source : null}
                   />
                 )}

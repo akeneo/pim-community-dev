@@ -1,18 +1,15 @@
-import { omit } from 'lodash';
 import { Payload } from '../../../rules.types';
 import { httpPut } from '../../../fetch';
 import { generateUrl } from '../../../dependenciesTools/hooks';
 import { FormData } from '../edit-rules.types';
 import { useForm, DeepPartial } from 'react-hook-form';
-import { Condition, Locale, RuleDefinition } from '../../../models';
+import { Locale, RuleDefinition } from '../../../models';
 import {
   Router,
   Translate,
   Notify,
   NotificationLevel,
 } from '../../../dependenciesTools';
-import { denormalize } from '../../../models/rule-definition-denormalizer';
-import { Action } from '../../../models/Action';
 
 type Reset = (
   values?: DeepPartial<FormData>,
@@ -27,26 +24,21 @@ type Reset = (
   }>
 ) => void;
 
+const removeIds = (array: any[]): any[] =>
+  array.map(elt => {
+    const { id, ...newElt } = elt;
+
+    return newElt;
+  });
+
 const transformFormData = (formData: FormData): Payload => {
-  const filledConditions = formData.content
-    ? formData.content.conditions.filter((condition: Condition | null) => {
-        return condition !== null;
-      })
-    : [];
-
-  const filledActions = formData.content
-    ? formData.content.actions.filter((action: Action | null) => {
-        return action !== null;
-      })
-    : [];
-
   return {
     ...formData,
     priority: Number(formData.priority),
     content: {
-      ...formData.content,
-      conditions: filledConditions,
-      actions: filledActions,
+      conditions: formData?.content?.conditions || [],
+      // useFieldArray adds ids in each action. We remove them before submit.
+      actions: removeIds(formData?.content?.actions || []),
     },
   };
 };
@@ -56,8 +48,7 @@ const submitEditRuleForm = (
   translate: Translate,
   notify: Notify,
   router: Router,
-  reset: Reset,
-  setRuleDefinition: (ruleDefinition: RuleDefinition) => void
+  reset: Reset
 ) => {
   return async (formData: FormData, event?: React.BaseSyntheticEvent) => {
     if (event) {
@@ -77,10 +68,7 @@ const submitEditRuleForm = (
         NotificationLevel.SUCCESS,
         translate('pimee_catalog_rule.form.edit.notification.success')
       );
-      reset({ ...formData });
-      const json = await response.json();
-      const ruleDefinition = await denormalize(json, router);
-      setRuleDefinition(ruleDefinition);
+      reset(formData);
     } else {
       notify(
         NotificationLevel.ERROR,
@@ -107,13 +95,7 @@ const createFormDefaultValues = (
   labels: locales.reduce(createLocalesLabels(ruleDefinition), {}),
   content: {
     conditions: ruleDefinition.conditions || [],
-    actions: ruleDefinition.actions.map((action: Action) => {
-      if (Object.prototype.hasOwnProperty.call(action, 'json')) {
-        // It's a FallbackAction
-        return (action as { json: any }).json;
-      }
-      return omit(action, 'module');
-    }),
+    actions: ruleDefinition.actions || [],
   },
 });
 
@@ -123,8 +105,7 @@ const useSubmitEditRuleForm = (
   notify: Notify,
   router: Router,
   ruleDefinition: RuleDefinition,
-  locales: Locale[],
-  setRuleDefinition: (ruleDefinition: RuleDefinition) => void
+  locales: Locale[]
 ) => {
   const defaultValues = createFormDefaultValues(ruleDefinition, locales);
   const formMethods = useForm<FormData>({
@@ -135,8 +116,7 @@ const useSubmitEditRuleForm = (
     translate,
     notify,
     router,
-    formMethods.reset,
-    setRuleDefinition
+    formMethods.reset
   );
 
   return {

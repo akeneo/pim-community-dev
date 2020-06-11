@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useFormContext, Control } from 'react-hook-form';
+import { useFormContext, Control, useFieldArray } from 'react-hook-form';
 import { SmallHelper } from '../../../../components';
 import {
   Condition,
@@ -11,17 +11,19 @@ import {
   createCategoryCondition,
   Locale,
   LocaleCode,
-  RuleDefinition,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
-import { Router, Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { ConditionLine } from './ConditionLine';
 import { ProductsCount } from '../ProductsCount';
 import { AddConditionButton } from './AddConditionButton';
 import { FormData } from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
 
 const Header = styled.header`
   font-weight: normal;
@@ -59,6 +61,7 @@ const AddConditionContainer = styled.div`
 
 const getValuesFromFormData = (getValues: Control['getValues']): FormData =>
   getValues({ nest: true });
+
 const RuleProductSelectionFieldsetWithAction = styled.fieldset`
   background-image: url('${startImage}');
   padding-left: 12px;
@@ -74,50 +77,31 @@ const RuleProductSelectionFieldset = styled.fieldset`
 type Props = {
   currentCatalogLocale: LocaleCode;
   locales: Locale[];
-  router: Router;
-  ruleDefinition: RuleDefinition;
   scopes: IndexedScopes;
-  translate: Translate;
 };
 
 const RuleProductSelection: React.FC<Props> = ({
   currentCatalogLocale,
   locales,
-  router,
-  ruleDefinition,
   scopes,
-  translate,
 }) => {
-  const [conditions, setConditions] = React.useState<(Condition | null)[]>(
-    ruleDefinition.conditions
-  );
+  const translate = useTranslate();
+  const router = useBackboneRouter();
 
-  const { getValues, unregister, watch } = useFormContext();
-  const deleteCondition = (lineNumber: number) => {
-    Object.keys(getValues()).forEach((value: string) => {
-      if (value.startsWith(`content.conditions[${lineNumber}]`)) {
-        unregister(value);
-      }
-    });
-    setConditions(
-      conditions.map((condition: Condition | null, i: number) => {
-        return i === lineNumber ? null : condition;
-      })
-    );
-  };
+  const { getValues, watch, control } = useFormContext();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'content.conditions',
+  });
+
   const productsCount = useProductsCount(
     router,
     getValuesFromFormData(getValues)
   );
-  const watchCondition = (conditionIdentifier: string) => {
-    watch(conditionIdentifier);
-  };
 
-  React.useEffect(() => {
-    setConditions(ruleDefinition.conditions);
-  }, [ruleDefinition]);
-
-  async function createCondition(fieldCode: string): Promise<Condition> {
+  const createCondition: (
+    fieldCode: string
+  ) => Promise<Condition> = async fieldCode => {
     const factories: ConditionFactory[] = [
       createFamilyCondition,
       createTextAttributeCondition,
@@ -134,32 +118,35 @@ const RuleProductSelection: React.FC<Props> = ({
     }
 
     throw new Error(`Unknown factory for field ${fieldCode}`);
-  }
+  };
 
   const handleAddCondition = (fieldCode: string) => {
-    createCondition(fieldCode).then(condition => {
-      const newConditions = [...conditions, condition];
-      setConditions(newConditions);
-    });
+    createCondition(fieldCode).then(condition => append(condition));
   };
 
-  const isActiveConditionField: (fieldCode: string) => boolean = (
-    fieldCode: string
-  ) => {
-    return conditions.some(condition => {
-      return (
-        condition !== null &&
-        condition.hasOwnProperty('field') &&
-        (condition as { field: string }).field === fieldCode
+  const isActiveConditionField = React.useCallback(
+    (fieldCode: string) => {
+      return (getValues({ nest: true })?.content?.conditions || []).some(
+        (condition: Condition) => {
+          return (
+            Object.hasOwnProperty.call(condition, 'field') &&
+            (condition as { field: string }).field === fieldCode
+          );
+        }
       );
-    });
+    },
+    [getValues({ nest: true })?.content?.conditions]
+  );
+
+  const hasActions: () => boolean = () => {
+    return (watch(`content.actions`) ?? []).length > 0;
   };
 
-  const Component = ruleDefinition.actions.length
+  const Component = hasActions()
     ? RuleProductSelectionFieldsetWithAction
     : RuleProductSelectionFieldset;
   return (
-    <Component>
+    <Component tabIndex={-1}>
       <Header className='AknSubsection-title'>
         <HeaderPartContainer>
           <TextBoxBlue>
@@ -173,13 +160,10 @@ const RuleProductSelection: React.FC<Props> = ({
           <ProductsCount
             count={productsCount.value}
             status={productsCount.status}
-            translate={translate}
           />
           <AddConditionContainer>
             <AddConditionButton
-              router={router}
               handleAddCondition={handleAddCondition}
-              translate={translate}
               isActiveConditionField={isActiveConditionField}
             />
           </AddConditionContainer>
@@ -195,22 +179,17 @@ const RuleProductSelection: React.FC<Props> = ({
       </SmallHelper>
       <div className='AknGrid AknGrid--unclickable'>
         <div className='AknGrid-body' data-testid={'condition-list'}>
-          {conditions.map((condition, i) => {
-            watchCondition(`content.conditions[${i}]`);
+          {fields.map((field, i) => {
             return (
-              condition && (
-                <ConditionLine
-                  condition={condition}
-                  lineNumber={i}
-                  translate={translate}
-                  key={`condition_${i}`}
-                  locales={locales}
-                  scopes={scopes}
-                  currentCatalogLocale={currentCatalogLocale}
-                  router={router}
-                  deleteCondition={deleteCondition}
-                />
-              )
+              <ConditionLine
+                condition={field as Condition}
+                lineNumber={i}
+                key={field.id}
+                locales={locales}
+                scopes={scopes}
+                currentCatalogLocale={currentCatalogLocale}
+                deleteCondition={remove}
+              />
             );
           })}
         </div>

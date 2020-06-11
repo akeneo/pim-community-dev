@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
-import { FormContext } from 'react-hook-form';
+import { FormContext, useFieldArray } from 'react-hook-form';
 import * as akeneoTheme from '../../theme';
 import {
   AkeneoSpinner,
@@ -21,7 +21,6 @@ import { Locale, RuleDefinition } from '../../models';
 import { useSubmitEditRuleForm } from './hooks';
 import { IndexedScopes } from '../../repositories/ScopeRepository';
 import { AddActionButton } from './components/actions/AddActionButton';
-import { Action } from '../../models/Action';
 
 type Props = {
   ruleDefinitionCode: string;
@@ -29,7 +28,6 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   setIsDirty: (isDirty: boolean) => void;
-  setRuleDefinition: (ruleDefinition: RuleDefinition) => void;
 };
 
 const EditRulesContent: React.FC<Props> = ({
@@ -38,7 +36,6 @@ const EditRulesContent: React.FC<Props> = ({
   locales,
   scopes,
   setIsDirty,
-  setRuleDefinition,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -59,40 +56,30 @@ const EditRulesContent: React.FC<Props> = ({
     notify,
     router,
     ruleDefinition,
-    locales,
-    setRuleDefinition
+    locales
   );
 
   useEffect(() => {
-    setIsDirty(formMethods.formState.dirtyFields.size > 0);
+    setIsDirty(formMethods.formState.dirty);
   }, [formMethods.formState.dirtyFields]);
 
   const title =
     (formMethods.watch(`labels.${currentCatalogLocale}`) as string) ||
     `[${ruleDefinitionCode}]`;
 
-  const [actions, setActions] = React.useState<(Action | null)[]>(
-    ruleDefinition.actions
-  );
+  const { fields, append, remove } = useFieldArray({
+    control: formMethods.control,
+    name: 'content.actions',
+  });
   React.useEffect(() => {
-    setActions(ruleDefinition.actions);
-  }, [ruleDefinition]);
+    if (fields.length) {
+      formMethods.register('content.actions');
+      formMethods.setValue('content.actions', fields);
+    }
+  }, [formMethods.formState.submitCount]);
 
-  const handleDeleteAction = (lineNumber: number) => {
-    Object.keys(formMethods.getValues()).forEach((value: string) => {
-      if (value.startsWith(`content.actions[${lineNumber}]`)) {
-        formMethods.unregister(value);
-      }
-    });
-    setActions(
-      actions.map((action: Action | null, i: number) => {
-        return i === lineNumber ? null : action;
-      })
-    );
-  };
-
-  const handleAddAction = (action: Action) => {
-    setActions([...actions, action]);
+  const handleAddAction = (action: any) => {
+    append(action);
   };
 
   return (
@@ -102,14 +89,8 @@ const EditRulesContent: React.FC<Props> = ({
         buttonLabel='pim_common.save'
         formId='edit-rules-form'
         title={title}
-        translate={translate}
-        unsavedChanges={formMethods.formState.dirtyFields.size > 0}
-        secondaryButton={
-          <AddActionButton
-            translate={translate}
-            handleAddAction={handleAddAction}
-          />
-        }>
+        unsavedChanges={formMethods.formState.dirty}
+        secondaryButton={<AddActionButton handleAddAction={handleAddAction} />}>
         <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>
           {translate('pim_menu.tab.settings')}
         </BreadcrumbItem>
@@ -124,12 +105,9 @@ const EditRulesContent: React.FC<Props> = ({
             currentCatalogLocale={currentCatalogLocale}
             locales={locales}
             onSubmit={onSubmit}
-            router={router}
-            ruleDefinition={ruleDefinition}
             scopes={scopes}
-            translate={translate}
-            actions={actions}
-            handleDeleteAction={handleDeleteAction}
+            actions={fields}
+            handleDeleteAction={remove}
           />
         </FormContext>
       </Content>

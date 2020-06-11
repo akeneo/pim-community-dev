@@ -1,7 +1,7 @@
 import React from 'react';
 import { FallbackCondition } from '../../../../models/conditions';
 import { ConditionLineProps } from './ConditionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
 
 type FallbackConditionLineProps = ConditionLineProps & {
   condition: FallbackCondition;
@@ -11,16 +11,9 @@ const FallbackConditionLine: React.FC<FallbackConditionLineProps> = ({
   condition,
   lineNumber,
 }) => {
-  useValueInitialization(
-    `content.conditions[${lineNumber}]`,
-    condition.json,
-    {},
-    [condition]
-  );
+  useRegisterConsts(condition, `content.conditions[${lineNumber}]`);
 
-  return (
-    <div className={'AknGrid-bodyCell'}>{JSON.stringify(condition.json)}</div>
-  );
+  return <div className={'AknGrid-bodyCell'}>{JSON.stringify(condition)}</div>;
 };
 
 export { FallbackConditionLine, FallbackConditionLineProps };

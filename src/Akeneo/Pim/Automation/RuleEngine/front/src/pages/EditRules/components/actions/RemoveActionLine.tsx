@@ -1,16 +1,15 @@
 import React from 'react';
-import { RemoveAction } from '../../../../models/actions/RemoveAction';
+import { RemoveAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { FallbackField } from '../FallbackField';
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
 
 type Props = {
   action: RemoveAction;
 } & ActionLineProps;
 
 const RemoveActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
   handleDelete,
@@ -33,13 +32,10 @@ const RemoveActionLine: React.FC<Props> = ({
     values.includeChildren = action.include_children;
   }
 
-  useValueInitialization(`content.actions[${lineNumber}]`, values, {}, [
-    action,
-  ]);
+  useRegisterConsts(values, `content.actions[${lineNumber}]`);
 
   return (
     <ActionTemplate
-      translate={translate}
       title='Remove Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
@@ -53,9 +49,8 @@ const RemoveActionLine: React.FC<Props> = ({
               {action.items.join(', ')}
               {action.include_children && ' and children'}
             </span>
-            {action.items.length > 1 || action.include_children
-              ? ' are'
-              : ' is'}
+            &nbsp;
+            {action.items.length > 1 || action.include_children ? 'are' : 'is'}
             &nbsp;removed from&nbsp;
             <FallbackField
               field={action.field}

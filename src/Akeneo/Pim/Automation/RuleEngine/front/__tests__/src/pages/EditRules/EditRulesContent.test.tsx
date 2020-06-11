@@ -4,14 +4,12 @@ import userEvent from '@testing-library/user-event';
 import { wait } from '@testing-library/dom';
 import { render, act } from '../../../../test-utils';
 import { IndexedScopes } from '../../../../src/repositories/ScopeRepository';
-import { RuleDefinition } from '../../../../src/models';
 
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
 
 const setIsDirty = (_isDirty: boolean) => {};
-const setRuleDefinition = (_ruleDefinition: RuleDefinition) => {};
 
 describe('EditRulesContent', () => {
   it('should display an unsaved changes alert after user have changed an input', async () => {
@@ -53,7 +51,6 @@ describe('EditRulesContent', () => {
         locales={locales}
         scopes={scopes}
         setIsDirty={setIsDirty}
-        setRuleDefinition={setRuleDefinition}
       />,
       {
         legacy: true,
@@ -116,7 +113,6 @@ describe('EditRulesContent', () => {
         locales={locales}
         scopes={scopes}
         setIsDirty={setIsDirty}
-        setRuleDefinition={setRuleDefinition}
       />,
       {
         legacy: true,

@@ -48,7 +48,7 @@ describe('useProductsCount', () => {
         `pimee_enrich_rule_definition_get_impacted_product_count?conditions={"conditions":"[{\\"field\\":\\"family\\",\\"value\\":[\\"camcorders\\"],\\"operator\\":\\"IN\\"}]"}`
       );
     });
-    expect(result.current).toEqual({ status: 2, value: '10' });
+    expect(result.current).toEqual({ status: 2, value: 10 });
   });
   test('it should return an error status', async () => {
     // Given
@@ -89,6 +89,6 @@ describe('useProductsCount', () => {
         `pimee_enrich_rule_definition_get_impacted_product_count?conditions={"conditions":"[{\\"field\\":\\"family\\",\\"value\\":[\\"camcorders\\"],\\"operator\\":\\"IN\\"}]"}`
       )
     );
-    expect(result.current).toEqual({ status: 1, value: '-1' });
+    expect(result.current).toEqual({ status: 1, value: -1 });
   });
 });

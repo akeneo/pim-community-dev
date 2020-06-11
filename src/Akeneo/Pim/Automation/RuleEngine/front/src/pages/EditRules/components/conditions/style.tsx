@@ -58,6 +58,10 @@ const ConditionErrorLine = styled.ul`
       margin-left: -16px;
     }
   }
+  &:first-child {
+    margin-top: 0;
+    margin-left: 0;
+  }
 `;
 
 export {

@@ -1,14 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTabState, Tab, TabList, TabPanel } from 'reakit/Tab';
-import { Router, Translate } from '../../../dependenciesTools';
-import { LocaleCode, RuleDefinition } from '../../../models';
+import { LocaleCode } from '../../../models';
 import { RulesBuilder } from './RulesBuilder';
 import { RuleProperties } from './RuleProperties';
 import { Locale } from '../../../models';
 import { IndexedScopes } from '../../../repositories/ScopeRepository';
 import { useFormContext } from 'react-hook-form';
-import { Action } from '../../../models/Action';
+import { useTranslate } from '../../../dependenciesTools/hooks';
 
 const getTabBorder = ({ id, selectedId, theme }: any): string | number => {
   if (id === selectedId) {
@@ -67,32 +66,27 @@ type FormData = {
 type Props = {
   locales: Locale[];
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  ruleDefinition: RuleDefinition;
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
-  router: Router;
-  translate: Translate;
-  actions: (Action | null)[];
+  actions: ({ [key: string]: any } & { id?: string })[];
   handleDeleteAction: (lineNumber: number) => void;
 };
 
 const EditRulesForm: React.FC<Props> = ({
   locales,
   onSubmit,
-  ruleDefinition,
   scopes,
-  translate,
   currentCatalogLocale,
-  router,
   actions,
   handleDeleteAction,
 }) => {
+  const translate = useTranslate();
   const tab = useTabState({ selectedId: 'rulesBuilderTab' });
 
   const { formState } = useFormContext();
   const beforeUnload = (event: Event) => {
     event = event || window.event;
-    if (formState.dirtyFields.size > 0) {
+    if (formState.dirty) {
       const message = translate('pimee_catalog_rule.form.edit.discard_changes');
       event.returnValue = true;
 
@@ -122,16 +116,13 @@ const EditRulesForm: React.FC<Props> = ({
           <RulesBuilder
             currentCatalogLocale={currentCatalogLocale}
             locales={locales}
-            router={router}
-            ruleDefinition={ruleDefinition}
             scopes={scopes}
-            translate={translate}
             actions={actions}
             handleDeleteAction={handleDeleteAction}
           />
         </StyledTabPanel>
         <StyledTabPanel {...tab} tabIndex={-1}>
-          <RuleProperties locales={locales} translate={translate} />
+          <RuleProperties locales={locales} />
         </StyledTabPanel>
       </StyledTabList>
     </form>

@@ -1,150 +1,40 @@
-import { renderWithProviders } from '../../../../test-utils';
 import React from 'react';
+import { renderWithProviders } from '../../../../test-utils';
+import 'jest-fetch-mock';
 import { TextAttributeConditionLine } from '../../../../src/pages/EditRules/components/conditions/TextAttributeConditionLine';
-import { TextAttributeCondition } from '../../../../src/models/conditions';
-import { Attribute } from '../../../../src/models/Attribute';
 import { Operator } from '../../../../src/models/Operator';
-import { IndexedScopes } from '../../../../src/repositories/ScopeRepository';
-import { Router } from '../../../../src/dependenciesTools';
 import userEvent from '@testing-library/user-event';
 import { wait } from '@testing-library/dom';
-
-jest.mock('../../../../src/fetch/categoryTree.fetcher');
-
-const createAttribute = (data: { [key: string]: any }): Attribute => {
-  return {
-    code: 'name',
-    type: 'pim_catalog_text',
-    group: 'marketing',
-    unique: false,
-    useable_as_grid_filter: true,
-    allowed_extensions: [],
-    metric_family: null,
-    default_metric_unit: null,
-    reference_data_name: null,
-    available_locales: [],
-    max_characters: null,
-    validation_rule: null,
-    validation_regexp: null,
-    wysiwyg_enabled: null,
-    number_min: null,
-    number_max: null,
-    decimals_allowed: null,
-    negative_allowed: null,
-    date_min: null,
-    date_max: null,
-    max_file_size: null,
-    minimum_input_length: null,
-    sort_order: 1,
-    localizable: true,
-    scopable: true,
-    labels: { en_US: 'Name', fr_FR: 'Nom' },
-    auto_option_sorting: null,
-    is_read_only: false,
-    empty_value: null,
-    field_type: 'text',
-    filter_types: {},
-    is_locale_specific: false,
-    meta: {
-      id: 42,
-    },
-    ...data,
-  };
-};
-
-const conditionWithLocalizableScopableAttribute: TextAttributeCondition = {
-  scope: 'mobile',
-  module: TextAttributeConditionLine,
-  locale: 'en_US',
-  attribute: createAttribute({}),
-  field: 'name',
-  operator: Operator.NOT_EQUAL,
-  value: 'Canon',
-};
-
-const conditionWithNonLocalizableScopableAttribute: TextAttributeCondition = {
-  module: TextAttributeConditionLine,
-  attribute: createAttribute({ localizable: false, scopable: false }),
-  field: 'name',
-  operator: Operator.NOT_EQUAL,
-  value: 'Canon',
-};
-
-const defaultCondition: TextAttributeCondition = {
-  module: TextAttributeConditionLine,
-  attribute: createAttribute({ localizable: true, scopable: true }),
-  field: 'name',
-  operator: Operator.IS_EMPTY,
-};
-
-const locales = [
-  {
-    code: 'de_DE',
-    label: 'German (Germany)',
-    region: 'Germany',
-    language: 'German',
-  },
-  {
-    code: 'en_US',
-    label: 'English (United States)',
-    region: 'United States',
-    language: 'English',
-  },
-  {
-    code: 'fr_FR',
-    label: 'French (France)',
-    region: 'France',
-    language: 'French',
-  },
-];
-
-const scopes: IndexedScopes = {
-  ecommerce: {
-    code: 'ecommerce',
-    currencies: ['EUR', 'USD'],
-    locales: locales,
-    category_tree: 'master',
-    conversion_units: [],
-    labels: { en_US: 'e-commerce' },
-    meta: {},
-  },
-  mobile: {
-    code: 'mobile',
-    currencies: ['EUR', 'USD'],
-    locales: [locales[0], locales[1]],
-    category_tree: 'master',
-    conversion_units: [],
-    labels: { en_US: 'Mobile' },
-    meta: {},
-  },
-};
-
-const translate = jest.fn((key: string) => key);
-const router: Router = {
-  generate: jest.fn(),
-  redirect: jest.fn(),
-};
+import { createAttribute, locales, scopes } from '../../factories';
 
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
+jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
+jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
 
 describe('TextAttributeConditionLine', () => {
-  beforeEach(() => {
+  afterEach(() => {
     fetchMock.resetMocks();
   });
 
-  it('should display the text attribute conditionWithLocalizableScopableAttribute with locale and scope selectors', async () => {
-    const {
-      findByText,
-      findByTestId,
-    } = renderWithProviders(
+  it('should display the locale and scope selectors', async () => {
+    fetchMock.mockResponses([
+      JSON.stringify(createAttribute({ localizable: true, scopable: true })),
+      { status: 200 },
+    ]);
+
+    const { findByText, findByTestId } = renderWithProviders(
       <TextAttributeConditionLine
-        condition={conditionWithLocalizableScopableAttribute}
+        condition={{
+          field: 'localizableScopableAttribute',
+          operator: Operator.NOT_EQUAL,
+          value: 'Canon',
+          scope: 'mobile',
+          locale: 'en_US',
+        }}
         lineNumber={1}
-        translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
-        router={router}
       />,
       { all: true }
     );
@@ -163,20 +53,23 @@ describe('TextAttributeConditionLine', () => {
     );
   });
 
-  it('should display the text attribute conditionWithLocalizableScopableAttribute without locale and scope selectors', async () => {
-    const {
-      findByText,
-      findByTestId,
-      queryByTestId,
-    } = renderWithProviders(
+  it('should not display the locale and scope selectors', async () => {
+    fetchMock.mockResponses([
+      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
+      { status: 200 },
+    ]);
+
+    const { findByText, findByTestId, queryByTestId } = renderWithProviders(
       <TextAttributeConditionLine
-        condition={conditionWithNonLocalizableScopableAttribute}
+        condition={{
+          field: 'conditionWithNonLocalizableScopableAttribute',
+          operator: Operator.NOT_EQUAL,
+          value: 'Canon',
+        }}
         lineNumber={1}
-        translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
-        router={router}
       />,
       { all: true }
     );
@@ -190,20 +83,22 @@ describe('TextAttributeConditionLine', () => {
   });
 
   it('handles values option appearance based on selected operator', async () => {
-    // Given
-    const {
-      findByText,
-      findByTestId,
-      queryByTestId,
-    } = renderWithProviders(
+    fetchMock.mockResponses([
+      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
+      { status: 200 },
+    ]);
+
+    const { findByText, findByTestId, queryByTestId } = renderWithProviders(
       <TextAttributeConditionLine
-        condition={conditionWithLocalizableScopableAttribute}
+        condition={{
+          field: 'localizableScopableAttribute',
+          operator: Operator.NOT_EQUAL,
+          value: 'Canon',
+        }}
         lineNumber={1}
-        translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'en_US'}
-        router={router}
       />,
       { all: true }
     );
@@ -222,7 +117,11 @@ describe('TextAttributeConditionLine', () => {
   });
 
   it('displays the matching locales regarding the scope', async () => {
-    // Given
+    fetchMock.mockResponses([
+      JSON.stringify(createAttribute({ localizable: true, scopable: true })),
+      { status: 200 },
+    ]);
+
     const {
       findByText,
       findByTestId,
@@ -230,13 +129,17 @@ describe('TextAttributeConditionLine', () => {
       queryByText,
     } = renderWithProviders(
       <TextAttributeConditionLine
-        condition={defaultCondition}
+        condition={{
+          field: 'localizableScopableAttribute',
+          operator: Operator.NOT_EQUAL,
+          value: 'Canon',
+          scope: 'mobile',
+          locale: 'en_US',
+        }}
         lineNumber={1}
-        translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'en_US'}
-        router={router}
       />,
       { all: true }
     );

@@ -1,34 +1,85 @@
 import React from 'react';
-import { Locale, LocaleCode } from '../../models';
+import { Attribute, Locale, LocaleCode, ScopeCode } from '../../models';
 import {
   Select2Option,
   Select2OptionGroup,
   Select2SimpleSyncWrapper,
+  Select2Value,
 } from '../Select2Wrapper';
+import { useTranslate } from '../../dependenciesTools/hooks';
 import { Translate } from '../../dependenciesTools';
 
+const getLocaleValidation = (
+  attribute: Attribute,
+  locales: Locale[],
+  availableLocales: Locale[],
+  channelCode: ScopeCode,
+  translate: Translate
+) => {
+  const localeValidation: any = {};
+  if (attribute.localizable) {
+    localeValidation['required'] = translate(
+      'pimee_catalog_rule.exceptions.required_locale'
+    );
+  }
+  localeValidation['validate'] = (localeCode: any) => {
+    if (attribute.localizable) {
+      if (!locales.some(locale => locale.code === localeCode)) {
+        return translate(
+          'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
+          { localeCode }
+        );
+      }
+      if (!availableLocales.some(locale => locale.code === localeCode)) {
+        return attribute.scopable
+          ? translate('pimee_catalog_rule.exceptions.unbound_locale', {
+              localeCode,
+              channelCode,
+            })
+          : translate(
+              'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
+              { localeCode }
+            );
+      }
+    } else {
+      if (localeCode) {
+        return translate(
+          'pimee_catalog_rule.exceptions.locale_on_unlocalizable_attribute'
+        );
+      }
+    }
+    return true;
+  };
+
+  return localeValidation;
+};
+
 type Props = {
-  id: string;
-  label: string;
+  label?: string;
   hiddenLabel?: boolean;
   availableLocales: Locale[];
-  value: LocaleCode;
-  onChange: (value: LocaleCode) => void;
-  translate: Translate;
+  value?: LocaleCode;
+  onChange?: (value: LocaleCode) => void;
   allowClear?: boolean;
+  disabled?: boolean;
+  name: string;
+  validation?: { required?: string; validate?: (value: any) => string | true };
 };
 
 const LocaleSelector: React.FC<Props> = ({
-  id,
   label,
   hiddenLabel = false,
   availableLocales,
   value,
   onChange,
-  translate,
   children,
   allowClear = false,
+  disabled = false,
+  name,
+  validation,
+  ...remainingProps
 }) => {
+  const translate = useTranslate();
   const localeChoices = availableLocales.map((locale: Locale) => {
     return {
       id: locale.code,
@@ -58,24 +109,33 @@ const LocaleSelector: React.FC<Props> = ({
     return `<i class="flag flag-${shortRegion}"}/>&nbsp;${locale.language}`;
   };
 
+  const handleChange = (value: Select2Value) => {
+    if (onChange) {
+      onChange(value as LocaleCode);
+    }
+  };
+
   return (
     <>
       <Select2SimpleSyncWrapper
-        id={id}
-        label={label}
+        {...remainingProps}
+        label={label || translate('pim_enrich.entity.locale.uppercase_label')}
         hiddenLabel={hiddenLabel}
         data={localeChoices}
         hideSearch={true}
         formatResult={formatLocale}
         formatSelection={formatLocale}
         placeholder={translate('pim_enrich.entity.locale.uppercase_label')}
-        value={value}
-        onValueChange={value => onChange(value as LocaleCode)}
+        value={value || null}
+        onChange={handleChange}
         allowClear={allowClear}
+        disabled={disabled}
+        name={name}
+        validation={validation}
       />
       {children}
     </>
   );
 };
 
-export { LocaleSelector };
+export { getLocaleValidation, LocaleSelector };

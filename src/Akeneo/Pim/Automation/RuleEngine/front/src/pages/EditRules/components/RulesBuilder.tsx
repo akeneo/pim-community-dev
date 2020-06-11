@@ -1,13 +1,12 @@
 import React from 'react';
-import { Router, Translate } from '../../../dependenciesTools';
 import { RuleProductSelection } from './conditions/RuleProductSelection';
-import { RuleDefinition, Locale, LocaleCode } from '../../../models';
-import { Action } from '../../../models/Action';
+import { Locale, LocaleCode } from '../../../models';
 import { IndexedScopes } from '../../../repositories/ScopeRepository';
 import { ActionLine } from './actions/ActionLine';
 import styled from 'styled-components';
 import middleImage from '../../../assets/illustrations/middle.svg';
 import endImage from '../../../assets/illustrations/end.svg';
+import { Action } from '../../../models/Action';
 
 const ActionContainer = styled.div`
   background-image: url('${middleImage}');
@@ -25,63 +24,49 @@ const LastActionContainer = styled.div`
 `;
 
 type Props = {
-  translate: Translate;
-  ruleDefinition: RuleDefinition;
   locales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
-  router: Router;
-  actions: (Action | null)[];
+  actions: ({ [key: string]: any } & { id?: string })[];
   handleDeleteAction: (lineNumber: number) => void;
 };
 
 const RulesBuilder: React.FC<Props> = ({
-  translate,
-  ruleDefinition,
   locales,
   scopes,
   currentCatalogLocale,
-  router,
   actions,
   handleDeleteAction,
 }) => {
   const isLastAction: (lineNumber: number) => boolean = lineNumber => {
-    const nextActions = actions.slice(lineNumber + 1);
-    return !nextActions.some(action => {
-      return action !== null;
-    });
+    return lineNumber === actions.length - 1;
   };
 
   return (
     <>
       <RuleProductSelection
-        ruleDefinition={ruleDefinition}
-        translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={currentCatalogLocale}
-        router={router}
       />
       <div data-testid={'action-list'}>
-        {actions.map((action: Action | null, i) => {
+        {actions.map((action, i) => {
           const Component = isLastAction(i)
             ? LastActionContainer
             : ActionContainer;
           return (
-            action && (
-              <Component key={`action_${i}`}>
-                <ActionLine
-                  action={action}
-                  translate={translate}
-                  lineNumber={i}
-                  handleDelete={() => {
-                    handleDeleteAction(i);
-                  }}
-                  router={router}
-                  currentCatalogLocale={currentCatalogLocale}
-                />
-              </Component>
-            )
+            <Component key={action.id}>
+              <ActionLine
+                action={action as Action}
+                lineNumber={i}
+                handleDelete={() => {
+                  handleDeleteAction(i);
+                }}
+                currentCatalogLocale={currentCatalogLocale}
+                locales={locales}
+                scopes={scopes}
+              />
+            </Component>
           );
         })}
       </div>

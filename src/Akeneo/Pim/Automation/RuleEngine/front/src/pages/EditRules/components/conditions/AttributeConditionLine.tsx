@@ -8,20 +8,28 @@ import {
   ScopeCode,
   TextAttributeCondition,
 } from '../../../../models';
-import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
-import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';
-import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import {
+  getScopeValidation,
+  ScopeSelector,
+} from '../../../../components/Selectors/ScopeSelector';
+import {
+  getLocaleValidation,
+  LocaleSelector,
+} from '../../../../components/Selectors/LocaleSelector';
+import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
+import {
+  ConditionErrorLine,
   FieldColumn,
   LocaleColumn,
   OperatorColumn,
   ScopeColumn,
   ValueColumn,
 } from './style';
-import { ConditionLineErrors } from './ConditionLineErrors';
-import { Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
+import { LineErrors } from '../LineErrors';
+import { useRegisterConst } from '../../hooks/useRegisterConst';
+import { useTranslate } from '../../../../dependenciesTools/hooks';
+import { Attribute } from '../../../../models';
 
 const shouldDisplayValue: (operator: Operator) => boolean = operator =>
   !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
@@ -31,37 +39,35 @@ const shouldDisplayValue: (operator: Operator) => boolean = operator =>
 type AttributeConditionLineProps = {
   condition: TextAttributeCondition | MultiOptionsAttributeCondition;
   lineNumber: number;
-  translate: Translate;
   locales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
   availableOperators: Operator[];
-  setValueFormValue: (value: any) => void;
+  attribute?: Attribute | null;
 };
 
 const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   condition,
   lineNumber,
-  translate,
   locales,
   scopes,
   currentCatalogLocale,
   availableOperators,
   children,
-  setValueFormValue,
+  attribute,
 }) => {
-  const { watch, setValue, triggerValidation } = useFormContext();
+  const translate = useTranslate();
+  const { watch, setValue } = useFormContext();
 
   const getOperatorFormValue: () => Operator = () =>
     watch(`content.conditions[${lineNumber}].operator`);
-
   const getScopeFormValue: () => ScopeCode = () =>
     watch(`content.conditions[${lineNumber}].scope`);
   const getLocaleFormValue: () => LocaleCode = () =>
     watch(`content.conditions[${lineNumber}].locale`);
 
   const getAvailableLocales = (): Locale[] => {
-    if (!condition.attribute.scopable) {
+    if (!attribute || !attribute.scopable) {
       return locales;
     }
 
@@ -73,106 +79,77 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     return [];
   };
 
-  const localeValidation: any = {};
-  if (condition.attribute.localizable) {
-    localeValidation['required'] = translate(
-      'pimee_catalog_rule.exceptions.required_locale'
-    );
-  }
-  localeValidation['validate'] = (localeCode: any) => {
-    if (condition.attribute.localizable) {
-      if (!locales.some(locale => locale.code === localeCode)) {
-        return translate(
-          'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
-          { localeCode }
-        );
-      }
-      if (!getAvailableLocales().some(locale => locale.code === localeCode)) {
-        return condition.attribute.scopable
-          ? translate('pimee_catalog_rule.exceptions.unbound_locale', {
-              localeCode,
-              scopeCode: getScopeFormValue(),
-            })
-          : translate(
-              'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
-              { localeCode }
-            );
-      }
-    } else {
-      if (localeCode) {
-        return translate(
-          'pimee_catalog_rule.exceptions.locale_on_unlocalizable_attribute'
-        );
-      }
-    }
-    return true;
-  };
-
-  const scopeValidation: any = {};
-  if (condition.attribute.scopable) {
-    scopeValidation['required'] = translate(
-      'pimee_catalog_rule.exceptions.required_scope'
-    );
-  }
-  scopeValidation['validate'] = (scopeCode: any) => {
-    if (condition.attribute.scopable) {
-      if (!scopes[scopeCode]) {
-        return translate('pimee_catalog_rule.exceptions.unknown_scope', {
-          scopeCode,
-        });
-      }
-    } else {
-      if (scopeCode) {
-        return translate(
-          'pimee_catalog_rule.exceptions.scope_on_unscopable_attribute'
-        );
-      }
-    }
-    return true;
-  };
-
-  useValueInitialization(
-    `content.conditions[${lineNumber}]`,
-    {
-      field: condition.field,
-      operator: condition.operator,
-      scope: condition.scope,
-      locale: condition.locale,
-    },
-    {
-      scope: scopeValidation,
-      locale: localeValidation,
-    },
-    [condition]
+  const [localeValidation, setLocaleValidation] = React.useState(
+    attribute
+      ? getLocaleValidation(
+          attribute,
+          locales,
+          getAvailableLocales(),
+          getScopeFormValue(),
+          translate
+        )
+      : {}
+  );
+  const [scopeValidation, setScopeValidation] = React.useState(
+    attribute ? getScopeValidation(attribute, scopes, translate) : {}
   );
 
-  const setLocaleFormValue = (value: LocaleCode | null) => {
-    setValue(`content.conditions[${lineNumber}].locale`, value);
-    triggerValidation(`content.conditions[${lineNumber}].locale`);
-  };
+  React.useEffect(() => {
+    setLocaleValidation(
+      attribute
+        ? getLocaleValidation(
+            attribute,
+            locales,
+            getAvailableLocales(),
+            getScopeFormValue(),
+            translate
+          )
+        : {}
+    );
+    setScopeValidation(
+      attribute ? getScopeValidation(attribute, scopes, translate) : {}
+    );
+  }, [JSON.stringify(getAvailableLocales())]);
 
-  const setScopeFormValue = (value: ScopeCode) => {
-    setValue(`content.conditions[${lineNumber}].scope`, value);
-    triggerValidation(`content.conditions[${lineNumber}].scope`);
+  useRegisterConst(`content.conditions[${lineNumber}].field`, condition.field);
+
+  const handleScopeChange = () => {
     if (
       !getAvailableLocales()
         .map(locale => locale.code)
         .includes(getLocaleFormValue())
     ) {
-      setLocaleFormValue(null);
-    }
-  };
-
-  const setOperatorFormValue = (value: Operator) => {
-    setValue(`content.conditions[${lineNumber}].operator`, value);
-    if (!shouldDisplayValue(getOperatorFormValue())) {
-      setValueFormValue(null);
+      setValue(`content.conditions[${lineNumber}].locale`, undefined);
     }
   };
 
   const title =
-    condition.attribute.labels[currentCatalogLocale] ||
-    '[' + condition.attribute.code + ']';
+    attribute && attribute.labels[currentCatalogLocale]
+      ? attribute.labels[currentCatalogLocale]
+      : '[' + condition.field + ']';
+
+  if (attribute === undefined) {
+    return (
+      <div className='AknGrid-bodyCell'>
+        <img
+          src='/bundles/pimui/images//loader-V2.svg'
+          alt={translate('pim_common.loading')}
+        />
+      </div>
+    );
+  }
+
+  if (attribute === null) {
+    return (
+      <div className='AknGrid-bodyCell'>
+        <ConditionErrorLine>
+          {translate('pimee_catalog_rule.exceptions.unknown_attribute', {
+            attributeCode: condition.field,
+          })}
+        </ConditionErrorLine>
+      </div>
+    );
+  }
 
   return (
     <div className={'AknGrid-bodyCell'}>
@@ -181,48 +158,45 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
       </FieldColumn>
       <OperatorColumn>
         <OperatorSelector
-          id={`edit-rules-input-${lineNumber}-operator`}
-          label='Operator'
+          data-testid={`edit-rules-input-${lineNumber}-operator`}
           hiddenLabel={true}
           availableOperators={availableOperators}
-          translate={translate}
-          value={getOperatorFormValue()}
-          onChange={setOperatorFormValue}
+          value={condition.operator}
+          name={`content.conditions[${lineNumber}].operator`}
         />
       </OperatorColumn>
       <ValueColumn>
         {shouldDisplayValue(getOperatorFormValue()) && children}
       </ValueColumn>
       <ScopeColumn>
-        {(condition.attribute.scopable || getScopeFormValue()) && (
+        {(attribute.scopable || getScopeFormValue()) && (
           <ScopeSelector
-            id={`edit-rules-input-${lineNumber}-scope`}
-            label='Scope'
+            data-testid={`edit-rules-input-${lineNumber}-scope`}
             hiddenLabel={true}
             availableScopes={Object.values(scopes)}
             currentCatalogLocale={currentCatalogLocale}
-            value={getScopeFormValue()}
-            onChange={setScopeFormValue}
-            translate={translate}
-            allowClear={!condition.attribute.scopable}
+            value={condition.scope}
+            onChange={handleScopeChange}
+            allowClear={!attribute.scopable}
+            name={`content.conditions[${lineNumber}].scope`}
+            validation={scopeValidation}
           />
         )}
       </ScopeColumn>
       <LocaleColumn>
-        {(condition.attribute.localizable || getLocaleFormValue()) && (
+        {(attribute.localizable || getLocaleFormValue()) && (
           <LocaleSelector
-            id={`edit-rules-input-${lineNumber}-locale`}
-            label='Locale'
+            data-testid={`edit-rules-input-${lineNumber}-locale`}
             hiddenLabel={true}
             availableLocales={getAvailableLocales()}
-            value={getLocaleFormValue()}
-            onChange={setLocaleFormValue}
-            translate={translate}
-            allowClear={!condition.attribute.localizable}
+            value={condition.locale}
+            allowClear={!attribute.localizable}
+            name={`content.conditions[${lineNumber}].locale`}
+            validation={localeValidation}
           />
         )}
       </LocaleColumn>
-      <ConditionLineErrors lineNumber={lineNumber} />
+      <LineErrors lineNumber={lineNumber} type='conditions' />
     </div>
   );
 };
