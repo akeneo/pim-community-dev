@@ -139,7 +139,7 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
             'attribute',
             [],
             'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
-            'Property "attribute" expects a string as data, "array" given.',
+            'The attribute attribute requires a string, a array was detected.',
             InvalidPropertyTypeException::STRING_EXPECTED_CODE
         );
 

@@ -1557,7 +1557,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "a_text" expects a string as data, "array" given. Check the expected format on the API documentation.',
+            'message' => 'The a_text attribute requires a string, a array was detected. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"

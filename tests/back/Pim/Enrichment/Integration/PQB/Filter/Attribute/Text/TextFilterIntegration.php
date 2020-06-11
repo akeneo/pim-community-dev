@@ -182,7 +182,7 @@ class TextFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testErrorDataIsMalformed()
     {
         $this->expectException(InvalidPropertyTypeException::class);
-        $this->expectExceptionMessage('Property "a_text" expects a string as data, "array" given.');
+        $this->expectExceptionMessage('The a_text attribute requires a string, a array was detected.');
 
         $this->executeFilter([['a_text', Operators::NOT_EQUAL, [[]]]]);
     }
