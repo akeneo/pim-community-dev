@@ -8,6 +8,9 @@ export const getCategoriesByIdentifiers = async (
   categoryIdentifiers: CategoryCode[],
   router: Router
 ): Promise<{ [identifier: string]: Category | null }> => {
+  if (categoryIdentifiers === undefined) {
+    throw new Error();
+  }
   const categoryIdentifiersToGet = categoryIdentifiers.filter(
     categoryIdentifier => {
       return !Object.keys(cacheCategories).includes(categoryIdentifier);

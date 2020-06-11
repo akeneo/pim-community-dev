@@ -1,13 +1,11 @@
-import React from 'react';
 import { AddToCategoryActionLine } from '../../pages/EditRules/components/actions/AddToCategoryActionLine';
-import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
 import { ActionModuleGuesser } from "./ActionModuleGuesser";
+import { CategoryCode } from "../Category";
 
 export type AddToCategoryAction = {
-  module: React.FC<{ action: AddToCategoryAction } & ActionLineProps>;
   type: 'add';
   field: 'categories';
-  value: string[] | null;
+  value: CategoryCode[];
 };
 
 export const getAddToCategoryModule: ActionModuleGuesser = json => {
@@ -23,9 +21,8 @@ export const getAddToCategoryModule: ActionModuleGuesser = json => {
 
 export const createAddToCategoryAction: () => AddToCategoryAction = () => {
   return {
-    module: AddToCategoryActionLine,
     type: 'add',
     field: 'categories',
-    value: null,
+    value: [],
   };
 };

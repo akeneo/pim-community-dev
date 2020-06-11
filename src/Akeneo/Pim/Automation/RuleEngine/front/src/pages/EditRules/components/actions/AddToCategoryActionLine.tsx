@@ -5,7 +5,7 @@ import { NetworkLifeCycle } from '../../../../components/CategoryTree/hooks/Netw
 import { CategoryTreeModel } from '../../../../components/CategoryTree/category-tree.types';
 import { Category, CategoryCode, CategoryId } from "../../../../models";
 import { getCategoriesByIdentifiers, getCategoryByIdentifier } from "../../../../repositories/CategoryRepository";
-import { useBackboneRouter } from "../../../../dependenciesTools/hooks";
+import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
 import { getCategoriesTrees } from "../../../../components/CategoryTree/category-tree.getters";
 import { ActionTemplate } from "./ActionTemplate";
 import { ActionGrid, ActionLeftSide, ActionRightSide, ActionTitle } from "./ActionLine";
@@ -13,6 +13,8 @@ import { LineErrors } from "../LineErrors";
 import styled from 'styled-components';
 import { Select2Wrapper } from "../../../../components/Select2Wrapper";
 import { CategorySelector } from "../../../../components/Selectors/CategorySelector";
+import { useFormContext } from 'react-hook-form';
+import { useRegisterConst } from "../../hooks/useRegisterConst";
 
 const CategoryTreeHelper = styled.span`
   text-transform: uppercase;
@@ -45,7 +47,14 @@ const AddToCategoryActionLine: React.FC<Props> = ({
   currentCatalogLocale,
   handleDelete,
 }) => {
+  // TODO handle unknown categories
+
   const router = useBackboneRouter();
+  const translate = useTranslate();
+  const { setValue, register } = useFormContext();
+
+  useRegisterConst(`content.actions[${lineNumber}].type`, 'add');
+  useRegisterConst(`content.actions[${lineNumber}].field`, 'categories');
 
   const [categories, setCategories] = React.useState<NetworkLifeCycle<Category[]>>({ status: 'PENDING' });
   const [categoryTrees, setCategoriesTrees] = useState<NetworkLifeCycle<CategoryTreeModel[]>>({ status: 'PENDING' });
@@ -67,14 +76,19 @@ const AddToCategoryActionLine: React.FC<Props> = ({
       }
       return previousValue;
     }, [] as any[]);
-    if (currentCategoryTree === undefined) {
+    if (currentCategoryTree === undefined && categoryTreesWithSelectedCategories.length) {
       setCurrentCategoryTree(categoryTreesWithSelectedCategories[0][0]);
     }
     return new Map<CategoryTreeModel, Category[]>(categoryTreesWithSelectedCategories);
   }
 
   React.useEffect(() => {
-    getCategoriesByIdentifiers(action.value || [], router).then((indexedCategories) => {
+    register(`content.actions[${lineNumber}].value`);
+    setValue(`content.actions[${lineNumber}].value`, action.value);
+  }, [lineNumber]);
+
+  React.useEffect(() => {
+    getCategoriesByIdentifiers((action.value || []), router).then((indexedCategories) => {
       const categories = Object.values(indexedCategories);
       const nonNullCategories = categories.filter(category => category !== null) as Category[];
       setCategories({ status: 'COMPLETE', data: nonNullCategories });
@@ -97,19 +111,10 @@ const AddToCategoryActionLine: React.FC<Props> = ({
     !categoryTrees.data || categoryTrees.status !== 'COMPLETE' ||
     !categoryTreesWithSelectedCategoriesMap
   ) {
-    return <div>Loading</div>
-  }
-
-  const categoryTreesWithSelectedCategories = categoryTrees.data.reduce((previousValue, categoryTree) => {
-    const categoriesData: Category[] = (categories.data || []);
-    const matchingCategories = categoriesData.filter(category => category.root === categoryTree.id);
-    if (matchingCategories.length) {
-      previousValue.push([categoryTree, matchingCategories]);
-    }
-    return previousValue;
-  }, [] as any[]);
-  if (currentCategoryTree === undefined) {
-    setCurrentCategoryTree(categoryTreesWithSelectedCategories[0][0]);
+    return <img
+      src='/bundles/pimui/images//loader-V2.svg'
+      alt={translate('pim_common.loading')}
+    />;
   }
 
   const handleAddCategoryTree = (categoryTreeId: CategoryId) => {
@@ -124,8 +129,7 @@ const AddToCategoryActionLine: React.FC<Props> = ({
 
   const getNonSelectedCategoryTrees = () => {
     const nonSelectedcategoryTrees = (categoryTrees.data || []).filter((categoryTree) => {
-      return !Array.from(categoryTreesWithSelectedCategoriesMap.entries()).some((toto) => {
-        const [ categoryTreeLeft ] = toto;
+      return !Array.from(categoryTreesWithSelectedCategoriesMap.entries()).some(([ categoryTreeLeft, _categories ]) => {
         return categoryTreeLeft.id === categoryTree.id;
       });
     })
@@ -135,6 +139,12 @@ const AddToCategoryActionLine: React.FC<Props> = ({
         text: categoryTree.labels[currentCatalogLocale] || `[${categoryTree.code}]`
       }
     })
+  }
+
+  const getSelectedCategories: () => CategoryCode[] = () => {
+    return Array.from(categoryTreesWithSelectedCategoriesMap.entries()).reduce((previousValue, [ _tree, categories ]) => {
+      return [...previousValue, ...categories.map(category => category.code)];
+    }, [] as CategoryCode[]);
   }
 
   const handleCategorySelect = (categoryCode: CategoryCode, categoryTree: CategoryTreeModel, index?: number) => {
@@ -150,6 +160,7 @@ const AddToCategoryActionLine: React.FC<Props> = ({
       }
       categoryTreesWithSelectedCategoriesMap.set(categoryTree, previousCategories);
       setCategoryTreesWithSelectedCategoriesMap(new Map(categoryTreesWithSelectedCategoriesMap));
+      setValue(`content.actions[${lineNumber}].value`, getSelectedCategories());
     });
   }
 
@@ -157,32 +168,39 @@ const AddToCategoryActionLine: React.FC<Props> = ({
     const previousCategories = categoryTreesWithSelectedCategoriesMap.get(categoryTree) || [];
     previousCategories.splice(index, 1);
     setCategoryTreesWithSelectedCategoriesMap(new Map(categoryTreesWithSelectedCategoriesMap));
+    setValue(`content.actions[${lineNumber}].value`, getSelectedCategories());
   }
 
   return (
     <ActionTemplate
-      title='Set Action'
-      helper='This feature is under development. Please use the import to manage your rules.'
-      legend='This feature is under development. Please use the import to manage your rules.'
+      title={translate('pimee_catalog_rule.form.edit.actions.add_category.title')}
+      helper={translate('pimee_catalog_rule.form.edit.actions.add_category.helper')}
+      legend={translate('pimee_catalog_rule.form.edit.actions.add_category.helper')}
       handleDelete={handleDelete}>
       <ActionGrid>
         <ActionLeftSide>
           <div className='AknFormContainer'>
             <ActionTitle>
-              Select your category trees
+              {translate('pimee_catalog_rule.form.edit.actions.add_category.select_category_trees')}
             </ActionTitle>
-            <label className="AknFieldContainer-label">Category tree (required)</label>
+            <label className="AknFieldContainer-label">
+              {`${translate('pimee_catalog_rule.form.edit.actions.add_category.category_tree')} ${translate('pim_common.required_label')}`}
+            </label>
             <ul>
-              {Array.from(categoryTreesWithSelectedCategoriesMap.entries()).map((toto) => {
-                const [categoryTree] = toto;
+              {Array.from(categoryTreesWithSelectedCategoriesMap.entries()).map(([categoryTree, _categories]) => {
                 return <li key={categoryTree.code}>
+                  {/* TODO add Selected state */}
                   <CategoryTreeButton
                     className='AknTextField'
                     onClick={(e) => { e.preventDefault(); setCurrentCategoryTree(categoryTree) }}
                   >
                     {categoryTree.labels[currentCatalogLocale] || `[${categoryTree.code}]`}
                     <CategoryTreeHelper>
-                      {(categoryTreesWithSelectedCategoriesMap.get(categoryTree) || []).length} selected categories
+                      {translate(
+                        'pimee_catalog_rule.form.edit.actions.add_category.categories_selected',
+                        { count: (categoryTreesWithSelectedCategoriesMap.get(categoryTree) || []).length },
+                        (categoryTreesWithSelectedCategoriesMap.get(categoryTree) || []).length
+                      )}
                     </CategoryTreeHelper>
                   </CategoryTreeButton>
                 </li>
@@ -195,7 +213,7 @@ const AddToCategoryActionLine: React.FC<Props> = ({
                   setCloseTick(!closeTick);
                   handleAddCategoryTree(event.val);
                 }}
-                placeholder={'Select your category tree'}
+                placeholder={translate('pimee_catalog_rule.form.edit.actions.add_category.select_category_tree')}
                 data={getNonSelectedCategoryTrees()}
                 hiddenLabel={true}
               />}
@@ -205,11 +223,13 @@ const AddToCategoryActionLine: React.FC<Props> = ({
         <ActionRightSide>
           <div className='AknFormContainer'>
             <ActionTitle>
-              Select your categories
+              {translate('pimee_catalog_rule.form.edit.actions.add_category.select_categories')}
             </ActionTitle>
-            {currentCategoryTree && (
+            {currentCategoryTree ? (
               <>
-                <label className="AknFieldContainer-label">Categories (required)</label>
+                <label className="AknFieldContainer-label">
+                  {`${translate('pim_enrich.entity.category.plural_label')} ${translate('pim_common.required_label')}`}
+                </label>
                 <ul>
                   {(categoryTreesWithSelectedCategoriesMap.get(currentCategoryTree) || []).map((category, i) => {
                     return (
@@ -232,6 +252,8 @@ const AddToCategoryActionLine: React.FC<Props> = ({
                 categoryTreeSelected={currentCategoryTree}
                 />
               </>
+            ) : (
+              <div>{translate('pimee_catalog_rule.form.edit.actions.add_category.no_category_tree')}</div>
             )}
           </div>
         </ActionRightSide>
