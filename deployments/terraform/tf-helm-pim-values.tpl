@@ -3,6 +3,11 @@ image:
     tag: ${pimVersion}
 
 elasticsearch:
+  cluster:
+    env:
+      cluster.routing.allocation.disk.watermark.low: .97
+      cluster.routing.allocation.disk.watermark.high: .98
+      cluster.routing.allocation.disk.watermark.flood_stage: .99
   master:
     podAnnotations:
       tags.akeneo.com/pfid: ${pfid}
