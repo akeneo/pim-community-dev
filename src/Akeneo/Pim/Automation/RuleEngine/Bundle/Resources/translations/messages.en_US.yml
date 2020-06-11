@@ -128,3 +128,17 @@ pim_datagrid:
         type:
             mass_edit_rule: Rules Settings
             execute_rules: Rules execution
+
+pim_localization:
+    relative_date:
+        now: 'now'
+        past: '{{ timeframe }} ago'
+        future: 'in {{ timeframe }}'
+    time_unit:
+        second: '{0,1} %count% second | ]1,Inf[ %count% seconds'
+        minute: '{0,1} %count% minute | ]1,Inf[ %count% minutes'
+        hour: '{0,1} %count% hour | ]1,Inf[ %count% hours'
+        day: '{0,1} %count% day | ]1,Inf[ %count% days'
+        week: '{0,1} %count% week | ]1,Inf[ %count% weeks'
+        month: '{0,1} %count% month | ]1,Inf[ %count% months'
+        year: '{0,1} %count% year | ]1,Inf[ %count% years'

@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegi
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -39,18 +40,23 @@ class RuleExtension extends \Twig_Extension
     /** @var FileInfoRepositoryInterface */
     private $fileInfoRepository;
 
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
     public function __construct(
         PresenterRegistryInterface $presenterRegistry,
         LocaleResolver $localeResolver,
         AttributeRepositoryInterface $attributeRepository,
         TranslatorInterface $translator,
-        FileInfoRepositoryInterface $fileInfoRepository
+        FileInfoRepositoryInterface $fileInfoRepository,
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->presenterRegistry   = $presenterRegistry;
-        $this->localeResolver      = $localeResolver;
+        $this->presenterRegistry = $presenterRegistry;
+        $this->localeResolver = $localeResolver;
         $this->attributeRepository = $attributeRepository;
         $this->translator = $translator;
         $this->fileInfoRepository = $fileInfoRepository;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -85,13 +91,22 @@ class RuleExtension extends \Twig_Extension
      * input: '/path/to/my/image.jpg', null
      * output: <i class="icon-file"></i> image.jpg
      *
-     * @param mixed  $value
+     * @param mixed $value
      * @param string $code
      *
      * @return string
      */
     public function presentRuleActionValue($value, $code): string
     {
+        $options = [
+            'attribute' => $code,
+            'locale' => $this->localeResolver->getCurrentLocale(),
+            'present_relative_date' => true,
+        ];
+        if (null !== $this->tokenStorage->getToken() && null !== $this->tokenStorage->getToken()->getUser()) {
+            $options['timezone'] = $this->tokenStorage->getToken()->getUser()->getTimezone();
+        }
+
         $presenter = $this->presenterRegistry->getPresenterByFieldCode($code);
         if (null === $presenter) {
             $presenter = $this->presenterRegistry->getPresenterByAttributeCode($code);
@@ -99,7 +114,7 @@ class RuleExtension extends \Twig_Extension
 
         if (is_array($value)) {
             if (null !== $presenter) {
-                $value = $presenter->present($value, ['locale' => $this->localeResolver->getCurrentLocale(), 'attribute' => $code]);
+                $value = $presenter->present($value, $options);
 
                 return is_array($value) ? implode(', ', $value) : $value;
             }
@@ -122,7 +137,7 @@ class RuleExtension extends \Twig_Extension
         }
 
         if (null !== $presenter) {
-            return $presenter->present($value, ['locale' => $this->localeResolver->getCurrentLocale(), 'attribute' => $code]);
+            return $presenter->present($value, $options);
         }
 
         return $value;
@@ -170,16 +185,22 @@ class RuleExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function appendIncludeChildrenContext(string $value, string $field = '', ?bool $includeChildren = false): string
-    {
+    public function appendIncludeChildrenContext(
+        string $value,
+        string $field = '',
+        ?bool $includeChildren = false
+    ): string {
         if ('categories' === $field && true === $includeChildren) {
             $locale = $this->localeResolver->getCurrentLocale();
-            $value .= sprintf(' %s', $this->translator->trans(
-                'pimee_catalog_rule.actions.options.include_children',
-                [],
-                null,
-                $locale
-            ));
+            $value .= sprintf(
+                ' %s',
+                $this->translator->trans(
+                    'pimee_catalog_rule.actions.options.include_children',
+                    [],
+                    null,
+                    $locale
+                )
+            );
         }
 
         return $value;

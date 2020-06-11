@@ -11,5 +11,13 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@translator'
             - '@akeneo_file_storage.repository.file_info'
+            - '@security.token_storage'
         tags:
             - { name: twig.extension }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Localization\Presenter\RelativeDatePresenter:
+        decorates: pim_catalog.localization.presenter.datetime
+        decoration_inner_name: 'base_datetime_presenter'
+        arguments:
+            - '@base_datetime_presenter'
+            - '@translator'
