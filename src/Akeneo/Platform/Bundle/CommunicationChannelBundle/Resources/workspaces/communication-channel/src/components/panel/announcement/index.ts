@@ -1,3 +1,2 @@
-import {AnnouncementComponent} from './Announcement';
-
-export {AnnouncementComponent};
+export * from './Announcement';
+export * from './EmptyAnnouncementList';

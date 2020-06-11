@@ -48,13 +48,13 @@ export const getExpectedCampaign = () => {
   return 'Serenity';
 }
 
-export const getMockDataProvider = () => {
+export const getMockDataProvider = (announcement: Announcement[], campaign: string) => {
   return {
     announcementFetcher:  {
       fetchAll: (): Promise<Announcement[]> => {
         return new Promise(resolve => {
           act(() => {
-            setTimeout(() => resolve(getExpectedAnnouncements()), 100);
+            setTimeout(() => resolve(announcement), 100);
           });
         })
       }
@@ -63,7 +63,7 @@ export const getMockDataProvider = () => {
       fetch: (): Promise<string> => {
         return new Promise(resolve => {
           act(() => {
-            setTimeout(() => resolve(getExpectedCampaign()), 100);
+            setTimeout(() => resolve(campaign), 100);
           });
         });
       } 
