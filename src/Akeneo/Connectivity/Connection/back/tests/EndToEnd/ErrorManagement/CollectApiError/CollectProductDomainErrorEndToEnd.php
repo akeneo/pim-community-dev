@@ -68,7 +68,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
             'attributes' => ['sku', 'name', 'length']
         ]);
 
-        $this->productLoader->create("high-top_sneakers", ["family" => "shoes"]);
+        $this->productLoader->create('high-top_sneakers', ['family' => 'shoes']);
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
         $client = $this->createAuthenticatedClient(
             [],
@@ -166,10 +166,10 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
         $this->familyLoader->create([
             'code' => 'shoes',
-            'attributes' => ['sku','name']
+            'attributes' => ['sku', 'name']
         ]);
 
-        $this->productLoader->create("high-top_sneakers", ["family" => "shoes"]);
+        $this->productLoader->create('high-top_sneakers', ['family' => 'shoes']);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
@@ -253,10 +253,10 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
         $expectedContent = [
             'type' => 'domain_error',
             'message' => 'Attribute "name" does not exist.',
-            'documentation' =>  [
+            'documentation' => [
                 [
                     'message' => 'More information about attributes: {what_is_attribute} {manage_attribute}.',
-                    'parameters' =>  [
+                    'parameters' => [
                         'what_is_attribute' => [
                             'href' => 'https://help.akeneo.com/pim/serenity/articles/what-is-an-attribute.html',
                             'title' => 'What is an attribute?',
@@ -281,7 +281,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                     ]
                 ]
             ],
-            'product' =>  [
+            'product' => [
                 'id' => 1,
                 'identifier' => 'high-top_sneakers',
                 'label' => 'high-top_sneakers',

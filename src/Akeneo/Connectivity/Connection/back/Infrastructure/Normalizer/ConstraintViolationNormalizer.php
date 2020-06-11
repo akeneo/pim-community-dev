@@ -39,17 +39,12 @@ class ConstraintViolationNormalizer extends ViolationNormalizer
                     sprintf('Context property "product" should be an instance of %s', ProductInterface::class)
                 );
             }
-
-            if (null !== $product->getId()) {
-                $data['product'] = [
-                    'id' => $product->getId(),
-                    'identifier' => $product->getIdentifier(),
-                    'label' => $product->getLabel(),
-                    'family' => null !== $product->getFamily() ? $product->getFamily()->getCode() : null,
-                ];
-            }
-
-
+            $data['product'] = [
+                'id' => $product->getId(),
+                'identifier' => $product->getIdentifier(),
+                'label' => $product->getLabel(),
+                'family' => null !== $product->getFamily() ? $product->getFamily()->getCode() : null,
+            ];
         }
 
         return $data;
