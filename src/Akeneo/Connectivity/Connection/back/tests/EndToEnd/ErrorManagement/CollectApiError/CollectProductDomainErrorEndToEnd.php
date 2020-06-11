@@ -401,7 +401,9 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
             ],
             'product' => [
                 'id' => null,
-                'identifier' => 'high-top_sneakers'
+                'identifier' => 'high-top_sneakers',
+                'label' => 'high-top_sneakers',
+                'family' => 'shoes'
             ]
         ];
         Assert::assertEquals($expectedContent, $doc['content']);
