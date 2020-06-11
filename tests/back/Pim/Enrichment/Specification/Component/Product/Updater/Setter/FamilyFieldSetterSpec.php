@@ -69,12 +69,8 @@ class FamilyFieldSetterSpec extends ObjectBehavior
     ) {
         $familyRepository->findOneByIdentifier('shirt')->willReturn(null);
 
-        $this->shouldThrow(
-            UnknownFamilyException::unknownFamily(
-                'family',
-                'shirt',
-                FamilyFieldSetter::class
-            )
-        )->during('setFieldData', [$product, 'family', 'shirt']);
+        $this
+            ->shouldThrow(UnknownFamilyException::class)
+            ->during('setFieldData', [$product, 'family', 'shirt']);
     }
 }

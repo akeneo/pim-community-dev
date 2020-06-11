@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
@@ -315,10 +316,10 @@ class ProductController
     {
         $product = $this->productRepository->findOneByIdentifier($code);
         if (null === $product) {
-            $exception = new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));
-            $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
+            $exception = new UnknownProductException($code);
+            $this->eventDispatcher->dispatch(new ProductDomainErrorEvent($exception, null));
 
-            throw $exception;
+            throw new NotFoundHttpException($exception->getMessage(), $exception);
         }
 
         $this->remover->remove($product);

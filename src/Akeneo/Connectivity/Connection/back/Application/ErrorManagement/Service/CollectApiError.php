@@ -57,8 +57,8 @@ class CollectApiError
     }
 
     public function collectFromProductDomainError(
-        ProductInterface $product,
-        DomainErrorInterface $error
+        DomainErrorInterface $error,
+        ?ProductInterface $product
     ): void {
         if (false === $this->isConnectionCollectable()) {
             return;
@@ -73,8 +73,8 @@ class CollectApiError
      * @param ConstraintViolationListInterface<ConstraintViolationInterface> $constraintViolationList
      */
     public function collectFromProductValidationError(
-        ProductInterface $product,
-        ConstraintViolationListInterface $constraintViolationList
+        ConstraintViolationListInterface $constraintViolationList,
+        ProductInterface $product
     ): void {
         if (false === $this->isConnectionCollectable()) {
             return;

@@ -157,7 +157,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
         Assert::assertEquals($expectedContent, $doc['content']);
     }
 
-    public function test_it_collects_the_unknown_family_error(): void
+    public function test_it_collects_an_unknown_family_error(): void
     {
         $this->attributeLoader->create([
             'code' => 'name',
@@ -209,7 +209,37 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
         $expectedContent = [
             'type' => 'domain_error',
-            'message' => 'Property "family" expects a valid family code. The family does not exist, "unknown_family_code" given.',
+            'message' => 'The unknown_family_code family does not exist in your PIM.',
+            'message_template' => 'The {family_code} family does not exist in your PIM.',
+            'message_parameters' => ['family_code' => 'unknown_family_code'],
+            'documentation' =>  [
+                [
+                    'message' => 'Please check your {family_settings}.',
+                    'parameters' => [
+                        'family_settings' => [
+                            'type' => 'route',
+                            'route' => 'pim_enrich_family_index',
+                            'routeParameters' => [],
+                            'title' => 'Family settings',
+                        ],
+                    ]
+                ],
+                [
+                    'message' => 'More information about families: {what_is_a_family} {manage_your_families}.',
+                    'parameters' => [
+                        'what_is_a_family' => [
+                            'type' => 'href',
+                            'href' => 'https://help.akeneo.com/pim/serenity/articles/what-is-a-family.html',
+                            'title' => 'What is a family?',
+                        ],
+                        'manage_your_families' => [
+                            'type' => 'href',
+                            'href' => 'https://help.akeneo.com/pim/serenity/articles/manage-your-families.html',
+                            'title' => 'Manage your families',
+                        ],
+                    ]
+                ]
+            ],
             'product' => [
                 'id' => 1,
                 'identifier' => 'high-top_sneakers',
@@ -252,8 +282,10 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
         $expectedContent = [
             'type' => 'domain_error',
-            'message' => 'Attribute "name" does not exist.',
-            'documentation' => [
+            'message' => 'The name attribute does not exist in your PIM.',
+            'message_template' => 'The {attribute_code} attribute does not exist in your PIM.',
+            'message_parameters' => ['attribute_code' => 'name'],
+            'documentation' =>  [
                 [
                     'message' => 'More information about attributes: {what_is_attribute} {manage_attribute}.',
                     'parameters' => [
@@ -299,6 +331,112 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
         $doc = $result['hits']['hits'][0]['_source'];
         Assert::assertEquals('erp', $doc['connection_code']);
+        Assert::assertEquals($expectedContent, $doc['content']);
+    }
+
+    public function test_it_collects_an_unknown_category_error(): void
+    {
+        $this->familyLoader->create(['code' => 'shoes', 'attributes' => ['sku']]);
+
+        $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
+
+        $client = $this->createAuthenticatedClient(
+            [],
+            [],
+            $connection->clientId(),
+            $connection->secret(),
+            $connection->username(),
+            $connection->password()
+        );
+
+        $content = json_encode([
+            'identifier' => 'high-top_sneakers',
+            'family' => 'shoes',
+            'categories' => ['unknown_category_code']
+        ]);
+
+        $client->request('PATCH', '/api/rest/v1/products/high-top_sneakers', [], [], [], $content);
+        Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
+
+        $this->elasticsearch->refreshIndex();
+        $result = $this->elasticsearch->search([]);
+
+        Assert::assertCount(1, $result['hits']['hits']);
+
+        $doc = $result['hits']['hits'][0]['_source'];
+        Assert::assertEquals('erp', $doc['connection_code']);
+
+        $expectedContent = [
+            'type' => 'domain_error',
+            'message' => 'The unknown_category_code category does not exist in your PIM.',
+            'message_template' => 'The {category_code} category does not exist in your PIM.',
+            'message_parameters' => ['category_code' => 'unknown_category_code'],
+            'documentation' => [
+                [
+                    'message' => 'Please check your {categories_settings}.',
+                    'parameters' => [
+                        'categories_settings' => [
+                            'type' => 'route',
+                            'route' => 'pim_enrich_categorytree_index',
+                            'routeParameters' => [],
+                            'title' => 'Categories settings',
+                        ],
+                    ]
+                ],
+                [
+                    'message' => 'More information about catalogs and categories: {what_is_a_category} {categorize_a_product}.',
+                    'parameters' => [
+                        'what_is_a_category' => [
+                            'type' => 'href',
+                            'href' => 'https://help.akeneo.com/pim/serenity/articles/what-is-a-category.html',
+                            'title' => 'What is a category?',
+                        ],
+                        'categorize_a_product' => [
+                            'type' => 'href',
+                            'href' => 'https://help.akeneo.com/pim/serenity/articles/categorize-a-product.html',
+                            'title' => 'Categorize a product',
+                        ],
+                    ]
+                ]
+            ],
+            'product' => [
+                'id' => null,
+                'identifier' => 'high-top_sneakers'
+            ]
+        ];
+        Assert::assertEquals($expectedContent, $doc['content']);
+    }
+
+    public function test_it_collects_an_unknown_product_error(): void
+    {
+        $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
+
+        $client = $this->createAuthenticatedClient(
+            [],
+            [],
+            $connection->clientId(),
+            $connection->secret(),
+            $connection->username(),
+            $connection->password()
+        );
+
+        $client->request('DELETE', '/api/rest/v1/products/unknown_product_identifier');
+        Assert::assertSame(Response::HTTP_NOT_FOUND, $client->getResponse()->getStatusCode());
+
+        $this->elasticsearch->refreshIndex();
+        $result = $this->elasticsearch->search([]);
+
+        Assert::assertCount(1, $result['hits']['hits']);
+
+        $doc = $result['hits']['hits'][0]['_source'];
+        Assert::assertEquals('erp', $doc['connection_code']);
+
+        $expectedContent = [
+            'type' => 'domain_error',
+            'message' => 'The unknown_product_identifier product does not exist in your PIM.',
+            'message_template' => 'The {product_identifier} product does not exist in your PIM.',
+            'message_parameters' => ['product_identifier' => 'unknown_product_identifier']
+        ];
         Assert::assertEquals($expectedContent, $doc['content']);
     }
 }

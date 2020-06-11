@@ -872,7 +872,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Attribute "unknown_attribute" does not exist. Check the expected format on the API documentation.',
+            'message' => 'The unknown_attribute attribute does not exist in your PIM. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_products'

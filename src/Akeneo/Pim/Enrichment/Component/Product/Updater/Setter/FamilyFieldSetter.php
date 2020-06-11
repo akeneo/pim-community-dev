@@ -54,7 +54,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
         if (null !== $data && '' !== $data) {
             $family = $this->getFamily($data);
             if (null === $family) {
-                throw UnknownFamilyException::unknownFamily($field, $data, static::class);
+                throw new UnknownFamilyException($field, $data, static::class);
             }
             $product->setFamily($family);
         } else {

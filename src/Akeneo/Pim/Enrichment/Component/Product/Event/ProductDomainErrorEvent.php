@@ -16,10 +16,10 @@ final class ProductDomainErrorEvent
     /** @var DomainErrorInterface */
     private $error;
 
-    /** @var ProductInterface */
+    /** @var ?ProductInterface */
     private $product;
 
-    public function __construct(DomainErrorInterface $error, ProductInterface $product)
+    public function __construct(DomainErrorInterface $error, ?ProductInterface $product)
     {
         $this->error = $error;
         $this->product = $product;

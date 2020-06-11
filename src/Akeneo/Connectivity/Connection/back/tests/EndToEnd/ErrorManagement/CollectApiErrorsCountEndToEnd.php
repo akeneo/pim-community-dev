@@ -47,8 +47,7 @@ class CollectApiErrorsCountEndToEnd extends ApiTestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    // test_it_collects_the_error_count_from_a_product_delete
-    public function test_it_collects_the_error_count_from_a_not_found_http_exception(): void
+    public function test_it_collects_the_error_count_from_a_product_delete(): void
     {
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
@@ -64,11 +63,10 @@ class CollectApiErrorsCountEndToEnd extends ApiTestCase
         $client->request('DELETE', '/api/rest/v1/products/unknown_product_identifier');
         Assert::assertSame(Response::HTTP_NOT_FOUND, $client->getResponse()->getStatusCode());
 
-        $this->errorCountMustBe('erp', 1, ErrorTypes::TECHNICAL);
+        $this->errorCountMustBe('erp', 1, ErrorTypes::BUSINESS);
     }
 
-    // test_it_collects_the_error_count_from_a_product_create
-    public function test_it_collects_the_error_count_from_a_unprocessable_entity_http_exception(): void
+    public function test_it_collects_the_error_count_from_a_product_create(): void
     {
         $this->attributeLoader->create([
             'code' => 'name',
@@ -110,8 +108,7 @@ JSON;
         $this->errorCountMustBe('erp', 1, ErrorTypes::BUSINESS);
     }
 
-// test_it_collects_the_error_count_from_a_product_partial_update
-    public function test_it_collects_the_error_count_from_a_violation_http_exception()
+    public function test_it_collects_the_error_count_from_a_product_partial_update()
     {
         $this->attributeLoader->create([
             'code' => 'name',

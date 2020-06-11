@@ -5,22 +5,15 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\CollectApiError;
-use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\MonitoredRoutes;
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ApiErrorEventSubscriber;
 use Akeneo\Pim\Enrichment\Bundle\Event\ProductValidationErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
-use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Validator\ConstraintViolationList;
 
@@ -47,14 +40,13 @@ class ApiErrorEventSubscriberSpec extends ObjectBehavior
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
-
     public function it_collects_a_product_domain_error($collectApiError): void
     {
-        $error = UnknownAttributeException::unknownAttribute('attribute_code');
+        $error = new UnknownAttributeException('attribute_code');
         $product = new Product();
         $event = new ProductDomainErrorEvent($error, $product);
 
-        $collectApiError->collectFromProductDomainError($product, $error)->shouldBeCalled();
+        $collectApiError->collectFromProductDomainError($error, $product)->shouldBeCalled();
 
         $this->collectProductDomainError($event);
     }
@@ -65,7 +57,7 @@ class ApiErrorEventSubscriberSpec extends ObjectBehavior
         $product = new Product();
         $event = new ProductValidationErrorEvent($constraintViolationList, $product);
 
-        $collectApiError->collectFromProductValidationError($product, $constraintViolationList)->shouldBeCalled();
+        $collectApiError->collectFromProductValidationError($constraintViolationList, $product)->shouldBeCalled();
 
         $this->collectProductValidationError($event);
     }

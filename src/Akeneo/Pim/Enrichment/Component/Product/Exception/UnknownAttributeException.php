@@ -8,6 +8,8 @@ use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\HrefMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\RouteMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 
 /**
@@ -18,30 +20,31 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
  */
 final class UnknownAttributeException extends PropertyException implements
     DomainErrorInterface,
+    TemplatedErrorMessageInterface,
     DocumentedErrorInterface
 {
+    /** @var TemplatedErrorMessage */
+    private $templatedErrorMessage;
+
     /** @var DocumentationCollection */
     private $documentation;
 
-    public function __construct(string $attributeName, string $message = '', int $code = 0, \Exception $previous = null)
+    public function __construct(string $attributeCode, \Exception $previous = null)
     {
-        parent::__construct($message, $code, $previous);
+        $this->templatedErrorMessage = new TemplatedErrorMessage(
+            'The {attribute_code} attribute does not exist in your PIM.',
+            ['attribute_code' => $attributeCode]
+        );
 
-        $this->propertyName = $attributeName;
+        parent::__construct((string) $this->templatedErrorMessage, 0, $previous);
+        $this->propertyName = $attributeCode;
+
         $this->documentation = $this->buildDocumentation();
     }
 
-    public static function unknownAttribute(string $attributeCode, \Exception $previous = null): self
+    public function getTemplatedErrorMessage(): TemplatedErrorMessage
     {
-        return new static(
-            $attributeCode,
-            sprintf(
-                'Attribute "%s" does not exist.',
-                $attributeCode
-            ),
-            0,
-            $previous
-        );
+        return $this->templatedErrorMessage;
     }
 
     public function getDocumentation(): DocumentationCollection

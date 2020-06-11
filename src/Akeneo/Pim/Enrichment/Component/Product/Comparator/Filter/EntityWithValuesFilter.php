@@ -104,7 +104,7 @@ class EntityWithValuesFilter implements FilterInterface
         $result = [];
         foreach ($values as $code => $value) {
             if (!isset($this->attributeTypeByCodes[$code])) {
-                throw UnknownAttributeException::unknownAttribute($code);
+                throw new UnknownAttributeException($code);
             }
 
             $comparator = $this->comparatorRegistry->getAttributeComparator($this->attributeTypeByCodes[$code]);

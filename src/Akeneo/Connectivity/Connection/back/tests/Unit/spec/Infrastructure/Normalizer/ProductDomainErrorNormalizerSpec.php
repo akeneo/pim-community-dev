@@ -9,7 +9,8 @@ use Akeneo\Pim\Enrichment\Component\Error\Documented\Documentation;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentationCollection;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
@@ -60,22 +61,18 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_a_templated_error_message(): void
     {
-        $error = new class () implements DomainErrorInterface, TemplatedErrorMessageInterface {
-            public function getMessageTemplate(): string
+        $error = new class () implements DomainErrorInterface, TemplatedErrorMessageInterface
+        {
+            public function getTemplatedErrorMessage(): TemplatedErrorMessage
             {
-                return 'My message template with %param%.';
-            }
-
-            public function getMessageParameters(): array
-            {
-                return ['%param%' => 'a param'];
+                return new TemplatedErrorMessage('My message template with {param}.', ['param' => 'a param']);
             }
         };
 
         $this->normalize($error, 'json', [])->shouldReturn([
             'type' => 'domain_error',
-            'message_template' => 'My message template with %param%.',
-            'message_parameters' => ['%param%' => 'a param']
+            'message_template' => 'My message template with {param}.',
+            'message_parameters' => ['param' => 'a param']
         ]);
     }
 
