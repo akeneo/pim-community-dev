@@ -39,8 +39,7 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_an_identifiable_domain_error(): void
     {
-        $error = new class () implements DomainErrorInterface
-        {
+        $error = new class () implements DomainErrorInterface {
         };
 
         $this->normalize($error, 'json', [])->shouldReturn([
@@ -50,8 +49,7 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_an_exception(): void
     {
-        $error = new class ('My message.') extends \Exception implements DomainErrorInterface
-        {
+        $error = new class ('My message.') extends \Exception implements DomainErrorInterface {
         };
 
         $this->normalize($error, 'json', [])->shouldReturn([
@@ -62,8 +60,7 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_a_templated_error_message(): void
     {
-        $error = new class () implements DomainErrorInterface, TemplatedErrorMessageInterface
-        {
+        $error = new class () implements DomainErrorInterface, TemplatedErrorMessageInterface {
             public function getMessageTemplate(): string
             {
                 return 'My message template with %param%.';
@@ -82,34 +79,9 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_does_not_normalize_the_product_without_product_id(ProductInterface $product, FamilyInterface $family): void
-    {
-        $error = new class () implements DomainErrorInterface
-        {
-            public function getErrorIdentifier(): string
-            {
-                return 'identifier';
-            }
-        };
-
-        $product->getId()->willReturn(null);
-        $product->getIdentifier()->willReturn('product_identifier');
-        $product->getFamily()->willReturn($family);
-        $product->getLabel()->willReturn('Akeneo T-Shirt black and purple with short sleeve');
-
-        $this->normalize($error, 'json', ['product' => $product])->shouldReturn([
-            'type' => 'domain_error',
-        ]);
-    }
-
     public function it_normalizes_the_product_without_family(ProductInterface $product): void
     {
-        $error = new class () implements DomainErrorInterface
-        {
-            public function getErrorIdentifier(): string
-            {
-                return 'identifier';
-            }
+        $error = new class () implements DomainErrorInterface {
         };
 
         $product->getId()->willReturn(1);
@@ -130,8 +102,7 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_a_documented_error(): void
     {
-        $error = new class () implements DomainErrorInterface, DocumentedErrorInterface
-        {
+        $error = new class () implements DomainErrorInterface, DocumentedErrorInterface {
             public function getDocumentation(): DocumentationCollection
             {
                 return new DocumentationCollection([new Documentation('any message', [])]);
@@ -151,8 +122,7 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_the_product_information(ProductInterface $product, FamilyInterface $family): void
     {
-        $error = new class () implements DomainErrorInterface
-        {
+        $error = new class () implements DomainErrorInterface {
         };
 
         $product->getId()->willReturn(1);

@@ -67,25 +67,6 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
         );
     }
 
-    public function it_does_not_normalize_a_product_without_id(ProductInterface $product, FamilyInterface $family): void
-    {
-        $constraintViolation = new ConstraintViolation('', '', [], '', '', '');
-
-        $product->getId()->willReturn(null);
-        $product->getIdentifier()->willReturn('product_identifier');
-        $product->getFamily()->willReturn($family);
-        $family->getCode()->willReturn('tshirts');
-        $product->getLabel()->willReturn('Akeneo T-Shirt black and purple with short sleeve');
-
-        $this->normalize($constraintViolation, 'json', ['product' => $product])->shouldReturn([
-            'property' => '',
-            'message' => '',
-            'type' => 'violation_error',
-            'message_template' => '',
-            'message_parameters' => [],
-        ]);
-    }
-
     public function it_normalizes_a_product_without_family(ProductInterface $product): void
     {
         $constraintViolation = new ConstraintViolation('', '', [], '', '', '');
