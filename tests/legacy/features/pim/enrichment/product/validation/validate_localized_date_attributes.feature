@@ -27,7 +27,7 @@ Feature: Validate localized date attributes of a product
     When I am on the "bar" product page
     And I change the Release to "02/02/2013"
     And I save the product
-    Then I should see validation tooltip "La valeur 2013-02-02 est déjà définie sur un autre produit pour l'attribut unique release"
+    Then I should see validation tooltip "L'attribut release ne peut pas avoir plusieurs fois la même valeur. La valeur 2013-02-02 est déjà attribuée à un autre produit."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the date min constraint of date attribute

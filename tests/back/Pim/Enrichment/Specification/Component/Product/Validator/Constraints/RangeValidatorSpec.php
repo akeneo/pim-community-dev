@@ -397,8 +397,14 @@ class RangeValidatorSpec extends ObjectBehavior
         $constraint->max = 20;
 
         $context
-            ->buildViolation('myMessage', ['{{ value }}' => 21, '{{ limit }}' => 20])
-            ->shouldNotBeCalled();
+            ->buildViolation(
+                $constraint->invalidMessage,
+                [
+                    '{{ attribute }}' => $constraint->attributeCode,
+                    '{{ value }}' => null,
+                ]
+            )
+            ->shouldBeCalled();
 
         $this->validate(null, $constraint);
     }

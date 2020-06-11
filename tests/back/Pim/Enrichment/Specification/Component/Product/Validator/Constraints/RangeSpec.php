@@ -30,6 +30,12 @@ class RangeSpec extends ObjectBehavior
         $this->maxDateMessage->shouldBe('The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.');
     }
 
+    function it_has_an_invalid_number_message()
+    {
+        $this->beConstructedWith(['max' => new \DateTime()]);
+        $this->invalidMessage->shouldBe('The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.');
+    }
+
     function it_has_an_invalid_date_message()
     {
         $this->beConstructedWith(['min' => new \DateTime()]);

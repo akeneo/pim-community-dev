@@ -37,8 +37,8 @@ class IsNumericValidator extends ConstraintValidator
             $violation = $this->context->buildViolation(
                 $constraint->message,
                 [
-                    '%attribute%' => $constraint->attributeCode,
-                    '%value%' => $value,
+                    '{{ attribute }}' => $constraint->attributeCode,
+                    '{{ value }}' => $value,
                 ]
 
             );

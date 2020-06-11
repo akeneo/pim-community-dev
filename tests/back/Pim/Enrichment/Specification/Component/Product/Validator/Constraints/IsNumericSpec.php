@@ -15,7 +15,7 @@ class IsNumericSpec extends ObjectBehavior
 
     function it_has_message()
     {
-        $this->message->shouldBe('The %attribute% attribute requires a number, and the submitted %value% value is not.');
+        $this->message->shouldBe('The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.');
     }
 
     function it_is_a_validator_constraint()

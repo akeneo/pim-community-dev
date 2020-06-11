@@ -22,6 +22,8 @@ class Range extends BaseRange
     /** @var string */
     public $invalidDateMessage = 'This value is not a valid date.';
 
+    public $invalidMessage = 'The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.';
+
     /** @var string */
     public $attributeCode = '';
 

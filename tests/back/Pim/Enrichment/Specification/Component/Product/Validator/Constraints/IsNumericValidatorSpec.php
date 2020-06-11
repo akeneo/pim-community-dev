@@ -116,8 +116,8 @@ class IsNumericValidatorSpec extends ObjectBehavior
             ->buildViolation(
                 $numericConstraint->message,
                 [
-                    '%attribute%' => $numericConstraint->attributeCode,
-                    '%value%' => 'a',
+                    '{{ attribute }}' => $numericConstraint->attributeCode,
+                    '{{ value }}' => 'a',
                 ]
             )
             ->shouldBeCalled()
@@ -139,8 +139,8 @@ class IsNumericValidatorSpec extends ObjectBehavior
             ->buildViolation(
                 $numericConstraint->message,
                 [
-                    '%attribute%' => $numericConstraint->attributeCode,
-                    '%value%' => 'a',
+                    '{{ attribute }}' => $numericConstraint->attributeCode,
+                    '{{ value }}' => 'a',
                 ]
             )
             ->shouldBeCalled()
@@ -161,8 +161,8 @@ class IsNumericValidatorSpec extends ObjectBehavior
             ->buildViolation(
                 $numericConstraint->message,
                 [
-                    '%attribute%' => $numericConstraint->attributeCode,
-                    '%value%' => 'a',
+                    '{{ attribute }}' => $numericConstraint->attributeCode,
+                    '{{ value }}' => 'a',
                 ]
             )
             ->shouldBeCalled()
