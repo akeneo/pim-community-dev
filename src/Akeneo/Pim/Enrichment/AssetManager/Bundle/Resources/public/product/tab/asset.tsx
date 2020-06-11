@@ -60,11 +60,7 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
   }
 
   configure() {
-    // Register the asset tab in the sidebar
-    this.trigger('tab:register', {
-      code: this.code,
-      label: __('pim_enrich.entity.product.module.asset.title'),
-    });
+    this.registerAssetManagerTab();
 
     this.listenTo(UserContext, 'change:catalogLocale', this.updateLocale);
     this.listenTo(UserContext, 'change:catalogScope', this.updateChannel);
@@ -87,6 +83,13 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
     this.store.dispatch(updateAttributeGroups() as any);
 
     return Form.prototype.configure.apply(this, arguments);
+  }
+
+  registerAssetManagerTab() {
+    this.trigger('tab:register', {
+      code: this.code,
+      label: __('pim_enrich.entity.product.module.asset.title'),
+    });
   }
 
   render() {

@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Technical Improvements
+
+- AOB-947: Add extension point on asset manager tab register
+
 # 4.0.33 (2020-06-11)
 
 ## Technical Improvements
