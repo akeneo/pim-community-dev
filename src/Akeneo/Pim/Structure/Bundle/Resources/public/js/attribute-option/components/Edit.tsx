@@ -29,7 +29,7 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
             <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
                 <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_labels')}</span>
             </div>
-            <div>
+            <div className="AknAttributeOption-edit-translations">
                 {locales.map((locale: Locale) => {
                     return (
                         <div className="AknFieldContainer" key={`${option.code}-${locale.code}`}>
@@ -50,10 +50,12 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
                         </div>
                     );
                 })}
+            </div>
+
+            <div className="AknAttributeOption-edit-saveTranslations">
                 <button className="AknButton AknButton--apply save" role="save-options-translations" onClick={() => saveAttributeOption(updatedOption)}>
                     {translate('pim_common.done')}
                 </button>
-
             </div>
         </div>
     );

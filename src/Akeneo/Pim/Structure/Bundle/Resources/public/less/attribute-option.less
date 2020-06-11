@@ -5,7 +5,14 @@
   min-height: 400px;
 
   &-list {
-    width: 56%;
+    flex: 1;
+    margin-right: 40px;
+
+    &-optionsList {
+      height: calc(100vh - 352px);
+      overflow-y: auto;
+      margin-top: 20px;
+    }
   }
 
   &-listItem {
@@ -25,10 +32,6 @@
     &--move-target {
       background-color: #ee5f5b !important;
       pointer-events: none;
-    }
-
-    &:first-child {
-      margin-top: 20px;
     }
 
     &:hover {
@@ -78,7 +81,18 @@
   }
 
   &-edit {
-    width: 40%;
+    width: 400px;
+
+    &-translations {
+      height: calc(100vh - 354px);
+      overflow-y: auto;
+    }
+
+    &-saveTranslations {
+      border-top: 1px @AknMediumGrey solid;
+      padding-top: 10px;
+      text-align: right;
+    }
   }
 
   .AknSubsection {
