@@ -94,6 +94,7 @@ describe('Attribute options list', () => {
     });
 
     test('it displays a fake new option at the end when adding a new option', async () => {
+        window.HTMLElement.prototype.scrollIntoView = jest.fn();
         const showNewOptionFormCallback = jest.fn();
         await renderComponent(options, false, jest.fn(), showNewOptionFormCallback, jest.fn());
 
@@ -133,8 +134,8 @@ describe('Attribute options list', () => {
     });
 
     test('it handles option reorder', async () => {
-        const reorderAttributeOptions = jest.fn();
-        await renderComponent(options, false, jest.fn(), jest.fn(), reorderAttributeOptions);
+        const manuallySortAttributeOptions = jest.fn();
+        await renderComponent(options, false, jest.fn(), jest.fn(), manuallySortAttributeOptions);
 
         const attributeOptionMoveHandle = getAllByRole(container, 'attribute-option-move-handle').shift();
         const attributeOptions = getAllByRole(container, 'attribute-option-item');
@@ -150,7 +151,7 @@ describe('Attribute options list', () => {
         expect(sortedAttributeOptions[0].textContent).toBe('black');
         expect(sortedAttributeOptions[1].textContent).toBe('blue');
 
-        expect(reorderAttributeOptions).toHaveBeenNthCalledWith(1, [
+        expect(manuallySortAttributeOptions).toHaveBeenNthCalledWith(1, [
             {
                 "id": 18,
                 "code": "black",
@@ -193,7 +194,7 @@ async function moveBlueOptionToBackOption(attributeOptionMoveHandle, attributeOp
     await fireEvent.drop(attributeOptionMoveHandle);
 }
 
-async function renderComponent(options, autoSortOptions, selectOptionCallback, showNewOptionFormCallback, reorderAttributeOptions, selectedOptionId = null) {
+async function renderComponent(options, autoSortOptions, selectOptionCallback, showNewOptionFormCallback, manuallySortAttributeOptionsCallback, selectedOptionId = null) {
     await act(async () => {
         ReactDOM.render(
             <DependenciesProvider>
@@ -205,7 +206,7 @@ async function renderComponent(options, autoSortOptions, selectOptionCallback, s
                             showNewOptionForm={showNewOptionFormCallback}
                             selectedOptionId={selectedOptionId}
                             deleteAttributeOption={jest.fn()}
-                            reorderAttributeOptions={reorderAttributeOptions}
+                            manuallySortAttributeOptions={manuallySortAttributeOptionsCallback}
                         />
                     </AttributeContextProvider>
                 </Provider>
