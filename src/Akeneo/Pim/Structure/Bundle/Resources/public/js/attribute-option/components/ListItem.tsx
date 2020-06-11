@@ -101,6 +101,7 @@ const ListItem = ({data, selectAttributeOption, isSelected, deleteAttributeOptio
                 onDragStart={onDragStart}
                 onDragOver={(event: any) => onDragOver(event)}
                 onDrop={(event: any) => onDrop(event)}
+                onDragEnd={(event: any) => onDrop(event)}
                 style={dragItem !== null && dragItem.code === data.code ? {opacity: 0.4} : {}}
                 ref={rowRef}
             >
