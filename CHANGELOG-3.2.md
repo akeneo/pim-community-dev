@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9203: Box shadow appearing on category selector in product grid
 - PIM-9282: Make calling attribute options via API case insensitive
 
 # 3.2.58 (2020-06-01)
