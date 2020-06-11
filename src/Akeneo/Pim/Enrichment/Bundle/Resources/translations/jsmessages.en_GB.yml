@@ -443,3 +443,7 @@ batch_jobs:
     quick_export.label: XLSX product quick export
     quick_export_product_model.label: XLSX product model quick export
     perform.label: XLSX product quick export
+error:
+  removing:
+    group: Impossible to remove group
+    association type: Impossible to remove association type
