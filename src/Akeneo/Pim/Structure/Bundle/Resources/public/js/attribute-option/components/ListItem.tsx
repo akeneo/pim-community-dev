@@ -33,7 +33,6 @@ const ListItem = ({data, selectAttributeOption, isSelected, deleteAttributeOptio
     const onDragStart = (event: any) => {
         event.stopPropagation();
         event.persist();
-        event.dataTransfer.setData('optionCode', data.code);
         event.dataTransfer.setDragImage(rowRef.current, 0, 0);
         setDragItem({code: data.code, index});
     };

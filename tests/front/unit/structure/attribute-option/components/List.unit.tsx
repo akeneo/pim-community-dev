@@ -174,11 +174,9 @@ describe('Attribute options list', () => {
 
 async function moveBlueOptionToBackOption(attributeOptionMoveHandle, attributeOptions) {
     const dragStartEvent = createEvent.dragStart(attributeOptionMoveHandle);
-    const setData = jest.fn();
     const setDragImage = jest.fn();
     Object.assign(dragStartEvent, {
         dataTransfer: {
-            setData,
             setDragImage,
         },
     });

@@ -1,15 +1,13 @@
 import React from 'react';
 
 const OverridePimStyle = () => {
-    const style = {
-        __html: `
+    const style = `
         .AknDefault-mainContent {
             padding-bottom: 0px;
-        }`
-    };
+        `;
 
     return (
-        <style dangerouslySetInnerHTML={style} />
+        <style>{style}</style>
     );
 };
 
