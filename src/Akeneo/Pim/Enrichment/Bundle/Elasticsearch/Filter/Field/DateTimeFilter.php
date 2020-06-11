@@ -22,7 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
     const DATETIME_FORMAT = 'Y-m-d H:i:s';
-    const RELATIVE_DATETIME_FORMAT = '/^now|([+-])([0-9]+)\s?(second|minute|hour|day|week|month|year)s?$/';
+    const RELATIVE_DATETIME_FORMAT = '/^(now|[+-][0-9]+\s?(second|minute|hour|day|week|month|year)s?)$/';
 
     /** @var IdentifiableObjectRepositoryInterface */
     protected $jobInstanceRepository;
