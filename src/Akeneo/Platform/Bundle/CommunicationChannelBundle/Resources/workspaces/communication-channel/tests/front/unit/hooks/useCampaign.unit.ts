@@ -3,9 +3,8 @@ import {renderHook} from '@testing-library/react-hooks';
 import {useCampaign} from '@akeneo-pim-community/communication-channel/src/hooks/useCampaign';
 import {getExpectedCampaign, getMockDataProvider} from '../../../test-utils';
 
-const mockDataProvider = getMockDataProvider();
-
 test('It can get all the campaign', async () => {
+  const mockDataProvider = getMockDataProvider([], getExpectedCampaign());
   const {result, waitForNextUpdate} = renderHook(() => useCampaign(mockDataProvider.campaignFetcher));
 
   expect(result.current.campaign).toEqual(null);

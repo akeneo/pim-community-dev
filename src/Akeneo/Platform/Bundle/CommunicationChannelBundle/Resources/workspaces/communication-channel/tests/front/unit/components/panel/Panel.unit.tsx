@@ -5,7 +5,6 @@ import {Panel} from '@akeneo-pim-community/communication-channel/src/components/
 import {dependencies} from '@akeneo-pim-community/legacy-bridge';
 import {renderWithProviders, getMockDataProvider, getExpectedAnnouncements, getExpectedCampaign} from '../../../../test-utils';
 
-const mockDataProvider = getMockDataProvider();
 const expectedAnnouncements = getExpectedAnnouncements();
 const expectedCampaign = getExpectedCampaign();
 
@@ -20,6 +19,7 @@ afterEach(() => {
 });
 
 test('it shows the panel with the announcements', async () => {
+  const mockDataProvider = getMockDataProvider(expectedAnnouncements, expectedCampaign);
   await act(async () => renderWithProviders(
     <Panel dataProvider={mockDataProvider} />,
     container as HTMLElement
@@ -34,6 +34,7 @@ test('it shows the panel with the announcements', async () => {
 });
 
 test('it can show for each announcement the information from the json', async () => {
+  const mockDataProvider = getMockDataProvider(expectedAnnouncements, expectedCampaign);
   await act(async () => renderWithProviders(
     <Panel dataProvider={mockDataProvider} />,
     container as HTMLElement
@@ -52,6 +53,7 @@ test('it can show for each announcement the information from the json', async ()
 });
 
 test('it can open the read more link in a new tab', async () => {
+  const mockDataProvider = getMockDataProvider(expectedAnnouncements, expectedCampaign);
   await act(async () => renderWithProviders(
     <Panel dataProvider={mockDataProvider} />,
     container as HTMLElement
@@ -63,7 +65,19 @@ test('it can open the read more link in a new tab', async () => {
   expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).target).toEqual('_blank');
 });
 
+test('it can display an empty panel when it is not a serenity version', async () => {
+  const mockDataProvider = getMockDataProvider(expectedAnnouncements, 'CE4.0');
+  await act(async () => renderWithProviders(
+    <Panel dataProvider={mockDataProvider} />,
+    container as HTMLElement
+  ));
+
+  expect(container.querySelectorAll('ul li').length).toEqual(0);
+  expect(getByText(container, 'akeneo_communication_channel.panel.list.empty')).toBeInTheDocument();
+});
+
 test('it can close the panel', async () => {
+  const mockDataProvider = getMockDataProvider([], expectedCampaign);
   await act(async () => renderWithProviders(
     <Panel dataProvider={mockDataProvider} />,
     container as HTMLElement
