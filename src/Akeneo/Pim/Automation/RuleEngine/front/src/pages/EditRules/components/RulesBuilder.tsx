@@ -1,6 +1,6 @@
 import React from 'react';
 import { RuleProductSelection } from './conditions/RuleProductSelection';
-import { Locale, LocaleCode } from '../../../models';
+import { Condition, Locale, LocaleCode } from '../../../models';
 import { IndexedScopes } from '../../../repositories/ScopeRepository';
 import { ActionLine } from './actions/ActionLine';
 import styled from 'styled-components';
@@ -29,6 +29,7 @@ type Props = {
   currentCatalogLocale: LocaleCode;
   actions: ({ [key: string]: any } & { id?: string })[];
   handleDeleteAction: (lineNumber: number) => void;
+  conditions: Condition[];
 };
 
 const RulesBuilder: React.FC<Props> = ({
@@ -37,6 +38,7 @@ const RulesBuilder: React.FC<Props> = ({
   currentCatalogLocale,
   actions,
   handleDeleteAction,
+  conditions
 }) => {
   const isLastAction: (lineNumber: number) => boolean = lineNumber => {
     return lineNumber === actions.length - 1;
@@ -48,6 +50,7 @@ const RulesBuilder: React.FC<Props> = ({
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={currentCatalogLocale}
+        conditions={conditions}
       />
       <div data-testid={'action-list'}>
         {actions.map((action, i) => {

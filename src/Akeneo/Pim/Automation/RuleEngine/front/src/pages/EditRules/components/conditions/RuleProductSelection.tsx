@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useFormContext, Control, useFieldArray } from 'react-hook-form';
+import { useFormContext, Control } from 'react-hook-form';
 import { SmallHelper } from '../../../../components';
 import {
   Condition,
@@ -78,21 +78,24 @@ type Props = {
   currentCatalogLocale: LocaleCode;
   locales: Locale[];
   scopes: IndexedScopes;
+  conditions: Condition[];
 };
 
 const RuleProductSelection: React.FC<Props> = ({
   currentCatalogLocale,
   locales,
   scopes,
+  conditions,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
 
-  const { getValues, watch, control } = useFormContext();
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'content.conditions',
-  });
+  const [ conditionsState, setConditionsState ] = React.useState<(Condition | null)[]>([]);
+  React.useEffect(() => {
+    setConditionsState(conditions)
+  }, []);
+
+  const { getValues, watch } = useFormContext();
 
   const productsCount = useProductsCount(
     router,
@@ -120,6 +123,10 @@ const RuleProductSelection: React.FC<Props> = ({
     throw new Error(`Unknown factory for field ${fieldCode}`);
   };
 
+  const append = (condition: Condition) => {
+    setConditionsState([...conditionsState, condition]);
+  }
+
   const handleAddCondition = (fieldCode: string) => {
     createCondition(fieldCode).then(condition => append(condition));
   };
@@ -140,7 +147,12 @@ const RuleProductSelection: React.FC<Props> = ({
 
   const hasActions: () => boolean = () => {
     return (watch(`content.actions`) ?? []).length > 0;
-  };
+  }
+
+  const remove = (lineNumber: number) => {
+    conditionsState[lineNumber] = null;
+    setConditionsState([...conditionsState]);
+  }
 
   const Component = hasActions()
     ? RuleProductSelectionFieldsetWithAction
@@ -179,12 +191,12 @@ const RuleProductSelection: React.FC<Props> = ({
       </SmallHelper>
       <div className='AknGrid AknGrid--unclickable'>
         <div className='AknGrid-body' data-testid={'condition-list'}>
-          {fields.map((field, i) => {
-            return (
+          {conditionsState.map((condition, i) => {
+            return condition && (
               <ConditionLine
-                condition={field as Condition}
+                condition={condition}
                 lineNumber={i}
-                key={field.id}
+                key={i}
                 locales={locales}
                 scopes={scopes}
                 currentCatalogLocale={currentCatalogLocale}

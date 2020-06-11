@@ -64,7 +64,7 @@ const CategoriesSelector: React.FC<Props> = ({
   const translate = useTranslate();
   const popover = usePopoverState({
     gutter: 0,
-    placement: 'auto-start',
+    placement: 'bottom-start',
     modal: true,
   });
   const PopoverButton = (

@@ -36,7 +36,7 @@ const transformFormData = (formData: FormData): Payload => {
     ...formData,
     priority: Number(formData.priority),
     content: {
-      conditions: formData?.content?.conditions || [],
+      conditions: formData?.content?.conditions?.filter(condition => condition !== null) || [],
       // useFieldArray adds ids in each action. We remove them before submit.
       actions: removeIds(formData?.content?.actions || []),
     },

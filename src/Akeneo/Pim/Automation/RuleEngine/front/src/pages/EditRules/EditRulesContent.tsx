@@ -108,6 +108,7 @@ const EditRulesContent: React.FC<Props> = ({
             scopes={scopes}
             actions={fields}
             handleDeleteAction={remove}
+            conditions={ruleDefinition.conditions}
           />
         </FormContext>
       </Content>
