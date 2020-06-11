@@ -2,15 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import { VisuallyHidden } from 'reakit/VisuallyHidden';
 import { usePopoverState, Popover, PopoverDisclosure } from 'reakit/Popover';
-import { ValueColumn } from './style';
-import { CategoryTreeFilter } from '../../../../components/CategoryTree/CategoryTreeFilter';
-import { Category, CategoryCode, LocaleCode } from '../../../../models';
-import { NetworkLifeCycle } from '../../../../components/CategoryTree/hooks/NetworkLifeCycle.types';
+import { ValueColumn } from '../../pages/EditRules/components/conditions/style';
+import { CategoryTreeFilter } from '../CategoryTree/CategoryTreeFilter';
+import { Category, CategoryCode, LocaleCode } from '../../models';
+import { NetworkLifeCycle } from '../CategoryTree/hooks/NetworkLifeCycle.types';
 import {
   CategoryTreeModelWithOpenBranch,
   CategoryTreeModel,
-} from '../../../../components/CategoryTree/category-tree.types';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
+} from '../CategoryTree/category-tree.types';
+import { useTranslate } from '../../dependenciesTools/hooks';
 
 const InputCategory = styled(ValueColumn)`
   position: relative;
@@ -46,18 +46,18 @@ type Props = {
   initCategoryTreeOpenBranch: NetworkLifeCycle<
     CategoryTreeModelWithOpenBranch[]
   >;
-  categoriesTrees: NetworkLifeCycle<CategoryTreeModel[]>;
+  categoryTrees: NetworkLifeCycle<CategoryTreeModel[]>;
   categoryTreeSelected?: CategoryTreeModel;
   setCategoryTreeSelected: (category: CategoryTreeModel) => void;
 };
 
-const CategoryTreeFilterCondition: React.FC<Props> = ({
+const CategoriesSelector: React.FC<Props> = ({
   onDelete,
   selectedCategories,
   onSelectCategory,
   locale,
   initCategoryTreeOpenBranch,
-  categoriesTrees,
+  categoryTrees,
   categoryTreeSelected,
   setCategoryTreeSelected,
 }) => {
@@ -106,7 +106,7 @@ const CategoryTreeFilterCondition: React.FC<Props> = ({
         hideOnEsc
         hideOnClickOutside>
         <CategoryTreeFilter
-          categoriesTrees={categoriesTrees}
+          categoryTrees={categoryTrees}
           categoryTreeSelected={categoryTreeSelected}
           initCategoryTreeOpenBranch={initCategoryTreeOpenBranch}
           locale={locale}
@@ -140,4 +140,4 @@ const CategoryTreeFilterCondition: React.FC<Props> = ({
   );
 };
 
-export { CategoryTreeFilterCondition };
+export { CategoriesSelector };

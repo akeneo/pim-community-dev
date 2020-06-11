@@ -10,7 +10,7 @@ import { OperatorSelector } from '../../../../components/Selectors/OperatorSelec
 import { FieldColumn, OperatorColumn } from './style';
 import { Category, CategoryCode } from '../../../../models';
 import { getCategoriesByIdentifiers } from '../../../../repositories/CategoryRepository';
-import { CategoryTreeFilterCondition } from './CategoryTreeFilterCondition';
+import { CategoriesSelector } from '../../../../components/Selectors/CategoriesSelector';
 import {
   getInitCategoryTreeOpenedNode,
   getCategoriesTrees,
@@ -47,7 +47,7 @@ const CategoryConditionLine: React.FC<CategoryConditionLineProps> = ({
   const [categoryTreeSelected, setCategoryTreeSelected] = useState<
     CategoryTreeModel
   >();
-  const [categoriesTrees, setCategoriesTrees] = useState<
+  const [categoryTrees, setCategoriesTrees] = useState<
     NetworkLifeCycle<CategoryTreeModel[]>
   >({
     status: 'PENDING',
@@ -140,8 +140,8 @@ const CategoryConditionLine: React.FC<CategoryConditionLineProps> = ({
         />
       </OperatorColumn>
       {shouldDisplayValue() && (
-        <CategoryTreeFilterCondition
-          categoriesTrees={categoriesTrees}
+        <CategoriesSelector
+          categoryTrees={categoryTrees}
           categoryTreeSelected={categoryTreeSelected}
           setCategoryTreeSelected={setCategoryTreeSelected}
           initCategoryTreeOpenBranch={initCategoryTreeOpenBranch}

@@ -26,14 +26,9 @@ const AddActionButton: React.FC<Props> = ({ handleAddAction }) => {
     handleAddAction(action);
   };
 
-  const addCategoryAction = {
-    id: 'set_categories',
-    text: 'Set categories',
-  };
-
   return (
     <Select2Wrapper
-      data={[...actionsData, addCategoryAction]}
+      data={actionsData}
       id={'add-action-button'}
       label={translate('pimee_catalog_rule.form.edit.actions.add_action')}
       hiddenLabel={true}
