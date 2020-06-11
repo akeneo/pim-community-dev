@@ -25,12 +25,25 @@ export type Documentation = {
     parameters: MessageParameters;
 };
 
+export type Product = {
+    id?: number;
+    family?: string;
+    label?: string;
+};
+
+export type ConnectionErrorContent = {
+    message: string;
+    message_parameters?: {};
+    message_template? : string;
+    property?: string;
+    documentation?: Array<Documentation>;
+    locale?: string;
+    scope?: string;
+    product?: Product;
+};
+
 export type ConnectionError = {
     id: number;
     timestamp: number;
-    content: {
-        message: string;
-        property?: string;
-        documentation?: Array<Documentation>;
-    };
+    content: ConnectionErrorContent;
 };
