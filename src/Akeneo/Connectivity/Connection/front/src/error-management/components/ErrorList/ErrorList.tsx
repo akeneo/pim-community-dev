@@ -1,27 +1,13 @@
 import React, {FC, useState} from 'react';
-import {Table, TableCell, TableHeaderCell, TableHeaderRow, TableRow} from '../../../common';
-import styled from '../../../common/styled-with-theme';
-import {useDateFormatter} from '../../../shared/formatter/use-date-formatter';
+import {Table, TableHeaderCell, TableHeaderRow, TableRow} from '../../../common';
 import {Translate} from '../../../shared/translate';
+import {ConnectionError} from '../../model/ConnectionError';
+import {ErrorDateTimeCell} from './ErrorDateTimeCell';
+import {ErrorDetailsCell} from './ErrorDetailsCell';
+import {ErrorMessageCell} from './ErrorMessageCell';
 import {NoError} from './NoError';
 import {SearchFilter} from './SearchFilter';
 import {Order, SortButton} from './SortButton';
-import {ConnectionError} from '../../model/ConnectionError';
-import {DocumentationList} from '../Documentation/DocumentationList';
-
-const useFormatTimestamp = () => {
-    const formatDateTime = useDateFormatter();
-
-    return (timestamp: number) =>
-        formatDateTime(timestamp, {
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-        });
-};
 
 const sortingByTimestamp = (sortOrder: Order) => {
     if ('asc' === sortOrder) {
@@ -40,8 +26,6 @@ type Props = {
 };
 
 const ErrorList: FC<Props> = ({errors}) => {
-    const formatTimestamp = useFormatTimestamp();
-
     const [sortOrder, setSortOrder] = useState<Order>('desc');
     const [searchValue, setSearchValue] = useState<string>('');
 
@@ -65,32 +49,17 @@ const ErrorList: FC<Props> = ({errors}) => {
                             <TableHeaderCell>
                                 <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.content_column' />
                             </TableHeaderCell>
+                            <TableHeaderCell>
+                                <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.details_column' />
+                            </TableHeaderCell>
                         </TableHeaderRow>
                     </thead>
                     <tbody>
                         {sortedAndfilteredErrors.map(error => (
                             <TableRow key={error.id}>
-                                <DateTimeCell collapsing>{formatTimestamp(error.timestamp)}</DateTimeCell>
-                                <ErrorMessageCell>
-                                    <strong>{error.content.message}</strong>
-                                    <table>
-                                        <tbody>
-                                            {Object.entries(error.content)
-                                                .filter(([key]) => 'message' !== key && 'documentation' !== key)
-                                                .map(([key, value], i) => {
-                                                    return (
-                                                        <ErrorContentRow key={i}>
-                                                            <ErrorContentKeyCell>{key}</ErrorContentKeyCell>
-                                                            <td>: {JSON.stringify(value)}</td>
-                                                        </ErrorContentRow>
-                                                    );
-                                                })}
-                                        </tbody>
-                                    </table>
-                                    {error.content.documentation !== undefined && (
-                                        <DocumentationList documentations={error.content.documentation} />
-                                    )}
-                                </ErrorMessageCell>
+                                <ErrorDateTimeCell timestamp={error.timestamp} />
+                                <ErrorMessageCell content={error.content} />
+                                <ErrorDetailsCell content={error.content} />
                             </TableRow>
                         ))}
                     </tbody>
@@ -101,23 +70,5 @@ const ErrorList: FC<Props> = ({errors}) => {
         </>
     );
 };
-
-const DateTimeCell = styled(TableCell)`
-    color: ${({theme}) => theme.color.grey140};
-`;
-
-const ErrorMessageCell = styled(TableCell)`
-    color: ${({theme}) => theme.color.grey140};
-    white-space: pre-wrap;
-`;
-
-const ErrorContentRow = styled.tr`
-    line-height: ${({theme}) => theme.fontSize.default};
-`;
-
-const ErrorContentKeyCell = styled.th`
-    text-align: left;
-    font-weight: normal;
-`;
 
 export {ErrorList};
