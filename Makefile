@@ -34,32 +34,24 @@ css:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/css
 	$(YARN_RUN) run less
 
-.PHONY: generate-models
-generate-models:
-	$(MAKE) communication-channel-generate-models
-
 .PHONY: javascript-prod
 javascript-prod:
 	$(NODE_RUN) rm -rf public/dist
-	$(MAKE) generate-models
 	$(YARN_RUN) run webpack
 
 .PHONY: javascript-dev
 javascript-dev:
 	$(NODE_RUN) rm -rf public/dist
-	$(MAKE) generate-models
 	$(YARN_RUN) run webpack-dev
 
 .PHONY: javascript-dev-strict
 javascript-dev-strict:
 	$(NODE_RUN) rm -rf public/dist
-	$(MAKE) generate-models
 	$(YARN_RUN) run webpack-dev --strict
 
 .PHONY: javascript-test
 javascript-test:
 	$(NODE_RUN) rm -rf public/dist
-	$(MAKE) generate-models
 	$(YARN_RUN) run webpack-test
 
 .PHONY: front
