@@ -60,7 +60,7 @@ services:
         class: '%pim_catalog.localization.presenter.date.class%'
         arguments:
             - '@pim_catalog.localization.factory.datetime'
-            - ['created_at', 'updated_at']
+            - ['created', 'updated']
         tags:
             - { name: pim_catalog.localization.presenter, type: 'product_field' }
 
