@@ -1,49 +1,87 @@
-import React, { useState, useEffect } from 'react';
-import { ActionTemplate } from './ActionTemplate';
+import React, { useState } from 'react';
 import { AddToCategoryAction } from '../../../../models/actions';
 import { ActionLineProps } from './ActionLineProps';
-import { getCategoriesTrees } from '../../../../components/CategoryTree/category-tree.getters';
 import { NetworkLifeCycle } from '../../../../components/CategoryTree/hooks/NetworkLifeCycle.types';
 import { CategoryTreeModel } from '../../../../components/CategoryTree/category-tree.types';
-import { Select2SimpleSyncWrapper } from '../../../../components/Select2Wrapper';
-import { AkeneoSpinner } from '../../../../components/AkeneoSpinner';
-import { AddToCategoryTree } from './AddToCategoryTree';
+import { Category } from "../../../../models";
+import { getCategoriesByIdentifiers } from "../../../../repositories/CategoryRepository";
+import { useBackboneRouter } from "../../../../dependenciesTools/hooks";
+import { getCategoriesTrees } from "../../../../components/CategoryTree/category-tree.getters";
 
 type Props = {
   action: AddToCategoryAction;
 } & ActionLineProps;
 
 const AddToCategoryActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
-  handleDelete,
-  router,
   currentCatalogLocale,
 }) => {
+  const router = useBackboneRouter();
   console.log('lineNumber', lineNumber);
   console.log('action', action);
   console.log('router', router);
   console.log('currentCatalogLocale', currentCatalogLocale);
 
-  const [categoriesTrees, setCategoriesTrees] = useState<
-    NetworkLifeCycle<CategoryTreeModel[]>
-  >({
-    status: 'PENDING',
-    data: [],
-  });
+  const [ categories, setCategories ] = React.useState<NetworkLifeCycle<Category[]>>({ status: 'PENDING' });
+  const [ categoryTrees, setCategoriesTrees ] = useState<NetworkLifeCycle<CategoryTreeModel[]>>({ status: 'PENDING' });
+  const [ currentCategoryTree, setCurrentCategoryTree ] = useState<CategoryTreeModel>();
 
-  const [categoryTreesSelected, setCategoryTreesSelected] = useState<
-    Map<number, string[]>
-  >(new Map());
-
-  useEffect(() => {
-    const initAddToCategoryData = async () => {
-      await getCategoriesTrees(setCategoriesTrees);
-    };
-    initAddToCategoryData();
+  React.useEffect(() => {
+    getCategoriesByIdentifiers(action.value || [], router).then((indexedCategories) => {
+      const categories = Object.values(indexedCategories);
+      const nonNullCategories = categories.filter(category => category !== null) as Category[];
+      setCategories({ status: 'COMPLETE', data: nonNullCategories });
+    });
+    getCategoriesTrees(setCategoriesTrees);
   }, []);
 
+  console.log(categories.data);
+  console.log(categoryTrees.data);
+
+  if (
+    !categories.data || categories.status !== 'COMPLETE' ||
+    !categoryTrees.data || categoryTrees.status !== 'COMPLETE'
+  ) {
+    return <div>Loading</div>
+  }
+
+  const categoryTreesWithSelectedCategories = categoryTrees.data.reduce((previousValue, categoryTree) => {
+    const categoriesData: Category[] = (categories.data || []);
+    const matchingCategories = categoriesData.filter(category => category.root === categoryTree.id);
+    if (matchingCategories.length) {
+      previousValue.push([categoryTree, matchingCategories]);
+    }
+    return previousValue;
+  }, [] as any[]);
+  if (currentCategoryTree === undefined) {
+    setCurrentCategoryTree(categoryTreesWithSelectedCategories[0][0]);
+  }
+  const categoryTreesWithSelectedCategoriesMap = new Map<CategoryTreeModel, Category[]>(categoryTreesWithSelectedCategories);
+
+  return <>
+    <div className="left">
+      <ul>
+        {Array.from(categoryTreesWithSelectedCategoriesMap.entries()).map((toto) => {
+          const [categoryTree] = toto;
+          return <li key={categoryTree.code}>
+            {categoryTree.labels[currentCatalogLocale] || `[${categoryTree.code}]`}
+          </li>
+        })}
+      </ul>
+    </div>
+    <div className="right">
+      {currentCategoryTree && (
+        <ul>
+          {(categoryTreesWithSelectedCategoriesMap.get(currentCategoryTree) || []).map((category) => {
+            return <li key={category.code}>{category.labels[currentCatalogLocale] || `[${category.code}]`}</li>
+          })}
+        </ul>
+      )}
+    </div>
+  </>
+
+  /*
   const handleAddCategoryTree = (event: any) => {
     const tmpCategoryTreesSelected = new Map(categoryTreesSelected);
     const key = Number(event.val);
@@ -92,7 +130,7 @@ const AddToCategoryActionLine: React.FC<Props> = ({
               return (
                 <AddToCategoryTree
                   key={`${categoryTreeId}-category-tree`}
-                  categoryTree={categoriesTrees.data?.find(
+                  categoryTree={categoryTrees.data?.find(
                     c => c.id === categoryTreeId
                   )}
                   onClickCategory={handleClickCategory}
@@ -101,7 +139,7 @@ const AddToCategoryActionLine: React.FC<Props> = ({
               );
             }
           )}
-          {categoriesTrees.status === 'PENDING' ? (
+          {categoryTrees.status === 'PENDING' ? (
             // Replace with a proper select loader component
             <AkeneoSpinner />
           ) : (
@@ -111,7 +149,7 @@ const AddToCategoryActionLine: React.FC<Props> = ({
               hiddenLabel
               onSelecting={handleAddCategoryTree}
               data={
-                categoriesTrees.data?.map(categoryTree => ({
+                categoryTrees.data?.map(categoryTree => ({
                   id: categoryTree.id,
                   text: categoryTree.code,
                 })) || []
@@ -130,6 +168,7 @@ const AddToCategoryActionLine: React.FC<Props> = ({
       </div>
     </ActionTemplate>
   );
+   */
 };
 
 export { AddToCategoryActionLine };

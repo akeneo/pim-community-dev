@@ -4,13 +4,13 @@ import { ActionLineProps } from '../../pages/EditRules/components/actions/Action
 
 export type AddToCategoryAction = {
   module: React.FC<{ action: AddToCategoryAction } & ActionLineProps>;
-  type: 'set';
+  type: 'add';
   field: 'categories';
   value: string[] | null;
 };
 
 export const denormalizeAddToCategoryAction = (json: any): AddToCategoryAction | null => {
-  if (json.type !== 'set') {
+  if (json.type !== 'add') {
     return null;
   }
   if (json.field !== 'categories') {
@@ -19,7 +19,7 @@ export const denormalizeAddToCategoryAction = (json: any): AddToCategoryAction |
 
   return {
     module: AddToCategoryActionLine,
-    type: 'set',
+    type: 'add',
     field: 'categories',
     value: json.value,
   };
@@ -28,7 +28,7 @@ export const denormalizeAddToCategoryAction = (json: any): AddToCategoryAction |
 export const createAddToCategoryAction: () => AddToCategoryAction = () => {
   return {
     module: AddToCategoryActionLine,
-    type: 'set',
+    type: 'add',
     field: 'categories',
     value: null,
   };
