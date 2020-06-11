@@ -38,14 +38,14 @@ final class ApiErrorEventSubscriber implements EventSubscriberInterface
 
     public function collectProductDomainError(ProductDomainErrorEvent $event): void
     {
-        $this->collectApiError->collectFromProductDomainError($event->getProduct(), $event->getError());
+        $this->collectApiError->collectFromProductDomainError($event->getError(), $event->getProduct());
     }
 
     public function collectProductValidationError(ProductValidationErrorEvent $event): void
     {
         $this->collectApiError->collectFromProductValidationError(
-            $event->getProduct(),
-            $event->getConstraintViolationList()
+            $event->getConstraintViolationList(),
+            $event->getProduct()
         );
     }
 
