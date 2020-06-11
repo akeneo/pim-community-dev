@@ -46,10 +46,6 @@ const AddToCategoryActionLine: React.FC<Props> = ({
   handleDelete,
 }) => {
   const router = useBackboneRouter();
-  console.log('lineNumber', lineNumber);
-  console.log('action', action);
-  console.log('router', router);
-  console.log('currentCatalogLocale', currentCatalogLocale);
 
   const [categories, setCategories] = React.useState<NetworkLifeCycle<Category[]>>({ status: 'PENDING' });
   const [categoryTrees, setCategoriesTrees] = useState<NetworkLifeCycle<CategoryTreeModel[]>>({ status: 'PENDING' });
@@ -57,7 +53,12 @@ const AddToCategoryActionLine: React.FC<Props> = ({
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
   const [categoryTreesWithSelectedCategoriesMap, setCategoryTreesWithSelectedCategoriesMap] = React.useState<Map<CategoryTreeModel, Category[]>>();
 
-  const initializeToto = () => {
+  /**
+   * Initialize the main object for this component. This object is a Map, having
+   * - a CategoryTreeModel as key
+   * - the selected categories as value
+   */
+  const initializeCategoryTreesWithSelectedCategories = () => {
     const categoryTreesWithSelectedCategories = (categoryTrees.data || []).reduce((previousValue, categoryTree) => {
       const categoriesData: Category[] = (categories.data || []);
       const matchingCategories = categoriesData.filter(category => category.root === categoryTree.id);
@@ -87,7 +88,7 @@ const AddToCategoryActionLine: React.FC<Props> = ({
       categories.data && categories.status === 'COMPLETE' &&
       categoryTrees.data && categoryTrees.status === 'COMPLETE'
     ) {
-      setCategoryTreesWithSelectedCategoriesMap(initializeToto());
+      setCategoryTreesWithSelectedCategoriesMap(initializeCategoryTreesWithSelectedCategories());
     }
   }, [categories, categoryTrees]);
 
@@ -115,11 +116,10 @@ const AddToCategoryActionLine: React.FC<Props> = ({
     if (!categoryTreesWithSelectedCategoriesMap) {
       return;
     }
-    categoryTreesWithSelectedCategoriesMap.set(
-      (categoryTrees.data || []).find(categoryTree => categoryTree.id === categoryTreeId) as CategoryTreeModel,
-      []
-    );
+    const categoryTree = (categoryTrees.data || []).find(categoryTree => categoryTree.id === categoryTreeId) as CategoryTreeModel;
+    categoryTreesWithSelectedCategoriesMap.set(categoryTree, []);
     setCategoryTreesWithSelectedCategoriesMap(new Map(categoryTreesWithSelectedCategoriesMap));
+    setCurrentCategoryTree(categoryTree);
   }
 
   const getNonSelectedCategoryTrees = () => {
@@ -151,7 +151,12 @@ const AddToCategoryActionLine: React.FC<Props> = ({
       categoryTreesWithSelectedCategoriesMap.set(categoryTree, previousCategories);
       setCategoryTreesWithSelectedCategoriesMap(new Map(categoryTreesWithSelectedCategoriesMap));
     });
-    console.log(categoryCode);
+  }
+
+  const handleCategoryDelete = (categoryTree: CategoryTreeModel, index: number) => {
+    const previousCategories = categoryTreesWithSelectedCategoriesMap.get(categoryTree) || [];
+    previousCategories.splice(index, 1);
+    setCategoryTreesWithSelectedCategoriesMap(new Map(categoryTreesWithSelectedCategoriesMap));
   }
 
   return (
@@ -211,7 +216,7 @@ const AddToCategoryActionLine: React.FC<Props> = ({
                       <li key={category.code}>
                         <CategorySelector
                           locale={currentCatalogLocale}
-                          onDelete={() => {}}
+                          onDelete={() => handleCategoryDelete(currentCategoryTree, i)}
                           onSelectCategory={categoryCode => handleCategorySelect(categoryCode, currentCategoryTree, i)}
                           selectedCategory={category}
                           categoryTreeSelected={currentCategoryTree}
