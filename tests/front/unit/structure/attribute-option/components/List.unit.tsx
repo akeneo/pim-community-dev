@@ -192,6 +192,7 @@ async function moveBlueOptionToBackOption(attributeOptionMoveHandle, attributeOp
         },
     });
     await fireEvent.drop(attributeOptionMoveHandle);
+    await fireEvent.dragEnd(attributeOptionMoveHandle);
 }
 
 async function renderComponent(options, autoSortOptions, selectOptionCallback, showNewOptionFormCallback, manuallySortAttributeOptionsCallback, selectedOptionId = null) {
