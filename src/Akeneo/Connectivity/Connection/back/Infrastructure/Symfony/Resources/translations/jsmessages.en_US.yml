@@ -208,6 +208,7 @@ akeneo_connectivity.connection:
             error_list:
                 date_time_column: Day and time
                 content_column: Error message
+                details_column: Details
             no_error:
                 title: Awesome! No error found!
             not_auditable:
