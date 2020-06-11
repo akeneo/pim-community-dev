@@ -18,7 +18,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class RelativeDatePresenter implements PresenterInterface
 {
-    private const RELATIVE_DATETIME_FORMAT = '/^(now|([+-])([0-9]+)\s?(second|minute|hour|day|week|month|year)s?)$/';
+    private const RELATIVE_DATETIME_FORMAT = '/^(now|([+-][0-9]+)\s?(second|minute|hour|day|week|month|year)s?)$/';
 
     /** @var PresenterInterface */
     private $basePresenter;
@@ -63,28 +63,25 @@ class RelativeDatePresenter implements PresenterInterface
         }
 
         if ('now' === $matches[0]) {
-            return $this->translator->trans('pim_localization.relative_date.now');
+            return $this->translator->trans(
+                'pimee_catalog_rule.datetime.now',
+                [],
+                'messages',
+                $options['locale'] ?? 'en_US'
+            );
         }
 
-        $time = '+' === $matches[2] ? 'future' : 'past';
-        $count = $matches[3];
-        $unit = $matches[4];
-
-        $timeframe = $this->translator->transChoice(
-            \sprintf('pim_localization.time_unit.%s', $unit),
-            $count,
-            [],
-            'messages',
-            $options['locale'] ?? 'en_US'
-        );
+        $count = $matches[2];
+        $unit = $matches[3];
 
         return $this->translator->trans(
-            \sprintf('pim_localization.relative_date.%s', $time),
+            \sprintf('pimee_catalog_rule.datetime.relative_date.%s', $unit),
             [
-                '{{ timeframe }}' => $timeframe,
+                '%count%' => $count,
+                '%absolute_count%' => abs($count),
             ],
             'messages',
-            $options['locale'] ?? 'en_US',
+            $options['locale'] ?? 'en_US'
         );
     }
 }

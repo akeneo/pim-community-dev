@@ -76,17 +76,11 @@ class RelativeDatePresenterSpec extends ObjectBehavior
         ];
 
         $basePresenter->present('-2 days', $options)->shouldBeCalled()->willReturn('06/08/2020 8:00 AM');
-        $translator->transChoice(
-            'pim_localization.time_unit.day',
-            2,
-            [],
-            'messages',
-            'en_US'
-        )->shouldBeCalled()->willReturn('2 days');
         $translator->trans(
-            'pim_localization.relative_date.past',
+            'pimee_catalog_rule.datetime.relative_date.day',
             [
-                '{{ timeframe }}' => '2 days',
+                '%count%' => -2,
+                '%absolute_count%' => 2,
             ],
             'messages',
             'en_US'

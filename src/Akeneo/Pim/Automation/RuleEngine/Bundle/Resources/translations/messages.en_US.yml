@@ -110,6 +110,17 @@ pimee_catalog_rule:
             success: Calculation of the affected products for the rules finished
             error: An error as occurred during the calculation of the affected products for the rules
 
+    datetime:
+        now: now
+        relative_date:
+            second: ]-Inf, -1[%absolute_count% seconds ago|{-1}1 second ago|{1}in 1 second|]1, +Inf[in %absolute_count% seconds
+            minute: ]-Inf, -1[%absolute_count% minutes ago|{-1}1 minute ago|{1}in 1 minute|]1, +Inf[in %absolute_count% minutes
+            hour: ]-Inf, -1[%absolute_count% hours ago|{-1}1 hour ago|{1}in 1 hour|]1, +Inf[in %absolute_count% hours
+            day: ]-Inf, -1[%absolute_count% days ago|{-1}1 day ago|{1}in 1 day|]1, +Inf[in %absolute_count% days
+            week: ]-Inf, -1[%absolute_count% weeks ago|{-1}1 week ago|{1}in 1 week|]1, +Inf[in %absolute_count% weeks
+            month: ]-Inf, -1[%absolute_count% months ago|{-1}1 month ago|{1}in 1 month|]1, +Inf[in %absolute_count% months
+            year: ]-Inf, -1[%absolute_count% years ago|{-1}1 year ago|{1}in 1 year|]1, +Inf[in %absolute_count% years
+
 btn:
     Execute rules: Execute rules
 
@@ -128,17 +139,3 @@ pim_datagrid:
         type:
             mass_edit_rule: Rules Settings
             execute_rules: Rules execution
-
-pim_localization:
-    relative_date:
-        now: 'now'
-        past: '{{ timeframe }} ago'
-        future: 'in {{ timeframe }}'
-    time_unit:
-        second: '{0,1} %count% second | ]1,Inf[ %count% seconds'
-        minute: '{0,1} %count% minute | ]1,Inf[ %count% minutes'
-        hour: '{0,1} %count% hour | ]1,Inf[ %count% hours'
-        day: '{0,1} %count% day | ]1,Inf[ %count% days'
-        week: '{0,1} %count% week | ]1,Inf[ %count% weeks'
-        month: '{0,1} %count% month | ]1,Inf[ %count% months'
-        year: '{0,1} %count% year | ]1,Inf[ %count% years'
