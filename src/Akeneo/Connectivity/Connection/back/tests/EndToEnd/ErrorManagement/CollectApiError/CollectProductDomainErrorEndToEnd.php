@@ -193,8 +193,8 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
         $expectedContent = [
             'type' => 'domain_error',
             'message' => 'The unknown_family_code family does not exist in your PIM.',
-            'message_template' => 'The %s family does not exist in your PIM.',
-            'message_parameters' => ['unknown_family_code'],
+            'message_template' => 'The {family_code} family does not exist in your PIM.',
+            'message_parameters' => ['family_code' => 'unknown_family_code'],
             'documentation' =>  [
                 [
                     'message' => 'Please check your {family_settings}.',
@@ -263,8 +263,8 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
         $expectedContent = [
             'type' => 'domain_error',
             'message' => 'The name attribute does not exist in your PIM.',
-            'message_template' => 'The %s attribute does not exist in your PIM.',
-            'message_parameters' => ['name'],
+            'message_template' => 'The {attribute_code} attribute does not exist in your PIM.',
+            'message_parameters' => ['attribute_code' => 'name'],
             'documentation' =>  [
                 [
                     'message' => 'More information about attributes: {what_is_attribute} {manage_attribute}.',
@@ -347,8 +347,8 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
         $expectedContent = [
             'type' => 'domain_error',
             'message' => 'The unknown_category_code category does not exist in your PIM.',
-            'message_template' => 'The %s category does not exist in your PIM.',
-            'message_parameters' => ['unknown_category_code'],
+            'message_template' => 'The {category_code} category does not exist in your PIM.',
+            'message_parameters' => ['category_code' => 'unknown_category_code'],
             'documentation' => [
                 [
                     'message' => 'Please check your {categories_settings}.',
@@ -412,8 +412,8 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
         $expectedContent = [
             'type' => 'domain_error',
             'message' => 'The unknown_product_identifier product does not exist in your PIM.',
-            'message_template' => 'The %s product does not exist in your PIM.',
-            'message_parameters' => ['unknown_product_identifier']
+            'message_template' => 'The {product_identifier} product does not exist in your PIM.',
+            'message_parameters' => ['product_identifier' => 'unknown_product_identifier']
         ];
         Assert::assertEquals($expectedContent, $doc['content']);
     }

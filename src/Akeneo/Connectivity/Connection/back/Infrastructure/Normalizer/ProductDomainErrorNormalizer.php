@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -33,8 +33,8 @@ class ProductDomainErrorNormalizer implements NormalizerInterface, CacheableSupp
         }
 
         if ($object instanceof TemplatedErrorMessageInterface) {
-            $data['message_template'] = $object->getMessageTemplate();
-            $data['message_parameters'] = $object->getMessageParameters();
+            $data['message_template'] = $object->getTemplatedErrorMessage()->getTemplate();
+            $data['message_parameters'] = $object->getTemplatedErrorMessage()->getParameters();
         }
 
         if ($object instanceof DocumentedErrorInterface) {

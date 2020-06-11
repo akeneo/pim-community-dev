@@ -3,7 +3,8 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Exception;
 
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownProductException;
 use PhpSpec\ObjectBehavior;
 
@@ -39,13 +40,11 @@ class UnknownProductExceptionSpec extends ObjectBehavior
         $this->getMessage()->shouldReturn('The product_identifier product does not exist in your PIM.');
     }
 
-    function it_returns_a_message_template()
+    function it_returns_a_message_template_and_parameters()
     {
-        $this->getMessageTemplate()->shouldReturn('The %s product does not exist in your PIM.');
-    }
-
-    function it_returns_message_parameters()
-    {
-        $this->getMessageParameters()->shouldReturn(['product_identifier']);
+        $templatedErrorMessage = $this->getTemplatedErrorMessage();
+        $templatedErrorMessage->shouldBeAnInstanceOf(TemplatedErrorMessage::class);
+        $templatedErrorMessage->__toString()
+            ->shouldReturn('The product_identifier product does not exist in your PIM.');
     }
 }

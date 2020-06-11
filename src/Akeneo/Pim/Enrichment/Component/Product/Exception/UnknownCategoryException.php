@@ -8,7 +8,8 @@ use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\HrefMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\RouteMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
 /**
@@ -20,34 +21,28 @@ final class UnknownCategoryException extends InvalidPropertyException implements
     TemplatedErrorMessageInterface,
     DocumentedErrorInterface
 {
-    /** @var string */
-    private $messageTemplate;
-
-    /** @var array */
-    private $messageParameters;
+    /** @var TemplatedErrorMessage */
+    private $templatedErrorMessage;
 
     public function __construct(string $propertyName, string $propertyValue, string $className)
     {
-        $this->messageTemplate = 'The %s category does not exist in your PIM.';
-        $this->messageParameters = [$propertyValue];
+        $this->templatedErrorMessage = new TemplatedErrorMessage(
+            'The {category_code} category does not exist in your PIM.',
+            ['category_code' => $propertyValue]
+        );
 
         parent::__construct(
             $propertyName,
             $propertyValue,
             $className,
-            sprintf($this->messageTemplate, ...$this->messageParameters),
+            (string) $this->templatedErrorMessage,
             self::VALID_ENTITY_CODE_EXPECTED_CODE
         );
     }
 
-    public function getMessageTemplate(): string
+    public function getTemplatedErrorMessage(): TemplatedErrorMessage
     {
-        return $this->messageTemplate;
-    }
-
-    public function getMessageParameters(): array
-    {
-        return $this->messageParameters;
+        return $this->templatedErrorMessage;
     }
 
     public function getDocumentation(): DocumentationCollection

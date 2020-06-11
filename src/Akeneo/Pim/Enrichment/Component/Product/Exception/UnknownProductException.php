@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Exception;
 
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (https://www.akeneo.com)
@@ -15,27 +16,21 @@ class UnknownProductException extends \Exception implements
     DomainErrorInterface,
     TemplatedErrorMessageInterface
 {
-    /** @var string */
-    private $messageTemplate;
-
-    /** @var array */
-    private $messageParameters;
+    /** @var TemplatedErrorMessage */
+    private $templatedErrorMessage;
 
     public function __construct(string $productIdentifier)
     {
-        $this->messageTemplate = 'The %s product does not exist in your PIM.';
-        $this->messageParameters = [$productIdentifier];
+        $this->templatedErrorMessage = new TemplatedErrorMessage(
+            'The {product_identifier} product does not exist in your PIM.',
+            ['product_identifier' => $productIdentifier]
+        );
 
-        parent::__construct(sprintf($this->messageTemplate, ...$this->messageParameters));
+        parent::__construct((string) $this->templatedErrorMessage);
     }
 
-    public function getMessageTemplate(): string
+    public function getTemplatedErrorMessage(): TemplatedErrorMessage
     {
-        return $this->messageTemplate;
-    }
-
-    public function getMessageParameters(): array
-    {
-        return $this->messageParameters;
+        return $this->templatedErrorMessage;
     }
 }

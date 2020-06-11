@@ -84,8 +84,8 @@ class CategoryFieldSetterSpec extends ObjectBehavior
         $categoryRepository->findOneByIdentifier('mug')->willReturn($mug);
         $categoryRepository->findOneByIdentifier('non valid category code')->willReturn(null);
 
-        $this->shouldThrow(
-            new UnknownCategoryException('categories', 'non valid category code', CategoryFieldSetter::class)
-        )->during('setFieldData', [$product, 'categories', ['mug', 'non valid category code']]);
+        $this
+            ->shouldThrow(UnknownCategoryException::class)
+            ->during('setFieldData', [$product, 'categories', ['mug', 'non valid category code']]);
     }
 }

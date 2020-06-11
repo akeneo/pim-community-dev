@@ -6,7 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentationCollection;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\MessageParameterTypes;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use PhpSpec\ObjectBehavior;
@@ -66,14 +67,12 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
         $this->getPrevious()->shouldReturn($previous);
     }
 
-    function it_returns_a_message_template()
+    function it_returns_a_message_template_and_parameters()
     {
-        $this->getMessageTemplate()->shouldReturn('The %s attribute does not exist in your PIM.');
-    }
-
-    function it_returns_message_parameters()
-    {
-        $this->getMessageParameters()->shouldReturn(['attribute_code']);
+        $templatedErrorMessage = $this->getTemplatedErrorMessage();
+        $templatedErrorMessage->shouldBeAnInstanceOf(TemplatedErrorMessage::class);
+        $templatedErrorMessage->__toString()
+            ->shouldReturn('The attribute_code attribute does not exist in your PIM.');
     }
 
     function it_provides_documentation()
