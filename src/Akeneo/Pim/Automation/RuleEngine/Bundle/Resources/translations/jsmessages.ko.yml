@@ -183,6 +183,9 @@ batch_jobs:
   add_attribute_value:
     execute_rules.label: 규칙 실행
   default_steps:
+    export_rules: 규칙 내보내기
+    import_rules: 규칙 가져오기
+    calculate_affected_products: Calculate affected products
     execute_rules: 규칙 실행
   yml_rule_import:
     label: YAML로 규칙 가져오기
@@ -207,8 +210,14 @@ pim_notification:
   types:
     rule: 규칙 설정
     mass_edit_rule: 규칙 대량 편집
+    execute_rules: 규칙 실행
 pim_menu:
   item:
     rule: 규칙
 pim_title:
   pimee_catalog_rule_rule_index: 규칙
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: 규칙 실행

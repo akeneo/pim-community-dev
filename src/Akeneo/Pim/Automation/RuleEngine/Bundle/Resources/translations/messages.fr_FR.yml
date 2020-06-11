@@ -98,16 +98,26 @@ pimee_catalog_rule:
     product_rule_definition_writer.title: Sauvegarde des règles des produits
     rules_execution.title: Exécution des règles
   notification:
-    rule:
-      executed: L'exécution des règles est terminée
+    execute_rules:
+      success: L'exécution des règles est terminée
+      warning: Execution of the rule(s) finished with warning(s)
+      error: An error occurred during the execution of the rules
     mass_edit_rule:
       success: Le calcul du nombre de produits affectés par les règles est terminé
       error: Une erreur que s’est produite lors du calcul du nombre de produits affectés par les règles
 btn:
   Execute rules: Exécuter les règles
-mass_edit_rule: Paramètres des règles
-job_execution.summary.rule_calculated: Nombre de règles
+job_execution:
+  summary:
+    rule_calculated: Nombre de règles
+    read_rules: read rules
+    selected_entities: selected products / product models
+    skipped_invalid: skipped products / product models (invalid)
+    updated_entities: updated products / product models
+    executed_rules: successfully executed rules
+    errored_rules: skipped rules (invalid)
 pim_datagrid:
   cells:
     type:
       mass_edit_rule: Paramètres des règles
+      execute_rules: Exécution des règles

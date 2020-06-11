@@ -183,6 +183,9 @@ batch_jobs:
   add_attribute_value:
     execute_rules.label: Regel-Ausführung
   default_steps:
+    export_rules: Regelexport
+    import_rules: Regel-Import
+    calculate_affected_products: Berechne betroffene Produkte
     execute_rules: Regel-Ausführung
   yml_rule_import:
     label: Regel-Import in YAML
@@ -207,8 +210,14 @@ pim_notification:
   types:
     rule: Regeleinstellungen
     mass_edit_rule: Massenbearbeitung Regel
+    execute_rules: Regel-Ausführung
 pim_menu:
   item:
     rule: Regeln
 pim_title:
   pimee_catalog_rule_rule_index: Regeln
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Regel-Ausführung

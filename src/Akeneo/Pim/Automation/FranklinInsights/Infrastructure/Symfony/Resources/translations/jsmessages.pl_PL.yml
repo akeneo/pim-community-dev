@@ -232,6 +232,8 @@ batch_jobs:
   default_steps:
     fetch_products: Fetch product data
     create_proposals: Utwórz propozycje
+    notify_if_pending_attributes: Powiadom użytkowników o oczekujących atrybutach do mapy
+    validate_configuration: Validate Franklin Insights configuration
   franklin_insights_subscribe_products:
     label: Franklin Insights bulk subscription
     validate_configuration.label: Validate Franklin Insights configuration
@@ -262,3 +264,8 @@ pim_title:
 pim_notification:
   types:
     franklin_insights: Franklin Insights
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        franklin_insights: Franklin Insights
