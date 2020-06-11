@@ -98,7 +98,7 @@ const List = ({selectAttributeOption, selectedOptionId, isNewOptionFormDisplayed
             </div>
             <ToggleButton />
 
-            <div role="attribute-options-list">
+            <div className="AknAttributeOption-list-optionsList" role="attribute-options-list">
                 {sortedAttributeOptions !== null && sortedAttributeOptions.map((attributeOption: AttributeOption, index: number) => {
                     return (
                         <ListItem
