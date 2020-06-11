@@ -30,6 +30,7 @@
 - RUL-20: Rule engine - As Julia, I would like to copy values from/to different attribute types
 - RUL-49: Rule engine - As Peter, I would like to clear attribute values, associations, categories and groups
 - RUL-77: Rule engine - As Peter, I would like to add labels to my rules
+- CLOUD-1959: Use cloud-deployer 2.2 and terraform 0.12.25
 
 ## New features
 
