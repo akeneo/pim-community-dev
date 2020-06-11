@@ -107,11 +107,19 @@ class IsNumericValidatorSpec extends ObjectBehavior
 
     function it_adds_violation_when_validating_non_numeric_value(
         $context,
-        IsNumeric $numericConstraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $numericConstraint = new IsNumeric();
+        $numericConstraint->attributeCode = 'number';
+
         $context
-            ->buildViolation($numericConstraint->message)
+            ->buildViolation(
+                $numericConstraint->message,
+                [
+                    '%attribute%' => $numericConstraint->attributeCode,
+                    '%value%' => 'a',
+                ]
+            )
             ->shouldBeCalled()
             ->willReturn($violation);
 
@@ -121,12 +129,20 @@ class IsNumericValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_validating_non_numeric_metric_value(
         $context,
         MetricInterface $metric,
-        IsNumeric $numericConstraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $numericConstraint = new IsNumeric();
+        $numericConstraint->attributeCode = 'number';
         $metric->getData()->willReturn('a');
+
         $context
-            ->buildViolation($numericConstraint->message)
+            ->buildViolation(
+                $numericConstraint->message,
+                [
+                    '%attribute%' => $numericConstraint->attributeCode,
+                    '%value%' => 'a',
+                ]
+            )
             ->shouldBeCalled()
             ->willReturn($violation);
 
@@ -136,12 +152,19 @@ class IsNumericValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_validating_non_numeric_product_price_value(
         $context,
         ProductPriceInterface $productPrice,
-        IsNumeric $numericConstraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $numericConstraint = new IsNumeric();
+        $numericConstraint->attributeCode = 'number';
         $productPrice->getData()->willReturn('a');
         $context
-            ->buildViolation($numericConstraint->message)
+            ->buildViolation(
+                $numericConstraint->message,
+                [
+                    '%attribute%' => $numericConstraint->attributeCode,
+                    '%value%' => 'a',
+                ]
+            )
             ->shouldBeCalled()
             ->willReturn($violation);
 

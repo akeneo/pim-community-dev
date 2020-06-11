@@ -13,5 +13,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class IsNumeric extends Constraint
 {
-    public $message = 'This value should be a valid number.';
+    /** @var string */
+    public $message = 'The %attribute% attribute requires a number, and the submitted %value% value is not.';
+
+    /** @var string */
+    public $attributeCode = '';
 }

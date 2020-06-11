@@ -61,6 +61,7 @@ Feature: Validate price attributes of a product
     Given I change the "Tax" to "bar USD"
     And I change the "Tax" to "qux EUR"
     And I save the product
-    Then I should see validation tooltip "This value should be a valid number."
+    Then I should see validation tooltip "The tax attribute requires a number, and the submitted bar value is not."
+    Then I should see validation tooltip "The tax attribute requires a number, and the submitted qux value is not."
     Then I should see validation tooltip "This value should be 10 or more."
     And there should be 2 error in the "Other" tab

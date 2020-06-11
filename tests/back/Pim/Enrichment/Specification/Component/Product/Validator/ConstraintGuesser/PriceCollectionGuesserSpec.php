@@ -56,6 +56,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
 
     function it_guesses_aggregated_guessers_simple(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('price');
         $constraints = $this->guessConstraints($attribute);
 
         $constraints->shouldHaveCount(1);
@@ -78,6 +79,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
     {
         $attribute->isDecimalsAllowed()
             ->willReturn(true);
+        $attribute->getCode()->willReturn('price');
 
         $constraints = $this->guessConstraints($attribute);
 
