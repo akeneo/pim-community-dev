@@ -10,6 +10,7 @@
 
 ## Bug fixes
 
+- PIM-9203: Box shadow appearing on category selector in product grid
 - PIM-9250: Display glitch - vertical grey lines appear when opening category tree
 - AOB-968: Fix product label rendering on edit form
 - CXP-306: Fix the collect of product events
