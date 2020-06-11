@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 interface NewProps {
@@ -8,6 +8,12 @@ interface NewProps {
 const New = ({createAttributeOption}: NewProps) => {
     const translate = useTranslate();
     const newOptionCodeRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (newOptionCodeRef !== null && newOptionCodeRef.current) {
+            newOptionCodeRef.current.focus();
+        }
+    }, []);
 
     const createNewOptionFromCode = () => {
         if (newOptionCodeRef.current !== null && newOptionCodeRef.current.value) {
