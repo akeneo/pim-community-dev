@@ -111,7 +111,7 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
     private function checkViewableAttributeGroup(AttributeInterface $attribute, array $permissions): void
     {
         if (!$permissions['view_attribute'] && !$permissions['edit_attribute']) {
-            throw UnknownAttributeException::unknownAttribute($attribute->getCode());
+            throw new UnknownAttributeException($attribute->getCode());
         }
     }
 

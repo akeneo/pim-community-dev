@@ -81,7 +81,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     public function testUpdateAProductDraftWithAttributeGroupNotViewable()
     {
         $this->expectException(UnknownAttributeException::class);
-        $this->expectExceptionMessage('Attribute "a_multi_select" does not exist.');
+        $this->expectExceptionMessage('The a_multi_select attribute does not exist in your PIM.');
 
         $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'values' => ['a_multi_select' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
         $this->generateToken('mary');

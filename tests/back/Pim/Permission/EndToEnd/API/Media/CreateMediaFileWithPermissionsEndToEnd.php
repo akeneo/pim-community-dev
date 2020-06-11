@@ -145,7 +145,7 @@ JSON;
         $expected = <<<JSON
 {
     "code": 422,
-    "message": "Attribute \"a_multi_select\" does not exist."
+    "message": "The a_multi_select attribute does not exist in your PIM."
 }
 JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());

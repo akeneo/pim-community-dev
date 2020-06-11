@@ -110,7 +110,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     public function testCreateAProductWithAttributeGroupNotFound()
     {
         $this->expectException(UnknownAttributeException::class);
-        $this->expectExceptionMessage('Attribute "not_found" does not exist.');
+        $this->expectExceptionMessage('The not_found attribute does not exist in your PIM.');
 
         $this->generateToken('mary');
         $this->createProduct('product', ['values' => ['not_found' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
@@ -119,7 +119,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     public function testCreateAProductWithAttributeGroupNotViewable()
     {
         $this->expectException(UnknownAttributeException::class);
-        $this->expectExceptionMessage('Attribute "a_multi_select" does not exist.');
+        $this->expectExceptionMessage('The a_multi_select attribute does not exist in your PIM.');
 
         $this->generateToken('mary');
         $this->createProduct('product', ['values' => ['a_multi_select' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
@@ -145,7 +145,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     public function testUpdateAProductWithAttributeGroupNotViewable()
     {
         $this->expectException(UnknownAttributeException::class);
-        $this->expectExceptionMessage('Attribute "a_multi_select" does not exist.');
+        $this->expectExceptionMessage('The a_multi_select attribute does not exist in your PIM.');
 
         $product = $this->saveProduct('product', ['values' => ['a_multi_select' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
         $this->generateToken('mary');
