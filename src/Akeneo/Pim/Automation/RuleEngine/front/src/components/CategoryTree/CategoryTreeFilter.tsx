@@ -12,7 +12,6 @@ import { NetworkLifeCycle } from './hooks/NetworkLifeCycle.types';
 
 const ContainerCategoryTree = styled.div`
   margin: 0 20px;
-  border-top: ${({ theme }) => `1px solid ${theme.color.purple100}`};
 `;
 
 type Props = {

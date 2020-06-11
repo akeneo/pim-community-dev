@@ -11,8 +11,7 @@ import { getInitCategoryTreeOpenedNode } from "../CategoryTree/category-tree.get
 import { NetworkLifeCycle } from "../CategoryTree/hooks/NetworkLifeCycle.types";
 
 const ContainerCategoryTree = styled.div`
-  margin: 0 20px;
-  border-top: ${({ theme }) => `1px solid ${theme.color.purple100}`};
+  margin: 10px 20px;
 `;
 
 const InputCategory = styled.div`
@@ -24,6 +23,8 @@ const InputCategory = styled.div`
 const CategoryArtifact = styled.div`
   z-index: 2;
   margin-bottom: 5px;
+  color: #67768A;
+  padding-left: 14px;
 `;
 
 const CategoryArtifactDelete = styled.span`
@@ -46,8 +47,9 @@ const getCategoryLabel = (category: Category, locale: LocaleCode) => {
 
 const CategoryPopover = styled(Popover)`
   background: white;
-  height: 354px;
-  width: 340px;
+  max-height: 354px;
+  width: 458px;
+  margin-left: 1px;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
   overflow: auto;
   z-index: 1;
@@ -57,7 +59,7 @@ type Props = {
   locale: LocaleCode;
   onDelete: (categoryCode: CategoryCode) => void;
   onSelectCategory: (categoryCode: CategoryCode) => void;
-  selectedCategory: Category;
+  selectedCategory?: Category;
   categoryTreeSelected: CategoryTreeModel;
 };
 
@@ -72,7 +74,7 @@ const CategorySelector: React.FC<Props> = ({
   const translate = useTranslate();
   const popover = usePopoverState({
     gutter: 0,
-    placement: 'auto-start',
+    placement: 'bottom-start',
     modal: true,
   });
   const PopoverButton = (
@@ -89,11 +91,11 @@ const CategorySelector: React.FC<Props> = ({
       background: 'none',
       border: 'none',
       cursor: 'pointer',
-      height: 'inherit',
+      height: '40px',
       left: 0,
       padding: '0',
       position: 'absolute',
-      width: '100%',
+      width: '420px',
       zIndex: 1,
     },
   };
@@ -139,23 +141,29 @@ const CategorySelector: React.FC<Props> = ({
               initCategoryTreeOpenBranch={initCategoryTreeOpenBranch.data[0]}
               categoryTree={categoryTreeSelected}
               locale={locale}
-              onSelectCategory={onSelectCategory}
+              onSelectCategory={(categoryCode) => {
+                popover.hide();
+                onSelectCategory(categoryCode);
+              }}
               selectedCategories={[]}
             />
           )}
         </ContainerCategoryTree>
       </CategoryPopover>
-      <CategoryArtifact
-        className='AknTextField'
-        key={selectedCategory.code}>
-        {getCategoryLabel(selectedCategory, locale)}
-        <CategoryArtifactDelete
-          tabIndex={0}
-          onClick={() => {
-            onDelete(selectedCategory.code);
-          }}
-          role='button'
-        />
+      <CategoryArtifact className='AknTextField'>
+        { selectedCategory ? (
+          <>
+            {getCategoryLabel(selectedCategory, locale)}
+            <CategoryArtifactDelete
+              tabIndex={0}
+              onClick={() => {
+                onDelete(selectedCategory.code);
+              }}
+              role='button'
+            />
+          </>
+          ) : 'Please select machin'
+        }
       </CategoryArtifact>
     </InputCategory>
   );

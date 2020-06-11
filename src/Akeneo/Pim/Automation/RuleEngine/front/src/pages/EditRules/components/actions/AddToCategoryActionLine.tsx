@@ -3,8 +3,8 @@ import { AddToCategoryAction } from '../../../../models/actions';
 import { ActionLineProps } from './ActionLineProps';
 import { NetworkLifeCycle } from '../../../../components/CategoryTree/hooks/NetworkLifeCycle.types';
 import { CategoryTreeModel } from '../../../../components/CategoryTree/category-tree.types';
-import { Category, CategoryId } from "../../../../models";
-import { getCategoriesByIdentifiers } from "../../../../repositories/CategoryRepository";
+import { Category, CategoryCode, CategoryId } from "../../../../models";
+import { getCategoriesByIdentifiers, getCategoryByIdentifier } from "../../../../repositories/CategoryRepository";
 import { useBackboneRouter } from "../../../../dependenciesTools/hooks";
 import { getCategoriesTrees } from "../../../../components/CategoryTree/category-tree.getters";
 import { ActionTemplate } from "./ActionTemplate";
@@ -137,6 +137,23 @@ const AddToCategoryActionLine: React.FC<Props> = ({
     })
   }
 
+  const handleCategorySelect = (categoryCode: CategoryCode, categoryTree: CategoryTreeModel, index?: number) => {
+    getCategoryByIdentifier(categoryCode, router).then((category) => {
+      if (category === null) {
+        throw new Error('Category not found');
+      }
+      const previousCategories = categoryTreesWithSelectedCategoriesMap.get(categoryTree) || [];
+      if (index) {
+        previousCategories[index] = category;
+      } else {
+        previousCategories.push(category);
+      }
+      categoryTreesWithSelectedCategoriesMap.set(categoryTree, previousCategories);
+      setCategoryTreesWithSelectedCategoriesMap(new Map(categoryTreesWithSelectedCategoriesMap));
+    });
+    console.log(categoryCode);
+  }
+
   return (
     <ActionTemplate
       title='Set Action'
@@ -185,120 +202,38 @@ const AddToCategoryActionLine: React.FC<Props> = ({
             <ActionTitle>
               Select your categories
             </ActionTitle>
-            <label className="AknFieldContainer-label">Categories (required)</label>
             {currentCategoryTree && (
-              <ul>
-                {(categoryTreesWithSelectedCategoriesMap.get(currentCategoryTree) || []).map((category) => {
-                  return (
-                    <li key={category.code}>
-                      <CategorySelector
-                        locale={currentCatalogLocale}
-                        onDelete={() => {}}
-                        onSelectCategory={() => {}}
-                        selectedCategory={category}
-                        categoryTreeSelected={currentCategoryTree}
-                      />
-                    </li>
-                  )
-                })}
-              </ul>
+              <>
+                <label className="AknFieldContainer-label">Categories (required)</label>
+                <ul>
+                  {(categoryTreesWithSelectedCategoriesMap.get(currentCategoryTree) || []).map((category, i) => {
+                    return (
+                      <li key={category.code}>
+                        <CategorySelector
+                          locale={currentCatalogLocale}
+                          onDelete={() => {}}
+                          onSelectCategory={categoryCode => handleCategorySelect(categoryCode, currentCategoryTree, i)}
+                          selectedCategory={category}
+                          categoryTreeSelected={currentCategoryTree}
+                        />
+                      </li>
+                    )
+                  })}
+                </ul>
+                <CategorySelector
+                locale={currentCatalogLocale}
+                onDelete={() => {}}
+                onSelectCategory={categoryCode => handleCategorySelect(categoryCode, currentCategoryTree)}
+                categoryTreeSelected={currentCategoryTree}
+                />
+              </>
             )}
-            --Select category--
           </div>
         </ActionRightSide>
       </ActionGrid>
       <LineErrors lineNumber={lineNumber} type='actions'/>
     </ActionTemplate>
   );
-
-  /*
-  const handleAddCategoryTree = (event: any) => {
-    const tmpCategoryTreesSelected = new Map(categoryTreesSelected);
-    const key = Number(event.val);
-    if (!tmpCategoryTreesSelected.has(key)) {
-      tmpCategoryTreesSelected.set(key, []);
-    }
-    setCategoryTreesSelected(tmpCategoryTreesSelected);
-  };
-
-  const handleClickCategory = (categoryId: number, value: string) => {
-    const tmpCategoryTreesSelected = new Map(categoryTreesSelected);
-    const values = tmpCategoryTreesSelected.get(categoryId);
-    if (values) {
-      tmpCategoryTreesSelected.set(categoryId, [...values, value]);
-    } else {
-      tmpCategoryTreesSelected.set(categoryId, [value]);
-    }
-    setCategoryTreesSelected(tmpCategoryTreesSelected);
-  };
-
-  console.log({ categoryTreesSelected });
-
-  return (
-    <ActionTemplate
-      translate={translate}
-      title={translate('pimee_catalog_rule.form.edit.add_to_category')}
-      helper={translate('pimee_catalog_rule.form.helper.add_to_category')}
-      legend={translate('pimee_catalog_rule.form.legend.add_to_category')}
-      handleDelete={handleDelete}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: '5px',
-        }}>
-        <fieldset style={{ width: '50%' }}>
-          <legend
-            style={{ color: '#9452BA', fontSize: '15px', padding: '10px 0' }}>
-            Select your category trees
-          </legend>
-          <label htmlFor='add_category_select_tree'>
-            Category tree (required)
-          </label>
-          {Array.from(categoryTreesSelected.entries()).map(
-            ([categoryTreeId, selectedCategories]) => {
-              return (
-                <AddToCategoryTree
-                  key={`${categoryTreeId}-category-tree`}
-                  categoryTree={categoryTrees.data?.find(
-                    c => c.id === categoryTreeId
-                  )}
-                  onClickCategory={handleClickCategory}
-                  selectedCategoriesLength={selectedCategories.length}
-                />
-              );
-            }
-          )}
-          {categoryTrees.status === 'PENDING' ? (
-            // Replace with a proper select loader component
-            <AkeneoSpinner />
-          ) : (
-            <Select2SimpleSyncWrapper
-              id='add_category_select_tree'
-              label='Category tree (required)'
-              hiddenLabel
-              onSelecting={handleAddCategoryTree}
-              data={
-                categoryTrees.data?.map(categoryTree => ({
-                  id: categoryTree.id,
-                  text: categoryTree.code,
-                })) || []
-              }
-              placeholder='Select you category tree'
-            />
-          )}
-        </fieldset>
-        <fieldset style={{ width: '50%' }}>
-          <legend
-            style={{ color: '#9452BA', fontSize: '15px', padding: '10px 0' }}>
-            Select your categories for master catalog
-          </legend>
-          <label>Categories (required)</label>
-        </fieldset>
-      </div>
-    </ActionTemplate>
-  );
-   */
 };
 
 export { AddToCategoryActionLine };
