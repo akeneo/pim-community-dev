@@ -2,6 +2,10 @@
 
 # 4.0.33 (2020-06-11)
 
+## Bug fixes
+
+- PIM-9280: Fix SqlGetConnectorProduct query group by issue with MySQL 8.0.20)
+
 # 4.0.32 (2020-06-08)
 
 ## Bug fixes
@@ -12,7 +16,6 @@
 - PIM-9282: Make calling attribute options via API case insensitive
 - PIM-9290: Fix product categories loading
 - PIM-9291: Fix product updated with a text value made of spaces only
-- PIM-9280: Fix SqlGetConnectorProduct query group by issue with MySQL 8.0.20)
 
 # 4.0.31 (2020-06-01)
 
