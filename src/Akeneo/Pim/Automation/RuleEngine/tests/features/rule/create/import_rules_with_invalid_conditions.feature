@@ -1150,3 +1150,52 @@ Feature: Import rules
             scope:  tablet
       """
     And the rule list does not contain the "canon_beautiful_description" rule
+
+  @integration-back
+  Scenario: Skip rules with invalid date format for updated
+    Given the following product rule definitions:
+      """
+      enable_recent_products:
+        priority: 10
+        conditions:
+          - field:    updated
+            operator: ">"
+            value:    "2020-06-09 10:00:00"
+        actions:
+          - type:   set
+            field:  enabled
+            value:  true
+      """
+    When the following yaml file is imported:
+    """
+    rules:
+      disable_recent_products:
+        priority: 10
+        conditions:
+          - field:    updated
+            operator: "<"
+            value:    "1 day"
+          - field: created
+            operator: ">"
+            value: "-1.5 week"
+        actions:
+          - type:   set
+            field:  enabled
+            value:  true
+    """
+    Then an exception with message "conditions[0]: Property \"updated\" expects a string with the format \"yyyy-mm-dd H:i:s\" as data, \"1 day\" given" has been thrown
+    And an exception with message "conditions[1]: Property \"created\" expects a string with the format \"yyyy-mm-dd H:i:s\" as data, \"-1.5 week\" given" has been thrown
+    And the rule list contains the rules:
+      """
+      enable_recent_products:
+        priority: 10
+        conditions:
+          - field:    updated
+            operator: ">"
+            value:    "2020-06-09 10:00:00"
+        actions:
+          - type:   set
+            field:  enabled
+            value:  true
+      """
+    And the rule list does not contain the "disable_old_products" rule

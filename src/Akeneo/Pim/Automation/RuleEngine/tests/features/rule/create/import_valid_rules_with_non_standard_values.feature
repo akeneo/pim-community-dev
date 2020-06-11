@@ -38,6 +38,12 @@ Feature: Import rules
                   value:
                       amount:     0
                       currency: EUR
+                - field: created
+                  operator: '>'
+                  value: '-3 months'
+                - field: updated
+                  operator: '<'
+                  value: 'now'
             actions:
                 - type:        copy
                   from_field:  side_view

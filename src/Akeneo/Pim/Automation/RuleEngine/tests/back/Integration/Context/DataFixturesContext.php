@@ -79,6 +79,23 @@ final class DataFixturesContext implements Context
     }
 
     /**
+     * @Given the :identifier product created at :createdAt
+     */
+    public function theProductCreatedAt(string $identifier, string $createdAt)
+    {
+        $product = $this->createProduct(['sku' => $identifier]);
+
+        $this->getContainer()->get('doctrine')->getConnection()->update(
+            'pim_catalog_product',
+            ['created' => $createdAt],
+            ['id' => $product->getId()]
+        );
+
+        $this->container->get('doctrine.orm.entity_manager')->refresh($product);
+        $this->getProductSaver()->save($product);
+    }
+
+    /**
      * @Given /the following family variants?:/
      */
     public function theFollowingFamilyVariants(TableNode $table)
