@@ -1,9 +1,8 @@
 import ReactDOM from 'react-dom';
 import React, {FC} from 'react';
-import {act, renderHook} from '@testing-library/react-hooks';
+import {renderHook} from '@testing-library/react-hooks';
 import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {Announcement} from '@akeneo-pim-community/communication-channel/src/models/announcement';
 
 const DefaultProviders: FC = ({children}) => {
   return (
@@ -25,33 +24,3 @@ export const fetchMockResponseOnce = (requestUrl: string, responseBody: string) 
     fetchMock.mockResponseOnce(request =>
         request.url === requestUrl ? Promise.resolve(responseBody) : Promise.reject()
     );
-
-export const getExpectedAnnouncements = () => {
-  return [
-      {
-        title: 'Title announcement',
-        description: 'Description announcement',
-        img: '/path/img/announcement.png',
-        altImg: 'alt announcement img',
-        link: 'http://external.com',
-        tags: ['new', 'updates'],
-        startDate: '20-04-2020',
-        notificationDuration: 7,
-        editions: ['CE', 'EE']
-      },
-      {
-        title: 'Title announcement 2',
-        description: 'Description announcement 2',
-        link: 'http://external-2.com',
-        tags: ['tag'],
-        startDate: '20-04-2020',
-        notificationDuration: 14,
-        editions: ['CE']
-      }
-  ];
-}
-
-export const getExpectedPimAnalyticsData = () => {
-  return {pim_edition: 'Serenity', pim_version: '129923839'};
-}
-

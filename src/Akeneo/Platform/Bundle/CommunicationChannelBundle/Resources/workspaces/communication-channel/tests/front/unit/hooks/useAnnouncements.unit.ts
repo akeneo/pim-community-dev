@@ -1,11 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import {useAnnouncements} from '@akeneo-pim-community/communication-channel/src/hooks/useAnnouncements';
-import {GlobalWithFetchMock} from 'jest-fetch-mock';
-import {renderHookWithProviders, fetchMockResponseOnce, getExpectedAnnouncements} from '../../../test-utils';
-
-const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock;
-customGlobal.fetch = require('jest-fetch-mock');
-customGlobal.fetchMock = customGlobal.fetch;
+import {renderHookWithProviders, fetchMockResponseOnce} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {getExpectedAnnouncements} from '../__mocks__/dataProvider';
 
 const expectedAnnouncements = getExpectedAnnouncements();
 

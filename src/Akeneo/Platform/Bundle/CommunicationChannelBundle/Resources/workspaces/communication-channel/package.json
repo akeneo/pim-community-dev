@@ -7,5 +7,6 @@
     "generate_models_script": "./../../../../../../../../frontend/build/json-schema-to-typescript.js"
   },
   "scripts": {
-    "generate-models": "node $npm_package_config_generate_models_script src/definitions/ src/models/"  }
+    "generate-models": "node $npm_package_config_generate_models_script src/definitions/ src/models/"
+  }
 }

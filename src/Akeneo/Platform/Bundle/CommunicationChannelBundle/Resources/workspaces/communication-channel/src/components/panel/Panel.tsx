@@ -17,8 +17,9 @@ const Panel = (): JSX.Element => {
   const mediator = useMediator();
   const pimVersion = usePimVersion();
   const announcements = useAnnouncements();
+  const cloudEEVersion = 'serenity';
   const campaign = null !== pimVersion.data ? formatCampaign(pimVersion.data.edition, pimVersion.data.version) : '';
-  const isSerenity = null !== pimVersion.data && 'serenity' === pimVersion.data.edition.toLowerCase();
+  const isSerenity = null !== pimVersion.data && cloudEEVersion === pimVersion.data.edition.toLowerCase();
 
   const closePanel = () => {
     mediator.trigger('communication-channel:panel:close');

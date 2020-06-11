@@ -1,11 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import {usePimVersion} from '@akeneo-pim-community/communication-channel/src/hooks/usePimVersion';
-import {GlobalWithFetchMock} from 'jest-fetch-mock';
-import {renderHookWithProviders, fetchMockResponseOnce} from '../../../test-utils';
-
-const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock;
-customGlobal.fetch = require('jest-fetch-mock');
-customGlobal.fetchMock = customGlobal.fetch;
+import {renderHookWithProviders, fetchMockResponseOnce} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
 afterEach(() => {
   fetchMock.resetMocks();

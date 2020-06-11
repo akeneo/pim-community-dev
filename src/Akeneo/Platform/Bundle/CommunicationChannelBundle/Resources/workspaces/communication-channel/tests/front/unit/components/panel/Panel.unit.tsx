@@ -4,12 +4,8 @@ import {fireEvent, act, getByText, getAllByText, getByTitle, waitForDomChange} f
 import {Panel} from '@akeneo-pim-community/communication-channel/src/components/panel';
 import {formatCampaign} from '@akeneo-pim-community/communication-channel/src/tools/formatCampaign';
 import {dependencies} from '@akeneo-pim-community/legacy-bridge';
-import {renderWithProviders, fetchMockResponseOnce, getExpectedAnnouncements, getExpectedPimAnalyticsData} from '../../../../test-utils';
-import {GlobalWithFetchMock} from 'jest-fetch-mock';
-
-const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock;
-customGlobal.fetch = require('jest-fetch-mock');
-customGlobal.fetchMock = customGlobal.fetch;
+import {renderWithProviders, fetchMockResponseOnce} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {getExpectedAnnouncements, getExpectedPimAnalyticsData} from '../../__mocks__/dataProvider';
 
 const expectedAnnouncements = getExpectedAnnouncements();
 const expectedPimAnalyticsData = getExpectedPimAnalyticsData();
