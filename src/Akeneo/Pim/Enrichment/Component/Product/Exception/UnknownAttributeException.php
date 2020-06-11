@@ -8,7 +8,8 @@ use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\HrefMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\RouteMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 
 /**
@@ -22,34 +23,28 @@ final class UnknownAttributeException extends PropertyException implements
     TemplatedErrorMessageInterface,
     DocumentedErrorInterface
 {
-    /** @var string */
-    private $messageTemplate;
-
-    /** @var array */
-    private $messageParameters;
+    /** @var TemplatedErrorMessage */
+    private $templatedErrorMessage;
 
     /** @var DocumentationCollection */
     private $documentation;
 
     public function __construct(string $attributeCode, \Exception $previous = null)
     {
-        $this->messageTemplate = 'The %s attribute does not exist in your PIM.';
-        $this->messageParameters = [$attributeCode];
+        $this->templatedErrorMessage = new TemplatedErrorMessage(
+            'The {attribute_code} attribute does not exist in your PIM.',
+            ['attribute_code' => $attributeCode]
+        );
 
-        parent::__construct(sprintf($this->messageTemplate, ...$this->messageParameters), 0, $previous);
+        parent::__construct((string) $this->templatedErrorMessage, 0, $previous);
         $this->propertyName = $attributeCode;
 
         $this->documentation = $this->buildDocumentation();
     }
 
-    public function getMessageTemplate(): string
+    public function getTemplatedErrorMessage(): TemplatedErrorMessage
     {
-        return $this->messageTemplate;
-    }
-
-    public function getMessageParameters(): array
-    {
-        return $this->messageParameters;
+        return $this->templatedErrorMessage;
     }
 
     public function getDocumentation(): DocumentationCollection

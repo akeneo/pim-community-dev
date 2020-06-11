@@ -6,7 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentationCollection;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\Documented\MessageParameterTypes;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessageInterface;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownFamilyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
@@ -48,14 +49,12 @@ class UnknownFamilyExceptionSpec extends ObjectBehavior
         $this->getMessage()->shouldReturn('The family_code family does not exist in your PIM.');
     }
 
-    function it_returns_a_message_template()
+    function it_returns_a_message_template_and_parameters()
     {
-        $this->getMessageTemplate()->shouldReturn('The %s family does not exist in your PIM.');
-    }
-
-    function it_returns_message_parameters()
-    {
-        $this->getMessageParameters()->shouldReturn(['family_code']);
+        $templatedErrorMessage = $this->getTemplatedErrorMessage();
+        $templatedErrorMessage->shouldBeAnInstanceOf(TemplatedErrorMessage::class);
+        $templatedErrorMessage->__toString()
+            ->shouldReturn('The family_code family does not exist in your PIM.');
     }
 
     function it_provides_a_documentation()
