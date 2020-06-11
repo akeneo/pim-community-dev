@@ -24,21 +24,19 @@ type Reset = (
   }>
 ) => void;
 
-const removeIds = (array: any[]): any[] =>
-  array.map(elt => {
-    const { id, ...newElt } = elt;
-
-    return newElt;
-  });
-
 const transformFormData = (formData: FormData): Payload => {
   return {
     ...formData,
     priority: Number(formData.priority),
     content: {
-      conditions: formData?.content?.conditions?.filter(condition => condition !== null) || [],
-      // useFieldArray adds ids in each action. We remove them before submit.
-      actions: removeIds(formData?.content?.actions || []),
+      conditions:
+        formData?.content?.conditions?.filter(
+          condition => condition !== null && Object.keys(condition).length
+        ) || [],
+      actions:
+        formData?.content?.actions?.filter(
+          action => action !== null && Object.keys(action).length
+        ) || [],
     },
   };
 };

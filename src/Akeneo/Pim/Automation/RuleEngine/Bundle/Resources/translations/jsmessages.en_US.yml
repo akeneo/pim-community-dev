@@ -111,9 +111,11 @@ pimee_catalog_rule:
                     select_category_trees: Select your category trees
                     select_category_tree: Select your category tree
                     select_categories: Select your categories
+                    select_category: Select your category
                     category_tree: Category tree
                     categories_selected: "]-Inf, 1]{{ count }} category selected|]1, +Inf[{{ count }} categories selected"
                     no_category_tree: Please, select a category tree first
+
                 set_family:
                     title: SET Family
                     subtitle: Select your family

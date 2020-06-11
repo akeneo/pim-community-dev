@@ -7,6 +7,7 @@ import { AttributeLocaleScopeSelector } from './attribute/AttributeLocaleScopeSe
 import { LineErrors } from '../LineErrors';
 import { useRegisterConst } from '../../hooks/useRegisterConst';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
+import { useFormContext } from 'react-hook-form';
 
 type Props = {
   action: ClearAttributeAction;
@@ -20,6 +21,7 @@ const ClearAttributeActionLine: React.FC<Props> = ({
   scopes,
 }) => {
   const translate = useTranslate();
+  const { watch } = useFormContext();
   useRegisterConst(`content.actions[${lineNumber}].type`, 'clear');
 
   return (
@@ -44,7 +46,7 @@ const ClearAttributeActionLine: React.FC<Props> = ({
           'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
         )}
         attributeFormName={`content.actions[${lineNumber}].field`}
-        attributeCode={action.field}
+        attributeCode={watch(`content.actions[${lineNumber}].field`)}
         scopeId={`edit-rules-action-${lineNumber}-scope`}
         scopeFormName={`content.actions[${lineNumber}].scope`}
         scopes={scopes}

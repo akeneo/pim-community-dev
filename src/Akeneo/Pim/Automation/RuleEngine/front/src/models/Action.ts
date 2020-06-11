@@ -1,14 +1,14 @@
 import { FallbackAction } from './actions/FallbackAction';
 import {
   AddAction,
-  AddToCategoryAction,
+  AddCategoriesAction,
   CalculateAction,
   ClearAction,
   ClearAttributeAction,
   ConcatenateAction,
   CopyAction,
   createClearAttributeAction,
-  createAddToCategoryAction,
+  createAddCategoriesAction,
   createSetFamilyAction,
   RemoveAction,
   SetAction,
@@ -18,12 +18,12 @@ import {
 export const AvailableAddAction: { [key: string]: () => Action } = {
   set_family: createSetFamilyAction,
   clear_attribute: createClearAttributeAction,
-  set_categories: createAddToCategoryAction,
+  add_category: createAddCategoriesAction,
 };
 
 export type Action =
   | AddAction
-  | AddToCategoryAction
+  | AddCategoriesAction
   | CalculateAction
   | ClearAction
   | ClearAttributeAction

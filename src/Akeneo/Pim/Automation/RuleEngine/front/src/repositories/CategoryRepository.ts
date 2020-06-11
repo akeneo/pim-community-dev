@@ -46,4 +46,4 @@ export const getCategoryByIdentifier = async (
   await getCategoriesByIdentifiers([categoryIdentifier], router);
 
   return cacheCategories[categoryIdentifier];
-}
+};

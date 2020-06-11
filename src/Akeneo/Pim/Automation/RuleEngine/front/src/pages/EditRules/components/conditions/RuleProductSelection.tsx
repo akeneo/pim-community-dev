@@ -90,9 +90,11 @@ const RuleProductSelection: React.FC<Props> = ({
   const translate = useTranslate();
   const router = useBackboneRouter();
 
-  const [ conditionsState, setConditionsState ] = React.useState<(Condition | null)[]>([]);
+  const [conditionsState, setConditionsState] = React.useState<
+    (Condition | null)[]
+  >([]);
   React.useEffect(() => {
-    setConditionsState(conditions)
+    setConditionsState(conditions);
   }, []);
 
   const { getValues, watch } = useFormContext();
@@ -123,10 +125,6 @@ const RuleProductSelection: React.FC<Props> = ({
     throw new Error(`Unknown factory for field ${fieldCode}`);
   };
 
-  const append = (condition: Condition) => {
-    setConditionsState([...conditionsState, condition]);
-  }
-
   const handleAddCondition = (fieldCode: string) => {
     createCondition(fieldCode).then(condition => append(condition));
   };
@@ -147,12 +145,16 @@ const RuleProductSelection: React.FC<Props> = ({
 
   const hasActions: () => boolean = () => {
     return (watch(`content.actions`) ?? []).length > 0;
-  }
+  };
+
+  const append = (condition: Condition) => {
+    setConditionsState([...conditionsState, condition]);
+  };
 
   const remove = (lineNumber: number) => {
     conditionsState[lineNumber] = null;
     setConditionsState([...conditionsState]);
-  }
+  };
 
   const Component = hasActions()
     ? RuleProductSelectionFieldsetWithAction
@@ -192,16 +194,18 @@ const RuleProductSelection: React.FC<Props> = ({
       <div className='AknGrid AknGrid--unclickable'>
         <div className='AknGrid-body' data-testid={'condition-list'}>
           {conditionsState.map((condition, i) => {
-            return condition && (
-              <ConditionLine
-                condition={condition}
-                lineNumber={i}
-                key={i}
-                locales={locales}
-                scopes={scopes}
-                currentCatalogLocale={currentCatalogLocale}
-                deleteCondition={remove}
-              />
+            return (
+              condition && (
+                <ConditionLine
+                  condition={condition}
+                  lineNumber={i}
+                  key={i}
+                  locales={locales}
+                  scopes={scopes}
+                  currentCatalogLocale={currentCatalogLocale}
+                  deleteCondition={remove}
+                />
+              )
             );
           })}
         </div>

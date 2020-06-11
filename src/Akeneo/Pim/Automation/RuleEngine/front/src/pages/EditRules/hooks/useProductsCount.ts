@@ -50,7 +50,11 @@ const createProductsCountUrl = (router: Router, form: FormData) => {
   return generateUrl(
     router,
     'pimee_enrich_rule_definition_get_impacted_product_count',
-    { conditions: JSON.stringify(form?.content?.conditions?.filter(condition => condition !== null) || []) }
+    {
+      conditions: JSON.stringify(
+        form?.content?.conditions?.filter(condition => condition !== null) || []
+      ),
+    }
   );
 };
 

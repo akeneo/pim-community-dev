@@ -3,12 +3,15 @@ import styled from 'styled-components';
 import { VisuallyHidden } from 'reakit/VisuallyHidden';
 import { usePopoverState, Popover, PopoverDisclosure } from 'reakit/Popover';
 import { Category, CategoryCode, LocaleCode } from '../../models';
-import { CategoryTreeModel, CategoryTreeModelWithOpenBranch } from '../CategoryTree/category-tree.types';
+import {
+  CategoryTreeModel,
+  CategoryTreeModelWithOpenBranch,
+} from '../CategoryTree/category-tree.types';
 import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
-import { CategoryTree } from "../CategoryTree/components/CategoryTree";
-import { AkeneoSpinner } from "../AkeneoSpinner";
-import { getInitCategoryTreeOpenedNode } from "../CategoryTree/category-tree.getters";
-import { NetworkLifeCycle } from "../CategoryTree/hooks/NetworkLifeCycle.types";
+import { CategoryTree } from '../CategoryTree/components/CategoryTree';
+import { AkeneoSpinner } from '../AkeneoSpinner';
+import { getInitCategoryTreeOpenedNode } from '../CategoryTree/category-tree.getters';
+import { NetworkLifeCycle } from '../CategoryTree/hooks/NetworkLifeCycle.types';
 
 const ContainerCategoryTree = styled.div`
   margin: 10px 20px;
@@ -23,7 +26,7 @@ const InputCategory = styled.div`
 const CategoryArtifact = styled.div`
   z-index: 2;
   margin-bottom: 5px;
-  color: #67768A;
+  color: #67768a;
   padding-left: 14px;
 `;
 
@@ -102,7 +105,7 @@ const CategorySelector: React.FC<Props> = ({
 
   const [initCategoryTreeOpenBranch, setInitCategoryTreeOpenBranch] = useState<
     NetworkLifeCycle<CategoryTreeModelWithOpenBranch[]>
-    >({
+  >({
     status: 'PENDING',
     data: [],
   });
@@ -115,7 +118,6 @@ const CategorySelector: React.FC<Props> = ({
       setInitCategoryTreeOpenBranch
     );
   }, []);
-
 
   return (
     <InputCategory>
@@ -141,17 +143,17 @@ const CategorySelector: React.FC<Props> = ({
               initCategoryTreeOpenBranch={initCategoryTreeOpenBranch.data[0]}
               categoryTree={categoryTreeSelected}
               locale={locale}
-              onSelectCategory={(categoryCode) => {
+              onSelectCategory={categoryCode => {
                 popover.hide();
                 onSelectCategory(categoryCode);
               }}
-              selectedCategories={[]}
+              selectedCategories={selectedCategory ? [selectedCategory] : []}
             />
           )}
         </ContainerCategoryTree>
       </CategoryPopover>
       <CategoryArtifact className='AknTextField'>
-        { selectedCategory ? (
+        {selectedCategory ? (
           <>
             {getCategoryLabel(selectedCategory, locale)}
             <CategoryArtifactDelete
@@ -162,8 +164,11 @@ const CategorySelector: React.FC<Props> = ({
               role='button'
             />
           </>
-          ) : 'Please select machin'
-        }
+        ) : (
+          translate(
+            'pimee_catalog_rule.form.edit.actions.add_category.select_category'
+          )
+        )}
       </CategoryArtifact>
     </InputCategory>
   );
