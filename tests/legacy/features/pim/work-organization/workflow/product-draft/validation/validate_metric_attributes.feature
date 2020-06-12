@@ -72,6 +72,6 @@ Feature: Validate metric attributes of a draft
   Scenario: Validate the type constraint of metric attribute
     Given I change the Power to "bar"
     And I save the product
-    Then I should see validation error "This value should be a valid number."
+    Then I should see validation error "The power attribute requires a number, and the submitted bar value is not."
     Then I should see validation error "This value should be -100 or less."
     And there should be 2 error in the "Product information" tab

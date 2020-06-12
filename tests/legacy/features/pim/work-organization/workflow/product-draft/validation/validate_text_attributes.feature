@@ -28,7 +28,7 @@ Feature: Validate text attributes of a draft
   Scenario: Validate the unique constraint of text attribute
     Given I change the Email to "bar@example.com"
     And I save the product
-    Then I should see validation error "The value bar@example.com is already set on another product for the unique attribute email"
+    Then I should see validation error "The email attribute can not have the same value more than once. The bar@example.com value is already set on another product."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the max characters constraint of text attribute
