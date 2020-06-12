@@ -48,7 +48,7 @@ services:
     akeneo_connectivity.connection.application.audit.handler.get_period_event_count_per_connection:
         class: 'Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionHandler'
         arguments:
-            - '@akeneo_connectivity.connection.persistence.query.select_period_event_counts'
+            - '@akeneo_connectivity.connection.persistence.query.select_period_event_count_per_connection'
 
     akeneo_connectivity.connection.application.audit.handler.update_data_source_product_event_count:
         class: Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler

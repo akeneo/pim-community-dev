@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Audit\Query;
 
+use Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod;
+
 /**
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -14,24 +16,15 @@ class GetPeriodEventCountPerConnectionQuery
     /** @var string */
     private $eventType;
 
-    /** @var \DateTimeImmutable */
-    private $fromDateTime;
-
-    /** @var \DateTimeImmutable */
-    private $upToDateTime;
+    /** @var DateTimePeriod */
+    private $period;
 
     public function __construct(
         string $eventType,
-        \DateTimeImmutable $fromDateTime,
-        \DateTimeImmutable $upToDateTime
+        DateTimePeriod $period
     ) {
         $this->eventType = $eventType;
-
-        $this->checkTimezoneIsUtc($fromDateTime);
-        $this->fromDateTime = $fromDateTime;
-
-        $this->checkTimezoneIsUtc($upToDateTime);
-        $this->upToDateTime = $upToDateTime;
+        $this->period = $period;
     }
 
     public function eventType(): string
@@ -39,26 +32,8 @@ class GetPeriodEventCountPerConnectionQuery
         return $this->eventType;
     }
 
-    public function fromDateTime(): \DateTimeImmutable
+    public function period(): DateTimePeriod
     {
-        return $this->fromDateTime;
-    }
-
-    public function upToDateTime(): \DateTimeImmutable
-    {
-        return $this->upToDateTime;
-    }
-
-    private function checkTimezoneIsUtc(\DateTimeImmutable $dateTime): void
-    {
-        if ('UTC' !== $dateTime->getTimezone()->getName()) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Parameter `$dateTime` "%s" with timezone "%s" must have a timezone "UTC".',
-                    $dateTime->format(\DateTimeInterface::ATOM),
-                    $dateTime->getTimezone()->getName()
-                )
-            );
-        }
+        return $this->period;
     }
 }
