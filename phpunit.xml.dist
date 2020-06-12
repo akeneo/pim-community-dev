@@ -48,6 +48,10 @@
             <directory suffix="EndToEnd.php">src/Akeneo/Connectivity/Connection/back/tests/EndToEnd</directory>
         </testsuite>
 
+        <testsuite name="Akeneo_Communication_Channel_EndToEnd">
+            <directory suffix="EndToEnd.php">src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/EndToEnd</directory>
+        </testsuite>
+
         <testsuite name="End_to_End">
             <directory suffix="EndToEnd.php">tests/back</directory>
             <directory suffix="EndToEnd.php">src</directory>

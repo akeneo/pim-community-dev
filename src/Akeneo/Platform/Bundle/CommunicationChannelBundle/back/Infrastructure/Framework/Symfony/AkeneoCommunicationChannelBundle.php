@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Symfony;
+namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

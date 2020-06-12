@@ -56,7 +56,7 @@ return [
     Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle::class => ['all' => true],
     Akeneo\Connectivity\Connection\Infrastructure\Symfony\AkeneoConnectivityConnectionBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FeatureFlagBundle\AkeneoFeatureFlagBundle::class =>  ['all' => true],
-    Akeneo\Platform\CommunicationChannel\Infrastructure\Symfony\AkeneoCommunicationChannelBundle::class =>  ['all' => true],
+    Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\AkeneoCommunicationChannelBundle::class =>  ['all' => true],
 
     // Dev related bundles
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
