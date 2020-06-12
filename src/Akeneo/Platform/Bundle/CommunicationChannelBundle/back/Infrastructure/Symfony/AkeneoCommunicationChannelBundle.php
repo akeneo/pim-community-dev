@@ -1,6 +1,8 @@
 <?php
 
-namespace Akeneo\Platform\Bundle\CommunicationChannelBundle;
+declare(strict_types=1);
+
+namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Symfony;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
