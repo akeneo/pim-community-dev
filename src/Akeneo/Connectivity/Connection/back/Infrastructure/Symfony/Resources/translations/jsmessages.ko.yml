@@ -168,12 +168,6 @@ akeneo_connectivity.connection:
         during_the_last_seven_days: '지난 7일간 합계:'
         today: 오늘
     error_management:
-      data_source_error_chart:
-        section:
-          title: Errors on source connections
-          helper: Here you can see the total number of errors, including business errors.
-        chart:
-          title: Error count per day
       widget:
         title: 소스 연결별 비즈니스 오류
         over_the_last_seven_days: 지난 7일간
@@ -205,13 +199,10 @@ akeneo_connectivity.connection:
       no_error:
         title: 대단합니다! 오류가 없습니다!
       not_auditable:
-        title: Unmonitored connection
         description:
           1: To track errors on this connection,
           2: activate monitoring
           3: in the settings.
-      not_data_source:
-        title: For now, monitoring page is only available for source connection.
   runtime_error:
     error_message: 죄송합니다! 오류가 발생했습니다...
     reload_helper: 페이지를 다시 로드하고 다시 시도하십시오.

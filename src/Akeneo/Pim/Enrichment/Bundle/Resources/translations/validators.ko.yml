@@ -83,15 +83,6 @@ pim_catalog:
     303: 이 필드에는 유효한 연결 형식이 필요합니다.
     pim_immutable_product_validator: 동일한 식별자가 이미 다른 제품에 설정되어 있습니다
     pim_immutable_product_model_validator: 동일한 코드가 이미 다른 제품 모델에 설정되어 있습니다.
-    quantified_associations:
-      unexpected_link_type: The link type "{{ value }}" doesn't exist. You can only associate products or product models.
-      max_associations: You've reached the limit of {{ limit }} associations. Please, delete some existing associations before adding new ones.
-      invalid_quantity: '"{{ value }}" is an invalid quantity. Please, write a value between {{ min }} and {{ max }}.'
-      products_do_not_exist: "The following products don't exist: {{ values }}. Please make sure the products haven't been deleted in the meantime."
-      product_models_do_not_exist: "The following product models don't exist: {{ values }}. Please make sure the product models haven't been deleted in the meantime."
-      association_type_does_not_exist: This association type doesn't exist. Please make sure it hasn't been deleted in the meantime.
-      association_type_is_not_quantified: '"{{ association_type }}" can’t be used for associations with quantities. Please, choose a different association type with quantities or use the "associations" property.'
-      association_type_should_not_be_quantified: '"{{ association_type }}" can only be used for associations with quantities. Please, choose a different association type or use the "quantified_associations" property.'
 mass_edit:
   edit_common_attributes:
     invalid_values: 특성 양식에 오류가 있습니다.
