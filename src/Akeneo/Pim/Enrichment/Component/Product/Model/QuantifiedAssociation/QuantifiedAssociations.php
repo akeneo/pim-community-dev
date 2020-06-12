@@ -154,7 +154,6 @@ class QuantifiedAssociations
                             $quantifiedLink['quantity']
                         );
                     } else {
-                        //TODO
                         $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][] = new QuantifiedLink($quantifiedLink['identifier'], $quantifiedLink['quantity']);
                     }
                 }
