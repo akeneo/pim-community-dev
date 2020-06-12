@@ -22,6 +22,7 @@ const createSetAction = (data?: { [key: string]: any }): SetAction => {
   };
 };
 
+jest.mock('../../../../src/fetch/categoryTree.fetcher');
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');

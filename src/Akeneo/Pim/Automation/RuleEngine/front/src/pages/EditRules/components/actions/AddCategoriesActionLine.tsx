@@ -119,8 +119,8 @@ const AddCategoriesActionLine: React.FC<Props> = ({
         : control.defaultValuesRef?.current?.content?.actions[lineNumber]?.value
     );
     return () => {
-      unregister(`content.actions[${lineNumber}].value`)
-    }
+      unregister(`content.actions[${lineNumber}].value`);
+    };
   }, [formState.submitCount]);
 
   React.useEffect(() => {
@@ -212,7 +212,7 @@ const AddCategoriesActionLine: React.FC<Props> = ({
       if (previousCategories.some(category => category.code === categoryCode)) {
         return;
       }
-      if (typeof(index) !== 'undefined') {
+      if (typeof index !== 'undefined') {
         previousCategories[index] = category;
       } else {
         previousCategories.push(category);
@@ -241,13 +241,12 @@ const AddCategoriesActionLine: React.FC<Props> = ({
     setValue(`content.actions[${lineNumber}].value`, getSelectedCategories());
   };
 
-  const getCategoryCount: (categoryTree: CategoryTreeModel) => number = (categoryTree) => {
-    return (
-      categoryTreesWithSelectedCategoriesMap?.get(
-        categoryTree
-      ) || []
-    ).length;
-  }
+  const getCategoryCount: (
+    categoryTree: CategoryTreeModel
+  ) => number = categoryTree => {
+    return (categoryTreesWithSelectedCategoriesMap?.get(categoryTree) || [])
+      .length;
+  };
 
   return (
     <ActionTemplate
@@ -281,7 +280,11 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                     <li key={categoryTree.code}>
                       {/* TODO add Selected state */}
                       <button
-                        className={`AknTextField AknCategoryTreeSelector${currentCategoryTree === categoryTree ? ' AknCategoryTreeSelector--selected' : ''}`}
+                        className={`AknTextField AknCategoryTreeSelector${
+                          currentCategoryTree === categoryTree
+                            ? ' AknCategoryTreeSelector--selected'
+                            : ''
+                        }`}
                         onClick={e => {
                           e.preventDefault();
                           setCurrentCategoryTree(categoryTree);

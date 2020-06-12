@@ -24,7 +24,7 @@ import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { Action } from "../../../../models/Action";
+import { Action } from '../../../../models/Action';
 
 const Header = styled.header`
   font-weight: normal;
@@ -62,11 +62,13 @@ const AddConditionContainer = styled.div`
 
 type IProps = {
   hasActions: boolean;
-}
+};
 const RuleProductSelectionFieldset = styled.fieldset<IProps>`
   padding-bottom: 20px;
-  
-  ${({ hasActions }) => hasActions && `
+
+  ${({ hasActions }) =>
+    hasActions &&
+    `
     background-image: url('${startImage}');
     padding-left: 12px;
     margin-left: -12px;
@@ -155,7 +157,10 @@ const RuleProductSelection: React.FC<Props> = ({
     setConditionsState([...conditionsState]);
   };
 
-  const hasActions = (getValues({ nest: true })?.content?.actions || []).filter((action: Action) => action !== null).length > 0
+  const hasActions =
+    (getValues({ nest: true })?.content?.actions || []).filter(
+      (action: Action) => action !== null
+    ).length > 0;
 
   return (
     <RuleProductSelectionFieldset hasActions={hasActions} tabIndex={-1}>
