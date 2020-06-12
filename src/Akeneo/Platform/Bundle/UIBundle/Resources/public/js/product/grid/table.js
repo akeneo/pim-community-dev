@@ -251,7 +251,7 @@ define(
                 } else {
                     if (state.view) params = this.applyView(state.view, params);
                     if (state.filters) params = this.applyFilters(state.filters, params);
-                    params = this.applyColumns(state.columns || defaultColumns, params);
+                    params = this.applyColumns(state.columns || defaultColumns[0], params);
                 }
 
                 this.getRoot().trigger('datagrid:getParams', params);

@@ -68,17 +68,19 @@ define(
                     datagridState.columns = '';
                 }
 
+                const notNullDatagridStateFilters = !datagridState.filters ? '' : datagridState.filters;
+
                 var initialView = this.getRoot().initialView;
                 var initialViewExists = null !== initialView && 0 !== initialView.id;
 
-                var filtersModified = this.areFiltersModified(initialView.filters, datagridState.filters);
+                var filtersModified = this.areFiltersModified(initialView.filters, notNullDatagridStateFilters);
                 var columnsModified = !_.isEqual(initialView.columns, datagridState.columns.split(','));
 
                 if (initialViewExists) {
                     this.dirtyFilters = filtersModified;
                     this.dirtyColumns = columnsModified;
                 } else {
-                    var isDefaultFilters = ('' === datagridState.filters);
+                    var isDefaultFilters = ('' === notNullDatagridStateFilters);
                     var isDefaultColumns = _.isEqual(this.getRoot().defaultColumns, datagridState.columns.split(','));
 
                     this.dirtyFilters = !isDefaultFilters;
