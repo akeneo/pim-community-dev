@@ -10,8 +10,7 @@ import {AnnouncementComponent, EmptyAnnouncementList} from './announcement';
 import {Announcement} from './../../models/announcement';
 
 const ListAnnouncement = styled.ul`
-  margin-top: 88px;
-  margin-left: 30px;
+  margin: 74px 30px 0 30px;
 `;
 
 type PanelDataProvider = {

@@ -13,7 +13,7 @@
             ],
             "title": "Easily monitor errors on your connections",
             "description": "For each of your connections, a new `Monitoring` page now lists the last integration errors that may have occurred.",
-            "img": "/bundles/akeneocommunicationchannel/images/cards/new-connection-monitoring-page.png",
+            "img": "/bundles/akeneocommunicationchannel/images/announcements/new-connection-monitoring-page.png",
             "altImg": "Connection monitoring page",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#easily-monitor-errors-on-your-connections"
         },
@@ -30,7 +30,7 @@
             ],
             "title": "New metrics on the Connection dashboard",
             "description": "The Connection dashboard now displays additional information to ease error monitoring and allow you to see at a glance how your source connections are performing.",
-            "img": "/bundles/akeneocommunicationchannel/images/cards/error-monitoring-connection-dashboard.png",
+            "img": "/bundles/akeneocommunicationchannel/images/announcements/error-monitoring-connection-dashboard.png",
             "altImg": "Error monitoring on the Connection dashboard",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#new-metrics-on-the-connection-dashboard"
         },
@@ -47,7 +47,7 @@
             ],
             "title": "New association type: the two-way association",
             "description": "Easily handle products compatibility in your PIM thanks to our **brand new two-way association type**! This new association type is now available under `Settings`/`Association types`.",
-            "img": "/bundles/akeneocommunicationchannel/images/cards/Associations_2-way-association-type.png",
+            "img": "/bundles/akeneocommunicationchannel/images/announcements/Associations_2-way-association-type.png",
             "altImg": "Create a new two-way association type",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#new-association-type-the-two-way-association"
         },
@@ -62,9 +62,9 @@
                 "CE",
                 "EE"
             ],
-            "title": "More visibility on all the jobs",
+            "title": "More visibility on PIM jobs",
             "description": "To give you more visibility and control on all PIM jobs, we added a new permission: `View all jobs in the Process Tracker` to see all jobs of any status under the Process Tracker.",
-            "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#more-visibility-on-all-the-jobs"
+            "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#more-visibility-on-pim-jobs"
         },
         {
             "startDate": "June, 4th 2020",
@@ -92,7 +92,7 @@
             ],
             "title": "A new screen to add your own measurement units",
             "description": "In order to give you more flexibility, we have improved the way we manage metrics in the PIM. Discover our new Measurements feature now!",
-            "img": "/bundles/akeneocommunicationchannel/images/cards/Settings_Measurement_Families-updates.png",
+            "img": "/bundles/akeneocommunicationchannel/images/announcements/Settings_Measurement_Families-updates.png",
             "altImg": "Measurement families list screen",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#a-new-screen-to-add-your-own-measurement-units"
         },
@@ -108,7 +108,7 @@
             ],
             "title": "New endpoints to manage measurements",
             "description": "We introduced two new API endpoints to create, update and list your measurement families.",
-            "img": "/bundles/akeneocommunicationchannel/images/cards/measurements-api.png",
+            "img": "/bundles/akeneocommunicationchannel/images/announcements/measurements-api.png",
             "altImg": "Measurement endpoints",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#new-endpoints-to-manage-measurements"
         },
@@ -124,7 +124,7 @@
             ],
             "title": "Product associations update",
             "description": "Starting now, enjoy some small improvements to make your life easier when you work with product associations.",
-            "img": "/bundles/akeneocommunicationchannel/images/cards/associations-number.png",
+            "img": "/bundles/akeneocommunicationchannel/images/announcements/associations-number.png",
             "altImg": "Associations number inside the product form",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#product-associations-update"
         },
@@ -140,7 +140,7 @@
             ],
             "title": "Track your destination connections",
             "description": "You can now easily track the number of products that are sent to your destinations in the Connection dashboard.",
-            "img": "/bundles/akeneocommunicationchannel/images/cards/number-of-products-sent.png",
+            "img": "/bundles/akeneocommunicationchannel/images/announcements/number-of-products-sent.png",
             "altImg": "Destination connection chart",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#track-your-destination-connections"
         },
@@ -208,7 +208,7 @@
                 "EE"
             ],
             "title": "New measurement units and families",
-            "description": "We added four new measurement families: `Force`, `Angle`,`Capacitance` and `Volume Flow` to better fit your needs in terms of product modeling.",
+            "description": "We added four new measurement families: `Force`, `Angle`, `Capacitance` and `Volume Flow` to better fit your needs in terms of product modeling.",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-03.html#new-measurement-units-and-families"
         },
         {
@@ -235,7 +235,7 @@
             ],
             "title": "Optimize the weight of your assets",
             "description": "If you need to reduce the size of your images, you can now use our new operation: `optimize_jpeg`. This transformation operation will compress your file to a jpeg.",
-            "img": "/bundles/akeneocommunicationchannel/images/cards/Optimize_jpeg_transformation.png",
+            "img": "/bundles/akeneocommunicationchannel/images/announcements/Optimize_jpeg_transformation.png",
             "altImg": "Optimize jpeg transformation",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-02.html#optimize-the-weight-of-your-assets"
         },
@@ -251,7 +251,7 @@
             ],
             "title": "New warning message on connection usernames",
             "description": "Whenever one of your connectors is not using the dedicated connection username, we now display a warning message in the main Connections screen as well as in the Connection form.",
-            "img": "/bundles/akeneocommunicationchannel/images/cards/connection_user_warning_message.png",
+            "img": "/bundles/akeneocommunicationchannel/images/announcements/connection_user_warning_message.png",
             "altImg": "Connection user warning",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-02.html#new-warning-message-on-connection-usernames"
         }
