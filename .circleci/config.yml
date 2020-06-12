@@ -424,6 +424,32 @@ jobs:
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make delete
               when: on_fail
 
+  duplicate_prod_environment_and_upgrade:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys
+          - set_gcloud_config_dev
+          - run:
+                name: Duplicate PROD environment and Upgrade
+                command: |
+                    ssh-keyscan github.com >> ~/.ssh/known_hosts
+                    LIST_SOURCE_PFID=( srnt-nature-et-decouvertes srnt-invivo srnt-prod-midwestwholesale )
+                    RANDOM_SOURCE_PFID=$(( $RANDOM % 3 ))
+                    SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
+                    SOURCE_PED_TAG=$(cd /root/project; git fetch origin &> /dev/null && git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1 )
+                    INSTANCE_NAME=$(echo "pimci-duplic-${CIRCLE_SHA1}"|cut -c1-40)
+                    ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} SOURCE_PED_TAG=${SOURCE_PED_TAG} INSTANCE_NAME=${INSTANCE_NAME} make duplicate_prod_environment_and_upgrade
+          - run:
+              name: Prepare infrastructure artifacts
+              command: INSTANCE_NAME=$(echo "pimci-duplic-${CIRCLE_SHA1}"|cut -c1-40) make prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+
   delete_pr_environments:
       environment:
           <<: *envVarsDeployDev
@@ -581,6 +607,17 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
+          - duplicate_prod_environment_and_upgrade?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
+                requires:
+                    - build_prod
+          - duplicate_prod_environment_and_upgrade:
+                requires:
+                    - duplicate_prod_environment_and_upgrade?
           - deploy_pr_environment?:
                 type: approval
                 filters:
