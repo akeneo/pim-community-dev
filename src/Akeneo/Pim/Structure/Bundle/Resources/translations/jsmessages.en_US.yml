@@ -81,6 +81,7 @@ pim_enrich.entity.attribute_option:
             cancel_title: Cancel modification
             cancel_description: Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option?
             options_labels: Options labels
+            options_settings: Options settings
             options_codes: Options codes
             option_code: Option code
             new_option_code: new_option

@@ -24,7 +24,7 @@ const New = ({createAttributeOption}: NewProps) => {
     return (
         <div className="AknSubsection AknAttributeOption-edit">
             <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
-                <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_labels')}</span>
+                <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_settings')}</span>
             </div>
             <div>
                 <div className="AknFieldContainer">
