@@ -21,7 +21,8 @@ const StyledDescription = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  line-height: 16px;
 
   ${(props: DesciptionProps & AkeneoThemedProps) => {
     if (props.tags.includes('new')) {

@@ -5,6 +5,7 @@ import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {MegaphoneIcon} from './../icons/Megaphone';
 
 const Container = styled.div`
+  margin-right: 30px;
   margin-left: 30px;
   background-color: ${({theme}: AkeneoThemedProps) => theme.color.white};
   width: 340px;
@@ -47,7 +48,7 @@ const HeaderPanel = ({title, onClickCloseButton}: HeaderPanelProps): JSX.Element
 
   return (
     <Container>
-      <IconContainer><MegaphoneIcon color={akeneoTheme.color.purple100} size={20} /></IconContainer>
+      <IconContainer><MegaphoneIcon color={akeneoTheme.color.purple100} size={24} /></IconContainer>
       <Title>{title}</Title>
       <CloseButton  onClick={onClickCloseButton}>
         <CloseIcon color={akeneoTheme.color.purple100} title={__('pim_common.close')} size={15} />

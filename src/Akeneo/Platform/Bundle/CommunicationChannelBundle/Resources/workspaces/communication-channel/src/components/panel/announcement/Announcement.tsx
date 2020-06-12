@@ -4,6 +4,7 @@ import {Announcement} from '../../../models/announcement';
 import {TagComponent} from './Tag';
 import {Title} from './Title';
 import {Description} from './Description';
+import {Image} from './Image';
 import {LinkComponent} from './Link';
 import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
 
@@ -15,12 +16,6 @@ const Container = styled.li`
   &:not(:last-child) {
     border-bottom: 1px solid ${({theme}: AkeneoThemedProps) => theme.color.grey80};
   }
-`;
-
-const Image = styled.img`
-  width: 340px;
-  object-fit: contain;
-  min-height: 200px;
 `;
 
 const LineContainer = styled.div`
@@ -52,7 +47,7 @@ const AnnouncementComponent = ({announcement, campaign}: AnnouncementProps): JSX
         <Image src={announcement.img} alt={announcement.altImg} />
       }
       <LineContainer>
-        <LinkComponent 
+        <LinkComponent
           baseUrl={announcement.link}
           title={announcement.title}
           campaign={campaign}

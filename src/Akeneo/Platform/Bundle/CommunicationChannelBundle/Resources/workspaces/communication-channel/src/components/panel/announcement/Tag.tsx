@@ -16,7 +16,7 @@ const StyledTag = styled.div`
   text-transform: uppercase;
   font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.small};
   border-radius: 2px;
-  margin-right: 16px;
+  margin-right: 10px;
   padding: 2px 5px;
   max-height: 24px;
 
@@ -34,7 +34,7 @@ const StyledTag = styled.div`
           color: #763e9e;
           border: 1px solid #9452ba;
         `;
-          
+
       default:
         return;
     }

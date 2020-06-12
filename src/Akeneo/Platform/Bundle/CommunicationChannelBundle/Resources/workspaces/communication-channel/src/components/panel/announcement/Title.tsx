@@ -14,13 +14,13 @@ const Title = (props: TitleProps & any): JSX.Element => (
 
 const StyledTitle = styled.div`
   font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.bigger};
-  margin-top: 15px;
+  margin-top: 20px;
   margin-bottom: 10px;
 
   ${(props: TitleProps & AkeneoThemedProps) => {
     if (props.tags.includes('new')) {
       return `
-        color: ${props.theme.color.purple80}
+        color: ${props.theme.color.purple100}
       `;
     } else {
       return `
