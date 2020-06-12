@@ -64,7 +64,7 @@ class AuditController
         );
         [$fromDateTime, $upToDateTime] = $this->createUtcDateTimeInterval($startDateTimeUser, $endDateTimeUser);
 
-        $query = new GetPeriodEventCountPerConnectionQuery($eventType, $fromDateTime, $upToDateTime);
+        $query = new GetPeriodEventCountPerConnectionQuery($eventType, new DateTimePeriod($fromDateTime, $upToDateTime));
         $periodEventCounts = $this->getPeriodEventCountPerConnectionHandler->handle($query);
 
         $data = AggregateAuditData::normalize($periodEventCounts, $timezone);
