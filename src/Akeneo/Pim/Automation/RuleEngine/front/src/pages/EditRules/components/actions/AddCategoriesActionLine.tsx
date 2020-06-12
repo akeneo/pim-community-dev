@@ -278,7 +278,6 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                 ([categoryTree, _categories]) => {
                   return (
                     <li key={categoryTree.code}>
-                      {/* TODO add Selected state */}
                       <button
                         className={`AknTextField AknCategoryTreeSelector${
                           currentCategoryTree === categoryTree
@@ -289,6 +288,7 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                           e.preventDefault();
                           setCurrentCategoryTree(categoryTree);
                         }}>
+                        {/* TODO Add DELETE */}
                         {categoryTree.labels[currentCatalogLocale] ||
                           `[${categoryTree.code}]`}
                         <span className='AknCategoryTreeSelector-helper'>

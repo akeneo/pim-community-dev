@@ -5,22 +5,6 @@ import { IndexedScopes } from '../../../repositories/ScopeRepository';
 import { ActionLine } from './actions/ActionLine';
 import { Action } from '../../../models/Action';
 
-/*
-const ActionContainer = styled.div`
-  background-image: url('${middleImage}');
-  padding-left: 12px;
-  margin-left: -12px;
-  background-repeat: no-repeat;
-  padding-bottom: 20px;
-`;
-
-const LastActionContainer = styled.div`
-  background-image: url('${endImage}');
-  padding-left: 12px;
-  margin-left: -12px;
-  background-repeat: no-repeat;
-`;*/
-
 type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
@@ -38,10 +22,6 @@ const RulesBuilder: React.FC<Props> = ({
   handleDeleteAction,
   conditions,
 }) => {
-  /*const isLastAction: (lineNumber: number) => boolean = lineNumber => {
-    return lineNumber === actions.length - 1;
-  };*/
-
   return (
     <>
       <RuleProductSelection
@@ -52,9 +32,6 @@ const RulesBuilder: React.FC<Props> = ({
       />
       <div data-testid={'action-list'} className={'actionList'}>
         {actions.map((action, i) => {
-          /*const Component = isLastAction(i)
-            ? LastActionContainer
-            : ActionContainer;*/
           return (
             action && (
               <ActionLine

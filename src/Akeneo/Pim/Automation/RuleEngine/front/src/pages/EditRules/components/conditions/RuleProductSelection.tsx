@@ -60,10 +60,7 @@ const AddConditionContainer = styled.div`
   padding-left: 15px;
 `;
 
-type IProps = {
-  hasActions: boolean;
-};
-const RuleProductSelectionFieldset = styled.fieldset<IProps>`
+const RuleProductSelectionFieldset = styled.fieldset<{ hasActions: boolean }>`
   padding-bottom: 20px;
 
   ${({ hasActions }) =>

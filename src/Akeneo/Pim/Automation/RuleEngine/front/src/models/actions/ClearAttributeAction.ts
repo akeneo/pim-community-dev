@@ -12,7 +12,7 @@ export const getClearAttributeActionModule: ActionModuleGuesser = async json => 
   }
 
   if (['associations', 'groups', 'categories'].includes(json.field)) {
-    return Promise.resolve(null)
+    return Promise.resolve(null);
   }
 
   return Promise.resolve(ClearAttributeActionLine);
