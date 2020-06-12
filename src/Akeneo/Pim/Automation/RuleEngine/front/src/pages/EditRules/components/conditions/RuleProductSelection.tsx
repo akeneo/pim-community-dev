@@ -24,6 +24,7 @@ import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
+import { Action } from "../../../../models/Action";
 
 const Header = styled.header`
   font-weight: normal;
@@ -59,20 +60,22 @@ const AddConditionContainer = styled.div`
   padding-left: 15px;
 `;
 
+type IProps = {
+  hasActions: boolean;
+}
+const RuleProductSelectionFieldset = styled.fieldset<IProps>`
+  padding-bottom: 20px;
+  
+  ${({ hasActions }) => hasActions && `
+    background-image: url('${startImage}');
+    padding-left: 12px;
+    margin-left: -12px;
+    background-repeat: no-repeat;
+  `}
+`;
+
 const getValuesFromFormData = (getValues: Control['getValues']): FormData =>
   getValues({ nest: true });
-
-const RuleProductSelectionFieldsetWithAction = styled.fieldset`
-  background-image: url('${startImage}');
-  padding-left: 12px;
-  margin-left: -12px;
-  background-repeat: no-repeat;
-  padding-bottom: 20px;
-`;
-
-const RuleProductSelectionFieldset = styled.fieldset`
-  padding-bottom: 20px;
-`;
 
 type Props = {
   currentCatalogLocale: LocaleCode;
@@ -97,7 +100,7 @@ const RuleProductSelection: React.FC<Props> = ({
     setConditionsState(conditions);
   }, []);
 
-  const { getValues, watch } = useFormContext();
+  const { getValues } = useFormContext();
 
   const productsCount = useProductsCount(
     router,
@@ -143,10 +146,6 @@ const RuleProductSelection: React.FC<Props> = ({
     [getValues({ nest: true })?.content?.conditions]
   );
 
-  const hasActions: () => boolean = () => {
-    return (watch(`content.actions`) ?? []).length > 0;
-  };
-
   const append = (condition: Condition) => {
     setConditionsState([...conditionsState, condition]);
   };
@@ -156,11 +155,10 @@ const RuleProductSelection: React.FC<Props> = ({
     setConditionsState([...conditionsState]);
   };
 
-  const Component = hasActions()
-    ? RuleProductSelectionFieldsetWithAction
-    : RuleProductSelectionFieldset;
+  const hasActions = (getValues({ nest: true })?.content?.actions || []).filter((action: Action) => action !== null).length > 0
+
   return (
-    <Component tabIndex={-1}>
+    <RuleProductSelectionFieldset hasActions={hasActions} tabIndex={-1}>
       <Header className='AknSubsection-title'>
         <HeaderPartContainer>
           <TextBoxBlue>
@@ -213,7 +211,7 @@ const RuleProductSelection: React.FC<Props> = ({
       <LegendSrOnly>
         {translate('pimee_catalog_rule.form.legend.product_selection')}
       </LegendSrOnly>
-    </Component>
+    </RuleProductSelectionFieldset>
   );
 };
 

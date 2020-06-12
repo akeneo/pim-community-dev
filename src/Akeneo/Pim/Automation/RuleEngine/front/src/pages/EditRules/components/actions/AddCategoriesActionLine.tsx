@@ -21,32 +21,10 @@ import {
   ActionTitle,
 } from './ActionLine';
 import { LineErrors } from '../LineErrors';
-import styled from 'styled-components';
 import { Select2Wrapper } from '../../../../components/Select2Wrapper';
 import { CategorySelector } from '../../../../components/Selectors/CategorySelector';
 import { useFormContext } from 'react-hook-form';
 import { useRegisterConst } from '../../hooks/useRegisterConst';
-
-const CategoryTreeHelper = styled.span`
-  text-transform: uppercase;
-  position: absolute;
-  right: 10px;
-  border: 1px solid #a1a9b7;
-  font-size: 11px;
-  height: 18px;
-  line-height: 18px;
-  border-radius: 2px;
-  top: 10px;
-  padding: 0 3px;
-`;
-
-const CategoryTreeButton = styled.button`
-  margin-bottom: 5px;
-  position: relative;
-  background: white;
-  text-align: left;
-  cursor: pointer;
-`;
 
 type Props = {
   action: AddCategoriesAction;
@@ -65,9 +43,9 @@ const AddCategoriesActionLine: React.FC<Props> = ({
   const {
     setValue,
     register,
-    getValues,
     formState,
     control,
+    unregister,
   } = useFormContext();
 
   useRegisterConst(`content.actions[${lineNumber}].type`, 'add');
@@ -140,6 +118,9 @@ const AddCategoriesActionLine: React.FC<Props> = ({
         ? action.value
         : control.defaultValuesRef?.current?.content?.actions[lineNumber]?.value
     );
+    return () => {
+      unregister(`content.actions[${lineNumber}].value`)
+    }
   }, [formState.submitCount]);
 
   React.useEffect(() => {
@@ -231,7 +212,7 @@ const AddCategoriesActionLine: React.FC<Props> = ({
       if (previousCategories.some(category => category.code === categoryCode)) {
         return;
       }
-      if (index) {
+      if (typeof(index) !== 'undefined') {
         previousCategories[index] = category;
       } else {
         previousCategories.push(category);
@@ -259,6 +240,14 @@ const AddCategoriesActionLine: React.FC<Props> = ({
     );
     setValue(`content.actions[${lineNumber}].value`, getSelectedCategories());
   };
+
+  const getCategoryCount: (categoryTree: CategoryTreeModel) => number = (categoryTree) => {
+    return (
+      categoryTreesWithSelectedCategoriesMap?.get(
+        categoryTree
+      ) || []
+    ).length;
+  }
 
   return (
     <ActionTemplate
@@ -291,32 +280,24 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                   return (
                     <li key={categoryTree.code}>
                       {/* TODO add Selected state */}
-                      <CategoryTreeButton
-                        className='AknTextField'
+                      <button
+                        className={`AknTextField AknCategoryTreeSelector${currentCategoryTree === categoryTree ? ' AknCategoryTreeSelector--selected' : ''}`}
                         onClick={e => {
                           e.preventDefault();
                           setCurrentCategoryTree(categoryTree);
                         }}>
                         {categoryTree.labels[currentCatalogLocale] ||
                           `[${categoryTree.code}]`}
-                        <CategoryTreeHelper>
+                        <span className='AknCategoryTreeSelector-helper'>
                           {translate(
                             'pimee_catalog_rule.form.edit.actions.add_category.categories_selected',
                             {
-                              count: (
-                                categoryTreesWithSelectedCategoriesMap.get(
-                                  categoryTree
-                                ) || []
-                              ).length,
+                              count: getCategoryCount(categoryTree),
                             },
-                            (
-                              categoryTreesWithSelectedCategoriesMap.get(
-                                categoryTree
-                              ) || []
-                            ).length
+                            getCategoryCount(categoryTree)
                           )}
-                        </CategoryTreeHelper>
-                      </CategoryTreeButton>
+                        </span>
+                      </button>
                     </li>
                   );
                 }

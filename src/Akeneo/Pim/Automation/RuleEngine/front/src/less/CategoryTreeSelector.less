@@ -1,0 +1,34 @@
+@import './public/bundles/pimui/less/base/variables';
+
+.AknCategoryTreeSelector {
+  margin-bottom: 5px;
+  position: relative;
+  background: white;
+  text-align: left;
+  cursor: pointer;
+  color: @AknGrey140;
+  padding-left: 14px;
+
+  &-helper {
+    text-transform: uppercase;
+    position: absolute;
+    right: 10px;
+    border: 1px solid @AknGrey;
+    font-size: 11px;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 2px;
+    top: 10px;
+    padding: 0 3px;
+    color: @AknSlateGrey;
+  }
+
+  &--selected {
+    border-color: @AknBlue;
+  }
+
+  &--selected &-helper {
+    border-color: @AknBlue;
+    color: @AknGrey140;
+  }
+}
