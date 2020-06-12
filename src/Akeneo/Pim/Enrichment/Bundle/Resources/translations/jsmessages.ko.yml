@@ -88,23 +88,12 @@ pim_enrich.entity.product:
       show_products: 제품 표시
       show_groups: 그룹 표시
       number_of_associations: "{{ productCount }} 제품, {{ productModelCount }} 제품 모델 및 {{ groupCount }} 그룹"
-      number_of_quantified_associations: "{{ productCount }} product(s) and {{ productModelCount }} product model(s)"
       association_type_selector: 연결 유형
       target: 대상
       manage: '{{ associationType }} 연결 추가'
       manage_description: '"{{ productLabel }}" 제품과 연결할 제품 선택'
       mass_edit_description: '{{ productCount }}개 선택 제품과 연결할 제품 선택'
       add_associations: 연결 추가
-      variant_products: Variant products
-      quantified:
-        quantity: Quantity
-      search:
-        placeholder: Search on label or identifier
-      no_result: Sorry, there is no result for your search.
-      no_data: There are no associated products.
-      remove: Remove association
-      limit_reached: You cannot add more than {{ maxLimit }} associations to this product.
-      variant_updated: You have updated a quantity on a variant, the quantities will no longer be synchronized.
     attribute_filter:
       display: 표시
       all: 모든 특성
@@ -264,8 +253,6 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: 모두
-    price-collection:
-      operators:
     select:
       operators:
         IN: 목록에 있음
@@ -384,7 +371,6 @@ pim_datagrid:
   filters:
     label: 필터
     system: 시스템
-  search: Search on {{ label }}
 batch_jobs:
   add_association:
     label: 연결
@@ -443,7 +429,3 @@ batch_jobs:
     quick_export.label: XLSX 제품의 빠른 내보내기
     quick_export_product_model.label: XLSX 제품 모델의 빠른 내보내기
     perform.label: XLSX 제품의 빠른 내보내기
-error:
-  removing:
-    group: Impossible to remove group
-    association type: Impossible to remove association type

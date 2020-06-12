@@ -168,12 +168,6 @@ akeneo_connectivity.connection:
         during_the_last_seven_days: 'Łącznie w ciągu ostatnich 7 dni:'
         today: Dzisiaj
     error_management:
-      data_source_error_chart:
-        section:
-          title: Errors on source connections
-          helper: Here you can see the total number of errors, including business errors.
-        chart:
-          title: Error count per day
       widget:
         title: Błędy biznesowe dla połączenia źródłowego
         over_the_last_seven_days: W ciągu ostatnich 7 dni
@@ -205,13 +199,10 @@ akeneo_connectivity.connection:
       no_error:
         title: Wspaniale! Nie znaleziono błędu!
       not_auditable:
-        title: Unmonitored connection
         description:
           1: To track errors on this connection,
           2: activate monitoring
           3: in the settings.
-      not_data_source:
-        title: For now, monitoring page is only available for source connection.
   runtime_error:
     error_message: Motyla noga! Mamy błąd...
     reload_helper: Proszę odświeżyć stronę i spróbować ponownie
