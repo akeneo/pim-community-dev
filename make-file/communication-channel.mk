@@ -54,10 +54,44 @@
 
 _COMMUNICATION_CHANNEL_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Platform/Bundle/CommunicationChannelBundle/Resources/workspaces/communication-channel/
 
+# Tests Back
+
+communication-channel-static-analysis-back:
+	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/phpstan.neon
+	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/phpstan-infra.neon
+
+communication-channel-coupling-back:
+	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/.php_cd.php src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back
+
+communication-channel-unit-back:
+	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Unit/spec/
+
+communication-channel-integration-back:
+ifeq ($(CI),true)
+	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Communication_Channel_Integration
+else
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Communication_Channel_Integration $(0)
+endif
+
+# Tests Front
+
+communication-channel-front-unit:
+	$(YARN_RUN) unit --coverage=false src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/tests/front/unit
+
+# Developpement
+
+communication-channel-back:
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --config=.php_cs.php src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back
+	$(MAKE) communication-channel-static-analysis-back
+	$(MAKE) communication-channel-coupling-back
+	$(MAKE) communication-channel-unit-back
+	$(MAKE) communication-channel-integration-back
+
+communication-channel-front:
+	$(NODE_RUN) node_modules/.bin/prettier --config .prettierrc.json --parser typescript --write "./src/Akeneo/Platform/Bundle/CommunicationChannelBundle/**/*.ts"
+	$(YARN_RUN) unit
+
 # Generate Models
 
 communication-channel-generate-models:
 	$(_COMMUNICATION_CHANNEL_YARN_RUN) generate-models
-
-communication-channel-unit-front:
-	$(_COMMUNICATION_CHANNEL_YARN_RUN) jest --ci

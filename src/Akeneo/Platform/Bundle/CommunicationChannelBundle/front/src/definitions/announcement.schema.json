@@ -1,0 +1,37 @@
+{
+  "title": "Announcement",
+  "type": "object",
+  "properties": {
+    "title": {"type": "string"},
+    "description": {"type": "string"},
+    "img": {"type": ["string", "null"]},
+    "altImg": {"type": ["string", "null"]},
+    "link": {"type": "string"},
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "startDate": {"type": "string"},
+    "notificationDuration": {"type": "integer"},
+    "editions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "link",
+    "img",
+    "altImg",
+    "tags",
+    "startDate",
+    "notificationDuration",
+    "editions"
+  ],
+  "additionalProperties": false
+}
