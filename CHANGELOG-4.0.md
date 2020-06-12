@@ -8,6 +8,7 @@
 
 ## Bug fixes
 
+- PIM-9297: Fixed redirection from assets to products with filter
 - PIM-9296: Fix validation of product link rules format
 
 # 4.0.32 (2020-06-08)
