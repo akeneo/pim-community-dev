@@ -10,6 +10,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
 
 /**
  * Product builder
@@ -65,6 +66,8 @@ class ProductBuilder implements ProductBuilderInterface
             $family = $this->familyRepository->findOneByIdentifier($familyCode);
             $product->setFamily($family);
         }
+
+        $product->setQuantifiedAssociations(QuantifiedAssociations::createFromNormalized([]));
 
         $event = new GenericEvent($product);
         $this->eventDispatcher->dispatch(ProductEvents::CREATE, $event);
