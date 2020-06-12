@@ -20,7 +20,6 @@ const Container = styled.li`
 const Image = styled.img`
   width: 340px;
   object-fit: contain;
-  min-height: 200px;
   border: 1px solid ${({theme}: AkeneoThemedProps) => theme.color.grey60};
 `;
 
