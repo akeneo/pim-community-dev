@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -38,10 +39,11 @@ class ConstraintViolationNormalizer extends ViolationNormalizer
                     sprintf('Context property "product" should be an instance of %s', ProductInterface::class)
                 );
             }
-
             $data['product'] = [
                 'id' => $product->getId(),
                 'identifier' => $product->getIdentifier(),
+                'label' => $product->getLabel(),
+                'family' => null !== $product->getFamily() ? $product->getFamily()->getCode() : null,
             ];
         }
 

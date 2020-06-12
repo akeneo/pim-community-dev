@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -52,7 +53,11 @@ class ProductDomainErrorNormalizer implements NormalizerInterface, CacheableSupp
             $data['product'] = [
                 'id' => $product->getId(),
                 'identifier' => $product->getIdentifier(),
+                'label' => $product->getLabel(),
+                'family' => null !== $product->getFamily() ? $product->getFamily()->getCode() : null,
             ];
+
+
         }
 
         return $data;

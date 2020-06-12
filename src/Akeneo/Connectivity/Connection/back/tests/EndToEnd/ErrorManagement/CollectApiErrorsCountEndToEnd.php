@@ -91,6 +91,7 @@ class CollectApiErrorsCountEndToEnd extends ApiTestCase
         $content = <<<JSON
 {
     "identifier": "teferi_time_raveler",
+    "family": "planeswalker",
     "values": {
         "description": [{
             "locale": null,
@@ -140,6 +141,7 @@ JSON;
         $content = <<<JSON
 {
     "identifier": "big_screen",
+    "family": "screen",
     "values": {
         "name": [{
             "locale": null,
@@ -195,6 +197,7 @@ JSON;
         // Error: unknown attribute "description"
         $content .= json_encode([
             'identifier' => 'high-top_sneakers',
+            'family' => 'shoes',
             'values' => [
                 'description' => [[
                     'locale' => null,

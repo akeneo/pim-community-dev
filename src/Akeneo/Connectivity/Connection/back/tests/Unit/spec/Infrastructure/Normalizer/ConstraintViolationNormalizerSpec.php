@@ -6,6 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Normalizer;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Normalizer\ConstraintViolationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -66,12 +67,14 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
         );
     }
 
-    public function it_normalizes_the_product_information(ProductInterface $product): void
+    public function it_normalizes_a_product_without_family(ProductInterface $product): void
     {
         $constraintViolation = new ConstraintViolation('', '', [], '', '', '');
 
         $product->getId()->willReturn(1);
         $product->getIdentifier()->willReturn('product_identifier');
+        $product->getFamily()->willReturn(null);
+        $product->getLabel()->willReturn('Akeneo T-Shirt black and purple with short sleeve');
 
         $this->normalize($constraintViolation, 'json', ['product' => $product])->shouldReturn([
             'property' => '',
@@ -81,7 +84,34 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
             'message_parameters' => [],
             'product' => [
                 'id' => 1,
-                'identifier' => 'product_identifier'
+                'identifier' => 'product_identifier',
+                'label' => 'Akeneo T-Shirt black and purple with short sleeve',
+                'family' => null,
+            ]
+        ]);
+    }
+
+    public function it_normalizes_a_product(ProductInterface $product, FamilyInterface $family): void
+    {
+        $constraintViolation = new ConstraintViolation('', '', [], '', '', '');
+
+        $product->getId()->willReturn(1);
+        $product->getIdentifier()->willReturn('product_identifier');
+        $product->getFamily()->willReturn($family);
+        $family->getCode()->willReturn('tshirts');
+        $product->getLabel()->willReturn('Akeneo T-Shirt black and purple with short sleeve');
+
+        $this->normalize($constraintViolation, 'json', ['product' => $product])->shouldReturn([
+            'property' => '',
+            'message' => '',
+            'type' => 'violation_error',
+            'message_template' => '',
+            'message_parameters' => [],
+            'product' => [
+                'id' => 1,
+                'identifier' => 'product_identifier',
+                'label' => 'Akeneo T-Shirt black and purple with short sleeve',
+                'family' => 'tshirts',
             ]
         ]);
     }
