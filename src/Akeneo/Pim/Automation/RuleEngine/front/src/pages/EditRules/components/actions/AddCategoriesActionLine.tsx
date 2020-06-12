@@ -111,20 +111,20 @@ const AddCategoriesActionLine: React.FC<Props> = ({
   };
 
   React.useEffect(() => {
-    register({ name: `content.actions[${lineNumber}].value` });
+    register({ name: `content.actions[${lineNumber}].items` });
     setValue(
-      `content.actions[${lineNumber}].value`,
+      `content.actions[${lineNumber}].items`,
       formState.submitCount === 0
-        ? action.value
-        : control.defaultValuesRef?.current?.content?.actions[lineNumber]?.value
+        ? action.items
+        : control.defaultValuesRef?.current?.content?.actions[lineNumber]?.items
     );
     return () => {
-      unregister(`content.actions[${lineNumber}].value`);
+      unregister(`content.actions[${lineNumber}].items`);
     };
   }, [formState.submitCount]);
 
   React.useEffect(() => {
-    getCategoriesByIdentifiers(action.value || [], router).then(
+    getCategoriesByIdentifiers(action.items || [], router).then(
       indexedCategories => {
         const categories = Object.values(indexedCategories);
         const nonNullCategories = categories.filter(
@@ -224,7 +224,7 @@ const AddCategoriesActionLine: React.FC<Props> = ({
       setCategoryTreesWithSelectedCategoriesMap(
         new Map(categoryTreesWithSelectedCategoriesMap)
       );
-      setValue(`content.actions[${lineNumber}].value`, getSelectedCategories());
+      setValue(`content.actions[${lineNumber}].items`, getSelectedCategories());
     });
   };
 
@@ -238,7 +238,7 @@ const AddCategoriesActionLine: React.FC<Props> = ({
     setCategoryTreesWithSelectedCategoriesMap(
       new Map(categoryTreesWithSelectedCategoriesMap)
     );
-    setValue(`content.actions[${lineNumber}].value`, getSelectedCategories());
+    setValue(`content.actions[${lineNumber}].items`, getSelectedCategories());
   };
 
   const getCategoryCount: (

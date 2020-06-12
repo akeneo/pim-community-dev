@@ -5,7 +5,7 @@ import { CategoryCode } from '../Category';
 export type AddCategoriesAction = {
   type: 'add';
   field: 'categories';
-  value: CategoryCode[];
+  items: CategoryCode[];
 };
 
 export const getAddCategoriesModule: ActionModuleGuesser = json => {
@@ -23,6 +23,6 @@ export const createAddCategoriesAction: () => AddCategoriesAction = () => {
   return {
     type: 'add',
     field: 'categories',
-    value: [],
+    items: [],
   };
 };
