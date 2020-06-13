@@ -18,7 +18,6 @@ pim_measure:
     Pressure: Pressione
     Energy: Energia
     CaseBox: Imballo
-    Brightness: Brightness
   units:
     #Area
     ACRE: Acri
@@ -179,6 +178,3 @@ pim_measure:
     #CaseBox
     PIECE: Pezzo
     DOZEN: Dozzina
-    #Brightness
-    LUMEN: Lumen
-    NIT: Nit

@@ -3,7 +3,6 @@
 "Yes, do it": "Да, сделать это"
 "Ok, got it.": "Ок, я понял."
 "Edit": "Изменить"
-"Unexpected error occurred. Please contact system administrator.": "Unexpected error occurred. Please contact system administrator."
 "Yes, revoke": "Да, отозвать"
 "Revoke Confirmation": "Отозвать подтверждение"
 Prev: Предыдущий
@@ -109,9 +108,6 @@ oro_config:
           label: Включить загрузку сообщений
         loading_messages:
           label: Доступна загрузка сообщений
-pim_ui:
-  flash:
-    unsaved_changes: 'You have unsaved changes, are you sure that you want to leave?'
 "Sorry, page was not loaded correctly": "Извините, страница загружена неправильно"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Ваши локальные изменения будут потеряны. Вы действительно хотите обновить страницу?"
 "navigation.message.content.outdated": "Содержание страницы {{ title }} устарело, пожалуйста, <a href='#' data-action='page-refresh'> обновите страницу</a>"
@@ -151,13 +147,11 @@ pim_common:
   all: Все
   and: и
   apply: Применить
-  before: Before
   by: по
   cancel: oтменить
   code: Код
   confirm: Подтверждение
   confirm_deletion: Подтвердить удаление
-  confirm_revocation: Confirm revocation
   create: Создать
   created: Создан
   delete: Удалить
@@ -169,7 +163,6 @@ pim_common:
   history: Журнал
   label: Ярлык
   label_translations: Переводы меток
-  Label or identifier: label or identifier
   less_than: менее чем
   loading: Загрузка...
   media_upload: Перетащите чтобы загрузить, или нажмите здесь
@@ -211,17 +204,14 @@ pim_common:
     STARTS WITH: Начинается с
     ENDS WITH: Заканчивается на
 error:
-  exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Запрещено. У вас нет доступа к этой странице
 alert:
   attribute_option:
-    error_occurred_during_submission: An error occurred during the form submission on the server
     save_before_edit_other: Пожалуйста зафиксируйте ваши изменения на других строках перед редактированием этой
   session_storage:
     not_available: Ваш веб-браузер кажется не совместим с sessionStorage. Обратитесь к администратору
 pim_enrich.entity.fallback:
   flash:
-    generic_error: An error occurred
     update:
       fail: Не удалось обновить
       success: Обновление завершено
@@ -233,14 +223,11 @@ pim_enrich.entity.fallback:
       title: Удалить {{ itemName }}
       alternative_title: Подтвердите удаление
       item: Вы действительно хотите удалить этот элемент?
-      item_placeholder: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action.
     edit:
       leave: Вы уверены, что хотите покинуть эту страницу?
       discard_changes: Если вы покините страницу изменения будут потеряны для {{ entity }}.
       discard_changes_title: Вы уверены?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
   module:
     create:
       upload: Перетащите ваш файл {{ type }} сюда или нажмите кнопку для просмотра диска

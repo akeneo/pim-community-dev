@@ -252,8 +252,6 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: Wszystkie
-    price-collection:
-      operators:
     select:
       operators:
         IN: Na liście
@@ -372,7 +370,6 @@ pim_datagrid:
   filters:
     label: Filtry
     system: System
-  search: Search on {{ label }}
 batch_jobs:
   add_association:
     label: Powiąż
