@@ -34,7 +34,6 @@ pim_enrich:
       description: 使用被选择的本地化语言对应的数据来编缉所选定的产品属性。
       empty: 请选择你要编辑的属性
       success_flash: 更新产品状态的作业正在运行
-      launched_flash: The bulk action "edit attributes" has been launched. You will be notified when it is done.
       message:
         warning: 所选定的产品中没有共同的产品属性。请更改您的选择。
         invalid_attribute: 具有代码"attribute_code"属性在选定的产品中并不共用，该属性略过。
@@ -74,9 +73,4 @@ pim_enrich:
       quick_export:
         launched_flash: 导出产品的作业正在运行
 category:
-  edit: Edit category
   overview: 分类
-tree:
-  edit: Edit tree
-  remove:
-    error_linked: This category tree cannot be deleted, it is linked to a channel

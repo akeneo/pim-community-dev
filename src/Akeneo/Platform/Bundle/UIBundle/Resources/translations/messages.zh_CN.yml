@@ -37,11 +37,9 @@ Most Viewed: 最多浏览商品
 "Yes": "是"
 "No": "否　"
 required: '（必需）'
-The element could not be deleted: The element could not be deleted
 pim_ui.system_config:
   form:
     loading_message_enabled.label: 启用加载消息
-    loading_message_enabled.tooltip: Display user friendly messages while waiting for a page to load
     loading_messages.label: 可用的加载消息
     loading_messages.tooltip: 全部可用的加载消息以换行符分隔
   group:
@@ -77,10 +75,7 @@ pim_enrich:
       add_attribute: 将属性添加到产品
       remove_attribute: 从产品中删除属性
       categories_view: 咨询产品的类别
-      associations_view: View the associations of a product
-      associations_edit: Add associations to a product
       change_family: 更改产品品类
-      change_state: Change the status of a product
       add_to_groups: 将商品添加到组
       mass_edit: 产品批量编辑操作
       comment: 评论产品
@@ -89,7 +84,6 @@ pim_enrich:
     product_model:
       create: 创建产品型号
       edit_attributes: 编辑产品模型的属性
-      categories_view: Consult the categories of a product model
       history: 查看产品模型的历史记录
       remove: 删除产品模型
     category:
@@ -112,11 +106,8 @@ pim_enrich:
       create: 创建品类
       edit_properties: 编辑一个品类的特征
       edit_attributes: 编辑一个品类包括的属性
-      edit_variants: Edit a family variant
       remove: 删除一个品类
       history: 查看品类历史
-    family_variant:
-      remove: Remove a family variant
     attribute_group:
       index: 列出属性组
       create: 创建属性组
@@ -150,8 +141,6 @@ pim_enrich:
       edit: 编辑关联类型
       remove: 删除关联类型
       history: 查看关联类型历史记录
-    association:
-      remove: Remove associations to a product
     job_tracker:
       index: 查看过程跟踪器
     api_connection:
@@ -169,11 +158,6 @@ pim_enrich:
     locale: 本地化语言
     product: 商品
     product_model: 产品模型
-  notification:
-    settings:
-      remove_completeness_for_channel_and_locale:
-        start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
-        done: Removal of a locale on a channel finished.
   create:
     attribute: 创建属性
     attribute group: 创建属性组
@@ -202,12 +186,10 @@ flash:
     removed: 项目已被删除
   attribute:
     identifier_not_removable: 标识属性不能被删除
-    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   category:
     removed: 目录已删除
   tree:
     removed: 目录已删除
-    not removable: Trees associated to channels cannot be removed.
   currency:
     updated: 货币已更新
     error.linked_to_channel: 您不能禁用一种货币挂钩的渠道。
@@ -294,7 +276,6 @@ Useable as grid column: 可作为表格列
 Useable as grid filter: 在表格中可用
 Family: 产品族
 Image: 图片
-Variant products: Variant products
 Available locales: 可用区域
 Locale specific: 特定的区域
 default: 默认
@@ -321,7 +302,6 @@ No matches found: 未找到匹配项
 Category tree: 目录树
 Completeness: 完整性
 Attribute used as label: 属性作为标签
-Credentials: Credentials
 #Scopes
 Global: 全局
 Channel: 通道
@@ -478,24 +458,17 @@ pim_mass_edit:
       error: 快速导出 <strong>%label%</strong>失败
       warning: 快速导出<strong>%label%</strong> 成功，但有一些警告
       success: 快速导出 <strong>%label%</strong>成功
-    mass_delete:
-      error: Mass delete <strong>%label%</strong> failed
-      warning: Mass delete <strong>%label%</strong> finished with some warnings
-      success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
   mass_edited: 批量编辑
   skip: 跳过
   skipped_products: 跳过的产品
   skipped_attributes: 跳过的属性
   skipped_families: 被略过的品类
-  deleted_products: Deleted products
-  deleted_product_models: Deleted product models
 pim_mass_edit_execution_show: 批量编辑执行 |详细信息
 edit_common_attributes.steps.edit_common_attributes_processor.title: 编辑属性
 update_product_value.steps.update_product_value_processor.title: 更新商品值
 remove_product_value.steps.update_product_value_processor.title: 移除商品值
 edit_common_attributes: 编辑属性
-edit_common_attributes_clean: Clean files for attributes
 perform.steps.duplicated.title: 重复的轴
 perform.steps.excluded.title: 被排除在外的产品
 mass_edit report:

@@ -118,8 +118,6 @@ pim_enrich.entity.product:
       header_reply: '{{ user }} svar på kommentar'
       delete_confirm: Er du sikker på du vil slette denne kommentar?
       removed_author: Slet bruger
-    asset:
-      title: Assets
 pim_enrich.entity.product_model:
   label: produktmodel
   uppercase_label: Produktmodel
@@ -175,13 +173,6 @@ pim_enrich.entity.group:
       button: Opret gruppe
     delete:
       confirm: Er du sikker på du vil slette denne gruppe?
-pim_enrich.entity.role:
-  module:
-    delete:
-      confirm: Are you sure you want to delete this role?
-  flash:
-    delete:
-      success: Role successfully removed
 pim_enrich.entity.category:
   label: kategori
   uppercase_label: Kategori
@@ -252,8 +243,6 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: Alle
-    price-collection:
-      operators:
     select:
       operators:
         IN: I listen

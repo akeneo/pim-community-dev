@@ -74,9 +74,4 @@ pim_enrich:
       quick_export:
         launched_flash: Ürünleri dışa aktarma işi şuan devam ediyor
 category:
-  edit: Edit category
   overview: Kategoriler
-tree:
-  edit: Edit tree
-  remove:
-    error_linked: This category tree cannot be deleted, it is linked to a channel

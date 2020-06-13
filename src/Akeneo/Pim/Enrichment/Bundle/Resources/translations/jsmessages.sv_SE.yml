@@ -5,13 +5,10 @@ flash:
   comment:
     create:
       success: Din kommentar har lagts till.
-      error: An error occurred during the creation of your comment.
     delete:
       success: Din kommentar har tagits bort.
-      error: An error occurred during the deletion of your comment.
     reply:
       success: Ditt svar har skapats.
-      error: An error occurred during the creation of your reply.
 pim_enrich.entity.product:
   label: produkt
   uppercase_label: Produkt
@@ -22,21 +19,15 @@ pim_enrich.entity.product:
       fail: Produkten kunde inte uppdateras.
       fields_not_ready: "Produkten kan inte sparas just nu. Följande fält är inte rätt: {{ fields }}"
       already_in_upload: En fil är har redan laddats upp för det här attributet i språkvariant "{{ locale }}" och omfattning "{{ scope }}"
-      file_upload: An error occurred during the file upload
     delete:
       success: Produkten har raderats.
       fail: Produkten kunde inte raderas.
     create:
       success: Produkten har skapts
       fail: Inget attribut är konfigurerat som produktidentifierare eller så har du inte rättigheter att redigera det.
-  page_title:
-    index: "]-Inf, 1]{{ count }} result|]1, Inf[{{ count }} results"
   module:
     create:
-      subtitle: Create product
-      title: Select your action
       choose_family: Välj en familj
-      choose_family_variant: Choose a family variant
     variant_navigation:
       common: Vanlig
     status:
@@ -68,7 +59,6 @@ pim_enrich.entity.product:
       remove_optional: Ta bort detta attributet
       locale_specific_unavailable: Detta lokaliserbara fältet är inte tillgängligt för detta språket
       locale_unavailable: Detta lokaliserbara fält är inte tillgänglig för språket '{{ locale }}' och kanal '{{ channel }}'
-      to_fill_count: "{1}1 missing required attribute|]1, Inf[{{ count }} missing required attributes"
       add_attribute_option: Lägg till attributalternativ
       add_option: Lägg till alternativ
     completeness:
@@ -76,28 +66,16 @@ pim_enrich.entity.product:
       complete: Slutförd
       no_family: Ingen familj har valts. Välj en familj för att beräkna fullständighet av denna produkt.
       no_completeness: Du ändrade produktens familj. Spara det för att beräkna fullständighet för den nya familjen.
-      missing_values: "{1}1 missing value|]1, Inf[{{ count }} missing values"
     sequential_edit:
-      item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
-      empty: Your selection is empty, please change your search criteria
       save_and_next: Spara och nästa
       save_and_finish: Spara och avsluta
     associations:
       title: Associationer
       none_exist: Det finns inga associationstyper.
       show_products: Displayprodukter
-      show_groups: Display groups
-      number_of_associations: "{{ productCount }} product(s), {{ productModelCount }} product model(s) and {{ groupCount }} group(s)"
-      association_type_selector: Association type
       target: Mål
-      manage: Add {{ associationType }} associations
-      manage_description: Select the products you want to associate with the current product
-      add_associations: Add associations
     attribute_filter:
-      display: Display
       all: Alla attribut
-      missing_required: All missing required attributes
-      at_this_level: All level specific attributes
     change_family:
       title: Ändra produktfamiljen
       merge_attributes: Aktuella attribut slås samman med de i den nya familjen.
@@ -118,70 +96,32 @@ pim_enrich.entity.product:
       header_reply: '{{ user }} svar till kommentar'
       delete_confirm: Är du säker på att du vill ta bort den här kommentaren?
       removed_author: Raderad användare
-    asset:
-      title: Assets
 pim_enrich.entity.product_model:
-  label: product model
   uppercase_label: Produktmodell
   plural_label: Produktmodeller
-  flash:
-    create:
-      success: Product model successfully created
-      product_model_added: Product model successfully added to the product model
-      variant_product_added: Variant product successfully added to the product model
-    update:
-      success: Product model successfully updated. The completeness of its variant products will be recalculated.
-      fail: The product model could not be updated.
-      fields_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
-    delete:
-      success: Product model successfully deleted.
-      fail: Cannot delete this product model
-  choose: Choose a product model
   property:
     family_variant: Variant
   module:
-    create:
-      title: Create a product model
-      content: A product model gathers variant products and eases the enrichment of their common properties.
-    attribute:
-      read_only_parent_attribute_from_common: This attribute can be updated in the common attributes.
-      read_only_parent_attribute_from_model: "This attribute can be updated in the attributes by {{ axes }}"
     variant_axis:
-      label: 'variant axis'
       create: Lägg till ny
-      create_label: "Add a new {{ axes }}"
-      required_label: '(variant axis)'
-    completeness:
-      variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }} / {{ total }} variant products"
     delete:
       confirm: Är du säker på att du vill ta bort denna produkt modell? Alla barn, modell och variant produkter, kommer att tas bort.
-      confirm_for_products_and_product_models: Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted.
 pim_enrich.entity.group:
   label: Grupp
   flash:
     update:
       success: Gruppen ändrades.
       fail: Gruppen kunde inte ändras.
-      fields_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
     create:
       success: Gruppen har skapats
     delete:
       success: Gruppen har tagits bort
       fail: Kan inte ta bort denna grupp
-  page_title:
-    index: "]-Inf, 1]{{ count }} group|]1, Inf[{{ count }} groups"
   module:
     create:
       button: Skapa grupp
     delete:
       confirm: Är du säker på att du vill ta bort denna grupp?
-pim_enrich.entity.role:
-  module:
-    delete:
-      confirm: Are you sure you want to delete this role?
-  flash:
-    delete:
-      success: Role successfully removed
 pim_enrich.entity.category:
   label: kategori
   uppercase_label: Kategori
@@ -197,7 +137,6 @@ pim_enrich.export.product:
     locales:
       help: "Språken väljer de lokaliserade produktvärdena att exportera. Ex: endast produktinformation på franska."
     attributes:
-      label: "{0}All attributes|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
       help: "Välj vilken produktinformation som ska exporteras. Ex: endast tekniska attribut."
       empty: Alla attribut kommer att exporteras
       modal:
@@ -208,7 +147,6 @@ pim_enrich.export.product:
       clear: Rensa
       all_group: Alla grupper
       empty_selection: Alla attribut kommer att exporteras
-      description: Select the product information to export
     family:
       title: Familj
       help: "Välj vilka produkter som exporteras beroende på familj. T. ex. exportera endast skor och klänningar."
@@ -240,20 +178,15 @@ pim_enrich.export.product:
         "GREATER OR EQUALS THAN ON ALL LOCALES": Fullständig på alla valda språk
         "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Fullständig på minst ett valt språk
         LOWER THAN ON ALL LOCALES: Inte fullständig på alla valda språk
-        AT LEAST COMPLETE: At least one child product complete on one selected locale
-        ALL COMPLETE: All children products complete on all selected locales
       empty_selection: Välj en familj
     category:
       title: Kategori
       help: Använd produktkategorierna i trädet (definierad av kanalen ovan) för att välja produkter att exportera
     identifier:
       title: Identifierare
-      help: Use the product identifiers to export separated by commas, spaces or line breaks
     string:
       operators:
         ALL: Alla
-    price-collection:
-      operators:
     select:
       operators:
         IN: I lista
@@ -264,76 +197,29 @@ pim_enrich.export.product:
   global_settings:
     title: Globala inställningar
 pim_enrich.mass_edit.product:
-  title: Products bulk action
-  confirm: "{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
   step:
     select:
       label: Välj produkter
-    choose:
-      title: Products bulk actions
-      label_count: "]0, Inf[Select your action"
     configure:
       label: Konfigurera
     confirm:
       label: Bekräfta
-    launch_error:
-      label: An error occurred during the launching of the mass edit operation
-    launched:
-      label: The bulk action "{{ operation }}" has been launched. You will be notified when it is done.
   operation:
     common:
       select_attributes: Välj attribut
     change_status:
       label: Ändra status
-      label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
       field: Aktivera
-    edit_common:
-      label: Edit attributes values
-      label_count: "{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-      description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
-      no_update: Please select at least one field to update
-    add_attribute_value:
-      label: Add attributes values
-      label_count: "{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-      description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
     change_family:
       label: Ändra familj
-      label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
     add_to_group:
       label: Lägg till i grupp
-      label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
       description: Markera de grupper som du vill lägga till de valda produkter
       field: Grupper
-      no_update: Please select a group before to continue
-    add_to_category:
-      label: Add to categories
-      label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
-      description: The products will be classified into following categories, the existing classification is kept.
-    move_to_category:
-      label: Move between categories
-      label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|]1, Inf[Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
-      description: The products will be classified into following categories, the existing classification is lost.
     remove_from_category:
-      label: Remove from categories
-      label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|]1, Inf[Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
       description: Produkterna kommer att tas bort från följande kategorier.
-      no_update: There is no category checked to remove the selected products from.
-    add_to_existing_product_model:
-      label: Add to an existing product model
-      label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
-      description: The product model selected will gather the products and allows the enrichment of their common properties.
-      no_update: Please select a product model before to continue
-    associate_to_product_and_product_model:
-      label: Associate
-      label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
-      description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
-      validate: Please add association before going to the next step
-    change_parent_product_model:
-      label: Change the parent product model
-      label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-      description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -342,20 +228,13 @@ pim_datagrid:
       label: Snabbexport
   mass_action:
     delete:
-      confirm_content: Are you sure you want to delete the selected products?
       success: Valda produkter har tagits bort.
-      error: Error occurred when trying to delete selected products, please try again.
     quick_export:
       csv_all: CSV (alla attribut)
       csv_grid_context: CSV (från tabellen)
       xlsx_all: Excel (alla attribut)
       xlsx_grid_context: Excel (från tabellen)
     mass_edit: Massåtgärder
-    sequential_edit: Sequential edit
-    mass_delete: Mass delete
-    selected:
-      family: selected families
-      product: selected results
   view_selector:
     view: Vyer
   actions:
@@ -365,68 +244,22 @@ pim_datagrid:
     change_status: Ändra status
     toggle_status: Växla status
     other: Andra åtgärder
-  empty_results:
-    associated_product:
-      hint: There are no associated products
-      subHint: 'Click on the button "Add associations" to associate this product'
   filters:
     label: Filter
     system: System
 batch_jobs:
-  add_association:
-    label: Associate
-    perform.label: Associate
-  add_attribute_value:
-    label: Add attributes value
-    perform.label: Add attributes value
   add_product_value:
     label: Lägg till produkt värde
     perform.label: Lägg till produkt värde
-  add_to_category:
-    label: Add to category
-    perform.label: Add to category
-  add_to_existing_product_model:
-    label: Add to an existing product model
-    perform.label: Add to an existing product model
   csv_product_grid_context_quick_export:
     quick_export.label: CSV-produkt rutnät sammanhang snabb export
-    quick_export_product_model.label: CSV product model grid context quick export
     perform.label: CSV-produkt rutnät sammanhang snabb export
   csv_product_quick_export:
     quick_export.label: CSV-produkt snabb export
-    quick_export_product_model.label: CSV product model quick export
     perform.label: CSV-produkt snabb export
-  delete_products_and_product_models:
-    label: Mass delete products
-    perform.label: Mass delete products
-  change_parent_product:
-    label: Change parent product model
-    perform.label: Change parent product model
   edit_common_attributes:
     label: Redigera Attribut
     perform.label: Redigera Attribut
-    clean.label: Clean files for attributes
-    cleaner.label: Clean files for attributes
-  compute_completeness_of_products_family:
-    label: Compute completeness
-    perform.label: Compute completeness
-  move_to_category:
-    label: Move to category
-    perform.label: Move to category
   update_product_value:
     label: Uppdatera produktens värde
     perform.label: Uppdatera produktens värde
-  remove_from_category:
-    label: Remove from category
-    perform.label: Remove from category
-  set_attribute_requirements:
-    label: Set attributes requirements
-    perform.label: Set attributes requirements
-  xlsx_product_grid_context_quick_export:
-    quick_export.label: XLSX product grid context quick export
-    quick_export_product_model.label: XLSX product model grid context quick export
-    perform.label: XLSX product grid context quick export
-  xlsx_product_quick_export:
-    quick_export.label: XLSX product quick export
-    quick_export_product_model.label: XLSX product model quick export
-    perform.label: XLSX product quick export

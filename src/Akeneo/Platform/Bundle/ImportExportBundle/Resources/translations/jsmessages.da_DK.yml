@@ -143,7 +143,6 @@ pim_import_export:
         import: Import
         export: Eksport
         mass_edit: Masse Rediger
-        mass_edit_rule: Rules Settings
         quick_export: Hurtig eksport
         compute_product_models_descendants: Beregne underliggende produkt modeller
         compute_family_variant_structure_changes: Beregner familie variant struktur ændringer

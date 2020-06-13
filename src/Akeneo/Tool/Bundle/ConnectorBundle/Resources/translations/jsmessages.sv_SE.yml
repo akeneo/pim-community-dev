@@ -3,20 +3,12 @@ batch_jobs:
   default_steps:
     validation: Filvalidering
     import_associations: Importera associationer
-    import_root_product_model: Root product model import
-    import_sub_product_model: Sub product model import
-    compute_data_related_to_family_root_product_models: Compute root product models data
-    compute_data_related_to_family_sub_product_models: Compute sub product models data
-    compute_data_related_to_family_products: Compute products data
     compute_product_models_descendants: Beräkna produktmodellers ättlingar
     compute_family_variant_structure_changes: Beräkna variantfamiljers strukturförändringar
     compute_completeness_of_products_family: Beräkna fullständighet av produktfamilj
   csv_product_export:
     label: Exportera produkt till CSV
     export.label: Exportera produkt
-  csv_product_model_export:
-    label: Product model export in CSV
-    export.label: Product model export
   csv_category_export:
     label: Exportera kategorier till CSV
     export.label: Exportera kategorier
@@ -35,15 +27,9 @@ batch_jobs:
   csv_family_export:
     label: Exportera familjer till CSV
     export.label: Exportera familj
-  csv_family_variant_export:
-    label: Family variant export in CSV
-    export.label: Family variant export
   csv_product_import:
     label: Importera produkter från CSV
     import.label: Importera produkter
-  csv_product_model_import:
-    label: Product model import in CSV
-    import_product_model_descendants.label: Compute product model descendants
   csv_category_import:
     label: Importera kategorier från CSV
     import.label: Importera produkt
@@ -59,10 +45,6 @@ batch_jobs:
   csv_family_import:
     label: Importera familjer från CSV
     import.label: Importera familj
-    compute_data_related_to_family_variants.label: Compute product models data
-  csv_family_variant_import:
-    label: Family variant import in CSV
-    import.label: Family variant import
   csv_group_import:
     label: Importera grupper från CSV
     import.label: Importera grupper
@@ -93,21 +75,12 @@ batch_jobs:
   xlsx_family_import:
     label: Importera familjer från XLSX
     import.label: Importera familj
-  xlsx_family_variant_import:
-    label: Family variant import in XLSX
-    import.label: Family variant import
   xlsx_product_export:
     label: Exportera produkt till XLSX
     export.label: Exportera produkt
-  xlsx_product_model_export:
-    label: Product model export in XLSX
-    export.label: Product model export
   xlsx_product_import:
     label: Importera produkter från XLSX
     import.label: Importera produkter
-  xlsx_product_model_import:
-    label: Product model import in XLSX
-    import_product_model_descendants.label: Compute product model descendants
   xlsx_group_export:
     label: Exportera grupper till XLSX
     export.label: Exportera grupper
@@ -117,9 +90,6 @@ batch_jobs:
   xlsx_family_export:
     label: Exportera familjer till XLSX
     export.label: Exportera familj
-  xlsx_family_variant_export:
-    label: Family variant export in XLSX
-    export.label: Family variant export
   xlsx_category_export:
     label: Exportera kategorier till XLSX
     export.label: Exportera kategorier

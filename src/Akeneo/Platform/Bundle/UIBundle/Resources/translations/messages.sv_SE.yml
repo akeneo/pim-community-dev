@@ -37,11 +37,9 @@ Most Viewed: Mest visade
 "Yes": "Ja"
 "No": "Nej"
 required: (obligatorisk)
-The element could not be deleted: The element could not be deleted
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Aktivera hämtning av meddelanden
-    loading_message_enabled.tooltip: Display user friendly messages while waiting for a page to load
     loading_messages.label: Tillgängliga meddelanden att hämta
     loading_messages.tooltip: Alla tillgängliga laddningsmeddelanden separerade med radbrytningar
   group:
@@ -77,21 +75,12 @@ pim_enrich:
       add_attribute: Lägga till ett attribut till en produkt
       remove_attribute: Ta bort ett attribut från en produkt
       categories_view: Rådfråga kategorierna av en produkt
-      associations_view: View the associations of a product
-      associations_edit: Add associations to a product
       change_family: Ändra produktfamilj
-      change_state: Change the status of a product
       add_to_groups: Lägga till produkten i grupper
       mass_edit: Produkt mass redigera
       comment: Kommentera produkter
       download: Ladda ner produkten som PDF
       history: Visa produkten historik
-    product_model:
-      create: Create a product model
-      edit_attributes: Edit attributes of a product model
-      categories_view: Consult the categories of a product model
-      history: View product model history
-      remove: Remove a product model
     category:
       list: Lista Kategorier
       create: Skapa en kategori
@@ -112,11 +101,8 @@ pim_enrich:
       create: Skapa en familj
       edit_properties: Redigera egenskaper för en familj
       edit_attributes: Redigera attribut för en familj
-      edit_variants: Edit a family variant
       remove: Ta bort en familj
       history: Visa familjehistorik
-    family_variant:
-      remove: Remove a family variant
     attribute_group:
       index: Visa attributgrupper
       create: Skapa en attributgrupp
@@ -150,8 +136,6 @@ pim_enrich:
       edit: Redigera förbindelse typ
       remove: Ta bort förbindelse typ
       history: Visa förbindelsen(s) historik
-    association:
-      remove: Remove associations to a product
     job_tracker:
       index: Visa process spårare
     api_connection:
@@ -169,11 +153,6 @@ pim_enrich:
     locale: Språk
     product: Produkter
     product_model: Produktmodeller
-  notification:
-    settings:
-      remove_completeness_for_channel_and_locale:
-        start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
-        done: Removal of a locale on a channel finished.
   create:
     attribute: skapa attribut
     attribute group: skapa attributgrupp
@@ -202,7 +181,6 @@ flash:
     removed: Objektet har tagits bort
   attribute:
     identifier_not_removable: ID-attributet kan inte tas bort
-    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   category:
     removed: Kategorin har tagits bort
   tree:
@@ -294,7 +272,6 @@ Useable as grid column: Kan användas som rutnätskolumn
 Useable as grid filter: Användbara i rutnät
 Family: Familj
 Image: Bild
-Variant products: Variant products
 Available locales: Tillgängliga språk
 Locale specific: Specifik språk
 default: Standard
@@ -321,7 +298,6 @@ No matches found: Inga träffar hittades
 Category tree: Kategoriträd
 Completeness: Fullständighet
 Attribute used as label: Attribut används som etikett
-Credentials: Credentials
 #Scopes
 Global: Global
 Channel: Kanal
@@ -478,24 +454,17 @@ pim_mass_edit:
       error: Snabb export <strong>%label%</strong> misslyckades
       warning: Snabb export <strong>%label%</strong> klar med några varningar
       success: Snabb export <strong>%label%</strong> färdiga
-    mass_delete:
-      error: Mass delete <strong>%label%</strong> failed
-      warning: Mass delete <strong>%label%</strong> finished with some warnings
-      success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
   mass_edited: Massa redigera
   skip: Hoppade över
   skipped_products: Överhoppade produkter
   skipped_attributes: Överhoppade attribut
   skipped_families: Överhoppade familjer
-  deleted_products: Deleted products
-  deleted_product_models: Deleted product models
 pim_mass_edit_execution_show: Massa redigera utförande | Detaljer
 edit_common_attributes.steps.edit_common_attributes_processor.title: Redigera Attribut
 update_product_value.steps.update_product_value_processor.title: Uppdatera produktens värde
 remove_product_value.steps.update_product_value_processor.title: Ta bort produktvärde
 edit_common_attributes: Redigera Attribut
-edit_common_attributes_clean: Clean files for attributes
 perform.steps.duplicated.title: Duplicerade Axlar
 perform.steps.excluded.title: Uteslutna produkter
 mass_edit report:

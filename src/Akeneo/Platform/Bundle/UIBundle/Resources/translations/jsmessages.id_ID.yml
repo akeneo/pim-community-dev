@@ -3,7 +3,6 @@
 "Yes, do it": "Ya lakukanlah"
 "Ok, got it.": "Ok, saya mengerti."
 "Edit": "Ubah"
-"Unexpected error occurred. Please contact system administrator.": "Unexpected error occurred. Please contact system administrator."
 "Yes, revoke": "Ya, cabut"
 "Revoke Confirmation": "Cabut kan Konfirmasi"
 Prev: Sebelum
@@ -109,9 +108,6 @@ oro_config:
           label: Memungkinkan pemuatan pesan
         loading_messages:
           label: Tersedia pesan pemuatan
-pim_ui:
-  flash:
-    unsaved_changes: 'You have unsaved changes, are you sure that you want to leave?'
 "Sorry, page was not loaded correctly": "Maaf, halaman tidak dimuat dengan benar"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Perubahan lokal anda akan hilang. Apakah anda yakin anda ingin menyegarkan halaman?"
 "navigation.message.content.outdated": "Isi {{ title }} di halaman ketinggalan jaman, silakan <a href='#' data-action='page-refresh'>menyegarkan halaman</a>"
@@ -147,17 +143,14 @@ pim_common:
   actions: Aksi
   add: Tambahkan
   add_attributes: Tambahkan atribut
-  after: After
   all: Semuanya
   and: dan
   apply: Terapkan
-  before: Before
   by: oleh
   cancel: Batal
   code: Kode
   confirm: Menyetujui
   confirm_deletion: Konfirmasi penghapusan
-  confirm_revocation: Confirm revocation
   create: Buat
   created: Dibuat
   delete: Hapus
@@ -169,7 +162,6 @@ pim_common:
   history: Riwayat
   label: Label
   label_translations: Terjemahan label
-  Label or identifier: label or identifier
   less_than: Kurang dari
   loading: Pemuatan...
   media_upload: Seret dan letakkan untuk mengunggah atau tekan disini
@@ -211,17 +203,14 @@ pim_common:
     STARTS WITH: Dimulai dengan
     ENDS WITH: Berakhir dengan
 error:
-  exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Terlarang. Anda tidak diizinkan mengakses halaman ini
 alert:
   attribute_option:
-    error_occurred_during_submission: An error occurred during the form submission on the server
     save_before_edit_other: Silahkan mendaftar modifikasi anda pada baris lain sebelum mengubah yang satu ini
   session_storage:
     not_available: Peramban web anda sepertinya tidak kompatibel dengan sessionStorage. Silahkan hubungi pengelola anda
 pim_enrich.entity.fallback:
   flash:
-    generic_error: An error occurred
     update:
       fail: Pembaruan gagal
       success: Berhasil diperbarui
@@ -233,26 +222,16 @@ pim_enrich.entity.fallback:
       title: Hapus {{ itemName }} ini
       alternative_title: Konfirmasi penghapusan
       item: Apakah Anda yakin Anda ingin menghapus produk ini?
-      item_placeholder: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action.
     edit:
       leave: Apakah anda yakin ingin meninggalkan halaman ini?
       discard_changes: Anda akan kehilangan perubahan {{ entity }} jika anda meninggalkan halaman.
-      discard_changes_title: Are you sure?
 pim_enrich.entity.api_connection:
   flash:
     create:
       success: Sambungan API berhasil dibuat
     delete:
       success: Sambungan API berhasil dicabut
-      fail: Cannot revoke this API connection
-  page_title:
-    index: "]-Inf, 1]{{ count }} API connection|]1, Inf[{{ count }} API connections"
-  module:
-    revoke:
-      confirm: Are you sure you want to revoke this API connection?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
   module:
     create:
       upload: Tarik berkas {{ type }} anda disini, atau tekan untuk menelusuri disket komputer
@@ -267,7 +246,6 @@ pim_title:
   pim_enrich_attributegroup_index: Grup atribut
   pim_enrich_attributegroup_create: Perlengkapan kelompok | Membuat
   pim_enrich_attributegroup_edit: Perlengkapan kelompok {{ group.label }} | Sunting
-  pim_enrich_catalog_volume_index: Catalog volume monitoring
   pim_enrich_categorytree_index: Pohon kategori
   pim_enrich_categorytree_create: Kategori pohon | Membuat
   pim_enrich_categorytree_edit: Kategori pohon {{ category.label }} | ubah
@@ -332,7 +310,6 @@ pim_menu:
     info: Sistem informasi
     job_tracker: Proses pelacak
     api_connection: Koneksi API
-    catalog_volume: Catalog volume monitoring
   navigation:
     activity: Navigasi aktivitas
     system: Sistem navigasi

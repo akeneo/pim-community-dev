@@ -3,9 +3,6 @@
 "Yes, do it": "是，继续"
 "Ok, got it.": "好的，知道了"
 "Edit": "编辑"
-"Unexpected error occurred. Please contact system administrator.": "Unexpected error occurred. Please contact system administrator."
-"Yes, revoke": "Yes, Revoke"
-"Revoke Confirmation": "Revoke Confirmation"
 Prev: 上一个
 Today: 今天
 Wk: 周
@@ -109,9 +106,6 @@ oro_config:
           label: 启用加载消息
         loading_messages:
           label: 可用的加载消息
-pim_ui:
-  flash:
-    unsaved_changes: 'You have unsaved changes, are you sure that you want to leave?'
 "Sorry, page was not loaded correctly": "抱歉，页面加载错误"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "你本地的更改将会丢失。你确定你想要刷新页面？"
 "navigation.message.content.outdated": "{{ title }} 页面的内容已经过时，请 <a href='#' data-action='page-refresh'> 刷新页面</a>"
@@ -147,17 +141,13 @@ pim_common:
   actions: 动作
   add: 增加
   add_attributes: 增加属性
-  after: After
   all: 所有
   and: 以及
   apply: 应用
-  before: Before
-  by: by
   cancel: 取消
   code: 代码
   confirm: 确认
   confirm_deletion: 确定删除
-  confirm_revocation: Confirm revocation
   create: 创建
   created: 创建
   delete: 删除
@@ -169,7 +159,6 @@ pim_common:
   history: 历史
   label: 标签
   label_translations: 标签翻译
-  Label or identifier: label or identifier
   less_than: 少于
   loading: 正在加载...
   media_upload: 拖放式操作可上传或点击这里
@@ -196,7 +185,6 @@ pim_common:
   type: 类型
   update: 升级
   "yes": "是"
-  operator: Operator
   operators:
     "=": 等于
     "!=": 不等于
@@ -211,17 +199,14 @@ pim_common:
     STARTS WITH: 开始于
     ENDS WITH: 结束于
 error:
-  exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: 您无权访问这个页面
 alert:
   attribute_option:
-    error_occurred_during_submission: An error occurred during the form submission on the server
     save_before_edit_other: 请在编辑这一条行项目之前，请登记您对其他行的修改
   session_storage:
     not_available: 您的 web 浏览器似乎并不与 sessionStorage 兼容。请联系您的管理员联系
 pim_enrich.entity.fallback:
   flash:
-    generic_error: An error occurred
     update:
       fail: 更新失败
       success: 分组已更新
@@ -233,29 +218,15 @@ pim_enrich.entity.fallback:
       title: 删除 {{ itemName }}
       alternative_title: 确认删除
       item: 确实要删除这个条目吗?
-      item_placeholder: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action.
     edit:
       leave: 你确定你要离开此页面？
       discard_changes: 如果你离开页面，将丢失更改 {{ entity }}。
-      discard_changes_title: Are you sure?
 pim_enrich.entity.api_connection:
   flash:
     create:
       success: API连接已成功创建
-    delete:
-      success: API connection successfully revoked
-      fail: Cannot revoke this API connection
-  page_title:
-    index: "]-Inf, 1]{{ count }} API connection|]1, Inf[{{ count }} API connections"
-  module:
-    revoke:
-      confirm: Are you sure you want to revoke this API connection?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
   module:
-    create:
-      upload: Drop your {{ type }} file here, or click to browse disk
     download:
       archive: 下载已生成的存档文件
       output: 下载已生成的文件
@@ -266,38 +237,25 @@ pim_title:
   oro_default: 主界面
   pim_enrich_attributegroup_index: 属性组
   pim_enrich_attributegroup_create: 属性组 |创建
-  pim_enrich_attributegroup_edit: Attribute group {{ group.label }} | Edit
-  pim_enrich_catalog_volume_index: Catalog volume monitoring
   pim_enrich_categorytree_index: 目录树
   pim_enrich_categorytree_create: 目录树|创建
-  pim_enrich_categorytree_edit: Category tree {{ category.label }} | Edit
   pim_enrich_categorytree_create_tree: 目录树|创建
   pim_enrich_attribute_index: 属性
   pim_enrich_attribute_create: 属性|创建
-  pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Edit
   pim_enrich_product_index: 商品
-  pim_enrich_product_edit: Product {{ product.label }} | Edit
-  pim_enrich_product_model_edit: Product model {{ product.label }} | Edit
   pim_enrich_family_index: 品类
-  pim_enrich_family_edit: Family {{ family.label }} | Edit
   pim_enrich_channel_index: 渠道
   pim_enrich_channel_create: 通道|创建
-  pim_enrich_channel_edit: Channel {{ channel.label }} | Edit
   pim_enrich_currency_index: 货币
   pim_enrich_locale_index: 本地化语言
   pim_enrich_group_index: 分组
-  pim_enrich_group_edit: Group {{ group.label }} | Edit
   pim_enrich_associationtype_index: 关联类型
-  pim_enrich_associationtype_edit: Association type {{ association type.label }} | Edit
   pim_enrich_grouptype_index: 分组类型
-  pim_enrich_grouptype_edit: Group type {{ group type.label }} | Edit
   pim_enrich_mass_edit_action_choose: 批量编辑|选择
   pim_enrich_mass_edit_action_configure: 批量编辑|配置
-  pim_enrich_mass_edit_action_perform: Mass Edit | Perform
   pim_enrich_job_tracker_index: 过程跟踪器
   pim_enrich_job_tracker_show: 过程跟踪器 |显示作业
   pim_enrich_api_connection_index: API连接
-  pim_enrich_api_connection_create: API connections | Create
   pim_enrich_mass_edit_action: 批量编辑
   pim_analytics_system_info_index: 系统信息
 pim_menu:
@@ -332,7 +290,6 @@ pim_menu:
     info: 系统信息
     job_tracker: 过程跟踪器
     api_connection: API连接
-    catalog_volume: Catalog volume monitoring
   navigation:
     activity: 活动导航
     system: 系统导航

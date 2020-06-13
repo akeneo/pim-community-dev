@@ -37,7 +37,6 @@ Most Viewed: En çok görüntülenenler
 "Yes": "Evet"
 "No": "Hayır"
 required: (gerekli)
-The element could not be deleted: The element could not be deleted
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Yükleme mesajlarını etkinleştir
@@ -80,7 +79,6 @@ pim_enrich:
       associations_view: Ürün ilişkilerini göster
       associations_edit: Ürüne ilişki ekle
       change_family: Ürün ailesini değiştir
-      change_state: Change the status of a product
       add_to_groups: Gruplara ürün ekle
       mass_edit: Toplu ürün düzenleme işlemleri
       comment: Ürünlere gelen yorum
@@ -202,7 +200,6 @@ flash:
     removed: Öğe silindi
   attribute:
     identifier_not_removable: Tanımlayıcı özellik silinemez
-    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   category:
     removed: Kategori Başarı ile Silindi
   tree:

@@ -20,26 +20,12 @@ confirmation:
 pim_enrich:
   entity:
     user:
-      flash:
-        delete:
-          fail: The user can not be deleted
-          success: The user has been deleted
       module:
         delete:
           confirm: Apakah kamu yakin kamu ingin menghapus pengguna kelompok ini?
 pim_user_management:
   entity:
     user:
-      label: user
-      flash:
-        update:
-          success: User successfully updated.
-          fail: The user could not be updated.
-          fields_not_ready: "The user cannot be saved right now. The following fields are not ready: {{ fields }}"
-        create:
-          success: User successfully created.
-      page_title:
-        index: "]-Inf, 1] {{ count }} user|]1, Inf [{{ count }} users"
       properties:
         username: Nama pengguna
         name_prefix: Nama awalan
@@ -47,7 +33,6 @@ pim_user_management:
         middle_name: Nama Tengah
         last_name: Nama Akhir
         name_suffix: Nama akhiran
-        phone: Phone
         avatar: Avatar
         email: Surel
         catalog_locale: Lokal katalog
@@ -59,18 +44,12 @@ pim_user_management:
         new_password: Kata sandi baru
         new_password_repeat: Kata sandi baru (ulangi)
         password: Password
-        password_repeat: Password (repeat)
-        last_logged_in: Last logged in
-        login_count: Login count
         ui_locale: UI lokal
         timezone: Zona waktu
         default_product_grid_view: Tampilan grid produk standar
         default_published_product_grid_view: Default tampilan tampilan grid produk #EE Only
         proposals_to_review_notification: Ketika proposal baru ditinjau #EE Only
         proposals_state_notifications: Ketika proposal diterima dan ditolak #EE Only
-      meta:
-        created: Created
-        updated: Updated
       module:
         create:
           button: Buat pengguna
@@ -78,14 +57,11 @@ pim_user_management:
           confirm: Apakah kamu yakin kamu ingin menghapus pengguna kelompok ini?
         update:
           additional: Tambahan
-          groups_and_roles: Groups and roles
           password: Password
           interfaces: Antarmuka
           notifications: Pemberitahuan #TODO EE Only
     role:
       plural_label: Peran
-      page_title:
-        index: "]-Inf, 1] {{ count }} role|]1, Inf [{{ count }} roles"
       module:
         create:
           button: Buat peran
@@ -93,8 +69,6 @@ pim_user_management:
           confirm: Anda yakin ingin menghapus peran ini?
     group:
       plural_label: Grup Pengguna
-      page_title:
-        index: "]-Inf, 1] {{ count }} group|]1, Inf [{{ count }} groups"
       module:
         create:
           button: Buat grup

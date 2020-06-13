@@ -39,8 +39,6 @@ pim_enrich.entity.family_variant:
       fail: Familie varianten kunne ikke opdateres.
     create:
       success: Familie variant blev oprettet
-    delete:
-      success: Family variant successfully deleted
   module:
     edit:
       common_attributes: Fælles attributter
@@ -202,10 +200,6 @@ pim_enrich.entity.attribute_group:
   label: attributgruppe
   uppercase_label: Attributgruppe
   plural_label: Attributgrupper
-  show_more_attribute:
-    title: It's a bit crowded around here, we show you {{ attributeCount }}/{{ totalAttributeCount }} attributes.
-    subtitle: To discover all the attributes of this group, just click below!
-    button: View all attributes
   flash:
     update:
       success: Attributgruppe opdateret

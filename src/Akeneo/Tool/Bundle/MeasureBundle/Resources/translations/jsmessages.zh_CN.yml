@@ -170,10 +170,7 @@ pim_measure:
     PSI: 磅 / 平方英寸
     TORR: 托尔
     MMHG: 毫米汞柱
-    #Energy
-    CALORIE: calorie
     KILOCALORIE: 千卡
-    JOULE: joule
     KILOJOULE: 千焦
     #CaseBox
     PIECE: 个

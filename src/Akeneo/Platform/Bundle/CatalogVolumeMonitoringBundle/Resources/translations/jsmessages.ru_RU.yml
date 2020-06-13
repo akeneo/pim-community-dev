@@ -27,5 +27,3 @@ pim_catalog_volume:
     count_variant_products: Варианты продуктов
     count_product_models: Модели продукта
     warning: Ух ты! Вы побили рекорд по этому измерению! Не стесняйтесь обращаться к нам, если вам нужна помощь.
-  mean: 'Mean:'
-  max: 'Max:'

@@ -118,8 +118,6 @@ pim_enrich.entity.product:
       header_reply: '{{ user }} antwoordt op de reactie'
       delete_confirm: Weet u zeker dat u deze reactie wilt verwijderen?
       removed_author: Verwijderde gebruiker
-    asset:
-      title: Assets
 pim_enrich.entity.product_model:
   label: product model
   uppercase_label: Productmodel
@@ -252,8 +250,6 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: Alle
-    price-collection:
-      operators:
     select:
       operators:
         IN: In lijst
