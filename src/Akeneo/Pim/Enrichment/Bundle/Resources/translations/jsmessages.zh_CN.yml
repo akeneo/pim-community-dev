@@ -5,13 +5,10 @@ flash:
   comment:
     create:
       success: 您的评论已经成功创建。
-      error: An error occurred during the creation of your comment.
     delete:
       success: 已成功删除您的评论。
-      error: An error occurred during the deletion of your comment.
     reply:
       success: 您的回复已经成功创建。
-      error: An error occurred during the creation of your reply.
 pim_enrich.entity.product:
   label: 产品
   uppercase_label: 产品
@@ -22,23 +19,17 @@ pim_enrich.entity.product:
       fail: 产品不能更新。
       fields_not_ready: "该产品现在无法保存。 以下字段未准备好: {{ fields }}"
       already_in_upload: 在针对本地化语言"{{ locale }}"和"{{ scope }}"范围中的这个属性中，一个文件已经在上传。
-      file_upload: An error occurred during the file upload
     delete:
       success: 产品被成功删除。
       fail: 产品不能被删除。
     create:
       success: 产品已创建
       fail: 产品标识符没有被设定属性，或者是你没有编辑的权限
-  page_title:
-    index: "]-Inf, 1]{{ count }} result|]1, Inf[{{ count }} results"
   module:
     create:
       subtitle: 创建产品
       title: 选择操作
       choose_family: 选择一个品类
-      choose_family_variant: Choose a family variant
-    variant_navigation:
-      common: Common
     status:
       enabled: 已启用
       disabled: 已禁用
@@ -68,7 +59,6 @@ pim_enrich.entity.product:
       remove_optional: 删除此属性
       locale_specific_unavailable: 在此本地化语言中，特定的字段在此不可用。
       locale_unavailable: 这个可本地化的字段不能用于本地化语言 '{{ locale }}' 和 '{{ channel }}' 通道
-      to_fill_count: "{1}1 missing required attribute|]1, Inf[{{ count }} missing required attributes"
       add_attribute_option: 添加属性选项
       add_option: 添加一个选项
     completeness:
@@ -76,7 +66,6 @@ pim_enrich.entity.product:
       complete: 完成
       no_family: 没有定义品类。请定义一个品类来计算这个产品的完成度。
       no_completeness: 你只是改变了产品的品类。请先保存来计算在该品类下的数据完整性。
-      missing_values: "{1}1 missing value|]1, Inf[{{ count }} missing values"
     sequential_edit:
       item_limit: 在这次序列编辑中只显示头1000个条目（{{ count }}项已选）
       empty: 您的选择为空，请更改搜索条件
@@ -87,17 +76,12 @@ pim_enrich.entity.product:
       none_exist: 没有关联的类型存在。
       show_products: 显示产品
       show_groups: 显示分组
-      number_of_associations: "{{ productCount }} product(s), {{ productModelCount }} product model(s) and {{ groupCount }} group(s)"
       association_type_selector: 关联类型
       target: 目标
-      manage: Add {{ associationType }} associations
-      manage_description: Select the products you want to associate with the current product
-      add_associations: Add associations
     attribute_filter:
       display: 显示
       all: 全部属性
       missing_required: 全部缺少的必要属性
-      at_this_level: All level specific attributes
     change_family:
       title: 变更产品族
       merge_attributes: 当前属性将被合并到新的产品族
@@ -114,74 +98,42 @@ pim_enrich.entity.product:
       reply: 回复
       title: 评论
       empty: 当前无评论
-      header_comment: '{{ user }} comments the product'
-      header_reply: '{{ user }} replies to the comment'
       delete_confirm: 您确定要删除此评论吗？
       removed_author: 已删除用户
-    asset:
-      title: Assets
 pim_enrich.entity.product_model:
-  label: product model
   uppercase_label: 产品型号
   plural_label: 产品模型
   flash:
     create:
       success: 产品型号已经成功创建
-      product_model_added: Product model successfully added to the product model
-      variant_product_added: Variant product successfully added to the product model
     update:
-      success: Product model successfully updated. The completeness of its variant products will be recalculated.
       fail: 产品型号无法更新
-      fields_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
     delete:
       success: 产品型号已经成功删除。
-      fail: Cannot delete this product model
   choose: 选择产品型号
   property:
     family_variant: 变量
   module:
     create:
       title: 创建产品型号
-      content: A product model gathers variant products and eases the enrichment of their common properties.
-    attribute:
-      read_only_parent_attribute_from_common: This attribute can be updated in the common attributes.
-      read_only_parent_attribute_from_model: "This attribute can be updated in the attributes by {{ axes }}"
     variant_axis:
-      label: 'variant axis'
-      create: Add new
       create_label: "添加新的{{ axes }}"
-      required_label: '(variant axis)'
-    completeness:
-      variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }} / {{ total }} variant products"
-    delete:
-      confirm: Are you sure you want to delete this product model? All its children, product models and variant products, will be also deleted.
-      confirm_for_products_and_product_models: Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted.
 pim_enrich.entity.group:
   label: 分组
   flash:
     update:
       success: 分组已成功更新。
       fail: 分组不能更新。
-      fields_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
     create:
       success: 分组已创建
     delete:
       success: 分组已删除
       fail: 不能删除这个组
-  page_title:
-    index: "]-Inf, 1]{{ count }} group|]1, Inf[{{ count }} groups"
   module:
     create:
       button: 创建组
     delete:
       confirm: 确定要删除这个组吗？
-pim_enrich.entity.role:
-  module:
-    delete:
-      confirm: Are you sure you want to delete this role?
-  flash:
-    delete:
-      success: Role successfully removed
 pim_enrich.entity.category:
   label: 类别
   uppercase_label: 分类
@@ -197,7 +149,6 @@ pim_enrich.export.product:
     locales:
       help: "本地化语言定义了要导出的本地化产品值。例如， 仅法国的产品信息"
     attributes:
-      label: "{0}All attributes|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
       help: "选择要导出的产品信息。例如︰ 仅导出有技术类的属性。"
       empty: 将导出所有属性
       modal:
@@ -208,7 +159,6 @@ pim_enrich.export.product:
       clear: 清除
       all_group: 所有群组
       empty_selection: 将导出所有属性
-      description: Select the product information to export
     family:
       title: 产品族
       help: "按品类选中产品进行导出。例如︰ 只导出鞋和衣服。"
@@ -240,20 +190,15 @@ pim_enrich.export.product:
         "GREATER OR EQUALS THAN ON ALL LOCALES": 在所有选择的本地化语言中是完整的
         "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": 完成至少一个选定的本地化语言
         LOWER THAN ON ALL LOCALES: 在所有选择的本地化语言中是不完整的
-        AT LEAST COMPLETE: At least one child product complete on one selected locale
-        ALL COMPLETE: All children products complete on all selected locales
       empty_selection: 选择一个品类
     category:
       title: 分类
       help: 使用在目录树上 （由渠道中定义） 的产品类别来选择要导出的产品
     identifier:
       title: 标识
-      help: Use the product identifiers to export separated by commas, spaces or line breaks
     string:
       operators:
         ALL: 所有
-    price-collection:
-      operators:
     select:
       operators:
         IN: 在列表中
@@ -265,19 +210,15 @@ pim_enrich.export.product:
     title: 全局设置
 pim_enrich.mass_edit.product:
   title: 产品批量操作
-  confirm: "{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
   step:
     select:
       label: 选择产品
     choose:
       title: 产品批量操作
-      label_count: "]0, Inf[Select your action"
     configure:
       label: 配置
     confirm:
       label: 确认
-    launch_error:
-      label: An error occurred during the launching of the mass edit operation
     launched:
       label: 批量操作“{{ operation }}”已启动。完成后你会收到通知。
   operation:
@@ -285,55 +226,22 @@ pim_enrich.mass_edit.product:
       select_attributes: 选择属性
     change_status:
       label: 更改状态
-      label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: 将启用或禁用选定的产品。
       field: 启用
-    edit_common:
-      label: Edit attributes values
-      label_count: "{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-      description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
-      no_update: Please select at least one field to update
-    add_attribute_value:
-      label: Add attributes values
-      label_count: "{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-      description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
     change_family:
       label: 更改品类
-      label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: 选定产品的品类将更改为被选定的品类
     add_to_group:
       label: 加入到组
-      label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
       description: 选择一个组，将所选定的产品加入其中
       field: 分组
-      no_update: Please select a group before to continue
     add_to_category:
       label: 添加到类别
-      label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
-      description: The products will be classified into following categories, the existing classification is kept.
     move_to_category:
       label: 更改类别
-      label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|]1, Inf[Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
-      description: The products will be classified into following categories, the existing classification is lost.
     remove_from_category:
       label: 从类别里删除
-      label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|]1, Inf[Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
       description: 产品将从以下目录中删除。
-      no_update: There is no category checked to remove the selected products from.
-    add_to_existing_product_model:
-      label: Add to an existing product model
-      label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
-      description: The product model selected will gather the products and allows the enrichment of their common properties.
-      no_update: Please select a product model before to continue
-    associate_to_product_and_product_model:
-      label: Associate
-      label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
-      description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
-      validate: Please add association before going to the next step
-    change_parent_product_model:
-      label: Change the parent product model
-      label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-      description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -344,15 +252,12 @@ pim_datagrid:
     delete:
       confirm_content: 确定要删除选定的产品吗？
       success: 选定的产品被成功删除。
-      error: Error occurred when trying to delete selected products, please try again.
     quick_export:
       csv_all: CSV （所有属性）
       csv_grid_context: CSV （界面内容）
       xlsx_all: Excel （所有属性）
       xlsx_grid_context: Excel （界面内容）
     mass_edit: 批量操作
-    sequential_edit: Sequential edit
-    mass_delete: Mass delete
     selected:
       family: 已选品类
       product: 选定的结果
@@ -365,68 +270,25 @@ pim_datagrid:
     change_status: 更改状态
     toggle_status: 切换状态
     other: 其它操作
-  empty_results:
-    associated_product:
-      hint: There are no associated products
-      subHint: 'Click on the button "Add associations" to associate this product'
   filters:
     label: 过滤器
     system: 系统
 batch_jobs:
-  add_association:
-    label: Associate
-    perform.label: Associate
-  add_attribute_value:
-    label: Add attributes value
-    perform.label: Add attributes value
   add_product_value:
     label: 添加商品值
     perform.label: 添加商品值
-  add_to_category:
-    label: Add to category
-    perform.label: Add to category
-  add_to_existing_product_model:
-    label: Add to an existing product model
-    perform.label: Add to an existing product model
   csv_product_grid_context_quick_export:
     quick_export.label: CSV 产品界面内容下快速导出
-    quick_export_product_model.label: CSV product model grid context quick export
     perform.label: CSV 产品界面内容下快速导出
   csv_product_quick_export:
     quick_export.label: Csv 产品快速导出
-    quick_export_product_model.label: CSV product model quick export
     perform.label: Csv 产品快速导出
-  delete_products_and_product_models:
-    label: Mass delete products
-    perform.label: Mass delete products
-  change_parent_product:
-    label: Change parent product model
-    perform.label: Change parent product model
   edit_common_attributes:
     label: 编辑属性
     perform.label: 编辑属性
-    clean.label: Clean files for attributes
-    cleaner.label: Clean files for attributes
-  compute_completeness_of_products_family:
-    label: Compute completeness
-    perform.label: Compute completeness
-  move_to_category:
-    label: Move to category
-    perform.label: Move to category
   update_product_value:
     label: 更新商品值
     perform.label: 更新商品值
-  remove_from_category:
-    label: Remove from category
-    perform.label: Remove from category
   set_attribute_requirements:
     label: 设置属性要求
     perform.label: 设置属性要求
-  xlsx_product_grid_context_quick_export:
-    quick_export.label: XLSX product grid context quick export
-    quick_export_product_model.label: XLSX product model grid context quick export
-    perform.label: XLSX product grid context quick export
-  xlsx_product_quick_export:
-    quick_export.label: XLSX product quick export
-    quick_export_product_model.label: XLSX product model quick export
-    perform.label: XLSX product quick export

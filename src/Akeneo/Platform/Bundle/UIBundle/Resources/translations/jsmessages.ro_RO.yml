@@ -3,7 +3,6 @@
 "Yes, do it": "Da, fă acest lucru"
 "Ok, got it.": "Bine, am înțeles."
 "Edit": "Modifică"
-"Unexpected error occurred. Please contact system administrator.": "Unexpected error occurred. Please contact system administrator."
 "Yes, revoke": "Da, revocă"
 "Revoke Confirmation": "Revocă confirmare"
 Prev: Prec
@@ -24,7 +23,6 @@ Microsecond: Microsecundă
 #PIM messages
 Localized value: Valoare localizată
 Columns: Coloane
-Datagrid Configuration: Datagrid Configuration
 #Filters
 Action: Acțiune
 Unit: Unitate
@@ -109,9 +107,6 @@ oro_config:
           label: Permite mesaje de incărcare
         loading_messages:
           label: Mesaje de incărcare disponibile
-pim_ui:
-  flash:
-    unsaved_changes: 'You have unsaved changes, are you sure that you want to leave?'
 "Sorry, page was not loaded correctly": "Ne pare rău, pagina nu a fost încărcată corect"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Schimbările locale vor fi pierdute. Sunteţi sigur că doriți să actualizați pagina?"
 "navigation.message.content.outdated": "Conținutul paginii {{ title }} este neactualizat, vă rugăm <a href='#' data-action='page-refresh'>reîmprospătați pagina</a>"
@@ -147,17 +142,14 @@ pim_common:
   actions: Acțiuni
   add: Adaugă
   add_attributes: Adaugă atribut
-  after: After
   all: Toate
   and: și
   apply: Aplică
-  before: Before
   by: de
   cancel: Anulează
   code: Cod
   confirm: Confirmă
   confirm_deletion: Confirmă ștergerea
-  confirm_revocation: Confirm revocation
   create: Creează
   created: Creat
   delete: Şterge
@@ -169,7 +161,6 @@ pim_common:
   history: Istoric
   label: Etichetă
   label_translations: Traduceri de etichetă
-  Label or identifier: label or identifier
   less_than: Mai puţin de
   loading: Se incarcă...
   media_upload: Trageți și lasăți pentru încărcare sau apasăți aici
@@ -211,17 +202,14 @@ pim_common:
     STARTS WITH: Începe cu
     ENDS WITH: Se termină cu
 error:
-  exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Interzis. Nu sunteți permiși să accesați această pagină
 alert:
   attribute_option:
-    error_occurred_during_submission: An error occurred during the form submission on the server
     save_before_edit_other: Vă rugăm să înregistrați modificările dumneavoastră pe alte rânduri inainte de a edita acest rând
   session_storage:
     not_available: Browserul web al dumneavoastră nu pare a fi compatibil cu sessionStorage. Vă rugăm să contactați administratorul
 pim_enrich.entity.fallback:
   flash:
-    generic_error: An error occurred
     update:
       fail: Actualizarea a eșuat
       success: Actualizat cu succes
@@ -233,53 +221,31 @@ pim_enrich.entity.fallback:
       title: Șterge {{ itemName }}
       alternative_title: Confirmă eliminarea
       item: Ești sigur că vrei să ștergi acest element?
-      item_placeholder: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action.
     edit:
       leave: Ești sigur că vrei să părăsești această pagină?
       discard_changes: Veți pierde modificările în {{ entity }} dacă ieșiți din pagina asta.
-      discard_changes_title: Are you sure?
 pim_enrich.entity.api_connection:
   flash:
     create:
       success: Conexiunea API a fost creată cu succes
     delete:
       success: Conexiunea API a fost revocată
-      fail: Cannot revoke this API connection
-  page_title:
-    index: "]-Inf, 1]{{ count }} API connection|]1, Inf[{{ count }} API connections"
-  module:
-    revoke:
-      confirm: Are you sure you want to revoke this API connection?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
   module:
-    create:
-      upload: Drop your {{ type }} file here, or click to browse disk
     download:
       archive: Descarcă arhiva generată
       output: Descarcă fișierele generate
-      input: Download read files
-      invalid_xlsx: Download invalid data
-      invalid_csv: Download invalid data
 pim_title:
   oro_default: Tablou de bord
   pim_enrich_attributegroup_index: Grupuri atribute
   pim_enrich_attributegroup_create: Grupe de atribute | Creează
-  pim_enrich_attributegroup_edit: Attribute group {{ group.label }} | Edit
-  pim_enrich_catalog_volume_index: Catalog volume monitoring
   pim_enrich_categorytree_index: Mulțimea de categorii
   pim_enrich_categorytree_create: Mulțimi de categorii | Creează
-  pim_enrich_categorytree_edit: Category tree {{ category.label }} | Edit
   pim_enrich_categorytree_create_tree: Mulțimi de categorii | Creează
   pim_enrich_attribute_index: Atribute
   pim_enrich_attribute_create: Atribute | Creează
-  pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Edit
   pim_enrich_product_index: Produse
-  pim_enrich_product_edit: Product {{ product.label }} | Edit
-  pim_enrich_product_model_edit: Product model {{ product.label }} | Edit
   pim_enrich_family_index: Familii
-  pim_enrich_family_edit: Family {{ family.label }} | Edit
   pim_enrich_channel_index: Canale
   pim_enrich_channel_create: Canale | Creează
   pim_enrich_channel_edit: Canlalul {{ channel.label }} | Editare
@@ -293,7 +259,6 @@ pim_title:
   pim_enrich_grouptype_edit: Tip de grup {{ group type.label }} | Editare
   pim_enrich_mass_edit_action_choose: Editare în masă | Alege
   pim_enrich_mass_edit_action_configure: Editare în masă | Configurează
-  pim_enrich_mass_edit_action_perform: Mass Edit | Perform
   pim_enrich_job_tracker_index: Monitorizare procese
   pim_enrich_job_tracker_show: Monitorizare procese | Arată sarcină
   pim_enrich_api_connection_index: Conexiunile API
@@ -332,12 +297,7 @@ pim_menu:
     info: Informație despre sistem
     job_tracker: Monitorizare procese
     api_connection: Conexiuni API
-    catalog_volume: Catalog volume monitoring
   navigation:
-    activity: Activity navigation
-    system: System navigation
-    user: Users management navigation
-    settings: Settings navigation
     product: Navigarea produsului
     product_infos: Infornații despre produs
   user:

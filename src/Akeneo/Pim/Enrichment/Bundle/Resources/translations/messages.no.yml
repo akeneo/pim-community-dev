@@ -78,5 +78,3 @@ category:
   overview: Kategorier
 tree:
   edit: Rediger tre
-  remove:
-    error_linked: This category tree cannot be deleted, it is linked to a channel

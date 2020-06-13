@@ -60,17 +60,12 @@ pim_user_management:
         new_password_repeat: Nieuw wachtwoord (herhalen)
         password: Wachtwoord
         password_repeat: Wachtwoord (herhalen)
-        last_logged_in: Last logged in
-        login_count: Login count
         ui_locale: Gebruikers Interface
         timezone: Tijdzone
         default_product_grid_view: Standaard Productweergave raster
         default_published_product_grid_view: Standaard gepubliceerde product rasterweergave #EE Only
         proposals_to_review_notification: Wanneer nieuw voorstel tot nakijken #EE Only
         proposals_state_notifications: Wanneer voorstel is goedgekeurd of geweigerd #EE Only
-      meta:
-        created: Created
-        updated: Updated
       module:
         create:
           button: Gebruiker aanmaken

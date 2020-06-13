@@ -69,8 +69,3 @@ pim_enrich.entity.currency:
   plural_label: 货币
   page_title:
     index: "]-Inf, 1]{{ count }} 种货币|]1, Inf[{{ count }} 种货币"
-flash:
-  currency:
-    error:
-      linked_to_channel: You cannot disable a currency linked to a channel
-    updated: Currency successfully updated

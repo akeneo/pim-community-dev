@@ -3,11 +3,8 @@ batch_jobs:
   default_steps:
     validation: Validarea fișierului
     import_associations: Import asociație
-    import_root_product_model: Root product model import
     import_sub_product_model: Impor model de subprodus
     compute_data_related_to_family_root_product_models: Calculează datele ale modelelor de produse
-    compute_data_related_to_family_sub_product_models: Compute sub product models data
-    compute_data_related_to_family_products: Compute products data
     compute_product_models_descendants: Computează descendenții modelelor de produs
     compute_family_variant_structure_changes: Calculează schimbarile structurii de variantă de familie
     compute_completeness_of_products_family: Calculează completitudinea familiei de produse
@@ -41,14 +38,9 @@ batch_jobs:
   csv_product_import:
     label: Import de produs în CSV
     import.label: Import produs
-  csv_product_model_import:
-    label: Product model import in CSV
-    import_product_model_descendants.label: Compute product model descendants
   csv_category_import:
-    label: Category import in CSV
     import.label: Import categorie
   csv_attribute_import:
-    label: Attribute import in CSV
     import.label: Import atribut
   csv_attribute_option_import:
     label: Import de opțiune a atributului în CSV
@@ -71,7 +63,6 @@ batch_jobs:
     export.label: Export grup de atribut
   csv_group_type_export:
     label: Export tip de grup În CSV
-    export.label: Group type export
   csv_attribute_group_import:
     label: Import grup de atribut în CSV
     import.label: Import grup de atribut
@@ -100,14 +91,9 @@ batch_jobs:
     label: Export produs în XLSX
     export.label: Exportare produse
   xlsx_product_model_export:
-    label: Product model export in XLSX
     export.label: Export model de produs
   xlsx_product_import:
-    label: Product import in XLSX
     import.label: Import produs
-  xlsx_product_model_import:
-    label: Product model import in XLSX
-    import_product_model_descendants.label: Compute product model descendants
   xlsx_group_export:
     label: Export grup în XLSX
     export.label: Export grup
@@ -115,29 +101,13 @@ batch_jobs:
     label: Import grup în XLSX
     import.label: Import grup
   xlsx_family_export:
-    label: Family export in XLSX
     export.label: Export familie
   xlsx_family_variant_export:
-    label: Family variant export in XLSX
     export.label: Export varianta de familie
   xlsx_category_export:
-    label: Category export in XLSX
     export.label: Export categorie
-  xlsx_attribute_export:
-    label: Attribute export in XLSX
-    export.label: Attribute export in XLSX
-  xlsx_attribute_option_export:
-    label: Attribute option export in XLSX
-    export.label: Attribute option export in XLSX
-  xlsx_association_type_export:
-    label: Association type export in XLSX
-    export.label: Association type export in XLSX
   xlsx_attribute_group_export:
-    label: Attribute group export in XLSX
     export.label: Export grup de atribut
-  xlsx_group_type_export:
-    label: Group type export in XLSX
-    export.label: Group type export
   xlsx_attribute_group_import:
     label: Import grup de atribut în XLSX
     import.label: Import grup de atribut

@@ -8,7 +8,6 @@ pim_connector:
       selector:
         modal:
           title: Pemilihan kategori
-        label: "{0}All products|{1}One selected category|]1,Inf[{{ count }} selected categories"
         title: Pilih kategori
     locales:
       validation:
@@ -28,10 +27,6 @@ pim_import_export:
       flash:
         create:
           success: Profil impor berhasil dibuat
-        upload:
-          error: Unable to upload the file. Its size may exceed the configured maximum upload size on your PHP or HTTP server configuration
-      page_title:
-        index: "]-Inf, 1] {{ count }} import profile|]1, Inf [{{ count }} import profiles"
       module:
         create:
           button: Buat profil impor
@@ -40,8 +35,6 @@ pim_import_export:
       flash:
         create:
           success: Profil ekspor berhasil dibuat
-      page_title:
-        index: "]-Inf, 1] {{ count }} export profile|]1, Inf [{{ count }} export profiles"
       module:
         create:
           button: Buat profil ekspor
@@ -89,7 +82,6 @@ pim_import_export:
           file_path:
             title: Jalur file
             help: Dimana untuk menulis berkas yang dihasilkan pada sistem berkas
-            help_import: The directory of the file to be used for the import
           delimiter:
             title: Pembatas
             help: Satu karakter digunakan untuk mengatur bidang pembatas
@@ -143,12 +135,10 @@ pim_import_export:
         import: Impor
         export: Ekspor
         mass_edit: Sunting massa
-        mass_edit_rule: Rules Settings
         quick_export: Ekspor cepat
         compute_product_models_descendants: Hitunglah model turunan produk
         compute_family_variant_structure_changes: Hitung perubahan struktur keluarga varian
         compute_completeness_of_products_family: Hitunglah perlengkapan produk keluarga
-        mass_delete: Mass delete products
       header.view_all: Lihat semua
   batch_status:
     1: Selesai

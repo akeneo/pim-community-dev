@@ -109,9 +109,6 @@ oro_config:
           label: Schakel laadberichten in
         loading_messages:
           label: Beschikbare laadberichten
-pim_ui:
-  flash:
-    unsaved_changes: 'You have unsaved changes, are you sure that you want to leave?'
 "Sorry, page was not loaded correctly": "Sorry, de pagina is niet correct geladen"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Uw lokale wijzigingen zullen verloren gaan. Weet u zeker dat u de pagina wilt vernieuwen?"
 "navigation.message.content.outdated": "De pagina-inhoud van {{ title }} is verouderd, graag <a href='#' data-action='page-refresh'>de pagina vernieuwen</a>"
@@ -147,17 +144,14 @@ pim_common:
   actions: Acties
   add: Toevoegen
   add_attributes: Attributen toevoegen
-  after: After
   all: Alle
   and: en
   apply: Pas toe
-  before: Before
   by: door
   cancel: Annuleer
   code: Code
   confirm: Bevestig
   confirm_deletion: Verwijderen bevestigen
-  confirm_revocation: Confirm revocation
   create: Aanmaken
   created: Aangemaakt
   delete: Verwijderen
@@ -233,35 +227,19 @@ pim_enrich.entity.fallback:
       title: Verwijder deze {{ itemName }}
       alternative_title: Verwijdering bevestigen
       item: Weet u zeker dat u dit item wilt verwijderen?
-      item_placeholder: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action.
     edit:
       leave: Weet u zeker dat u deze pagina wilt verlaten?
       discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
-      discard_changes_title: Are you sure?
 pim_enrich.entity.api_connection:
   flash:
     create:
       success: API koppeling met succes aangemaakt
     delete:
       success: API koppeling met succes ingetrokken
-      fail: Cannot revoke this API connection
-  page_title:
-    index: "]-Inf, 1]{{ count }} API connection|]1, Inf[{{ count }} API connections"
-  module:
-    revoke:
-      confirm: Are you sure you want to revoke this API connection?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
   module:
     create:
       upload: Versleep jouw {{ type }} bestand naar hier, of klik om bestand te zoeken
-    download:
-      archive: Download generated archive
-      output: Download generated files
-      input: Download read files
-      invalid_xlsx: Download invalid data
-      invalid_csv: Download invalid data
 pim_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Attribuutgroepen
@@ -274,42 +252,26 @@ pim_title:
   pim_enrich_categorytree_create_tree: Categoriestructuren|Aanmaken
   pim_enrich_attribute_index: Attributen
   pim_enrich_attribute_create: Attributen | Aanmaken
-  pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Edit
   pim_enrich_product_index: Producten
-  pim_enrich_product_edit: Product {{ product.label }} | Edit
-  pim_enrich_product_model_edit: Product model {{ product.label }} | Edit
   pim_enrich_family_index: Families
-  pim_enrich_family_edit: Family {{ family.label }} | Edit
   pim_enrich_channel_index: Kanalen
   pim_enrich_channel_create: Kanalen | Aanmaken
-  pim_enrich_channel_edit: Channel {{ channel.label }} | Edit
   pim_enrich_currency_index: Valuta
   pim_enrich_locale_index: Lokalisaties
   pim_enrich_group_index: Groepen
-  pim_enrich_group_edit: Group {{ group.label }} | Edit
   pim_enrich_associationtype_index: Associatietypes
-  pim_enrich_associationtype_edit: Association type {{ association type.label }} | Edit
   pim_enrich_grouptype_index: Groepstypen
-  pim_enrich_grouptype_edit: Group type {{ group type.label }} | Edit
   pim_enrich_mass_edit_action_choose: Massa bewerken | Kies
   pim_enrich_mass_edit_action_configure: Massa bewerken | Configureren
-  pim_enrich_mass_edit_action_perform: Mass Edit | Perform
   pim_enrich_job_tracker_index: Procesopvolger
   pim_enrich_job_tracker_show: Procesopvolger | Toon taak
-  pim_enrich_api_connection_index: API connections
-  pim_enrich_api_connection_create: API connections | Create
   pim_enrich_mass_edit_action: Massa bewerken
   pim_analytics_system_info_index: Systeeminformatie
 pim_menu:
   tab:
     activity: Activiteit
-    imports: Imports
-    exports: Exports
     settings: Instellingen
     system: Systeem
-    help:
-      title: Help
-      helper: Akeneo Help center
   item:
     association_type: Associatietypes
     attribute_group: Attribuutgroepen
@@ -319,7 +281,6 @@ pim_menu:
     family: Families
     group: Groepen
     group_type: Groepstypen
-    product_model: Product Models
     export_history: Exportgeschiedenis
     export_profile: Exportprofielen
     import_history: Importgeschiedenis
@@ -331,13 +292,8 @@ pim_menu:
     user_role: Rollen
     info: Systeeminformatie
     job_tracker: Procesopvolger
-    api_connection: API connections
     catalog_volume: Catalogus volume monitoring
   navigation:
-    activity: Activity navigation
-    system: System navigation
-    user: Users management navigation
-    settings: Settings navigation
     product: Product navigatie
     product_infos: Product informatie
   user:

@@ -202,10 +202,6 @@ pim_enrich.entity.attribute_group:
   label: Attributi di gruppo
   uppercase_label: Gruppo attributi
   plural_label: Gruppi di attributi
-  show_more_attribute:
-    title: It's a bit crowded around here, we show you {{ attributeCount }}/{{ totalAttributeCount }} attributes.
-    subtitle: To discover all the attributes of this group, just click below!
-    button: View all attributes
   flash:
     update:
       success: Gruppo di attributi aggiornato con successo
