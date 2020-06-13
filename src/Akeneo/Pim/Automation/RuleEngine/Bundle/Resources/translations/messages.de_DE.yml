@@ -100,8 +100,6 @@ pimee_catalog_rule:
   notification:
     execute_rules:
       success: Anwenden der Regel(n) abgeschlossen
-      warning: Ausführung der Regel(n) mit Warnung(en) beendet
-      error: Beim Anwenden der Regeln ist ein Fehler aufgetreten
     mass_edit_rule:
       success: Berechnung der von dieser Regel betroffenen Produkte abgeschlossen
       error: Während der Berechnung, der von diesen Regeln betroffenen Produkte, ist ein Fehler aufgetreten
@@ -110,12 +108,6 @@ btn:
 job_execution:
   summary:
     rule_calculated: Anzahl der Regeln
-    read_rules: lese Regeln
-    selected_entities: ausgewählte Produkte / Produktmodelle
-    skipped_invalid: übersprungene Produkte / Produktmodelle (ungültig)
-    updated_entities: aktualisierte Produkte / Produktmodelle
-    executed_rules: erfolgreich ausgeführte Regeln
-    errored_rules: übersprungene Regeln (ungültig)
 pim_datagrid:
   cells:
     type:

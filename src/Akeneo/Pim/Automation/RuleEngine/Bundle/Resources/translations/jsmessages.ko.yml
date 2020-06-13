@@ -16,7 +16,6 @@ pimee_catalog_rule:
       action.label: 작업
       no_rule_yet.label: 현재는 규칙 없음
   rule:
-    value: Value
     condition:
       if.label: '조건:'
     action:
@@ -50,21 +49,6 @@ pimee_catalog_rule:
           error: 규칙을 삭제하는 중에 오류가 발생했습니다.
           empty_selection: 규칙을 선택하지 않았습니다.
   form:
-    category:
-      catalog: Catalog
-      select: Select a category
-      open_tree: Open category tree
-      tree: Category Tree
-      menu: Select a category tree
-      folder:
-        selected: Folder selected
-        not_selected: Folder
-      folders:
-        selected: Folders selected
-        not_selected: Folders
-      arrow:
-        open: Open branch category
-        close: Close branch category
     tab:
       list: 규칙 작성기 및 속성 탭
       rule_builder: 규칙 작성기
@@ -94,19 +78,10 @@ pimee_catalog_rule:
         label: 우선순위
       add_to_category: 카테고리에 추가
       add_conditions: 조건 추가
-      products_count:
-        complete: "{{ count }} products and product models"
-        pending: Calculating products and product models
-        error: Calculation impossible
       product_selection: 제품 선택
       fields:
         family: 패밀리
-        category: Category
       actions:
-        add_action: Add action
-        set_family:
-          title: SET Family
-          subtitle: Select your family
         delete:
           label: 작업 제거
           description: 이 작업을 제거하시겠습니까?
@@ -146,22 +121,8 @@ pimee_catalog_rule:
     legend:
       add_to_category: 작업 만들기
       product_selection: 조건 만들기
-    tree:
-      item:
-        selected: Item selected
-        not_selected: Select item
   exceptions:
     loading: 규칙 정의 로드 중에 오류가 발생했습니다.
-    required: This field is required
-    required_locale: A locale is required for this attribute
-    required_scope: A channel is required for this attribute
-    unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
-    unbound_locale: 'The "{{ localeCode }}" locale is not activated in the channel "{{ channelCode }}"'
-    locale_on_unlocalizable_attribute: This attribute is not localizable. Please remove the locale before continue.
-    unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
-    scope_on_unscopable_attribute: This attribute is not scopable. Please remove the scope before continue.
-    unknown_families: "{1}The family {{ familyCodes }} does not exist|]1,+Inf[The families {{ familyCodes }} do not exist"
-    unknown_attribute_options: "{1}The option {{ attributeOptionCodes }} does not exist|]1,+Inf[The options {{ attributeOptionCodes }} do not exist"
 pim_enrich:
   entity:
     rule:
@@ -185,7 +146,6 @@ batch_jobs:
   default_steps:
     export_rules: 규칙 내보내기
     import_rules: 규칙 가져오기
-    calculate_affected_products: Calculate affected products
     execute_rules: 규칙 실행
   yml_rule_import:
     label: YAML로 규칙 가져오기

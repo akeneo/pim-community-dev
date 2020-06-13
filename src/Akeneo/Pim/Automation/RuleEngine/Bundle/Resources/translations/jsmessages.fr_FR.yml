@@ -16,7 +16,6 @@ pimee_catalog_rule:
       action.label: Action
       no_rule_yet.label: Il n'y a aucune règle pour l'instant
   rule:
-    value: Valeur
     condition:
       if.label: Si
     action:
@@ -50,21 +49,6 @@ pimee_catalog_rule:
           error: Une erreur s'est produite lors de la suppression des règles.
           empty_selection: Aucune règle n'a été sélectionnée.
   form:
-    category:
-      catalog: Catalogue
-      select: Sélectionnez une catégorie
-      open_tree: Ouvrir l'arbre des catégories
-      tree: Arborescence des catégories
-      menu: Sélectionner un arbre de catégories
-      folder:
-        selected: Répertoire sélectionné
-        not_selected: Répertoire
-      folders:
-        selected: Dossiers sélectionnés
-        not_selected: Répertoires
-      arrow:
-        open: Ouvrir la branche de catégories
-        close: Fermer la branche de catégories
     tab:
       list: Constructeur de règle et onglets de propriétés
       rule_builder: Générateur de règles
@@ -94,18 +78,12 @@ pimee_catalog_rule:
         label: Priorité
       add_to_category: Ajouter à une catégorie
       add_conditions: Ajouter des conditions
-      products_count:
-        complete: "{{ count }} produits et modèles de produits"
-        pending: Calcul des produits et des modèles de produits
-        error: Calcul impossible
       product_selection: Sélection de produits
       fields:
         family: Famille
-        category: Catégorie
       actions:
         add_action: Ajouter une action
         set_family:
-          title: DEFINIR une famille
           subtitle: Sélectionnez votre famille
         delete:
           label: Supprimer l'action
@@ -146,22 +124,8 @@ pimee_catalog_rule:
     legend:
       add_to_category: Créer une action
       product_selection: Créer une condition
-    tree:
-      item:
-        selected: Item selected
-        not_selected: Select item
   exceptions:
     loading: Une erreur s'est produite lors du chargement de la définition de règle.
-    required: Ce champ est obligatoire
-    required_locale: Une locale est requise pour cet attribut
-    required_scope: Un canal est requis pour cet attribut
-    unknown_or_inactive_locale: 'La locale "{{ localeCode }}" n''existe pas ou n''est pas activée'
-    unbound_locale: 'La locale "{{ localeCode }}" n''est pas activée dans le canal "{{ channelCode }}"'
-    locale_on_unlocalizable_attribute: Cet attribut n'est pas localisable. Veuillez supprimer la locale avant de continuer.
-    unknown_scope: 'Le canal "{{ scopeCode }}" n''existe pas'
-    scope_on_unscopable_attribute: Cet attribut n'est pas scopable. Veuillez supprimer le canal avant de continuer.
-    unknown_families: "{1}La famille {{ familyCodes }} n'existe pas|]1,+Inf[Les familles {{ familyCodes }} n'existent pas"
-    unknown_attribute_options: "{1}L'option {{ attributeOptionCodes }} n'existe pas|]1,+Inf[Les options {{ attributeOptionCodes }} n'existent pas"
 pim_enrich:
   entity:
     rule:
@@ -185,7 +149,6 @@ batch_jobs:
   default_steps:
     export_rules: Export des règles
     import_rules: Import des règles
-    calculate_affected_products: Calculer les produits affectés
     execute_rules: Exécution des règles
   yml_rule_import:
     label: Import des règles en YAML

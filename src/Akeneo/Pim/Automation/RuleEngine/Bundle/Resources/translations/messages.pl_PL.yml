@@ -100,8 +100,6 @@ pimee_catalog_rule:
   notification:
     execute_rules:
       success: Wykonywanie reguł gotowe
-      warning: Execution of the rule(s) finished with warning(s)
-      error: An error occurred during the execution of the rules
     mass_edit_rule:
       success: Obliczanie produktów, których dotyczy problem dla reguł zakończone
       error: Wystąpił błąd podczas obliczania dotkniętych produktów dla reguł
@@ -110,12 +108,6 @@ btn:
 job_execution:
   summary:
     rule_calculated: Liczba zasad
-    read_rules: read rules
-    selected_entities: selected products / product models
-    skipped_invalid: skipped products / product models (invalid)
-    updated_entities: updated products / product models
-    executed_rules: successfully executed rules
-    errored_rules: skipped rules (invalid)
 pim_datagrid:
   cells:
     type:
