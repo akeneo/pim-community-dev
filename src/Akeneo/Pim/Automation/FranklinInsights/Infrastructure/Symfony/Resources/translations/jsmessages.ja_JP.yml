@@ -52,7 +52,6 @@ akeneo_franklin_insights:
         suggest_attribute_mapping_error: 'カタログ属性「[{{ catalogAttributeCode }}]」はすでにフランクリン属性「{{ franklinAttributeLabel }}」にマップ済です。'
         add_attribute_to_family_success: '{1}属性がファミリー「{{ family }}」に正常に適用されました。 |[2,Inf[ 属性がファミリー「{{ family }}」に正常に適用されました。'
         add_attribute_to_family_error: '申し訳ございませんが属性をファミリーに適用中にエラーが発生しました。'
-        fail_to_retrieve_franklin_mapping: 'Attribute mapping is not available right now. Please come back later.'
       fields:
         search_bar.placeholder: 'フランクリン属性内で検索'
         franklin_attribute: 'フランクリン属性'
@@ -158,8 +157,6 @@ akeneo_franklin_insights:
           title: '{{ familyLabel }}－{{ franklinAttributeLabel }}属性オプション'
           sub_title: 'あなたの<span class="AknDescriptionHeader-title--highlight">商品情報AIアシスタント</span>、フランクリンに会いましょう！'
           description: 'カタログを充実するために、フランクリンは適合するカタログの属性オプションについて知る必要があります。<a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">より詳しく</a>'
-      flash:
-        load_failed: 'Update failed'
   product:
     edit:
       btn.push: データを提案する
@@ -232,7 +229,6 @@ batch_jobs:
   default_steps:
     fetch_products: 商品データを取得
     create_proposals: 提案を作成
-    notify_if_pending_attributes: Notify users for pending attributes to map
     validate_configuration: フランクリンインサイト構成を確認
   franklin_insights_subscribe_products:
     label: フランクリンインサイトの一括サブスクリプション
