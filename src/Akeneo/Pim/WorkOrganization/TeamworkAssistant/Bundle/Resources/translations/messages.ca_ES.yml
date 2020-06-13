@@ -28,10 +28,6 @@ teamwork_assistant:
     owner_todo: A fer (resum del projecte)
     owner_in_progress: En progrés (resum del projecte)
     owner_done: Fet (resum del projecte)
-  user:
-    deletion:
-      user_linked_to_project: This user is still linked to one or more project(s). Please remove the groups he is linked to in his user account.
-      user_is_project_owner: This user is still owner of one or more projects. Please delete all this user's projects.
 job_execution:
   summary:
     processed_products: Productes processats

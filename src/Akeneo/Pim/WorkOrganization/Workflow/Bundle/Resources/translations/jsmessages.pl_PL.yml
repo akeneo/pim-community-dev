@@ -24,7 +24,6 @@ pimee_workflow:
     proposal:
       modal.title: Pozostaw komentarz (opcjonalnie - 255 znaków max.)
   proposal:
-    overview: "]-Inf, 1]{{ count }} proposal|]1, Inf[{{ count }} proposals"
     selected: wniosek wybrany
     mass_action_group:
       review:
@@ -102,9 +101,6 @@ pimee_enrich.entity.product:
     history:
       published: Opublikowane
       revert: Odzyskaj
-    attribute:
-      can_be_updated_by_a_rule: "This attribute can be updated by a rule: {{ rule }}"
-      value_updated: This value is updated by the current draft
     meta:
       published_version: Opublikowana wersja
       owner_groups: Właściciel grup
@@ -139,8 +135,6 @@ pimee_enrich.entity.published_product:
       fail: Nie udało się cofnąć publikacji tego produktu
     revert:
       success: Produkt pomyślnie przywrócony
-  page_title:
-    index: "]-Inf, 1]{{ count }} published product|]1, Inf[{{ count }} published products"
   module:
     publish:
       label: Opublikuj
@@ -179,12 +173,10 @@ pimee_enrich.mass_edit.product:
   operation:
     publish:
       label: Opublikuj
-      label_count: "{1}Publish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: Produkty zostaną opublikowane
       warning: '{{ itemsCount }} wybrane produkty zostaną opublikowane.'
     unpublish:
       label: Cofnij publikację
-      label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: Produkty nie będą publiczne
       warning: '{{ itemsCount }} wybranym produktom zostanie cofnięta publikacja.'
 pimee_enrich.entity.category:

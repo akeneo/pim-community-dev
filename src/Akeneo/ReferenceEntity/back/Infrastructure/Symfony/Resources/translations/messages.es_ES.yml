@@ -28,5 +28,3 @@ pim_analytics:
     max_number_of_attributes_per_reference_entity: Número máximo de atributos por entidad de referencia
     average_number_of_attributes_per_reference_entity: Promedio de atributos por entidad de referencia
     average_percentage_localizable_only_attributes: Porcentaje promedio de atributos localizables por entidad de referencia
-    average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per reference entity
-    average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per reference entity

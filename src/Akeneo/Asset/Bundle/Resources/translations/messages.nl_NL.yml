@@ -6,7 +6,6 @@ pimee_product_asset:
       remove: Verwijder een kenmerk
       categories_view: Raadpleeg de kenmerken van een product
       mass_upload: Laad kenmerken in bulk op
-      remove_from_collection: Remove a product asset from an asset collection
     category_asset_picker:
       list: Lijst kenmerk categorieën op in de kenmerk kiezer
     category:
@@ -24,9 +23,7 @@ pimee_product_asset:
       upload: Upload
       delete: Verwijderen
       download: Download
-      generate_from_reference: Generate from reference
       reset_variations: Stel variaties opnieuw in
-    confirmation.remove: Are you sure you want to remove the asset "%asset%" ?
     confirmation.subTitle: Kenmerken
     grid:
       edit: Bewerk eigenschappen van het kenmerk
@@ -46,8 +43,6 @@ pimee_product_asset:
       actions: Acties
       download: Download
       tag: Labels
-      no_reference: No reference file has been uploaded yet.
-      no_variation: No variation file has been generated yet.
     flash:
       update:
         success: Het kenmerk is bijgewerkt.
@@ -60,27 +55,14 @@ pimee_product_asset:
   enrich_reference:
     flash:
       delete:
-        success: Reference file has been deleted.
         error: Referentiebestand is niet verwijderd. Er is een fout opgetreden.
   enrich_variation:
     flash:
-      transformation:
-        invalid_options: Impossible to generate the variation %channel% due to invalid options.
-        image_width_error: Impossible to generate the variation %channel% because the uploaded image has a width smaller than the one required by the transformation.
-        image_height_error: Impossible to generate the variation %channel% because the uploaded image has a height smaller than the one required by the transformation.
-        not_applicable: Impossible to generate the variation %channel%.
-        non_registered: No %transformation% transformation registered for the mime type %mimeType%. Impossible to generate the variation %channel%.
-        missing_asset_transformation_for_channel: Impossible to generate the variation %channel%, please set an asset transformation for this channel.
-        error: Impossible to generate the variation %channel%.
-        success: Variation files have been generated successfully.
       update:
-        success: Variation file has been updated.
         error: Variatiebestand is niet bijgewerkt. Er is een fout opgetreden.
       delete:
-        success: Variation file has been deleted.
         error: Variatiebestand is niet verwijderd. Er is een fout opgetreden.
   popin.create:
-    title: Create a new asset
     is_localized: Lokaliseerbaar
   menu: Kenmerken
   page_tab:
@@ -90,14 +72,10 @@ pimee_product_asset:
       index: Productkenmerken
   code:
     label: Code
-  thumbnail:
-    label: Thumbnail
   status:
     label: Status
   description:
     label: Beschrijving
-  endOfUse:
-    label: End of use
   createdAt:
     label: Aangemaakt op
   updatedAt:
@@ -106,91 +84,34 @@ pimee_product_asset:
     label: Labels
   tabs:
     properties.title: Eigenschappen
-    variations.title: Variations
     categories.title: Categorieën
-  validation:
-    code:
-      not_empty: Code is required. It can not be empty.
-      unique: Code must be unique.
-      new_generation: We generated a new one for you.
-  notAvailable:
-    label: not available
-  asset:
-    title: Asset
   mass_upload:
     menu: Upload assets
-    new: A new asset will be created
-    add_files: add files
-    start: Start upload
-    cancel: Cancel upload
     import: Importeer
-    executed: Mass upload executed
     error:
       upload: Er is een fout opgetreden tijdens het uploaden
-      code: Invalid code format for asset
-      localizable: An asset exists but is not localizable
       invalid_locale: De landinstelling is uitgeschakeld of ongeldig
   category:
     menu: Kenmerk categorieën
     permissions:
-      view.label: Allowed to view assets
-      view.help: Allow to view the assets in this category
-      edit.label: Allowed to edit assets
-      edit.help: Allow to edit the assets in this category (implies the view permission)
-      no_access_to_products: You don't have access to assets in any tree, please contact your administrator
       apply_on_children.label: Breng wijzigingen aan de onderliggende elementen
       apply_on_children.help: Kopiëer de wijzigingen van de machtigingen naar alle kinderen, bestaande machtigingen van de kinderen worden bewaard
   mass_edit_action:
     asset:
       page_title: Kenmerken
-      page_subtitle: Mass Edit (1 asset)|Mass Edit (%count% assets)
-      confirm: You are about to update an asset with the following information, please confirm.|You are about to update %count% assets with the following information, please confirm.
       steps:
-        first: Choose assets
         second: Configureer
         third: Bevestig
-  not_editable: You don't have edit permission on the asset "%code%".
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
-      label: Move assets to categories
-      description: The assets will be positioned into the following categories, the existing placement is lost
-      success_flash: Asset(s) have been moved to selected categories
       launched_flash: De massa actie "verplaats naar categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
-    add-tags-to-assets:
-      label: Add tags to assets
-      description: Tags will be added to the assets. If some tags does not exist, they will be created.
-      success_flash: Tag(s) have been added to asset(s)
-      launched_flash: The bulk action "Add tags to assets" has been launched. You will be notified when it is done.
-      message.error: The provided tag does not exists
-pim:
-  grid:
-    mass_action:
-      mass_classify_assets: Classify
-      add_tags_to_assets: Add tags
-      delete_assets: Delete assets
 btn.create.asset: Creëer een kenmerk
 btn.drag_or_upload: Klik en sleep een bestand of klik hier
-job_execution.summary:
-  variations_not_generated: Variations not generated
-  pimee_product_asset.mass_upload.new: Asset created from file
-  pimee_product_asset.mass_upload.updated: Asset updated
-  error: Error on asset file process
-  skipped_assets: Skipped assets
-assets_mass_upload.steps:
-  asset_mass_upload.title: Assets mass upload
-import_asset.steps.channel_configuration_processor.title: Process channel configurations
 pim_datagrid:
   cells:
     type:
-      mass_upload: Mass Upload Assets
       compute_completeness_of_products_linked_to_assets: Bereken volledigheid van producten gekoppeld aan assets
-pim_analytics:
-  info_type:
-    nb_assets: Number of assets
-pim_assets_collection: Assets collection
-akeneo_reference_entity: Reference entity single link
-akeneo_reference_entity_collection: Reference entity multiple links
 pim_api:
   acl:
     asset_category:
@@ -203,18 +124,10 @@ pim_api:
     asset_category: Kenmerk categorieën
     asset: Kenmerken
 pimee_enrich:
-  channel:
-    tab:
-      asset_transformation.title: Asset transformations
   asset_transformation:
-    not_found: No transformation found
     title:
       transformation: Transformatie
       options: Opties
-    colorspace:
-      title: Colorspace
-      options:
-        colorspace: '%value% colorspace'
     resize:
       title: Formaat wijzigen
       options:
@@ -226,16 +139,10 @@ pimee_enrich:
         resolution: '%value%'
         resolution-unit: '%value%'
     scale:
-      title: Scale
       options:
         width: '%value%px breedte'
         height: '%value%px hoogte'
-        ratio: '%value%% ratio'
     thumbnail:
-      title: Thumbnail
       options:
         width: '%value%px breedte'
         height: '%value%px hoogte'
-asset_tree:
-  remove:
-    error_linked: This category tree cannot be deleted, it is set as the default asset category tree of a user.

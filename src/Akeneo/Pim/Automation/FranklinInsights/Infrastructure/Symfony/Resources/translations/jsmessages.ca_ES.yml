@@ -37,7 +37,6 @@ akeneo_franklin_insights:
         mandatory_identifier_mapping: "Mapatge de Marca i MPN requerits"
         attribute_type: "No es pot definir el tipus d'aquest atribut com a identificador"
         localizable_not_allowed: "Els atributs localitzables no s'admeten com a identificadors"
-        scopable_not_allowed: "Scopable attributes are not allowed as identifier"
         locale_specific_not_allowed: "Els atributs localitzables específics no s'admeten com a identificadors"
     attributes_mapping:
       label: Mapatge dels atributs
@@ -65,9 +64,6 @@ akeneo_franklin_insights:
         invalid_attribute_type_mapping: 'No s''han pogut mapar els atributs Franklin al tipus d''atributs PIM "{{ pimType }}"'
         empty_mapping: 'No s''han pogut mapar els atributs Franklin amb un mapat buit'
         localizable_not_allowed: 'No s''han pogut mapar els atributs Franklin a atributs localitzables PIM'
-        scopable_not_allowed: 'Franklin attributes cannot be mapped to a PIM scopable attribute'
-        locale_specific_not_allowed: 'Franklin attributes cannot be mapped to a PIM locale specific attribute'
-        duplicated_pim_attribute: "Mapping can't be saved as you mapped several Franklin attributes to the same PIM attribute"
         attribute_not_in_family_not_allowed: 'L''atribut PIM ha de ser de la família seleccionada.'
         only_unknown_mapped_attributes: 'No s''han trobat atributs en el mapatge d''atributs'
     product_subscription:
@@ -95,8 +91,6 @@ akeneo_franklin_insights:
           no_identifier_filled: 'Identificadors de producte requerits.'
           invalid_mapping: "Identificadors de mapatge requerits."
     attribute_options_mapping:
-      constraint:
-        no_attribute_options_mapped: 'Franklin attribute options cannot be mapped with an empty mapping'
       fields:
         franklin_attribute_option: Opció d'atribut de Franklin
         catalog_attribute_option: Opcions d'atribut del catàleg
@@ -135,7 +129,6 @@ akeneo_franklin_insights:
         sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
         description:
           first_step: 'Per tal d''ajudar a enriquir el ser catàleg, Franklin haurà de saber els identificadors del seu catàleg.'
-          second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="https://help.akeneo.com/articles/franklin-insights-mappings.html" class="AknDescriptionHeader-link" target="_blank">Read more</a>'
       inactive_connection:
         title: 'Ho sentim, no hi ha res que mostrar ara mateix'
         sub_title: 'Si us plau, activa el compte en el Sistema > Connexió Franklin i torna de nou.'
@@ -164,7 +157,6 @@ batch_jobs:
   franklin_insights_subscribe_products:
     label: Subscripció en massa a Franklin Insights
     validate_configuration.label: Validar la configuració de les estadístiques de Franklin
-    validate_identifiers_mapping.label: Validate identifiers mapping
     subscribe_products.label: Subscriu-te a productes
   franklin_insights_unsubscribe_products:
     label: Cancel·lada subscripció en massa a Franklin Insights
