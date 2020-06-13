@@ -1,18 +1,13 @@
-"oro_datagrid.no_data_hint %entityHint%": '%entityHint% не існує.'
 oro_datagrid.not_found_hint: Вибачте, пошук не дав результатів.
 oro_datagrid.label_add_filter: Керування фільтрами
 oro_datagrid.label_loading_mask: Завантаження . . .
 oro.grid.mass_action.selected_rows: Виділені рядки
-oro.grid.mass_action.confirm_title: Підтверждення масової дії
-oro.grid.mass_action.confirm_content: Ви впевнені, що ви хочете це зробити?
 oro.grid.mass_action.confirm_ok: Так, зробити це
 oro.grid.mass_action.error_title: Помилка масової дії
 oro.grid.mass_action.error_content: Не вдалося виконати масову дію
-oro.grid.mass_action.delete.label: Видалити
 oro.grid.mass_action.delete.confirm_title: Підтвердження масового видалення
 oro.grid.mass_action.delete.confirm_content: Ви впевнені, що ви хочете видалити виділені елементи?
 oro.grid.mass_action.delete.item_limit: Ви не можете масово видалити більше, ніж %limit% продуктів (%count% вибрано)
-oro.grid.datagrid.page_size.all: Всі
 oro.grid.mass_action.delete.success_message: "{0} Жодна сутність не була видалена|{1} Одна сутність була видалена|]1,Inf[ %count% сутностей було видалено"
 #Datagrid views constraints
 datagrid_view:

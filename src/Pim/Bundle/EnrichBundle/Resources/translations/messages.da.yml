@@ -384,7 +384,6 @@ flash:
     updated: Attributten opdateret
     removed: Attributten blev slettet
     identifier_not_removable: Id attribut kan ikke fjernes
-    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   attribute group:
     created: Attributgruppe oprettet
     updated: Attributgruppe opdateret

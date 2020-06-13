@@ -18,7 +18,6 @@ confirmation:
     user: Tem certeza de que deseja exvluir este usuário?
     role: Tem certeza de que deseja excluir esta função?
     job_instance: Tem certeza que deseja excluir esta instância de job?
-    api_connection: Are you sure you want to revoke this API connection? All API calls made through this connection will now throw an error.
     products_and_product_models: Tem certeza que deseja excluir os produtos selecionados e modelos de produtos? Todos os filhos dos modelos de produto também serão excluídos.
 pim_datagrid:
   mass_action_group:
@@ -49,8 +48,6 @@ flash:
     removed: Grupo de atributos removido com sucesso
   family:
     removed: Família removida com sucesso
-  family_variant:
-    removed: Family variant successfully removed
   product:
     removed: Produto removido com sucesso
   product_model:
@@ -290,8 +287,6 @@ pim_enrich:
         created: Tipo de associação criado com sucesso
     group_type:
       info:
-        deletion_successful: Group type successfully deleted.
-        deletion_failed: Group type could not be deleted.
         update_successful: Tipo de grupo atualizado com sucesso.
         update_failed: O tipo de grupo não pôde ser atualizado.
         field_not_ready: "O tipo de grupo não pode ser salvo agora. Os seguintes campos não estão prontos: {{ fields }}"
@@ -357,7 +352,6 @@ pim_enrich:
         create_label: Criar uma nova variante de família
         create_description: Em uma variante de família, você pode definir uma estrutura para produtos com variantes. Escolha o número de níveis de variantes gerenciadas, os atributos usados como eixos de variantes para cada nível e, em seguida, defina como os atributos serão distribuídos.
         update_description: Arraste e solte atributos para o nível de variante selecionado para ter esses atributos gerenciados no nível da variante.
-        update_translation: Translate family variant label
         create: Criar
         cancel: Cancelar
         code: Código
@@ -407,7 +401,6 @@ pim_enrich:
         update_successful: Atributo atualizado com sucesso.
         update_failed: O atributo não pôde ser atualizado.
         create_successful: Atributo criado com sucesso.
-        create_failed: The attribute could not be created.
         field_not_ready: "O atributo não pode ser salvo agora. Os seguintes campos não estão prontos: {{ fields }}"
       scopable: Com escopo definível
       type:
@@ -462,9 +455,6 @@ pim_enrich:
     required: (Obrigatório)
     product_model:
       choose_product_model: Escolha um modelo de produto
-      choose_variant: Choose a variant
-      complete_variant_product: variant product
-      complete_variant_products: variante de produtos
       family_variant: Variante
       product_model: Modelo do produto
       flash:
@@ -497,7 +487,6 @@ pim_enrich:
             load_more: Carregando mais resultados...
           attribute_group_selector: Grupo de atributos
           attribute_group_all: Todos
-          attribute_group.to_fill_count: "{1}1 atributo obrigatório faltando|]1, Inf [{{ count }} atributos obrigatórios faltando"
           attribute_filter:
             display: Exibir
             all: Todos os atributos
@@ -511,7 +500,6 @@ pim_enrich:
           info:
             no_family: Família não definida. Por favor, defina uma família para calcular a plenitude desse produto.
             no_completeness: Você alterou a família do produto. Por favor, salve primeiramente para calcular a plenitude para nova família.
-          missing_values: "{1}1 valor faltando|] 1, Inf [{{ count }} valores faltando"
         history:
           title: Histórico
       switch:
@@ -957,83 +945,55 @@ pim_enrich:
         title: Propriedade
       global_settings:
         title: Configurações globais
-  mass_edit_action:
-    edit_common_attributes:
-      description: Apenas os atributos pertencentes às famílias dos produtos selecionados serão editados com os seguintes dados para a localização <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>.
   index:
     association_type:
-      title: "] -Inf, 1 ]{{ count }} tipo de associação|] 1, Inf [{{ count }} tipos de associação"
       create_btn: Criar tipo de associação
     import_profiles:
-      title: "] -Inf, 1] {{ count }} perfil de importação|] 1, Inf [{{ count }} perfis de importação"
       create_btn: Criar perfil de importação
       list: Selecione uma tarefa
       create_popin:
         title: Criar
       message:
         created: Perfil de importação criado com sucesso
-    import_history:
-      title: Import reports
     group:
-      title: "] -Inf, 1] {{ count }} grupo|] 1, Inf [{{ count }} grupos"
       create_btn: Criar Grupo
     export_profiles:
-      title: "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} export profiles"
       create_btn: Criar perfil de exportação
       create_popin:
         title: Criar
       message:
         created: Perfil de exportação criado com sucesso
-    export_history:
-      title: Export reports
     family:
-      title: "] -Inf, 1] {{ count }} family|] 1, Inf [{{ count }} families"
       create_btn: Criar família
     grouptype:
-      title: "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} group types"
       create_btn: Criar tipo de grupo
-    currency:
-      title: "] -Inf, 1] {{ count }} currency|] 1, Inf [{{ count }} currencies"
-    locale:
-      title: "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
     user:
-      title: "] -Inf, 1] {{ count }} user|] 1, Inf [{{ count }} users"
       create_btn: Criar Usuário
     user_role:
-      title: "] -Inf, 1] {{ count }} role|] 1, Inf [{{ count }} roles"
       create_btn: Criar papel
     user_group:
-      title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
       create_btn: Criar Grupo
-    process_tracker:
-      title: "] -Inf, 1] {{ count }} operation|] 1, Inf [{{ count }} operations"
     channel:
-      title: "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} channels"
       create_btn: Criar canal
     attribute:
-      title: "] -Inf, 1] {{ count }} attribute|] 1, Inf [{{ count }} attributes"
       create_btn: Criar atributo
       modal_title: Escolher tipo de atributo
     attribute_group:
       title: Grupo de atributos
       create_btn: Criar
     api_connection:
-      title: "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API connections"
       create_btn: Criar
   mass_edit:
     next: Próximo
-    previous: Back
     cancel: Cancelar
     confirm: Confirmar
     product:
       title: Ação em massa de produtos
-      confirm: "{1}You are about to update a product with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} products with the following information, please confirm."
       step:
         select:
           label: Escolha produtos
         choose:
           title: Ação em massa de produtos
-          label_count: "] 0, Inf [Selecione sua ação"
         configure:
           label: Configurar
         confirm:
@@ -1045,61 +1005,48 @@ pim_enrich:
       operation:
         change_status:
           label: Alterar Status
-          label_count: "{1}Altere o status de <span class=\"AknFullPage-title--highlight\">produto</span>|]1, Inf[Alterar o status de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span>"
           description: Os produtos selecionados serão habilitados ou desabilitados.
           field: Habilitar
         edit_common:
           label: Editar valores de atributos
-          label_count: "{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: Apenas os atributos pertencentes às famílias dos produtos selecionados serão editados com os seguintes dados para a localização {{ locale }} e o canal {{ scope }}.
         add_attribute_value:
           label: Adicionar valores de atributos
-          label_count: "{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: Apenas os atributos múltiplos pertencentes às famílias dos produtos serão editados com os seguintes dados para a localidade {{ locale }} e o canal {{ scope }} . Os valores de atributos são adicionados, os valores anteriores são mantidos.
         change_family:
           label: Alterar a família
-          label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: A família dos produtos selecionados será alterada para a família escolhida
           field: Família
         add_to_group:
           label: Adicionar aos grupos
-          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
           description: Selecione os grupos nos quais os produtos selecionados devem ser adicionados
           field: Grupos
         add_to_category:
           label: Adicionar às categorias
-          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
           description: O produto será classificado nas seguintes categorias, a classificação existente será armazenada.
         move_to_category:
           label: Mover entre categorias
-          label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|] 1, Inf [Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
           description: O produto será classificado nas seguintes categorias, a classificação existente será apagada.
         remove_from_category:
           label: Remover das categorias
-          label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|] 1, Inf [Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
           description: Os produtos serão removidos das seguintes categorias.
         add_to_existing_product_model:
           label: Adicionar a um modelo de produto existente
-          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
           description: O modelo de produto selecionado irá recolher os produtos e permite o enriquecimento dos atributos comuns.
         associate_to_product_and_product_model:
           label: Associar
-          label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|] 1, Inf [Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
           description: Os produtos selecionados na grade serão associados aos produtos selecionados e modelos de produto para o tipo de associação escolhido
           validate: Por favor, adicione associação antes de ir para o próximo passo
         change_parent_product_model:
           label: Alterar o modelo de produto pai
-          label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: O pai dos produtos variantes ou modelos de subprodutos selecionados na grade será alterado para o modelo de produto escolhido.
     family:
       title: Ação em massa de famílias
-      confirm: "{1}You are about to update a family with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} families with the following information, please confirm."
       step:
         select:
           label: Escolher famílias
         choose:
           title: Ações em massa de famílias
-          label_count: "] 0, Inf [Select your action"
         configure:
           label: Configurar
         confirm:
@@ -1110,7 +1057,6 @@ pim_enrich:
         set_requirements:
           label: Definir os requisitos de atributos
           description: Os seguintes requisitos de atributos serão aplicados às famílias selecionadas
-          label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
 pim_enrich.error:
   exception.title: Oh snap! Um {{ status_code }} erro aconteceu...
   http:
@@ -1164,10 +1110,6 @@ batch_jobs:
     label: Atualizar valor do produto
     perform:
       label: Atualizar o valor do produto
-  add_to_group:
-    label: Add to group
-    perform:
-      label: Add to group
   edit_common_attributes:
     label: Editar atributos
     perform:
@@ -1199,25 +1141,9 @@ batch_jobs:
     perform:
       label: Definir os requisitos de atributos
   csv_product_quick_export:
-    quick_export.label: CSV product quick export
     quick_export_product_model.label: Exportação rápida de modelo de produto em CSV
-    perform:
-      label: CSV product quick export
   csv_product_grid_context_quick_export:
-    quick_export.label: CSV product grid context quick export
     quick_export_product_model.label: Exportação rápida da grade de modelo de produtos em CSV
-    perform:
-      label: CSV product grid context quick export
-  xlsx_product_quick_export:
-    quick_export.label: XSLX product quick export
-    quick_export_product_model.label: XSLX product model quick export
-    perform:
-      label: XSLX product quick export
-  xlsx_product_grid_context_quick_export:
-    quick_export.label: XSLX product grid context quick export
-    quick_export_product_model.label: XSLX product model grid context quick export
-    perform:
-      label: XSLX product grid context quick export
   csv_product_export:
     label: Exportar Produto em CSV
     export.label: Exportar Produto

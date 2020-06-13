@@ -40,8 +40,6 @@ oro.datagrid.nocolumns: Nici o coloană configurată pentru această grilă
 oro.datagrid.pagination.label: "Pagină"
 oro.datagrid.pagination.totalPages: "din {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} înregistrări"
-#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
-oro.datagrid.pagination.limit_warning: "The grid cannot display more than {{ limit }} results, try to filter on additional search criteria."
 oro.datagrid.action.reset: "Resetează"
 oro.datagrid.action.refresh: "Reîmprospătează"
 oro_datagrid.select.all: "Toate"

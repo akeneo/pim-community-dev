@@ -40,8 +40,6 @@ oro.datagrid.nocolumns: Tidak ada kolom yang dikonfigurasi untuk grid ini
 oro.datagrid.pagination.label: "Halaman"
 oro.datagrid.pagination.totalPages: "dari {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} catatan"
-#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
-oro.datagrid.pagination.limit_warning: "The grid cannot display more than {{ limit }} results, try to filter on additional search criteria."
 oro.datagrid.action.reset: "Setel ulang"
 oro.datagrid.action.refresh: "Menyegarkan"
 oro_datagrid.select.all: "Semuanya"

@@ -50,7 +50,6 @@ Additional: 附加
 Groups and Roles: 分组和角色
 Username: 用户名
 Password: 密码
-Password (again): Password (again)
 Re-enter password: 重复密码
 Name prefix: 名称前缀
 First name: 名
@@ -162,5 +161,4 @@ Username or Email: 用户名或电子邮箱
 Forgot Password: 忘记密码
 Request: 请求
 Check Email: 检查电子邮件
-password_reset_email_sent: An email has been sent to the user. It contains a link to reset the password.
 Go to homepage: 转到主页

@@ -26,22 +26,9 @@ pim_analytics:
     nb_scopable_attributes: Număr de atribute localizabile
     nb_localizable_attributes: Număr de atribute localizabile
     nb_scopable_localizable_attributes: Număr de atribute localizabile și scopabile
-    nb_useable_as_grid_filter_attributes: Number of attributes useable as grid filter
-    avg_percentage_scopable_attributes_per_family: Average percentage of scopable attributes per family (%)
-    avg_percentage_localizable_attributes_per_family: Average percentage of localizable attributes per family (%)
-    avg_percentage_scopable_localizable_attributes_per_family: Average percentage of localizable and scopable attributes per family (%)
-    avg_number_attributes_per_family: Average number of attributes per family
     nb_locales: Număr de locale
     nb_families: Număr de familii
     nb_users: Număr de utilizatori
-    nb_categories: Number of categories
-    nb_category_trees: Number of category trees
-    max_category_in_one_category: Max number of categories in one category
-    max_category_levels: Max number of category levels
-    nb_product_values: Number of product values
-    avg_product_values_by_product: Average number of product values by product
-    avg_product_values_by_family: Average number of potential product values by family
-    max_product_values_by_family: Max number of potential product values by family
     pim_storage_version: Versiune de stocare
     os_version: Versiune SO
     php_version: Versiune PHP
@@ -50,7 +37,6 @@ pim_analytics:
     mongodb_version: Versiune MongoDB
     server_version: Versiune server
     php_extensions: Extensiile PHP
-    email_domains: Associated email domains
   acl:
     system_info:
       index: Informații despre sistem

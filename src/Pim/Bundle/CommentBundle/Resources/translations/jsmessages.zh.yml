@@ -19,8 +19,6 @@ flash:
 comment:
   index:
     empty: 当前无评论
-    header_comment: '{{ user }} comments the product'
-    header_reply: '{{ user }} replies to the comment'
   placeholder:
     new: 撰写一个新评论...
     reply: 回复此评论...

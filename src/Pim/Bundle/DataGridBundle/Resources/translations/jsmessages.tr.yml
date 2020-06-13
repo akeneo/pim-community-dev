@@ -40,8 +40,6 @@ oro.datagrid.nocolumns: Bu kılavuz için yapılandırılmış sütun yok
 oro.datagrid.pagination.label: "Sayfa"
 oro.datagrid.pagination.totalPages: "{{ totalPages }} sayfada"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} kayıt"
-#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
-oro.datagrid.pagination.limit_warning: "The grid cannot display more than {{ limit }} results, try to filter on additional search criteria."
 oro.datagrid.action.reset: "Sıfırlama"
 oro.datagrid.action.refresh: "Yenile"
 oro_datagrid.select.all: "Tümü"

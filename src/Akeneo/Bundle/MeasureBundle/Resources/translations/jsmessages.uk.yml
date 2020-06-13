@@ -25,7 +25,6 @@ MEGABYTE: Мегабайт
 GIGABYTE: Гігабайт
 TERABYTE: Терабайт
 Decibel: Децибел
-DECIBEL: Децибел
 Frequency: Частота
 GIGAHERTZ: Гігагерц
 KILOHERTZ: Кілогерц
@@ -55,8 +54,6 @@ TERAWATT: Терават
 WATT: Ват
 Resistance: Опір
 MILLIOHM: Міліметр
-CENTIOHM: Сантиметр
-DECIOHM: Дециметр
 OHM: Ом
 DEKAOHM: Декаом
 HECTOHM: Гектоом

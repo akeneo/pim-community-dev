@@ -40,7 +40,6 @@ pim_catalog:
     cannot_have_parent: 'Produkt model "%product_model%" kan ikke have et overordnet produkt'
     attribute_does_not_belong_to_family: 'Attributten "%attribute%" tilhører ikke familien "%family%"'
     variant_product_invalid_family: 'Produktfamilien variant skal være den samme end dens overordnede'
-    php_int_max_reached: 'The maximum number must be lower than %php_int_max%.'
     not_null_family: Familien kan ikke være "null", fordi produktet med id "%sku%" er et variant produkt.
     variant_product_has_parent: 'Produkt varianten "%variant_product%" skal have en forælder'
     invalid_variant_product_parent: 'Produkt varianten "%variant_product%" kan ikke have produkt model "%product_model%" som forælder, (denne produktmodel kan kun have andre produktmodeller som børn)'

@@ -24,8 +24,6 @@ pim_enrich:
       history.title: Povijest
   #Family
   family:
-    info:
-      cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
     tab:
       property.title: Svojstva
       attribute.title: Atributi
@@ -103,28 +101,23 @@ pim_enrich:
       description: Atributi odabranih proizvoda će se uređivati s podacima za odabrane postavke lokalizacije.
       empty: Odaberi atribut(e) koje želiš urediti
       success_flash: Proces ažuriranja statusa proizvoda se izvodi
-      launched_flash: The bulk action "edit attributes" has been launched. You will be notified when it is done.
       message:
         warning: Ne postoji zajednički atribut za odabrane proizvode. Promijenite odabir.
         invalid_attribute: Atribut sa kodom "attribute_code" nije zajednički za odabrane proizvode, atribut je preskočen.
         no_valid_attribute: Niti jedan od odabranih atributa se ne može primijeniti na ovaj proizvod.
     classify-add:
-      label: Add to categories
       description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
       success_flash: Proizvodi su klasificirani u odabrane kategorije
       launched_flash: Pokrenuta je masovna radnja "dodati u grupe". Biti ćete obaviješteni kad bude gotovo.
     classify-move:
-      label: Move between categories
       description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
       success_flash: Proizvodi su premješteni u odabrane kategorije
       launched_flash: Pokrenuta je masovna radnja "premjesti u kategorije". Biti ćete obaviješteni kad bude gotovo.
     classify-remove:
-      label: Remove from categories
       description: Proizvodi će biti uklonjeni iz sljedećih kategorija.
       success_flash: Proizvodi su uklonjeni iz odabranih kategorija
       launched_flash: Masovna radnja "ukloni iz kategorija" je pokrenuta. Biti ćete obaviješteni kad bude gotovo.
     change-family:
-      label: Change family
       description: Obitelj odabranih proizvoda će se promijeniti u odabranu obitelj
       success_flash: Obitelj odabranih proizvoda je uspješno promijenjena
       launched_flash: Pokrenuta je masovna radnja "promijeni status". Biti ćete obaviješteni kad bude gotovo.
@@ -135,7 +128,6 @@ pim_enrich:
       launched_flash: Pokrenuta je masovna radnja "dodati u grupe". Biti ćete obaviješteni kad bude gotovo.
       no_group: Nema grupa za sada. Molimo da najprije kreirate grupu.
     set-attribute-requirements:
-      label: Set attributes requirements
       description: Sljedeći zahtjevi atributa će se primijeniti na odabrane obitelji
       success_flash: Zahtjevi atributa su primjenjeni na odabrane obitelji
       launched_flash: Masovna akcija "postavi zahtjeve za atribute" je pokrenuta. Biti ćete obaviješteni kada bude gotovo.
@@ -162,21 +154,12 @@ pim_enrich:
       add_attribute: Dodavanje atributa proizvoda
       remove_attribute: Ukloni atribut proizvodu
       categories_view: Pogledajte kategorije proizvoda
-      associations_view: View the associations of a product
-      associations_edit: Add associations to a product
       change_family: Promjena obitelji proizvoda
-      change_state: Change the status of a product
       add_to_groups: Dodaj proizvod u grupe
       mass_edit: Akcije masovnog uređivanja proizvoda
       comment: Komentar proizvoda
       download: Preuzimanje proizvoda kao PDF dokument
       history: Prikaz povijesti proizvoda
-    product_model:
-      create: Create a product model
-      edit_attributes: Edit attributes of a product model
-      categories_view: Consult the categories of a product model
-      history: View product model history
-      remove: Remove a product model
     category:
       list: Popis kategorija
       create: Kreiraj kategoriju
@@ -197,11 +180,8 @@ pim_enrich:
       create: Kreiraj obitelj
       edit_properties: Uredi svojstva obitelji
       edit_attributes: Uredi atribute obitelji
-      edit_variants: Edit a family variant
       remove: Ukloni obitelj
       history: Prikaz povijesti obitelji
-    family_variant:
-      remove: Remove a family variant
     attribute_group:
       index: Popis atributa grupa
       create: Kreiraj atribut grupe
@@ -235,12 +215,8 @@ pim_enrich:
       edit: Uredi tip pridruživanja
       remove: Ukloni tip pridruživanja
       history: Prikaži povijest tipa pridruživanja
-    association:
-      remove: Remove associations to a product
     job_tracker:
       index: Prikaži proces praćenja
-    api_connection:
-      manage: Manage the API connections
   acl_group:
     association_type: Tipovi pridruživanja
     attribute: Atributi
@@ -253,16 +229,10 @@ pim_enrich:
     group_type: Tipovi grupa
     locale: Lokalizacija
     product: Proizvodi
-    product_model: Product models
   reference_data:
     empty_value:
       reference_data_type:
         label: Odaberi tip reference podataka
-  notification:
-    settings:
-      remove_completeness_for_channel_and_locale:
-        start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
-        done: Removal of a locale on a channel finished.
 #Entity and page header titles
 attribute:
   title: atribut
@@ -283,10 +253,8 @@ category:
   edit: uredi kategoriju
   suggest selection: Molimo odaberi kategoriju na lijevoj strani
   or: ili
-  create new: Create a new category tree
 tree:
   title: stablo
-  create: create category tree
   edit: uredi stablo
 channel:
   title: kanal
@@ -327,7 +295,6 @@ btn:
     attribute: kreiraj atribut
     attribute group: kreiraj grupu atributa
     category: kreiraj kategoriju
-    tree: create category tree
     channel: kreiraj kanal
     currency: kreiraj valutu
     family: kreiraj obitelj
@@ -364,7 +331,6 @@ confirmation:
     attribute group: Jeste li sigurni da želite izbrisati grupu atributa %name%?
     category: Jeste li sigurni da želite izbrisati kategoriju %name%?
     family: Jeste li sigurni da želite izbrisati obitelji %name%?
-    family_variant: Are you sure you want to delete the family variant %name%?
     product: Jeste li sigurni da želite izbrisati proizvod %name%?
     group: Jeste li sigurni da želite izbrisati grupu %name%?
     group type: Jeste li sigurni da želite izbrisati tip grupe %name%?
@@ -384,7 +350,6 @@ flash:
     updated: Atribut je uspješno ažuriran
     removed: Atribut je uspješno uklonjen
     identifier_not_removable: Identifikator atributa ne može biti uklonjen
-    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   attribute group:
     created: Atribut grupe je uspješno kreiran
     updated: Atribut grupe je uspješno ažuriran
@@ -519,7 +484,6 @@ Useable as grid column: Može se koristiti kao kolona u prikazu
 Useable as grid filter: Može se koristiti u prikazu
 Family: Obitelj
 Image: Slika
-Variant products: Variant products
 Available locales: Dostupni lokalni parametri
 Locale specific: Specifične regionalne postavke
 default: Zadani
@@ -548,7 +512,6 @@ No matches found: Nisu pronađeni rezultati
 Category tree: Stablo kategorije
 Completeness: Potpunost
 Attribute used as label: Atribut se koristi kao oznaka
-Credentials: Credentials
 #Scopes
 Global: Globalno
 Channel: Kanal
@@ -603,7 +566,6 @@ pim_title.attribute:
   edit: "Atributi %attribute.label% | Uredi"
 pim_title.product:
   index: "Proizvodi"
-  edit: "Products %product.label% | Edit"
 pim_title.family:
   index: "Obitelji"
   edit: "Obitelji %family.label% | Uredi"
@@ -693,11 +655,9 @@ pim_enrich.mass_edit_action:
     message.warning: Ne postoji zajednički atribut za odabrane proizvode. Promijenite odabir.
     no_attribute.warning: Ne postoji zajednički atribut za odabrane proizvode. Promijenite odabir.
   classify:
-    label: Add to categories
     description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
     success_flash: Proizvodi su klasificirani u odabrane kategorije
   change-family:
-    label: Change family
     description: Obitelj odabranih proizvoda će se promijeniti u odabranu obitelj
     success_flash: Obitelj odabranih proizvoda je uspješno promijenjena
     no_family: Bez obitelji
@@ -706,7 +666,6 @@ pim_enrich.mass_edit_action:
     description: Odaberi grupe u koju se dodaju odabrani proizvodi
     success_flash: Proizvodi su uspješno dodani u odabrane grupe
   set-attribute-requirements:
-    label: Set attributes requirements
     description: Sljedeći zahtjevi atributa će se primijeniti na odabrane obitelji
     success_flash: Zahtjevi atributa su primjenjeni na odabrane obitelji
 To enable: Da se omogući
@@ -807,24 +766,16 @@ pim_mass_edit:
       error: Brzi izvoz <strong>%label%</strong> nije uspio
       warning: Brzi izvoz <strong>%label%</strong> je završio sa upozorenjima
       success: Brzi izvoz <strong>%label%</strong> je završio
-    mass_delete:
-      error: Mass delete <strong>%label%</strong> failed
-      warning: Mass delete <strong>%label%</strong> finished with some warnings
-      success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
   mass_edited: Masovno uređeno
   skip: Preskočeno
   skipped_products: Preskočeni proizvodi
   skipped_attributes: Preskočeni atributi
-  skipped_families: Skipped families
-  deleted_products: Deleted products
-  deleted_product_models: Deleted product models
 pim_mass_edit_execution_show: Izvođenje masovnog uređivanja | Detalji
 edit_common_attributes.steps.edit_common_attributes_processor.title: Uredi atribute
 update_product_value.steps.update_product_value_processor.title: Ažuriraj vrijednosti proizvoda
 remove_product_value.steps.update_product_value_processor.title: Uklanjanje vrijednosti proizvoda
 edit_common_attributes: Uredi atribute
-edit_common_attributes_clean: Clean files for attributes
 perform.steps.duplicated.title: Dvostruke osi
 perform.steps.excluded.title: Isključeni proizvod
 #Background jobs & steps labels
@@ -837,44 +788,10 @@ batch_jobs:
     label: Ažuriraj vrijednosti proizvoda
     perform:
       label: Ažuriraj vrijednosti proizvoda
-  add_attribute_value:
-    label: Add attributes value
-    perform:
-      label: Add attributes value
   edit_common_attributes:
     label: Uredi atribute
     perform:
       label: Uredi atribute
-    clean:
-      label: Clean files for attributes
-    cleaner:
-      label: Clean files for attributes
-  compute_completeness_of_products_family:
-    compute_completeness_of_products_family.label: Compute completeness
-  add_to_category:
-    label: Add to category
-    perform:
-      label: Add to category
-  move_to_category:
-    label: Move to category
-    perform:
-      label: Move to category
-  remove_from_category:
-    label: Remove from category
-    perform:
-      label: Remove from category
-  add_association:
-    label: Associate
-    perform:
-      label: Associate
-  add_to_existing_product_model:
-    label: Add to an existing product model
-    perform:
-      label: Add to an existing product model
-  set_attribute_requirements:
-    label: Set attributes requirements
-    perform:
-      label: Set attributes requirements
   csv_product_quick_export:
     quick_export.label: Brzi izvoz proizvoda u Csv
     perform:
@@ -891,11 +808,6 @@ batch_jobs:
     quick_export.label: Brzi izvoz pregleda proizvoda u Xlsx
     perform:
       label: Brzi izvoz pregleda proizvoda u Xlsx
-  delete_products_and_product_models:
-    delete_products_and_product_models.label: Mass delete products
-  change_parent_product:
-    perform:
-      label: Change parent product model
 mass_edit report:
   overview: Izvješća masovnog uređivanja
 job_tracker:
@@ -907,8 +819,6 @@ pim_enrich_attribute_form:
   code: Kod
   type: Tip atributa
   reference_data_name: Naziv refernce podataka
-  scopable: Value per channel
-  localizable: Value per locale
   unique: Jedinstvena vrijednost
   availableLocales: Dostupni lokalni parametri
   locale_specific: Specifične regionalne postavke

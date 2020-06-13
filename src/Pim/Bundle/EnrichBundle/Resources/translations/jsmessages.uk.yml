@@ -37,16 +37,11 @@ pim_datagrid:
     create_view_modal:
       create: Створити
       confirm: Підтвердити
-      cancel: Відмінити
 flash:
   item:
     removed: Елемент успішно видалено
-  association_type:
-    removed: Тип асоціації успішно видалено
   attribute:
     removed: Атрибут успішно видалено
-  attribute_group:
-    removed: Групу атрибутів успішно видалено
   family:
     removed: Сімейство успішно видалено
   family_variant:
@@ -131,13 +126,11 @@ pim:
       sequential_edit: Послідовне редагування
 #Jstree context menu actions
 jstree.create: Створити
-jstree.done: Зроблено
 switch_on: "Так"
 switch_off: "Ні"
 pim_enrich:
   item:
     list:
-      delete.label: Видалити
       delete.error: Помилка під час видалення елементу
     delete:
       confirm.content: Ви дійсно бажаєте видалити {{ itemName }}? Ця дія незворотня
@@ -157,13 +150,11 @@ pim_enrich:
       label: Мітка
       labels:
         save: Зберегти
-        cancel: Відмінити
     product:
       navigation: Навягація по продуктах
       infos: Інформація про товар
       index_title: "] -Inf, 1] {{ count }} результат|] 1, Inf [{{ count }} результати"
       title: продукт
-      locale: Локаль
       category: Категорія
       create: Створити
       subTitle: Створити продукт
@@ -176,8 +167,6 @@ pim_enrich:
         disabled: Вимкнено
         download_pdf: PDF
         compare_translate: Порівняти / Перекласти
-        delete: Видалити
-        save: Зберегти
       history:
         version: Версія
         author: Автор
@@ -199,13 +188,11 @@ pim_enrich:
       meta:
         created: Створено
         created_by: За
-        updated_by: За
         updated: Останнє оновлення
         family:
           title: Сімейство
           none: Жоден
         family_variant:
-          title: Варіант
           none: Жоден
         groups:
           title: Групи
@@ -217,12 +204,10 @@ pim_enrich:
             close: Закрити
         status: Статус
         scope: Канал
-        locale: Локаль
       copy:
         select: Виберіть
         all: Всі
         all_visible: Всі видимі
-        none: Жоден
         copy: Копія
       optional_attribute:
         remove: Видалити цей атрибут
@@ -233,16 +218,10 @@ pim_enrich:
       media:
         upload: Перетягніть для вивантаження, або натисніть тут
       create_popin:
-        type: Продукт
         title: Створити
         labels:
           family: Виберіть сімейство
           family_variant: Виберіть різновид сімейства
-          save: Зберегти
-          cancel: Відмінити
-      message:
-        created: Продукт успішно створено
-      completeness: Завершено
       sequential_edit:
         item_limit: Тільки перша 1000 елементів з ({{ count }} вибраних відображується при послідовному редагуванні
         empty: Пошук не дав результатів, будь ласка, змініть умови пошуку
@@ -263,7 +242,6 @@ pim_enrich:
       title: моделі продукту
       add_child:
         create: Додати новий
-        cancel: Відмінити
         confirm: Підтвердження
         create_label: "Додати нові {{ axes }}"
         fields:
@@ -277,17 +255,11 @@ pim_enrich:
         update_failed: Не вдалося оновити тип асоціацій.
         field_not_ready: "Тип асоціацій не можна зберегти прямо зараз. Наступні обов'язкові поля не заповнені: {{ fields }}"
       meta:
-        created: Створено
         created_by: Створено
-        updated: Оновлено
         updated_by: Оновлено
-      btn:
-        save: Зберегти
       title: тип асоціації
       create_popin:
         title: Створити
-      message:
-        created: Тип асоціації успішно створено
     group_type:
       info:
         deletion_successful: Тип групи успішно видалений.
@@ -305,8 +277,6 @@ pim_enrich:
       title: тип групи
       create_popin:
         title: Створити
-      message:
-        created: Тип групи успішно створено
     channel:
       title: канал
       info:
@@ -318,12 +288,8 @@ pim_enrich:
         create_failed: Неможливо створити канал.
         field_not_ready: "Канал не може бути збережений прямо зараз. Наступні обов'язкові поля не заповнені: {{ fields }}"
       meta:
-        created: Створено
         created_by: Створено
-        updated: Оновлено
         updated_by: Оновлено
-      btn:
-        save: Зберегти
     family:
       title: сімейство
       selected: вибрані сімейства
@@ -336,12 +302,8 @@ pim_enrich:
         attribute_edit_permission_is_not_granted: Ви не маєте прав на редагування атрибутів сімейства
         cant_remove_attribute_used_as_axis: Ви не можете видалити цей атрибут, який використовується як різновид конфігураційного атрибутів у сімействі різновидів
       meta:
-        created: Створено
         created_by: Створено
-        updated: Оновлено
         updated_by: Оновлено
-      btn:
-        save: Зберегти
       create_popin:
         title: Створити
       message:
@@ -359,7 +321,6 @@ pim_enrich:
         update_description: Перетягніть атрибути на потрібний рівень, щоб керувати даними атрибутами з цього рівня.
         update_translation: Перекласти сімейство різновидів мітки
         create: Створити
-        cancel: Відмінити
         code: Код
         label: Мітка
         levels: Різновиди рівнів
@@ -372,24 +333,16 @@ pim_enrich:
       info:
         update_successful: Різновид сімейства успішно оновлено. Продукція з різновидів буде оновлена із внесеними змінами.
     attribute_option:
-      code: Код
-      label: Мітка
       actions: Дії
     group:
-      title: Група
       info:
         deletion_successful: Групу успішно видалено.
         deletion_failed: Не вдалося видалити групу.
         update_successful: Групу успішно оновлено.
         update_failed: Не вдалося оновити групу.
         field_not_ready: "Група не може бути збережена прямо зараз. Наступні обов'язкові поля не заповнені: {{ fields }}"
-      btn:
-        save: Зберегти
       meta:
-        product_count: Продукти
-        created: Створено
         created_by: Створено
-        updated: Оновлено
         updated_by: Оновлено
       create_popin:
         title: Створити
@@ -409,31 +362,16 @@ pim_enrich:
         create_successful: Атрибут успішно створено.
         create_failed: Не вдалося створити атрибут.
         field_not_ready: "Атрибут не можна зберегти прямо зараз. Наступні обов'язкові поля не заповнені: {{ fields }}"
-      scopable: Сфера визначається
       type:
         pim_catalog_identifier: Ідентифікатор
         pim_catalog_text: Текст до 255 символів
-        pim_catalog_textarea: Область тексту
-        pim_catalog_number: Число
-        pim_catalog_price_collection: Ціна
-        pim_catalog_multiselect: Множинний вибір
-        pim_catalog_simpleselect: Простий вибір
-        pim_catalog_file: Файл
-        pim_catalog_image: Зображення
-        pim_catalog_boolean: "Так/Ні"
-        pim_catalog_date: Дата
         pim_catalog_metric: Метричний
         pim_reference_data_simpleselect: Простий розкривний список довідкових даниx
         pim_reference_data_multiselect: Множинний розкривний список довідкових даниx
-      validation_rule:
-        email: E-mail
-        regexp: Регулярний вираз
-        url: URL
       title: атрибут
     attribute_group:
       info:
         update_failed: Не вдалося оновити групу атрибутів
-        update_successful: Групу атрибутів успішно оновлено
     api_connection:
       create_popin:
         title: Створити
@@ -444,7 +382,6 @@ pim_enrich:
     discard_changes: Якщо ви залишите сторінку, для {{ entity }} зміни будуть втрачені.
     delete_item: Підтвердити видалення
     remove_item: Підтвердіть видалення
-    remove: Видалити
     delete:
       attribute: Ви дійсно бажаєте видалити цей атрибут з продукту?
       attribute_group: Ви дійсно бажаєте видалити атрибут {{ attribute }} з цієї групи атрибутів?
@@ -465,7 +402,6 @@ pim_enrich:
       choose_variant: Обрати вариант
       complete_variant_product: різновид продукту
       complete_variant_products: різновид продуктів
-      family_variant: Варіант
       product_model: Модель продукту
       flash:
         product_model_added: Модель продукту успішно додана до моделі продукту
@@ -495,7 +431,6 @@ pim_enrich:
             attributes_selected: "вибрано атрибутів: {{ itemsCount }}"
             no_match: Збіги не знайдено
             load_more: Завантаження додаткових результатів...
-          attribute_group_selector: Група атрибутів
           attribute_group_all: Всі
           attribute_group.to_fill_count: "{1}1 відсутній потрібний атрибут|] 1, Inf [{{ count }} відсутні потрібні атрибути"
           attribute_filter:
@@ -514,9 +449,6 @@ pim_enrich:
           missing_values: "{1}1 відсутнє значення|] 1, Inf [{{ count }} відсутні значення"
         history:
           title: Історія
-      switch:
-        "no": "Ні"
-        "yes": "Так"
       sequential_edit:
         info:
           products: продукти
@@ -531,21 +463,10 @@ pim_enrich:
           merge_attributes: Поточні атрибути буде об'єднано з іншими в нову родину.
           keep_attributes: Атрибути не буде видалено.
           change_family_to: Змінити сімейство на
-          empty_selection: Виберіть сімейство
       flash:
         attribute_deletion_error: Виникла помилка під час видалення атрибуту
       mass_edit:
         select_attributes: Виберіть атрибути
-        select: Виберіть
-    association_type:
-      tab:
-        properties:
-          title: Властивості
-          general: Загальні властивості
-          code: Код
-          label_translations: Переклади міток
-        history:
-          title: Історія
     group_type:
       tab:
         properties:
@@ -557,45 +478,22 @@ pim_enrich:
           title: Історія
     channel:
       tab:
-        history:
-          title: Історія
         properties:
-          title: Властивості
-          general: Загальне
-          code: Код
-          currencies: Валюти
-          locales: Локалі
-          category_tree: Дерево категорій
-          label_translations: Переклади міток
           label_conversion_units: Вибрати одиницю перетворення для кожного метричного атрибуту, яка буде використана під час експорту продуктів
           conversion_unit:
             do_not_convert: Не перетворювати
     family:
       tab:
         properties:
-          title: Властивості
-          general: Загальне
-          code: Код
-          attribute_as_label: Атрибут, який використовується як мітка
           attribute_as_image: Атрибут використовується як основне зображення
-          empty_attribute_as_image: Не вибрано
-          label_translations: Переклади міток
         attributes:
-          title: Атрибути
-          label_label: Мітка
           toolbox:
             select_attributes_by_groups: Додати по групах
-            select_attributes: Додати атрибути
-            add: Додати
             attributes_groups_selected: 'вибрано груп: {{ itemsCount }}'
-          not_required_label: Не вимагається
-          required_label: Обов’язково
         variant:
           title: Варіанти
           flash:
             family_variant_created: Різновид сімейства успішно створений
-        history:
-          title: Історія
     family_variant:
       tab:
         attributes:
@@ -608,24 +506,6 @@ pim_enrich:
         error_creating_option: Сталася помилка під час спроби створення опції атрибуту
       add_option_modal:
         title: Додати опцію атрибута
-        confirm: Додати
-        cancel: Відмінити
-    entity:
-      switch:
-        "no": "Ні"
-        "yes": "Так"
-    group:
-      tab:
-        properties:
-          title: Властивості
-          general: Загальні властивості
-          code: Код
-          type: Тип
-          label_translations: Переклади міток
-        history:
-          title: Історія
-        products:
-          title: Продукти
     attribute_group:
       tab:
         properties:
@@ -636,20 +516,13 @@ pim_enrich:
         attribute:
           title: Атрибути
           table:
-            name: Ім’я
             type: Тип
-            scopable: Сфера визначається
-            localizable: Локалізуємий
         history.title: Історія
     common:
       tab:
         attributes:
-          btn:
-            add: Додати
-            add_attributes: Додати атрибути
           info:
             search_attributes: Пошук...
-            no_available_attributes: Немає більше атрибутів для додавання
     job_execution:
       loading: Завантаження...
       title.details: Подробиці виконання
@@ -662,7 +535,6 @@ pim_enrich:
         download_file.title: Завантажити створений файл
         download_archive.title: Завантажити створений архів
       summary:
-        fetching: Збирання даних про виконання роботи...
         warning: Попередження
         header.step: Етап
         header.status: Статус
@@ -678,14 +550,10 @@ pim_enrich:
         import: Профіль імпорту
         export: Профіль експорту
       button:
-        edit.title: Редагувати
         export.title: Експортувати зараз
         import.launch: Імпортувати зараз
         import.upload: Вивантажити та імпортувати зараз
         import.upload_file: Вивантажити файл
-      meta:
-        job: Робота
-        connector: Коннектор
       subsection:
         last_executions: Останні запуски
       tab:
@@ -693,10 +561,6 @@ pim_enrich:
           title: Вміст
         properties:
           title: Властивості
-          code:
-            title: Код
-          label:
-            title: Мітка
           decimal_separator:
             title: Десятковий роздільник
             help: Визначити десятковий роздільник
@@ -747,8 +611,6 @@ pim_enrich:
             help: Означає, що історія продукту автоматично оновлюється, можна вимкнути для кращої продуктивності
           family_variant_column:
             title: Стовпець різновидів сімейств
-        history:
-          title: Історія
       file_path: Шлях до файлу
     attribute:
       meta:
@@ -760,55 +622,33 @@ pim_enrich:
         properties:
           title: Властивості
           section:
-            common: Загальні параметри
             type_specific: Введіть конкретні параметри
             validation: Параметри перевірки
           label:
-            allowed_extensions: Дозволені розширення
             auto_option_sorting: Автоматично сортувати опції в алфавітному порядку
-            available_locales: Доступні локалі
             code: Код
-            date_max: Максимальна дата
-            date_min: Мінімальна дата
             decimals_allowed: Допустимі десяткові значення
-            default_metric_unit: Одиниці виміру за промовчанням
-            group: Група атрибутів
-            is_locale_specific: Специфічно для локалі
             localizable: Значення в локалі
-            max_characters: Максимум символів
-            max_file_size: Максимальний розмір файлу (МБ)
-            metric_family: Сімейство вимірів
             minimum_input_length: Мінімальна довжина для автозаповнення
             negative_allowed: Допустимі негативні значення
-            number_max: Максимальне число
-            number_min: Мінімальне число
             reference_data_name: Посилальний тип даних
             scopable: Значення для каналу
             type: Тип
-            unique: Унікальне значення
             useable_as_grid_filter: Використовується в представленні даних в таблиці
-            validation_regexp: Регулярний вираз
-            validation_rule: Правило перевірки
             wysiwyg_enabled: Розширений текстовий редактор увімкнено
           default_label:
-            default_metric_unit: Виберіть одиниці виміру
             group: Оберіть групу атрибутів
             metric_family: Виберіть сімейство
             reference_data_name: Оберіть посилальний тип даних
         labels:
           title: Переклади міток
-        choices:
-          title: Параметри
         history:
           title: Історія
     mass_edit:
       family:
         attributes:
-          label_label: Мітка
           toolbox:
             select_attributes_by_groups: Додати через групи
-            select_attributes: Додати атрибути
-            add: Додати
             attributes_groups_selected: 'вибрано груп: {{ itemsCount }}'
     basket:
       title: Кошик
@@ -821,8 +661,6 @@ pim_enrich:
         title: Фільтрувати за продуктами
       structure:
         title: Фільтрувати дані
-        attributes:
-          title: Атрибути
       filter:
         channel:
           title: Канал
@@ -831,14 +669,11 @@ pim_enrich:
           title: Локалі
           help: "Локалі визначають значення локалізованих даних для експорту. Наприклад, лише інформація по продукції французькою мовою."
         attributes:
-          title: Атрибути
-          edit: Редагувати
           label: "{0}всі атрибути|{1}один атрибут вибрано|] 1, Inf [{{ count }} атрибутів вибрано"
           help: "Виберіть відомості про продукт для експорту. Наприклад, тільки технічні атрибути."
           empty: Всі атрибути будуть експортовані
           modal:
             apply: Застосувати
-            cancel: Відмінити
             title: Выбір атрибутів
         attributes_selector:
           attribute_group: Групи атрибутів
@@ -850,7 +685,6 @@ pim_enrich:
           title: Атрибути
           description: Виберіть відомості про продукт для експорту
         family:
-          title: Сімейство
           help: "Виберіть продукти для експорту за сімейством. Наприклад, експортувати лише взуття і сукні."
           operators:
             IN: У списку
@@ -868,12 +702,7 @@ pim_enrich:
         enabled:
           title: Статус
           help: "Виберіть продукти для їхнього експорту за статусом. Наприклад, експорт товарів незалежно від їхнього статусу."
-          value:
-            all: Всі
-            enabled: Ввімкнено
-            disabled: Вимкнено
         completeness:
-          title: Ступінь заповненості
           help: Виберіть продукти для їхнього експорту за повнотою заповненості.
           operators:
             ALL: Немає умови щодо повноти заповненості
@@ -901,7 +730,6 @@ pim_enrich:
             NOT EMPTY: Не є порожнім
         string:
           operators:
-            ALL: Всі
             CONTAINS: Містить
             DOES NOT CONTAIN: Не містить
             "=": Дорівнює
@@ -953,10 +781,6 @@ pim_enrich:
             "<": Менше ніж
             EMPTY: Порожньо
             NOT EMPTY: Не є порожнім
-      properties:
-        title: Властивості
-      global_settings:
-        title: Глобальні налаштування
   mass_edit_action:
     edit_common_attributes:
       description: Тільки атрибути, що належать до сімейства вибраних продуктів, будуть редаговані з наступних даних для <span class="highlight">{{ locale }}</span> аудиторії та <span class="highlight">{{ channel }}</span> каналу.
@@ -976,7 +800,6 @@ pim_enrich:
       title: Звіти імпорту
     group:
       title: "] -Inf, 1] {{ count }} групи|] 1, Inf [{{ count }} групи"
-      create_btn: Створити групу
     export_profiles:
       title: "] -Inf, 1] {{ count }} експорт профілю|] 1, Inf [{{ count }} експорт профілей"
       create_btn: Створити профіль експорту
@@ -998,13 +821,11 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }} локаль|] 1, Inf [{{ count }} локалі"
     user:
       title: "] -Inf, 1] {{ count }} користувач|] 1, Inf [{{ count }} користувачі"
-      create_btn: Створити користувача
     user_role:
       title: "] -Inf, 1] {{ count }} роль|] 1, Inf [{{ count }} ролі"
       create_btn: Створити роль
     user_group:
       title: "] -Inf, 1] {{ count }} група|] 1, Inf [{{ count }} групи"
-      create_btn: Створити групу
     process_tracker:
       title: "] -Inf, 1] {{ count }} операція|] 1, Inf [{{ count }} операції"
     channel:
@@ -1021,9 +842,7 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }} підключення до API|] 1, Inf [{{ count }} підключення до API"
       create_btn: Створити
   mass_edit:
-    next: Наступний
     previous: Назад
-    cancel: Відмінити
     confirm: Підтвердження
     product:
       title: Масові дії по продуктах
@@ -1046,8 +865,6 @@ pim_enrich:
         change_status:
           label: Змінити статус
           label_count: "{1}Змінити статус <span class=\"AknFullPage-title--highlight\">1 продукту</span>|] 1, Inf [Змінити статус <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продуктів</span>"
-          description: Вибрані продукти будуть увімкнені або вимкнені.
-          field: Увімкнути
         edit_common:
           label: Змінити значення атрибутів
           label_count: "{1}Редагувати значення атрибутів <span class=\"AknFullPage-title--highlight\">1 продукту</span>|] 1, Inf [Редагувати значення атрибутів <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продуктів</span>"
@@ -1059,12 +876,9 @@ pim_enrich:
         change_family:
           label: Змінити сімейство
           label_count: "{1}Змінити сімейство <span class=\"AknFullPage-title--highlight\">1 продукту</span>|] 1, Inf [Змінити сімейство <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продуктів</span>"
-          description: Сімейство вибраних продуктів буде змінено на вибране сімейство
           field: Сімейство
         add_to_group:
-          label: Додати до групи
           label_count: "{1}Додати <span class=\"AknFullPage-title--highlight\">1 продукт</span> до групи|] 1, Inf [Додати <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукти</span> до групи"
-          description: Виберіть групи, до яких додати вибрані продукти
           field: Групи
         add_to_category:
           label: Додати до категорій
@@ -1117,43 +931,29 @@ pim_enrich.error:
     403: Заборонено. У вас немає доступу до цієї сторінки
 #Page titles
 page_title:
-  oro_default: Панель керування
   pim_enrich_attributegroup_index: Групи атрибутів
-  pim_enrich_attributegroup_create: Групи атрибутів | Створити
   pim_enrich_attributegroup_edit: Групи атрибутів {{ group.label }}| Редагувати
   pim_enrich_catalog_volume_index: Моніторинг обсягу каталогу
   pim_enrich_categorytree_index: Дерева категорії
-  pim_enrich_categorytree_create: Категорія дерев | Створити
   pim_enrich_categorytree_edit: Дерево категорій {{ category.label }} | Редагувати
-  pim_enrich_categorytree_create_tree: Категорія дерев | Створити
   pim_enrich_attribute_index: Атрибути
-  pim_enrich_attribute_create: Атрибути | Створити
   pim_enrich_attribute_edit: Атрибути {{ attribute.label }} | Редагувати
   pim_enrich_product_index: Продукти
   pim_enrich_product_edit: Продукт {{ product.label }} | Редагувати
   pim_enrich_product_model_edit: Модель продукту {{ product.label }} | Редагувати
-  pim_enrich_family_index: Сімейства
   pim_enrich_family_edit: Сімейство {{ family.label }} | Редагувати
-  pim_enrich_channel_index: Канали
-  pim_enrich_channel_create: Канали | Створити
   pim_enrich_channel_edit: Канал {{ channel.label }} | Редагувати
-  pim_enrich_currency_index: Валюти
   pim_enrich_locale_index: Локалі
   pim_enrich_group_index: Групи
   pim_enrich_group_edit: Група {{ group.label }} | Редагування
-  pim_enrich_associationtype_index: Типи асоціацій
   pim_enrich_associationtype_edit: Тип зв'язку {{ association type.label }} | Редагувати
-  pim_enrich_grouptype_index: Типи груп
   pim_enrich_grouptype_edit: Тип групи {{ group type.label }} | Змінити
-  pim_enrich_mass_edit_action_choose: Масове редагування | Вибрати
-  pim_enrich_mass_edit_action_configure: Масове редагування | Конфігурувати
   pim_enrich_mass_edit_action_perform: Масові зміни | Виконати
   pim_enrich_job_tracker_index: Трекер процесів
   pim_enrich_job_tracker_show: Трекер процесів | Показати завдання
   pim_enrich_api_connection_index: API підключення
   pim_enrich_api_connection_create: Підключення до API | Створити
   pim_enrich_mass_edit_action: Масове редагування
-  pim_analytics_system_info_index: Інформація про систему
 #Batch job labels
 batch_jobs:
   add_product_value:
@@ -1166,8 +966,6 @@ batch_jobs:
       label: Оновити значення продукту
   add_to_group:
     label: Додати до групи
-    perform:
-      label: Додати до групи
   edit_common_attributes:
     label: Редагувати атрибути
     perform:
@@ -1218,27 +1016,8 @@ batch_jobs:
     quick_export_product_model.label: Швидкий експорт в XSLX моделей продуктів в вигляді представлення даних у таблиці
     perform:
       label: Швидкий експорт в XSLX продуктів в вигляді представлення даних у таблиці
-  csv_product_export:
-    label: Експорт продуктів у CSV
-    export.label: Експорт продуктів
   csv_product_model_export:
     label: Експорт моделі продукту в CSV
-    export.label: Експорт продуктів
-  csv_category_export:
-    label: Експорт категорій у CSV
-    export.label: Експорт категорій
-  csv_attribute_export:
-    label: Експорт атрибутів у CSV
-    export.label: Експорт атрибутів
-  csv_attribute_option_export:
-    label: Експорт налаштувань атрибутів у CSV
-    export.label: Експорт налаштувань атрибутів
-  csv_association_type_export:
-    label: Експорт типів асоціацій у CSV
-    export.label: Експорт типів асоціацій
-  csv_group_export:
-    label: Експорт групи у CSV
-    export.label: Експорт групи
   csv_family_export:
     label: Експорт сім'ї у форматі CSV
     export.label: Експорт сім'ї
@@ -1246,31 +1025,11 @@ batch_jobs:
     label: Експорт варіанту сімейства у форматі CSV
     export.label: Експорт варіантів сімейства
   csv_product_import:
-    label: Експорт продуктів у CSV
     validation.label: Перевірка файлу
-    import.label: Експорт продуктів
-    import_associations.label: Імпорт асоціацій
   csv_product_model_import:
     label: Імпорт моделі продукту в CSV
-  csv_category_import:
-    label: Імпорт категорій у CSV
-    validation.label: Перевірка файлу
-    import.label: Імпорт категорій
-  csv_attribute_import:
-    label: Імпорт атрибутів у CSV
-    validation.label: Перевірка файлу
-    import.label: Імпорт атрибутів
-  csv_attribute_option_import:
-    label: Імпорт налаштувань атрибутів у CSV
-    validation.label: Перевірка файлу
-    import.label: Імпорт налаштувань атрибутів
-  csv_association_type_import:
-    label: Імпорт типів асоціацій у CSV
-    validation.label: Перевірка файлу
-    import.label: Імпорт типів асоціацій
   csv_family_import:
     label: Імпорт сімейств із CSV
-    validation.label: Перевірка файлу
     import.label: Імпорт сімейств
     compute_data_related_to_family_variants.label: Обчислення даних моделей продукту
     compute_data_related_to_family_root_product_models.label: Обчислення даних кореневих моделей продукту
@@ -1278,12 +1037,7 @@ batch_jobs:
     compute_data_related_to_family_products.label: Обчислення даних продуктів
   csv_family_variant_import:
     label: Імпорт варіантів сімейства в CSV
-    validation.label: Перевірка файлу
     import.label: Імпорт варіантів сімейства
-  csv_group_import:
-    label: Імпорт групи у CSV
-    validation.label: Перевірка файлу
-    import.label: Імпорт групи
   csv_channel_export:
     label: Експорт каналів у CSV
     export.label: Експорт каналів
@@ -1301,43 +1055,29 @@ batch_jobs:
     export.label: Експорт типів груп
   csv_channel_import:
     label: Імпорт каналів з CSV
-    validation.label: Перевірка файлу
     import.label: Імпорт каналів
   csv_locale_import:
     label: Імпорт локалей з CSV
-    validation.label: Перевірка файлу
     import.label: Імпорт локалей
   csv_attribute_group_import:
     label: Імпорт груп атрибутів з CSV
-    validation.label: Перевірка файлу
     import.label: Імпорт груп атрибутів
   csv_currency_import:
     label: Імпорт валют з CSV
-    validation.label: Перевірка файлу
     import.label: Імпорт валют
   csv_group_type_import:
     label: Імпорт типів груп з CSV
-    validation.label: Перевірка файлу
     import.label: Імпорт типів груп
   xlsx_category_import:
     label: Імпорт категорій з XLSX
-    validation.label: Перевірка файлу
-    import.label: Імпорт категорій
   xlsx_association_type_import:
     label: Імпорт типів асоціацій з XLSX
-    validation.label: Перевірка файлу
-    import.label: Імпорт типів асоціацій
   xlsx_attribute_import:
     label: Імпорт атрибутів з XLSX
-    validation.label: Перевірка файлу
-    import.label: Імпорт атрибутів
   xlsx_attribute_option_import:
     label: Імпорт опцій атрибутів з XLSX
-    validation.label: Перевірка файлу
-    import.label: Імпорт налаштувань атрибутів
   xlsx_family_import:
     label: Імпорт сімейств з XLSX
-    validation.label: Перевірка файлу
     import.label: Імпорт сімейств
     compute_data_related_to_family_variants.label: Обчислення даних моделей продукту
     compute_data_related_to_family_root_product_models.label: Обчислення даних кореневих моделей продукту
@@ -1345,37 +1085,27 @@ batch_jobs:
     compute_data_related_to_family_products.label: Обчислення даних продуктів
   xlsx_family_variant_import:
     label: Імпорт різновидів сімейства в XLSX
-    validation.label: Перевірка файлу
     import.label: Імпорт варіантів сімейства
   xlsx_product_export:
     label: Експорт продуктів в XLSX
-    export.label: Експорт продуктів
   xlsx_product_model_export:
     label: Експорт моделі продукту в XLSX
     export.label: Експорт моделі продукту
   xlsx_product_import:
     label: Імпорт продуктів з XLSX
-    validation.label: Перевірка файлу
-    import.label: Експорт продуктів
-    import_associations.label: Імпорт асоціацій
   xlsx_product_model_import:
     label: Імпорт моделі продукту в XSLX
   xlsx_group_export:
     label: Експорт груп у XLSX
-    export.label: Експорт групи
   xlsx_group_import:
     label: Імпорт груп з XLSX
-    validation.label: Перевірка файлу
-    import.label: Імпорт групи
   xlsx_family_export:
     label: Експорт сімейств у XLSX
-    export.label: Експорт сім'ї
   xlsx_family_variant_export:
     label: Експорт різновидів сімейства в XLSX
     export.label: Експорт варіантів сімейства
   xlsx_category_export:
     label: Експорт категорій у XLSX
-    export.label: Експорт категорій
   xlsx_attribute_export:
     label: Експорт атрибутів у XLSX
     export.label: Експорт атрибутів у XLSX
@@ -1402,23 +1132,18 @@ batch_jobs:
     export.label: Експорт типів груп
   xlsx_channel_import:
     label: Імпорт каналів з XLSX
-    validation.label: Перевірка файлу
     import.label: Імпорт каналів
   xlsx_locale_import:
     label: Імпорт локалей у XLSX
-    validation.label: Перевірка файлу
     import.label: Імпорт локалей
   xlsx_attribute_group_import:
     label: Імпорт груп атрибутів з XLSX
-    validation.label: Перевірка файлу
     import.label: Імпорт груп атрибутів
   xlsx_currency_import:
     label: Імпорт валют з XLSX
-    validation.label: Перевірка файлу
     import.label: Імпорт валют
   xlsx_group_type_import:
     label: Імпорт типів груп з XLSX
-    validation.label: Перевірка файлу
     import.label: Імпорт типів груп
 job_tracker:
   download_archive:
@@ -1434,36 +1159,20 @@ pim_menu:
     products: Продукти
     exports: Експорт
     settings: Налаштування
-    system: Система
     help:
       title: Допомога
       helper: Довідковий центр Akeneo
   item:
-    association_type: Типи асоціацій
     attribute: Атрибути
     attribute_group: Групи атрибутів
     category: Категорії
-    channel: Канали
-    currency: Валюти
-    dashboard: Панель керування
-    family: Сімейства
     group: Групи
-    group_type: Типи груп
     locale: Локалі
     product: Продукти
     product_model: Моделі продукту
-    published_product: Опубліковані продукти
     export_history: Історія експорту
-    export_profile: Профілі експорту
     import_history: Історія імпорту
-    import_profile: Профілі імпорту
-    configuration: Конфігурація
-    catalog_volume: Моніторинг обсягу каталогу
-    user_management: Керування користувачами
-    user: Користувачі
     user_group: Групи
-    user_role: Ролі
-    info: Інформація про систему
     job_tracker: Трекер процесів
     api_connection: API підключення
   navigation:
@@ -1471,9 +1180,6 @@ pim_menu:
     system: Меню розділу Система
     user: Меню розділу Керування користувачами
     settings: Меню розділу Налаштування
-  user:
-    logout: Вийти
-    user_account: Мій акаунт
 pim_notification:
   mark_all_as_read: Позначити всі як прочитані
   no_notifications: Немає повідомлень
@@ -1494,12 +1200,10 @@ catalog_volume:
   axis:
     count_products: Продукти
     average_max_attributes_per_family: Атрибути сімейства
-    count_channels: Канали
     count_locales: Локалі (активувати)
     count_scopable_attributes: Видимі атрибути
     count_localizable_and_scopable_attributes: Видимі атрибути та атрибути, які локалізуються
     count_localizable_attributes: Атрибути, які локалізуються
-    count_families: Сімейства
     count_attributes: Атрибути
     average_max_options_per_attribute: Опції за атрибутом
     count_categories: Категорії
@@ -1507,5 +1211,3 @@ catalog_volume:
     count_variant_products: Варіанти продуктів
     count_product_models: Моделі продукту
     warning: Нічого собі! Ви встановили рекорд за цим виміром! Не соромтеся звертатися до нас, якщо вам потрібна допомога.
-  mean: 'Mean:'
-  max: 'Max:'

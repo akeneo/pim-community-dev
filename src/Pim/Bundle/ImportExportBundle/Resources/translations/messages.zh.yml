@@ -39,13 +39,9 @@ pim_import_export:
       job_content.title: 内容
 #Page titles:
 pim_title.export_profile.index: 导出配置文件管理
-pim_title.export_profile.edit: Export profile %job.label% | Edit
-pim_title.export_profile.show: Export profile %job.label% | Show
 pim_title.export_execution.index: 导出处理记录
 pim_title.export_execution.show: 导出处理记录|详情
 pim_title.import_profile.index: 导入配置文件管理
-pim_title.import_profile.edit: Import profile %job.label% | Edit
-pim_title.import_profile.show: Import profile %job.label% | Show
 pim_title.import_execution.index: 导入处理记录
 pim_title.import_execution.show: 导入处理记录|详情
 #Entity and page header titles
@@ -156,11 +152,4 @@ End: 结束
 #Process tracker
 set_attribute_requirements: 设置属性要求
 COMPLETED: 已完成
-STARTING: Starting
-STARTED: Started
-STOPPING: Stopping
-STOPPED: Stopped
-FAILED: Failed
-ABANDONED: Abandoned
-UNKNOWN: Unknown
 warning.label: 警告

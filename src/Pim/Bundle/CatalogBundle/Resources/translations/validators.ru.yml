@@ -40,7 +40,6 @@ pim_catalog:
     cannot_have_parent: 'Модель продукта "%product_model%" не может иметь родительскую'
     attribute_does_not_belong_to_family: 'Атрибут "%attribute%" не принадлежит семейству "%family%"'
     variant_product_invalid_family: 'Семейство у варианта продукта должно быть таким же, как у его родителя'
-    php_int_max_reached: 'The maximum number must be lower than %php_int_max%.'
     not_null_family: Семейство не может быть «нулевым», потому что ваш продукт с идентификатором "%sku%" является вариантом продукта.
     variant_product_has_parent: 'Вариант продукта "%variant_product%" должен иметь родителя'
     invalid_variant_product_parent: 'Данная разновидность продукта "%variant_product%" не может иметь в качестве родительской модель продукта "%product_model%" (она может иметь другие модели продуктов только в качестве дочерних)'

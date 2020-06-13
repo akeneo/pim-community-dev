@@ -41,7 +41,6 @@ required: (obligatorisk)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Aktivera hämtning av meddelanden
-    loading_message_enabled.tooltip: Display user friendly messages while waiting for a page to load
     loading_messages.label: Tillgängliga meddelanden att hämta
     loading_messages.tooltip: Alla tillgängliga laddningsmeddelanden separerade med radbrytningar
   group:

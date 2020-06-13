@@ -34,14 +34,11 @@ Yes: true
 No: false
 oro.datagrid.entityHint: Entidade
 oro.datagrid.noentities: Nenhum registro encontrado
-oro.datagrid.noresults: "Sorry, there is no result for your search."
 oro.datagrid.noresults_subTitle: "Tente novamente com novos critérios de pesquisa."
 oro.datagrid.nocolumns: Não há colunas configuradas para esse grid
 oro.datagrid.pagination.label: "Página"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registros"
-#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
-oro.datagrid.pagination.limit_warning: "The grid cannot display more than {{ limit }} results, try to filter on additional search criteria."
 oro.datagrid.action.reset: "Resetar"
 oro.datagrid.action.refresh: "Atualizar"
 oro_datagrid.select.all: "Todos"
@@ -72,7 +69,6 @@ datagrid_view.columns.min_message: Você deve selecionar ao menos uma coluna par
 pim_datagrid:
   column_configurator:
     label: Colunas
-    title: Configure columns
     all_groups: Todos os Grupos
     search: Pesquisar
     clear: Limpar
@@ -80,7 +76,6 @@ pim_datagrid:
     apply: Aplicar
     cancel: Cancelar
     remove_column: Remover
-    description: Select the information you want to display as column
     attribute_groups: Grupos de Atributos
   mass_action:
     delete:
@@ -111,18 +106,12 @@ grid.view_selector:
   placeholder: Nome da visualização
   choose_label: Escolha um rótulo para a visualização
   confirmation:
-    remove: Are you sure you want to delete this view?
     delete: Confirmar exclusão
 #View selector flash messages
 grid.view_selector.flash.updated: Visualização de grid atualizada com sucesso
 #Display selector
 grid.display_selector:
   label: Exibir
-  gallery: Gallery
-  list: List
-#Credentials cell
-Client ID: Client ID
-Secret: Secret
 grid.empty_results:
   associated_product:
     hint: Não existem produtos associados

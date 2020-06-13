@@ -41,7 +41,6 @@ job_execution.summary:
     skipped: sărit, extensie în lista albă
   product_skipped_no_diff: produs omis (nici o diferență)
   product_skipped_no_associations: produs sărit (nu a fost găsită nicio asociație)
-  product_model_skipped_no_associations: skipped product model (no associations detected)
   product_model_skipped_no_diff: model de produs omis (fără diferențe)
   item_position: citeşte linii
   skipped_in_root_product_model: model de produs cu mamă omis
@@ -81,17 +80,12 @@ batch_jobs:
     import.label: Import produs
     import_associations.label: Import asociație
   csv_product_model_import:
-    label: Product model import in CSV
     validation.label: Validarea fișierului
-    import_root_product_model.label: Root product model import
     import_sub_product_model.label: Impor model de subprodus
-    import_product_model_descendants.label: Compute product model descendants
   csv_category_import:
-    label: Category import in CSV
     validation.label: Validarea fișierului
     import.label: Import categorie
   csv_attribute_import:
-    label: Attribute import in CSV
     validation.label: Validarea fișierului
     import.label: Import atribut
   csv_attribute_option_import:
@@ -128,7 +122,6 @@ batch_jobs:
     export.label: Export valută
   csv_group_type_export:
     label: Export tip de grup În CSV
-    export.label: Group type export
   csv_channel_import:
     label: Import canal în CSV
     validation.label: Validarea fișierului
@@ -177,19 +170,14 @@ batch_jobs:
     label: Export produs în XLSX
     export.label: Exportare produse
   xlsx_product_model_export:
-    label: Product model export in XLSX
     export.label: Export model de produs
   xlsx_product_import:
-    label: Product import in XLSX
     validation.label: Validarea fișierului
     import.label: Import produs
     import_associations.label: Import asociație
   xlsx_product_model_import:
-    label: Product model import in XSLX
     validation.label: Validarea fișierului
-    import_root_product_model.label: Root product model import
     import_sub_product_model.label: Impor model de subprodus
-    import_product_model_descendants.label: Compute product model descendants
     import_associations.label: Import asociație
   xlsx_group_export:
     label: Export grup în XLSX
@@ -199,40 +187,20 @@ batch_jobs:
     validation.label: Validarea fișierului
     import.label: Import grup
   xlsx_family_export:
-    label: Family export in XLSX
     export.label: Export familie
   xlsx_family_variant_export:
-    label: Family variant export in XLSX
     export.label: Export varianta de familie
   xlsx_category_export:
-    label: Category export in XLSX
     export.label: Export categorie
-  xlsx_attribute_export:
-    label: Attribute export in XLSX
-    export.label: Attribute export in XLSX
-  xlsx_attribute_option_export:
-    label: Attribute option export in XLSX
-    export.label: Attribute option export in XLSX
-  xlsx_association_type_export:
-    label: Association type export in XLSX
-    export.label: Association type export in XLSX
   xlsx_channel_export:
-    label: Channel export in XLSX
     export.label: Export canal
   xlsx_locale_export:
-    label: Locale export in XLSX
     export.label: Export local
   xlsx_attribute_group_export:
-    label: Attribute group export in XLSX
     export.label: Export grup de atribut
   xlsx_currency_export:
-    label: Currency export in XLSX
     export.label: Export valută
-  xlsx_group_type_export:
-    label: Group type export in XLSX
-    export.label: Group type export
   xlsx_channel_import:
-    label: Channel import in XLSX
     validation.label: Validarea fișierului
     import.label: Import canal
   xlsx_locale_import:

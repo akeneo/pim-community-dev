@@ -25,5 +25,3 @@ pim_dashboard:
         export: Izvoz
         mass_edit: Masovno uređivanje
         quick_export: Brzi izvoz
-        compute_product_models_descendants: Compute product models descendants
-        mass_delete: Mass delete products

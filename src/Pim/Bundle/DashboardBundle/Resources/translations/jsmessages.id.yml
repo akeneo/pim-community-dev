@@ -16,7 +16,6 @@ pim_dashboard:
         compute_product_models_descendants: Hitunglah model produk keturunan
         compute_family_variant_structure_changes: Hitung perubahan struktur varian keluarga
         compute_completeness_of_products_family: Hitunglah kelengkapan produk keluarga
-        mass_delete: Mass delete products
     completeness:
       load_more: 'Muat lebih...'
     header:

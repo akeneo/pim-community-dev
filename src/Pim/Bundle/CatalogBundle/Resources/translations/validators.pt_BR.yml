@@ -40,7 +40,6 @@ pim_catalog:
     cannot_have_parent: 'O modelo de produto "%product_model%" não pode ter um pai'
     attribute_does_not_belong_to_family: 'O atributo "%attribute%" não pertence à família "%family%"'
     variant_product_invalid_family: 'A variante da família de produtos tem que ser a mesma que a de seu pai'
-    php_int_max_reached: 'The maximum number must be lower than %php_int_max%.'
     not_null_family: A família não pode ser "null" porque o produto com o identificador "%sku%" é uma variante de produto.
     variant_product_has_parent: 'A variante de produto "%variant_product%" tem que ter um pai'
     invalid_variant_product_parent: 'A variante de produto "%variant_product%" não pode ter o modelo de produto "%product_model%" como pai, (esse modelo de produto pode ter somente outros modelos de produtos como filhos)'
