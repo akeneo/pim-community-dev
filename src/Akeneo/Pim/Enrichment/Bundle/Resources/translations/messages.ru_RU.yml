@@ -74,10 +74,4 @@ pim_enrich:
       quick_export:
         launched_flash: Выполняется работа экспорта продуктов
 category:
-  edit: Edit category
   overview: Категории
-tree:
-  edit: Edit tree
-  remove:
-    error_linked: This category tree cannot be deleted, it is linked to a channel
-  create: Create a category tree
