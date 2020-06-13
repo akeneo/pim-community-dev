@@ -60,17 +60,12 @@ pim_user_management:
         new_password_repeat: Ny adgangskode (gentag)
         password: Adgangskode
         password_repeat: Adgangskode (gentag)
-        last_logged_in: Last logged in
-        login_count: Login count
         ui_locale: UI landestandard
         timezone: Tidszone
         default_product_grid_view: Standard produkt gittervisningen
         default_published_product_grid_view: Standard offentliggjorte produkter grid view #EE Only
         proposals_to_review_notification: Når nye forslag til revision #EE Only
         proposals_state_notifications: Når forslaget er accepteret eller afvist #EE Only
-      meta:
-        created: Created
-        updated: Updated
       module:
         create:
           button: Opret bruger
