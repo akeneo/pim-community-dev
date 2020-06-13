@@ -19,12 +19,8 @@ pim_connector:
 #Page titles
 page_title:
   pim_importexport_export_profile_index: Upravljanje profilima izvoza
-  pim_importexport_export_profile_edit: Export profile {{ job.label }} | Edit
-  pim_importexport_export_profile_show: Export profile {{ job.label }} | Show
   pim_importexport_export_execution_index: Povijest izvođenja izvoza
   pim_importexport_export_execution_show: Izvoz izvođenja | Detalji
   pim_importexport_import_profile_index: Upravljanje profilima uvoza
-  pim_importexport_import_profile_edit: Import profile {{ job.label }} | Edit
-  pim_importexport_import_profile_show: Import profile {{ job.label }} | Show
   pim_importexport_import_execution_index: Povijest izvođenja uvoza
   pim_importexport_import_execution_show: Uvoz izvođenja | Detalji

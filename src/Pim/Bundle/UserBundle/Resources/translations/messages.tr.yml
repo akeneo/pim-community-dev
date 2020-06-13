@@ -50,7 +50,6 @@ Additional: Ek olarak
 Groups and Roles: Gruplar ve Yetkiler
 Username: Kullanıcı adı
 Password: Parola
-Password (again): Password (again)
 Re-enter password: Parola (tekrar)
 Name prefix: Ad ön eki
 First name: İsim
@@ -162,5 +161,4 @@ Username or Email: Kullanıcı adı veya Email
 Forgot Password: Parolamı unuttum
 Request: İstekler
 Check Email: E-Postayı kontrol et
-password_reset_email_sent: An email has been sent to the user. It contains a link to reset the password.
 Go to homepage: Ana sayfaya git

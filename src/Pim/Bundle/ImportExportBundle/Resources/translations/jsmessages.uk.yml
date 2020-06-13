@@ -8,23 +8,15 @@ pim_connector:
       selector:
         modal:
           title: Вибір категорій
-          cancel: Відмінити
           confirm: Підтвердження
         label: "{0} Всі продукти|{1} Одну категорію вибрано|] 1, Inf [ {{ count }} вибрані категорії"
-        edit: Редагувати
         title: Оберіть категорії
     locales:
       validation:
         not_blank: Одна локаль має бути вибрана, будь ласка, оберіть локаль для експорту.
 #Page titles
 page_title:
-  pim_importexport_export_profile_index: Керування профілями експорту
   pim_importexport_export_profile_edit: Експорт профілю {{ job.label }} | Редагувати
   pim_importexport_export_profile_show: Експорт профілю {{ job.label }} | Показати
-  pim_importexport_export_execution_index: Історія запусків експорту
-  pim_importexport_export_execution_show: Запуски експорту | Подробиці
-  pim_importexport_import_profile_index: Керування профілями імпорту
   pim_importexport_import_profile_edit: Імпорт профілю {{ job.label }} | Редагувати
   pim_importexport_import_profile_show: Імпорт профілю {{ job.label }} | Показати
-  pim_importexport_import_execution_index: Історія запусків імпорту
-  pim_importexport_import_execution_show: Запуски імпорту | Подробиці

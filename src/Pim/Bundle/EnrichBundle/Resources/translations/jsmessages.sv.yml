@@ -7,7 +7,6 @@ confirmation:
     attribute: Är du säker på att du vill radera det här attributet?
     attribute_group: Är du säker på att du vill radera det här attributet?
     family: Är du säker på att du vill radera den här familjen?
-    family_variant: Are you sure you want to delete this family variant ?
     product: Är du säker på att du vill ta bort denna produkt?
     product_model: Är du säker på att du vill ta bort denna produkt modell? Alla barn, modell och variant produkter, kommer att tas bort.
     channel: Är du säker på att du vill ta bort denna kanal?
@@ -19,7 +18,6 @@ confirmation:
     role: Är du säker på att du vill ta bort denna roll?
     job_instance: Är du säker på att du vill ta bort den här jobbinstansen?
     api_connection: Är du säker du vill återkalla denna API-anslutning? Alla API-anrop som görs via denna anslutning kommer nu att kasta ett fel.
-    products_and_product_models: Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -29,7 +27,6 @@ pim_datagrid:
   mass_action:
     delete:
       label: Ta bort
-      confirm_content: Are you sure you want to delete the selected products?
       success: Valda produkter har tagits bort.
       error: Ett fel uppstod när de valda produkterna skulle tas bort, vänligen försök igen.
   view_selector:
@@ -49,12 +46,8 @@ flash:
     removed: Attributgruppen har tagits bort
   family:
     removed: Familjen har tagits bort
-  family_variant:
-    removed: Family variant successfully removed
   product:
     removed: Produkten har tagits bort
-  product_model:
-    removed: Product model successfully removed
   channel:
     removed: Kanalen har tagits bort
   group:
@@ -115,7 +108,6 @@ Classify the product: Klassificera produkten
 Delete the product: Ta bort denna produkt
 Change status: Ändra status
 Toggle status: Växla status
-mass_delete: Mass delete
 #Quick export labels
 pim:
   grid:
@@ -128,7 +120,6 @@ pim:
       delete: Ta bort
       mass_edit: Massåtgärder
       category_edit: Flytta produkter i kategorier
-      sequential_edit: Sequential edit
 #Jstree context menu actions
 jstree.create: Skapa
 jstree.done: Slutförd
@@ -161,15 +152,11 @@ pim_enrich:
     product:
       navigation: Produkt navigering
       infos: Produkt information
-      index_title: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
       title: produkt
       locale: Språk
       category: Kategori
       create: Skapa
-      subTitle: Create product
-      modalTitle: Select your action
       filters: Filter
-      selected: selected results
       common: Vanlig
       btn:
         enabled: Aktiverad
@@ -237,37 +224,19 @@ pim_enrich:
         title: Skapa
         labels:
           family: Välj en familj
-          family_variant: Choose a family variant
           save: Spara
           cancel: Avbryt
       message:
         created: Produkten har skapts
       completeness: Slutförd
-      sequential_edit:
-        item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
-        empty: Your selection is empty, please change your search criteria
     product_model:
       create_popin:
         type: Produktmodell
-        title: Create a product model
-        content: A product model gathers variant products and eases the enrichment of their common properties.
-      info:
-        create_successful: Product model successfully created
-        update_successful: Product model successfully updated. The completeness of its variant products will be recalculated.
-        deletion_successful: Product model successfully deleted.
-        update_failed: The product model could not be updated.
-        field_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
-      read_only_parent_attribute_from_common: This attribute can be updated in the common attributes.
-      read_only_parent_attribute_from_model: "This attribute can be updated in the attributes by {{ axes }}"
-      variant_axis: Variant axis
-      title: product models
       add_child:
         create: Lägg till ny
         cancel: Avbryt
         confirm: Bekräfta
-        create_label: "Add a new {{ axes }}"
         fields:
-          required_label: (variant axis)
           code: Kod
     association_type:
       info:
@@ -326,7 +295,6 @@ pim_enrich:
         save: Spara
     family:
       title: familj
-      selected: selected families
       info:
         update_successful: Familjen har uppdaterats.
         create_successful: Kanalen har skapats.
@@ -334,7 +302,6 @@ pim_enrich:
         cant_remove_attribute_as_label: Kan inte ta bort ett attribut som används som etikett
         cant_remove_attribute_as_image: Kan inte ta bort attributet används som huvudbild
         attribute_edit_permission_is_not_granted: Du saknar rättigheter för att ändra på en familjs attribut
-        cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
       meta:
         created: Skapad
         created_by: Skapad av
@@ -347,30 +314,11 @@ pim_enrich:
       message:
         created: Familjen har skapats
       variant:
-        common:
-          title: Common attributes
-          empty: There is no common attributes
-        axis.label: Variant axis
-        level_1.label: Variant attributes level one
-        level_2.label: Variant attributes level two
         add_variant: Lägg till variant
-        create_label: Create a new family variant
-        create_description: In a family variant, you can define a structure for products with variants. Choose the number of managed variant levels, the attributes used as variant axes for each level, and then define how the attributes are distributed.
-        update_description: Drag & drop attributes to the selected variant level to have these attributes managed at the variant level.
-        update_translation: Translate family variant label
         create: Skapa
         cancel: Avbryt
         code: Kod
         label: Etikett
-        levels: Variant levels
-        axis_level: Variant axis level
-        required: required
-        confirm_attribute_removal:
-          title: Confirm remove of attributes
-          message: By removing these attributes you will put them back in the common attributes of the family variant and remove the values from the variant products
-    family_variant:
-      info:
-        update_successful: Family variant successfully updated. The products with variants will be updated with your changes.
     attribute_option:
       code: Kod
       label: Etikett
@@ -382,7 +330,6 @@ pim_enrich:
         deletion_failed: Grupp kunde inte raderas.
         update_successful: Gruppen ändrades.
         update_failed: Gruppen kunde inte ändras.
-        field_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
       btn:
         save: Spara
       meta:
@@ -401,14 +348,6 @@ pim_enrich:
         update_failed: Jobbets profil kunde inte ändras.
         update_successful: Jobbets profil har ändrats.
     attribute:
-      info:
-        deletion_successful: Attribute successfully deleted.
-        deletion_failed: The attribute could not be deleted.
-        update_successful: Attribute successfully updated.
-        update_failed: The attribute could not be updated.
-        create_successful: Attribute successfully created.
-        create_failed: The attribute could not be created.
-        field_not_ready: "The attribute cannot be saved right now. The following fields are not ready: {{ fields }}"
       scopable: Omfattningbar
       type:
         pim_catalog_identifier: Identifierare
@@ -432,22 +371,17 @@ pim_enrich:
       title: attribut
     attribute_group:
       info:
-        update_failed: Attribute group could not be updated
         update_successful: Attributgruppen uppdaterades
     api_connection:
       create_popin:
         title: Skapa
-      message:
-        created: API connection successfully created
   confirmation:
     leave: Är det säkert att du vill lämna den här sidan?
     discard_changes: Du kommer att förlora ändringar av {{ entity }} om du lämnar sidan.
     delete_item: Bekräfta radering
-    remove_item: Confirm removal
     remove: Ta bort
     delete:
       attribute: Är det säkert att du vill ta bort detta attribut från produkten?
-      attribute_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
       product_model: Bekräfta radering
   info:
     not_applicable: '-'
@@ -456,20 +390,12 @@ pim_enrich:
   error:
     upload: Ett fel inträffade när filen skulle laddas upp
   alert:
-    not_allowed: Forbidden. You are not allowed to access this page
     error_occured: Ett fel inträffade när sidan hämtades
   form:
     required: (obligatorisk)
     product_model:
-      choose_product_model: Choose a product model
-      choose_variant: Choose a variant
-      complete_variant_product: variant product
-      complete_variant_products: variant products
       family_variant: Variant
       product_model: Produktmodell
-      flash:
-        product_model_added: Product model successfully added to the product model
-        variant_product_added: Variant product successfully added to the product model
     product:
       tab:
         associations:
@@ -477,13 +403,7 @@ pim_enrich:
           info:
             none_exist: Det finns inga associationstyper.
             show_products: Visa produkter
-            show_groups: Display groups
-            number_of_associations: "{{ productCount }} product(s), {{ productModelCount }} product model(s) and {{ groupCount }} group(s)"
-          association_type_selector: Association type
           target: Mål
-          manage: Add {{ associationType }} associations
-          manage_description: Select the products you want to associate with the current product
-          add_associations: Add associations
         attributes:
           title: Attribut
           btn:
@@ -497,12 +417,8 @@ pim_enrich:
             load_more: Laddar fler resultat...
           attribute_group_selector: Attributgrupp
           attribute_group_all: Alla
-          attribute_group.to_fill_count: "{1}1 missing required attribute|]1, Inf [{{ count }} missing required attributes"
           attribute_filter:
-            display: Display
             all: Alla attribut
-            missing_required: All missing required attributes
-            at_this_level: All level specific attributes
         categories:
           title: Kategorier
       panel:
@@ -511,7 +427,6 @@ pim_enrich:
           info:
             no_family: Ingen familj har valts. Välj en familj för att beräkna fullständighet av denna produkt.
             no_completeness: Du ändrade produktens familj. Spara det för att beräkna fullständighet för den nya familjen.
-          missing_values: "{1}1 missing value|] 1, Inf [{{ count }} missing values"
         history:
           title: Historik
       switch:
@@ -578,7 +493,6 @@ pim_enrich:
           code: Kod
           attribute_as_label: Attribut som etikett
           attribute_as_image: Attribut används som huvudbilden
-          empty_attribute_as_image: Not selected
           label_translations: Etikettsöversättningar
         attributes:
           title: Attribut
@@ -592,14 +506,10 @@ pim_enrich:
           required_label: Obligatorisk
         variant:
           title: Varianter
-          flash:
-            family_variant_created: Family variant successfully created
         history:
           title: Historik
     family_variant:
       tab:
-        attributes:
-          title: Variant attributes
         labels:
           title: Etikettsöversättningar
     attribute_option:
@@ -745,8 +655,6 @@ pim_enrich:
           real_time_versioning:
             title: Realtidsuppdatering av historiken
             help: Innebär att produktens historik uppdateras i realtid, kan stängas av för att förbättra prestandarden
-          family_variant_column:
-            title: Family variant column
         history:
           title: Historik
       file_path: Filsökväg
@@ -813,8 +721,6 @@ pim_enrich:
     basket:
       title: Korg
       empty_basket: Korgen är tom
-  job:
-    upload: Drop your {{ type }} file here, or click to browse disk
   export:
     product:
       data:
@@ -833,7 +739,6 @@ pim_enrich:
         attributes:
           title: Attribut
           edit: Ändra
-          label: "{0}All attributes|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
           help: "Välj vilken produktinformation som ska exporteras. Ex: endast tekniska attribut."
           empty: Alla attribut kommer att exporteras
           modal:
@@ -848,7 +753,6 @@ pim_enrich:
           all_group: Alla grupper
           empty_selection: Alla attribut kommer att exporteras
           title: Attribut
-          description: Select the product information to export
         family:
           title: Familj
           help: "Välj vilka produkter som exporteras beroende på familj. T. ex. exportera endast skor och klänningar."
@@ -880,15 +784,12 @@ pim_enrich:
             "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Fullständig på minst ett valt språk
             "GREATER OR EQUALS THAN ON ALL LOCALES": Fullständig på alla valda språk
             LOWER THAN ON ALL LOCALES: Inte fullständig på alla valda språk
-            AT LEAST COMPLETE: At least one child product complete on one selected locale
-            ALL COMPLETE: All children products complete on all selected locales
           empty_selection: Välj en familj
         category:
           title: Kategori
           help: Använd produktkategorierna i trädet (definierad av kanalen ovan) för att välja produkter att exportera
         identifier:
           title: Identifierare
-          help: Use the product identifiers to export separated by commas, spaces or line breaks
         metric:
           operators:
             "=": Är lika med
@@ -957,15 +858,10 @@ pim_enrich:
         title: Egenskaper
       global_settings:
         title: Globala inställningar
-  mass_edit_action:
-    edit_common_attributes:
-      description: Only the attributes belonging to the families of the selected products will be edited with the following data for the <span class="highlight">{{ locale }}</span> locale and the <span class="highlight">{{ channel }}</span> channel.
   index:
     association_type:
-      title: "] -Inf, 1] {{ count }} association type|] 1, Inf [{{ count }} association types"
       create_btn: Skapa en förbindelsetyp
     import_profiles:
-      title: "] -Inf, 1] {{ count }} import profile|] 1, Inf [{{ count }} import profiles"
       create_btn: Skapa importprofil
       list: Välj ett jobb
       create_popin:
@@ -975,10 +871,8 @@ pim_enrich:
     import_history:
       title: Import rapporter
     group:
-      title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
       create_btn: Skapa grupp
     export_profiles:
-      title: "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} export profiles"
       create_btn: Skapa exportprofil
       create_popin:
         title: Skapa
@@ -987,38 +881,23 @@ pim_enrich:
     export_history:
       title: Exportrapporter
     family:
-      title: "] -Inf, 1] {{ count }} family|] 1, Inf [{{ count }} families"
       create_btn: Skapa familj
     grouptype:
-      title: "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} group types"
       create_btn: Skapa grupptyp
-    currency:
-      title: "] -Inf, 1] {{ count }} currency|] 1, Inf [{{ count }} currencies"
-    locale:
-      title: "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
     user:
-      title: "] -Inf, 1] {{ count }} user|] 1, Inf [{{ count }} users"
       create_btn: Skapa användare
     user_role:
-      title: "] -Inf, 1] {{ count }} role|] 1, Inf [{{ count }} roles"
       create_btn: Skapa roll
     user_group:
-      title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
       create_btn: Skapa grupp
-    process_tracker:
-      title: "] -Inf, 1] {{ count }} operation|] 1, Inf [{{ count }} operations"
     channel:
-      title: "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} channels"
       create_btn: Skapa kanal
     attribute:
-      title: "] -Inf, 1] {{ count }} attribute|] 1, Inf [{{ count }} attributes"
-      create_btn: Create attribute
       modal_title: Välj attributtyp
     attribute_group:
       title: Attributgrupper
       create_btn: Skapa
     api_connection:
-      title: "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API connections"
       create_btn: Skapa
   mass_edit:
     next: Nästa
@@ -1026,91 +905,36 @@ pim_enrich:
     cancel: Avbryt
     confirm: Bekräfta
     product:
-      title: Products bulk action
-      confirm: "{1}You are about to update a product with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} products with the following information, please confirm."
       step:
         select:
           label: Välj produkter
-        choose:
-          title: Products bulk actions
-          label_count: "] 0, Inf [Select your action"
         configure:
           label: Konfigurera
         confirm:
           label: Bekräfta
-        launch_error:
-          label: An error occured during the launching of the mass edit operation
-        launched:
-          label: The bulk action "{{ operation }}" has been launched. You will be notified when it is done.
       operation:
         change_status:
           label: Ändra status
-          label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
           field: Aktivera
-        edit_common:
-          label: Edit attributes values
-          label_count: "{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-          description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
-        add_attribute_value:
-          label: Add attributes values
-          label_count: "{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-          description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
         change_family:
           label: Ändra familj
-          label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
           field: Familj
         add_to_group:
           label: Lägg till i grupp
-          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
           description: Markera de grupper som du vill lägga till de valda produkterna
           field: Grupper
-        add_to_category:
-          label: Add to categories
-          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
-          description: The products will be classified into following categories, the existing classification is kept.
-        move_to_category:
-          label: Move between categories
-          label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|] 1, Inf [Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
-          description: The products will be classified into following categories, the existing classification is lost.
         remove_from_category:
-          label: Remove from categories
-          label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|] 1, Inf [Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
           description: Produkterna kommer att tas bort från följande kategorier.
-        add_to_existing_product_model:
-          label: Add to an existing product model
-          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
-          description: The product model selected will gather the products and allows the enrichment of their common properties.
-        associate_to_product_and_product_model:
-          label: Associate
-          label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|] 1, Inf [Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
-          description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
-          validate: Please add association before going to the next step
-        change_parent_product_model:
-          label: Change the parent product model
-          label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-          description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
     family:
-      title: Families bulk action
-      confirm: "{1}You are about to update a family with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} families with the following information, please confirm."
       step:
         select:
           label: Välj familjer
-        choose:
-          title: Families bulk actions
-          label_count: "] 0, Inf [Select your action"
         configure:
           label: Konfigurera
         confirm:
           label: Bekräfta
-        launched:
-          label: The bulk action "{{ operation }}" has been launched. You will be notified when it is done.
-      operation:
-        set_requirements:
-          label: Set attributes requirements
-          description: The following attributes requirements will be applied to the selected families
-          label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
 pim_enrich.error:
   exception.title: Oh snap! Ett {{ status_code }} fel uppstod...
   http:
@@ -1120,38 +944,26 @@ page_title:
   oro_default: Instrumentpanel
   pim_enrich_attributegroup_index: Attributgrupper
   pim_enrich_attributegroup_create: Attributgrupper | Skapa
-  pim_enrich_attributegroup_edit: Attribute group {{ group.label }} | Edit
-  pim_enrich_catalog_volume_index: Catalog volume monitoring
   pim_enrich_categorytree_index: Kategoriträd
   pim_enrich_categorytree_create: Kategoriträd | Skapa
-  pim_enrich_categorytree_edit: Category tree {{ category.label }} | Edit
   pim_enrich_categorytree_create_tree: Kategoriträd | Skapa
   pim_enrich_attribute_index: Attribut
   pim_enrich_attribute_create: Attribut | Skapa
-  pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Edit
   pim_enrich_product_index: Products
-  pim_enrich_product_edit: Product {{ product.label }} | Edit
-  pim_enrich_product_model_edit: Product model {{ product.label }} | Edit
   pim_enrich_family_index: Familjer
-  pim_enrich_family_edit: Family {{ family.label }} | Edit
   pim_enrich_channel_index: Kanaler
   pim_enrich_channel_create: Kanaler | Skapa
-  pim_enrich_channel_edit: Channel {{ channel.label }} | Edit
   pim_enrich_currency_index: Valutor
   pim_enrich_locale_index: Språk
   pim_enrich_group_index: Grupper
-  pim_enrich_group_edit: Group {{ group.label }} | Edit
   pim_enrich_associationtype_index: Associationstyper
-  pim_enrich_associationtype_edit: Association type {{ association type.label }} | Edit
   pim_enrich_grouptype_index: Grupptyper
-  pim_enrich_grouptype_edit: Group type {{ group type.label }} | Edit
   pim_enrich_mass_edit_action_choose: Mass redigera | Välj
   pim_enrich_mass_edit_action_configure: Mass redigera | Konfigurera
   pim_enrich_mass_edit_action_perform: Mass redigera | Utföra
   pim_enrich_job_tracker_index: Spåra process
   pim_enrich_job_tracker_show: Spåra process | Visa jobb
   pim_enrich_api_connection_index: API-anslutning
-  pim_enrich_api_connection_create: API connections | Create
   pim_enrich_mass_edit_action: Massredigera
   pim_analytics_system_info_index: Systeminformation
 #Batch job labels
@@ -1164,65 +976,30 @@ batch_jobs:
     label: Uppdatera produktens värde
     perform:
       label: Uppdatera produktens värde
-  add_to_group:
-    label: Add to group
-    perform:
-      label: Add to group
   edit_common_attributes:
     label: Redigera Attribut
     perform:
       label: Redigera Attribut
-    cleaner:
-      label: Clean files for attributes
-  add_to_category:
-    label: Add to category
-    perform:
-      label: Add to category
-  move_to_category:
-    label: Move to category
-    perform:
-      label: Move to category
-  remove_from_category:
-    label: Remove from category
-    perform:
-      label: Remove from category
-  add_association:
-    label: Associate
-    perform:
-      label: Associate
-  add_to_existing_product_model:
-    label: Add to an existing product model
-    perform:
-      label: Add to an existing product model
-  set_attribute_requirements:
-    label: Set attributes requirements
-    perform:
-      label: Set attributes requirements
   csv_product_quick_export:
     quick_export.label: CSV-produkt snabb export
-    quick_export_product_model.label: CSV product model quick export
     perform:
       label: CSV-produkt snabb export
   csv_product_grid_context_quick_export:
     quick_export.label: CSV-produkt rutnät sammanhang snabb export
-    quick_export_product_model.label: CSV product model grid context quick export
     perform:
       label: CSV-produkt rutnät sammanhang snabb export
   xlsx_product_quick_export:
     quick_export.label: XLSX produkt snabb export
-    quick_export_product_model.label: XSLX product model quick export
     perform:
       label: XLSX produkt snabb export
   xlsx_product_grid_context_quick_export:
     quick_export.label: XLSX produkt rutnät sammanhang snabb export
-    quick_export_product_model.label: XSLX product model grid context quick export
     perform:
       label: XLSX produkt rutnät sammanhang snabb export
   csv_product_export:
     label: Exportera produkt till CSV
     export.label: Exportera produkt
   csv_product_model_export:
-    label: Product model export in CSV
     export.label: Exportera produkt
   csv_category_export:
     label: Exportera kategorier till CSV
@@ -1242,16 +1019,11 @@ batch_jobs:
   csv_family_export:
     label: Exportera familjer till CSV
     export.label: Exportera familjer
-  csv_family_variant_export:
-    label: Family variant export in CSV
-    export.label: Family variant export
   csv_product_import:
     label: Importera produkter från CSV
     validation.label: Filvalidering
     import.label: Importera produkter
     import_associations.label: Importera associationer
-  csv_product_model_import:
-    label: Product model import in CSV
   csv_category_import:
     label: Importera kategorier från CSV
     validation.label: Filvalidering
@@ -1272,14 +1044,8 @@ batch_jobs:
     label: Importera familjer från CSV
     validation.label: Filvalidering
     import.label: Importera familjer
-    compute_data_related_to_family_variants.label: Compute product models data
-    compute_data_related_to_family_root_product_models.label: Compute root product models data
-    compute_data_related_to_family_sub_product_models.label: Compute sub product models data
-    compute_data_related_to_family_products.label: Compute products data
   csv_family_variant_import:
-    label: Family variant import in CSV
     validation.label: Filvalidering
-    import.label: Family variant import
   csv_group_import:
     label: Importera grupper från CSV
     validation.label: Filvalidering
@@ -1339,27 +1105,16 @@ batch_jobs:
     label: Importera familjer från XLSX
     validation.label: Filvalidering
     import.label: Importera familj
-    compute_data_related_to_family_variants.label: Compute product models data
-    compute_data_related_to_family_root_product_models.label: Compute root product models data
-    compute_data_related_to_family_sub_product_models.label: Compute sub product models data
-    compute_data_related_to_family_products.label: Compute products data
   xlsx_family_variant_import:
-    label: Family variant import in XLSX
     validation.label: Filvalidering
-    import.label: Family variant import
   xlsx_product_export:
     label: Exportera produkt till XLSX
     export.label: Exportera produkt
-  xlsx_product_model_export:
-    label: Product model export in XLSX
-    export.label: Product model export
   xlsx_product_import:
     label: Importera produkter från XLSX
     validation.label: Filvalidering
     import.label: Importera produkter
     import_associations.label: Importera associationer
-  xlsx_product_model_import:
-    label: Product model import in XSLX
   xlsx_group_export:
     label: Exportera grupper till XLSX
     export.label: Exportera grupper
@@ -1370,9 +1125,6 @@ batch_jobs:
   xlsx_family_export:
     label: Exportera familjer till XLSX
     export.label: Exportera familj
-  xlsx_family_variant_export:
-    label: Family variant export in XLSX
-    export.label: Family variant export
   xlsx_category_export:
     label: Exportera kategorier till XLSX
     export.label: Exportera kategorier
@@ -1437,7 +1189,6 @@ pim_menu:
     system: System
     help:
       title: Hjälp
-      helper: Akeneo Help center
   item:
     association_type: Associationstyper
     attribute: Attribut
@@ -1451,14 +1202,12 @@ pim_menu:
     group_type: Grupptyper
     locale: Språk
     product: Products
-    product_model: Product Models
     published_product: Publicerade produkter
     export_history: Exporthistorik
     export_profile: Exportprofiler
     import_history: Importhistorik
     import_profile: Importprofiler
     configuration: Inställningar
-    catalog_volume: Catalog volume monitoring
     user_management: Hantering av användare
     user: Användare
     user_group: Grupper
@@ -1467,45 +1216,19 @@ pim_menu:
     job_tracker: Process spårare
     api_connection: API-anslutning
   navigation:
-    activity: Activity navigation
     system: System navigering
-    user: Users management navigation
-    settings: Settings navigation
   user:
     logout: Logga ut
     user_account: Mitt konto
 pim_notification:
   mark_all_as_read: Markera alla som lästa
-  no_notifications: No notifications
   loading: Laddar...
 catalog_volume:
-  product_values: "You have <span>{{values}}</span> product values in your PIM! On average, it's <span>{{average}}</span> product values per product!&nbsp;💪"
-  product_values_description: 'The more product values you have, the more valuable your PIM is, the higher your ROI is! More details <a href="{{link}}" target="_blank">here</a>'
-  section:
-    product_values:
-      hint: 'Did you know that the total number of product values in your PIM is directly linked to the following axes?<br/>To have more details, we invite you to <a href="{{link}}" target="_blank">browse this article</a>.'
-      title: Axes that leverage the number of product values
-    catalog_structure:
-      hint: You may know that a good catalog structure is really important and is a condition to efficient enrichment. Below are the various axes to monitor your catalog structure.
-      title: Axes related to the catalog structure
-    variant_modelling:
-      hint: If you are using the variant modeling, here are the axes to help you monitor your volume.
-      title: Axes regarding the variant modeling
   axis:
     count_products: Products
-    average_max_attributes_per_family: Attributes per family
     count_channels: Kanaler
-    count_locales: Locales (activated)
-    count_scopable_attributes: Scopable attributes
-    count_localizable_and_scopable_attributes: Localizable and scopable attributes
-    count_localizable_attributes: Localizable attributes
     count_families: Familjer
     count_attributes: Attribut
-    average_max_options_per_attribute: Options by attribute
     count_categories: Kategorier
     count_category_trees: Kategoriträd
-    count_variant_products: Variant products
     count_product_models: Produktmodeller
-    warning: Wow! You hit a record with this axis! Don't hesitate to contact us if you need any help with this kind of volume.
-  mean: 'Mean:'
-  max: 'Max:'

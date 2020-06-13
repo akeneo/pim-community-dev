@@ -39,13 +39,9 @@ pim_import_export:
       job_content.title: Sadržaj
 #Page titles:
 pim_title.export_profile.index: Upravljanje profilima izvoza
-pim_title.export_profile.edit: Export profile %job.label% | Edit
-pim_title.export_profile.show: Export profile %job.label% | Show
 pim_title.export_execution.index: Povijest izvođenja izvoza
 pim_title.export_execution.show: Izvoz izvođenja | Detalji
 pim_title.import_profile.index: Upravljanje profilima uvoza
-pim_title.import_profile.edit: Import profile %job.label% | Edit
-pim_title.import_profile.show: Import profile %job.label% | Show
 pim_title.import_execution.index: Povijest izvođenja uvoza
 pim_title.import_execution.show: Uvoz izvođenja | Detalji
 #Entity and page header titles
@@ -149,18 +145,7 @@ job_execution.summary:
     skipped: preskočeno, ekstenzija u bijeloj listi
 Step: Korak
 Status: Status
-Warnings: Warnings
 Summary: Sažetak
 Start: Početak
 End: Kraj
-#Process tracker
-set_attribute_requirements: Set attributes requirements
-COMPLETED: Completed
-STARTING: Starting
-STARTED: Started
-STOPPING: Stopping
-STOPPED: Stopped
-FAILED: Failed
-ABANDONED: Abandoned
-UNKNOWN: Unknown
 warning.label: Upozorenje

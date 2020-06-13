@@ -50,7 +50,6 @@ Additional: Dodatno
 Groups and Roles: Grupe i role
 Username: Korisničko ime
 Password: Lozinka
-Password (again): Password (again)
 Re-enter password: Ponovo upiši lozinku
 Name prefix: Prefiks imena
 First name: Ime
@@ -162,5 +161,4 @@ Username or Email: Korisničko ime ili E-mail
 Forgot Password: Zaboravio/la si lozinku
 Request: Zahtjev
 Check Email: Provjeri e-poštu
-password_reset_email_sent: An email has been sent to the user. It contains a link to reset the password.
 Go to homepage: Idi na početnu stranicu

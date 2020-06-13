@@ -11,7 +11,6 @@ oro.grid.mass_action.error_content: 不能执行批处理
 oro.grid.mass_action.delete.label: 删除
 oro.grid.mass_action.delete.confirm_title: 批量删除确认
 oro.grid.mass_action.delete.confirm_content: 您确定要删除所选的项目吗?
-oro.grid.mass_action.delete.item_limit: You cannot mass delete more than %limit% products (%count% selected)
 oro.grid.datagrid.page_size.all: 所有
 oro.grid.mass_action.delete.success_message: "{0} 没有实体被删除 |{1} 一个实体被删除 |]1，Inf [%count% 实体被删除"
 #Datagrid views constraints
@@ -30,4 +29,3 @@ quick_export: 快速导出
 import: 导入
 export: 导出
 mass_edit: 批量编辑
-mass_delete: Mass Delete

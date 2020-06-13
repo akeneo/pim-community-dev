@@ -100,10 +100,8 @@ pim_enrich:
       launched_flash: Acțiunea în masă "schimbă status" a fost lansată. Vei fi notificat când este gata.
     edit-common-attributes:
       label: Modifică atribute
-      description: The selected product's attributes will be edited with the following data for the chosen locale.
       empty: Selectează atributul/atributele pe care dorești să le modifici
       success_flash: Sarcina de actualizare a produsului/produselor se execută
-      launched_flash: The bulk action "edit attributes" has been launched. You will be notified when it is done.
       message:
         warning: Nu există niciun atribut în comun pentru produsele selectate. Vă rugăm să vă schimbați selecția.
         invalid_attribute: Atributul cu codul "attribute_code nu este comun produselor selectate, se sare peste atribut.
@@ -165,7 +163,6 @@ pim_enrich:
       associations_view: Vezi asociaţiile unui produs
       associations_edit: Adauga asociaţii la un produs
       change_family: Schimbă familia produsului
-      change_state: Change the status of a product
       add_to_groups: Adaugă produsul în grupuri
       mass_edit: Acțiuni de modificare în masă a produsului
       comment: Comentează produse
@@ -197,7 +194,6 @@ pim_enrich:
       create: Creează o familie
       edit_properties: Modifică proprietățile unei familii
       edit_attributes: Modifică atributele unei familii
-      edit_variants: Edit a family variant
       remove: Șterge o familie
       history: Vezi istoricul familiei
     family_variant:
@@ -235,12 +231,8 @@ pim_enrich:
       edit: Modifică un tip de asociație
       remove: Șterge un tip de asociere
       history: Vezi istoricul tipului de asociere
-    association:
-      remove: Remove associations to a product
     job_tracker:
       index: Monitorizare procese
-    api_connection:
-      manage: Manage the API connections
   acl_group:
     association_type: Tipuri de asociații
     attribute: Atribute
@@ -253,16 +245,10 @@ pim_enrich:
     group_type: Tipuri de grup
     locale: Locale
     product: Produse
-    product_model: Product models
   reference_data:
     empty_value:
       reference_data_type:
         label: Alege tipul datelor de referință
-  notification:
-    settings:
-      remove_completeness_for_channel_and_locale:
-        start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
-        done: Removal of a locale on a channel finished.
 #Entity and page header titles
 attribute:
   title: atribut
@@ -283,10 +269,8 @@ category:
   edit: modifică categorie
   suggest selection: Vă rugăm să selectați o categorie din stânga
   or: sau
-  create new: Create a new category tree
 tree:
   title: arbore
-  create: create category tree
   edit: modifică arbore
 channel:
   title: canal
@@ -327,7 +311,6 @@ btn:
     attribute: creeaza atribut
     attribute group: creează grup de atribute
     category: creează categorie
-    tree: create category tree
     channel: creează canal
     currency: creează o monedă
     family: creeaza familie
@@ -364,7 +347,6 @@ confirmation:
     attribute group: Ești sigur că vrei să ștergi acest grup de atribute %name%?
     category: Ești sigur că vrei să ștergi această categorie %name%?
     family: Ești sigur că vrei să ștergi această familie %name%?
-    family_variant: Are you sure you want to delete the family variant %name%?
     product: Ești sigur că vrei să ștergi acest produs %name%?
     group: Ești sigur că vrei să ștergi acest grup %name%?
     group type: Ești sigur că vrei să ștergi acest tip de grup %name%?
@@ -384,7 +366,6 @@ flash:
     updated: Atributul a fost actualizat cu succes
     removed: Atributul a fost şters
     identifier_not_removable: Atributul de identificare nu poate fi eliminat
-    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   attribute group:
     created: Grupul de atribute a fost creeat cu succes
     updated: Grupul de atribute a fost actualizat cu succes
@@ -493,12 +474,10 @@ Required: Necesar
 Unique: Unic
 Not required: Nu este necesar
 Translatable: Traductibil
-Scopable: Scopable
 Localizable: Localizabil
 Unique value: Valoare unică
 Attribute group: Grup de atribut
 Other: Altul
-Variants behavior when edited: Variants behavior when edited
 Edit: Modifică
 Remove: Elimină
 Delete: Şterge
@@ -515,11 +494,9 @@ Attribute type: Tip de atribut
 Defaultvalue: Valoare implicită
 Variant: Variantă
 Smart: Intelingent
-Useable as grid column: Usable as grid column
 Useable as grid filter: Utilizabil în grilă
 Family: Familie
 Image: Imagine
-Variant products: Variant products
 Available locales: Locale disponibile
 Locale specific: Specific local
 default: Prestabilit
@@ -548,7 +525,6 @@ No matches found: Nicio potrivire găsită
 Category tree: Mulțimea de categorii
 Completeness: Completitudine
 Attribute used as label: Atribut folosit ca etichetă
-Credentials: Credentials
 #Scopes
 Global: Global
 Channel: Canal
@@ -559,14 +535,12 @@ Always override: Scrie peste întotdeauna
 Ask: Întreabă
 #Attribute group
 General Properties: Proprietăți generale
-Group values: Group values
 New group: Grup nou
 Groups overview: Privirea de ansamblu a grupurilor
 'Y-m-d h:i:s': 'A-l-z o:m:s'
 #Attribute properties
 Max characters: Caractere maxime
 Validation rule: Regulă de validare
-Validation regexp: Validation regexp
 Wysiwyg enabled: WYSIWYG activat
 Number min: Număr minim
 Number max: Număr maxim
@@ -603,7 +577,6 @@ pim_title.attribute:
   edit: "Atributele %attribute.label% | Modifică"
 pim_title.product:
   index: "Produse"
-  edit: "Products %product.label% | Edit"
 pim_title.family:
   index: "Familii"
   edit: "Familii %family.label% | Modifică"
@@ -687,7 +660,6 @@ pim_enrich.mass_edit_action:
     success_flash: Statusul produsului/produselor a fost schimbat
   edit-common-attributes:
     label: Modifică atribute
-    description: The selected product's attributes will be edited with the following data for the chosen locale.
     empty: Selectează atributul/atributele pe care dorești să le modifici
     success_flash: Atributul/atributele produselor/produsului au fost actualizate
     message.warning: Nu există atribute în comun pentru produsele selectate. Vă rugăm să vă schimbați selecția.
@@ -731,7 +703,6 @@ pane.accordion:
   validation_parameters: Parametrii de validare
   label_translations: Traduceri de etichetă
   options: Opţiuni
-  group_values: Group values
 #Popin titles
 popin.create:
   association_type.title: Creează un nou tip de asociere
@@ -748,15 +719,8 @@ Updated At: Actualizat pe
 Enabled: Activat
 Disabled: Dezactivat
 Status: Stare
-#Versioning / history
-Change History: Change history
-Data Audit: Data audit
-Data Audit - System: 'Data audit - system'
 Action: Acțiune
 Version: Versiune
-Entity type: Entity type
-Entity name: Entity name
-Entity id: Entity id
 Data: Date
 Author: Autor
 Logged at: Conectat la
@@ -767,7 +731,6 @@ New values: Valorile noi
 System configuration: Configurarea sistemului
 General setup: Setarea generală
 Localization: Localizare
-Localization options: Localization options
 Locale: Local
 Location: Locație
 Format address by address country: Formatează adresele după țară
@@ -789,7 +752,6 @@ oro.locale:
       province: "provincie"
   form:
     tooltip:
-      locale: "Select the locale option used to format numbers, addresses, names and dates"
       location: " Locația va fi folosită pentru a formata adresele atunci când opțiunea 'Formatează adresele după țară' va fi dezactivată"
       format_address_by_address_country: "Selectarea acestei opțiuni va activa ca adresele să fie formatate după țara în care se află. Dezactivarea acestei opțiuni va cauza ca adresele să fie formatate dupa formatul adresei locației tale"
       language: "Selectează limba sistemului pe care dorești să o folosești"
@@ -806,19 +768,12 @@ pim_mass_edit:
     quick_export:
       error: Exportarea rapidă <strong>%label%</strong> a eșuat
       warning: Exportarea rapidă <strong>%label%</strong> s-a finalizat cu unele avertismente
-      success: Quick export <strong>%label%</strong> finished
-    mass_delete:
-      error: Mass delete <strong>%label%</strong> failed
-      warning: Mass delete <strong>%label%</strong> finished with some warnings
-      success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
   mass_edited: Modificat în masă
   skip: Sărit
   skipped_products: Produse sărite
   skipped_attributes: Atributele sărite
   skipped_families: Familii sărite
-  deleted_products: Deleted products
-  deleted_product_models: Deleted product models
 pim_mass_edit_execution_show: Executări de editări în masă | Detalii
 edit_common_attributes.steps.edit_common_attributes_processor.title: Modifică atribute
 update_product_value.steps.update_product_value_processor.title: Actualizează valoarea produsului
@@ -837,10 +792,6 @@ batch_jobs:
     label: Actualizați valoarea produsului
     perform:
       label: Actualizați valoarea produsului
-  add_attribute_value:
-    label: Add attributes value
-    perform:
-      label: Add attributes value
   edit_common_attributes:
     label: Modifică atribute
     perform:
@@ -849,8 +800,6 @@ batch_jobs:
       label: Curățați fișierele pentru atribute
     cleaner:
       label: Curățați fișierele pentru atribute
-  compute_completeness_of_products_family:
-    compute_completeness_of_products_family.label: Compute completeness
   add_to_category:
     label: Adăugați la categorie
     perform:
@@ -863,10 +812,6 @@ batch_jobs:
     label: Eliminați din categorie
     perform:
       label: Eliminați din categorie
-  add_association:
-    label: Associate
-    perform:
-      label: Associate
   add_to_existing_product_model:
     label: Adăugați la un model al produsului existent
     perform:
@@ -875,14 +820,6 @@ batch_jobs:
     label: Setează cerințele atributelor
     perform:
       label: Setează cerințele atributelor
-  csv_product_quick_export:
-    quick_export.label: Csv product quick export
-    perform:
-      label: Csv product quick export
-  csv_product_grid_context_quick_export:
-    quick_export.label: Csv product grid context quick export
-    perform:
-      label: Csv product grid context quick export
   xlsx_product_quick_export:
     quick_export.label: Xlsx produs export rapid
     perform:
@@ -891,11 +828,6 @@ batch_jobs:
     quick_export.label: Xlsx contextul grila produs export rapid
     perform:
       label: Xlsx contextul grila produs export rapid
-  delete_products_and_product_models:
-    delete_products_and_product_models.label: Mass delete products
-  change_parent_product:
-    perform:
-      label: Change parent product model
 mass_edit report:
   overview: Raporturi de editare in masă
 job_tracker:

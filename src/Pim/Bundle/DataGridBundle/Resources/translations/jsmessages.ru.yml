@@ -40,8 +40,6 @@ oro.datagrid.nocolumns: Ни один столбец не настроен дл�
 oro.datagrid.pagination.label: "Страница"
 oro.datagrid.pagination.totalPages: "из {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} записей"
-#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
-oro.datagrid.pagination.limit_warning: "The grid cannot display more than {{ limit }} results, try to filter on additional search criteria."
 oro.datagrid.action.reset: "Сброс"
 oro.datagrid.action.refresh: "Обновить"
 oro_datagrid.select.all: "Все"

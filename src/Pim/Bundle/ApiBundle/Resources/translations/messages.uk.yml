@@ -29,14 +29,6 @@ pim_api:
       list: Список типів асоціацій
   acl_group:
     overall_access: Загальний доступ до Web API
-    attribute: Атрибути
     attribute_option: Опції атрибутів
-    attribute_group: Групи атрибутів
-    category: Категорії
-    family: Сімейства
     family_variant: Варіанти сімейств
-    channel: Канали
-    locale: Локалі
-    currency: Валюти
-    association_type: Типи асоціацій
 rights.api: Права доступу до Web API

@@ -33,14 +33,11 @@ product_model.family_variant.not_blank.message: Varianta de familie a modelului 
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'Atributul %attribute% nu poate să fie goală, aşa cum este definit ca o axă pentru această entitate'
-    product_model_with_same_axis_value_already_exists: 'Cannot set value "%values%" for the attribute axis "%attributes%" on product model "%validated_entity%", as the product model "%sibling_with_same_value%" already has this value'
-    variant_product_with_same_axis_value_already_exists: 'Cannot set value "%values%" for the attribute axis "%attributes%" on variant product "%validated_entity%", as the variant product "%sibling_with_same_value%" already has this value'
     can_have_family_variant_unexpected_attribute: 'Nu se poate seta propritatea %attribute% pe această entitate deoarece nu ĕ în setul de atribute'
     cannot_have_product_model_as_parent: 'Modelul de produs %product_model% nu poate să aibă modelul de produs %parent_product_model% ca rudă'
     cannot_have_parent: 'Modelul de produs %product_model% nu poate să aibă o rudă'
     attribute_does_not_belong_to_family: 'Atributul %attribute% nu aparține familiei %family%'
     variant_product_invalid_family: 'Familia variantei produsului trebuie să fie aceeaşi ca şi rudele ei'
-    php_int_max_reached: 'The maximum number must be lower than %php_int_max%.'
     not_null_family: Familia nu poate fi null, deoarece produsul cu identificativ %sku% este o variantă de produs.
     variant_product_has_parent: 'Varianta de produs %variant_product% trebuie să aibă o rudă'
     invalid_variant_product_parent: 'Varianta de produs %variant_product% nu poate să aibă %product_model% ca mamă (acest model de produs poate avea doar alte modele de produs ca copii)'

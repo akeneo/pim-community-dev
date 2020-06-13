@@ -7,16 +7,11 @@ pim_dashboard:
       type: Tip
       profile_name: Naziv profila
       details: Detalji
-      warning_count: Warnings
       job_type:
         import: Uvoz
         export: Izvoz
         mass_edit: Masovno uređivanje
         quick_export: Brzi izvoz
-        compute_product_models_descendants: Compute product models descendants
-        compute_family_variant_structure_changes: Compute family variant structure changes
-        compute_completeness_of_products_family: Compute completeness of products family
-        mass_delete: Mass delete products
     completeness:
       load_more: 'Učitaj više...'
     header:

@@ -26,22 +26,12 @@ pim_analytics:
     nb_scopable_attributes: Ölçeklendirilebilir özelliklerin sayısı
     nb_localizable_attributes: Yerelleştirilebilir özellik sayısı
     nb_scopable_localizable_attributes: Yerelleştirilebilir ve ölçeklendirilebilir özelliklerin sayısı
-    nb_useable_as_grid_filter_attributes: Number of attributes useable as grid filter
-    avg_percentage_scopable_attributes_per_family: Average percentage of scopable attributes per family (%)
-    avg_percentage_localizable_attributes_per_family: Average percentage of localizable attributes per family (%)
-    avg_percentage_scopable_localizable_attributes_per_family: Average percentage of localizable and scopable attributes per family (%)
-    avg_number_attributes_per_family: Average number of attributes per family
     nb_locales: Yerel ayar sayısı
     nb_families: Tür sayısı
     nb_users: Kullanıcı sayısı
     nb_categories: Kategori sayısı
-    nb_category_trees: Number of category trees
-    max_category_in_one_category: Max number of categories in one category
     max_category_levels: Kategori seviyesinin maksimum sayısı
     nb_product_values: Ürün değerlerinin sayısı
-    avg_product_values_by_product: Average number of product values by product
-    avg_product_values_by_family: Average number of potential product values by family
-    max_product_values_by_family: Max number of potential product values by family
     pim_storage_version: Depolama sürümü
     os_version: İşletim sistemi sürümü
     php_version: PHP sürümü
@@ -50,7 +40,6 @@ pim_analytics:
     mongodb_version: MongoDB sürümü
     server_version: Sunucu sürümü
     php_extensions: PHP uzantıları
-    email_domains: Associated email domains
   acl:
     system_info:
       index: Sistem bilgisi
