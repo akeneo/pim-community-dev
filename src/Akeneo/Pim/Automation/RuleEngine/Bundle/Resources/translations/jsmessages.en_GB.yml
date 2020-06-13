@@ -95,7 +95,6 @@ pimee_catalog_rule:
       add_to_category: Add to category
       add_conditions: Add conditions
       products_count:
-        complete: "{{ count }} products and product models"
         pending: Calculating products and product models
         error: Calculation impossible
       product_selection: Product selection
@@ -185,7 +184,6 @@ batch_jobs:
   default_steps:
     export_rules: Rule export
     import_rules: Rule import
-    calculate_affected_products: Calculate affected products
     execute_rules: Rules execution
   yml_rule_import:
     label: Rule import in YAML

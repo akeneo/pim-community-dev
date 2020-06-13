@@ -100,8 +100,6 @@ pimee_catalog_rule:
   notification:
     execute_rules:
       success: L'exécution des règles est terminée
-      warning: Exécution de(s) règle(s) terminée(s) avec avertissement(s)
-      error: Une erreur s'est produite lors de l'exécution des règles
     mass_edit_rule:
       success: Le calcul du nombre de produits affectés par les règles est terminé
       error: Une erreur que s’est produite lors du calcul du nombre de produits affectés par les règles
@@ -110,12 +108,6 @@ btn:
 job_execution:
   summary:
     rule_calculated: Nombre de règles
-    read_rules: règles lues
-    selected_entities: produits / modèles de produits sélectionnés
-    skipped_invalid: produits / modèles de produit ignorés (invalides)
-    updated_entities: produits / modèles de produits mis à jour
-    executed_rules: règles exécutées avec succès
-    errored_rules: règles ignorées (invalides)
 pim_datagrid:
   cells:
     type:

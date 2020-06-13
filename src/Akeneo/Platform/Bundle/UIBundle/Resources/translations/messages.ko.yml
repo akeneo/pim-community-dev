@@ -1,5 +1,0 @@
-pimee_enrich:
-  #ACLs
-  acl:
-    product:
-      duplicate: Duplicate the product

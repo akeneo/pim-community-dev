@@ -100,8 +100,6 @@ pimee_catalog_rule:
   notification:
     execute_rules:
       success: 규칙 실행 완료
-      warning: Execution of the rule(s) finished with warning(s)
-      error: An error occurred during the execution of the rules
     mass_edit_rule:
       success: 규칙의 영향받는 제품 계산 완료
       error: 규칙의 영향받는 제품을 계산하는 중에 오류가 발생했습니다
@@ -110,12 +108,6 @@ btn:
 job_execution:
   summary:
     rule_calculated: 규칙 수
-    read_rules: read rules
-    selected_entities: selected products / product models
-    skipped_invalid: skipped products / product models (invalid)
-    updated_entities: updated products / product models
-    executed_rules: successfully executed rules
-    errored_rules: skipped rules (invalid)
 pim_datagrid:
   cells:
     type:
