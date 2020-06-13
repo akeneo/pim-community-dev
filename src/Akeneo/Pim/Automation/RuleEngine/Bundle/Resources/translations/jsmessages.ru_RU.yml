@@ -1,5 +1,4 @@
 pimee_catalog_rule:
-  overview: "]-Inf, 1]{{ count }} rule|]1, Inf[{{ count }} rules"
   execution_button: Выполнить привила
   selected: 'правила выбраны'
   popin:
@@ -40,13 +39,11 @@ pimee_catalog_rule:
           confirm_title: Подтвердить выполнение
           confirm_content: Вы уверены, что хотите выполнить выбранные правила?
           success: Выполнение выбранных правил начато. Вы будете уведомлены, когда это будет сделано
-          error: An error occurred during the execution of the rules.
           empty_selection: Правила не выбраны.
         delete:
           confirm_title: Подтвердить выполнение
           confirm_content: Вы уверены, что хотите удалить выбранные правила?
           success: Вы успешно удалили правила.
-          error: An error occurred during the deletion of the rules.
           empty_selection: Правила не выбраны.
   form:
     attribute:
@@ -97,7 +94,6 @@ batch_jobs:
 pim_notification:
   types:
     rule: Настройки правил
-    mass_edit_rule: Mass edit rule
 pim_menu:
   item:
     rule: Правила

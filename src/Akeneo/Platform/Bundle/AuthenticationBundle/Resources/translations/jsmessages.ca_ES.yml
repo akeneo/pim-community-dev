@@ -12,16 +12,10 @@ authentication:
       section:
         activation:
           title: Activació SSO
-          info:
-            description: If you're going to enable the SSO authentication your current session will be invalid. You will be logged out and redirected to your Identity Provider after saving the configuration.
         identity_provider:
           title: Proveïdor d'identitat (IdP)
-          info:
-            description: You can set here all the parameters required to communicate with your IdP. Those information must be provided by your IdP. Please contact your SSO administrator to get them.
         service_provider:
           title: Proveïdor de servei (SP)
-          info:
-            description: You can find below the information concerning the Service Provider. This is auto-generated values. You can edit them if you need. Those information will have to be provided to your SSO administrator in order to configure the IdP.
       field:
         activation:
           label: Activat SSO

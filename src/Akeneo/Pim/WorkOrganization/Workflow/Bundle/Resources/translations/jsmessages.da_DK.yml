@@ -53,9 +53,6 @@ batch_jobs:
   csv_product_proposal_import:
     label: Produkt forslag import som CSV
     import.label: Produkt forslag import
-  csv_product_model_proposal_import:
-    label: Product model proposal import in CSV
-    import.label: Product model proposal import in CSV
   approve_product_draft:
     label: Godkend forslag
     perform.label: Godkend forslag
@@ -68,9 +65,6 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Produkt forslag import som CSV
     import.label: Produkt forslag import som CSV
-  xlsx_product_model_proposal_import:
-    label: Product model proposal import in XLSX
-    import.label: Product model proposal import in XLSX
   csv_published_product_quick_export:
     export.label: CSV offentliggjort produkter hurtig eksport
     perform.label: CSV offentliggjort produkter hurtig eksport
@@ -198,10 +192,6 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}Fjern offentliggørelse <span class=\"AknFullPage-title--highlight\">1 produkt</span>|]1, Inf[Fjern offentliggørelse <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
       description: Produkterne vil blive afpubliseret
       warning: '{{ itemsCount }} udvalgte produkter vil blive afpubliseret.'
-pimee_enrich.entity.category:
-  flash:
-    remove:
-      error_linked: Cannot delete a category linked to a published product.
 pim_menu:
   navigation:
     published_products: Publicerede produkter

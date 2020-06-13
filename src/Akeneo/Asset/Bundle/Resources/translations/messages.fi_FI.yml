@@ -75,10 +75,8 @@ pimee_product_asset:
         success: Variaatiotiedoston luotu onnistuneesti.
       update:
         success: Variaatiotiedosto päivitetty.
-        error: Variation file has not been updated. An error occurred.
       delete:
         success: Variaatiotiedosto on poistettu.
-        error: Variation file has not been deleted. An error occurred.
   popin.create:
     title: Luo uusi assetti
     is_localized: Kielikohtainen
@@ -236,6 +234,3 @@ pimee_enrich:
       options:
         width: '%value%px leveys'
         height: '%value%px korkeus'
-asset_tree:
-  remove:
-    error_linked: This category tree cannot be deleted, it is set as the default asset category tree of a user.

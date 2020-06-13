@@ -88,7 +88,3 @@ btn:
   Execute rules: Jalankan aturan
 mass_edit_rule: Aturan pengaturan
 job_execution.summary.rule_calculated: Jumlah aturan
-pim_datagrid:
-  cells:
-    type:
-      mass_edit_rule: Rules Settings

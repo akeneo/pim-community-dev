@@ -32,19 +32,16 @@ pimee_workflow:
     partial_accept:
       modal.title: Aprovar parte da informação
       modal.label: Deixe um comentário (opcional)
-      modal.error: An error occurred, the proposal has not been partially approved
       modal.success: A proposta foi parcialmente validada com sucesso
     partial_approve:
       modal:
         title: Aprovar parcialmente as mudanças
         label: Deixe um comentário (opcional)
-        error: An error occurred, the proposal has not been partially approved
         success: As mudanças foram aprovadas com sucesso
     partial_reject:
       modal:
         title: Rejeitar parcialmente as mudanças
         label: Deixe um comentário (opcional)
-        error: An error occurred, the proposal has not been partially rejected
         success: As mudanças foram rejeitadas com sucesso
 batch_jobs:
   csv_published_product_export:
@@ -53,9 +50,6 @@ batch_jobs:
   csv_product_proposal_import:
     label: Importação de proposta de produto em CSV
     import.label: Importação de proposta de produto
-  csv_product_model_proposal_import:
-    label: Product model proposal import in CSV
-    import.label: Product model proposal import in CSV
   approve_product_draft:
     label: Aprovar proposta
     perform.label: Aprovar proposta
@@ -68,9 +62,6 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Importação de proposta de produto em XLSX
     import.label: Importação de proposta de produto em XLSX
-  xlsx_product_model_proposal_import:
-    label: Product model proposal import in XLSX
-    import.label: Product model proposal import in XLSX
   csv_published_product_quick_export:
     export.label: Exportação rápida de produtos publicados em CSV
     perform.label: Exportação rápida de produtos publicados em CSV
@@ -95,7 +86,6 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Proposta aprovada
     pimee_workflow_product_draft_notification_refuse: Proposta rejeitada
     pimee_workflow_product_draft_notification_remove: Proposta excluída
-    pimee_workflow_product_draft_notification_sent: Proposals sent
 pimee_dashboard:
   widget:
     product_drafts:
@@ -137,8 +127,6 @@ pimee_enrich.entity.product:
     approval:
       send: Enviar para aprovação
       sent: Enviado para aprovação
-      send_and_next: Send and next
-      send_and_finish: Send and finish
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -172,7 +160,6 @@ pimee_enrich.entity.product_draft:
     create:
       success: Rascunho do produto foi enviado para aprovação
       fail: Você não pode enviar este rascunho para aprovação
-      skip: Product draft hasn't been sent for approval as no value has been edited
   module:
     proposal:
       accept: Aceitar proposta
@@ -198,10 +185,6 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}Cancelar publicação do <span class=\"AknFullPage-title--highlight\">produto</span>|]1, Inf[Cancelar publicação de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span>"
       description: Os produtos terão suas publicações canceladas
       warning: Os {{ itemsCount }} produtos selecionados terão sua publicações canceladas.
-pimee_enrich.entity.category:
-  flash:
-    remove:
-      error_linked: Cannot delete a category linked to a published product.
 pim_menu:
   navigation:
     published_products: Produtos publicados

@@ -3,7 +3,6 @@ teamwork_assistant:
     required: This value should not be blank.
     label_maxlength: This value is too long. It should have {{ max }} characters or less.
     project_identifier: The project {{ project }} doesn't exist.
-    project_locale: The locale {{ locale }} is not supported by the channel {{ channel }}.
     project_due_date: You can't select a date in the past.
   notification:
     project_calculation:
@@ -28,10 +27,6 @@ teamwork_assistant:
     owner_todo: Todo (project overview)
     owner_in_progress: In progress (project overview)
     owner_done: Done (project overview)
-  user:
-    deletion:
-      user_linked_to_project: This user is still linked to one or more project(s). Please remove the groups he is linked to in his user account.
-      user_is_project_owner: This user is still owner of one or more projects. Please delete all this user's projects.
 job_execution:
   summary:
     processed_products: Processed products
@@ -42,4 +37,3 @@ pim_datagrid:
   cells:
     type:
       project_calculation: Project calculation
-      refresh_project_completeness_calculation: Refresh project completeness calculation

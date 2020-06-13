@@ -198,10 +198,6 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}No publicar <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[No publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
       description: Els productes no es publicaran
       warning: Els productes {{ itemsCount }} seleccionats no seran publicats.
-pimee_enrich.entity.category:
-  flash:
-    remove:
-      error_linked: Cannot delete a category linked to a published product.
 pim_menu:
   navigation:
     published_products: Productes publicats

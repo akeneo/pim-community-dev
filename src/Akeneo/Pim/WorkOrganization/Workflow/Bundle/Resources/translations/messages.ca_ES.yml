@@ -37,7 +37,6 @@ pimee_workflow:
       approve: '%owner% ha acceptat la seva proposta pel producte %product%'
       refuse: '%owner% ha rebutjat la proposta pel producte %product%'
       remove: '%owner% ha rebutjat la proposta pel producte %product%'
-      mass_edit_sent_for_approval: 'Mass edit <strong>%jobLabel%</strong> finished: %sentForApprovalCount% proposals generated out of %readProductsCount% products'
     mass_review_action:
       approve: Aprovar els seleccionats
       refuse: Rebutjar els seleccionats

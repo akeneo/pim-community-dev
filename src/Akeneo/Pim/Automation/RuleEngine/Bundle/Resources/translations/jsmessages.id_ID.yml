@@ -1,5 +1,4 @@
 pimee_catalog_rule:
-  overview: "]-Inf, 1]{{ count }} rule|]1, Inf[{{ count }} rules"
   execution_button: Laksanakan aturan
   selected: 'aturan dipilih'
   popin:
@@ -40,13 +39,11 @@ pimee_catalog_rule:
           confirm_title: Konfirmasi perhitungan
           confirm_content: Apakah anda yakin anda ingin menjalankan aturan yang dipilih?
           success: Sebagian besar tindakan untuk melaksanakan aturan terpilih telah diluncurkan. anda akan diberitahu bila hal itu dilakukan
-          error: An error occurred during the execution of the rules.
           empty_selection: Tidak ada aturan terpilih.
         delete:
           confirm_title: Konfirmasi eksekusi
           confirm_content: Apakah anda yakin anda ingin menghapus aturan yang dipilih?
           success: Anda telah berhasil menghapus aturan.
-          error: An error occurred during the deletion of the rules.
           empty_selection: Tidak ada aturan yang dipilih.
   form:
     attribute:
@@ -97,7 +94,6 @@ batch_jobs:
 pim_notification:
   types:
     rule: Aturan pengaturan
-    mass_edit_rule: Mass edit rule
 pim_menu:
   item:
     rule: Aturan

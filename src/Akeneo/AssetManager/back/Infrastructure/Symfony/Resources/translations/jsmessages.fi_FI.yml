@@ -3,13 +3,7 @@
 #akeneo_asset_manager_asset_family_edit: Edit an asset family
 #akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
-  editor:
-    embedded:
-      invalid_link:
-        title: Suspicious embedded link
-        message: Sorry, we do not display this embed item but it will be correctly saved
   asset_collection:
-    asset_count: '{0} No asset|{1} {{ resultCount }} asset|]1,Inf] {{ resultCount }} assets'
     add_asset: 'Lisää assetti'
     add_asset_title: 'Avaa assettivalitsin lisätäksesi assetteja kokoelmaan'
     no_asset_in_collection: 'Pahoittelut, tässä kokoelmassa ei ole assetteja.'
@@ -22,7 +16,6 @@ pim_asset_manager:
       text: 'Perheellä {{ family }} ei ole assettikokoelmia!'
     notification:
       product_rule: 'Tämä kokoelma voidaan päivittää säännöllä:'
-      limit: 'You have reached the limit of {{ limit }} assets per collection, you can no longer add assets to your collection.'
     remove_one_asset: Poista assetti {{ assetName }} kokoelmasta
     remove_all_assets: Poista kaikki assetit
     other_actions: Muut toiminnot
@@ -30,12 +23,8 @@ pim_asset_manager:
     dismiss_other_actions: Hylkää muut toiminnot
     move_asset_to_left: Siirrä assetti {{ assetName }} vasemmalle
     move_asset_to_right: Siirrä assetti {{ assetName }} oikealle
-    legacy_helper:
-      moved_to_assets_tab: To see the asset collection {{ label }}, go to the product's assets section.
-      is_missing_required: The asset collection {{ label }} is required. Enrich it in the product's assets section.
   asset_picker:
     title: Lisää assetteja tuotteellesi
-    sub_title: Choose the assets you want to attach to your product {{ productLabel }} in {{ attributeLabel }} collection
     no_result:
       title: Valitettavasti haullesi ei löytynyt tuloksia
       sub_title: Yritä uudelleen uusilla hakuehdoilla
@@ -53,7 +42,6 @@ pim_asset_manager:
     edit_asset: Muokkaa assettia
     download: Lataa
     copy_url: Kopioi URL-osoite
-  close: Close the modal
   breadcrumb:
     products: Tuotteet
   #app:
@@ -268,103 +256,3 @@ pim_asset_manager:
     #option_collection: Multiple options
     #number: Number
     is_required: vaadittu täyteen valmiusasteeseen
-#media_type_preview: Preview of media type
-#no_data:
-#title: There are no custom attributes for {{ entityLabel }}
-#subtitle: Click on the button "Add an attribute" to configure your first custom attribute
-#button:
-#add: Add an attribute
-#create:
-#header:
-#title: Create
-#subtitle: Asset Families
-#title: Add new asset attribute
-#description: The following parameters, except the label, cannot be updated after the attribute creation
-#input:
-#code: Code (required)
-#label: Label
-#type: Attribute type
-#asset_type: Asset family to link (required)
-#value_per_locale: Value per locale
-#value_per_channel: Value per channel
-#placeholder:
-#asset_type: Select your linked asset family
-#confirm: Save
-#edit:
-#delete: Delete the attribute
-#title: Edit attribute {{ code }}
-#save: Save
-#cancel: Cancel
-#input:
-#code: Code (required)
-#label: Label
-#type: Attribute type
-#asset_type: Related asset family (required)
-#value_per_locale: Value per locale
-#value_per_channel: Value per channel
-#is_required: Required for completeness
-#max_length: Max characters
-#textarea: Text Area
-#is_rich_text_editor: Rich Text Editor
-#max_file_size: Max file size (MB)
-#allowed_extensions: Allowed extensions
-#validation_rule: Validation rule
-#regular_expression: Regular expression
-#min_value: Min value
-#max_value: Max value
-#manage_options:
-#confirmation:
-#discard_changes: You will lose changes made to the list of options if you leave the page
-#quick_edit:
-#label: Manage options
-#option:
-#label:
-#placeholder: Write you new option label here
-#options:
-#validation_rule:
-#none: None
-#email: E-mail
-#regular_expression: Regular expression
-#url: URL
-#decimals_allowed: Decimal values allowed
-#delete:
-#message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
-#title: Attribute
-#notification:
-#list:
-#fail: An error occured during the update of the attribute list
-#save:
-#success: Attribute successfully updated.
-#fail: An error occured during the save of the attribute
-#validation_error: The attribute could not be updated
-#create:
-#success: Attribute successfully created.
-#fail: An error occured during the creation of the attribute
-#validation_error: The attribute could not be created
-#delete:
-#success: Attribute successfully deleted.
-#fail: An error occured during the deletion of the attribute
-#options:
-#no_value: Click here to select an option.
-#sub_title: Asset Families
-#helper:
-#title: Label translations
-#modal:
-#delete:
-#subtitle: Confirm deletion
-#button:
-#cancel: Cancel
-#confirm: Delete
-pim_enrich:
-  #confirmation:
-  #discard_changes: 'You will lose changes to the "{{ entity }}" entity if you leave the page.'
-  entity:
-    attribute:
-      property:
-        #type:
-        #pim_catalog_asset_collection: Asset multiple links
-        #section:
-        #type_specific: Type specific parameters
-        asset_family:
-          identifier: Related asset family (required)
-          default_label: Please select an asset family

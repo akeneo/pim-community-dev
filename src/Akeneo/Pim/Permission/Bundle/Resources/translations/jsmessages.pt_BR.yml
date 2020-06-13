@@ -46,7 +46,5 @@ batch_jobs:
     label: Editar atributos com verificação de permissão e aplicação das regras
     perform.label: Editar atributos
     cleaner.label: Limpar arquivos temporários
-  default_steps:
-    send_for_approval: Send for approval
 pim_title:
   pimee_enrich_locale_edit: Localidade | Editar

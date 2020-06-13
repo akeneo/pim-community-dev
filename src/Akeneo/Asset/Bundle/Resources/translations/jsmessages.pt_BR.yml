@@ -42,9 +42,7 @@ pimee_product_asset:
       need_refresh: <b>A importação de mídia foi iniciada</b><br> Para ver as mídias importadas no formulário de produto, por favor, atualize a página do produto assim que receber a notificação de importação.
     error:
       list: Não é possível ler arquivos já enviados
-      upload: An error occurred while uploading
       delete: Não é possível excluir o arquivo do servidor
-      import: An error occurred during import
       filename: Nome de arquivo inválido para a mídia
       code: Formato de código inválido para a mídia
       locale: Uma mídia existe mas não é localizável
@@ -64,7 +62,6 @@ pimee_product_asset:
       delete:
         confirm_content: Tem certeza que deseja excluir as mídias selecionadas?
         success: As mídias selecionadas foram excluídas com sucesso.
-        error: Error occurred when trying to delete selected assets, please try again.
         empty_selection: Nenhuma mídia selecionada
 pim_enrich:
   entity:
@@ -72,20 +69,12 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Coleção de mídias
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        mass_upload: Mass upload
-        compute_completeness_of_products_linked_to_assets: Compute completeness of products linked to assets
 pim_title:
   pimee_product_asset_mass_upload: Enviar mídias
   pimee_product_asset_index: Mídias
   pimee_product_asset_edit: Mídia {{ asset.label }} | Editar
-  pimee_product_asset_view: Asset {{ asset.label }} | View
   pimee_asset_categorytree_index: Categorias
   pimee_asset_categorytree_edit: Categoria {{ category.label }} | Editar
-  pimee_asset_categorytree_create: Category | Create
 batch_jobs:
   apply_assets_mass_upload:
     label: Envio em massa de mídias
@@ -145,8 +134,6 @@ batch_jobs:
     perform.label: Mover mídias para categorias
   add_tags_to_assets:
     perform.label: Adicionar etiquetas às mídias
-  compute_completeness_of_products_linked_to_assets:
-    compute_completeness_of_products_linked_to_assets.label: Compute completeness of products linked to assets
 jstree:
   asset:
     all: Todas as mídias

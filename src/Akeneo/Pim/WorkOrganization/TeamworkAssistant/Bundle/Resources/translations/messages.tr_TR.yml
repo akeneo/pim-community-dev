@@ -3,7 +3,6 @@ teamwork_assistant:
     required: Bu değeri boş bırakmamalısınız.
     label_maxlength: Bu değer çok uzun. En fazla {{ max }} karakter içermelidir.
     project_identifier: '{{ project }} adında bir proje bulunmamaktadır.'
-    project_locale: The locale {{ locale }} is not supported by the channel {{ channel }}.
     project_due_date: Geçmiş bir tarih seçemezsiniz.
   notification:
     project_calculation:
@@ -28,10 +27,6 @@ teamwork_assistant:
     owner_todo: Yapılacaklar (proje genelinde)
     owner_in_progress: Devam etmekte (Projeye gözatın)
     owner_done: Tamamlandı (Projeye Gözatın)
-  user:
-    deletion:
-      user_linked_to_project: This user is still linked to one or more project(s). Please remove the groups he is linked to in his user account.
-      user_is_project_owner: This user is still owner of one or more projects. Please delete all this user's projects.
 job_execution:
   summary:
     processed_products: İşlenmesi bitmiş ürünler
@@ -42,4 +37,3 @@ pim_datagrid:
   cells:
     type:
       project_calculation: Proje Hesaplama
-      refresh_project_completeness_calculation: Refresh project completeness calculation

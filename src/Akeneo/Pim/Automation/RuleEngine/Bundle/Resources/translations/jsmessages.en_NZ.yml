@@ -40,13 +40,11 @@ pimee_catalog_rule:
           confirm_title: Confirm execution
           confirm_content: Are you sure you want to execute the selected rules?
           success: The bulk action to execute the selected rules has been launched. You will be notified when it is done
-          error: An error occurred during the execution of the rules.
           empty_selection: No rules selected.
         delete:
           confirm_title: Confirm execution
           confirm_content: Are you sure you want to delete the selected rules?
           success: You successfuly deleted the rules.
-          error: An error occurred during the deletion of the rules.
           empty_selection: No rules selected.
   form:
     attribute:
@@ -97,7 +95,6 @@ batch_jobs:
 pim_notification:
   types:
     rule: Rules Settings
-    mass_edit_rule: Mass edit rule
 pim_menu:
   item:
     rule: Rules

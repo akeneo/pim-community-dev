@@ -25,8 +25,6 @@ pimee_catalog_rule:
       "set_value": Sonra %value% %field%'a ayarlanacak
       "add": Ardından %value% %field%'a eklenir
       "remove": Ardından %value% %field%'dan silinir
-    options:
-      include_children: and children
   condition:
     label: Eğer %field% %operator% %value%
     operators:
@@ -88,7 +86,3 @@ btn:
   Execute rules: Kuralları gerçekleştir
 mass_edit_rule: Kural Ayarları
 job_execution.summary.rule_calculated: Kural sayısı
-pim_datagrid:
-  cells:
-    type:
-      mass_edit_rule: Rules Settings

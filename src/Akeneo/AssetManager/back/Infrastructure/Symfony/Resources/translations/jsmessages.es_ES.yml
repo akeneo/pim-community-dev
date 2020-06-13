@@ -3,15 +3,9 @@
 #akeneo_asset_manager_asset_family_edit: Edit an asset family
 #akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
-  editor:
-    embedded:
-      invalid_link:
-        title: Suspicious embedded link
-        message: Sorry, we do not display this embed item but it will be correctly saved
   asset_collection:
     asset_count: '{0} Ningún recurso|{1} {{ resultCount }} recurso|]1,Inf] {{ resultCount }} recursos'
     add_asset: 'Añadir recurso'
-    add_asset_title: 'Open the asset picker to add assets to the collection'
     no_asset_in_collection: 'Lo sentimos, no hay ningún recurso en esta colección.'
     helper:
       title: '¡Bienvenido a su nueva área de gestión de activos de producto!'
@@ -22,7 +16,6 @@ pim_asset_manager:
       text: '¡No hay ninguna colección de recursos para la familia {{ family }}!'
     notification:
       product_rule: 'Esta colección puede ser actualizada por una regla de producto:'
-      limit: 'You have reached the limit of {{ limit }} assets per collection, you can no longer add assets to your collection.'
     remove_one_asset: Eliminar el recurso {{ assetName }} de la colección de recursos
     remove_all_assets: Eliminar todos los recursos
     other_actions: Otras acciones
@@ -30,12 +23,8 @@ pim_asset_manager:
     dismiss_other_actions: Descartar otras acciones
     move_asset_to_left: Mover recurso {{ assetName }} a la izquierda
     move_asset_to_right: Mover recurso {{ assetName }} a la derecha
-    legacy_helper:
-      moved_to_assets_tab: To see the asset collection {{ label }}, go to the product's assets section.
-      is_missing_required: The asset collection {{ label }} is required. Enrich it in the product's assets section.
   asset_picker:
     title: Añadir recursos a su producto
-    sub_title: Choose the assets you want to attach to your product {{ productLabel }} in {{ attributeLabel }} collection
     no_result:
       title: Lo sentimos, no hay recursos para su búsqueda
       sub_title: Pruebe con nuevos criterios de búsqueda
@@ -53,7 +42,6 @@ pim_asset_manager:
     edit_asset: Editar recurso
     download: Descargar
     copy_url: Copiar URL
-  close: Close the modal
   breadcrumb:
     products: Productos
   #app:
@@ -221,7 +209,6 @@ pim_asset_manager:
             in: En la lista
       more_result:
         title: '¡No es eso!'
-        description: You just scrolled through the first {{ maxDisplayedAssets }} results out of {{ total }} assets. To see more, try with more specific search criteria.
   #column:
   #code: Code
   #image: Image

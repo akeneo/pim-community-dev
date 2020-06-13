@@ -82,10 +82,8 @@ pim_title:
   pimee_product_asset_mass_upload: Cargar recursos
   pimee_product_asset_index: Recursos
   pimee_product_asset_edit: Recurso {{ asset.label }} | Editar
-  pimee_product_asset_view: Asset {{ asset.label }} | View
   pimee_asset_categorytree_index: Categorías
   pimee_asset_categorytree_edit: Categoría {{ category.label }} | Editar
-  pimee_asset_categorytree_create: Category | Create
 batch_jobs:
   apply_assets_mass_upload:
     label: Carga masiva de recursos

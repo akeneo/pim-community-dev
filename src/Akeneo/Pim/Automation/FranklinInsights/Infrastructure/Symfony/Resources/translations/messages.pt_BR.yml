@@ -11,8 +11,6 @@ akeneo_franklin_insights:
   mapping_identifier:
     success: O mapeamento foi salvo com sucesso
     error: Ocorreu um erro ao salvar o mapeamento
-  notification:
-    invalid_token: 'Your Franklin Insights activation code is not valid. Please update the code or contact us for assistance.'
   entity:
     product_subscription:
       constraint:
@@ -23,7 +21,6 @@ akeneo_franklin_insights:
         already_subscribed_product: 'O produto já está inscrito.'
         variant_product: 'As variantes de produtos não podem ser inscritas nas Intuições do Franklin.'
         inactive_connection: 'Não foi possível inscrever o produto nas Intuições do Franklin. Por favor, configure sua conexão com as Intuições do Franklin.'
-        product_subscription_with_same_identifier_already_exist: 'Another product with at least one identical identifier has already been subscribed.'
     attributes_mapping:
       notification:
         new_attributes_to_map: 'Você tem novos atributos para mapear da família "%familyLabel%"'

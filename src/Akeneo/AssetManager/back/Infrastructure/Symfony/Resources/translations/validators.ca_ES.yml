@@ -3,7 +3,6 @@ pim_asset_manager:
     validation:
       code:
         pattern: 'Aquest camp només pot tenir lletres, números i guions baixos.'
-        should_be_unique: 'An asset family already exists with code "%asset_family_identifier%"'
         limit_reached: 'Vostè no pot crear la família de recursos "%asset_family_identifier%" perquè ha arribat al límit de famílies de recursos %limit%'
       assets:
         should_have_no_asset: 'No es pot eliminar aquesta entitat perquè existeixen recursos per a aquesta entitat'
@@ -24,10 +23,6 @@ pim_asset_manager:
         locale_should_exist: 'El local "%locale_code%" no està activat o no existeix'
         extrapolated_attribute_type_should_not_have_one_value_per_channel: 'L''atribut "%attribute_code%" no pot utilitzar-se per l''extrapolació perquè té un valor per canal'
         extrapolated_attribute_type_should_not_have_one_value_per_locale: 'L''atribut "%attribute_code%" no pot utilitzar-se per l''extrapolació perquè té un valor per local'
-        assignment_mode_not_supported: 'Invalid assignment mode "%assignment_mode%" found in a product link rule, expected to be "replace" or "add"'
-        channel_not_supported_for_field: 'You cannot specify a channel for the field "%product_field%"'
-        locale_not_supported_for_field: 'You cannot specify a locale for the field "%product_field%"'
-        assignmement_attribute_does_not_support_this_asset_family: 'The product attribute "%product_attribute_code%" cannot contain assets of asset family "%asset_family_identifier%"'
   asset:
     validation:
       code:
@@ -59,7 +54,6 @@ pim_asset_manager:
         is_not_activated: 'La localització "%locale_identifier%" no està activada.'
         is_not_activated_for_channel: 'La localització "%locale_identifier%" no està activada pel canal "%channel_identifier%".'
       number:
-        should_be_string: 'This field should be a string'
         should_be_integer: 'Aquest camp té que ser un enter'
         integer_too_long: 'Aquest enter és massa gran'
         should_be_numeric: 'Aquest camp té que ser un valor numèric amb els separador decimal correcte'
@@ -85,7 +79,6 @@ pim_asset_manager:
       code:
         pattern: 'Aquest camp només pot contenir lletres, números i guions baixos. "{{ value }}" prestat.'
         reserved_codes: 'El codi no pot ser cap d''aquests valors: "{{ comma_separated_reserved_keywords }}"'
-        should_not_exist: 'The attribute already exists for the asset family "{{ asset_family_identifier }}" and the attribute code "{{ code }}"'
         should_exist: 'L''atribut no s''ha trobat'
       regular_expression:
         invalid_regular_expression: 'Aquesta expressió regular no és vàlida. Aquí tens un exemple d''una expressió regular vàlida: "/[a-z]+[0-9]*/"'
@@ -98,9 +91,5 @@ pim_asset_manager:
       asset_type:
         is_required: 'Necessita especificar el tipus de família de recursos per crear un atribut d''enllaç de la Família de Recursos'
         asset_family_should_exist: 'La família de recurs "%asset_family_code%" no s''ha trobat.'
-      prefix:
-        should_not_be_empty: 'The prefix cannot be an empty string.'
-      suffix:
-        should_not_be_empty: 'The suffix cannot be an empty string.'
       media_type:
         not_expected: 'El tipus de medi donat no correspon al que s''espera (%supported_media_types%).'

@@ -42,9 +42,7 @@ pimee_product_asset:
       need_refresh: <b>Asset import has been launched</b><br> To see imported assets in the product form, please refresh the product page as soon as you receive the import notification.
     error:
       list: Cannot read already uploaded files
-      upload: An error occurred while uploading
       delete: Cannot delete file from server
-      import: An error occurred during import
       filename: Invalid file name for asset
       code: Invalid code format for asset
       locale: An asset exists but is not localizable
@@ -58,13 +56,11 @@ pimee_product_asset:
       error: Error
       success: Success
     drag_and_drop: Drag and drop your assets or click here
-    tabsection_title: Assets uploaded
   datagrid:
     mass_action:
       delete:
         confirm_content: Are you sure you want to delete the selected assets?
         success: Selected assets successfully deleted.
-        error: Error occurred when trying to delete selected assets, please try again.
         empty_selection: No asset selected
 pim_enrich:
   entity:
@@ -72,20 +68,12 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Assets collection
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        mass_upload: Mass upload
-        compute_completeness_of_products_linked_to_assets: Compute completeness of products linked to assets
 pim_title:
   pimee_product_asset_mass_upload: Upload assets
   pimee_product_asset_index: Assets
   pimee_product_asset_edit: Asset {{ asset.label }} | Edit
-  pimee_product_asset_view: Asset {{ asset.label }} | View
   pimee_asset_categorytree_index: Categories
   pimee_asset_categorytree_edit: Category {{ category.label }} | Edit
-  pimee_asset_categorytree_create: Category | Create
 batch_jobs:
   apply_assets_mass_upload:
     label: Assets mass upload
@@ -145,8 +133,6 @@ batch_jobs:
     perform.label: Move assets to categories
   add_tags_to_assets:
     perform.label: Add tags to assets
-  compute_completeness_of_products_linked_to_assets:
-    compute_completeness_of_products_linked_to_assets.label: Compute completeness of products linked to assets
 jstree:
   asset:
     all: All assets
@@ -221,7 +207,6 @@ pim_catalog_volume:
   section:
     assets:
       title: Axes on assets
-      hint: You can follow the volume regarding the assets right here.
   axis:
     count_assets: Assets
     count_asset_categories: Asset categories

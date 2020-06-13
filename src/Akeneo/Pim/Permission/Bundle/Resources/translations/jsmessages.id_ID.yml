@@ -46,7 +46,3 @@ batch_jobs:
     label: Sunting perlengkapan dengan izin memeriksa & aturan aplikasi
     perform.label: Ubah perlengkapan
     cleaner.label: Bersihkan bekas sementara
-  default_steps:
-    send_for_approval: Send for approval
-pim_title:
-  pimee_enrich_locale_edit: Locale | Edit

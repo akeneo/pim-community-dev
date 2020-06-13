@@ -47,13 +47,7 @@ akeneo_franklin_insights:
       label: Attribuuttien liittäminen
       flash:
         do_not_map_attribute_success: 'Attribuutin päivittäminen onnistui.'
-        create_attribute_success: '{0} Sorry, none of the {{ requestCount }} attributes have been created. |{1} Attribute successfully created and attached to the family "{{ family }}". |[2,Inf[ {{ successCount }} attributes out of {{ requestCount }} have been successfully created and attached to the family "{{ family }}".'
-        create_attribute_error: 'Sorry, an error occurred while creating or attaching the attribute to the family.'
-        suggest_attribute_mapping_error: 'Catalog attribute "[{{ catalogAttributeCode }}]" is already mapped on the Franklin attribute "{{ franklinAttributeLabel }}".'
-        add_attribute_to_family_success: '{1} Attribute successfully attached to the family "{{ family }}". |[2,Inf[ Attributes successfully attached to the family "{{ family }}".'
-        add_attribute_to_family_error: 'Sorry, an error occurred while attaching the attribute to the family.'
       fields:
-        search_bar.placeholder: 'Search on Franklin attribute'
         franklin_attribute: 'Franklin attribuutti'
         franklin_attribute_type: '{{ type }} attribuutti'
         franklin_value_sample: 'Esimerkkiarvo:'
@@ -79,7 +73,6 @@ akeneo_franklin_insights:
           family_status:
             pending: 'Uudet Franklin attribuutit katselmointiin'
             full: 'Kaikki Franklin attribuutit liitetty'
-          types_mismatch_warning: 'Warning : attributes types mismatch.'
           family_progress:
             title: 'Liitettyjen attribuuttien määrä'
             description: "Käytä tätä palkkia nähdäksesi yhdellä silmäyksellä työn tila"
@@ -96,48 +89,13 @@ akeneo_franklin_insights:
         bulk_create_attribute:
           title: '{1} Luo 1 attribuutti |[2,Inf[ Luo {{ count }} attribuuttia'
           subtitle: 'Franklin Insights'
-          description: '{1} The selected attribute will be created and added to the family |[2,Inf[ The selected attributes will be created and added to the family'
-          warning: '{1} Please confirm the creation of a new attribute. |[2,Inf[ Please confirm the creation of {{ count }} new attributes.'
           ok: Vahvista
         bulk_add_to_family:
-          title: '{1} Add 1 attribute to the family |[2,Inf[ Add {{ count }} attributes to the family'
           subtitle: 'Franklin Insights'
-          description: '{1} The selected attribute will be added to the family |[2,Inf[ The selected attributes will be added to the family'
-          warning: '{1} Please confirm the addition of a new attribute to the family. |[2,Inf[ Please confirm the addition of {{ count }} new attributes to the family.'
           ok: Vahvista
-      constraint:
-        missing_target_key: 'Missing target key for mapping'
-        missing_attribute_key: 'Missing {{ expectedKey }} key for mapping with target key "{{ targetKey }}"'
-        invalid_attribute_type_mapping: 'Franklin attributes cannot be mapped to PIM attribute type "{{ pimType }}"'
-        empty_mapping: 'Franklin attributes cannot be mapped with an empty mapping'
-        localizable_not_allowed: 'Franklin attributes cannot be mapped to a PIM localizable attribute'
-        scopable_not_allowed: 'Franklin attributes cannot be mapped to a PIM scopable attribute'
-        locale_specific_not_allowed: 'Franklin attributes cannot be mapped to a PIM locale specific attribute'
-        duplicated_pim_attribute: "Mapping can't be saved as you mapped several Franklin attributes to the same PIM attribute"
-        attribute_not_in_family_not_allowed: 'PIM attribute must be in the selected family.'
-        only_unknown_mapped_attributes: 'No attribute in the attributes mapping can be found'
       search:
-        no_result_title: Sorry, there is no Franklin attribute for your search.
         no_result_subtitle: Yritä uudelleen uusilla hakuehdoilla.
     product_subscription:
-      flash:
-        create:
-          success: 'Product successfully subscribed to Franklin'
-          fail: 'Impossible to subscribe product to Franklin'
-        delete:
-          success: 'Product successfully unsubscribed from Franklin'
-          fail: 'Impossible to unsubscribe product from Franklin'
-      constraint:
-        family_required: 'Sorry, a product family is required in order to subscribe the product to Franklin Insights.'
-        no_identifiers_mapping: 'Please map your catalog product identifiers at Settings > Franklin Insights before subscribing products.'
-        insufficient_credits: "Sorry, failed to subscribe product to Franklin Insights. You don't have enough credit."
-        invalid_mapped_values: 'Sorry, failed to subscribe product to Franklin Insights. Please subscribe the product with a valid combination of identifiers.'
-        data_provider_error: 'Franklin returned an error while trying to subscribe the product' #TODO: check with POs
-        not_subscribed: 'The product is not subscribed'
-        already_subscribed_product: 'The product is already subscribed.'
-        variant_product: 'Sorry, variant products cannot be subscribed to Franklin Insights.'
-        inactive_connection: 'Sorry, failed to subscribe product to Franklin Insights. Please configure your connection to Franklin Insights.'
-        product_subscription_with_same_identifier_already_exist: 'Another product with at least one identical identifier has already been subscribed.'
       module:
         product_edit_form:
           family_required: 'Perhe pakollinen.'
@@ -145,17 +103,10 @@ akeneo_franklin_insights:
           invalid_mapping: "Tunnisteiden määrittäminen pakollista."
     attribute_options_mapping:
       label: 'Attribuuttioptioiden liittäminen'
-      constraint:
-        no_attribute_options_mapped: 'Franklin attribute options cannot be mapped with an empty mapping'
       fields:
         franklin_attribute_option: Franklin attribuuttioptio
         catalog_attribute_option: Tuoteluettelon attribuuttioptio
         attribute_option_status: Franklin attribuuttioption tila
-      module:
-        edit:
-          title: '{{ familyLabel }} - {{ franklinAttributeLabel }} attribute options'
-          sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
-          description: 'In order to help enrich your catalog, Franklin will need to know your catalog attribute options that match his. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">Read more</a>'
   product:
     edit:
       btn.push: Ehdota dataa
@@ -165,13 +116,7 @@ akeneo_franklin_insights:
     flash:
       success: Franklin Insights aktivointikoodi tallennettu onnistuneesti.
       invalid: Pahoittelut, väärä aktivointikoodi. Yritä uudelleen oikealla aktivointikoodilla.
-      error: Sorry, an error occurred.
     module:
-      title:
-        sub_title: 'Welcome to the <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
-        description:
-          first_step: 'The first step in the connection of the assistant is to configure the API token.'
-          second_step: 'The next step in the connection process is to match your <a href="#" class="AknDescriptionHeader-link link">catalog product identifiers</a> to the assistant''s identifiers.'
       activation:
         label: 'Franklin Connector'
         activation_code: 'Aktivointikoodi'
@@ -183,32 +128,14 @@ akeneo_franklin_insights:
     attributes_mapping_title: 'Attribuuttien liittäminen'
     identifiers_mapping_title: 'Tunnisteiden liittäminen'
     module:
-      title:
-        sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
-        description:
-          first_step: 'In order to help you enrich your catalog, Franklin will need to know your catalog identifiers.'
-          second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="https://help.akeneo.com/articles/franklin-insights-mappings.html" class="AknDescriptionHeader-link" target="_blank">Read more</a>'
-      inactive_connection:
-        title: 'Sorry, nothing to show here yet'
-        sub_title: 'Please activate your account on System > Franklin connection and come back.'
-      no_active_english_locale:
-        title: 'Franklin insights is only available for English locales.'
-        sub_title: 'Stay tuned, locales are coming.'
       save:
-        warning: '{1}Changing the mapping may impact 1 subscription. Are you sure?|]1,+Inf[Changing the mapping may impact {{ count }} subscriptions. Are you sure?'
         title: 'Varoitus!'
   mass_edit:
     product:
       operation:
         franklin_insights:
-          label: 'Franklin Insights Subscriptions'
-          label_count: "{1}Manage Franklin Insights subscriptions for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Subscribe to Franklin Insights for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
           description: Valitse toiminto, jonka haluat kohdistaa tuotelistasta valitsemillesi tuotteille
           subscribe_label: Tilaa
-          unsubscribe_label: Unsubscribe
-          constraint:
-            franklin_activation: "Please <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">activate</a> Franklin Insights before subscribing products."
-            invalid_mapping: "Please map the product identifiers at Settings > Franklin Insights before subscribing products."
   key_figures:
     menu: Franklin avainluvut
     section_title:
@@ -225,12 +152,10 @@ batch_jobs:
     fetch_products: Hae tuotetiedot
     create_proposals: Luo ehdotuksia
   franklin_insights_subscribe_products:
-    label: Franklin Insights bulk subscription
     validate_configuration.label: Tarkista Franklin Insights konfiguraatio
     validate_identifiers_mapping.label: Tarkista tunnisteiden liittäminen
     subscribe_products.label: Tilaa tuotteet
   franklin_insights_unsubscribe_products:
-    label: Franklin Insights bulk unsubscription
     validate_configuration.label: Tarkista Franklin Insights konfiguraatio
     unsubscribe_products.label: Peruuta tuotteiden tilaus
   franklin_insights_fetch_products:
@@ -244,7 +169,6 @@ pim_enrich.entity.attribute:
   module:
     save:
       title: 'Varoitus!'
-      warning: '{1}Deleting an attribute may impact 1 Franklin subscription. Are you sure?|]1,+Inf[Deleting an attribute may impact {{ count }} Franklin subscriptions. Are you sure?'
 pim_title:
   akeneo_franklin_insights_connection_edit: Franklin Insights yhteys
   akeneo_franklin_insights_mapping_index: Franklin Insights liittäminen

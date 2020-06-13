@@ -37,7 +37,6 @@ pimee_workflow:
       approve: '%owner% telah menerima proposal anda untuk produk ini %product%'
       refuse: '%owner% telah menolak proposal anda untuk produk ini %product%'
       remove: '%owner% telah menghapus proposal anda untuk produk ini %product%'
-      mass_edit_sent_for_approval: 'Mass edit <strong>%jobLabel%</strong> finished: %sentForApprovalCount% proposals generated out of %readProductsCount% products'
     mass_review_action:
       approve: Menyetujui semua yang dipilih
       refuse: Menolak semua yang dipilih
