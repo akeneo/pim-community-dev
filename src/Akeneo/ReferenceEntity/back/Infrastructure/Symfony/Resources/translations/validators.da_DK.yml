@@ -20,10 +20,6 @@ pim_reference_entity:
         pattern: 'Dette felt må kun indeholde bogstaver, tal og underscores.'
         should_be_unique: 'Arkivkoden eksisterer allerede for referenceenhed "%reference_entity_identifier%" og arkivkode "%code%"'
         should_exist: 'Arkivet blev ikke fundet'
-      text:
-        incompatible_with_regular_expression: 'Please enter a text that satisfies the regular expression: "%regular_expression%"'
-        invalid_email: 'Please enter an email address: xxxxx@xx.xx'
-        invalid_url: 'Please enter a URL: http(s)://xxxx.XXX'
       file:
         extension_not_allowed: '"%file_extension%"-filer er ikke tilladt for denne attribut. Tilladte udvidelser er: %allowed_file_extensions%'
         file_size_exceeded: 'Filen overskrider den maksimale filstørrelse tilladt for denne attribut.'
@@ -92,7 +88,3 @@ pim_reference_entity:
         should_not_be_empty: 'Dette suffix kan ikke være en tom string.'
       media_type:
         not_expected: 'Den givne medietype korresponderer ikke med de forventede (%supported_media_types%).'
-  product_value:
-    validation:
-      record_should_exist: 'Property "%attribute_code%" expects a valid record code. The record "%invalid_record%" does not exist'
-      records_should_exist: 'Property "%attribute_code%" expects valid record codes. The following records do not exist: "%invalid_records%"'

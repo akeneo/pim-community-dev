@@ -32,19 +32,16 @@ pimee_workflow:
     partial_accept:
       modal.title: Hyväksy osittaisia tietoja
       modal.label: Jätä kommentti (valinnainen)
-      modal.error: An error occurred, the proposal has not been partially approved
       modal.success: Ehdotus on osittain vahvistettu onnistuneesti
     partial_approve:
       modal:
         title: Hyväksy muutokset osittain
         label: Jätä kommentti (valinnainen)
-        error: An error occurred, the proposal has not been partially approved
         success: Muutokset hyväksytty onnistuneesti
     partial_reject:
       modal:
         title: Hylkää muutokset osittain
         label: Jätä kommentti (valinnainen)
-        error: An error occurred, the proposal has not been partially rejected
         success: Muutokset hylätty onnistuneesti
 batch_jobs:
   csv_published_product_export:
@@ -198,10 +195,6 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}Poista julkaisu <span class=\"AknFullPage-title--highlight\">1 tuotteelta</span>|]1, Inf[Poista julkaisu <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteelta</span>"
       description: Tuotteen julkaisu perutaan
       warning: '{{ itemsCount }} valitun tuotteen julkaisu perutaan.'
-pimee_enrich.entity.category:
-  flash:
-    remove:
-      error_linked: Cannot delete a category linked to a published product.
 pim_menu:
   navigation:
     published_products: Julkaistu tuote

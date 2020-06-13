@@ -46,7 +46,3 @@ batch_jobs:
     label: Редактировать атрибуты с проверкой прав доступа и применения правил
     perform.label: Изменить атрибуты
     cleaner.label: Очистить временные файлы
-  default_steps:
-    send_for_approval: Send for approval
-pim_title:
-  pimee_enrich_locale_edit: Locale | Edit

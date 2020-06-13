@@ -37,10 +37,6 @@ category.permissions:
   apply_on_children.label: Terapkan perubahan pada anak-anak
   apply_on_children.help: Salin perubahan perizinan pada semua anak, izin yang ada pada anak-anak disimpan
 locale.permissions:
-  view.label: Allowed to view information
-  view.help: Allow to view the information in this locale
-  edit.label: Allowed to edit information
-  edit.help: Allow to edit the information in this locale (implies the view permission)
   no_access_to_products: Anda tidak memiliki akses ke data produk di lokasi yang diaktifkan, hubungi administrator anda
 flash.locale.updated: Lokal dan izin telah diperbarui
 pim_enrich:

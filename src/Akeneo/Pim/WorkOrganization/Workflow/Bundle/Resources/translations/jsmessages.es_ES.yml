@@ -53,9 +53,6 @@ batch_jobs:
   csv_product_proposal_import:
     label: Importación de propuesta de producto en CSV
     import.label: Importación de propuesta de producto
-  csv_product_model_proposal_import:
-    label: Product model proposal import in CSV
-    import.label: Product model proposal import in CSV
   approve_product_draft:
     label: Aprobar la proposición
     perform.label: Aprobar la proposición
@@ -68,9 +65,6 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Importar propuestas de productos en XLSX
     import.label: Importar propuestas de productos en XLSX
-  xlsx_product_model_proposal_import:
-    label: Product model proposal import in XLSX
-    import.label: Product model proposal import in XLSX
   csv_published_product_quick_export:
     export.label: Exportación rápida en CSV de los productos publicados
     perform.label: Exportación rápida en CSV de los productos publicados
@@ -95,7 +89,6 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Propuesta aprobada
     pimee_workflow_product_draft_notification_refuse: Propuesta rechazada
     pimee_workflow_product_draft_notification_remove: Propuesta eliminada
-    pimee_workflow_product_draft_notification_sent: Proposals sent
 pimee_dashboard:
   widget:
     product_drafts:
@@ -198,10 +191,6 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}No publicar <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[No publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: Los productos serán despublicados
       warning: Los {{ itemsCount }} productos seleccionados serán quitados de la publicación.
-pimee_enrich.entity.category:
-  flash:
-    remove:
-      error_linked: Cannot delete a category linked to a published product.
 pim_menu:
   navigation:
     published_products: Productos publicados

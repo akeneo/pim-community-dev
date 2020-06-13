@@ -3,7 +3,6 @@ teamwork_assistant:
     required: Aquest valor no es pot deixar en blanc.
     label_maxlength: Aquest valor és massa llarga. Ha de tenir {{ max }} caràcters o menys.
     project_identifier: El projecte {{ project }} no existeix.
-    project_locale: The locale {{ locale }} is not supported by the channel {{ channel }}.
     project_due_date: No podeu seleccionar una data en el passat.
   notification:
     project_calculation:
@@ -28,10 +27,6 @@ teamwork_assistant:
     owner_todo: A fer (resum del projecte)
     owner_in_progress: En progrés (resum del projecte)
     owner_done: Fet (resum del projecte)
-  user:
-    deletion:
-      user_linked_to_project: This user is still linked to one or more project(s). Please remove the groups he is linked to in his user account.
-      user_is_project_owner: This user is still owner of one or more projects. Please delete all this user's projects.
 job_execution:
   summary:
     processed_products: Productes processats

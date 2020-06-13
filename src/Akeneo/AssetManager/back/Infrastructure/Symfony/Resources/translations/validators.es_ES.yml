@@ -3,31 +3,17 @@ pim_asset_manager:
     validation:
       code:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
-        should_be_unique: 'An asset family already exists with code "%asset_family_identifier%"'
-        limit_reached: 'You cannot create the asset family "%asset_family_identifier%" because you have reached the limit of %limit% asset families'
-      assets:
-        should_have_no_asset: 'You cannot delete this entity because assets exist for this entity'
-      asset_family_attributes:
-        should_not_be_linked: 'You can not delete this entity because asset family attributes are related to this entity'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Al menos un grupo de usuarios debe tener permiso de edición sobre esta entidad'
       product_attributes:
         should_not_be_linked: 'No puede eliminar esta entidad debido a que ciertos atributos de productos están relacionados a esta entidad'
-      should_exist: 'The asset family "%asset_family_code%" was not found.'
       rule_template:
-        limit_reached: 'You cannot create the asset family "%asset_family_identifier%" because you have reached the limit of %limit% product link rules'
-        product_selection_cannot_be_empty: 'You must specify at least one product selection in your product link rule'
-        product_assignment_cannot_be_empty: 'You must specify at least one product assignment in your product link rule'
         extrapolated_attribute_should_exist: 'El atributo "%attribute_code%" no existe para esta familia de recursos'
         extrapolated_attribute_type_should_be_supported: 'El atributo "%attribute_code%" de tipo "%attribute_type%" no es compatible, sólo los siguientes tipos de atributos son soportados para este campo: %supported_attribute_type%'
         channel_should_exist: 'El canal "%channel_code%" no existe'
         locale_should_exist: 'El local "%locale_code%" no está activado o no existe'
         extrapolated_attribute_type_should_not_have_one_value_per_channel: 'El atributo "%attribute_code%" no puede ser usado para la extrapolación porque tiene un valor por canal'
         extrapolated_attribute_type_should_not_have_one_value_per_locale: 'El atributo "%attribute_code%" no puede ser usado para la extrapolación porque tiene un valor por local'
-        assignment_mode_not_supported: 'Invalid assignment mode "%assignment_mode%" found in a product link rule, expected to be "replace" or "add"'
-        channel_not_supported_for_field: 'You cannot specify a channel for the field "%product_field%"'
-        locale_not_supported_for_field: 'You cannot specify a locale for the field "%product_field%"'
-        assignmement_attribute_does_not_support_this_asset_family: 'The product attribute "%product_attribute_code%" cannot contain assets of asset family "%asset_family_identifier%"'
   asset:
     validation:
       code:
@@ -48,18 +34,12 @@ pim_asset_manager:
         should_exist: 'El recurso "%asset_code%" no se encontró.'
       asset_collection:
         should_exist: 'No se encontraron los recursos "%asset_codes%".'
-      limit_reached: 'You cannot create the asset "%asset_label%" because you have reached the limit of %limit% assets for this asset family'
       channel:
-        is_expected: 'A channel is expected for attribute "%attribute_code%" because it has a value per channel.'
-        is_not_expected: 'A channel is not expected for attribute "%attribute_code%" because it has not a value per channel.'
         should_exist: 'El canal "%channel_identifier%" no existe.'
       locale:
-        is_expected: 'A locale is expected for attribute "%attribute_code%" because it has a value per locale.'
-        is_not_expected: 'A locale is not expected for attribute "%attribute_code%" because it has not a value per locale.'
         is_not_activated: 'El local "%locale_identifier%" no está activado.'
         is_not_activated_for_channel: 'El local "%locale_identifier%" no está activado para el canal "%channel_identifier%".'
       number:
-        should_be_string: 'This field should be a string'
         should_be_integer: 'Este campo debe ser un entero'
         integer_too_long: 'Este entero es demasiado grande'
         should_be_numeric: 'Este campo debe ser un valor numérico con el separador decimal correcto'
@@ -68,10 +48,8 @@ pim_asset_manager:
       options:
         should_exist: 'La opción no se encontró.'
         duplicated: 'La opción "%option_code%" ya existe'
-        too_many: 'You have reached the limit of {{ limit }} attribute options per attribute.'
         code:
           pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
-          should_not_be_blank: 'The code of the option should not be blank'
       max_length:
         should_be_an_integer: 'Este valor debe ser un entero.'
       max_file_size:
@@ -83,24 +61,9 @@ pim_asset_manager:
         should_be_a_number: 'Este valor debe ser un número con el separador decimal correcto.'
         cannot_be_lower_than_min: 'El máximo no puede ser inferior al mínimo'
       code:
-        pattern: 'This field may only contain letters, numbers and underscores. "{{ value }}" given.'
-        reserved_codes: 'The code cannot be any of those values: "{{ comma_separated_reserved_keywords }}"'
-        should_not_exist: 'The attribute already exists for the asset family "{{ asset_family_identifier }}" and the attribute code "{{ code }}"'
         should_exist: 'El atributo no se encontró'
       regular_expression:
-        invalid_regular_expression: 'This regular expression is not valid. Here is an example of a valid regular expression: "/[a-z]+[0-9]*/"'
         should_not_be_empty: 'La expresión regular no puede estar vacía.'
       should_be_a_textarea_to_update_is_rich_text_editor: 'Un atributo de texto simple no puede tener un editor de texto rico'
       should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'Un atributo de área de texto no puede tener una regla de validación'
       cannot_set_a_non_empty_regular_expression: 'El atributo no debe tener una expresión regular'
-      cannot_update_the_regular_expression: 'Cannot set a regular expression on the text attribute'
-      limit_reached: 'You cannot create the attribute "%attribute_label%" because you have reached the limit of %limit% attributes for this asset family'
-      asset_type:
-        is_required: 'You need to specify the asset family type to create an Asset Family link attribute'
-        asset_family_should_exist: 'The asset family "%asset_family_code%" was not found.'
-      prefix:
-        should_not_be_empty: 'The prefix cannot be an empty string.'
-      suffix:
-        should_not_be_empty: 'The suffix cannot be an empty string.'
-      media_type:
-        not_expected: 'The media type given is not corresponding to the expected ones (%supported_media_types%).'

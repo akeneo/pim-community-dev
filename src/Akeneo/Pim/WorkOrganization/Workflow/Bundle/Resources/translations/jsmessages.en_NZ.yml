@@ -32,19 +32,16 @@ pimee_workflow:
     partial_accept:
       modal.title: Approve partial information
       modal.label: Leave a comment (optional)
-      modal.error: An error occurred, the proposal has not been partially approved
       modal.success: The proposal has been successfully partially validated
     partial_approve:
       modal:
         title: Partially approve changes
         label: Leave a comment (optional)
-        error: An error occurred, the proposal has not been partially approved
         success: The changes have been successfully approved
     partial_reject:
       modal:
         title: Partially reject changes
         label: Leave a comment (optional)
-        error: An error occurred, the proposal has not been partially rejected
         success: The changes have been successfully rejected
 batch_jobs:
   csv_published_product_export:
@@ -53,9 +50,6 @@ batch_jobs:
   csv_product_proposal_import:
     label: Product proposal import in CSV
     import.label: Product proposal import
-  csv_product_model_proposal_import:
-    label: Product model proposal import in CSV
-    import.label: Product model proposal import in CSV
   approve_product_draft:
     label: Approve proposal
     perform.label: Approve proposal
@@ -68,9 +62,6 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Product proposal import in XLSX
     import.label: Product proposal import in XLSX
-  xlsx_product_model_proposal_import:
-    label: Product model proposal import in XLSX
-    import.label: Product model proposal import in XLSX
   csv_published_product_quick_export:
     export.label: Csv published products quick export
     perform.label: Csv published products quick export
@@ -95,7 +86,6 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Proposal approved
     pimee_workflow_product_draft_notification_refuse: Proposal rejected
     pimee_workflow_product_draft_notification_remove: Proposal deleted
-    pimee_workflow_product_draft_notification_sent: Proposals sent
 pimee_dashboard:
   widget:
     product_drafts:
@@ -137,8 +127,6 @@ pimee_enrich.entity.product:
     approval:
       send: Send for approval
       sent: Sent for approval
-      send_and_next: Send and next
-      send_and_finish: Send and finish
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -172,7 +160,6 @@ pimee_enrich.entity.product_draft:
     create:
       success: Product draft sent for approval
       fail: You cannot send this draft for approval
-      skip: Product draft hasn't been sent for approval as no value has been edited
   module:
     proposal:
       accept: Accept proposal
@@ -198,10 +185,6 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: The products will be unpublished
       warning: The {{ itemsCount }} selected products will be unpublished.
-pimee_enrich.entity.category:
-  flash:
-    remove:
-      error_linked: Cannot delete a category linked to a published product.
 pim_menu:
   navigation:
     published_products: Published products

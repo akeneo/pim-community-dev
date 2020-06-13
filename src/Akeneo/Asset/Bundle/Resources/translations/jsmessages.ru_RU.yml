@@ -27,7 +27,6 @@ pimee_product_asset:
     popin:
       reset:
         title: Сбросить вариации
-        message: Are you sure you want to reset all the variations?
   mass_upload:
     menu: Загрузить медиафайлы
     btn:
@@ -42,9 +41,7 @@ pimee_product_asset:
       need_refresh: <b>Импорт медиафайлов запущен</b><br> Чтобы увидеть заимпортированные медиафайлы в продуктах, пожалуйста, обновите страницу продуктов, когда получите уведомление о завершении импорта.
     error:
       list: Невозможно читать уже загруженные файлы
-      upload: An error occurred while uploading
       delete: Не удается удалить файл с сервера
-      import: An error occurred during import
       filename: Недопустимое имя файла для медиафайла
       code: Недопустимый формат кода для медиафайла
       locale: Медиафайл существует, но не является локализуемым
@@ -58,13 +55,11 @@ pimee_product_asset:
       error: Ошибка
       success: Успешно
     drag_and_drop: Перетащите медиафайлы или нажмите здесь
-    tabsection_title: Assets uploaded
   datagrid:
     mass_action:
       delete:
         confirm_content: Вы уверены, что хотите удалить выбранные медиафайлы?
         success: Выбранные медиафайлы успешно удалены.
-        error: Error occurred when trying to delete selected assets, please try again.
         empty_selection: Ничего не выбрано
 pim_enrich:
   entity:
@@ -72,20 +67,12 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Коллекция медиафайлов
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        mass_upload: Mass upload
-        compute_completeness_of_products_linked_to_assets: Compute completeness of products linked to assets
 pim_title:
   pimee_product_asset_mass_upload: Загрузить медиафайлы
   pimee_product_asset_index: Медиафайлы
   pimee_product_asset_edit: Медиафайл {{ asset.label }} | Редактировать
-  pimee_product_asset_view: Asset {{ asset.label }} | View
   pimee_asset_categorytree_index: Категории
   pimee_asset_categorytree_edit: Категория {{ category.label }} | Редактировать
-  pimee_asset_categorytree_create: Category | Create
 batch_jobs:
   apply_assets_mass_upload:
     label: Массовая загрузка медиафайлов
@@ -145,14 +132,11 @@ batch_jobs:
     perform.label: Переместить медиафайлы в категории
   add_tags_to_assets:
     perform.label: Добавление тегов к медиафайлам
-  compute_completeness_of_products_linked_to_assets:
-    compute_completeness_of_products_linked_to_assets.label: Compute completeness of products linked to assets
 jstree:
   asset:
     all: Все медиафайлы
     unclassified: Неклассифицированные медиафайлы
 asset_grid:
-  title: "]-Inf, 1]{{ count }} Product asset|]1, Inf[{{ count }} Product assets"
   selected: выбранные медиафайлы
   label: Медиафайлы продукта
 create_asset:
@@ -195,13 +179,11 @@ pimee_enrich.entity.channel:
           height: 'Высота %value%px'
 pimee_enrich.mass_edit.asset:
   title: Массовые действия с медиафайлами
-  confirm: "{1}You are about to update an asset with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} assets with the following information, please confirm."
   step:
     select:
       label: Выбор медиафайлов
     choose:
       title: Массовые действия с медиафайлами
-      label_count: "]0, Inf[Select your action"
     configure:
       label: Настроить
     confirm:
@@ -210,18 +192,15 @@ pimee_enrich.mass_edit.asset:
     add_tag:
       label: Добавление тегов к медиафайлам
       description: Теги будут добавлены к медиафайлам.
-      label_count: "{1}Add tags to <span class=\"AknFullPage-title--highlight\">1 asset</span>|]1, Inf[Add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span>"
       field: Теги
       empty_selection: Пожалуйста, выберите теги
     add_to_category:
       label: Классифицировать медиафайлы по категориям
       description: Медиафайлы будут добавлены в следующие категории, исходное расположение будет потеряно.
-      label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|]1, Inf[Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
 pim_catalog_volume:
   section:
     assets:
       title: Измерения по медиафайлам
-      hint: You can follow the volume regarding the assets right here.
   axis:
     count_assets: Медиафайлы
     count_asset_categories: Категории медиафайлов
