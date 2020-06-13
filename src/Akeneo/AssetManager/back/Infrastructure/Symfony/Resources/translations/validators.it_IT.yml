@@ -11,11 +11,8 @@ pim_asset_manager:
         should_not_be_linked: 'Non puoi eliminare questa famiglia perché ci sono degli attributi di famiglia di asset collegati a questa famiglia'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Almeno un gruppo di utenti dovrebbe avere i permessi di modifica per questa famiglia'
-      product_attributes:
-        should_not_be_linked: 'You can not delete this family because an asset collection is linked to this family.'
       should_exist: 'La famiglia dell''attività "%asset_family_code%" non è stata trovata.'
       rule_template:
-        limit_reached: 'You have reached the limit of %limit% product link rules for the "%asset_family_identifier%" asset family.'
         product_selection_cannot_be_empty: 'Devi specificare almeno una selezione di prodotto nella tua regola del collegamento del prodotto'
         product_assignment_cannot_be_empty: 'Devi specificare almeno un''assegnazione prodotto nella tua regola di collegamento del prodotto'
         extrapolated_attribute_should_exist: 'L''attributo "%attribute_code%" non esiste per questa famiglia di attività'
@@ -28,8 +25,6 @@ pim_asset_manager:
         channel_not_supported_for_field: 'Non puoi specificare un canale per il campo "%product_field%"'
         locale_not_supported_for_field: 'Non puoi specificare un locale per il campo "%product_field%"'
         assignmement_attribute_does_not_support_this_asset_family: 'L''attributo del prodotto "%product_attribute_code%" non può contenere le attività della famiglia di attività "%asset_family_identifier%"'
-        assignmement_attribute_does_not_exist: 'product attribute "%product_attribute_code%" does not exist'
-        assignmement_attribute_is_not_an_asset_collection: 'product attribute "%product_attribute_code%" is not an attribute of type asset collection'
       attribute_as_main_media:
         not_found: 'L''attributo "%attribute_as_main_media%" impostato come media principale per la famiglia di asset non esiste'
         invalid_type: 'L''attributo impostato come media principale della famiglia di asset dovrebbe essere del tipo: %valid_attribute_as_main_media_types%'
@@ -45,10 +40,8 @@ pim_asset_manager:
         code_is_not_unique: 'Non è possibile definire due trasformazione con lo stesso codice "%transformation_code%"'
         filename_prefix_suffix_empty: 'Dovrebbe essere impostata almeno una proprietà  filename_prefix o filename_suffix e una di esse dovrebbe non essere una stringa vuota.'
         empty_operation_list: 'Almeno una operazione di trasformazione è obbligatoria.'
-        unknown_extra_field: 'The property {{ field }} was not expected.'
       naming_convention:
         property_should_exist: 'La proprietà "%property%" non esiste per questa famiglia di asset'
-        not_main_media_attribute_code: 'Property must match the code of the attribute defined as main media'
   asset:
     validation:
       code:

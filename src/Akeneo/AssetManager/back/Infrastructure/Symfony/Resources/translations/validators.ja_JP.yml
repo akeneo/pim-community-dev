@@ -11,8 +11,6 @@ pim_asset_manager:
         should_not_be_linked: 'アセットファミリーの属性がこのファミリーのために現存するため、該当ファミリーを削除できません'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'このファミリーに対する編集権限を少なくとも1つのユーザグループに付与する必要があります'
-      product_attributes:
-        should_not_be_linked: 'You can not delete this family because an asset collection is linked to this family.'
       should_exist: 'アセットファミリー「%asset_family_code%」は検出できませんでした。'
       rule_template:
         limit_reached: 'アセットファミリー「%asset_family_identifier%」の商品リンクルールの上限 %limit% に達しました。'
@@ -28,8 +26,6 @@ pim_asset_manager:
         channel_not_supported_for_field: '分野「%product_field%」を特定できません'
         locale_not_supported_for_field: '分野「%product_field%」に対してロケールを特定できません'
         assignmement_attribute_does_not_support_this_asset_family: '属性「%product_attribute_code%」にはアセットファミリー「%asset_family_identifier%」を含むことができません'
-        assignmement_attribute_does_not_exist: 'product attribute "%product_attribute_code%" does not exist'
-        assignmement_attribute_is_not_an_asset_collection: 'product attribute "%product_attribute_code%" is not an attribute of type asset collection'
       attribute_as_main_media:
         not_found: 'アセットファミリーに設定された主要メディアとしての属性「%attribute_as_main_media%」が存在しません'
         invalid_type: 'アセットファミリーに主要メディアとして設定するべき属性は次のタイプです:%valid_attribute_as_main_media_types%'

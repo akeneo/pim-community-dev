@@ -1,6 +1,5 @@
 pim_asset_manager:
   product_value:
     validation:
-      asset_should_exist: 'The asset with code "%asset_code%" does not exist'
       asset_multiple_link:
         limit_reached: 'Hai raggiunto il limite di %limit% attività per raccolta, non puoi più aggiungere attività alla tua raccolta.'
