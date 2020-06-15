@@ -53,6 +53,11 @@ class ProductAssociationFilter implements FilterInterface
         }
 
         $result = [];
+
+        if (!isset($newValues[ProductNormalizer::FIELD_ASSOCIATIONS])) {
+            return $result;
+        }
+
         foreach ($newValues[ProductNormalizer::FIELD_ASSOCIATIONS] as $type => $field) {
             foreach ($field as $key => $association) {
                 $data = $this->compareAssociations($originalAssociations, $association, $type, $key);
@@ -61,6 +66,10 @@ class ProductAssociationFilter implements FilterInterface
                     $result[ProductNormalizer::FIELD_ASSOCIATIONS][$type][$key] = $data;
                 }
             }
+        }
+
+        if (!isset($newValues[ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS])) {
+            return $result;
         }
 
         foreach ($newValues[ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS] as $type => $field) {
