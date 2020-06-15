@@ -17,18 +17,21 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductAssociationFilter implements FilterInterface
 {
     /** @var NormalizerInterface */
-    protected $normalizer;
+    protected $associationsNormalizer;
+
+    /** @var NormalizerInterface */
+    protected $quantifiedAssociationsNormalizer;
 
     /** @var ComparatorRegistry */
     protected $comparatorRegistry;
 
-    /**
-     * @param NormalizerInterface $normalizer
-     * @param ComparatorRegistry  $comparatorRegistry
-     */
-    public function __construct(NormalizerInterface $normalizer, ComparatorRegistry $comparatorRegistry)
-    {
-        $this->normalizer = $normalizer;
+    public function __construct(
+        NormalizerInterface $associationsNormalizer,
+        NormalizerInterface $quantifiedAssociationsNormalizer,
+        ComparatorRegistry $comparatorRegistry
+    ) {
+        $this->associationsNormalizer = $associationsNormalizer;
+        $this->quantifiedAssociationsNormalizer = $quantifiedAssociationsNormalizer;
         $this->comparatorRegistry = $comparatorRegistry;
     }
 
@@ -37,20 +40,44 @@ class ProductAssociationFilter implements FilterInterface
      */
     public function filter(EntityWithValuesInterface $product, array $newValues): array
     {
-        $originalAssociations = $this->normalizer->normalize($product, 'standard');
-        $hasAssociation = $this->hasNewAssociations($newValues);
+        $originalAssociations = $this->associationsNormalizer->normalize($product, 'standard');
+        $originalQuantifiedAssociations = $this->quantifiedAssociationsNormalizer->normalize($product, 'standard');
 
-        if (!$hasAssociation && empty($originalAssociations)) {
+        if (
+            !$this->hasNewAssociations($newValues) &&
+            !$this->hasNewQuantifiedAssociations($newValues) &&
+            empty($originalAssociations) &&
+            empty($originalQuantifiedAssociations)
+        ) {
             return [];
         }
 
         $result = [];
+
+        if (!isset($newValues[ProductNormalizer::FIELD_ASSOCIATIONS])) {
+            return $result;
+        }
+
         foreach ($newValues[ProductNormalizer::FIELD_ASSOCIATIONS] as $type => $field) {
             foreach ($field as $key => $association) {
-                $data = $this->compareAssociation($originalAssociations, $association, $type, $key);
+                $data = $this->compareAssociations($originalAssociations, $association, $type, $key);
 
                 if (null !== $data) {
                     $result[ProductNormalizer::FIELD_ASSOCIATIONS][$type][$key] = $data;
+                }
+            }
+        }
+
+        if (!isset($newValues[ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS])) {
+            return $result;
+        }
+
+        foreach ($newValues[ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS] as $type => $field) {
+            foreach ($field as $key => $association) {
+                $data = $this->compareQuantifiedAssociations($originalQuantifiedAssociations, $association, $type, $key);
+
+                if (null !== $data) {
+                    $result[ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS][$type][$key] = $data;
                 }
             }
         }
@@ -59,11 +86,7 @@ class ProductAssociationFilter implements FilterInterface
     }
 
     /**
-     * Has association(s) in new values ?
-     *
-     * @param array $convertedItem
-     *
-     * @return bool
+     * Has association(s) in new values?
      */
     protected function hasNewAssociations(array $convertedItem): bool
     {
@@ -81,37 +104,48 @@ class ProductAssociationFilter implements FilterInterface
     }
 
     /**
-     * Compare product's association
-     *
-     * @param array  $originalAssociations original associations
-     * @param array  $associations         product's associations
-     * @param string $type                 type of association (PACK, SUBSTITUTION, etc)
-     * @param string $key                  key of group (products or groups)
-     *
-     * @throws \LogicException
-     *
-     * @return array|null
+     * Has quantified association(s) in new values?
      */
-    protected function compareAssociation(array $originalAssociations, array $associations, $type, $key): ?array
+    protected function hasNewQuantifiedAssociations(array $convertedItem): bool
     {
-        $comparator = $this->comparatorRegistry->getFieldComparator(ProductNormalizer::FIELD_ASSOCIATIONS);
-        $diff = $comparator->compare($associations, $this->getOriginalAssociation($originalAssociations, $type, $key));
-
-        if (null !== $diff) {
-            return $diff;
+        if (!isset($convertedItem['quantified_associations'])) {
+            return false;
         }
 
-        return null;
+        foreach ($convertedItem['quantified_associations'] as $association) {
+            if (!empty($association['products']) || !empty($association['product_models'])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
-     * @param array  $originalAssociations original associations
-     * @param string $type                 type of association (PACK, SUBSTITUTION, etc)
-     * @param string $key                  key of group (products or groups)
+     * Compare product's associations
      *
-     * @return array
+     * @throws \LogicException
      */
-    protected function getOriginalAssociation(array $originalAssociations, $type, $key): array
+    protected function compareAssociations(array $originalAssociations, array $newAssociations, string $type, string $key): ?array
+    {
+        $comparator = $this->comparatorRegistry->getFieldComparator(ProductNormalizer::FIELD_ASSOCIATIONS);
+
+        return $comparator->compare($newAssociations, $this->getOriginalAssociation($originalAssociations, $type, $key));
+    }
+
+    /**
+     * Compare product's quantified associations
+     *
+     * @throws \LogicException
+     */
+    protected function compareQuantifiedAssociations(array $originalQuantifiedAssociations, array $newQuantifiedAssociations, string $type, string $key): ?array
+    {
+        $comparator = $this->comparatorRegistry->getFieldComparator(ProductNormalizer::FIELD_QUANTIFIED_ASSOCIATIONS);
+
+        return $comparator->compare($newQuantifiedAssociations, $this->getOriginalAssociation($originalQuantifiedAssociations, $type, $key));
+    }
+
+    protected function getOriginalAssociation(array $originalAssociations, string $type, string $key): array
     {
         return !isset($originalAssociations[$type][$key]) ? [] : $originalAssociations[$type][$key];
     }

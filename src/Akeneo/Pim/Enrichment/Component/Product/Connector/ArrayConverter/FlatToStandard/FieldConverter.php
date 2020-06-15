@@ -43,12 +43,19 @@ class FieldConverter implements FieldConverterInterface
     public function convert(string $fieldName, $value): ConvertedField
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
+        $quantifiedAssociationFields = $this->assocFieldResolver->resolveQuantifiedIdentifierAssociationColumns();
 
         if (in_array($fieldName, $associationFields)) {
             $value = $this->fieldSplitter->splitCollection($value);
             list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
 
             return new ConvertedField('associations', [$associationTypeCode => [$associatedWith => $value]]);
+        } elseif (in_array($fieldName, $quantifiedAssociationFields)) {
+            list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
+
+            return new ConvertedField('quantified_associations', [$associationTypeCode => [$associatedWith => $value]]);
+        } elseif (in_array($fieldName, $this->assocFieldResolver->resolveQuantifiedQuantityAssociationColumns())) {
+            return new ConvertedField($fieldName, $value);
         } elseif (in_array($fieldName, ['categories'])) {
             $categories = $this->fieldSplitter->splitCollection($value);
 
@@ -72,8 +79,9 @@ class FieldConverter implements FieldConverterInterface
     public function supportsColumn($column): bool
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
+        $quantifiedAssociationFields = $this->assocFieldResolver->resolveQuantifiedAssociationColumns();
 
-        $fields = array_merge(['categories', 'groups', 'enabled', 'family', 'parent'], $associationFields);
+        $fields = array_merge(['categories', 'groups', 'enabled', 'family', 'parent'], $associationFields, $quantifiedAssociationFields);
 
         return in_array($column, $fields);
     }

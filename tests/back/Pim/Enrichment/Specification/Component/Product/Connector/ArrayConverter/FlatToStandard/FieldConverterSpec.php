@@ -27,6 +27,7 @@ class FieldConverterSpec extends ObjectBehavior
     function it_supports_converter_column($assocFieldResolver)
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn(['X_SELL-groups', 'associations']);
+        $assocFieldResolver->resolveQuantifiedAssociationColumns()->willReturn(['PACK-products']);
 
         $this->supportsColumn('associations')->shouldReturn(true);
         $this->supportsColumn('enabled')->shouldReturn(true);
@@ -34,6 +35,8 @@ class FieldConverterSpec extends ObjectBehavior
         $this->supportsColumn('categories')->shouldReturn(true);
         $this->supportsColumn('groups')->shouldReturn(true);
         $this->supportsColumn('X_SELL-groups')->shouldReturn(true);
+        $this->supportsColumn('PACK-products')->shouldReturn(true);
+        $this->supportsColumn('PACK-product_models')->shouldReturn(false);
 
         $this->supportsColumn('other')->shouldReturn(false);
     }
@@ -41,6 +44,8 @@ class FieldConverterSpec extends ObjectBehavior
     function it_converts($assocFieldResolver, $fieldSplitter)
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn(['X_SELL-groups', 'associations']);
+        $assocFieldResolver->resolveQuantifiedQuantityAssociationColumns()->willReturn(['PACK-products-quantity']);
+        $assocFieldResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn(['PACK-products']);
 
         $this->convert('enabled', 'true')->shouldBeLike(new ConvertedField('enabled', true));
         $this->convert('enabled', true)->shouldBeLike(new ConvertedField('enabled', true));
@@ -49,6 +54,7 @@ class FieldConverterSpec extends ObjectBehavior
         $fieldSplitter->splitCollection('group1,group2')->willReturn(['group1', 'group2']);
         $fieldSplitter->splitCollection('value,test')->willReturn(['value', 'test']);
         $fieldSplitter->splitFieldName('X_SELL-groups')->willReturn(['X_SELL', 'groups']);
+        $fieldSplitter->splitFieldName('PACK-products')->willReturn(['PACK', 'products']);
 
         $this->convert('family', 'family_name')->shouldBeLike(new ConvertedField('family', 'family_name'));
 
@@ -58,11 +64,19 @@ class FieldConverterSpec extends ObjectBehavior
         $this->convert('X_SELL-groups', 'value,test')->shouldBeLike(
             new ConvertedField('associations', ['X_SELL' => ['groups' => ['value', 'test']]])
         );
+        $this->convert('PACK-products', [['identifier' => 'value', 'quantity' => '12']])->shouldBeLike(
+            new ConvertedField('quantified_associations', ['PACK' => ['products' => [['identifier' => 'value', 'quantity' => '12']]]])
+        );
+        $this->convert('PACK-products-quantity', [['identifier' => 'value', 'quantity' => '12']])->shouldBeLike(
+            new ConvertedField('PACK-products-quantity', [['identifier' => 'value', 'quantity' => '12']])
+        );
     }
 
     function it_extracts_group_from_column_group($assocFieldResolver, $fieldSplitter, $groupTypeRepository)
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn(['X_SELL-groups', 'associations']);
+        $assocFieldResolver->resolveQuantifiedQuantityAssociationColumns()->willReturn(['PACK-products-quantity', 'quantified_associations-quantity']);
+        $assocFieldResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn(['PACK-products', 'quantified_associations']);
         $fieldSplitter->splitCollection('group1,group2')->willReturn([
             'group1',
             'group2'

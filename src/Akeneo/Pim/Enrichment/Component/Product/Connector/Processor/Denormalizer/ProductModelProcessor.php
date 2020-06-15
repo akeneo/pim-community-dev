@@ -179,6 +179,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     protected function filterItemData(array $item): array
     {
         unset($item['associations']);
+        unset($item['quantified_associations']);
 
         return $item;
     }
