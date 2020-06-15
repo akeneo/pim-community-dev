@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.59 (2020-06-15)
+
 ## Bug fixes:
 
 - PIM-9292: Fix performances when filtering on assets with a lot of tags
