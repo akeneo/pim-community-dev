@@ -154,7 +154,10 @@ class QuantifiedAssociations
                             $quantifiedLink['quantity']
                         );
                     } else {
-                        $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][] = new QuantifiedLink($quantifiedLink['identifier'], $quantifiedLink['quantity']);
+                        $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][] = new QuantifiedLink(
+                            $quantifiedLink['identifier'],
+                            $quantifiedLink['quantity']
+                        );
                     }
                 }
             }

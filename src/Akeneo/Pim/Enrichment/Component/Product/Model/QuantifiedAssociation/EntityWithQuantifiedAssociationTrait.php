@@ -28,6 +28,7 @@ trait EntityWithQuantifiedAssociationTrait
     {
         $this->quantifiedAssociations = $quantifiedAssociations;
     }
+
     /**
      * @inheritDoc
      */
