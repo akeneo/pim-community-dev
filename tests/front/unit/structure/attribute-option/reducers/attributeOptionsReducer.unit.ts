@@ -5,6 +5,7 @@ import {
     createAttributeOptionAction,
     deleteAttributeOptionAction,
 } from 'akeneopimstructure/js/attribute-option/reducers';
+import {resetAttributeOptionsAction} from "akeneopimstructure/js/attribute-option/reducers";
 
 const blackAndBlueOptions = [
     {
@@ -62,6 +63,22 @@ describe('Attribute options reducer', () => {
             ],
             initializeAttributeOptionsAction(blackAndBlueOptions))
         ).toMatchObject(blackAndBlueOptions);
+    });
+
+    test('Reset attribute options with an existing state', () => {
+        expect(
+          attributeOptionsReducer([
+                {
+                    "id": 1,
+                    "code": "red",
+                    "optionValues": {
+                        "en_US": {"id": 2,"locale":"en_US","value":"Red"},
+                        "fr_FR":{"id": 3,"locale":"fr_FR","value":"Rouge"}
+                    }
+                },
+            ],
+            resetAttributeOptionsAction())
+        ).toBeNull();
     });
 
     test('Update an attribute option', () => {
