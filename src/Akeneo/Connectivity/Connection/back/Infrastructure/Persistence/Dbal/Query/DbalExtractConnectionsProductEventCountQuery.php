@@ -130,7 +130,6 @@ FROM (
 ) AS tmp_table
 INNER JOIN oro_user u ON u.username = author AND u.user_type = :user_type
 INNER JOIN akeneo_connectivity_connection conn ON conn.user_id = u.id
-GROUP BY conn.code;
 SQL;
         $dataRows = $this->dbalConnection->executeQuery(
             $sqlQuery,
