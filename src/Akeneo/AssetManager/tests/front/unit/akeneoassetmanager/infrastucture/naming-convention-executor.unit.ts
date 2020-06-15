@@ -7,8 +7,8 @@ import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 const routing = require('routing');
 
 const EXECUTE_NAMING_CONVENTION_ACTUAL_ROUTE = '/ROUTE/TO/BE/CALLED';
-const EXECUTE_NAMING_CONVENTION_ROUTE_CODE = 'akeneo_asset_manager_asset_family_execute_naming_convention';
-const EXECUTE_NAMING_CONVENTION_ALL_ROUTE_CODE = 'akeneo_asset_manager_asset_family_execute_naming_convention_all';
+const ASSET_EXECUTE_NAMING_CONVENTION_ROUTE_CODE = 'akeneo_asset_manager_asset_execute_naming_convention';
+const ASSET_FAMILY_EXECUTE_NAMING_CONVENTION_ROUTE_CODE = 'akeneo_asset_manager_asset_family_execute_naming_convention';
 
 jest.mock('pim/router', () => {});
 jest.mock('pim/security-context', () => {}, {virtual: true});
@@ -27,7 +27,7 @@ describe('It executes naming convention for one asset', () => {
         await namingConventionExecutor.execute(assetFamilyIdentifier, assetCode);
 
         expect(routing.generate).toBeCalledWith(
-            EXECUTE_NAMING_CONVENTION_ROUTE_CODE,
+            ASSET_EXECUTE_NAMING_CONVENTION_ROUTE_CODE,
             {
                 'assetCode': assetCode,
                 'assetFamilyIdentifier': assetFamilyIdentifier
@@ -47,7 +47,7 @@ describe('It executes naming convention for one asset', () => {
         await namingConventionExecutor.execute(assetFamilyIdentifier, assetCode);
 
         expect(routing.generate).toBeCalledWith(
-            EXECUTE_NAMING_CONVENTION_ROUTE_CODE,
+            ASSET_EXECUTE_NAMING_CONVENTION_ROUTE_CODE,
             {
                 'assetCode': assetCode,
                 'assetFamilyIdentifier': assetFamilyIdentifier
@@ -69,7 +69,7 @@ describe('It executes naming convention for all assets', () => {
         await namingConventionExecutor.executeAll(assetFamilyIdentifier);
 
         expect(routing.generate).toBeCalledWith(
-            EXECUTE_NAMING_CONVENTION_ALL_ROUTE_CODE,
+            ASSET_FAMILY_EXECUTE_NAMING_CONVENTION_ROUTE_CODE,
             {
                 'assetFamilyIdentifier': assetFamilyIdentifier
             }
@@ -87,7 +87,7 @@ describe('It executes naming convention for all assets', () => {
         await namingConventionExecutor.executeAll(assetFamilyIdentifier);
 
         expect(routing.generate).toBeCalledWith(
-            EXECUTE_NAMING_CONVENTION_ALL_ROUTE_CODE,
+            ASSET_FAMILY_EXECUTE_NAMING_CONVENTION_ROUTE_CODE,
             {
                 'assetFamilyIdentifier': assetFamilyIdentifier
             }
