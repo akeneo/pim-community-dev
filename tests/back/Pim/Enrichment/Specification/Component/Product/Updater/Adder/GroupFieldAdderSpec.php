@@ -2,16 +2,17 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\GroupFieldAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\FieldAdderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\GroupFieldAdder;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 
 class GroupFieldAdderSpec extends ObjectBehavior
 {
@@ -57,33 +58,26 @@ class GroupFieldAdderSpec extends ObjectBehavior
     }
 
     function it_adds_groups_field(
-        $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         ProductInterface $product,
         GroupInterface $pack,
-        GroupInterface $cross,
-        GroupTypeInterface $nonVariantType
+        GroupInterface $cross
     ) {
         $groupRepository->findOneByIdentifier('pack')->willReturn($pack);
         $groupRepository->findOneByIdentifier('cross')->willReturn($cross);
 
-        $pack->getType()->willReturn($nonVariantType);
-
-        $cross->getType()->willReturn($nonVariantType);
-
-        $product->addGroup($pack)->shouldBeCalled();
-        $product->addGroup($cross)->shouldBeCalled();
+        $product->addGroup($pack->getWrappedObject())->shouldBeCalled();
+        $product->addGroup($cross->getWrappedObject())->shouldBeCalled();
 
         $this->addFieldData($product, 'groups', ['pack', 'cross']);
     }
 
     function it_fails_if_the_group_code_does_not_exist(
-        $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         ProductInterface $product,
-        GroupInterface $pack,
-        GroupTypeInterface $nonVariantType
+        GroupInterface $pack
     ) {
         $groupRepository->findOneByIdentifier('pack')->willReturn($pack);
-        $pack->getType()->willReturn($nonVariantType);
         $groupRepository->findOneByIdentifier('not valid code')->willReturn(null);
 
         $this->shouldThrow(
@@ -95,5 +89,15 @@ class GroupFieldAdderSpec extends ObjectBehavior
                 'not valid code'
             )
         )->during('addFieldData', [$product, 'groups', ['pack', 'not valid code']]);
+    }
+
+    function it_throws_an_exception_if_the_subject_is_not_a_product()
+    {
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                ProductModel::class,
+                ProductInterface::class
+            )
+        )->during('addFieldData', [new ProductModel(), 'enabled', ['tshirts']]);
     }
 }
