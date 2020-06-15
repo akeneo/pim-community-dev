@@ -81,6 +81,7 @@ class AdderActionApplier implements ActionApplierInterface
 
     /**
      * We do not apply the action if field is an attribute and:
+     *  - field is "groups" and entity is a product model
      *  - attribute does not belong to the family
      *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
@@ -91,6 +92,11 @@ class AdderActionApplier implements ActionApplierInterface
         $field = $action->getField();
         if (!is_string($field)) {
             return;
+        }
+        if ('groups' === $field && $entity instanceof ProductModelInterface) {
+            throw new NonApplicableActionException(
+                'The "groups" property cannot be added to a product model'
+            );
         }
 
         $attribute = $this->getAttributes->forCode($field);

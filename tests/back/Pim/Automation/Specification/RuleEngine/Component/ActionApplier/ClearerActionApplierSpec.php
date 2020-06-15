@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductClearAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetAction;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -145,6 +146,19 @@ class ClearerActionApplierSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->applyAction($clearerAction, [$productModel])->shouldReturn([$productModel]);
+    }
+
+    function it_does_not_apply_action_if_entity_is_a_product_model_and_field_is_groups(
+        PropertyClearerInterface $propertyClearer,
+        EventDispatcherInterface $eventDispatcher,
+        ProductModelInterface $productModel
+    ) {
+        $action = new ProductClearAction(['field' => 'groups']);
+
+        $propertyClearer->clear(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
+
+        $this->applyAction($action, [$productModel])->shouldReturn([]);
     }
 
     function it_does_not_apply_clear_attribute_action_on_product_model_when_variation_level_is_not_right(
