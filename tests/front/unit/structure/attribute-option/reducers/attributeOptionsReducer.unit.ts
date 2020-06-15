@@ -36,6 +36,18 @@ describe('Attribute options reducer', () => {
         ).toMatchObject(blackAndBlueOptions);
     });
 
+    test('Initialize an empty list of attribute options with an array', () => {
+        expect(
+          attributeOptionsReducer([], initializeAttributeOptionsAction([]))
+        ).toMatchObject([]);
+    });
+
+    test('Initialize an empty list of attribute options with an object', () => {
+        expect(
+          attributeOptionsReducer([], initializeAttributeOptionsAction({}))
+        ).toMatchObject([]);
+    });
+
     test('Initialize attribute options action with an existing state', () => {
         expect(
           attributeOptionsReducer([
