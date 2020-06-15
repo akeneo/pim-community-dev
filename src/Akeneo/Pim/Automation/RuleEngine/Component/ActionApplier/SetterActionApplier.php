@@ -81,7 +81,8 @@ class SetterActionApplier implements ActionApplierInterface
 
     /**
      * We do not apply the action if:
-     * - if field is categories and the new category codes do not include the categories of the entity's parent
+     * - if field is "groups" or "enabled" and the entity is a product model
+     * - if field is "categories" and the new category codes do not include the categories of the entity's parent
      * - or field is an attribute and:
      *   - attribute does not belong to the family
      *   - or entity is variant (variant product or product model) and attribute is not on the entity's variation level
@@ -105,6 +106,15 @@ class SetterActionApplier implements ActionApplierInterface
                     'The ancestor categories are missing'
                 );
             }
+        }
+
+        if (('groups' === $field || 'enabled' === $field) && $entity instanceof ProductModelInterface) {
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'The "%s" property cannot be set on a product model',
+                    $field
+                )
+            );
         }
 
         $attribute = $this->getAttributes->forCode($field);
