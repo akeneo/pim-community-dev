@@ -142,14 +142,6 @@ SQL;
             ]
         )->fetchAll();
 
-//        if (empty($hourlyEventCountsData)) {
-//            $hourlyEventCountsData[] = [
-//                'connection_code' => AllConnectionCode::CODE,
-//                'event_datetime' => null,
-//                'event_count' => null
-//            ];
-//        }
-
         return $hourlyEventCountsData;
     }
 
@@ -166,7 +158,9 @@ SQL;
                 $flowType = FlowType::DATA_DESTINATION;
                 break;
             default:
-                throw new \LogicException();
+                throw new \LogicException(
+                    sprintf('$eventType must be "product_created", "product_updated" or "product_read", but "%s" given.', $eventType)
+                );
         }
 
         return $flowType;
