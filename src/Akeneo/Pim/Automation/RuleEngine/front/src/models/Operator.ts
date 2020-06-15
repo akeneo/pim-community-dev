@@ -12,4 +12,8 @@ export enum Operator {
   NOT_IN_CHILDREN_LIST = 'NOT IN CHILDREN',
   UNCLASSIFIED = 'UNCLASSIFIED',
   IN_LIST_OR_UNCLASSIFIED = 'IN OR UNCLASSIFIED',
+  LESS = '<',
+  LESS_OR_EQUAL = '<=',
+  MORE = '>',
+  MORE_OR_EQUAL = '>=',
 }

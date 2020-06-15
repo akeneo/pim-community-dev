@@ -11,6 +11,7 @@ import {
   createCategoryCondition,
   Locale,
   LocaleCode,
+  createNumberAttributeCondition,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
@@ -113,6 +114,7 @@ const RuleProductSelection: React.FC<Props> = ({
       createFamilyCondition,
       createTextAttributeCondition,
       createSimpleMultiOptionsAttributeCondition,
+      createNumberAttributeCondition,
       createCategoryCondition,
     ];
 

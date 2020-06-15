@@ -31,6 +31,7 @@ const ATTRIBUTE_TYPES = [
   'pim_catalog_multiselect',
   'pim_catalog_simpleselect',
   'pim_catalog_text',
+  'pim_catalog_number',
 ];
 
 const AddConditionButton: React.FC<Props> = ({
