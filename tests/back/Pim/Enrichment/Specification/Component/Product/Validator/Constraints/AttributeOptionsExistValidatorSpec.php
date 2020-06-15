@@ -152,6 +152,7 @@ class AttributeOptionsExistValidatorSpec extends ObjectBehavior
             '%invalid_option%' => 'rouge'
         ])->willReturn($violationBuilder);
         $violationBuilder->atPath('[color-<all_channels>-fr_FR]')->willReturn($violationBuilder);
+        $violationBuilder->setCode(AttributeOptionsExist::ATTRIBUTE_OPTION_DOES_NOT_EXIST)->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $context->buildViolation($constraint->messagePlural, [
@@ -159,6 +160,7 @@ class AttributeOptionsExistValidatorSpec extends ObjectBehavior
             '%invalid_options%' => 'invalid_option, other_invalid_option'
         ])->willReturn($secondViolationBuilder);
         $secondViolationBuilder->atPath('[scopable_multi_select-ecommerce-<all_locales>]')->willReturn($secondViolationBuilder);
+        $secondViolationBuilder->setCode(AttributeOptionsExist::ATTRIBUTE_OPTIONS_DO_NOT_EXIST)->willReturn($secondViolationBuilder);
         $secondViolationBuilder->addViolation()->shouldBecalled();
 
         $this->validate($values, $constraint);

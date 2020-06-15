@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Error\Documented;
+namespace spec\Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation;
 
-use Akeneo\Pim\Enrichment\Component\Error\Documented\MessageParameterInterface;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\MessageParameterTypes;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\RouteMessageParameter;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\MessageParameterInterface;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\MessageParameterTypes;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\RouteMessageParameter;
 use PhpSpec\ObjectBehavior;
 
 class RouteMessageParameterSpec extends ObjectBehavior

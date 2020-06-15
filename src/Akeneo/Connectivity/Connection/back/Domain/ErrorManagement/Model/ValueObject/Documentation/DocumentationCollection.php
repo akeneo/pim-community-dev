@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Error\Documented;
+namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -13,6 +14,9 @@ class DocumentationCollection
     /** @var Documentation[] */
     private $collection;
 
+    /**
+     * @param Documentation[] $documentations
+     */
     public function __construct(array $documentations)
     {
         foreach ($documentations as $documentation) {
@@ -29,7 +33,7 @@ class DocumentationCollection
     }
 
     /**
-     * @return array{array{message: string, parameters: array<string, array<string, string|array>>}}
+     * @return array<array{message: string, parameters: array<string, array<string, string|array>>}>
      * Example:
      * [
      *     [

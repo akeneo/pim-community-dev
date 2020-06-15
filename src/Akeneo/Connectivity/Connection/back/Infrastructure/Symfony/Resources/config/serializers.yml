@@ -16,10 +16,13 @@ services:
         class: 'Akeneo\Connectivity\Connection\Infrastructure\Normalizer\ConstraintViolationNormalizer'
         arguments:
             - '@pim_catalog.repository.cached_attribute'
+            - '@akeneo_connectivity.connection.error_management.documentation_builder_registry'
         tags:
             - { name:  akeneo_connectivity.connection.serializer.normalizer, priority: 100 }
 
     akeneo_connectivity.connection.normalizer.product_domain_error:
         class: 'Akeneo\Connectivity\Connection\Infrastructure\Normalizer\ProductDomainErrorNormalizer'
+        arguments:
+            - '@akeneo_connectivity.connection.error_management.documentation_builder_registry'
         tags:
             - { name:  akeneo_connectivity.connection.serializer.normalizer, priority: 100 }

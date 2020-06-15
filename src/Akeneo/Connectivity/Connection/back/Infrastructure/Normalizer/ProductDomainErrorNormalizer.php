@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\DocumentationBuilderRegistry;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -18,6 +18,14 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductDomainErrorNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
+    /** @var DocumentationBuilderRegistry */
+    private $documentationBuilderRegistry;
+
+    public function __construct(DocumentationBuilderRegistry $documentationBuilderRegistry)
+    {
+        $this->documentationBuilderRegistry = $documentationBuilderRegistry;
+    }
+
     /**
      * @param DomainErrorInterface $object
      * @param string $format
@@ -38,8 +46,8 @@ class ProductDomainErrorNormalizer implements NormalizerInterface, CacheableSupp
             $data['message_parameters'] = $object->getTemplatedErrorMessage()->getParameters();
         }
 
-        if ($object instanceof DocumentedErrorInterface) {
-            $data['documentation'] = $object->getDocumentation()->normalize();
+        if (null !== $documentation = $this->documentationBuilderRegistry->getDocumentation($object)) {
+            $data['documentation'] = $documentation->normalize();
         }
 
         if (isset($context['product'])) {
@@ -56,8 +64,6 @@ class ProductDomainErrorNormalizer implements NormalizerInterface, CacheableSupp
                 'label' => $product->getLabel(),
                 'family' => null !== $product->getFamily() ? $product->getFamily()->getCode() : null,
             ];
-
-
         }
 
         return $data;

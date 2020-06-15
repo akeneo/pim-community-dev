@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Error\Documented;
+namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -16,9 +17,12 @@ class RouteMessageParameter implements MessageParameterInterface
     /** @var string */
     private $route;
 
-    /** @var array */
+    /** @var array<string, mixed> */
     private $routeParameters;
 
+    /**
+     * @param array<string, mixed> $routeParameters
+     */
     public function __construct(string $title, string $route, array $routeParameters = [])
     {
         $this->title = $title;
@@ -41,7 +45,12 @@ class RouteMessageParameter implements MessageParameterInterface
     }
 
     /**
-     * @return array{type: MessageParameterTypes::ROUTE, route: string, routeParameters: array<string, string>, title: string}
+     * @return array{
+     *  type: MessageParameterTypes::ROUTE,
+     *  route: string,
+     *  routeParameters: array<string, string>,
+     *  title: string
+     * }
      */
     public function normalize(): array
     {

@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Normalizer;
 
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\DocumentationBuilderRegistry;
 use Akeneo\Connectivity\Connection\Infrastructure\Normalizer\ProductDomainErrorNormalizer;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\Documentation;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentationCollection;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\Documentation;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\DocumentationCollection;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\DocumentedErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 
 /**
@@ -22,6 +24,13 @@ use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
  */
 class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 {
+    public function let(DocumentationBuilderRegistry $documentationBuilderRegistry): void
+    {
+        $documentationBuilderRegistry->getDocumentation(Argument::any())->willReturn(null);
+
+        $this->beConstructedWith($documentationBuilderRegistry);
+    }
+
     public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(ProductDomainErrorNormalizer::class);
@@ -33,14 +42,15 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
         $this->hasCacheableSupportsMethod()->shouldReturn(true);
     }
 
-    public function it_supports_an_identifiable_domain_error(DomainErrorInterface $error): void
+    public function it_supports_a_domain_error(DomainErrorInterface $error): void
     {
         $this->supportsNormalization($error)->shouldReturn(true);
     }
 
-    public function it_normalizes_an_identifiable_domain_error(): void
+    public function it_normalizes_a_domain_error(): void
     {
-        $error = new class () implements DomainErrorInterface {
+        $error = new class () implements DomainErrorInterface
+        {
         };
 
         $this->normalize($error, 'json', [])->shouldReturn([
@@ -50,7 +60,8 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_an_exception(): void
     {
-        $error = new class ('My message.') extends \Exception implements DomainErrorInterface {
+        $error = new class ('My message.') extends \Exception implements DomainErrorInterface
+        {
         };
 
         $this->normalize($error, 'json', [])->shouldReturn([
@@ -78,7 +89,8 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_the_product_without_family(ProductInterface $product): void
     {
-        $error = new class () implements DomainErrorInterface {
+        $error = new class () implements DomainErrorInterface
+        {
         };
 
         $product->getId()->willReturn(1);
@@ -97,29 +109,24 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_normalizes_a_documented_error(): void
+    public function it_normalizes_a_documented_error($documentationBuilderRegistry): void
     {
-        $error = new class () implements DomainErrorInterface, DocumentedErrorInterface {
-            public function getDocumentation(): DocumentationCollection
-            {
-                return new DocumentationCollection([new Documentation('any message', [])]);
-            }
+        $error = new class () implements DomainErrorInterface
+        {
         };
+
+        $documentationBuilderRegistry->getDocumentation($error)->willReturn(new DocumentationCollection([]));
 
         $this->normalize($error, 'json', [])->shouldReturn([
             'type' => 'domain_error',
-            'documentation' => [
-                [
-                    'message' => 'any message',
-                    'parameters' => [],
-                ],
-            ]
+            'documentation' => []
         ]);
     }
 
     public function it_normalizes_the_product_information(ProductInterface $product, FamilyInterface $family): void
     {
-        $error = new class () implements DomainErrorInterface {
+        $error = new class () implements DomainErrorInterface
+        {
         };
 
         $product->getId()->willReturn(1);

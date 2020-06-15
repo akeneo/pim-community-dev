@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Error\Documented;
+namespace spec\Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation;
 
-use Akeneo\Pim\Enrichment\Component\Error\Documented\HrefMessageParameter;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\MessageParameterInterface;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\MessageParameterTypes;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\HrefMessageParameter;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\MessageParameterInterface;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\MessageParameterTypes;
 use PhpSpec\ObjectBehavior;
 
 class HrefMessageParameterSpec extends ObjectBehavior

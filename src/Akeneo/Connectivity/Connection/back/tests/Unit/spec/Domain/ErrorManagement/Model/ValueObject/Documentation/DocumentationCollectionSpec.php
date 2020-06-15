@@ -1,13 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Error\Documented;
+namespace spec\Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation;
 
-use Akeneo\Pim\Enrichment\Component\Error\Documented\Documentation;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentationCollection;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\HrefMessageParameter;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\MessageParameterTypes;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\RouteMessageParameter;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\Documentation;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\DocumentationCollection;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\HrefMessageParameter;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\MessageParameterTypes;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\RouteMessageParameter;
 use PhpSpec\ObjectBehavior;
 
 class DocumentationCollectionSpec extends ObjectBehavior
@@ -26,7 +27,8 @@ class DocumentationCollectionSpec extends ObjectBehavior
                         'Manage your attributes',
                         'https://help.akeneo.com/manage-your-attributes.html'
                     )
-                ]
+                ],
+                Documentation::TYPE_INFORMATION
             ),
             new Documentation(
                 'Please check your {attribute_settings}.',
@@ -35,7 +37,8 @@ class DocumentationCollectionSpec extends ObjectBehavior
                         'Attributes settings',
                         'pim_enrich_attribute_index',
                     )
-                ]
+                ],
+                Documentation::TYPE_TEXT
             )
         ]);
         $this->normalize()->shouldReturn([
@@ -52,7 +55,8 @@ class DocumentationCollectionSpec extends ObjectBehavior
                         'href' => 'https://help.akeneo.com/manage-your-attributes.html',
                         'title' => 'Manage your attributes',
                     ],
-                ]
+                ],
+                'type' => 'information'
             ],
             [
                 'message' => 'Please check your {attribute_settings}.',
@@ -63,14 +67,17 @@ class DocumentationCollectionSpec extends ObjectBehavior
                         'routeParameters' => [],
                         'title' => 'Attributes settings',
                     ],
-                ]
+                ],
+                'type' => 'text'
             ]
         ]);
     }
 
     public function it_validates_documentations(): void
     {
-        $documentation = new class() {};
+        $documentation = new class ()
+        {
+        };
         $this->beConstructedWith([$documentation]);
         $this
             ->shouldThrow(

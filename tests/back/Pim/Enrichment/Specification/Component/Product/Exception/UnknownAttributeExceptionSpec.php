@@ -2,9 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Exception;
 
-use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentationCollection;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\MessageParameterTypes;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
@@ -44,11 +41,6 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
         $this->shouldImplement(TemplatedErrorMessageInterface::class);
     }
 
-    function it_is_a_documented_error()
-    {
-        $this->shouldImplement(DocumentedErrorInterface::class);
-    }
-
     function it_returns_an_exception_message()
     {
         $this->getMessage()->shouldReturn('The attribute_code attribute does not exist in your PIM.');
@@ -73,39 +65,5 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
         $templatedErrorMessage->shouldBeAnInstanceOf(TemplatedErrorMessage::class);
         $templatedErrorMessage->__toString()
             ->shouldReturn('The attribute_code attribute does not exist in your PIM.');
-    }
-
-    function it_provides_documentation()
-    {
-        $collection = $this->getDocumentation();
-        $collection->shouldBeAnInstanceOf(DocumentationCollection::class);
-        $collection->normalize()->shouldReturn([
-            [
-                'message' => 'More information about attributes: {what_is_attribute} {manage_attribute}.',
-                'parameters' => [
-                    'what_is_attribute' => [
-                        'type' => MessageParameterTypes::HREF,
-                        'href' => 'https://help.akeneo.com/pim/serenity/articles/what-is-an-attribute.html',
-                        'title' => 'What is an attribute?',
-                    ],
-                    'manage_attribute' => [
-                        'type' => MessageParameterTypes::HREF,
-                        'href' => 'https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html',
-                        'title' => 'Manage your attributes',
-                    ],
-                ]
-            ],
-            [
-                'message' => 'Please check your {attribute_settings}.',
-                'parameters' => [
-                    'attribute_settings' => [
-                        'type' => MessageParameterTypes::ROUTE,
-                        'route' => 'pim_enrich_attribute_index',
-                        'routeParameters' => [],
-                        'title' => 'Attributes settings',
-                    ],
-                ]
-            ]
-        ]);
     }
 }
