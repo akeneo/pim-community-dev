@@ -217,11 +217,14 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
 
-        $this->updateProduct($product, ['associations' => [
-            'X_SELL' => [
-                'products' => ['product_a']
-            ]
-        ]]);
+        $this->updateProduct($product, [
+            'associations' => [
+                'X_SELL' => [
+                    'products' => ['product_a']
+                ]
+            ],
+            'quantified_associations' => []
+        ]);
     }
 
     public function testFailToUpdateValuesOnAProductOnlyViewable()
