@@ -4,6 +4,7 @@ import {Announcement} from '../../../models/announcement';
 import {TagComponent} from './Tag';
 import {Title} from './Title';
 import {Description} from './Description';
+import {Image} from './Image';
 import {LinkComponent} from './Link';
 import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
 
@@ -15,12 +16,6 @@ const Container = styled.li`
   &:not(:last-child) {
     border-bottom: 1px solid ${({theme}: AkeneoThemedProps) => theme.color.grey80};
   }
-`;
-
-const Image = styled.img`
-  width: 340px;
-  object-fit: contain;
-  border: 1px solid ${({theme}: AkeneoThemedProps) => theme.color.grey60};
 `;
 
 const LineContainer = styled.div`
