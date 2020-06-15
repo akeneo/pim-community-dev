@@ -2,15 +2,16 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\GroupFieldRemover;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\FieldRemoverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\GroupFieldRemover;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 
 class GroupFieldRemoverSpec extends ObjectBehavior
 {
@@ -34,32 +35,26 @@ class GroupFieldRemoverSpec extends ObjectBehavior
     }
 
     function it_removes_groups_field(
-        $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         ProductInterface $product,
         GroupInterface $packGroup,
-        GroupInterface $crossGroup,
-        GroupTypeInterface $nonVariantType
+        GroupInterface $crossGroup
     ) {
         $groupRepository->findOneByIdentifier('pack')->willReturn($packGroup);
         $groupRepository->findOneByIdentifier('cross')->willReturn($crossGroup);
 
-        $packGroup->getType()->willReturn($nonVariantType);
-        $crossGroup->getType()->willReturn($nonVariantType);
-
-        $product->removeGroup($packGroup)->shouldBeCalled();
-        $product->removeGroup($crossGroup)->shouldBeCalled();
+        $product->removeGroup($packGroup->getWrappedObject())->shouldBeCalled();
+        $product->removeGroup($crossGroup->getWrappedObject())->shouldBeCalled();
 
         $this->removeFieldData($product, 'groups', ['pack', 'cross']);
     }
 
     function it_fails_if_the_group_code_does_not_exist(
-        $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         ProductInterface $product,
-        GroupInterface $pack,
-        GroupTypeInterface $nonVariantType
+        GroupInterface $pack
     ) {
         $groupRepository->findOneByIdentifier('pack')->willReturn($pack);
-        $pack->getType()->willReturn($nonVariantType);
         $groupRepository->findOneByIdentifier('not valid code')->willReturn(null);
 
         $this->shouldThrow(
@@ -91,5 +86,15 @@ class GroupFieldRemoverSpec extends ObjectBehavior
                 [['array of array']]
             )
         )->during('removeFieldData', [$product, 'groups', [['array of array']]]);
+    }
+
+    function it_throws_an_exception_if_the_subject_is_not_a_product()
+    {
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                ProductModel::class,
+                ProductInterface::class
+            )
+        )->during('removeFieldData', [new ProductModel(), 'groups', ['tshirts']]);
     }
 }

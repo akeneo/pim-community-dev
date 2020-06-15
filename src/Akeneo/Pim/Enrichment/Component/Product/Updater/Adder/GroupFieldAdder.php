@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -37,6 +39,13 @@ class GroupFieldAdder extends AbstractFieldAdder
      */
     public function addFieldData($product, $field, $data, array $options = [])
     {
+        if (!$product instanceof ProductInterface) {
+            throw InvalidObjectException::objectExpected(
+                \is_object($product) ? \get_class($product) : \gettype($product),
+                ProductInterface::class
+            );
+        }
+
         $this->checkData($field, $data);
 
         $groups = [];

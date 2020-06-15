@@ -6,7 +6,10 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
@@ -39,5 +42,15 @@ class GroupFieldClearerSpec extends ObjectBehavior
 
         $this->clear($product, 'groups');
         Assert::count($product->getGroups(), 0);
+    }
+
+    function it_throws_an_exception_if_the_subject_is_not_a_product()
+    {
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                ProductModel::class,
+                ProductInterface::class
+            )
+        )->during('clear', [new ProductModel(), 'groups']);
     }
 }
