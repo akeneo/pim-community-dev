@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
-import { FormContext, useFieldArray } from 'react-hook-form';
+import { FormContext } from 'react-hook-form';
 import * as akeneoTheme from '../../theme';
 import {
   AkeneoSpinner,
@@ -21,6 +21,7 @@ import { Locale, RuleDefinition } from '../../models';
 import { useSubmitEditRuleForm } from './hooks';
 import { IndexedScopes } from '../../repositories/ScopeRepository';
 import { AddActionButton } from './components/actions/AddActionButton';
+import { Action } from '../../models/Action';
 
 type Props = {
   ruleDefinitionCode: string;
@@ -58,6 +59,9 @@ const EditRulesContent: React.FC<Props> = ({
     ruleDefinition,
     locales
   );
+  const [actionsState, setActionsState] = React.useState<(Action | null)[]>(
+    ruleDefinition.actions
+  );
 
   useEffect(() => {
     setIsDirty(formMethods.formState.dirty);
@@ -67,16 +71,14 @@ const EditRulesContent: React.FC<Props> = ({
     (formMethods.watch(`labels.${currentCatalogLocale}`) as string) ||
     `[${ruleDefinitionCode}]`;
 
-  const { fields, append, remove } = useFieldArray({
-    control: formMethods.control,
-    name: 'content.actions',
-  });
-  React.useEffect(() => {
-    if (fields.length) {
-      formMethods.register('content.actions');
-      formMethods.setValue('content.actions', fields);
-    }
-  }, [formMethods.formState.submitCount]);
+  const append = (action: Action) => {
+    setActionsState([...actionsState, action]);
+  };
+
+  const remove = (lineNumber: number) => {
+    actionsState[lineNumber] = null;
+    setActionsState([...actionsState]);
+  };
 
   const handleAddAction = (action: any) => {
     append(action);
@@ -106,8 +108,9 @@ const EditRulesContent: React.FC<Props> = ({
             locales={locales}
             onSubmit={onSubmit}
             scopes={scopes}
-            actions={fields}
+            actions={actionsState}
             handleDeleteAction={remove}
+            conditions={ruleDefinition.conditions}
           />
         </FormContext>
       </Content>

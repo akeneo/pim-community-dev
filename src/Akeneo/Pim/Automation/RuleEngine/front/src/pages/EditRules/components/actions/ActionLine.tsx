@@ -16,6 +16,7 @@ const ActionTitle = styled.div`
 `;
 
 const ActionGrid = styled.div`
+  margin-top: 10px;
   display: grid;
   grid-template-columns: repeat(2, minmax(140px, 1fr));
 `;

@@ -105,6 +105,17 @@ pimee_catalog_rule:
                 attribute: Attribute
             actions:
                 add_action: Add action
+                add_category:
+                    title: ADD categories
+                    helper: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories
+                    select_category_trees: Select your category trees
+                    select_category_tree: Select your category tree
+                    select_categories: Select your categories
+                    select_category: Select your category
+                    category_tree: Category tree
+                    categories_selected: "]-Inf, 1]{{ count }} category selected|]1, +Inf[{{ count }} categories selected"
+                    no_category_tree: Please, select a category tree first
+                    remove_unknown_category: " Click here to remove this category."
                 set_family:
                     title: SET Family
                     subtitle: Select your family
@@ -178,6 +189,7 @@ pimee_catalog_rule:
         unknown_families: "{1}The family {{ familyCodes }} does not exist|]1,+Inf[The families {{ familyCodes }} do not exist"
         unknown_attribute_options: "{1}The option {{ attributeOptionCodes }} does not exist|]1,+Inf[The options {{ attributeOptionCodes }} do not exist"
         unknown_attribute: "The attribute {{ attributeCode }} does not exist"
+        unknown_categories: "{1}The category {{ categoryCodes }} does not exist.|]1, +Inf[The categories {{ categoryCodes }} do not exist"
 
 pim_enrich:
     entity:

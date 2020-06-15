@@ -12,6 +12,7 @@ import { getSetActionModule } from './SetAction';
 import { FallbackActionLine } from '../../pages/EditRules/components/actions/FallbackActionLine';
 import { Router } from '../../dependenciesTools';
 import { getClearAttributeActionModule } from './ClearAttributeAction';
+import { getAddCategoriesModule } from './AddCategoriesAction';
 
 export type ActionModuleGuesser = (
   json: any,
@@ -28,6 +29,7 @@ const getActionModule: (
   const getActionModuleFunctions: ActionModuleGuesser[] = [
     getSetFamilyActionModule,
     getClearAttributeActionModule,
+    getAddCategoriesModule,
     // Fallbacks
     getAddActionModule,
     getCalculateActionModule,

@@ -1,13 +1,18 @@
 import { Router } from '../dependenciesTools';
-import { Category } from '../models/Category';
+import { Category, CategoryCode } from '../models/Category';
 import { fetchCategoriesByIdentifiers } from '../fetch/CategoryFetcher';
 
 const cacheCategories: { [identifier: string]: Category | null } = {};
 
 export const getCategoriesByIdentifiers = async (
-  categoryIdentifiers: string[],
+  categoryIdentifiers: CategoryCode[],
   router: Router
 ): Promise<{ [identifier: string]: Category | null }> => {
+  if (categoryIdentifiers === undefined) {
+    throw new Error(
+      'getCategoriesByIdentifiers cannot be called with undefined parameter'
+    );
+  }
   const categoryIdentifiersToGet = categoryIdentifiers.filter(
     categoryIdentifier => {
       return !Object.keys(cacheCategories).includes(categoryIdentifier);
@@ -34,4 +39,13 @@ export const getCategoriesByIdentifiers = async (
     result[currentValue] = cacheCategories[currentValue];
     return result;
   }, {});
+};
+
+export const getCategoryByIdentifier = async (
+  categoryIdentifier: CategoryCode,
+  router: Router
+): Promise<Category | null> => {
+  await getCategoriesByIdentifiers([categoryIdentifier], router);
+
+  return cacheCategories[categoryIdentifier];
 };

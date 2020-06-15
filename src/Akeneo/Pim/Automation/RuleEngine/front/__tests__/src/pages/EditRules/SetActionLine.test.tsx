@@ -22,6 +22,7 @@ const createSetAction = (data?: { [key: string]: any }): SetAction => {
   };
 };
 
+jest.mock('../../../../src/fetch/categoryTree.fetcher');
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
@@ -126,9 +127,7 @@ describe('SetActionLine', () => {
     expect(valueInput).toBeInTheDocument();
     expect(valueInput).toHaveValue('This is the name');
     expect(
-      await findByText(
-        'Name pim_common.required_label'
-      )
+      await findByText('Name pim_common.required_label')
     ).toBeInTheDocument();
   });
 });
