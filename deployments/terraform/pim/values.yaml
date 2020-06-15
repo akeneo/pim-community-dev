@@ -196,6 +196,8 @@ onboarder:
       enabled: true
     pushChannelToOnboarder:
       enabled: true
+    pushCatalogToOnboarder:
+      enabled: false
     importAdditionalOnboarderFixtures:
       enabled: false
   pubsub:
