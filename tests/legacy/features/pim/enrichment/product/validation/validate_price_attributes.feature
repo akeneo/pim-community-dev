@@ -24,13 +24,13 @@ Feature: Validate price attributes of a product
   Scenario: Validate the decimals allowed constraint of price attribute
     Given I change the "Cost" to "2.7 USD"
     And I save the product
-    Then I should see validation tooltip "This value should not be a decimal."
+    Then I should see validation tooltip "The cost attribute requires a non-decimal value, and 2.7 is not a valid value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the decimals allowed constraint of scopable price attribute
     Given I change the "Price" to "4.9 USD"
     And I save the product
-    Then I should see validation tooltip "This value should not be a decimal."
+    Then I should see validation tooltip "The price attribute requires a non-decimal value, and 4.9 is not a valid value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number min constraint of price attribute
