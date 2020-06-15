@@ -26,6 +26,15 @@ export class NamingConventionExecutorImplementation implements NamingConventionE
         {}
     ).catch(handleError);
   }
+
+  async executeAll(assetFamilyIdentifier: AssetFamilyIdentifier): Promise<ValidationError[] | null> {
+    return await postJSON(
+        routing.generate('akeneo_asset_manager_asset_family_execute_naming_convention_all', {
+          assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
+        }),
+        {}
+    ).catch(handleError);
+  }
 }
 
 export default new NamingConventionExecutorImplementation();
