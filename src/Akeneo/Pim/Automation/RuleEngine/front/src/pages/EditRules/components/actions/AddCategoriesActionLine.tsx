@@ -36,8 +36,6 @@ const AddCategoriesActionLine: React.FC<Props> = ({
   currentCatalogLocale,
   handleDelete,
 }) => {
-  // TODO handle unknown categories
-
   const router = useBackboneRouter();
   const translate = useTranslate();
   const {
@@ -84,12 +82,7 @@ const AddCategoriesActionLine: React.FC<Props> = ({
       }
       return previousValue;
     }, [] as any[]);
-    if (
-      currentCategoryTree === undefined &&
-      categoryTreesWithSelectedCategories.length
-    ) {
-      setCurrentCategoryTree(categoryTreesWithSelectedCategories[0][0]);
-    }
+
     return new Map<CategoryTreeModel, Category[]>(
       categoryTreesWithSelectedCategories
     );
@@ -241,12 +234,34 @@ const AddCategoriesActionLine: React.FC<Props> = ({
     setValue(`content.actions[${lineNumber}].items`, getSelectedCategories());
   };
 
+  const handleCategoryTreeDelete = (
+    categoryTree: CategoryTreeModel,
+  ) => {
+    categoryTreesWithSelectedCategoriesMap.delete(categoryTree);
+    setCategoryTreesWithSelectedCategoriesMap(
+      new Map(categoryTreesWithSelectedCategoriesMap)
+    )
+    setValue(`content.actions[${lineNumber}].items`, getSelectedCategories());
+  }
+
   const getCategoryCount: (
     categoryTree: CategoryTreeModel
   ) => number = categoryTree => {
     return (categoryTreesWithSelectedCategoriesMap?.get(categoryTree) || [])
       .length;
   };
+
+  const getCurrentCategoryTreeOrDefault = () => {
+    if (currentCategoryTree && categoryTreesWithSelectedCategoriesMap.get(currentCategoryTree)) {
+      return currentCategoryTree;
+    }
+
+    if (categoryTreesWithSelectedCategoriesMap.size > 0) {
+      return Array.from(categoryTreesWithSelectedCategoriesMap.entries())[0][0];
+    }
+
+    return null;
+  }
 
   return (
     <ActionTemplate
@@ -280,7 +295,7 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                     <li key={categoryTree.code}>
                       <button
                         className={`AknTextField AknCategoryTreeSelector${
-                          currentCategoryTree === categoryTree
+                          getCurrentCategoryTreeOrDefault() === categoryTree
                             ? ' AknCategoryTreeSelector--selected'
                             : ''
                         }`}
@@ -300,6 +315,11 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                             getCategoryCount(categoryTree)
                           )}
                         </span>
+                        <span className='AknCategoryTreeSelector-delete'
+                          tabIndex={0}
+                          onClick={() => handleCategoryTreeDelete(categoryTree)}
+                          role='button'
+                        />
                       </button>
                     </li>
                   );
@@ -331,7 +351,7 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                 'pimee_catalog_rule.form.edit.actions.add_category.select_categories'
               )}
             </ActionTitle>
-            {currentCategoryTree ? (
+            {getCurrentCategoryTreeOrDefault() !== null ? (
               <>
                 <label className='AknFieldContainer-label'>
                   {`${translate(
@@ -341,7 +361,7 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                 <ul>
                   {(
                     categoryTreesWithSelectedCategoriesMap.get(
-                      currentCategoryTree
+                      getCurrentCategoryTreeOrDefault() as CategoryTreeModel
                     ) || []
                   ).map((category, i) => {
                     return (
@@ -349,17 +369,17 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                         <CategorySelector
                           locale={currentCatalogLocale}
                           onDelete={() =>
-                            handleCategoryDelete(currentCategoryTree, i)
+                            handleCategoryDelete(getCurrentCategoryTreeOrDefault() as CategoryTreeModel, i)
                           }
                           onSelectCategory={categoryCode =>
                             handleCategorySelect(
                               categoryCode,
-                              currentCategoryTree,
+                              getCurrentCategoryTreeOrDefault() as CategoryTreeModel,
                               i
                             )
                           }
                           selectedCategory={category}
-                          categoryTreeSelected={currentCategoryTree}
+                          categoryTreeSelected={getCurrentCategoryTreeOrDefault() as CategoryTreeModel}
                         />
                       </li>
                     );
@@ -369,9 +389,9 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                   locale={currentCatalogLocale}
                   onDelete={() => {}}
                   onSelectCategory={categoryCode =>
-                    handleCategorySelect(categoryCode, currentCategoryTree)
+                    handleCategorySelect(categoryCode, getCurrentCategoryTreeOrDefault() as CategoryTreeModel)
                   }
-                  categoryTreeSelected={currentCategoryTree}
+                  categoryTreeSelected={getCurrentCategoryTreeOrDefault() as CategoryTreeModel}
                 />
               </>
             ) : (
