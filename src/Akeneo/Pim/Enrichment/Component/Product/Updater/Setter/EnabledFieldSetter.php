@@ -31,7 +31,10 @@ class EnabledFieldSetter extends AbstractFieldSetter
     public function setFieldData($product, $field, $data, array $options = [])
     {
         if (!$product instanceof ProductInterface) {
-            throw InvalidObjectException::objectExpected($product, ProductInterface::class);
+            throw InvalidObjectException::objectExpected(
+                \is_object($product) ? \get_class($product) : \gettype($product),
+                ProductInterface::class
+            );
         }
 
         if (0 === $data || '0' === $data) {
