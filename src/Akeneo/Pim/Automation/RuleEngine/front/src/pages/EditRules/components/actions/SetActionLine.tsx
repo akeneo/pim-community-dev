@@ -8,13 +8,12 @@ import {
   ActionRightSide,
   ActionTitle,
 } from './ActionLine';
-import { AttributeLocaleScopeSelector } from './AttributeLocaleScopeSelector';
+import { AttributeLocaleScopeSelector } from './attribute';
 import { Attribute } from '../../../../models';
-import { InputText } from '../../../../components/Inputs';
-import { useFormContext } from 'react-hook-form';
 import { useRegisterConst } from '../../hooks/useRegisterConst';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
 import { LineErrors } from '../LineErrors';
+import { AttributeValue } from './attribute';
 
 type Props = {
   action: SetAction;
@@ -31,32 +30,16 @@ const SetActionLine: React.FC<Props> = ({
   const [attribute, setAttribute] = React.useState<
     Attribute | null | undefined
   >(undefined);
-  const previousAttribute = React.useRef<Attribute | null | undefined>();
-  const { register, setValue } = useFormContext();
 
   const validateValue = {
     required: translate('pimee_catalog_rule.exceptions.required_value'),
   };
 
   useRegisterConst(`content.actions[${lineNumber}].type`, 'set');
-  // Remove this line when the value input will be done.
-  useRegisterConst(`content.actions[${lineNumber}].value`, action.value);
-
-  const setValueFormValue = (value: any) => {
-    setValue(`content.actions[${lineNumber}].value`, value);
-  };
 
   const onAttributeChange = (newAttribute: Attribute | null) => {
     setAttribute(newAttribute);
   };
-
-  React.useEffect(() => {
-    if (undefined !== previousAttribute.current) {
-      setValueFormValue(null);
-    }
-
-    previousAttribute.current = attribute;
-  }, [attribute]);
 
   return (
     <ActionTemplate
@@ -98,27 +81,13 @@ const SetActionLine: React.FC<Props> = ({
               'pimee_catalog_rule.form.edit.actions.set_attribute.value_subtitle'
             )}
           </ActionTitle>
-          {null === attribute && (
-            <div>
-              {translate(
-                'pimee_catalog_rule.form.edit.actions.set_attribute.unknown_attribute'
-              )}
-            </div>
-          )}
-          {null !== attribute && (
-            <InputText
-              data-testid={`edit-rules-input-${lineNumber}-value`}
-              name={`content.actions[${lineNumber}].value`}
-              label={`${translate('pimee_catalog_rule.rule.value')} ${translate(
-                'pim_common.required_label'
-              )}`}
-              ref={register(validateValue)}
-              hiddenLabel={true}
-              defaultValue={action.value}
-              disabled
-              readOnly
-            />
-          )}
+          <AttributeValue
+            id={`edit-rules-action-${lineNumber}-value`}
+            attribute={attribute}
+            name={`content.actions[${lineNumber}].value`}
+            validation={validateValue}
+            value={action.value}
+          />
         </ActionRightSide>
       </ActionGrid>
       <LineErrors lineNumber={lineNumber} type='actions' />

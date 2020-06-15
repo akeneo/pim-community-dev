@@ -1,3 +1,5 @@
+import { LocaleCode } from './Locale';
+
 type AttributeId = number;
 type AttributeCode = string;
 
@@ -74,9 +76,17 @@ const validateLocalizableScopableAttribute = (
   return isValidated;
 };
 
+const getAttributeLabel = (
+  attribute: Attribute,
+  localeCode: LocaleCode
+): string => {
+  return attribute.labels[localeCode] || attribute.code;
+};
+
 export {
   Attribute,
   validateLocalizableScopableAttribute,
   AttributeId,
   AttributeCode,
+  getAttributeLabel,
 };

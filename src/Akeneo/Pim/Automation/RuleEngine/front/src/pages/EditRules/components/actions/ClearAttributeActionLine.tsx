@@ -3,7 +3,7 @@ import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { ActionTitle } from './ActionLine';
 import { ClearAttributeAction } from '../../../../models/actions';
-import { AttributeLocaleScopeSelector } from './AttributeLocaleScopeSelector';
+import { AttributeLocaleScopeSelector } from './attribute/AttributeLocaleScopeSelector';
 import { LineErrors } from '../LineErrors';
 import { useRegisterConst } from '../../hooks/useRegisterConst';
 import { useTranslate } from '../../../../dependenciesTools/hooks';

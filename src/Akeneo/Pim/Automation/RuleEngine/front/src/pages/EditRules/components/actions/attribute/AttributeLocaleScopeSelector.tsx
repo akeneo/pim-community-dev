@@ -5,24 +5,24 @@ import {
   Locale,
   LocaleCode,
   ScopeCode,
-} from '../../../../models';
-import { AttributeSelector } from '../../../../components/Selectors/AttributeSelector';
+} from '../../../../../models';
+import { AttributeSelector } from '../../../../../components/Selectors/AttributeSelector';
 import {
   getScopeValidation,
   ScopeSelector,
-} from '../../../../components/Selectors/ScopeSelector';
+} from '../../../../../components/Selectors/ScopeSelector';
 import {
   getLocaleValidation,
   LocaleSelector,
-} from '../../../../components/Selectors/LocaleSelector';
+} from '../../../../../components/Selectors/LocaleSelector';
 import {
   useBackboneRouter,
   useTranslate,
   useUserCatalogLocale,
-} from '../../../../dependenciesTools/hooks';
-import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
+} from '../../../../../dependenciesTools/hooks';
+import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
 import { useFormContext } from 'react-hook-form';
-import { IndexedScopes } from '../../../../repositories/ScopeRepository';
+import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import styled from 'styled-components';
 
 const SelectorBlock = styled.div`

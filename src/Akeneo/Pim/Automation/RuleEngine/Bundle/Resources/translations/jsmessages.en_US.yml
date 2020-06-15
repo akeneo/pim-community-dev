@@ -114,7 +114,6 @@ pimee_catalog_rule:
                     value_subtitle: Define your value
                     attribute_label: Attribute
                     attribute_placeholder: Select your target attribute
-                    unknown_attribute: Unknown attribute
                 clear_attribute:
                     title: CLEAR Attribute value
                     subtitle: Select the attribute to clear
@@ -151,6 +150,8 @@ pimee_catalog_rule:
                 success: Rule updated successfully
                 failed: Rule update failed
             discard_changes: You will lose changes to the rule if you leave the page.
+            unknown_attribute: Unknown attribute
+            unhandled_attribute_type: Sorry this attribute type is not managed yet. Please use the rule import.
         helper:
             add_to_category: To add your product selection to one or more categories, please start by selecting our category trees and then, your categories.
             product_selection: "You must define your product selection in order to create your rule. If you don't know how, "
