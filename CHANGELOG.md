@@ -25,6 +25,8 @@
 
 ## Improvements
 
+- CLOUD-1959: Use cloud-deployer 2.2 and terraform 0.12.25
+
 # Technical Improvements
 
 ## Classes
