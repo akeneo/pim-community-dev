@@ -127,6 +127,15 @@ const RuleProductSelection: React.FC<Props> = ({
     throw new Error(`Unknown factory for field ${fieldCode}`);
   };
 
+  const append = (condition: Condition) => {
+    setConditionsState([...conditionsState, condition]);
+  };
+
+  const remove = (lineNumber: number) => {
+    conditionsState[lineNumber] = null;
+    setConditionsState([...conditionsState]);
+  };
+
   const handleAddCondition = (fieldCode: string) => {
     createCondition(fieldCode).then(condition => append(condition));
   };
@@ -144,15 +153,6 @@ const RuleProductSelection: React.FC<Props> = ({
     },
     [getValues({ nest: true })?.content?.conditions]
   );
-
-  const append = (condition: Condition) => {
-    setConditionsState([...conditionsState, condition]);
-  };
-
-  const remove = (lineNumber: number) => {
-    conditionsState[lineNumber] = null;
-    setConditionsState([...conditionsState]);
-  };
 
   const hasActions =
     (getValues({ nest: true })?.content?.actions || []).filter(

@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 
-const ErrorLine = styled.ul`
+const SmallErrorHelper = styled.ul`
   &:not(:empty) {
-    margin-left: 10%;
-    margin-top: 15px;
     color: ${({ theme }): string => theme.color.red100};
     background: ${({ theme }): string => theme.color.red20};
     min-height: 44px;
@@ -24,7 +22,17 @@ const ErrorLine = styled.ul`
       height: 22px;
       margin-left: -16px;
     }
+
+    a {
+      color: ${({ theme }): string => theme.color.red100};
+      cursor: pointer;
+    }
   }
 `;
 
-export { ErrorLine };
+const ErrorLine = styled(SmallErrorHelper)`
+  margin-left: 10%;
+  margin-top: 15px;
+`;
+
+export { ErrorLine, SmallErrorHelper };

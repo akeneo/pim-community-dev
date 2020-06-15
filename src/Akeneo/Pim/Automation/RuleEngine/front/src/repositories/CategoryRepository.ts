@@ -9,7 +9,9 @@ export const getCategoriesByIdentifiers = async (
   router: Router
 ): Promise<{ [identifier: string]: Category | null }> => {
   if (categoryIdentifiers === undefined) {
-    throw new Error();
+    throw new Error(
+      'getCategoriesByIdentifiers cannot be called with undefined parameter'
+    );
   }
   const categoryIdentifiersToGet = categoryIdentifiers.filter(
     categoryIdentifier => {

@@ -25,6 +25,7 @@ import { Select2Wrapper } from '../../../../components/Select2Wrapper';
 import { CategorySelector } from '../../../../components/Selectors/CategorySelector';
 import { useFormContext } from 'react-hook-form';
 import { useRegisterConst } from '../../hooks/useRegisterConst';
+import { SmallErrorHelper } from '../style';
 
 type Props = {
   action: AddCategoriesAction;
@@ -63,6 +64,9 @@ const AddCategoriesActionLine: React.FC<Props> = ({
     categoryTreesWithSelectedCategoriesMap,
     setCategoryTreesWithSelectedCategoriesMap,
   ] = React.useState<Map<CategoryTreeModel, Category[]>>();
+  const [unexistingCategoryCodes, setUnexistingCategoryCodes] = React.useState<
+    CategoryCode[]
+  >([]);
 
   /**
    * Initialize the main object for this component. This object is a Map, having
@@ -72,16 +76,19 @@ const AddCategoriesActionLine: React.FC<Props> = ({
   const initializeCategoryTreesWithSelectedCategories = () => {
     const categoryTreesWithSelectedCategories = (
       categoryTrees.data || []
-    ).reduce((previousValue, categoryTree) => {
-      const categoriesData: Category[] = categories.data || [];
-      const matchingCategories = categoriesData.filter(
-        category => category.root === categoryTree.id
-      );
-      if (matchingCategories.length) {
-        previousValue.push([categoryTree, matchingCategories]);
-      }
-      return previousValue;
-    }, [] as any[]);
+    ).reduce<[CategoryTreeModel, Category[]][]>(
+      (previousValue, categoryTree) => {
+        const categoriesData: Category[] = categories.data || [];
+        const matchingCategories = categoriesData.filter(
+          category => category.root === categoryTree.id
+        );
+        if (matchingCategories.length) {
+          previousValue.push([categoryTree, matchingCategories]);
+        }
+        return previousValue;
+      },
+      []
+    );
 
     return new Map<CategoryTreeModel, Category[]>(
       categoryTreesWithSelectedCategories
@@ -90,26 +97,38 @@ const AddCategoriesActionLine: React.FC<Props> = ({
 
   const getSelectedCategories: () => CategoryCode[] = () => {
     if (!categoryTreesWithSelectedCategoriesMap) {
-      return [];
+      return unexistingCategoryCodes;
     }
-    return Array.from(categoryTreesWithSelectedCategoriesMap.entries()).reduce(
-      (previousValue, [_tree, categories]) => {
+    return Array.from(categoryTreesWithSelectedCategoriesMap.entries())
+      .reduce<CategoryCode[]>((previousValue, [_tree, categories]) => {
         return [
           ...previousValue,
           ...categories.map(category => category.code).sort(),
         ];
-      },
-      [] as CategoryCode[]
-    );
+      }, [])
+      .concat(unexistingCategoryCodes);
   };
 
   React.useEffect(() => {
-    register({ name: `content.actions[${lineNumber}].items` });
+    register(
+      { name: `content.actions[${lineNumber}].items` },
+      {
+        validate: () =>
+          unexistingCategoryCodes.length > 0
+            ? translate(
+                'pimee_catalog_rule.exceptions.unknown_categories',
+                { categoryCodes: unexistingCategoryCodes.join(', ') },
+                unexistingCategoryCodes.length
+              )
+            : true,
+      }
+    );
+  }, [unexistingCategoryCodes]);
+
+  React.useEffect(() => {
     setValue(
       `content.actions[${lineNumber}].items`,
-      formState.submitCount === 0
-        ? action.items
-        : control.defaultValuesRef?.current?.content?.actions[lineNumber]?.items
+      control.defaultValuesRef?.current?.content?.actions[lineNumber]?.items
     );
     return () => {
       unregister(`content.actions[${lineNumber}].items`);
@@ -119,11 +138,19 @@ const AddCategoriesActionLine: React.FC<Props> = ({
   React.useEffect(() => {
     getCategoriesByIdentifiers(action.items || [], router).then(
       indexedCategories => {
-        const categories = Object.values(indexedCategories);
-        const nonNullCategories = categories.filter(
-          category => category !== null
-        ) as Category[];
-        setCategories({ status: 'COMPLETE', data: nonNullCategories });
+        const existingCategories: Category[] = [];
+        const unexistingCategoryCodes: CategoryCode[] = [];
+        action.items.forEach(categoryCode => {
+          if (indexedCategories[categoryCode]) {
+            existingCategories.push(
+              indexedCategories[categoryCode] as Category
+            );
+          } else {
+            unexistingCategoryCodes.push(categoryCode);
+          }
+        });
+        setCategories({ status: 'COMPLETE', data: existingCategories });
+        setUnexistingCategoryCodes(unexistingCategoryCodes);
       }
     );
     getCategoriesTrees(setCategoriesTrees);
@@ -173,7 +200,7 @@ const AddCategoriesActionLine: React.FC<Props> = ({
   };
 
   const getNonSelectedCategoryTrees = () => {
-    const nonSelectedcategoryTrees = (categoryTrees.data || []).filter(
+    const nonSelectedCategoryTrees = (categoryTrees.data || []).filter(
       categoryTree => {
         return !Array.from(
           categoryTreesWithSelectedCategoriesMap.entries()
@@ -182,7 +209,7 @@ const AddCategoriesActionLine: React.FC<Props> = ({
         });
       }
     );
-    return nonSelectedcategoryTrees.map(categoryTree => {
+    return nonSelectedCategoryTrees.map(categoryTree => {
       return {
         id: categoryTree.id,
         text:
@@ -234,15 +261,23 @@ const AddCategoriesActionLine: React.FC<Props> = ({
     setValue(`content.actions[${lineNumber}].items`, getSelectedCategories());
   };
 
-  const handleCategoryTreeDelete = (
-    categoryTree: CategoryTreeModel,
-  ) => {
+  const handleCategoryTreeDelete = (categoryTree: CategoryTreeModel) => {
     categoryTreesWithSelectedCategoriesMap.delete(categoryTree);
     setCategoryTreesWithSelectedCategoriesMap(
       new Map(categoryTreesWithSelectedCategoriesMap)
-    )
+    );
     setValue(`content.actions[${lineNumber}].items`, getSelectedCategories());
-  }
+  };
+
+  const handleDeleteUnexistingAttributeCode = (
+    categoryCodeToDelete: CategoryCode
+  ) => {
+    setUnexistingCategoryCodes(
+      unexistingCategoryCodes.filter(
+        categoryCode => categoryCode !== categoryCodeToDelete
+      )
+    );
+  };
 
   const getCategoryCount: (
     categoryTree: CategoryTreeModel
@@ -252,7 +287,10 @@ const AddCategoriesActionLine: React.FC<Props> = ({
   };
 
   const getCurrentCategoryTreeOrDefault = () => {
-    if (currentCategoryTree && categoryTreesWithSelectedCategoriesMap.get(currentCategoryTree)) {
+    if (
+      currentCategoryTree &&
+      categoryTreesWithSelectedCategoriesMap.get(currentCategoryTree)
+    ) {
       return currentCategoryTree;
     }
 
@@ -261,7 +299,7 @@ const AddCategoriesActionLine: React.FC<Props> = ({
     }
 
     return null;
-  }
+  };
 
   return (
     <ActionTemplate
@@ -275,6 +313,29 @@ const AddCategoriesActionLine: React.FC<Props> = ({
         'pimee_catalog_rule.form.edit.actions.add_category.helper'
       )}
       handleDelete={handleDelete}>
+      <LineErrors lineNumber={lineNumber} type='actions' />
+      <SmallErrorHelper>
+        {unexistingCategoryCodes.map(unexistingCategoryCode => {
+          return (
+            <li key={unexistingCategoryCode}>
+              {translate(
+                'pimee_catalog_rule.exceptions.unknown_categories',
+                { categoryCodes: unexistingCategoryCode },
+                1
+              )}
+              <a
+                onClick={e => {
+                  e.preventDefault();
+                  handleDeleteUnexistingAttributeCode(unexistingCategoryCode);
+                }}>
+                {translate(
+                  'pimee_catalog_rule.form.edit.actions.add_category.remove_unknown_category'
+                )}
+              </a>
+            </li>
+          );
+        })}
+      </SmallErrorHelper>
       <ActionGrid>
         <ActionLeftSide>
           <div className='AknFormContainer'>
@@ -303,7 +364,6 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                           e.preventDefault();
                           setCurrentCategoryTree(categoryTree);
                         }}>
-                        {/* TODO Add DELETE */}
                         {categoryTree.labels[currentCatalogLocale] ||
                           `[${categoryTree.code}]`}
                         <span className='AknCategoryTreeSelector-helper'>
@@ -315,7 +375,8 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                             getCategoryCount(categoryTree)
                           )}
                         </span>
-                        <span className='AknCategoryTreeSelector-delete'
+                        <span
+                          className='AknCategoryTreeSelector-delete'
                           tabIndex={0}
                           onClick={() => handleCategoryTreeDelete(categoryTree)}
                           role='button'
@@ -328,7 +389,9 @@ const AddCategoriesActionLine: React.FC<Props> = ({
               {getNonSelectedCategoryTrees().length > 0 && (
                 <Select2Wrapper
                   multiple={false}
-                  label={'add-category-tree'}
+                  label={translate(
+                    'pimee_catalog_rule.form.edit.actions.add_category.category_tree'
+                  )}
                   onSelecting={(event: any) => {
                     event.preventDefault();
                     setCloseTick(!closeTick);
@@ -369,7 +432,10 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                         <CategorySelector
                           locale={currentCatalogLocale}
                           onDelete={() =>
-                            handleCategoryDelete(getCurrentCategoryTreeOrDefault() as CategoryTreeModel, i)
+                            handleCategoryDelete(
+                              getCurrentCategoryTreeOrDefault() as CategoryTreeModel,
+                              i
+                            )
                           }
                           onSelectCategory={categoryCode =>
                             handleCategorySelect(
@@ -379,7 +445,9 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                             )
                           }
                           selectedCategory={category}
-                          categoryTreeSelected={getCurrentCategoryTreeOrDefault() as CategoryTreeModel}
+                          categoryTreeSelected={
+                            getCurrentCategoryTreeOrDefault() as CategoryTreeModel
+                          }
                         />
                       </li>
                     );
@@ -387,11 +455,15 @@ const AddCategoriesActionLine: React.FC<Props> = ({
                 </ul>
                 <CategorySelector
                   locale={currentCatalogLocale}
-                  onDelete={() => {}}
                   onSelectCategory={categoryCode =>
-                    handleCategorySelect(categoryCode, getCurrentCategoryTreeOrDefault() as CategoryTreeModel)
+                    handleCategorySelect(
+                      categoryCode,
+                      getCurrentCategoryTreeOrDefault() as CategoryTreeModel
+                    )
                   }
-                  categoryTreeSelected={getCurrentCategoryTreeOrDefault() as CategoryTreeModel}
+                  categoryTreeSelected={
+                    getCurrentCategoryTreeOrDefault() as CategoryTreeModel
+                  }
                 />
               </>
             ) : (
@@ -404,7 +476,6 @@ const AddCategoriesActionLine: React.FC<Props> = ({
           </div>
         </ActionRightSide>
       </ActionGrid>
-      <LineErrors lineNumber={lineNumber} type='actions' />
     </ActionTemplate>
   );
 };

@@ -167,7 +167,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           value={attributeCode}
           onChange={setAttributeFormValue}
           placeholder={attributePlaceholder}
-          disabled={false}
+          disabled={!firstRefresh && null === attribute}
           validation={{
             required: translate(
               'pimee_catalog_rule.exceptions.required_attribute'

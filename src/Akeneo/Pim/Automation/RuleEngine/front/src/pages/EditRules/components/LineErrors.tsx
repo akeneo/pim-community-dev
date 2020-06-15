@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { ErrorLine } from './style';
+import { ErrorLine, SmallErrorHelper } from './style';
 
 type Props = {
   lineNumber: number;
@@ -15,6 +15,16 @@ const LineErrors: React.FC<Props> = ({ lineNumber, type }) => {
   const messages = Object.values(currentErrors).map(
     fieldError => fieldError.message
   );
+
+  if (type === 'actions') {
+    return (
+      <SmallErrorHelper>
+        {messages.map((message, i) => {
+          return <li key={i}>{message}</li>;
+        })}
+      </SmallErrorHelper>
+    );
+  }
 
   return (
     <ErrorLine>

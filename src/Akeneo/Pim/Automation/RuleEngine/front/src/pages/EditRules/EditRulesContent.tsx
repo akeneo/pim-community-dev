@@ -59,10 +59,9 @@ const EditRulesContent: React.FC<Props> = ({
     ruleDefinition,
     locales
   );
-  const [actionsState, setActionsState] = React.useState<(Action | null)[]>([]);
-  React.useEffect(() => {
-    setActionsState(ruleDefinition.actions);
-  }, []);
+  const [actionsState, setActionsState] = React.useState<(Action | null)[]>(
+    ruleDefinition.actions
+  );
 
   useEffect(() => {
     setIsDirty(formMethods.formState.dirty);

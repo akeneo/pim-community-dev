@@ -59,7 +59,7 @@ const CategoryPopover = styled(Popover)`
 
 type Props = {
   locale: LocaleCode;
-  onDelete: (categoryCode: CategoryCode) => void;
+  onDelete?: (categoryCode: CategoryCode) => void;
   onSelectCategory: (categoryCode: CategoryCode) => void;
   selectedCategory?: Category;
   categoryTreeSelected: CategoryTreeModel;
@@ -119,6 +119,12 @@ const CategorySelector: React.FC<Props> = ({
     );
   }, []);
 
+  const handleDelete = (categoryCode: CategoryCode) => {
+    if (onDelete) {
+      onDelete(categoryCode);
+    }
+  };
+
   return (
     <InputCategory>
       <PopoverDisclosure {...popover}>
@@ -158,9 +164,7 @@ const CategorySelector: React.FC<Props> = ({
             {getCategoryLabel(selectedCategory, locale)}
             <CategoryArtifactDelete
               tabIndex={0}
-              onClick={() => {
-                onDelete(selectedCategory.code);
-              }}
+              onClick={() => handleDelete(selectedCategory.code)}
               role='button'
             />
           </>

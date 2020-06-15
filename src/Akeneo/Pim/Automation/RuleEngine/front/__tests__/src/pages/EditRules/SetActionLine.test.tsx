@@ -127,9 +127,7 @@ describe('SetActionLine', () => {
     expect(valueInput).toBeInTheDocument();
     expect(valueInput).toHaveValue('This is the name');
     expect(
-      await findByText(
-        'Name pim_common.required_label'
-      )
+      await findByText('Name pim_common.required_label')
     ).toBeInTheDocument();
   });
 });
