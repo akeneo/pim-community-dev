@@ -8,13 +8,14 @@ const routing = require('routing');
 
 const EXECUTE_NAMING_CONVENTION_ACTUAL_ROUTE = '/ROUTE/TO/BE/CALLED';
 const EXECUTE_NAMING_CONVENTION_ROUTE_CODE = 'akeneo_asset_manager_asset_family_execute_naming_convention';
+const EXECUTE_NAMING_CONVENTION_ALL_ROUTE_CODE = 'akeneo_asset_manager_asset_family_execute_naming_convention_all';
 
 jest.mock('pim/router', () => {});
 jest.mock('pim/security-context', () => {}, {virtual: true});
 jest.mock('routing');
 jest.mock('akeneoassetmanager/infrastructure/tools/error-handler');
 
-describe('It executes naming convention', () => {
+describe('It executes naming convention for one asset', () => {
     it('It successfully executes a naming convention', async () => {
         const assetCode = 'user_manual.pdf';
         const assetFamilyIdentifier = 'notice';
@@ -31,7 +32,7 @@ describe('It executes naming convention', () => {
                 'assetCode': assetCode,
                 'assetFamilyIdentifier': assetFamilyIdentifier
             }
-        )
+        );
         expect(fetch.postJSON).toBeCalledWith(EXECUTE_NAMING_CONVENTION_ACTUAL_ROUTE, {})
     });
 
@@ -51,8 +52,47 @@ describe('It executes naming convention', () => {
                 'assetCode': assetCode,
                 'assetFamilyIdentifier': assetFamilyIdentifier
             }
-        )
-        expect(fetch.postJSON).toBeCalledWith(EXECUTE_NAMING_CONVENTION_ACTUAL_ROUTE, {})
+        );
+        expect(fetch.postJSON).toBeCalledWith(EXECUTE_NAMING_CONVENTION_ACTUAL_ROUTE, {});
         expect(handleError).toBeCalled();
     });
-})
+});
+
+describe('It executes naming convention for all assets', () => {
+    it('It successfully executes the naming convention for all assets', async () => {
+        const assetFamilyIdentifier = 'notice';
+        // @ts-ignore
+        routing.generate = jest.fn().mockImplementation(() => EXECUTE_NAMING_CONVENTION_ACTUAL_ROUTE);
+        // @ts-ignore
+        fetch.postJSON = jest.fn().mockImplementationOnce(() => Promise.resolve({}));
+
+        await namingConventionExecutor.executeAll(assetFamilyIdentifier);
+
+        expect(routing.generate).toBeCalledWith(
+            EXECUTE_NAMING_CONVENTION_ALL_ROUTE_CODE,
+            {
+                'assetFamilyIdentifier': assetFamilyIdentifier
+            }
+        );
+        expect(fetch.postJSON).toBeCalledWith(EXECUTE_NAMING_CONVENTION_ACTUAL_ROUTE, {})
+    });
+
+    it('It fails to execute the naming convention for all assets', async () => {
+        const assetFamilyIdentifier = 'notice';
+        // @ts-ignore
+        routing.generate = jest.fn().mockImplementation(() => EXECUTE_NAMING_CONVENTION_ACTUAL_ROUTE);
+        // @ts-ignore
+        fetch.postJSON = jest.fn().mockImplementationOnce(() => Promise.reject({}));
+
+        await namingConventionExecutor.executeAll(assetFamilyIdentifier);
+
+        expect(routing.generate).toBeCalledWith(
+            EXECUTE_NAMING_CONVENTION_ALL_ROUTE_CODE,
+            {
+                'assetFamilyIdentifier': assetFamilyIdentifier
+            }
+        );
+        expect(fetch.postJSON).toBeCalledWith(EXECUTE_NAMING_CONVENTION_ACTUAL_ROUTE, {});
+        expect(handleError).toBeCalled();
+    });
+});
