@@ -88,23 +88,12 @@ pim_enrich.entity.product:
       show_products: Produkte anzeigen
       show_groups: Gruppen anzeigen
       number_of_associations: "{{ productCount }} Produkt(e), {{ productModelCount }} Produktmodelle und {{ groupCount }} Gruppe(n)"
-      number_of_quantified_associations: "{{ productCount }} Produkt(e) und {{ productModelCount }} Produktmodell(e)"
       association_type_selector: Verbindungstyp
       target: Ziel
       manage: Fügen Sie {{ associationType }} Verbindungen hinzu
       manage_description: Wählen Sie die Produkte, die Sie mit dem Produkt "{{ productLabel }} " verknüpfen möchten
       mass_edit_description: Wählen Sie die Produkte, die Sie mit {{ productCount }} ausgewählten Produkt(en) verknüpfen möchten
       add_associations: Verbindungen hinzufügen
-      variant_products: Produktvarianten
-      quantified:
-        quantity: Quantität
-      search:
-        placeholder: In Label oder Bezeichner suchen
-      no_result: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
-      no_data: Es gibt keine verbundenen Produkte
-      remove: Verbindung entfernen
-      limit_reached: Sie können nicht mehr als {{ maxLimit }} Verbindungen zu diesem Produkt hinzufügen.
-      variant_updated: Sie haben eine Menge auf eine Variante aktualisiert, die Mengen werden nicht mehr synchronisiert.
     attribute_filter:
       display: Anzeige
       all: Alle Attribute
@@ -264,8 +253,6 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: Alle
-    price-collection:
-      operators:
     select:
       operators:
         IN: In Liste

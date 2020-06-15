@@ -4,6 +4,7 @@ namespace Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Tool\Component\Analytics\ApiConnectionCountQuery;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
 
@@ -21,6 +22,8 @@ use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
  * - max number of category levels
  * - number of product values
  * - average number of product values by product
+ * - email domains
+ * - number of api connection (tracked or not)
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -76,23 +79,27 @@ class DBDataCollector implements DataCollectorInterface
     /** @var EmailDomainsQuery */
     protected $emailDomains;
 
+    /** @var ApiConnectionCountQuery */
+    protected $apiConnectionCountQuery;
+
     public function __construct(
-        CountQuery        $channelCountQuery,
-        CountQuery        $productCountQuery,
-        CountQuery        $localeCountQuery,
-        CountQuery        $familyCountQuery,
-        CountQuery        $attributeCountQuery,
-        CountQuery        $userCountQuery,
-        CountQuery        $productModelCountQuery,
-        CountQuery        $variantProductCountQuery,
-        CountQuery        $categoryCountQuery,
-        CountQuery        $categoryTreeCountQuery,
-        AverageMaxQuery   $categoriesInOneCategoryAverageMax,
-        AverageMaxQuery   $categoryLevelsAverageMax,
-        CountQuery        $productValueCountQuery,
-        AverageMaxQuery   $productValueAverageMaxQuery,
-        AverageMaxQuery   $productValuePerFamilyAverageMaxQuery,
-        EmailDomainsQuery $emailDomains
+        CountQuery $channelCountQuery,
+        CountQuery $productCountQuery,
+        CountQuery $localeCountQuery,
+        CountQuery $familyCountQuery,
+        CountQuery $attributeCountQuery,
+        CountQuery $userCountQuery,
+        CountQuery $productModelCountQuery,
+        CountQuery $variantProductCountQuery,
+        CountQuery $categoryCountQuery,
+        CountQuery $categoryTreeCountQuery,
+        AverageMaxQuery $categoriesInOneCategoryAverageMax,
+        AverageMaxQuery $categoryLevelsAverageMax,
+        CountQuery $productValueCountQuery,
+        AverageMaxQuery $productValueAverageMaxQuery,
+        AverageMaxQuery $productValuePerFamilyAverageMaxQuery,
+        EmailDomainsQuery $emailDomains,
+        ApiConnectionCountQuery $apiConnectionCountQuery
     ) {
         $this->channelCountQuery = $channelCountQuery;
         $this->productCountQuery = $productCountQuery;
@@ -110,6 +117,7 @@ class DBDataCollector implements DataCollectorInterface
         $this->productValueAverageMaxQuery = $productValueAverageMaxQuery;
         $this->productValuePerFamilyAverageMaxQuery = $productValuePerFamilyAverageMaxQuery;
         $this->emailDomains = $emailDomains;
+        $this->apiConnectionCountQuery = $apiConnectionCountQuery;
     }
 
     /**
@@ -118,23 +126,24 @@ class DBDataCollector implements DataCollectorInterface
     public function collect()
     {
         return [
-            'nb_channels'                    => $this->channelCountQuery->fetch()->getVolume(),
-            'nb_locales'                     => $this->localeCountQuery->fetch()->getVolume(),
-            'nb_products'                    => $this->productCountQuery->fetch()->getVolume(),
-            'nb_product_models'              => $this->productModelCountQuery->fetch()->getVolume(),
-            'nb_variant_products'            => $this->variantProductCountQuery->fetch()->getVolume(),
-            'nb_families'                    => $this->familyCountQuery->fetch()->getVolume(),
-            'nb_attributes'                  => $this->attributeCountQuery->fetch()->getVolume(),
-            'nb_users'                       => $this->userCountQuery->fetch()->getVolume(),
-            'nb_categories'                  => $this->categoryCountQuery->fetch()->getVolume(),
-            'nb_category_trees'              => $this->categoryTreeCountQuery->fetch()->getVolume(),
-            'max_category_in_one_category'   => $this->categoriesInOneCategoryAverageMax->fetch()->getMaxVolume(),
-            'max_category_levels'            => $this->categoryLevelsAverageMax->fetch()->getMaxVolume(),
-            'nb_product_values'              => $this->productValueCountQuery->fetch()->getVolume(),
-            'avg_product_values_by_product'  => $this->productValueAverageMaxQuery->fetch()->getAverageVolume(),
-            'avg_product_values_by_family'  => $this->productValuePerFamilyAverageMaxQuery->fetch()->getAverageVolume(),
-            'max_product_values_by_family'  => $this->productValuePerFamilyAverageMaxQuery->fetch()->getMaxVolume(),
-            'email_domains' => $this->emailDomains->fetch()
+            'nb_channels' => $this->channelCountQuery->fetch()->getVolume(),
+            'nb_locales' => $this->localeCountQuery->fetch()->getVolume(),
+            'nb_products' => $this->productCountQuery->fetch()->getVolume(),
+            'nb_product_models' => $this->productModelCountQuery->fetch()->getVolume(),
+            'nb_variant_products' => $this->variantProductCountQuery->fetch()->getVolume(),
+            'nb_families' => $this->familyCountQuery->fetch()->getVolume(),
+            'nb_attributes' => $this->attributeCountQuery->fetch()->getVolume(),
+            'nb_users' => $this->userCountQuery->fetch()->getVolume(),
+            'nb_categories' => $this->categoryCountQuery->fetch()->getVolume(),
+            'nb_category_trees' => $this->categoryTreeCountQuery->fetch()->getVolume(),
+            'max_category_in_one_category' => $this->categoriesInOneCategoryAverageMax->fetch()->getMaxVolume(),
+            'max_category_levels' => $this->categoryLevelsAverageMax->fetch()->getMaxVolume(),
+            'nb_product_values' => $this->productValueCountQuery->fetch()->getVolume(),
+            'avg_product_values_by_product' => $this->productValueAverageMaxQuery->fetch()->getAverageVolume(),
+            'avg_product_values_by_family' => $this->productValuePerFamilyAverageMaxQuery->fetch()->getAverageVolume(),
+            'max_product_values_by_family' => $this->productValuePerFamilyAverageMaxQuery->fetch()->getMaxVolume(),
+            'email_domains' => $this->emailDomains->fetch(),
+            'api_connection' => $this->apiConnectionCountQuery->fetch(),
         ];
     }
 }

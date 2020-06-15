@@ -155,7 +155,7 @@ pim_enrich:
       remove: Supprimer les associations d'un produit
     job_tracker:
       index: Voir les processus exécutés
-      view_all_jobs: View all jobs in process tracker
+      view_all_jobs: Voir toutes les tâches dans le traqueur de processus
   acl_group:
     association_type: Types d'association
     attribute: Attributs

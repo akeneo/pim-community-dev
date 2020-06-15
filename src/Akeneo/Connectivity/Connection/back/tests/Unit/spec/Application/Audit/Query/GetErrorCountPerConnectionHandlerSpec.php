@@ -36,7 +36,7 @@ class GetErrorCountPerConnectionHandlerSpec extends ObjectBehavior
 
         $errorCountPerConnection = new ErrorCountPerConnection([
             new ErrorCount('erp', 11),
-            new ErrorCount('ecommerce', 21),
+            new ErrorCount('bynder', 21),
         ]);
         $selectErrorCountPerConnectionQuery->execute(ErrorTypes::BUSINESS, $fromDateTime, $upToDateTime)
             ->willReturn($errorCountPerConnection);

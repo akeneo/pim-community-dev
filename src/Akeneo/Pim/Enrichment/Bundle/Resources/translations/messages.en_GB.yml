@@ -80,3 +80,4 @@ tree:
   edit: Edit tree
   remove:
     error_linked: This category tree cannot be deleted, it is linked to a channel
+  create: Create a category tree
