@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormaliz
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -15,6 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -80,7 +82,10 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
         }
 
         $item = array_merge(
-            ['associations' => []],
+            [
+                'associations' => [],
+                'quantified_associations' => [],
+            ],
             $item
         );
 
@@ -114,6 +119,7 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
         }
 
         $violations = $this->validateAssociations($entity);
+        $violations->addAll($this->validateQuantifiedAssociations($entity));
         if ($violations && $violations->count() > 0) {
             $this->detach($entity);
             $this->skipItemWithConstraintViolations($item, $violations);
@@ -164,23 +170,25 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
     }
 
     /**
-     * @param EntityWithAssociationsInterface $product
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return ConstraintViolationListInterface|null
      */
-    protected function validateAssociations(EntityWithAssociationsInterface $product): ?ConstraintViolationListInterface
+    protected function validateAssociations(EntityWithAssociationsInterface $product): ConstraintViolationListInterface
     {
+        $violations = new ConstraintViolationList();
         $associations = $product->getAssociations();
         foreach ($associations as $association) {
-            $violations = $this->validator->validate($association);
-            if ($violations->count() > 0) {
-                return $violations;
-            }
+            $violations->addAll($this->validator->validate($association));
         }
 
-        return null;
+        return $violations;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    protected function validateQuantifiedAssociations(EntityWithQuantifiedAssociationsInterface $product): ConstraintViolationListInterface
+    {
+        return $this->validator->validate($product->getQuantifiedAssociations());
     }
 
     /**
@@ -196,25 +204,30 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
     }
 
     /**
-     * It there association(s) in new values ?
-     *
-     * @param array $item
-     *
-     * @return bool
+     * Is there association(s) in new values?
      */
     protected function hasAssociationToImport(array $item): bool
     {
-        if (!isset($item['associations'])) {
-            return false;
+        if (isset($item['associations'])) {
+            foreach ($item['associations'] as $association) {
+                $hasProductAssoc = isset($association['products']);
+                $hasGroupAssoc = isset($association['groups']);
+                $hasProductModelAssoc = isset($association['product_models']);
+
+                if ($hasProductAssoc || $hasGroupAssoc || $hasProductModelAssoc) {
+                    return true;
+                }
+            }
         }
 
-        foreach ($item['associations'] as $association) {
-            $hasProductAssoc = isset($association['products']);
-            $hasGroupAssoc = isset($association['groups']);
-            $hasProductModelAssoc = isset($association['product_models']);
+        if (isset($item['quantified_associations'])) {
+            foreach ($item['quantified_associations'] as $quantifiedAssociation) {
+                $hasProductAssoc = isset($quantifiedAssociation['products']);
+                $hasProductModelAssoc = isset($quantifiedAssociation['product_models']);
 
-            if ($hasProductAssoc || $hasGroupAssoc || $hasProductModelAssoc) {
-                return true;
+                if ($hasProductAssoc || $hasProductModelAssoc) {
+                    return true;
+                }
             }
         }
 

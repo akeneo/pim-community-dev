@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -30,14 +31,18 @@ final class GroupFieldClearer implements ClearerInterface
      */
     public function clear($entity, string $property, array $options = []): void
     {
+        if (!$entity instanceof ProductInterface) {
+            throw InvalidObjectException::objectExpected(
+                \is_object($entity) ? \get_class($entity) : \gettype($entity),
+                ProductInterface::class
+            );
+        }
+
         Assert::true(
             $this->supportsProperty($property),
             sprintf('The clearer does not handle the "%s" property.', $property)
         );
 
-        // Groups are only available for products, not product models.
-        if ($entity instanceof ProductInterface) {
-            $entity->getGroups()->clear();
-        }
+        $entity->getGroups()->clear();
     }
 }

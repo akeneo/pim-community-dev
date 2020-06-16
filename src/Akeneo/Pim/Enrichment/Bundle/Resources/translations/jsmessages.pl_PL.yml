@@ -88,23 +88,12 @@ pim_enrich.entity.product:
       show_products: Wyświetl produkty
       show_groups: Wyświetl grupy
       number_of_associations: "{{ productCount }} produkt(ów), {{ productModelCount }} model(i) produkt(ów) i {{ groupCount }} grup(a)"
-      number_of_quantified_associations: "{{ productCount }} product(s) and {{ productModelCount }} product model(s)"
       association_type_selector: Typ powiązania
       target: Cel
       manage: Dodaj {{ associationType }} powiązania
       manage_description: Wybierz produkty, które chcesz powiązać z produktem "{{ productLabel }}"
       mass_edit_description: Wybierz produkty, które chcesz powiązać z {{ productCount }} wybranymi produktami
       add_associations: Dodaj powiązania
-      variant_products: Variant products
-      quantified:
-        quantity: Quantity
-      search:
-        placeholder: Search on label or identifier
-      no_result: Sorry, there is no result for your search.
-      no_data: There are no associated products.
-      remove: Remove association
-      limit_reached: You cannot add more than {{ maxLimit }} associations to this product.
-      variant_updated: You have updated a quantity on a variant, the quantities will no longer be synchronized.
     attribute_filter:
       display: Wyświetl
       all: Wszystkie atrybuty
@@ -264,8 +253,6 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: Wszystkie
-    price-collection:
-      operators:
     select:
       operators:
         IN: Na liście

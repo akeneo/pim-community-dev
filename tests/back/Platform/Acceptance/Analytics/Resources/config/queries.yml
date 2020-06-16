@@ -1,3 +1,5 @@
 services:
     pim_analytics.query.email_domains:
         class: AkeneoTest\Platform\Acceptance\Analytics\Query\Sql\EmailDomainsInMemory
+    pim_analytics.query.api_connection_count:
+        class: AkeneoTest\Platform\Acceptance\Analytics\Query\Sql\ApiConnectionCountInMemory

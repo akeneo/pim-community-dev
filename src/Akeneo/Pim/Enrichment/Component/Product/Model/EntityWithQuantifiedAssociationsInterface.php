@@ -22,6 +22,11 @@ interface EntityWithQuantifiedAssociationsInterface
     public function setQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void;
 
     /**
+     * Get the quantified associations
+     */
+    public function getQuantifiedAssociations(): QuantifiedAssociations;
+
+    /**
      * Get all associated product ids
      *
      * @return int[]

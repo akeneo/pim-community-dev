@@ -3,3 +3,8 @@ services:
         class: Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\EmailDomains
         arguments:
             - '@database_connection'
+
+    pim_analytics.query.api_connection_count:
+        class: Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\ApiConnectionCount
+        arguments:
+            - '@database_connection'

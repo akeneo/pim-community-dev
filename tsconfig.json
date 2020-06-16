@@ -18,7 +18,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "removeComments": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
   "include": [
     "public/bundles",

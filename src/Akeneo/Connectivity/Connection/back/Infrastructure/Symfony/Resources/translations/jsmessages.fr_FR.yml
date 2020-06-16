@@ -171,7 +171,7 @@ akeneo_connectivity.connection:
       data_source_error_chart:
         section:
           title: Erreurs sur les connexions sources
-          helper: Here you can see the total number of errors, including business errors.
+          helper: Ici vous pouvez voir le nombre total d'erreurs, y compris les erreurs métier.
         chart:
           title: Nombre d'erreurs par jour
       widget:
@@ -205,7 +205,7 @@ akeneo_connectivity.connection:
       no_error:
         title: Génial ! Aucune erreur trouvée !
       not_auditable:
-        title: Unmonitored connection
+        title: Connexion non suivie
         description:
           1: Pour suivre les erreurs de cette connexion,
           2: activer la surveillance

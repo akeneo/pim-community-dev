@@ -107,7 +107,7 @@ WITH
             product_model.created,
             root_product_model.code AS parent_code,
             GREATEST(product_model.updated, COALESCE(root_product_model.updated, 0)) as updated,
-            JSON_MERGE_PRESERVE(COALESCE(root_product_model.raw_values, '{}'), COALESCE(product_model.raw_values, '{}')) AS raw_values,
+            JSON_MERGE_PATCH(COALESCE(root_product_model.raw_values, '{}'), COALESCE(product_model.raw_values, '{}')) AS raw_values,
             family.code AS family_code,
             family_variant.code AS family_variant_code,
             product_model.parent_id,

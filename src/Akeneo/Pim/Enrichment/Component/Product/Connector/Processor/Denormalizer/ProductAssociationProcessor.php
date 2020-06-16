@@ -13,6 +13,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -78,7 +79,10 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
         }
 
         $item = array_merge(
-            ['associations' => []],
+            [
+                'associations' => [],
+                'quantified_associations' => [],
+            ],
             $item
         );
 
@@ -112,6 +116,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
         }
 
         $violations = $this->validateProductAssociations($product);
+        $violations->addAll($this->validateProductQuantifiedAssociations($product));
         if ($violations && $violations->count() > 0) {
             $this->detachProduct($product);
             $this->skipItemWithConstraintViolations($item, $violations);
@@ -160,23 +165,25 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
     }
 
     /**
-     * @param ProductInterface $product
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return ConstraintViolationListInterface|null
      */
-    protected function validateProductAssociations(ProductInterface $product)
+    protected function validateProductAssociations(ProductInterface $product): ConstraintViolationListInterface
     {
+        $violations = new ConstraintViolationList();
         $associations = $product->getAssociations();
         foreach ($associations as $association) {
-            $violations = $this->validator->validate($association);
-            if ($violations->count() > 0) {
-                return $violations;
-            }
+            $violations->addAll($this->validator->validate($association));
         }
 
-        return null;
+        return $violations;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    protected function validateProductQuantifiedAssociations(ProductInterface $product): ConstraintViolationListInterface
+    {
+        return $this->validator->validate($product->getQuantifiedAssociations());
     }
 
     /**
@@ -192,25 +199,30 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
     }
 
     /**
-     * It there association(s) in new values ?
-     *
-     * @param array $item
-     *
-     * @return bool
+     * Is there association(s) in new values?
      */
-    protected function hasAssociationToImport(array $item)
+    protected function hasAssociationToImport(array $item): bool
     {
-        if (!isset($item['associations'])) {
-            return false;
+        if (isset($item['associations'])) {
+            foreach ($item['associations'] as $association) {
+                $hasProductAssoc = isset($association['products']);
+                $hasGroupAssoc = isset($association['groups']);
+                $hasProductModelAssoc = isset($association['product_models']);
+
+                if ($hasProductAssoc || $hasGroupAssoc || $hasProductModelAssoc) {
+                    return true;
+                }
+            }
         }
 
-        foreach ($item['associations'] as $association) {
-            $hasProductAssoc = isset($association['products']);
-            $hasGroupAssoc = isset($association['groups']);
-            $hasProductModelAssoc = isset($association['product_models']);
+        if (isset($item['quantified_associations'])) {
+            foreach ($item['quantified_associations'] as $quantifiedAssociation) {
+                $hasProductAssoc = isset($quantifiedAssociation['products']);
+                $hasProductModelAssoc = isset($quantifiedAssociation['product_models']);
 
-            if ($hasProductAssoc || $hasGroupAssoc || $hasProductModelAssoc) {
-                return true;
+                if ($hasProductAssoc || $hasProductModelAssoc) {
+                    return true;
+                }
             }
         }
 

@@ -38,12 +38,19 @@ class FieldConverter implements FieldConverterInterface
     public function convert(string $fieldName, $value): ConvertedField
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
+        $quantifiedAssociationFields = $this->assocFieldResolver->resolveQuantifiedIdentifierAssociationColumns();
 
         if (in_array($fieldName, $associationFields)) {
             $value = $this->fieldSplitter->splitCollection($value);
             list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
 
             return new ConvertedField('associations', [$associationTypeCode => [$associatedWith => $value]]);
+        } elseif (in_array($fieldName, $quantifiedAssociationFields)) {
+            list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
+
+            return new ConvertedField('quantified_associations', [$associationTypeCode => [$associatedWith => $value]]);
+        } elseif (in_array($fieldName, $this->assocFieldResolver->resolveQuantifiedQuantityAssociationColumns())) {
+            return new ConvertedField($fieldName, $value);
         }
 
         if ('categories' === $fieldName) {
@@ -66,7 +73,9 @@ class FieldConverter implements FieldConverterInterface
     public function supportsColumn($fieldName): bool
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
-        $fields = array_merge(self::PRODUCT_MODEL_FIELDS, $associationFields);
+        $quantifiedAssociationFields = $this->assocFieldResolver->resolveQuantifiedAssociationColumns();
+
+        $fields = array_merge(self::PRODUCT_MODEL_FIELDS, $associationFields, $quantifiedAssociationFields);
 
         return in_array($fieldName, $fields);
     }
