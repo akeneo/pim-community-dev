@@ -5,7 +5,7 @@ import {
   NumberAttributeOperators,
 } from '../../../../models/conditions';
 import { ConditionLineProps } from './ConditionLineProps';
-import { InputText } from '../../../../components/Inputs';
+import { InputNumber } from '../../../../components/Inputs';
 import { AttributeConditionLine } from './AttributeConditionLine';
 import {
   useBackboneRouter,
@@ -44,13 +44,14 @@ const NumberAttributeConditionLine: React.FC<NumberAttributeConditionLineProps> 
       scopes={scopes}
       availableOperators={NumberAttributeOperators}
       attribute={attribute}>
-      <InputText
+      <InputNumber
         data-testid={`edit-rules-input-${lineNumber}-value`}
         name={`content.conditions[${lineNumber}].value`}
         label={translate('pimee_catalog_rule.rule.value')}
         ref={register()}
         hiddenLabel={true}
         defaultValue={condition.value}
+        step={attribute?.decimals_allowed ? 'any' : 1}
       />
     </AttributeConditionLine>
   );
