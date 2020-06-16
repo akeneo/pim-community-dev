@@ -57,7 +57,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
     And I should see the text "conditions[0]: Property \"name\" expects a string as data, \"integer\" given."
-    And I should see the text "actions[0]: Property \"name\" expects a string as data, \"integer\" given."
+    And I should see the text "actions[0]: The name attribute requires a string, a integer was detected."
     When I am on the "name" attribute page
     And I visit the "Rules" tab
     Then I should see the text "Super Name"
