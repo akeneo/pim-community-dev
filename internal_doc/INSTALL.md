@@ -86,7 +86,7 @@ elasticsearch:
 EOF
 ```
 
-#### 4. Apply
+### 4. Apply
 
 ```bash
 terraform init -upgrade
