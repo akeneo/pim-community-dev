@@ -5,6 +5,7 @@
 - PIM-9301: Fix extractUpdatedProductsByConnection query group by issue
 - PIM-9294: Fix removal of a validation rule in text attribute edit form
 - PIM-9279: Fix missing required attributes display in PEF when an attribute option was deleted
+- PIM-9308: Fix infinite scroll in the view selector when some views are filtered
 
 # 4.0.33 (2020-06-11)
 
