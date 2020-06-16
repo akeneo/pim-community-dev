@@ -89,6 +89,7 @@ const ColoredParameters = styled.span`
 const ErrorContentKeyCell = styled.th`
     text-align: left;
     font-weight: normal;
+    white-space: pre-wrap;
 `;
 
 export {ErrorMessageCell};
