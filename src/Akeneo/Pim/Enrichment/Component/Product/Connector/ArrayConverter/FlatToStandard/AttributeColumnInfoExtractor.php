@@ -46,7 +46,7 @@ class AttributeColumnInfoExtractor
         IdentifiableObjectRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
-        AssociationColumnsResolver $assoColumnResolver = null
+        AssociationColumnsResolver $assoColumnResolver
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->channelRepository   = $channelRepository;
@@ -76,8 +76,9 @@ class AttributeColumnInfoExtractor
      */
     public function extractColumnInfo($fieldName)
     {
-        if ($this->assoColumnResolver &&
-            in_array($fieldName, $this->assoColumnResolver->resolveAssociationColumns())
+        if (
+            in_array($fieldName, $this->assoColumnResolver->resolveAssociationColumns()) ||
+            in_array($fieldName, $this->assoColumnResolver->resolveQuantifiedAssociationColumns())
         ) {
             $this->excludedFieldNames[] = $fieldName;
         }

@@ -82,7 +82,6 @@ pim_enrich.entity.association_type:
   label: type d'association
   property:
     is_two_way: Association bi-directionnelle
-    is_quantified: Association avec la quantité
   flash:
     update:
       success: Le type d'association a été mis à jour avec succès.
@@ -99,10 +98,6 @@ pim_enrich.entity.association_type:
     create:
       title: Créer un nouveau type d'association
       button: Créer un type d'association
-      is_two_way:
-        message_on_read_only: Le type d'association peut être quantifié ou bidirectionnel, pour sélectionner celui-ci, décocher l'autre
-      is_quantified:
-        message_on_read_only: Le type d'association peut être quantifié ou bidirectionnel, pour sélectionner celui-ci, décocher l'autre
     delete:
       confirm: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
   hint: <a href="{{link}}" target="_blank">Dans cet article</a>, vous trouverez tout ce dont vous avez besoin pour créer votre propre type d'association.

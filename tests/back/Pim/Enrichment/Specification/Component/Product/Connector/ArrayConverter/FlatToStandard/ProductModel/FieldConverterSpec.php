@@ -32,6 +32,8 @@ class FieldConverterSpec extends ObjectBehavior
     function it_converts_an_association($assocFieldResolver, $fieldSplitter)
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn(['X_SELL-groups']);
+        $assocFieldResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn([]);
+        $assocFieldResolver->resolveQuantifiedQuantityAssociationColumns()->willReturn([]);
         $fieldSplitter->splitFieldName('X_SELL-groups')->willReturn(['X_SELL', 'groups']);
         $fieldSplitter->splitCollection('group1,group2')->willReturn(['group1', 'group2']);
 
@@ -42,6 +44,8 @@ class FieldConverterSpec extends ObjectBehavior
     function it_converts_categories($assocFieldResolver, $fieldSplitter)
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn([]);
+        $assocFieldResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn([]);
+        $assocFieldResolver->resolveQuantifiedQuantityAssociationColumns()->willReturn([]);
         $fieldSplitter->splitCollection('dry,wet')->willReturn(['dry', 'wet']);
         $this->convert('categories', 'dry,wet')->shouldBeLike(new ConvertedField('categories', ['dry', 'wet']));
     }
@@ -49,6 +53,8 @@ class FieldConverterSpec extends ObjectBehavior
     function it_converts_other_field($assocFieldResolver)
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn([]);
+        $assocFieldResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn([]);
+        $assocFieldResolver->resolveQuantifiedQuantityAssociationColumns()->willReturn([]);
         $this->convert('family_variant', 'family_variant')
             ->shouldBeLike(new ConvertedField('family_variant', 'family_variant'));
     }
@@ -56,6 +62,8 @@ class FieldConverterSpec extends ObjectBehavior
     function it_converts_the_value_of_the_other_fields_to_a_string($assocFieldResolver, $fieldSplitter)
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn([]);
+        $assocFieldResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn([]);
+        $assocFieldResolver->resolveQuantifiedQuantityAssociationColumns()->willReturn([]);
         $this->convert('family_variant', 123456)
             ->shouldBeLike(new ConvertedField('family_variant', '123456'));
 
@@ -69,6 +77,7 @@ class FieldConverterSpec extends ObjectBehavior
     function it_only_converts_a_specific_column($assocFieldResolver)
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn(['upsell']);
+        $assocFieldResolver->resolveQuantifiedAssociationColumns()->willReturn(['pack']);
 
         $this->supportsColumn('parent')->shouldReturn(true);
         $this->supportsColumn('code')->shouldReturn(true);

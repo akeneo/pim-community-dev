@@ -20,6 +20,8 @@ class AssociationColumnsResolverSpec extends ObjectBehavior
     ) {
         $assocType1->getCode()->willReturn("ASSOC_TYPE_1");
         $assocType2->getCode()->willReturn("ASSOC_TYPE_2");
+        $assocType1->isQuantified()->willReturn(false);
+        $assocType2->isQuantified()->willReturn(false);
         $assocTypeRepo->findAll()->willReturn([$assocType1, $assocType2]);
         $this->resolveAssociationColumns()->shouldReturn(
             [
@@ -29,6 +31,30 @@ class AssociationColumnsResolverSpec extends ObjectBehavior
                 "ASSOC_TYPE_2-groups",
                 "ASSOC_TYPE_2-products",
                 "ASSOC_TYPE_2-product_models",
+            ]
+        );
+    }
+
+    function it_resolves_quantified_association_type_field_names(
+        $assocTypeRepo,
+        AssociationTypeInterface $assocType1,
+        AssociationTypeInterface $assocType2
+    ) {
+        $assocType1->getCode()->willReturn("ASSOC_TYPE_1");
+        $assocType2->getCode()->willReturn("ASSOC_TYPE_2");
+        $assocType1->isQuantified()->willReturn(true);
+        $assocType2->isQuantified()->willReturn(true);
+        $assocTypeRepo->findAll()->willReturn([$assocType1, $assocType2]);
+        $this->resolveQuantifiedAssociationColumns()->shouldReturn(
+            [
+                "ASSOC_TYPE_1-products",
+                "ASSOC_TYPE_1-product_models",
+                "ASSOC_TYPE_2-products",
+                "ASSOC_TYPE_2-product_models",
+                "ASSOC_TYPE_1-products-quantity",
+                "ASSOC_TYPE_1-product_models-quantity",
+                "ASSOC_TYPE_2-products-quantity",
+                "ASSOC_TYPE_2-product_models-quantity",
             ]
         );
     }
