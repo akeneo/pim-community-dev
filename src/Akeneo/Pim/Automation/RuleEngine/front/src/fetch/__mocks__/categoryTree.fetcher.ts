@@ -1,5 +1,7 @@
 const fetchRootCategoryTrees = jest.fn(() => [
   { code: 'master', id: 1, labels: { en_US: 'master' }, parent: null },
+  { code: 'sales', id: 200, labels: { en_US: 'sales' }, parent: null },
+  { code: 'marketing', id: 300, labels: { en_US: 'marketing' }, parent: null },
 ]);
 
 const fetchCategoryTree = jest.fn(() => ({

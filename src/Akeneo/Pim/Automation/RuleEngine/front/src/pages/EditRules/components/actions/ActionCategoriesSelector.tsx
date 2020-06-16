@@ -339,6 +339,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                   return (
                     <li key={categoryTree.code}>
                       <button
+                        data-testid={`category-tree-selector-${categoryTree.code}`}
                         className={`AknTextField AknCategoryTreeSelector${
                           getCurrentCategoryTreeOrDefault() === categoryTree
                             ? ' AknCategoryTreeSelector--selected'
@@ -372,6 +373,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
               )}
               {getNonSelectedCategoryTrees().length > 0 && (
                 <Select2Wrapper
+                  data-testid='category-tree-selector-new'
                   multiple={false}
                   label={translate(
                     'pimee_catalog_rule.form.edit.actions.category.category_tree'
@@ -414,6 +416,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                     return (
                       <li key={category.code}>
                         <CategorySelector
+                          data-testid={`category-selector-${category.code}`}
                           locale={currentCatalogLocale}
                           onDelete={() =>
                             handleCategoryDelete(
@@ -438,6 +441,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                   })}
                 </ul>
                 <CategorySelector
+                  data-testid='category-selector-new'
                   locale={currentCatalogLocale}
                   onSelectCategory={categoryCode =>
                     handleCategorySelect(

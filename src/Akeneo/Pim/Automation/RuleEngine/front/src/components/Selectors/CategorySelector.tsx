@@ -71,6 +71,7 @@ const CategorySelector: React.FC<Props> = ({
   onSelectCategory,
   locale,
   categoryTreeSelected,
+  ...remainingProps
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
@@ -158,7 +159,10 @@ const CategorySelector: React.FC<Props> = ({
           )}
         </ContainerCategoryTree>
       </CategoryPopover>
-      <CategoryArtifact className='AknTextField'>
+      <CategoryArtifact
+        {...remainingProps}
+        className='AknTextField'
+        >
         {selectedCategory ? (
           <>
             {getCategoryLabel(selectedCategory, locale)}

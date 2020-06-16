@@ -7,7 +7,7 @@ import {
 
 const cacheAttributes: { [identifier: string]: Attribute | null } = {};
 
-export const clearCache = () => {
+export const clearAttributeRepositoryCache = () => {
   for (const key in cacheAttributes) {
     delete cacheAttributes[key];
   }
