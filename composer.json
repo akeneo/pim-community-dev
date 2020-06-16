@@ -52,7 +52,7 @@
     },
     "require": {
         "akeneo/pim-community-dev": "dev-master",
-        "akeneo/pim-onboarder": "dev-TIP-1412@dev",
+        "akeneo/pim-onboarder": "^4.1",
         "guzzlehttp/guzzle": "6.3.3",
         "hslavich/oneloginsaml-bundle": "1.4.1",
         "justinrainbow/json-schema": "^5.2",
