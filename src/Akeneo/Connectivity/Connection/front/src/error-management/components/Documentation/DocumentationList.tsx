@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '../../../common/styled-with-theme';
-import {Documentation} from '../../model/ConnectionError';
+import {Documentation, DocumentationStyleInformation, DocumentationStyleText} from '../../model/ConnectionError';
 import {DocumentationMessage} from './DocumentationMessage';
 
 type Props = {
@@ -8,18 +8,16 @@ type Props = {
 };
 
 export const DocumentationList = ({documentations}: Props) => {
-    // TODO: change when 'DocumentationMessageType' will be available.
     const checkDocumentations = documentations
-        .filter((documentation, i) => i < documentations.length)
+        .filter(documentation => documentation.style === DocumentationStyleText)
         .map((documentation, i) => (
             <div key={i}>
                 <DocumentationMessage documentation={documentation} />
             </div>
         ));
 
-    // TODO: change when 'DocumentationMessageType' will be available.
     const moreInformationDocumentations = documentations
-        .filter((documentation, i) => i >= documentations.length)
+        .filter(documentation => documentation.style === DocumentationStyleInformation)
         .map((documentation, i) => (
             <div key={i}>
                 <DocumentationMessage documentation={documentation} />
@@ -36,4 +34,5 @@ export const DocumentationList = ({documentations}: Props) => {
 
 const MoreInformationHelper = styled.div`
     padding-top: 10px;
+    color: ${({theme}) => theme.color.grey100};
 `;

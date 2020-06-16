@@ -1,5 +1,7 @@
 export const HrefType = 'href';
 export const RouteType = 'route';
+export const DocumentationStyleText = 'text';
+export const DocumentationStyleInformation = 'information';
 
 export type HrefParameter = {
     type: typeof HrefType;
@@ -23,6 +25,7 @@ export type MessageParameters = {
 export type Documentation = {
     message: string;
     parameters: MessageParameters;
+    style: string;
 };
 
 export type Product = {

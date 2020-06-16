@@ -2,7 +2,7 @@ import React from 'react';
 import {Typography} from '../../../common';
 import {InfoIcon} from '../../../common/icons';
 import styled from '../../../common/styled-with-theme';
-import {Documentation, HrefType, RouteType} from '../../model/ConnectionError';
+import {Documentation, DocumentationStyleInformation, HrefType, RouteType} from '../../model/ConnectionError';
 import {RouteDocumentationMessageParameter} from './RouteDocumentationMessageParameter';
 
 type Props = {
@@ -12,17 +12,7 @@ type Props = {
 export const DocumentationMessage = ({documentation}: Props) => {
     const constructedMessage = documentation.message.split(/({[^{}]+})/).map((messagePart: string, i) => {
         const isNeedle = new RegExp(/^{([^{}]+)}$/);
-        // TODO: change when 'DocumentationMessageType' will be available.
         if (!isNeedle.test(messagePart)) {
-            if (-1 !== messagePart.search('More information about')) {
-                return (
-                    <InfoMessage key={i}>
-                        <InfoImg />
-                        {messagePart}
-                    </InfoMessage>
-                );
-            }
-
             return <Message key={i}>{messagePart}</Message>;
         }
 
@@ -40,22 +30,33 @@ export const DocumentationMessage = ({documentation}: Props) => {
         switch (messageParameter.type) {
             case HrefType:
                 return (
-                    <Typography.Link key={i} href={messageParameter.href} target='_blank'>
+                    <DocLink key={i} href={messageParameter.href} target='_blank'>
                         {messageParameter.title}
-                    </Typography.Link>
+                    </DocLink>
                 );
             case RouteType:
                 return <RouteDocumentationMessageParameter key={i} routeParam={messageParameter} />;
         }
     });
-    return <>{constructedMessage}</>;
-};
-const Message = styled.span`
-    color: ${({theme}) => theme.color.grey140};
-`;
 
-const InfoMessage = styled.span`
-    color: ${({theme}) => theme.color.grey100};
+    return (
+        <>
+            {DocumentationStyleInformation === documentation.style ? (
+                <Message>
+                    <InfoImg />
+                    {constructedMessage}
+                </Message>
+            ) : (
+                <Message>{constructedMessage}</Message>
+            )}
+        </>
+    );
+};
+
+const Message = styled.span``;
+
+const DocLink = styled(Typography.Link)`
+    color: ${({theme}) => theme.color.blue100};
 `;
 
 const InfoImg = styled(InfoIcon)`

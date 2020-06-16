@@ -42,9 +42,9 @@ const ErrorMessageCell: FC<Props> = ({content}) => {
             {'domain_error' === content?.type &&
             'string' === typeof content?.message_template &&
             null !== content?.message_parameters ? (
-                <ErrorContentRow>
+                <ErrorMessage>
                     {messageWithColoredParameters(content?.message_template, content.message_parameters)}
-                </ErrorContentRow>
+                </ErrorMessage>
             ) : (
                 <table>
                     <tbody>
@@ -60,10 +60,10 @@ const ErrorMessageCell: FC<Props> = ({content}) => {
                             )
                             .map(([key, value], i) => {
                                 return (
-                                    <ErrorContentRow key={i}>
-                                        <ErrorContentKeyCell>{key}</ErrorContentKeyCell>
-                                        <td>: {JSON.stringify(value)}</td>
-                                    </ErrorContentRow>
+                                    <ErrorLine key={i}>
+                                        <ErrorKey>{key}</ErrorKey>
+                                        <ErrorValue>: {JSON.stringify(value)}</ErrorValue>
+                                    </ErrorLine>
                                 );
                             })}
                     </tbody>
@@ -78,17 +78,23 @@ const Container = styled(TableCell)`
     color: ${({theme}) => theme.color.grey140};
 `;
 
-const ErrorContentRow = styled.div`
+const ErrorMessage = styled.div`
     line-height: ${({theme}) => theme.fontSize.default};
+    font-weight: bold;
 `;
 
 const ColoredParameters = styled.span`
     color: ${({theme}) => theme.color.red100};
 `;
 
-const ErrorContentKeyCell = styled.th`
+const ErrorLine = styled.tr``;
+
+const ErrorKey = styled.th`
     text-align: left;
     font-weight: normal;
+    white-space: pre-wrap;
 `;
+
+const ErrorValue = styled.td``;
 
 export {ErrorMessageCell};
