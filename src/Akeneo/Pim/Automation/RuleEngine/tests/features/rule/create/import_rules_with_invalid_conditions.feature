@@ -553,7 +553,7 @@ Feature: Import rules
                   scope: tablet
     """
     Then an exception with message "conditions[0]: Property \"number_in_stock\" expects a numeric as data, \"string\" given." has been thrown
-    And an exception with message "actions[0]: This value should be a valid number." has been thrown
+    And an exception with message "actions[0]: The number_in_stock attribute requires a number, and the submitted invalid value is not." has been thrown
     And the rule list contains the rules:
       """
       sony_beautiful_description:
