@@ -9,13 +9,13 @@
   },
   "scripts": {
     "requirements": "node $npm_package_config_source/frontend/build/check-requirements.js",
-    "webpack": "yarn requirements && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
-    "webpack-dev": "yarn requirements && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
-    "webpack-watch": "yarn requirements && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch --strict",
+    "webpack": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
+    "webpack-dev": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
+    "webpack-watch": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch --strict",
     "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
     "before-commit": "yarn prettier && yarn lint && yarn test",
     "test": "yarn unit && yarn webpack-test --env=prod && yarn integration && yarn acceptance tests/features",
-    "webpack-test": "webpack --config webpack-test.config.js",
+    "webpack-test": "yarn generate-models && webpack --config webpack-test.config.js",
     "lint": "eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet",
     "lint-fix": "yarn run lint --fix",
     "unit": "jest --no-cache --config tests/front/unit/jest/unit.jest.js --runInBand",
@@ -24,7 +24,8 @@
     "acceptance-html-report": "yarn acceptance ./tests/features/ -f json:public/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
     "less": "node $npm_package_config_styles",
     "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,public/bundles}/**/*.{less,css}\" -c \"yarn run less --dev\"",
-    "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js"
+    "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
+    "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models"
   },
   "repository": {
     "type": "git",
@@ -103,6 +104,7 @@
     "yamljs": "0.3.0"
   },
   "dependencies": {
+    "ajv": "^6.10.2",
     "babel-polyfill": "6.26.0",
     "backbone": "0.9.10",
     "css-loader": "^3.3.0",
@@ -110,11 +112,14 @@
     "dropzone": "4.0.1",
     "formik": "^2.0.6",
     "jquery": "3.4.0",
+    "json-schema-ref-parser": "^7.1.2",
+    "json-schema-to-typescript": "^7.1.0",
     "less": "^3.9.0",
     "lodash": "^4.17.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-hook-form": "^5.2.0",
+    "react-markdown": "^4.3.1",
     "react-router-dom": "^5.1.0",
     "reakit": "^1.0.0-rc.0",
     "style-loader": "^1.0.1",
@@ -130,6 +135,7 @@
   "workspaces": [
     "src/Akeneo/Connectivity/Connection/front",
     "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
-    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared"
+    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared",
+    "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/Resources/workspaces/communication-channel"
   ]
 }

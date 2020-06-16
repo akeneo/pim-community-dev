@@ -37,6 +37,9 @@ const dependencies = {
   security: {
     isGranted: jest.fn((acl: boolean) => acl),
   },
+  mediator: {
+    trigger: jest.fn((event: string) => event),
+  },
 };
 
 export {dependencies};
