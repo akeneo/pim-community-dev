@@ -48,7 +48,7 @@ class RouteMessageParameter implements MessageParameterInterface
      * @return array{
      *  type: MessageParameterTypes::ROUTE,
      *  route: string,
-     *  routeParameters: array<string, string>,
+     *  routeParameters: array<string, mixed>,
      *  title: string
      * }
      */
