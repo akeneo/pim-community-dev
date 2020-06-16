@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -20,7 +21,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormaliz
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -31,7 +31,6 @@ use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
@@ -56,7 +55,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
         CompletenessCalculator $completenessCalculator,
-        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -78,7 +78,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             $parentAssociationsNormalizer,
             $catalogContext,
             $completenessCalculator,
-            $missingRequiredAttributesNormalizer
+            $missingRequiredAttributesNormalizer,
+            $missingRequiredAttributesCalculator
         );
     }
 
@@ -101,8 +102,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         UserContext $userContext,
         FillMissingValuesInterface $fillMissingProductValues,
         MissingAssociationAdder $missingAssociationAdder,
-        CompletenessCalculator $completenessCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -187,7 +188,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $group->getId()->willReturn(12);
 
         $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(12, []);
-        $completenessCalculator->fromProductIdentifier('mug')->willReturn($productCompletenessWithMissingAttributeCodesCollection);
+        $missingRequiredAttributesCalculator->fromEntityWithFamily($mug)->willReturn($productCompletenessWithMissingAttributeCodesCollection);
         $completenessCollectionNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
                                          ->willReturn(['normalized_completenesses']);
         $missingRequiredAttributesNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
@@ -257,8 +258,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         VariantNavigationNormalizer $navigationNormalizer,
         AscendantCategoriesInterface $ascendantCategories,
         MissingAssociationAdder $missingAssociationAdder,
-        CompletenessCalculator $completenessCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -350,7 +351,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $group->getId()->willReturn(12);
 
         $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(12, []);
-        $completenessCalculator->fromProductIdentifier('mug')->willReturn($productCompletenessWithMissingAttributeCodesCollection);
+        $missingRequiredAttributesCalculator->fromEntityWithFamily($mug)->willReturn($productCompletenessWithMissingAttributeCodesCollection);
         $completenessCollectionNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)->willReturn([]);
         $missingRequiredAttributesNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)->willReturn([]);
 
