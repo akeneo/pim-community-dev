@@ -10,10 +10,10 @@ const TYPE = 'pim_catalog_number';
 const NumberAttributeOperators = [
   Operator.EQUALS,
   Operator.NOT_EQUAL,
-  Operator.LESS,
-  Operator.LESS_OR_EQUAL,
-  Operator.MORE,
-  Operator.MORE_OR_EQUAL,
+  Operator.LOWER_THAN,
+  Operator.LOWER_OR_EQUAL_THAN,
+  Operator.GREATER_THAN,
+  Operator.GREATER_OR_EQUAL_THAN,
   Operator.IS_EMPTY,
   Operator.IS_NOT_EMPTY,
 ];

@@ -18,11 +18,13 @@ describe('NumberAttributeConditionLine', () => {
 
   it('should display the locale and scope selectors', async () => {
     fetchMock.mockResponses([
-      JSON.stringify(createAttribute({
-        type: 'pim_catalog_number',
-        localizable: true,
-        scopable: true,
-      })),
+      JSON.stringify(
+        createAttribute({
+          type: 'pim_catalog_number',
+          localizable: true,
+          scopable: true,
+        })
+      ),
       { status: 200 },
     ]);
 
@@ -59,11 +61,13 @@ describe('NumberAttributeConditionLine', () => {
 
   it('should not display the locale and scope selectors', async () => {
     fetchMock.mockResponses([
-      JSON.stringify(createAttribute({
-        type: 'pim_catalog_number',
-        localizable: false,
-        scopable: false,
-      })),
+      JSON.stringify(
+        createAttribute({
+          type: 'pim_catalog_number',
+          localizable: false,
+          scopable: false,
+        })
+      ),
       { status: 200 },
     ]);
 
@@ -92,11 +96,13 @@ describe('NumberAttributeConditionLine', () => {
 
   it('handles values option appearance based on selected operator', async () => {
     fetchMock.mockResponses([
-      JSON.stringify(createAttribute({
-        type: 'pim_catalog_number',  
-        localizable: false,
-        scopable: false
-      })),
+      JSON.stringify(
+        createAttribute({
+          type: 'pim_catalog_number',
+          localizable: false,
+          scopable: false,
+        })
+      ),
       { status: 200 },
     ]);
 
@@ -130,7 +136,13 @@ describe('NumberAttributeConditionLine', () => {
 
   it('displays the matching locales regarding the scope', async () => {
     fetchMock.mockResponses([
-      JSON.stringify(createAttribute({ type: 'pim_catalog_number', localizable: true, scopable: true })),
+      JSON.stringify(
+        createAttribute({
+          type: 'pim_catalog_number',
+          localizable: true,
+          scopable: true,
+        })
+      ),
       { status: 200 },
     ]);
 
