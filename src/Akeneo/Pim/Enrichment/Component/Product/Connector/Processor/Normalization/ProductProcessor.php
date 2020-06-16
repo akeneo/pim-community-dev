@@ -157,7 +157,6 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             ) {
                 $valuesToExport[$attributeCode] = $value;
             }
-            }
         }
 
         return $valuesToExport;
