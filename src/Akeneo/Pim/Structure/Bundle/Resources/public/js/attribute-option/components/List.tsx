@@ -93,9 +93,9 @@ const List = ({selectAttributeOption, selectedOptionId, isNewOptionFormDisplayed
                 </div>
             </div>
 
-            <div className="AknFieldContainer-header">
+            <label className="AknFieldContainer-header" htmlFor="auto-sort-options">
                 {translate('pim_enrich.entity.attribute.property.auto_option_sorting')}
-            </div>
+            </label>
             <ToggleButton />
 
             <div className="AknAttributeOption-list-optionsList" role="attribute-options-list">

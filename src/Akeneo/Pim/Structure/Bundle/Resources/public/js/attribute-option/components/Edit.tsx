@@ -45,6 +45,7 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
                                     defaultValue={option.optionValues[locale.code].value}
                                     role="attribute-option-label"
                                     onChange={(event: ChangeEvent<HTMLInputElement>) => onUpdateOptionLabel(event, locale.code)}
+                                    data-locale={locale.code}
                                 />
                             </div>
                         </div>
