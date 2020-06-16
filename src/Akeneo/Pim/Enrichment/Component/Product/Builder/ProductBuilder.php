@@ -67,8 +67,6 @@ class ProductBuilder implements ProductBuilderInterface
             $product->setFamily($family);
         }
 
-        $product->setQuantifiedAssociations(QuantifiedAssociations::createFromNormalized([]));
-
         $event = new GenericEvent($product);
         $this->eventDispatcher->dispatch(ProductEvents::CREATE, $event);
 
