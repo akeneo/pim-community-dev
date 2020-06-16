@@ -8,7 +8,6 @@ pim_connector:
       selector:
         modal:
           title: 类别选择
-        label: "{0}All products|{1}One selected category|]1,Inf[{{ count }} selected categories"
         title: 选择类别
     locales:
       validation:
@@ -28,26 +27,16 @@ pim_import_export:
       flash:
         create:
           success: 导入配置文件已成功创建
-        upload:
-          error: Unable to upload the file. Its size may exceed the configured maximum upload size on your PHP or HTTP server configuration
-      page_title:
-        index: "]-Inf, 1] {{ count }} import profile|]1, Inf [{{ count }} import profiles"
-      module:
-        create:
-          button: Create import profile
     export_profile:
       uppercase_label: 导出配置文件
       flash:
         create:
           success: 导出配置文件已成功创建
-      page_title:
-        index: "]-Inf, 1] {{ count }} export profile|]1, Inf [{{ count }} export profiles"
       module:
         create:
           button: 创建导入配置文件
   form:
     job_execution:
-      title.details: Execution details
       refreshBtn.title: 刷新
       button:
         show_profile.title: 显示配置文件
@@ -89,7 +78,6 @@ pim_import_export:
           file_path:
             title: 文件路径
             help: 将生成的文件写到哪里
-            help_import: The directory of the file to be used for the import
           delimiter:
             title: 分隔符
             help: 作为字段分隔符的单个字符
@@ -129,8 +117,6 @@ pim_import_export:
           real_time_versioning:
             title: 实时历史记录更新
             help: 关闭产品历史自动更新以提高性能
-          family_variant_column:
-            title: Family variant column
       file_path: 文件路径
   widget:
     last_operations:
@@ -143,12 +129,7 @@ pim_import_export:
         import: 导入
         export: 导出
         mass_edit: 批量编辑
-        mass_edit_rule: Rules Settings
         quick_export: 快速导出
-        compute_product_models_descendants: Compute product models descendants
-        compute_family_variant_structure_changes: Compute family variant structure changes
-        compute_completeness_of_products_family: Compute completeness of products family
-        mass_delete: Mass delete products
       header.view_all: 显示所有
   batch_status:
     1: 已完成
@@ -182,12 +163,8 @@ pim_enrich:
           success: 导出配置文件已删除
 pim_title:
   pim_importexport_export_profile_index: 导出配置文件管理
-  pim_importexport_export_profile_edit: Export profile {{ job.label }} | Edit
-  pim_importexport_export_profile_show: Export profile {{ job.label }} | Show
   pim_importexport_export_execution_index: 导出处理记录
   pim_importexport_export_execution_show: 导出处理记录|详情
   pim_importexport_import_profile_index: 导入配置文件管理
-  pim_importexport_import_profile_edit: Import profile {{ job.label }} | Edit
-  pim_importexport_import_profile_show: Import profile {{ job.label }} | Show
   pim_importexport_import_execution_index: 导入处理记录
   pim_importexport_import_execution_show: 导入处理记录|详情

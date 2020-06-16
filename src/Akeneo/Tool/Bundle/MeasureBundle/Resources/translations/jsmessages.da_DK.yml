@@ -170,10 +170,7 @@ pim_measure:
     PSI: Pund pr. kvadrattomme
     TORR: Torr
     MMHG: millimeter kviksølv
-    #Energy
-    CALORIE: calorie
     KILOCALORIE: kilokalorie
-    JOULE: joule
     KILOJOULE: kJ
     #CaseBox
     PIECE: Stykke

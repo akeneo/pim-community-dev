@@ -17,7 +17,4 @@ job_execution.summary:
     skipped: hoppades över, filändelsen i godkäntlistan
   product_skipped_no_diff: hoppade över produkten (inga skillnader)
   product_skipped_no_associations: hoppade över produkten (inga associationer hittades)
-  product_model_skipped_no_diff: skipped product model (no differences)
   item_position: lästa rader
-  skipped_in_root_product_model: skipped product model with parent
-  skipped_in_sub_product_model: skipped product model without parent

@@ -4,6 +4,13 @@
 
 - PIM-9084: Block the export of attributes with specific locale wich isn't the used locale in the export profile
 
+# 3.2.59 (2020-06-15)
+
+## Bug fixes
+
+- PIM-9203: Box shadow appearing on category selector in product grid
+- PIM-9282: Make calling attribute options via API case insensitive
+
 # 3.2.58 (2020-06-01)
 
 # 3.2.57 (2020-05-28)

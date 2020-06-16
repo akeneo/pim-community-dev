@@ -106,7 +106,6 @@ batch_jobs:
     label: Impor produk dalam XLSX
     import.label: Product import
   xlsx_product_model_import:
-    label: Product model import in XLSX
     import_product_model_descendants.label: Hitunglah model produk keturunan
   xlsx_group_export:
     label: Ekspor grup dalam XLSX

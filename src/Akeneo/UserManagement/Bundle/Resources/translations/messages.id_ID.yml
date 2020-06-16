@@ -9,7 +9,6 @@ pim_user:
       middle_name: Nama Tengah
       last_name: Nama Akhir
       name_suffix: Nama akhiran
-      phone: Phone
       date_of_birth: Tanggal Lahir
       avatar: Avatar
       timezone: Zona waktu
@@ -40,22 +39,12 @@ pim_user:
       has_group: Memiliki grup
       active: Aktif
       inactive: Tidak aktif
-    fields_errors:
-      new_password:
-        minimum_length: Password must contains at least 2 characters
-      new_password_repeat:
-        not_match: Password does not match
-      current_password:
-        wrong: Wrong password
     tabs:
       general:
         title: Umum
-        basic_information: Basic information
         contact_information: Informasi Kontak
       additional:
         title: Tambahan
-      additional_data:
-        title: Additional data
       interfaces:
         title: Antarmuka
       group_and_role.title: Grup dan peran

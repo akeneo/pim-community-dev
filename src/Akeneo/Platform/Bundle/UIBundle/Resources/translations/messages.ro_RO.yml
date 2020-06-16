@@ -37,7 +37,6 @@ Most Viewed: Cele mai vizualizate
 "Yes": "Da"
 "No": "Nu"
 required: (necesar)
-The element could not be deleted: The element could not be deleted
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Abiliți mesaje de incărcare
@@ -80,7 +79,6 @@ pim_enrich:
       associations_view: Vezi asociaţiile unui produs
       associations_edit: Adauga asociaţii la un produs
       change_family: Schimbă familia produsului
-      change_state: Change the status of a product
       add_to_groups: Adaugă produsul în grupuri
       mass_edit: Acțiuni de modificare în masă a produsului
       comment: Comentează produse
@@ -112,7 +110,6 @@ pim_enrich:
       create: Creează o familie
       edit_properties: Modifică proprietățile unei familii
       edit_attributes: Modifică atributele unei familii
-      edit_variants: Edit a family variant
       remove: Șterge o familie
       history: Vezi istoricul familiei
     family_variant:
@@ -150,12 +147,8 @@ pim_enrich:
       edit: Modifică un tip de asociație
       remove: Șterge un tip de asociere
       history: Vezi istoricul tipului de asociere
-    association:
-      remove: Remove associations to a product
     job_tracker:
       index: Monitorizare procese
-    api_connection:
-      manage: Manage the API connections
   acl_group:
     association_type: Tipurile asociației
     attribute: Atribute
@@ -168,12 +161,6 @@ pim_enrich:
     group_type: Tipuri de grup
     locale: Locale
     product: Produse
-    product_model: Product models
-  notification:
-    settings:
-      remove_completeness_for_channel_and_locale:
-        start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
-        done: Removal of a locale on a channel finished.
   create:
     attribute: creează atribut
     attribute group: creează un grup de atribute
@@ -202,7 +189,6 @@ flash:
     removed: Elementul a fost şters
   attribute:
     identifier_not_removable: Atributul de identificare nu poate fi eliminat
-    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   category:
     removed: Categorie înlăturată cu succes
   tree:
@@ -270,12 +256,10 @@ Required: Necesar
 Unique: Unic
 Not required: Nu este necesar
 Translatable: Traductibil
-Scopable: Scopable
 Localizable: Localizabil
 Unique value: Valoare unică
 Attribute group: Grup de atribut
 Other: Altul
-Variants behavior when edited: Variants behavior when edited
 Remove: Elimină
 Parameters: Parametri
 System: Sistem
@@ -290,11 +274,9 @@ Attribute type: Tip de atribut
 Defaultvalue: Valoare implicită
 Variant: Variantă
 Smart: Intelingent
-Useable as grid column: Usable as grid column
 Useable as grid filter: Utilizabil în grilă
 Family: Familie
 Image: Imagine
-Variant products: Variant products
 Available locales: Locale disponibile
 Locale specific: Specific local
 default: Prestabilit
@@ -321,7 +303,6 @@ No matches found: Nicio potrivire găsită
 Category tree: Mulțimea de categorii
 Completeness: Completitudine
 Attribute used as label: Atribut folosit ca etichetă
-Credentials: Credentials
 #Scopes
 Global: Global
 Channel: Canal
@@ -332,14 +313,12 @@ Always override: Scrie peste întotdeauna
 Ask: Întreabă
 #Attribute group
 General Properties: Proprietăți generale
-Group values: Group values
 New group: Grup nou
 Groups overview: Privirea de ansamblu a grupurilor
 'Y-m-d h:i:s': 'A-l-z o:m:s'
 #Attribute properties
 Max characters: Caractere maxime
 Validation rule: Regulă de validare
-Validation regexp: Validation regexp
 Wysiwyg enabled: WYSIWYG activat
 Number min: Număr minim
 Number max: Număr maxim
@@ -403,7 +382,6 @@ pane.accordion:
   validation_parameters: Parametrii de validare
   label_translations: Traduceri de etichetă
   options: Opţiuni
-  group_values: Group values
 #Popin titles
 popin.create:
   association_type.title: Creează un nou tip de asociere
@@ -420,15 +398,8 @@ Updated At: Actualizat pe
 Enabled: Activat
 Disabled: Dezactivat
 Status: Stare
-#Versioning / history
-Change History: Change history
-Data Audit: Data audit
-Data Audit - System: 'Data audit - system'
 Action: Acțiune
 Version: Versiune
-Entity type: Entity type
-Entity name: Entity name
-Entity id: Entity id
 Data: Date
 Author: Autor
 Logged at: Conectat la
@@ -439,7 +410,6 @@ New values: Valorile noi
 System configuration: Configurarea sistemului
 General setup: Setarea generală
 Localization: Localizare
-Localization options: Localization options
 Locale: Local
 Location: Locație
 Format address by address country: Formatează adresele după țară
@@ -460,7 +430,6 @@ oro.locale:
       province: "provincie"
   form:
     tooltip:
-      locale: "Select the locale option used to format numbers, addresses, names and dates"
       location: " Locația va fi folosită pentru a formata adresele atunci când opțiunea 'Formatează adresele după țară' va fi dezactivată"
       format_address_by_address_country: "Selectarea acestei opțiuni va activa ca adresele să fie formatate după țara în care se află. Dezactivarea acestei opțiuni va cauza ca adresele să fie formatate dupa formatul adresei locației tale"
       language: "Selectează limba sistemului pe care dorești să o folosești"
@@ -477,19 +446,12 @@ pim_mass_edit:
     quick_export:
       error: Exportarea rapidă <strong>%label%</strong> a eșuat
       warning: Exportarea rapidă <strong>%label%</strong> s-a finalizat cu unele avertismente
-      success: Quick export <strong>%label%</strong> finished
-    mass_delete:
-      error: Mass delete <strong>%label%</strong> failed
-      warning: Mass delete <strong>%label%</strong> finished with some warnings
-      success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
   mass_edited: Modificat în masă
   skip: Sărit
   skipped_products: Produse sărite
   skipped_attributes: Atributele sărite
   skipped_families: Familii sărite
-  deleted_products: Deleted products
-  deleted_product_models: Deleted product models
 pim_mass_edit_execution_show: Executări de editări în masă | Detalii
 edit_common_attributes.steps.edit_common_attributes_processor.title: Modifică atribute
 update_product_value.steps.update_product_value_processor.title: Actualizează valoarea produsului
