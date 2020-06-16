@@ -35,7 +35,7 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
         $standardCategory = $this->categoryNormalizer->normalize($category, 'standard', $context);
 
         $standardCategory['id'] = $category->getId();
-        if ($context['with_root']) {
+        if ($context['with_root'] ?? false) {
             $standardCategory['root'] = $category->getRoot();
         }
 
