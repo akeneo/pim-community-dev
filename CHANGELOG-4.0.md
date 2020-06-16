@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9301: Fix extractUpdatedProductsByConnection query group by issue
+- PIM-9294: Fix removal of a validation rule in text attribute edit form
 
 # 4.0.33 (2020-06-11)
 
