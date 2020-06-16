@@ -4,7 +4,7 @@ import { ActionLineProps } from './ActionLineProps';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
 import { ActionTemplate } from './ActionTemplate';
 import { useFormContext } from 'react-hook-form';
-import { useRegisterConst } from '../../hooks/useRegisterConst';
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
 import { ActionCategoriesSelector } from './ActionCategoriesSelector';
 
 type Props = {
@@ -20,8 +20,13 @@ const SetCategoriesActionLine: React.FC<Props> = ({
   const translate = useTranslate();
   const { control } = useFormContext();
 
-  useRegisterConst(`content.actions[${lineNumber}].type`, 'add');
-  useRegisterConst(`content.actions[${lineNumber}].field`, 'categories');
+  useRegisterConsts(
+    {
+      type: 'set',
+      field: 'categories',
+    },
+    `content.actions[${lineNumber}]`
+  );
 
   return (
     <ActionTemplate

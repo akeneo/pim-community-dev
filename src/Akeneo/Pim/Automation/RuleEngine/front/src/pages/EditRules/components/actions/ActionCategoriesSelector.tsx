@@ -92,9 +92,9 @@ const ActionCategoriesSelector: React.FC<Props> = ({
     );
   };
 
-  React.useEffect(() => {
+  const registerField = () => {
     register(
-      { name: name },
+      { name },
       {
         validate: () =>
           unexistingCategoryCodes.length > 0
@@ -106,6 +106,10 @@ const ActionCategoriesSelector: React.FC<Props> = ({
             : true,
       }
     );
+  };
+
+  React.useEffect(() => {
+    registerField();
   }, [unexistingCategoryCodes]);
 
   React.useEffect(() => {
@@ -123,6 +127,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
   }, [categories, categoryTrees]);
 
   React.useEffect(() => {
+    registerField();
     setValue(name, defaultValue);
     return () => {
       unregister(name);
