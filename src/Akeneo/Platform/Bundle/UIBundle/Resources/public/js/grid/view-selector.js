@@ -183,7 +183,8 @@ define(
                     FetcherRegistry.getFetcher(fetcher).search(searchParameters).then(function (response) {
                         const views = response.results || response;
                         let choices = this.toSelect2Format(views);
-                        const more = typeof response.more === 'undefined' ? (choices.length === this.getResultsPerPage()) : response.more;
+                        const more = typeof response.more === 'undefined' ?
+                            (choices.length === this.getResultsPerPage()) : response.more;
 
                         if (page === 1 && !options.term) {
                             choices = this.ensureDefaultView(choices);
