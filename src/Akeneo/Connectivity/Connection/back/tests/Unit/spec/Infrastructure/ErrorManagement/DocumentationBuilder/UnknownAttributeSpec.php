@@ -58,7 +58,7 @@ class UnknownAttributeSpec extends ObjectBehavior
                         'title' => 'Attributes settings',
                     ],
                 ],
-                'type' => 'text'
+                'style' => 'text'
             ],
             [
                 'message' => 'More information about attributes: {what_is_attribute} {manage_attribute}.',
@@ -74,7 +74,7 @@ class UnknownAttributeSpec extends ObjectBehavior
                         'title' => 'Manage your attributes',
                     ],
                 ],
-                'type' => 'information'
+                'style' => 'information'
             ]
         ]);
     }

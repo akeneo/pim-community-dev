@@ -28,7 +28,7 @@ class DocumentationCollectionSpec extends ObjectBehavior
                         'https://help.akeneo.com/manage-your-attributes.html'
                     )
                 ],
-                Documentation::TYPE_INFORMATION
+                Documentation::STYLE_INFORMATION
             ),
             new Documentation(
                 'Please check your {attribute_settings}.',
@@ -38,7 +38,7 @@ class DocumentationCollectionSpec extends ObjectBehavior
                         'pim_enrich_attribute_index',
                     )
                 ],
-                Documentation::TYPE_TEXT
+                Documentation::STYLE_TEXT
             )
         ]);
         $this->normalize()->shouldReturn([
@@ -56,7 +56,7 @@ class DocumentationCollectionSpec extends ObjectBehavior
                         'title' => 'Manage your attributes',
                     ],
                 ],
-                'type' => 'information'
+                'style' => 'information'
             ],
             [
                 'message' => 'Please check your {attribute_settings}.',
@@ -68,7 +68,7 @@ class DocumentationCollectionSpec extends ObjectBehavior
                         'title' => 'Attributes settings',
                     ],
                 ],
-                'type' => 'text'
+                'style' => 'text'
             ]
         ]);
     }

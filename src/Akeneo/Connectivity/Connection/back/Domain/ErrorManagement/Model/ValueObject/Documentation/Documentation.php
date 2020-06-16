@@ -11,8 +11,8 @@ namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObjec
  */
 class Documentation
 {
-    const TYPE_TEXT = 'text';
-    const TYPE_INFORMATION = 'information';
+    const STYLE_TEXT = 'text';
+    const STYLE_INFORMATION = 'information';
 
     /** @var string */
     private $message;
@@ -20,15 +20,15 @@ class Documentation
     /** @var array<string, MessageParameterInterface> */
     private $messageParameters;
 
-    /** @var self::TYPE_* */
-    private $type;
+    /** @var self::STYLE_* */
+    private $style;
 
     /**
      * @param string $message Could include parameters with the pattern {needle}.
      * @param array<string, MessageParameterInterface> $messageParameters Must have as many parameters as {needle} in message.
-     * @param self::TYPE_* $type Type of the documentation.
+     * @param self::STYLE_* $style Type of the documentation.
      */
-    public function __construct(string $message, array $messageParameters, string $type)
+    public function __construct(string $message, array $messageParameters, string $style)
     {
         $this->message = $message;
 
@@ -50,13 +50,13 @@ class Documentation
         }
         $this->messageParameters = $messageParameters;
 
-        switch ($type) {
-            case self::TYPE_TEXT:
-            case self::TYPE_INFORMATION:
-                $this->type = $type;
+        switch ($style) {
+            case self::STYLE_TEXT:
+            case self::STYLE_INFORMATION:
+                $this->style = $style;
                 break;
             default:
-                throw new \InvalidArgumentException('Documentation $type is not valid.');
+                throw new \InvalidArgumentException('Documentation $style is not valid.');
         }
     }
 
@@ -64,7 +64,7 @@ class Documentation
      * @return array{
      *  message: string,
      *  parameters: array<string, array<string, string|array>>,
-     *  type: self::TYPE_*
+     *  style: self::STYLE_*
      * }
      */
     public function normalize(): array
@@ -77,7 +77,7 @@ class Documentation
         return [
             'message' => $this->message,
             'parameters' => $normalizedParams,
-            'type' => $this->type
+            'style' => $this->style
         ];
     }
 }

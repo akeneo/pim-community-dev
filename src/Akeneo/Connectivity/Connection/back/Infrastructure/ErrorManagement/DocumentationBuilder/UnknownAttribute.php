@@ -41,7 +41,7 @@ final class UnknownAttribute implements DocumentationBuilderInterface
                         'pim_enrich_attribute_index'
                     )
                 ],
-                Documentation::TYPE_TEXT
+                Documentation::STYLE_TEXT
             ),
             new Documentation(
                 'More information about attributes: {what_is_attribute} {manage_attribute}.',
@@ -55,7 +55,7 @@ final class UnknownAttribute implements DocumentationBuilderInterface
                         'https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html'
                     )
                 ],
-                Documentation::TYPE_INFORMATION
+                Documentation::STYLE_INFORMATION
             )
         ]);
     }

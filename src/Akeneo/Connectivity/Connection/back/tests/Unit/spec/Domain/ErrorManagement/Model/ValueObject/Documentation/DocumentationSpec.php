@@ -27,7 +27,7 @@ class DocumentationSpec extends ObjectBehavior
                     'pim_enrich_attribute_index'
                 )
             ],
-            Documentation::TYPE_TEXT
+            Documentation::STYLE_TEXT
         );
 
         $this->normalize()->shouldReturn([
@@ -45,7 +45,7 @@ class DocumentationSpec extends ObjectBehavior
                     'title' => 'Attributes settings',
                 ],
             ],
-            'type' => Documentation::TYPE_TEXT
+            'style' => Documentation::STYLE_TEXT
         ]);
     }
 
@@ -62,7 +62,7 @@ class DocumentationSpec extends ObjectBehavior
                 {
                 }
             ],
-            Documentation::TYPE_TEXT
+            Documentation::STYLE_TEXT
         );
 
         $this
@@ -88,7 +88,7 @@ class DocumentationSpec extends ObjectBehavior
                         'https://help.akeneo.com/what-is-an-attribute.html'
                     ),
                 ],
-                Documentation::TYPE_TEXT
+                Documentation::STYLE_TEXT
             );
 
             $this
@@ -110,7 +110,7 @@ class DocumentationSpec extends ObjectBehavior
                     'https://help.akeneo.com/what-is-an-attribute.html'
                 ),
             ],
-            Documentation::TYPE_TEXT
+            Documentation::STYLE_TEXT
         );
 
         $this

@@ -114,7 +114,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                             'title' => 'Family settings',
                         ],
                     ],
-                    'type' => 'text'
+                    'style' => 'text'
                 ],
                 [
                     'message' => 'More information about families: {what_is_a_family} {manage_your_families}.',
@@ -130,7 +130,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                             'title' => 'Manage your families',
                         ],
                     ],
-                    'type' => 'information'
+                    'style' => 'information'
                 ]
             ],
             'product' => [
@@ -189,7 +189,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                             'type' => 'route',
                         ]
                     ],
-                    'type' => 'text'
+                    'style' => 'text'
                 ],
                 [
                     'message' => 'More information about attributes: {what_is_attribute} {manage_attribute}.',
@@ -205,7 +205,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                             'type' => 'href',
                         ]
                     ],
-                    'type' => 'information'
+                    'style' => 'information'
                 ]
             ],
             'product' => [
@@ -277,7 +277,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                             'title' => 'Categories settings',
                         ],
                     ],
-                    'type' => 'text'
+                    'style' => 'text'
                 ],
                 [
                     'message' => 'More information about catalogs and categories: {what_is_a_category} {categorize_a_product}.',
@@ -293,7 +293,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                             'title' => 'Categorize a product',
                         ],
                     ],
-                    'type' => 'information'
+                    'style' => 'information'
                 ]
             ],
             'product' => [

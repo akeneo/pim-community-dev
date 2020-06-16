@@ -58,7 +58,7 @@ class UnknownFamilySpec extends ObjectBehavior
                         'title' => 'Family settings',
                     ],
                 ],
-                'type' => 'text'
+                'style' => 'text'
             ],
             [
                 'message' => 'More information about families: {what_is_a_family} {manage_your_families}.',
@@ -74,7 +74,7 @@ class UnknownFamilySpec extends ObjectBehavior
                         'title' => 'Manage your families',
                     ],
                 ],
-                'type' => 'information'
+                'style' => 'information'
             ]
         ]);
     }

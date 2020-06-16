@@ -59,7 +59,7 @@ final class AttributeOptionDoesNotExist implements DocumentationBuilderInterface
                         'https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html#manage-simple-and-multi-selects-attribute-options'
                     )
                 ],
-                Documentation::TYPE_INFORMATION
+                Documentation::STYLE_INFORMATION
             ),
             new Documentation(
                 'Please check the {attribute_options_settings}.',
@@ -70,7 +70,7 @@ final class AttributeOptionDoesNotExist implements DocumentationBuilderInterface
                         ['code' => $parameters['%attribute_code%']]
                     )
                 ],
-                Documentation::TYPE_TEXT
+                Documentation::STYLE_TEXT
             )
         ]);
     }

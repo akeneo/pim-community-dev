@@ -41,7 +41,7 @@ final class UnknownCategory implements DocumentationBuilderInterface
                         'pim_enrich_categorytree_index'
                     )
                 ],
-                Documentation::TYPE_TEXT
+                Documentation::STYLE_TEXT
             ),
             new Documentation(
                 'More information about catalogs and categories: {what_is_a_category} {categorize_a_product}.',
@@ -55,7 +55,7 @@ final class UnknownCategory implements DocumentationBuilderInterface
                         'https://help.akeneo.com/pim/serenity/articles/categorize-a-product.html'
                     )
                 ],
-                Documentation::TYPE_INFORMATION
+                Documentation::STYLE_INFORMATION
             )
         ]);
     }

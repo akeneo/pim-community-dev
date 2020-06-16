@@ -58,7 +58,7 @@ class UnknownCategorySpec extends ObjectBehavior
                         'title' => 'Categories settings',
                     ],
                 ],
-                'type' => 'text'
+                'style' => 'text'
             ],
             [
                 'message' => 'More information about catalogs and categories: {what_is_a_category} {categorize_a_product}.',
@@ -74,7 +74,7 @@ class UnknownCategorySpec extends ObjectBehavior
                         'title' => 'Categorize a product',
                     ],
                 ],
-                'type' => 'information'
+                'style' => 'information'
             ],
         ]);
     }

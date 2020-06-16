@@ -116,7 +116,7 @@ class CollectProductValidationErrorEndToEnd extends ApiTestCase
                             'title' => 'Manage select attributes options'
                         ]
                     ],
-                    'type' => 'information'
+                    'style' => 'information'
                 ],
                 [
                     'message' => 'Please check the {attribute_options_settings}.',
@@ -130,7 +130,7 @@ class CollectProductValidationErrorEndToEnd extends ApiTestCase
                             'title' => 'Options settings of the color attribute'
                         ]
                     ],
-                    'type' => 'text'
+                    'style' => 'text'
                 ]
             ],
             'product' => [

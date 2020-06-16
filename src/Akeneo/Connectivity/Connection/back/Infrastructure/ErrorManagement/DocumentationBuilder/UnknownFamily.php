@@ -41,7 +41,7 @@ final class UnknownFamily implements DocumentationBuilderInterface
                         'pim_enrich_family_index'
                     )
                 ],
-                Documentation::TYPE_TEXT
+                Documentation::STYLE_TEXT
             ),
             new Documentation(
                 'More information about families: {what_is_a_family} {manage_your_families}.',
@@ -55,7 +55,7 @@ final class UnknownFamily implements DocumentationBuilderInterface
                         'https://help.akeneo.com/pim/serenity/articles/manage-your-families.html'
                     )
                 ],
-                Documentation::TYPE_INFORMATION
+                Documentation::STYLE_INFORMATION
             )
         ]);
     }

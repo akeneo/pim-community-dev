@@ -68,7 +68,7 @@ class AttributeOptionDoesNotExistSpec extends ObjectBehavior
                         'title' => 'Manage select attributes options',
                     ],
                 ],
-                'type' => 'information'
+                'style' => 'information'
             ],
             [
                 'message' => 'Please check the {attribute_options_settings}.',
@@ -82,7 +82,7 @@ class AttributeOptionDoesNotExistSpec extends ObjectBehavior
                         'title' => 'Options settings of the color attribute',
                     ],
                 ],
-                'type' => 'text'
+                'style' => 'text'
             ],
         ]);
     }
