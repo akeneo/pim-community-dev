@@ -44,10 +44,10 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     protected $productValuesFiller;
 
     /**
-     * @param NormalizerInterface                   $normalizer
+     * @param NormalizerInterface $normalizer
      * @param IdentifiableObjectRepositoryInterface $channelRepository
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param BulkMediaFetcher                      $mediaFetcher
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param BulkMediaFetcher $mediaFetcher
      * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
      */
     public function __construct(
@@ -56,11 +56,12 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         AttributeRepositoryInterface $attributeRepository,
         BulkMediaFetcher $mediaFetcher,
         ?EntityWithFamilyValuesFillerInterface $productValuesFiller = null
-    ) {
-        $this->normalizer          = $normalizer;
-        $this->channelRepository   = $channelRepository;
+    )
+    {
+        $this->normalizer = $normalizer;
+        $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->mediaFetcher        = $mediaFetcher;
+        $this->mediaFetcher = $mediaFetcher;
         $this->productValuesFiller = $productValuesFiller;
     }
 
@@ -82,7 +83,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             [
                 'filter_types' => ['pim.transform.product_value.structured'],
                 'channels' => [$channel->getCode()],
-                'locales'  => array_intersect(
+                'locales' => array_intersect(
                     $channel->getLocaleCodes(),
                     $parameters->get('filters')['structure']['locales']
                 ),
@@ -125,7 +126,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      * Fetch medias on the local filesystem
      *
      * @param EntityWithFamilyInterface $product
-     * @param string           $directory
+     * @param string $directory
      */
     protected function fetchMedia(EntityWithFamilyInterface $product, $directory)
     {
@@ -149,13 +150,13 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     {
         $valuesToExport = [];
         $attributesToFilter = array_flip($attributesToFilter);
-        foreach ($values as $attributeCode => $value) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-            if ($attribute->isLocaleSpecific()
-                && in_array($this->currentLocale, $attribute->getLocaleSpecificCodes())
-                && isset($attributesToFilter[$attributeCode])
-            ) {
-                    $valuesToExport[$attributeCode] = $value;
+        foreach ($values as $code => $value) {
+            if (isset($attributesToFilter[$code])) {
+                $attribute = $this->attributeRepository->findOneByIdentifier($code);
+                if (!$attribute->isLocaleSpecific()
+                    || in_array($this->currentLocale, $attribute->getLocaleSpecificCodes())) {
+                    $valuesToExport[$code] = $value;
+                }
             }
         }
 
