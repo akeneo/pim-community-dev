@@ -35,6 +35,8 @@ type AnnouncementProps = {
 };
 
 const AnnouncementComponent = ({announcement, campaign}: AnnouncementProps): JSX.Element => {
+  const altImg = null !== announcement.altImg ? announcement.altImg : announcement.title;
+
   return (
     <Container>
       <LineContainer>
@@ -43,8 +45,8 @@ const AnnouncementComponent = ({announcement, campaign}: AnnouncementProps): JSX
       </LineContainer>
       <Title tags={announcement.tags} title={announcement.title} />
       <Description tags={announcement.tags} description={announcement.description} />
-      {announcement.img &&
-        <Image src={announcement.img} alt={announcement.altImg} />
+      {null !== announcement.img &&
+        <Image src={announcement.img} alt={altImg} />
       }
       <LineContainer>
         <LinkComponent

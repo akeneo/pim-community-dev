@@ -10,10 +10,7 @@ afterEach(() => {
 });
 
 test('It can get all the announcements', async () => {
-  fetchMockResponseOnce(
-    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json',
-    JSON.stringify({data: expectedAnnouncements})
-  );
+  fetchMockResponseOnce('/rest/announcements', JSON.stringify({items: expectedAnnouncements}));
 
   const {result, waitForNextUpdate} = renderHookWithProviders(useAnnouncements);
 
@@ -23,14 +20,11 @@ test('It can get all the announcements', async () => {
 
   expect(result.current.data).toEqual(expectedAnnouncements);
   expect(result.current.hasError).toEqual(false);
-  expect(fetchMock).toHaveBeenCalledWith('./bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json');
+  expect(fetchMock).toHaveBeenCalledWith('/rest/announcements');
 });
 
 test('It can validate the announcements from the json', async () => {
-  fetchMockResponseOnce(
-    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json',
-    JSON.stringify({data: [{invalidProperty: 'invalid_property'}]})
-  );
+  fetchMockResponseOnce('/rest/announcements', JSON.stringify({items: [{invalidProperty: 'invalid_property'}]}));
   console.error = jest.fn();
 
   const {result, waitForNextUpdate} = renderHookWithProviders(useAnnouncements);

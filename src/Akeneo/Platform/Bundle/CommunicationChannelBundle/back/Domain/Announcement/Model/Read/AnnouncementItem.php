@@ -29,6 +29,9 @@ final class AnnouncementItem
     /** @var \DateTimeImmutable */
     private $startDate;
 
+    /** @var \DateTimeImmutable */
+    private $endDate;
+
     /** @var int */
     private $notificationDuration;
 
@@ -60,7 +63,25 @@ final class AnnouncementItem
         $this->editions = $editions;
     }
 
-    public function normalize()
+    private function addNewTag(): array
+    {
+        $currentDate = new \DateTimeImmutable();
+        $dateInterval = new \DateInterval('P' . $this->notificationDuration . 'D');
+        $endDate = $this->startDate->add($dateInterval);
+
+        if ($currentDate > $this->startDate && $currentDate < $endDate) {
+            array_unshift($this->tags, 'new');
+        }
+
+        return $this->tags;
+    }
+
+    private function formatDate(\DateTimeImmutable $date): string
+    {
+        return $date->format('F\, jS Y');
+    }
+
+    public function toArray(): array
     {
         return [
             'title' => $this->title,
@@ -68,9 +89,9 @@ final class AnnouncementItem
             'img' => $this->img,
             'altImg' => $this->altImg,
             'link' => $this->link,
-            'startDate' => $this->startDate,
+            'startDate' => $this->formatDate($this->startDate),
             'notificationDuration' => $this->notificationDuration,
-            'tags' => $this->tags,
+            'tags' => $this->addNewTag($this->tags),
             'editions' => $this->editions,
         ];
     }

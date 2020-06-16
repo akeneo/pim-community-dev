@@ -26,8 +26,8 @@ test('it shows the panel with the announcements', async () => {
     JSON.stringify(expectedPimAnalyticsData)
   );
   fetchMockResponseOnce(
-    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json',
-    JSON.stringify({data: expectedAnnouncements})
+    '/rest/announcements',
+    JSON.stringify({items: expectedAnnouncements})
   );
 
   await act(async () => renderWithProviders(
@@ -45,8 +45,8 @@ test('it can show for each announcement the information from the json', async ()
     JSON.stringify(expectedPimAnalyticsData)
   );
   fetchMockResponseOnce(
-    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json',
-    JSON.stringify({data: expectedAnnouncements})
+    '/rest/announcements',
+    JSON.stringify({items: expectedAnnouncements})
   );
 
   await act(async () => renderWithProviders(
@@ -71,8 +71,8 @@ test('it can open the read more link in a new tab', async () => {
     JSON.stringify(expectedPimAnalyticsData)
   );
   fetchMockResponseOnce(
-    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json',
-    JSON.stringify({data: expectedAnnouncements})
+    '/rest/announcements',
+    JSON.stringify({items: expectedAnnouncements})
   );
 
   await act(async () => renderWithProviders(
@@ -90,8 +90,8 @@ test('it can display an empty panel when it is not a serenity version', async ()
     JSON.stringify({pim_edition: 'CE', pim_version: '4.0'})
   );
   fetchMockResponseOnce(
-    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json',
-    JSON.stringify({data: expectedAnnouncements})
+    '/rest/announcements',
+    JSON.stringify({items: expectedAnnouncements})
   );
 
   await act(async () => renderWithProviders(
@@ -109,8 +109,8 @@ test('it can close the panel', async () => {
     JSON.stringify(expectedPimAnalyticsData)
   );
   fetchMockResponseOnce(
-    './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json',
-    JSON.stringify({data: []})
+    '/rest/announcements',
+    JSON.stringify({items: []})
   );
 
   await act(async () => renderWithProviders(

@@ -2,7 +2,7 @@ var/tests/%:
 	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
 
 .PHONY: coupling-back
-coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back
+coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back
 
 ### Static tests
 static-back: check-pullup check-sf-services

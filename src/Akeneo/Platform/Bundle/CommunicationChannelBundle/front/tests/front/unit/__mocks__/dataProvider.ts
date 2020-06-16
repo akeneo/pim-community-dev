@@ -15,6 +15,8 @@ export const getExpectedAnnouncements = () => {
       title: 'Title announcement 2',
       description: 'Description announcement 2',
       link: 'http://external-2.com',
+      img: null,
+      altImg: null,
       tags: ['tag'],
       startDate: '20-04-2020',
       notificationDuration: 14,

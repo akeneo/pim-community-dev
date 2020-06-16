@@ -4,8 +4,8 @@
   "properties": {
     "title": {"type": "string"},
     "description": {"type": "string"},
-    "img": {"type": "string"},
-    "altImg": {"type": "string"},
+    "img": {"type": ["string", "null"]},
+    "altImg": {"type": ["string", "null"]},
     "link": {"type": "string"},
     "tags": {
       "type": "array",
@@ -26,6 +26,8 @@
     "title",
     "description",
     "link",
+    "img",
+    "altImg",
     "tags",
     "startDate",
     "notificationDuration",

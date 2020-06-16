@@ -14,12 +14,12 @@ const useAnnouncements = (): {
     data: [],
     hasError: false,
   });
-  const route = './bundles/akeneocommunicationchannel/__mocks__/serenity-updates.json';
+  const route = '/rest/announcements';
 
   const updateAnnouncements = useCallback(async () => {
     try {
       const jsonResponse = await baseFetcher(route);
-      const announcements = jsonResponse.data;
+      const announcements = jsonResponse.items;
       announcements.map(validateAnnouncement);
 
       setAnnouncements({data: announcements, hasError: false});

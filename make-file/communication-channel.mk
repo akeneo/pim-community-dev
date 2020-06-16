@@ -59,17 +59,22 @@ _COMMUNICATION_CHANNEL_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Platform/Bund
 communication-channel-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/.php_cd.php src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back
 
-communication-channel-e2e-back:
+communication-channel-unit-back:
+	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Unit/spec/
+
+communication-channel-integration-back:
 ifeq ($(CI),true)
-	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Communication_Channel_EndToEnd
+	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Communication_Channel_Integration
 else
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Communication_Channel_EndToEnd $(0)
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Communication_Channel_Integration $(0)
 endif
+
+# Tests Front
+
+communication-channel-front-unit:
+	$(YARN_RUN) unit src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/tests/front/unit
 
 # Generate Models
 
 communication-channel-generate-models:
 	$(_COMMUNICATION_CHANNEL_YARN_RUN) generate-models
-
-communication-channel-unit-front:
-	$(_COMMUNICATION_CHANNEL_YARN_RUN) jest --ci

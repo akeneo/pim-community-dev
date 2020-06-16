@@ -32,6 +32,13 @@ suites:
         src_path: src/Akeneo/Platform
         spec_prefix: Specification
 
+    ## Communication Channel context
+    CommunicationChannel:
+        namespace: Akeneo\Platform\CommunicationChannel
+        psr4_prefix: Akeneo\Platform\CommunicationChannel
+        spec_path: src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Unit
+        src_path: src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back
+
     ## Apps context
     Apps:
         namespace: Akeneo\Connectivity\Connection

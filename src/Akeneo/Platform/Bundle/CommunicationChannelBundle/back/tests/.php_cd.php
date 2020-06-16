@@ -13,7 +13,16 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
+            'Akeneo\Platform\VersionProviderInterface',
+            'Akeneo\Platform\CommunicationChannel\Domain'
+        ]
+    )->in('Akeneo\Platform\CommunicationChannel\Application'),
+
+    $builder->only(
+        [
             'Symfony\Component',
+            'Akeneo\Platform\CommunicationChannel\Domain',
+            'Akeneo\Platform\CommunicationChannel\Application'
         ]
     )->in('Akeneo\Platform\CommunicationChannel\Infrastructure'),
 ];

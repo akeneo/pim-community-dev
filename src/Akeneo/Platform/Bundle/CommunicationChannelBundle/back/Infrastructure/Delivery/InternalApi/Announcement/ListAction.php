@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Delivery\InternalApi\Announcement;
 
-use Symfony\Component\HttpFoundation\Response;
+use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementsHandler;
+use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read\AnnouncementItem;
+use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindAnnouncementItemsInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @author Christophe Chausseray <chaauseray.christophe@gmail.com>
@@ -13,8 +16,29 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ListAction
 {
+    /** @var ListAnnouncementsHandler */
+    private $listAnnouncementsHandler;
+
+    public function __construct(ListAnnouncementsHandler $listAnnouncementsHandler)
+    {
+        $this->listAnnouncementsHandler = $listAnnouncementsHandler;
+    }
+
     public function __invoke()
     {
-        return Response::create(null, Response::HTTP_NO_CONTENT);
+        $announcementItems = $this->listAnnouncementsHandler->execute();
+
+        $normalizedAnnouncementItems = $this->normalizeAnnouncementItems($announcementItems);
+
+        return new JsonResponse([
+            'items' => $normalizedAnnouncementItems
+        ]);
+    }
+
+    private function normalizeAnnouncementItems(array $announcementItems): array
+    {
+        return array_map(function (AnnouncementItem $item) {
+            return $item->toArray();
+        }, $announcementItems);
     }
 }
