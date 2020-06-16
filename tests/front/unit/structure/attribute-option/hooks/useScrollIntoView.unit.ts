@@ -1,4 +1,4 @@
-import {renderHook, act} from '@testing-library/react-hooks';
+import {renderHook} from '@testing-library/react-hooks';
 import {useScrollIntoView} from 'akeneopimstructure/js/attribute-option/hooks/useScrollIntoView';
 
 describe('useScrollIntoView', () => {
