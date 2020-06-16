@@ -1,5 +1,5 @@
 import React from 'react';
-import { AddCategoriesAction } from '../../../../models/actions';
+import { SetCategoriesAction } from '../../../../models/actions';
 import { ActionLineProps } from './ActionLineProps';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
 import { ActionTemplate } from './ActionTemplate';
@@ -8,10 +8,10 @@ import { useRegisterConst } from '../../hooks/useRegisterConst';
 import { ActionCategoriesSelector } from './ActionCategoriesSelector';
 
 type Props = {
-  action: AddCategoriesAction;
+  action: SetCategoriesAction;
 } & ActionLineProps;
 
-const AddCategoriesActionLine: React.FC<Props> = ({
+const SetCategoriesActionLine: React.FC<Props> = ({
   lineNumber,
   action,
   currentCatalogLocale,
@@ -26,26 +26,26 @@ const AddCategoriesActionLine: React.FC<Props> = ({
   return (
     <ActionTemplate
       title={translate(
-        'pimee_catalog_rule.form.edit.actions.add_category.title'
+        'pimee_catalog_rule.form.edit.actions.set_category.title'
       )}
       helper={translate(
-        'pimee_catalog_rule.form.edit.actions.add_category.helper'
+        'pimee_catalog_rule.form.edit.actions.set_category.helper'
       )}
       legend={translate(
-        'pimee_catalog_rule.form.edit.actions.add_category.helper'
+        'pimee_catalog_rule.form.edit.actions.set_category.helper'
       )}
       handleDelete={handleDelete}>
       <ActionCategoriesSelector
         lineNumber={lineNumber}
         currentCatalogLocale={currentCatalogLocale}
-        initialCategoryCodes={action.items || []}
-        name={`content.actions[${lineNumber}].items`}
+        initialCategoryCodes={action.value || []}
+        name={`content.actions[${lineNumber}].value`}
         defaultValue={
-          control.defaultValuesRef?.current?.content?.actions[lineNumber]?.items
+          control.defaultValuesRef?.current?.content?.actions[lineNumber]?.value
         }
       />
     </ActionTemplate>
   );
 };
 
-export { AddCategoriesActionLine };
+export { SetCategoriesActionLine };
