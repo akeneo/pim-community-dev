@@ -43,14 +43,14 @@ const ErrorList: FC<Props> = ({errors}) => {
                         <TableHeaderRow>
                             <TableHeaderCell>
                                 <SortButton order={sortOrder} onSort={setSortOrder}>
-                                    <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.date_time_column' />
+                                    <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.date_time_column.title' />
                                 </SortButton>
                             </TableHeaderCell>
                             <TableHeaderCell>
-                                <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.content_column' />
+                                <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.content_column.title' />
                             </TableHeaderCell>
                             <TableHeaderCell>
-                                <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.details_column' />
+                                <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.details_column.title' />
                             </TableHeaderCell>
                         </TableHeaderRow>
                     </thead>

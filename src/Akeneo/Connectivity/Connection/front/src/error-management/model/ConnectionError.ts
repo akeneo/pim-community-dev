@@ -27,6 +27,7 @@ export type Documentation = {
 
 export type Product = {
     id?: number;
+    identifier?: string;
     family?: string;
     label?: string;
 };
@@ -34,12 +35,13 @@ export type Product = {
 export type ConnectionErrorContent = {
     message: string;
     message_parameters?: {};
-    message_template? : string;
+    message_template?: string;
     property?: string;
     documentation?: Array<Documentation>;
     locale?: string;
     scope?: string;
     product?: Product;
+    type?: string;
 };
 
 export type ConnectionError = {

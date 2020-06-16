@@ -1,55 +1,50 @@
 import React, {FC} from 'react';
+import {Flag} from '../../../common';
 import TableCell from '../../../common/components/Table/TableCell';
 import styled from '../../../common/styled-with-theme';
+import {Translate} from '../../../shared/translate';
 import {ConnectionErrorContent} from '../../model/ConnectionError';
-import {Flag} from '../../../common/components/Flag';
 
 type Props = {
     content: ConnectionErrorContent;
 };
 
 const ErrorDetailsCell: FC<Props> = ({content}) => {
-    const localeRow =
-        'locale' in content && null !== content.locale && 'string' === typeof content.locale ? (
-            <DetailRow>
-                <DetailLabel>Locale: </DetailLabel>
-                <DateContent>
-                    <Flag locale={content.locale} /> {content.locale}
-                </DateContent>
-            </DetailRow>
-        ) : (
-            <DetailRow></DetailRow>
-        );
-
-    const channelRow =
-        'scope' in content && null !== content.scope ? (
-            <DetailRow>
-                <DetailLabel>Channel: </DetailLabel>
-                <DateContent>{content.scope}</DateContent>
-            </DetailRow>
-        ) : (
-            <DetailRow></DetailRow>
-        );
-
-    const familyRow =
-        'product' in content &&
-        null !== content.product &&
-        'undefined' !== typeof content.product &&
-        'family' in content.product &&
-        null !== content.product.family ? (
-            <DetailRow>
-                <DetailLabel>Family: </DetailLabel>
-                <DateContent>{content.product.family}</DateContent>
-            </DetailRow>
-        ) : (
-            <DetailRow></DetailRow>
-        );
-
     return (
         <Container>
-            {localeRow}
-            {channelRow}
-            {familyRow}
+            {'string' === typeof content?.locale ? (
+                <DetailRow>
+                    <DetailLabel>
+                        <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.details_column.locale' />
+                        :{' '}
+                    </DetailLabel>
+                    <Flag locale={content.locale} /> {content.locale}
+                </DetailRow>
+            ) : (
+                <DetailRow></DetailRow>
+            )}
+            {'string' === typeof content?.scope ? (
+                <DetailRow>
+                    <DetailLabel>
+                        <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.details_column.channel' />
+                        :{' '}
+                    </DetailLabel>
+                    {content.scope}
+                </DetailRow>
+            ) : (
+                <DetailRow></DetailRow>
+            )}
+            {'string' === typeof content?.product?.family ? (
+                <DetailRow>
+                    <DetailLabel>
+                        <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.details_column.family' />
+                        :{' '}
+                    </DetailLabel>
+                    {content.product.family}
+                </DetailRow>
+            ) : (
+                <DetailRow></DetailRow>
+            )}
         </Container>
     );
 };
@@ -68,12 +63,5 @@ const DetailRow = styled.div`
 const DetailLabel = styled.span`
     font-weight: bold;
 `;
-
-const DateContent = styled.span``;
-
-/*
-const DetailFlag = styled.span`
-`;
-*/
 
 export {ErrorDetailsCell};

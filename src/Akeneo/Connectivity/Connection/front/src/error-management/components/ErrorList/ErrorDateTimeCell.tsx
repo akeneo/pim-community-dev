@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import TableCell from '../../../common/components/Table/TableCell';
+import {ClockIcon, DateIcon} from '../../../common/icons';
 import styled from '../../../common/styled-with-theme';
 import {useDateFormatter} from '../../../shared/formatter/use-date-formatter';
 
@@ -34,11 +35,11 @@ const ErrorDateTimeCell: FC<Props> = ({timestamp}) => {
     return (
         <Container collapsing>
             <DateTimeRow>
-                <DateTimeImg src='/bundles/pimui/images/date.svg' />
+                <Calendar />
                 <DateTimeText>{formatTimestampToDate(timestamp)}</DateTimeText>
             </DateTimeRow>
             <DateTimeRow>
-                <DateTimeImg src='/bundles/pimui/images/clock.svg' />
+                <Clock />
                 <DateTimeText>{formatTimestampToTime(timestamp)}</DateTimeText>
             </DateTimeRow>
         </Container>
@@ -52,7 +53,7 @@ const Container = styled(TableCell)`
 const DateTimeRow = styled.div`
     line-height: ${({theme}) => theme.fontSize.default};
     color: ${({theme}) => theme.color.grey140};
-    padding: 5px 20px;
+    padding: 5px 0px;
 `;
 
 const DateTimeText = styled.span`
@@ -60,7 +61,13 @@ const DateTimeText = styled.span`
     vertical-align: text-bottom;
 `;
 
-const DateTimeImg = styled.img`
+const Calendar = styled(DateIcon)`
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+`;
+
+const Clock = styled(ClockIcon)`
     width: 24px;
     height: 24px;
     vertical-align: middle;
