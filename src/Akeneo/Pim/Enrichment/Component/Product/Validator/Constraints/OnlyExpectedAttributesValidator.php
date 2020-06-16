@@ -42,6 +42,7 @@ class OnlyExpectedAttributesValidator extends ConstraintValidator
         if (null === $entity->getFamilyVariant()) {
             return;
         }
+
         $family = $entity->getFamilyVariant()->getFamily();
         $familyAttributeCodes = $family->getAttributeCodes();
         $levelAttributes = $this->attributesProvider->getAttributes($entity);
@@ -56,19 +57,34 @@ class OnlyExpectedAttributesValidator extends ConstraintValidator
         foreach ($entity->getValuesForVariation()->getAttributeCodes() as $modelAttributeCode) {
             if (!in_array($modelAttributeCode, $familyAttributeCodes)) {
                 $this->context->buildViolation(
-                    OnlyExpectedAttributes::ATTRIBUTE_DOES_NOT_BELONG_TO_FAMILY, [
-                    '%attribute%' => $modelAttributeCode,
-                    '%family%' => $family->getCode()
-                ])->atPath('attribute')->addViolation();
+                    OnlyExpectedAttributes::getErrorMessage(
+                        OnlyExpectedAttributes::ATTRIBUTE_DOES_NOT_BELONG_TO_FAMILY
+                    ),
+                    [
+                        '%attribute%' => $modelAttributeCode,
+                        '%family%' => $family->getCode()
+                    ]
+                )
+                    ->atPath('attribute')
+                    ->setCode(OnlyExpectedAttributes::ATTRIBUTE_DOES_NOT_BELONG_TO_FAMILY)
+                    ->addViolation();
+
 
                 continue;
             }
 
             if (!in_array($modelAttributeCode, $levelAttributeCodes, true)) {
                 $this->context->buildViolation(
-                    OnlyExpectedAttributes::ATTRIBUTE_UNEXPECTED, [
-                    '%attribute%' => $modelAttributeCode
-                ])->atPath('attribute')->addViolation();
+                    OnlyExpectedAttributes::getErrorMessage(
+                        OnlyExpectedAttributes::ATTRIBUTE_UNEXPECTED
+                    ),
+                    [
+                        '%attribute%' => $modelAttributeCode
+                    ]
+                )
+                    ->atPath('attribute')
+                    ->setCode(OnlyExpectedAttributes::ATTRIBUTE_UNEXPECTED)
+                    ->addViolation();
             }
         }
     }

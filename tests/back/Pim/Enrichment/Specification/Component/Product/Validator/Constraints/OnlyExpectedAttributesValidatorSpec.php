@@ -3,7 +3,6 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\OnlyExpectedAttributesValidator;
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -111,7 +110,8 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                OnlyExpectedAttributes::ATTRIBUTE_DOES_NOT_BELONG_TO_FAMILY, [
+                OnlyExpectedAttributes::getErrorMessage(OnlyExpectedAttributes::ATTRIBUTE_DOES_NOT_BELONG_TO_FAMILY),
+                [
                     '%attribute%' => 'price',
                     '%family%' => 'family'
                 ]
@@ -120,13 +120,18 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                OnlyExpectedAttributes::ATTRIBUTE_UNEXPECTED, [
+                OnlyExpectedAttributes::getErrorMessage(OnlyExpectedAttributes::ATTRIBUTE_UNEXPECTED),
+                [
                     '%attribute%' => 'sku'
                 ]
             )
             ->willReturn($violation);
 
         $violation->atPath('attribute')->willReturn($violation)->shouldBeCalledTimes(2);
+        $violation->setCode(OnlyExpectedAttributes::ATTRIBUTE_DOES_NOT_BELONG_TO_FAMILY)
+            ->willReturn($violation)->shouldBeCalledTimes(1);
+        $violation->setCode(OnlyExpectedAttributes::ATTRIBUTE_UNEXPECTED)
+            ->willReturn($violation)->shouldBeCalledTimes(1);
         $violation->addViolation()->shouldBeCalledTimes(2);
 
         $this->validate($entity, $constraint);

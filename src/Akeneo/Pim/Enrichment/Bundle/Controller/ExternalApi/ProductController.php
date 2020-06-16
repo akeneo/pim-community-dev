@@ -21,7 +21,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
@@ -125,9 +124,6 @@ class ProductController
     /** @var AddParent */
     protected $addParent;
 
-    /** @var AttributeFilterInterface */
-    protected $productAttributeFilter;
-
     /** @var ListProductsQueryValidator */
     private $listProductsQueryValidator;
 
@@ -176,7 +172,6 @@ class ProductController
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductBuilderInterface $variantProductBuilder,
-        AttributeFilterInterface $productAttributeFilter,
         AddParent $addParent,
         ListProductsQueryValidator $listProductsQueryValidator,
         array $apiConfiguration,
@@ -208,7 +203,6 @@ class ProductController
         $this->fromSizePqbFactory = $fromSizePqbFactory;
         $this->variantProductBuilder = $variantProductBuilder;
         $this->apiConfiguration = $apiConfiguration;
-        $this->productAttributeFilter = $productAttributeFilter;
         $this->addParent = $addParent;
         $this->listProductsQueryValidator = $listProductsQueryValidator;
         $this->listProductsQueryHandler = $listProductsQueryHandler;
@@ -499,10 +493,6 @@ class ProductController
         }
 
         try {
-            if (isset($data['parent']) || $product->isVariant()) {
-                $data = $this->productAttributeFilter->filter($data);
-            }
-
             $this->updater->update($product, $data);
         } catch (\Exception $exception) {
             if ($exception instanceof DomainErrorInterface) {

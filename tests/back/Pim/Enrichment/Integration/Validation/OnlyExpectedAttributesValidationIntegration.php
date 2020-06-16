@@ -25,7 +25,7 @@ class OnlyExpectedAttributesValidationIntegration extends TestCase
         $violations = $this->get('pim_catalog.validator.product')->validate($variantProduct);
 
         $this->assertCount(1, $violations);
-        $this->assertSame('Attribute "care_instructions" does not belong to the family "shoes"', $violations->get(0)->getMessage());
+        $this->assertSame('The care_instructions attribute does not belong to the shoes family or does not exist.', $violations->get(0)->getMessage());
         $this->assertSame('attribute', $violations->get(0)->getPropertyPath());
     }
 
