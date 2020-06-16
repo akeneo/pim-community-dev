@@ -23,8 +23,7 @@ const AttributeOptionForm: FC<AttributeOptionFormProps> = ({option, locale, onUp
 
     return (
         <div className="AknFieldContainer">
-            <
-                div className="AknFieldContainer-header">
+            <div className="AknFieldContainer-header">
                 <label className="AknFieldContainer-label control-label AknFieldContainer-label">
                     {locale.label}
                 </label>

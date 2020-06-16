@@ -7,10 +7,10 @@ interface newOptionPlaceholderProps {
 
 const NewOptionPlaceholder = ({cancelNewOption}: newOptionPlaceholderProps) => {
     const translate = useTranslate();
-    const placeholderRef = useRef<HTMLDivElement | null>(null);
+    const placeholderRef = useRef<HTMLDivElement>(null);
 
     useLayoutEffect(() => {
-        if (placeholderRef && placeholderRef.current) {
+        if (placeholderRef.current) {
             placeholderRef.current.scrollIntoView();
         }
     }, []);
